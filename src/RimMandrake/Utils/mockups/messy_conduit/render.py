@@ -27,6 +27,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from scene import GRID_KEY, base_scene, break_scene, mini  # noqa: E402
 from styles import LEVEL_ORDER, LEVELS, STYLE_ORDER, STYLES  # noqa: E402
+import rope  # noqa: E402
 
 LIGHT = np.array([-0.55, -0.835])
 LIGHT = LIGHT / np.linalg.norm(LIGHT)
@@ -167,9 +168,10 @@ def at_arc(P, s):
 class Net:
     """Conduit graph, chains and end classes for one scene."""
 
-    def __init__(self, sc, seed):
+    def __init__(self, sc, seed, load=False):
         self.sc = sc
         self.seed = seed
+        self.load = load
         self.cells = set(map(tuple, sc["conduit"]))
         self.walls = set(map(tuple, sc["walls"]))
         self.rock = set(map(tuple, sc["rock"]))
@@ -184,6 +186,12 @@ class Net:
         self.nb = {c: [(c[0] + d[0], c[1] + d[1]) for d in DIRS
                        if (c[0] + d[0], c[1] + d[1]) in self.cells] for c in self.cells}
         self.deg = {c: len(v) for c, v in self.nb.items()}
+        # load mode: a machine/lamp hookup in the middle of a run is a TAP (flow changes there),
+        # so runs are split at it and it is treated like a junction
+        self.taps = set()
+        if load:
+            hooks = set(self.hook_of) | {tuple(l["hookup"]) for l in sc["lamps"]}
+            self.taps = {c for c in hooks if c in self.cells and self.deg[c] == 2}
         self._chains()
         self._live()
 
@@ -198,13 +206,13 @@ class Net:
         return c in self.walls or c in self.rock or c in self.machine_cells
 
     def _chains(self):
-        stops = [c for c in sorted(self.cells) if self.deg[c] != 2]
+        stops = [c for c in sorted(self.cells) if self.deg[c] != 2 or c in self.taps]
         seen = set()
         self.chains = []
         for s in stops:
             for n in sorted(self.nb[s]):
                 path = [s, n]
-                while self.deg[path[-1]] == 2:
+                while self.deg[path[-1]] == 2 and path[-1] not in self.taps:
                     a, b = self.nb[path[-1]]
                     path.append(a if a != path[-2] else b)
                 key = frozenset(frozenset(e) for e in zip(path, path[1:]))
@@ -231,6 +239,8 @@ class Net:
         return (c[0] - n[0], c[1] - n[1])
 
     def end_class(self, c):
+        if c in self.taps:
+            return "t"
         d = self.deg[c]
         if d >= 3:
             return "x" if d == 4 else "t"
@@ -267,12 +277,26 @@ class Net:
         return [ctr + o * ext, ctr]
 
 
+def port_point(c, nbr):
+    """Load mode: a run stops at the junction cell's EDGE (its port), not at the knot."""
+    return np.array([c[0] + 0.5 + (nbr[0] - c[0]) * PORT, c[1] + 0.5 + (nbr[1] - c[1]) * PORT])
+
+
+PORT = 0.44
+
+
 def centreline(net, path):
     a, b = path[0], path[-1]
     ca, cb = net.end_class(a), net.end_class(b)
-    pts = net.end_point(a, ca)
+    if net.load and ca in ("t", "x"):
+        pts = [port_point(a, path[1])]
+    else:
+        pts = net.end_point(a, ca)
     pts += [np.array([c[0] + 0.5, c[1] + 0.5]) for c in path[1:-1]]
-    pts += list(reversed(net.end_point(b, cb)))
+    if net.load and cb in ("t", "x"):
+        pts += [port_point(b, path[-2])]
+    else:
+        pts += list(reversed(net.end_point(b, cb)))
     # corner cutting gives every 90 degree bend a minimum radius before the spline
     cut = [pts[0]]
     for i in range(1, len(pts) - 1):
@@ -299,7 +323,9 @@ def build_strands(net, sty, lvl, opts):
     strands, splices, coils, knots, ends, greases = [], [], [], [], [], []
     lines = []
     ws = sty.get("wander_scale", 1.0)
-    for path in net.chains:
+    LD = opts.get("load")
+    per_chain = []
+    for ci_, path in enumerate(net.chains):
         C, ca, cb = centreline(net, path)
         lines.append((path, C))
         key = tuple(sorted([path[0], path[-1]])) + (len(path),)
@@ -309,6 +335,8 @@ def build_strands(net, sty, lvl, opts):
         L = cl[-1]
         nmin, nmax = opts.get("force_n", lvl["strands"])
         n = rr.randint(nmin, nmax)
+        if LD:
+            n = LD["n"][ci_]
         kinds = [k for k, _ in sty["kinds"]]
         wts = [w for _, w in sty["kinds"]]
         if opts.get("force_kind"):
@@ -319,8 +347,17 @@ def build_strands(net, sty, lvl, opts):
         def tap_end(cls, s):
             if cls in ("break", "open", "grommet"):
                 return np.ones_like(s)
+            if LD and cls in ("t", "x"):
+                return np.ones_like(s)
             return 0.15 + 0.85 * sstep(s / taper_len)
+
+        def free_end(cls, s):
+            # load mode: wander and sag die out at a junction port so the strand slots line up exactly
+            if LD and cls in ("t", "x"):
+                return sstep(s / 0.45)
+            return tap_end(cls, s)
         tap = tap_end(ca, cl) * tap_end(cb, L - cl)
+        tfree = free_end(ca, cl) * free_end(cb, L - cl)
         shrink = min(1.0, L / 1.5)
         bundle_sign = rr.choice([-1, 1])
         chain_strands = []
@@ -328,13 +365,20 @@ def build_strands(net, sty, lvl, opts):
             kind = rr.choices(kinds, wts)[0]
             lat = 0.0 if n == 1 else spread * ((i - (n - 1) / 2) / ((n - 1) / 2)) * rr.uniform(0.75, 1.1)
             lat += rr.uniform(-0.015, 0.015)
+            if LD:
+                kind = LD["kind"](ci_, i)
+                lat = LD["lat"](n, i)
             wa = lvl["wander"] * ws * rr.uniform(0.6, 1.2) * shrink
             l1, l2 = rr.uniform(1.3, 2.4), rr.uniform(0.5, 0.9)
             f1, f2 = rr.uniform(0, 6.28), rr.uniform(0, 6.28)
             wander = wa * (0.72 * np.sin(2 * np.pi * cl / l1 + f1) + 0.28 * np.sin(2 * np.pi * cl / l2 + f2))
             sg = bundle_sign if rr.random() < 0.75 else -bundle_sign
             sag = lvl["sag"] * rr.uniform(0.4, 1.0) * sg * shrink * np.sin(np.pi * np.clip(cl / max(L, 1e-6), 0, 1))
-            off = tap * (lat + wander) + sag * np.minimum(1, tap * 1.5)
+            if LD:
+                wander = wander * 0.55
+                off = tap * lat + tfree * wander + sag * 0.6 * np.minimum(1, tfree * 1.5)
+            else:
+                off = tap * (lat + wander) + sag * np.minimum(1, tap * 1.5)
             off = np.clip(off, -0.38, 0.38)
             for _ in range(5):
                 P = C + N * off[:, None]
@@ -351,6 +395,10 @@ def build_strands(net, sty, lvl, opts):
             P = C + N * off[:, None]
             P = np.c_[smooth1d(P[:, 0], 3), smooth1d(P[:, 1], 3)]
             P[0], P[-1] = C[0] + N[0] * off[0], C[-1] + N[-1] * off[-1]
+            if opts.get("sprawl"):
+                # owner excursions (§8.11): slack laid as big walkability-aware loops, then settled
+                P = rope.sprawl(net, P, opts["sprawl"], R(seed, "bundle", key), R(seed, "strand", key, i),
+                                set(path) & net.walls, n)
             chain_strands.append({"pts": P, "kind": kind, "s0": rr.uniform(0, 1), "tails": [],
                                   "i": i, "front": None})
         # floor loops (messiness)
@@ -401,20 +449,23 @@ def build_strands(net, sty, lvl, opts):
             if rr.random() < p_splice:
                 j = int(np.argmin(np.hypot(C[:, 0] - c[0] - 0.5, C[:, 1] - c[1] - 0.5)))
                 splices.append({"s": cl[j], "C": C, "strands": chain_strands, "rr": R(seed, "spl", c),
-                                "kind": "splice"})
+                                "kind": "splice", "frac": ci / max(1, ncell - 1)})
             elif sty.get("tape") and rr.random() < lvl["tape_p"] and not opts.get("force_splice"):
                 j = int(np.argmin(np.hypot(C[:, 0] - c[0] - 0.5, C[:, 1] - c[1] - 0.5)))
                 splices.append({"s": cl[j] + rr.uniform(-0.2, 0.2), "C": C, "strands": chain_strands,
-                                "rr": R(seed, "tape", c), "kind": "tape"})
+                                "rr": R(seed, "tape", c), "kind": "tape", "frac": ci / max(1, ncell - 1)})
         for cls, cell, P0 in ((ca, path[0], C[0]), (cb, path[-1], C[-1])):
             ends.append({"cls": cls, "cell": cell, "p": P0, "C": C, "at_start": cell == path[0],
                          "strands": chain_strands, "live": cell in net.live})
             if cls in ("cap", "plug") and (rr.random() < lvl["coil_p"] or opts.get("force_coil")):
                 coils.append({"cell": cell, "kind": rr.choice(chain_strands)["kind"], "rr": R(seed, "coil", cell)})
         strands += chain_strands
+        per_chain.append(chain_strands)
+    if LD:
+        strands += LD["connectors"](net, per_chain)
     # junction knots
     for c in sorted(net.cells):
-        if net.deg[c] >= 3:
+        if net.deg[c] >= 3 or c in net.taps:
             knots.append({"cell": c, "p": net.knot(c), "cls": "x" if net.deg[c] == 4 else "t"})
     # grease near knots / plug ends (filth)
     for k in knots:
@@ -624,6 +675,11 @@ def draw_tube(d, P, k, W, s_off=0.0, caps=True):
     if pat == "rubber":
         _line(d, P + N * sg * 0.22 * W, mix(base, hi, 0.55), max(1, W * 0.22))
         return
+    if pat == "matte":
+        # matte rubber: a broad, low-contrast sheen and no specular line
+        _line(d, P + N * sg * 0.16 * W, mix(base, hi, 0.45), max(1, W * 0.34))
+        _line(d, P + N * sg * 0.2 * W, mix(base, hi, 0.75), max(1, W * 0.12))
+        return
     # plain / gloss
     _line(d, P + N * sg * 0.2 * W, mix(base, hi, 0.55), W * 0.3)
     _line(d, P + N * sg * 0.26 * W, hi, max(1, W * 0.12))
@@ -753,7 +809,7 @@ def draw_machine(cv, m, net):
     cv.comp(ov, blur=C * 0.05)
     k = m["kind"]
     fh = C * 0.22
-    powered = tuple(m["hookup"]) in net.live
+    powered = tuple(m["hookup"]) in net.live and m.get("on", True)
     if k == "generator":
         box(d, x0 + C * 0.06, y0 + C * 0.06, x1 - C * 0.06, y1 - C * 0.04, hx("#9a5a33"), fh, C, ss)
         d.ellipse([x0 + C * 0.3, y0 + C * 0.3, x0 + C * 0.75, y0 + C * 0.75], fill="#2b2420")
@@ -790,6 +846,24 @@ def draw_machine(cv, m, net):
         box(d, x0 + C * 0.1, y0 + C * 0.08, x1 - C * 0.1, y1 - C * 0.04, hx("#5c5e5a"), fh, C, ss)
         d.rectangle([x0 + C * 0.22, y0 + C * 0.2, x1 - C * 0.22, y0 + C * 0.55],
                     fill="#2bb6c8" if powered else "#141818")
+    elif k == "solar":
+        box(d, x0 + C * 0.04, y0 + C * 0.04, x1 - C * 0.04, y1 - C * 0.03, hx("#3a4048"), fh * 0.6, C, ss)
+        for i in range(m["w"] * 2):
+            for j in range(m["h"] * 2):
+                xx, yy = x0 + C * (0.1 + 0.47 * i), y0 + C * (0.1 + 0.42 * j)
+                d.rectangle([xx, yy, xx + C * 0.42, yy + C * 0.36],
+                            fill="#2d4f7a" if m.get("lit", True) else "#1a2433")
+                d.line([(xx + C * 0.04, yy + C * 0.05), (xx + C * 0.3, yy + C * 0.05)],
+                       fill="#6f93c0" if m.get("lit", True) else "#2a3446", width=ss)
+    elif k == "smelter":
+        box(d, x0 + C * 0.05, y0 + C * 0.04, x1 - C * 0.05, y1 - C * 0.02, hx("#5a4a3c"), fh * 0.8, C, ss)
+        d.rectangle([x0 + C * 1.05, y0 + C * 0.18, x0 + C * 1.95, y0 + C * 0.6],
+                    fill="#ff7a1e" if powered else "#2a2420")
+        if powered:
+            gl = cv.overlay()
+            ImageDraw.Draw(gl).ellipse([x0 + C * 0.8, y0 - C * 0.2, x0 + C * 2.2, y0 + C * 0.9],
+                                       fill=(255, 140, 40, 90))
+            cv.comp(gl, blur=C * 0.15)
     else:
         box(d, x0 + C * 0.1, y0 + C * 0.06, x1 - C * 0.1, y1 - C * 0.04, hx("#777777"), fh, C, ss)
 
@@ -890,7 +964,7 @@ def tape_band(d, c, ang, length, width, col, ss, r):
         off = r.uniform(-0.35, 0.35) * length
         p = (c[0] + math.cos(ang) * off, c[1] + math.sin(ang) * off)
         q = rot_rect(p, ang, max(1, length * 0.06), width * 0.85)
-        d.polygon(q, fill=mix(col, "#ffffff", 0.25) if k % 2 else mul(col, 0.75))
+        d.polygon(q, fill=mix(col, "#ffffff", 0.12) if k % 2 else mul(col, 0.75))
 
 
 def decal(cv, name, p, ang, sty, scale=1.0, rr=None, kind=None):
@@ -1025,7 +1099,7 @@ def decal(cv, name, p, ang, sty, scale=1.0, rr=None, kind=None):
             rx, ry = rad * rr.uniform(0.45, 0.65), rad * rr.uniform(0.3, 0.5)
             d.ellipse([x + ox - rx, y + oy - ry, x + ox + rx, y + oy + ry], fill=rr.choice(["#232323", "#2c2c2c", "#1c1c1c"]))
         tape_band(d, (x + rr.uniform(-0.1, 0.1) * rad, y), ang + rr.uniform(-0.6, 0.6), rad * 1.7, rad * 0.45,
-                  hx("#d8b21e"), ss, rr)
+                  hx(sty.get("tape_lump", "#d8b21e")), ss, rr)
         for k in range(4):
             a = rr.uniform(0, 6.28)
             d.arc([x - rad * 0.7, y - rad * 0.5, x + rad * 0.7, y + rad * 0.5], math.degrees(a),
@@ -1034,25 +1108,25 @@ def decal(cv, name, p, ang, sty, scale=1.0, rr=None, kind=None):
         rad = s * 0.24
         shadow(rad)
         d.ellipse([x - rad, y - rad * 0.9, x + rad, y + rad * 0.9], fill="#3c3a34")
-        d.ellipse([x - rad * 0.92, y - rad * 0.84, x + rad * 0.92, y + rad * 0.82], fill="#9ea296")
-        d.ellipse([x - rad * 0.75, y - rad * 0.68, x + rad * 0.75, y + rad * 0.66], fill="#868a7e")
-        d.ellipse([x - rad * 0.6, y - rad * 0.55, x + rad * 0.6, y + rad * 0.52], fill="#a7ab9e")
-        d.arc([x - rad * 0.92, y - rad * 0.84, x + rad * 0.92, y + rad * 0.82], 200, 300, fill="#e6e8dc",
+        d.ellipse([x - rad * 0.92, y - rad * 0.84, x + rad * 0.92, y + rad * 0.82], fill=mul("#9ea296", sty.get("tin_shade", 1.0)))
+        d.ellipse([x - rad * 0.75, y - rad * 0.68, x + rad * 0.75, y + rad * 0.66], fill=mul("#868a7e", sty.get("tin_shade", 1.0)))
+        d.ellipse([x - rad * 0.6, y - rad * 0.55, x + rad * 0.6, y + rad * 0.52], fill=mul("#a7ab9e", sty.get("tin_shade", 1.0)))
+        d.arc([x - rad * 0.92, y - rad * 0.84, x + rad * 0.92, y + rad * 0.82], 200, 300, fill=sty.get("tin_hi", "#e6e8dc"),
               width=max(1, ss * 2))
         d.pieslice([x - rad * 0.92, y - rad * 0.84, x + rad * 0.92, y + rad * 0.82], 20, 80, fill="#b33a24")
-        d.pieslice([x - rad * 0.74, y - rad * 0.66, x + rad * 0.74, y + rad * 0.64], 20, 80, fill="#868a7e")
+        d.pieslice([x - rad * 0.74, y - rad * 0.66, x + rad * 0.74, y + rad * 0.64], 20, 80, fill=mul("#868a7e", sty.get("tin_shade", 1.0)))
         for k in range(6):
             a = rr.uniform(0, 6.28)
             q = (x + math.cos(a) * rad * rr.uniform(0.3, 0.85), y + math.sin(a) * rad * rr.uniform(0.3, 0.8))
             _dot(d, q, rad * rr.uniform(0.05, 0.12), rr.choice(["#7a3e1e", "#8a4a24", "#5e3418"]))
-        d.ellipse([x + rad * 0.1, y - rad * 0.4, x + rad * 0.45, y - rad * 0.15], fill="#6e7266")
+        d.ellipse([x + rad * 0.1, y - rad * 0.4, x + rad * 0.45, y - rad * 0.15], fill=mul("#6e7266", sty.get("tin_shade", 1.0)))
         tape_band(d, (x - rad * 0.1, y + rad * 0.2), ang + 0.4, rad * 1.5, rad * 0.32, hx("#1c1c1c"), ss, rr)
     elif name == "tape":
         col = hx(rr.choice(sty["tape"])) if sty.get("tape") else hx("#202020")
         w = scale * C
         if rr.random() < 0.3:
             d.polygon(rot_rect(p, ang, C * 0.07, w * 1.08), fill="#2a2c2e")
-            d.polygon(rot_rect(p, ang, C * 0.05, w), fill="#b8bec2")
+            d.polygon(rot_rect(p, ang, C * 0.05, w), fill=sty.get("clamp", "#b8bec2"))
             q = (x - math.sin(ang) * w * 0.55, y + math.cos(ang) * w * 0.55)
             d.polygon(rot_rect(q, ang, C * 0.07, C * 0.06), fill="#8a9094")
         else:
@@ -1063,7 +1137,7 @@ def decal(cv, name, p, ang, sty, scale=1.0, rr=None, kind=None):
         for k in range(4):
             ox, oy = rr.uniform(-0.5, 0.5) * rad, rr.uniform(-0.4, 0.4) * rad
             d.ellipse([x + ox - rad * 0.7, y + oy - rad * 0.55, x + ox + rad * 0.7, y + oy + rad * 0.55],
-                      fill=rr.choice(["#a89a7a", "#8f8264", "#b9ab88"]), outline="#4a4030")
+                      fill=rr.choice(sty.get("rag", ["#a89a7a", "#8f8264", "#b9ab88"])), outline="#2e2618")
         d.line([(x - rad * 0.6, y - rad * 0.4), (x + rad * 0.5, y + rad * 0.5)], fill="#7a2a1a", width=max(1, ss * 2))
         tape_band(d, (x - math.cos(ang) * rad * 0.7, y - math.sin(ang) * rad * 0.7), ang, rad * 0.5, rad * 1.1,
                   hx("#1c1c1c"), ss, rr)
@@ -1173,7 +1247,11 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
     opts = dict(opts or {})
     sty, lvl = STYLES[style], dict(LEVELS[level])
     lvl.update(opts.get("level_over", {}))
-    net = Net(sc, seed)
+    net = Net(sc, seed, load=bool(opts.get("load_model")))
+    LD = None
+    if opts.get("load_model"):
+        LD = opts["load_model"](net, sty, seed)
+        opts["load"] = LD
     strands, ex = build_strands(net, sty, lvl, opts)
     cv = Canvas(sc["w"], sc["h"], cell_px, ss)
     C = cv.C
@@ -1236,9 +1314,21 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         ang = 0.0 if horiz else math.pi / 2
         ang += R(seed, "kang", c).uniform(-0.25, 0.25)
         name = sty["junction_x"] if k["cls"] == "x" else sty["junction_t"]
-        decal(cv, name, p, ang, sty, 1.3, R(seed, "kd", c))
+        decal(cv, name, p, ang, sty, 0.85 if LD else 1.3, R(seed, "kd", c))
     for spx in ex["splices"]:
         rr = spx["rr"]
+        if opts.get("sprawl"):
+            # strands no longer follow the centreline: the decal goes on one real strand
+            st = spx["strands"][rr.randrange(len(spx["strands"]))]
+            P = st["pts"]
+            p, ang = at_arc(P, spx["frac"] * cumlen(P)[-1])
+            if (int(p[0]), int(p[1])) in net.walls:
+                continue
+            if spx["kind"] == "tape" or sty["splice_mode"] == "bundle":
+                decal(cv, "tape", cv.px(p), ang, sty, st["kind"]["width"] + 0.03, rr)
+            else:
+                decal(cv, sty["splice"], cv.px(p), ang, sty, 1.0, rr, st["kind"])
+            continue
         if spx["kind"] == "tape" or sty["splice_mode"] == "bundle":
             p, ang = at_arc(spx["C"], spx["s"])
             width = (2 * lvl["spread"] + 0.12) if len(spx["strands"]) > 1 else 0.13
@@ -1294,6 +1384,8 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         else:
             q[0] = x0 + 0.15
         n = r.randint(*lvl["hook_strands"])
+        if LD:
+            n = LD["hook_n"].get(m["id"], 1)
         for i in range(n):
             qq = q + np.array([r.uniform(-0.2, 0.2), r.uniform(-0.05, 0.05)])
             ss_ = start + np.array([r.uniform(-0.05, 0.05), r.uniform(-0.05, 0.05)])
@@ -1314,11 +1406,16 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         start = np.array([c[0] + 0.5, c[1] + 0.5])
         kind = dict(r.choices([k for k, _ in sty["kinds"]], [w for _, w in sty["kinds"]])[0])
         kind["width"] *= 0.8
+        if c in net.taps or net.deg.get(c, 0) >= 3:
+            start = net.knot(c)
         b = g["base"] + np.array([0.0, 0.03])
-        mid = (start + b) / 2 + np.array([lvl["hook_sag"] * 0.6, 0.05])
-        t = np.linspace(0, 1, 30)[:, None]
-        B = (1 - t) ** 2 * start + 2 * (1 - t) * t * mid + t ** 2 * b
-        hooks.append({"pts": B, "kind": kind, "s0": 0, "tags": np.zeros(len(B), int), "lift": t[:, 0] * 0})
+        nl = LD["hook_n"].get("lamp", 1) if LD else 1
+        for i in range(nl):
+            o = (i - (nl - 1) / 2) * 0.06
+            mid = (start + b) / 2 + np.array([lvl["hook_sag"] * 0.6 + o, 0.05 + o * 0.5])
+            t = np.linspace(0, 1, 30)[:, None]
+            B = (1 - t) ** 2 * (start + [o, 0]) + 2 * (1 - t) * t * mid + t ** 2 * (b + [o * 0.5, 0])
+            hooks.append({"pts": B, "kind": kind, "s0": 0, "tags": np.zeros(len(B), int), "lift": t[:, 0] * 0})
         # the climb up the post (drawn after the lamp, in front of it)
         yy = np.linspace(g["base"][1], g["top"][1] + 0.08, 50)
         xx = g["base"][0] + 0.03 + 0.04 * np.sin((yy - yy[0]) * 7)
@@ -1387,6 +1484,8 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
     # items always above wires
     for (x, y, kind) in sc["items"]:
         draw_item(cv, x, y, kind, seed)
+    if LD and opts.get("labels", True):
+        LD["draw_labels"](cv, net, ex)
     # live break ends: whipping tail, lifted shadow, frayed hot copper, sparks
     glow = cv.overlay()
     streaks_all = []
@@ -1567,7 +1666,7 @@ def render_break_strip(style, seed, ss, cell=110):
     panels.append(label_panel(im, "battery empty / power off  -  BOTH ends read dead",
                               "no current, no sparks: a brown-out never looks like a live break"))
     sty = STYLES[style]
-    return titled(grid(panels, 1), f"{sty['num']:02d} {sty['title']} - break readout",
+    return titled(grid(panels, 1), f"{sty['file']} {sty['title']} - break readout",
                   "4-frame strip of the live end (real-time animation in game, so it is findable while paused)")
 
 
@@ -1593,10 +1692,10 @@ def main(argv=None):
         for lv in levels:
             lvl = LEVELS[lv]
             img, info = render_scene(sc, st, lv, a.cell, a.ss, a.seed, 0)
-            title = f"{sty['num']:02d} {sty['title']}  -  messiness {lvl['num']}: {lvl['title']}"
+            title = f"{sty['file']} {sty['title']}  -  messiness {lvl['num']}: {lvl['title']}"
             sub = f"{sty['blurb']}   [seed {a.seed}; {info['strands']} strands on {info['chains']} runs]"
             framed = frame_scene(img, sc, title, sub, a.cell, SCENE_FOOTER)
-            p = os.path.join(a.out, f"{sty['num']:02d}{chr(96 + lvl['num'])}_{st}_{lv}.png")
+            p = os.path.join(a.out, f"{sty['file']}{chr(96 + lvl['num'])}_{st}_{lv}.png")
             framed.save(p, optimize=True)
             written.append(p)
             if lv == "default":
@@ -1609,21 +1708,21 @@ def main(argv=None):
             body = Image.new("RGB", (max(top.width, brk.width + 20), top.height + brk.height + 10), (22, 17, 13))
             body.paste(top, (0, 0))
             body.paste(brk, (10, top.height))
-            sw = titled(body, f"{sty['num']:02d} {sty['title']} - swatches (close-up, 110 px per cell)", sty["blurb"])
-            p = os.path.join(a.out, f"{sty['num']:02d}s_{st}_swatches.png")
+            sw = titled(body, f"{sty['file']} {sty['title']} - swatches (close-up, 110 px per cell)", sty["blurb"])
+            p = os.path.join(a.out, f"{sty['file']}s_{st}_swatches.png")
             sw.save(p, optimize=True)
             written.append(p)
             print("wrote", p, flush=True)
-            p = os.path.join(a.out, f"{sty['num']:02d}t_{st}_break.png")
+            p = os.path.join(a.out, f"{sty['file']}t_{st}_break.png")
             render_break_strip(st, a.seed, a.ss).save(p, optimize=True)
             written.append(p)
             print("wrote", p, flush=True)
     if not a.no_overview and len(defaults) == len(STYLE_ORDER):
         ims = [defaults[s].resize((defaults[s].width * 3 // 5, defaults[s].height * 3 // 5), Image.LANCZOS)
                for s in STYLE_ORDER]
-        ov = titled(grid(ims, 2), "Messy Conduit - four selectable styles at the DEFAULT messiness (ropey / jury-rigged)",
-                    "Phase-0 offline mock-up. Same conduit network in every panel; only the art style changes. "
-                    "Full-size images 01a..04c; swatches 0Ns; break strips 0Nt.")
+        ov = titled(grid(ims, 2), "Messy Conduit - three style families at the DEFAULT messiness (ropey / jury-rigged)",
+                    "1 Cybertek | 2 Extension cord | 3 Star Wars (base) | 3J Star Wars: Jawa variant.  Same network in every "
+                    "panel. Full-size 01a..03jc; swatches *s; break strips *t; load-proportional bundles 05_load_*.")
         p = os.path.join(a.out, "00_overview.png")
         ov.save(p, optimize=True)
         written.append(p)
