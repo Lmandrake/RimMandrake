@@ -2,10 +2,10 @@
 //
 // WHY THIS EXISTS
 // ===============
-// Nothing on this bridge could put an eligible PRISONER on a fresh test map, so
-// PitCell's prisoner-intake gizmos (RM_PlaceInPitCell, RM_FeedCaptive, the
-// assign-nearest and gate toggles) could not be exercised end to end without a
-// human clicking. The chain that blocks it:
+// Nothing on this bridge could put an eligible PRISONER on a fresh test map
+// (built for the pit-cell building, retired 2026-10-02 by PIT_LEGACY_CODE_RETIRE_1;
+// still needed for a prisoner bed in a superdeep prison room,
+// SUPERDEEP_PRISON_ROOM_1). The chain that blocks it:
 //
 //   Verse/DebugToolsPawns.cs  AddGuest(GuestStatus.Prisoner) walks
 //     Find.CurrentMap.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>()

@@ -36,13 +36,15 @@ namespace RimMandrake.FlowWorks
 
 		public static ThingDef RM_FluidCanalFlood;
 
-		/// <summary>PHASE 5, ruling 26. The holder the depth engine keeps on every
-		/// D = 4 cell so Pits' capture and struggle machinery can do the work.
-		/// Never player-buildable.</summary>
-		public static ThingDef RM_SuperdeepPit;
-
 		/// <summary>PHASE 5. The one boolean that makes a dug cell exitable.</summary>
 		public static ThingDef RM_Ladder;
+
+		/// <summary>PIT_LEGACY_CODE_RETIRE_1: merged from the retired RimMandrakePits_DefOf
+		/// (only the surviving hediffs). REWIRE pending: drowning keyed to fill at D=4
+		/// (PIT_FILL_EFFECTS_1); exposure driven by temperature (PIT_TEMPERATURE_SOFTENING_1).</summary>
+		public static HediffDef RM_PitDrowning;
+
+		public static HediffDef RM_PitExposure;
 
 		// ── LIQUID_BOTTLE_LOOP_1: fill/use/dirty/wash ──────────────────────
 		public static JobDef RM_FillBottleJob;

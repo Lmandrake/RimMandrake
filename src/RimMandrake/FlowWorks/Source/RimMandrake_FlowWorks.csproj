@@ -2,8 +2,8 @@
 
   <!--
     FLOWWORKS_BUILD_PROGRAM_1 Phase 1. ONE assembly for the whole liquid
-    domain: the canal/depth engine (Source/), the pit family (Source/Pits/,
-    merged from RimMandrake Pits), the water-effects engine
+    domain: the canal/depth engine (Source/), the pit cover trigger (Source/Pits/,
+    what survives of RimMandrake Pits), the water-effects engine
     (Source/ManyWaters/, merged from ManyWaters) and the liquid registry
     (Source/LiquidTypes/, merged from RimMandrake: Liquid Types).
 
@@ -17,7 +17,7 @@
     (FLOWWORKS_BUILD_PROGRAM_1 Phase 3), because RimWorld.Flood is
     Odyssey content.
 
-    Source/Pits/SelfTest/ is a SEPARATE net8.0 project and is deliberately
+    Source/SelfTest/ is a SEPARATE net8.0 project and is deliberately
     absent from the Compile list below; EnableDefaultCompileItems is false,
     so nothing there is picked up implicitly.
 
@@ -79,38 +79,24 @@
     <Compile Include="JobDriver_FillInCanal.cs" />
     <Compile Include="Flood_FlowWorks.cs" />
     <Compile Include="Debug\FlowWorksDebugActions.cs" />
-    <!-- PHASE 5: capture at SUPERDEEP, ladders, and ruling 23's shooting rule.
-         Building_SuperdeepPit subclasses Pits' Building_OpenPit below — one
-         assembly is exactly what makes that reuse free. -->
+    <!-- PHASE 5: ladders and ruling 23's shooting rule. SUPERDEEP_HOLDER_RETIRE_1:
+         the holder Thing is gone; a pit is a D=4 cell and the trap is a grid rule
+         (RM_PitTrapMath is Verse-free and also compiled into Source/SelfTest/). -->
     <Compile Include="Superdeep\RM_LadderUtility.cs" />
-    <Compile Include="Superdeep\Building_SuperdeepPit.cs" />
-    <Compile Include="Superdeep\RM_SuperdeepCapture.cs" />
+    <Compile Include="RM_PitTrapMath.cs" />
+    <Compile Include="Superdeep\RM_SuperdeepTrap.cs" />
     <Compile Include="RM_Patch_SuperdeepShooting.cs" />
   </ItemGroup>
 
-  <!-- Pits, merged 2026-09-16 (rulings 18/27). Namespace
-       RimMandrake.FlowWorks.Pits; file order preserved from the retired
-       RimMandrake_Pits.csproj. -->
+  <!-- Pits, merged 2026-09-16; the building model RETIRED 2026-10-02
+       (PIT_LEGACY_CODE_RETIRE_1): a pit is a D=4 canal cell. What survives is
+       the cover's mass trigger, its tiers and the terrain-mimic printer, kept
+       for PIT_COVER_FALL_REWIRE_1. Namespace RimMandrake.FlowWorks.Pits. -->
   <ItemGroup>
-    <Compile Include="Pits\RimMandrakePits_DefOf.cs" />
-    <Compile Include="Pits\PitsMod.cs" />
-    <Compile Include="Pits\TerrainMimic\Building_TerrainMimicCover.cs" />
+    <Compile Include="Pits\TerrainMimic\TerrainMimicPrinter.cs" />
     <Compile Include="Pits\Trigger\CompProperties_PitCoverTrigger.cs" />
     <Compile Include="Pits\Trigger\CompPitCoverTrigger.cs" />
     <Compile Include="Pits\Trigger\PitCoverTier.cs" />
-    <Compile Include="Pits\DigStage\PitDepthTier.cs" />
-    <Compile Include="Pits\DigStage\CompProperties_PitDigStage.cs" />
-    <Compile Include="Pits\DigStage\CompPitDigStage.cs" />
-    <Compile Include="Pits\DigStage\Building_PitDigSite.cs" />
-    <Compile Include="Pits\DigStage\WorkGiver_DigPitDeeper.cs" />
-    <Compile Include="Pits\DigStage\JobDriver_DigPitDeeper.cs" />
-    <Compile Include="Pits\Fitting\PitFittingType.cs" />
-    <Compile Include="Pits\Fitting\CompProperties_PitFitting.cs" />
-    <Compile Include="Pits\Fitting\CompPitFitting.cs" />
-    <Compile Include="Pits\Escape\PitEscapeUtility.cs" />
-    <Compile Include="Pits\Holding\Building_OpenPit.cs" />
-    <Compile Include="Pits\Holding\Building_PitCell.cs" />
-    <Compile Include="Pits\Debug\PitDebugActions.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace

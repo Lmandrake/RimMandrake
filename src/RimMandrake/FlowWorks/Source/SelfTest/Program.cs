@@ -8,7 +8,7 @@
 // no error of any kind when it drifts. The pond just refills at the wrong rate,
 // or recedes at the wrong stock, forever, until somebody happens to trace it by
 // hand again. That is exactly the class of defect an offline selftest catches
-// for free, on the same discipline as Source/Pits/SelfTest/ and
+// for free, on the same discipline as
 // src/RimMandrake/Utils/selftest_validate_patch.py.
 //
 // WHAT IS REAL vs EXTRACTED:
@@ -17,10 +17,10 @@
 //   RM_LiquidStock calls every function asserted below, so a change to any
 //   constant or clause fails this test immediately.
 //
-//   ⭐ That is a deliberate improvement on the Pits selftest next door, whose
-//   own header flags its one weakness: its escape-chance formula is a hand
-//   transcription that "keeps passing against the OLD formula" if the real
-//   method changes. The §5 arithmetic needed no Map, Thing or IntVec3 to be
+//   ⭐ That is a deliberate improvement on the retired Pits selftest, whose
+//   escape-chance formula was a hand transcription that "keeps passing against
+//   the OLD formula" if the real method changes. RM_PitTrapMath.cs follows the
+//   same rule for the pit-width trap rule. The §5 arithmetic needed no Map, Thing or IntVec3 to be
 //   stated, so it was pulled into a Verse-free production file rather than
 //   copied into a test.
 //
@@ -690,6 +690,81 @@ namespace RimMandrake.FlowWorks.SelfTest
                     Assert(s45 == 1 && s55 == 1, $"sources listed (4,5)x{s45} (5,5)x{s55}");
                 }
                 finally { dug.Remove((4, 6)); }
+            });
+
+            // ── SUPERDEEP_HOLDER_RETIRE_1: the grid trap rule (owner Q4, pit width) ──
+            // PRODUCTION RM_PitTrapMath.cs. The holder model it replaces held ANY pawn on
+            // ANY D=4 cell; these cases go red against that model (large pawn in 1x1 / 1x5).
+            HashSet<(int, int)> PitRect(int x0, int z0, int w, int h)
+            {
+                var s = new HashSet<(int, int)>();
+                for (int i = 0; i < w; i++) for (int j = 0; j < h; j++) s.Add((x0 + i, z0 + j));
+                return s;
+            }
+            bool HeldIn(HashSet<(int, int)> pit, (int, int) c, float bodySize) =>
+                RM_PitTrapMath.Held(true, pit.Contains(c), true, false, false,
+                    RM_PitTrapMath.PitWidthAt((x, z) => pit.Contains((x, z)), c.Item1, c.Item2,
+                        RM_PitTrapMath.RequiredWidth(bodySize)));
+
+            Case("PitWidth_required_width_bands", () =>
+            {
+                Assert(RM_PitTrapMath.RequiredWidth(0.2f) == 1, "0.2 -> 1");
+                Assert(RM_PitTrapMath.RequiredWidth(1.0f) == 1, "1.0 -> 1");
+                Assert(RM_PitTrapMath.RequiredWidth(2.24f) == 1, "2.24 -> 1");
+                Assert(RM_PitTrapMath.RequiredWidth(2.25f) == 2, "2.25 -> 2 (band edge)");
+                Assert(RM_PitTrapMath.RequiredWidth(6.24f) == 2, "6.24 -> 2");
+                Assert(RM_PitTrapMath.RequiredWidth(6.25f) == 3, "6.25 -> 3 (band edge)");
+                Assert(RM_PitTrapMath.RequiredWidth(12.24f) == 3, "12.24 -> 3");
+                Assert(RM_PitTrapMath.RequiredWidth(1.0f, 4f) == 2, "multiplier scales BodySize");
+                Assert(RM_PitTrapMath.RequiredWidth(0f) == 1, "0 -> 1 floor");
+            });
+
+            Case("PitWidth_matrix_small_large_x_1x1_trench_2x2", () =>
+            {
+                // item verify: expected held = {T,T,T ; F,F,T}
+                var p1 = PitRect(10, 10, 1, 1); var tr = PitRect(10, 10, 1, 5); var p2 = PitRect(10, 10, 2, 2);
+                Assert(HeldIn(p1, (10, 10), 1.0f), "small in 1x1 held");
+                Assert(HeldIn(tr, (10, 12), 1.0f), "small in 1x5 trench held");
+                Assert(HeldIn(p2, (11, 11), 1.0f), "small in 2x2 held");
+                Assert(!HeldIn(p1, (10, 10), 2.4f), "large (2.4) in 1x1 NOT held");
+                Assert(!HeldIn(tr, (10, 12), 2.4f), "large in 1x5 trench NOT held");
+                foreach (var c in p2) Assert(HeldIn(p2, c, 2.4f), $"large in 2x2 held at {c}");
+            });
+
+            Case("PitWidth_fill_in_one_cell_releases_large", () =>
+            {
+                var p2 = PitRect(10, 10, 2, 2);
+                p2.Remove((11, 11));
+                Assert(!HeldIn(p2, (10, 10), 2.4f), "2x2 broken by a fill-in -> large not held");
+                Assert(HeldIn(p2, (10, 10), 1.0f), "small still held");
+            });
+
+            Case("PitWidth_diagonal_run_does_not_count", () =>
+            {
+                var diag = new HashSet<(int, int)> { (10, 10), (11, 11), (12, 12), (13, 13) };
+                Assert(!HeldIn(diag, (11, 11), 2.4f), "diagonal cells are not a 2-wide pit");
+                Assert(RM_PitTrapMath.MeasuredPitWidth((x, z) => diag.Contains((x, z)), 11, 11) == 1, "width 1");
+                Assert(RM_PitTrapMath.MeasuredPitWidth((x, z) => PitRect(0, 0, 3, 3).Contains((x, z)), 2, 0) == 3, "3x3 corner width 3");
+                Assert(RM_PitTrapMath.MeasuredPitWidth((x, z) => false, 0, 0) == 0, "not D4 -> 0");
+            });
+
+            Case("PitTrap_held_gates_and_step_rule", () =>
+            {
+                Assert(!RM_PitTrapMath.Held(false, true, true, false, false, true), "rule off -> free");
+                Assert(!RM_PitTrapMath.Held(true, false, true, false, false, true), "not D4 -> free");
+                Assert(!RM_PitTrapMath.Held(true, true, false, false, false, true), "own faction carve-out -> free");
+                Assert(!RM_PitTrapMath.Held(true, true, true, true, false, true), "flying -> free");
+                Assert(!RM_PitTrapMath.Held(true, true, true, false, true, true), "ladder -> free");
+                Assert(RM_PitTrapMath.Held(true, true, true, false, false, true), "all gates -> held");
+                Assert(RM_PitTrapMath.StepBlocked(true, 3) && RM_PitTrapMath.StepBlocked(true, 0), "held cannot step up");
+                Assert(!RM_PitTrapMath.StepBlocked(true, 4), "held may move along the D4 floor");
+                Assert(!RM_PitTrapMath.StepBlocked(false, 0), "unheld walks out");
+                Assert(RM_PitTrapMath.IsPitDescent(0, 4) && RM_PitTrapMath.IsPitDescent(3, 4), "into D4 is a descent");
+                Assert(!RM_PitTrapMath.IsPitDescent(4, 4) && !RM_PitTrapMath.IsPitDescent(4, 0) && !RM_PitTrapMath.IsPitDescent(0, 3),
+                    "along / out / into D3 are not pit descents");
+                AssertClose(RM_PitTrapMath.FallDamage(60f, 1f), 4.8f, "60 kg -> 4.8 blunt");
+                AssertClose(RM_PitTrapMath.FallDamage(5f, 1f), 1f, "floor 1");
+                AssertClose(RM_PitTrapMath.FallDamage(60f, 0f), 1f, "multiplier 0 still floors at 1");
             });
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

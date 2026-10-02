@@ -9,10 +9,11 @@ namespace RimMandrake.FlowWorks
     // Precedent: src/RimMandrake/GelatinousSlime/Source/SlimeMod.cs and
     // src/RimMandrake/Greentide/Source/RM_GreentideMod.cs.
     //
-    // This screen covers the EXCAVATION AND FLOW half of FlowWorks. The pit
-    // family and the water-effects engine came in with the 2026-09-16 merge
-    // and keep their own screens, listed beside this one under the FlowWorks
-    // name (Source/Pits/PitsMod.cs, Source/ManyWaters/RiverSteamSettings.cs).
+    // This screen covers excavation, flow and pits. The water-effects engine
+    // came in with the 2026-09-16 merge and keeps its own screen beside this
+    // one under the FlowWorks name (Source/ManyWaters/RiverSteamSettings.cs);
+    // the old Pits screen retired 2026-10-02 (PIT_LEGACY_CODE_RETIRE_1) and its
+    // four surviving settings live here.
     //
     // ⚠️ `canalFlowEnabled`, `flowRateMultiplier` and `floodVolumeMultiplier`
     // are GONE. They existed only to scale CompFluidReservoir's drip and
@@ -124,6 +125,17 @@ namespace RimMandrake.FlowWorks
         public static bool superdeepCapturesOwnFaction = false;
         public static bool ladderRequiredToExitEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
+        // SUPERDEEP_HOLDER_RETIRE_1, owner Q4: the pit must be as wide as the creature.
+        // Required width W = max(1, round(sqrt(BodySize x this))). 1 = the proposed bands.
+        public static float pitWidthBodySizeMultiplier = 1f;
+        // PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsMod screen
+        // (same field names and defaults, so nothing that reads them changes meaning).
+        // The cover's mass trigger (PIT_COVER_FALL_REWIRE_1) and the fall on any descent
+        // into a D=4 cell. Struggle/escape and pit-cell exposure died with their mechanics.
+        public static bool trapTriggerEnabled = true;
+        public static float trapSensitivityMultiplier = 1f;
+        public static bool fallDamageEnabled = true;
+        public static float fallDamageMultiplier = 1f;
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
@@ -240,6 +252,11 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
+            Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
+            Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
+            Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
+            Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
+            Scribe_Values.Look(ref fallDamageMultiplier, "fallDamageMultiplier", 1f);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -423,30 +440,53 @@ namespace RimMandrake.FlowWorks
             // ══════════════════════════════════════════════════════════════
             list.GapLine();
             Text.Font = GameFont.Medium;
-            list.Label("Falling in, ladders and shooting");
+            list.Label("Pits, ladders and shooting");
             Text.Font = GameFont.Small;
-            list.Label("A superdeep excavation is the trapping level — the only depth that takes "
-                     + "anyone. Everything shallower is wadeable however full it is: a brimming "
-                     + "deep canal is a tax on crossing it, never a barrier, so stopping power "
-                     + "comes from superdeep holes and nothing else.");
+            list.Label("A pit is any canal cell dug to superdeep, nothing more: there is no pit building. "
+                     + "Everything shallower is wadeable however full it is: a brimming deep canal is "
+                     + "a tax on crossing it, never a barrier, so stopping power comes from superdeep "
+                     + "cells and nothing else.");
 
-            list.CheckboxLabeled("Superdeep cells capture", ref superdeepCaptureEnabled,
-                "Anyone who walks into a superdeep excavation falls in and is held there, whether "
-              + "it is dry or brimming. They take a fall, and whatever liquid is down there then "
-              + "goes to work on them. They struggle to climb out on the same clock a pit trap "
-              + "uses. Off: a superdeep cell is just a very slow hole to cross.");
+            list.CheckboxLabeled("Superdeep cells trap", ref superdeepCaptureEnabled,
+                "Anyone who walks, is pushed or jumps into a superdeep cell takes a fall and, if the "
+              + "pit is wide enough for them, cannot climb back out. They stay on the map, standing "
+              + "on the pit floor. Off: a superdeep cell is just a very slow hole to cross.");
 
-            list.CheckboxLabeled("Your own hole takes your own people", ref superdeepCapturesOwnFaction,
-                "Off (the default), a superdeep excavation you dug ignores your own colonists, the "
-              + "same way your own armed pit traps do — otherwise nobody could ever get down there "
-              + "to build the ladder. On, the ground does not care whose side you are on.");
+            list.CheckboxLabeled("Your own pit takes your own people", ref superdeepCapturesOwnFaction,
+                "Off (the default), a superdeep cell ignores your own colonists unless they jump in, "
+              + "otherwise nobody could ever get down there to build the ladder. On, the ground does "
+              + "not care whose side you are on.");
 
             list.CheckboxLabeled("A ladder is needed to get out", ref ladderRequiredToExitEnabled,
-                "Without a ladder standing in it, a superdeep hole holds whoever is in it "
-              + "indefinitely — pull the ladder and they are stranded, which is a jailer as much "
-              + "as a trap. With a ladder, they can climb, and the ladder beats deep liquid that "
-              + "would otherwise make climbing impossible. Off: no ladder is needed and the "
-              + "struggle roll is the only thing between an occupant and the surface.");
+                "On, a pit holds whoever is in it until a ladder stands in their cell: pull the "
+              + "ladder and they are stranded. Off: a pit still costs the fall, but anyone can walk "
+              + "back out.");
+
+            list.Label("How wide a pit must be to hold a creature (body size multiplier): "
+                     + pitWidthBodySizeMultiplier.ToString("F2"), tooltip:
+                "A creature is held only if a square of superdeep cells as wide as it is contains its "
+              + "cell. Width = round(square root of body size x this). At 1.00 a one-cell pit holds "
+              + "anything under body size 2.25 (a human), a 2x2 pit anything under 6.25, a 3x3 pit "
+              + "anything under 12.25. A creature too big for its pit walks out.");
+            pitWidthBodySizeMultiplier = list.Slider(pitWidthBodySizeMultiplier, 0.25f, 4f);
+
+            list.CheckboxLabeled("Falling into a pit deals damage", ref fallDamageEnabled,
+                "Anyone who walks, is pushed or jumps into a superdeep cell takes blunt damage scaled "
+              + "by their mass. Off: the fall is harmless.");
+            if (fallDamageEnabled)
+            {
+                list.Label("Fall damage multiplier: " + fallDamageMultiplier.ToString("F2"));
+                fallDamageMultiplier = list.Slider(fallDamageMultiplier, 0f, 3f);
+            }
+
+            list.CheckboxLabeled("Pit covers give way under enough weight", ref trapTriggerEnabled,
+                "An armed cover over a pit drops whoever stands on it once their combined mass passes "
+              + "the cover's rating. Off: covers never give way on their own.");
+            if (trapTriggerEnabled)
+            {
+                list.Label("Cover sensitivity multiplier: " + trapSensitivityMultiplier.ToString("F2"));
+                trapSensitivityMultiplier = list.Slider(trapSensitivityMultiplier, 0.25f, 3f);
+            }
 
             list.CheckboxLabeled("Superdeep limits who can shoot whom", ref superdeepShootingRuleEnabled,
                 "Someone standing in a superdeep hole can only trade fire with whoever is in one "

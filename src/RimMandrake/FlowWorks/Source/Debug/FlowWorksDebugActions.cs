@@ -10,8 +10,7 @@ using Verse;
 
 namespace RimMandrake.FlowWorks
 {
-    // Bridge-reachable test surface, same pattern as RimMandrakePits'
-    // PitDebugActions: gizmo/labor-only actions get a ToolMap hook so a
+    // Bridge-reachable test surface: gizmo/labor-only actions get a ToolMap hook so a
     // live proof does not depend on a colonist actually walking over and
     // finishing a multi-thousand-work-unit dig job.
     public static class FlowWorksDebugActions

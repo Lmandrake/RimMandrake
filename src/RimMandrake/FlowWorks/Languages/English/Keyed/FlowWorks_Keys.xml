@@ -2,8 +2,11 @@
 <LanguageData>
 
   <!-- FLOWWORKS_BUILD_PROGRAM_1 Phase 5 — capture, ladders, ruling 23. -->
-  <RMFlow_SuperdeepLadderPresent>A ladder is standing here: whoever is down there can climb out.</RMFlow_SuperdeepLadderPresent>
-  <RMFlow_SuperdeepNoLadder>No ladder: whoever is down there is not climbing out.</RMFlow_SuperdeepNoLadder>
+  <RMFlow_PitHeld>Held in a pit: it cannot climb out without a ladder.</RMFlow_PitHeld>
+  <RMFlow_PitTooBig>In a pit, but too big for this pit: it can climb out.</RMFlow_PitTooBig>
+  <RMFlow_JumpIntoPit>Jump into pit</RMFlow_JumpIntoPit>
+  <RMFlow_JumpIntoPitDesc>Jump down into the adjacent superdeep pit. The fall hurts, and there is no climbing out without a ladder.</RMFlow_JumpIntoPitDesc>
+  <RMFlow_JumpIntoPitConfirm>{0} will jump into the pit, take the fall and be stranded down there until a ladder is placed. Jump?</RMFlow_JumpIntoPitConfirm>
   <RMFlow_LadderNeedsExcavation>Must be placed in an excavated cell.</RMFlow_LadderNeedsExcavation>
 
   <!-- MANY_WATERS_DRILL_BUILDINGS_1 — the fourth acquisition route. -->

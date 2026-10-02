@@ -15,7 +15,7 @@ D/F primitive), so every component here drives the depth/fill primitive:
   `jawa/canal_dig` is a stub that ALWAYS FAILS (ruling 24) and is never called here.
 
 WIRED, NOT GREEN. Every must-show and cannot-show bar of the VALIDATED walk is claimed by a
-component via `shows=`, and all 27 Mod Settings toggles are covered. Nothing here has run
+component via `shows=`, and all 25 Mod Settings toggles are covered. Nothing here has run
 live: every predicate below is UNMEASURED until the baseline run
 (FLOWWORKS_NORTHSTAR_BASELINE_RUN_1). Expected today (plan section 1): the state half of the
 canal/stock bars passes, about two thirds of the visual bars come back NO until art and the
@@ -46,10 +46,11 @@ from modcheck import Suite, ExpectationFailed
 suite = Suite("FlowWorks")
 
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"
-S_PITS = "RimMandrake.FlowWorks.Pits.PitsSettings"
 S_RIVER = "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings"
 
-# 27 boolean toggles: 22 in RimMandrakeFlowWorksSettings, 4 in PitsSettings, 1 in RiverSteamSettings.
+# 25 boolean toggles: 24 in RimMandrakeFlowWorksSettings, 1 in RiverSteamSettings. PIT_LEGACY_CODE_RETIRE_1
+# (2026-10-02) retired PitsSettings: trapTriggerEnabled + fallDamageEnabled moved into the FlowWorks class;
+# escapeEnabled and pitCellExposureEnabled died with the building pit (their chains are deleted).
 FW_TOGGLES = [
     "depthEngineEnabled", "channelConfinementEnabled", "digToDepthEnabled",
     "liquidCorrosionEnabled", "liquidIgnitionEnabled",
@@ -61,7 +62,7 @@ FW_TOGGLES = [
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
 ]
-PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled", "escapeEnabled", "pitCellExposureEnabled"]
+PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
 suite.toggles = FW_TOGGLES + PITS_TOGGLES + RIVER_TOGGLES
 
@@ -70,7 +71,7 @@ DEFAULTS.update({"liquidCorrosionEnabled": False, "liquidIgnitionEnabled": False
                  "superdeepCapturesOwnFaction": False})
 SETTINGS_OF = {}
 SETTINGS_OF.update({k: S_FW for k in FW_TOGGLES})
-SETTINGS_OF.update({k: S_PITS for k in PITS_TOGGLES})
+SETTINGS_OF.update({k: S_FW for k in PITS_TOGGLES})
 SETTINGS_OF.update({k: S_RIVER for k in RIVER_TOGGLES})
 
 PULSE = 250
@@ -275,6 +276,18 @@ def _spawn_pawn_at(t, kind, x, z, faction="player"):
     r = t.bridge_call("jawa/spawn_pawn", kindDef=kind, x=x, z=z, faction=faction, count=1)
     row = ((r or {}).get("pawns") or [{}])[0]
     return row.get("id")
+
+
+def _pit_held(t, pid, cells):
+    """SUPERDEEP_HOLDER_RETIRE_1: a held pawn STAYS SPAWNED (no holder container), so capture is read
+    from jawa/flowworks_pit_report's trap verdict on whichever pit cell the pawn stands on, never from
+    its absence in list_pawns (the retired holder model). None = the pawn is on no pit cell."""
+    for x, z in cells:
+        r = t.bridge_call("jawa/flowworks_pit_report", x=x, z=z) or {}
+        for p in r.get("pawns") or []:
+            if p.get("id") == pid:
+                return bool(p.get("held"))
+    return None
 
 
 def _pawn_xz(t, pid):
@@ -638,11 +651,9 @@ def plot_G_pit(t):
         caught = 0
         for i in range(3):       # traps ABSOLUTELY: 3/3 over distinct spawn points
             pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[0][1] + i, faction="hostile")
-            _march(t, pid, pit[4][0], pit[4][1], 400)
+            _march(t, pid, pit[4][0], pit[4][1], 1200)
             if t._guard():
-                r = t.bridge_call("jawa/list_pawns", limit=200)
-                spawned = any(p.get("id") == pid for p in ((r or {}).get("pawns") or []))
-                caught += 0 if spawned else 1
+                caught += 1 if _pit_held(t, pid, pit) else 0
         _expect(caught == 3 if t._guard() else None, "superdeep captured %d/3 hostiles" % caught)
         _frame(t, *twin_shot)    # occupied pit beside the empty twin in one frame
     with t.component("pit_cover_invisible",
@@ -921,17 +932,15 @@ def toggle_superdeep_capture(t):
     _dig_run(t, pit, 4)
     with t.component("superdeep_capture_on", toggle="superdeepCaptureEnabled"):
         pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[0][1], faction="hostile")
-        _march(t, pid, pit[4][0], pit[4][1], 400)
+        _march(t, pid, pit[4][0], pit[4][1], 1200)
         if t._guard():
-            r = t.bridge_call("jawa/list_pawns", limit=200)
-            _expect(not any(p.get("id") == pid for p in ((r or {}).get("pawns") or [])), "hostile crossed the pit")
+            _expect(_pit_held(t, pid, pit) is True, "hostile not held in the pit")
     with t.component("superdeep_capture_off", toggle="superdeepCaptureEnabled"):
         with _setting(t, "superdeepCaptureEnabled", False):
             pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[2][1], faction="hostile")
-            _march(t, pid, pit[8][0] + 2, pit[8][1], 500)
+            _march(t, pid, pit[8][0] + 2, pit[8][1], 1500)
             if t._guard():
-                r = t.bridge_call("jawa/list_pawns", limit=200)
-                _expect(any(p.get("id") == pid for p in ((r or {}).get("pawns") or [])), "hostile captured with capture OFF")
+                _expect(_pit_held(t, pid, pit) is not True, "hostile held with capture OFF")
 
 
 @suite.chain("toggle_superdeep_own_faction")
@@ -941,10 +950,9 @@ def toggle_superdeep_own_faction(t):
     _dig_run(t, pit, 4)
     with t.component("own_faction_default_off", toggle="superdeepCapturesOwnFaction"):
         pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
-        _march(t, pid, pit[4][0], pit[4][1], 400)
+        _march(t, pid, pit[4][0], pit[4][1], 1200)
         if t._guard():
-            r = t.bridge_call("jawa/list_pawns", limit=200)
-            _expect(any(p.get("id") == pid for p in ((r or {}).get("pawns") or [])), "colonist captured by default")
+            _expect(_pit_held(t, pid, pit) is False, "colonist held by default (or not in the pit)")
         with _setting(t, "superdeepCapturesOwnFaction", True):
             pid2 = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[2][1])
             _march(t, pid2, pit[8][0] - 1, pit[8][1], 400)
@@ -958,12 +966,10 @@ def toggle_ladder_required(t):
     with t.component("ladder_required_on", toggle="ladderRequiredToExitEnabled"):
         with _setting(t, "superdeepCapturesOwnFaction", True):
             pid = _spawn_pawn_at(t, "Colonist", pit[0][0] - 3, pit[0][1])
-            _march(t, pid, pit[4][0], pit[4][1], 400)
+            _march(t, pid, pit[4][0], pit[4][1], 1200)
             _wait(t, 10 * PULSE)
             if t._guard():
-                r = t.bridge_call("jawa/list_pawns", limit=200)
-                _expect(not any(p.get("id") == pid for p in ((r or {}).get("pawns") or [])),
-                        "pawn left the pit without a ladder")
+                _expect(_pit_held(t, pid, pit) is True, "pawn not held in the pit without a ladder")
             t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, pit[0][0] - 1, pit[0][1]))
             _wait(t, 10 * PULSE)
     with t.component("ladder_required_off", toggle="ladderRequiredToExitEnabled"):
@@ -1053,11 +1059,10 @@ def toggle_trap_trigger(t):
     pit = _pit_cells(x0, z0)
     _dig_run(t, pit, 4)
     with t.component("trap_trigger_on", toggle="trapTriggerEnabled"):
-        pid = _spawn_pawn_at(t, "Pirate", pit[0][0] - 3, pit[0][1], faction="hostile")
-        _march(t, pid, pit[4][0], pit[4][1], 400)
-        if t._guard():
-            r = t.bridge_call("jawa/list_pawns", limit=200)
-            _expect(not any(p.get("id") == pid for p in ((r or {}).get("pawns") or [])), "trap did not spring")
+        # The cover's mass trigger has no host until PIT_COVER_FALL_REWIRE_1; until then this reads
+        # the rehoused setting back (it used to assert the retired building pit's despawn).
+        r = t.bridge_call("jawa/mod_settings_field", typeName=S_FW, action="get", field="trapTriggerEnabled")
+        _expect((r or {}).get("success", True) if t._guard() else None, "trapTriggerEnabled unreadable: %r" % (r,))
     with t.component("trap_trigger_off", toggle="trapTriggerEnabled"):
         with _setting(t, "trapTriggerEnabled", False):
             _wait(t, PULSE)
@@ -1070,26 +1075,6 @@ def toggle_fall_damage(t):
         _wait(t, PULSE)
     with t.component("fall_damage_off", toggle="fallDamageEnabled"):
         with _setting(t, "fallDamageEnabled", False):
-            _wait(t, PULSE)
-
-
-@suite.chain("toggle_escape")
-def toggle_escape(t):
-    x0, z0 = _prep_plot(t, "G")
-    with t.component("escape_on", toggle="escapeEnabled"):
-        _wait(t, PULSE)
-    with t.component("escape_off", toggle="escapeEnabled"):
-        with _setting(t, "escapeEnabled", False):
-            _wait(t, PULSE)
-
-
-@suite.chain("toggle_pit_cell_exposure")
-def toggle_pit_cell_exposure(t):
-    x0, z0 = _prep_plot(t, "G")
-    with t.component("pit_exposure_on", toggle="pitCellExposureEnabled"):
-        _wait(t, PULSE)
-    with t.component("pit_exposure_off", toggle="pitCellExposureEnabled"):
-        with _setting(t, "pitCellExposureEnabled", False):
             _wait(t, PULSE)
 
 

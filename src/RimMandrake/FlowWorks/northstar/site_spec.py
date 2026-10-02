@@ -50,16 +50,14 @@ SETTINGS = {
         "rainFillPerPulse": 0.1,
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
         "ladderRequiredToExitEnabled": True, "superdeepShootingRuleEnabled": True,
+        "pitWidthBodySizeMultiplier": 1.0,
+        # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here
+        "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
+        "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,
         "typedLiquidShoresEnabled": True,
-    },
-    "RimMandrake.FlowWorks.Pits.PitsSettings": {
-        "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
-        "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
-        "struggleIntervalHours": 1.0, "escapeEnabled": True, "escapeChanceMultiplier": 1.0,
-        "digWorkMultiplier": 1.0, "pitCellExposureEnabled": True, "pitCellExposureMultiplier": 1.0,
     },
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": {
         "riverSteamEnabled": True, "puffRateMultiplier": 1.0,
@@ -67,11 +65,10 @@ SETTINGS = {
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
-    "RimMandrake.FlowWorks.Pits.PitsSettings": os.path.join("Pits", "PitsMod.cs"),
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": os.path.join("ManyWaters", "RiverSteamSettings.cs"),
 }
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
-MOD_CLASSES = ("RimMandrakeFlowWorksMod", "PitsMod", "RiverSteamMod")
+MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
 
 
 def toggles():

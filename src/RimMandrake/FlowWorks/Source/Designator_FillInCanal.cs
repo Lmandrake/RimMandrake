@@ -74,16 +74,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
-			// PHASE 5. §19's open question — "filling in a canal that contains a
-			// pit: does the pit survive?" — is STILL not decided here, and now
-			// there is a live occupant to lose by deciding it silently. Refusing
-			// while someone is held is the same non-decision the edifice branch
-			// above makes, and the engine's own FillIn path still drops an
-			// occupant safely if a cell is raised some other way.
-			Building_SuperdeepPit holder = RM_SuperdeepCapture.HolderAt(Map, c);
-			if (holder != null && holder.Sprung)
+			// Unified pit model §3.8 (DEFAULT): fill-in on a cell with a pawn
+			// standing in it is refused until the pawn is out. The pawn is on
+			// the map (no holder container), so the cell itself says so.
+			if (c.GetFirstPawn(Map) != null)
 			{
-				return "Someone is held down there. Get them out first.";
+				return "Someone is down there. Get them out first.";
 			}
 			if (!excavation.CanFillIn(c))
 			{
