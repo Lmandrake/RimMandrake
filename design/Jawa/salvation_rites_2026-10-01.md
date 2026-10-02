@@ -204,9 +204,28 @@ yet. Likely one with open sight lines."* The Open Boast's home, decision taken b
 Ozzik carries five found rites (the Lightless Burial, B2; the Salted Keeping, B7, pitched; the
 Flawed Masterwork, B7, ruled-kept; the Ceded Room and the Open Boast, B11): at the cap.
 
-**Count (by hand from the tables above, not an instrument): 105 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2. **96 are the Salvation's** (B1 to B5, B7 to B11;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 94 distinct). Sh'kaar
+### B12. Found rites ruled at the Rust Cathedral sitting (RULED)
+
+Owner, typed 2026-10-02: *"Mending Weld (Rekko): Repair a stretch of old structure here into a properly
+formed room, restoring an old creation. Very sacred. 2nd ritual should be about droids: offer to repair one
+of the free droids here as a sacred act. Option to capture it while it is being repaired (pleases trading
+god, pleases Ohm, angers prideful god, angers neutral droids, angers Cathedral) or complete the repair and
+release it (annoys trading god, pleases Ohm, pleases neutral droids, pleases Cathedral)."* Readings
+(BENCH): trading god = Mob'Unloo, prideful god = Ozzik, neutral droids = the Free Droid Enclaves; the droid
+rite is Ohm's and is named the Stranger's Overhaul.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Mending Weld | Rekko | feeding (very sacred) | a broken stretch of old, non-colony structure rebuilt by hand, in its own material where it has one, into one enclosed, roofed room that keeps its original owner; scrapping it later is scrapping the mendable | Rust Cathedral, a conduit-wall gap mended in a foreign hand and roofed, its plate scratched *what was broken is whole* | RULED (owner, 2026-10-02, typed); build `RUSTCATHEDRAL_MENDING_WELD_RITE_1` | `design/Jawa/worldbuilding/biomes/rustcathedral_bedazzle_review_2026-10-02.md` §6 R1, §8 |
+| The Stranger's Overhaul | Ohm (Mob'Unloo, Ozzik react) | feeding | a damaged droid that is not the colony's, repaired in the open; at half progress, capture it (Mob'Unloo and Ohm pleased; Ozzik, the Free Droid Enclaves and the Cathedral angered) or finish and release it (Mob'Unloo annoyed; Ohm, the Enclaves and the Cathedral pleased); on the borehulk it is the Worn Bit's last stage | Rust Cathedral, a droid chassis on its back by the enclaves' road, panel open, tools laid round it, scratched *fixed, not kept* | RULED (owner, 2026-10-02, typed); build `RUSTCATHEDRAL_STRANGERS_OVERHAUL_RITE_1` | `design/Jawa/worldbuilding/biomes/rustcathedral_bedazzle_review_2026-10-02.md` §8 |
+
+Ohm carries five found rites (the Engine Hour, the Last Track, the Deserter's Welcome, B7, pitched; the
+Answering, B8, ruled; the Stranger's Overhaul, B12): at the cap. Rekko carries four (the Unfinished Laid
+Down, the Inherited Wreck, the Mud Claim, B7, pitched; the Mending Weld, B12): one under the cap.
+
+**Count (by hand from the tables above, not an instrument): 107 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2. **98 are the Salvation's** (B1 to B5, B7 to B12;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 96 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
