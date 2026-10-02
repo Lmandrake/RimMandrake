@@ -763,9 +763,26 @@ a duplicate, write a pointer instead.
 
 The laptop's `chore(sync): laptop` sweep commits whatever is in progress under a generic message — if the message matters, commit each unit the moment it lands (2026-09-15).
 
-Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Push immediately after
-committing; rejected push → `git pull --rebase`, never `--force`. Never a file over
-~50 MB.
+🔑 **Publish with `./publish`, from the shared tree or any worktree — no checkout, no
+rebase, no merge** (2026-10-01, `design/RimMandrake/git_workflow_fix_2026-10-01.md`):
+
+```
+./publish -m "subject" path/one path/two     # those files -> one commit on origin/main
+./publish --commit <sha>                     # an existing local commit (skips if already upstream)
+./publish --sync                             # every local-only commit, then --catchup
+./publish --catchup [--dry-run]              # move this tree to origin/main, keeping all edits
+./publish --worktrees [--apply]              # remove clean, fully-published worktrees
+```
+
+It builds the commit in a private temp index against a fresh origin/main, 3-way merges a
+path upstream also changed (refuses on a real overlap, pushing nothing), unions ledger
+shards by line, rebuilds and retries on a push race, and prints **`PUBLISHED <sha>`** —
+pass THAT to `rimflow close --sha`, never local HEAD. A subagent needs **no worktree to
+publish**; give one a worktree only to build or merge, under `/home/mandrake/wt` (ext4),
+never `/tmp` (tmpfs, filled to 100 % by 4 GB checkouts) — and it still lands with `./publish`.
+
+Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Never `--force`. Never a file
+over ~50 MB.
 
 🔴 **The pathspec goes on the `commit`, not just the `add`** — `git commit <paths> -F -`
 (hook-enforced). Four threads share this working tree *and* its index, so a bare
@@ -774,24 +791,16 @@ committing; rejected push → `git pull --rebase`, never `--force`. Never a file
 file write to a commit, the write never happens either. Keep writes and commits separate.
 
 🔴 **No real merge in the shared tree** (owner, 2026-09-25; hook-enforced by
-`block_shared_tree_merge.py`). Merge a branch in a private `git worktree add --detach`, push
-`HEAD:main` from there. To publish THIS tree's commits and catch it up, run
-`python3 src/RimMandrake/Utils/shared_sync.py` (`git replay` onto origin, push, then `reset --keep`,
-which aborts rather than touch a dirty file) — this tree is never clean, so `pull --rebase`
-refuses and a bare `git pull` merges. Linked worktrees are exempt.
+`block_shared_tree_merge.py`). This tree is never clean, so `pull --rebase` and
+`reset --keep` refuse and a bare `git pull` merges; it moves forward only with
+`./publish --catchup` (or `--sync`; `shared_sync.py` is now a wrapper for it), which updates
+upstream-changed paths one by one, merges into a file you are editing only when clean, never
+touches untracked files, and moves HEAD by compare-and-swap so a peer committing mid-run
+stops it instead of losing that commit. Linked worktrees are exempt.
 
-🔴 **`shared_sync.py` has a RACE that silently drops a peer's commit, and the symptom is the
-most reassuring signal git has.** Hit live 2026-09-26: a finished 16-file commit vanished from
-HEAD, and `git log origin/main..HEAD` printed **nothing**, which reads exactly like "everything
-is pushed." Recovered byte-exact from the dropped commit's blobs. The mechanism, read off the
-script: it computes `todo` (the local-only commits) at line ~78, replays and pushes them, then
-at line ~123 runs `git reset --keep origin/main`. **One tree, one HEAD, four agents** — so a
-peer commit landing in that window is on HEAD, was never in `todo`, was never pushed, and the
-`reset --keep` moves HEAD past it. Nothing warns; the commit is only in the reflog.
-⇒ **After EVERY `shared_sync.py` run, prove your own commit survived:**
-`git merge-base --is-ancestor <your sha> origin/main` (exit 0 = published). An empty
-`origin/main..HEAD` is NOT that proof. Capture your sha with `git rev-parse HEAD` *before*
-syncing. Fix owed: `SHARED_SYNC_DROPS_PEER_COMMITS_1`.
+⚠️ **An empty `git log origin/main..HEAD` is not proof your commit is published** (a peer
+commit was once dropped exactly that way, 2026-09-26). The proof is
+`git merge-base --is-ancestor <sha> origin/main`, which `./publish` runs itself.
 
 🔴 **When the shared tree is behind origin and won't sync, publish from a SPARSE private worktree** (2026-10-01).
 Peers' dirty files can block `shared_sync.py` for days. A full `git worktree add` then fails with write errors
@@ -830,18 +839,13 @@ so every `prune`/`list` re-dirties 5 tracked artifacts. Commit them and the reba
 🔴 **The ledger is SHARDED PER SEAT since 2026-09-23** (`EVENTS_JSONL_SHARDING_1`, `2b5947555`):
 `events.jsonl` is frozen history nothing appends to, and every new event lands in
 `infrastructure/state/ledger/events/<SEAT>.jsonl`, so BENCH and FOUNDRY can never rebase-conflict
-in one ledger file again. **Two windows of the SAME seat still share one shard**, and a rebase
-conflict there is resolved by git PLUMBING, because `Edit`/`Write`/redirect on any ledger file is
-hook-blocked by design and the hook refuses the whole compound command.
-Build the union of both sides **outside the repo** (`/tmp`), verify every line parses, then
-`git hash-object -w` → `git update-index --cacheinfo 100644,<sha>,<path>` →
-`git checkout-index -f -- <path>`. Regenerate the two derived queue views with
+in one ledger file again. **Two windows of the SAME seat still share one shard**; publish it
+with `./publish -m "…" infrastructure/state/ledger/events/<SEAT>.jsonl`, which unions it with
+origin's copy by line (upstream's lines, then yours it lacks), so no hand resolution is
+needed. ⛔ **Never resolve a shard with `checkout --ours/--theirs`:** that silently discards a
+concurrent window's events. Regenerate the two derived queue views with
 `rimflow render -- --overwrite-queues` — that flag belongs to `render.py`, must come **after
-`--`**, and `reindex` does not accept it. ⛔ **Never resolve it with `checkout --ours/--theirs`:**
-that silently discards a concurrent window's events — two BENCH windows appending minutes apart
-is exactly when this happens. Done twice — `36de6942c` and 2026-09-23, the second keeping one
-window's 11 notes alongside another's 5 events. Verify after: both windows' ids present, and
-`unparseable=0` over the whole file.
+`--`**, and `reindex` does not accept it; do not publish a hand-merged queue view.
 
 ⚠️ **A `cd` in one Bash call PERSISTS into later calls.** `modcheck` needs
 `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`, and after that `cd` a git query
