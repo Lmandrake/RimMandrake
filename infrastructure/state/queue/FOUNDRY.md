@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T02:32:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T02:33:48Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3680,3 +3680,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/MandrakeJawaXenotype.xml gives RSWMandrakeJawa a
 prose:    infrastructure/state/items/JAWA_NAMEMAKER_NEVER_FIRES_1.md
+
+## NINEFOLD_FAVOUR_ODDS_BUILD_1 Build Nine Faults (fresh-find rite, Rekko to Zizzik), the Left Behind transfer (Ohm to Ta'Baa), the god-favour odds-shift def type with incident and weather hooks, the fresh-find mark, and Mod Settings; spec design/Jawa/nine_faults_permanent_rite_2026-10-01.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINEFOLD_FAVOUR_ODDS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_FAVOUR_ODDS_BUILD_1.md
