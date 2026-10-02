@@ -1,0 +1,1 @@
+A gpt_consult with no live process is not a dead consult: it may have finished and written its output while the subagent waits on a monitor. Check the consult's output file (Transient/bedazzle_gpt_enrich_*/<subject>_gpt.md) before reporting it dead; BENCH told the owner one died when it had finished 50 min earlier (2026-10-02).
