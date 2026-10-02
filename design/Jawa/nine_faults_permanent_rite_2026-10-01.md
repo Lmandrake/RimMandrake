@@ -1,6 +1,6 @@
 # Nine Faults — the first permanent-choice rite (design exploration, 2026-10-01)
 
-Item: `NINE_FAULTS_PERMANENT_RITE_1`. Status: **RULED** (owner, 2026-10-01), except the Left Behind's cost (§6), which BENCH is asking him now. Nothing built.
+Item: `NINE_FAULTS_PERMANENT_RITE_1`. Status: **RULED** (owner, 2026-10-01). Build: `NINEFOLD_FAVOUR_ODDS_BUILD_1` (FOUNDRY); this doc is its spec.
 
 ## THE RULED DESIGN (owner, 2026-10-01, rounds 3 and 4, and the round-4 rulings)
 
@@ -33,6 +33,9 @@ god, everywhere (`GODS_NOT_EVIL_SWEEP_1`, done in the same pass as this doc).
 **Nine Faults replaces the Gift of Working Things** (that devotion is deleted and its substance is
 folded in below); and on signs, typed: *"The Narrator speaks of the gods with full living color. He
 seems closer to them than to the "strange creatures that dwell within the vessel now.""*
+
+**The Left Behind's cost** (ledger `ddb4b8d66`, typed): *"No... you are creating Salvage for
+another, so Rekko is ambivalent. Ohm loses."*
 
 
 ### 2. Nine Faults (Zizzik): breaking the newly found machine
@@ -89,7 +92,7 @@ launch-rite, abandoned. COST: the thing, forever. BUYS: the launch spike enlarge
 rooted-clock runs slower (you have proven you can let go). SIGN: from the climbing ship, the left
 thing glints once, like a wave."*
 
-**What this design proposes for it** (owed to the catalog entry once he rules; not edited there):
+**As ruled** (the catalog entry carries the same):
 
 - **What is left:** a **working** building of the clan's, off the ship, marked *"Leave behind"*
   before departure. It must be in working order: a working thing is a real letting-go, whereas a
@@ -98,21 +101,13 @@ thing glints once, like a wave."*
   sends off every pawn left behind and abandons the map (`Abandon(wasGravshipLaunch: true)`). The
   clan flies away from it, which is not magic. UNVERIFIED whether every departure goes through
   `AbandonMap`.
-- **Which favour it moves:** **Ta'Baa gains.** The god whose work the machine did loses, for a
-  working thing of his given up:
-
-  | Left behind, working | Loses favour | Canon basis |
-  |---|---|---|
-  | Power: generator, battery | Ohm | the living machine |
-  | Droid support: charger, droid bench | Ohm | *"wants his droid servants back"* |
-  | Water, kitchen, freezer | Oomo | the body's waters; Cooking (§2.0c) |
-  | Comms, trade beacon | Mob'Unloo | the deal |
-  | Salvage workbenches | Rekko | Crafting from salvage (§2.0c) |
-  | Research, art, high-tech benches | Ozzik | Intellectual, Artistic, high-tech building (§2.0c) |
-  | Turrets, walls of machinery | Ishko | the turtle that outlasts |
-
-  Sized by market value as above. One letter at departure names what was left; the catalog's sign
-  (the glint from the climbing ship) is the readable mark.
+- **Which favour it moves:** **Ta'Baa gains and Ohm loses, always, whatever the machine.** A
+  working machine walked away from is one the living machine's god has lost. **Rekko is
+  unaffected:** the clan has *"created Salvage for another"*, and to Rekko that is neither loss nor
+  gain. The machine's own god is not involved. The transfer is sized by market value (Ninefold's
+  Small 3 to Large 15), equal out of Ohm and into Ta'Baa.
+- **Sign:** one letter at departure names what was left; from the climbing ship, the left thing
+  glints once, like a wave.
 
 
 ### 4. How favour shows: events, world and subtle odds
@@ -186,14 +181,7 @@ settings rule).
 
 ### 6. Questions for the owner
 
-**Open, being asked by BENCH now: when a working machine is left behind for Ta'Baa, who should
-lose?** The Left Behind is the existing Ta'Baa devotion: at launch the clan leaves one valuable
-thing behind, forever. The proposal narrows it to working machines and makes it a transfer: Ta'Baa
-gains, and the god whose work the machine did loses (Ohm for a generator, Oomo for a water
-machine, Mob'Unloo for a comms console). The alternative is that leaving things behind only
-pleases Ta'Baa and costs no other god. §3's table stands only if he picks the first.
-
-Everything else in this design is ruled (§1).
+None open. Every question in this design is ruled (§1).
 
 
 ---
