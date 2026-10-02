@@ -158,6 +158,15 @@ TIERS = {
         "forbid_substr": ["manywaters"],
         "dlc": True,
     },
+    "messyconduit": {
+        "why": "MESSY_CONDUIT_MOD_1 phase 1a functional script (MessyConduit/validation.py): "
+               "the cord overlay alone with the bridge on a dev quicktest map. Harmony and all "
+               "five DLCs resolve automatically. REFUSES Invisible Conduit Continued, whose "
+               "unconditional wire prefix would erase the overlay lines the script checks.",
+        "want": [BRIDGE, "mandrake.rm.messyconduit"],
+        "forbid": ["glitchgoblin.invisibleconduitcont"],
+        "dlc": True,
+    },
     "visibility": {
         "why": "Prove mandrake.rm.visibility's threat-point Prefix and "
                "tile-memory round trip (COLONY_VISIBILITY_BUILD_1) with "

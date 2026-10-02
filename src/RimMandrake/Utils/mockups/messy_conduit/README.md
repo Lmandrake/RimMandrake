@@ -22,6 +22,8 @@ python3 selftest.py      # geometry, size, determinism, sprawl, node reduction, 
 | `sprawl.py` | §8.6 before/after renders on `scene.sprawl_scene()` |
 | `nodal.py` | §8.2 the nodal cord model: `reduce` (conduit -> node graph: machines, junctions, terminals, stubs, tangles; needless spurs pruned), `plan` (A* + string-pull: corner, doorway, knot waypoints), `build_nodal` (slack via `rope.sprawl`, capped), stub/downed-wire/power-strip art, debug view, 07 sheets |
 | `tricky.py` | §8.7 test beds and the 08 gallery: terminals + downed wire, under rock/water/machine, conduit lattice -> one tangle, needless conduit |
+| `export_oracle.py` | writes the scenes + this oracle's graph answers to `MessyConduit/Source/SelfTest/oracle_scenes.json`, which the C# core is tested against (`Utils/selftest_messyconduit.py`) |
+| `export_textures.py` | the phase-1a placeholder textures for `MessyConduit/Textures/RimMandrake/MessyConduit/` (+ validator) |
 | `selftest.py` | every style/level: no strand vertex in a blocked cell, deterministic output, a live end exists; nodal: reduction census, cords only between connected nodes, never across a gap, no vertex in an unwalkable cell, unrelated edits do not reshuffle, tricky rules |
 
 **Styles:** three families (01 Cybertek, 02 Extension cord, 03 Star Wars) and the Jawa VARIANT of Star Wars (03j); no white in the Star Wars family.

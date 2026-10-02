@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Messy Conduit: dirties the sections that OWN a cord when that cord changed because of an
+       edit elsewhere (design §8.1). Read by SectionLayer_RM_MessyCords.relevantChangeTypes. -->
+  <MapMeshFlagDef>
+    <defName>RM_MessyCords</defName>
+  </MapMeshFlagDef>
+</Defs>
