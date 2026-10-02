@@ -172,16 +172,16 @@ sheets `the_sump.md`, `sump_fauna_roster_2026-09-24.md` and `sump_flora_roster_2
 | 5 | GIANT beast | MISS | MISS | The largest resident is the gulveth (bs 1.5). The feared tar beast exists only as a bulge and a dread (`RUT_BeastBulge`, `DEPLOY_HOLD`'d). The absence may be deliberate, but no colossus exists. |
 | 6 | Gravship touch | MISS | PARTIAL | Campaign: an arrival letter, *"The Ship Remembers the Sump"*, in which the ship's memory warns you about the thin tar. It is a letter, not a mechanic. |
 | 7 | Soundscape | MISS | MISS | No SoundDef and no `soundsAmbient`. |
-| 8 | Interesting weather | MISS | **HIT** | `RUT_SumpWeather` and `RUT_SumpDuskLock` (the sun sits just below the horizon, forever) **ship in the free mod but are wired only to `RUT_Sump`** (`Patches/RUT_SumpDuskLock_BiomeWiring.xml`), so the free def runs vanilla `Fog`/`Clear`. ⚠ The campaign HIT lives on the twin only. |
+| 8 | Interesting weather | **HIT** | **HIT** | `RUT_SumpWeather` and `RUT_SumpDuskLock` (the sun sits just below the horizon, forever) ship in the free mod; `RM_TheSump` lists the lock in its own `biomeMapConditions`, and `Patches/RUT_SumpDuskLock_BiomeWiring.xml` adds it to the twin. |
 | 9 | Relationship to the gods | MISS | MISS | Nothing in source or sheet. |
 
-**Free: 3 HIT / 0 PARTIAL / 6 MISS. Campaign: 4 HIT / 2 PARTIAL / 3 MISS.**
+**Free: 4 HIT / 0 PARTIAL / 5 MISS. Campaign: 4 HIT / 2 PARTIAL / 3 MISS.**
 
 **Rites:** none. The ship's memory of others sinking here is the natural seed: a rite for the drowned, held at the mere (Rekko, consolation).
 
 **Biggest gaps.**
 1. **No giant, by design or by omission.** The feared tar beast is the biome's whole dread, and it never surfaces. Decide whether it ever does.
-2. **The dusk is wired to the twin only.** Re-wire it to `RM_TheSump`, or the free tier keeps vanilla fog and the campaign loses the dusk at the repaint. ⚠ Defs named `RUT_` also ship inside an `RM_` mod (`RUT_SumpWeather`, `RUT_SumpDuskLock`, `RUT_TarPitBelch`, `RUT_GenStep_*`), which is a tier-grammar slip.
+2. **Defs named `RUT_` ship inside the `RM_` mod** (`RUT_SumpWeather`, `RUT_SumpDuskLock`, `RUT_TarPitBelch`, `RUT_GenStep_*`), a tier-grammar slip; the free def uses them, so the fix is a rename, not a move.
 3. **Sound, gods and free tech are all blank.**
 
 ## Miasma
@@ -363,7 +363,7 @@ Scores are HIT / PARTIAL / MISS out of nine.
 | Greentide | 3 / 3 / 3 | 5 / 2 / 2 | Free `wildAnimals` is 7 vanilla filler rows; the roil is campaign-only |
 | Gelatinous Slime | 6 / 0 / 3 | 6 / 0 / 3 | No sound, ship or god; the campaign layer adds nothing |
 | Weeping Stones | 5 / 1 / 3 | 5 / 2 / 2 | Vanilla sky and silence, and wind-hour (the obvious register) is ruled dead |
-| The Sump | 3 / 0 / 6 | 4 / 2 / 3 | No giant (the tar beast never surfaces); the dusk is wired to the twin only |
+| The Sump | 4 / 0 / 5 | 4 / 2 / 3 | No giant (the tar beast never surfaces) |
 | Miasma | 6 / 1 / 2 | 6 / 1 / 2 | Muted with no sound; two invented species on the wrong tier |
 | Webwork | 3 / 2 / 4 | 4 / 1 / 4 | The web front (its signature) is twin-only; no tech, weather or god |
 | Rust Cathedral | 4 / 1 / 4 | 4 / 1 / 4 | A sacred register with no named god or rite; no colossus |
@@ -377,7 +377,7 @@ Scores are HIT / PARTIAL / MISS out of nine.
 - **Rites: no grandfathered biome teaches the Salvation a found rite.** Each section names the natural seed. ⚠ The register's Weeping Stones row (*"pool rites, wind-hour, PITCHED"*, `salvation_rites_2026-10-01.md` §B6) is stale, because wind-hour was ruled DEAD on 2026-09-24.
 - **Discoverable technology (mark 2):** only the Slime HITs (gene seeking). Everywhere else it is recipes or husbandry.
 - **Free rosters broken against Q11a** (*"rich enough to stand alone"*): Lantern Deeps (empty), Greentide and Pyrelands (vanilla filler), the Rot and Nightside Ice (donor only), and Miasma (two invented species gated on the campaign).
-- **Content wired to the frozen twin only, which is lost at the repaint unless moved:** the Greentide roil and wet-bulb locks, the Sump dusk lock, and the Webwork front creep.
+- **Content wired to the frozen twin only, which is lost at the repaint unless moved:** the Greentide roil and wet-bulb locks, and the Webwork front creep.
 - **Tier leaks:**
   - Star Wars IP inside `RM_` text: the Rot's pale tree (*"the Force"*), Fever Wood's sekkulaath (*"canon dianoga"*), and Slime genes (`…VestigialLekku`, `…BanthaSnore`, `…StartleJawaese`).
   - `RUT_`-prefixed defs shipping inside `RM_` mods: the Sump, Miasma, Rust Cathedral and Lantern Deeps.
@@ -389,7 +389,7 @@ Worst first, by built free-tier strength, with the cheapest big win noted.
 1. **Nightside Ice.** 0 of 9 built. The sheet is ratified, so this sitting is mostly movement 4 (ticket and commission), plus marks 6, 7 and 9.
 2. **Lantern Deeps.** The free tier has no animals at all. Its roster fill comes first, then the mindstone as god and rite.
 3. **Pyrelands.** Five free misses. Moving 8 invented `RUT_` creatures to `RM_` repairs marks 4 and 5 at once. Then sound and a Salvation rite of the burn line.
-4. **The Sump.** Six free misses. Decide whether the tar beast ever surfaces (mark 5), move the dusk onto `RM_TheSump`, then sound and gods.
+4. **The Sump.** Five free misses. Decide whether the tar beast ever surfaces (mark 5), then sound and gods.
 5. **Webwork.** Four misses. Port the web front to the free def (`WEBWORK_WEB_STRUCTURES_1`), then weather, tech and god.
 6. **Greentide.** Its free roster is vanilla filler, and the roil should move down. The campaign tier is already strong.
 7. **Rust Cathedral.** Four misses, but the best-prepared god slot on the planet (*"the first of many sacred moments"*), so it is a quick rite win. It also needs a colossus.
