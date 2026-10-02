@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T01:47:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T01:50:44Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -3670,3 +3670,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1.md
+
+## JAWA_NAMEMAKER_NEVER_FIRES_1 RSW_MandrakeJawa nameMaker never fires: no chanceToUseNameMaker (XenotypeDef default 0), so Jawa get human names
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/MandrakeJawaXenotype.xml gives RSWMandrakeJawa a
+prose:    infrastructure/state/items/JAWA_NAMEMAKER_NEVER_FIRES_1.md
