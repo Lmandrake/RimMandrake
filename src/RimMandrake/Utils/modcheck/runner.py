@@ -306,10 +306,21 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             return {"chains": [], "all_green": False, "findings": [],
                     "refused": why, "visual": [], "visual_all_green": False,
                     "state_all_green": False, "walk": walk, "bar": fl["bar"]}
+    anchor_given = anchor
     if anchor is None:
         anchor = _default_anchor(session)
     findings = []
     chains_out = []
+    if situational and anchor_given is None:
+        # MEASURED 2026-10-01: the map centre is where the colony spawns; an explosion test there killed
+        # two starting colonists. Pick the point farthest from every colonist instead.
+        try:
+            import helpers as _H  # noqa: E402
+            ax, az, dist = _H.safe_anchor(session)
+            if dist >= 0:
+                anchor = (ax, az)
+        except Exception:     # noqa: BLE001 - keep the centre rather than fail the run over a heuristic
+            pass
     watch_dir = os.path.join(SHEET_DIR, "surprises", time.strftime("%Y%m%dT%H%M%S"))
     fixtures = set()      # pawns spawned and later torn down (this run, plus earlier runs on this game):
     #                       their corpses are the harness's own litter, never contamination
@@ -324,7 +335,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         if situational:
             from watch import Watch  # noqa: E402
             watch = Watch(session, anchor, watch_dir, mod=mod or suite.name, chain=name, policy=policy,
-                          expected_ids=sorted(fixtures))
+                          expected_ids=sorted(fixtures), resurrect=True)
             watch.__enter__()
         t = TestContext(session, anchor=anchor, debug=debug,
                         on_finding=findings.append, watch=watch)

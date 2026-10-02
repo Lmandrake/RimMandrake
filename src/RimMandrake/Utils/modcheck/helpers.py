@@ -334,6 +334,7 @@ class BlandReport(object):
     def __init__(self):
         self.steps = []
         self.problems = []
+        self.notes = []
         self.baseline = None
 
     @property
@@ -341,7 +342,7 @@ class BlandReport(object):
         return not self.problems
 
     def as_dict(self):
-        return {"bland": self.bland, "problems": self.problems,
+        return {"bland": self.bland, "problems": self.problems, "notes": self.notes,
                 "steps": [s.as_dict() for s in self.steps]}
 
 
@@ -372,7 +373,27 @@ def assert_bland(session, expected_ids=()):
     return problems
 
 
-def prepare_bland_map(session, tx, expected_ids=(), kill=True):
+def safe_anchor(session, expected_ids=(), margin=20):
+    """The test anchor FARTHEST from every living colonist (Chebyshev), on a coarse grid. MEASURED
+    2026-10-01: the default anchor is the map centre, where the colony spawns, and a droid-detonation test
+    there killed two starting colonists. Returns (x, z, min_distance); falls back to the centre."""
+    info = session.call("jawa/map_info")
+    n, m = int(info.get("sizeX", 250)), int(info.get("sizeZ", info.get("sizeX", 250)))
+    cols = [(r["x"], r["z"]) for r in read_pawns(session, health=False)
+            if is_colonist(r) and not r["dead"] and r["spawned"] and r["id"] not in set(expected_ids)]
+    best = (n // 2, m // 2, -1)
+    for fx in (0.2, 0.35, 0.5, 0.65, 0.8):
+        for fz in (0.2, 0.35, 0.5, 0.65, 0.8):
+            x, z = int(n * fx), int(m * fz)
+            if x < margin or z < margin or x > n - margin or z > m - margin:
+                continue
+            d = min([max(abs(x - cx), abs(z - cz)) for cx, cz in cols] or [10 ** 6])
+            if d > best[2]:
+                best = (x, z, d)
+    return best
+
+
+def prepare_bland_map(session, tx, expected_ids=(), kill=True, resurrect=False):
     """Fixed order, each step protecting the next (plan section 4): pause, stop new causes, remove
     present ones, restore colonists, baseline, verify. `kill=False` makes it a pure VERIFIER that
     refuses with problems instead of erasing anything (plan section 10.7 prefers that on a pristine
@@ -389,8 +410,12 @@ def prepare_bland_map(session, tx, expected_ids=(), kill=True):
         # At START every injury on a colonist is contamination (measured: Frostbite within 60 ticks of a
         # fresh swamp map), so the restore baseline is the empty set; the real baseline is taken after.
         start = dict((r["id"], set()) for r in read_pawns(session, health=False)
-                     if is_colonist(r) and not r["dead"] and r["id"] not in set(expected_ids))
-        rep.steps.append(restore_colonists(session, start))
+                     if is_colonist(r) and (resurrect or not r["dead"]) and r["id"] not in set(expected_ids))
+        rep.steps.append(restore_colonists(session, start, resurrect=resurrect))
+        if resurrect and rep.steps[-1].acted:
+            rep.notes.append("restore_colonists acted %d time(s) incl. resurrections of colonists a previous "
+                             "chain lost: those deaths belong to THAT chain's evidence, not this one"
+                             % rep.steps[-1].acted)
     rep.baseline = colonist_baseline(session)
     for s in rep.steps:
         if not s.verified:
