@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:15:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:27:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -958,3 +958,33 @@ kind:     design
 thin:     spec, verify and criteria all present
 summary:  The four movements of the program item, applied to this biome:
 prose:    infrastructure/state/items/BLACKCRAGS_BEDAZZLE_SITTING_1.md
+
+## CAULDRON_ENRICHMENT_AUDIO_1 Cauldron enrichment sounds: vexxiss bellow, metal-tree harvest noise, directional vapour-bank hisses
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## verify, no ## criteria
+summary:  - Vexxiss bellow when fire starts nearby (warden of the breath).
+prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_AUDIO_1.md
+
+## CAULDRON_ENRICHMENT_VISUALS_1 Cauldron enrichment visuals: dewfall chemical beads, dewfall plant saturation, assay flecks on old trees, vexxiss mineral-ringed footprints
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## verify, no ## criteria
+summary:  - Dewfall chemical beads: a filth or overlay painting surfaces in brilliant chemical colour.
+prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_VISUALS_1.md
+
+## VEXXITH_CLOSED_LOOP_BUILD_1 Vexxith closed loop: acid immunity hook, plate-only recipes, poor-walls/weapons stance - three open questions
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  VEXXITHCLOSEDLOOPBUILD1 — the vexxith closed loop, after three answers
+prose:    infrastructure/state/items/VEXXITH_CLOSED_LOOP_BUILD_1.md
