@@ -41,7 +41,7 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
       <value>
-        <Vapaad>0.5</Vapaad>
+        <Vapaad MayRequire="mlie.starwarsanimalcollection">0.5</Vapaad>
       </value>
     </match>
   </Operation>

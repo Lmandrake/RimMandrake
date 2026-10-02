@@ -248,7 +248,7 @@
       <RM_Karrimeth>0.8</RM_Karrimeth>  <!-- karrimeth - the mass; an event, not background, wildGroupSize carries the "carpet crossing" read -->
       <RM_Karrolun>1.2</RM_Karrolun>  <!-- karrolun - the harvest; the arthropod industry's actual target -->
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
-      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
+      <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals,oskarpotocki.vfe.insectoid2">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
       <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator -->
       <AA_Mantrap MayRequire="sarg.alphaanimals">0.2</AA_Mantrap>  <!-- mantrap - root-ambush -->
       <AA_RaptorShrimp MayRequire="sarg.alphaanimals">0.2</AA_RaptorShrimp>  <!-- raptor shrimp - channel-predator -->

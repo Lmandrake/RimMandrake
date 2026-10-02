@@ -103,8 +103,8 @@
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_FeverWood"]/wildPlants</xpath>
       <value>
-        <Plant_HydenockTree_Wild>1.5</Plant_HydenockTree_Wild>
-        <Plant_JoganTree_Wild>0.6</Plant_JoganTree_Wild>
+        <Plant_HydenockTree_Wild MayRequire="mlie.starwarsanimalcollection">1.5</Plant_HydenockTree_Wild>
+        <Plant_JoganTree_Wild MayRequire="mlie.starwarsanimalcollection">0.6</Plant_JoganTree_Wild>
       </value>
     </match>
   </Operation>

@@ -264,10 +264,10 @@
       <RM_FireLavender>0.6</RM_FireLavender>  <!-- renamed from RUT_FireLavender -->
       <RM_CinderCrust>0.4</RM_CinderCrust>  <!-- this biome's own variant of the shared crust-fungus, §7 Q13 -->
       <IronScruff_PrimordialGrass MayRequire="IronScruff.PrimordialGeysers">0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
-      <AB_TinkleGrass>0.3</AB_TinkleGrass>  <!-- tinkle grass -->
+      <AB_TinkleGrass MayRequire="sarg.alphabiomes">0.3</AB_TinkleGrass>  <!-- tinkle grass -->
       <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
       <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
-      <AB_FirevineTree>0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
+      <AB_FirevineTree MayRequire="sarg.alphabiomes">0.2</AB_FirevineTree>  <!-- firevine tree - tree -->
       <RM_HeatsinkFungus>0.2</RM_HeatsinkFungus>  <!-- renamed from RUT_HeatsinkFungus, tree -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
