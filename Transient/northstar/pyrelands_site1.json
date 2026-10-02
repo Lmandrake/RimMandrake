@@ -1,0 +1,88 @@
+{
+ "colonists": [
+  "Human89077",
+  "Human89080",
+  "Human89082"
+ ],
+ "colonyTile": 42955,
+ "fingerprint": "46a3a8544c79cd17",
+ "generate": {
+  "mapIndex": 1,
+  "mapParentDef": "Settlement",
+  "pawnCount": 17,
+  "thingCount": 53654
+ },
+ "isolation": {
+  "settingsBefore": {
+   "burnLineEnabled": "True",
+   "burrowOnFireEnabled": "True",
+   "fireClockEnabled": "True",
+   "fireHawkSpreadEnabled": "True",
+   "fulguriteEnabled": "True",
+   "furnaceThermalEnabled": "True",
+   "furnaceWorldMigrationEnabled": "True"
+  },
+  "storyteller": {
+   "difficultyDef": "Rough",
+   "storytellerDef": "Cassandra",
+   "threatScale": 1.0
+  }
+ },
+ "mapId": 1,
+ "pick": {
+  "candidatesChecked": 1,
+  "centre": 3,
+  "lat": 0.0,
+  "long": -20.9052,
+  "patch": [
+   3,
+   39988,
+   39990,
+   39989,
+   39991,
+   39992,
+   39987,
+   13341,
+   66734,
+   13343,
+   66727,
+   13342,
+   66740,
+   13344,
+   66746,
+   13345,
+   66715,
+   13340,
+   66722
+  ],
+  "was": {
+   "biome": "Ocean",
+   "hilliness": "Flat",
+   "lat": 0.0,
+   "long": -20.9052,
+   "mutatorCount": 0,
+   "riverCount": 0,
+   "roadCount": 0,
+   "waterCovered": false
+  }
+ },
+ "reload": {
+  "mapBiome": "RM_Pyrelands",
+  "mapId": 1,
+  "outdoorTempNow": 50.36936,
+  "season": "PermanentSummer",
+  "tile": 3
+ },
+ "retiled": 19,
+ "save": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Saves\\NS_Pyrelands_site_1_46a3a8544c79.rws",
+ "saveName": "NS_Pyrelands_site_1_46a3a8544c79",
+ "site": 1,
+ "temp": 50.0,
+ "tickAtGen": 1,
+ "ticksGameNoon": 375000,
+ "utc": "2026-10-01T17:31:43Z",
+ "world": {
+  "planetCoverage": 0.3,
+  "seedString": "meush"
+ }
+}

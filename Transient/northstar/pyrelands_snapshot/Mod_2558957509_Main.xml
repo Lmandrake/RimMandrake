@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="CaravanAdventures.ModSettings">
+		<scytherRange>1~3</scytherRange>
+		<psyfocusToRestore>0.200000003</psyfocusToRestore>
+		<plantScoreMultiplier>2</plantScoreMultiplier>
+		<ancientProtectiveAuraDamageReduction>0.5</ancientProtectiveAuraDamageReduction>
+		<disableSetupWindow>True</disableSetupWindow>
+		<buffShrineRewards>False</buffShrineRewards>
+		<engageMeleeBehaviour>None</engageMeleeBehaviour>
+		<engageMeleeChaseHostiles>False</engageMeleeChaseHostiles>
+	</ModSettings>
+</SettingsBlock>

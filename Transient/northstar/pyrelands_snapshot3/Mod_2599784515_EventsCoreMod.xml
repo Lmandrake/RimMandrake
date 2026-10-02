@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="EventsCore.Settings.EventModSettings">
+		<settings>
+			<li Class="EventsCore.Settings.WorldSettings">
+				<riverWarmingTexturing>False</riverWarmingTexturing>
+			</li>
+			<li Class="EventsCore.Settings.IncidentAllowedSettings">
+				<incidentAllowedDict>
+					<keys />
+					<values />
+				</incidentAllowedDict>
+			</li>
+		</settings>
+	</ModSettings>
+</SettingsBlock>

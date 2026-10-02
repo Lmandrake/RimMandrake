@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="RimTalk.RimTalkSettings">
+		<cloudConfigs>
+			<li>
+				<selectedModel>(choose model)</selectedModel>
+			</li>
+		</cloudConfigs>
+		<localConfig>
+			<provider>Local</provider>
+			<selectedModel>(choose model)</selectedModel>
+		</localConfig>
+		<processNonRimTalkInteractions>False</processNonRimTalkInteractions>
+		<enabledArchivableTypes>
+			<keys />
+			<values />
+		</enabledArchivableTypes>
+		<context />
+		<promptSystem>
+			<presets />
+			<variableStore>
+				<variables>
+					<keys />
+					<values />
+				</variables>
+			</variableStore>
+		</promptSystem>
+		<buttonDisplay>Toggle</buttonDisplay>
+	</ModSettings>
+</SettingsBlock>

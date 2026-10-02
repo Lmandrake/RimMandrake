@@ -1,0 +1,121 @@
+{
+  "mod": "Graffiti",
+  "mode": "live",
+  "started_utc": "2026-10-01T15:55:16Z",
+  "expected": [
+    "mark_actually_appears",
+    "mark_reads_as_deliberate",
+    "mark_reads_at_play_zoom",
+    "mark_sits_on_the_wall",
+    "marks_visibly_various",
+    "mark_register_is_punk_urban",
+    "mark_carries_no_earth_signage",
+    "mark_ugliness_is_visible",
+    "never_real_world_english",
+    "never_reads_as_dirt"
+  ],
+  "expected_source": "VALIDATED walk Graffiti.md",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "479 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "UNMEASURED",
+      "evidence": "no window-listing tool on this bridge (rimworld/list_windows); a stale modal cannot be ruled out -- close it by eye or build the tool",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "UNMEASURED",
+      "evidence": "get_game_info has no 'devModeEnabled' field",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "9 active, sha256 30cd4bd89dfc6411 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "deployed_matches_repo:Graffiti",
+      "status": "PASS",
+      "evidence": "73 files identical (textures by size)",
+      "required": true
+    },
+    {
+      "name": "site:dlc_status",
+      "status": "FAIL",
+      "evidence": "dlc_status: dlc_status does not name ['Royalty', 'Ideology', 'Biotech', 'Anomaly', 'Odyssey']: {'success': True, 'royaltyActive': True, 'ideologyActive': True, 'biotechActive': True, 'anomalyActive': True, 'odysseyActive': True, 'ticksGame': 1, 'operation",
+      "required": true
+    },
+    {
+      "name": "site:weather",
+      "status": "FAIL",
+      "evidence": "weather: weather read-back {'current': 'Clear', 'last': 'Clear', 'curWeatherAge': 0, 'rainRate': 0.0, 'snowRate': 0.0} != 'Clear'",
+      "required": true
+    }
+  ],
+  "refused": "site:dlc_status FAIL; site:weather FAIL; no_modal UNMEASURED; dev_god_mode UNMEASURED",
+  "all_green": false,
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "timing": {
+    "n": 15,
+    "total_ms": 2741.614,
+    "mean_ms": 182.7743,
+    "p50_ms": 49.802,
+    "p95_ms": 435.8977,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 11.3986,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 53.7074,
+        "errors": 0
+      },
+      "jawa/dlc_status": {
+        "n": 1,
+        "mean_ms": 49.802,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 6,
+        "mean_ms": 413.0348,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 1,
+        "mean_ms": 26.4702,
+        "errors": 0
+      },
+      "jawa/weather_get": {
+        "n": 1,
+        "mean_ms": 34.1241,
+        "errors": 0
+      }
+    }
+  }
+}

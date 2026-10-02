@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="FactionTerritories.FactionTerritoriesSettings">
+		<radiusSteps>10</radiusSteps>
+		<roadMovementDifficultyPercent>200</roadMovementDifficultyPercent>
+		<minLabelConnectedTiles>14</minLabelConnectedTiles>
+		<factionOverrides />
+		<caravanIncidentWeightOverrides>
+			<li>
+				<incidentDefName>CaravanMeeting</incidentDefName>
+				<weight>10</weight>
+			</li>
+			<li>
+				<incidentDefName>Ambush</incidentDefName>
+				<weight>15</weight>
+			</li>
+		</caravanIncidentWeightOverrides>
+		<caravanIncidentLegacyMigrated>True</caravanIncidentLegacyMigrated>
+		<encounterOverrides IsNull="True" />
+		<techLevelMultipliers>
+			<li>
+				<techLevel>Animal</techLevel>
+			</li>
+			<li>
+				<techLevel>Neolithic</techLevel>
+			</li>
+			<li>
+				<techLevel>Medieval</techLevel>
+			</li>
+			<li />
+			<li>
+				<techLevel>Spacer</techLevel>
+			</li>
+			<li>
+				<techLevel>Ultra</techLevel>
+			</li>
+			<li>
+				<techLevel>Archotech</techLevel>
+			</li>
+		</techLevelMultipliers>
+	</ModSettings>
+</SettingsBlock>

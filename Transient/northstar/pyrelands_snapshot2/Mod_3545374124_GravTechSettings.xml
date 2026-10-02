@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SettingsBlock>
+	<ModSettings Class="als.gravtech.GravTechDefault">
+		<GT_gravEngineMaxRadius>150</GT_gravEngineMaxRadius>
+		<GT_gravEnginePower>4800</GT_gravEnginePower>
+		<GT_gravFieldPylonSupport>130</GT_gravFieldPylonSupport>
+		<GT_gravFieldPylonMax>20</GT_gravFieldPylonMax>
+		<GT_gravFieldPylonMaxRadius>30</GT_gravFieldPylonMaxRadius>
+		<GT_gravFieldPylonMaxDistance>300</GT_gravFieldPylonMaxDistance>
+		<gravChemFuelTankSize>2400</gravChemFuelTankSize>
+		<GT_gravThrusterRange>32</GT_gravThrusterRange>
+		<GT_maxGravThrusters>20</GT_maxGravThrusters>
+		<GT_gravReactorPower>120000</GT_gravReactorPower>
+		<GT_gravReactorSupport>500</GT_gravReactorSupport>
+		<GT_gravReactorMaxRadius>49.9000015</GT_gravReactorMaxRadius>
+		<GT_gravForgePowerCons>2000</GT_gravForgePowerCons>
+		<GT_gravBatteryMaxCharge>25000</GT_gravBatteryMaxCharge>
+	</ModSettings>
+</SettingsBlock>

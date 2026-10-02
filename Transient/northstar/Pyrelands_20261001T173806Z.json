@@ -1,0 +1,109 @@
+{
+  "mod": "Pyrelands",
+  "mode": "live",
+  "started_utc": "2026-10-01T17:38:04Z",
+  "expected": [
+    "pyre_plant_distribution_correct",
+    "pyre_animal_distribution_correct",
+    "pyre_mapgen_log_clean",
+    "pyre_ground_ash_ladder",
+    "pyre_grass_chokes_ground",
+    "pyre_embergrass_regrows",
+    "pyre_burn_line_present",
+    "pyre_scorchfruit_fire_born",
+    "pyre_scorchfruit_produces",
+    "pyre_scorchfruit_spoils_fast",
+    "pyre_ruins_scorched",
+    "pyre_fulgurite_after_lightning",
+    "pyre_firehawk_carries_ember",
+    "pyre_furnacebeast_warmth",
+    "pyre_furnacebeast_heats_room",
+    "pyre_burrowers_dive",
+    "pyre_ashfall_darkens_drifts",
+    "pyre_cinderfall_distinct",
+    "pyre_blackrain_reads",
+    "pyre_cannot_ordinary_rain"
+  ],
+  "expected_source": "VALIDATED walk Pyrelands.md",
+  "bars": [],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "479 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=376801 map=250x250",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 376801 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "20 active, sha256 9aaf78ae2b2e3b97 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    },
+    {
+      "name": "deployed_matches_repo:Pyrelands",
+      "status": "FAIL",
+      "evidence": "not deployed: C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Pyrelands",
+      "required": true
+    }
+  ],
+  "refused": "deployed_matches_repo:Pyrelands FAIL",
+  "all_green": false,
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 0
+  },
+  "timing": {
+    "n": 7,
+    "total_ms": 169.338,
+    "mean_ms": 24.1911,
+    "p50_ms": 16.5199,
+    "p95_ms": 50.5989,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 4,
+        "mean_ms": 13.1352,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 1,
+        "mean_ms": 50.5989,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 16.2765,
+        "errors": 0
+      },
+      "jawa/prefs": {
+        "n": 1,
+        "mean_ms": 49.9214,
+        "errors": 0
+      }
+    }
+  }
+}
