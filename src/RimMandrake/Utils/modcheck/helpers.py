@@ -160,6 +160,16 @@ class SettingsTransaction(object):
 
 
 # ------------------------------------------------------------------ helpers
+def companion_available(session):
+    """True iff the situational companion answers (jawa/pawn_census with limit=1 succeeds). Probed once per
+    Watch; a missing companion DLL means the detectors fall back to inference, never to silence."""
+    try:
+        r = session.call("jawa/pawn_census", limit=1) or {}
+    except Exception:                                           # noqa: BLE001
+        return False
+    return bool(r.get("success"))
+
+
 def pause(session):
     clockgate.ensure_paused(session)
     return HelperResult("pause", acted=0, verified=True)

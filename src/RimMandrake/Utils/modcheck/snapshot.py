@@ -27,7 +27,11 @@ TOOLS_TRIPWIRE = ("time_clock", "story_stats", "list_pawns", "letter_list")
 TOOLS_FULL = ("time_clock", "story_stats", "list_pawns", "letter_list",
               "alerts_list", "weather_get", "list_things", "drain_log",
               "window_list_close", "map_info")
-ALL_SOURCES = TOOLS_FULL
+# Direct reads from the JawaBench situational companion (JawaBenchSituationalTools.cs, live-proved
+# 2026-10-01, Transient/companion_live_proof_2026-10-01.md). Read only when the Watch found the tools
+# present; unread they are silent, exactly like a skipped tier.
+TOOLS_COMPANION = ("pawn_census", "damage_log", "incident_queue_peek")
+ALL_SOURCES = TOOLS_FULL + TOOLS_COMPANION
 
 
 def _short(tool):
@@ -143,6 +147,8 @@ def normalize(raw_reads):
             # defName filter the list_things read used; item/fire detectors only
             # compare reads made with the SAME query (different query != vanished)
             "things_query": (raw_reads or {}).get("_things_query"),
+            # companion direct reads (empty unless their source was read)
+            "damage_events": [], "damage_next_seq": None, "incident_queue": [],
             "settings": dict((raw_reads or {}).get("_settings") or {})}
 
     for name in ALL_SOURCES:
@@ -195,12 +201,30 @@ def normalize(raw_reads):
                                 "isDebug": bool(w.get("isDebug")),
                                 "forcePause": bool(w.get("forcePause"))}
                                for w in res.get("windows") or []]
+        elif name == "pawn_census":
+            snap["_census"] = {c.get("id"): c for c in res.get("pawns") or []}
+            src["complete"] = not res.get("truncated") and not res.get("readErrors")
+            if res.get("readErrors"):
+                src["error"] = "readErrors: %s" % (res.get("readErrors"),)
+        elif name == "damage_log":
+            snap["damage_events"] = list(res.get("events") or [])
+            snap["damage_next_seq"] = res.get("nextSeq")
+            # an overwritten ring or a capped return means a missing event is NOT 'did not happen'
+            src["complete"] = bool(res.get("completeSinceSeq", True)) and not res.get("truncated")
+        elif name == "incident_queue_peek":
+            snap["incident_queue"] = [{"defName": q.get("defName"), "fireTick": q.get("fireTick"),
+                                       "ticksUntilFire": q.get("ticksUntilFire")}
+                                      for q in res.get("queue") or []]
         elif name == "map_info":
             # GUESS: mapParent{defName,faction}, plus an id key we cannot name yet
             snap["map_info"] = {"mapParent": res.get("mapParent"),
                                 "mapBiome": res.get("mapBiome")}
             if snap["map_id"] is None:
                 snap["map_id"] = res.get("mapId", res.get("id"))
+
+    census = snap.pop("_census", None)
+    if census is not None:
+        _merge_census(snap["pawns"], census)
 
     tclk = raw.get("time_clock")
     if isinstance(tclk, dict) and tclk.get("ticksGame") is not None:
@@ -212,10 +236,28 @@ def normalize(raw_reads):
     return snap
 
 
+def _merge_census(pawns, census):
+    """Overwrite the GUESS fields of each list_pawns row with the census's direct reads. A row the
+    census did not cover keeps `census: False`, so a detector can tell 'not read' from 'not in a state'."""
+    for p in pawns:
+        c = census.get(p["id"])
+        if c is None:
+            p["census"] = False
+            continue
+        p["census"] = True
+        p["mentalState"] = c.get("mentalState")          # dict {def,isAggro,...} or None == in none
+        if c.get("isColonist") is not None:
+            p["isColonist"] = bool(c["isColonist"])
+        job = c.get("job") or {}
+        p["job"] = job.get("def")
+        p["isPredatorHunting"] = bool(c.get("isPredatorHunting"))
+        p["preyId"] = c.get("preyId")
+
+
 # ---- the one function that touches the bridge ---------------------------------
 
 def take_snapshot(session, tier="tripwire", epoch=0, map_id=None, anchor_rect=None,
-                  list_things_def="Fire", limit=500):
+                  list_things_def="Fire", limit=500, companion=False, damage_since_seq=-1):
     """Read the bridge via session.call(tool, **params) and normalise.
 
     A failed read becomes complete=False + error; it never raises and is never
@@ -235,6 +277,10 @@ def take_snapshot(session, tier="tripwire", epoch=0, map_id=None, anchor_rect=No
                  ("drain_log", dict(errorsOnly=True, limit=50)),
                  ("window_list_close", dict(action="list")),
                  ("map_info", {})]
+        if companion:
+            plan += [("pawn_census", dict(includeDead=True, limit=limit)),
+                     ("damage_log", dict(sinceSeq=damage_since_seq, pawnsOnly=True, limit=limit)),
+                     ("incident_queue_peek", {})]
     raw, errs = {}, {}
     for tool, params in plan:
         try:
@@ -281,6 +327,8 @@ class Baseline(object):
         self.dead_ids = {p["id"] for p in snap["pawns"] if p["dead"]}
         self.item_totals = dict(snap["item_totals"])
         self.settings = dict(snap.get("settings") or {})
+        self.damage_next_seq = snap.get("damage_next_seq")
+        self.incident_queue = Counter((q["defName"], q["fireTick"]) for q in snap.get("incident_queue") or [])
 
     @classmethod
     def from_snapshot(cls, snap):

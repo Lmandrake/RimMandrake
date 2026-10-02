@@ -475,6 +475,87 @@ class FakeWorld(object):
                 "recorderInstalledUtc": "2026-10-01T00:00:00Z", "journalTotal": len(self.lineage),
                 "journalOverwritten": 0, "results": out, "ticksGame": self.ticks}
 
+    # ------------------------------------------------ hazard levers + world tools (northstar live queue)
+    # Keys from each tool's ResultDescription in JawaBench.BridgeTools (NOT live-measured shapes); used by
+    # modcheck/live_queue dry runs and selftest_companion_detectors.py.
+
+    def _t_jawa_pawn_force_mental_break(self, pawn=None, breakDef=None, intensity="minor", reason="", **_):
+        p = self.pawns.get(pawn)
+        if p is None:
+            return {"success": False, "message": "No pawn matching %s." % pawn}
+        before = self.mental.get(pawn)
+        self.mental[pawn] = breakDef or "Wander_Sad"
+        return {"success": True, "started": True, "breakDef": self.mental[pawn], "before": before,
+                "after": self.mental[pawn]}
+
+    def _t_jawa_ordered_job(self, pawnId=None, jobDef=None, targetAId=None, **_):
+        if pawnId not in self.pawns:
+            return {"success": False, "message": "No pawn matching %s." % pawnId}
+        before = (self.jobs.get(pawnId) or {}).get("def")
+        self.jobs[pawnId] = {"def": jobDef, "targetA": targetAId}
+        return {"success": True, "accepted": True, "beforeJobDef": before, "afterJobDef": jobDef,
+                "nowRunningRequested": True}
+
+    def _t_jawa_incident_schedule(self, incidentDef=None, delayTicks=2500, **_):
+        before = len(self.queue)
+        row = {"defName": incidentDef, "fireTick": self.ticks + int(delayTicks)}
+        self.queue.append(row)
+        return {"success": True, "queued": dict(row), "countBefore": before, "countAfter": len(self.queue),
+                "ticksUntilFire": int(delayTicks)}
+
+    def _t_jawa_world_tile_get(self, tiles=None, **_):
+        rows = []
+        for t in str(tiles).split(","):
+            t = int(t)
+            rows.append(dict({"tile": t, "biome": "AridShrubland", "hilliness": "Flat", "swampiness": 0.0,
+                              "temperature": 22.0, "elevation": 120.0, "mutatorCount": 0, "roadCount": 0,
+                              "riverCount": 0}, **getattr(self, "tile_overrides", {}).get(t, {})))
+        return {"success": True, "count": len(rows), "tiles": rows}
+
+    def _t_jawa_world_tile_export(self, path=None, **_):
+        rows = getattr(self, "tile_rows", None) or [
+            {"tile": 4375, "biome": "AridShrubland", "hilliness": "Flat", "swampiness": 0.0, "temperature": 22.0,
+             "elevation": 120.0}]
+        if path:
+            import csv
+            with open(path, "w", newline="", encoding="utf-8") as f:
+                w = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+                w.writeheader()
+                w.writerows(rows)
+        return {"success": True, "path": path, "rows": len(rows)}
+
+    def _t_jawa_colony_found(self, tile=-1, faction="Player", name=None, dryRun=False, **_):
+        self.settled = getattr(self, "settled", set())
+        if tile in self.settled:
+            return {"success": False, "message": "Tile %s already carries a Settlement." % tile}
+        if not dryRun:
+            self.settled.add(tile)
+        return {"success": True, "tile": tile, "layerId": 0, "faction": faction, "settlementId": 900 + tile % 97,
+                "name": name or "Bland", "limitReached": False}
+
+    def _t_jawa_world_tile_map_generate(self, tile=-1, suggestedMapParent="Settlement", dryRun=False, **_):
+        self.maps = getattr(self, "maps", [0])
+        if not dryRun:
+            self.maps.append(tile)
+        wild = getattr(self, "arrival_wildlife", 0)
+        for i in range(wild):               # MEASURED 2026-10-01: tile 4375 arrived with 47 wildlife pawns
+            pid = "Megasloth%d" % (5000 + i)
+            self.pawns[pid] = pawn_row(pid, kind="Megasloth", faction=None, is_player=False,
+                                       intelligence="Animal", x=50 + i, z=50)
+        return {"success": True, "tile": tile, "mapParentDef": suggestedMapParent, "wasAlreadyGenerated": False,
+                "mapSize": {"x": self.size, "z": self.size}, "mapIndex": len(self.maps) - 1,
+                "pawnCount": wild, "thingCount": 16753, "mapFinalize": {"failedSteps": [], "steps": []}}
+
+    def _t_jawa_set_current_map(self, mapId=None, **_):
+        self.maps = getattr(self, "maps", [0])
+        if int(mapId) >= len(self.maps):
+            return {"success": False, "message": "no map %s" % mapId,
+                    "loadedMaps": [{"mapId": i, "tile": t} for i, t in enumerate(self.maps)]}
+        prev = getattr(self, "current_map", 0)
+        self.current_map = int(mapId)
+        return {"success": True, "mapId": int(mapId), "tile": self.maps[int(mapId)], "biome": "AridShrubland",
+                "mapCount": len(self.maps), "previousMapId": prev, "ticksGame": self.ticks}
+
     # ------------------------------------------------ extra reads the snapshot takes (full tier)
     def _t_jawa_alerts_list(self):
         return {"success": True, "count": 0, "alerts": [], "ticksGame": self.ticks}
@@ -510,10 +591,12 @@ class FakeWorld(object):
         self._fid += 1
         pid = "%s%d" % (kindDef, self._fid)
         hostile = faction == "hostile"
+        humanlike = kindDef in ("Colonist", "Villager", "Tribal_Warrior", "Pirate") or hostile
         self.pawns[pid] = pawn_row(pid, kind=kindDef, faction=("TribeRough" if hostile else
                                    ("PlayerColony" if faction == "player" else None)),
-                                   is_player=(faction == "player"), hostile=hostile, x=x, z=z)
-        return {"success": True, "spawnedCount": 1, "pawns": [{"id": pid, "name": pid}]}
+                                   is_player=(faction == "player"), hostile=hostile, x=x, z=z,
+                                   intelligence="Humanlike" if humanlike else "Animal")
+        return {"success": True, "spawnedCount": 1, "pawns": [{"id": pid, "name": pid, "x": x, "z": z}]}
 
     # ------------------------------------------------ rimdrive.Session surface used by TestContext
     def _ticks(self):

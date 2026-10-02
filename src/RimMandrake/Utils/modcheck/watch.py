@@ -49,7 +49,7 @@ class SurpriseAbort(Exception):
 class Watch(object):
     def __init__(self, session, anchor, outdir, mod="mod", chain="chain", policy="abort",
                  chunk=DEFAULT_CHUNK, session_cap=DEFAULT_SESSION_CAP, screenshots=True,
-                 prepare=True, kill=True, expected_ids=(), resurrect=False):
+                 prepare=True, kill=True, expected_ids=(), resurrect=False, companion=None):
         if policy not in ("abort", "record"):
             raise ValueError("policy must be 'abort' or 'record'")
         self.session, self.anchor, self.outdir = session, anchor, outdir
@@ -57,6 +57,7 @@ class Watch(object):
         self.chunk, self.screenshots = chunk, screenshots
         self.prepare_map, self.kill, self.expected_ids = prepare, kill, tuple(expected_ids)
         self.resurrect = resurrect
+        self.companion = companion    # None = probe at enter: read the companion tools iff they answer
         self.gate = clockgate.ClockGate(session_cap)
         self.exps = D.Expectations()
         self.dedup = D.Dedup()
@@ -82,7 +83,9 @@ class Watch(object):
             self.bland = self.report.bland
         for pid in self.expected_ids:                 # earlier chains' leftover fixtures stay the test's own
             self.exps.expect("fixture", {"id": pid})
-        self.baseline = S.Baseline(S.take_snapshot(self.session, "full"))
+        if self.companion is None:
+            self.companion = H.companion_available(self.session)
+        self.baseline = S.Baseline(S.take_snapshot(self.session, "full", companion=self.companion))
         self.gate.observe(clockgate.read_ticks(self.session), reason="baseline")
         return self
 
@@ -113,7 +116,8 @@ class Watch(object):
 
     # ------------------------------------------------------------------ sweeping
     def sweep(self):
-        snap = S.take_snapshot(self.session, "full")
+        since = (self.baseline.damage_next_seq - 1) if (self.baseline and self.baseline.damage_next_seq is not None) else -1
+        snap = S.take_snapshot(self.session, "full", companion=self.companion, damage_since_seq=since)
         self._last_snap = snap
         self.sweeps += 1
         hits = D.sweep(snap, self.baseline, self.exps, anchor=self.anchor)
@@ -220,7 +224,7 @@ class Watch(object):
 
     # ------------------------------------------------------------------ summary
     def summary(self):
-        return {"bland": self.bland,
+        return {"bland": self.bland, "companion": bool(self.companion),
                 "bland_problems": (self.report.problems if self.report else []),
                 "bland_notes": (self.report.notes if self.report else []),
                 "policy": self.policy, "chunk": self.chunk, "sweeps": self.sweeps,
