@@ -26,7 +26,7 @@ work *into* rigor ("careful with this one"), never out of it.
    announce loudly where he reads.
 4. **Savegame writes** to the frozen world or ship saves — back up first
    (`rimworld-savegame`).
-5. **History and others' work** — force-push, `reset --hard` on the shared tree,
+5. **History and others' work** — force-push, `reset --hard` over work you did not make,
    deleting work not yours: warn in one line, then only with the owner's word.
 6. **Anything the owner must LOOK at** — always with the complete native path in
    backticks, spaces as spaces.
@@ -38,27 +38,20 @@ protected thing.
 
 ## Git
 
-CLAUDE.md owns the rules ("Git" + the Transient rule). Charter's additions only:
-commit when a unit of work exists, and `git status --porcelain <path>` before
-touching a file another window may hold.
+CLAUDE.md owns the rules ("Git" + the Transient rule); `design/RimMandrake/GIT_WORKFLOW.md`
+is the operating doc. Charter's additions only: commit when a unit of work exists, and work
+only in your seat clone (`/home/mandrake/rm/<seat>`) — `D:\Luke\dev\RimMandrake` is a
+read-only mirror.
 
 🔑 **A subagent touching more than a couple of files, or expected to run more than a
-couple of minutes, gets `isolation: "worktree"` on the `Agent` call** — its own
-working tree and its own `.git/index` off this repo, so its staging never collides
-with BENCH's or FOUNDRY's live window mid-run. This was always available on the
-`Agent` tool; the gap was that nobody defaulted to it. **Landing the result: the agent
-lands its own work** — brief it to finish with `git fetch origin && git rebase origin/main
-&& git push origin HEAD:main` from inside its worktree. ⛔ Never merge its branch into the
-shared tree (`block_shared_tree_merge.py` refuses it: a failed merge hard-resets the tree
-and erased 215 files' edits 2026-09-25). The shared tree then catches up with
-`python3 src/RimMandrake/Utils/shared_sync.py`. Rebase conflicts land only on files every
-worktree regenerates (the seat's ledger shard — union it by plumbing, see CLAUDE.md Git —
-the health artifacts: take either side and regenerate; since 2026-10-02 the shards union-merge and
-`queue/BENCH.md`/`FOUNDRY.md` + health files are gitignored, so those no longer conflict at all). If a Windows
-credential-manager error blocks the push, use
-`git -c credential.helper= -c credential.helper='!gh auth git-credential' push …`.
-A quick single-file edit doesn't need a worktree — the ceremony pays only once there's
-real concurrent-edit risk.
+couple of minutes, gets `isolation: "worktree"` on the `Agent` call.** The WorktreeCreate
+hook hands it a pool slot (2 per seat, `/home/mandrake/rm/pool/<seat>/`) with its own
+tree and index. **It never pushes `main`:** brief it to finish with `./publish -m "…" <paths>`,
+which pushes `submit/<seat>/<name>`; **the seat lands it** with
+`python3 src/RimMandrake/Utils/land_submissions.py`. Pool full → queue the work, or run
+unisolated when it is a one-path edit. A slot whose owner died is snapshotted to a local
+`refs/rescue/` ref on the next allocation. Brief every helper that `reset --hard`,
+`checkout --` and `stash` are forbidden and a conflict is reported back, never cleared.
 
 ## Queue
 

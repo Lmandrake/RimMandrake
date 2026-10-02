@@ -3,7 +3,7 @@
 _Cited by `SKILL.md` §5. Every count here was measured 2026-08-14 against the live
 dump (`2026-08-14T08:20:26Z, game 1.6.4871 rev591` — 136 memes · 685 precepts · 41
 styles · 585 active mods) and the eleven religions in
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`._
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions_spec.md`._
 
 ## 1. Two verdicts. Never merge them.
 
@@ -81,7 +81,7 @@ of its eight precepts have `comps: []`, including `Cannibalism_Acceptable`,
 
 **Measure.** The **player-contact issue set** is fixed — nine `IssueDef`s where the
 clan's practice is settled in
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\restraining_bolt_doctrine.md` and
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\restraining_bolt_doctrine.md` and
 `design/Jawa/worldbuilding/ideoligion/APPROVED.md`:
 
 | issue | the clan's side |
@@ -224,7 +224,7 @@ tooltips.
 - **Prose quality.** The Junkers' three paragraphs are the best writing in the eleven
   and the religion scores 2/18. The instrument is working.
 - **Lore depth / canon fidelity.** A different review, against
-  `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_roster_v2.md`.
+  `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_roster_v2.md`.
 - **Internal fictional consistency for its own sake.** A doctrine that contradicts
   itself but fires 16 events beats an airtight one that fires 2.
 - **Meme impact as a rating.** `MemeDef.impact` is a *budget* — structure memes are

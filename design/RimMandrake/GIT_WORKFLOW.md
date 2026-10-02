@@ -1,0 +1,62 @@
+# Git workflow — the operating doc (2026-10-02)
+
+Rationale and measurements: `git_workflow_plan_2026-10-01.md` (plan) and the dated
+`git_migration_*_2026-10-02.md` records (what was built). This file states what IS.
+
+## Where work happens
+
+| place | what it is |
+|---|---|
+| `/home/mandrake/rm/bench`, `/home/mandrake/rm/foundry` | the seat clones — ext4, plain git, **one writer each** (the seat's own window). Every seat launches from its clone. |
+| `/home/mandrake/rm/pool/<seat>/slot{0,1}` | subagent worktree slots, 2 per seat (linked worktrees of the seat clone) |
+| `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | **read-only mirror** of origin/main, refreshed every 5 min by `rm-mirror.timer` (`./mirror sync`). No `.git`. Never write it; Windows tools (the game deploy, Explorer, python.exe) read it. `MIRROR_HEAD` names its commit; `MIRROR_STALE` appears if a refresh failed. |
+| `/home/mandrake/rm/mirror.git` | the mirror's bare fetch-only repo |
+| `D:\Luke\dev\_artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |
+| `D:\Luke\dev\_rmbuild\`, `D:\Luke\dev\_rmscratch\codex\` | build staging and codex.exe staging (drive-local scratch) |
+| `/home/mandrake/wt/` | throwaway ext4 clones for one-off jobs (never `/tmp`: tmpfs) |
+
+A session in the `D:\` mirror cannot commit: `./publish` refuses under `/mnt/`, and the
+`block_shared_tree_merge.py` hook refuses whole-tree git there.
+
+## The loop (seat)
+
+```
+git add/commit <explicit paths>  →  git pull --rebase origin main  →  git push origin HEAD:main
+./publish -m "subject" path/one path/two        # the same, wrapped; prints PUBLISHED <sha>
+```
+
+- Pathspec on the commit (`git commit <paths>`), never `git add -A`/`.`/`-a` (hook-enforced). Never `--force`. Never a file over ~50 MB.
+- `./publish` retries up to 8 times on a non-fast-forward, checks `merge-base --is-ancestor` after any ambiguous push, and aborts (naming the paths) on a real rebase conflict, leaving the commit on HEAD. Pass the printed sha to `rimflow close --sha`.
+- Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, never an empty `git log origin/main..HEAD`.
+- Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`).
+- Committed and pushed is the only durable state: commit at each finished unit and push at once.
+
+## Subagents
+
+- `isolation: worktree` takes a pool slot through the `WorktreeCreate` hook (`worktree_pool.py`). Pool full → the hook errors naming the holders; queue the work, or run unisolated when it is a one-path edit.
+- A helper in a slot runs `./publish`, which pushes `submit/<seat>/<name>` — never `main`. The seat lands them: `python3 src/RimMandrake/Utils/land_submissions.py` (rebases on a throwaway ref, pushes atomically, never touches the seat's tree; a conflict leaves the submit ref and exits 1).
+- A slot whose owner died is rescued on the next allocation into a local ref `refs/rescue/<seat>/…` (working tree, index and unpushed commits); `worktree_pool.py rescue-list` shows them. Rescue refs are never pushed.
+- Brief helpers: `reset --hard`, `checkout --`, `stash` on paths they did not create are forbidden; a conflict is reported, never cleared.
+
+## Generated and per-writer state (nothing shared to conflict on)
+
+| state | where |
+|---|---|
+| ledger | `infrastructure/state/ledger/events/<SEAT>.jsonl`, append-only, `merge=union`; `events.jsonl` is frozen. `ledger_lint.py` (and the pre-push hook `block_ledger_lint.py`) refuses an edited or reordered line. `model.read()` orders by content, so file order does not matter. Never resolve a shard with `checkout --ours/--theirs`. |
+| queue views | rendered on read, untracked: `python3 src/RimMandrake/rimflow/cli.py queue <SEAT>`. `queue/HUMAN.md` is the owner's hand-written inbox and stays tracked. |
+| lessons | one file each in `infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`); `lessons.py render` makes the untracked `LESSONS_INBOX.md` view |
+| code review status | append-only records `infrastructure/state/code_review/<SEAT>.jsonl` (`merge=union`), written only by `code_review_status.py`; review waves are one file each under `code_review/waves/` |
+| health heartbeat | `Transient/codebase_health*`, `codebase_health_last.json`, `dashboards/hub/data/*.json` are untracked; `rm-codebase-health.timer` regenerates them in the FOUNDRY clone |
+
+## Builds, DLLs, tools that need Windows
+
+- C# builds: `python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` stages the sources on `D:\Luke\dev\_rmbuild\`, runs Windows dotnet, copies the DLL **and its `.srchash` back as a pair**. The JawaBench companion builds through `bridgetools/build.py`, which stages the same way.
+- A committed DLL must be pushed with its `.srchash` (`dll_source_stamp.py`; guard `block_dll_source_mismatch.py` on push). FOUNDRY alone commits DLLs; after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
+- `codex.exe` cannot run from an ext4 cwd: `codex_image.py` and `gpt_consult.py` stage the call in `D:\Luke\dev\_rmscratch\codex\<job>\` and copy results back.
+- artpipe: the daemon runs from the FOUNDRY clone with `ARTPIPE_STATE_DIR=/mnt/d/Luke/dev/_artpipe`. Art is copied into a clone for commit with `artpipe_state.py collect <job> --to src/…`; `artpipe_state.py find <term>` searches finished jobs.
+- Anything bridge or game-facing from WSL runs under `python.exe` against the **mirror** path.
+
+## History and recovery
+
+- The old shared tree's worktrees, branches and stashes were drained into `archive/*` tags on origin (reachable, not accepted into main) plus `refs/rescue/*`; see `git_migration_drain_2026-10-02.md`. `git tag -l 'archive/*'` lists them.
+- Never merge in a tree others write; there is no such tree any more — each clone has one writer.

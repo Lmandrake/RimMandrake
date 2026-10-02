@@ -188,7 +188,7 @@ DLL of its own.** If we want authored dungeon set-pieces, that mod is the templa
 read before writing anything.
 
 **The full CQF capability write-up already exists and must not be re-derived:**
-`D:\Luke\dev\Rimworld\vendor\wisdom\cqf_quest_types_explainer.md` — 4 building blocks,
+`D:\Luke\dev\RimMandrake\vendor\wisdom\cqf_quest_types_explainer.md` — 4 building blocks,
 4 `SpawnType` triggers, the complete 21-verb `CQFAction` list, conditions, signals,
 required-items, 7 quest shapes. ⚠️ It was written from an `-Old-src` snapshot and its
 §8 flags possible drift; the class names above were re-read from the **installed 1.6
@@ -201,7 +201,7 @@ DLL** and match.
 Two defs, one patch, one bridge tool. All deployed. **None seen working in game.**
 
 ### `Jawa_TheClaim` — the quest
-`D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Defs\QuestScriptDefs\Jawa_TheClaim.xml`
+`D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Defs\QuestScriptDefs\Jawa_TheClaim.xml`
 (223 lines; present in the deployed copy at `…\RimWorld\Mods\Jawa_Patches\…` — checked).
 
 Shape: `Util_AdjustPointsForDistantFight` → `GetMap(canBeSpace)` → accept-letter →
@@ -230,7 +230,7 @@ matches in `Assembly-CSharp.dll`. Core-only — DLC files are cited for *provena
 never as a dependency, so no DLC change can orphan it.
 
 ### `Jawa_ClaimRumour` — the on-demand trigger
-`D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Defs\ThingDefs_Items\Jawa_ClaimRumour.xml`
+`D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Defs\ThingDefs_Items\Jawa_ClaimRumour.xml`
 (95 lines). A usable item that gives the quest and destroys itself:
 `CompProperties_Usable(useJob UseItem)` + `CompProperties_UseEffectDestroySelf` +
 `CompProperties_UseEffectGiveQuest(quest Jawa_TheClaim)`.
@@ -246,11 +246,11 @@ load-budget one: a root-selected quest fires on the storyteller's cadence, and a
 a gate.
 
 ### `BTDGravshipQuest_GrammarFix.xml` — the patch
-`D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` —
+`D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` —
 the repo's worked example of failure mode 1.
 
 ### `jawa/fire_quest` — the bridge tool
-`D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBenchTerrainTools.cs:3310-3380`.
+`D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\JawaBench.BridgeTools\JawaBenchTerrainTools.cs:3310-3380`.
 Calls `QuestUtility.GenerateQuestAndMakeAvailable(QuestScriptDef, float)`,
 IL-confirmed to reach `QuestManager::Add`, and **reads the quest back out of
 `QuestManager`** because a method returning is not evidence. 🔴 **Built, deployed,
@@ -282,14 +282,14 @@ never run.**
 
 | what it settles | path |
 |---|---|
-| **CQF's complete capability surface** — 4 building blocks, 4 `SpawnType` triggers, all 21 `CQFAction` verbs, conditions, signals, required-items, 7 quest shapes, and the tradeoffs vs save-editing | `D:\Luke\dev\Rimworld\vendor\wisdom\cqf_quest_types_explainer.md` |
-| **The space-acceptance ruling, campaign-wide** — mechanism, the IL-level refinement ("friction, not silence"), and the ⛔ *do not sweep 200 vanilla quest defs* decision | `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\v1_quest_the_claim.md` §106-193 |
-| **What Cherry Picker does to a `QuestScriptDef`**, and that it does nothing to an existing save | `D:\Luke\dev\Rimworld\infrastructure\archive\2026-08-13_mechanoid_removal_study.md:100-180` |
-| **The `questScriptDef`-referenced-by-`IncidentDef` gate** in the cherry-pick builder | `D:\Luke\dev\Rimworld\src\RimMandrake\Utils\cherrypick_build.py:30,166-180,300` |
-| **The grammar-bracket failure with verbatim log trace**, and the guarded-patch rationale | `D:\Luke\dev\Rimworld\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` |
-| **Row 3's gate, and why "blocked on a human" was the wrong conclusion** | `D:\Luke\dev\Rimworld\infrastructure\state\V1_CHAIN.md` |
-| **The step-by-step in-game verification script** for rumour → quest (3 screenshots; PASS = any end state) | `D:\Luke\dev\Rimworld\infrastructure\state\TEST_PLAN.md:103-118` |
-| `rimworld/right_click_cell` **is measured broken** — reports success, does nothing; why the float-menu route needed replacing | `D:\Luke\dev\Rimworld\skills\rimbridge\references\traps.md` |
+| **CQF's complete capability surface** — 4 building blocks, 4 `SpawnType` triggers, all 21 `CQFAction` verbs, conditions, signals, required-items, 7 quest shapes, and the tradeoffs vs save-editing | `D:\Luke\dev\RimMandrake\vendor\wisdom\cqf_quest_types_explainer.md` |
+| **The space-acceptance ruling, campaign-wide** — mechanism, the IL-level refinement ("friction, not silence"), and the ⛔ *do not sweep 200 vanilla quest defs* decision | `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\v1_quest_the_claim.md` §106-193 |
+| **What Cherry Picker does to a `QuestScriptDef`**, and that it does nothing to an existing save | `D:\Luke\dev\RimMandrake\infrastructure\archive\2026-08-13_mechanoid_removal_study.md:100-180` |
+| **The `questScriptDef`-referenced-by-`IncidentDef` gate** in the cherry-pick builder | `D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\cherrypick_build.py:30,166-180,300` |
+| **The grammar-bracket failure with verbatim log trace**, and the guarded-patch rationale | `D:\Luke\dev\RimMandrake\src\Jawa\Jawa_Patches\Patches\BTDGravshipQuest_GrammarFix.xml` |
+| **Row 3's gate, and why "blocked on a human" was the wrong conclusion** | `D:\Luke\dev\RimMandrake\infrastructure\state\V1_CHAIN.md` |
+| **The step-by-step in-game verification script** for rumour → quest (3 screenshots; PASS = any end state) | `D:\Luke\dev\RimMandrake\infrastructure\state\TEST_PLAN.md:103-118` |
+| `rimworld/right_click_cell` **is measured broken** — reports success, does nothing; why the float-menu route needed replacing | `D:\Luke\dev\RimMandrake\skills\rimbridge\references\traps.md` |
 
 ⚠️ **`skills\rimworld-modding\` currently says nothing about quests** — grepped
 `SKILL.md` and all six `references\traps*.md`; the only hits are incidental uses of

@@ -2,8 +2,8 @@
 
 Read this before extracting xenotypes into a standalone mod, or before merging
 two species mods. Measured while rescuing 69 Star Wars species into
-`D:\Luke\dev\Rimworld\src\Jawa\RimMandrake_StarWarsRaces`; the builder is
-`D:\Luke\dev\Rimworld\src\RimMandrake\Utils\gen_races_mod.py`.
+`D:\Luke\dev\RimMandrake\src\Jawa\RimMandrake_StarWarsRaces`; the builder is
+`D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\gen_races_mod.py`.
 
 ## What actually travelled
 

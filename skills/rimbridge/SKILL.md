@@ -123,7 +123,7 @@ with a paste-the-token step that silently uses last launch's value.
 action paths contain backslashes and die twice through bash then JSON.
 
 ```python
-import sys; sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")   # WSL: /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils
+import sys; sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")   # WSL: /mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils  (read-only mirror)
 from rimbridge_client import RimBridge, resolve_endpoint
 host, port, token = resolve_endpoint()
 with RimBridge(host, port, token) as rb:

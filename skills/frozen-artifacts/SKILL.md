@@ -40,7 +40,7 @@ then about the mechanism.
   **fails (c)**. Being wrong announces itself.
 
 ✅ **Passes all three:**
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\review\worldmap_elements.prefill.json` —
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\review\worldmap_elements.prefill.json` —
 the owner's 449-row keep/cut curation (296 whitelisted, 52 rejected, 2 deliberately
 undecided, 332 notes), against `worldmap_prefill.py`, which would rewrite the whole file
 with an agent's original *guesses* and produce a file that looks exactly as valid.

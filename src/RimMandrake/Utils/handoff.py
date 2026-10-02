@@ -269,7 +269,7 @@ def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
     bad = []
 
     # `git cherry` marks a commit `-` when origin already holds a patch-equivalent
-    # (shared_sync.py replays commits under new shas), so only `+` is truly unpushed.
+    # (a rebase rewrites shas), so only `+` is truly unpushed.
     unpushed = "\n".join(
         sh("git", "log", "--oneline", "-1", ln[2:].strip())
         for ln in sh("git", "cherry", "@{u}", "HEAD").splitlines()

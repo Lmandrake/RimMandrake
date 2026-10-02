@@ -4,9 +4,9 @@ _Expands `SKILL.md` §2. Every number here was counted from the live def dump
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\defs\`
 (all mods resolved, captured 2026-08-14, game 1.6.4871 rev591) or from
 `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Data\Ideology\Defs\`.
-Vocabulary: `D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`.
+Vocabulary: `D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\data\ideology_palette.md`.
 Corpus of eleven worked religions:
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`._
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions_spec.md`._
 
 **Population, 2026-08-14:** 136 memes (35 structure, 101 normal) · 685 precepts
 across 220 issues · 283 `HistoryEventDef`s, 206 of them hooked by at least one
@@ -343,7 +343,7 @@ count it toward interest.
 
 ## 6. Worked example — faction 5, the Continuity Protocol
 
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\faction_religions_spec.md`
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\faction_religions_spec.md`
 lines 290–328. `SKILL.md` §2 rule 3 names it the best entry in the roster.
 Running the §1 loop over it as written:
 

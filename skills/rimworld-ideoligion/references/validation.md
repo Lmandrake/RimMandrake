@@ -15,7 +15,7 @@ here forbids the religion you described" — never "the religion exists".
 
 ## 1. What the validator reads
 
-`/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/validate_ideoligion.py`
+`/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/Utils/validate_ideoligion.py`
 
 Ground truth is the **live def dump**, i.e. all mods resolved:
 `/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs/`
@@ -33,7 +33,7 @@ measured 2026-08-14). Harmless — expansions really are active — but it is no
 strict read of `activeMods`.
 
 Vocabulary cross-reference for humans:
-`/mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/data/ideology_palette.md`
+`/mnt/d/Luke/dev/RimMandrake/design/Jawa/worldbuilding/data/ideology_palette.md`
 (136 memes · 685 precepts · 41 styles · 92 ritual patterns, same capture).
 
 ### Three input routes
@@ -64,7 +64,7 @@ mostly do not. **Typos in vanilla meme names are invisible to `--md`.** Use
 ## 2. Usage — measured 2026-08-14
 
 ```bash
-cd /mnt/d/Luke/dev/Rimworld
+cd /mnt/d/Luke/dev/RimMandrake
 python3 src/RimMandrake/Utils/validate_ideoligion.py --md design/Jawa/worldbuilding/faction_religions_spec.md
 python3 src/RimMandrake/Utils/validate_ideoligion.py --xml <FactionDefs.xml or a dir>
 python3 src/RimMandrake/Utils/validate_ideoligion.py --spec my_religion.json
@@ -316,13 +316,13 @@ these lines. Absence of error means only "no error"; only 4a shows the ideo.
 `skills/rimbridge/SKILL.md`. The bridge can list every faction —
 `jawa/list_factions`, drove live 2026-08-14, returns *defName, name, isPlayer,
 hostile, goodwill, hidden* and **no ideo field**
-(`/mnt/d/Luke/dev/Rimworld/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:4183`).
+(`/mnt/d/Luke/dev/RimMandrake/src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs:4183`).
 The only ideo signal anywhere in the tool surface is `factionHasIdeo` — a bare
 bool, and it appears **only on the failure row of `jawa/spawn_pawn`** (same file,
 `:1791`).
 
 ⏳ **`jawa/ideo_of` is requested from CHECK and does not exist**
-(`/mnt/d/Luke/dev/Rimworld/infrastructure/state/queue/CHECK.md`). Until it
+(`/mnt/d/Luke/dev/RimMandrake/infrastructure/state/queue/CHECK.md`). Until it
 lands, "the game built the ideoligion I specified" is read off a screenshot of
 4a, by eye — it cannot be diffed. **Say "unverified", not "verified", when the
 only evidence is a clean log.**
@@ -350,7 +350,7 @@ is the one the script most looks like it is catching.**
 ## 6. Checklist — "I just authored a faction religion"
 
 1. **Every defName came out of the palette.**
-   `grep -n '<defName>' /mnt/d/Luke/dev/Rimworld/design/Jawa/worldbuilding/data/ideology_palette.md`
+   `grep -n '<defName>' /mnt/d/Luke/dev/RimMandrake/design/Jawa/worldbuilding/data/ideology_palette.md`
    — or search it for the name. Never write one from memory.
 2. **Dump is fresh.** Line 1 of any run prints the capture stamp; compare against
    today and against `ModsConfig.xml`'s mtime. Stale dump ⇒ stale verdict.
