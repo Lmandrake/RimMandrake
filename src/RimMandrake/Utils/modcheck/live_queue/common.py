@@ -59,6 +59,14 @@ def read_results(dry_run=False, path=None):
     return out
 
 
+def rel(path):
+    """Repo-relative when possible; Windows relpath raises across drives (temp on C:, repo on D:)."""
+    try:
+        return os.path.relpath(path, ROOT)
+    except ValueError:
+        return path
+
+
 class Unmeasurable(Exception):
     """Raised by a job body when it cannot ask the game the question (not a verdict)."""
 
@@ -94,7 +102,7 @@ class Job(object):
                "checks_passed": sum(c["ok"] for c in self.checks), "checks_total": len(self.checks),
                "failed": [c["name"] for c in self.checks if not c["ok"]],
                "unmeasured_reason": self.unmeasured_reason, "checks": self.checks,
-               "evidence": self.evidence, "outdir": self.outdir if self.dry_run else os.path.relpath(self.outdir, ROOT)}
+               "evidence": self.evidence, "outdir": rel(self.outdir)}
         path = results_path(self.dry_run)
         os.makedirs(os.path.dirname(path), exist_ok=True)
         with open(path, "a", encoding="utf-8") as f:
