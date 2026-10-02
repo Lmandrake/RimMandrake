@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T03:47:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T05:01:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1086,6 +1086,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SUMP_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  Movements 1-2, the required five-idea GPT consult and the found-rite pitch, in
 prose:    infrastructure/state/items/SUMP_BEDAZZLE_SITTING_1.md
