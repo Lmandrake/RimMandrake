@@ -21,11 +21,15 @@ Result JSON beside this script (modcheck `run` swaps ModsConfig and records only
 validation.py; northstar_driver `run` does not call record_run -- debug_process section 1 item 4).
 
 LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose only):
-  * MOD defect FLOWWORKS_SHARED_SOURCE_STALL_1: two channels off ONE source cell -> the
-    second-dug channel stalls at its inlet forever, even off a limitless body. Cause: pulseVisited
-    is shared across components, so the first-seeded component claims the source cell and the
-    other gets no flow order (keys all equal -> no overflow). Live == oracle on both twin pairs
-    (E2s_*). Seeds go in DIG order (HashSet insertion order), so which one stalls is predictable.
+  * MOD defect FLOWWORKS_SHARED_SOURCE_STALL_1 (FIXED same day): two channels off ONE source cell
+    -> the second-dug channel stalled at its inlet forever, even off a limitless body. Cause: the
+    DoPulse component walk (older than the rank pass) marked source cells in pulseVisited, shared
+    across components, so the first-seeded component claimed the source and the other had no
+    supplying source -> all keys equal -> only its inlet (fed directly by PickDonor) ever filled.
+    Fix: RM_StockMath.CollectComponent tracks sources per component (oracle claim_sources=False);
+    O9 + the C# SharedSource_* selftests guard it, and claim_sources=True must go red (O-NEG).
+    LIMITED-body split rule: components resolve in excavatedCells order, so each pulse the
+    earlier-seeded channel's inlet is paid first; an odd stock gives it the extra level (O9: 3/2).
   * The fixed engine (ddb473416) fills a channel FAR END FIRST: [0,0,0,1] -> [1,1,1,1] in n*D pulses,
     every compass direction, identical vectors (E2_*); reproduced on two fresh maps bit-for-bit.
   * A 1-cell pond at shipped recession supplies exactly ONE level, then recedes (floor(4/5) = 0
@@ -33,6 +37,8 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
   * Rain lands on EVERY unroofed excavated cell of the map, so it runs last and is predicted
     map-wide; RainRate needs ticks after weather_set (TransitionTo lerps over ~4000 ticks), so the
     rain-OFF negative rides the job ticks with rainFillPerPulse pinned 1.0.
+  * HARNESS: the J window ended when the jobs did; fast colonists (run 5: 7 chunks) left Rain at 0.18
+    and E6n UNMEASURED -> J now keeps pulsing after the jobs until the rain-OFF negative is measurable.
   * HARNESS/SITE lessons: start_debug_game_ready from a running colony times out (go to the main
     menu first); wildlife wanders into plots (destroy_bulk nonColonists); a mining-incapable
     colonist makes pawn_stats log a red error and returns 0.1 (re-roll); pawns left to the
@@ -105,8 +111,13 @@ class PulseOracle(object):
     2026-10-01 run recorded at ticks 538,130..539,880, exactly."""
 
     def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed",
-                 recession=False):
+                 recession=False, claim_sources=None):
         self.w, self.h = w, h
+        # claim_sources=True is the pre-FLOWWORKS_SHARED_SOURCE_STALL_1 component walk (a source cell
+        # marked in the visited set SHARED across components, so the first-seeded channel claims it).
+        # Default: True for algo="old" (as measured 2026-10-01), False for "fixed" (the shipped fix,
+        # RM_StockMath.CollectComponent: sources tracked per component only).
+        self.claim_sources = (algo == "old") if claim_sources is None else claim_sources
         # recession (RM_LiquidStock.Recede, run before the flow each pulse): a LIMITED body whose
         # bodies[id] carries "cells" and "capacity" sheds active cells down to floor(stock/perCell),
         # picking fewest 8-way source neighbours, then furthest from the integer centroid, then
@@ -283,14 +294,15 @@ class PulseOracle(object):
             self._recede()
         seen = set()
         # Seeds in DIG order: C# iterates excavatedCells, a HashSet<IntVec3>, which enumerates in
-        # insertion order while nothing is removed. It matters only when two components touch the
-        # same source cell: the FIRST seeded claims it (pulseVisited is shared across components)
-        # and the other gets no flow order -- FLOWWORKS_SHARED_SOURCE_STALL_1, measured live
-        # 2026-10-02 (prove_flowworks_pulse P2: [1,0,0,0], stock 3, exactly as this oracle says).
+        # insertion order while nothing is removed. Since FLOWWORKS_SHARED_SOURCE_STALL_1's fix it
+        # matters only for a LIMITED body that cannot pay every adjacent inlet in one pulse: the
+        # earlier-seeded component resolves first, so it is paid first, unit by unit. (claim_sources:
+        # the FIRST seeded claimed the source and the other got no flow order -- measured live
+        # 2026-10-02, prove_flowworks_pulse P2 [1,0,0,0] stock 3, and v2's E2s pairs, exactly.)
         for seed in list(self.D):
             if seed in seen or not self.exc(seed):
                 continue
-            comp, queue = [], [seed]
+            comp, queue, comp_src = [], [seed], set()
             seen.add(seed)
             while queue:
                 c = queue.pop(0)
@@ -299,11 +311,17 @@ class PulseOracle(object):
                     continue
                 for dx, dz in CARDINAL:
                     n = (c[0] + dx, c[1] + dz)
-                    if n in seen or not self.inb(n):
+                    if not self.inb(n):
                         continue
-                    if self.exc(n) or self.is_source(n):
-                        seen.add(n)
-                        queue.append(n)
+                    if self.exc(n):
+                        if n not in seen:
+                            seen.add(n)
+                            queue.append(n)
+                    elif self.is_source(n):
+                        claimed = seen if self.claim_sources else comp_src
+                        if n not in claimed:
+                            claimed.add(n)
+                            queue.append(n)
             for c in comp:                                   # sinks drain before the flow
                 if self.exc(c) and self.is_sink(c):
                     take = min(self.F[c], self.per)
@@ -382,9 +400,10 @@ SCENES = {
     "E2_north": dict(cells=_run(12, 64, 4, 0, 1), D=1, body="W1", dir="N", phase="A"),
     "E2_south": dict(cells=_run(12, 59, 4, 0, -1), D=1, body="W1", dir="S", phase="A"),
     "E2_west": dict(cells=_run(149, 33, 4, -1, 0), D=1, body="W5", dir="W", phase="A"),
-    # E2s: TWO channels off ONE source cell (a body corner). Dug in order: the first-dug claims
-    # the source; the second stalls at its inlet (FLOWWORKS_SHARED_SOURCE_STALL_1). The W8 pair
-    # is dug in the opposite compass order, so a pass/fail cannot be a direction effect.
+    # E2s: TWO channels off ONE source cell (a body corner); both must fill. Until
+    # FLOWWORKS_SHARED_SOURCE_STALL_1's fix the first-dug claimed the source and the second stalled
+    # at its inlet. The W8 pair is dug in the opposite compass order, so a pass/fail cannot be a
+    # direction effect.
     "E2s_shared_E7": dict(cells=_run(16, 183, 4, 1, 0), D=1, body="W7", dir="E", phase="A"),
     "E2s_shared_N7": dict(cells=_run(15, 184, 4, 0, 1), D=1, body="W7", dir="N", phase="A"),
     "E2s_shared_N8": dict(cells=_run(15, 224, 4, 0, 1), D=1, body="W8", dir="N", phase="A"),
@@ -831,6 +850,53 @@ def o7_scene_predictions():
     return Check("O7", not probs, "; ".join(probs) or "E2 x6 full at pulse 4, far end first; E3b keeps 1; E3 delivers 5 then rests")
 
 
+def o9_shared_source(claim=False):
+    """FLOWWORKS_SHARED_SOURCE_STALL_1. Two channels off ONE source cell (perpendicular at a body
+    corner, and opposite off a 1-cell source), every orientation, both dig orders. The fixed walk
+    (claim=False): both fill to n*D within n*D pulses, identically, and rest; a LIMITED body's stock
+    is conserved every pulse, fully delivered, and split by the stated rule -- each pulse the
+    earlier-dug channel's inlet is paid first, so an odd stock gives it the one extra level.
+    claim=True is the shipped-until-fix walk and must go red (the second-dug channel stalls)."""
+    probs, n = [], 4
+    pairs = [("E", "N"), ("N", "W"), ("W", "S"), ("S", "E"), ("E", "W"), ("N", "S")]
+    for a, b in pairs:
+        for first, second in ((a, b), (b, a)):
+            for limitless, stock0 in ((True, 0.0), (False, 5.0)):
+                o = PulseOracle(200, 200, {(100, 100): 0}, {0: {"limitless": limitless, "stock": stock0}},
+                                algo="fixed", claim_sources=claim)
+                runs = {}
+                for d in (first, second):
+                    dx, dz = DIRS[d]
+                    runs[d] = _run(100 + dx, 100 + dz, n, dx, dz)
+                    for c in runs[d]:
+                        o.dig(c)
+                tag = "%s-then-%s %s" % (first, second, "limitless" if limitless else "stock 5")
+                hist = {d: [] for d in runs}
+                for p in range(4 * n + 8):
+                    o.pulse()
+                    for d in runs:
+                        hist[d].append([o.F[c] for c in runs[d]])
+                    tot = sum(o.F.values())
+                    if not limitless and tot + o.bodies[0]["stock"] != stock0:
+                        probs.append("%s: conservation broken at pulse %d" % (tag, p + 1))
+                        break
+                if limitless:
+                    full = {d: next((i + 1 for i, v in enumerate(h) if v == [1] * n), None) for d, h in hist.items()}
+                    if any(f is None or f > o6_fill_bound(n, 1) for f in full.values()):
+                        probs.append("%s: first-full %s (bound %d), final %s" % (tag, full, n, {d: h[-1] for d, h in hist.items()}))
+                    elif hist[first] != hist[second]:
+                        probs.append("%s: the two channels' vectors differ" % tag)
+                else:
+                    got = {d: sum(hist[d][-1]) for d in runs}
+                    if got[first] != 3 or got[second] != 2:
+                        probs.append("%s: split %s (rule: earlier-dug gets the odd level, 3/2)" % (tag, got))
+                if not _is_fixed_point(o):
+                    probs.append("%s: not at rest" % tag)
+    return Check("O9", not probs, "; ".join(probs[:8]) or
+                 "%d pairs x 2 dig orders: limitless -> both full at pulse %d, identical; stock 5 -> conserved, "
+                 "split 3/2 to the earlier-dug channel; all at rest" % (len(pairs), n))
+
+
 def o8_lint():
     """Schema lint of every literal bridge call in this file (northstar_driver/lint_calls.py)."""
     try:
@@ -890,6 +956,7 @@ def offline_negative_controls():
         out.append(("O7 inert engine", o7_scene_predictions().ok))
     finally:
         PulseOracle._pick = real_pick
+    out.append(("O9 shared-source walk with the source claimed (pre-fix)", o9_shared_source(claim=True).ok))
     fails = [name for name, ok in out if ok]
     return Check("O-NEG", not fails, ("these did NOT go red: %s" % fails) if fails else
                  "%d in-memory mutations, every one went red" % len(out))
@@ -897,7 +964,8 @@ def offline_negative_controls():
 
 def run_offline():
     checks = [o1_defs(), o2_settings_defaults(), o3_unbuilt_register(), o4_geometry(), o5_oracle_selftest(),
-              o6_channel_directions(), o7_scene_predictions(), o8_lint(), offline_negative_controls()]
+              o6_channel_directions(), o7_scene_predictions(), o8_lint(), o9_shared_source(),
+              offline_negative_controls()]
     for c in checks:
         print(c)
     return checks
@@ -910,7 +978,7 @@ def run_offline():
 STATUS_OK = ("PASS", "SKIP", "UNCOVERED", "UNBUILT")
 # Rows that are RED on the shipped engine because of a filed MOD defect. The mock reproduces the
 # shipped semantics, so they are red there too; a fix makes them green and this list shrinks.
-KNOWN_MOD_RED = {"E2s_shared_source_both_fill": "FLOWWORKS_SHARED_SOURCE_STALL_1"}
+KNOWN_MOD_RED = {}   # FLOWWORKS_SHARED_SOURCE_STALL_1 fixed 2026-10-02 (O9 + E2s_shared_source_both_fill)
 
 
 class Abort(Exception):
@@ -1411,7 +1479,7 @@ def phase_A(L, args):
               "interior prefilled twin final %s" % vec.get("E5_inner", [[]])[-1])
         sh = {k: vec.get(k, [[]])[-1] for k in ("E2s_shared_E7", "E2s_shared_N7", "E2s_shared_N8", "E2s_shared_E8")}
         L.row("E2s_shared_source_oracle", not any(k in mism for k in sh), "HARNESS",
-              {k: mism[k][:2] for k in sh if k in mism} or "both pairs == oracle (first-dug claims the source): %s" % sh)
+              {k: mism[k][:2] for k in sh if k in mism} or "both pairs == oracle (every channel gets the shared source): %s" % sh)
         full_all = all(v == [1] * 4 for v in sh.values())
         L.row("E2s_shared_source_both_fill", full_all, "MOD", "all four shared-source channels full: %s" % sh if full_all
               else "two channels off ONE source cell after 8 pulses: %s -- the second-dug channel stalls at its inlet "
@@ -1592,7 +1660,15 @@ def phase_J(L, args):
             hist.append((e.get("ticksGame"), e.get("nextPulseTick")))
             q8, q7a, q7b = L.cells_read([e8, e7a, e7b])
             done = {"E8": q8["d"] == 1, "E7a": q7a["d"] == 0, "E7b": q7b["d"] == 0}
-            if all(done.values()) or e.get("ticksGame") - t_start >= cap:
+            ran = e.get("ticksGame") - t_start
+            if all(done.values()):
+                # Live run 5 (2026-10-02): fast colonists finished in 7 chunks, Rain had only lerped
+                # to 0.18 and E6n went UNMEASURED. So once the jobs are done, keep pulsing until the
+                # rain-OFF negative is measurable (same estimate as E6n below) or the hard job cap.
+                wr_now = (B.call("jawa/weather_get").get("weather") or {}).get("rainRate") or 0.0
+                if 0.5 * wr_now * chunks >= 1.5 or ran >= args.max_job_ticks:
+                    break
+            elif ran >= cap:
                 break
         spent = hist[-1][0] - t_start
         gaps = [b[1] - a[1] for a, b in zip(hist, hist[1:])]
@@ -2088,6 +2164,7 @@ class RealBridge(object):
         return r if isinstance(r, dict) else {"success": False, "raw": r}
 
 
+FROZEN_BIOMES = ("IceSheet", "SeaIce")   # temp-layer ice the site painter cannot clear (run 6)
 PHASES = ("L", "site", "S", "A", "B", "C", "R", "J", "rain", "tail")
 
 
@@ -2101,16 +2178,27 @@ def run_live(args, B=None, quiet=False):
         # from inside a running colony start_debug_game_ready does NOT start a fresh one (it times
         # out waiting for the entry scene, 280 s lost on 2026-10-02): go to the main menu first,
         # and judge by programState + a pristine engine, never by the call's own success.
-        m = B.call("rimworld/go_to_main_menu")
-        r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
-        st = None
-        for _ in range(120):
-            st = B.call("rimworld/get_ui_state").get("programState")
-            if st == "Playing" and B.call("jawa/map_info").get("success"):
+        # Live run 6 (2026-10-02) drew an IceSheet map: map gen leaves ThinIce on the TEMP terrain
+        # layer over painted Soil (get_terrain_layers temp=ThinIce, base Soil), set_terrain_batch
+        # writes the base layer only and set_terrain_layer cannot clear temp ("Give a TerrainDef"),
+        # so SITE1 refused. The engine renders fill on the temp layer too. -> re-roll such maps.
+        rolls = []
+        for _roll in range(4):
+            m = B.call("rimworld/go_to_main_menu")
+            r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
+            st = None
+            for _ in range(120):
+                st = B.call("rimworld/get_ui_state").get("programState")
+                if st == "Playing" and B.call("jawa/map_info").get("success"):
+                    break
+                if not args.mock:
+                    time.sleep(2.0)
+            biome = B.call("jawa/map_info").get("mapBiome")
+            rolls.append(biome)
+            if biome not in FROZEN_BIOMES:
                 break
-            if not args.mock:
-                time.sleep(2.0)
-        load = dict(menu=m.get("success"), start=r.get("success"), programState=st, wall_s=round(time.time() - ts, 1))
+        load = dict(menu=m.get("success"), start=r.get("success"), programState=st, biomes=rolls,
+                    wall_s=round(time.time() - ts, 1))
         L._log("- fresh quicktest map: %s" % load)
         if st != "Playing":
             L.row("L0_fresh_map", False, "SITE", load)

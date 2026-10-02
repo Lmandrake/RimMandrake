@@ -1,0 +1,229 @@
+# FLOWWORKS_SHARED_SOURCE_STALL_1 — helper progress (2026-10-02)
+
+## 1 root cause
+(pending)
+## 2 oracle red on old algo
+## 3 fix
+## 4 build
+## 5 deploy/relaunch
+## 6 live run
+## 7 classification
+
+## 1 root cause (CONFIRMED by reading)
+Not the rank pass: DoPulse component BFS marks SOURCE cells in pulseVisited (shared across components). First-seeded channel claims the shared source; second has no supplying source -> keys all (0,0) -> only its inlet (PickDonor reads sources directly) fills.
+## 2 red on old algo
+Oracle claim_sources=True reproduces stall (E2s live==oracle earlier). C# mutation (sources into shared set) -> SharedSource_every_adjacent... FAIL 58/59.
+## 3 fix
+RM_StockMath.CollectComponent<T> (Verse-free), sources tracked per component. Excavation.DoPulse calls it. Oracle claim_sources mirror; O9 added; O-NEG +1; KNOWN_MOD_RED emptied. Selftest 59/59.
+selftests 117/117
+## 4 build
+winbuild OK 07:50, DLL contains CollectComponent
+## 5 deploy
+killing RimWorldWin64 PID 38524
+deployed 5 files VERIFIED; ModsConfig 9 active incl flowworks; relaunching 07:51:02
+## 6 live run start 07:51:29
+- fresh quicktest map: {'menu': True, 'start': True, 'programState': 'Playing', 'wall_s': 14.6}
+    L0_loaded_paused       PASS                programState Playing, ticksGame 1 -> 1 over 1 s
+    L0_map_250             PASS                map 250x250 biome TropicalRainforest
+    L1_log_clean           PASS                no FlowWorks error in 13 warn+ entries (base seq 13)
+    L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 571e6eb55f04 mvidMatchesFile True; repo sha 571e6eb55f04
+    L3_defs_live           PASS                live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})
+    L4_settings_default    PASS                43 settings read, all shipped defaults
+    L5_site_pristine       PASS                excavated 0 bodies 0 superdeep 0 activeFluidRaw None
+    E1a_cadence_shipped    PASS                pulseIntervalTicks 250, nextPulseTick 251 at tick 1
+    L5_dry_weather         PASS                weather Clear rainRate 0.0
+- step L_preflight: ticks 0 (planned 0), wall 19.4s, 54 calls
+    destroy_bulk nonColonists: 56
+    SITE0_no_pawn_in_plots PASS                3 pawns, none in 36 plot rects
+    SITE1_painted_readback PASS                36 rects cleared+Soil, 9 bodies painted, every scene cell fresh Soil, every body exactly its sources
+- step SITE_paint: ticks 0 (planned 0), wall 4.0s, 77 calls
+    S1_dig_ladder          PASS                D [1, 2, 3, 4] terrain ['RM_Channel_Empty', 'RM_Channel_Mid', 'RM_Channel_Deep', 'RM_Channel_Superdeep'] excavated +4 superdeep +1
+    S1n_superdeep_is_max   PASS                deepen D=4 once more -> 4
+    S1p_holder_at_D4_only  PASS                D4 holder True (occupants 0); D3 holder False  [pit smoke only: pit model under redesign]
+    S2_fill_clamp          PASS                setFill 9 on D=2 -> F=2; setFill 1 on undug -> fillSet=False F=0
+    S3_classification      PASS                W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED
+    S4_sink_band           PASS                isSink at edge distance 9: True; at 11: False
+    S5_sticky_limitless    PASS                W6 (sticky OFF) limitless=False; twin W7 (ON) limitless=True
+    S6_digToDepth_gate     UNCOVERED           jawa/designate_batch adds Designations directly, bypassing Designator_DigCanal.CanDesignateCell; the WorkGiver gate needs a HasJobOnCell probe tool (owed)
+    S7_S9_capture_ladder   SKIP                pit model (pit = depth-4 cell, no holder building) is being redesigned by other helpers; only the S1p holder smoke runs
+    U_fill_fluid_distinct  UNBUILT             UNBUILT: one activeFluid field per map component
+    U_ladder_state_legible UNBUILT             UNBUILT: RM_Ladder has no raised/lowered state (thingClass Building)
+    U_pawn_height_ladder_legible UNBUILT             UNBUILT: no pawn draw offset by depth
+    U_pawn_lowers_on_deeper_cell UNBUILT             UNBUILT: same
+    U_pawn_rises_on_shallower_cell UNBUILT             UNBUILT: same
+    U_pit_covered_invisible UNBUILT             UNBUILT: no superdeep cover (only legacy Building_TerrainMimicCover)
+    U_pit_covered_seam_at_max_zoom UNBUILT             UNBUILT: same as pit_covered_invisible
+    U_pit_trapped_reads_as_trapped UNBUILT             UNBUILT: same (walls above head need the offset)
+    U_slime_occupant_below_surface UNBUILT             UNBUILT: same
+    U_sluice_gate_state_legible UNBUILT             UNBUILT: no Sluice def
+    U_spikes_read_distinct UNBUILT             UNBUILT: no per-cell spike def on excavations (RM_OpenPit_Spiked / RM_PitDigSite_*_Spiked are the legacy building pit)
+    U_tar_fill_front_lags_water UNBUILT             UNBUILT: FlowPerPulse is global; viscosity not read by the engine
+- step S_state: ticks 0 (planned 0), wall 3.7s, 31 calls
+    A0_sanity_probe        PASS                rect read of the prefilled E5_sink run: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] (must see a known F=1)
+    pulse[A] x8: 67 cells, 0 mismatching scenes []
+    A_pulse_contract       PASS                8 pulses, 0 ticks, scheduler untouched, paused
+    E2_east_A              PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_east_B              PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_north               PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_south               PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_west                PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_twins_identical     PASS                A [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] / B [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_channels_fill_every_direction PASS                first-full pulse by direction {'E2_east_A': 4, 'E2_north': 4, 'E2_south': 4, 'E2_west': 4} (bound n*D = 4; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)
+    E2_dry_ring            PASS                every non-channel, non-body ring cell undug, F=0, Soil
+    E3b_recession_shipped  PASS                final [0, 0, 0, 1], W2R {'stock': 4.001896, 'recededCount': 1, 'activeCellCount': 0}
+    E5_sink_drains         PASS                band run drained per oracle: sinkTransferredTotal +10.0 (oracle +10); final [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    E5_inner_holds         PASS                interior prefilled twin final [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    E2s_shared_source_oracle PASS                both pairs == oracle (every channel gets the shared source): {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}
+    E2s_shared_source_both_fill PASS                all four shared-source channels full: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}
+    A_global_vs_oracle     PASS                every excavated cell == oracle at every pulse
+- step A_flow_defaults: ticks 0 (planned 0), wall 4.5s, 90 calls
+    pulse[B] x7: 75 cells, 0 mismatching scenes []
+    E3_budget_exhaustion   PASS                cap-5 pond delivered exactly 5 ([0, 0, 0, 1, 1, 1, 1, 1]), then rested; stock 0.00162504055
+    pulse[B-off] x2: 75 cells, 0 mismatching scenes []
+    E3n_budget_off_supplies PASS                budget OFF: a spent pond supplies again ([0, 0, 0, 1, 1, 1, 1, 1] -> [0, 1, 1, 1, 1, 1, 1, 1])
+    B_global_vs_oracle     PASS                all cells == oracle
+- step B_budget: ticks 0 (planned 0), wall 3.6s, 20 calls
+    pulse[C-off] x2: 85 cells, 0 mismatching scenes []
+    E5n_sinks_off          PASS                sinks OFF: run [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], total 10.0->10.0, isSink any=False
+    pulse[C-on] x3: 85 cells, 0 mismatching scenes []
+    E5_sinks_back_on       PASS                sinks ON again: [1, 1, 0, 0, 0, 1, 0, 0, 0, 0], total +7.0 (oracle +7)
+    C_global_vs_oracle     PASS                all cells == oracle
+- step C_sink_toggle: ticks 0 (planned 0), wall 2.8s, 33 calls
+    pulse[R] x8: 89 cells, 0 mismatching scenes []
+    E2_rerun_determinism   PASS                E2_east_A (phase A) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] vs E2_rerun (dug later, other body) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    R_global_vs_oracle     PASS                all cells == oracle
+- step R_determinism_rerun: ticks 0 (planned 0), wall 0.3s, 7 calls
+    job pawns {'E7a_fillin': ('Human48849', 1.3664), 'E7b_overflow': ('Human48852', 2.44), 'E8_dig': ('Human48856', 3.29400015)} (rejected, mining disabled: [])
+    J_orders_accepted      PASS                [('E8_dig', True, None), ('E7a_fillin', True, None), ('E7b_overflow', True, None)]
+    J_workgiver_selection  UNCOVERED           WorkGiver_DigCanal/FillInCanal choosing the designation unprompted is not timed here (pawn AI noise; run 3 never chose it) -- owed HasJobOnCell probe tool
+    E4_engine_off          PASS                OFF for 310 ticks, past the due tick 251: nextPulseTick 251->251, cells moved []
+    E1b_pulse_clamp        PASS                pulseIntervalTicks set 30 -> engine reads 60 (clamp floor 60)
+    E1c_cadence_real_scheduler PASS                7 chunks of 60 ticks: nextPulseTick advances [60], lead [1]
+    E4_engine_on_scheduled PASS                after 7 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]
+    E6n_rain_toggle_off    UNMEASURED HARNESS  rain too light to test: rate 0.1825 over 7 pulses would add ~0.64 levels (< 1.5)
+    E7a_fillin_displaces   PASS                sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]
+    E7b_overflow_sanctioned PASS                no room: sum F 3 -> 2, overflowDestroyedTotal +1.0 (want +1)
+    E8_player_dig          PASS                designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 420 ticks (cap 3285, MiningSpeed 1.37)
+- step J_jobs_scheduler: ticks 730 (planned <= 3285 (job cap)), wall 22.4s, 144 calls
+    E6_roof_readback       PASS                roofed excavated cells [(182, 60)]
+    pulse[rain] x6: 100 cells, 0 mismatching scenes []
+    E6_rain_fills_unroofed PASS                rate 0.182 x 6 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle
+- step E6_rain: ticks 0 (planned 0), wall 1.8s, 11 calls
+    T0n_fluid_switch_refused PASS                set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water
+    E9_log_budget          PASS                0 FlowWorks errors, 0 ledger imbalances, exactly 1 sanctioned conservation exception; 0 other error lines []
+- step T0_E9_tail: ticks 0 (planned 0), wall 0.2s, 5 calls
+    Z_settings_restored    PASS                8 touched settings back to shipped defaults
+live run5 (07:52): 55 PASS 0 FAIL, E2s green, 730 ticks; E6n UNMEASURED (HARNESS: jobs done in 7 chunks, rain 0.18). compare vs 074420: only the 2 E2s rows differ. Harness fix: J keeps pulsing until rain measurable. rerunning.
+- fresh quicktest map: {'menu': True, 'start': True, 'programState': 'Playing', 'wall_s': 6.6}
+    L0_loaded_paused       PASS                programState Playing, ticksGame 1 -> 1 over 1 s
+    L0_map_250             PASS                map 250x250 biome IceSheet
+    L1_log_clean           PASS                no FlowWorks error in 14 warn+ entries (base seq 31)
+    L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 571e6eb55f04 mvidMatchesFile True; repo sha 571e6eb55f04
+    L3_defs_live           PASS                live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})
+    L4_settings_default    PASS                43 settings read, all shipped defaults
+    L5_site_pristine       PASS                excavated 0 bodies 0 superdeep 0 activeFluidRaw None
+    E1a_cadence_shipped    PASS                pulseIntervalTicks 250, nextPulseTick 251 at tick 1
+    L5_dry_weather         PASS                weather Clear rainRate 0.0
+- step L_preflight: ticks 0 (planned 0), wall 17.8s, 54 calls
+    destroy_bulk nonColonists: 2
+    SITE0_no_pawn_in_plots PASS                3 pawns, none in 36 plot rects
+    SITE1_painted_readback FAIL       SITE     ["E2_east_A (18, 60) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}", "E2_east_A (19, 60) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}", "E2_east_B (19, 63) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}"]
+- step SITE_paint: ticks 0 (planned 0), wall 3.9s, 77 calls ERROR Abort: site readback
+    ABORT                  FAIL       HARNESS  site readback
+    Z_settings_restored    PASS                0 touched settings back to shipped defaults
+run6 07:53: SITE abort, IceSheet map temp-layer ThinIce over painted Soil (SITE). Harness: re-roll FROZEN_BIOMES. run7 07:54:45
+- fresh quicktest map: {'menu': True, 'start': True, 'programState': 'Playing', 'biomes': ['TemperateForest'], 'wall_s': 10.5}
+    L0_loaded_paused       PASS                programState Playing, ticksGame 1 -> 1 over 1 s
+    L0_map_250             PASS                map 250x250 biome TemperateForest
+    L1_log_clean           PASS                no FlowWorks error in 14 warn+ entries (base seq 31)
+    L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 571e6eb55f04 mvidMatchesFile True; repo sha 571e6eb55f04
+    L3_defs_live           PASS                live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})
+    L4_settings_default    PASS                43 settings read, all shipped defaults
+    L5_site_pristine       PASS                excavated 0 bodies 0 superdeep 0 activeFluidRaw None
+    E1a_cadence_shipped    PASS                pulseIntervalTicks 250, nextPulseTick 251 at tick 1
+    L5_dry_weather         PASS                weather Clear rainRate 0.0
+- step L_preflight: ticks 0 (planned 0), wall 17.8s, 54 calls
+    destroy_bulk nonColonists: 47
+    SITE0_no_pawn_in_plots PASS                3 pawns, none in 36 plot rects
+    SITE1_painted_readback PASS                36 rects cleared+Soil, 9 bodies painted, every scene cell fresh Soil, every body exactly its sources
+- step SITE_paint: ticks 0 (planned 0), wall 3.9s, 77 calls
+    S1_dig_ladder          PASS                D [1, 2, 3, 4] terrain ['RM_Channel_Empty', 'RM_Channel_Mid', 'RM_Channel_Deep', 'RM_Channel_Superdeep'] excavated +4 superdeep +1
+    S1n_superdeep_is_max   PASS                deepen D=4 once more -> 4
+    S1p_holder_at_D4_only  PASS                D4 holder True (occupants 0); D3 holder False  [pit smoke only: pit model under redesign]
+    S2_fill_clamp          PASS                setFill 9 on D=2 -> F=2; setFill 1 on undug -> fillSet=False F=0
+    S3_classification      PASS                W1, W8 limitless; W2/W2R 5, W3 10, W4 (edge,40) 200, W5 (interior,64) 320 all LIMITED
+    S4_sink_band           PASS                isSink at edge distance 9: True; at 11: False
+    S5_sticky_limitless    PASS                W6 (sticky OFF) limitless=False; twin W7 (ON) limitless=True
+    S6_digToDepth_gate     UNCOVERED           jawa/designate_batch adds Designations directly, bypassing Designator_DigCanal.CanDesignateCell; the WorkGiver gate needs a HasJobOnCell probe tool (owed)
+    S7_S9_capture_ladder   SKIP                pit model (pit = depth-4 cell, no holder building) is being redesigned by other helpers; only the S1p holder smoke runs
+    U_fill_fluid_distinct  UNBUILT             UNBUILT: one activeFluid field per map component
+    U_ladder_state_legible UNBUILT             UNBUILT: RM_Ladder has no raised/lowered state (thingClass Building)
+    U_pawn_height_ladder_legible UNBUILT             UNBUILT: no pawn draw offset by depth
+    U_pawn_lowers_on_deeper_cell UNBUILT             UNBUILT: same
+    U_pawn_rises_on_shallower_cell UNBUILT             UNBUILT: same
+    U_pit_covered_invisible UNBUILT             UNBUILT: no superdeep cover (only legacy Building_TerrainMimicCover)
+    U_pit_covered_seam_at_max_zoom UNBUILT             UNBUILT: same as pit_covered_invisible
+    U_pit_trapped_reads_as_trapped UNBUILT             UNBUILT: same (walls above head need the offset)
+    U_slime_occupant_below_surface UNBUILT             UNBUILT: same
+    U_sluice_gate_state_legible UNBUILT             UNBUILT: no Sluice def
+    U_spikes_read_distinct UNBUILT             UNBUILT: no per-cell spike def on excavations (RM_OpenPit_Spiked / RM_PitDigSite_*_Spiked are the legacy building pit)
+    U_tar_fill_front_lags_water UNBUILT             UNBUILT: FlowPerPulse is global; viscosity not read by the engine
+- step S_state: ticks 0 (planned 0), wall 3.7s, 31 calls
+    A0_sanity_probe        PASS                rect read of the prefilled E5_sink run: [1, 1, 1, 1, 1, 1, 1, 1, 1, 1] (must see a known F=1)
+    pulse[A] x8: 67 cells, 0 mismatching scenes []
+    A_pulse_contract       PASS                8 pulses, 0 ticks, scheduler untouched, paused
+    E2_east_A              PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_east_B              PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_north               PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_south               PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_west                PASS                8/8 pulse vectors == oracle; [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_twins_identical     PASS                A [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] / B [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    E2_channels_fill_every_direction PASS                first-full pulse by direction {'E2_east_A': 4, 'E2_north': 4, 'E2_south': 4, 'E2_west': 4} (bound n*D = 4; FLOWWORKS_CHANNEL_OSCILLATION_1 regression guard)
+    E2_dry_ring            PASS                every non-channel, non-body ring cell undug, F=0, Soil
+    E3b_recession_shipped  PASS                final [0, 0, 0, 1], W2R {'stock': 4.00473976, 'recededCount': 1, 'activeCellCount': 0}
+    E5_sink_drains         PASS                band run drained per oracle: sinkTransferredTotal +10.0 (oracle +10); final [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    E5_inner_holds         PASS                interior prefilled twin final [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    E2s_shared_source_oracle PASS                both pairs == oracle (every channel gets the shared source): {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}
+    E2s_shared_source_both_fill PASS                all four shared-source channels full: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}
+    A_global_vs_oracle     PASS                every excavated cell == oracle at every pulse
+- step A_flow_defaults: ticks 0 (planned 0), wall 4.5s, 90 calls
+    pulse[B] x7: 75 cells, 0 mismatching scenes []
+    E3_budget_exhaustion   PASS                cap-5 pond delivered exactly 5 ([0, 0, 0, 1, 1, 1, 1, 1]), then rested; stock 0.004062602
+    pulse[B-off] x2: 75 cells, 0 mismatching scenes []
+    E3n_budget_off_supplies PASS                budget OFF: a spent pond supplies again ([0, 0, 0, 1, 1, 1, 1, 1] -> [0, 1, 1, 1, 1, 1, 1, 1])
+    B_global_vs_oracle     PASS                all cells == oracle
+- step B_budget: ticks 0 (planned 0), wall 3.6s, 20 calls
+    pulse[C-off] x2: 85 cells, 0 mismatching scenes []
+    E5n_sinks_off          PASS                sinks OFF: run [1, 1, 1, 1, 1, 1, 1, 1, 1, 1], total 10.0->10.0, isSink any=False
+    pulse[C-on] x3: 85 cells, 0 mismatching scenes []
+    E5_sinks_back_on       PASS                sinks ON again: [1, 1, 0, 0, 0, 1, 0, 0, 0, 0], total +7.0 (oracle +7)
+    C_global_vs_oracle     PASS                all cells == oracle
+- step C_sink_toggle: ticks 0 (planned 0), wall 2.9s, 33 calls
+    pulse[R] x8: 89 cells, 0 mismatching scenes []
+    E2_rerun_determinism   PASS                E2_east_A (phase A) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]] vs E2_rerun (dug later, other body) [[0, 0, 0, 1], [0, 0, 1, 1], [0, 1, 1, 1], [1, 1, 1, 1]]
+    R_global_vs_oracle     PASS                all cells == oracle
+- step R_determinism_rerun: ticks 0 (planned 0), wall 0.3s, 7 calls
+    job pawns {'E7a_fillin': ('Human38735', 2.44), 'E7b_overflow': ('Human38738', 2.35866666), 'E8_dig': ('Human38741', 2.196)} (rejected, mining disabled: [])
+    J_orders_accepted      PASS                [('E8_dig', True, None), ('E7a_fillin', True, None), ('E7b_overflow', True, None)]
+    J_workgiver_selection  UNCOVERED           WorkGiver_DigCanal/FillInCanal choosing the designation unprompted is not timed here (pawn AI noise; run 3 never chose it) -- owed HasJobOnCell probe tool
+    E4_engine_off          PASS                OFF for 310 ticks, past the due tick 251: nextPulseTick 251->251, cells moved []
+    E1b_pulse_clamp        PASS                pulseIntervalTicks set 30 -> engine reads 60 (clamp floor 60)
+    E1c_cadence_real_scheduler PASS                12 chunks of 60 ticks: nextPulseTick advances [60], lead [1]
+    E4_engine_on_scheduled PASS                after 12 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]
+    E6n_rain_toggle_off    PASS                rain fell (rate now 0.258) with rainFillsExcavations OFF over 12 pulses: no cell gained
+    E7a_fillin_displaces   PASS                sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]
+    E7b_overflow_sanctioned PASS                no room: sum F 3 -> 2, overflowDestroyedTotal +1.0 (want +1)
+    E8_player_dig          PASS                designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 720 ticks (cap 2135, MiningSpeed 2.20)
+- step J_jobs_scheduler: ticks 1030 (planned <= 2135 (job cap)), wall 28.0s, 162 calls
+    E6_roof_readback       PASS                roofed excavated cells [(182, 60)]
+    pulse[rain] x4: 100 cells, 0 mismatching scenes []
+    E6_rain_fills_unroofed PASS                rate 0.258 x 4 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle
+- step E6_rain: ticks 0 (planned 0), wall 1.8s, 11 calls
+    T0n_fluid_switch_refused PASS                set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water
+    E9_log_budget          PASS                0 FlowWorks errors, 0 ledger imbalances, exactly 1 sanctioned conservation exception; 0 other error lines []
+- step T0_E9_tail: ticks 0 (planned 0), wall 0.2s, 5 calls
+    Z_settings_restored    PASS                8 touched settings back to shipped defaults
+## 6 result
+run7 07:56 TemperateForest: LIVE GREEN, 56 PASS 0 FAIL 0 UNMEASURED (2 UNCOVERED, 12 UNBUILT, 1 SKIP), 1030 ticks, 83 s. E2s both rows PASS. compare run5 vs run7: SAME (31 zero-tick rows); vs 074420: only the 2 E2s rows differ.
+## 8 game
+UP, PID 25748, flowworks tier (9 mods), fresh quicktest map. Source+DLL+srchash uncommitted for FOUNDRY.

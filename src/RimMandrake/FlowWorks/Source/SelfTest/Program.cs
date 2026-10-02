@@ -629,6 +629,69 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             });
 
+            // FLOWWORKS_SHARED_SOURCE_STALL_1: the production component walk.
+            // A 3x1 body (sources at x=3..5, z=5); channel E runs (6..9,5) off the
+            // body's east end, channel N runs (5,6..9) off the same corner cell.
+            var srcCells = new HashSet<(int, int)> { (3, 5), (4, 5), (5, 5) };
+            var dug = new HashSet<(int, int)>();
+            for (int i = 1; i <= 4; i++) { dug.Add((5 + i, 5)); dug.Add((5, 5 + i)); }
+            List<List<(int, int)>> Components(IEnumerable<(int, int)> seeds)
+            {
+                var visited = new HashSet<(int, int)>();
+                var compSrc = new HashSet<(int, int)>();
+                var q = new Queue<(int, int)>();
+                var scratch = new List<(int, int)>();
+                var all = new List<List<(int, int)>>();
+                foreach (var s in seeds)
+                {
+                    if (visited.Contains(s)) continue;
+                    var comp = new List<(int, int)>();
+                    RM_StockMath.CollectComponent(s, c => srcCells.Contains(c), c => dug.Contains(c),
+                        (c, into) => { into.Add((c.Item1, c.Item2 + 1)); into.Add((c.Item1 + 1, c.Item2));
+                                       into.Add((c.Item1, c.Item2 - 1)); into.Add((c.Item1 - 1, c.Item2)); },
+                        visited, compSrc, q, scratch, comp, 6000);
+                    all.Add(comp);
+                }
+                return all;
+            }
+
+            Case("SharedSource_every_adjacent_channel_gets_the_source_either_dig_order", () =>
+            {
+                var east = new List<(int, int)>(); var north = new List<(int, int)>();
+                for (int i = 1; i <= 4; i++) { east.Add((5 + i, 5)); north.Add((5, 5 + i)); }
+                foreach (var order in new[] { east.Concat(north), north.Concat(east) })
+                {
+                    var comps = Components(order);
+                    Assert(comps.Count == 2, $"two components, got {comps.Count}");
+                    foreach (var comp in comps)
+                    {
+                        Assert(comp.Contains((5, 5)), "a channel component lacks the shared source (the stall)");
+                        Assert(comp.Count == 5, $"4 channel cells + 1 source, got {comp.Count}");
+                    }
+                }
+            });
+
+            Case("SharedSource_source_joins_but_is_never_expanded_through", () =>
+            {
+                // (4,5) and (3,5) are sources too but touch no channel cell: an ocean
+                // must not be walked just because one channel reaches its shore.
+                var comps = Components(new[] { (6, 5) });
+                Assert(!comps[0].Contains((4, 5)) && !comps[0].Contains((3, 5)), "walked into the body");
+                Assert(comps[0].Count == 5, $"E channel + 1 source, got {comps[0].Count}");
+            });
+
+            Case("SharedSource_one_channel_touching_two_sources_lists_each_once", () =>
+            {
+                dug.Add((4, 6)); // touches source (4,5) and channel cell (5,6)
+                try
+                {
+                    var comps = Components(new[] { (5, 6) });
+                    int s45 = comps[0].Count(c => c == (4, 5)), s55 = comps[0].Count(c => c == (5, 5));
+                    Assert(s45 == 1 && s55 == 1, $"sources listed (4,5)x{s45} (5,5)x{s55}");
+                }
+                finally { dug.Remove((4, 6)); }
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

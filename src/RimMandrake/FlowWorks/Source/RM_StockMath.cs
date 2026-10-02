@@ -346,5 +346,64 @@ namespace RimMandrake.FlowWorks
 			}
 			return recipientDepth > donorDepth;
 		}
+
+		/// <summary>FLOWWORKS_SHARED_SOURCE_STALL_1. One pulse component: BFS from
+		/// <paramref name="seed"/> (an excavated cell) through excavated cells,
+		/// collecting adjacent source cells as donors that are never expanded
+		/// through.
+		///
+		/// 🔑 Excavated cells are marked in <paramref name="visitedExcavated"/>,
+		/// which the caller shares across the pulse's components (an excavated cell
+		/// belongs to exactly one). Source cells are tracked only in
+		/// <paramref name="componentSources"/>, cleared here per component. The
+		/// shipped walk marked sources in the SHARED set, so when two channels
+		/// touched one source cell the first-seeded component claimed it and the
+		/// other had no supplying source: no flow order, and its run stalled at the
+		/// inlet forever, even off a limitless body.
+		///
+		/// Generic and Verse-free so the selftest runs this production code.
+		/// <paramref name="neighbours"/> appends a cell's in-bounds cardinal
+		/// neighbours in a fixed order. Excavated and source are disjoint.</summary>
+		public static void CollectComponent<T>(T seed, Predicate<T> isSource, Predicate<T> isExcavated,
+			Action<T, System.Collections.Generic.List<T>> neighbours,
+			System.Collections.Generic.HashSet<T> visitedExcavated,
+			System.Collections.Generic.HashSet<T> componentSources,
+			System.Collections.Generic.Queue<T> queue,
+			System.Collections.Generic.List<T> scratch,
+			System.Collections.Generic.List<T> component,
+			int maxCells)
+		{
+			component.Clear();
+			componentSources.Clear();
+			queue.Clear();
+			queue.Enqueue(seed);
+			visitedExcavated.Add(seed);
+			while (queue.Count > 0 && component.Count < maxCells)
+			{
+				T c = queue.Dequeue();
+				component.Add(c);
+				if (isSource(c))
+				{
+					continue;
+				}
+				scratch.Clear();
+				neighbours(c, scratch);
+				for (int i = 0; i < scratch.Count; i++)
+				{
+					T n = scratch[i];
+					if (isExcavated(n))
+					{
+						if (visitedExcavated.Add(n))
+						{
+							queue.Enqueue(n);
+						}
+					}
+					else if (isSource(n) && componentSources.Add(n))
+					{
+						queue.Enqueue(n);
+					}
+				}
+			}
+		}
 	}
 }

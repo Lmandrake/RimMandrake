@@ -94,6 +94,12 @@ namespace RimMandrake.FlowWorks
 
 		private readonly HashSet<IntVec3> pulseVisited = new HashSet<IntVec3>();
 
+		/// <summary>FLOWWORKS_SHARED_SOURCE_STALL_1: source cells already in the
+		/// CURRENT component only — cleared per component, never shared.</summary>
+		private readonly HashSet<IntVec3> pulseComponentSources = new HashSet<IntVec3>();
+
+		private readonly List<IntVec3> pulseNeighbourScratch = new List<IntVec3>();
+
 		private readonly Queue<IntVec3> pulseQueue = new Queue<IntVec3>();
 
 		private readonly List<IntVec3> pulseComponent = new List<IntVec3>();
@@ -787,6 +793,16 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
+			// FLOWWORKS_SHARED_SOURCE_STALL_1. The component walk lives in the
+			// Verse-free RM_StockMath.CollectComponent so the selftest runs the
+			// production code. A source cell JOINS a component as a donor but is
+			// never expanded through (one channel touching an ocean must not walk
+			// the ocean), and — the fix — a source cell is never marked visited
+			// across components: every channel touching it gets it as a donor and
+			// a flow order. Components resolve in excavatedCells order, so when a
+			// LIMITED body cannot pay every adjacent channel's inlet in a pulse,
+			// the earlier-seeded channel (dig order in a session; cell-index order
+			// after a load rebuilds the set) is paid first, unit by unit.
 			pulseVisited.Clear();
 			foreach (IntVec3 seed in excavatedCells)
 			{
@@ -794,37 +810,29 @@ namespace RimMandrake.FlowWorks
 				{
 					continue;
 				}
-				pulseComponent.Clear();
-				pulseQueue.Clear();
-				pulseQueue.Enqueue(seed);
-				pulseVisited.Add(seed);
-				while (pulseQueue.Count > 0 && pulseComponent.Count < MaxComponentCells)
-				{
-					IntVec3 c = pulseQueue.Dequeue();
-					pulseComponent.Add(c);
-					// A source cell JOINS a component as a donor but is never
-					// expanded through. Otherwise one channel touching an ocean
-					// would walk the ocean, which is thousands of cells of
-					// nothing: a source is always full and never needs solving.
-					if (IsSourceCell(c))
-					{
-						continue;
-					}
-					for (int i = 0; i < 4; i++)
-					{
-						IntVec3 n = c + GenAdj.CardinalDirections[i];
-						if (!n.InBounds(map) || pulseVisited.Contains(n))
-						{
-							continue;
-						}
-						if (IsExcavated(n) || IsSourceCell(n))
-						{
-							pulseVisited.Add(n);
-							pulseQueue.Enqueue(n);
-						}
-					}
-				}
+				RM_StockMath.CollectComponent(seed, isSourcePredicate, isExcavatedPredicate, cardinalNeighbours,
+					pulseVisited, pulseComponentSources, pulseQueue, pulseNeighbourScratch, pulseComponent,
+					MaxComponentCells);
 				ResolveComponent();
+			}
+		}
+
+		private System.Predicate<IntVec3> isSourcePredicateCache;
+		private System.Predicate<IntVec3> isExcavatedPredicateCache;
+		private System.Action<IntVec3, List<IntVec3>> cardinalNeighboursCache;
+		private System.Predicate<IntVec3> isSourcePredicate => isSourcePredicateCache ?? (isSourcePredicateCache = IsSourceCell);
+		private System.Predicate<IntVec3> isExcavatedPredicate => isExcavatedPredicateCache ?? (isExcavatedPredicateCache = IsExcavated);
+		private System.Action<IntVec3, List<IntVec3>> cardinalNeighbours => cardinalNeighboursCache ?? (cardinalNeighboursCache = CardinalNeighboursInBounds);
+
+		private void CardinalNeighboursInBounds(IntVec3 c, List<IntVec3> into)
+		{
+			for (int i = 0; i < 4; i++)
+			{
+				IntVec3 n = c + GenAdj.CardinalDirections[i];
+				if (n.InBounds(map))
+				{
+					into.Add(n);
+				}
 			}
 		}
 
