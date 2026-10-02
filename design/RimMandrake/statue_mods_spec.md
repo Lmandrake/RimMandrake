@@ -19,7 +19,7 @@ route, placeholder `RM_FlameStatuary`, fuel routes). Engine facts below are mark
 - The player always chooses which god a statue honours (R2) — every Utinni subject is its own
   buildable (§1.3).
 - Not here: new decorative variants for vanilla `SculptureSmall/Large/Grand` folders (deferred);
-  the "holy act to the evil sun god" ritual/precept (`SUMP_UTINNI_LAYER_1` §2 owns it; §2.5 below
+  the "holy act to the sun god" ritual/precept (`SUMP_UTINNI_LAYER_1` §2 owns it; §2.5 below
   only leaves it a hook); forking either Workshop statue mod.
 - Naming is tier-grammar (`design/NAMING_SCHEME_PLAN.md`). The gods' names are OURS (invented,
   Q11a): they live in the campaign tier because they are campaign culture, not because they are IP.
@@ -117,7 +117,7 @@ the flaming idol.
   sandstone/bone; per-god accent from the render spec as a mineral vein or inlaid metal (Ohm
   arc-blue, Sh'kaar white-gold, Ozzik purple/gold …). Eyes: two inlaid amber-glass stones,
   slightly uneven — the one non-stone highlight. Hands over-sized and gnarled. Hood always up
-  (Sh'kaar's thrown back INTO a carved sun-disc is the one exception and the reason he reads evil).
+  (Sh'kaar's thrown back INTO a carved sun-disc is the one exception and the reason he reads as dreadful).
   No spaceships, no gravship; sand crawlers, droids and scavenged tech welcome. Top-down-oblique
   RimWorld building angle, drop shadow off, alpha background.
 - **Canvas (drawSize×128, authored at 2× for the painterly register; enhanced-zoom mods void

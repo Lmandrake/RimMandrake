@@ -46,7 +46,7 @@ Result: 1254x1254 raw -> 1254x1245 tight cutout, 67% opaque, generated in 122s.
 > glowing pupil-less eyes burning wide and cruel, most frightening, in
 > hood-shadow, strange furry black five-fingered hands from deep sleeves. A
 > searing white-gold light blazes from deep within the hood, over-exposing
-> everything it touches, evil light and destruction made manifest. Desert /
+> everything it touches, searing light and destruction made manifest. Desert /
 > scavenged tech / sand crawlers / droids as fits; NO spaceships. Painterly
 > dark religious iconography, chiaroscuro; ground palette rust/bone/indigo +
 > brass accent, this god's accent searing white-gold (over-exposed). Tight

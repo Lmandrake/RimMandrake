@@ -79,7 +79,7 @@ abstractions — **they run as personas inside the ship** (`06_the_ship.md`).
 | ⑤ **Rekko of the Second Hand** | salvage, repair | scrapping the repairable is tragedy to be mourned; theft gives a thing a better home; restore ≠ transcend |
 | ⑥ **Ta'Baa the Unrooted** | flight, hope | the launch is the holiest rite; despair is his one blasphemy; explosives are a door held open behind you |
 | ⑦ **Zizzik the Spark-Maker** | malfunction, betrayal, breaks | inverted; starved he SLUMBERS and waking is inevitable — manage when, not whether |
-| ⑧ **Sh'kaar the All-Searing** | the killing light, inevitability | EVIL; every battle wakes him hungrier (the escalation meter); calmed by a death that isn't yours |
+| ⑧ **Sh'kaar the All-Searing** | the killing light, inevitability | dangerous and hungry; every battle wakes him hungrier (the escalation meter); calmed by a death that isn't yours |
 | ⑨ **Ozzik the Shamed** | ambition, pride, grief | THE TRAP: you must court him to advance and his pleasure is exposure — high Ozzik feeds ⑦ and ⑧; his grief is the memory of a prouder Jawa age |
 
 System properties that no single god states:

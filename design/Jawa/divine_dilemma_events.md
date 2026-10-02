@@ -5,7 +5,7 @@ _Authored choice-letters where three gods argue the options out loud and the pla
 picks a theology, not an answer. Ruling basis: `salvation_engine_review.md` F5/F6
 (the 3×3 as crew-lore; 10–15 authored dilemmas). Every option is genuinely
 playable — charged differently, never punished; no option is "correct." Deltas use
-§8b notation (`↑`/`↓` satiation, `▲` = an evil god fed, S/M/L magnitude). All
+§8b notation (`↑`/`↓` satiation, `▲` = a hungry god fed, S/M/L magnitude). All
 consequences are §19.5-legal: events, mood, eligibility, clocks, visibility —
 never a material parachute. Money that changes hands (ransoms, sales) is ordinary
 trade through the normal gate, not a divine gift._

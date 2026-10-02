@@ -163,7 +163,7 @@ emergence points + refuelable) rather than re-deriving it. Two additive layers, 
 
 1. A `StyleCategoryDef`/`ThingStyleDef` set (§2) for automatic culture-driven reskinning once the
    Utinni ideoligion is chosen — zero new dependency, pure vanilla mechanism.
-2. The "holy act to the evil sun god" ritual/precept meaning as an ideoligion patch over the RM
+2. The "holy act to the sun god" ritual/precept meaning as an ideoligion patch over the RM
    flame-statuary def, per `SUMP_UTINNI_LAYER_1` item §2 (already scoped, not yet built).
 
 Prerequisite worth flagging, not blocking: the live `RUT_Sumpgas` byproduct-spawn failure (§5)

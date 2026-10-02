@@ -95,7 +95,7 @@ is invisible dice (the exact frustration F8 exists to prevent).
   gods** where `effective = satiation + w_m·mood + w_g·grievance` (w_m≈0.3,
   w_g≈0.5. TUNE), with two overrides: a god whose L-curse fired unanswered
   since last landing takes precedence (his matter is unfinished); the two
-  evil gods front only via their own meters (Zizzik: post-WAKING aftermath
+  hungry gods front only via their own meters (Zizzik: post-WAKING aftermath
   reign; Sh'kaar: meter above threshold — dreaded dispensations, never
   routine picks).
 - **Reign length:** until the next landing (the loop is the liturgy — the

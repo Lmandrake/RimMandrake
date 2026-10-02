@@ -599,7 +599,7 @@ Counted by hand from the table above plus register B2 (not an instrument).
 | ⑤ Rekko | 3 | Contagion, Wasteland, Cracked Lands | consolation, settlement, feeding | balanced, and the widest spread of kinds |
 | ⑥ Ta'Baa | 3 | Blue Desert, Long Shade, Warscar | consolation ×2, feeding | balanced |
 | ⑦ Zizzik | 3 | Contagion, Cauldron, Leaning Scrub | warding, starving, settlement | balanced |
-| ⑧ Sh'kaar | 3 | Abyss, Forge, Long Shade | starving, venting, warding | balanced; never fed outright, as an evil god should be |
+| ⑧ Sh'kaar | 3 | Abyss, Forge, Long Shade | starving, venting, warding | balanced; never fed outright, as a dangerous, hungry god should be |
 | ⑨ Ozzik | 3 | Abyss, Wasteland, Forge | consolation (interim), venting, feeding | balanced; the Lightless Burial row is interim per `SALVATION_RITES_RENORMALIZE_PASS_1` |
 
 **Total: 27 found rites** (4 Abyss + 23 here). Every god has at least two, none more than four.

@@ -54,7 +54,7 @@ temper wanders) are distinct and canon-flavored.
 | **⑤ Rekko** (salvage/repair) | Positive when we mend, sharply negative when we scrap-the-mendable | Warm but proud; wounded easily by waste, generous when honored. |
 | **⑥ Ta'Baa** (leaving) | Negative-drifting on its OWN clock the longer we sit (see §3) | Restless, rising; the longer rooted the worse the Mood, regardless of satiation. |
 | **⑦ Zizzik** (malfunction/betrayal) | Feeds on OUR misfortune — rises when things break/betray. **NOT a simple keep-LOW god: STARVED → he SLUMBERS (dormant, no boon/bane); FED → offers positives alongside the misfortune (see §3⑦-reframe)** | Gleeful, chaotic, high-amplitude; the trickster. Never trust his calm. |
-| **⑧ Sh'kaar** (evil light/exposure) | Perverse: fed by destruction & exposure (incl. *our* losses); angered by comfort/abundance. **RISES with every violent battle (the escalation meter, §3⑧-reframe) — hardens the clan but breeds exposure/doom** | Cruel, arbitrary; a malevolent power, not a fair one. Bad Mood is the default weather. |
+| **⑧ Sh'kaar** (searing light/exposure) | Perverse: fed by destruction & exposure (incl. *our* losses); angered by comfort/abundance. **RISES with every violent battle (the escalation meter, §3⑧-reframe) — hardens the clan but breeds exposure/doom** | Harsh, arbitrary; a capricious power, not a fair one. Bad Mood is the default weather. |
 | **⑨ Ozzik** (ambition/pride/grief — THE TRAP) | Rises with ambition-acts (art, research, high tech/construction, statecraft, enslavement, outposts, alliances, betrayal, marriage); his HIGH satiation is itself a danger (see §3⑨) | Grieving and proud at once — swings between hollow grandeur and bitter shame; volatile when courted, sullen when ignored. |
 
 > **Ta'Baa's independent clock (user, highlighted):** Ta'Baa's satiation erodes purely with *time
@@ -171,7 +171,7 @@ narrative build-up, never a flat modifier.
   *when* he wakes, not whether.** His two faces (the reasonable catastrophist who *ensures* complex plans
   fail, and the capricious child who presses every red button) both argue this in Council.
 
-### ⑧ Sh'kaar the All-Searing — evil sun, exposure, killing light (EVIL god)
+### ⑧ Sh'kaar the All-Searing — the searing sun, exposure, killing light (a dangerous, hungry god)
 - **(a) Ambient:** **perverse** — fed by destruction and exposure, *including our own losses* (an
   explosion burning our stuff *pleases* him — he's "fed," then lenient a while); angered by prolonged
   comfort/peace/abundance (full water tanks, a long safe stretch make him restless and cruel).
@@ -195,7 +195,7 @@ narrative build-up, never a flat modifier.
   **prisoner death-matches (gladiatorial):** let him feast on the prisoners' deaths and **redirect his
   burning gaze away from the clan.** A dark, **§19.5-clean** lever: the payoff is *mood/threat-pressure
   relief* (the escalation meter drops, doom-unease eases), **never loot.** It buys reprieve through
-  atrocity. _(Cross-note: the death-match also feeds `▲Zizzik` — catastrophe — so calming one evil god
+  atrocity. _(Cross-note: the death-match also feeds `▲Zizzik` — catastrophe — so calming one hungry god
   slightly feeds the other; see §8b.)_
 
 ### ⑨ Ozzik the Shamed — ambition, pride, grief (THE TRAP; canon §2.0b ⑨)
@@ -209,7 +209,7 @@ satiation is not a reward you bank — it's a **pride-meter that draws fire.**_
 - **(b) Lever (the trap made playable):** *reach vs. safety.* Building bolder tech, larger settlements,
   wider alliances, more slaves — all genuinely advance the win-paths AND raise Ozzik. But **his rising
   satiation is itself the cost:** see (c). The impious-but-safe move is to stay humble, hidden, lean
-  (which pleases the rest of the pantheon and starves the two evil gods). **Weapon doctrine:** using
+  (which pleases the rest of the pantheon and starves the two hungry gods). **Weapon doctrine:** using
   **explosives** sharply *offends* Ozzik (the loud folly that destroys what could be taken) — a rare
   case where a god dislikes an ambition-act; **ion weaponry pleases** him (disable-and-take). Gives the
   clan a concrete armory bias: ion over grenades.
@@ -580,15 +580,15 @@ The canon's three tensions become live see-saws in the vector:
   Zizzik↑.
 - **Ta'Baa ⇄ Ishko/Tunneler** (leave / burrow) — moving pleases Ta'Baa but you can't ambush from a moving
   ship; hiding pleases Ishko but rooting angers Ta'Baa.
-- **Light ⇄ dark (Sh'kaar ⇄ Ishko)** — lighting the dark feeds evil Sh'kaar AND offends hiding-Ishko; the
+- **Light ⇄ dark (Sh'kaar ⇄ Ishko)** — lighting the dark feeds hungry Sh'kaar AND offends hiding-Ishko; the
   same "top the water tanks" act comforts the colony, pleases nobody pious, and *angers* Sh'kaar.
 - **Rekko ⇄ resource pressure** — scrap (useful) vs. repair (pious) is the everyday grind-level tension.
 - **★ Ozzik → Sh'kaar + Zizzik (the trap coupling, user 2026-08-08)** — NOT a see-saw but a one-way
-  amplifier: **high Ozzik satiation biases both evil gods' event rolls upward.** Ambition (tech OR
+  amplifier: **high Ozzik satiation biases both hungry gods' event rolls upward.** Ambition (tech OR
   statecraft — the win-path acts) raises Ozzik, and a fat Ozzik is *literally* the exposure that lets
   the Searer and the wrong-spark find the clan. This is the mechanical heart of anti-exponential: the
   more you reach, the more the two things that can kill you are fed. The counter-move is the humble
-  pantheon (Ishko/Oomo/Rekko/Ta'Baa) — living small keeps Ozzik lean and the evil gods starved, at the
+  pantheon (Ishko/Oomo/Rekko/Ta'Baa) — living small keeps Ozzik lean and the hungry gods starved, at the
   cost of Ozzik's grief-pall. **There is no free ambition.**
 
 These give the crew live theology to invoke and the agent live signal to narrate.
@@ -697,7 +697,7 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 - **A machine/turret/ship system MALFUNCTIONS or breaks down** → `▲Zizzik` (his signature), `↓Ohm` (his body failing) — the Ohm⇄Zizzik see-saw firing live.
 - **Solar flare / eclipse / weather** → **eclipse `↑Ishko`** (blessed dark) **+ `↓Sh'kaar`** (the sun hidden = his humiliation); **solar flare `▲Zizzik`** (machines die — he crows) **+ `▲Sh'kaar`** (killing light); **sandstorm/red-fog** `↑Ishko` (concealment).
 - **Disease / plague sweeps the colony** → `▲Zizzik` (the body malfunctioning, his signature). **A disease outbreak can itself be a low-Oomo consequence** — a slighted Oomo lets sickness in, and his own wet tiles breed it (§③): the god of the body's waters governs both health and rot. **But TENDING the sick is sacred to Oomo** → `↑Oomo` (caring for the body's waters earns his favor; the nurse's work is devotional). So a plague both *punishes* neglect of Oomo and *offers* a way to court him.
-- **Insect infestation erupts** → `▲Zizzik` (his trademark — one of the calamities a woken Zizzik throws, §⑦). Then the *response* forks: **harvesting the insect meat/jelly and gathering that food** → `↑Oomo` (the family provided for — Jawa don't mind eating insect meat), while **blasting through the hive violently (explosives/open battle)** → `▲Sh'kaar` (awakening the Searer, §⑧). Endure-and-harvest is pious; burn-it-out feeds the evil clock.
+- **Insect infestation erupts** → `▲Zizzik` (his trademark — one of the calamities a woken Zizzik throws, §⑦). Then the *response* forks: **harvesting the insect meat/jelly and gathering that food** → `↑Oomo` (the family provided for — Jawa don't mind eating insect meat), while **blasting through the hive violently (explosives/open battle)** → `▲Sh'kaar` (awakening the Searer, §⑧). Endure-and-harvest is pious; burn-it-out feeds the hungry clock.
 - **A wanderer/refugee joins; a slave-block caravan offers Jawa** → `↑Mob'Unloo` (a soul to the ledger), `↑Oomo` (more life); buying kin back is a standing imperative (§4.3b).
 - **A trade caravan / orbital trader arrives** → `↑Mob'Unloo` opportunity (scores on completion, above); if it's the beast-monger, ties to §Livestock.
 - **A quest is offered (CQF/vanilla)** → often Ozzik-flavored if it dangles tech/allies/dominion; the *offer* tempts, the *taking* scores per the action rows above.
@@ -833,19 +833,19 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 
 **What he wants the ship to become:** **the disaster that plagues the planet.** Since disaster and disappointment are the only constants, the more the ship *becomes* the misfortune, the more it survives. Move at random, strike without strategy, sow chaos, reap whatever falls, never ask why — become the whirlwind, the sandstorm, the earthquake the terraformer can literally make.
 
-**How he regards the others:** **Ohm** is his mirror and rival — the wrong spark against the right one. He and **Sh'kaar** feed together on violence and ruin (the two evil clocks). **Ta'Baa** fears him above all. **Pleasing Ozzik feeds him** — the Arrogant and the Treacherous are two faces of one folly (their names near-rhyme on purpose) — but the *feeling* differs: Ozzik mourns what was lost; Zizzik celebrates the mechanism of the loss.
+**How he regards the others:** **Ohm** is his mirror and rival — the wrong spark against the right one. He and **Sh'kaar** feed together on violence and ruin (the two hungry clocks). **Ta'Baa** fears him above all. **Pleasing Ozzik feeds him** — the Arrogant and the Treacherous are two faces of one folly (their names near-rhyme on purpose) — but the *feeling* differs: Ozzik mourns what was lost; Zizzik celebrates the mechanism of the loss.
 
 **Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑦ (the **slumber clock** — starved he sleeps granting neither boon nor bane, all fear to wake him, waking is inevitable; manage *when*, not *whether*), §2 (sign-inverted Mood band), §8b (catastrophe/mental-break deltas); §2.2 ("ward against Zizzik" flavor-only superstition).
 
-**⑧ Sh'kaar the All-Searing** — _the evil sun; the Unbeatable One; the god of Time and Inevitability._ (pun: scans like "scar" — the sun that marks you.) **An EVIL god.**
+**⑧ Sh'kaar the All-Searing** — _the searing sun; the Unbeatable One; the god of Time and Inevitability._ (pun: scans like "scar" — the sun that marks you.) **A dangerous, hungry god: feared, never a villain.**
 
-**What he is.** God of **the one unsetting sun, exposure, and the killing daylight** _(RULED 2026-08-30, card-session V.3: the world is tidally locked — one sun that never sets, half the planet permanently his; the old "twin suns" line is dead)_ — a malevolent power, not a fair one. Form: white glare and heat-shimmer. He is **so bright and so great that nothing can resist him** — you do not fight the sun and win; against him there are only three moves: hide and wait him out, abandon your plans, or run. He is therefore the **god of Time and Inevitability**: the pressure that grinds down every fixed position given long enough, the certainty that catches anything standing still in the open. To make a light in the dark is to do his work — you expose yourself to Ishko's shame, betray your position to predators, and invite the All-Searing's attention.
+**What he is.** God of **the one unsetting sun, exposure, and the killing daylight** _(RULED 2026-08-30, card-session V.3: the world is tidally locked — one sun that never sets, half the planet permanently his; the old "twin suns" line is dead)_ — a capricious power, not a fair one. Form: white glare and heat-shimmer. He is **so bright and so great that nothing can resist him** — you do not fight the sun and win; against him there are only three moves: hide and wait him out, abandon your plans, or run. He is therefore the **god of Time and Inevitability**: the pressure that grinds down every fixed position given long enough, the certainty that catches anything standing still in the open. To make a light in the dark is to do his work — you expose yourself to Ishko's shame, betray your position to predators, and invite the All-Searing's attention.
 
 **Pleases him — i.e., feeds him (bad for the clan):** destruction and exposure, *including the clan's own losses* (an explosion burning your own stuff pleases him — he's fed, then lenient a while); open pitched battle and violent fighting of any kind; **melee above all — the close, exposed, hands-on brutality is his purest war** (where a ranged shot from cover barely stirs him, a knife in the open gorges him); burning a threat out violently rather than enduring it (torching an infestation instead of hiding and harvesting it); light cast into darkness; and, as a deliberate lever, a **death that isn't the clan's own** — prisoner death-matches let him gorge and redirect his gaze away. **Displeases him — i.e., starves him (good for the clan):** prolonged comfort, peace, and abundance (full water tanks, a long safe stretch make him restless and cruel); staying dark, hidden, and unfought.
 
 **What he wants the ship to become:** a **war-sun** — weapons, and more weapons. Blaze out the ancient enemies and all who wronged the Jawa; drink their loot, grow stronger, roar like a fire consuming its fuel. You may not live forever — but who does? Be the blazing terror everyone fears, at least for a while, and never surrender until you detonate or they do.
 
-**How he regards the others:** he **hates Ishko** above all — the one thing that *evades* him, the hider who slips the inevitable, the shadow the sun cannot reach; together the two make darkness *doubly* sacred (one demands you hide, the other punishes those who break the dark). He and **Zizzik** are the two evil clocks, feeding together on violence and catastrophe. He wants the big destructive weapons **Ozzik** despises. High **Ozzik** satiation wakes him — ambition draws his gaze.
+**How he regards the others:** he **hates Ishko** above all — the one thing that *evades* him, the hider who slips the inevitable, the shadow the sun cannot reach; together the two make darkness *doubly* sacred (one demands you hide, the other punishes those who break the dark). He and **Zizzik** are the two hungry clocks, feeding together on violence and catastrophe. He wants the big destructive weapons **Ozzik** despises. High **Ozzik** satiation wakes him — ambition draws his gaze.
 
 **Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑧ (the **battle-escalation meter** — every violent fight wakes him, hardening the clan but breeding dominance-quarrels, more beast/brute attacks, doom-unease, and faster-arriving enemies; stillness cools it; the costly prisoner-death-match lever, §19.5-clean), §2 (sign-inverted band), §8b (combat deltas); §2.2 (light-taboo, running-lights-only-when-safe, `ship_distinctive_features.md` §5); `design/Jawa/divine_satiation_engine.md` §2.0c (Melee, open-firefight Shooting).
 
@@ -855,7 +855,7 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 
 **Pleases him:** the win-path activities as they happen — art completed, research finished, high-tech buildings raised, a marriage, an outpost founded, an alliance struck, an enslavement, a betrayal that pays off, mathematics and intellectual work; and **ion weaponry** (non-destructive, disabling, *acquisitive* — disable and *take* the droid or vehicle intact). **Displeases him:** being forced to act like "techno-rats" — abandoning tech, fleeing, scrapping the grand thing; and **explosives**, which he despises as the ultimate folly, the ego-weapon that destroys what could have been taken intact (his warriors carry ion, never grenades). But note the trap: pleasing him **too greatly is itself the danger** — his high satiation is a standing upward bias on Sh'kaar's and Zizzik's event rolls. *The bolder your reach, the more you expose yourself to the desires of another.*
 
-**What he wants the ship to become:** **do NOT restore it — build it ANEW, grander than before.** Learn the ship's secrets, remember the latent greatness in the Jawa heart, let the cunning ambusher become the **secret lords of all around them.** Release the ancient agony of being crushed; think deeply, artfully, strategically; fear nothing ever again. The most seductive vision in the pantheon — and the one that wakes the two evil gods.
+**What he wants the ship to become:** **do NOT restore it — build it ANEW, grander than before.** Learn the ship's secrets, remember the latent greatness in the Jawa heart, let the cunning ambusher become the **secret lords of all around them.** Release the ancient agony of being crushed; think deeply, artfully, strategically; fear nothing ever again. The most seductive vision in the pantheon — and the one that wakes the two hungry gods.
 
 **How he regards the others:** his flat opposite is **Rekko** — *transcend* against *restore* — the sharpest internal war in the pantheon. Pleasing him feeds **Zizzik** (two faces of one folly) and wakes **Sh'kaar** (ambition-as-exposure); he is the humble pantheon's shadow, the temptation it exists to resist. He keeps a rare accord with **Ohm** (ion disables droids to be *taken intact*, serving both). He is **not the Hutt**: the Hutt buys safety through dominion, but the Jawa revere resilience even at the price of a humble life — Ozzik *wants* the Hutt path ("always he seeks to enslave them") and **always fails**, and that endless failure *is* his shame, repeating forever.
 
@@ -1186,7 +1186,7 @@ you hoarded; tell: total silence where the rattle lived, the held breath —
 no exit ONCE IT FIRES, but the controlled-waking rite spends the bank early
 on YOUR schedule, and honored breaks keep him gorged after).
 
-### ⑧ Sh'kaar the All-Searing — SHIPPED 2026-08-30 (EVIL; the escalation meter)
+### ⑧ Sh'kaar the All-Searing — SHIPPED 2026-08-30 (dangerous and hungry; the escalation meter)
 DEEDS + (every one feeds the meter): kills yours and theirs · battles fought
 at all · executions · fires and burning · the Deep Desert Fire-side reaping
 (feeds him too, uncomfortably).

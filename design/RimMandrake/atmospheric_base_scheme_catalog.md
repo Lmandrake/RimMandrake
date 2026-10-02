@@ -613,7 +613,7 @@ Every engine-dependent assumption in this document, in one place.
 4. **Duration ceilings on Mourning.** The Long Dim and Ashfall need caps, or they become silent death
    spirals. (VI-1, VI-2)
 5. **Searing may be too comfortable.** It is the only unpleasant scheme with no mechanical cost — is
-   an assault on the player's eye a sufficient bane for the evil sun god? (VII-2)
+   an assault on the player's eye a sufficient bane for the searing sun god? (VII-2)
 6. **Reserving neutral white.** No god may ever be assigned flat neutral white, so the Narrator's
    signature stays unambiguous. (IV-1)
 7. **Never fully dark.** Confirm that no scheme drives neighbouring fixtures fully off, so darkness

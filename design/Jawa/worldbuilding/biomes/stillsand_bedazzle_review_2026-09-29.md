@@ -137,7 +137,7 @@ the ruled-but-unbuilt fill-out, the free tier reaches **14 wild**.
   (`DeepDesertTribes.xml`: *"The sun lends and the sand collects… We take back what was drawn"*).
   Those tribes hold this biome (both sheets, §8). The Sarlacc's draft stage names echo it, and a
   Utinni-side "taken-and-returned" Sun-Debt patch is owed by `SARLACC_HABITAT_BUILD_1`. **Nothing
-  ties the biome itself to the Sun-Debt**: no precept, ritual, incident or site. Sh'kaar (the evil
+  ties the biome itself to the Sun-Debt**: no precept, ritual, incident or site. Sh'kaar (the searing
   sun) is PARKED at the Long Shade and is not ours to take.
 - **Sound:** none. No SoundDef, no ambient, and no register in either sheet.
 - **Ship:** no Stillsand row in `BIOME_SHIP_CONTRIBUTIONS_1`. The 09-27 doc's §6 (biosilica lens

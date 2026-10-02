@@ -55,7 +55,7 @@ belongs only in the chorus.
    a move — dread and relief in one line)
 9. *"Ask it, someday, what it once seeded."* (unrevealed lore as invitation —
    plant, never exposit)
-10. *"This is not good news."* (after a gift from an evil god: flat, unsoftened,
+10. *"This is not good news."* (after a gift from a dangerous god: flat, unsoftened,
     final — see style law 4)
 11. *"The waters moved tonight whether you willed them or not."* (a curse in
     F10 voice: the god's want, enacted — never "you are punished")
@@ -192,9 +192,9 @@ currency.
    comes to a self is "the ship remembers" — memory without a rememberer.
 3. **No god impersonation** outside the rite-chorus. Reported speech is
    allowed ("Ta'Baa calls this place a grave"); first person is not.
-4. **No mercy-softening of the evil gods.** Sh'kaar's gifts arrive with the
+4. **No mercy-softening of the dangerous gods.** Sh'kaar's gifts arrive with the
    blade unsheathed ("This is not good news"); Zizzik's charm is never made
-   safe; the letter that makes an evil god likable has failed unless the
+   safe; the letter that makes a dangerous god likable has failed unless the
    distrust survives the liking.
 5. **No punishment language** (F10). A curse letter that says "you are
    punished" is wrong; the letter says *what the god wanted, and took*. The

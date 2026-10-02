@@ -29,7 +29,7 @@ Rekko fires on day-one scavenger reflex; Ta'Baa's rooted clock runs with zero
 player action; Oomo rides the clan's prolific coupling; Ishko needs the first
 threat; Zizzik the first crack; Mob'Unloo the first caravan; Ohm the first
 rewoken machine or droid; Sh'kaar accumulates across battles; Ozzik waits for
-the first true reach. The two evil gods and the trap arrive LAST — by then the
+the first true reach. The two hungry gods and the trap arrive LAST — by then the
 player trusts the pantheon, which is exactly what makes ⑧ and ⑨ land.
 
 ---
