@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:15:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:27:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1260,6 +1260,15 @@ kind:     task
 summary:  - A ship-mounted acoustic scanner. When the grounded gravship fires a sounding pulse, dust jumps
 prose:    infrastructure/state/items/GRAVSHIP_ACOUSTIC_SCANNER_1.md
 
+## CAULDRON_GPT_ENRICHMENT_1 Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assay forestry, condensate gardens
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  1. Four-stroke weather cycle. The four ratified weathers become recognizable phases of one engine:
+prose:    infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md
+
 ## CONTAGION_GROWN_LIMBS_BUILD_1 Build the grown limbs the owner keeps on design/Jawa/worldbuilding/biomes/contagion_grown_limbs_2026-09-30.md (Pillar Arm + Lash first; Monstrous sample grade from Coalescence drops; removal-spawns-Unfinished comp)
 state:    doing
 row:      unassigned
@@ -2051,16 +2060,6 @@ thin:     no ## verify
 summary:  1. Ledges of Mercy. Map generation places high ledges bearing worn figures, old offerings, and
 prose:    infrastructure/state/items/CRACKEDLANDS_GPT_ENRICHMENT_1.md
 
-## CAULDRON_GPT_ENRICHMENT_1 Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assay forestry, condensate gardens
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Four-stroke weather cycle. The four ratified weathers become recognizable phases of one engine:
-prose:    infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md
-
 ## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
 state:    proposed
 row:      unassigned
@@ -2730,3 +2729,23 @@ kind:     defect
 thin:     no ## spec, no ## verify
 summary:  RIMPLACEGENSTEPNRE1 — GenStepRimplacePlan throws during map generation
 prose:    infrastructure/state/items/RIMPLACE_GENSTEP_NRE_1.md
+
+## CAULDRON_VENT_ENRICHMENT_HOOKS_1 Cauldron enrichment pieces that hang on vents: weather vent multipliers + vent-local exposure + falter, vexxiss vent-drinking, vent-keyed gardens
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  From the parent's spec, verbatim in substance:
+prose:    infrastructure/state/items/CAULDRON_VENT_ENRICHMENT_HOOKS_1.md
+
+## CAULDRON_ENRICHMENT_LIVE_PROOF_1 Quicktest-prove the offline-built Cauldron enrichment: assay grade line, vexxiss poisoned-water letter, nettles on toxic shores
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CAULDRONENRICHMENTLIVEPROOF1 — live proof of the offline Cauldron enrichment
+prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md
