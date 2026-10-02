@@ -1,0 +1,1 @@
+AskUserQuestion: a 4-question card with ~600-char option descriptions came back 'Denied by user' and the owner said cards were failing; the same card with descriptions under ~350 chars rendered and was answered. Cause unproven, but keep option descriptions short (2026-10-02).
