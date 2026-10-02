@@ -445,7 +445,10 @@ def snapshot_tree(root, head, name, refname, recs=None, timeout=600):
                 GIT_COMMITTER_EMAIL="313496996+Lmandrake@users.noreply.github.com")
     commit = obj("commit-tree", tree, "-p", head, env=cenv, inp="\n".join(msg).encode())
     g(OBJ, "update-ref", refname, commit)
-    g(OBJ, "push", "-q", D, "%s:%s" % (commit, refname), timeout=600)   # local rescue ref in D:\
+    # receive.autogc=false: a push into D:\ otherwise starts `gc --auto` there, whose reflog expire
+    # and prune would destroy dangling objects (the fsck recovery path for lost staged work)
+    g(OBJ, "push", "-q", "--receive-pack=git -c receive.autogc=false receive-pack", D,
+      "%s:%s" % (commit, refname), timeout=600)   # local rescue ref in D:\
     return {"commit": commit, "ref": refname, "classes": classes, "stored": len(stored),
             "skipped": skipped, "secret": [p for p, k in stored if k == "suspect-secret"], "files": files,
             "ignored_n": len(ignored)}

@@ -7,7 +7,7 @@ Tool: `src/RimMandrake/Utils/drain_worktrees.py` (run from ext4 against `/mnt/d/
 
 ## Status
 
-IN PROGRESS — census done, archive tags pushed; dirty snapshots running.
+IN PROGRESS — census, archive tags, dirty snapshots done; shared tree running.
 
 ## Census
 
@@ -157,11 +157,24 @@ Safe-ignored set for removal: `obj/ bin/ __pycache__ *.pyc .vs node_modules mod_
 
 ## Archive tags pushed
 
-(pending)
+**13 tags** `refs/tags/archive/<branch>` — 9 refs carrying the 19 unaccepted commits (7 branches + 2
+detached HEADs, which were first given local refs `refs/rescue/wt-head/<dir>`; `main` is handled as shared
+tree below) and the 4 stash entries (`archive/stash/<n>-<sha10>`, local refs `refs/rescue/stash/…`).
 
 ## Dirty snapshots
 
-(pending)
+**96 dirty linked worktrees** snapshotted (fresh status at snapshot time; a few more than the census's 91
+had become dirty): each commit = worktree HEAD + tracked changes + untracked non-ignored files ≤5 MB, built
+with a temp index in the ext4 object repo `/home/mandrake/rm/drain/objects.git`, kept as local ref
+`refs/rescue/dirty/<dir>-<utc>` in D:\ and pushed as tag `archive/dirty/<dir>`. **96 tags pushed, 0
+suspect-secret, 0 errors.** Class counts, skipped (>5 MB) paths and ignored paths are in each commit message.
+
+⚠️ **Trap found and fixed:** a push INTO the D:\ repo (to create its `refs/rescue/*`) triggers
+`receive.autogc` → `git maintenance run --auto` there — `reflog expire --all`, `pack-refs --prune`, and a
+repack/prune that would delete dangling objects (the `fsck --unreachable` recovery path). The first
+one ran ~100 s (its `reflog expire --all` may have expired >30/90-day reflog entries) and was killed
+before any prune; every later one was killed on sight by a watcher. The script now pushes with
+`--receive-pack="git -c receive.autogc=false receive-pack"`.
 
 ## Shared tree
 
