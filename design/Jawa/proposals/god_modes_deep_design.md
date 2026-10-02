@@ -134,18 +134,18 @@ ruled in a bench session 2026-09-02:
    because Oomo's water no longer blesses, the ship freezes because Ohm's
    warmth withdrew. Consequence, never assault. (Owner card: "the world
    notices the absence.")
-3. **The evil gods (Zizzik, Sh'kaar) INVERT the law, and this is already in
+3. **The hungry gods (Zizzik, Sh'kaar) INVERT the law, and this is already in
    `divine_satiation_engine.md`:** their love is our misfortune, so to anger
    them is to make them *go silent / slumber*. But slumber is itself a rising
    pressure — *"kept sleeping too long, when he finally wakes he will be
    HUNGRY and eager... explosive when he inevitably awakens. It is not safe to
-   keep him slumbering for eternity."* Same for both. So an evil god's "angry
+   keep him slumbering for eternity."* Same for both. So a hungry god's "angry
    mode" is a deepening quiet with a wake-clock underneath it, not a beating.
 
 **Audit result (2026-09-02):** ⑨-A Ozzik, ③-A Oomo and ⑥-A Ta'Baa already
 obeyed the law and are unchanged. ①-A Ishko, ②-A Ohm, ④-A Mob'Unloo and ⑤-A
 Rekko granted the ugly opposite and are REWRITTEN below to withhold instead.
-The evil-god modes (⑦, ⑧) are reframed as slumber-with-wake-pressure.
+The hungry-god modes (⑦, ⑧) are reframed as slumber-with-wake-pressure.
 
 ### ①-P Ishko — "The Unseen Reign" (pleased-lock)
 Look: exterior light caps at dusk-level, permanently blue-grey noon. Rules:
@@ -325,7 +325,7 @@ re-rolls instead of firing once — reuses F11's machinery wholesale. Scar: the
 reign's most dramatic accidental-good outcome is recorded as a named,
 retold incident.
 
-### ⑧-P Sh'kaar — "The Long Noon" (pleased-lock, evil-inverted)
+### ⑧-P Sh'kaar — "The Long Noon" (pleased-lock, hunger-inverted)
 Look: flat white light at all hours, no true shade anywhere. Rules:
 battle-fervor toughness permanently active on every pawn; animal/brute
 aggression fires on a predictable schedule instead of randomly; all
@@ -339,7 +339,7 @@ deliberately (his existing calming lever, now closing a mode). Mechanics:
 aggression on a fixed cadence, disabling the stealth JobGivers from ①. Scar:
 one battle becomes a named permanent Narrator callback.
 
-### ⑧-A Sh'kaar — "The Cold Vigil" (angry-lock, evil-inverted)
+### ⑧-A Sh'kaar — "The Cold Vigil" (angry-lock, hunger-inverted)
 Look: an unnatural hush — even wind and machinery read quieter. Rules:
 pain/shock tolerance drops colony-wide (gone soft from disuse); any conflict,
 even minor, triggers an outsized panic/rout; fragile high-risk work (surgery,

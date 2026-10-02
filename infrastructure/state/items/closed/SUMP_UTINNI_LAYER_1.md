@@ -9,7 +9,7 @@ Additive only (Q11/Q11a): the free mod is whole without any of this.
    typed, verbatim: *"But the utinni layer should rename it to our own form of
    gas. Let's call it Sumpgas."* (Label/description patch over the gas the RM mod
    uses — `SUMP_GASLIGHT_1` builds the chemistry.)
-2. **The holy act**: flame statuary as worship of the evil sun god — an ideoligion
+2. **The holy act**: flame statuary as worship of the sun god — an ideoligion
    patch giving the statues ritual/holy meaning (owner: *"That could be a holy
    act to the evil sun god."* Split ruled by card: statues RM-tier secular,
    worship campaign-tier).
@@ -63,7 +63,7 @@ reuse — so a scoped, dedicated event was required, fired from a small new comp
 at an existing one.
 
 Deity name resolved from `design/Jawa/divine_satiation_engine.md` §8 (the Pantheon of
-record, names LOCKED): **Sh'kaar the All-Searing**, "the evil sun ... an EVIL god" — not
+record, names LOCKED): **Sh'kaar the All-Searing**, "the searing sun ... a dangerous, hungry god" — not
 invented here.
 
 Built, all in `mandrake.rut.patches` (UtinniPatches):

@@ -67,7 +67,7 @@ because the owner ruled them (card 09:22, Q2), but no rite is cut to save a slot
 Status: **BUILT** (defs in `src/`), **IN .RID** (in The Salvation, donor-mod worker), **SPECCED**
 (a design doc gives the full shape), **PITCHED** (named in a biome sheet), **RULED OUT**.
 Appeasement kinds, used throughout: **feeding** (raise a god's satiation), **settlement** (balance
-a ledger), **starving** (deny an evil god what feeds him), **venting** (bleed a dangerous meter
+a ledger), **starving** (deny a hungry god what feeds him), **venting** (bleed a dangerous meter
 safely), **consolation** (lay grief down), **warding** (keep a god's attention away).
 
 ### B1. The liturgy tab (`mandrake.rut.rites`, BUILT as research projects, no ritual yet)
@@ -214,11 +214,11 @@ night-rite"* (§5). A watcher re-reads the condition every 250 ticks and records
   sees who took it. In the Abyss this is the Nhaleth exchange, never confirmed. Ninefold: a
   settlement entry for Mob'Unloo sized by the item's value.
 
-### c3. The Snuffing, for Sh'kaar: starving the evil god
+### c3. The Snuffing, for Sh'kaar: starving the hungry god
 
 - **Grounding:** Sh'kaar is fed by light cast into darkness and starved by *"staying dark, hidden,
   and unfought"* (§2.0b ⑧); his battle-escalation meter is cooled by stillness (§3⑧). The only
-  appeasement an evil god accepts is to be denied.
+  appeasement a hungry god accepts is to be denied.
 - **Asks:** a short rite at a lit spot. Each light within a radius is put out by a participant,
   one by one. It makes the condition the other three need, so it is a colony's way in.
 - **Outcome:** Poor, the lights are relit within the hour. Fair, the room stays dark until relit.

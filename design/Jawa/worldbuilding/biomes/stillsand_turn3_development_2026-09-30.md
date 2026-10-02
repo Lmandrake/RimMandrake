@@ -326,7 +326,7 @@ the dunes engine's reveal, the dormancy comps, and the sarlacc's Sun-Debt stage 
 ritual is XML plus a small C# outcome worker; the debt counter plus incident weighting is small
 C#; the RM bloom-on-pour is small C#. **Tier:** the ritual and debt are Utinni; bloom-on-pour is
 RM. **Admission test:** a line of poured water, and a bloom that dies. The map ends no busier than
-it began. **Distinct from** Sh'kaar (the evil sun, parked at the Long Shade): this god is
+it began. **Distinct from** Sh'kaar (the searing sun, parked at the Long Shade): this god is
 *owed*, not feared.
 
 ### 2.4 Sand → glass → lens → solar still and solar oven

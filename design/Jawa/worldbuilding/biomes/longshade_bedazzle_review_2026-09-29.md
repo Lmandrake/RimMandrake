@@ -163,7 +163,7 @@ one creature, one def. A card row, not a finding to act on here.
 - **C# in this mod:** 250 lines total (settings + dewfringe gate). Everything else is kit.
 - **Lore/ideology layer:** none for this biome. The Utinni tier has `DeepDesertTribes.xml`
   (a `TribeCivil` reskin — the §8 "Deep Desert Tribe holdings", canon no-roads) and the Sump's
-  `RUT_HolyFlamePrecepts.xml` worships **Sh'kaar the All-Searing, the evil sun god**
+  `RUT_HolyFlamePrecepts.xml` worships **Sh'kaar the All-Searing, the searing sun god**
   (`divine_satiation_engine.md` §8) — the dayside's own deity, with no Long Shade content
   touching it.
 - **Sound:** none — and the `RM_` move deliberately DROPPED the donor Wounded/Death/Call/
@@ -205,7 +205,7 @@ BOTH the current and the old port/donor spellings (probes: `imperialtoad` 12 reg
 | 6 | Gravship touch | **MISS** | Nothing anywhere references the ship in this biome's voice. `long_shade_bedazzle_2026-09-27.md` §6 proposed the **shade awning** (a landed ship becomes the best harbour on purpose), pavement-stone flooring and the vorrel galley — none was on the 12-question agenda, so **unruled**; `BIOME_SHIP_CONTRIBUTIONS_1`'s running list has no Long Shade row. |
 | 7 | Soundscape | **MISS** | No SoundDef, no ambient, no register in the frozen sheet (§9 is light/palette/silhouette/motion only), and the free-tier cast was stripped of even its donor call/wound sounds at the move. The kit precedent exists (`RM_MapComponent_ProximitySoundscape`, Greentide's hum layers; `RM_DeepCalm`) and is unused here. |
 | 8 | Interesting weather | **PARTIAL** | Stock weather only (Clear 90; Odyssey's Sandstorm 4). But the **smoke calendar is RULED marquee #2** (Q11, 2026-09-27) — haze weather + ash-pulse condition + sand-lock — and `RUT_MiasmaWeatherLock`/Pyrelands `AshFall` are shipped shapes. Ruled, unbuilt. |
-| 9 | Relationship to the gods | **MISS** | No ideoligion/lore content. The hook is already in the campaign canon and nobody has used it: **Sh'kaar the All-Searing** (the evil sun, `divine_satiation_engine.md` §8) — and this is the one biome where the sun never sets. `DeepDesertTribes.xml` is a faction reskin, not a relationship. |
+| 9 | Relationship to the gods | **MISS** | No ideoligion/lore content. The hook is already in the campaign canon and nobody has used it: **Sh'kaar the All-Searing** (the searing sun, `divine_satiation_engine.md` §8) — and this is the one biome where the sun never sets. `DeepDesertTribes.xml` is a faction reskin, not a relationship. |
 
 Score as built: **4 HIT / 2 PARTIAL / 3 MISS** — up from the program table's "content
 today: 1", because the 09-27 sitting's builds landed (`3bf918d54`, deep sand `eb5a35214`,
@@ -336,7 +336,7 @@ to the ship, the gods and the ear.
    biome threatens the ship; this one is *hospitable to it*, and hospitality is the threat.
    *Trade-off:* a bs-16 visitor must delay and damage, never hard-block a launch.
 2. **Sh'kaar's country — the sun as the god** *(mark 9; Utinni-tier precepts, RM-tier
-   condition)*. The campaign already has an evil sun god, Sh'kaar the All-Searing, whose
+   condition)*. The campaign already has a searing sun god, Sh'kaar the All-Searing, whose
    own rule (`divine_satiation_engine.md` §8) is that light "does Sh'kaar's work" and
    staying dark and hidden is pious — and this is the one biome where he never looks
    away. Content: (a) a precept pair *Shade-piety* (working under roof is devout; work in

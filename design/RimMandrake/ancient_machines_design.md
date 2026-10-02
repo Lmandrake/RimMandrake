@@ -564,7 +564,7 @@ piety in which refurbishing is free.
 
 **Two consequences that fall out without new rules.** High Ozzik satiation is
 already a standing upward bias on Sh'kaar's and Zizzik's rolls (§8), so
-refurbishment feeds both evil gods through the pride channel. And ② **Ohm** is
+refurbishment feeds both hungry gods through the pride channel. And ② **Ohm** is
 unnamed by the ruling but his shipped page awards satiation for *"machines built
 and powered"* and *"ship systems restored"* — refurbishment is the single most
 Ohm-pleasing act in the mod. Leaving him off the list would contradict a page

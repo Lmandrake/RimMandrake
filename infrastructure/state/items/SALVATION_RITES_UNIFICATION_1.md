@@ -13,7 +13,7 @@ Earlier rulings carried (card 09:22, decisions taken by question card; Q4 typed)
 ## decided (BENCH)
 
 - Home: `mandrake.rut.rites` (`src/RimUtinni/Rites/`), the existing liturgy tab ("revealed, not bought"). Gods' arithmetic stays in `mandrake.rm.ninefold`; the darkness gate is C# inside the Rites mod. `RM_Ishko_RitualOutcome_PlaceSacredMark` moves in from SacredGraffiti with the Dark Vigil.
-- The four Abyss rites: Dark Vigil → Ishko (feeding by stillness); Blind Offering → Mob'Unloo (settlement); Snuffing → Sh'kaar (starving the evil god); Lightless Burial → Ozzik (consolation, pride-meter vented).
+- The four Abyss rites: Dark Vigil → Ishko (feeding by stillness); Blind Offering → Mob'Unloo (settlement); Snuffing → Sh'kaar (starving the hungry god); Lightless Burial → Ozzik (consolation, pride-meter vented).
 - Discovery: a CompStudiable inscription in the biome yields a techprint rubbing (commonality 0); its "found rites" project on the Rites tab completes through a ResearchMod that calls `Ideo.AddPrecept(..., fillWith)` on The Salvation. UNMEASURED: runtime AddPrecept fills a ritual correctly.
 - There is no ritual-count cap (facts/salvation_ritual_precepts.json); the old "6 slots" claim was false.
 

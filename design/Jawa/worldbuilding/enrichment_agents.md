@@ -224,7 +224,7 @@ _Two user seeds ("more interesting outcomes from religious observances" + "monit
 them visible in behavior AND a colony overview the ship-voice speaks to") fanned into 8 agents. All
 lean on "The Salvation" pantheon (`design/Jawa/divine_satiation_engine.md` §2.0b — Ohm=living machine/droids,
 Zizzik=malfunction, Mob'Unloo=ship-ghosts, Oomo=water/atonement, Ta'Baa=leave, Rekko=salvage,
-Sh'kaar=evil light). **Pillar bar (§19.5): every ritual/atonement payoff stays in the
+Sh'kaar=searing light). **Pillar bar (§19.5): every ritual/atonement payoff stays in the
 narrative/mood/quest register — never material power; any loot routes through the balance-bar gate.**
 User verdict 2026-08-08: **"I love all of these" — all 8 logged.**_
 

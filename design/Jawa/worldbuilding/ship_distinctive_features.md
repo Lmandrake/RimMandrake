@@ -152,7 +152,7 @@ changes color and intensity as a function of the pantheon's standing.** This mak
   killing-light domain favors open aggression)? If the lights already show him "present," **fight more
   aggressively with confidence of pleasing him.** The status display turns divine standing into a
   pre-battle instrument, not just post-hoc flavor. (Careful: courting Sh'kaar is still perilous per his
-  evil-god status — this is a *knowing gamble*, exactly the tension we want.)
+  dangerous, hungry nature — this is a *knowing gamble*, exactly the tension we want.)
 - **Per-god color/behavior language (draft, to refine):** Oomo = blue, deepening with content; Sh'kaar =
   harsh white/red glare when "fed"/present; Ishko = dimming toward dark (his pleasure IS the absence of
   light); Ohm = electric cyan pulse tied to powered machinery; Rekko = warm amber; Ta'Baa = a rising/

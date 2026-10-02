@@ -60,7 +60,7 @@ When a curse (M or L) is rolled and would land:
   willingness (he is a neighbor doing you a favor, not a bodyguard). The third
   ask in quick succession fails with his own displeasure — you have made him a
   servant, and no god is that.
-- **The evil gods are targets, never shields.** Zizzik and Sh'kaar can be
+- **The hungry gods are targets, never shields.** Zizzik and Sh'kaar can be
   interceded *against*; neither can be recruited. There is no bargaining the
   wrong spark onto your side.
 - **Ozzik intercedes — and his shield is the trap.** Statecraft is his
@@ -87,7 +87,7 @@ intercessor makes; then who never will._
 | **⑤ Rekko** | Ta'Baa; Mob'Unloo | "They could not carry it — flight excuses the scrapping" (the pillar-brothers); "the salvage was realized as value, not murdered" | Ozzik (the sharpest war — see below) |
 | **⑥ Ta'Baa** | Ishko; Oomo | "They stay because the dark is deep — hidden is not rooted" (the one reconciliation posture); "the brood must sit before it can fly — eggs do not travel" | Ozzik (despises his explosives; wants the rooted grandeur Ta'Baa flees) |
 | **⑦ Zizzik** | Ohm; Rekko | "The right spark holds this wire" (the mirror — the engine room is Ohm's ward, where the name is never spoken); "the twice-mended does not break twice" | Ta'Baa (fears him above all — will not stand in that doorway) |
-| **⑧ Sh'kaar** | Ishko; Ta'Baa | "The dark against the sun" — the canonical evasion; "run — the sun cannot chase" (two of canon's three moves against him, made mechanical; the third, *abandon the plan*, is not an intercession — it is Ozzik's grief, accepted) | Zizzik (the two evil clocks feed together) |
+| **⑧ Sh'kaar** | Ishko; Ta'Baa | "The dark against the sun" — the canonical evasion; "run — the sun cannot chase" (two of canon's three moves against him, made mechanical; the third, *abandon the plan*, is not an intercession — it is Ozzik's grief, accepted) | Zizzik (the two hungry clocks feed together) |
 | **⑨ Ozzik** | Ishko; Mob'Unloo | "The pride is covered — what is not seen cannot be envied" (the Ozzik−Ishko gap arithmetic, F13-C, spoken as theology); "glory converts to goods; sell the triumph before it draws fire" | **Rekko — NEVER.** Restore-vs-transcend is the sharpest internal war; his refusal is an authored signature moment: *"The scarred hand does not rise. Rekko watches the Shamed one reach for you, and turns back to his heap."* |
 
 **Design note:** every intercessor pairing doubles as a teaching instrument —

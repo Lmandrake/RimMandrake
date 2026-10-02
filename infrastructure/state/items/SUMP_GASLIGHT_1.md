@@ -30,7 +30,7 @@ call it Sumpgas."* (rename is `SUMP_UTINNI_LAYER_1`'s). Discovery scope: *"Yes
 pilot here (the flickering light or geyser both can teach) and some specific tech
 will unlock when meeting tar. I should not say unlock trees that may be, but often
 it will just be specific technologies."* Statues/worship split ruled by card:
-flame statuary ships RM-tier; the holy-act-to-the-evil-sun-god meaning is an
+flame statuary ships RM-tier; the holy-act-to-the-sun-god meaning is an
 Utinni ideoligion patch (`SUMP_UTINNI_LAYER_1`).
 
 ## spec

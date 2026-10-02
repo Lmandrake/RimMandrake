@@ -51,7 +51,7 @@ The gods are **Jawa gods** who **predate the campaign**. Every render obeys:
 | 5 | **Rekko of the Second Hand** | salvage, repair, the rewoken | memory-keeper; the ONLY comforter; proud | mending a broken droid in his lap; robe patched from salvage; gentlest eyes | salvage-bronze |
 | 6 | **Ta'Baa the Unrooted** | leaving, the threshold | breathless, restless; always at the door | mid-stride at a dune edge / sand-crawler ramp; robe wind-caught; looking away | wind-grey/gold |
 | 7 | **Zizzik the Spark-Maker** | malfunction, betrayal, misfortune | gleeful trickster, chaotic | eyes slanted in delight; wrong sparks arcing from broken tech | spark-green |
-| 8 | **Sh'kaar the All-Searing** | evil light, exposure, destruction | cruel, malevolent; "the eye" | a searing light within the hood over-exposing all; most frightening eyes | white-gold |
+| 8 | **Sh'kaar the All-Searing** | searing light, exposure, destruction | harsh, implacable; "the eye" | a searing light within the hood over-exposing all; most frightening eyes | white-gold |
 | 9 | **Ozzik the Shamed** | ambition, pride, grief (THE TRAP) | grandeur with the wound showing | broken salvaged crown; robe grand but torn; eyes proud AND grieving | purple/gold |
 
 _(The tenth strand — the Cradle's own purpose — has no voice and no figure.)_
