@@ -1,0 +1,865 @@
+{
+  "mod": "Graffiti",
+  "mode": "mock",
+  "started_utc": "2026-10-01T20:52:28Z",
+  "expected": [
+    "mark_actually_appears",
+    "mark_reads_as_deliberate",
+    "mark_reads_at_play_zoom",
+    "mark_sits_on_the_wall",
+    "marks_visibly_various",
+    "mark_register_is_punk_urban",
+    "mark_carries_no_earth_signage",
+    "mark_ugliness_is_visible",
+    "never_real_world_english",
+    "never_reads_as_dirt"
+  ],
+  "expected_source": "VALIDATED walk Graffiti.md",
+  "bars": [
+    {
+      "id": "mark_actually_appears",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [spree_paints_marks=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "spree_paints_marks=PASS"
+    },
+    {
+      "id": "mark_reads_as_deliberate",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_reads_at_play_zoom",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_sits_on_the_wall",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [wall_closeup=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "wall_closeup=PASS"
+    },
+    {
+      "id": "marks_visibly_various",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [spree_variety=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "spree_variety=PASS"
+    },
+    {
+      "id": "mark_register_is_punk_urban",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_carries_no_earth_signage",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "gallery_page_0=PASS; gallery_page_1=PASS; gallery_page_2=PASS"
+    },
+    {
+      "id": "mark_ugliness_is_visible",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [beauty_pair=PASS]",
+      "visual": true,
+      "polarity": "must",
+      "state_status": "PASS",
+      "state_evidence": "beauty_pair=PASS"
+    },
+    {
+      "id": "never_real_world_english",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [closeup_page_0_0=PASS; closeup_page_0_1=PASS; closeup_page_0_2=PASS; closeup_page_0_3=PASS; closeup_page_1_0=PASS; closeup_page_1_1=PASS; closeup_page_1_2=PASS; closeup_page_1_3=PASS; closeup_page_2_0=PASS; closeup_page_2_1=PASS; closeup_page_2_2=PASS]",
+      "visual": true,
+      "polarity": "cannot",
+      "state_status": "PASS",
+      "state_evidence": "closeup_page_0_0=PASS; closeup_page_0_1=PASS; closeup_page_0_2=PASS; closeup_page_0_3=PASS; closeup_page_1_0=PASS; closeup_page_1_1=PASS; closeup_page_1_2=PASS; closeup_page_1_3=PASS; closeup_page_2_0=PASS; closeup_page_2_1=PASS; closeup_page_2_2=PASS"
+    },
+    {
+      "id": "never_reads_as_dirt",
+      "status": "UNMEASURED",
+      "evidence": "visual bar: state PASS, not yet judged (run judge_cli.py) [dirt_page_0_0=PASS; dirt_page_0_1=PASS; dirt_page_0_2=PASS; dirt_page_0_3=PASS; dirt_page_1_0=PASS; dirt_page_1_1=PASS; dirt_page_1_2=PASS; dirt_page_1_3=PASS; dirt_page_2_0=PASS; dirt_page_2_1=PASS; dirt_page_2_2=PASS]",
+      "visual": true,
+      "polarity": "cannot",
+      "state_status": "PASS",
+      "state_evidence": "dirt_page_0_0=PASS; dirt_page_0_1=PASS; dirt_page_0_2=PASS; dirt_page_0_3=PASS; dirt_page_1_0=PASS; dirt_page_1_1=PASS; dirt_page_1_2=PASS; dirt_page_1_3=PASS; dirt_page_2_0=PASS; dirt_page_2_1=PASS; dirt_page_2_2=PASS"
+    }
+  ],
+  "preflight": [
+    {
+      "name": "tool_census",
+      "status": "PASS",
+      "evidence": "46 tools, all 4 required present",
+      "required": true
+    },
+    {
+      "name": "game_loaded",
+      "status": "PASS",
+      "evidence": "ticksGame=1000 map=200x200",
+      "required": true
+    },
+    {
+      "name": "no_modal",
+      "status": "PASS",
+      "evidence": "open blocking windows: none",
+      "required": true
+    },
+    {
+      "name": "paused",
+      "status": "PASS",
+      "evidence": "ticksGame frozen at 1000 over two reads",
+      "required": true
+    },
+    {
+      "name": "dev_god_mode",
+      "status": "PASS",
+      "evidence": "dev on",
+      "required": true
+    },
+    {
+      "name": "modlist",
+      "status": "PASS",
+      "evidence": "2 active, sha256 f7b925add18084d3 (disk = NEXT load, not proof of the running list)",
+      "required": true
+    }
+  ],
+  "components": [
+    {
+      "chain": "forced_paint_job",
+      "name": "site_ready_forced_paint",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "forced_paint_job",
+      "name": "paints_mark_at_interval",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "mental_break_spree",
+      "name": "site_ready_mental_break",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "mental_break_spree",
+      "name": "mental_break_assigns_paint_job",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spree_wall",
+      "name": "site_ready_spree_wall",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spree_wall",
+      "name": "spree_runs",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "spree_wall",
+      "name": "spree_paints_marks",
+      "verdict": "PASS",
+      "shows": [
+        "mark_actually_appears"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "spree_wall",
+      "name": "spree_variety",
+      "verdict": "PASS",
+      "shows": [
+        "marks_visibly_various"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "spree_wall",
+      "name": "wall_closeup",
+      "verdict": "PASS",
+      "shows": [
+        "mark_sits_on_the_wall"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "gallery_page_0",
+      "verdict": "PASS",
+      "shows": [
+        "mark_reads_at_play_zoom",
+        "mark_reads_as_deliberate",
+        "mark_register_is_punk_urban",
+        "mark_carries_no_earth_signage"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_0_0",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_0_0",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_0_1",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_0_1",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_0_2",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_0_2",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_0_3",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_0_3",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "gallery_page_1",
+      "verdict": "PASS",
+      "shows": [
+        "mark_reads_at_play_zoom",
+        "mark_reads_as_deliberate",
+        "mark_register_is_punk_urban",
+        "mark_carries_no_earth_signage"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_1_0",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_1_0",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_1_1",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_1_1",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_1_2",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_1_2",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_1_3",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_1_3",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "gallery_page_2",
+      "verdict": "PASS",
+      "shows": [
+        "mark_reads_at_play_zoom",
+        "mark_reads_as_deliberate",
+        "mark_register_is_punk_urban",
+        "mark_carries_no_earth_signage"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_2_0",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_2_0",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_2_1",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_2_1",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "closeup_page_2_2",
+      "verdict": "PASS",
+      "shows": [
+        "never_real_world_english"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "gallery",
+      "name": "dirt_page_2_2",
+      "verdict": "PASS",
+      "shows": [
+        "never_reads_as_dirt"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "beauty_pair",
+      "name": "site_ready_beauty_pair",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "beauty_pair",
+      "name": "beauty_pair",
+      "verdict": "PASS",
+      "shows": [
+        "mark_ugliness_is_visible"
+      ],
+      "screenshots": [
+        {
+          "path": "/nonexistent/mock.png",
+          "win": "/nonexistent/mock.png",
+          "wsl": "/nonexistent/mock.png"
+        }
+      ]
+    },
+    {
+      "chain": "viewer_reaction_toggle_flips",
+      "name": "viewer_reaction_setting_flips",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "breach_bias_toggle_flips",
+      "name": "breach_bias_setting_flips",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "raid_exit_tag_toggle_flips",
+      "name": "raid_exit_tag_setting_flips",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    },
+    {
+      "chain": "auto_clean_protection_toggle_flips",
+      "name": "auto_clean_protection_setting_flips",
+      "verdict": "PASS",
+      "shows": [],
+      "screenshots": []
+    }
+  ],
+  "bar_text": {
+    "mark_actually_appears": {
+      "polarity": "must",
+      "text": "after a paint job or spree completes, a mark is visibly on the wall. Not an empty wall with a clean job log. (This is in the checklist because it has already failed silently: a colonist painted for ~20000 ticks with dozens of `TryMakeFilth` calls and produced nothing, because `placementMask` was `Any`. Every state assertion passed at the time.)"
+    },
+    "mark_reads_as_deliberate": {
+      "polarity": "must",
+      "text": "a mark reads at play zoom as something a hand made on purpose, not as scattered dirt or a smudge."
+    },
+    "mark_reads_at_play_zoom": {
+      "polarity": "must",
+      "text": "every mark reads AS A MARK at normal play zoom (~64px), not only when zoomed in. \ud83d\udd34 **Owner ruling, 2026-09-16**: this replaces a drafted `mark_scale_consistent` line. Scale *uniformity* is the wrong bar \u2014 real graffiti varies wildly in scale and a big piece beside a small tag is correct. The real defect is a mark that cannot be read at the zoom the game is played at."
+    },
+    "mark_sits_on_the_wall": {
+      "polarity": "must",
+      "text": "a mark reads as being *on* the wall face, aligned to it, not as a decal floating over the floor beside it."
+    },
+    "marks_visibly_various": {
+      "polarity": "must",
+      "text": "several marks in one colony are visibly different kinds of mark, not recolours of one."
+    },
+    "mark_register_is_punk_urban": {
+      "polarity": "must",
+      "text": "the mark set reads as urban/punk graffiti, not as clip-art icons or modern signage."
+    },
+    "mark_carries_no_earth_signage": {
+      "polarity": "must",
+      "text": "no mark reads as a contemporary real-world sign (road-hazard triangle, exit sign, traffic glyph). \ud83d\udd34 **Owner ruling, 2026-09-16**: kept at FULL scope covering symbols, not narrowed to lettering only. He chose to replace the offending glyph rather than exempt it."
+    },
+    "mark_ugliness_is_visible": {
+      "polarity": "must",
+      "text": "a Beauty \u221215 vandal scrawl looks worse than a Beauty \u22123 tally at a glance. The stat and the picture agree."
+    },
+    "never_real_world_english": {
+      "polarity": "cannot",
+      "text": "legible real-world English words, or a third-party author's tag, in a mark. \ud83d\udd34 **`RM_Graffiti_Vandal` shows this today**: \"TARTE\" is plainly legible in `vandal_0.png` (the donor author's own tag \u2014 Tarte/emipa606, art copied under MIT per About.xml), alongside further English tags in yellow, red and blue. Confirmed by looking at the sprite composited on a wall, 2026-09-16. `GRAFFITI_PUNK_IDEOLIGION_SCOPE_1` already put English lettering out of scope; the shipping default violates it."
+    },
+    "never_reads_as_dirt": {
+      "polarity": "cannot",
+      "text": "a mark indistinguishable from vanilla filth at play zoom. If graffiti reads as a mess rather than a message, the mod is doing nothing his three quotes asked for."
+    }
+  },
+  "bar_text_source": "design/validation_walks/RimMandrake/Graffiti.md (hash 335bccf3b6cbda91ab995e52922ffd51ae11365b0652dc0481dc6bf8fc10693c)",
+  "summary": {
+    "PASS": 0,
+    "FAIL": 0,
+    "UNMEASURED": 10
+  },
+  "all_green": false,
+  "timing": {
+    "n": 460,
+    "total_ms": 3.583,
+    "mean_ms": 0.0078,
+    "p50_ms": 0.0007,
+    "p95_ms": 0.0661,
+    "by_tool": {
+      "rimworld/get_game_info": {
+        "n": 11,
+        "mean_ms": 0.0017,
+        "errors": 0
+      },
+      "jawa/map_info": {
+        "n": 2,
+        "mean_ms": 0.0037,
+        "errors": 0
+      },
+      "rimworld/get_ui_state": {
+        "n": 1,
+        "mean_ms": 0.0015,
+        "errors": 0
+      },
+      "jawa/destroy_batch": {
+        "n": 37,
+        "mean_ms": 0.0043,
+        "errors": 0
+      },
+      "jawa/set_terrain_batch": {
+        "n": 29,
+        "mean_ms": 0.0729,
+        "errors": 0
+      },
+      "jawa/set_fog": {
+        "n": 29,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/weather_set": {
+        "n": 29,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/log_autoopen_suppress": {
+        "n": 29,
+        "mean_ms": 0.0003,
+        "errors": 0
+      },
+      "jawa/spawn_batch": {
+        "n": 76,
+        "mean_ms": 0.0052,
+        "errors": 0
+      },
+      "jawa/spawn_pawn": {
+        "n": 8,
+        "mean_ms": 0.0012,
+        "errors": 0
+      },
+      "jawa/list_pawns": {
+        "n": 5,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/set_work_priority": {
+        "n": 8,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/pawn_need": {
+        "n": 16,
+        "mean_ms": 0.0003,
+        "errors": 0
+      },
+      "jawa/set_pawn_skill": {
+        "n": 8,
+        "mean_ms": 0.0003,
+        "errors": 0
+      },
+      "jawa/set_draft": {
+        "n": 8,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/list_things": {
+        "n": 44,
+        "mean_ms": 0.0094,
+        "errors": 0
+      },
+      "jawa/ordered_job": {
+        "n": 1,
+        "mean_ms": 0.0139,
+        "errors": 0
+      },
+      "rimworld/step_game_ticks": {
+        "n": 4,
+        "mean_ms": 0.0843,
+        "errors": 0
+      },
+      "jawa/clear_ui": {
+        "n": 30,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "rimworld/screenshot_cell_rect": {
+        "n": 30,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/damage": {
+        "n": 2,
+        "mean_ms": 0.0009,
+        "errors": 0
+      },
+      "jawa/pawn_force_mental_break": {
+        "n": 7,
+        "mean_ms": 0.0008,
+        "errors": 0
+      },
+      "jawa/pawn_get": {
+        "n": 1,
+        "mean_ms": 0.0005,
+        "errors": 0
+      },
+      "jawa/map_commit": {
+        "n": 27,
+        "mean_ms": 0.0004,
+        "errors": 0
+      },
+      "jawa/thing_stats": {
+        "n": 2,
+        "mean_ms": 0.0015,
+        "errors": 0
+      },
+      "jawa/mod_settings_field": {
+        "n": 16,
+        "mean_ms": 0.0006,
+        "errors": 0
+      }
+    }
+  }
+}
