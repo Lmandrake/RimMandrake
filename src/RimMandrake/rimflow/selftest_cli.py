@@ -373,7 +373,9 @@ def _ledger_events():
     for f in _ledger_paths():
         with open(f, encoding="utf-8") as fh:
             out += [json.loads(l) for l in fh if l.strip()]
-    out.sort(key=lambda e: str(e.get("ts") or ""))
+    # (ts, tsn): the reader's own order since 2026-10-02 (model.canonical_order) — a
+    # ts-only stable sort fell back to FILE order, which union-merged shards lack.
+    out.sort(key=lambda e: (str(e.get("ts") or ""), e.get("tsn") or 0))
     return out
 
 

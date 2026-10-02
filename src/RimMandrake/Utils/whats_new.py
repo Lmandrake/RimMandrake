@@ -4,7 +4,7 @@
 WHY
 ===
 A seat that has been running for hours has no idea that a peer appended a trap,
-rewrote a rule in CLAUDE.md, or filed a new item at `infrastructure/state/queue/<SEAT>.md`. There is
+rewrote a rule in CLAUDE.md, or filed a new item for this seat (`rimflow next` / `rimflow queue <SEAT>`). There is
 no channel between the windows. The only remedy on offer used to be "go reread
 the traps and the rules", which is a ~25k-token chore, so it gets skipped, and
 the seat keeps acting on doctrine that moved underneath it.
@@ -74,7 +74,8 @@ import sys
 DOCTRINE = [
     "CLAUDE.md",
     ":(glob)infrastructure/agents/*.md",
-    ":(glob)infrastructure/state/queue/*.md",
+    # queue/<SEAT>.md left git 2026-10-02 (git plan Phase 4): it is a gitignored view,
+    # so it has no history to diff. Work filed AT a seat is surfaced by `rimflow next`.
     ":(glob)skills/**/SKILL.md",
     ":(glob)skills/**/references/traps*.md",
     "infrastructure/state/V1.md",
@@ -352,7 +353,7 @@ def report(seat, since, note=None):
         lines = [f"up to date ({short(since)})"]
         return (lines + ["   " + note] if note else lines), False
 
-    mine = {f"infrastructure/state/queue/{seat}.md", f"infrastructure/agents/{seat}.md"}
+    mine = {f"infrastructure/agents/{seat}.md"}
     # A seat cares most about what was filed AT it, so its own queue and identity
     # sort first and carry the flag. Everything else keeps git's order.
     files.sort(key=lambda row: (row[1] not in mine, row[1]))

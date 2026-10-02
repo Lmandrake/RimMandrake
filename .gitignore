@@ -233,6 +233,24 @@ infrastructure/state/queue/DECIDE.md
 infrastructure/state/queue/BUILD.md
 infrastructure/state/queue/CHECK.md
 infrastructure/state/queue/REP.md
+# Git plan Phase 4 (2026-10-02, design/RimMandrake/git_workflow_plan_2026-10-01.md §2.4):
+# the two live views leave git too — they were the biggest conflict class after the
+# ledger (BENCH.md/FOUNDRY.md 647/738 path-conflicts at K=5). Read with
+# `rimflow queue <SEAT>`, which renders first. HUMAN.md stays tracked (hand-written).
+infrastructure/state/queue/BENCH.md
+infrastructure/state/queue/FOUNDRY.md
+
+# Generated health/hub data (same plan, §2.4 rows 2-4). Regenerated every 15 min by the
+# `rm-codebase-health.timer` systemd user unit in FOUNDRY's clone
+# (src/RimMandrake/Utils/systemd/), which replaced the post-commit heartbeat; the
+# hub data by `infrastructure/dashboards/hub/regen_hub.py`.
+Transient/codebase_health.html
+Transient/codebase_health.json
+Transient/codebase_health_artifact.html
+infrastructure/state/codebase_health_last.json
+infrastructure/dashboards/hub/data/*.json
+# hand-maintained INPUT to regen_hub.py (published-path -> source), not an output
+!infrastructure/dashboards/hub/data/publish_manifest.json
 
 # Derived ortho globe SVGs — regenerate with worldview.py; the PNGs beside them are committed
 world/view/globes_*/*.svg

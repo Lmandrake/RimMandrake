@@ -84,8 +84,9 @@ GIT_TIMEOUT = 8  # seconds. A hung/contended git call fails fast, never hangs th
 def _trigger_health_rebuild():
     """Give the codebase-health map a heartbeat after a state change that isn't a
     git commit — mark-clean (dirty->green) and reopen (green->dirty) both flip a
-    file's colour with no commit involved, so the git post-commit hook never fires
-    for them. Same three rules as src/RimMandrake/Utils/git_hooks/post-commit:
+    file's colour with no commit involved, so the 15-min health timer
+    (src/RimMandrake/Utils/systemd/rm-codebase-health.*, which replaced the git
+    post-commit hook 2026-10-02) would lag. Same three rules that hook kept:
     never block the caller, never fail the caller, never touch the index. The
     publisher itself decides whether a rebuild is actually due.
 
