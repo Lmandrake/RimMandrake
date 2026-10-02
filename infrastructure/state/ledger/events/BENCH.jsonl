@@ -831,3 +831,4 @@
 {"seat":"BENCH","event":"claim","id":"GIT_WORKFLOW_MIGRATION_1","ts":"2026-10-02T07:22:24Z"}
 {"seat":"BENCH","event":"start","id":"GIT_WORKFLOW_MIGRATION_1","ts":"2026-10-02T07:22:25Z"}
 {"seat":"BENCH","event":"note","id":"GIT_WORKFLOW_MIGRATION_1","text":"All 9 phases implemented overnight 2026-10-02 and pushed; D: frozen as mirror; live multi-day bars pending (handoff BENCH_REBOOT_HANDOFF_202610020812)","ts":"2026-10-02T08:13:24Z","tsn":1790928804457242410}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-10-02T12:18:05Z","tsn":1790943485012873272}
