@@ -21,3 +21,34 @@ status-hint: patch-only mod giving Lake and Ocean their first wildAnimals common
 6. [B] jawa/biome_probe {biomes: "LavaField", find: "Mott"} → expect state "spawning" at commonality ~0.7 (same check for Mott/LavaField)
 7. [D] jawa/get_def {defType: "ThingDef", defName: "Megasquid"} → expect not-found/absent — confirms the retired mlie.beastsoftherim dependency is actually gone from the running mod list, not just described as gone
 X. [S] (human pass) none — this mod is patch-only wildlife commonality; the visual proof (an aquatic actually surfacing in a Lake/Ocean tile) is downstream world-tile/spawn behavior, not this mod's own scope
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**A shore with life on it**
+- [ ] `waterline_lake_shows_creatures` — on a Lake or Ocean map, some of the
+      13-creature waterline cast is visible in or beside the water within an
+      ordinary visit, where before this mod the water carried no wild animals.
+      (guess: depends on commonality and map size)
+- [ ] `waterline_cast_hugs_water` — those creatures are seen at the water's edge or
+      in it rather than roaming the dry interior. (guess)
+- [ ] `waterline_mix_star_wars_and_fish` — the cast reads as a mix of Star Wars
+      aquatics and fish/turtles, not one species repeated. (guess)
+
+### cannot show
+
+- [ ] `waterline_never_empty_water` — a Lake or Ocean map whose water stays
+      lifeless across a normal visit. (guess)

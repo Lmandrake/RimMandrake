@@ -33,3 +33,40 @@ status-hint: two untameable Abyss predators (cindermare — kills by a cold-drai
 14. [B] on a quicktest map with a `HandTailoringBench` placed: `jawa/bill_add` `{recipe: RSW_CureKarraskPlate, building: <the bench>}` → expect the bill is accepted (`jawa/bill_list` shows it), confirming the recipe/bench pairing resolves at runtime and not just in the def dump.
 15. list=minimal+sarg.alphabiomes: [D] def read-back: `BiomeDef AB_RockyCrags` → `wildAnimals` dictionary contains `RSW_Cindermare = 0.04` and `RSW_Skarnix = 0.09` (proves the Conditional-guarded patch actually fired against a live Alpha Biomes install, not just that it is well-formed).
 16. [S] (human pass) look at a spawned cindermare/skarnix/karrask in game and confirm the generated sprites read as the intended creatures at their `drawSize` (no magenta, no obviously wrong silhouette) — this walk only proves the texPath resolves to a real file, not that the art looks right.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The two Abyss predators**
+- [ ] `livestock_cindermare_reads_predator` — `RSW_Cindermare` reads at play zoom
+      as a dangerous predator, not a grazer. (guess)
+- [ ] `livestock_skarnix_leaves_the_light` — a `RSW_Skarnix` on lit ground is seen,
+      over a short sequence of frames, moving off into darkness rather than
+      standing in the light.
+- [ ] `livestock_predators_distinct` — cindermare and skarnix are plainly two
+      different animals side by side.
+
+**The karrask**
+- [ ] `livestock_karrask_reads_farm_stock` — `RSW_Karrask` in a pen reads as
+      domestic stock, visibly different from the two predators.
+- [ ] `livestock_karrask_shed_reads_as_shed` — `RSW_KarraskShedRaw` in a stockpile
+      reads as a raw shed hide, not finished leather or metal. (guess)
+
+### cannot show
+
+- [ ] `livestock_never_sideways_walking_north` — all three ship one
+      `Graphic_Single` texture, so a creature walking north or south may show the
+      same side profile. Whether that reads acceptably is his call. (guess)
