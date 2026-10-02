@@ -20,3 +20,34 @@ status-hint: campfire-cooked "on a stick" food line (meat/veg/fungus/fruit/blend
 5. [B] rimworld/spawn_thing {defName: "RSW_Skewer", x, z, stackCount: 10} then jawa/list_things {defName: "RSW_Skewer"} → a stack of 10 exists at the target cell
 6. [B] rimworld/spawn_thing {defName: "RSW_CookedSkewer", x, z} then jawa/list_things {defName: "RSW_CookedSkewer"} → it exists on the map
 X. [S] (human pass) cook meat-on-a-stick at a campfire and confirm the item's in-game label reads "Roasted <ingredient>" (NameGenComp), then eat an empty RSW_CookedSkewer and confirm the mood thought bubble fires
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Food on a stick**
+- [ ] `cuisine_sticks_read_as_skewers` — each stick meal (`RSW_MeatOnAStick` and its
+      kin) in a stockpile reads as food on a skewer, and the meat, veg, fungus,
+      fruit and fish sticks are visibly different.
+- [ ] `cuisine_skewer_reads_as_sticks` — `RSW_Skewer` reads as a bundle of bare
+      sticks, and a spent skewer (`RSW_CookedSkewer`) reads as an empty stick.
+      (guess)
+- [ ] `cuisine_cooked_at_campfire` — a colonist cooking a stick meal is seen at a
+      campfire.
+
+### cannot show
+
+- [ ] `cuisine_never_vanilla_meal_art` — a stick meal drawn as a vanilla meal
+      plate. (guess)

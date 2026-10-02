@@ -33,3 +33,19 @@ unresolved duplicate-PNG pair (item step 3); seeding both halves would make comp
 image, so only the mod-named walk of each pair got lines.
 Noticed, not fixed: FireEcology.md's `## must be true` still names `RSW_FE_*` defs; the shipped defs are
 `RM_FE_*` (src/RimMandrake/Pyrelands/Defs). The seeded section uses the live `RM_FE_*` names.
+
+### Batch 4 — single-file art repairs, medical/food/relic items, places
+ToolBeltFix, SauridFrillFix, ResearchKitEastFix, PhytokinBarkHeadFix, GravshipAstronautFix,
+BlastDoorFrameAsyncFix, Bacta, Cuisine, SacredGraffiti, Antiquities, Inhabited, MandrakePatches,
+StarWarsPatches — 13 walks. Lint/floor: no new findings.
+
+## Result
+37 walks seeded (7 + 8 + 9 + 13), every one `state: DRAFT`, empty hash, `modcheck validate` never run.
+No `shows=` wiring added: `shows=` naming an id no VALIDATED checklist defines is a lint error (spec §2),
+so wiring a DRAFT id would only add failures.
+After: run_selftests.py 102/107, the same 4 pre-existing FAILs, no new failures. lint: same 3 FAIL /
+12 WARN as baseline. floor --all: no refusals introduced.
+
+Not seeded (judged): RiverSteam (inside VALIDATED FlowWorks); BeastLairs, DesertFixtures, UtinniShell
+(duplicate-PNG pair halves); pure code/prose mods (Oracle-style read-axis candidates: Aftermath,
+AftermathRites, PawnFlavor, JawaVoice; arithmetic: Visibility, RimDefDump, LoadTracer, etc.).

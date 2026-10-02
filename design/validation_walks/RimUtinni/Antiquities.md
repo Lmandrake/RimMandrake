@@ -31,3 +31,34 @@ status-hint: A five-stage research tree (LANGUAGE → RELIGION → CULTURE → C
 14. [B] jawa/research_availability project=RUT_Antiq_Language → project snapshot shows progress > 0 (expect 125 = 500/4, or 250 on a key-text roll)
 15. [D] def read-back: WorkTypeDef RUT_ExamineAntiquities; relevantSkills = [Intellectual, Artistic] (feeds both auto-priority AND, per JobDriver_ExamineAntiquity's skillFactor lerp, read duration)
 X. [S] (human pass) placeholder art — RUT_AntiquityReadingStation and all three item defs currently reuse the vanilla AIPersonaCore texture; the real reading-station art/animation is a later slice
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Antiquities and reading them**
+- [ ] `antiq_items_read_as_relics` — antiquity items (such as `RUT_Antiquity_Urn`) in
+      a stockpile read as ancient relics, each kind visibly different. (guess: art
+      may still be vanilla stand-ins)
+- [ ] `antiq_station_reads_as_desk` — `RUT_AntiquityReadingStation` reads as a place
+      where someone studies an object. (guess)
+- [ ] `antiq_reader_at_station` — a colonist reading is seen at the station with
+      the antiquity in front of them, and the item is back on the map afterwards.
+- [ ] `antiq_catalogued_distinguishable` — a catalogued antiquity can be told from
+      an unread one without opening its tooltip. (guess)
+
+### cannot show
+
+- [ ] `antiq_never_consumed` — an antiquity disappearing after it is read.

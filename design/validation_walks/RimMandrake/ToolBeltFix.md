@@ -19,3 +19,30 @@ status-hint: one loose PNG replacing a donor-mod worn-apparel texture that ships
 3. [D] confirm this mod's file loads AFTER `VanillaExpanded.VAEAccessories` in the resolved mod order (`ModsConfig.xml` / live `jawa/mod_inventory` load-order listing) — order is the entire mechanism; a misordered list makes this mod a silent no-op
 4. [B] `jawa/spawn_pawn`, then `jawa/inventory_transfer {mode: "add", ...}` a `VAEA_Apparel_ToolBelt` item onto the pawn (or `rimworld/right_click_cell` → wear order), rotate the pawn to face west, then use `jawa/inspect_string` on the pawn to confirm the apparel is worn — this proves the def resolves and equips, though whether the WEST-FACING TEXTURE actually renders is a visual property no bridge tool can assert (see [S] line)
 X. [S] (human pass) with the tool belt worn and the pawn facing west, confirm the belt is visible rather than invisible — deferred to MOD_HUMAN_EXPLORATION_PASS_1
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The tool belt from the west**
+- [ ] `toolbelt_west_visible` — a colonist wearing the tool belt and facing west
+      shows the belt, the mirror of its east view.
+- [ ] `toolbelt_west_sits_on_hips` — the west belt sits at the same height and size
+      on the body as the east one.
+
+### cannot show
+
+- [ ] `toolbelt_never_vanishes_west` — the belt disappearing when the wearer turns
+      west (the donor's fully transparent `_west` file).

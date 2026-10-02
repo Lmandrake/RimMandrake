@@ -25,3 +25,35 @@ status-hint: gives world-map places a persistent cast of real Pawn objects who l
 
 ## [S]
 Whether the eleven Templates/*.txt structure layouts (deepwater/droid/hutt/junkers) actually build as coherent rooms, and whether the settlement district composition reads well at normal zoom, is a human-pass concern.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**A place with people in it**
+- [ ] `inhabited_place_has_cast` — entering an Inhabited place shows its cast of
+      named people living there: working, walking, resting.
+- [ ] `inhabited_settlement_reads_as_district` — an Inhabited settlement map reads as
+      a composed district (streets, buildings), not an empty field with a few
+      pawns. (guess)
+- [ ] `inhabited_cast_remembered` — leaving and returning shows the same faces in
+      the same place. (sequence of two visits)
+
+### cannot show
+
+- [ ] `inhabited_never_empty_place` — an Inhabited place entered with nobody there
+      and no sign of what happened to them.
+- [ ] `inhabited_never_stranger_swap` — the returning visit showing new, unrelated
+      people where the remembered cast stood. (guess)
