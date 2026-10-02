@@ -49,7 +49,13 @@ to `infrastructure/state/code_review/waves/0000-history-to-2026-09-27.md` (froze
 `code_review/waves/<utc>-<seat>-wave-<n>.md`. Nothing generated, so nothing gitignored here.
 
 ## 4. artpipe queue state out of git
-(pending)
+
+Landed `abf0aadb4`; full account and the cutover runbook in `design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md`.
+State root `$ARTPIPE_STATE_DIR` (default `/mnt/d/Luke/dev/_artpipe`), copied there with counts verified; 3,939 paths
+untracked + gitignored, `registry.jsonl` included (it holds keep/reject verdicts and now has **no backup** — open).
+The daemon never wrote into `src/`: art lands in `_artsrc/<id>/`, and a seat runs `artpipe_state.py collect <job> --to
+src/…` to copy it into its clone for commit. Launcher change is in `install_wt_seat_profiles.py`, not yet applied.
+The running daemon was not touched; cutover = drain `active/`, stop, `migrate` delta, `--apply` profiles, prove one job.
 
 ## 5. X2 replay with the full §2.4–2.5 path set
 
