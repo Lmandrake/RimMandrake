@@ -1,4 +1,4 @@
-"""Owner excursions: walkability-aware slack routing with a relaxed-rope settle (design §8.11).
+"""Owner excursions: walkability-aware slack routing with a relaxed-rope settle (design §8.6).
 
 A strand gets MORE cable than the straight run needs (slack). The excess is laid as broad lateral
 excursions (shared by the bundle), slack loops, figure-eights and the odd heap, then settled by a
@@ -31,6 +31,10 @@ def sdf_grid(net):
         for x in range(w):
             if not unwalkable(net, (x, y)):
                 blocked[(y + 1) * RES:(y + 2) * RES, (x + 1) * RES:(x + 2) * RES] = False
+    # nodal model (§8.2): tree trunks and posts are small round obstacles a cord piles against
+    for (cx, cy, r) in getattr(net, "posts", ()):
+        yy, xx = np.mgrid[0:h * RES + 2 * RES, 0:w * RES + 2 * RES]
+        blocked |= np.hypot((xx + 0.5) / RES - 1 - cx, (yy + 0.5) / RES - 1 - cy) < r
 
     def dist(mask):
         big = 1e6
@@ -50,8 +54,8 @@ def sdf_grid(net):
 
 
 def unwalkable(net, c):
-    """The mock-up's stand-in for the pathing grid (in game: !c.Walkable(map), see §8.11)."""
-    return c in net.walls or c in net.rock or c in net.machine_cells
+    """The mock-up's stand-in for the pathing grid (in game: !c.Walkable(map), see §8.6)."""
+    return c in net.walls or c in net.rock or c in net.machine_cells or c in getattr(net, "water", ())
 
 
 def sample(net, P):
@@ -138,6 +142,8 @@ def sprawl(net, P, prm, rr_bundle, rr_strand, own_walls, n_in_bundle=1):
     Q = P + N * lat[:, None]
     # 2. loops, figure-eights and a heap, spliced in where there is room
     target = L * (1 + slack)
+    if prm.get("max_extra") is not None:          # nodal model: total slack is capped (§8.2.4)
+        target = min(target, L + prm["max_extra"])
     lost = max(0.0, want_len - np.hypot(*np.diff(Q, axis=0).T).sum())
     Q = _add_loops(net, Q, ramp, prm, rr_strand, target)
     # 3. settle
@@ -193,7 +199,9 @@ def _add_loops(net, Q, ramp, prm, rr, target):
             else:
                 cand = _figure8(Q[j], t, nrm, r, side) if fig8 else _loop(Q[j], t, nrm, r, side)
             sd, _ = sample(net, cand)
-            if (sd > RC + 0.02).all():
+            over = prm.get("max_extra") is not None and \
+                s[-1] + np.hypot(*np.diff(cand, axis=0).T).sum() > target * 1.25
+            if (sd > RC + 0.02).all() and not over:
                 shape = cand
                 break
             r *= 0.7

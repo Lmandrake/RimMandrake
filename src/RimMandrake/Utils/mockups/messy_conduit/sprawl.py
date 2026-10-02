@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Owner excursions mock-up (design §8.11): 'cap 0.38' (the phase-0 routing) against the owner's
+"""Owner excursions mock-up (design §8.6): 'cap 0.38' (the phase-0 routing) against the owner's
 big walkability-aware slack loops, on a scene with real open floor.
 
     python3 sprawl.py --out <dir> [--seed 1] [--ss 2] [--cell 64]

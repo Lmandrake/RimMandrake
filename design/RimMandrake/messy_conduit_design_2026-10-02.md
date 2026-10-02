@@ -6,7 +6,8 @@ Spawn out a design pass to consider how hard it would be to make MESSY CONDUIT, 
 make conduit sprawl all over the floor in loose wirey mess like it does in real life."*
 
 Status: DESIGN ONLY. Nothing built. Filed as `MESSY_CONDUIT_MOD_1` (ledger event, `3bb58a7e5`). The current
-recommendation is the overlay model in §8.
+recommendation is the **nodal cord model** (§8.2, owner ruling 2026-10-02): conduit reduced to a node graph,
+one too-long extension cord per edge planned over the floor, buried conduit never drawn.
 Engine facts below are from RimSage (decompiled 1.6) unless marked otherwise.
 
 ## 0. Retired-mod fact
@@ -249,24 +250,26 @@ Invisible Conduit.
 
 **Naming.**
 - packageId `mandrake.rm.messyconduit`, folder `src/RimMandrake/MessyConduit`, C# namespace
-  `RimMandrake.MessyConduit`, prefix `RM_` (`SectionLayer_RM_MessyWires`, `RM_MessyConduitExtension`).
+  `RimMandrake.MessyConduit`, prefix `RM_` (`SectionLayer_RM_MessyCords`, `RM_MessyConduitExtension`,
+  `RM_MapComponent_CordGraph`).
 - It is franchise-free and is a public-use mod.
-- Hard dependency: Harmony (one prefix, for hookup wires, §8.1). No DLC dependency needed, though Odyssey's substructure rule is
-  honoured by reuse.
+- Hard dependency: Harmony (one prefix, for hookup wires, §8.1). No DLC dependency needed, though Odyssey's
+  substructure rule is honoured by reuse.
 
-**Settings.** This is the full set for every tier ("superb Mod Settings"):
+**Settings** ("superb Mod Settings"):
 
 | Setting | Effect | Applies |
 |---|---|---|
 | Master enable | — | restart |
-| Messiness slider | slack, excursion cap (0.38 tidy → ~2.6 cells owner level, §8.11), loop/heap chance | live (dirty all sections) |
-| Load bundles (§8.10) | on/off (off = 2 strands), strand rating W per strand, linear or log | live |
-| Variant count / LOD | — | live |
+| Slack | spare cord per cord: off (path-tight) / some / **owner level (default: 1.4-2.4x the path, at least 7 and at most 16 cells spare)** / feral; loop, figure-eight and heap chance | live (rebuild cords) |
+| Cords per connection | 1, 1-2, **1-3 (default)**; seeded per edge, never by load | live |
+| Style family | Cybertek / Extension cord / Star Wars / **Star Wars: Jawa** (campaign default) | live |
+| Tangles | dense conduit fields drawn as one heap (on) or as ordinary cords (off); size threshold (default 9 cells) | live |
+| Needless conduit as loops | short spurs and 2x2 blocks drawn as pointless loops (on) or as terminals (off) | live |
+| Unfinished runs spark | a dead end that is not a needless spur sparks when live (**on**) or wears a taped cap | live |
 | Per-def toggles | power conduit, waterproof, "all isPowerConduit defs" | — |
-| Sagging machine wires | — | — |
-| Sway (lifted spans) / floor ripple | §8.4 | live (dirty all sections) |
-| Break sparks / whip / spark rate / only-with-power-overlay | §8.4b | live |
-| Colour mode | salvage-mixed or uniform | — |
+| Sway (lifted spans) / floor ripple | §8.4 | live |
+| Break sparks / whip / downed-wire bursts / spark rate / only-with-power-overlay | §8.5 | live |
 | Leave the power-overlay lines alone | fixed on; it is a guarantee, not a toggle | — |
 
 Defaults equal the shipped behaviour, and all-off degrades to vanilla.
@@ -275,22 +278,24 @@ Defaults equal the shipped behaviour, and all-off degrades to vanilla.
 walk `design/validation_walks/RimMandrake/MessyConduit.md`.
 
 `## must be true` lines, each with a cheap state read:
-1. Every section of the current map holds a `SectionLayer_RM_MessyWires` (`Section.GetLayer`), and a
-   conduit cell produces non-zero vertices in it. `PowerConduit` renders transparent.
-2. `HiddenConduit` stays invisible: its colour alpha is 0 and it is excluded from our class.
-3. The same cell yields the same mesh after a save/load: hash the section layer's vertex count and a sample
-   of positions before and after.
-4. Neighbour joins update across a section boundary when a conduit is placed or removed (place at x=16|17
-   and read the adjacent section's dirty/regen state).
-5. With the power overlay on, connector lines are still printed (the `SectionLayer_ThingsPowerGrid`
-   sub-mesh for `MatConnectorLine` is non-empty). This is a guard against Invisible Conduit's bug.
-6. Master toggle off → the layer's `Visible` is false and conduit renders as vanilla.
-8. Break readout: destroy one conduit in a powered line, and the end registry reads 1 live end. Turn the source
-   off and within 250 ticks it reads dead (§8.4b).
-7. Removing the mod from a save that used it: the load is clean and `Player.log` shows no errors.
+1. The cord graph of the current map exists (`RM_MapComponent_CordGraph`) and its node census matches a
+   recount from the conduit grid: every conduit end is a terminal node, every buried run has a stub at each
+   place it surfaces. `PowerConduit` renders transparent.
+2. **No cord edge joins two nodes in different `PowerNet`s, and no cord crosses a gap**: for every cord edge
+   both endpoint cells report the same `TransmittedPowerNetAt` (or the same conduit component when unpowered).
+3. `HiddenConduit` stays invisible: its colour alpha is 0 and it is excluded from the graph.
+4. The same map yields the same cord polylines after a save/load: hash the laid points per edge before and after.
+5. Placing a conduit cell far from a cord does not change that cord's hash (local invalidation, §8.2.7).
+6. With the power overlay on, connector lines are still printed (the `SectionLayer_ThingsPowerGrid` sub-mesh
+   for `MatConnectorLine` is non-empty). This is a guard against Invisible Conduit's bug.
+7. Master toggle off → the layer's `Visible` is false and conduit renders as vanilla.
+8. Break readout: destroy one conduit in a powered line; the graph gains 2 terminal nodes, the registry reads
+   1 live end. Turn the source off and within 250 ticks it reads dead (§8.5).
+9. Removing the mod from a save that used it: the load is clean and `Player.log` shows no errors.
 
-Steps 2 and 6 are `--mock`-selftestable, and the routing geometry is selftestable offline; 3–5 and 7 need the bridge. Visual judgement ("does it read as
-messy") is a screenshot or a keeper savegame for the owner, never a pass bar.
+Lines 1, 2, 3, 5 and 7 are offline-selftestable against a synthetic grid (the mock-up selftest already does
+1, 2 and 5); 4, 6, 8 and 9 need the bridge. Visual judgement ("does it read as messy") is a screenshot or a
+keeper savegame for the owner, never a pass bar.
 
 `## anti-guessing notes`, seeded:
 - `RULED OUT: custom graphicClass with linkType None — CanAffectLinker false ⇒ no adjacent-cell regen
@@ -299,15 +304,17 @@ messy") is a screenshot or a keeper savegame for the owner, never a pass bar.
 
 ## 6. Recommendation and build plan
 
-**Recommendation: the overlay model (§8).** The conduit is vanilla and invisible, and a cosmetic section
-layer draws the wires: walls on top, trunk wraps, sway, and the break readout. Tier A cannot sprawl past the
-cell. Tier C (hazards) stays a later, separate opt-in (`MessyConduit.Hazards`), if ever.
+**Recommendation: the nodal cord model (§8.2).** The conduit is vanilla and invisible. A cosmetic layer
+reduces the conduit network to a node graph (machines, junctions, terminals, stubs where buried conduit
+surfaces, tangles) and draws one too-long extension cord per graph edge, path-planned over walkable floor
+between its two nodes. Buried conduit is never drawn. Breaks are terminal nodes that spark when live. Tier A
+cannot sprawl past the cell. Tier C (hazards) stays a later, separate opt-in (`MessyConduit.Hazards`), if ever.
 
 🔴 **This is gated by the 2026-10-01 build pause.** A new mod is new content, and the pause holds it until
 every mod has a first script with a recorded run (`debug_process.md` §1, "DONE"). The phase-0 mock-ups are
 design work and can go ahead now. Everything after waits for the lift, or for the owner's explicit word.
 
-**Build order, phases, effort and the art list:** §8.7 and §8.8.
+**Build order, phases, effort and the art list:** §8.10 and §8.11.
 
 **Artpipe.**
 - Run `artpipe_state.py find` first. It was run this pass: no conduit, cable or wire art exists, and the 9
@@ -320,250 +327,305 @@ design work and can go ahead now. Everything after waits for the lift, or for th
 
 ## 7. Open questions for the owner
 
-1. **How messy is the default?** Neat-but-ropey (cables mostly follow the line, with gentle loops), or a
-   real rat's nest (cables wander half a cell, pile up at junctions)? Mock-ups will show both.
-2. **Should cable spill visibly over floors and under furniture**, or stay mostly within its own lane?
-3. **Machine hookup wires:** keep vanilla's straight thin line, or make them sag and droop too?
-4. **Looks only, or later some danger?** Trip hazard, sparks in rain, vermin chewing cable, a tidy-up job.
+1. **Machine hookup cords:** the nodal model already runs a cord into each machine. Does it plug in with a
+   visible plug (current mock-up) or vanish into the casing?
+2. **Looks only, or later some danger?** Trip hazard, sparks in rain, vermin chewing cable, a tidy-up job.
    This is a separate later add-on; say no and it never gets built.
-5. **Waterproof conduit:** messy too, or left clean as the "proper" option?
-6. **Should vanilla's own Hidden Conduit stay invisible**, so players keep a tidy choice, or should
+3. **Waterproof conduit:** messy too, or left clean as the "proper" option?
+4. **Should vanilla's own Hidden Conduit stay invisible**, so players keep a tidy choice, or should
    everything be messy?
+5. **Unfinished runs:** should every live dead end spark (current default, his 2026-10-02 rule), or only
+   ends at a real gap, with deliberate ends taped?
 
-## 8. The overlay model (owner idea of 2026-10-02)
+## 8. The overlay model and the nodal cords (owner, 2026-10-02)
 
-Owner, verbatim: *"I had wondered if we could actually have little drawn wires decoratively put over
-otherwise-invisible-conduits as usual. So the visible wires would only be aesthetic. In theory then the drawer
-could be very smart and have them bend around corners and do other multi-cell-physics things to look even more
-realistic, depending on how difficult that is. Swaying in the wind would be amazing, or looping around tree
-trunks or poles. Things like that. Assess that as even realistic or possible, given that art can be anything.
-We certainly wouldn't want annoying clipping issues."*
+Owner, verbatim (the overlay idea): *"I had wondered if we could actually have little drawn wires decoratively
+put over otherwise-invisible-conduits as usual. So the visible wires would only be aesthetic. In theory then the
+drawer could be very smart and have them bend around corners and do other multi-cell-physics things to look
+even more realistic, depending on how difficult that is. Swaying in the wind would be amazing, or looping
+around tree trunks or poles. Things like that. Assess that as even realistic or possible, given that art can be
+anything. We certainly wouldn't want annoying clipping issues."*
 
-Three requirements he added the same day (relayed by the coordinator):
-1. **Break detection as a readout.** Where a line is broken, the end still on a powered net sparks and whips
-   about, and the dead end lies limp. The point is finding breaks at a glance.
-2. **Wires in walls lie on top of the walls.** Conduit under a wall cell is drawn over the wall.
-3. **Aesthetic:** deliberately ugly, "truck drivers in space", very Jawa. Jury-rigged, taped, patched,
-   mismatched gauges and colours, grease.
+Owner, verbatim (the nodal ruling, after approving `06_sprawl_jawa.png` as the look): *"I agree. The
+06_sprawl_jawa.png is definitely the look I was going for. Any cheaper ways to get there? Ignore the load
+calculations, the cables shouldn't change as the power flux changes. It's just about cords roughly connecting
+to/from where they belong. Honestly they don't even need to go over where the conduit is... it's really the
+nodal map of sources, destinations, places where they go into walls, places where they emerge, and then
+corners that they must traverse. So maybe it could be better served as a path-planning problem between nearest
+connected neighbors with conduit under walls being a special case. Perhaps we don't need to show it "over the
+wall" after all, we just say "it's in there" and show where it comes out/goes in. How's that as an improvement
+for doability? But do let's aim for that extra loopy slack look. I'm not going for taught cables. Quite the
+opposite. Everything is a too-long extension cord."*
 
-**This model replaces Tier B as the recommendation.** The conduit def stays functionally vanilla and is made
-invisible (the Invisible Conduit texture swap, plus the hookup-wire suppression). All the looks come from a
-separate cosmetic drawer that reads the conduit grid and owns its own geometry. Under Tier B the conduit's own
-`Print` was the drawer, which tied every wire to its own cell's graphic. The overlay can see the whole
-neighbourhood (trees, walls, nets) when it decides how a wire looks. Tier B's routing math (§3) carries over
-unchanged.
+Owner, verbatim (edge cases, same day): *"Yes, conduit that suddenly ends has a "node" at its terminal point
+that must be reached by a "broken" cord lying on the ground. Sparking if live, dead if not. We'd need to think
+what it looks like when a cord ends in a wall suddenly (probably hangs sparking out of the wall, not a
+continuous shining arc, but a pulsing, flashing, spark-dripping pattern like a real downed power line). How
+about when the conduit "goes under" a large impassable area? (hopefully it "goes into" the device somehow)
+Flesh out other tricky configurations to think through. How to handle a "grid of conduit beneath the ground"
+(ideally a huge tangle of nasty wires and power strips all swirled together terribly). A needless conduit square
+along a linear strip (a pointless loop in the wire on the ground perhaps). Things like that."*
+
+Standing requirements carried from the first round:
+1. **Break detection as a readout.** The end still on a powered net sparks and whips; the dead end lies limp.
+   The point is finding breaks at a glance (§8.5).
+2. **Aesthetic:** deliberately ugly, "truck drivers in space", very Jawa (§8.11).
+
+The conduit def stays functionally vanilla and is made invisible (the Invisible Conduit texture swap, plus the
+hookup-wire suppression). All the looks come from a separate cosmetic layer that reads the conduit grid and
+owns its own geometry.
 
 ### 8.0 Verdicts
 
 | # | question | verdict | one line |
 |---|---|---|---|
 | 1 | Overlay hook | **EASY** | A `SectionLayer` subclass is instantiated by the engine for every section automatically. It needs no Harmony and is rebuilt on existing dirty flags. |
-| 2 | Routing | **MODERATE** | This is pure geometry run at section rebuild time. The only real design work is edge-seeded joins and the strand offsets. |
-| 3 | Trunk and pole wraps | **MODERATE** | The two-layer wrap works if the front half's height is matched to the tree's own sloped plane. Real poles do not exist in vanilla 1.6. |
-| 3b | Wires on top of walls | **MODERATE** | One altitude rule plus a drape piece at the wall's edge. Natural rock is excluded. |
-| 4 | Sway | **EASY if the vanilla plant shader behaves as inferred, else HARD** | `CutoutPlant` already sways any mesh by vertex alpha, driven by the map's wind, with no per-frame CPU cost. |
-| 4b | Break sparking | **EASY to MODERATE** | Find dead ends at rebuild time, poll live/dead every 250 ticks, use vanilla spark flecks, and whip only the few live ends each frame. |
-| 5 | Clipping | **MODERATE, manageable** | Every failure mode has a mitigation (table in §8.5). The ones left over need eyes, not a state read. |
-| — | Overhead spans between poles | **NOT ADVISABLE for phase 1-3** | Wires floating over everything cannot be occluded correctly in a top-down sprite game. |
+| 2 | Node reduction | **EASY-MODERATE** | One flood over conduit cells plus a degree-2 collapse; the special cases (§8.7) are local rules. |
+| 3 | Cord planning | **MODERATE** | A* over the path grid between two nodes, string-pulled, then the rope settle of §8.6. Pure math on copied grids. |
+| 4 | Buried conduit ("it's in there") | **EASY** | Nothing is drawn on walls, rock, water or buildings; a stub decal where conduit surfaces. The wall-top rendering and its occlusion problems are gone. |
+| 5 | Sway | **EASY if the vanilla plant shader behaves as inferred, else HARD** | `CutoutPlant` already sways any mesh by vertex alpha, driven by the map's wind, with no per-frame CPU cost. |
+| 6 | Break sparking + downed wire | **EASY to MODERATE** | Terminals come out of the reduction; poll live/dead every 250 ticks; vanilla spark flecks; only a few live ends animate per frame. |
+| 7 | Clipping | **EASY-MODERATE** | Cords only ever lie on walkable floor at one altitude; the remaining risks are listed in §8.8. |
+| — | Overhead spans between poles | **NOT ADVISABLE** | Wires floating over everything cannot be occluded correctly in a top-down sprite game. |
 
-### 8.1 Overlay model: where the drawer hooks
+### 8.1 Where the drawer hooks
 
 **Options compared** (engine facts from RimSage, decompiled 1.6):
 
 | hook | how it draws | cost | verdict |
 |---|---|---|---|
-| **custom `SectionLayer` subclass** | `Section`'s constructor does `foreach (Type t in typeof(SectionLayer).AllSubclassesNonAbstract()) Activator.CreateInstance(t, this)`, so **any mod's subclass is created for every 17×17 section of every map**. `MapDrawLayer.DrawLayer` then calls `Graphics.DrawMesh` per sub-mesh. `MapDrawer.DrawMapMesh` draws a section only when `view.Overlaps(section.Bounds)` | zero per frame (static mesh); rebuild only when dirty | **chosen** |
-| `MapComponent.MapComponentUpdate` + `Graphics.DrawMesh` with our own cached meshes | we reimplement sections, dirtying and culling | the same GPU cost plus our own bookkeeping | only for the few **animated** pieces (live ends that whip, §8.4b) |
-| `DynamicDrawManager` / `drawerType RealtimeOnly` | per-thing `DrawAt` every frame | O(conduits) each frame | rejected, as before |
-| Harmony on `Graphic_LinkedTransmitter.Print` (Tier B) | inside the conduit's own print | zero per frame | superseded: it cannot see neighbours or obstacles cleanly |
+| **custom `SectionLayer` subclass** | `Section`'s constructor does `foreach (Type t in typeof(SectionLayer).AllSubclassesNonAbstract()) Activator.CreateInstance(t, this)`, so **any mod's subclass is created for every 17×17 section of every map**. `MapDrawLayer.DrawLayer` then calls `Graphics.DrawMesh` per sub-mesh. `MapDrawer.DrawMapMesh` draws a section only when `view.Overlaps(section.Bounds)` | zero per frame (static mesh); rebuild only when dirty | **chosen** for the cords |
+| `MapComponent.MapComponentUpdate` + `Graphics.DrawMesh` with our own cached meshes | we reimplement sections, dirtying and culling | the same GPU cost plus our own bookkeeping | only for the few **animated** pieces (live ends, downed-wire bursts, §8.5) |
+| `DynamicDrawManager` / `drawerType RealtimeOnly` | per-thing `DrawAt` every frame | O(conduits) each frame | rejected |
+| Harmony on `Graphic_LinkedTransmitter.Print` (Tier B) | inside the conduit's own print | zero per frame | rejected: it cannot see neighbours or obstacles |
 | `MapComponentOnGUI` | screen-space IMGUI | — | wrong space; never |
 
+**Who owns what.** A `RM_MapComponent_CordGraph` (runtime only, no `ExposeData`) holds the node graph, the
+planned and laid polylines per edge, and the dirty set. Each `SectionLayer_RM_MessyCords` prints the cords
+**owned** by its section: a cord is owned by the section holding the lower-index endpoint of its edge, so every
+cord is printed exactly once.
+
 **Rebuild triggers** use existing flags. The layer sets `relevantChangeTypes = Things | Buildings | PowerGrid |
-FogOfWar | Roofs` (`MapMeshFlagDefOf`).
-- `Section.TryUpdate` ORs the section's `dirtyFlags` against that mask, and rebuilds immediately only when the
-  section is in view. An off-screen section stays dirty and is rebuilt when it next draws.
-- **Conduit placed or removed:** the conduit still satisfies `def.CanAffectLinker` (it keeps
-  `linkType Transmitter`), so `Thing.SpawnSetup` and `DeSpawn` call
-  `MapMeshDirty(Position, Things, regenAdjacentCells: true)`.
-- **Net change:** `PowerNetManager.NotifyDrawersForWireUpdate` dirties `Things` (adjacent cells) and
-  `PowerGrid` (adjacent cells and adjacent sections).
-- **Buildings:** `Building.SpawnSetup` dirties `Buildings` on every occupied cell, which covers walls, lamps and
-  furniture.
-- **Trees:** spawn, despawn and growth-stage changes dirty `Things` (`Plant.cs` lines 617, 662, 797 and 829).
-- **Fog and roofs:** `FogGrid` dirties `FogOfWar|Things`.
-- 🔑 **No Harmony and no custom flag is needed for any rebuild.** A mod can add a `MapMeshFlagDef`, since it is
-  a Def with an index-derived bit. That is only worth doing if we ever want "rebuild wires only". The `Things`
-  flag also fires for item drops and filth, so the layer will rebuild more often than strictly needed. Keep a
-  per-section cache keyed by a hash of (conduit cells, obstacle cells, live-end set), so an unchanged hash
-  re-emits the cached vertices and skips routing.
+FogOfWar | Terrain`.
+- **Conduit placed or removed:** the conduit keeps `linkType Transmitter`, so it still satisfies
+  `def.CanAffectLinker`, and `Thing.SpawnSetup` and `DeSpawn` call `MapMeshDirty(Position, Things,
+  regenAdjacentCells: true)`.
+- **Net change:** `PowerNetManager.NotifyDrawersForWireUpdate` dirties `Things` and `PowerGrid`.
+- **Buildings, walls, doors:** `Building.SpawnSetup` dirties `Buildings` on every occupied cell.
+- **Terrain** (water, bridges): dirties `Terrain` on the cell and neighbours.
+- **Trees:** spawn, despawn and growth-stage changes dirty `Things`.
+- **Fog:** `FogGrid` dirties `FogOfWar|Things`.
+- 🔑 A section rebuild does **not** re-plan everything: it asks the map component for the cords it owns, and
+  the component re-plans only edges in its dirty set (§8.2.7). An unchanged cord re-emits its cached polyline.
+- Vanilla dirties only the 8 neighbour cells' sections. A cord can run several sections away from the change
+  that affects it (a new wall across its path), so the component marks dirty **edges**, then calls
+  `MapMeshDirty` on the owning section of each dirty edge itself.
 
 **How it reads the network.** All of these are O(1) per cell from existing grids:
 - `map.linkGrid.LinkFlagsAt(c) & LinkFlags.PowerConduit` tells whether a cell is conduit.
 - `map.thingGrid` gives the def at that cell, used to exclude `HiddenConduit` and untagged defs.
-- `map.powerNetGrid.TransmittedPowerNetAt(c)` gives the net, for live/dead state.
-- `CompPower.connectParent` and `connectChildren` give the machine hookups.
-- Copy the Odyssey rule from `Graphic_Linked.ShouldLinkWith`: never join across a
-  substructure/non-substructure edge.
+- `map.powerNetGrid.TransmittedPowerNetAt(c)` gives the net, for live/dead state and for the "same net" guard.
+- `CompPower.connectParent` and `connectChildren` give the machine hookups (machines up to
+  `PowerConnectionMaker.ConnectMaxDist` = 6 cells from their conduit).
+- `map.pathing.Normal.pathGrid.WalkableFast(idx)` gives walkability for planning (§8.6).
+- Copy the Odyssey rule from `Graphic_Linked.ShouldLinkWith`: never join across a substructure/non-substructure
+  edge.
 
-**Overflow and culling.**
-- Each conduit cell's geometry is emitted by the section that owns the cell, even when sprawl crosses into
-  the next section.
-- Override `GetBoundaryRect()` to return the real extent of every vertex printed (as `SectionLayer_Things`
-  does), not a fixed margin: excursions reach up to 3 cells (§8.11.3). `Section` encapsulates every layer's
-  boundary rect into its draw bounds, so overflow is not culled early at the screen edge.
+**Culling.** `SectionLayer_RM_MessyCords` accumulates a `CellRect` of every vertex it prints and returns it
+from `GetBoundaryRect()`, exactly as `SectionLayer_Things` does for oversized prints. `Section.Bounds`
+encapsulates every non-dynamic layer's boundary rect, so a cord reaching far out of its owning section keeps
+that section drawn whenever any of the cord is on screen. Do **not** use `SectionLayer_Dynamic`: dynamic layers
+are excluded from `Section.Bounds`.
 
 **Save compatibility and removal.**
-- Nothing is saved: no comp, no MapComponent data and no def that a save references.
-- Removing the mod drops the layer class. The conduit def's texture swap reverts with it, so conduit
-  becomes visible vanilla conduit again.
-- A setting turns the whole layer off: `Visible => settings.enabled`. `Section.RegenerateSingleLayer` and
-  `DrawLayer` both honour `Visible`.
+- Nothing is saved: no comp, no MapComponent data and no def that a save references. The whole graph and every
+  polyline is rebuilt from the conduit grid on load, and the seeds (§8.2.5) make it identical.
+- Removing the mod drops the layer class. The conduit def's texture swap reverts with it, so conduit becomes
+  visible vanilla conduit again.
+- A setting turns the whole layer off: `Visible => settings.enabled`.
 
 **Hookup wires** (machine to conduit).
 - Vanilla prints these in `CompPower.PostPrintOnto` through
   `PowerNetGraphics.PrintWirePieceConnecting(..., forPowerOverlay:false)`. It already skips them for
   `ThingDefOf.HiddenConduit` by def identity.
-- For our invisible conduit we still need **one Harmony prefix** on `PrintWirePieceConnecting` that returns
-  false only when `!forPowerOverlay` and the connect parent is one of our tagged defs. Our layer then draws a
-  sagging hookup itself.
+- For our invisible conduit we need **one Harmony prefix** on `PrintWirePieceConnecting` that returns false
+  only when `!forPowerOverlay` and the connect parent is one of our tagged defs. The machine is then a node of
+  the graph and its cord is planned like any other (§8.2.6).
 - The overlay's blue connector line stays intact, which avoids Invisible Conduit's bug (§2).
-### 8.2 Routing: cell graph to smooth wires
 
-**Verdict: MODERATE.** It is pure C# geometry with no engine risk.
+### 8.2 The nodal cord model
 
-1. **Graph.** Nodes are our conduit cells. An edge joins two orthogonal neighbours that are both ours and
-   pass the substructure rule. Degree splits the cells into four kinds:
-   - **0** is an isolated cell, drawn as a coil.
-   - **1** is a dead end (§8.4b).
-   - **2** is either a straight run or a corner.
-   - **3 or 4** is a junction.
-2. **Runs.** Walk the chains between junctions and dead ends into polylines of cell centres. Pass them through
-   a **centripetal Catmull-Rom** spline, which never overshoots or loops at sharp corners the way a uniform
-   spline does.
-3. **Corners.** Cut each 90° corner into an arc with a **minimum bend radius**: 0.35 cell for a thin strand,
-   0.5 for a fat cable. A tight double corner (an S inside 2 cells) flattens rather than kinks.
-4. **Slack and sag.**
-   - **Sag and excursions:** the owner level lays 1.9× the run's length as walkability-bounded excursions,
-     loops, figure-eights and heaps up to about 2.6 cells out, settled as a relaxed rope (§8.11). "Tidy"
-     keeps a small sag capped at 0.38 cell. No strand vertex ever enters an unwalkable cell.
-   - **Loops** happen on runs of 4 cells or more with a chance set by the messiness slider: a small 360° loop
-     (radius 0.2) laid flat on the floor.
-   - **Coils** are a decal on isolated cells and capped stubs.
-5. **Bundles.**
-   - Each run carries **1-10 strands, set by the watts flowing along it** (§8.10), never by a random pick.
-   - Each strand has a fixed lateral slot across the bundle (the bundle stays under 0.62 cell wide at 10). It also has its own phase
-     and amplitude for a low-frequency wander (a sine along the arc length), so strands cross and re-cross
-     instead of running parallel.
-   - Each strand also gets its own Y increment, a fraction of `Altitudes.AltInc` (0.0366), so crossings never
-     z-fight.
-   - Gauges and colours are mixed per strand (§8.8).
-6. **Junctions.** Strands entering a T or X are routed to a shared **knot point** jittered inside the cell,
-   and a junction decal sits over it: a taped lump, or a ration-tin box at X junctions. That hides every
-   discontinuity where splines meet.
-7. **Determinism.**
-   - Seed with `Gen.HashCombineInt(x, z, map.uniqueID)` for cells and `HashCombine(min(a,b), max(a,b))` for
-     edges, so the two neighbours agree on a shared edge whichever section draws it.
-   - It is stable across frames, reloads and saves, and nothing is stored.
-   - Avoid `Rand` (global state). Use a local hash-based PRNG.
-8. **Cost.** About 3 strands × 10 segments × 2 tris is about 60 tris per cell, plus decals. A 200-conduit base
-   is about 12k tris and a 5,000-conduit base about 300k tris. Only visible sections are drawn, and the mesh
-   is static. CPU work happens at rebuild only, and a full section is about 17k vertices. Reuse vertex
-   buffers.
+**The idea in one line.** Conduit cells only decide *which things are connected to which*; cords are drawn
+between those things over the floor, too long, and never on top of walls.
 
-### 8.3 Obstacles, wrapping and walls
+#### 8.2.1 Node types
+
+| node | what it is in the conduit | where its cord end sits | look |
+|---|---|---|---|
+| **power source** | a machine with a `CompPowerPlant` (generator, solar, geothermal, wind) whose `connectParent` is a conduit | just outside the machine footprint, on the side nearest its connect cell | the cord plugs into the casing (plug decal) |
+| **consumer** | a machine with a `CompPowerTrader` | same | plug |
+| **battery** | a `CompPowerBattery` building | same | plug |
+| **switch** | `Building_PowerSwitch` (a transmitter building) | on its footprint edge, one end per side | plug on each side; an off switch splits the net (two nets, no break) |
+| **junction** | a conduit cell with 3 or 4 conduit neighbours, or a conduit cell where a machine taps a straight run | the cell centre plus a seeded jitter | tape lump / ration tin / power strip / hex pod (per style) |
+| **terminal** | a conduit cell with one neighbour that is not a needless spur (§8.7.5) | the cell centre pushed 0.36 cell out of the open side | the cord lies broken: live = whip + sparks, dead = limp (§8.5) |
+| **stub** | the boundary between a walkable conduit cell and a **buried** conduit cell (under a wall, natural rock, deep water, or an impassable building) | the face between the two cells | a grommet in a built wall, a drilled hole in rock, ripples on water, a power strip at a building's base (§8.7.3) |
+| **wall terminal** | a stub whose buried run ends inside the wall/rock and not at the map edge | the face | the cord hangs out of a scorched hole: downed-wire bursts if live (§8.7.2) |
+| **tangle** | a dense conduit field (§8.7.4) | one exit point per cord, on the field cell the exit leaves from | a heap of cords and power strips |
+| **lamp / post** | a lamp's connect cell | the lamp base | the cord climbs the post (taped) |
+
+**Waypoints** are not nodes; they are produced by the planner and belong to one cord:
+- **corner waypoints** where a string-pulled path bends round an obstacle;
+- **doorway waypoints**: a door cell on the path; the cord is pinned through the doorway (no loops in it);
+- **knot waypoints**: needless conduit on the cord's own chain (§8.7.5); the cord gets a pointless loop there;
+- **via waypoints**: the midpoint of a ring edge's own chain, so two cords between the same nodes go round
+  their own sides (§8.7.6).
+
+#### 8.2.2 Reduction: from conduit cells to nodes and edges
+
+1. **Classify cells.** `buried` = conduit cells that are not walkable (`!WalkableFast`), i.e. under a wall,
+   rock, deep water or an impassable building. The rest are floor conduit.
+2. **Dense fields** (§8.7.4): find components of dense floor conduit; a component of ≥ 9 cells becomes one
+   **tangle** vertex, a smaller one containing a 2x2 block becomes a **blob** vertex.
+3. **Vertices and links.** Floor conduit cell, buried cell, tangle, blob and machine are vertices. Orthogonal
+   conduit neighbours link. A link between a floor cell and a buried cell is split by a **stub** vertex. A
+   machine links to its connect cell.
+4. **Keep** machines, stubs and tangles, and any cell/buried/blob vertex whose degree is not 2. Walk every chain
+   of degree-2 vertices between kept vertices into one **edge**. An edge whose chain contains a buried cell is
+   **hidden** (never drawn); every other edge is a **cord edge**.
+5. **Prune needless spurs** (§8.7.5): a dead end of ≤ 2 cells off a junction that does not face a gap is
+   removed; if that leaves the junction as a plain pass-through, its two edges merge into one cord edge with a
+   knot waypoint where the junction was.
+6. **Classify** the kept vertices into the node types of §8.2.1. A buried end that is not at the map edge turns
+   the stub leading to it into a wall terminal.
+
+🔑 **Cords exist only between truly connected nodes.** Every cord edge *is* a chain of 4-adjacent conduit
+cells, so its two endpoints are always in the same conduit component, and in the same `PowerNet` (a net is the
+4-neighbour flood of transmitters, `PowerNetMaker`). A missing conduit cell splits the chain: each side ends in
+a terminal node, so a gap always yields **two dangling ends and never a cord across it**. Selftested in the
+mock-up (`selftest.py`: "cords only between connected nodes", "no cord across the gap"), and line 2 of the
+north-star script re-checks it against the live `PowerNet`s.
+
+Cost: one pass over conduit cells plus one walk per chain, O(cells). It is redone per **net** when that net
+changes, not per map.
+
+#### 8.2.3 Planning one cord
+
+1. **A*** on the walkable grid (8-connected, no corner cutting past an unwalkable cell) from the cell of one
+   endpoint to the cell of the other. Tree and post cells cost a little more, so cords prefer to go round them.
+   Mandatory stops (knot and via waypoints) split the search into legs.
+2. **String-pull** each leg: from the current point keep the furthest path point that is in clear line of
+   sight (clearance 0.2 cell from any unwalkable cell), never skipping a door cell. The surviving points are the
+   corner and doorway waypoints.
+3. **Round corners** (corner cut + centripetal Catmull-Rom, which never overshoots).
+
+The path does **not** follow the conduit cells. Conduit under a room can be laid in a straight trunk while its
+cord wanders across the floor in a different route; the owner ruled this fine ("they don't even need to go
+over where the conduit is").
+
+If A* finds no path (the endpoints are in walkable regions that do not connect, e.g. a stub opening into a
+sealed rock pocket), the cord is drawn as a short stub at each end and the edge is flagged `unroutable` (debug
+view only).
+
+#### 8.2.4 Laying the slack: "everything is a too-long extension cord"
+
+The laid cord is the rope settle of §8.6 applied to the planned path:
+- **Length:** extra cord = `clamp(slack × path, 7, 16)` cells, with `slack` seeded per cord in 1.4-2.4. A
+  short cord therefore lies at about 2-3x its path (one heap's worth even on a 1-cell hop); a 60-cell run carries
+  at most 16 extra cells (about 1.25x) and reads as a long cord with a few loose bunches, not 120 cells of
+  coil. Measured on the mock-up scene: 13 cords at 1.2-3.7x, median 2.6x.
+- **Shape:** broad excursions shared by the cords of one edge, slack loops (0.35 per cell), figure-eights, a
+  heap with probability 0.8, each spliced in only where it lies on walkable floor and fits the length budget
+  (a loop that does not fit shrinks, then is dropped).
+- **Settle:** inextensible segments, bend smoothing, hard projection out of unwalkable cells and out of round
+  trunk/post obstacles, so excess piles against walls, rock, trees and posts. Ends and doorways are pinned.
+- **Cords per edge:** 1-3, seeded per edge. Fixed: the count never changes with power flow.
+- **No self-avoidance and no cord-cord avoidance.** Cords may cross themselves and each other, as real cords
+  do; a per-cord altitude increment (a fraction of `AltInc`) orders them without z-fighting. Cords may **not**
+  enter an unwalkable cell (asserted by the selftest on every scene).
+
+#### 8.2.5 Determinism
+
+- Every random choice comes from a local hash PRNG (never `Rand`), seeded from **the two endpoint cells of the
+  edge plus their node types** (and the index among parallel edges).
+- So an unrelated edit never reshuffles a cord: placing a machine across the map leaves every other cord's
+  polyline bit-identical (selftested). Only cords whose endpoints, chain or planned corridor changed are re-laid.
+- Stable across frames, reloads and saves; nothing is stored.
+
+#### 8.2.6 Machines, doorways, crossings
+
+- **Hookups:** a machine is a node; its cord is planned from its footprint edge to the next node like any
+  other cord. A machine whose connect cell is the end of a run collapses into that run (one cord from the
+  machine to the next junction). A machine tapping the middle of a run makes that cell a junction.
+- **Machines connected from up to 6 cells away** (`ConnectMaxDist`) without conduit between: the cord simply
+  runs that distance over the floor. That is the vanilla hookup wire, now a too-long cord.
+- **Doorways:** a door cell is walkable, so cords pass through it on the floor. The doorway is a pinned
+  waypoint: no loops or heaps in the doorway, and the closed door leaves (`DoorMoveable`) cover the cord at the
+  threshold. Conduit *under* a door is just floor conduit.
+- **Crossings:** cords may overlap and cross each other and themselves. They never cross an unwalkable cell:
+  there they stop at a stub.
+- **Fences** (`FenceBlocked`) are walkable for cords: cords pass under fences.
+
+#### 8.2.7 What a change invalidates
+
+| change | invalidates |
+|---|---|
+| conduit cell placed/removed/destroyed | the net's reduction; then only edges whose chain or endpoints changed (compare by endpoint key + chain hash) are re-planned |
+| machine connected/disconnected | its one edge (and the merge/split of the run it taps) |
+| wall, rock, building, door placed/removed (walkability change) | edges whose **planned corridor** (path bounding box expanded by 3 cells) contains the cell; their laid polylines |
+| water/terrain change | same as a walkability change |
+| tree grows/falls, lamp placed | edges whose corridor contains it (trunks and posts are obstacles) |
+| fog revealed | edges touching the cell (fogged cells are treated as unwalkable and hide their cords, §8.3) |
+| live/dead flip (night solar, empty battery, EMP) | **nothing geometric**: only the terminal registry (§8.5) |
+| power flux | nothing. Cords never change with load (owner ruling) |
+
+The map component keeps `Dictionary<edgeKey, CordCache>` (planned path, laid polylines, corridor rect) in
+memory only. Dirty edges are re-planned lazily when their owning section next draws, so off-screen changes cost
+nothing until seen.
+
+### 8.3 Layering, obstacles and walls
 
 **The relevant altitude layers** (`Verse.AltitudeLayer`). `Altitudes.AltitudeFor` = index × 0.3659, so a
 higher Y draws over a lower one. `AltInc` = 0.0366, which gives 10 sub-steps per layer.
 
-| idx | layer | y | relation to wires |
+| idx | layer | y | relation to cords |
 |---|---|---|---|
-| 2 | Terrain | 0.73 | the floor; **snow is drawn here too** (`SectionLayer_Snow`, `AltitudeLayer.Terrain`), so snow is under the wires |
+| 2 | Terrain | 0.73 | the floor; **snow is drawn here too** (`SectionLayer_Snow`), so snow is under the cords |
 | 4 | Floor | 1.46 | |
-| **5** | **Conduits** | **1.83** | **floor wires live here**, like vanilla conduit |
-| 6 | FloorCoverings | 2.20 | rugs over the wires (reads right) |
-| 8 | Filth | 2.93 | filth over the wires (grease and dirt on cable reads right) |
-| **10** | **SmallWire** | **3.66** | vanilla hookup wires; **our hookups live here** |
-| 11 | LowPlant | 4.02 | grass over the floor wires |
+| **5** | **Conduits** | **1.83** | **floor cords live here**, like vanilla conduit |
+| 6 | FloorCoverings | 2.20 | rugs over the cords (reads right) |
+| 8 | Filth | 2.93 | filth over the cords (grease and dirt on cable reads right) |
+| 10 | SmallWire | 3.66 | vanilla hookup wires (suppressed for our defs) |
+| 11 | LowPlant | 4.02 | grass over the floor cords |
 | 13 | Shadows | 4.76 | sun and edge shadows |
-| 14 | DoorMoveable | 5.12 | door leaves cover wires at the threshold |
-| **15** | **Building** | **5.49** | walls, trees, lamps, furniture. Planes **tilt**: top vertices +0.01 by default, and **+0.1 for plants** (`Plant.Print` passes `topVerticesAltitudeBias 0.1`). Wall corner fillers sit at +1 AltInc |
-| 17 | BuildingOnTop | 6.22 | |
-| 18 | Item | 6.59 | items always over the wires |
-| 20/23 | LayingPawn / Pawn | 7.3 / 8.4 | **pawns, including carried things, always walk over the wires** |
+| 14 | DoorMoveable | 5.12 | door leaves cover cords at the threshold |
+| **15** | **Building** | **5.49** | walls, trees, lamps, furniture; stub decals print here at the wall face + ε |
+| 18 | Item | 6.59 | items always over the cords |
+| 20/23 | LayingPawn / Pawn | 7.3 / 8.4 | **pawns always walk over the cords** |
 | 34 | FogOfWar | 12.4 | fog covers everything |
 | 38 | MapDataOverlay | 13.9 | the power overlay. We never draw here |
 
-**Trunks.**
-- **Which plants are trees:** `def.plant.IsTree`, which is `harvestTag == "Wood" || forceIsTree`.
-- **Where a tree sits:**
-  - `Plant.Print` (`maxMeshCount == 1`) centres the sprite at `TrueCenter` plus a 0.05 random horizontal
-    jitter, using `Rand` seeded by `Position.GetHashCode()`.
-  - It clamps the sprite so its bottom does not fall below the cell's south edge. The trunk base is therefore
-    at about (x+0.5, z+0.05…0.15).
-  - The sprite size is `drawSize.x × visualSizeRange.LerpThroughRange(growth)`. Oak, for example, is 1.5~2.0.
-  - The UV is mirrored by `Rand.Bool`.
-  - We can reproduce the exact jitter and flip by replaying that seed. The trunk's **pixel width and x
-    position inside the art are not in any def**, so a small per-def anchor table is needed (default: centred,
-    radius 0.08 × sprite size).
-- **The wrap**, the two-layer trick done correctly:
-  - **Back half** of the loop: at Conduits/SmallWire height. It sits far below the tree plane, so the trunk's
-    opaque pixels hide it naturally, while it still shows through the cut-out gaps beside the trunk.
-  - **Front half:** at **the tree plane's own Y at that z, plus ε (~0.002)**, which is
-    `Building.AltitudeFor() + 0.1 × (z − spriteBottomZ) / spriteHeight + ε`. Do **not** put it on a fixed
-    higher layer.
-  - 🔑 Why the matched Y matters: a tree or lamp **south** of the wrapped trunk has its upper sprite (higher
-    tilted Y) overlapping our cell. With the matched Y it still covers our front half, as it covers the trunk.
-    A fixed BuildingOnTop front half would paint over that southern canopy, which is the classic clipping bug.
-  - Items and pawns (higher layers) still draw over the wrap.
-- **Rebuild:** tree growth, chopping and burning all dirty `Things`, so the wrap follows the trunk size and
-  disappears with it.
+- **Everything a cord does happens on the floor at Conduits height.** Nothing is drawn on top of a wall, so the
+  matched-Y wall-top rendering, wall drapes and wall-corner-filler fights of the per-cell model are gone.
+- **Stubs** are the only pieces at Building height: a decal on the wall/rock face, printed after the wall.
+- **Trees and posts** are round obstacles in the settle (trunk base ≈ (x+0.5, z+0.1), radius ~0.17; posts
+  ~0.1). Cords pile against them. **Trunk wraps** (a loop round a trunk with a matched-Y front half; `Plant.Print`
+  tilts its plane +0.1, so the front half must sit at the tree plane's own Y at that z + ε, never a fixed higher
+  layer) stay an optional phase-3 decoration.
+- **Lamps:** a powered lamp is a node; its cord climbs the post with a tape decal (matched-Y front, same rule).
+- **Multi-cell furniture over floor conduit:** furniture is walkable or not per the path grid; an impassable
+  one buries the conduit under it (stubs, §8.7.3), a passable one (tables, beds) lets cords lie under it,
+  showing through the gaps.
+- **Fog:** fogged cells are unwalkable for planning and their nodes are not drawn, so a cord never reveals
+  hidden conduit or wanders into fog. FogOfWar is in the rebuild mask.
+- **Roofs:** RimWorld does not draw roofs over the map; roofed cells only zero the sway (§8.4).
+- **Overhead spans** pole-to-pole are **NOT ADVISABLE**: a span floating above the floor has no correct
+  occlusion against walls and furniture between the poles in a top-down sprite game.
 
-**Poles.**
-- **No power pole exists in vanilla 1.6.** RimSage search: `pole` returns no def. `Pylon` returns only Biotech's
-  `MechPylon`.
-- The pole-like 1×1 `Building`-altitude things are `StandingLamp`, `TorchLamp`, `Column`, `AncientLamppost` and
-  `AncientCraneColumn`. Mod poles are UNMEASURED.
-- **Phase-1 "pole" behaviour:** a powered lamp's hookup wire **climbs the post**. A short vertical strand on the
-  lamp's front face uses the same matched-Y front rule, with a tape decal. A wire passing a column or lamp
-  can take a single wrap, like a trunk.
-- **Overhead spans** pole-to-pole are **NOT ADVISABLE**. A span floating above the floor has no correct
-  occlusion against walls and furniture between the poles in a top-down sprite game. Every fixed altitude for it
-  is wrong somewhere. If ever wanted, restrict spans to runs where every cell between is open floor, and treat
-  it as a later experiment.
+**Mouse-over and selection.** Cords are not Things. Selection, tooltips and deconstruction still go through
+the invisible conduit's cell. Because a cord may lie far from its conduit, while a conduit is selected the
+component redraws every cord of that cell's net-component edges in a highlight material (from
+`MapComponentUpdate`), so players see what they clicked. Required, not optional.
 
-**Wires in walls** (owner requirement 2).
-- `PowerConduit` is `isEdifice false`, and its description says it "can be placed under walls and other
-  buildings".
-- **Constructed wall** (an edifice with `Fillage Full` and not `building.isNaturalRock`):
-  - The strand runs along the wall's top surface at Y = `Building + AltInc + 0.01 + ε`, just above the wall
-    plane and its corner fillers.
-  - The same tilt logic applies: anything south of the wall whose sprite reaches up over the wall still has a
-    higher Y on its upper part and stays in front.
-  - Where the run leaves the wall into an open cell, a **drape piece** (a decal) bends the cable over the
-    wall's edge. On the south face it hangs down the face. On north, east and west edges it is a short bend.
-  - Walls dirty `Buildings`, so building or removing a wall over a conduit rebuilds the wire correctly.
-- **Natural rock and mountains** (`isNaturalRock`):
-  - Draw nothing inside rock. Where a conduit run meets a rock face, place a **grommet** decal: a cable
-    plunging into a drilled hole.
-  - Rock tops are usually fogged anyway.
-  - Whether conduit can even be built under natural rock is UNVERIFIED. It is rare either way.
-- **Doors:** draw at floor level. The door leaves (DoorMoveable) cover the cable when closed, and it reads as a
-  cable under the threshold.
-- **Roofs:** RimWorld does not draw roofs over the map, so there is no interaction. Roofed cells only zero the
-  sway (§8.4).
-- **Fog:** like `SectionLayer_Things`, skip any conduit cell that is `fogGrid.IsFogged`. Otherwise a strand
-  sprawling out of a fogged cell would reveal hidden conduit. FogOfWar is in the rebuild mask.
-- **Multi-cell buildings and furniture over conduit:** floor wires stay at Conduits height. They are hidden by
-  the opaque pixels and show through the gaps, such as between table legs, which is realistic. Wall-top
-  treatment applies only to `Fillage Full` edifices.
-
-**Mouse-over and selection.**
-- Wires are not Things. Selection, tooltips and deconstruction still go through the invisible conduit's cell,
-  as now.
-- Excursions reach 1-3 cells (§8.11), so a loop is not clickable by itself. While a conduit is selected,
-  highlight its whole run (required now, see below).
-- Optional: while a conduit is selected, redraw its cached strand segment in a highlight material from
-  `MapComponentUpdate`, so players see what they clicked.
 ### 8.4 Sway
 
 **How the engine sways plants** (RimSage):
@@ -579,135 +641,256 @@ higher Y draws over a lower one. `AltInc` = 0.0366, which gives 10 sub-steps per
 - Plants are printed into the static section mesh. **The motion is entirely in the vertex shader. No CPU work
   happens per frame.**
 
-**So the cheapest wire sway is free.**
+**So the cheapest cord sway is free.**
 - Build the strand material with `ShaderDatabase.CutoutPlant` and give it the strand texture. It joins the
   wind list automatically.
-- Write **vertex alpha** as the sway weight per vertex:
-  - 0 where a strand lies on the floor, is taped or is anchored;
-  - rising toward the middle of any lifted span (trunk loops, pole climbs, wall drapes);
-  - **0 under a roof** (`roofGrid.Roofed`), since there is no wind indoors.
-- Write the UV z as a per-run phase.
-- What this gives:
-  - wind-speed-driven sway that respects the game's own "plant sway" preference;
-  - storms sway harder (`WindSpeed` includes weather and `CompWindSource`);
-  - zero CPU per frame on a 200- or a 5,000-conduit base.
-- **What to sway:** realistically, cable lying on a floor does not sway. Sway the lifted bits: trunk-wrap
-  loops, pole climbs and wall drapes. Optionally add a faint ripple on outdoor floor runs, behind a setting.
+- Write **vertex alpha** as the sway weight per vertex: 0 where a cord lies on the floor, is taped or pinned;
+  rising toward the middle of any lifted span (lamp climbs, cords hanging out of a wall face, trunk-wrap loops);
+  **0 under a roof**.
+- Write the UV z as a per-cord phase.
+- What this gives: wind-speed-driven sway that respects the game's own "plant sway" preference; storms sway
+  harder; zero CPU per frame on any base size.
+- **What to sway:** cord lying on a floor does not sway. Sway the lifted bits. Optionally a faint ripple on
+  outdoor floor cords, behind a setting.
 - **Caveat:** the shader is a compiled asset. Its displacement formula (the axis, and how it uses vertex alpha
-  and UV z) is **not in the decompiled C#**, and is inferred from how `Plant.Print` feeds it.
-  - If it displaces only along world x, east-west spans would stretch along their own axis rather than sway.
-    Keep amplitudes small and weight north-south spans more.
-  - `CutoutPlant` also carries fall-colour parameters. We do not set `_FallBehaviorEnabled`, so it should stay
-    off. UNVERIFIED.
+  and UV z) is **not in the decompiled C#**, and is inferred from how `Plant.Print` feeds it. If it displaces
+  only along world x, keep amplitudes small. `CutoutPlant` also carries fall-colour parameters; we do not set
+  `_FallBehaviorEnabled`, so it should stay off. UNVERIFIED.
 
 **Fallbacks if the plant shader misbehaves.**
 - **Our own vertex shader in an AssetBundle:** HARD. It is a new toolchain for us and needs the Unity version
   matched to the game.
-- **CPU mesh deformation per frame for lifted spans only**, from `MapComponentUpdate`: MODERATE.
-  - Even a 5,000-conduit base has perhaps 50-200 lifted spans, each about 40 verts. That is under 10k verts a
-    frame and cheap.
-  - Animating all floor strands on the CPU (about 150k verts on a 5,000-conduit base) is **not** acceptable.
+- **CPU mesh deformation per frame for lifted spans only**, from `MapComponentUpdate`: MODERATE. Even a big base
+  has perhaps 50-200 lifted spans of about 40 verts each.
 
-**Level of detail and culling.**
-- Sections are culled by the engine (`DrawMapMesh`).
-- For LOD, emit two sub-meshes per material: full strands, and a 1-strand simplified bundle. Override
-  `DrawLayer` to set `LayerSubMesh.disabled` by `Find.CameraDriver.CurrentZoom`. At far zoom, thin strands
-  alias into shimmer, so drop to the simplified bundle and hide decals.
-- Settings: sway on/off, which only rebuilds with alpha 0; floor ripple on/off; LOD threshold.
+**Level of detail.** Sections are culled by the engine (`DrawMapMesh`). For LOD, emit a second sub-mesh per
+material with cords decimated to 1 strand and no decals, and switch by `Find.CameraDriver.CurrentZoom`
+(`LayerSubMesh.disabled`). At far zoom thin strands alias into shimmer.
 
-### 8.4b Break detection: live ends spark and whip, dead ends lie limp (owner requirement 1)
+### 8.5 Break readout: terminals spark, dead ends lie limp
 
-**What a "break" is when the conduit is invisible.** The wires are drawn only where conduit exists, so a break
-is a **gap**: a cell with no conduit between two conduit runs. At rebuild time the router already finds every
-**dead end** (a degree-1 cell). A dead end is classed by what lies beyond its open side:
+**A break is a terminal node.** The reduction (§8.2.2) turns every conduit end into a terminal, except a
+needless spur (§8.7.5). The cord to a terminal lies broken on the ground; its last ~0.4 cell is the **tail**.
+- **A conduit destroyed** (fire, explosion, raid): two terminals face a 1-cell gap. Vanilla
+  `ThingUtility.CheckAutoRebuildOnDestroyed` leaves a `Blueprint_Build`/`Frame` in the gap; the terminals stay
+  until the conduit is rebuilt.
+- **Deconstructed or never finished:** a terminal at the end of the run. It sparks when live (owner rule; the
+  "Unfinished runs spark" setting can tape them instead).
+- **A transmitter building removed** from the middle of a run (a battery): terminals across its old footprint.
+- **Wall or building removed over conduit:** no break. Buried conduit was continuous all along; the two stubs
+  simply become ordinary floor conduit and the cord re-plans.
+- **A run that ends inside a wall or rock** is a wall terminal (§8.7.2).
 
-| case | test | drawn as |
-|---|---|---|
-| terminates into a machine or transmitter building | the neighbour cell holds a `CompPower` (connector or transmitter, including power switches and batteries) | normal plug-in, no end |
-| **paired break** | the straight continuation, within 1-3 non-conduit cells, reaches another of our conduit cells, **on a different net** or the same one | **frayed ends reaching into the gap**, leaving a visible gap |
-| **planned or auto-rebuild break** | a `Blueprint_Build` or `Frame` of a conduit def sits in the gap cell. Vanilla `ThingUtility.CheckAutoRebuildOnDestroyed` leaves exactly that when a player conduit is destroyed with auto-rebuild on | frayed end |
-| lone stub | none of the above | **taped cap**. A deliberate end never sparks |
+**Live or dead per terminal.**
+- `powerNetGrid.TransmittedPowerNetAt(cell)` returns the terminal's net.
+- **live** = `net.HasActivePowerSource` (a battery with `StoredEnergy > 0` that is not EMP-stunned, or a trader
+  with `PowerOutput > 0`).
+- 🔴 **Live/dead flips without any mesh-dirty event** (solar at night, batteries draining, an EMP). So:
+  - the map component keeps a terminal registry (runtime only, no `ExposeData`);
+  - every **250 ticks** it re-evaluates live/dead once per distinct net;
+  - a flip **does not** rebuild any mesh. The cord body is static; the tail is not in the static mesh, the
+    component draws it.
+- **Live floor terminal:** the tail whips (a cached ribbon bent by a sum of sines plus random snaps, keyed to
+  **real time**, so a broken line is findable **while paused**); every 40-120 ticks
+  `FleckMaker.ThrowMicroSparks(tip, map)` plus an occasional `ThrowLightningGlow(tip, map, 0.4)`. A lightning
+  arc is drawn only between two live tips across the same gap (≤ 1.5 cells apart). Vanilla flecks, no new art;
+  `ShouldSpawnMotesAt` culls off-screen positions. Cost O(visible live ends).
+- **Dead terminal:** a static limp, slightly curled tail with a dull frayed-copper decal. No motion, no light.
+- **Brownout or power off:** a net with no active source reads **dead** everywhere: no current, no sparks. An
+  off power switch splits the net at a building; that is two nets, not a break.
+- Settings: break sparks on/off, whip on/off, downed-wire bursts on/off, spark rate, "only when the power
+  overlay is open".
 
-How breaks arise:
-- **A conduit destroyed** (fire, explosion, raid): two dead ends face a 1-cell gap → paired.
-- **Deconstructed:** paired. If the gap is wider than 3 cells, the ends become lone capped stubs. That is
-  correct, since a long gap is a layout and not a break.
-- **A transmitter building removed** from the middle of a run, a battery for example: paired across its old
-  footprint.
-- **Wall or building removed:** no break. Conduit under a wall was continuous all along.
+**Gameplay clarity.** The whole readout is cosmetic: no danger, damage or fire (Tier C stays separate). The
+flecks are bright, so a break is seen at a glance from across the map at normal zoom.
 
-**Live or dead per end.**
-- `powerNetGrid.TransmittedPowerNetAt(cell)` returns the end's net.
-- **live** = `net.HasActivePowerSource`. That is a battery with `StoredEnergy > 0` that is not EMP-stunned,
-  or a trader with `PowerOutput > 0`.
-- 🔴 **Live/dead flips without any mesh-dirty event:** solar at night, batteries draining, an EMP. So:
-  - The layer publishes each section's frayed ends to a small `MapComponent` registry. This is runtime only,
-    with **no `ExposeData`**, so nothing is saved.
-  - Every **250 ticks** the component re-evaluates live/dead once per distinct net. `HasActivePowerSource`
-    loops transmitters, but only until it finds a source, so this is negligible.
-  - A flip **does not** rebuild the static mesh. Limp ends are part of the static mesh; live ends are drawn
-    dynamically.
-  - To make that possible, the layer omits the last ~0.4 cell of every frayed end from the static mesh, and the
-    component draws that tail itself.
-- **Live end:** the component draws the frayed tail each frame in `MapComponentUpdate` with
-  `Graphics.DrawMesh`:
-  - a small cached ribbon mesh, rotated and bent by a jittery whip function (sum of sines plus random snaps,
-    keyed to **real time**, so a broken line is still findable **while paused**);
-  - every 40-120 ticks, `FleckMaker.ThrowMicroSparks(tip, map)`, plus an occasional
-    `ThrowLightningGlow(tip, map, 0.4)`.
-  - Both are vanilla flecks, with no new art needed. `ShouldSpawnMotesAt` already culls off-screen positions.
-  - Cost is O(visible live ends), which is a handful on any real base.
-- **Dead end:** a static limp, slightly curled tail with a dull frayed-copper decal. No motion, no light.
-- **Brownout or power off:** a net with a source that is not active (night solar, empty batteries) reads
-  **dead**, which is physically right: no current, no sparks. A tripped or flicked-off power switch splits the
-  net at a building, so it is not a break.
-- Settings: break sparks on/off, whip on/off (sparks only), spark rate, and an "only when the power overlay is
-  open" option for players who find it noisy.
+### 8.6 Slack laying: walkability-aware loops and the rope settle
 
-**Gameplay clarity.**
-- The whole readout is cosmetic. No danger, damage or fire comes from sparks (Tier C stays separate).
-- A break can be seen at a glance from across the map at normal zoom, because the flecks are bright.
-- Bars for Northstar (state reads, no eyes needed):
-  - destroy one conduit in a live line, then read the registry: 1 live end, plus 1 dead end if the far side
-    has no source;
-  - after 250 ticks, flip the source off and see the live end turn dead.
-### 8.5 Clipping and artifact risk register
+Owner, verbatim, with a photo of an orange extension cord lying in big loose loops, figure-eights and a heap
+on a dirt floor (`Transient/messy_conduit_mockups_20261002/00_owner_reference_orange_cord.png`): *"Yes, I want
+it to have much larger excursions that avoid unwalkable areas or even pile up against them. I think you know
+what I'm wanting."* `06_sprawl_jawa.png` (AFTER panel) is the owner-approved look; the nodal model lays every
+cord with this machinery (implemented in `rope.py`, called from `nodal.py`).
+
+1. **Slack.** Each cord gets more cable than its path needs, budgeted per §8.2.4.
+2. **Excursions.** Broad lateral bumps, 1.2-2.6 cells long, shared by the cords of one edge so they travel
+   together. Their side is biased toward open floor (30% go toward the obstacle side, which makes the cord pile
+   up against it). An excursion is clipped to the open floor in its direction; the clipped excess is kept as
+   length and buckles into a bunch along the wall base or rock face.
+3. **Loops, figure-eights, heaps**, seeded per cord, spliced in only where every point lies on walkable floor
+   and within the length budget; otherwise shrunk by 0.7 up to 5 times, then dropped.
+4. **Relaxed-rope settle** (position-based dynamics, 70 iterations): inextensible segments; bend smoothing;
+   hard projection out of unwalkable cells and round trunk/post obstacles along the signed-distance gradient;
+   pins at both ends and through doorways. No self-avoidance, by design.
+
+**Walkability in game** (decompiled 1.6):
+- Cheapest read: `map.pathing.Normal.pathGrid.WalkableFast(idx)` (`pathGrid[idx] < 10000`); no bounds check, so
+  do our own `InBounds`. The cost becomes `ImpassableCost` (10000) for impassable terrain (deep water,
+  `TerrainDef.passability`), impassable things (walls, rock, most production buildings) and fences;
+  `GenGrid.Walkable` additionally reads `FenceBlocked`, which we ignore (cords pass under fences).
+- For a re-plan, copy the corridor window of the path grid into a small signed-distance field (the mock-up
+  uses 10 samples per cell and a chamfer transform).
+- Walkability changes from pawns, items and plants do not count: items and pawns are not impassable, and
+  plants are not checked. Cords lie under them.
+
+**Cost** (mock-up measurement, Python + numpy, not C#): the 07 scene's 13 cord edges, 18 cords, 4,055 laid
+points, reduce + plan + lay in **0.23 s**; the per-cell overlay on the same conduit took 0.35 s for 25 strands
+and 8,178 points. C# estimate (arithmetic only): points × iterations × ~60 flops ≈ 5-15 ms for that scene,
+once, then cached per edge. A re-plan touches only dirty edges.
+
+### 8.7 Tricky configurations
+
+Rules 8.7.1-8.7.5 and the ring rule of 8.7.6 are implemented in the mock-up's reduction and planner, so
+`Transient/messy_conduit_mockups_20261002/08_tricky_*.png` comes out of the same code path as the main scene,
+and `selftest.py` asserts the census of each. The stub-merging rule of 8.7.3, the long-run heaps and the rest
+of 8.7.6 are design only.
+
+#### 8.7.1 Terminal node (any conduit end)
+
+- **DETECT:** a floor conduit cell with one conduit neighbour (graph degree 1) that is not a needless spur. A
+  gap is two such cells facing each other across 1-3 non-conduit cells.
+- **TREAT:** a node at the cell, pushed 0.36 cell toward the open side. Its cord is planned like any other.
+- **LOOK:** the cord lies broken on the ground; live = the tail whips and sparks; dead = limp, dull copper
+  (`07_nodal_breaks_jawa.png`, `08_tricky_downed_wire.png`).
+- **COST:** none beyond the reduction; the registry poll is per net every 250 ticks.
+- **RISK:** a base with many unfinished runs sparks a lot. Mitigation: per-map cap on concurrently sparking
+  ends; the "Unfinished runs spark" setting.
+
+#### 8.7.2 Cord ending inside a wall (downed wire)
+
+- **DETECT:** a hidden edge from a stub ends at a buried vertex of degree 1 that is not at the map edge.
+- **TREAT:** the stub becomes a wall terminal; live/dead from the walk cell's net.
+- **LOOK:** a scorched, ragged hole with soot; the cord goes in and its broken end **hangs out of the hole**,
+  drooping down the face. Live: a pulsing, flashing, spark-**dripping** pattern like a downed power line, never
+  a steady arc: irregular cycles of drip (sparks fall down the face and bounce on the floor), flash (a burst,
+  the wall face lights up), quiet (an ember) and crackle. Driven by real time with a per-terminal seeded random
+  schedule (exponential gaps 0.3-2.5 s), vanilla `MicroSparks` for the drips and `LightningGlow` for the flash.
+  Dead: hangs still (`08_tricky_downed_wire.png`, 4 frames + dead).
+- **COST:** O(visible live wall terminals) per frame, a few flecks each.
+- **RISK:** the face decal on a wall's north/east/west side is less visible (top-down view sees the south face).
+  The hole sits on the visible south face strip when the wall is north of the floor cell, else at the cell
+  line; the drip direction is always screen-down.
+
+#### 8.7.3 Conduit under a large impassable area
+
+- **DETECT:** buried cells are any unwalkable conduit cells; the stub's type comes from what buries the cell:
+  natural rock, deep water (terrain passability), a built wall, or an impassable building footprint.
+- **TREAT:** the buried run is a hidden edge (any length; nothing drawn). The stubs are exactly where the
+  conduit surfaces: entry and exit points are chosen by the conduit itself, never invented. Several stubs of
+  one buried run that surface on the same floor chain within 2 cells are merged into one (no "comb" of holes
+  along a wall that conduit runs beside).
+  - **powered building on its own conduit** (the building's `connectParent` is one of the buried cells):
+    the cord **goes into the device**: a power strip at the building's base with the cord plugged in.
+  - **unpowered impassable building** (a sculpture, a ship part): a grommet at its base, as for a wall.
+  - **rock**: a drilled cable hole with chipped rim. **Wall**: a grommet plate. **Deep water**: the cord dives
+    in under ripples.
+- **LOOK:** `08_tricky_under_mountain.png` (rock mass, lake, 3x3 machine; render + graph).
+- **COST:** cheaper than floor conduit: a buried run of any length is one hidden edge and two decals.
+- **RISK:** a stub that opens into a sealed pocket has nowhere to route (flagged `unroutable`, short stubs only).
+  Long buried runs show nothing between their ends; the vanilla power overlay still shows the cells.
+
+#### 8.7.4 A grid of conduit under the floor (tangle)
+
+- **DETECT:** dense floor conduit = cells in a full 2x2 block, or with ≥ 6 conduit cells in their 3x3 window;
+  closed over lattice crossings (≥ 2 dense 4-neighbours) and over the conduit inside the field's bounding box.
+  A dense component of **≥ 9 cells** is a tangle.
+- **TREAT:** the whole field is **one node**. Every conduit link from the field to outside conduit, and every
+  machine hooked into it, is one exit edge whose cord starts on the field cell it leaves from.
+- **LOOK:** a huge swirled heap of cords over the field's cells (4 + cells/3 cords, max 14, heaped and settled),
+  with power strips (1 per 7 cells) lying on top, LEDs lit when the field's net is live
+  (`08_tricky_grid_tangle.png`: live, generator off, and the graph).
+- **Brownout:** strips go dark, no sparks. **A break inside the field** splits it into two components, so it
+  becomes two tangles (or a tangle plus terminals), each reading its own net; terminals facing the seam spark as
+  usual. An off power switch inside a field is the same.
+- **COST:** the lattice in the mock-up is 40 cells: **45 cord edges** without the rule, **4 exit cords + 1
+  heap** with it. The heap is laid once per field change.
+- **RISK:** a legitimately dense but tidy layout (two parallel runs touching) reads as a tangle. The 9-cell
+  threshold and the setting cover it; parallel touching runs only form 2-wide strips, which pass the 2x2 test,
+  so the threshold matters.
+
+#### 8.7.5 Needless conduit
+
+- **DETECT:** (a) a dead-end spur of **≤ 2 cells** off a junction that is not a machine's connect cell and does
+  not face another conduit cell within 3 cells (that would be a gap); (b) a dense component under the tangle
+  threshold that contains a 2x2 block (a "blob"); (c) a zigzag of degree-2 cells.
+- **TREAT:** (a) the spur is pruned; if its junction is left as a pass-through, the two edges merge and the cord
+  gets a **knot waypoint** there; if the junction still branches, it gets a pointless spare coil. (b) a blob of
+  degree 2 is a knot waypoint on the cord through it; of degree ≥ 3 it is a junction with a spare coil. (c)
+  nothing: degree-2 cells collapse anyway.
+- **LOOK:** a pointless loop or figure-eight in the cord at the knot, taped (`08_tricky_needless_loop.png`).
+- **The rule that separates a harmless spur from a true break:** length > 2 cells, or facing a gap, or ending at
+  a buried end → terminal; otherwise needless. The mock-up's 4-cell spur stays a sparking terminal.
+- **COST:** one pass after the reduction. **RISK:** a player's deliberate 1-2 cell stub (to be extended later)
+  shows as a loop rather than a spark. That is the intended reading; the setting can turn it off.
+
+#### 8.7.6 Other configurations
+
+| configuration | DETECT | TREAT / LOOK | RISK |
+|---|---|---|---|
+| **4+-way junctions** | conduit degree 4 | one junction node, X decal (ration tin / greeble / hex pod / power strip) | none |
+| **rings and cycles** | two edges between the same node pair, or an edge from a node to itself | each cord is forced through a **via** waypoint at the midpoint of its own chain, so the two cords go round their own sides (mock-up: the ring in `08_tricky_needless_loop.png`) | a long ring whose chain hugs walls on both sides: both cords may still end up near each other; harmless |
+| **batteries** | `CompPowerBattery` | an ordinary node with a plug; a full or empty battery changes nothing visual except live/dead of its net | none |
+| **power switches** | `Building_PowerSwitch` | a node with one cord per side; off = two nets, both sides read their own live/dead; never a break | none |
+| **transformers / modded relays** | any transmitter building with a `CompPower` | treated like a switch: a node | modded behaviour UNMEASURED |
+| **conduit under doors** | a door cell is walkable | ordinary floor conduit; cords pass through the doorway pinned (§8.2.6) | none |
+| **diagonal adjacency to a device** | power links are orthogonal; machines connect via `connectParent` up to 6 cells | the machine's cord goes to its connect cell's node; diagonal contact means nothing | none |
+| **multi-cell buildings with several connection cells** | vanilla gives one `connectParent` per `CompPower` | one cord per `CompPower`; a building with several comps (modded) gets several | modded, UNMEASURED |
+| **deep water and FlowWorks canals and pits** | the cell is unwalkable (deep water; canal/pit depths the path grid marks impassable) | buried: stubs at both banks; water = the cord dives in under ripples; a canal or pit lip = a drilled hole in the lip | shallow canal cells are walkable: cords lie in them. The FlowWorks depth→passability mapping is UNMEASURED here |
+| **two unconnected nets in one room** | separate conduit components | separate graphs; their cords may cross each other on the floor freely, never join | a reader may think crossing cords are connected; the selection highlight (§8.3) answers it |
+| **very long runs** | path length | extra cord capped at 16 cells, so a 60-cell run is ~1.25x and mostly a gently wandering cord with a few bunches; cords > 40 cells add one extra heap near each end, where people look | none |
+| **traffic lanes, stockpiles, zones** | not read | cords lie under items and pawns as conduit does; no avoidance (zones are not walkability) | visual clutter on stockpiles; acceptable |
+| **fire** | burning conduit is destroyed by vanilla | becomes terminals (§8.7.1) | none |
+| **snow** | drawn under Conduits | cords on top of snow, as vanilla conduit | deep-snow fade optional (phase 3) |
+| **roofs** | `roofGrid.Roofed` | sway weight 0 | none |
+| **fog of war** | `fogGrid.IsFogged` | fogged cells are unwalkable for planning and their nodes undrawn | none |
+| **map edge** | buried run reaching the edge | a normal stub (it continues off-map); not a wall terminal | none |
+| **blueprints / frames of conduit** | `Blueprint_Build` / `Frame` of a conduit def | not conduit: ignored by the graph; a gap with a blueprint in it is still two terminals | none |
+| **underground-wire mods** | their own defs | only defs tagged with our extension join the graph; untagged transmitters are still graph vertices (so connectivity is right) but buried | modded, UNMEASURED |
+| **save/load** | — | nothing saved; graph and cords rebuilt on load, bit-identical by seeding | none |
+
+#### 8.7.7 Performance on a 5,000-conduit base
+
+Arithmetic, not measured. A 5,000-cell base reduces to roughly 500-1,000 nodes (junctions, machines, stubs,
+terminals are 10-20% of cells) and 600-1,200 cord edges; dense fields collapse further (the mock-up lattice:
+40 cells → 1 node). Laying every cord once: ~1,000 cords × ~250 points × 70 iterations × 60 flops ≈ 1 Gflop,
+about 0.5-1 s of C# **at map load**, spread over sections as they first draw (lazy) or a background task.
+After that, a change re-lays only dirty edges (typically 1-5 cords, a few ms). Geometry: ~1,000 cords × 250
+points × 2 tris ≈ 0.5M tris static, culled per section, about half the per-cell model's estimate. Live terminals
+and downed wires animate per frame, a handful at a time.
+
+### 8.8 Clipping and artifact risk register
 
 | # | failure mode | mitigation | check |
 |---|---|---|---|
-| 1 | strands z-fight at crossings | per-strand Y increment (a fraction of AltInc) | visual |
-| 2 | wire paints over a **tree or lamp to the south** whose sprite overlaps the wrap or wall cell | front-wrap and wall-top Y **matched to the occluder's own tilted plane + ε**, never a fixed higher layer (§8.3) | visual; keeper save with a tree row south of a wrapped trunk and of a wired wall |
-| 3 | wall-top wire fights with **wall corner fillers** (+1 AltInc) | wall-top Y above `Building + AltInc + 0.01` | visual |
-| 4 | sprawl disappears **under walls** or into rock and looks cut | excursions are clipped to walkable floor and the settle projects every vertex out of unwalkable cells (§8.11); a grommet decal at rock faces; a drape decal at wall edges | state: no strand vertex inside an unwalkable cell that holds no conduit (geometry assert in the selftest, base and sprawl scenes) |
-| 5 | **doors** chop the cable | floor level under the threshold, covered by the leaves | visual |
-| 6 | multi-cell furniture over conduit | floor wires stay at Conduits height and show through gaps, which is realistic | visual |
-| 7 | **fog** leak: strands reveal hidden conduit | skip fogged cells; FogOfWar is in the rebuild mask | state: zero vertices from fogged cells |
-| 8 | **culling pop** at screen edges from overflow (excursions reach 3 cells) | `GetBoundaryRect` returns the real printed extent, as `SectionLayer_Things` does (§8.11.3) | visual |
-| 9 | stale join across a section edge | the conduit keeps `linkType Transmitter`, so its neighbours rebuild; edge-seeded joins | state: place a conduit at x=16 or 17 and compare both sections' join points |
-| 10 | **transparent** strand material sorts wrongly against filth, shadows and gas (also transparent) | strands use a **cutout** family shader (`CutoutPlant`), which is alpha-tested. The soft drop shadow is a separate transparent strip at Conduits height | visual |
-| 11 | **far zoom** shimmer and aliasing | LOD sub-mesh swap; mipmapped strip textures | visual |
-| 12 | **snow and sand** | snow is drawn under Conduits (`AltitudeLayer.Terrain`), so wires show on top of snow, as vanilla conduit does. Optionally fade wires where the snow is deep | visual |
-| 13 | pawns, carried items, laying pawns | always above (layers 18-23) | none needed |
-| 14 | **Gravship cutscene** (Odyssey): `SectionLayer_Things.DrawLayer` has special cutscene handling (disables `renderQueue 2950` sub-meshes) that our layer would not get | hide the layer while `WorldComponent_GravshipController.CutsceneInProgress`, then verify | UNVERIFIED, owed a live look |
-| 15 | wire drawn across the substructure/hull edge | reuse the `ShouldLinkWith` substructure test | state |
+| 1 | cords z-fight at crossings | per-cord Y increment (a fraction of AltInc) | visual |
+| 2 | a cord vertex inside a wall, rock, water or building | the settle projects out of unwalkable cells; buried conduit is never drawn | state: no laid vertex in an unwalkable cell (selftest, every scene) |
+| 3 | **doors** chop the cord | pinned through the doorway at floor level, covered by the leaves | visual |
+| 4 | multi-cell furniture over cords | walkable furniture: cords at Conduits height show through gaps; impassable: buried | visual |
+| 5 | **fog** leak | fogged cells unwalkable; fogged nodes undrawn | state: zero vertices in fogged cells |
+| 6 | **culling pop** when a cord reaches far from its owning section | `GetBoundaryRect` returns the real printed extent | visual |
+| 7 | a cord far from its conduit confuses selection | the selection highlight draws the whole net's cords (§8.3) | visual |
+| 8 | **cord wanders far from the conduit route** (a trunk laid along a wall, its cord crossing the room) | owner-ruled acceptable; A* takes the shortest walkable route, and the slack stays near it | visual |
+| 9 | doorway pass-through: a heap jams the doorway | doorway pins; loops are spliced only where `ramp ≥ 0.9` (away from pins) | visual |
+| 10 | **rock stubs** in dark rock read poorly | chipped light rim on the hole | visual |
+| 11 | **wide open rooms with many machines**: dozens of cords crossing | 1-3 cords per edge, slack budget, tangles for dense fields; the slack setting | visual, owner sitting |
+| 12 | transparent material sorts wrongly against filth and gas | cutout family shader (`CutoutPlant`); soft drop shadow is a separate transparent strip | visual |
+| 13 | far-zoom shimmer | LOD sub-mesh; mipmapped strips | visual |
+| 14 | **Gravship cutscene** (Odyssey): `SectionLayer_Things.DrawLayer` has special cutscene handling that our layer would not get | hide the layer while `WorldComponent_GravshipController.CutsceneInProgress` | UNVERIFIED, owed a live look |
+| 15 | a cord across the substructure/hull edge | the reduction never links across it (`ShouldLinkWith` rule); the planner treats the hull edge as unwalkable for cords of the other side | state |
 | 16 | the power overlay loses its connector lines (Invisible Conduit's bug) | the prefix acts only when `!forPowerOverlay` | state: the `MatConnectorLine` sub-mesh is non-empty |
-| 17 | sway shader displaces along the wrong axis or fall colours tint the wires | small amplitudes; CPU fallback for lifted spans | visual, first test |
-| 18 | spark flecks spam the screen in big breakdowns | per-map cap on concurrently sparking ends; settings | state |
+| 17 | sway shader displaces along the wrong axis | small amplitudes; CPU fallback for lifted spans | visual, first test |
+| 18 | spark flecks spam the screen in big breakdowns | per-map cap on concurrently sparking terminals; settings | state |
 
-**Testing split.**
-- **Northstar state reads** cover these, all cheap and deterministic:
-  - the layer class exists on a section;
-  - vertex and hash stability across save and load;
-  - no vertices from fogged cells or inside full-fill non-conduit cells;
-  - section-edge joins;
-  - overlay lines intact;
-  - break registry contents and the live/dead flip;
-  - toggle off leaves the sub-meshes empty.
-- **Visual review is unavoidable** for rows 1-3, 5, 6, 8, 10-12, 14 and 17. That review is **a keeper
-  savegame** with one test bed per row, laid out on a grid, for the owner to walk. A screenshot is never a pass
-  bar.
+**What the nodal model removed** from the per-cell register: wire paints over a tree/lamp south of a wall-top
+run (matched-Y wall tops), wall-top vs wall-corner-filler fights, sprawl cut by walls, stale joins at section
+edges (edge-seeded bundle joins), bundle divergence and junction port matching. **What it adds:** rows 7-11.
 
-### 8.6 Compatibility
+**Testing split.** Northstar state reads: graph census, connected-only, no vertex in an unwalkable cell, hash
+stability across save/load and unrelated edits, overlay lines intact, terminal registry and the live/dead flip,
+toggle off. Visual review (rows 1, 3, 4, 6-14, 17) is a **keeper savegame** with one test bed per row for the
+owner to walk; a screenshot is never a pass bar.
+
+### 8.9 Compatibility
 
 **Active mods relevant here.** MEASURED by parsing `infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`
 (610 active mods): `vanillaexpanded.vfepower`, `dubwise.dubsbadhygiene.lite`, `dubwise.rimefeller`,
@@ -716,418 +899,93 @@ How breaks arise:
 | neighbour | interaction |
 |---|---|
 | vanilla `HiddenConduit` | excluded by def, so it stays the tidy invisible option. Vanilla already skips its hookup wire |
-| Invisible Conduit Continued (inactive) | both make conduit invisible, which is harmless. Its unconditional `PrintWirePieceConnecting` prefix also kills our hookups' replacement test and the overlay lines. Declare it incompatible in About |
-| Underground Wires-style mods (none active) | different defs; drawn only if tagged |
-| **VFE Power** (active) | any extra conduit defs it adds are UNMEASURED. The default target set is "defs with `building.isPowerConduit` and `linkType Transmitter`", with a settings checklist listing every match so the player can opt out |
-| **LED Lights Strip** (active) | "placed like conduit". If its defs set `isPowerConduit` we would cover them in wires. UNMEASURED: check its defs before choosing the default target set |
-| **Dubs Bad Hygiene Lite, Rimefeller** pipes | their own link flags and defs, so untouched. The same layer could later draw messy *pipes* through an opt-in extension |
-| conduit retexture mods | we replace the conduit texture with a transparent one. Load order decides, so put our patch in a `zzz` file and `loadAfter` known retextures |
-| overlay or minimap mods (Dubs Mint Minimap) | the minimap reads grids, not our meshes, so no interaction expected |
-| Multiplayer | visual only. The layer uses no `Rand`, and the 250-tick poll only reads state |
+| Invisible Conduit Continued (inactive) | both make conduit invisible, which is harmless. Its unconditional `PrintWirePieceConnecting` prefix also kills the overlay lines. Declare it incompatible in About |
+| Underground Wires-style mods (none active) | different defs; graph vertices but buried unless tagged |
+| **VFE Power** (active) | any extra conduit defs it adds are UNMEASURED. The default target set is "defs with `building.isPowerConduit` and `linkType Transmitter`", with a settings checklist listing every match |
+| **LED Lights Strip** (active) | "placed like conduit". If its defs set `isPowerConduit` we would draw cords for them. UNMEASURED: check its defs before choosing the default target set |
+| **Dubs Bad Hygiene Lite, Rimefeller** pipes | their own link flags and defs, so untouched. The same graph code could later draw messy *pipes* through an opt-in extension |
+| conduit retexture mods | we replace the conduit texture with a transparent one. Put our patch in a `zzz` file and `loadAfter` known retextures |
+| overlay or minimap mods (Dubs Mint Minimap) | the minimap reads grids, not our meshes |
+| Multiplayer | visual only. No `Rand`; the 250-tick poll only reads state |
 
-### 8.7 Phased plan
+### 8.10 Effort, cost verdict and phased plan
 
-🔴 This is still gated by the 2026-10-01 build pause (§6). These are effort estimates for when it lifts.
+🔴 Still gated by the 2026-10-01 build pause (§6). Days are estimates for when it lifts.
+
+**Is the nodal model cheaper than the per-cell overlay? Yes.**
+
+| | per-cell overlay (06 look, previous plan) | nodal cords (this plan) | factor |
+|---|---|---|---|
+| **code to the 06 look** | phase 1 overlay 5-7 d + excursions 4-6 d + load bundles 2-3 d + Kirchhoff 1-2 d = **12-18 d** | **7-9 d** (phase 1 below) | **~1.8x less**; ~1.4x less even with load bundles struck from the old plan (9-13 d) |
+| **cheapest first version that already reads as messy** | phase 1 without excursions, 5-7 d, and it looked tidy | **4-5 d** (phase 1a) with the loopy look | — |
+| **hard subsystems** | wall-top runs with matched-Y occlusion + drapes; edge-seeded joins across sections; bundle port matching + union-find; per-cell Bezier strands; flow solve | A*, string-pull, rope settle (exists in Python), stub decals | 5 hard pieces → 1 moderate one |
+| **perf** (mock-up, same conduit) | 25 strands, 8,178 points, 0.35 s | 18 cords, 4,055 points, 0.23 s | **~2x less geometry, ~1.5x less laying time**; dense fields up to ~10x less (45 cords → 4 + 1 heap) |
+| **risks** | 18-row register, 7 rows needing matched-Y or section-edge joins | 18 rows, none needing matched-Y; 5 removed, 5 new and visual-only | the expensive-to-fix class (occlusion bugs) is gone |
+| **invalidation** | every conduit cell's strands + a 3-cell dirty reach + per-run settle cache | per edge, by endpoint key and corridor | simpler |
+
+**Phases.**
 
 | phase | scope | effort | art |
 |---|---|---|---|
-| **0. Mock-ups** | Python prototype of §8.2 rendering 3 messiness levels, plus a trunk wrap and a wall run, to PNG. The owner picks | 1 day | uses the phase-1 strips once generated, or flat placeholders |
-| **1. Static overlay + break readout** | invisible conduit (XML texture swap and transparent PNG); `SectionLayer_RM_MessyWires`; bundles, corners, junction knots, capped stubs; wall-top runs with drapes and rock grommets; trunk wraps (matched-Y front half); hookup prefix with sagging hookups that climb lamp posts; **break detection: frayed ends, live/dead poll, vanilla sparks, whip on live ends**; settings; first script | **5-7 days** | **13** (below) |
-| **2. Sway** | `CutoutPlant` strand material, vertex-alpha weights on lifted spans, roof zeroing, settings; CPU fallback if the shader misbehaves | 1-2 days (4-5 with the fallback) | 0 new |
-| **3. Richer physics and decoration** | floor loops and coils by slider; per-def trunk anchor table; column and lamp wraps; snow fade; LOD sub-mesh; selection highlight; Jawa campaign art set (`RUT_`) | 3-5 days | +10 |
-| **1b. Load bundles** (§8.10) | subtree-sum flow on trees, linear rating, hysteresis, port/peel matching, 250-tick poll, settings | +2-3 days | 0 new |
-| **1c. Owner excursions** (§8.11) | slack, walkability-bounded excursions/loops/heaps, rope settle, per-run cache, 3-cell dirty reach, real `GetBoundaryRect`, fog-as-obstacle, run highlight on select | +4-6 days | 0 new (coil/heap are strands) |
-| **3b. Kirchhoff loops** (§8.10) | CG solve on the reduced graph for meshed nets; EMA + dwell; debug flow overlay | +1-2 days | 0 new |
-| 4. Overhead spans (experiment only) | pole-to-pole catenaries over open cells only | — | not recommended |
+| **0. Mock-ups (now, done)** | Python: reduction, planner, slack laying, stubs, terminals, downed wire, tangles, needless loops; 07 and 08 sheets; selftest | done | procedural placeholders |
+| **1a. Cheapest first version** | invisible conduit (XML texture swap + transparent PNG); hookup prefix; `RM_MapComponent_CordGraph` with reduction + A* + string-pull; slack as **canned** loop/figure-eight/heap shapes spliced at seeded points that pass a walkability test (no PBD settle); one strip texture; plugs and stub decals; terminals with **static** live sparks via vanilla flecks; settings; first script | **4-5 d** | 6 (strand strip, shadow strip, plug, junction, stub wall, stub rock) |
+| **1b. Full static nodal cords + break readout** | port the rope settle (PBD, SDF of the corridor) and the length budget; per-edge cache and corridor invalidation; tangles; needless-conduit knots; device/water stubs; whipping live tails; downed-wire bursts; selection highlight; LOD | **+3-4 d** (7-9 d total) | +7 (§8.11) |
+| **2. Sway** | `CutoutPlant` strand material, vertex-alpha weights on lifted spans (lamp climbs, hanging wall terminals), roof zeroing; CPU fallback if the shader misbehaves | 1-2 d (3-4 with the fallback) | 0 |
+| **3. Decoration** | trunk wraps, per-def trunk anchor table, snow fade, Jawa campaign art set (`RUT_`), grease decals | 2-4 d | +8 |
+| 4. Overhead spans | experiment only | — | not recommended |
 
-Break-sparking is in **phase 1** because it is cheap: the router already finds dead ends, the sparks are
-vanilla flecks, and the poll is 250-tick. It is also the highest-value debugging aid in the mod.
+Break-sparking is in phase 1 because it is cheap: terminals come out of the reduction, sparks are vanilla
+flecks, and the poll is 250-tick. It is also the highest-value debugging aid in the mod.
 
-### 8.8 Aesthetic: "truck drivers in space" (owner requirement 3)
+### 8.11 Aesthetic: "truck drivers in space"
 
 **Direction.** Ugly on purpose. Nothing matches, everything is repaired, and it has been working for twenty
-years.
+years. Everything is a too-long extension cord.
 - **Structure (owner, 2026-10-02):** three style families: 1 Cybertek, 2 Extension cord and 3 Star Wars.
   **Jawa is a variant of the Star Wars family**, not a separate set. In his words: *"Jawa is certainly more
   option 3. Though there should be no white versions and many should be smooth black cables with less
   shine."*
-- **Gauges and sheaths (Star Wars family and Jawa variant):**
-  - smooth **matte** black cable dominates (low, broad sheen and no specular line);
-  - a few dark corrugated-steel hoses and coiled black cords;
-  - **no white cable or tape anywhere in the family.**
-  - The Jawa variant adds the jury-rigging below, with dark, ochre or oil-stained tape.
-- **Repairs:** dark and ochre electrical tape in lumpy wraps, hose clamps, zip ties, rag bandages, solder
-  blobs, and a splice twisted by hand.
-- **Grime:** grease smears and fingerprints on the cable and the floor around junctions.
-- **Junctions:** a "box" made from a ration tin or a droid's chest plate.
-- **Stencil marks:** hand-painted arrows and tally marks.
+- **Star Wars family and Jawa variant:** smooth **matte** black cable dominates (low, broad sheen, no specular
+  line); a few dark corrugated-steel hoses and coiled black cords; **no white cable, tape or power-strip body
+  anywhere in the family** (the Jawa power strips are dark grey with an amber LED).
+- **Jawa jury-rigging:** dark and ochre electrical tape in lumpy wraps, hose clamps, zip ties, rag bandages,
+  solder blobs, hand-twisted splices; grease smears around junctions; a ration-tin or droid-chest-plate box at
+  X junctions; hand-painted arrows and tally marks.
+- Still the painterly lawset: top-lit cylinders, value over detail at 64 px a cell, the 70s-brown palette.
+- The franchise-free `RM_` set stays generic and dirty. Overtly Jawa trinkets go in the `RUT_` set (§4).
 
-Style rules:
-- Still the painterly lawset: top-lit cylinders, value over detail at 64 px a cell, the 70s-brown palette with
-  loud accent sheaths.
-- The franchise-free `RM_` set stays generic and dirty. Overtly Jawa trinkets (droid plating, rag-and-bead
-  wraps) go in the `RUT_` set (§4).
+**Art list, ruled from the mock-ups** (07/08). One strip per cord kind; a cord is one ribbon, so there are
+**no strand-count variants** and no bundle textures.
 
-**Phase-1 art (13).**
-- **Strand strips, 5:** tileable 128×32 strips with alpha edges and mipmaps:
-  - matte black cable;
-  - dark corrugated steel hose;
-  - coiled black cord;
-  - bare copper (frayed ends only);
-  - a taped strand.
-- **Drop-shadow strip, 1:** soft shadow.
-- **Decals, 7:**
-  - tape lump (junction T);
-  - tin box (junction X);
-  - taped cap (lone stub);
-  - frayed end, dead (dull copper, limp);
-  - frayed end, live (bright copper, scorch);
-  - wall drape over an edge;
-  - rock grommet.
+| group | phase 1 | later |
+|---|---|---|
+| **strands** (tileable 128×32, alpha edges, mipmaps) | matte black cable; drop-shadow strip | dark corrugated hose; coiled black cord; bare copper (tails); taped strand; family strips for Extension cord and Cybertek if they ship |
+| **nodes / junction pieces** | tape lump (T); ration tin (X) | greeble box, hex pod, power strip (lit / dark LED) for tangles and device stubs |
+| **plugs** | plug into a casing | lamp-post climb tape |
+| **stubs** | wall grommet plate; rock cable hole | scorched ragged hole + soot (wall terminal); water ripple ring |
+| **decals** | frayed end, dead (dull copper) | frayed end, live (bright copper, scorch); hose clamp; zip tie; rag wrap; grease (2) |
 
-**Phase-3 additions (10).**
-- **Strand strips, 2:** greasy black and heavy black (the extension-cord and Cybertek families need their own
-  strips if they ship).
-- **Decals, 7:**
-  - hose clamp;
-  - zip tie;
-  - rag wrap;
-  - floor coil;
-  - trunk-wrap front;
-  - trunk-wrap back;
-  - pole-climb tape.
-- **Grease decals, 2:** on the floor.
-- **`RUT_` Jawa set:** 2-3 more strips.
+Sparks, drips and the downed-wire flash reuse vanilla `MicroSparks`/`LightningGlow`: **0** new art. Total:
+6 textures for phase 1a, 13 for phase 1b, about 21 with phase 3.
 
-Notes:
-- Sparks reuse vanilla `MicroSparks`/`LightningGlow`, so they need **0** new art. One custom spark fleck is
-  optional.
-- The total is about 23-26 textures. A static-only Tier B set would be 10-14.
+### 8.12 What this pass could not verify
 
-### 8.9 What this pass could not verify
-
-- **The `CutoutPlant` shader's displacement function**, meaning its axis and how it uses vertex alpha and UV z.
-  It is a compiled asset, and only its C# feeding side was read. The sway verdict depends on it.
-- **Whether cutout map shaders write depth** (ZWrite), which the matched-Y occlusion argument assumes. The
-  engine's design strongly implies it: plants get a +0.1 tilt that would be pointless without a depth test.
-  It is still not read from a shader.
+- **The `CutoutPlant` shader's displacement function** (axis, use of vertex alpha and UV z). The sway verdict
+  depends on it.
+- **Whether cutout map shaders write depth** (ZWrite). Only the optional trunk-wrap and lamp-climb front halves
+  rely on it now.
 - **The gravship cutscene path** for a custom section layer (risk 14).
 - **Trunk pixel positions and widths** in vanilla and modded tree art. These are not in defs.
-- **Whether conduit can be placed under natural rock.**
-- **The conduit defs of VFE Power and LED Lights Strip.** A full-disk XML sweep for `isPowerConduit` was
-  started and abandoned at 600 s on the slow drvfs mount; run it from a narrower root.
-- **Any performance number.** All triangle and vertex counts are arithmetic, not measured.
-- The overlay was not tried in game. This pass did not touch the game, the bridge or `src/`.
-- **Everything in §8.10-8.11 runs in Python only.** The C# solve and settle costs are arithmetic. The equal-
-  conductance loop split is a modelling choice, not an engine fact. `CameraDriver.CurrentViewRect`'s own body
-  and the vanilla battery def's comps (whether it also has a `CompPowerTrader`) were not read.
+- **Whether conduit can be placed under natural rock** in vanilla (the mock-up assumes it can; the rule costs
+  nothing if it never happens).
+- **FlowWorks canal and pit passability by depth** (§8.7.6).
+- **The conduit defs of VFE Power and LED Lights Strip.**
+- **Any C# performance number.** All C# costs are arithmetic; only the Python mock-up timings are measured.
+- `CameraDriver.CurrentViewRect`'s own body and the vanilla battery def's comps were not read.
+- The model was not tried in game. This pass did not touch the game, the bridge or `src/` outside the mock-up
+  folder.
 
-### 8.10 Load-proportional bundles (owner question of 2026-10-02)
-
-Owner, verbatim: *"This seems to vary the number of cables between nodes. Is that an algorithm? It would be
-better to have it vary from one to ten, depending entirely on how much flows along there. That would really
-be the realism."*
-
-Answer to his question: in phase 0 the count (2-4) was a seeded random per run, purely cosmetic. This
-section replaces it: **every run carries 1-10 strands, set by the watts flowing along it.**
-
-**Verdict: MODERATE.** Phase 1 is a tree/Kirchhoff solve on a graph the router already builds; nothing in the
-engine has to change. Mock-ups: `05_load_*.png` (§8.10.8).
-
-#### 8.10.1 What the engine gives us (decompiled 1.6, RimSage)
-
-- **No per-conduit flow exists anywhere.** `PowerNet` is a flat bag: `transmitters`, `connectors`,
-  `powerComps` (`CompPowerTrader`) and `batteryComps` (`CompPowerBattery`), with whole-net totals only
-  (`CurrentEnergyGainRate()`, `CurrentStoredEnergy()`). Nothing in `PowerNet`, `PowerNetManager`,
-  `PowerNetGrid`, `PowerNetMaker` or `CompPower` stores a flow per cell or per edge. **Flow must be derived.**
-- **Per device:** `CompPowerTrader.PowerOutput` is negative for consumers and positive for producers
-  (`SetUpPowerVars` sets `-Props.PowerConsumption`, or `-idlePowerDraw` when off). It reads 0 when EMP-stunned.
-  Only comps with `PowerOn` count toward the net's gain.
-- **Producers update every tick** in `CompPowerPlant.CompTick`. Solar is `Lerp(0, max, skyGlow)` times the
-  unroofed fraction. Wind is recached every 250 ticks. Geothermal is constant.
-- **Batteries:** surplus is spread by `DistributeEnergyAmongBatteries`, which shuffles the batteries and fills
-  them evenly. A deficit is drawn in equal shares (`DrawEnergyFromBatteries`). So per battery, flow is about
-  net gain divided by the non-full (or non-empty) batteries. Charging has an efficiency loss; discharge has none.
-- **Shortfall (brown-out):** `PowerNetTick` turns off about 5% of the powered consumers, chosen at random,
-  every 20 ticks until the net balances. It turns them back on gradually when there is power. We read the real
-  `PowerOn`, so the bundles follow what the engine actually powers.
-- **Topology:** a net is the 4-neighbour flood fill of transmitting buildings (`PowerNetMaker`). A switched-off
-  `Building_PowerSwitch` stops transmitting (`TransmitsPowerNow`) and splits the net in two, so a switch is
-  just a cut in the graph. Machines join a transmitter through `CompPower.connectParent`, up to
-  `PowerConnectionMaker.ConnectMaxDist` (6) cells away.
-- **Hooks:** `PowerNetManager.RegisterPowerNet` and `DeletePowerNet` are public, non-virtual and fire on every
-  transmitter-side change; Harmony postfixes catch them. Connector changes need `CompPower.ConnectToTransmitter`
-  and `PowerConnectionMaker.DisconnectFromPowerNet`. `PowerNetGrid.TransmittedPowerNetAt(c)` is a cheap
-  per-cell net lookup.
-
-#### 8.10.2 Deriving per-segment flow
-
-The graph is the one §8.2 already builds: conduit cells as nodes, orthogonal neighbours as edges. Each
-device's `PowerOutput` is injected at its `connectParent` cell (producers +, consumers −). Batteries take the
-balance: −(net gain) shared over the batteries. The flow on each edge is then computed by one of three methods:
-
-| method | what it does | tree | loop | cost |
-|---|---|---|---|---|
-| **A. Subtree sums** (BFS spanning tree from the biggest source) | an edge carries the net injection of everything beyond it | exact | **wrong**: one side of the loop carries all, the closing edge 0 | O(V) |
-| **B. Equal split at loops** (heuristic) | at a node with k downstream edges, split equally | exact | plausible on symmetric loops, wrong on lopsided ones | O(V) |
-| **C. Kirchhoff, equal conductance** (resistive network) | solve `L·φ = b` (graph Laplacian, one grounded node per net); flow on edge = `φa − φb` | exact (identical to A) | physical: splits by path length | sparse solve |
-
-- **Recommended: C.** It equals A on every tree (asserted in the selftest), and on a loop it gives the split a
-  player expects: the short side of a ring carries more. A shows a loop as one fat side and one empty side
-  (`05_load_method_ring.png`). B is not worth having beside C.
-- **Size of the solve.** Collapse every chain of degree-2 cells that holds no hookup into one edge with
-  conductance 1/length. The nodes are then only junctions, dead ends and hookup cells: typically 10-20% of the
-  cells. A 200-conduit base has about 20-40 nodes; a 5,000-conduit base about 500-1,000.
-- **Solver.** Use conjugate gradient on the reduced Laplacian (symmetric positive-definite once grounded). It
-  needs about 20-60 iterations at about 2E flops each, so even a 1,000-node net is well under 1 ms. A dense
-  solve at 1,000 nodes (10⁹ flops) is not acceptable. Shortcuts:
-  - if E = V − 1 (a tree, which most bases are), use A directly and skip the solve;
-  - if CG fails to converge in 200 iterations, fall back to A.
-  These costs are arithmetic, not measured.
-- **Edge cases:**
-  - **Flow reversal:** a battery that switches from charging to discharging reverses its branch. The magnitude
-    sets the strand count and the sign only matters for the debug arrows.
-  - **Multiple sources:** handled by superposition; they are just several positive injections.
-  - **Dead ends and the live side of a break:** these carry 0 W and draw the minimum, 1 strand.
-  - **Unpowered nets** (no source, or `CurrentStoredEnergy` 0 with no gain): 1 strand everywhere. The
-    live/dead break readout of §8.4b is unchanged.
-  - **Brown-out:** consumers that the engine switched off read `PowerOn` false and inject 0, so their branch
-    thins. That is correct.
-  - **Switches:** an off switch is a gap in the graph, so each side is solved as its own net.
-  - **Idle draw:** `PowerOutput` already includes it.
-  - **Wire-connected but untagged transmitters** (modded conduit we do not draw) are still graph nodes and
-    carry flow. They are simply not drawn.
-
-#### 8.10.3 Watts to strands
-
-| mapping | behaviour | verdict |
-|---|---|---|
-| **Absolute, linear "strand rating"**: n = ceil(W / R), clamp 1..10 | a 10-strand trunk always means real load (≥ 9R); thickness is comparable across nets and saves | **recommended default**, R = 250 W |
-| Absolute, logarithmic: n = 1 + log₂(W / W₀) | spans 100 W to 50 kW; big modded bases never saturate | setting ("huge base" mode) |
-| Relative to the net's max: n = 10 · W / Wmax | the trunk is always 10 | rejected: switching one machine changes every run on the net (non-local popping), and the 10 means nothing |
-
-- With R = 250 W, a vanilla generator's 1,000 W reads as 4 strands, and a 2.5 kW trunk saturates at 10.
-  Settings: **strand rating (W per strand)** with a slider of 100-2,000 W, **cap** fixed at 10, **minimum**
-  fixed at 1 so every wire always shows, plus linear or log mode.
-- **Quantisation with hysteresis** (`strands_hyst`, selftested): step up as soon as W passes n·R; step down
-  only once W is below (n − 1 − 0.15)·R. A load hovering at a threshold never flickers.
-- **Smoothing:** feed the quantiser an exponential moving average over about 2 polls, so a solar panel at dusk
-  steps down a strand at a time.
-- **Minimum dwell:** a run changes its count at most once per 2,500 ticks, unless the topology changed.
-
-#### 8.10.4 Peeling off at junctions
-
-The router stops each run at its junction cell's **edge** (the port), with its n strands in fixed lateral slots
-there. Wander and sag fade to 0 over the last 0.45 cell, so the slots are exact. Inside the junction cell:
-
-1. Each slot is typed **in** (its flow enters the junction) or **out**. A machine hooked at a junction or
-   mid-run tap is one more port, and its strands sink into the knot.
-2. All slots are sorted by angle around the cell. In-slots and out-slots are paired by a **planar,
-   non-crossing matching**: a parenthesis stack run twice around the circle. The strands on the side of the
-   trunk facing a branch peel into that branch, and the rest carry straight on. n strands in become n1 + n2 out.
-3. Each pair is joined by a short cubic Bézier from port to port, using the port tangents.
-4. Leftover slots, where quantisation makes the in-count differ from the out-count, end under the junction
-   decal. In the Jawa set that is a tape lump; in the Star Wars set a greeble box.
-5. **One strand keeps one look end to end.** A union-find over (run, slot) through every matched pair picks
-   one strand kind per connected strand, so a corrugated hose stays corrugated as it peels off.
-
-Phase 0's random 2-4 count, and its tape-ball junction that hid every mismatch, are both superseded by this.
-
-#### 8.10.5 Recompute policy and cost
-
-- **Topology** (the graph and the reduced Laplacian) is rebuilt on `RegisterPowerNet` / `DeletePowerNet` /
-  connect / disconnect postfixes, and cached per net.
-- **Flow** is re-solved per net **every 250 ticks**, from the current `PowerOutput`s. It is never per frame.
-  The CG solve warm-starts from the previous φ, so it usually needs only a few iterations.
-- **Mesh:** only runs whose quantised count changed dirty their sections (`MapMeshDirty` on one cell of the
-  run, custom flag or `PowerGrid`). Changes are rare because of the hysteresis and dwell above.
-- **Cost:**
-
-| base size | reduced nodes | per 250-tick solve | sections re-meshed per change |
-|---|---|---|---|
-| 200 conduit | 20-40 | ~µs (tree: no solve) | 1-3 |
-| 5,000 conduit | 500-1,000 | < 1 ms CG (tree path O(V)) | only the sections holding changed runs |
-
-These are arithmetic estimates, not measured.
-
-- **Geometry cost grows with strand count.** At about 60 tris per strand-cell, a 10-strand trunk is about
-  600 tris per cell. A 5,000-conduit base averaging 3 strands is about 900k tris. The LOD sub-mesh (§8.4)
-  collapses to a single fat strip at far zoom.
-- **Save-compat is unchanged.** Flow is derived from live state on load, and nothing is saved.
-
-#### 8.10.6 What it teaches the player, and where it misleads
-
-**Teaches:**
-- **Where the main trunk is:** follow the fat bundle back to the generators.
-- **Which branch is the hog:** a 5-strand spur off to the smelter.
-- **That a branch is idle:** it is 1 strand.
-- **What a cut would cost:** a break in a 10-strand trunk is visibly worse than one in a 1-strand spur.
-- **Day/night:** the solar run thins at dusk, and the battery run reverses.
-
-**Misleads (say so in the tooltip and the docs):**
-- **The battery bank.** When a big machine switches off, its spur drops to 1 strand, but the trunk keeps its
-  thickness and the **battery branch gets fatter**: the surplus now charges the bank. This is realistic, but
-  players may read it as a "battery is consuming power" bug (`05_load_beforeafter_jawa.png`, middle panel).
-  Once the bank is full the surplus goes nowhere, and the trunk then thins. Generators do not throttle, so that
-  surplus is wasted.
-- **Equal conductance is fiction.** Real conduit has no resistance in RimWorld, so the loop split is a
-  plausible picture, not a game fact.
-- **Thickness is load, not capacity.** A 10-strand trunk is not "maxed out". RimWorld conduit has no capacity
-  limit, so nothing explodes from thickness.
-- **A long thin run feeding a far big load** looks wrong to anyone expecting a fat feeder all the way. It is in
-  fact fat all the way, which is right. A mesh with a short parallel path takes most of the flow.
-- **A dead end on the live side of a break** shows 1 strand: it is drawn, it carries nothing.
-
-#### 8.10.7 Verdict, phases and art
-
-**MODERATE.** The phases slot into §8.7:
-
-| phase | scope |
-|---|---|
-| **1** | Load bundles with method A (subtree sums) on trees, which most bases are, and A as the loop fallback. Linear rating, hysteresis, the port and peel matching, union-find kinds, 250-tick poll. Settings: rating, linear/log, on/off (off = fixed 2 strands). |
-| **3** | Kirchhoff CG on the reduced graph for nets with loops; warm start; EMA and dwell; a debug overlay with the per-run W labels and arrows of the mock-up. |
-
-- **Art: recommend procedural assembly, no new art.** Every strand is the same single-strand strip texture
-  (§8.8 strand strips) laid along its own spline, so 1-10 strands is just 1-10 ribbons.
-- Pre-drawn "n-strand bundle" strips would need 10 counts × strand kinds × junction transitions, which is
-  hundreds of textures, and they still could not peel at junctions.
-- The junction decals become smaller: they only cover leftover ends, not a whole bundle.
-- **The art count of §8.8 is unchanged.**
-
-#### 8.10.8 Mock-ups
-
-In `Transient/messy_conduit_mockups_20261002/`, rendered by
-`src/RimMandrake/Utils/mockups/messy_conduit/load.py`:
-- `05_load_starwars_day.png`, `05_load_jawa_day.png` and `05_load_extcord_day.png`. Each is the base scene plus
-  a solar array and a smelter. Every run is labelled with its watts, strand count and flow direction, and there
-  is a strand legend.
-- `05_load_beforeafter_jawa.png`: smelter on, then off, then night (battery discharging, trunk reversal).
-- `05_load_method_ring.png`: Kirchhoff against the spanning tree on the ring.
-
-### 8.11 Owner excursions: big walkability-aware slack (owner, 2026-10-02)
-
-Owner, verbatim, with a photo of an orange extension cord lying in big loose loops, figure-eights and a heap
-on a dirt floor (`Transient/messy_conduit_mockups_20261002/00_owner_reference_orange_cord.png`): *"Yes, I want
-it to have much larger excursions that avoid unwalkable areas or even pile up against them. I think you know
-what I'm wanting."*
-
-This **supersedes the 0.35-0.38 cell sprawl cap** of §8.2, §8.3 and §8.5 row 4. Wires may now wander 1-3
-cells from their conduit.
-
-**Verdict: MODERATE-HARD.** The routing itself is moderate. The hard parts are invalidation reach, fog and
-selection (below). Mock-ups: `06_sprawl_jawa.png` and `06_sprawl_extcord.png`.
-
-#### 8.11.1 Model
-
-Implemented in `rope.py`.
-
-1. **Slack.** Each strand gets more cable than its run needs: length = run × (1 + slack). The default is
-   slack 0.9 and the excursion cap 2.6 cells. A fat bundle is stiffer: its slack is divided by
-   (1 + 0.15·(n − 1)), so a 10-strand trunk lies straighter than a 1-strand spur. That agrees with §8.10.
-2. **Excursions.** Broad lateral bumps, 1.2-2.6 cells long, are shared by the whole bundle, so the strands
-   travel together. Their side is biased toward open floor: the router probes free distance on both sides. 30%
-   go toward the obstacle side, which makes the cable pile up against it.
-   - **Bounded by walkability:** an excursion is clipped to the open floor in its direction, found by marching
-     along the normal. It never jumps a wall.
-   - **The clipped excess is kept as length.** The settle step below then buckles it into a bunch along the
-     wall base or rock face. That is the "pile up against them".
-3. **Loops, figure-eights, heaps.** Per strand and seeded:
-   - slack loops of radius up to about 0.8 cell;
-   - figure-eights (35% of the loops);
-   - a heap (3-5 overlapping loops) with probability 0.35.
-   Each is spliced in only where all of its points lie on walkable floor. Otherwise it shrinks by 0.7, up to 5
-   times, and is then dropped.
-4. **Relaxed-rope settle** (position-based dynamics, 70 iterations):
-   - **inextensible segments:** the cable cannot stretch, so excess must go somewhere;
-   - **bend smoothing**, which gives a minimum bend radius and no kinks;
-   - **hard projection out of unwalkable cells** along the signed-distance gradient;
-   - **pins:** both ends (junction ports and plugs, which keeps §8.10's peel slots exact) and any span lying
-     on its own wall-top conduit (§8.3's wire-over-wall case is the only crossing).
-   - **No self-avoidance**, by design. Real cords cross themselves (see the photo), and per-strand Y order
-     already handles the overlap.
-5. **Seeded per run** with the edge hashes of §8.2. It is stable across rebuilds and saves, and nothing is saved.
-
-#### 8.11.2 Walkability in game (decompiled 1.6)
-
-- **Cheapest per-cell read:** `map.pathing.Normal.pathGrid.WalkableFast(idx)` (`pathGrid[idx] < 10000`). It
-  has no bounds check, so do our own `InBounds`.
-- `GenGrid.Walkable(c, map)` also requires `FenceBlocked`. That is two reads, and it treats fences as walls,
-  which is optional for us.
-- The cost becomes `ImpassableCost` (10000) for impassable terrain (deep water, through
-  `TerrainDef.passability`), impassable things (walls, rock, most production buildings), and fences.
-- For the rebuild, copy the needed window of the path grid into a small signed-distance field once per
-  section. The mock-up uses 10 samples per cell and a chamfer transform.
-- **Invalidation.** Subscribe the layer to `Buildings | Terrain`:
-  - `Building.SpawnSetup` and `DeSpawn` dirty `Buildings` on their cells;
-  - terrain changes dirty `Terrain` on the cell and its neighbours.
-  - `PathGrid.RecalculatePerceivedPathCostAt` does not dirty map meshes.
-  - Vanilla only dirties the sections of the **8 neighbour cells**. A wall placed 2-3 cells from a run in
-    another section would not reach it.
-  - So a postfix on `MapDrawer.MapMeshDirty`, or on `Building.SpawnSetup` / `DeSpawn`, must dirty our layer in
-    every section within the excursion cap (3 cells). Use `MapMeshDirty(c, flag, regenAdjacentCells: true,
-    regenAdjacentSections: true)`, or our own flag over a 3-cell box.
-- Walkability changes from **pawns, items and plants do not count**: items and pawns are not impassable, and
-  plants are not checked. Wires lie under them as now.
-
-#### 8.11.3 Section edges and culling (the open question)
-
-**No pop-in, if the layer reports its real extent.**
-- `MapDrawer.DrawMapMesh` draws a section when `ViewRect` (`CurrentViewRect.ExpandedBy(1)`) overlaps
-  `section.Bounds`.
-- `Section.Bounds` is the 17×17 rect **encapsulated with every non-dynamic layer's `GetBoundaryRect()`**.
-- `MapDrawLayer.RefreshSubMeshBounds` sets the Unity mesh bounds to that rect `ExpandedBy(2)`.
-- This is exactly how vanilla `SectionLayer_Things` handles oversized prints: it keeps a `bounds` field
-  encapsulating each thing's `OccupiedDrawRect()`.
-- So `SectionLayer_RM_MessyWires` accumulates a `CellRect` of every vertex it prints and returns that from
-  `GetBoundaryRect()`. A loop reaching 3 cells into the next section keeps its owner section drawn whenever
-  the loop is on screen, so it never pops.
-- §8.1's old `ExpandedBy(1)` rule is replaced by this. The cost is that a section with far-reaching wires is
-  drawn a little more often, which is negligible.
-- Do **not** use `SectionLayer_Dynamic`: dynamic layers are excluded from `Section.Bounds`.
-- Each run is still printed only by the section owning its first cell. Nothing is printed twice.
-
-#### 8.11.4 Cost and caching
-
-- **Mock-up measurement (Python + numpy, not C#):** 18 strands on a 52-cell scene settle in about 300 ms, or
-  17 ms per strand. That is about 7,500 points: ~48 per strand-cell at 0.05-cell spacing, 70 iterations.
-- **C# estimate, arithmetic only:**
-  - points × iterations × ~60 flops comes to roughly 15-30 ms for that scene;
-  - a fully wired 289-cell section is 100-170 ms;
-  - with 0.08-cell spacing and 30 iterations it is about 6× less: 15-30 ms per section.
-  - That is fine for an occasional rebuild, but **too slow to redo on every dirty**.
-- **Cache per run.** Store the settled polylines in a `Dictionary<runKey, Vector2[][]>` on a MapComponent,
-  in memory only and never saved. The key hashes:
-  - the run's cells;
-  - its strand count (§8.10);
-  - the seed;
-  - the walkability bits of the run's bounding box expanded by the cap.
-- A section rebuild re-meshes from cached polylines, which costs the same as phase 1. It re-settles only runs
-  whose key changed, typically the one or two next to a new wall.
-- Settle off the main thread is possible: it is pure math on copied grids. The cached result is then swapped
-  in on the next rebuild. It is not needed at the estimates above.
-- A load-change (§8.10) that changes the strand count re-settles only that run.
-
-#### 8.11.5 New risks this adds
-
-| risk | mitigation |
-|---|---|
-| **Fog leak.** A loop from a visible run sprawls into fogged cells, or a fogged run's loop reaches into view | treat fogged cells as unwalkable for the settle, and add FogOfWar to the cache key |
-| **Selection.** A loop 3 cells out is not clickable: the conduit is still its cell | while a conduit is selected, highlight its whole run (§8.3's optional highlight becomes required) |
-| **Visual clutter** on dense bases where runs are 1-2 cells apart: loops of neighbouring runs interleave | the messiness slider scales slack and cap. "Tidy" is the old 0.38 cap; the default is the owner level. Optionally treat other runs' conduit cells as soft obstacles |
-| **Bundles diverge**: per-strand loops pull a bundle apart | excursions are shared by the bundle and only loops and heaps are per strand. It reads as one bundle with stray loops (mock-up) |
-| **Doors**: a heap in a doorway | a door cell is walkable, so loops may pass through it, but they pile against the jambs. Optionally make door cells "no heaps" |
-| **Rebuild reach**: a wall 3 cells away does not dirty our section | the 3-cell dirty postfix (§8.11.2) |
-
-#### 8.11.6 Mock-ups
-
-`06_sprawl_jawa.png` and `06_sprawl_extcord.png` show BEFORE (phase-0 routing, 0.38 cap) above AFTER (owner
-excursions) on a new scene:
-- a rock outcrop and a rock pillar;
-- runs one cell off the west and north wall bases, where the slack bunches against the walls;
-- a generator run through the doorway, where the excess piles against the outer wall beside the door;
-- an open-hall run with big loops and figure-eights;
-- an outdoor heap.
-
-The renderer is `src/RimMandrake/Utils/mockups/messy_conduit/sprawl.py`. The selftest asserts that no settled
-vertex lands in an unwalkable cell.
-
+**Mock-ups:** `Transient/messy_conduit_mockups_20261002/07_nodal_*.png` (main scene in three families, break
+readout, per-cell vs nodal, node-graph debug view) and `08_tricky_*.png` (§8.7). Renderer:
+`src/RimMandrake/Utils/mockups/messy_conduit/nodal.py` and `tricky.py`; `selftest.py` covers the reduction
+census, connected-only cords, the gap, geometry, determinism under unrelated edits and the tricky rules.

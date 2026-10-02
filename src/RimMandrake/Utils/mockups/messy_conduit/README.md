@@ -7,24 +7,31 @@ art styles and messiness before any C# exists. Nothing here touches the game.
 ```
 python3 render.py --out <dir> [--seed 1] [--styles cybertek,extcord,starwars,jawa]
                   [--levels tidy,default,ratsnest] [--ss 3] [--cell 80]
-python3 load.py --out <dir>     # 05_load_*: load-proportional bundles (design §8.10)
-python3 sprawl.py --out <dir>   # 06_sprawl_*: owner excursions vs the 0.38 cap (design §8.11)
-python3 selftest.py      # geometry + size + determinism + flow/matching/hysteresis/sprawl checks, no files written
+python3 sprawl.py --out <dir>   # 06_sprawl_*: owner excursions vs the 0.38 cap (design §8.6)
+python3 nodal.py --out <dir>    # 07_nodal_*: the nodal cord model, the current design (§8.2)
+python3 nodal.py --tricky --out <dir>   # 08_tricky_*: tricky configurations (§8.7)
+python3 selftest.py      # geometry, size, determinism, sprawl, node reduction, connected-only, tricky rules
 ```
 
 | file | what |
 |---|---|
 | `scene.py` | the fixed base scene (grid, walls, door, machines, lamp, tree, items, conduit cells), the break test bed, `GRID_KEY` |
 | `styles.py` | `STYLES` (strand kinds, decal vocabulary per style) and `LEVELS` (messiness knobs) |
-| `render.py` | routing (§8.2), layering (§8.3), break readout (§8.4b), decals, sheet framing, CLI |
-| `load.py` | §8.10: load scene (solar, smelter, day/off/night), Kirchhoff and spanning-tree flow, watts→strands with hysteresis, junction port matching (planar) + union-find strand kinds, labels, legend |
-| `rope.py` | §8.11: slack, walkability-bounded excursions, loops/figure-8s/heaps, PBD relaxed-rope settle against a signed-distance field of unwalkable cells |
-| `sprawl.py` | §8.11 before/after renders on `scene.sprawl_scene()` |
-| `selftest.py` | checks every style/level: no strand vertex in a blocked cell, deterministic output, a live end exists |
+| `render.py` | per-cell routing (superseded; kept for 01-06), layering (§8.3), break readout (§8.5), decals, sheet framing, CLI; nodal.py plugs in through its `builder`/`after_*` hooks |
+| `rope.py` | §8.6: slack, walkability-bounded excursions, loops/figure-8s/heaps, PBD relaxed-rope settle against a signed-distance field of unwalkable cells |
+| `sprawl.py` | §8.6 before/after renders on `scene.sprawl_scene()` |
+| `nodal.py` | §8.2 the nodal cord model: `reduce` (conduit -> node graph: machines, junctions, terminals, stubs, tangles; needless spurs pruned), `plan` (A* + string-pull: corner, doorway, knot waypoints), `build_nodal` (slack via `rope.sprawl`, capped), stub/downed-wire/power-strip art, debug view, 07 sheets |
+| `tricky.py` | §8.7 test beds and the 08 gallery: terminals + downed wire, under rock/water/machine, conduit lattice -> one tangle, needless conduit |
+| `selftest.py` | every style/level: no strand vertex in a blocked cell, deterministic output, a live end exists; nodal: reduction census, cords only between connected nodes, never across a gap, no vertex in an unwalkable cell, unrelated edits do not reshuffle, tricky rules |
 
 **Styles:** three families (01 Cybertek, 02 Extension cord, 03 Star Wars) and the Jawa VARIANT of Star Wars (03j); no white in the Star Wars family.
 
-**Routing:** conduit cells → graph → chains between junctions/ends → corner-cut
+**Nodal routing (07/08, current):** conduit cells → node graph (buried conduit = hidden
+edges, stubs where it surfaces; dense fields → one tangle; short spurs → pointless loops) →
+one cord per graph edge, A* over walkable cells, string-pulled → corner-rounded → slack
+laid by `rope.sprawl` (extra cord 7-16 cells) → break tails at terminals.
+
+**Per-cell routing (01-06, superseded):** conduit cells → graph → chains between junctions/ends → corner-cut
 centripetal Catmull-Rom centreline (min bend radius 0.42 cell) → 1-4 strands per run with
 lateral offset, low-frequency wander, sag and end tapering into knots → floor loops →
 trunk wraps → break tails. Offsets that would enter a wall/machine/rock cell are shrunk.

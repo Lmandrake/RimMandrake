@@ -2,8 +2,8 @@
 """Messy Conduit phase-0 mock-up renderer (offline, PIL + numpy only).
 
 Draws decorative wires over an otherwise-invisible conduit network, following the
-routing model of design/RimMandrake/messy_conduit_design_2026-10-02.md §8.2-8.4b:
-cell graph -> chains between junctions/ends -> corner-cut centripetal Catmull-Rom
+per-cell routing model of the first design round (superseded by the nodal cords of nodal.py, §8.2;
+kept for the 01-06 sheets): cell graph -> chains between junctions/ends -> corner-cut centripetal Catmull-Rom
 centreline -> 1-4 offset strands with taper, wander, sag and loops -> painter's-order
 layering (floor wires, hookups, buildings, wall-top wires, front-of-trunk wraps,
 items, live break ends with sparks).
@@ -168,13 +168,13 @@ def at_arc(P, s):
 class Net:
     """Conduit graph, chains and end classes for one scene."""
 
-    def __init__(self, sc, seed, load=False):
+    def __init__(self, sc, seed):
         self.sc = sc
         self.seed = seed
-        self.load = load
         self.cells = set(map(tuple, sc["conduit"]))
         self.walls = set(map(tuple, sc["walls"]))
         self.rock = set(map(tuple, sc["rock"]))
+        self.water = set(map(tuple, sc.get("water", [])))
         self.doors = set(map(tuple, sc["doors"]))
         self.trees = {(t["x"], t["y"]) for t in sc["trees"]}
         self.machine_cells = {}
@@ -186,12 +186,6 @@ class Net:
         self.nb = {c: [(c[0] + d[0], c[1] + d[1]) for d in DIRS
                        if (c[0] + d[0], c[1] + d[1]) in self.cells] for c in self.cells}
         self.deg = {c: len(v) for c, v in self.nb.items()}
-        # load mode: a machine/lamp hookup in the middle of a run is a TAP (flow changes there),
-        # so runs are split at it and it is treated like a junction
-        self.taps = set()
-        if load:
-            hooks = set(self.hook_of) | {tuple(l["hookup"]) for l in sc["lamps"]}
-            self.taps = {c for c in hooks if c in self.cells and self.deg[c] == 2}
         self._chains()
         self._live()
 
@@ -203,16 +197,16 @@ class Net:
             return True
         if c in self.cells:
             return False
-        return c in self.walls or c in self.rock or c in self.machine_cells
+        return c in self.walls or c in self.rock or c in self.machine_cells or c in self.water
 
     def _chains(self):
-        stops = [c for c in sorted(self.cells) if self.deg[c] != 2 or c in self.taps]
+        stops = [c for c in sorted(self.cells) if self.deg[c] != 2]
         seen = set()
         self.chains = []
         for s in stops:
             for n in sorted(self.nb[s]):
                 path = [s, n]
-                while self.deg[path[-1]] == 2 and path[-1] not in self.taps:
+                while self.deg[path[-1]] == 2:
                     a, b = self.nb[path[-1]]
                     path.append(a if a != path[-2] else b)
                 key = frozenset(frozenset(e) for e in zip(path, path[1:]))
@@ -239,8 +233,6 @@ class Net:
         return (c[0] - n[0], c[1] - n[1])
 
     def end_class(self, c):
-        if c in self.taps:
-            return "t"
         d = self.deg[c]
         if d >= 3:
             return "x" if d == 4 else "t"
@@ -277,26 +269,12 @@ class Net:
         return [ctr + o * ext, ctr]
 
 
-def port_point(c, nbr):
-    """Load mode: a run stops at the junction cell's EDGE (its port), not at the knot."""
-    return np.array([c[0] + 0.5 + (nbr[0] - c[0]) * PORT, c[1] + 0.5 + (nbr[1] - c[1]) * PORT])
-
-
-PORT = 0.44
-
-
 def centreline(net, path):
     a, b = path[0], path[-1]
     ca, cb = net.end_class(a), net.end_class(b)
-    if net.load and ca in ("t", "x"):
-        pts = [port_point(a, path[1])]
-    else:
-        pts = net.end_point(a, ca)
+    pts = net.end_point(a, ca)
     pts += [np.array([c[0] + 0.5, c[1] + 0.5]) for c in path[1:-1]]
-    if net.load and cb in ("t", "x"):
-        pts += [port_point(b, path[-2])]
-    else:
-        pts += list(reversed(net.end_point(b, cb)))
+    pts += list(reversed(net.end_point(b, cb)))
     # corner cutting gives every 90 degree bend a minimum radius before the spline
     cut = [pts[0]]
     for i in range(1, len(pts) - 1):
@@ -323,8 +301,6 @@ def build_strands(net, sty, lvl, opts):
     strands, splices, coils, knots, ends, greases = [], [], [], [], [], []
     lines = []
     ws = sty.get("wander_scale", 1.0)
-    LD = opts.get("load")
-    per_chain = []
     for ci_, path in enumerate(net.chains):
         C, ca, cb = centreline(net, path)
         lines.append((path, C))
@@ -335,8 +311,6 @@ def build_strands(net, sty, lvl, opts):
         L = cl[-1]
         nmin, nmax = opts.get("force_n", lvl["strands"])
         n = rr.randint(nmin, nmax)
-        if LD:
-            n = LD["n"][ci_]
         kinds = [k for k, _ in sty["kinds"]]
         wts = [w for _, w in sty["kinds"]]
         if opts.get("force_kind"):
@@ -347,17 +321,8 @@ def build_strands(net, sty, lvl, opts):
         def tap_end(cls, s):
             if cls in ("break", "open", "grommet"):
                 return np.ones_like(s)
-            if LD and cls in ("t", "x"):
-                return np.ones_like(s)
             return 0.15 + 0.85 * sstep(s / taper_len)
-
-        def free_end(cls, s):
-            # load mode: wander and sag die out at a junction port so the strand slots line up exactly
-            if LD and cls in ("t", "x"):
-                return sstep(s / 0.45)
-            return tap_end(cls, s)
         tap = tap_end(ca, cl) * tap_end(cb, L - cl)
-        tfree = free_end(ca, cl) * free_end(cb, L - cl)
         shrink = min(1.0, L / 1.5)
         bundle_sign = rr.choice([-1, 1])
         chain_strands = []
@@ -365,20 +330,13 @@ def build_strands(net, sty, lvl, opts):
             kind = rr.choices(kinds, wts)[0]
             lat = 0.0 if n == 1 else spread * ((i - (n - 1) / 2) / ((n - 1) / 2)) * rr.uniform(0.75, 1.1)
             lat += rr.uniform(-0.015, 0.015)
-            if LD:
-                kind = LD["kind"](ci_, i)
-                lat = LD["lat"](n, i)
             wa = lvl["wander"] * ws * rr.uniform(0.6, 1.2) * shrink
             l1, l2 = rr.uniform(1.3, 2.4), rr.uniform(0.5, 0.9)
             f1, f2 = rr.uniform(0, 6.28), rr.uniform(0, 6.28)
             wander = wa * (0.72 * np.sin(2 * np.pi * cl / l1 + f1) + 0.28 * np.sin(2 * np.pi * cl / l2 + f2))
             sg = bundle_sign if rr.random() < 0.75 else -bundle_sign
             sag = lvl["sag"] * rr.uniform(0.4, 1.0) * sg * shrink * np.sin(np.pi * np.clip(cl / max(L, 1e-6), 0, 1))
-            if LD:
-                wander = wander * 0.55
-                off = tap * lat + tfree * wander + sag * 0.6 * np.minimum(1, tfree * 1.5)
-            else:
-                off = tap * (lat + wander) + sag * np.minimum(1, tap * 1.5)
+            off = tap * (lat + wander) + sag * np.minimum(1, tap * 1.5)
             off = np.clip(off, -0.38, 0.38)
             for _ in range(5):
                 P = C + N * off[:, None]
@@ -396,7 +354,7 @@ def build_strands(net, sty, lvl, opts):
             P = np.c_[smooth1d(P[:, 0], 3), smooth1d(P[:, 1], 3)]
             P[0], P[-1] = C[0] + N[0] * off[0], C[-1] + N[-1] * off[-1]
             if opts.get("sprawl"):
-                # owner excursions (§8.11): slack laid as big walkability-aware loops, then settled
+                # owner excursions (§8.6): slack laid as big walkability-aware loops, then settled
                 P = rope.sprawl(net, P, opts["sprawl"], R(seed, "bundle", key), R(seed, "strand", key, i),
                                 set(path) & net.walls, n)
             chain_strands.append({"pts": P, "kind": kind, "s0": rr.uniform(0, 1), "tails": [],
@@ -460,12 +418,9 @@ def build_strands(net, sty, lvl, opts):
             if cls in ("cap", "plug") and (rr.random() < lvl["coil_p"] or opts.get("force_coil")):
                 coils.append({"cell": cell, "kind": rr.choice(chain_strands)["kind"], "rr": R(seed, "coil", cell)})
         strands += chain_strands
-        per_chain.append(chain_strands)
-    if LD:
-        strands += LD["connectors"](net, per_chain)
     # junction knots
     for c in sorted(net.cells):
-        if net.deg[c] >= 3 or c in net.taps:
+        if net.deg[c] >= 3:
             knots.append({"cell": c, "p": net.knot(c), "cls": "x" if net.deg[c] == 4 else "t"})
     # grease near knots / plug ends (filth)
     for k in knots:
@@ -1247,12 +1202,8 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
     opts = dict(opts or {})
     sty, lvl = STYLES[style], dict(LEVELS[level])
     lvl.update(opts.get("level_over", {}))
-    net = Net(sc, seed, load=bool(opts.get("load_model")))
-    LD = None
-    if opts.get("load_model"):
-        LD = opts["load_model"](net, sty, seed)
-        opts["load"] = LD
-    strands, ex = build_strands(net, sty, lvl, opts)
+    net = Net(sc, seed)
+    strands, ex = opts.get("builder", build_strands)(net, sty, lvl, opts)
     cv = Canvas(sc["w"], sc["h"], cell_px, ss)
     C = cv.C
     draw_terrain(cv, sc, seed)
@@ -1264,6 +1215,13 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
             px_, py_ = (x + r.random()) * C, (y + r.random()) * C
             rad = r.uniform(0.05, 0.15) * C
             cv.d.ellipse([px_ - rad, py_ - rad, px_ + rad, py_ + rad], fill=r.choice(["#3a3530", "#5a544c", "#625b52"]))
+    for (x, y) in sorted(net.water):
+        r = R(seed, "water", x, y)
+        cv.d.rectangle([x * C, y * C, (x + 1) * C, (y + 1) * C], fill="#2f4a52")
+        for k in range(3):
+            yy = (y + r.uniform(0.15, 0.85)) * C
+            xx = (x + r.uniform(0.05, 0.5)) * C
+            cv.d.line([(xx, yy), (xx + C * r.uniform(0.2, 0.45), yy)], fill="#4c6e78", width=max(1, cv.ss * 2))
     # coils lie on the floor under everything
     coil_strands = []
     for co in ex["coils"]:
@@ -1314,7 +1272,7 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         ang = 0.0 if horiz else math.pi / 2
         ang += R(seed, "kang", c).uniform(-0.25, 0.25)
         name = sty["junction_x"] if k["cls"] == "x" else sty["junction_t"]
-        decal(cv, name, p, ang, sty, 0.85 if LD else 1.3, R(seed, "kd", c))
+        decal(cv, name, p, ang, sty, 1.3, R(seed, "kd", c))
     for spx in ex["splices"]:
         rr = spx["rr"]
         if opts.get("sprawl"):
@@ -1365,9 +1323,11 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
             decal(cv, "grommet", cv.px(q), 0, sty, 1.0)
     for (p, r) in ex["greases"]:
         grease_decal(cv, cv.px(p), r, 1.0)
+    if opts.get("after_floor"):
+        opts["after_floor"](cv, net, ex, sty, seed)
     # machine hookups (SmallWire): sagging, elevated -> bigger, softer shadow
     hooks = []
-    for m in sc["machines"]:
+    for m in ([] if opts.get("no_hooks") else sc["machines"]):
         c = tuple(m["hookup"])
         r = R(seed, "hook", m["id"])
         start = np.array([c[0] + 0.5, c[1] + 0.5])
@@ -1384,8 +1344,6 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         else:
             q[0] = x0 + 0.15
         n = r.randint(*lvl["hook_strands"])
-        if LD:
-            n = LD["hook_n"].get(m["id"], 1)
         for i in range(n):
             qq = q + np.array([r.uniform(-0.2, 0.2), r.uniform(-0.05, 0.05)])
             ss_ = start + np.array([r.uniform(-0.05, 0.05), r.uniform(-0.05, 0.05)])
@@ -1406,11 +1364,11 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         start = np.array([c[0] + 0.5, c[1] + 0.5])
         kind = dict(r.choices([k for k, _ in sty["kinds"]], [w for _, w in sty["kinds"]])[0])
         kind["width"] *= 0.8
-        if c in net.taps or net.deg.get(c, 0) >= 3:
+        if net.deg.get(c, 0) >= 3:
             start = net.knot(c)
         b = g["base"] + np.array([0.0, 0.03])
-        nl = LD["hook_n"].get("lamp", 1) if LD else 1
-        for i in range(nl):
+        for i in range(0 if opts.get("no_hooks") else 1):
+            nl = 1
             o = (i - (nl - 1) / 2) * 0.06
             mid = (start + b) / 2 + np.array([lvl["hook_sag"] * 0.6 + o, 0.05 + o * 0.5])
             t = np.linspace(0, 1, 30)[:, None]
@@ -1434,6 +1392,8 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
     draw_doors(cv, sc)
     for m in sorted(sc["machines"], key=lambda m: m["y"]):
         draw_machine(cv, m, net)
+    if opts.get("after_buildings"):
+        opts["after_buildings"](cv, net, ex, sty, seed)
     # wires on top of walls (+ staples, drape shadow)
     sh = cv.overlay()
     draw_strand_runs(cv, strands, 1, shadow_layer=sh, shadow_off=(0.02, 0.03))
@@ -1484,8 +1444,6 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
     # items always above wires
     for (x, y, kind) in sc["items"]:
         draw_item(cv, x, y, kind, seed)
-    if LD and opts.get("labels", True):
-        LD["draw_labels"](cv, net, ex)
     # live break ends: whipping tail, lifted shadow, frayed hot copper, sparks
     glow = cv.overlay()
     streaks_all = []
@@ -1520,7 +1478,8 @@ def render_scene(sc, style, level, cell_px=80, ss=2, seed=1, frame=0, opts=None)
         streaks_all.append((sparks(cv, glow, tip, dirv, r, big), r))
         if len(live_tips) > 1 and r.random() < 0.6:
             other = live_tips[(j + 1) % len(live_tips)][0]
-            bolts.append((tip, other, R(seed, "bolt", j, frame)))
+            if np.hypot(*(np.asarray(other) - np.asarray(tip))) < 1.5 * C:   # only across one break
+                bolts.append((tip, other, R(seed, "bolt", j, frame)))
     if live_tips:
         cv.comp(glow, blur=C * 0.06)
         for (sts, r) in streaks_all:
@@ -1722,7 +1681,7 @@ def main(argv=None):
                for s in STYLE_ORDER]
         ov = titled(grid(ims, 2), "Messy Conduit - three style families at the DEFAULT messiness (ropey / jury-rigged)",
                     "1 Cybertek | 2 Extension cord | 3 Star Wars (base) | 3J Star Wars: Jawa variant.  Same network in every "
-                    "panel. Full-size 01a..03jc; swatches *s; break strips *t; load-proportional bundles 05_load_*.")
+                    "panel. Full-size 01a..03jc; swatches *s; break strips *t; nodal cords 07_nodal_*.")
         p = os.path.join(a.out, "00_overview.png")
         ov.save(p, optimize=True)
         written.append(p)
