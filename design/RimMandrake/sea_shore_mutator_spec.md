@@ -85,7 +85,7 @@ assumption and it is the documented 1.6 contract).
 `World.CoastAngleAt(tile, waterBiome)` (`World.cs:303-314`) takes the biome as a parameter — mean
 heading of the neighbours whose `PrimaryBiome == waterBiome`, `null` if none — which is why the
 override in §1a needs no Harmony. All four of our seas are `impassable`, `canBuildBase false`
-(`RM_TheScald.xml`, `RM_GreySea.xml`, `RM_TwilightSea.xml`, `RM_PropaneLake.xml`), so no map is ever
+(`RM_TheScald.xml`, `RM_GreySea.xml`, `RM_TwilightSea.xml`, `RM_TheChill.xml`), so no map is ever
 generated ON a sea tile.
 
 **How mutators get onto a tile.** `WorldGenStep_Mutators.AddMutatorsFromTile(layer)`
@@ -188,7 +188,7 @@ None of the four sets `ocean*Terrain`.
 | `RM_TheScald` | `RUT_ScaldWaterOceanDeep` / `RUT_ScaldWaterOceanShallow` (`RUT_ScaldWater.xml`) | `RUT_ScaldWaterDeep` / `RUT_ScaldWaterShallow` (+ moving pair) | boiling ocean deep / boiling ocean shallow | land biome's `coastalBeachTerrain ?? Sand` |
 | `RM_GreySea` | (empty extension) | none | **vanilla `WaterOceanDeep` / `WaterOceanShallow`** | land's |
 | `RM_TwilightSea` | (empty extension) | none | **vanilla `WaterOceanDeep` / `WaterOceanShallow`** | land's |
-| `RM_PropaneLake` | `RM_PropaneDeep` / `RM_PropaneShallow` (FlowWorks, `FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Propane.xml`) | `RM_PropaneLakeDeep` / `RM_SolidPropane` (`RM_PropaneLakeTerrains.xml`) | liquid propane deep / shallow | land's |
+| `RM_TheChill` | `RM_PropaneDeep` / `RM_PropaneShallow` (FlowWorks, `FlowWorks/Defs/LiquidTypes/TerrainDefs/RM_Propane.xml`) | `RM_TheChillDeep` / `RM_SolidPropane` (`RM_TheChillTerrains.xml`) | liquid propane deep / shallow | land's |
 
 Consequences:
 - Grey and Twilight shores are **indistinguishable from a vanilla coast** today. `sea_dive_maps_spec.md`
