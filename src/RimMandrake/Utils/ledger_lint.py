@@ -2,7 +2,8 @@
 """ledger_lint.py — the second permanent invariant of the union-merged ledger.
 
 Git plan §2.5 (`design/RimMandrake/git_workflow_plan_2026-10-01.md`): the per-seat shards
-`infrastructure/state/ledger/events/<SEAT>.jsonl` merge with `merge=union`. Union never
+`infrastructure/state/ledger/events/<SEAT>.jsonl` (and, since Phase 5, the code-review records
+`infrastructure/state/code_review/<SEAT>.jsonl`) merge with `merge=union`. Union never
 conflicts, which is the point, and also means git will never stop a bad shard from
 landing. So this lint does, refusing:
 
@@ -40,6 +41,9 @@ import sys
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 SHARD_DIR = "infrastructure/state/ledger/events"
+# Every append-only, union-merged shard directory. Phase 5 (2026-10-02) added the
+# code-review records (`code_review_status.py`), which carry the same invariants.
+SHARD_DIRS = (SHARD_DIR, "infrastructure/state/code_review")
 FROZEN = "infrastructure/state/ledger/events.jsonl"
 
 
@@ -59,15 +63,18 @@ def blob_at(root, rev, path):
 
 def shards_at(root, rev):
     """-> sorted shard paths at `rev` (None = worktree)."""
-    if rev is None:
-        d = os.path.join(root, SHARD_DIR)
-        try:
-            names = os.listdir(d)
-        except OSError:
-            return []
-        return sorted("%s/%s" % (SHARD_DIR, n) for n in names if n.endswith(".jsonl"))
-    r = _git(root, "ls-tree", "--name-only", rev, SHARD_DIR + "/")
-    return sorted(p for p in r.stdout.decode().splitlines() if p.endswith(".jsonl"))
+    out = []
+    for sd in SHARD_DIRS:
+        if rev is None:
+            try:
+                names = os.listdir(os.path.join(root, sd))
+            except OSError:
+                continue
+            out += ["%s/%s" % (sd, n) for n in names if n.endswith(".jsonl")]
+        else:
+            r = _git(root, "ls-tree", "--name-only", rev, sd + "/")
+            out += [p for p in r.stdout.decode().splitlines() if p.endswith(".jsonl")]
+    return sorted(out)
 
 
 def content(root, rev, path):
@@ -81,7 +88,7 @@ def content(root, rev, path):
 
 
 def identity(ev):
-    subj = ev.get("id") or ev.get("name") or ev.get("system") or ""
+    subj = ev.get("id") or ev.get("name") or ev.get("system") or ev.get("path") or ""
     return (ev.get("seat"), ev.get("event"), subj, ev.get("ts"))
 
 
