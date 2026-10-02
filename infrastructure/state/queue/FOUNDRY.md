@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T09:28:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-01T09:30:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -2041,16 +2041,6 @@ thin:     no ## verify, no ## criteria
 summary:  Follow-on from FEVERWOODSAPSUCKERGUILD1 (closed), same pattern as
 prose:    infrastructure/state/items/FEVERWOOD_SAP_SUCKER_TUNING_1.md
 
-## CAULDRON_GPT_ENRICHMENT_1 Cauldron enrichment (GPT consult 2026-09-30, owner-picked by card): four-stroke weather cycle, vexxiss warden of the breath, vexxith closed loop, assay forestry, condensate gardens
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  1. Four-stroke weather cycle. The four ratified weathers become recognizable phases of one engine:
-prose:    infrastructure/state/items/CAULDRON_GPT_ENRICHMENT_1.md
-
 ## FORGE_GPT_ENRICHMENT_1 Forge enrichment (GPT consult 2026-09-30, owner-picked by card): floatstone keelwork, spunstone bonding, four voices of the Forge, white plume fronts, sky pastures, dhokkur ways, dhuvvox clock
 state:    proposed
 row:      unassigned
@@ -2790,3 +2780,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  CRACKEDLANDSWOOLAMANDERFLIGHT1 — the woolamander is a ruled flier but cannot fly
 prose:    infrastructure/state/items/CRACKEDLANDS_WOOLAMANDER_FLIGHT_1.md
+
+## CAULDRON_VENT_ENRICHMENT_HOOKS_1 Cauldron enrichment pieces that hang on vents: weather vent multipliers + vent-local exposure + falter, vexxiss vent-drinking, vent-keyed gardens
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## verify
+summary:  From the parent's spec, verbatim in substance:
+prose:    infrastructure/state/items/CAULDRON_VENT_ENRICHMENT_HOOKS_1.md
+
+## CAULDRON_ENRICHMENT_LIVE_PROOF_1 Quicktest-prove the offline-built Cauldron enrichment: assay grade line, vexxiss poisoned-water letter, nettles on toxic shores
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  CAULDRONENRICHMENTLIVEPROOF1 — live proof of the offline Cauldron enrichment
+prose:    infrastructure/state/items/CAULDRON_ENRICHMENT_LIVE_PROOF_1.md
