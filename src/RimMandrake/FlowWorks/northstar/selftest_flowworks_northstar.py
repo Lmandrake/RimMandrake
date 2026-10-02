@@ -307,11 +307,26 @@ def test_offline(P):
         with open(pre, "w") as f:
             f.write("<ModsConfigData><activeMods>%s</activeMods></ModsConfigData>"
                     % "".join("<li>%s</li>" % i for i in lst))
-    Q = PF.Paths(full_latest=full, pre_swap=pre, backup_dir=sub("o_bk"))
+    roots = sub("o_modroot")
+    Q = PF.Paths(full_latest=full, pre_swap=pre, backup_dir=sub("o_bk"), mod_roots=[roots])
     write_pre(ids)
     check("P-O4 equal lists PASS", PF.p_o4(Q).status == PASS)
     write_pre([i for i in ids if i != "mandrake.rm.pits"])
     check("P-O4 minus pits PASS", PF.p_o4(Q).status == PASS)
+    # the real 2026-10-02 shape: FULL.LATEST dropped pits, the live list still carries it
+    with open(full, "w") as f:
+        f.write("<ModsConfigData><activeMods>%s</activeMods></ModsConfigData>"
+                % "".join("<li>%s</li>" % i for i in ids if i != "mandrake.rm.pits"))
+    write_pre(ids)
+    check("P-O4 live has dangling pits, not installed -> PASS", PF.p_o4(Q).status == PASS, PF.p_o4(Q).evidence)
+    os.makedirs(os.path.join(roots, "Pits", "About"))
+    with open(os.path.join(roots, "Pits", "About", "About.xml"), "w") as f:
+        f.write("<ModMetaData><packageId>mandrake.rm.pits</packageId></ModMetaData>")
+    check("P-O4 pits diff while Pits IS installed -> FAIL", PF.p_o4(Q).status == FAIL, PF.p_o4(Q).evidence)
+    Q.mod_roots = [os.path.join(roots, "nope")]
+    check("P-O4 pits diff, unreadable roots -> UNMEASURED", PF.p_o4(Q).status == UNMEASURED, PF.p_o4(Q).evidence)
+    with open(full, "w") as f:
+        f.write("<ModsConfigData><activeMods>%s</activeMods></ModsConfigData>" % "".join("<li>%s</li>" % i for i in ids))
     write_pre(ids + ["x.y"])
     check("P-O4 unexpected extra FAIL", PF.p_o4(Q).status == FAIL)
     write_pre(["a.b", "ludeon.rimworld", "mandrake.rm.flowworks"])

@@ -3,8 +3,9 @@
 I designed this offline as a helper to FOUNDRY. The game was down and I did not take the bridge.
 
 - **The evidence** is `design/RimMandrake/flowworks_northstar_interrogation_2026-10-02.md` (call it "INT").
-- **The draft** is `src/RimMandrake/FlowWorks/northstar/validation_v2_DRAFT.py`. It is not wired into
-  modcheck, and it does not replace `validation.py` or touch the walk.
+- **The script** is `src/RimMandrake/FlowWorks/northstar/validation_v2.py` (the `_DRAFT` was promoted
+  after its first green live run, 2026-10-02; its docstring records what the live runs taught). It is
+  not wired into modcheck, and it does not replace `validation.py` or touch the walk.
 
 ## 0. What changes, in one paragraph
 
