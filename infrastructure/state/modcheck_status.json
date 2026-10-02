@@ -96,23 +96,23 @@
         "M9_remove_mod_clean"
       ]
     },
-    "hash": "c9d4910b8f3e19101ae802062d94c6ada199214303bd4d251f7449b5e1e1e207",
+    "hash": "93fd84eddaccd259bfd7dbb8de0dcf7bfd3578726bb4e067187846c763a4d5d7",
     "minor": null,
     "owner_review": null,
     "refused": "19 live rows PASS but 6 bars UNBUILT, 2 UNCOVERED: U_whip_tails, U_downed_wire_bursts, U_pbd_settle, U_selection_highlight, U_sway, U_other_styles, M4_save_load_hash, M9_remove_mod_clean",
-    "run_id": "MessyConduit/script@validation_result_20261002T135728.json",
+    "run_id": "MessyConduit/script@validation_result_20261002T150809.json",
     "source": {
       "assembly_sha256": null,
       "env_running_count": 9,
       "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "src/RimMandrake/MessyConduit/northstar/validation_result_20261002T135728.json",
-      "started": "2026-10-02T13:56:51",
+      "result": "src/RimMandrake/MessyConduit/northstar/validation_result_20261002T150809.json",
+      "started": "2026-10-02T15:07:31",
       "ticks_spent": null,
       "tier": "messyconduit",
       "verb": "modcheck record"
     },
     "status": "REFUSED",
-    "ts": 1790974660.1446674
+    "ts": 1790979061.0020213
   },
   "Ninefold": {
     "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",

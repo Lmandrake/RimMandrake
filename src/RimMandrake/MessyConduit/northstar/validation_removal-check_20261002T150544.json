@@ -1,0 +1,27 @@
+{
+ "mod": "MessyConduit",
+ "mode": "removal-check",
+ "started": "2026-10-02T15:05:38",
+ "rows": [
+  {
+   "id": "M9_remove_mod_clean",
+   "status": "FAIL",
+   "class": "MOD",
+   "detail": {
+    "running": 9,
+    "loadSeconds": 4,
+    "errorsNamingMod": [
+     "SaveableFromNode exception: System.ArgumentException: Can't load abstract class Verse.MapComponent\r\n[Ref 8FA4C5EC]\n  at Verse.ScribeExtractor.SaveableFromNode[T] (System.Xml.XmlNode subNode, System.Object[] ctorArgs) [0x00143] in <61e417356",
+     "Could not find class RimMandrake.MessyConduit.RM_MapComponent_CordGraph while resolving node li. Trying to use Verse.MapComponent instead. Full node: <li Class=\"RimMandrake.MessyConduit.RM_MapComponent_CordGraph\" />"
+    ],
+    "playerLogLinesNamingMod": [
+     "Could not find class RimMandrake.MessyConduit.RM_MapComponent_CordGraph while resolving node li. Trying to use Verse.MapComponent instead. Full node: <li Class=\"RimMandrake.MessyConduit.RM_MapComponent_CordGraph\" />",
+     "<li Class=\"RimMandrake.MessyConduit.RM_MapComponent_CordGraph\" />"
+    ],
+    "otherErrors": [],
+    "newWarnings": 1,
+    "conduitStillThere": null
+   }
+  }
+ ]
+}

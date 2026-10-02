@@ -9,8 +9,9 @@ using Verse;
 namespace RimMandrake.MessyConduit
 {
     /// <summary>
-    /// Runtime-only owner of a map's cord graph (design §8.1): nothing here is saved (no
-    /// ExposeData), the whole graph and every polyline is rebuilt from the conduit grid on load and
+    /// Runtime-only owner of a map's cord graph (design §8.1): nothing here is saved -- not even the
+    /// component's own entry (Patch_Map_ExposeComponents_SkipCordGraph, below), so a save loads clean
+    /// without the mod; the whole graph and every polyline is rebuilt from the conduit grid on load and
     /// seeded so it comes out identical.
     ///
     /// Rebuild trigger: a SectionLayer_RM_MessyCords regenerating means one of its change flags
@@ -79,20 +80,35 @@ namespace RimMandrake.MessyConduit
                 if (!nextBy.TryGetValue(s, out List<LaidPiece> l)) nextBy[s] = l = new List<LaidPiece>();
                 l.Add(p);
             }
+            // Publish BEFORE dirtying: a throw below must never leave the map with no cords.
+            Dictionary<IntVec2, List<LaidPiece>> prevBy = bySection;
+            pieces = next;
+            bySection = nextBy;
             // dirty every section whose owned set changed (not just the regenerating one)
             if (Current.ProgramState == ProgramState.Playing)
             {
                 var keys = new HashSet<IntVec2>(nextBy.Keys);
-                keys.UnionWith(bySection.Keys);
+                keys.UnionWith(prevBy.Keys);
                 foreach (IntVec2 s in keys)
-                {
-                    string a = Sig(bySection, s), z = Sig(nextBy, s);
-                    if (a != z)
-                        map.mapDrawer.MapMeshDirty(new IntVec3(s.x * Section.Size, 0, s.z * Section.Size), MessyConduitDefOf.RM_MessyCords);
-                }
+                    if (Sig(prevBy, s) != Sig(nextBy, s)) DirtySection(s);
             }
-            pieces = next;
-            bySection = nextBy;
+        }
+
+        /// <summary>
+        /// MapDrawer.RegenerateEverythingNow (map load / FinalizeInit) creates its Section objects one by one
+        /// INSIDE the regenerate loop, so while the first sections regenerate the later array slots are still
+        /// null and MapMeshDirty -> SectionAt(..).dirtyFlags throws (live 2026-10-02: every loaded save drew no
+        /// cords). A section not created yet regenerates in that same loop anyway, so skipping it is correct.
+        /// </summary>
+        private void DirtySection(IntVec2 s)
+        {
+            var loc = new IntVec3(s.x * Section.Size, 0, s.z * Section.Size);
+            if (!loc.InBounds(map)) return;
+            Section sec;
+            try { sec = map.mapDrawer.SectionAt(loc); }
+            catch (NullReferenceException) { return; }       // the drawer's section array itself not built yet
+            if (sec == null) return;
+            map.mapDrawer.MapMeshDirty(loc, MessyConduitDefOf.RM_MessyCords);
         }
 
         private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s) =>
@@ -170,6 +186,42 @@ namespace RimMandrake.MessyConduit
                                   nd.IsStub ? SimpleColor.Cyan : nd.Type == NodeType.Junction ? SimpleColor.Blue : SimpleColor.Green;
                 GenDraw.DrawCircleOutline(new Vector3((float)nd.Pos.X, y, (float)nd.Pos.Z), 0.22f, col);
             }
+        }
+    }
+
+    /// <summary>
+    /// Keeps the cord graph out of the save (walk M9). Map.ExposeComponents writes every MapComponent as
+    /// &lt;li Class="..."/&gt; even with no ExposeData, and loading that save without the mod logs two red errors
+    /// ("Could not find class RimMandrake.MessyConduit.RM_MapComponent_CordGraph" + "Can't load abstract class
+    /// Verse.MapComponent"; measured live 2026-10-02). While SAVING, the component is taken out of the list and
+    /// put back afterwards at its old index; FillComponents (end of ExposeComponents) re-adds a fresh instance,
+    /// which the finalizer drops again. On load it is simply absent and FillComponents creates it.
+    /// </summary>
+    [HarmonyLib.HarmonyPatch(typeof(Map), "ExposeComponents")]
+    internal static class Patch_Map_ExposeComponents_SkipCordGraph
+    {
+        internal sealed class Held { public int Index; public MapComponent Comp; }
+
+        private static void Prefix(Map __instance, out Held __state)
+        {
+            __state = null;
+            if (Scribe.mode != LoadSaveMode.Saving) return;
+            List<MapComponent> list = __instance.components;
+            int i = list.FindIndex(c => c is RM_MapComponent_CordGraph);
+            if (i < 0) return;
+            __state = new Held { Index = i, Comp = list[i] };
+            list.RemoveAt(i);
+        }
+
+        private static Exception Finalizer(Map __instance, Exception __exception, Held __state)
+        {
+            if (__state != null)
+            {
+                List<MapComponent> list = __instance.components;
+                list.RemoveAll(c => c is RM_MapComponent_CordGraph);
+                list.Insert(Math.Min(__state.Index, list.Count), __state.Comp);
+            }
+            return __exception;
         }
     }
 }

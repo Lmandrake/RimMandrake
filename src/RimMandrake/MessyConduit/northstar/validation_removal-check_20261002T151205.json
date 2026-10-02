@@ -1,0 +1,21 @@
+{
+ "mod": "MessyConduit",
+ "mode": "removal-check",
+ "started": "2026-10-02T15:12:00",
+ "rows": [
+  {
+   "id": "M9_remove_mod_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "running": 9,
+    "loadSeconds": 3,
+    "errorsNamingMod": [],
+    "playerLogLinesNamingMod": [],
+    "otherErrors": [],
+    "newWarnings": 1,
+    "conduitStillThere": 3
+   }
+  }
+ ]
+}
