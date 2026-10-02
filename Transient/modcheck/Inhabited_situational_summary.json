@@ -1,0 +1,972 @@
+{
+ "chains": [
+  {
+   "name": "place_and_roster",
+   "components": [
+    {
+     "name": "place_created",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Create place at current tile",
+        "node": {
+         "path": "Actions\\Create place at current tile",
+         "parentPath": "Actions",
+         "label": "Create place at current tile",
+         "category": "RimMandrake.Inhabited",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Create place at current tile",
+          "category": "RimMandrake.Inhabited",
+          "allowedGameStates": "Playing",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 21,
+           "level": "info",
+           "message": "[RimMandrake.Inhabited] created Test place at tile 2115,0 for Jaesunt, archetype RM_InhabitedPlace_Scrapyard.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:57.30952+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_bc4d5a0707bd4c1abb3ba50d2cbf6a48",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:07:57.3055204+00:00",
+         "CompletedAtUtc": "2026-10-02T01:07:57.3140276+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] created, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\place_created_1790903277.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roster_stuffed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Stuff roster (3 pawns)",
+        "node": {
+         "path": "Actions\\Stuff roster (3 pawns)",
+         "parentPath": "Actions",
+         "label": "Stuff roster (3 pawns)",
+         "category": "RimMandrake.Inhabited",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Stuff roster (3 pawns)",
+          "category": "RimMandrake.Inhabited",
+          "allowedGameStates": "Playing",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 3,
+         "logs": [
+          {
+           "sequence": 24,
+           "level": "info",
+           "message": "[RimMandrake.Inhabited] ROSTER REPORT  Test place -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\InhabitedReports\\roster_reports.txt",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:57.6703519+00:00"
+          },
+          {
+           "sequence": 23,
+           "level": "info",
+           "message": "[RimMandrake.Inhabited] roster of Test place now holds 3.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:57.667354+00:00"
+          },
+          {
+           "sequence": 22,
+           "level": "warning",
+           "message": "Tried to directly add implied pawn relation Sibling, pawn=Bishop, otherPawn=Vasilisa",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:57.6377151+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_d91a8b7f00324d1da54b893052e126c7",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:07:57.6315472+00:00",
+         "CompletedAtUtc": "2026-10-02T01:07:57.6703519+00:00",
+         "DurationMs": 38,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] roster of, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\roster_stuffed_1790903277.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "absorbed_into_pool",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Absorb roster into pool",
+        "node": {
+         "path": "Actions\\Absorb roster into pool",
+         "parentPath": "Actions",
+         "label": "Absorb roster into pool",
+         "category": "RimMandrake.Inhabited",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Absorb roster into pool",
+          "category": "RimMandrake.Inhabited",
+          "allowedGameStates": "Playing",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 25,
+           "level": "info",
+           "message": "[RimMandrake.Inhabited] moved 3 into the pool; roster now 0.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:57.9001226+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_e9507d4ba54641f7b5764f0ccb8a899f",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:07:57.8971224+00:00",
+         "CompletedAtUtc": "2026-10-02T01:07:57.9001226+00:00",
+         "DurationMs": 3,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] moved, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\absorbed_into_pool_1790903277.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pool_ready_for_beggars_substitution",
+     "toggle": "beggarsFromPoolEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] moved, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pool_ready_for_beggars_substitution_1790903278.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "drawn_from_pool",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Draw 3 from pool",
+        "node": {
+         "path": "Actions\\Draw 3 from pool",
+         "parentPath": "Actions",
+         "label": "Draw 3 from pool",
+         "category": "RimMandrake.Inhabited",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Draw 3 from pool",
+          "category": "RimMandrake.Inhabited",
+          "allowedGameStates": "Playing",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 26,
+           "level": "info",
+           "message": "[RimMandrake.Inhabited] drew 3; pool now 0.\r\n  Human42519  Anya Bishop  age=45y (163046914 ticks)  relations=0  hediffs=3  traits=1  dead=False  faction=Jaesunt\r\n  Human42526  Durward Noonen  age=37y (134134854 ticks)  relations=0  hediffs=1  traits=3  dead=False  faction=Jaesunt\r\n  Human42534  Soleceon 'Solec' Cross  age=14y (51201967 ticks)  relations=0  hediffs=0  traits=1  dead=False  faction=Jaesunt",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:58.348914+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_96aff72c9731447292cb882d5771054f",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:07:58.346913+00:00",
+         "CompletedAtUtc": "2026-10-02T01:07:58.3499129+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] drew, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\drawn_from_pool_1790903278.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 11 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "fate_and_stock",
+   "components": [
+    {
+     "name": "place_created",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Create place at current tile",
+        "node": {
+         "path": "Actions\\Create place at current tile",
+         "parentPath": "Actions",
+         "label": "Create place at current tile",
+         "category": "RimMandrake.Inhabited",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Create place at current tile",
+          "category": "RimMandrake.Inhabited",
+          "allowedGameStates": "Playing",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 27,
+           "level": "info",
+           "message": "[RimMandrake.Inhabited] a place already exists at tile 2115,0.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:59.6888122+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_1307ab48ffe145c18214e1840b3fba6d",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:07:59.6868118+00:00",
+         "CompletedAtUtc": "2026-10-02T01:07:59.6888122+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] created, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\place_created_1790903279.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "stock_dumped",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[RimMandrake.Inhabited] dumped' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Stock: dump onto this map",
+        "node": {
+         "path": "Actions\\Stock: dump onto this map",
+         "parentPath": "Actions",
+         "label": "Stock: dump onto this map",
+         "category": "RimMandrake.Inhabited",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Stock: dump onto this map",
+          "category": "RimMandrake.Inhabited",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_0",
+         "currentMapIndex": 0,
+         "mapCount": 1,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 28,
+           "level": "warning",
+           "message": "[RimMandrake.Inhabited] Test place holds no goods. Its archetype is RM_InhabitedPlace_Scrapyard; check its larder table.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-02T01:07:59.9147172+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_1fb98744b8224923af7feeb765710825",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:07:59.9126925+00:00",
+         "CompletedAtUtc": "2026-10-02T01:07:59.9147172+00:00",
+         "DurationMs": 2,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Inhabited] dumped, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "fate_detects_when_enabled",
+     "toggle": "fateEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "stock_collected",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "robbed_threshold_not_spurious",
+     "toggle": "robbedFraction",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x00000157CE4908D0>"
+ ],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\RimMandrake\\design\\validation_walks\\RimMandrake\\Inhabited.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

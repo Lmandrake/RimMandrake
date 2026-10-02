@@ -1,0 +1,3 @@
+replay_dwelling_plan v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+replay_moisture_farm_plan v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+enabled_toggle_flips v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]

@@ -1,0 +1,525 @@
+{
+ "chains": [
+  {
+   "name": "reading_completes_and_advances_research",
+   "components": [
+    {
+     "name": "ordered_reading_job_catalogues_and_adds_progress",
+     "toggle": "readingEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "harness: BudgetExceeded: tick budget exceeded in scope 'request': spent 95000 of cap 60000 (step(95000) exceeds remaining())",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RUT_AntiquityReadingStation36141",
+          "def": "RUT_AntiquityReadingStation",
+          "label": "Steel urn reading station",
+          "x": 200,
+          "z": 200,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 150,
+          "maxHitPoints": 150,
+          "faction": null,
+          "factionName": null,
+          "stuff": "Steel",
+          "quality": null
+         },
+         {
+          "id": "RUT_Antiquity_Urn36142",
+          "def": "RUT_Antiquity_Urn",
+          "label": "Ancient urn",
+          "x": 200,
+          "z": 200,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 60,
+          "maxHitPoints": 60,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33247,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RUT_AntiquityReadingStation": 1,
+         "RUT_Antiquity_Urn": 1
+        },
+        "ticksGame": 1,
+        "message": "2 of 2 matching thing(s) returned, 33247 examined.",
+        "operation": {
+         "OperationId": "op_de4cdd4b37264a769df98ee001da45a0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:34.684127+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:34.6916493+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": true,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "RUT_ExamineAntiquity",
+        "afterJobDef": "RUT_ExamineAntiquity",
+        "nowRunningRequested": true,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": null,
+        "operation": {
+         "OperationId": "op_b3e72a1a2849430d9e24aed66cccb561",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:34.7039412+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:49.9050792+00:00",
+         "DurationMs": 15201,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": {
+      "kind": "harness",
+      "message": "BudgetExceeded: tick budget exceeded in scope 'request': spent 95000 of cap 60000 (step(95000) exceeds remaining())",
+      "hits": [],
+      "evidence": [],
+      "screenshots": []
+     }
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "no_more_reading_once_all_stages_done",
+   "components": [
+    {
+     "name": "stage_completion_gate",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": true,
+        "researcher": null,
+        "result": {
+         "defName": "RUT_Antiq_Language",
+         "label": "Language",
+         "cost": 500.0,
+         "baseCost": 500.0,
+         "progress": 500.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_0a0a02520e98465f8ae6f8ffe03eb7ec",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.331885+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:51.3388855+00:00",
+         "DurationMs": 7,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": true,
+        "researcher": null,
+        "result": {
+         "defName": "RUT_Antiq_Religion",
+         "label": "Religion",
+         "cost": 1200.0,
+         "baseCost": 1200.0,
+         "progress": 1200.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_ff9aa9a33eac4cc5b10da4b5a5a84307",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.3499036+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:51.3549115+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": true,
+        "researcher": null,
+        "result": {
+         "defName": "RUT_Antiq_Culture",
+         "label": "Culture",
+         "cost": 2400.0,
+         "baseCost": 2400.0,
+         "progress": 2400.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_8cc33e3b72b043a884d8840cc29e63c2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.3609589+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:51.3649604+00:00",
+         "DurationMs": 4,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": true,
+        "researcher": null,
+        "result": {
+         "defName": "RUT_Antiq_Cartography",
+         "label": "Cartography",
+         "cost": 4000.0,
+         "baseCost": 4000.0,
+         "progress": 4000.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_312ea5b5000f4ae0a0d17d9aa641da94",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.3699592+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:51.3753255+00:00",
+         "DurationMs": 5,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": true,
+        "researcher": null,
+        "result": {
+         "defName": "RUT_Antiq_Voice",
+         "label": "Voice",
+         "cost": 6000.0,
+         "baseCost": 6000.0,
+         "progress": 6000.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_7cd61369d34747f1ae58434547437c0d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.3808323+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:51.3848315+00:00",
+         "DurationMs": 3,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RUT_AntiquityReadingStation36148",
+          "def": "RUT_AntiquityReadingStation",
+          "label": "Steel urn reading station",
+          "x": 200,
+          "z": 200,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 150,
+          "maxHitPoints": 150,
+          "faction": null,
+          "factionName": null,
+          "stuff": "Steel",
+          "quality": null
+         },
+         {
+          "id": "RUT_Antiquity_Urn36149",
+          "def": "RUT_Antiquity_Urn",
+          "label": "Ancient urn",
+          "x": 200,
+          "z": 200,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 60,
+          "maxHitPoints": 60,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 33247,
+        "countReturned": 2,
+        "countMatched": 2,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 5,
+        "perDef": {
+         "RUT_AntiquityReadingStation": 1,
+         "RUT_Antiquity_Urn": 1
+        },
+        "ticksGame": 1,
+        "message": "2 of 2 matching thing(s) returned, 33247 examined.",
+        "operation": {
+         "OperationId": "op_1b99eab87db548efabbfb81bebe76305",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.3898591+00:00",
+         "CompletedAtUtc": "2026-10-02T01:16:51.3960894+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "RUT_ExamineAntiquity",
+        "afterJobDef": "GotoWander",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 120 tick(s) is 'GotoWander', not 'RUT_ExamineAntiquity' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+         "OperationId": "op_fa4a6e20dbd94d71834bdb1b6f9410fb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:16:51.401382+00:00",
+         "CompletedAtUtc": "2026-10-02T01:17:06.5824413+00:00",
+         "DurationMs": 15181,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 33247 examined.",
+        "matched": 1,
+        "examined": 33247,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RUT_Antiquity_Urn36149",
+          "defName": "RUT_Antiquity_Urn",
+          "label": "ancient urn",
+          "x": 200,
+          "z": 200,
+          "className": "Verse.ThingWithComps",
+          "inspect": [
+           "Not yet read"
+          ],
+          "lowPriority": "Deteriorating: Unroofed, outdoors (0.5 / day)",
+          "error": null
+         }
+        ],
+        "ticksGame": 601,
+        "operation": {
+         "OperationId": "op_14b73d13f81841a58650eabc6ff32ceb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:17:08.4486412+00:00",
+         "CompletedAtUtc": "2026-10-02T01:17:08.4676732+00:00",
+         "DurationMs": 19,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\stage_completion_gate_1790903828.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 2,
+    "ticks_spent": 600,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\RimMandrake\\design\\validation_walks\\RimUtinni\\Antiquities.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

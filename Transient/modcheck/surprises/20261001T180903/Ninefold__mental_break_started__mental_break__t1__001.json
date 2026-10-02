@@ -1,0 +1,181 @@
+{
+ "name": "Ninefold__mental_break_started__mental_break__t1__001",
+ "when_utc": "2026-10-02T01:09:06Z",
+ "hits": [
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "mental-break letter: Sad wander: Chaz",
+   "evidence": {
+    "label": "Sad wander: Chaz",
+    "arrivalTick": 1,
+    "count": 1
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "mental_break:letter:('NegativeEvent', 'Sad wander: Chaz', 1)"
+  }
+ ],
+ "snapshot": {
+  "tick": 1,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Chaz",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Chaz",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 4,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 1
+  },
+  "fires": 0,
+  "conditions": []
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexFurniture) -> 3.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: PassiveCooler) -> 33.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): PassiveCooler) -> 6.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: Stonecutting) -> 48.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): Stonecutting) -> 9.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: ComplexClothing) -> 63.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): ComplexClothing) -> 12.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: Electricity) -> 78.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): Electricity) -> 15.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: NutrientPaste) -> 93.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): NutrientPaste) -> 18.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: AirConditioning) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): AirConditioning) -> 21.0 [Content]"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 354 tools, build 89dd1414426b"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 27/17d111aa, toolSet 4e0b93e6, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +15.0 (research completed: Smithing) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ohm satiation +3.0 (research completed (shared input): Smithing) -> 24.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +15.0 (mental break: Chaz -> Wander_Sad) -> 15.0 [Neutral]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 1,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "Ninefold",
+  "chain": "mental_break_started",
+  "policy": "record"
+ },
+ "png": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T180903\\Ninefold__mental_break_started__mental_break__t1__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3352045,
+  "width": 1810,
+  "height": 1183,
+  "md5": "aab2222d3b61bbbb5026f2cf97d122ca",
+  "why": ""
+ },
+ "notes": []
+}

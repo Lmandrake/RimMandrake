@@ -1,0 +1,12 @@
+def_wiring v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+flesh_buildup v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]
+buildup_math v=PASS,FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   bodysize_squared_resistance FAIL: ExpectationFailed: severity ratio 4.17x (rat/human) is far below the ~25.00x the bodySize^2 divisor predicts -- resistance curve may not be squared
+   thirdparty_stat_matches_formula UNMEASURED: upstream failed -- this chain's state is meaningless
+machine_and_droid_tier v=PASS,FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   droid_tier_strong_stun FAIL: ExpectationFailed: jawa/damage returned no per-target row -- the hit did not land on anything
+shield_break v=FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   ion_pops_shield_then_bullet_lands FAIL: ExpectationFailed: bullet STILL absorbed after an ion hit -- shieldBreakEnabled's 1-point EMP dispatch did not pop the belt: before=-1 after=-1
+vehicle_tier_without_framework v=FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   vehicle_tier_logs_selfdisable FAIL: ExpectationFailed: no recent log line matched tag='Vehicle Framework is not loaded' field=None value=None (last matching line: None)
+   vehicle_tier_multiplier_dormant_without_framework UNMEASURED: upstream failed -- this chain's state is meaningless
