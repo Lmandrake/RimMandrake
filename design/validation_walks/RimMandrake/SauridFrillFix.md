@@ -18,3 +18,30 @@ status-hint: one loose PNG replacing a donor-mod texture whose real filename car
 3. [D] confirm via file inspection (not a def field — this is a loose-texture override with no def of its own) that `SauridFrillFix/Textures/Pawn/CenterFrill/CenterFrill8_north.png` exists, is a valid PNG, and its alpha channel is NOT uniformly zero (the exact defect this mod exists to fix, per its own README-style About.xml description of the donor's typo) — mirrors the alpha-decode method the mod's own justification is built on, not a log read
 4. [D] confirm this mod's file loads AFTER `vanillaracesexpanded.saurid` in the resolved mod order (read `ModsConfig.xml` / RimSort's resolved order, or the live `jawa/mod_inventory` load-order listing) — order is the entire mechanism here; a misordered list makes this mod a silent no-op
 X. [S] (human pass) spawn or select a saurid pawn with the "littlefoot" center frill and rotate it to face north — confirm the crest is visible from behind rather than showing the front-facing fallback; deferred to MOD_HUMAN_EXPLORATION_PASS_1
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The Littlefoot frill from behind**
+- [ ] `saurid_frill_north_visible` — a Saurid with the Littlefoot center frill,
+      facing north, shows the frill from behind.
+- [ ] `saurid_frill_north_consistent` — the north frill matches the south and east
+      frills in size and colour.
+
+### cannot show
+
+- [ ] `saurid_never_front_frill_from_behind` — the south sprite drawn on a
+      north-facing Saurid (the silent `Graphic_Multi` fallback this fix ends).

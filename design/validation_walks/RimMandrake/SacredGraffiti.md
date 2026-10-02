@@ -17,3 +17,31 @@ status-hint: sacred devotional wall-marks, one per Salvation god (one shipped: I
 3. [D] def read-back: `RitualOutcomeEffectDef RM_Ishko_RitualOutcome_PlaceSacredMark` exists; `workerClass` = "RimMandrake.SacredGraffiti.RitualOutcomeEffectWorker_PlaceSacredMark"; `filthDefToSpawn` = "RM_SacredMark_Ishko"
 4. [B] `jawa/spawn_thing {defName: "RM_SacredMark_Ishko", count: 1}` → success, then `jawa/list_things` confirms it exists on the map with the expected texPath/Beauty — proves the def itself is game-ready even though no ritual can reach it yet (per must-be-true's 🔴 note, this bypasses the worker entirely and is a def-sanity check, not an end-to-end ritual test)
 X. [S] (human pass) with the mark spawned, confirm the "pair of glowing orange eyes" art actually renders (positive Beauty in the inspect pane) rather than a placeholder/magenta texture — deferred to MOD_HUMAN_EXPLORATION_PASS_1
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The Ishko mark**
+- [ ] `sacred_mark_reads_devotional` — `RM_SacredMark_Ishko` on a wall reads as a
+      devotional sign for a god, visibly unlike vandal graffiti.
+- [ ] `sacred_mark_reads_at_play_zoom` — the mark reads as a mark at ordinary play
+      zoom, not only zoomed in (Graffiti's own `mark_reads_at_play_zoom` bar).
+- [ ] `sacred_mark_sits_on_the_wall` — it is drawn on the wall face, aligned to it.
+
+### cannot show
+
+- [ ] `sacred_never_reads_as_dirt` — a sacred mark indistinguishable from filth.
+- [ ] `sacred_never_real_world_english` — legible English words in the mark.

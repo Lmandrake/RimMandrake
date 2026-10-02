@@ -23,3 +23,31 @@ status-hint: restores the east-facing worn art of all four Research Reinvented f
 4. [D] def read-back (on the donor's own defs, quoted not guessed): `ThingDef RR_FieldResearchKitSimple` exists with `wornGraphicPath` = `Things/Items/SimpleResearchKit/SimpleResearchKit` — repeat for HiTech/MultiAnalyzer/Remote — confirms the path this mod's files sit at is still the one the live game actually reads (a Research Reinvented update could move it)
 5. [B] `jawa/spawn_pawn`, then `jawa/inventory_transfer {mode: "add", ...}` an `RR_FieldResearchKitSimple` onto the pawn and wear it (or `rimworld/right_click_cell` → wear order), rotate the pawn to face east, then `jawa/inspect_string` on the pawn to confirm the apparel is worn — proves the def resolves and equips; whether the EAST-FACING TEXTURE actually renders is a visual property no bridge tool can assert (see [S] line) — repeat per kit if time allows, simple kit first since it's the one blank in BOTH donor layers
 X. [S] (human pass) with each kit worn and the pawn facing east, confirm the kit is visible rather than invisible, for all four kits — deferred to MOD_HUMAN_EXPLORATION_PASS_1
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Field research kits from the east**
+- [ ] `researchkit_east_visible` — a colonist wearing each of the four field
+      research kits (simple, hi-tech, multi-analyzer, remote) and facing east shows
+      the kit.
+- [ ] `researchkit_east_mirrors_west` — each east kit reads as the mirror of its
+      west view, at the same size and place on the body.
+
+### cannot show
+
+- [ ] `researchkit_never_vanishes_east` — a kit vanishing when the wearer turns
+      east.

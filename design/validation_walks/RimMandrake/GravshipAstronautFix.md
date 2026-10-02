@@ -23,3 +23,34 @@ status-hint: pure loose-texture supply mod, no defs and no code — ships the do
 
 ## [S]
 The actual visual correctness of the north-facing astronaut (both life stages) and the gene bank's back view, walking the pawn/rotating the building in-game and looking at it, is the human-pass concern this mod exists to satisfy (MOD_HUMAN_EXPLORATION_PASS_1) — the whole defect ("Failed to find any textures" never fires for one missing direction) means no automated log signal can prove the fix beyond step 4's rotation check.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The astronaut mech walking away**
+- [ ] `astronaut_north_shows_back` — the ancient astronaut mech facing north shows
+      its own back, with the allegiance mask drawn correctly on it.
+
+**The gravship gene bank**
+- [ ] `genebank_north_reads_rotated` — a gravship gene bank built facing north is
+      drawn rotated to face north, not as its south art.
+
+### cannot show
+
+- [ ] `astronaut_never_front_from_behind` — a north-facing astronaut mech showing
+      its front.
+- [ ] `genebank_never_south_art_north` — the gene bank's south sprite on a
+      north-facing building.

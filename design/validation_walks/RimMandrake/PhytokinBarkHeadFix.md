@@ -21,3 +21,30 @@ status-hint: pure loose-texture supply mod, no defs and no code — ships one mi
 
 ## [S]
 The actual visual correctness of the east-facing bark head on a walking colonist (and west, mirrored from it) is the human-pass concern this mod exists to satisfy — "Failed to find any textures" never fires for one missing direction among four, so no log line can independently confirm the fix beyond step 4's rotation check.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The heavy-jawed bark head, side on**
+- [ ] `phytokin_bark_head_east_visible` — a female Phytokin with bark skin and the
+      heavy-jaw head (`VRE_BarkHeavy_Female`) facing east shows a head.
+- [ ] `phytokin_bark_head_east_matches` — the east head reads as the same head as
+      her south view, bark texture and jaw included.
+
+### cannot show
+
+- [ ] `phytokin_never_headless_east` — a headless or missing-texture Phytokin
+      facing east.

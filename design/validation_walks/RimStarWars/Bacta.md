@@ -36,6 +36,43 @@ Source for every line: `About/About.xml` description, `Defs/`, `Source/*.cs`, `P
 3. [B] tank_scar chain: make an injury permanent with the dev action found by `rimworld/search_debug_actions`, immerse with scar erasure off, then on
 4. [B] tank_power, tank_needs_and_dry, tank_droid, field_patch, revival chains as named
 
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The tank**
+- [ ] `bacta_tank_reads_as_tank` — `RSW_BactaTank` reads at play zoom as an upright
+      medical tank, and a patient inside reads as floating in fluid. (guess: art is
+      placeholder today)
+- [ ] `bacta_tank_occupied_distinguishable` — an occupied and an empty tank are
+      distinguishable at a glance.
+- [ ] `bacta_fluid_level_visible` — a tank low on bacta looks different from a full
+      one. (guess)
+
+**The fluid and the field kit**
+- [ ] `bacta_items_read_as_bacta` — `RSW_Bacta`, `RSW_BactaPatch` and
+      `RSW_BactaSpray` in a stockpile read as three different medical goods.
+- [ ] `bacta_wounds_close_visibly` — a wounded colonist's health tab shows wounds
+      closing over a short stay in the tank. (guess)
+
+### cannot show
+
+- [ ] `bacta_never_regrows_limb` — a missing limb restored by the tank.
+- [ ] `bacta_never_placeholder_art` — the placeholder tank art shipping as final.
+      (guess: art status is his call)
+
 ## anti-guessing notes
 - RULED OUT: "bacta should heal a pawn who walks in with no wounds" — `CompBactaImmersion.CompTick` releases an occupant the first pass nothing healable remains (autoEject), so every chain adds its wound BEFORE entering, and the scar-off phase sets autoEjectEnabled false.
 - RULED OUT: "WoundInfection is a safe infection fixture" — MEASURED 2026-09-24: adding it at severity 1.0 kills the pawn that tick, success:true (BACTA_TANK_CORE_1 live note). The infection assist is UNCOVERED rather than risked.

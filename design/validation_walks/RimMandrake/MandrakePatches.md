@@ -23,6 +23,36 @@ status-hint: game-generic fixes and compatibility patches, MayRequire/Conditiona
 8. [D] (only if `det.buzzers` active) def read-back: `RulePackDef` `DV_NamerFactionOutlanderBuzzer` and `DV_NamerSettlementOutlanderBuzzer` no longer contain the rule string `maybeApostrophe->''`
 9. [L] confirm every patch file for a mod NOT in the active list produces zero Player.log lines referencing that file's own defNames — logs nothing on no-match, per the anti-guessing rule; this is a negative check and must be run against a KNOWN inactive-mod baseline (e.g. `ab.hoffa`, confirmed absent from the active list per this mod's own loadAfter comment) to be meaningful
 
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**World-map readability**
+- [ ] `patches_settlement_icons_readable` — settlement icons on the Ash'karr world
+      map read clearly at normal world zoom, drawn larger than vanilla
+      (`expandingIconDrawSize` 2).
+
+**Third-party art repairs**
+- [ ] `patches_dessicated_corpses_render` — dessicated corpses of the patched cavern
+      and Star Wars animals render as bodies, not magenta squares. (guess)
+
+### cannot show
+
+- [ ] `patches_never_crowded_icons` — enlarged settlement icons that overlap their
+      neighbours into an unreadable cluster. (guess)
+
 ## anti-guessing notes
 - `AnimalDessicatedTexPaths_Fix.xml` and `GrimTerraTexPaths_Fix.xml` retarget `dessicatedBodyGraphicData`/`bodyGraphicData` `texPath` values on several third-party PawnKindDefs (`BMT_BeardedYak`, `BMT_FreezerFrog`, `Bursa`, `GreaterKraytDragon`, `SW_Electrictick`, `GRimTortoise`, `GRimPinkbird`, `GRimBullfrog`, etc.) — checking these requires the exact NEW texPath value each patch writes, which was not transcribed here; read the patch's own `<value>` node before writing the concrete [D] check, never guess the corrected path.
 - `HeadSetForFA_Revive.xml` targets `FacialAnimation.FaceAdjustmentDef` `BS_InsectoidHumanoid_FourArmed_FaceAdjustment` and is a designed no-op today (`ab.hoffa`, the mod it revives, is not in the current active list per the mod's own loadAfter comment) — do not report this patch as "broken" if it produces no visible effect; that is correct until `ab.hoffa` is added.

@@ -45,3 +45,36 @@ status-hint: 28 XML-only compatibility/content patches, tier RimStarWars, every 
 26. list=full ("Star Wars Animal Collection (Continued)" active): [D] def read-back: `PawnKindDef Behemoth` → `lifeStages/li/bodyGraphicData` texPath reads `swanimals/Behemoth/JawaBehemoth_m` (male) and `femaleGraphicData` reads `swanimals/Behemoth/JawaBehemoth_f`; [L] confirm Player.log no longer contains `Failed to find any textures at swanimals/Behemoth/JawaBehemoth_fPack` (the follow-up Pack-overlay fix, same file).
 27. list=full (mandrake.rsw.starwarsraces active, ≥1 of its 19 `Outland_EggLayer`-carrying xenotypes present): [D] def read-back: pick one such xenotype (e.g. whichever the live dump shows) → `genes` contains `Outland_EggLayer` still present AND, if `LovelyDovey.Sex.WithRosaline` is also active, `SEX_Ovipositor` added alongside it (not replacing it).
 28. [S] (human pass) look at a Gamorrean (guard and enforcer), a wrecked landspeeder ruin, and a Hutt with the restored slit-pupil eyes in game — the eye-render-node fix (`HuttEyes_RestoreRenderNodes.xml`) and the Behemoth art upres are both explicitly visual judgment calls (drawSize/gap-between-irises tuning, silhouette fidelity) this walk can only confirm are structurally present, never that they look right.
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The Jawa look**
+- [ ] `swpatches_jawa_robed_and_hooded` — a `RSW_Jawa` pawn arrives in Jawa robes and
+      hood, with no modern civilian clothing on top.
+
+**Desert weather**
+- [ ] `swpatches_desert_sandstorms` — a vanilla desert or arid shrubland map shows a
+      Star Wars sandstorm in its weather over a normal stretch of play. (guess)
+
+**Door and beast art carried here**
+- [ ] `swpatches_doors_render_all_facings` — the patched Star Wars doors draw
+      correctly from every facing. (guess)
+
+### cannot show
+
+- [ ] `swpatches_never_jawa_in_jeans` — a Jawa wearing jeans, surgical masks or other
+      off-world civilian clothing.
