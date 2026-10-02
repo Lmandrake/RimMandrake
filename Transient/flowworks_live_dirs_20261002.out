@@ -1,0 +1,97 @@
+map_info keys {'sizeX': 250, 'sizeZ': 250, 'size': None}
+terrain True {'success': True, 'message': 'Applied 4/4 op(s): 2448 cell(s) changed, 0 already correct.', 'layer': 'top', 'opsRequested': 4, 'opsApplied': 4, 'cellsRequested': 2448, 'cellsChanged': 2448, 'cellsAlre
+body A {"id": 1, "limitless": true, "stock": 720.0, "capacity": 720.0, "cellCount": 144, "recededCount": 0, "activeCellCount": 144, "truncated": false}
+body B {"id": 2, "limitless": true, "stock": 720.0, "capacity": 720.0, "cellCount": 144, "recededCount": 0, "activeCellCount": 144, "truncated": false}
+pulse0 {('E', 3): [0, 0, 0], ('N', 3): [0, 0, 0], ('S', 3): [0, 0, 0], ('W', 3): [0, 0, 0], ('E', 6): [0, 0, 0, 0, 0, 0], ('N', 6): [0, 0, 0, 0, 0, 0], ('S', 6): [0, 0, 0, 0, 0, 0], ('W', 6): [0, 0, 0, 0, 0, 0]}
+('E', 3) MATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 1] 
+  p2  live [0, 1, 1]  oracle [0, 1, 1] 
+  p3  live [1, 1, 1]  oracle [1, 1, 1] 
+  p4  live [1, 1, 1]  oracle [1, 1, 1] 
+  p5  live [1, 1, 1]  oracle [1, 1, 1] 
+  p6  live [1, 1, 1]  oracle [1, 1, 1] 
+  p7  live [1, 1, 1]  oracle [1, 1, 1] 
+  p8  live [1, 1, 1]  oracle [1, 1, 1] 
+  p9  live [1, 1, 1]  oracle [1, 1, 1] 
+  p10 live [1, 1, 1]  oracle [1, 1, 1] 
+('N', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 1] 
+  p2  live [0, 0, 1]  oracle [0, 1, 1] <<<
+  p3  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p4  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p5  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p6  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p7  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p8  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p9  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p10 live [0, 0, 1]  oracle [1, 1, 1] <<<
+('S', 3) MISMATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 1] 
+  p2  live [0, 0, 1]  oracle [0, 1, 1] <<<
+  p3  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p4  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p5  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p6  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p7  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p8  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p9  live [0, 0, 1]  oracle [1, 1, 1] <<<
+  p10 live [0, 0, 1]  oracle [1, 1, 1] <<<
+('W', 3) MATCH
+  p1  live [0, 0, 1]  oracle [0, 0, 1] 
+  p2  live [0, 1, 1]  oracle [0, 1, 1] 
+  p3  live [1, 1, 1]  oracle [1, 1, 1] 
+  p4  live [1, 1, 1]  oracle [1, 1, 1] 
+  p5  live [1, 1, 1]  oracle [1, 1, 1] 
+  p6  live [1, 1, 1]  oracle [1, 1, 1] 
+  p7  live [1, 1, 1]  oracle [1, 1, 1] 
+  p8  live [1, 1, 1]  oracle [1, 1, 1] 
+  p9  live [1, 1, 1]  oracle [1, 1, 1] 
+  p10 live [1, 1, 1]  oracle [1, 1, 1] 
+('E', 6) MATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 1] 
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 1, 1] 
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 1, 1, 1] 
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 1, 1, 1, 1] 
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 1, 1, 1, 1, 1] 
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+('N', 6) MISMATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 1] 
+  p2  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 1, 1] <<<
+  p3  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 1, 1, 1] <<<
+  p4  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 1, 1, 1, 1] <<<
+  p5  live [0, 0, 0, 0, 0, 1]  oracle [0, 1, 1, 1, 1, 1] <<<
+  p6  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p7  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p8  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p9  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p10 live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+('S', 6) MISMATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 1] 
+  p2  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 1, 1] <<<
+  p3  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 1, 1, 1] <<<
+  p4  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 1, 1, 1, 1] <<<
+  p5  live [0, 0, 0, 0, 0, 1]  oracle [0, 1, 1, 1, 1, 1] <<<
+  p6  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p7  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p8  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p9  live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+  p10 live [0, 0, 0, 0, 0, 1]  oracle [1, 1, 1, 1, 1, 1] <<<
+('W', 6) MATCH
+  p1  live [0, 0, 0, 0, 0, 1]  oracle [0, 0, 0, 0, 0, 1] 
+  p2  live [0, 0, 0, 0, 1, 1]  oracle [0, 0, 0, 0, 1, 1] 
+  p3  live [0, 0, 0, 1, 1, 1]  oracle [0, 0, 0, 1, 1, 1] 
+  p4  live [0, 0, 1, 1, 1, 1]  oracle [0, 0, 1, 1, 1, 1] 
+  p5  live [0, 1, 1, 1, 1, 1]  oracle [0, 1, 1, 1, 1, 1] 
+  p6  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p7  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p8  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p9  live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+  p10 live [1, 1, 1, 1, 1, 1]  oracle [1, 1, 1, 1, 1, 1] 
+fill-complete pulse: {'E3': 3, 'N3': None, 'S3': None, 'W3': 3, 'E6': 6, 'N6': None, 'S6': None, 'W6': 6}
+len 3 identical across dirs: False
+len 6 identical across dirs: False
+TOTAL MISMATCH scenes: 4
