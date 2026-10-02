@@ -177,9 +177,20 @@ to rule**.
 | Zizzik's Nine Faults | Zizzik (Rekko pays) | feeding, the bank (a favour transfer) | a newly found machine, never run, still on its map | Lantern Deeps, a dead droid with nine wires crossed | RULED (owner, 2026-10-01) | `design/Jawa/nine_faults_permanent_rite_2026-10-01.md` |
 | The Answering | Ohm | settlement | a mindstone or Shard-mind in line of sight and a colony droid present; lit is fine | Lantern Deeps, a Working Dead chassis that scratches the cousins' terms into the gallery wall | RULED (owner, 2026-10-01, question card) | `design/Jawa/worldbuilding/biomes/lanterndeeps_bedazzle_review_2026-10-01.md` §6 R1 |
 
-**Count (by hand from the tables above, not an instrument): 100 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 22 + B8 2. **91 are the Salvation's** (B1 to B5, B7 and B8; the
-Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 89 distinct). B6's 8 are other faiths' rites or unassigned biome pitches,
+### B9. Found rites of the Pyrelands (RULED)
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Struck Glass | Zizzik | feeding, by breakage | a rough ring of lightning glass, stamped to pieces during any lightning storm; triggers a really powerful lightning blast at a random cell (the ship included) | Pyrelands, an old stamped ring on bare ash with a crater off across the plain | RULED (owner, 2026-10-01, revised by him, typed) | `design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md` §6 R1 |
+
+**Count (by hand from the tables above, not an instrument): 101 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 22 + B8 2 + B9 1. **92 are the Salvation's** (B1 to B5, B7 to B9; the
+Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 90 distinct).
+
+**Per-god cap: four found rites, except Zizzik (owner, 2026-10-01, typed: *"Just leave them all for
+now"*).** Zizzik carries five, and none is cut: the controlled waking / Calling-Pyre (B4, ruled-merged),
+Nine Faults (B8, ruled), the Struck Glass (B9, ruled), the Kept Mistake (B7, pitched), the Capping
+(B7, pitched). B6's 8 are other faiths' rites or unassigned biome pitches,
 one ruled out. The calling-pyre is a form of B4's controlled waking, so it has no row of its own.
 
 ## (c) The four Abyss rites

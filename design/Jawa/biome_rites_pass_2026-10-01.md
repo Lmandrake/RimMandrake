@@ -602,7 +602,7 @@ Counted by hand from the table above plus register B2 (not an instrument).
 | ⑧ Sh'kaar | 3 | Abyss, Forge, Long Shade | starving, venting, warding | balanced; never fed outright, as a dangerous, hungry god should be |
 | ⑨ Ozzik | 3 | Abyss, Wasteland, Forge | consolation (interim), venting, feeding | balanced; the Lightless Burial row is interim per `SALVATION_RITES_RENORMALIZE_PASS_1` |
 
-**Total: 27 found rites** (4 Abyss + 23 here). Every god has at least two, none more than four.
+**Total: 27 found rites** (4 Abyss + 23 here). Every god has at least two. The cap of four per god holds for all but Zizzik, who carries five since the Pyrelands sitting (owner, 2026-10-01: *"Just leave them all for now"*; list in the register, B9).
 Every biome carries two or three, and no biome repeats a kind.
 
 ### Collision check against the register (b)
