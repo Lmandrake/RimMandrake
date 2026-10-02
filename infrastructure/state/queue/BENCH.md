@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-02T02:39:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-10-02T02:42:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -489,16 +489,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Not written. Design work; goes to a backgrounded high-tier subagent per
 prose:    infrastructure/state/items/FLOWWORKS_DOOR_FAMILY_1.md
-
-## DEEPS_FAUNA_REPOPULATION_1 Repopulate the Lantern Deeps fauna: a proposal portfolio of truly alien hydrocarbon-based life forms for the owner to pick from
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEEPS_FAUNA_REPOPULATION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPS_FAUNA_REPOPULATION_1.md
 
 ## DEEPS_FAUNA_MECHANICS_2 Deeps fauna mechanics, second pass on DEEPS_FAUNA_MECHANICS_1: grabber-side crush comp + rescue roll, soulchime LoS/damage trigger/psychic-deaf immunity, drinker hydrocarbon-blood extension + fluid-sack gauge + drained-fluids drop
 state:    proposed
@@ -1079,16 +1069,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  FLAWEDMASTERWORKENGINECHECK1 — can Ninefold damp Ozzik's knock-on for one call?
 prose:    infrastructure/state/items/FLAWED_MASTERWORK_ENGINE_CHECK_1.md
-
-## LANTERNDEEPS_BEDAZZLE_SITTING_1 Lantern Deeps bedazzle sitting (grandfathered track a, sitting 2)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  Movements 1-2 done. Next: the owner's turn-1 card (§7), then the volley, then ticket-out
-prose:    infrastructure/state/items/LANTERNDEEPS_BEDAZZLE_SITTING_1.md
 
 ## GODS_NOT_EVIL_SWEEP_1 No god is evil: remove 'evil' god framing from the pantheon canon and the ~25 docs/code comments listed in nine_faults_permanent_rite_2026-10-01.md section 8 (decision taken by question card)
 state:    proposed
