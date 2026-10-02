@@ -156,6 +156,50 @@ def main():
         rep = H.prepare_bland_map(w, tx, kill=False)
     check("verifier mode refuses instead of erasing", (not rep.bland) and not w.pawns["Raider1"]["dead"] and len(w.fires) == 1)
 
+    # --- the harness's own teardown kills must not poison the next chain (E1 root cause, measured live)
+    w = messy()
+    w.kill("Col3")
+    p = H.assert_bland(w, expected_ids=["Col3"])
+    check("a dead FIXTURE colonist is not 'dead colonists' contamination", not any("dead colonists" in x for x in p), str(p))
+    p = H.assert_bland(w)
+    check("control: the same corpse un-declared IS reported", any("dead colonists" in x for x in p), str(p))
+
+    # --- measured: removal by part can fail where removal by def works
+    w = FakeWorld(pawns=[pawn_row("A1", hediffs=[hediff("Gunshot", "Leg")]),
+                         pawn_row("B1", hediffs=[hediff("Gunshot", "Leg"), hediff("Gunshot", "Arm")])])
+    w.modes.add("part_mismatch")
+    r = H.restore_colonists(w, {"A1": set(), "B1": set([("Gunshot", "Arm")])})
+    check("part-mismatch falls back to def-only when no baseline instance would be swept up",
+          not w.pawns["A1"]["health"]["hediffs"], str(r.residue))
+    check("it does NOT fall back when a baseline instance of the same def exists (reports residue instead)",
+          len(w.pawns["B1"]["health"]["hediffs"]) == 2 and any(x[0] == "B1" for x in r.residue), str(r.residue))
+
+    # --- MEASURED 2026-10-01: killing explosive wildlife ignites the map; removal must not kill them
+    w = messy()
+    w.pawns["Boom1"] = pawn_row("Boom1", kind="Boomalope", faction=None, is_player=False, intelligence="Animal", x=60, z=60)
+    w.modes.add("kill_explodes")
+    w.fires = []                                   # messy() carries one unrelated fire
+    r = H.kill_wildlife(w)
+    check("wildlife removal uses destroy_bulk (no death, no corpse, no fire)",
+          r.evidence.get("route") == "destroy_bulk" and "Boom1" not in w.pawns and not w.fires and r.verified, str(r.evidence))
+    w = messy()
+    w.pawns["Boom1"] = pawn_row("Boom1", kind="Boomalope", faction=None, is_player=False, intelligence="Animal", x=60, z=60)
+    w.modes.add("kill_explodes")
+    w.fires = []
+    with H.SettingsTransaction(w) as tx:
+        rep = H.prepare_bland_map(w, tx, expected_ids=["Deer1"])     # an expected animal forces the kill-per-id route
+    check("with an expected animal present the kill route is used and the fires it causes are extinguished AFTER",
+          rep.bland and not w.fires and w.pawns["Boom1"]["dead"] and not w.pawns["Deer1"]["dead"], str(rep.problems))
+    check("control: extinguishing BEFORE the kills would have left the fires (fake really ignites)",
+          (lambda ww: (ww.call("jawa/pawn_force_incapacitate", pawn="Boom1", action="kill"), len(ww.fires))[1])(
+              (lambda ww: (ww.pawns.update({"Boom1": pawn_row("Boom1", kind="Boomalope", faction=None, is_player=False, intelligence="Animal")}), ww.modes.add("kill_explodes"), ww)[2])(FakeWorld())) >= 25)
+
+    # --- a droid has no Food need: restoring must not demand one (measured)
+    w = FakeWorld(pawns=[pawn_row("D1")])
+    w.needs["D1"] = {"Rest": 0.2, "Joy": 0.1, "Mood": 0.5}          # no Food
+    r = H.restore_needs(w, ["D1"])
+    check("restore_needs only touches needs the pawn has", r.verified and not any(p.get("need") == "Food" for t, p in w.calls if t == "jawa/pawn_need"), str(r.residue))
+
     n_ok = sum(1 for _, c in _results if c)
     print("\n%d/%d passed" % (n_ok, len(_results)))
     return 0 if n_ok == len(_results) else 1

@@ -516,6 +516,10 @@ def wild_droid_crash(t):
     with t.component("wild_droid_crash_fires", toggle="wildDroidCrash"):
         before = t.bridge_call("jawa/list_pawns", limit=500)
         ids_before = {p.get("id") for p in ((before or {}).get("pawns") or [])}
+        # this chain CAUSES the crash on purpose: its letter and its faction-less manhunter droid are the
+        # subject, not a surprise (the situational detectors would otherwise abort the component)
+        t.expect("letter", {"label_contains": "Wild droid"})
+        t.expect("hostile", {"isMechanoid": True, "faction": None})
         r = t.bridge_call("jawa/fire_incident", incidentDef="RSW_DW_WildDroidCrash")
         if not (r or {}).get("fired", (r or {}).get("success")):
             raise ExpectationFailed(

@@ -206,9 +206,26 @@ def kill_hostiles(session, expected_ids=()):
 
 
 def kill_wildlife(session, expected_ids=()):
+    """Remove wild animals WITHOUT killing them. MEASURED 2026-10-01: one dead Boomalope made 25 fires in 5
+    ticks (39 by 30), and a fresh quicktest map carries explosive wildlife -- the harness's own kill was the
+    source of the scattered fires, the "122 fires in 120 ticks" reading and a Droidworks fire surprise, all
+    previously "unknown why". `jawa/destroy_bulk filter=factionlessAnimals` removes them with no death, no
+    corpse and no detonation (fires stayed 0). It has no exclusion list, so it is used only when no expected
+    animal is on the map; otherwise animals are killed per exact id and the caller MUST extinguish afterwards
+    (prepare_bland_map orders it so)."""
     exp = set(expected_ids)
-    ids = set(r["id"] for r in read_pawns(session, health=False) if is_wildlife(r) and r["id"] not in exp)
-    return _kill_ids(session, ids, "kill_wildlife", is_wildlife)
+    rows = [r for r in read_pawns(session, health=False) if is_wildlife(r)]
+    ids = set(r["id"] for r in rows if r["id"] not in exp)
+    if not ids:
+        return HelperResult("kill_wildlife", acted=0, verified=True, evidence={"route": "none-needed"})
+    if not any(r["id"] in exp for r in rows):
+        r = session.call("jawa/destroy_bulk", filter="factionlessAnimals", dryRun=False)
+        left = [x["id"] for x in read_pawns(session, health=False) if x["id"] in ids and is_wildlife(x)]
+        return HelperResult("kill_wildlife", acted=int(r.get("matchedCount") or 0), verified=not left,
+                            residue=left, evidence={"route": "destroy_bulk"})
+    res = _kill_ids(session, ids, "kill_wildlife", is_wildlife)
+    res.evidence["route"] = "kill-per-id (an expected animal is present): explosion risk, extinguish after"
+    return res
 
 
 def clear_strangers(session, expected_ids=()):
@@ -253,15 +270,18 @@ def calm_colonists(session, ids):
 
 
 def restore_needs(session, ids):
+    """Refill Food/Rest/Joy for pawns that HAVE those needs (MEASURED: a droid has no Food need, and
+    demanding it made a bland map 'unestablishable'). Verified against the pawn's own need list."""
     acted = 0
-    for pid in ids:
-        for need in RESTORE_NEEDS:
-            session.call("jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
-            acted += 1
     low = []
     for pid in ids:
         lv = dict((x["need"], x["level"]) for x in session.call("jawa/pawn_need", pawn=pid, action="list")["needs"])
-        low.extend((pid, n) for n in RESTORE_NEEDS if lv.get(n, 0) < 0.95)
+        have = [n for n in RESTORE_NEEDS if n in lv]
+        for need in have:
+            session.call("jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
+            acted += 1
+        lv2 = dict((x["need"], x["level"]) for x in session.call("jawa/pawn_need", pawn=pid, action="list")["needs"])
+        low.extend((pid, n) for n in have if lv2.get(n, 0) < 0.95)
     return HelperResult("restore_needs", acted=acted, verified=not low, residue=low)
 
 
@@ -287,8 +307,14 @@ def restore_colonists(session, baseline, resurrect=False):
         for h in row["health"]["hediffs"]:
             if hediff_key(h) in base or h["def"] not in INJURY_DEFS:
                 continue
-            session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"], bodyPart=h.get("part") or "")
+            r = session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"], bodyPart=h.get("part") or "")
             acted += 1
+            # MEASURED 2026-10-01: a chronic start-of-game wound ("old gunshot (aching)") was listed on part
+            # "Leg" but remove(bodyPart="Leg") answered "Pawn has no hediff 'Gunshot' on Leg"; removing by def
+            # alone worked. Fall back ONLY when no baseline instance of that def exists to be swept up too.
+            if (not r.get("success") and "no hediff" in str(r.get("message", "")).lower()
+                    and not any(k[0] == h["def"] for k in base)):
+                session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"])
     after = dict((r["id"], r) for r in read_pawns(session))
     live = [pid for pid in baseline if pid in after and not after[pid]["dead"]]
     for pid in live:
@@ -337,7 +363,10 @@ def assert_bland(session, expected_ids=()):
     fires = session.call("jawa/list_things", defName="Fire")
     if fires.get("countMatched"):
         problems.append("fires burning: %d" % fires["countMatched"])
-    dead_col = [r["id"] for r in rows if is_colonist(r) and r["dead"]]
+    # A dead colonist that is one of the session's OWN fixtures (a test walker the litter teardown killed)
+    # is not contamination: MEASURED 2026-10-01, that teardown is what made earlier "everyone is dead"
+    # reports (E1) -- the harness killed its own spawns and the next suite read them as casualties.
+    dead_col = [r["id"] for r in rows if is_colonist(r) and r["dead"] and r["id"] not in exp]
     if dead_col:
         problems.append("dead colonists: %s" % dead_col)
     return problems
@@ -354,12 +383,13 @@ def prepare_bland_map(session, tx, expected_ids=(), kill=True):
     if kill:
         rep.steps.append(storyteller_off(session, tx))
         rep.steps.append(random_events_off(session, tx))
-        rep.steps.append(extinguish(session))
         for h in (kill_hostiles, kill_wildlife, clear_strangers):
             rep.steps.append(h(session, expected_ids))
+        rep.steps.append(extinguish(session))      # AFTER removals: a death can detonate and ignite
         # At START every injury on a colonist is contamination (measured: Frostbite within 60 ticks of a
         # fresh swamp map), so the restore baseline is the empty set; the real baseline is taken after.
-        start = dict((r["id"], set()) for r in read_pawns(session, health=False) if is_colonist(r) and not r["dead"])
+        start = dict((r["id"], set()) for r in read_pawns(session, health=False)
+                     if is_colonist(r) and not r["dead"] and r["id"] not in set(expected_ids))
         rep.steps.append(restore_colonists(session, start))
     rep.baseline = colonist_baseline(session)
     for s in rep.steps:
