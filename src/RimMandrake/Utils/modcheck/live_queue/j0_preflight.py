@@ -18,6 +18,8 @@ REQUIRED_TOOLS = (
     "jawa/set_current_map", "jawa/destroy_bulk", "jawa/list_things", "jawa/list_pawns",
     "rimworld/take_screenshot", "rimworld/step_game_ticks",
 )
+# J5's FlowWorks plot reads; FakeWorld has no FlowWorks, so these are checked live only
+LIVE_ONLY_TOOLS = ("rimworld/screenshot_cell_rect", "jawa/flowworks_excavation_report", "jawa/set_terrain_batch")
 
 
 def active_package_ids():
@@ -34,7 +36,7 @@ def body(s, job):
         state = runner.ensure_playing_map()
         job.note("map", state)
         job.check("a Playing map exists (or was started)", state in ("playing", "started"), state)
-    missing = [t for t in REQUIRED_TOOLS if not tool_present(s, t)]
+    missing = [t for t in REQUIRED_TOOLS + (() if dry else LIVE_ONLY_TOOLS) if not tool_present(s, t)]
     job.check("every tool the queue drives is in the live census", not missing, "missing: %s" % missing)
     c = call(s, "jawa/pawn_census", limit=5)
     job.check("companion answers (jawa/pawn_census success)", c.get("success"), c.get("message"))

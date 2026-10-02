@@ -47,7 +47,7 @@ def fake_world():
 def body(s, job):
     import helpers as H
     from watch import Watch
-    tmpdir = os.environ.get("TEMP") or tempfile.gettempdir()
+    tmpdir = os.environ.get("TEMP") or tempfile.gettempdir()     # python.exe: the Windows %TEMP% the game can write
     path = os.path.join(tmpdir, "lq_tiles.csv")
     r = call(s, "jawa/world_tile_export", path=path)
     if not r.get("success") or not os.path.isfile(path):

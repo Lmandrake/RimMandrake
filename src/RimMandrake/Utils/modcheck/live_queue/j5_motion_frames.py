@@ -93,10 +93,11 @@ def body(s, job):
 
 
 def fake_world():
-    import tempfile
+    import common
     from rimdrive.fake import FakeWorld, pawn_row
     w = FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103)])
-    w.shot_dir = tempfile.mkdtemp(prefix="lq_j5_")
+    w.shot_dir = os.path.join(common.DRY_OUTDIR, "J5_fake_shots")
+    os.makedirs(w.shot_dir, exist_ok=True)
     return w
 
 
