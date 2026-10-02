@@ -348,9 +348,11 @@ MEASURED about the live world — the live system is the only instrument for "ri
   gravship carries the player onto the sea floor and carries them off it. ⛔ The old
   `RM_DiveEligible` shore-terrain mechanism — right-click a tagged shallow cell and a
   colonist swims down — is **RETIRED AND DELETED FROM THE CODE**, along with
-  `RM_FloatMenuOptionProvider_Dive` and both JobDrivers. The live mechanism is
-  `RM_SeaDiveHatch` (a `MapPortal` subclass), buildable only on a map that carries a real
-  `GravEngine`, i.e. inside a gravship.
+  `RM_FloatMenuOptionProvider_Dive` and both JobDrivers. 🔴 **The ship FLIES to the sea floor:
+  it is its own planet layer, `RM_SeabedLayer`** (`2db33bf23`). Owner, 2026-10-01: *"the sea hatch
+  might have been something from a previous build. Now the ship just flies to a new planetary
+  layer called sea floor."* ⛔ `RM_SeaDiveHatch` is a leftover, not the mechanism — retirement is
+  `SEA_DIVE_HATCH_RETIRE_1`.
   🔑 **Every fishable is ALSO a living creature on the floor, in EVERY sea** (owner,
   2026-09-26): *"All the fishables should also be alive and moving around in the depths
   (this is true for ALL seas)."* A catch item with no living counterpart swimming the floor
