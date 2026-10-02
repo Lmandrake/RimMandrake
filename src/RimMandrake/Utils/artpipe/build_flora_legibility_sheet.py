@@ -59,8 +59,8 @@ sys.path.insert(0, str(common.REPO_ROOT / "src" / "RimMandrake" / "Utils"))
 import art_legibility as AL  # noqa: E402
 
 REPO = common.REPO_ROOT
-DONE_DIR = REPO / "infrastructure" / "artpipe" / "done"
-ARTSRC_DIR = REPO / "infrastructure" / "artpipe" / "_artsrc"
+DONE_DIR = common.QUEUE_ROOT / "done"
+ARTSRC_DIR = common.QUEUE_ROOT / "_artsrc"
 BACKFILL_PATH = REPO / "infrastructure" / "artpipe" / "drawsize_backfill.json"
 TEMPLATE = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "sheet_template.html"
 THUMB_MAX_SIDE = 128

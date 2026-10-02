@@ -287,6 +287,20 @@ infrastructure/artpipe/*.lock
 # both uncommitted, pruned/rewritten by the daemon itself.
 infrastructure/artpipe/logs/
 infrastructure/artpipe/status/
+# Phase 5 (2026-10-02): artpipe queue STATE lives in $ARTPIPE_STATE_DIR (D:\Luke\dev\_artpipe),
+# resolved by src/RimMandrake/Utils/artpipe/state_dir.py. Ignored here so an old-code daemon
+# or a stray copy can never re-add it. Config (art_lists/, legibility_*.json, README) stays tracked.
+infrastructure/artpipe/pending/
+infrastructure/artpipe/active/
+infrastructure/artpipe/done/
+infrastructure/artpipe/failed/
+infrastructure/artpipe/_artsrc/
+infrastructure/artpipe/_withdrawn/
+infrastructure/artpipe/registry.jsonl
+infrastructure/artpipe/throughput.jsonl
+infrastructure/artpipe/art_status.json
+infrastructure/artpipe/art_status.html
+infrastructure/artpipe/daemon_run_*.log
 
 # derived: cloned prototypes under Transient/triposr_prototype (owner: local imagegen track PARKED 2026-09-05)
 Transient/triposr_prototype/TripoSR/

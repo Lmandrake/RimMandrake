@@ -321,8 +321,9 @@ and palette stay exactly as they are; change only the surface"*.
   prose in `style_notes` is unchecked. A def having a name and a `drawSize`
   does not mean it has a texture; resolve the cited def's `texPath` and
   confirm a real PNG before writing "match the existing X" (2026-09-23).
-- **Search before queuing.** `infrastructure/artpipe/done/`, `_artsrc/`,
-  `registry.jsonl` and any `.decisions.json` review sheet can already hold
+- **Search before queuing.** `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>`
+  searches the artpipe state dir (`done/`, `_artsrc/`, `registry.jsonl`; `D:\Luke\dev\_artpipe`, outside
+  git since 2026-10-02) — that, and any `.decisions.json` review sheet, can already hold
   finished, ruled-on art for the subject — the daemon runs continuously and
   its output regularly sits unused. Grep `registry.jsonl` for `source:
   "<ITEM_ID>"` before filing: one wave's "81 owed renders" was actually 77

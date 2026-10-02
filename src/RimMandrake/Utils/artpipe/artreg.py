@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""artreg.py — the SOLE writer of `infrastructure/artpipe/registry.jsonl`.
+"""artreg.py — the SOLE writer of `registry.jsonl` in the artpipe state dir (`state_dir.py`).
 
 Design: `design/RimMandrake/art_regen_registry_design.md` (owner-ruled
 2026-09-11). Item: `infrastructure/state/items/closed/ART_REGEN_REGISTRY_1.md`.
@@ -557,12 +557,22 @@ def backfill(done_dir: Path = common.DEFAULT_DONE, failed_dir: Path = common.DEF
 # fingerprint — content-based, per this repo's currency doctrine
 # --------------------------------------------------------------------------
 
+def _display_path(path: Path) -> str:
+    # registry.jsonl lives in the state dir (outside the repo) since 2026-10-02.
+    for root in (common.REPO_ROOT, common.QUEUE_ROOT):
+        try:
+            return str(path.resolve().relative_to(root.resolve()))
+        except ValueError:
+            continue
+    return str(path)
+
+
 def fingerprint_file(path: Path) -> dict:
     if not path.is_file():
         return {"path": str(path), "exists": False}
     data = path.read_bytes()
     return {
-        "path": str(path.relative_to(common.REPO_ROOT)),
+        "path": _display_path(path),
         "exists": True,
         "sha256_12": hashlib.sha256(data).hexdigest()[:12],
         "bytes": len(data),

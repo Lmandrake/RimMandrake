@@ -31,12 +31,14 @@ import sys
 from pathlib import Path
 
 HUB = Path(__file__).resolve().parent
+sys.path.insert(0, str(HUB.parents[2] / "src" / "RimMandrake" / "Utils" / "artpipe"))
+import state_dir  # noqa: E402 — art_status.json lives in the artpipe state dir (2026-10-02)
 SHELL = HUB / "index.html"
 OUT = HUB / "utinni_control_room_standalone.html"
 
 # published path -> source file, matching regen_hub.py's publish set
 DATA = {
-    "data/art.json": HUB.parent.parent / "artpipe" / "art_status.json",
+    "data/art.json": state_dir.STATE_ROOT / "art_status.json",
     "data/artsheets.json": HUB / "data" / "artsheets.json",
     "data/health.json": HUB / "data" / "health.json",
     "data/maturity.json": HUB / "data" / "maturity.json",

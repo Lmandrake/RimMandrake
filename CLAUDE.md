@@ -165,7 +165,8 @@ MEASURED about the live world — the live system is the only instrument for "ri
   round is a query bug until proven otherwise, and the alarming direction is the one you will
   believe without checking.
 - 🔴 **`ls <dir> | wc -l` answers 0 for a directory that does not exist**, so a "queue is empty" claim can be
-  a wrong-path claim wearing a number. The artpipe queue is `infrastructure/artpipe/pending/` — it held
+  a wrong-path claim wearing a number. The artpipe queue is `<state>/pending/` (state dir `D:\Luke\dev\_artpipe`,
+  outside git since 2026-10-02; `artpipe_state.py where` prints it and its counts) — it held
   **182** jobs when a count of `artpipe/queue/` reported 0, and that figure was stated to the owner. ⇒ Prove
   the path (glob `*.json`, which errors loudly) before repeating any count of zero. ⚠️ **And the artpipe
   daemon does not run on the Mac**, so queueing work here generates nothing until the Desktop runs it.
@@ -965,8 +966,10 @@ on** — the artpipe daemon runs continuously and its output regularly sits
 unused for days because the def/roster work that would wire it in hasn't
 happened yet.
 
-- **Search `infrastructure/artpipe/done/` (and `_artsrc/`, `registry.jsonl`,
-  `art_status.json`) by subject/defName first**, not just by job-id guesswork.
+- **Search the artpipe state dir by subject/defName first** —
+  `python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term>…` covers `done/`, `_artsrc/`,
+  `registry.jsonl` and `art_status.json` in `D:\Luke\dev\_artpipe` (outside git since 2026-10-02) and
+  refuses rather than report 0 when that dir is absent — not just by job-id guesswork.
   A finished job's `rimflow_item_id` and `style_notes` often name the exact
   roster row or item it was generated for.
 - **Check for a review sheet's `.decisions.json`** (`Transient/*.decisions.json`,

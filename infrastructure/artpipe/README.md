@@ -1,6 +1,17 @@
-# infrastructure/artpipe/ — the art-pipeline daemon's queue
+# The art-pipeline daemon's queue
 
 ART_PIPELINE_DAEMON_1. Built by `src/RimMandrake/Utils/artpipe/artpiped.py`.
+
+**The queue STATE is not in this folder and not in git** (git migration Phase 5, 2026-10-02,
+`design/RimMandrake/git_migration_phase5_artpipe_2026-10-02.md`). It lives in the state dir
+resolved by `src/RimMandrake/Utils/artpipe/state_dir.py` — `$ARTPIPE_STATE_DIR`, default
+`D:\Luke\dev\_artpipe` (`/mnt/d/Luke/dev/_artpipe`). Every directory and log in the layout
+below is relative to THAT dir. This folder keeps only tracked config: this README,
+`BACKGROUND_TEMPLATE*.md`, `art_lists/`, `legibility_*.json`, `drawsize_backfill.json`.
+
+    python3 src/RimMandrake/Utils/artpipe/artpipe_state.py where      # dir + counts
+    python3 src/RimMandrake/Utils/artpipe/artpipe_state.py find <term> # prior art before queuing
+    python3 src/RimMandrake/Utils/artpipe/artpipe_state.py collect <job_id> --to src/…/X.png
 
 **Deliberately NOT under `infrastructure/state/`** — that prefix is rimflow's
 ledger and its item files only. This is a plain file-based job queue with no
@@ -21,7 +32,10 @@ failed/     jobs that did not survive worker error, a validator REJECT, or a
             grumpiness-detector stop: `<id>.json` + `<id>.manifest.json`.
 _artsrc/    staging for the PNGs a worker actually produces. Wiring a
             finished, validated file into a mod's Textures/ tree is a
-            separate concern this daemon does not do.
+            separate concern this daemon does not do: a seat runs
+            `artpipe_state.py collect` in its own clone (logged to
+            collected.jsonl) and commits the printed paths.
+registry.jsonl, art_status.{json,html}   artreg's event log and its render.
 throughput.jsonl   one line per request (appended, never rewritten): wall
             clock, meter before/after, validator verdict. The calibration
             projection's raw data.

@@ -15,8 +15,10 @@ from datetime import datetime, timezone
 
 HERE = pathlib.Path(__file__).resolve().parent
 REPO = HERE.parents[2]
+sys.path.insert(0, str(REPO / "src" / "RimMandrake" / "Utils" / "artpipe"))
+import state_dir  # noqa: E402 — art_status.json lives in the artpipe state dir (2026-10-02)
 TABS = {
-    "art": REPO / "infrastructure/artpipe/art_status.json",
+    "art": state_dir.STATE_ROOT / "art_status.json",
     "health": HERE / "data/health.json",
     "maturity": HERE / "data/maturity.json",
     "worldmap": HERE / "data/worldmap.json",

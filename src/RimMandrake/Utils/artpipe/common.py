@@ -56,9 +56,15 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import state_dir  # noqa: E402 — the one resolver; see its docstring
+
 # this file -> artpipe -> Utils -> RimMandrake -> src -> repo root.
-REPO_ROOT = Path(__file__).resolve().parents[4]
-QUEUE_ROOT = REPO_ROOT / "infrastructure" / "artpipe"
+REPO_ROOT = state_dir.REPO_ROOT
+# Queue STATE (pending/active/done/failed/_artsrc, registry, throughput, logs)
+# lives outside git since 2026-10-02; tracked config stays at CONFIG_ROOT.
+QUEUE_ROOT = state_dir.STATE_ROOT
+CONFIG_ROOT = state_dir.CONFIG_ROOT
 
 DEFAULT_PENDING = QUEUE_ROOT / "pending"
 DEFAULT_ACTIVE = QUEUE_ROOT / "active"
