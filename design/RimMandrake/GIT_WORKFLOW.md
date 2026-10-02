@@ -8,7 +8,6 @@ Rationale and measurements: `git_workflow_plan_2026-10-01.md` (plan) and the dat
 | place | what it is |
 |---|---|
 | `/home/mandrake/rm/bench`, `/home/mandrake/rm/foundry` | the seat clones — ext4, plain git, **one writer each** (the seat's own window). Every seat launches from its clone. |
-| `/home/mandrake/rm/pool/<seat>/slot{0,1}` | subagent worktree slots, 2 per seat (linked worktrees of the seat clone) |
 | `D:\Luke\dev\RimMandrake` (`/mnt/d/Luke/dev/RimMandrake`) | **read-only mirror** of origin/main, refreshed every 5 min by `rm-mirror.timer` (`./mirror sync`). No `.git`. Never write it; Windows tools (the game deploy, Explorer, python.exe) read it. `MIRROR_HEAD` names its commit; `MIRROR_STALE` appears if a refresh failed. |
 | `/home/mandrake/rm/mirror.git` | the mirror's bare fetch-only repo |
 | `D:\Luke\dev\_artpipe\` | artpipe queue/state (not in git): `pending/ active/ done/ failed/ _artsrc/ registry.jsonl` |

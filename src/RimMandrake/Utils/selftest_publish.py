@@ -53,7 +53,6 @@ def world():
     sh(a, "commit", "-q", "-m", "seed")
     sh(a, "push", "-q", "origin", "HEAD:main")
     sh(d, "clone", "-q", bare, b)
-    P.POOL_ROOT = os.path.join(d, "pool")
     return d, a, b
 
 
@@ -175,19 +174,6 @@ def t_pushes_existing_local_commits(a, b):
     sh(a, "commit", "-q", "-m", "x", "--", "x.txt")
     sha, _ = quiet(P.publish, a, [], None)
     assert sha == sh(a, "rev-parse", "origin/main")
-
-
-def t_pool_slot_pushes_submit_ref(a, b):
-    slot = os.path.join(P.POOL_ROOT, "bench", "slot1")
-    os.makedirs(os.path.dirname(slot))
-    sh(a, "worktree", "add", "-q", "-b", "agent/fixit", slot, "origin/main")
-    main_before = sh(a, "rev-parse", "origin/main")
-    write(slot, "f.txt", LINES.replace("line 4", "LINE 4"))
-    sha, log = quiet(P.publish, slot, ["f.txt"], "slot work")
-    assert "submit/bench/fixit" in log, log
-    sh(a, "fetch", "-q")
-    assert sh(a, "rev-parse", "origin/main") == main_before          # main untouched
-    assert sh(a, "rev-parse", "origin/submit/bench/fixit") == sha
 
 
 def t_refuses_on_mnt(a, b):
