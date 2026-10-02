@@ -63,13 +63,8 @@
     <description>A dome of fused, sun-baked grit standing where a ruukka's brood has taken hold below — the one part of the whole nest that was ever meant to be seen. Everything living under it stays under the sand until something crosses too close; then the surface simply opens.</description>
     <thingClass>Hive</thingClass>
     <graphicData>
-      <!-- art pending — SANDBUSTER_CASTES_BUILD_1, pending/RM_SandBusterMound_
-           south.json filed (infrastructure/artpipe/art_lists/
-           sandbuster_castes.csv). Placeholder reuses vanilla Hive's own
-           texPath until a real render lands, same "loud placeholder" posture
-           this mod's other unrendered content uses. -->
-      <texPath>Things/Building/Natural/Hive</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Natural/RM_SandBusterMound</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>2.0</drawSize>
     </graphicData>
     <uiIconScale>0.65</uiIconScale>

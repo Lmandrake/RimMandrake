@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 182.5193671869929,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 74.97653145723709,
+  "derive_from_palette_distance": 6.987013822487108,
+  "elapsed_s": 182.5193671869929,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "RM_Totchak_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T22-58-53-01a0f60b-5572-76c3-9667-390907779002.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 62.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T22-52-33-01a0f605-893f-7080-8f15-5cc4966031ee.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 1024,
+    "id": "RM_Totchak_south",
+    "note": "Built-in imagegen derived the south-facing frontal sprite from the accepted east master; normalized to exactly 1024\u00d71024 while preserving transparency.",
+    "out": "D:\\Luke\\dev\\RimMandrake\\infrastructure\\artpipe\\_artsrc\\RM_Totchak_south\\RM_Totchak_south.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe/_artsrc/RM_Totchak_south/RM_Totchak_south.png\n    1024x1024  rgba  1,826,750 bytes  (176s)\n"
+}

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:04Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Sparkleech_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the sparkleech, a cat-sized flying leech with wet ragged membrane wings and a round socket-mouth of concentric hooks for clamping onto tree bark; faint stolen bioluminescent charge flickering in branching veins through its wing membranes, body a slick segmented tube. It reads as a flap of tissue that steals light. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the tree-tapping electrovore thief, bs~0.45, a flyer; the read is ragged glowing-veined wings around a socket mouth; storm-dark red-valley register: wet slick greys and raw pinks, the one glow allowed is the faint stolen charge in the wing veins, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the wings and body"
+}

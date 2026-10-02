@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 88.20144170199637,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 88.20144170199637,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_GuzzkaSkeleton",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 57.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T18-40-28-01a0f51e-c11f-7362-b484-45d273cfc990.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 57.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T18-35-27-01a0f51a-2a21-7061-9805-a87ab0c948c2.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_GuzzkaSkeleton",
+    "note": "Built-in imagegen; normalized prompt preserved the salt-crusted bone palette, hard lighting, bold silhouette keyline, transparent backdrop, and no cast shadow.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_GuzzkaSkeleton\\RM_GuzzkaSkeleton.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_GuzzkaSkeleton/RM_GuzzkaSkeleton.png\n    512x512  rgba  481,905 bytes  (84s)\n"
+}

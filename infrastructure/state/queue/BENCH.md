@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-10-01T01:09:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-10-02T07:22:25Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -279,6 +279,24 @@ kind:     design
 summary:  (no items/WASTELAND_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WASTELAND_BEDAZZLE_SITTING_1.md
 
+## WARSCAR_BEDAZZLE_SITTING_1 Warscar bedazzle sitting - program row 10: review + roster fill (Opus), four-turn volley to the nine-mark bar, ticket and commission
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/WARSCAR_BEDAZZLE_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WARSCAR_BEDAZZLE_SITTING_1.md
+
+## GIT_WORKFLOW_MIGRATION_1 Git workflow migration: guard D:\ writes, per-seat ext4 clones, generated views out of git, ledger union+dedupe, worktree drain to archive tags, helper pool (2/seat, submit/ branches) — phases 0-8 of the plan; owner chose windows-land-helpers and hub-page queues by card 2026-10-02
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/RimMandrake/gitworkflowplan2026-10-01.md is the authority (phases 0-8, §7 review dispositions, §8 owne…
+prose:    infrastructure/state/items/GIT_WORKFLOW_MIGRATION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -484,16 +502,6 @@ kind:     design
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/REACTIVE_SHIP_LIGHTING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/REACTIVE_SHIP_LIGHTING_1.md
-
-## NORTHSTAR_MOTION_FRAMES_1 A north-star line about CHANGE is evidenced by an ordered frame sequence, not one screenshot - owner ruling 2026-09-17, spec 4b. judge.py takes shots[-1] under a prompt telling the model to answer about that image alone, so 10 of AtmosphericBase's 23 bars (travelling boundary, writhing dark, rise-hold-release, restore-to-substrate, both anger reactions, identity on two channels) are structurally unjudgeable while every state assertion passes. Owed: a line declares state-vs-change, the judge takes a sequence, a change line claimed with one frame is UNJUDGEABLE never a partial pass. Separately move never_interpolated_colour off the eye onto a material-cache count - differing stills cannot settle smoothness at any frame count
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  owner ruling 2026-09-17 — do not build this on spec
-prose:    infrastructure/state/items/NORTHSTAR_MOTION_FRAMES_1.md
 
 ## NORTH_STAR_ATMOSPHERIC_TBD_1 TBD by owner ruling 2026-09-17: how the ship-lighting north star bars get automated waits on live play. Verbatim: 'I am not sure we should worry about how to automate these tests at this time. please stop the north star definition here and file it as TBD for now in terms of these highly subtle nuances until we can play with it live first.' The AtmosphericBase checklist is FINISHED as intent (23 bars, stays DRAFT, binds nothing) and must not be refined further - no new bars, no rewording, no nuance-chasing. NORTHSTAR_MOTION_FRAMES_1's frame-sequence judge and the material-cache count that replaced the smooth-fade bar are recorded work and are NOT to be built on spec for this mod. Reopens when he has played it
 state:    proposed

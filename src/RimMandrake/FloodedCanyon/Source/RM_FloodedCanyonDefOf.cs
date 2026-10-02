@@ -23,6 +23,21 @@ namespace RimMandrake.FloodedCanyon
         // CRACKEDLANDS_MECHANICS_BUILD_1 §5 — the herald sky.
         public static WeatherDef RM_PeakstormLight;
 
+        // CRACKEDLANDS_GPT_ENRICHMENT_1 §2 — five beats before water
+        // (Defs/SoundDefs/RM_CanyonBeats.xml) and the tarruq hush.
+        public static SoundDef RM_CanyonBeat_SlotWind;
+        public static SoundDef RM_CanyonBeat_PanTick;
+        public static SoundDef RM_CanyonChime_Far;
+        public static SoundDef RM_CanyonChime_Mid;
+        public static SoundDef RM_CanyonChime_Near;
+        public static SoundDef RM_CanyonFlood_Roar;
+        public static ThingDef RM_Tarruq;
+
+        // §5 — the recede feast (Defs/ThingDefs_Races/RM_IrqitTarruq.xml,
+        // Defs/HediffDefs/RM_IrqitFloodBorn.xml).
+        public static PawnKindDef RM_Irqit;
+        public static HediffDef RM_IrqitFloodBorn;
+
         static RM_FloodedCanyonDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_FloodedCanyonDefOf));

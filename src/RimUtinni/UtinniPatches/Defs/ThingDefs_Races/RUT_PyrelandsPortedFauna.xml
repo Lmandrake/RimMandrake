@@ -443,8 +443,16 @@
        "shoot two venomous missile weapons in battle every few rounds, then
        close for pincer assault." BARBSLINGER_SCORPION_REDESIGN_1.
 
-       Verbs-only, no visible sprite — the two CompProperties_TurretGun
-       instances on RUT_Barbslinger below carry no renderNodeProperties
+       ONE turret comp, a 2-shot burst — one needle per tail. Never two
+       CompProperties_TurretGun on one ThingDef: CompTurretGun.PostExposeData
+       scribes fixed labels ("gun", "currentTarget", burst timers), so two
+       instances write two <gun> nodes into one pawn node and on load BOTH
+       read the first — duplicate load IDs ("Cannot register ...TailGun",
+       "Could not get load ID ... /currentTarget/thing"). MEASURED in
+       NS_Pyrelands_site_1 2026-10-01.
+
+       Verbs-only, no visible sprite — the CompProperties_TurretGun on
+       RUT_Barbslinger below carries no renderNodeProperties
        (RimSage-confirmed optional on CompProperties_TurretGun/CompTurretGun:
        CompRenderNodes() returns nothing without it), so the redesigned art's
        own two needle-tipped tails are the only thing drawn — this ThingDef
@@ -482,7 +490,7 @@
        is Core + mandrake.rm.weathersuite only, not Biotech, so this cannot
        be a bare reference — matches this file's own Odyssey-gated
        specialTrainables on Sytheclaw above and GeneSeeker.xml's identical
-       gating pattern. RUT_Barbslinger's two referencing comps below are
+       gating pattern. RUT_Barbslinger's referencing comp below is
        gated the same way, so without Biotech neither side of the
        cross-reference exists and Barbslinger simply keeps its melee
        pincers/sting with no dangling turretDef.
@@ -510,6 +518,8 @@
         <defaultProjectile>Bullet_ToxicNeedleGun</defaultProjectile>
         <range>15.9</range>
         <minRange>2.9</minRange>
+        <burstShotCount>2</burstShotCount>
+        <ticksBetweenBurstShots>12</ticksBetweenBurstShots>
         <warmupTime>1</warmupTime>
         <soundCast>Shot_ToxicNeedleGun</soundCast>
         <muzzleFlashScale>4</muzzleFlashScale>
@@ -533,7 +543,8 @@
        REDESIGN 2026-09-20 (owner: "Approve barbslinger", against
        barbslinger_redesign_v1_{south,east,north}): two independent tails,
        each ending in a javelin-like needle, now carry a ranged venomous
-       attack via two RUT_BarbslingerTailGun turret comps (below) — see
+       attack via one RUT_BarbslingerTailGun turret comp firing a 2-shot
+       burst (below) — see
        that ThingDef's own header for the full mechanism. Pincers/sting
        tools above are UNCHANGED; "close for pincer assault" falls out of
        the turret's minRange rather than needing a rewrite of them.
@@ -647,10 +658,6 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="CompProperties_TurretGun" MayRequire="Ludeon.RimWorld.Biotech">
-        <turretDef>RUT_BarbslingerTailGun</turretDef>
-        <autoAttack>true</autoAttack>
-      </li>
       <li Class="CompProperties_TurretGun" MayRequire="Ludeon.RimWorld.Biotech">
         <turretDef>RUT_BarbslingerTailGun</turretDef>
         <autoAttack>true</autoAttack>

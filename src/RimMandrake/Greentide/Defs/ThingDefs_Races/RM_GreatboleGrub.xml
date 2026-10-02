@@ -116,8 +116,8 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.3</minAge>
-          <soundWounded>Pawn_Insect_Ambient</soundWounded>
-          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>

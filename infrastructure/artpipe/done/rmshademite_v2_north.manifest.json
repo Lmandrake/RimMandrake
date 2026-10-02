@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 100.42163293199997,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 11.435367452760046,
+  "derive_from_palette_distance": 5.926347191890749,
+  "elapsed_s": 100.42163293199997,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rmshademite_v2_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 32.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/27/rollout-2026-09-27T19-46-50-01a0e5e8-70af-7cd2-9cd7-44a650ef305f.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 31.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/27/rollout-2026-09-27T15-22-03-01a0e4f6-0383-74a3-ab5e-15bf52608002.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rmshademite_v2_north",
+    "note": "Derived the north-facing rear view from the accepted east master and preserved the matte palette, painterly style, scale, and heavy keylines.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rmshademite_v2_north\\rmshademite_v2_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rmshademite_v2_north/rmshademite_v2_north.png\n    256x256  rgba  12,313 bytes  (98s)\n"
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RM_Abyss                    FORSAKENCRAGS_RM_MOD_BUILD_1, new 2026-09-25
+
+    Copied verbatim from the frozen src/RimUtinni/UtinniPatches/Defs/BiomeDefs/
+    RUT_Abyss.xml (150 lines, authored 2026-09-09) per
+    design/RimMandrake/biome_mod_architecture.md §5 Phase A step 2. Every field
+    below is the twin's own content, unchanged, EXCEPT:
+
+      - workerClass: the donor AlphaBiomes.BiomeWorker_RockyCrags becomes this
+        mod's own RM_BiomeWorker_Abyss (§5 step 2 — a donor type in
+        workerClass is a hard dependency the RimMandrake tier may not assume).
+        The new worker's placement ranges are [INVENTED], same footing as the
+        sibling Gelatinous Slime/Flooded Canyon mods' own worker ranges.
+
+    Everything else — texture, terrain, weather, diseases, wildAnimals (all 14
+    Alpha Animals rows), wildPlants (all 8 Alpha Biomes/Alpha Genetics rows) —
+    is the twin's content unchanged. Zero RSW_/SW_/RUT_ rows exist in the
+    twin's wildAnimals, so nothing moves to a Utinni patch from THIS def; the
+    real Star Wars content for this biome (RSW_Cindermare/RSW_Skarnix) already
+    lives in a Utinni patch and only had its TARGET corrected to point here
+    (src/RimStarWars/SWBestiary/Patches/Livestock/Abyss_WildSpawns.xml).
+
+    ⚠️ NOT donor-free: terrain/texture and all 8 wildPlants entries carry no
+    MayRequire (inherited from the twin, not this build's scope to fix) — see
+    About.xml for the disclosure. The 14 wildAnimals rows keep their original
+    MayRequire="sarg.alphaanimals" gate and degrade gracefully without it.
+  -->
+
+  <BiomeDef>
+    <defName>RM_Abyss</defName>
+    <label>the Abyss</label>
+    <description>A country of obsidian-black stone twisted into shapes no wind carved, drowned in a darkness that behaves like a substance: it fills the air, it pools, it parts without warning into pockets of impossibly clear air, and it closes again. Light is eaten in transit here, not merely absent. The only reliable illumination is biological -- glowing grass, blue darklight gammas, yellow giant flora -- a land lit like a harbor at night, by its own lamps.</description>
+    <workerClass>RimMandrake.Abyss.RM_BiomeWorker_Abyss</workerClass>
+    <foragedFood>RawAgave</foragedFood>
+    <allowRoads>true</allowRoads>
+    <allowRivers>true</allowRivers>
+    <allowFarmingCamps>true</allowFarmingCamps>
+    <animalDensity>1.8</animalDensity>
+    <plantDensity>0.5</plantDensity>
+    <forageability>0.5</forageability>
+    <movementDifficulty>1</movementDifficulty>
+    <texture>Biomes/AB_RockyCrags</texture>
+    <diseaseMtbDays>65</diseaseMtbDays>
+    <diseases>
+      <li>
+        <diseaseInc>Disease_Flu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_Plague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_GutWorms</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_MuscleParasites</diseaseInc>
+        <commonality>60</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_FibrousMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_SensoryMechanites</diseaseInc>
+        <commonality>30</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalFlu</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+      <li>
+        <diseaseInc>Disease_AnimalPlague</diseaseInc>
+        <commonality>100</commonality>
+      </li>
+    </diseases>
+    <terrainsByFertility>
+      <li>
+        <terrain>AB_FineForsakenSand</terrain>
+        <min>-999</min>
+        <max>0.5</max>
+      </li>
+      <li>
+        <terrain>AB_ForsakenSand</terrain>
+        <min>0.5</min>
+        <max>999</max>
+      </li>
+    </terrainsByFertility>
+    <baseWeatherCommonalities>
+      <Clear>0</Clear>
+      <AB_ForsakenNight MayRequire="sarg.alphabiomes">70</AB_ForsakenNight>
+      <AB_ForsakenThunderstorm MayRequire="sarg.alphabiomes">4</AB_ForsakenThunderstorm>
+      <AB_ForsakenRainyNight MayRequire="sarg.alphabiomes">4</AB_ForsakenRainyNight>
+    </baseWeatherCommonalities>
+    <wildAnimals>
+      <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
+      <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
+      <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
+      <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
+      <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->
+      <AA_NightAve MayRequire="sarg.alphaanimals">0.2</AA_NightAve>  <!-- night ave - medium, keep -->
+      <AA_Nightling MayRequire="sarg.alphaanimals">0.2</AA_Nightling>  <!-- nightling - medium-apex, keep -->
+      <AA_DarkVandal MayRequire="sarg.alphaanimals">0.15</AA_DarkVandal>  <!-- dark vandal - medium, keep -->
+      <AA_NightRam MayRequire="sarg.alphaanimals">0.09</AA_NightRam>  <!-- nightram - large, keep -->
+      <AA_ShadowCharger MayRequire="sarg.alphaanimals">0.09</AA_ShadowCharger>  <!-- shadow charger - large, keep -->
+      <AA_Thunderox MayRequire="sarg.alphaanimals">0.09</AA_Thunderox>  <!-- thunderox - large, keep -->
+      <AA_SandProwler MayRequire="sarg.alphaanimals">0.075</AA_SandProwler>  <!-- sand prowler - medium-pred, keep -->
+      <AA_Frostling MayRequire="sarg.alphaanimals">0.05</AA_Frostling>  <!-- frostling - medium-pred, import -->
+      <AA_Darkbeast MayRequire="sarg.alphaanimals">0.005</AA_Darkbeast>  <!-- darkbeast - medium, keep -->
+    </wildAnimals>
+    <coastalWildAnimals />
+    <wildPlants>
+      <AB_GlowingGrass>1.0</AB_GlowingGrass>  <!-- grass -->
+      <AB_ToxicGamma>0.6</AB_ToxicGamma>  <!-- toxic gamma - tree -->
+      <AB_GiantGamma>0.5</AB_GiantGamma>  <!-- giant gamma -->
+      <AB_WildRadagast>0.5</AB_WildRadagast>  <!-- wild ragadast -->
+      <AG_Gamma MayRequire="sarg.alphagenes">0.5</AG_Gamma>  <!-- gamma -->
+      <AB_GiantStikehr>0.3</AB_GiantStikehr>  <!-- giant stikehr -->
+      <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
+      <AB_GiantSeptimum>0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
+    </wildPlants>
+    <wildPlantRegrowDays>27</wildPlantRegrowDays>
+  </BiomeDef>
+
+</Defs>

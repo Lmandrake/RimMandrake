@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Stillsand_Fillout.xml                RimMandrake — STILLSAND_BEDAZZLE_CONTENT_1
+
+  The six ruled fill-out creatures of design/Jawa/worldbuilding/biomes/
+  stillsand_roster_fillout_2026-09-27.md (owner ruled the art sheet 2026-09-27;
+  each uses its _b redo render where one exists): soorrak, gaanok, liikka,
+  duumma, veessa, loomma. Invented names, franchise-free RM_ tier (Q11a).
+
+  Every def carries its OWN 3-facing render, Textures/Things/Pawn/Animal/RM_<Name>/.
+  Each behaviour rides a shipped comp or extension; no new C# is added for them.
+  Sizes follow the size law: giants-or-grains on the surface, a subsurface body
+  of any size (duumma, the depth arm, annotated in place).
+
+  Wired in RM_Stillsand_Biome.xml's wildAnimals at the doc's commonalities.
+-->
+<Defs>
+
+  <!-- ============================================================ -->
+  <!-- 1. RM_Soorrak — the flier that owns the sky                    -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Soorrak</defName>
+    <label>soorrak</label>
+    <description>A sail-winged giant that nests in the deep dune precisely because nothing alive can afford to walk there. Its sun-face is one sheet of mirror-ceramic, so from below, crossing the white sky, it is nearly invisible except as a moving glare; its shade-face carries the eyes, the vents and the brood pouch. It drinks at the green line or a distant shore and carries the water home in its crop. A soorrak nesting crag is the richest square kilometre of surface in the biome, and its eggs are canteens: a full one is drink in a rigid shell, and a Jawa will cross a horizon for a clutch.</description>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <MarketValue>1800</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <FilthRate>10</FilthRate>
+      <Wildness>0.9</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>8</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>talons</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Feet</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Beak</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RM_SoorrakEggUnfertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RM_SoorrakEggFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>30</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~2</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>Bird</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>4.5</baseBodySize>
+      <baseHealthScale>3.5</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <useMeatFrom>Chicken</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <roamMtbDays>10</roamMtbDays>
+      <lifeExpectancy>40</lifeExpectancy>
+      <!-- Real core flight, the Locust/Chicken shape. canLeaveMapFlying is the
+           sheet's own mechanism: it drinks hundreds of kilometres away and
+           leaves the map to do it. No flying flip-book frames yet, so it flies
+           without a wing-beat; frames never block flight. -->
+      <flightStartChanceOnJobStart>0.3</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Chicken_Wounded</soundWounded>
+          <soundDeath>Pawn_Chicken_Death</soundDeath>
+          <soundCall>Pawn_Chicken_Call</soundCall>
+          <soundAngry>Pawn_Chicken_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Soorrak</defName>
+    <label>soorrak</label>
+    <race>RM_Soorrak</race>
+    <combatPower>220</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Soorrak/RM_Soorrak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Soorrak/RM_Soorrak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Soorrak/RM_Soorrak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The eggs ARE canteens (deep_desert §4.4): heavy, cool, drink in a rigid shell. -->
+  <ThingDef ParentName="EggFertBase">
+    <defName>RM_SoorrakEggFertilized</defName>
+    <label>soorrak egg</label>
+    <description>A rigid, mirror-glazed shell the size of a Jawa's torso, cool to the touch and sloshing when it moves: a full clutch is a caravan's worth of drink. Something inside is slowly growing a sail.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
+      <color>(214,224,226)</color>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>180.0</MarketValue>
+      <Mass>4.5</Mass>
+      <Nutrition>1.4</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>14</hatcherDaystoHatch>
+        <hatcherPawn>RM_Soorrak</hatcherPawn>
+      </li>
+      <li Class="CompProperties" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <water>5</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RM_SoorrakEggUnfertilized</defName>
+    <label>soorrak egg (unfert.)</label>
+    <description>A rigid, mirror-glazed shell, heavy with stored water. Nothing will hatch from it; it is exactly the drink of water it feels like.</description>
+    <graphicData>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
+      <color>(214,224,226)</color>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <statBases>
+      <MarketValue>180.0</MarketValue>
+      <Mass>4.5</Mass>
+      <Nutrition>1.4</Nutrition>
+    </statBases>
+    <comps>
+      <li Class="CompProperties" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <compClass>DubsBadHygiene.CompContamination</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="DubsBadHygiene.WaterExt" MayRequire="Dubwise.DubsBadHygiene.Lite">
+        <water>5</water>
+        <UseForWashing>true</UseForWashing>
+        <SeekForThirst>true</SeekForThirst>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- ============================================================ -->
+  <!-- 2. RM_Gaanok — the follower                                    -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gaanok</defName>
+    <label>gaanok</label>
+    <description>A gaunt, stilt-legged walker the colour of bleached bone, powder-glazed, taller than a wall and thin as famine, and it never attacks. It simply appears on the horizon behind a caravan and walks, at exactly the caravan's pace, for days. It is doing arithmetic: a moving party is a sealed cask of water that will open itself if followed long enough. When something collapses, of heat or thirst or wounds, the gaanok is there within the hour, and it drinks. The horror is that it is patient, visible, and correct.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <MarketValue>1500</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <FilthRate>2</FilthRate>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>drinking mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>false</herdAnimal>
+      <!-- v1 ships on vanilla predator AI. The walking pace makes a chase
+           structurally impossible, so it takes only the downed and the slow,
+           which IS the design. It declines fights: manhunterOnDamageChance 0. -->
+      <predator>true</predator>
+      <maxPreyBodySize>2.5</maxPreyBodySize>
+      <baseBodySize>5.0</baseBodySize>
+      <baseHealthScale>4.0</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <roamMtbDays>8</roamMtbDays>
+      <lifeExpectancy>45</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.4</minAge></li>
+        <li><def>AnimalAdult</def><minAge>1.0</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gaanok</defName>
+    <label>gaanok</label>
+    <race>RM_Gaanok</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gaanok/RM_Gaanok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gaanok/RM_Gaanok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Gaanok/RM_Gaanok</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>5.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 3. RM_Liikka — the light-eater                                 -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Liikka</defName>
+    <label>liikka</label>
+    <description>A thumb-sized surface mite whose back is a domed mirror and whose underside is the entire rest of the animal. It is the only creature on the planet that meets the biome's one surplus head-on: its dome meters photons down into photolytic tissue the way the light-pipe nubs do, and it sieves the top centimetre of sand for the glasscrust it grazes. It never drinks. In a biome that hides everything, a traveller sees a scatter of stationary glints that turn out, on the next look, to have moved.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <MarketValue>6</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <MeatAmount>1</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <modExtensions>
+      <!-- Light-eating rides the shipped filter-feed stack against sand, the
+           same way the gloomcast strains the buried canopy. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_FilterFeedExtension">
+        <feedTerrainDefNames>
+          <li>Sand</li>
+          <li>SoftSand</li>
+        </feedTerrainDefNames>
+        <beginBelowFoodPercent>0.9</beginBelowFoodPercent>
+        <foodPercentPerBout>0.25</foodPercentPerBout>
+        <boutDurationTicks>600</boutDurationTicks>
+        <searchRadius>8</searchRadius>
+      </li>
+    </modExtensions>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.08</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <roamMtbDays>4</roamMtbDays>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.05</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.1</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Liikka</defName>
+    <label>liikka</label>
+    <labelPlural>liikka</labelPlural>
+    <race>RM_Liikka</race>
+    <combatPower>2</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>3~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liikka/RM_Liikka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.25</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liikka/RM_Liikka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.32</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Liikka/RM_Liikka</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 4. RM_Duumma — the prey that drums dry                         -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Duumma</defName>
+    <label>duumma</label>
+    <description>The fattest water-cask in the biome, and the ground's other liar. A barrel-bodied burrower, plated in matte dust-glaze, that ferries stored water between buried moisture pockets. Every subsurface hunter can feel a footfall, so when anything heavy moves nearby the duumma goes utterly still and its gait-drum shifts to the dry, hollow signature of a desiccated husk: nothing here worth a strike. A traveller who learns the tell, the sand that went quiet, is standing on more water than a whole clutch of eggs. Prey to the vekka, the drazzik and the krayt; prize to a Jawa.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.8</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <!-- The prize: a fresh duumma butchers into carried drink (RM_DrainedFluids,
+         creaturebehaviors), the eggs-as-water economy without an egg. The
+         signal falsification itself is description plus stats; no shipped comp
+         expresses "drums dry". -->
+    <butcherProducts>
+      <RM_DrainedFluids>6</RM_DrainedFluids>
+    </butcherProducts>
+    <race>
+      <body>TurtleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <!-- DEPTH ARM (Q7, annotated in place, nothing evicted): mid-band bs 1.8 is
+           legal because it is a SUBSURFACE animal, defended by depth, not size. -->
+      <baseBodySize>1.8</baseBodySize>
+      <baseHealthScale>1.4</baseHealthScale>
+      <baseHungerRate>0.12</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>SeaTurtle</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <roamMtbDays>6</roamMtbDays>
+      <lifeExpectancy>35</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Duumma</defName>
+    <label>duumma</label>
+    <race>RM_Duumma</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Duumma/RM_Duumma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 5. RM_Veessa — the miller of the mummified fields              -->
+  <!-- ============================================================ -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Veessa</defName>
+    <label>veessa</label>
+    <description>Nothing rots here, so something learned to eat what cannot rot. The veessa is a grain-scale plated miller that works the mummified fields, rasping the desiccated dead into a powder its gut chemistry can finally unlock. It is the only thing on the planet that digests the dry dead; everything else fights over the wet kill and leaves. It never touches the living or the fresh, because fresh is water, and water draws things it cannot afford to meet. Hunting one costs more water than it holds.</description>
+    <statBases>
+      <MoveSpeed>1.4</MoveSpeed>
+      <MarketValue>5</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+      <MeatAmount>1</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>rasp-mouth</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <modExtensions>
+      <!-- Secondary option from the design row: it also mills dust filth. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_EatCleanableExtension" />
+    </modExtensions>
+    <race>
+      <body>BeetleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.08</baseHungerRate>
+      <!-- Vanilla carries it whole: a corpse-eating carnivore diet. -->
+      <foodType>CarnivoreAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <roamMtbDays>5</roamMtbDays>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.05</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.1</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Veessa</defName>
+    <label>veessa</label>
+    <labelPlural>veessa</labelPlural>
+    <race>RM_Veessa</race>
+    <combatPower>2</combatPower>
+    <ecoSystemWeight>0.05</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Veessa/RM_Veessa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Veessa/RM_Veessa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Veessa/RM_Veessa</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ============================================================ -->
+  <!-- 6. RM_Loomma — the ollim's tenant                              -->
+  <!-- ============================================================ -->
+
+  <!-- Death-outside-shade clock: rises in sun, falls in shade, lethal at 1.
+       Rides the shipped shade-driven severity comp (RM_MapComponent_ShadeGrid). -->
+  <HediffDef>
+    <defName>RM_LoommaSunstruck</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>sunstruck</label>
+    <description>A shade-bound tenant caught outside any hard shadow. It cannot survive long in the open.</description>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>0.01</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <lethalSeverity>1.0</lethalSeverity>
+    <stages>
+      <li>
+        <label>shaded</label>
+        <minSeverity>0</minSeverity>
+      </li>
+      <li>
+        <label>scorched</label>
+        <minSeverity>0.4</minSeverity>
+        <painOffset>0.2</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <postFactor>0.6</postFactor>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_ShadeDrivenSeverity">
+        <severityPerDayInSun>40</severityPerDayInSun>
+        <severityPerDayInShade>-20</severityPerDayInShade>
+      </li>
+    </comps>
+  </HediffDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Loomma</defName>
+    <label>loomma</label>
+    <description>The rent-payer. A soft-bodied, kettle-sized commensal that lives its whole life inside one ollim's hard-edged permanent shadow; it cannot survive twenty minutes outside it. It forages the shade line at the shadow's rim, and it pays the tree: its dung and its water-rich waste go into the sand at the trunk, concentrating exactly the buried moisture the ollim accretes from. A stand with loomma in it is a working ecosystem; a stand without them is a dying one. A tame one will pay rent to a colony instead, a slow, gentle fertiliser engine, but it dies on any caravan that leaves the shade.</description>
+    <statBases>
+      <MoveSpeed>1.8</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>70</ComfyTemperatureMax>
+      <FilthRate>6</FilthRate>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <modExtensions>
+      <!-- Shade-binding: idle wander steers to shaded cells. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_ShadeSeekingWanderExtension">
+        <minShadeToPrefer>0.6</minShadeToPrefer>
+      </li>
+    </modExtensions>
+    <comps>
+      <!-- The rent: waste that seeds and feeds, gated on shade so a drop in the
+           open leaves nothing and only a stop under an ollim fertilises. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_DungSeeder">
+        <intervalTicksRange>12000~24000</intervalTicksRange>
+        <minShadeToSeed>0.5</minShadeToSeed>
+        <dungFilthDef>Filth_Dirt</dungFilthDef>
+        <dungFilthCount>2</dungFilthCount>
+        <seedRadius>4.9</seedRadius>
+        <growthBoost>0.2</growthBoost>
+        <maxPlantsBoosted>8</maxPlantsBoosted>
+        <seedPlants>
+          <li>RM_Glasscrust</li>
+        </seedPlants>
+        <seedPlantCount>1~2</seedPlantCount>
+        <wildlifeSpawnChance>0</wildlifeSpawnChance>
+      </li>
+    </comps>
+    <race>
+      <body>TurtleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.5</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <useMeatFrom>SeaTurtle</useMeatFrom>
+      <trainability>Intermediate</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <roamMtbDays>6</roamMtbDays>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Loomma</defName>
+    <label>loomma</label>
+    <race>RM_Loomma</race>
+    <combatPower>8</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <wildGroupSize>1~2</wildGroupSize>
+    <startingHediffs>
+      <li>
+        <def>RM_LoommaSunstruck</def>
+        <severity>0.03</severity>
+      </li>
+    </startingHediffs>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Loomma/RM_Loomma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Loomma/RM_Loomma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Loomma/RM_Loomma</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -255,9 +255,15 @@ namespace JawaBench.BridgeTools
                 "assembly, how many of that assembly's types made it into AllTypes, and " +
                 "each [DebugAction] method on it with whether its game-state gate passes " +
                 "RIGHT NOW (plus the raw state flags: programState, worldSelected, " +
-                "currentMap). Executes nothing and invokes no yielders.",
+                "currentMap). Also reports the LOADED ASSEMBLY'S IDENTITY: the file it came from " +
+                "(Assembly.Location, or the carrying mod's Assemblies/ file when it was loaded from " +
+                "bytes), its in-memory module MVID, and that file's SHA-256 and MVID read off disk - " +
+                "mvidMatchesFile=false means the DLL on disk was replaced after this process loaded it, " +
+                "so the running code is NOT the deployed build. Executes nothing and invokes no yielders.",
             ResultDescription =
-                "success, typeName, resolved, assembly, inAllTypesByIdentity, " +
+                "success, typeName, resolved, assembly, assemblyLocation, assemblyLocationSource, " +
+                "assemblyMvid (loaded), assemblyFileSha256, assemblyFileMvid, mvidMatchesFile, " +
+                "identityError (null when every identity field was read), inAllTypesByIdentity, " +
                 "allTypesNameMatches, allTypesCount, assemblyTypesInAllTypes, " +
                 "carryingMods[], debugActions[] of {method, name, category, actionType, " +
                 "allowedGameStates, isAllowedNow}, state{programState, worldSelected, " +
@@ -330,12 +336,22 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                Dictionary<string, object> ident = t != null ? AssemblyIdentity(t.Assembly) : null;
+                object Id(string k) => ident != null && ident.TryGetValue(k, out object v) ? v : null;
+
                 return (object)new
                 {
                     success = true,
                     typeName = name,
                     resolved = t != null,
                     assembly = t?.Assembly.FullName,
+                    assemblyLocation = Id("assemblyLocation"),
+                    assemblyLocationSource = Id("assemblyLocationSource"),
+                    assemblyMvid = Id("assemblyMvid"),
+                    assemblyFileSha256 = Id("assemblyFileSha256"),
+                    assemblyFileMvid = Id("assemblyFileMvid"),
+                    mvidMatchesFile = Id("mvidMatchesFile"),
+                    identityError = Id("identityError"),
                     inAllTypesByIdentity,
                     allTypesNameMatches = nameMatches,
                     allTypesCount = allTypes.Count,

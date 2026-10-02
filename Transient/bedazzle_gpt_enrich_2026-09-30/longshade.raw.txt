@@ -1,0 +1,97 @@
+The strongest path is to make shade a readable ecosystem, a transport network, and a source of trouble—not merely a temperature bonus. I would leave Sh’kaar and Ideology untouched because that layer is explicitly parked.
+
+### 1. The Law of the Light — every journey becomes rest, dash, rest
+
+One law governs wildlife and colonists: exposure accumulates vanilla heatstroke; shade buys recovery.
+
+- **Experience:** Herds gather at violet shadow rims, signal, sprint together, then collapse panting. Drafted colonists display a faint “safe return” radius. The open ground hisses; shade feels abruptly quiet.
+- **Marks:** Unique mechanic, surprising creatures.
+- **Build:** **Large C#** (~450–550 lines). Directional `RM_MapComponent_ShadeGrid`; flood-filled shade-patch graph; Harmony postfix on `Pawn_PathFollower.GenerateNewPathRequest` supplying a sun-cost `IPathGridCustomizer`; rest/dash job givers; inspect-bar and radius overlay. Exposure adjusts vanilla `Heatstroke`, never a new heat hediff. Put the exposure calculation in the shared extreme-heat framework: overhead/low-sun shade works here, lateral shelter matters in the Deep Desert, roofs do nothing against ambient steam.
+- **Only here:** Other hot biomes roast differently. Only the Long Shade turns heat into a visible network of discrete refuges.
+
+### 2. Shipfall Commons — landing the gravship creates the greatest shade patch on the map
+
+The gravship needs no special awning: its roofed footprint is already a perfect harbour. Make the ecosystem notice.
+
+- **Experience:** Shortly after landing, little animals occupy the ramp shadow, larger herds press against the hull, pirrik circle above, and eventually the gloomcast changes course toward the ship. Launch preparations scatter an entire temporary commons.
+- **Marks:** Gravship touch, unique mechanic, GIANT beast.
+- **Build:** **Small C#** (~100–180 lines) plus incidents. The patch graph detects a newly created, unusually large roofed component and advances a configurable harbour-escalation ladder. Launch is never hard-blocked; occupants receive a readable dispersal job or cause a short cleanup delay.
+- **Only here:** Elsewhere the ship is shelter or machinery. Here its shadow makes it an ecological landmark—and hospitality becomes the threat.
+
+### 3. Heard Heat — an exposure-driven soundscape
+
+Give the biome an audible boundary between light and shade.
+
+- **Experience:** Lit ground carries a dry, rising shimmer. Crossing into shade cuts it to breathing, leather creaks and an occasional dew drip. Herds exchange calls before dashing; a gloomcast is heard as subsonic footfalls before it enters view. Smoke haze muffles everything.
+- **Marks:** Soundscape, weather, GIANT beast.
+- **Build:** **Small C#** (~120–200 lines) plus `SoundDef`s. A map component manages camera-relative sustainers from shade strength and weather; job-start sounds announce herd dashes; proximity sustainers handle the gloomcast. Settings control volume, camera response and creature calls.
+- **Only here:** Its signature sound is not wind or wildlife—it is the sensation of standing in hostile light.
+
+### 4. Shadecraft Field Lessons — technology learned by surviving the biome
+
+Turn the ruled parasol, shade tent and standing shield into discoveries rather than starting recipes.
+
+- **Experience:** Studying a dewfringe rim teaches condensation geometry; observing a herd crossing teaches portable shade; examining mirrak hide teaches deeper shade cloth. Each lesson unlocks one practical tool.
+- **Marks:** Discoverable technology, unique resources.
+- **Build:** **XML + small C#** (~120–180 lines). Hidden research projects or a compact knowledge `GameComponent`; study comps on dewfringe, a crawler-road wreck and a mirrak corpse; recipes unlock through letters and visible knowledge progress. Apparel carries a shadow-caster comp; shields and tents cast directional strips.
+- **Only here:** The technology is learned from the geometry of survival. In other extreme-heat biomes the same gear behaves appropriately—sideways shielding in the Deep Desert, ineffective against steam.
+
+### 5. The Smoke Calendar — weather that redraws the road network
+
+Build the ruled haze, ash pulse and sand-lock as changes to shade geometry, not cosmetic filters.
+
+- **Experience:** Haze lengthens shadows until isolated refuges touch and whole migrations begin. Ash settles quietly in the lee. The sand-lock then seals the new routes and leaves animals stranded in suddenly separated patches.
+- **Marks:** Interesting weather, unique mechanic, soundscape.
+- **Build:** **Medium C#** (~200–300 lines) plus `WeatherDef`/`GameConditionDef` XML. The golden-hour sky anchor supplies colour and fixed shadow vector; conditions modify vector length, grid strength, sound mix, plant fertility and dash-graph connectivity.
+- **Only here:** Weather does not merely reduce visibility. It temporarily rewrites which journeys are physically possible.
+
+### 6. Mirrak, the Wrong Shadow — refuge that closes around you
+
+Implement the approved predator as a false node in the shade network.
+
+- **Experience:** A dark patch lies across the pavement at the wrong angle, without dew, tenants or sound. An overheated animal runs into it; the “shadow” folds shut. During haze, real shadows lengthen while mirrak remain short and obvious.
+- **Marks:** Surprising creature, unique resources, unique mechanic.
+- **Build:** **XML + small C#** (~100–160 lines). A false-shade extension exposes the mirrak as a candidate to desperate dash logic without satisfying actual `ShadeAt`; an ambush comp wakes on arrival. Its matte hide improves shade depth when used in portable shelter.
+- **Only here:** It can exist only where creatures are conditioned to trust shadows more than their senses.
+
+### 7. The Swimmer’s Road — one young sarlacc, one readable journey
+
+A juvenile migrates from the deep desert toward the map’s largest dew ring—often the colony’s.
+
+- **Experience:** A continuous sand wake travels from patch to patch. Each strike leaves blood, dragged furrows and shed material. If it roots, every tenant evacuates before the ground sinks into a permanent mouth.
+- **Marks:** Surprising creature, unique mechanic, unique resources.
+- **Build:** **Small C#** (~120–200 lines). One-per-map incident; patch-graph destination bias; dew-ring cells accepted as rooting sites. Victims leave the commissioned kill-sign filths, dropped possessions and a “taken below” tale. If the swimmer exits, it leaves a furrow to the edge and a departure letter—never a silent despawn.
+- **Only here:** This is the migratory life stage following dew, not a second sarlacc homeland or a Stillsand eruption.
+
+### 8. The Crawler Road — salvage that is also transportation infrastructure
+
+Generate a chain of wrecks across the widest gap, ending at a broken sandcrawler harbour.
+
+- **Experience:** Landspeeders, carts and crawler tread cast stepping-stone shadows. Removing a valuable wreck breaks the route; the next herd reaches the missing link, calls, and turns back—or attempts the fatal crossing.
+- **Marks:** Unique mechanic, unique resources, gravship-adjacent vehicle identity.
+- **Build:** **Medium C#** GenStep (~180–280 lines) plus XML wrecks. Place casters at human dash intervals using the patch graph. Make small wrecks minifiable so players can repair or extend the route. Populate the crawler’s lee with a full shade hierarchy and occasional Jawa scavengers or stranded occupants.
+- **Only here:** Wreckage matters primarily because of the shadow it casts, creating a distinctly Jawa conflict between salvage and stewardship.
+
+### 9. The Walking Eclipse — make the gloomcast change the map as it moves
+
+Elevate the existing giant from a large grazer into a mobile public utility.
+
+- **Experience:** Its shadow carries pirrik, small grazers and a trailing dew-darkened strip. Its footfalls arrive first. When it stops beside the colony, dung, feeding scars and displaced animals record the entire visit.
+- **Marks:** GIANT beast, soundscape, unique resources, gravship touch.
+- **Build:** **Medium C#** (~150–250 lines). Its shadow-caster comp dirties only old and new local grid rectangles; followers retarget dynamically; dung seeding and filter-feeding leave persistent signs. Wire the commissioned original art and proximity audio.
+- **Only here:** It is not merely megafauna. It temporarily moves the biome’s most precious terrain.
+
+### 10. Lee-Side Middens — every old shadow keeps a history
+
+Make natural shade pockets places to investigate even when no animal is present.
+
+- **Experience:** The down-sun side of old rocks contains layered bones, cracked water vessels, dung, shed scales and wind-sorted scrap. Fresh layers identify recent occupants; an unnaturally clean patch warns of a mirrak or rooted sarlacc.
+- **Marks:** Unique resources, discoverable technology, unique mechanic.
+- **Build:** **XML + small C#** (~100–170 lines). A GenStep places surface middens at directional lee endpoints; a lightweight map component periodically adds deposits based on patch occupants. Searching can yield minor salvage, biological samples or Shadecraft study progress.
+- **Only here:** These are surface archives created by permanent, unmoving shadows—not the Stillsand’s buried archaeological record.
+
+## Top 3
+
+1. **The Law of the Light** — it is the foundation that makes every approved animal, shadow and journey behave distinctly.
+2. **Shipfall Commons** — it fills the gravship miss with very little bespoke machinery and produces an immediate campaign-defining spectacle.
+3. **Heard Heat** — it closes the most visible presentation gap and makes crossing the shade boundary physically memorable.

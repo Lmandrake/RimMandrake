@@ -103,6 +103,15 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.luminouspigment"],
         "dlc": True,
     },
+    "luminouspigment_ns": {
+        "why": "LUMINOUS_PIGMENT_FIRST_SCRIPT_1: the north-star script for LuminousPigment "
+               "(src/RimMandrake/LuminousPigment/validation.py). The `luminouspigment` tier plus "
+               "Ninefold, so the god-delta chain (godsReact, DeepfireGodDeltas) is MEASURED "
+               "instead of UNMEASURED. LightsOut (a third-party donor) is not carried: the one "
+               "LightsOut bar stays UNCOVERED.",
+        "want": [BRIDGE, "mandrake.rm.luminouspigment", "mandrake.rm.ninefold"],
+        "dlc": True,
+    },
     "weepingstones": {
         "why": "Live-load/quicktest proof for WEEPINGSTONES_RM_MOD_BUILD_1: does "
                "mandrake.rm.weepingstones load clean, does RM_WeepingStones "
@@ -137,11 +146,16 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches"],  # BAROQUE_BIOMES_WAVE2_FOLD_1: gelatinousslime folded
         "dlc": True,
     },
-    "pits": {
-        "why": "Prove the pit framework inside FlowWorks (dig stages, mass-sum "
-               "cover trigger, struggle escape) with nothing else on the map "
-               "that could spring a trap or explain a failure.",
+    "flowworks": {
+        "why": "FLOWWORKS_NORTHSTAR trial (FlowWorks_trial_plan.md 3.1): FlowWorks "
+               "alone with the bridge -- canals, the depth/fill primitive, liquid "
+               "stock, superdeep pits. All five DLCs and Harmony resolve "
+               "automatically. REFUSES if the stale mandrake.rm.pits (22/22 "
+               "defName collision) or a terrain donor (Alpha Biomes, ManyWaters) "
+               "is in the closure, so a slime/tar terrain cannot come from a donor.",
         "want": [BRIDGE, "mandrake.rm.flowworks"],
+        "forbid": ["mandrake.rm.pits", "sarg.alphabiomes"],
+        "forbid_substr": ["manywaters"],
         "dlc": True,
     },
     "visibility": {
@@ -158,6 +172,15 @@ TIERS = {
                "Mlie.GraffitiMod already retired and nothing else on the "
                "list that could explain a failure.",
         "want": [BRIDGE, "mandrake.rm.graffiti", "mandrake.rm.sacredgraffiti"],
+        "dlc": True,
+    },
+    "graffiti_solo": {
+        "why": "GRAFFITI_NORTHSTAR trial: mandrake.rm.graffiti ALONE with the bridge. "
+               "NOT the `graffiti` tier above -- that one adds SacredGraffiti, whose "
+               "RM_SacredMark_* defs inherit RM_BaseGraffiti and join the mark pool and "
+               "gallery, so a GREEN would no longer be Graffiti's. All five DLCs and "
+               "Harmony resolve automatically (BreachBiasHook is a Harmony postfix).",
+        "want": [BRIDGE, "mandrake.rm.graffiti"],
         "dlc": True,
     },
     "bench": {
@@ -282,6 +305,18 @@ TIERS = {
                "smaller tier -- this exists so the next re-verify (perf gate, "
                "cut-vs-harvest, every top) doesn't cost a full-list restart either.",
         "want": [BRIDGE, "mandrake.rm.explosivegrowth", "mandrake.rut.plantgrowth"],
+        "dlc": True,
+    },
+    "explosivegrowth_solo": {
+        "why": "EXPLOSIVE_GROWTH_FIRST_SCRIPT_1 north-star script: mandrake.rm.explosivegrowth "
+               "ALONE with the bridge. NOT the `explosivegrowth` tier above -- that one adds "
+               "mandrake.rut.plantgrowth, whose x4/x10 ambient bands multiply the same "
+               "Plant.GrowthRate the soak postfix multiplies (it cancels in a ratio but "
+               "not in any absolute rate), and the RM-tier script must not depend on a "
+               "campaign mod. Vanilla + DLC plants carry every Churn check; the "
+               "donor-plant tops (Burst/Tinder/Slime/Rupture/Flush) read UNMEASURED here by "
+               "design. All five DLCs and Harmony resolve automatically.",
+        "want": [BRIDGE, "mandrake.rm.explosivegrowth"],
         "dlc": True,
     },
     "fish": {
@@ -459,6 +494,59 @@ TIERS["greentideant"] = {
     "dlc": True,
 }
 
+# PYRELANDS_GREEN_MINIMAL_1 / Pyrelands_trial_plan.md §3.1. Pyrelands ships COMPOSED in
+# mandrake.rm.biomes, so that (never mandrake.rm.pyrelands) is what loads. swbestiary is
+# load-bearing: WildAnimals_Pyrelands.xml adds seven RSW_ keys under a MayRequire on a
+# top-level <Operation>, which the engine ignores, so without it GenStep_Animals NREs.
+# `forbid` (tier_guard) refuses the tier, plan or apply, if any of these lands in the
+# resolved closure (neighbour bleed / plantDensity rewrite / flora injection).
+# ⚠️ sarg.alphabiomes is NOT forbiddable although §3.1 once listed it: the composed
+# mandrake.rm.biomes About.xml hard-depends on it (MEASURED 2026-10-01 over the
+# installed set). Plant purity is then guarded by WildPlantAllowlist + bar 1.
+TIERS["pyrelands"] = {
+    "why": "PYRELANDS_NORTHSTAR_TRIAL_1: the composed Baroque Biomes + the Utinni "
+           "fauna/mechanics patch closure for the Pyrelands north-star trial, with "
+           "biome transitions, Map Designer and flora injectors kept off the list.",
+    "want": [BRIDGE, "mandrake.rm.biomes", "mandrake.rut.patches",
+             "mandrake.rsw.swbestiary", "mandrake.rut.pyrelandsmechanics"],
+    "forbid": ["m00nl1ght.geologicallandforms",
+               "m00nl1ght.geologicallandforms.biometransitions",
+               "zylle.mapdesigner",
+               "kopp.biomecompatibilityproject",
+               "noxilie.regrow.wmb.alphabiomes"],
+    "dlc": True,
+}
+
+TIERS["weepingstones_solo"] = {
+    "why": "WEEPING_STONES_FIRST_SCRIPT_1: the north-star script for WeepingStones "
+           "(src/RimMandrake/WeepingStones, packageId mandrake.rm.weepingstones). That "
+           "dev folder is SOURCE only: the biome ships composed inside "
+           "mandrake.rm.biomes (Biomes.compose.json), so the thing to load is the composed "
+           "mod and nothing else -- NOT the older `weepingstones` tier, which adds the "
+           "Utinni patch layer, swbestiary and Alpha Animals for the campaign fauna and "
+           "carries a retired packageId (mandrake.rut.rotsporekit). All five DLCs and "
+           "Harmony resolve automatically.",
+    "want": [BRIDGE, "mandrake.rm.biomes"],
+    "dlc": True,
+}
+
+
+def resolve_tier(name, installed):
+    """(ordered packageIds, missing, refusals) for a tier -- the exact list --apply
+    writes. `refusals` is tier_guard's list (forbidden mod in the closure, a DLC
+    missing); non-empty means the tier is refused. Also the manifest a pre-flight
+    compares the running list against (preflight_pyrelands.py)."""
+    t = TIERS[name]
+    want = list(t["want"])
+    if t["dlc"]:
+        want += [p for p in installed if p.startswith("ludeon.rimworld")]
+    else:
+        want += [CORE]
+    want += [HARMONY]
+    pids, missing = close_over(want, installed)
+    ordered = order(pids, installed)
+    return ordered, missing, tier_guard(t, ordered)
+
 
 def read_about(path):
     try:
@@ -617,6 +705,32 @@ def full_mod_count():
         return None
 
 
+DLC_IDS = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+           "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
+
+
+def tier_guard(tier, pids):
+    """Refusals for a resolved tier list (empty = fine). A tier's `forbid` ids and
+    `forbid_substr` fragments must be absent from the dependency CLOSURE, not just
+    from `want` -- a dependency can drag a forbidden mod in. A `dlc` tier must
+    resolve all five expansions (owner ruling 2026-09-19); a missing one is a
+    refusal, never a quieter list."""
+    pids = [p.lower() for p in pids]
+    out = []
+    for f in tier.get("forbid", ()):
+        if f.lower() in pids:
+            out.append("forbidden mod in closure: %s" % f)
+    for frag in tier.get("forbid_substr", ()):
+        hit = [p for p in pids if frag.lower() in p]
+        if hit:
+            out.append("forbidden mod in closure (matches %r): %s" % (frag, hit))
+    if tier.get("dlc"):
+        miss = [d for d in DLC_IDS if d not in pids]
+        if miss:
+            out.append("DLC missing from the resolved list: %s" % miss)
+    return out
+
+
 def write_config(pids, version_from):
     tree = ET.parse(version_from)
     root = tree.getroot()
@@ -689,21 +803,17 @@ def main():
         ap.error("give --tier, --list or --restore")
 
     t = TIERS[a.tier]
-    want = list(t["want"])
-    if t["dlc"]:
-        want += [p for p in installed if p.startswith("ludeon.rimworld")]
-    else:
-        want += [CORE]
-    want += [HARMONY]
-
-    pids, missing = close_over(want, installed)
-    ordered = order(pids, installed)
+    ordered, missing, refusals = resolve_tier(a.tier, installed)
 
     print("\ntier '%s': %s\n" % (a.tier, t["why"]))
     for i, pid in enumerate(ordered, 1):
         print("  %3d  %-44s %s" % (i, pid, installed[pid]["name"][:40]))
     if missing:
         print("\n  ! NOT INSTALLED (tier is incomplete): %s" % missing)
+        return 1
+    if refusals:
+        for r in refusals:
+            print("\n  REFUSING tier '%s': %s" % (a.tier, r))
         return 1
     full_n = full_mod_count()
     print("\n  %d mods%s." % (len(ordered),

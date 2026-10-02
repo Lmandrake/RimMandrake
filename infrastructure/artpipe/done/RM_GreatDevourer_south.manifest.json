@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 111.38998823499423,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 113.3759983954159,
+  "derive_from_palette_distance": 15.163594487361792,
+  "elapsed_s": 111.38998823499423,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_GreatDevourer_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T20-57-58-01a0f076-480e-7d91-9eaf-388ba6edc4a8.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T20-51-14-01a0f070-1cfe-7523-ae20-3849be6f307d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_GreatDevourer_south",
+    "note": "Derived a true south-facing frontal view from the accepted east master, preserving the bone-plate-and-bruise palette, painterly style, scale, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_GreatDevourer_south\\RM_GreatDevourer_south.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_GreatDevourer_south/RM_GreatDevourer_south.png\n    512x512  rgba  380,639 bytes  (105s)\n"
+}

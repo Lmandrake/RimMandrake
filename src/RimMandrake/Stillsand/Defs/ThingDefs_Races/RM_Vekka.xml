@@ -135,6 +135,16 @@
     <tradeTags>
       <li>AnimalFighter</li>
     </tradeTags>
+    <!-- STILLSAND_SAND_SWIM_KIT_1: swims under loose sand (submerge, wake, rumble, breach,
+         take funnel + letter). The kit adds its own comp; this extension is the whole wiring. -->
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandSwimExtension">
+        <submergedHediff>RM_SandSubmerged</submergedHediff>
+        <swimmerMarkerHediff>RM_SandSwimmer</swimmerMarkerHediff>
+        <takeFilth>RM_Filth_DisturbedSand</takeFilth>
+        <dragFilth>RM_Filth_DragMark</dragFilth>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -147,7 +157,6 @@
       <li>
         <label>vekka cub</label>
         <bodyGraphicData>
-          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
           <texPath>Things/Pawn/Animal/RM_Vekka/RM_Vekka</texPath>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>

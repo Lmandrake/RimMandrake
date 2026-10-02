@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "drawsize": 0.8,
+  "facing": null,
+  "facings": [],
+  "id": "RUT_Mindstone",
+  "priority": 50,
+  "prompt": "RimWorld item sprite seen from above: the mindstone, a fist-sized crystal unlike lanternstone, smooth and rounded like a river pebble yet clearly crystal, with a perfectly steady pale light deep inside it that does not flicker, faintly unsettling. A single item on its own.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; crystal life: crystals AS creatures, never an animal studded with crystals; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is MILK-OPAL AND STEADY GOLD: milky opal-white crystal with one steady pale gold point of light inside top-down view, no figures, no ground shadow."
+}

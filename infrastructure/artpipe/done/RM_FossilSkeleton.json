@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:01Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FossilSkeleton",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: an articulated fossil skeleton, a rarer slab of canyon-wall stone holding a whole small animal in the rock \u2014 a complete articulated skeleton of a small alien creature curled in death position, bones mineral-dark against pale stone, every joint in place, red-brown strata lines running through the slab. It reads as a museum piece pulled whole from the wall. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the rare fossil tier (articulated skeletons); the read is a complete curled alien skeleton articulated in pale stone; cracked lands register: pale sedimentary grey-white, mineral-dark bone, red-brown strata lines, no green, hard dry light; realistic painted natural-history illustration, grounded believable alien osteology, matte stone texture, never cartoonish, no outlines"
+}

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:00:29Z",
+  "derive_from": "RM_Orruhmu_b_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Orruhmu_b_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the orruhmu, a squat urn-shaped bellows creature disguised as a salt dome \u2014 a low rounded mantle armoured in knobbly white salt crust, cauliflower-textured and slightly chipped and clouded, over soft grey flesh just visible at the seams, a ring of short stubby pads beneath, and a small puckered pale spout at the crown. It should read as a mineral formation first and an animal second. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "GREYSEA_RULED_CONTENT_1",
+  "style_notes": "pool-shore sentinel, bs~0.6; the read is a salt dome that is secretly breathing; grey-on-grey murk register: bone and salt whites over grey flesh, dim directionless grey-green gloom, no glow, no luminance, crust marred and never perfect; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; owner: the crown spout/mouth must be INVISIBLE from behind; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the head and body"
+}

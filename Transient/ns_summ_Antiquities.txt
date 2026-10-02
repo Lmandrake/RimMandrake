@@ -1,0 +1,3 @@
+reading_completes_and_advances_research v=UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   ordered_reading_job_catalogues_and_adds_progress UNMEASURED: harness: BudgetExceeded: tick budget exceeded in scope 'request': spent 95000 of cap 60000 (step(95000) exceeds remaining())
+no_more_reading_once_all_stages_done v=PASS bland=True sweeps=2 ticks=600 surprises=0 aborted=[]

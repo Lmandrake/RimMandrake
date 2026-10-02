@@ -1,0 +1,266 @@
+{
+ "name": "Droidworks__power_state_machine__fire_on_map__t601__001",
+ "when_utc": "2026-10-02T00:03:21Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "13 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 163,
+      "z": 30
+     },
+     {
+      "x": 164,
+      "z": 30
+     },
+     {
+      "x": 163,
+      "z": 31
+     },
+     {
+      "x": 163,
+      "z": 29
+     },
+     {
+      "x": 239,
+      "z": 43
+     },
+     {
+      "x": 187,
+      "z": 186
+     },
+     {
+      "x": 188,
+      "z": 186
+     },
+     {
+      "x": 187,
+      "z": 185
+     },
+     {
+      "x": 164,
+      "z": 31
+     },
+     {
+      "x": 188,
+      "z": 187
+     },
+     {
+      "x": 188,
+      "z": 185
+     },
+     {
+      "x": 186,
+      "z": 187
+     },
+     {
+      "x": 186,
+      "z": 185
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    163,
+    30
+   ],
+   "fingerprint": "fire_on_map:13"
+  }
+ ],
+ "snapshot": {
+  "tick": 601,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Requiem of Torment opportunity for William",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Requiem of Torment opportunity for William",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: William",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: William",
+     1
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 4,
+   "adaptDays": -30.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 601
+  },
+  "fires": 13,
+  "conditions": []
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser8263"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] ARM RM_OpenPit_Bare covered=True coverTier=WovenScrap triggerMassKg=40.0"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare25480 pos=(125, 0, 125) size=(1, 1) covered=True coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STANDING_COUNT=0 SUMMED_MASS=0.00 THR"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare covered=False sprung=True"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare25480 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=True occupants=1 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STANDING_COUNT=0 SUMMED_MASS=0.00 THR"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] STRUGGLE RM_OpenPit_Bare occupantsBefore=1 occupantsAfter=0"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] ARM RM_OpenPit_Bare covered=True coverTier=WovenScrap triggerMassKg=40.0"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] UNCOVER RM_OpenPit_Bare covered=False coverTier=None"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare25491 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=None triggerMassKg=340282300000000000000000000000000000000.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STAND"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] created Test place at tile 74814,0 for Seia, archetype RM_InhabitedPlace_Scrapyard."
+  ],
+  [
+   "Warning",
+   "Tried to directly add implied pawn relation Sibling, pawn=Mikio, otherPawn=Terry"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] roster of Test place now holds 3."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] ROSTER REPORT  Test place -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\InhabitedReports\\roster_reports.txt"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] moved 3 into the pool; roster now 0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] drew 3; pool now 0.\r\n  Human25492  Mikio Miura  age=54y (197779229 ticks)  relations=0  hediffs=4  traits=2  dead=False  faction=Seia\r\n  Human25499  Aleksi 'Kepe' Vanttinen  age=26y (94773030 ticks)  relations=0  hediffs=1  traits=3  dead=False  faction=Seia\r\n  Human25506  Es"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] a place already exists at tile 74814,0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.Inhabited] Test place holds no goods. Its archetype is RM_InhabitedPlace_Scrapyard; check its larder table."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 601,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1350,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 601,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Droidworks",
+  "chain": "power_state_machine",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T170318\\Droidworks__power_state_machine__fire_on_map__t601__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3470928,
+  "width": 1810,
+  "height": 1183,
+  "md5": "1be227b449467bf68ac0311273bc8864",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GlassChain_Recipes.xml               RimMandrake — STILLSAND_GLASS_LENS_CHAIN_1 §3, §4, §6
+
+  Plain glass sand makes plain sun glass; fine sand makes lens-grade glass (owner ruling
+  2026-09-30). The fulgurite melt is in Patches/RM_GlassChain_Fulgurite.xml, because the
+  fulgurite is the Pyrelands' def and an ingredient naming an absent def NREs the recipe
+  generator.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_MeltSunGlass</defName>
+    <label>melt sun glass</label>
+    <description>Melt glass sand into plain sun glass in focused sunlight.</description>
+    <jobString>Melting sun glass.</jobString>
+    <workAmount>900</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Smelt</effectWorking>
+    <soundWorking>Recipe_Smelt</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.25</workSkillLearnFactor>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_GlassSand</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_GlassSand</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_SunGlass>10</RM_SunGlass>
+    </products>
+    <recipeUsers>
+      <li>RM_SunFurnace</li>
+      <li>RM_SolarOvenCrest</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_MeltLensGlass</defName>
+    <label>melt lens glass</label>
+    <description>Melt fine sand into clear lens glass in focused sunlight.</description>
+    <jobString>Melting lens glass.</jobString>
+    <workAmount>1400</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Smelt</effectWorking>
+    <soundWorking>Recipe_Smelt</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <workSkillLearnFactor>0.25</workSkillLearnFactor>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_FineSand</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_FineSand</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_LensGlass>5</RM_LensGlass>
+    </products>
+    <recipeUsers>
+      <li>RM_SunFurnace</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_GrindPrecisionLens</defName>
+    <label>grind precision lens</label>
+    <description>Grind and polish lens glass into a precision lens.</description>
+    <jobString>Grinding a precision lens.</jobString>
+    <workAmount>3000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_LensGlass</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_LensGlass</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PrecisionLens>1</RM_PrecisionLens>
+    </products>
+    <recipeUsers>
+      <li>RM_LensBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_GrindPearlLens</defName>
+    <label>grind pearl lens</label>
+    <description>Grind a glass pearl into a lens, seated in lens glass.</description>
+    <jobString>Grinding a pearl lens.</jobString>
+    <workAmount>4500</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>CutStone</effectWorking>
+    <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <skillRequirements>
+      <Crafting>8</Crafting>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_GlassPearl</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_LensGlass</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_GlassPearl</li>
+        <li>RM_LensGlass</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_PearlLens>1</RM_PearlLens>
+    </products>
+    <recipeUsers>
+      <li>RM_LensBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

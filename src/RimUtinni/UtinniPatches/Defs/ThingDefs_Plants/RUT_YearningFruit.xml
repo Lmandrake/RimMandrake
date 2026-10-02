@@ -23,7 +23,7 @@
   Mechanism, same "ships now, hooks later" posture RUT_BloomCrop (wave 10)
   and RUT_VaultRoot/RUT_DosimeterLawn (this wave) used: the "digests fast /
   hunger returns" half ships for real today via ordinary vanilla stats
-  (HungerRateMultiplier + a temporary MoveSpeed factor for "a brief
+  (hungerRateFactor + a temporary MoveSpeed factor for "a brief
   waddle") on the hediff below — ingredients this codebase already has, no
   new C# needed for that half. The "passes seed quickly, filth follows, the
   ground sprouts" half is the same shape as RUT_VorrelBrood's own

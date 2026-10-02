@@ -1,0 +1,87 @@
+All C# features should expose real Mod Settings: enable toggle, intensity/frequency, warning time, audio volume, and performance density where relevant.
+
+1. **Floatstone Keelwork** — Turn the Forge’s signature material into the planet’s premier gravship construction resource.
+
+The player sees pearl-white, spun-sugar braces threaded through the ship and hears a glassy resonance during launch. Floatstone structural parts reduce gravship launch cost or increase effective payload, making every harvested garden strategically meaningful.
+
+- **Marks:** Gravship touch, Unique resources, Discoverable technology
+- **Build:** `ThingDef` for a floatstone keel brace; Harmony hook into Odyssey’s gravship mass/launch-cost calculation; inspect string showing saved mass. **Small C# + XML**
+- **Why Forge:** Only the fire–water quench cycle creates material strong enough to brace a ship while weighing almost nothing.
+
+2. **The Four Voices of the Forge** — Give every phase of the cycle its own audible identity and warning language.
+
+Still heat has a subterranean turbine-like throb; gas washes approach with coughing vents; boiling rain becomes a deafening hiss; cooling basalt ticks and sings like glass. Before remelting, the harmony drops out and a deep cracking pulse begins. Muted players receive matching visual alerts.
+
+- **Marks:** Soundscape, Unique mechanic, Interesting weather
+- **Build:** Layered `SoundDef` sustainers selected by the cycle MapComponent, positional geyser one-shots, tower harmonics, phase-transition stingers, accessible alert/letter fallback. **Small C# + audio/XML**
+- **Why Forge:** This is a working mountain whose weather behaves like a vast industrial process, not ambient wilderness.
+
+3. **Spunstone Bonding** — Make Floatstone construction knowledge something learned in the Forge rather than granted at a research bench.
+
+Studying mature gardens and foundry salvage reveals how their tangled fibers distribute strain. Several completed studies trigger a breakthrough and expose a hidden research project unlocking Floatstone keel braces, high-speed doors, and advanced structural components. This is explicitly material science, not another vent machine.
+
+- **Marks:** Discoverable technology, Unique resources, Gravship touch
+- **Build:** `CompStudiable` on gardens/caches, a knowledge counter, hidden `ResearchProjectDef`, and an unlock letter with examined samples listed. **Small C# + XML**
+- **Why Forge:** The technique can travel, but its only natural teacher is Floatstone growing over temporarily quenched lava.
+
+4. **The Anvil Answer** — Let the mountain occasionally produce an unmistakable but theologically ambiguous omen.
+
+At the height of a quench, steam and doubled light cast an immense hammer-like shadow across the map. Sh’kaar’s faithful call it a blessing; tribal witnesses call it proof that fire displays itself but cannot be possessed. Pawns may watch, dismiss, or record it, gaining different memories without the game declaring either belief correct.
+
+- **Marks:** Relationship to the gods, Interesting weather
+- **Build:** Rare phase-bound `IncidentDef`, large moving shadow/fleck, temporary watch job, several `ThoughtDef`s selected by belief or background tags. **Small C# + XML**
+- **Why Forge:** Only the planet’s “unstolen fire” can make both religions feel vindicated by the same event.
+
+5. **Quench Crossings** — Make the temporary basalt and pumice phase radically alter map traversal.
+
+Lava channels vanish beneath steaming shingle, opening shortcuts to isolated shelves, tower doors, carcasses, and ripe Floatstone. Later, glowing cracks spread along those routes, accompanied by evacuation alerts; pawns caught beyond them must race back before the crossings melt.
+
+- **Marks:** Unique mechanic, Interesting weather, Unique resources
+- **Build:** Phase-driven terrain replacement with original-terrain snapshots, reachability checks, crack propagation, countdown overlays, and safe handling for stranded pawns. **Large C#**
+- **Why Forge:** Fire and water literally redraw this biome’s usable map; no other biome should periodically open and close its geography this way.
+
+6. **The Last Lift** — Make unharvested Floatstone Gardens visibly escape instead of simply being deleted.
+
+Ripe globes begin tugging at their roots, shedding bright threads and casting moving shadows. Before remelting, they tear free, rise as genuine airborne objects, drift toward the map edge, and leave with a named message and lingering opal trail.
+
+- **Marks:** Unique resources, Unique mechanic, Interesting weather
+- **Build:** Garden ripeness comp, airborne `ThingWithComps`/flyer state, shadow and flecks, edge departure letter, configurable grace period. **Small C#**
+- **Why Forge:** Floatstone is the single strange growth admitted for the cycle; its impossible lightness deserves a memorable conclusion.
+
+7. **Sky Pastures** — Turn the existing vapor-column field into visible, inhabited aerial terrain.
+
+Steam columns bend ash upward in spirals. Aerofleets, beldons, fleet fliers, and the newly admitted giants congregate there; jossurs circle above and make real flying stoops on prey. Selecting a flier highlights the useful columns without covering the map in permanent overlays.
+
+- **Marks:** Surprising creatures, Unique mechanic, Soundscape
+- **Build:** Render the existing column grid, add column-aware wander and hunting roots, wire `RM_CompVaporDrifter`, and give jossurs proper RimWorld 1.6 flight rather than walking attacks. **Small–medium C#**
+- **Why Forge:** Its “pasture” is vertical—herds graze the smoke while predators own the updrafts.
+
+8. **Dhokkur Ways** — Give the giant’s ancient walking routes readable history and consequences.
+
+Dormant dhokkur resemble outcrops, but converging gutter lines and worn depressions reveal them. When rain begins, stone groans, water pours through their plates, and they follow old glass-polished tracks. Tracks let careful players site walls safely; careless construction gets shoved aside rather than arbitrarily annihilated.
+
+- **Marks:** GIANT beast, Surprising creatures, Soundscape
+- **Build:** Dormant graphic swap, phase-triggered wake comp, lightweight path-memory MapComponent, marked trail terrain, shove/damage rules, inspection clues. **Medium C# + XML**
+- **Why Forge:** The biome’s largest “landform” wakes only when its lethal rain becomes feeding weather.
+
+9. **The Dhuvvox Clock** — Make the flash swarm a precise, legible timer for the harvest window.
+
+Nodules click open after rain, and ember-flecked swarms race across wet rock. Their movement and sound slow during the final quarter-hour. At expiry, every surviving creature visibly curls into a persistent nodule; none simply disappears.
+
+- **Marks:** Surprising creatures, Unique mechanic, Soundscape
+- **Build:** Phase spawning from nodule Things, timed behavior states, swarm aggregation for performance, resealing animation and Thing conversion, countdown inspect strings. **Medium C#**
+- **Why Forge:** These animals do not merely survive the cycle—they are its living clock.
+
+10. **White Plume Fronts** — Make quenching steam a moving tactical weather feature rather than background decoration.
+
+Towering white plumes roll outward from newly crusted vents, briefly obscuring shooters, soaking the ground, and filling exposed pawns’ heatstroke faster. Creatures adapted to vapor columns navigate normally inside them; silhouettes of flying herds appear and vanish overhead.
+
+- **Marks:** Interesting weather, Unique mechanic, Surprising creatures
+- **Build:** Phase-bound gas or cell-front simulation, expanding flecks, ranged-accuracy modifier, vanilla heatstroke application, AI avoidance and adapted-species exemption. **Medium C#**
+- **Why Forge:** These are the visible collision fronts between open lava and torrential water—the biome’s central thesis made tactical.
+
+## Top 3
+
+1. **Quench Crossings** — It turns the ruled cycle into map-changing play rather than a sequence of visual effects.
+2. **The Four Voices of the Forge** — It fills the clearest missing mark while making every dangerous transition readable.
+3. **Floatstone Keelwork** — It joins the unique resource, discoverable technology, and gravship campaign into one valuable Forge-only reason to return.

@@ -55,7 +55,9 @@ namespace RimMandrake.FloodedCanyon
         private RM_MapComponent_Excavation Excavation =>
             excavationInt ?? (excavationInt = map.GetComponent<RM_MapComponent_Excavation>());
 
-        private enum Phase : byte { Dry, Warned, Flooding }
+        // Herald is appended LAST so a save written before it (bytes 0-2)
+        // still reads back as the same phase.
+        private enum Phase : byte { Dry, Warned, Flooding, Herald }
 
         private Phase phase = Phase.Dry;
 
@@ -69,6 +71,18 @@ namespace RimMandrake.FloodedCanyon
 
         // Next chime stage to ring while Warned (RingChime staging).
         private int chimeStage;
+
+        // CRACKEDLANDS_GPT_ENRICHMENT_1 §2 — five beats before water. Beats
+        // 1-3 (slot wind, ticking pans, tarruq hush) ring in the Herald
+        // window before the chimes; heraldBeat is the next one due.
+        private int heraldBeat;
+
+        // Where this cycle's water will arrive, chosen when the warning
+        // starts so the chimes can toll from the far canyon toward it and the
+        // roar can sit on it. Invalid = choose at StartFlood (debug path).
+        private IntVec3 pendingSeed = IntVec3.Invalid;
+        private IntVec3 roarCell = IntVec3.Invalid;
+        private Sustainer roar;
 
         // Cells this cycle's flood is currently standing on, to convert
         // back to soil at recede time (only if still ours — see header).
@@ -90,6 +104,12 @@ namespace RimMandrake.FloodedCanyon
         // Read by RM_CompPanSleeper: a muttavaq never digs in while the
         // wall is standing.
         public bool IsFlooding => phase == Phase.Flooding;
+
+        // Read by RM_TarruqHushPatch: from beat 3 until the water recedes,
+        // the tarruq do not call.
+        public bool TarruqSilenced =>
+            Active && RM_FloodedCanyonSettings.fiveBeatsEnabled
+            && ((phase == Phase.Herald && heraldBeat > 3) || phase == Phase.Warned || phase == Phase.Flooding);
 
         private bool Active =>
             RM_FloodedCanyonSettings.floodCycleEnabled
@@ -128,13 +148,15 @@ namespace RimMandrake.FloodedCanyon
             return string.Format(
                 "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
                 + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8} "
-                + "chimeStage={9} lastRecedeTick={10} peakstormPulled={11} weather={12}",
+                + "chimeStage={9} lastRecedeTick={10} peakstormConsidered={11} weather={12} "
+                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16}",
                 phase, nextFloodTick, floodEndTick, Find.TickManager.TicksGame,
                 activeFloodCells.Count, raisedFillCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
                 RM_ExplosiveGrowthBridge.Available ? "present" : "ABSENT (flood soaks nothing)",
                 chimeStage, lastRecedeTick, peakstormPulledThisCycle,
-                map.weatherManager.curWeather?.defName ?? "null");
+                map.weatherManager.curWeather?.defName ?? "null",
+                heraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced);
         }
 
         public override void FinalizeInit()
@@ -167,11 +189,41 @@ namespace RimMandrake.FloodedCanyon
                     {
                         MaybeFollowPeakstorm(now);
                     }
+                    if (RM_FloodedCanyonSettings.fiveBeatsEnabled
+                        && now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours) - HoursToTicks(RM_FloodedCanyonSettings.heraldLeadHours))
+                    {
+                        ChooseSeed();
+                        heraldBeat = 1;
+                        phase = Phase.Herald;
+                        break;
+                    }
                     if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
                     {
-                        RingChime(0);
-                        chimeStage = 1;
-                        phase = Phase.Warned;
+                        EnterWarned();
+                    }
+                    break;
+
+                case Phase.Herald:
+                    // Beats 1-3 at the start, two thirds and one third of the
+                    // way through the herald window (TUNED: evenly spaced, so
+                    // each beat has room to be heard before the next). A loop,
+                    // so a compressed window (debug arm, a late peakstorm
+                    // pull) still plays every beat, in order, before the chime.
+                    while (heraldBeat <= 3)
+                    {
+                        int heraldTicks = HoursToTicks(RM_FloodedCanyonSettings.heraldLeadHours);
+                        int chimeAt = nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours);
+                        float frac = 1f - (heraldBeat - 1) / 3f;
+                        if (now < chimeAt - (int)(heraldTicks * frac))
+                        {
+                            break;
+                        }
+                        PlayHeraldBeat(heraldBeat);
+                        heraldBeat++;
+                    }
+                    if (now >= nextFloodTick - HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours))
+                    {
+                        EnterWarned();
                     }
                     break;
 
@@ -192,6 +244,7 @@ namespace RimMandrake.FloodedCanyon
                     break;
 
                 case Phase.Flooding:
+                    MaintainRoar();
                     if (now >= floodEndTick)
                     {
                         RecedeFlood();
@@ -235,15 +288,33 @@ namespace RimMandrake.FloodedCanyon
             {
                 return;
             }
-            int pulled = now + Rand.RangeInclusive(30000, 90000);
-            int minTicks = HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours) + 2500;
+            if (nextFloodTick - now <= 60000)
+            {
+                return;
+            }
+            // CRACKEDLANDS_GPT_ENRICHMENT_1 §3: the storm "raises flood odds
+            // without being a perfect timer". One roll per cycle, win or lose
+            // (peakstormPulledThisCycle now means "this cycle's storm has been
+            // considered"), so a storm that stands for hours cannot re-roll
+            // its way to certainty. TUNED: 0.6 — more often than not, never
+            // reliably. The window widens to 0.5-2 days for the same reason.
+            peakstormPulledThisCycle = true;
+            if (!Rand.Chance(PeakstormPullChance))
+            {
+                return;
+            }
+            int pulled = now + Rand.RangeInclusive(30000, 120000);
+            int minTicks = HoursToTicks(RM_FloodedCanyonSettings.chimeLeadTimeHours)
+                + (RM_FloodedCanyonSettings.fiveBeatsEnabled ? HoursToTicks(RM_FloodedCanyonSettings.heraldLeadHours) : 0)
+                + 2500;
             pulled = System.Math.Max(pulled, now + minTicks);
-            if (nextFloodTick - now > 60000 && pulled < nextFloodTick)
+            if (pulled < nextFloodTick)
             {
                 nextFloodTick = pulled;
-                peakstormPulledThisCycle = true;
             }
         }
+
+        private const float PeakstormPullChance = 0.6f;
 
         private void ScheduleNextFlood()
         {
@@ -265,6 +336,126 @@ namespace RimMandrake.FloodedCanyon
             "The nearest chimes are ringing — the water is almost here. Get off the canyon floor.",
         };
 
+        private void EnterWarned()
+        {
+            if (!pendingSeed.IsValid)
+            {
+                ChooseSeed();
+            }
+            RingChime(0);
+            chimeStage = 1;
+            phase = Phase.Warned;
+        }
+
+        private void ChooseSeed()
+        {
+            pendingSeed = CellFinderLoose.TryGetRandomCellWith(Eligible, map, 2000, out IntVec3 seed) ? seed : IntVec3.Invalid;
+        }
+
+        // Beats 1-3. Vanilla clips retinted in Defs/SoundDefs/RM_CanyonBeats.xml
+        // stand in until the bespoke audio lands (CRACKEDLANDS_FIVE_BEATS_AUDIO_1).
+        private void PlayHeraldBeat(int beat)
+        {
+            switch (beat)
+            {
+                case 1:
+                    Messages.Message("Wind is threading the slot canyons, cool and smelling of wet clay.",
+                        new TargetInfo(map.Center, map), MessageTypeDefOf.NeutralEvent);
+                    RM_FloodedCanyonDefOf.RM_CanyonBeat_SlotWind?.PlayOneShotOnCamera(map);
+                    break;
+                case 2:
+                    int ticked = 0;
+                    IntVec3 first = IntVec3.Invalid;
+                    IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+                    for (int i = 0; i < pawns.Count && ticked < MaxTickingSleepers; i++)
+                    {
+                        Pawn p = pawns[i];
+                        CompCanBeDormant d = p.RaceProps.Animal ? p.TryGetComp<CompCanBeDormant>() : null;
+                        if (d != null && !d.Awake)
+                        {
+                            RM_FloodedCanyonDefOf.RM_CanyonBeat_PanTick?.PlayOneShot(SoundInfo.InMap(new TargetInfo(p.Position, map)));
+                            if (!first.IsValid) first = p.Position;
+                            ticked++;
+                        }
+                    }
+                    Messages.Message(ticked > 0
+                            ? "The sleeper pans have started ticking."
+                            : "The dry flats have started ticking.",
+                        new TargetInfo(first.IsValid ? first : map.Center, map), MessageTypeDefOf.NeutralEvent);
+                    break;
+                case 3:
+                    Messages.Message("The tarruq have gone silent in the cracks.",
+                        new TargetInfo(map.Center, map), MessageTypeDefOf.NeutralEvent);
+                    break;
+            }
+        }
+
+        // TUNED: at most this many pans tick audibly — a chorus, not a
+        // per-pawn sound spike on a sleeper-dense map.
+        private const int MaxTickingSleepers = 8;
+
+        // The chime for stage k tolls from a point on the line running from
+        // the map corner farthest from where the water will arrive toward
+        // that arrival point: far, then nearer, then nearest. Until the map
+        // carries physical chime-line anchors (CRACKEDLANDS_LEDGES_OF_MERCY_1)
+        // these are positions, not things.
+        private static readonly float[] ChimeLinePositions = { 0f, 0.5f, 0.85f };
+
+        private IntVec3 ChimeCell(int stage)
+        {
+            if (!pendingSeed.IsValid)
+            {
+                return map.Center;
+            }
+            IntVec3 far = FarCornerFrom(pendingSeed);
+            float f = ChimeLinePositions[UnityEngine.Mathf.Clamp(stage, 0, ChimeLinePositions.Length - 1)];
+            IntVec3 c = new IntVec3(
+                UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Lerp(far.x, pendingSeed.x, f)), 0,
+                UnityEngine.Mathf.RoundToInt(UnityEngine.Mathf.Lerp(far.z, pendingSeed.z, f)));
+            return c.ClampInsideMap(map);
+        }
+
+        private IntVec3 FarCornerFrom(IntVec3 seed)
+        {
+            int maxX = map.Size.x - 1;
+            int maxZ = map.Size.z - 1;
+            IntVec3[] corners = { new IntVec3(0, 0, 0), new IntVec3(maxX, 0, 0), new IntVec3(0, 0, maxZ), new IntVec3(maxX, 0, maxZ) };
+            IntVec3 best = corners[0];
+            for (int i = 1; i < corners.Length; i++)
+            {
+                if ((corners[i] - seed).LengthHorizontalSquared > (best - seed).LengthHorizontalSquared)
+                {
+                    best = corners[i];
+                }
+            }
+            return best;
+        }
+
+        private static SoundDef ChimeSound(int stage)
+        {
+            switch (stage)
+            {
+                case 0: return RM_FloodedCanyonDefOf.RM_CanyonChime_Far;
+                case 1: return RM_FloodedCanyonDefOf.RM_CanyonChime_Mid;
+                default: return RM_FloodedCanyonDefOf.RM_CanyonChime_Near;
+            }
+        }
+
+        // Beat 5: the flood is a continuous roar, sited where the water came in.
+        private void MaintainRoar()
+        {
+            if (!RM_FloodedCanyonSettings.fiveBeatsEnabled || !roarCell.IsValid || RM_FloodedCanyonDefOf.RM_CanyonFlood_Roar == null)
+            {
+                return;
+            }
+            if (roar == null || roar.Ended)
+            {
+                roar = RM_FloodedCanyonDefOf.RM_CanyonFlood_Roar.TrySpawnSustainer(
+                    SoundInfo.InMap(new TargetInfo(roarCell, map), MaintenanceType.PerTick));
+            }
+            roar?.Maintain();
+        }
+
         private void RingChime(int stage)
         {
             // "the water chimes ring... tones rolling up through the stone
@@ -274,17 +465,29 @@ namespace RimMandrake.FloodedCanyon
             // stage reuses the vanilla TinyBell cue — the staging, messages
             // and timing are the mechanism, the tone per stage is the art.
             stage = UnityEngine.Mathf.Clamp(stage, 0, ChimeStageMessages.Length - 1);
+            IntVec3 at = RM_FloodedCanyonSettings.fiveBeatsEnabled ? ChimeCell(stage) : map.Center;
             Messages.Message(
                 ChimeStageMessages[stage],
-                new TargetInfo(map.Center, map),
+                new TargetInfo(at, map),
                 MessageTypeDefOf.ThreatBig);
-            SoundDefOf.TinyBell.PlayOneShotOnCamera(map);
+            SoundDef chime = RM_FloodedCanyonSettings.fiveBeatsEnabled ? ChimeSound(stage) : null;
+            if (chime != null)
+            {
+                chime.PlayOneShot(SoundInfo.InMap(new TargetInfo(at, map)));
+            }
+            else
+            {
+                SoundDefOf.TinyBell.PlayOneShotOnCamera(map);
+            }
         }
 
         private void StartFlood(int now)
         {
             int target = UnityEngine.Mathf.Clamp(map.Area / 20, 40, 400);
-            List<IntVec3> cells = ComputeFloodCells(target);
+            List<IntVec3> cells = ComputeFloodCells(target, pendingSeed);
+            roarCell = cells.Count > 0 ? cells[0] : IntVec3.Invalid;
+            pendingSeed = IntVec3.Invalid;
+            heraldBeat = 0;
 
             int durationTicks = HoursToTicks(RM_FloodedCanyonSettings.floodDurationHours);
             floodEndTick = now + durationTicks;
@@ -367,10 +570,10 @@ namespace RimMandrake.FloodedCanyon
             // The whole wetted footprint (both halves) is the wall line the
             // water scoured; a few natural-rock cells touching it become
             // fresh fossil seams. Taken before the lists are cleared below.
+            List<IntVec3> wetted = new List<IntVec3>(activeFloodCells);
+            wetted.AddRange(raisedFillCells);
             if (RM_FloodedCanyonSettings.floodRecutSeamsEnabled)
             {
-                List<IntVec3> wetted = new List<IntVec3>(activeFloodCells);
-                wetted.AddRange(raisedFillCells);
                 RM_FossilStrata.RecutAlong(map, wetted, RM_FloodedCanyonSettings.floodRecutSeamCount);
             }
 
@@ -408,13 +611,26 @@ namespace RimMandrake.FloodedCanyon
             }
             raisedFillCells.Clear();
             raisedFillPrior.Clear();
+
+            roar?.End();
+            roar = null;
+            roarCell = IntVec3.Invalid;
+
+            // CRACKEDLANDS_GPT_ENRICHMENT_1 §5/§6: the irqit carpet, the
+            // migrant sky and the floodline salvage. After the soil
+            // conversion, so they land on the ground the recede left.
+            map.GetComponent<RM_MapComponent_RecedeAftermath>()?.OnRecede(wetted);
         }
 
-        private List<IntVec3> ComputeFloodCells(int target)
+        private List<IntVec3> ComputeFloodCells(int target, IntVec3 preferredSeed)
         {
             List<IntVec3> result = new List<IntVec3>();
 
-            if (!CellFinderLoose.TryGetRandomCellWith(Eligible, map, 2000, out IntVec3 seed))
+            // The seed chosen when the warning began, if the ground there is
+            // still floodable; otherwise a fresh one, as before.
+            IntVec3 seed = preferredSeed;
+            if ((!seed.IsValid || !Eligible(seed))
+                && !CellFinderLoose.TryGetRandomCellWith(Eligible, map, 2000, out seed))
             {
                 return result;
             }
@@ -503,6 +719,9 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref lastRecedeTick, "lastRecedeTick", -1);
             Scribe_Values.Look(ref chimeStage, "chimeStage", 0);
             Scribe_Values.Look(ref peakstormPulledThisCycle, "peakstormPulledThisCycle", false);
+            Scribe_Values.Look(ref heraldBeat, "heraldBeat", 0);
+            Scribe_Values.Look(ref pendingSeed, "pendingSeed", IntVec3.Invalid);
+            Scribe_Values.Look(ref roarCell, "roarCell", IntVec3.Invalid);
             Scribe_Collections.Look(ref activeFloodCells, "activeFloodCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillCells, "raisedFillCells", LookMode.Value);
             Scribe_Collections.Look(ref raisedFillPrior, "raisedFillPrior", LookMode.Value);

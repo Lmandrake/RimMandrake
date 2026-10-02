@@ -106,12 +106,12 @@
       </li>
     </diseases>
     <terrainsByFertility>
-      <li>
+      <li MayRequire="Mlie.AdvancedBiomes">
         <terrain>VolcanoSoil</terrain>
         <min>-999</min>
         <max>0.5</max>
       </li>
-      <li>
+      <li MayRequire="Mlie.AdvancedBiomes">
         <terrain>WastelandAsphalt</terrain>
         <min>0.5</min>
         <max>999</max>
@@ -177,8 +177,8 @@
          (Defs/ThingDefs_Plants/RUT_PollutedFlora.xml) and so needs no guard either —
          same as its unguarded row in RUT_Scarlands.xml. -->
     <wildPlants>
-      <RG_Plant_ToxiGrass>1.2</RG_Plant_ToxiGrass>  <!-- toxigrass -->
-      <RG_Plant_TallToxiGrass>0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
+      <RG_Plant_ToxiGrass MayRequire="ReGrowth.BOTR.Core">1.2</RG_Plant_ToxiGrass>  <!-- toxigrass -->
+      <RG_Plant_TallToxiGrass MayRequire="ReGrowth.BOTR.Core">0.8</RG_Plant_TallToxiGrass>  <!-- tall toxigrass -->
       <Plant_GrayGrass>0.35</Plant_GrayGrass>  <!-- gray grass -->
       <RUT_ScorchedStars>0.3</RUT_ScorchedStars>  <!-- scorched stars -->
       <AB_WeepingToxberry>0.2</AB_WeepingToxberry>  <!-- weeping toxberry - tree -->
@@ -187,7 +187,7 @@
       <AB_ToxiBulb>0.1</AB_ToxiBulb>  <!-- toxibulb -->
       <Plant_TreePolux>0.1</Plant_TreePolux>  <!-- polux tree - tree -->
       <RUT_VaultRoot>0.08</RUT_VaultRoot>  <!-- vault-root tree - COMMISSION_LEDGER_CLEANUP_1 wave 11, sequestration tree; ships as a plain wood-yield tree now, "vault ore" mining mechanic deferred to the same dose/geiger layer scope -->
-      <VRE_PoluxBush>0.08</VRE_PoluxBush>  <!-- polux bush -->
+      <VRE_PoluxBush MayRequire="vanillaracesexpanded.phytokin">0.08</VRE_PoluxBush>  <!-- polux bush -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

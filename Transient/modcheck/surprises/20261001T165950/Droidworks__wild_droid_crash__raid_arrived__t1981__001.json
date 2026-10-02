@@ -1,0 +1,337 @@
+{
+ "name": "Droidworks__wild_droid_crash__raid_arrived__t1981__001",
+ "when_utc": "2026-10-02T00:00:11Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): Wild droid; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      1921,
+      "Wild droid"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@1921"
+  }
+ ],
+ "snapshot": {
+  "tick": 1981,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Nudity opportunity for Feeb",
+    "arrivalTick": 601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Nudity opportunity for Feeb",
+     601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Feeb",
+    "arrivalTick": 601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Feeb",
+     601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Nudity opportunity for Schnook",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Nudity opportunity for Schnook",
+     1921
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Schnook",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Schnook",
+     1921
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Nudity opportunity for Lover",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Nudity opportunity for Lover",
+     1921
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lover",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lover",
+     1921
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Nudity opportunity for Sanchez",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Nudity opportunity for Sanchez",
+     1921
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sanchez",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sanchez",
+     1921
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Nudity opportunity for Panda",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Nudity opportunity for Panda",
+     1921
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Panda",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Panda",
+     1921
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Nudity opportunity for Engie",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Nudity opportunity for Engie",
+     1921
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Engie",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Engie",
+     1921
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Wild droid",
+    "arrivalTick": 1921,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Wild droid",
+     1921
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1981
+  },
+  "fires": 0,
+  "conditions": []
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=30603"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=30604"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=30607"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=30608"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=30608"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=0 elapsedMs=30611"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=39 elapsedMs=30651"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=535 elapsedMs=30651"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=40 elapsedMs=30652"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 8574507562e34b139aa2016e3da84223"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 354 tools, build 89dd1414426b"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 26/ed7a854f, toolSet 4e0b93e6, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ],
+  [
+   "Error",
+   "Vas started 10 jobs in one tick. newJob=Insult (Job_269) A = Thing_Human696 jobGiver=RimWorld.JobGiver_InsultingSpree jobList=(Insult (Job_259) A = Thing_Human696) (Insult (Job_260) A = Thing_Human696) (Insult (Job_261) A = Thing_Human696) (Insult (Job_262) A = Thing_Human696) (Insult (Job_263) A = "
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser8263"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957120,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 60,
+  "overhead_spent": 0,
+  "total_spent": 60,
+  "epoch": 0,
+  "last_seen_tick": 1981,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1921,
+    "tick_to": 1981,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "Droidworks",
+  "chain": "wild_droid_crash",
+  "policy": "abort"
+ },
+ "png": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\Droidworks__wild_droid_crash__raid_arrived__t1981__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3161152,
+  "width": 1810,
+  "height": 1183,
+  "md5": "465578a3448888df22eebe70a1b28c67",
+  "why": ""
+ },
+ "notes": []
+}

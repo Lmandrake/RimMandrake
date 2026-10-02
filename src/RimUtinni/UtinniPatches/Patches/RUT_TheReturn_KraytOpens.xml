@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_RETURN_RITUAL_1 spec 3: "Opens on events, never by clock: after a dune
+  gale, after a krayt kill, or when the debt passes a threshold." This file is the
+  krayt kill: both krayts carry the RM tier's RM_CompProperties_OpensWaterReturn, whose
+  Notify_Killed tells the water ledger (Source/RM_StillsandWater.cs in
+  mandrake.rm.stillsand). It names no faith; the ledger only listens on its own biomes
+  (RUT_SunDebt: RM_Stillsand), so a krayt killed anywhere else opens nothing.
+
+  Both ThingDefs already write a <comps> node (SWBestiary ThingDefs_Races), so this
+  is a plain Add. Guard: PatchOperationFindMod on BOTH mods by their About.xml names
+  (the comp's assembly and the krayts'), never MayRequire on an Operation (CLAUDE.md:
+  inert on a top-level Operation in 1.6).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Baroque Biomes</li>
+    </mods>
+    <match Class="PatchOperationFindMod">
+      <mods>
+        <li>RimMandrake: SW — Bestiary</li>
+      </mods>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="RSW_KraytDragon" or defName="RSW_GreaterKraytDragon"]/comps</xpath>
+        <value>
+          <li Class="RimMandrake.Stillsand.RM_CompProperties_OpensWaterReturn">
+            <reason>a krayt dragon has been killed</reason>
+          </li>
+        </value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>

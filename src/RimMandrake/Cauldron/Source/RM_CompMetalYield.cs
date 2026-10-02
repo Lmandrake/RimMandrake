@@ -58,5 +58,36 @@ namespace RimMandrake.Cauldron
             int n = MetalCountNow();
             if (n > 0) yield return new ThingDefCountClass(Props.metalDef, n);
         }
+
+        // CAULDRON_GPT_ENRICHMENT_1 part 4 (assay forestry): the inspect pane
+        // reads the trunk's value before it is cut. The grade is the EXPECTED
+        // metal count right now (same lerp as MetalCountNow, no rounding)
+        // as a fraction of the full-growth count.
+        // TUNED: tier cut points at 1/3 and 2/3 of the full-growth lode, plus
+        // "lode" only at >= 95% so the top grade means a genuinely old stand.
+        // Unripe trunks (below harvestMinGrowth) read "unripe": they yield nothing.
+        public float ExpectedMetalNow()
+        {
+            if (Props.metalDef == null || !(parent is RimWorld.Plant plant)) return 0f;
+            float min = plant.def.plant.harvestMinGrowth;
+            if (plant.Growth < min) return 0f;
+            float t = Mathf.InverseLerp(min, 1f, plant.Growth);
+            return Mathf.Lerp(Props.countAtMinGrowth, Props.countAtFullGrowth, t)
+                   * RM_CauldronSettings.metalYieldFactor;
+        }
+
+        public override string CompInspectStringExtra()
+        {
+            if (!RM_CauldronSettings.metalYieldEnabled || !RM_CauldronSettings.assayGradeEnabled) return null;
+            if (Props.metalDef == null || !(parent is RimWorld.Plant plant)) return null;
+            if (plant.Growth < plant.def.plant.harvestMinGrowth)
+                return "Assay grade: unripe (no " + Props.metalDef.label + " yet)";
+
+            float expected = ExpectedMetalNow();
+            float full = Props.countAtFullGrowth * RM_CauldronSettings.metalYieldFactor;
+            float frac = full > 0f ? expected / full : 0f;
+            string grade = frac >= 0.95f ? "lode" : frac >= 2f / 3f ? "rich" : frac >= 1f / 3f ? "fair" : "trace";
+            return "Assay grade: " + grade + " (~" + expected.ToString("0.#") + " " + Props.metalDef.label + " if cut now)";
+        }
     }
 }

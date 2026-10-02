@@ -50,10 +50,10 @@
          ban 8). No other already-written text exists for the propane biome, so this
          reuses that description verbatim rather than composing new prose from the
          .md sheet (which DOES carry SSGM content that must never reach a def field).
-      4. AB_RockyCrags ("the Forsaken Crags", 1,135 tiles): donor text invented a
+      4. AB_RockyCrags ("the Abyss", 1,135 tiles): donor text invented a
          rival ancient race ("Forsakens... a mysterious humanoid alien race"),
          corrupting the campaign's one reveal ladder. Fixed below with
-         RUT_ForsakenCrags' description (forsaken_crags.md).
+         RUT_Abyss' description (abyss.md).
 
     THE REST OF THE LIST closes the same findings doc's §B "three mods arguing"
     class — donor descriptions under a campaign label, none individually a plot
@@ -115,7 +115,7 @@
       <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/description</xpath>
       <value><description>A country of obsidian-black stone twisted into shapes no wind carved, drowned in a darkness that behaves like a substance: it fills the air, it pools, it parts without warning into pockets of impossibly clear air, and it closes again. Light is eaten in transit here, not merely absent. The only reliable illumination is biological -- glowing grass, blue darklight gammas, yellow giant flora -- a land lit like a harbor at night, by its own lamps.</description></value>
     </match>
-  </Operation>   <!-- "the Forsaken Crags" [PLOT LEAK 4] - RUT_ForsakenCrags -->
+  </Operation>   <!-- "the Abyss" [PLOT LEAK 4] - RUT_Abyss -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/description</xpath>

@@ -30,10 +30,20 @@ namespace RimMandrake.Pyrelands
         // this engine's own scorchable-sand clone, and plain vanilla Sand —
         // kept generic (no "Pyrelands"/"Ash'karr" reference) because this
         // assembly ships in the RimStarWars-tier mod.
+        // STILLSAND_GLASS_LENS_CHAIN_1 §10(a): vanilla SoftSand and FlowWorks'
+        // RM_DeepSand (the Stillsand's dune ground) join the family.
         private static readonly string[] SandTerrainDefNames =
         {
-            "RM_FE_Ground_Sand", "Sand",
+            "RM_FE_Ground_Sand", "Sand", "SoftSand", "RM_DeepSand",
         };
+
+        // The Pyrelands' own fire-ecology ground. Only strikes here are governed by
+        // the Pyrelands master switch; a strike on any other sand needs only the
+        // fulgurite toggle (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
+        internal static bool IsPyrelandsGround(TerrainDef terrain)
+        {
+            return terrain != null && terrain.defName.StartsWith("RM_FE_");
+        }
 
         // Shipped defaults for the numbers below now live as tunable fields on
         // RM_PyrelandsSettings (MOD_OPTIONS_RETROFIT_1) — read those at the
@@ -112,10 +122,13 @@ namespace RimMandrake.Pyrelands
         {
             try
             {
-                if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.fulguriteEnabled) return;
+                if (!RM_PyrelandsSettings.fulguriteEnabled) return;
                 if (map == null || !strikeLoc.IsValid || !strikeLoc.InBounds(map)) return;
                 TerrainDef terrain = strikeLoc.GetTerrain(map);
                 if (!FireEcologyHookMod.IsSandFamily(terrain)) return;
+                // The master switch governs the Pyrelands' own ground only, so Stillsand
+                // fulgurites do not need the Pyrelands on (STILLSAND_GLASS_LENS_CHAIN_1 §10(b)).
+                if (!RM_PyrelandsSettings.pyrelandsEnabled && FireEcologyHookMod.IsPyrelandsGround(terrain)) return;
                 if (!Rand.Chance(RM_PyrelandsSettings.fulguriteChance)) return;
 
                 ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Fulgurite");

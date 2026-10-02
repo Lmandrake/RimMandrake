@@ -32,9 +32,8 @@
   biome's wildAnimals), so it has no independent tier question: it goes wherever
   RM_Drazzik's egg does.
 
-  ART: no render exists for "drazzik"/"nizzek" (checked artpipe done/_artsrc/
-  registry.jsonl — none found, matching the original RSW_ files' own note).
-  texPath points at each def's own future folder, art pending.
+  ART: own 3-facing renders, Textures/Things/Pawn/Animal/RM_Drazzik and RM_Nizzek
+  (STILLSAND_BEDAZZLE_CONTENT_1). Eggs use RM_EggScaled, copied into this mod.
 -->
 <Defs>
 
@@ -184,7 +183,6 @@
       <li>
         <label>drazzik cub</label>
         <bodyGraphicData>
-          <!-- art pending — STILLSAND_RULED_CONTENT_1 tier move, no render filed yet -->
           <texPath>Things/Pawn/Animal/RM_Drazzik/RM_Drazzik</texPath>
           <drawSize>1.2</drawSize>
         </bodyGraphicData>
@@ -220,7 +218,7 @@
     <description>Heavy for its size and cool to the touch, sloshing faintly when moved — everything a canteen-egg should feel like to a hand that has learned to trust that weight. Do not trust this one. Something is already moving inside, and it did not wait for the mother to leave before it started deciding who counts as prey.</description>
     <possessionCount>1</possessionCount>
     <graphicData>
-      <texPath>swresource/EggScaled</texPath>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
       <color>(232,222,198)</color>
       <drawSize>0.85</drawSize>
     </graphicData>
@@ -247,7 +245,7 @@
     <label>drazzik egg (unfert.)</label>
     <description>Heavy for its size and cool to the touch, sloshing faintly when moved. Nothing is going to hatch out of this one — it is exactly what it feels like, a rigid shell of good water.</description>
     <graphicData>
-      <texPath>swresource/EggScaled</texPath>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
       <color>(232,222,198)</color>
       <drawSize>0.85</drawSize>
     </graphicData>
@@ -337,16 +335,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <!-- TEMP PLACEHOLDER: vanilla Chicken's own body art, tinted (same as the
-               original RSW_Nizzek). -->
-          <texPath>Things/Pawn/Animal/Chicken/Chicken</texPath>
-          <color>(222,214,196)</color>
+          <texPath>Things/Pawn/Animal/RM_Nizzek/RM_Nizzek</texPath>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
-        <dessicatedBodyGraphicData>
-          <texPath>Things/Pawn/Animal/Chicken/Dessicated_Chicken</texPath>
-          <drawSize>0.5</drawSize>
-        </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
   </PawnKindDef>

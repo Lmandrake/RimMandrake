@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:00:29Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_KneelOllim_b",
+  "priority": 70,
+  "prompt": "RimWorld top-down game plant sprite: the kneel ollim, the low shield growth-form of the ollim shade tree \u2014 a swept, wind-aligned open swept bone-white canopy like a low sunshade or awning raised on one windward edge - open beneath, never a closed hood or dome rising from the sand, brilliantly pale and smooth, casting one hard black crescent of shadow, no leaves, no green, no branches.",
+  "reference": null,
+  "rimflow_item_id": "STILLSAND_DESIGN_SITTING_1",
+  "style_notes": "low shield form of the ollim family; the read is the bone-white dome and its hard black shade crescent; eternal noon hard overhead light; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

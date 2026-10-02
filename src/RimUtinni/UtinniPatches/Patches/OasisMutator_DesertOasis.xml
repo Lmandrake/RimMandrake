@@ -58,7 +58,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist</xpath>
       <value>
-        <li>ZBiome_DesertOasis</li>
+        <li MayRequire="zylle.MoreVanillaBiomes">ZBiome_DesertOasis</li>
       </value>
     </match>
   </Operation>
@@ -86,8 +86,8 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/TileMutatorDef[defName="Oasis"]/additionalWildPlants</xpath>
       <value>
-        <TreePalma>3</TreePalma> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
-        <VEE_Plant_DatePalm>2</VEE_Plant_DatePalm> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
+        <TreePalma MayRequire="GRimTerra.Biomesmod">3</TreePalma> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
+        <VEE_Plant_DatePalm MayRequire="VanillaExpanded.VExplorationE">2</VEE_Plant_DatePalm> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
       </value>
     </match>
   </Operation>

@@ -1,0 +1,8 @@
+1.9M	/tmp/rimworld_workshop_defnames.json
+4.4M	/tmp/all_files_ever.txt
+6.9M	/tmp/test
+170M	/tmp/wt_faults
+2.7G	/tmp/wt_queue
+3.2G	/tmp/wt_corr
+3.2G	/tmp/wt_motion
+8.4G	/tmp/claude-1000

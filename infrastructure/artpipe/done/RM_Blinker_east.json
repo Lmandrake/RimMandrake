@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Blinker_east",
+  "priority": 60,
+  "prompt": "RimWorld game animal sprite: the blinker, a hydrocarbon animal of the Lantern Deeps. A prey animal built around one organ. A soft upright teardrop, one cell, about a metre tall, pale blue and a little translucent, and where a face would be a single large lens-window through which the yellow interior fluid shows \u2014 not an eye, a lamp with nothing behind it. Two thin trailing arms it walks on like crutches and a third, shorter, it holds against the lens like a hand over a torch. Its rest state is dim, shuttered by that arm; its alarm state, drawn as a second sprite frame or a mote, is the arm flung wide and the whole body white-blue, the yellow bleached out. House palette, with the flash as a pure overexposed burst.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; hydrocarbon life (owner's own remake brief): pale glowing blue skin, YELLOW hydrocarbon internal fluids (oil, wax, light gas) visible through it, never red blood, never fur, never an Earth animal; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is SOFT LILAC-BLUE AND LAMP YELLOW: lilac-tinged pale blue teardrop, one large clear lens-window of lamp yellow; bs~0.45, drawSize ~1.0. north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}

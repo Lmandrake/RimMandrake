@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:00Z",
+  "derive_from": "RM_Tarruq_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Tarruq_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the tarruq, a lean long-limbed climber of the canyon cracks and seep line \u2014 a wiry vertical-country body with grip-padded feet, a deep resonating throat-chamber swelling below the jaw that carries its long low calls for hundreds of meters down the crack network, large sound-gathering ears, dust-grey hide with moss-green staining at the throat and belly from the seep. It reads as the canyon's voice: built to climb the dark and to call down it. No nameable Earth primate or lizard.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "the crack-network caller at the seep line, bs~0.45, the biome's living second warning; the read is a wiry climber with a swollen resonating throat-chamber, alert and shy; cracked lands register: dust-grey and cracked-clay grey-white, moss green only at throat and belly where the seep stains, red-brown crack shadow, hardest dry-light contrast; realistic painted natural-history illustration, grounded believable anatomy, matte natural hide texture with dust and seep stain, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no throat-chamber visible, only the wiry back, long climbing limbs and grip-padded rear feet"
+}

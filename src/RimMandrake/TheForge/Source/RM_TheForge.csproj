@@ -49,6 +49,11 @@
     <Compile Include="RM_CompForgeCycleDormancy.cs" />
     <Compile Include="RM_PawnRenderNodeWorker_DormantBody.cs" />
     <Compile Include="RM_ForgeCycleDebugActions.cs" />
+    <!-- FORGE_GPT_ENRICHMENT_1 -->
+    <Compile Include="RM_TheForgeDefOf.cs" />
+    <Compile Include="RM_ForgeVoices.cs" />
+    <Compile Include="RM_ForgeKeelwork.cs" />
+    <Compile Include="RM_ForgeSpunstone.cs" />
   </ItemGroup>
 
   <!-- FORGE_CYCLE_MECHANICS_1: the cycle subclasses the F1 pulse

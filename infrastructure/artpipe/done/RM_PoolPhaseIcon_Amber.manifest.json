@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 107.10742482799105,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 107.10742482799105,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 128,
+  "id": "RM_PoolPhaseIcon_Amber",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T21-47-22-01a0f5c9-dee5-73d0-9d6b-330c9fbb53e5.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 60.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/30/rollout-2026-09-30T21-41-12-01a0f5c4-3891-74c3-a464-06e2ffe2bf43.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 128,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 128,
+    "id": "RM_PoolPhaseIcon_Amber",
+    "note": "Generated with built-in imagegen, copied into the workspace, resized to exactly 128x128, and verified as 32-bit PNG with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_PoolPhaseIcon_Amber\\RM_PoolPhaseIcon_Amber.png",
+    "status": "ok",
+    "width": 128
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_PoolPhaseIcon_Amber/RM_PoolPhaseIcon_Amber.png\n    128x128  rgba  30,823 bytes  (104s)\n"
+}

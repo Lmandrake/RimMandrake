@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:00Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Muttavaq_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the muttavaq, a canyon-floor giant that sleeps for years beneath a cracked clay pan and wakes when the flood reaches it \u2014 a vast low-slung body plated in dried-clay polygons that match the pan it slept under, a broad shovel head with straining jaw-plates for feeding like a walking weir in floodwater, thick pillar legs caked to the knee in wet clay, small deep-set eyes, wax-sheened seams where its burrow lining still clings. It reads as a piece of the cracked flats that stood up and started wading. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "THE pan giant, bs~5.0, rendered large and high-fidelity so the scale carries in the pixels; the read is a clay-plated colossus mid-wade, neutral but unstoppable, never hostile-posed; cracked lands register: cracked-clay grey-white polygon plating, red-brown flood stain low on the body, pale wax sheen at the seams, moss green only as faint traces in shadowed creases, hardest dry-light contrast, dry then sudden; realistic painted natural-history illustration, grounded believable anatomy under the clay, matte natural surface texture of dried clay, mud and wax crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the polygon-plated back, haunches and rear pillar legs"
+}

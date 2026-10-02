@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.7204238619999614,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 9.520506125999987,
+  "id": "nightside_mahllik_south",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T20-59-53-01a0d6b8-3d6c-7521-81d7-d7380381cdc0.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T20-59-42-01a0d6b8-0fc5-7671-bb7c-b43ac2edc390.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\nightside_mahllik_south\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d6b8-3d6c-7521-81d7-d7380381cdc0\n--------\nuser\nUse $imagegen to [artpipe job nightside_mahllik_south] RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the mahllik, a big solitary ice-sheet herbivore, a soft lumpish resting shape that becomes a sudden powerful spring, thick insulating white-frost coat, short hidden legs, on the dead-still Nightside ice hemisphere, a chemistry set switched off under the aurora; pale frost-white to glacial-blue palette, minimal markings, hushed and still. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: defName RSW_CaveLemming. Batch 3b row 2. Owner asked for this rename in the roster ('ice sheet, rename'). No bs given. Facing: south \u2014 the creature walks TOWARD the viewer; we see its FACE and chest straight on.\n\nThen copy the generated image into the current working directory as nightside_mahllik_south.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\n\n",
+  "worker_stdout_tail": ""
+}

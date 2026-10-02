@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:01Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FossilImpression",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: a common fossil impression, a hand-sized slab of canyon-wall stone split to show the pressed print of ancient life \u2014 a fern-mat and small shell-bed impressed in relief into pale sedimentary stone, red-brown strata banding across the slab edge, the print crisp on one face. It reads as an honest trade-good piece of deep time. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the common fossil tier (impressions); the read is a split stone slab with a crisp pressed fern-and-shell print; cracked lands register: pale sedimentary grey-white, red-brown strata banding, no green, hard dry light; realistic painted natural-history illustration, grounded believable geology, matte stone texture, never cartoonish, no outlines"
+}

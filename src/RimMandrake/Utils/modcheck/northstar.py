@@ -32,6 +32,12 @@ _SECTION = "## north star"
 # Group 2 is the prose, which the judge needs: an id alone is not a question
 # anyone can answer about an image.
 _MUST_SHOW_LINE = re.compile(r"^\s*-\s*\[[ xX]\]\s*`([A-Za-z0-9_]+)`\s*(.*)$")
+# A line's evidence class (spec §4b): `(change)` right after the id means the
+# line is about CHANGE and is judged on an ordered frame sequence; a bare id, or
+# `(state)`, is judged on one frame. PROVISIONAL seed (owner 2026-10-01).
+_KIND_TAG = re.compile(r"^\((change|state)\)\s*", re.IGNORECASE)
+STATE = "state"
+CHANGE = "change"
 _LEAD_DASH = re.compile(r"^[\s—–:-]+")
 
 
@@ -82,7 +88,8 @@ def _polarity_of(heading):
 def _checklists(lines):
     """Split the section's checkbox lines into the two checklists, with prose.
 
-    Returns (must_ids, must_text, cannot_ids, cannot_text).
+    Returns (must_ids, must_text, cannot_ids, cannot_text, kinds), where
+    `kinds` is {id: STATE | CHANGE} across both checklists (§4b).
 
     ⚠️ The two are kept APART deliberately. A `cannot show` line states a defect
     he would reject, so it is judged with the opposite polarity: a YES on
@@ -98,6 +105,7 @@ def _checklists(lines):
     """
     ids = {MUST: [], CANNOT: []}
     text = {MUST: {}, CANNOT: {}}
+    kinds = {}
     where = MUST
     last = None
 
@@ -108,10 +116,16 @@ def _checklists(lines):
             continue
         m = _MUST_SHOW_LINE.match(line)
         if m and where:
-            req_id, prose = m.group(1), _LEAD_DASH.sub("", m.group(2)).strip()
+            req_id, rest = m.group(1), m.group(2)
+            k = _KIND_TAG.match(rest)
+            kind = k.group(1).lower() if k else STATE
+            if k:
+                rest = rest[k.end():]
+            prose = _LEAD_DASH.sub("", rest).strip()
             if req_id not in ids[where]:
                 ids[where].append(req_id)
                 text[where][req_id] = prose
+                kinds[req_id] = kind
             last = (where, req_id)
             continue
         if last and line[:1].isspace() and line.strip():
@@ -120,7 +134,7 @@ def _checklists(lines):
             continue
         last = None
 
-    return ids[MUST], text[MUST], ids[CANNOT], text[CANNOT]
+    return ids[MUST], text[MUST], ids[CANNOT], text[CANNOT], kinds
 
 
 def _canonical(lines):
@@ -160,6 +174,7 @@ def parse(path):
       must_show_text {id: prose} for those ids -- the question the judge asks
       cannot_show    list of `### cannot show` ids (opposite polarity)
       cannot_show_text  {id: prose} for those
+      kinds          {id: "state" | "change"} -- the evidence class (§4b)
       state          the EFFECTIVE state -- VALIDATED only when the declared
                      state says so AND the recorded hash matches disk
       reason         why it is not VALIDATED, when it is not
@@ -174,7 +189,8 @@ def parse(path):
     if not lines:
         return {"present": False, "declared_state": DRAFT, "recorded_hash": "",
                 "current_hash": "", "must_show": [], "must_show_text": {},
-                "cannot_show": [], "cannot_show_text": {}, "state": DRAFT,
+                "cannot_show": [], "cannot_show_text": {}, "kinds": {},
+                "state": DRAFT,
                 "reason": "no `## north star` section in %s" % path}
 
     declared = DRAFT
@@ -187,7 +203,7 @@ def parse(path):
         elif low.startswith("validated-hash:"):
             recorded = s.split(":", 1)[1].strip()
 
-    must_show, must_text, cannot_show, cannot_text = _checklists(lines)
+    must_show, must_text, cannot_show, cannot_text, kinds = _checklists(lines)
     current = content_hash(lines)
 
     if declared != VALIDATED:
@@ -205,7 +221,7 @@ def parse(path):
             "recorded_hash": recorded, "current_hash": current,
             "must_show": must_show, "must_show_text": must_text,
             "cannot_show": cannot_show, "cannot_show_text": cannot_text,
-            "state": state, "reason": reason}
+            "kinds": kinds, "state": state, "reason": reason}
 
 
 def bar_for(path):
@@ -228,6 +244,13 @@ def text_for(path):
     if ns["state"] != VALIDATED:
         return {}, {}
     return dict(ns["must_show_text"]), dict(ns["cannot_show_text"])
+
+
+def kinds_for(path):
+    """{id: "state" | "change"} for a VALIDATED section, or {}. Tells the judge
+    which lines need an ordered frame sequence rather than one frame (§4b)."""
+    ns = parse(path)
+    return dict(ns["kinds"]) if ns["state"] == VALIDATED else {}
 
 
 def record_validation(path):

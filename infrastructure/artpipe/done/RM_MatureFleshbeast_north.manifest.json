@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 140.76050537699484,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 73.64847014153676,
+  "derive_from_palette_distance": 8.95899571533297,
+  "elapsed_s": 140.76050537699484,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 512,
+  "id": "RM_MatureFleshbeast_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 54.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/29/rollout-2026-09-29T21-08-43-01a0f080-1e13-7ea0-9feb-ad7642aac1dc.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 53.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/29/rollout-2026-09-29T21-01-37-01a0f079-9e2e-7642-89ad-15c68d54de63.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 512,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 512,
+    "id": "RM_MatureFleshbeast_north",
+    "note": "Derived a true rear-facing view from the accepted east master, preserving the terracotta/rose palette, folded anatomy, painterly style, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_MatureFleshbeast_north\\RM_MatureFleshbeast_north.png",
+    "status": "ok",
+    "width": 512
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_MatureFleshbeast_north/RM_MatureFleshbeast_north.png\n    512x512  rgba  412,029 bytes  (136s)\n"
+}

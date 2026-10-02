@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 512,
+    "width": 512
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "coalescence_stage3",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the Coalescence at its third stage, a tower of almost-anatomy \u2014 a gathered crimson mass hauling itself toward an upright shape, dozens of open eyes ringing it at every height, multiple mismatched limbs braced against the ground as if about to stand, ropes of tissue still feeding up into it from the goo at its base; the shape of a body proposed but not yet ratified. It reads as the moment before it stands up. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "stage 3 of 3 of the growing set-piece organism, rendered large and high-fidelity; the read is a braced tower of eyes and mismatched limbs about to stand; storm-dark red-valley register: wet glistening crimson and bruise-purple, sclera whites, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; keep silhouette family and palette continuous with stages 1 and 2 (same organism, more mass)"
+}

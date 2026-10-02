@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Scumgrass",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the scumgrass, a wiry tussock of grease-slicked grass that grows where cleaner plants die \u2014 blades a dull grey-green with an oily sheen, tips crusted white with salt, the clump sparse but firmly rooted and alive. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "the biome's default ground cover; the read is wiry oily grass with salt-crusted tips, healthy on ruined ground; wasteland survivor register: dull grey-green over salt white and ash grey, vitrified black-green accents, harsh dry light; realistic painted natural-history illustration, grounded believable botany, matte natural surface texture with grease sheen and salt crust, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

@@ -1,0 +1,46 @@
+elapsed 23.3s  all_green=False
+CHAIN power_state_machine | {'bland': True, 'sweeps': 2, 'ticks_spent': 600, 'policy': 'abort'} | problems: []
+    PASS | format_tier_defaults_to_programmable | 
+    PASS | power_need_present | 
+    PASS | empty_bar_powers_down | 
+    PASS | reboot_restores_power | 
+    hits seen: [('log_errors', 'WARN')]
+CHAIN passive_charging | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    FAIL | nimbus_charges_in_range | ExpectationFailed: RSW_DW_ChargeNimbus not found at anchor after spawn: []
+    hits seen: []
+CHAIN detonation | {'bland': True, 'sweeps': 2, 'ticks_spent': 60, 'policy': 'abort'} | problems: []
+    PASS | full_charge_detonates_on_death | 
+    hits seen: []
+CHAIN salvage_on_death | {'bland': True, 'sweeps': 2, 'ticks_spent': 60, 'policy': 'abort'} | problems: []
+    PASS | head_drops_with_identity | 
+    PASS | parts_drop_from_dead_droid | 
+    hits seen: []
+CHAIN bolt_core | {'bland': True, 'sweeps': 2, 'ticks_spent': 1200, 'policy': 'abort'} | problems: []
+    FAIL | resentment_accrues | ExpectationFailed: RSW_DW_BoltResentment severity did not rise (0.000000 -> 0.000000)
+    UNMEASURED | shear_on_damage | upstream failed -- this chain's state is meaningless
+    UNMEASURED | mood_penalty_nearby | upstream failed -- this chain's state is meaningless
+    UNMEASURED | mental_break_suppressed_while_bolted | upstream failed -- this chain's state is meaningless
+    hits seen: [('letter_unexpected', 'INFO')]
+CHAIN bolt_rebellion_structural | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | rebellion_recipe_wired | 
+    hits seen: []
+CHAIN wipe_and_drift_structural | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | wipe_hediff_attaches | 
+    FAIL | quirk_pool_marked | ExpectationFailed: get_defs('TraitDef/RSW_DW_Quirk_ServoTwitch', fields='modExtensions') did not contain 'HardwareQuirkExtension': {'success': True, 'message': '1 of 1 def(s) resolved', 'requested': 1, 'foundCount': 1, 'notFound': [], 'malformed': [], 'fieldsA
+    UNMEASURED | idiosyncrasy_pool_marked | upstream failed -- this chain's state is meaningless
+    hits seen: []
+CHAIN hutt_captive_bolt_state | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | captive_bolt_state_reachable | 
+    hits seen: []
+CHAIN module_personality | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    FAIL | module_grants_personality_on_wear | ExpectationFailed: RSW_DW_Race_guy762_DroidRace_T3series18387 hediff RSW_DW_ModulePersonality_Twitchy=False, expected present=True (hediffs: ['Gunshot', 'RSW_DW_FormatTier'])
+    hits seen: []
+CHAIN wild_droid_crash | {'bland': True, 'sweeps': 2, 'ticks_spent': 60, 'policy': 'abort'} | problems: []
+    PASS | wild_droid_crash_fires | 
+    hits seen: [('pawn_roster_transition', 'WARN')]
+CHAIN protocol_trade_advantage | {'bland': True, 'sweeps': 1, 'ticks_spent': 120, 'policy': 'abort'} | problems: []
+    FAIL | protocol_droid_shifts_prices | ExpectationFailed: no buy price changed after adding a protocol droid to the player party: before={'Silver': {'defName': 'Silver', 'label': 'silver', 'baseMarketValue': 1.0, 'buy': 1.0, 'sell': 1.0}} after={'Silver': {'defName': 'Silver', 'label': 'silver', 'b
+    hits seen: [('letter_unexpected', 'INFO'), ('pawn_roster_transition', 'WARN')]
+CHAIN ion_overload_shutdown | {'bland': True, 'sweeps': 2, 'ticks_spent': 60, 'policy': 'abort'} | problems: []
+    PASS | ion_overload_shuts_down_droid | 
+    hits seen: []

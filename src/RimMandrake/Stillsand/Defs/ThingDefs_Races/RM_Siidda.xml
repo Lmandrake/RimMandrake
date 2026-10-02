@@ -169,21 +169,21 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_DustHusk/RM_DustHusk</texPath>
+          <texPath>Things/Pawn/Animal/RM_Siidda/RM_Siidda</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.3</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_DustHusk/RM_DustHusk</texPath>
+          <texPath>Things/Pawn/Animal/RM_Siidda/RM_Siidda</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.4</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_DustHusk/RM_DustHusk</texPath>
+          <texPath>Things/Pawn/Animal/RM_Siidda/RM_Siidda</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>

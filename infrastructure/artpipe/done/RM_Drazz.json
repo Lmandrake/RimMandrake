@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Drazz",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: the brineleech, a forearm-long plated brine animal landed and inert \u2014 a sea-cucumber-shaped body that is a stack of living electrode wafers, salt-white and mineral-dark plates by turns, edges rimed with salt crust, a faint residual spark caught between two plates. It reads as a caught capacitor of a creature, laid out as a resource. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the caught brine-battery creature (label: brineleech, defName frozen RM_Drazz); the read is a stacked-wafer plated body, salt-white and mineral-dark; wasteland survivor register: salt white and mineral darks, one faint sickly-radiance spark between plates, vitrified black-green accents, harsh dry light; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with salt rime, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

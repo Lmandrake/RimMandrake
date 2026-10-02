@@ -6,7 +6,7 @@ namespace RimMandrake.Cauldron
 {
     // ════════════════════════════════════════════════════════════════════
     // BIOME PLACEMENT — the thing XML cannot do. Same reasoning as the
-    // sibling ForsakenCrags/TheRot/Greentide workers: BiomeDef has no
+    // sibling Abyss/TheRot/Greentide workers: BiomeDef has no
     // temperature/rainfall/elevation field, RimWorld scores every BiomeDef's
     // workerClass per tile and keeps the highest, so a biome with no worker
     // never generates anywhere.

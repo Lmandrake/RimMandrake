@@ -1,0 +1,23 @@
+elapsed 7.4s  all_green=False
+CHAIN def_wiring | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | ion_damagedef_fields | 
+    hits seen: [('log_errors', 'WARN')]
+CHAIN flesh_buildup | {'bland': True, 'sweeps': 1, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | buildup_downs_alive_no_injury | 
+    hits seen: []
+CHAIN buildup_math | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    FAIL | default_severity_matches_xml_rate | ExpectationFailed: one ion hit on a bodySize=1.00 pawn gave severity 0.375, expected ~0.240 from 0.03*8*1.0/bodySize^2
+    UNMEASURED | bodysize_squared_resistance | upstream failed -- this chain's state is meaningless
+    UNMEASURED | thirdparty_stat_matches_formula | upstream failed -- this chain's state is meaningless
+    hits seen: []
+CHAIN machine_and_droid_tier | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    PASS | mechanoid_overloaded_near_instant | 
+    FAIL | droid_tier_strong_stun | ExpectationFailed: jawa/damage returned no per-target row -- the hit did not land on anything
+    hits seen: []
+CHAIN shield_break | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    FAIL | ion_pops_shield_then_bullet_lands | ExpectationFailed: bullet STILL absorbed after an ion hit -- shieldBreakEnabled's 1-point EMP dispatch did not pop the belt: before=-1 after=-1
+    hits seen: []
+CHAIN vehicle_tier_without_framework | {'bland': True, 'sweeps': 0, 'ticks_spent': 0, 'policy': 'abort'} | problems: []
+    FAIL | vehicle_tier_logs_selfdisable | ExpectationFailed: no recent log line matched tag='Vehicle Framework is not loaded' field=None value=None (last matching line: None)
+    UNMEASURED | vehicle_tier_multiplier_dormant_without_framework | upstream failed -- this chain's state is meaningless
+    hits seen: []

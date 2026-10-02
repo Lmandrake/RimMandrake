@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.892644789000002,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 10.89980208900002,
+  "id": "crags_brekkugar_east",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T20-51-19-01a0d6b0-6349-7a50-92a3-c3c058592445.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/24/rollout-2026-09-24T20-51-06-01a0d6b0-3014-78e2-ab32-bbbcfb0dd444.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nbrekkugar_east\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d6b0-6349-7a50-92a3-c3c058592445\n--------\nuser\nUse $imagegen to [artpipe job crags_brekkugar_east] RimWorld creature sprite, side view, painterly vanilla-RimWorld animal art style: the brekkugar, a huge Hercules-beetle-like herbivorous beast of burden, massive overlapping armour plates across its back, thick clattering carapace, slow deliberate heavy-legged gait, under the fogged obsidian light of the Forsaken Crags, a nocturnal highland lit by aurora, never sun; dark basalt-black to gunmetal palette, hard voiced-consonant creature, no bright accent colors. Single creature, centered, standing pose, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below. Canvas: exactly 512x512 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient. Style: defName AA_CrepuscularBeetle. Batch 3a row 6. bs 3.0. Armour-on-armour bulk; not the Latin lab name 'Crepuscular Beetle'. Facing: east \u2014 strict side profile with the camera at the creature's own eye level, the creature's head points to the RIGHT edge of the image. NOT a top-down or overhead view: we do not look down on its back, and only the near side of the body is visible.\n\nThen copy the generated image into the current working directory as crags_brekkugar_east.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\n\n",
+  "worker_stdout_tail": ""
+}

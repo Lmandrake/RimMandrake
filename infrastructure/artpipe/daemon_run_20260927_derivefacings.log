@@ -2,3 +2,53 @@
 [11:44:32] pruned 90 scratch dir(s) older than 14d
 [11:44:32] codex sandbox ok — sandbox seed template matches the installed build (codex-command-runner-0.153.4.exe)
 ● IDLE — queue empty  (0 ok, 0 failed this session)  wk —
+● IDLE — 5 pending, nothing claimable  (0 ok, 0 failed this session)  wk —
+● IDLE — 10 pending, nothing claimable  (0 ok, 0 failed this session)  wk —
+▶ WORKING 1/3 ░░░░░░░░░░░░  chill_plant_eldspar 0s  +9 pending  wk —
+▶ WORKING 3/3 ░░░░░░░░░░░░  chill_plant_eldspar 0s, chill_plant_fuselight 0s, chill_plant_ghostpane 0s  +7 pending  wk —
+✓  chill_plant_fuselight                           generate/codex     90s  PASS  15:07
+▶ WORKING 3/3 ████░░░░░░░░  chill_plant_eldspar 93s, chill_plant_ghostpane 93s, chill_plant_keelgrass 0s  +6 pending  wk 31%
+✓  chill_plant_eldspar                             generate/codex     86s  PASS  15:09
+▶ WORKING 3/3 ███████░░░░░  chill_plant_ghostpane 179s, chill_plant_keelgrass 86s, chill_plant_pitchpearl 0s  +5 pending  wk 31%
+✓  chill_plant_ghostpane                           generate/codex     98s  PASS  15:10
+▶ WORKING 3/3 ███████░░░░░  chill_plant_keelgrass 183s, chill_plant_pitchpearl 97s, chill_plant_skyharp 0s  +4 pending  wk 31%
+✓  chill_plant_keelgrass                           generate/codex    102s  PASS  15:12
+▶ WORKING 3/3 ████████░░░░  chill_plant_pitchpearl 199s, chill_plant_skyharp 101s, chill_plant_slackwax 0s  +3 pending  wk 31%
+✓  chill_plant_pitchpearl                          generate/codex    158s  PASS  15:15
+▶ WORKING 3/3 ██████████░░  chill_plant_skyharp 259s, chill_plant_slackwax 157s, chill_plant_stillbloom 0s  +2 pending  wk 31%
+✓  chill_plant_skyharp                             generate/codex     96s  PASS  15:16
+▶ WORKING 2/3 ██████████░░  chill_plant_slackwax 254s, chill_plant_stillbloom 96s  +1 pending  wk 31%
+▶ WORKING 3/3 ██████████░░  chill_plant_slackwax 254s, chill_plant_stillbloom 96s, chill_plant_stonewater 0s  +1 pending  wk 31%
+✓  chill_plant_slackwax                            generate/codex    102s  PASS  15:18
+▶ WORKING 3/3 ████████░░░░  chill_plant_stillbloom 198s, chill_plant_stonewater 102s, chill_plant_tarspool 0s  +0 pending  wk 31%
+✓  chill_plant_stillbloom                          generate/codex    105s  PASS  15:20
+▶ WORKING 2/3 ████████░░░░  chill_plant_stonewater 207s, chill_plant_tarspool 105s  +0 pending  wk 31%
+✓  chill_plant_stonewater                          generate/codex    101s  PASS  15:22
+▶ WORKING 1/3 ████████░░░░  chill_plant_tarspool 206s  +0 pending  wk 31%
+✓  chill_plant_tarspool                            generate/codex    103s  PASS  15:23
+● IDLE — queue empty  (10 ok, 0 failed this session)  wk 31%
+● IDLE — 7 pending, nothing claimable  (10 ok, 0 failed this session)  wk 31%
+● IDLE — 14 pending, nothing claimable  (10 ok, 0 failed this session)  wk 31%
+▶ WORKING 3/3 ░░░░░░░░░░░░  RM_Dakkra_east 0s, RM_Gennok_east 0s, RM_Pirrik_east 0s  +15 pending  wk 31%
+▶ WORKING 3/3 ░░░░░░░░░░░░  RM_Dakkra_east 0s, RM_Gennok_east 0s, RM_Pirrik_east 0s  +16 pending  wk 31%
+✗  RM_Dakkra_east                                  generate/codex      ?s  FAIL  bad_job_file  16:42
+✗  RM_Gennok_east                                  generate/codex      ?s  FAIL  bad_job_file  16:42
+▶ WORKING 3/3 ░░░░░░░░░░░░  RM_Pirrik_east 0s, RM_Dakkra_north 0s, RM_Dakkra_south 0s  +15 pending  wk 31%
+✗  RM_Pirrik_east                                  generate/codex      ?s  FAIL  bad_job_file  16:42
+✗  RM_Dakkra_north                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+✗  RM_Dakkra_south                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+▶ WORKING 3/3 ░░░░░░░░░░░░  RM_Dewfringe 0s, RM_Gennok_north 0s, RM_Gennok_south 0s  +12 pending  wk 31%
+✗  RM_Gennok_north                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+✗  RM_Gennok_south                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+✗  RM_Pirrik_north                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+▶ WORKING 3/3 ░░░░░░░░░░░░  RM_Dewfringe 0s, RM_Pirrik_south 0s, RM_UltracactusPad 0s  +6 pending  wk 31%
+✗  RM_Pirrik_south                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+✗  RM_Sollak_north                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+▶ WORKING 3/3 ░░░░░░░░░░░░  RM_Dewfringe 0s, RM_UltracactusPad 0s, RM_Sollak_south 0s  +2 pending  wk 31%
+✗  RM_Sollak_south                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+✗  RM_Tebbra_north                                 edit/codex          ?s  FAIL  bad_job_file  16:42
+▶ WORKING 2/3 ░░░░░░░░░░░░  RM_Dewfringe 0s, RM_UltracactusPad 0s  +0 pending  wk 31%
+✓  RM_Dewfringe                                    generate/codex    106s  PASS  16:44
+▶ WORKING 1/3 ████░░░░░░░░  RM_UltracactusPad 109s  +0 pending  wk 32%
+✓  RM_UltracactusPad                               generate/codex     87s  PASS  16:46
+● IDLE — queue empty  (12 ok, 12 failed this session)  wk 32%

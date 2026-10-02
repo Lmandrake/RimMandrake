@@ -35,6 +35,9 @@ namespace RimMandrake.MovingDunes
     //      the def-level RM_Dunes_Globals.applyHideDepths field) even with
     //      this off, they just never spawn a lootable cache.
     //   4. plantChokeEnabled — master switch for the sand-depth plant kill.
+    //   5. windLockEnabled (STILLSAND_WIND_SUN_BEARING_1) — only a biome whose
+    //      DuneFieldExtension sets lockBearingToSubstellar. On: the wind keeps the
+    //      tile's sun bearing forever. Off: it shifts like any dune field's.
     // ════════════════════════════════════════════════════════════════════
     public class MovingDunesSettings : ModSettings
     {
@@ -42,6 +45,9 @@ namespace RimMandrake.MovingDunes
         public static float transportRateMultiplier = 1f;
         public static bool burialEnabled = true;
         public static bool plantChokeEnabled = true;
+        public static bool windLockEnabled = true;
+        public static bool clearYieldEnabled = true;          // STILLSAND_GLASS_LENS_CHAIN_1 §1
+        public static float clearYieldMultiplier = 1f;
 
         public override void ExposeData()
         {
@@ -50,6 +56,9 @@ namespace RimMandrake.MovingDunes
             Scribe_Values.Look(ref transportRateMultiplier, "transportRateMultiplier", 1f);
             Scribe_Values.Look(ref burialEnabled, "burialEnabled", true);
             Scribe_Values.Look(ref plantChokeEnabled, "plantChokeEnabled", true);
+            Scribe_Values.Look(ref windLockEnabled, "windLockEnabled", true);
+            Scribe_Values.Look(ref clearYieldEnabled, "clearYieldEnabled", true);
+            Scribe_Values.Look(ref clearYieldMultiplier, "clearYieldMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -69,6 +78,20 @@ namespace RimMandrake.MovingDunes
               + "dunes still bury things visually, but no cache — and nothing to dig for.");
             list.CheckboxLabeled("Sand chokes plants", ref plantChokeEnabled,
                 "A plant fully buried by sand slowly dies. Off: buried plants are unaffected.");
+            list.CheckboxLabeled("Wind locked to the sun (the Stillsand)", ref windLockEnabled,
+                "On a land built with it: the wind blows from one bearing forever, the same way every "
+              + "shadow falls, so dune crests, lees and shadows all line up. Off: the wind shifts "
+              + "every day or so, as on any other dune field.");
+            list.GapLine();
+            list.CheckboxLabeled("Shovelled drift yields sand", ref clearYieldEnabled,
+                "Clearing drift through the clear-sand area drops the biome's sand item (on the "
+              + "Stillsand: glass sand) in proportion to the depth removed. Only biomes that name "
+              + "a yield give one. Off: shovelled sand just leaves the field.");
+            if (clearYieldEnabled)
+            {
+                list.Label("Sand per drift depth: " + clearYieldMultiplier.ToString("0.00") + "x");
+                clearYieldMultiplier = list.Slider(clearYieldMultiplier, 0.1f, 3f);
+            }
 
             list.End();
         }

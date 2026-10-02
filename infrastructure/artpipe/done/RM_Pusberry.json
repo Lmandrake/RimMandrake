@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Pusberry",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the pusberry, a small gnarled tree whose pale berries sit in weeping wax-sealed sockets \u2014 each berry cupped in a swollen rim of hardened waxy secretion where the tree walled its fruit off from its own sap, slow pale runs of set wax down the bark, sparse tough grey-green leaves. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "the walled-fruit tree; the read is pale berries in weeping wax-sealed sockets on a gnarled survivor tree; wasteland survivor register: ash-grey bark, pale waxy berry sockets, dull grey-green leaves, vitrified black-green accents, harsh dry light; realistic painted natural-history illustration, grounded believable botany, matte natural surface texture with wax runs and crust, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

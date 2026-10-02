@@ -1,0 +1,117 @@
+## Recommendations
+
+### 1. The Warnings, Read Backward
+
+**Pitch:** Every quarry contains one layer of a five-epoch translation; reading from recent graffiti down to Rakatan text unlocks practical knowledge—and reveals that the “gods” were warning miners, not blessing them.
+
+- **Experience:** Pawns brush frost from inscriptions, hear a low recognition tone, and add imperfect translations to a biome-local journal. The final text reads: *What the sky returns is not a gift.*
+- **Marks:** Discoverable technology, relationship to the gods.
+- **Build:** **Small C#** — `CompWarningTableau`, study job, and persistent `GameComponent` tracking fragments; XML tableau/fragment defs. No precepts or rituals.
+- **Only here:** The Blue Desert physically preserves every civilization’s failed interpretation in the same quarry walls.
+
+### 2. Cold-Cutting Protocol
+
+**Pitch:** Completing the middle Warning tier grants a slower mining mode that extracts blue ice without warming the face or rolling the thaw table.
+
+- **Experience:** A new designation outlines the cut in pale cyan; tools make muted glassy taps instead of ordinary mining impacts. Safe faces retain visible frost, while careless cuts sweat, crack, and hiss.
+- **Marks:** Discoverable technology, unique mechanic, unique resources.
+- **Build:** **Small C#** — cold-cut designation and work giver; patch blue-ice yield resolution or route it through `CompColdCuttable`. Trade speed and yield for zero thaw chance.
+- **Only here:** It is knowledge created by quarrying a material that becomes dangerous precisely when worked conventionally.
+
+### 3. The Blue-Ice Heat Sink
+
+**Pitch:** Blue ice becomes functional thermal mass: load blocks into a rack to hold a room cold through power failure, eventually producing distilled-water canisters.
+
+- **Experience:** Blocks slowly cloud from deep blue to white while the rack groans and drips into sealed cans. During a blackout, the Cold Hold warms by degrees rather than instantly becoming a bomb.
+- **Marks:** Unique resources, gravship touch.
+- **Build:** **Small C#** — `CompRefuelable` cold-sink rack, room-temperature offset, spent-block conversion, and inspection-string heat capacity; XML items/building/recipe.
+- **Only here:** This is the only biome where “water reserve,” explosive pantry safety, and treasure-grade mineral extraction are the same economy.
+
+### 4. The Line Gives Back Slowly
+
+**Pitch:** Ablation salvage incidents unfold over several hours instead of spawning loot instantly.
+
+- **Experience:** First comes a distant crack, then a dark silhouette under thinning ice, then exposed wreckage, meteoritic metal, or a named freeze-dried corpse. Vekkit tracks and circling vrisk make the find visible before the letter arrives.
+- **Marks:** Unique resources, relationship to the gods, surprising creatures.
+- **Build:** **Small C#** — staged `IncidentWorker`, emergence markers, edge-biased placement, and corpse-history generation; XML incident variants and sounds.
+- **Only here:** The Blue Desert does not receive meteorites—it returns things swallowed by the sky in earlier ages.
+
+### 5. The Carbon Garden
+
+**Pitch:** Add three unmistakably plant-like natives: creeping **milelace**, the many-leaved **Ninefold Censer**, and branching **longglass**.
+
+- **Experience:** Milelace stitches fresh drifts into silver mats; censers open after Haze and exhale visible hydrocarbon breath; longglass turns toward wind and accumulates frost on new growth. All remain small, transparent, unsowable, and dangerously warm-reactive.
+- **Marks:** Unique mechanic, unique resources, soundscape, interesting weather.
+- **Build:** **XML only** for baseline plants using `RM_CompPlantCharge`; **small C#** if Haze flowering and post-drift succession are included. Milelace can yield insulating frost-fibre.
+- **Only here:** These are an anhydrous plant succession powered by atmospheric hydrocarbons and moving ice-sand—not transplanted desert vegetation.
+
+### 6. The Three-Sky Sequence
+
+**Pitch:** Connect the ruled weathers into a learnable cycle: ice fog gathers, Haze loads the air, then the ice-sand drift releases it.
+
+- **Experience:** Visibility contracts, virr pitch rises, static crawls over blue ice, and finally the storm rearranges paths and buries the lee side of structures. Forecasts describe signs rather than percentages.
+- **Marks:** Interesting weather, soundscape, unique mechanic.
+- **Build:** **Small C#** — map phase component adjusting WeatherDef transition weights and notifying fauna/flora; XML weather ambients and forecast text.
+- **Only here:** Its weather is a metabolic cycle shared by the atmosphere, charged flora, buried predators, and frozen ground.
+
+### 7. Silence Has Teeth
+
+**Pitch:** Make the ossivel choir a trustworthy diegetic alarm rather than decorative ambience.
+
+- **Experience:** Packs hold shifting organ chords until a large moving creature enters range; every throat stops within a beat, leaving only wind and echo. Tamed packs can guard a perimeter without producing conventional alerts.
+- **Marks:** Soundscape, surprising creatures.
+- **Build:** **Small C#** — one map-level sustainer controller, pack clustering, body-size/movement checks, and optional visual “choir fell silent” mote; XML `SoundDef`s.
+- **Only here:** Elsewhere danger announces itself. Here the memorable sound is the sudden removal of the biome’s only living music.
+
+### 8. After the Storm, the Drifts Hunt
+
+**Pitch:** Murrek do not simply spawn after storms; existing animals crawl into new drifts, leaving readable occupied mounds.
+
+- **Experience:** A suspect drift subtly pulses, sheds grains against the wind, and produces an occasional hooked scrape. Probing or digging flushes the murrek; abandoned burrows remain as collapsed bowls.
+- **Marks:** Surprising creatures, interesting weather, unique mechanic.
+- **Build:** **Large C#** — burrow/unburrow jobs, persistent pawn state, drift-cell selection, flushing interaction, and weather-end map logic.
+- **Only here:** The terrain genuinely becomes the predator without making pawns disappear or teleport invisibly.
+
+### 9. The Vhaulk Road
+
+**Pitch:** A vhaulk’s passage should remain legible long after the giant leaves the map.
+
+- **Experience:** Pillar feet compress blue ice into a broad rime road; nearby flora are cropped flat, cistern seams boom at long intervals, and frost hangs in its wake. Departure leaves a map-edge trail and letter rather than silent despawning.
+- **Marks:** GIANT beast, soundscape, relationship to the gods.
+- **Build:** **Small C#** — movement comp placing temporary terrain/filth and grazing scars, entrance/departure incident handling, plus the ruled heat/ion/lightning detonation gates.
+- **Only here:** The “mountain” writes temporary geography into a landscape otherwise erased by wind.
+
+### 10. Dovvik Sweep
+
+**Pitch:** A trained dovvik can be ordered along a drawn path, draining charged plants into a visibly safe corridor for one day.
+
+- **Experience:** Its proboscis frosts each plant from base to tip; drained specimens turn matte and stop singing. The safe colour slowly retreats before the charge returns.
+- **Marks:** Surprising creatures, unique mechanic.
+- **Build:** **Large C#** — line designation, animal job driver, trainable command, and timed safe state in `RM_CompPlantCharge`.
+- **Only here:** It turns husbandry into bomb-disposal inside a living hydrocarbon minefield.
+
+### 11. Gravship Rime-Lock
+
+**Pitch:** Drift against a landed gravship adds departure mass until crews dig out marked hull cells.
+
+- **Experience:** Windward hull sections vanish beneath sculpted banks; the ship interface reports exact buried cells and estimated clearing work. Engines can force departure, but hot wash may ignite nearby charged flora.
+- **Marks:** Gravship touch, weather, unique mechanic.
+- **Build:** **Large C#** — Odyssey gravship integration, hull-edge drift accounting, clearing jobs, launch warning, and optional forced-launch consequence.
+- **Only here:** The ship is caught between cold burial outside and a temperature-sensitive cargo hold inside.
+
+### 12. Star Wars Layer — Jawa Salvage Claim
+
+**Pitch:** Fresh ablation finds sometimes draw a Jawa scavenger crew that offers a bargain, contests the wreck, or helps translate a later quarry inscription.
+
+- **Experience:** Droids probe the ice while Jawas erect heaters at an alarming distance; their chatter mixes with cracking ice as both parties decide whether to trade or race.
+- **Marks:** Unique resources, discoverable technology, soundscape.
+- **Build:** **Large C#** — separate Star Wars patch with incident, Jawa `LordJob`, negotiation outcomes, and compatibility-gated defs.
+- **Only here:** The biome’s returning wrecks make it the natural pilgrimage ground for an old scavenger clan, while canon content remains outside the native layer.
+
+Every system should have real settings for frequency, danger, audio volume, accessibility tells, cold-cut balance, drift depth, and gravship consequences.
+
+## Top 3
+
+1. **The Warnings, Read Backward** — closes the two weakest marks with one coherent discovery spine.
+2. **The Carbon Garden** — answers the owner’s flora request while making weather, sound, resources, and explosive ecology feel alive.
+3. **The Blue-Ice Heat Sink** — turns the signature resource and Cold Hold from lore into an immediately useful gravship decision.

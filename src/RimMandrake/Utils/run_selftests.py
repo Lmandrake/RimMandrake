@@ -27,7 +27,10 @@ in NOT_STANDALONE with its real invocation, so it is a VISIBLE `SKIPPED` line ra
 than a glob miss nobody can see.
 """
 import argparse
+import json
+import os
 import re
+import signal
 import subprocess
 import sys
 import time
@@ -56,6 +59,31 @@ def per_test_timeout(path: Path) -> int:
 # changing this string.
 UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"
 SEQUENTIAL_ISOLATED = {"selftest_render.py"}
+# Per-test wall times from the previous run (path -> seconds). Used ONLY to start the
+# slowest tests first (longest-processing-time scheduling), so the long pole overlaps
+# everything else instead of starting last. Never read for a verdict. Lives in /tmp:
+# a program reads it, not a human.
+TIMINGS_FILE = Path(os.environ.get("SELFTEST_TIMINGS_FILE",
+                                   Path(os.environ.get("TMPDIR", "/tmp")) / "selftest_timings.json"))
+DEFAULT_WORKERS = 16  # tests are IO/subprocess-bound on drvfs, not CPU-bound
+
+
+def load_timings() -> dict:
+    try:
+        return json.loads(TIMINGS_FILE.read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def save_timings(results) -> None:
+    old = load_timings()
+    for path, status, elapsed, _ in results:
+        if status in ("PASS", "FAIL", "UNMEASURED"):  # a TIMEOUT time is the cap, not a measurement
+            old[path.relative_to(REPO_ROOT).as_posix()] = round(elapsed, 1)
+    try:
+        TIMINGS_FILE.write_text(json.dumps(old, indent=0, sort_keys=True))
+    except OSError:
+        pass
 SEARCH_ROOTS = ("src", ".claude/hooks", "skills", "infrastructure/dashboards/hub")
 SELFTEST_GLOB = "selftest*.py"
 
@@ -84,16 +112,32 @@ def find_selftests() -> tuple[list[Path], list[tuple[Path, str]]]:
     return runnable, excluded
 
 
+def _run_capped(path: Path, timeout: int):
+    """subprocess.run, but a timeout kills the child's whole PROCESS GROUP.
+
+    Plain subprocess.run(timeout=) kills only the direct child; a grandchild (a grep,
+    a dotnet, a nested python) keeps the stdout pipe open and communicate() then blocks
+    until IT exits -- so a "240 s" timeout could silently take far longer.
+    """
+    p = subprocess.Popen([sys.executable, str(path)], cwd=REPO_ROOT, text=True,
+                         stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                         start_new_session=True)
+    try:
+        out, err = p.communicate(timeout=timeout)
+    except subprocess.TimeoutExpired:
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except OSError:
+            pass
+        p.communicate()
+        raise
+    return subprocess.CompletedProcess(p.args, p.returncode, out, err)
+
+
 def run_one(path: Path) -> tuple[Path, str, float, str]:
     start = time.monotonic()
     try:
-        proc = subprocess.run(
-            [sys.executable, str(path)],
-            cwd=REPO_ROOT,
-            capture_output=True,
-            text=True,
-            timeout=per_test_timeout(path),
-        )
+        proc = _run_capped(path, per_test_timeout(path))
         elapsed = time.monotonic() - start
         if proc.returncode == 0:
             return path, "PASS", elapsed, ""
@@ -123,7 +167,9 @@ def run_one(path: Path) -> tuple[Path, str, float, str]:
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--workers", type=int, default=DEFAULT_WORKERS)
+    ap.add_argument("--timings", action="store_true",
+                    help="print the 10 slowest tests after the summary")
     args = ap.parse_args()
 
     tests, excluded = find_selftests()
@@ -142,20 +188,35 @@ def main() -> int:
     pooled = [t for t in tests if t.name not in SEQUENTIAL_ISOLATED]
     isolated = [t for t in tests if t.name in SEQUENTIAL_ISOLATED]
 
+    # Slowest-first (from last run's timings); unknown tests go first too, so a new
+    # slow test cannot become the tail.
+    prior = load_timings()
+    pooled.sort(key=lambda t: -prior.get(t.relative_to(REPO_ROOT).as_posix(), 1e9))
+
     results = []
     wall_start = time.monotonic()
+    total = len(tests)
+
+    def _progress(r):
+        # Live line per finished test (flushed) so a long run is never silent.
+        results.append(r)
+        print(f"[{len(results)}/{total}] {r[1]:10s} {r[2]:6.1f}s  "
+              f"{r[0].relative_to(REPO_ROOT)}", file=sys.stderr, flush=True)
+
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = {pool.submit(run_one, t): t for t in pooled}
         for fut in as_completed(futures):
-            results.append(fut.result())
+            _progress(fut.result())
     for t in isolated:
-        results.append(run_one(t))
+        _progress(run_one(t))
     wall_elapsed = time.monotonic() - wall_start
 
+    save_timings(results)
     results.sort(key=lambda r: str(r[0]))
     passed = [r for r in results if r[1] == "PASS"]
     unmeasured = [r for r in results if r[1] == "UNMEASURED"]
-    failed = [r for r in results if r[1] not in ("PASS", "UNMEASURED")]
+    timed_out = [r for r in results if r[1] == "TIMEOUT"]
+    failed = [r for r in results if r[1] not in ("PASS", "UNMEASURED", "TIMEOUT")]
 
     for path, status, elapsed, detail in results:
         rel = path.relative_to(REPO_ROOT)
@@ -172,7 +233,10 @@ def main() -> int:
     # shrinks the numerator and shows, instead of shrinking both and reading green.
     print(f"\n{len(passed)}/{len(tests)} passed  (wall {wall_elapsed:.1f}s, "
           f"{args.workers} workers, {len(excluded)} skipped, "
-          f"{len(unmeasured)} unmeasured, {len(failed)} failed)")
+          f"{len(unmeasured)} unmeasured, {len(timed_out)} timeout, {len(failed)} failed)")
+    if args.timings:
+        for path, status, elapsed, _ in sorted(results, key=lambda r: -r[2])[:10]:
+            print(f"  slow: {elapsed:6.1f}s {status:8s} {path.relative_to(REPO_ROOT)}")
     if unmeasured:
         print(f"UNMEASURED ({len(unmeasured)}) — could not run here, NOT failures: "
               + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in unmeasured))
@@ -182,8 +246,12 @@ def main() -> int:
               f"{len(results)} results came back — the sweep is NOT a clean signal")
         return 1
 
-    if failed:
-        print("FAILED: " + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in failed))
+    if timed_out:
+        print("TIMEOUT (%d) — NOT passes, exceeded their cap: " % len(timed_out)
+              + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in timed_out))
+    if failed or timed_out:
+        if failed:
+            print("FAILED: " + ", ".join(str(p.relative_to(REPO_ROOT)) for p, *_ in failed))
         return 1
     return 0
 

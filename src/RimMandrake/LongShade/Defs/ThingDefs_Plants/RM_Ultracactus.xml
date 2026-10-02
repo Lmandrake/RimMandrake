@@ -16,10 +16,6 @@
   reads texPath as a folder, same convention RM_Leachmoss's own header
   documents) and Textures/Things/Item/Plant/RM_RawUltracactus.png.
 
-  ⚠️ specialThoughtAsIngredient AteUltracactus below is a PRE-EXISTING
-  dangling reference carried over unchanged from the RSW_ original — no
-  ThoughtDef of that name exists anywhere in this repo. Not introduced or
-  fixed by this move; flagged, not this item's scope.
 -->
 <Defs>
 
@@ -86,7 +82,6 @@
     <ingestible>
       <foodType>VegetableOrFruit</foodType>
       <tasteThought>AteRawFood</tasteThought>
-      <specialThoughtAsIngredient>AteUltracactus</specialThoughtAsIngredient>
     </ingestible>
     <comps>
       <li Class="CompProperties_Rottable">

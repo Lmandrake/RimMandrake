@@ -3,7 +3,7 @@
 Item: `SEA_DIVE_MAPS_BUILD_1`. Owner ruling (question card, 2026-09-25): **Build dive maps** —
 diving opens a small underwater map where each sea's floor cast (the BiomeDef's `<wildAnimals>`)
 actually spawns, one per sea, shared machinery across the four terminal seas (`RM_TheScald`,
-`RM_GreySea`, `RM_TwilightSea`, `RM_PropaneLake`, all in `src/RimMandrake/TerminalBiomes`).
+`RM_GreySea`, `RM_TwilightSea`, `RM_TheChill`, all in `src/RimMandrake/TerminalBiomes`).
 
 Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7a/§7b rulings,
 §8 design). Engine claims are labelled **MEASURED** (read in the
@@ -44,7 +44,7 @@ Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7
 | Generic floor painters | `RM_GenStep_TerrainChannels` (random-walk channels of any TerrainDef), `RM_GenStep_ScatterPools` (3–6 spaced pools), `RM_GenStep_PlacedSetPieces` + `RM_SetPieceElement_AnchoredPawn`, `RM_ScattererValidator_NearThingDef` | Twilight's underwater rivers, Grey's brine pools, Scald's vents + sail clusters, statuary set-pieces |
 | Weather forcing | `RM_GameCondition_WeatherPulse` / `GameCondition_EnvironmentalWeather` (override `GameCondition.ForcedWeather()`) | one held "murk" weather per floor |
 | A dive clock | `HediffCompProperties_EnvironmentalExposure` — accrues while unroofed during listed weathers, heals otherwise, apparel stat slows it | the breath/exposure budget with no new hediff comp |
-| Sea terrains | `RUT_ScaldWater*` (burnDamage 1/2), `RM_PropaneLakeDeep`/`RM_SolidPropane`, `RM_WastelandBrine*` (Wasteland mod — a brine pair already exists) | floor and hazard terrain per sea |
+| Sea terrains | `RUT_ScaldWater*` (burnDamage 1/2), `RM_TheChillDeep`/`RM_SolidPropane`, `RM_WastelandBrine*` (Wasteland mod — a brine pair already exists) | floor and hazard terrain per sea |
 | The cast, already on the defs | 14 `RM_` floor residents in `Defs/ThingDefs_Races/RM_*Fauna.xml`, wired in each sea's `<wildAnimals>`; `fishTypes` on all four defs; `RM_ScaldWalkerChitin` (DivingInteraction) as the walker's drop | the shared machinery authors no creature; the Scald's four new residents (walker, swirl, guardian, swarm) are §8.2 |
 
 ## 1. The experience
@@ -220,7 +220,7 @@ from the floor spawn (§3.3).
 ### 3.1 One generator per sea, one floor per sea per surface map
 
 Four `MapGeneratorDef`s (`RM_ScaldFloorGenerator`, `RM_GreySeaFloorGenerator`,
-`RM_TwilightSeaFloorGenerator`, `RM_PropaneLakeFloorGenerator`), each: `isUnderground true`
+`RM_TwilightSeaFloorGenerator`, `RM_TheChillFloorGenerator`), each: `isUnderground true`
 (every cell roofed — the sea is the roof; `roofDef` a new unmineable `RM_RoofWaterColumn` so
 nobody "mines" the ceiling), `pocketMapProperties { biome = that sea; temperature = its clock;
 tileMutators = [RM_SeaFloorHabitat] }`, `disableCallAid true`, `ignoreAreaRevealedLetter true`,

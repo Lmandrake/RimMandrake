@@ -26,7 +26,6 @@
     <defName>RM_Quest_RiteOfTipping</defName>
     <rootSelectionWeight>0</rootSelectionWeight>
     <expireDaysRange>2~3</expireDaysRange>
-    <defaultChallengeRating>1</defaultChallengeRating>
     <questNameRules>
       <rulesStrings>
         <li>questName->The Rite of Tipping</li>

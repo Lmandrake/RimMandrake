@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Tekk",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: the sparkcrab, a thumb-sized flat-bodied crustacean of the brine beds, landed as a catch \u2014 a salt-white plate-scraper with a low wide carapace, small folded scraping limbs tucked beneath, faint charge shimmer along the shell rim, salt crystals clinging to it. It reads as a small caught shellfish that still carries a tingle. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the small brine catch (label: sparkcrab, defName frozen RM_Tekk); the read is a flat salt-white scraper crustacean with a faint charge shimmer; wasteland survivor register: salt whites dominant, mineral greys, one faint sickly-radiance shimmer at the shell rim, harsh dry light; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with salt crystals, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

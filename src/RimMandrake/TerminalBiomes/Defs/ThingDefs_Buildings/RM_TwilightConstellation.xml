@@ -40,6 +40,9 @@
     <drawerType>MapMeshOnly</drawerType>
     <tickerType>Rare</tickerType>
     <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
     <size>(2,2)</size>
     <fertility>1.0</fertility>
     <canOverlapZones>false</canOverlapZones>
@@ -48,6 +51,7 @@
     <selectable>true</selectable>
     <statBases>
       <MaxHitPoints>140</MaxHitPoints>
+      <Mass>10</Mass>
       <WorkToBuild>2200</WorkToBuild>
       <Flammability>0.2</Flammability>
       <Beauty>3</Beauty>
@@ -111,6 +115,9 @@
     <drawerType>MapMeshOnly</drawerType>
     <tickerType>Normal</tickerType>
     <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
     <size>(1,1)</size>
     <passability>PassThroughOnly</passability>
     <fillPercent>0.15</fillPercent>
@@ -118,6 +125,7 @@
     <selectable>true</selectable>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
+      <Mass>3</Mass>
       <WorkToBuild>900</WorkToBuild>
       <Flammability>0.1</Flammability>
       <Beauty>4</Beauty>

@@ -1,0 +1,4847 @@
+{
+ "_p": {
+  "tool": "jawa/list_pawns",
+  "params": {
+   "includeHealth": true,
+   "includeCorpses": true,
+   "limit": 500
+  },
+  "ms": 9,
+  "result": {
+   "success": true,
+   "message": "67 pawn(s).",
+   "pawns": [
+    {
+     "id": "Human691",
+     "name": "Vas",
+     "kind": "Colonist",
+     "kindDef": "Colonist",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Baseliner",
+     "xenotypeLabel": "baseliner",
+     "uniqueXenotype": false,
+     "faction": "PlayerColony",
+     "factionName": "New Arrivals",
+     "isPlayer": true,
+     "hostile": false,
+     "x": 125,
+     "z": 117,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [
+       {
+        "def": "Stab",
+        "label": "stab scar",
+        "severity": 6.0,
+        "part": "Leg",
+        "partLabel": "left leg"
+       }
+      ],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 0.89,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Human693",
+     "name": "Fu",
+     "kind": "Colonist",
+     "kindDef": "Colonist",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Baseliner",
+     "xenotypeLabel": "baseliner",
+     "uniqueXenotype": false,
+     "faction": "PlayerColony",
+     "factionName": "New Arrivals",
+     "isPlayer": true,
+     "hostile": false,
+     "x": 131,
+     "z": 113,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [
+       {
+        "def": "BloodLoss",
+        "label": "blood loss (minor)",
+        "severity": 0.0031322185,
+        "part": null,
+        "partLabel": null
+       }
+      ],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Husky4105",
+     "name": "Ruby",
+     "kind": "Husky",
+     "kindDef": "Husky",
+     "def": "Husky",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": "PlayerColony",
+     "factionName": "New Arrivals",
+     "isPlayer": true,
+     "hostile": false,
+     "x": 123,
+     "z": 115,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.86,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Boomrat45654",
+     "name": "Boomrat",
+     "kind": "Boomrat",
+     "kindDef": "Boomrat",
+     "def": "Boomrat",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 40,
+     "z": 79,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Squirrel45655",
+     "name": "Squirrel",
+     "kind": "Squirrel",
+     "kindDef": "Squirrel",
+     "def": "Squirrel",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 57,
+     "z": 82,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Tortoise45656",
+     "name": "Tortoise",
+     "kind": "Tortoise",
+     "kindDef": "Tortoise",
+     "def": "Tortoise",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 184,
+     "z": 69,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.5,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Heron45657",
+     "name": "Heron",
+     "kind": "Heron",
+     "kindDef": "Heron",
+     "def": "Heron",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 211,
+     "z": 71,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.6,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Hare45658",
+     "name": "Hare",
+     "kind": "Hare",
+     "kindDef": "Hare",
+     "def": "Hare",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 22,
+     "z": 22,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Heron45659",
+     "name": "Heron",
+     "kind": "Heron",
+     "kindDef": "Heron",
+     "def": "Heron",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 59,
+     "z": 168,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.6,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Raccoon45660",
+     "name": "Raccoon",
+     "kind": "Raccoon",
+     "kindDef": "Raccoon",
+     "def": "Raccoon",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 138,
+     "z": 30,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Heron45661",
+     "name": "Heron",
+     "kind": "Heron",
+     "kindDef": "Heron",
+     "def": "Heron",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 57,
+     "z": 55,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.6,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Boomalope45662",
+     "name": "Boomalope",
+     "kind": "Boomalope",
+     "kindDef": "Boomalope",
+     "def": "Boomalope",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 141,
+     "z": 137,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Boomalope45663",
+     "name": "Boomalope",
+     "kind": "Boomalope",
+     "kindDef": "Boomalope",
+     "def": "Boomalope",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 137,
+     "z": 140,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Boomalope45664",
+     "name": "Boomalope",
+     "kind": "Boomalope",
+     "kindDef": "Boomalope",
+     "def": "Boomalope",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 138,
+     "z": 144,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Boomalope45665",
+     "name": "Boomalope",
+     "kind": "Boomalope",
+     "kindDef": "Boomalope",
+     "def": "Boomalope",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 136,
+     "z": 139,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Ibex45666",
+     "name": "Ibex ram",
+     "kind": "Ibex",
+     "kindDef": "Ibex",
+     "def": "Ibex",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 106,
+     "z": 140,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Hare45667",
+     "name": "Hare",
+     "kind": "Hare",
+     "kindDef": "Hare",
+     "def": "Hare",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 16,
+     "z": 126,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Tortoise45668",
+     "name": "Tortoise",
+     "kind": "Tortoise",
+     "kindDef": "Tortoise",
+     "def": "Tortoise",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 247,
+     "z": 198,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.5,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Rat45669",
+     "name": "Rat",
+     "kind": "Rat",
+     "kindDef": "Rat",
+     "def": "Rat",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 182,
+     "z": 169,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [
+       {
+        "def": "Bite",
+        "label": "bite scar (itchy)",
+        "severity": 2.0,
+        "part": "Leg",
+        "partLabel": "front left leg"
+       }
+      ],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 0.94,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.04310345,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Rat45670",
+     "name": "Rat",
+     "kind": "Rat",
+     "kindDef": "Rat",
+     "def": "Rat",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 91,
+     "z": 164,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "WildBoar45671",
+     "name": "Wild boar",
+     "kind": "WildBoar",
+     "kindDef": "WildBoar",
+     "def": "WildBoar",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 76,
+     "z": 60,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "WildBoar45672",
+     "name": "Wild boar",
+     "kind": "WildBoar",
+     "kindDef": "WildBoar",
+     "def": "WildBoar",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 72,
+     "z": 54,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "WildBoar45673",
+     "name": "Wild boar",
+     "kind": "WildBoar",
+     "kindDef": "WildBoar",
+     "def": "WildBoar",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 76,
+     "z": 61,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "WildBoar45674",
+     "name": "Wild boar",
+     "kind": "WildBoar",
+     "kindDef": "WildBoar",
+     "def": "WildBoar",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 68,
+     "z": 63,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "WildBoar45675",
+     "name": "Wild boar",
+     "kind": "WildBoar",
+     "kindDef": "WildBoar",
+     "def": "WildBoar",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 67,
+     "z": 63,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "WildBoar45676",
+     "name": "Wild boar",
+     "kind": "WildBoar",
+     "kindDef": "WildBoar",
+     "def": "WildBoar",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 73,
+     "z": 61,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45677",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 13,
+     "z": 57,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45678",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 16,
+     "z": 63,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45679",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 19,
+     "z": 63,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45680",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 18,
+     "z": 59,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45681",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 17,
+     "z": 60,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Ibex45682",
+     "name": "Ibex ram",
+     "kind": "Ibex",
+     "kindDef": "Ibex",
+     "def": "Ibex",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 191,
+     "z": 35,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Duck45683",
+     "name": "Duck",
+     "kind": "Duck",
+     "kindDef": "Duck",
+     "def": "Duck",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 13,
+     "z": 100,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.3,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bullfrog45684",
+     "name": "Bullfrog",
+     "kind": "Bullfrog",
+     "kindDef": "Bullfrog",
+     "def": "Bullfrog",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 73,
+     "z": 148,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bluebird45685",
+     "name": "Bluebird",
+     "kind": "Bluebird",
+     "kindDef": "Bluebird",
+     "def": "Bluebird",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 218,
+     "z": 57,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.15,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Duck45686",
+     "name": "Duck",
+     "kind": "Duck",
+     "kindDef": "Duck",
+     "def": "Duck",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 109,
+     "z": 55,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.3,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Rat45687",
+     "name": "Rat",
+     "kind": "Rat",
+     "kindDef": "Rat",
+     "def": "Rat",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 91,
+     "z": 231,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bluebird45688",
+     "name": "Bluebird",
+     "kind": "Bluebird",
+     "kindDef": "Bluebird",
+     "def": "Bluebird",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 232,
+     "z": 108,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.15,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bluebird45689",
+     "name": "Bluebird",
+     "kind": "Bluebird",
+     "kindDef": "Bluebird",
+     "def": "Bluebird",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 125,
+     "z": 81,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.15,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Badger45690",
+     "name": "Badger",
+     "kind": "Badger",
+     "kindDef": "Badger",
+     "def": "Badger",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 144,
+     "z": 14,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.6,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Squirrel45691",
+     "name": "Squirrel",
+     "kind": "Squirrel",
+     "kindDef": "Squirrel",
+     "def": "Squirrel",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 120,
+     "z": 205,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Squirrel45692",
+     "name": "Squirrel",
+     "kind": "Squirrel",
+     "kindDef": "Squirrel",
+     "def": "Squirrel",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 219,
+     "z": 69,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Porcupine45693",
+     "name": "Porcupine",
+     "kind": "Porcupine",
+     "kindDef": "Porcupine",
+     "def": "Porcupine",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 125,
+     "z": 80,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.35,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Squirrel45694",
+     "name": "Squirrel",
+     "kind": "Squirrel",
+     "kindDef": "Squirrel",
+     "def": "Squirrel",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 61,
+     "z": 110,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Rat45695",
+     "name": "Rat",
+     "kind": "Rat",
+     "kindDef": "Rat",
+     "def": "Rat",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 30,
+     "z": 222,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Lynx45696",
+     "name": "Lynx",
+     "kind": "Lynx",
+     "kindDef": "Lynx",
+     "def": "Lynx",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 198,
+     "z": 212,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.6,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bullfrog45697",
+     "name": "Bullfrog",
+     "kind": "Bullfrog",
+     "kindDef": "Bullfrog",
+     "def": "Bullfrog",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 80,
+     "z": 82,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Squirrel45698",
+     "name": "Squirrel",
+     "kind": "Squirrel",
+     "kindDef": "Squirrel",
+     "def": "Squirrel",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 170,
+     "z": 198,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [
+       {
+        "def": "Stab",
+        "label": "stab scar (painful)",
+        "severity": 4.0,
+        "part": "Body",
+        "partLabel": "body"
+       }
+      ],
+      "capacities": {
+       "Consciousness": 0.78,
+       "Moving": 0.78,
+       "Manipulation": 0.78,
+       "Talking": 0.78,
+       "Eating": 0.78,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.6,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bullfrog45699",
+     "name": "Bullfrog",
+     "kind": "Bullfrog",
+     "kindDef": "Bullfrog",
+     "def": "Bullfrog",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 110,
+     "z": 49,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Mink45700",
+     "name": "Mink",
+     "kind": "Mink",
+     "kindDef": "Mink",
+     "def": "Mink",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 2,
+     "z": 173,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.35,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bluebird45701",
+     "name": "Bluebird",
+     "kind": "Bluebird",
+     "kindDef": "Bluebird",
+     "def": "Bluebird",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 46,
+     "z": 183,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.15,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Squirrel45702",
+     "name": "Squirrel",
+     "kind": "Squirrel",
+     "kindDef": "Squirrel",
+     "def": "Squirrel",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 142,
+     "z": 218,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Bluebird45703",
+     "name": "Bluebird",
+     "kind": "Bluebird",
+     "kindDef": "Bluebird",
+     "def": "Bluebird",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 219,
+     "z": 45,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.15,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Badger45704",
+     "name": "Badger",
+     "kind": "Badger",
+     "kindDef": "Badger",
+     "def": "Badger",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 25,
+     "z": 58,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.6,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Hare45705",
+     "name": "Hare",
+     "kind": "Hare",
+     "kindDef": "Hare",
+     "def": "Hare",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 45,
+     "z": 40,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.2,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45706",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 167,
+     "z": 56,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45707",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 166,
+     "z": 51,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45708",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 167,
+     "z": 56,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45709",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 169,
+     "z": 55,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Muffalo45710",
+     "name": "Muffalo",
+     "kind": "Muffalo",
+     "kindDef": "Muffalo",
+     "def": "Muffalo",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 165,
+     "z": 56,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 2.4,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Wolf_Timber45785",
+     "name": "Timber wolf",
+     "kind": "Wolf_Timber",
+     "kindDef": "Wolf_Timber",
+     "def": "Wolf_Timber",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 138,
+     "z": 123,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Human45788",
+     "name": "White",
+     "kind": "Tribal_Berserker",
+     "kindDef": "Tribal_Berserker",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Neanderthal",
+     "xenotypeLabel": "neanderthal",
+     "uniqueXenotype": false,
+     "faction": "TribeRoughNeanderthal",
+     "factionName": "Buton",
+     "isPlayer": false,
+     "hostile": true,
+     "x": 11,
+     "z": 122,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off (fresh)",
+        "severity": 0.5,
+        "part": "Leg",
+        "partLabel": "left leg"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Shattered",
+        "severity": 0.5,
+        "part": "Femur",
+        "partLabel": "left femur"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Shattered",
+        "severity": 0.5,
+        "part": "Tibia",
+        "partLabel": "left tibia"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off",
+        "severity": 0.5,
+        "part": "Foot",
+        "partLabel": "left foot"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left little toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left fourth toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left middle toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left second toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Cut off",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left big toe"
+       }
+      ],
+      "capacities": {
+       "Consciousness": 0.96,
+       "Moving": 0.48,
+       "Manipulation": 0.96,
+       "Talking": 0.96,
+       "Eating": 0.96,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.1875,
+      "bleedRate": 3.6
+     }
+    },
+    {
+     "id": "Human696",
+     "name": "Burdee",
+     "kind": "Colonist",
+     "kindDef": "Colonist",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Baseliner",
+     "xenotypeLabel": "baseliner",
+     "uniqueXenotype": false,
+     "faction": "PlayerColony",
+     "factionName": "New Arrivals",
+     "isPlayer": true,
+     "hostile": false,
+     "x": 121,
+     "z": 114,
+     "spawned": true,
+     "dead": false,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {
+       "Consciousness": 1.0,
+       "Moving": 1.0,
+       "Manipulation": 1.0,
+       "Talking": 1.0,
+       "Eating": 1.0,
+       "Sight": 1.0,
+       "Hearing": 1.0,
+       "Breathing": 1.0,
+       "BloodFiltration": 1.0,
+       "BloodPumping": 1.0,
+       "Metabolism": 1.0
+      },
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Human45767",
+     "name": "Sausage",
+     "kind": "Drifter",
+     "kindDef": "Drifter",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Genie",
+     "xenotypeLabel": "genie",
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 51,
+     "z": 180,
+     "spawned": false,
+     "dead": true,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [
+       {
+        "def": "PegLeg",
+        "label": "peg leg",
+        "severity": 0.5,
+        "part": "Leg",
+        "partLabel": "left leg"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Femur",
+        "partLabel": "left femur"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Tibia",
+        "partLabel": "left tibia"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Foot",
+        "partLabel": "left foot"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left little toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left fourth toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left middle toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left second toe"
+       },
+       {
+        "def": "MissingBodyPart",
+        "label": "Removed",
+        "severity": 0.5,
+        "part": "Toe",
+        "partLabel": "left big toe"
+       }
+      ],
+      "capacities": {},
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Human45772",
+     "name": "Pete",
+     "kind": "Drifter",
+     "kindDef": "Drifter",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Baseliner",
+     "xenotypeLabel": "baseliner",
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 44,
+     "z": 175,
+     "spawned": false,
+     "dead": true,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {},
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Human45786",
+     "name": "Sam",
+     "kind": "Tribal_Penitent",
+     "kindDef": "Tribal_Penitent",
+     "def": "Human",
+     "hasGenes": true,
+     "xenotype": "Neanderthal",
+     "xenotypeLabel": "neanderthal",
+     "uniqueXenotype": false,
+     "faction": "TribeRoughNeanderthal",
+     "factionName": "Buton",
+     "isPlayer": false,
+     "hostile": true,
+     "x": 11,
+     "z": 122,
+     "spawned": false,
+     "dead": true,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Humanlike",
+     "bodySize": 1.0,
+     "health": {
+      "hediffs": [],
+      "capacities": {},
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    },
+    {
+     "id": "Wolf_Timber45653",
+     "name": "Timber wolf",
+     "kind": "Wolf_Timber",
+     "kindDef": "Wolf_Timber",
+     "def": "Wolf_Timber",
+     "hasGenes": false,
+     "xenotype": null,
+     "xenotypeLabel": null,
+     "uniqueXenotype": false,
+     "faction": null,
+     "factionName": null,
+     "isPlayer": false,
+     "hostile": false,
+     "x": 236,
+     "z": 177,
+     "spawned": false,
+     "dead": true,
+     "downed": false,
+     "stunned": false,
+     "stunTicksLeft": 0,
+     "fleshType": "Normal",
+     "isMechanoid": false,
+     "isFlesh": true,
+     "intelligence": "Animal",
+     "bodySize": 0.85,
+     "health": {
+      "hediffs": [],
+      "capacities": {},
+      "capacityErrors": [],
+      "painTotal": 0.0,
+      "bleedRate": 0.0
+     }
+    }
+   ],
+   "returned": 67,
+   "truncated": 0,
+   "totalOnMap": 63,
+   "ticksGame": 371
+  }
+ },
+ "1_mental_end": {
+  "tool": "jawa/pawn_mental",
+  "params": {
+   "pawn": "Human691",
+   "action": "end"
+  },
+  "ms": 4,
+  "result": {
+   "success": false,
+   "message": "Pawn is not in a mental state.",
+   "details": null
+  }
+ },
+ "1b": {
+  "tool": "jawa/pawn_mental",
+  "params": {
+   "action": "list",
+   "pawn": "Human691"
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "list",
+   "started": null,
+   "notes": [],
+   "currentState": null,
+   "totalDefs": 47,
+   "states": [
+    {
+     "def": "Berserk",
+     "label": "berserk",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "BerserkPermanent",
+     "label": "berserk",
+     "neverRecoversAlone": true,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "FireStartingSpree",
+     "label": "fire starting spree",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Binging_DrugExtreme",
+     "label": "binging on drug",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Jailbreaker",
+     "label": "inducing prisoner to escape",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Slaughterer",
+     "label": "slaughterer",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "MurderousRage",
+     "label": "murderous rage",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "GiveUpExit",
+     "label": "giving up and leaving",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Binging_DrugMajor",
+     "label": "binging on drug",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Wander_Psychotic",
+     "label": "wandering in psychosis",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Wander_Psychotic_Short",
+     "label": "wandering in psychosis",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Tantrum",
+     "label": "tantrum",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "TargetedTantrum",
+     "label": "tantrum",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "BedroomTantrum",
+     "label": "tantrum",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "SadisticRage",
+     "label": "sadistic rage",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "CorpseObsession",
+     "label": "corpse obsession",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Binging_Food",
+     "label": "binging on food",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Wander_Sad",
+     "label": "sad wandering",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Wander_OwnRoom",
+     "label": "sitting alone",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "InsultingSpree",
+     "label": "insulting spree",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "TargetedInsultingSpree",
+     "label": "insulting spree",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "WanderConfused",
+     "label": "confused wandering",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "PanicFlee",
+     "label": "panic fleeing",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Manhunter",
+     "label": "manhunter",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "ManhunterPermanent",
+     "label": "manhunter",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "SocialFighting",
+     "label": "social fighting",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Roaming",
+     "label": "roaming",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "BerserkMechanoid",
+     "label": "aggression judgement scramble",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "CocoonDisturbed",
+     "label": "cocoon disturbed",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "IdeoChange",
+     "label": "crisis of belief",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Rebellion",
+     "label": "rebelling",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "BerserkTrance",
+     "label": "berserk trance",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Crying",
+     "label": null,
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "Giggling",
+     "label": null,
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "PanicFleeFire",
+     "label": "panic-fleeing fire",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "BerserkWarcall",
+     "label": "warcall berserk",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "DarkVisions",
+     "label": "dark visions",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "InsaneRamblings",
+     "label": "insane ramblings",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "EntityKiller",
+     "label": "entity slayer",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "EntityLiberator",
+     "label": "entity liberator",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "TerrifyingHallucinations",
+     "label": "terrifying hallucinations",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "HumanityBreak",
+     "label": "humanity break",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "BerserkShort",
+     "label": "berserk",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "ManhunterBloodRain",
+     "label": "manhunter",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": false
+    },
+    {
+     "def": "CubeSculpting",
+     "label": "cube sculpting",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "Terror",
+     "label": "terror",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    },
+    {
+     "def": "VEF_XenophobicRage",
+     "label": "xenophobic rage",
+     "neverRecoversAlone": false,
+     "blockNormalThoughts": true
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "2_resurrect": {
+  "tool": "jawa/pawn_resurrect",
+  "params": {
+   "pawn": "Human696",
+   "restoreMissingParts": true,
+   "removeDiedThoughts": true
+  },
+  "ms": 19,
+  "result": {
+   "success": true,
+   "resurrected": true,
+   "deadBefore": true,
+   "deadAfter": false,
+   "spawned": true,
+   "thingId": "Human696",
+   "label": "Burdee",
+   "hediffCount": 0,
+   "needCount": 9,
+   "ticksGame": 371
+  }
+ },
+ "2b": {
+  "tool": "jawa/letter_list",
+  "params": {},
+  "ms": 6,
+  "result": {
+   "success": true,
+   "count": 4,
+   "letters": [
+    {
+     "label": {
+      "RawText": "Mourning of Nature opportunity for Burdee",
+      "Length": 41,
+      "StrippedLength": 41
+     },
+     "defName": "NeutralEvent",
+     "arrivalTick": 61,
+     "lookTargets": "Verse.LookTargets"
+    },
+    {
+     "label": {
+      "RawText": "Death: Burdee",
+      "Length": 13,
+      "StrippedLength": 13
+     },
+     "defName": "Death",
+     "arrivalTick": 61,
+     "lookTargets": "Verse.LookTargets"
+    },
+    {
+     "label": {
+      "RawText": "Raid: Buton",
+      "Length": 11,
+      "StrippedLength": 11
+     },
+     "defName": "ThreatBig",
+     "arrivalTick": 71,
+     "lookTargets": "Verse.LookTargets"
+    },
+    {
+     "label": {
+      "RawText": "Sad wander: Vas",
+      "Length": 15,
+      "StrippedLength": 15
+     },
+     "defName": "NegativeEvent",
+     "arrivalTick": 371,
+     "lookTargets": "Verse.LookTargets"
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "3a_kill_force": {
+  "tool": "jawa/pawn_force_incapacitate",
+  "params": {
+   "pawn": "Human45786",
+   "action": "kill"
+  },
+  "ms": 9,
+  "result": {
+   "success": true,
+   "action": "kill",
+   "allowBleedingWoundsHonoured": null,
+   "downedBefore": false,
+   "deadBefore": false,
+   "downedAfter": false,
+   "deadAfter": true,
+   "changed": true,
+   "hediffCount": 0,
+   "ticksGame": 371
+  }
+ },
+ "3b_kill_damage": {
+  "tool": "jawa/damage",
+  "params": {
+   "thingId": "Human45788",
+   "damageDef": "Cut",
+   "amount": 500,
+   "allowColonists": false
+  },
+  "ms": 15,
+  "result": {
+   "success": true,
+   "message": "Damaged 1 thing(s) with Cut 500.",
+   "damageDef": "Cut",
+   "harmsHealth": true,
+   "targetsHit": 1,
+   "colonistsSkipped": 0,
+   "bodyPartRequested": null,
+   "bodyPartNotOnTarget": 0,
+   "results": [
+    {
+     "id": "Human45788",
+     "def": "Human",
+     "isPawn": true,
+     "bodyPartRequested": null,
+     "bodyPartHit": null,
+     "bodyPartTargeted": true,
+     "hitPointsBefore": -1,
+     "hitPointsAfter": -1,
+     "destroyed": false,
+     "totalDamageDealt": 80.0,
+     "hediffsBefore": 0,
+     "hediffsAfter": 9,
+     "downed": false,
+     "dead": false,
+     "stunTicksLeft": 0
+    }
+   ],
+   "targets": [
+    {
+     "id": "Human45788",
+     "def": "Human",
+     "isPawn": true,
+     "bodyPartRequested": null,
+     "bodyPartHit": null,
+     "bodyPartTargeted": true,
+     "hitPointsBefore": -1,
+     "hitPointsAfter": -1,
+     "destroyed": false,
+     "totalDamageDealt": 80.0,
+     "hediffsBefore": 0,
+     "hediffsAfter": 9,
+     "downed": false,
+     "dead": false,
+     "stunTicksLeft": 0
+    }
+   ],
+   "resultCount": 1,
+   "verdictFields": [
+    "downed",
+    "dead",
+    "destroyed"
+   ],
+   "ticksGame": 371
+  }
+ },
+ "3c_kill_wolf": {
+  "tool": "jawa/pawn_force_incapacitate",
+  "params": {
+   "pawn": "Wolf_Timber45653",
+   "action": "kill"
+  },
+  "ms": 8,
+  "result": {
+   "success": true,
+   "action": "kill",
+   "allowBleedingWoundsHonoured": null,
+   "downedBefore": false,
+   "deadBefore": false,
+   "downedAfter": false,
+   "deadAfter": true,
+   "changed": true,
+   "hediffCount": 0,
+   "ticksGame": 371
+  }
+ },
+ "4_ext": {
+  "tool": "jawa/map_fire",
+  "params": {
+   "action": "extinguish",
+   "rect": "0,0,250,250"
+  },
+  "ms": 23,
+  "result": {
+   "success": true,
+   "action": "extinguish",
+   "cellsTried": 62500,
+   "firesStarted": 0,
+   "firesExtinguished": 6,
+   "cellsFailed": 0,
+   "errors": [],
+   "errorsTruncated": false,
+   "note": null,
+   "ticksGame": 371
+  }
+ },
+ "4b": {
+  "tool": "jawa/list_things",
+  "params": {
+   "defName": "Fire"
+  },
+  "ms": 13,
+  "result": {
+   "success": true,
+   "things": [],
+   "scanned": 43189,
+   "countReturned": 0,
+   "countMatched": 0,
+   "isCompleteList": true,
+   "truncated": 0,
+   "pawnsSkipped": 68,
+   "perDef": {},
+   "ticksGame": 371,
+   "message": "NOTHING MATCHED. 43189 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent."
+  }
+ },
+ "5_rm_Frostbite": {
+  "tool": "jawa/pawn_health",
+  "params": {
+   "pawn": "Human693",
+   "action": "remove",
+   "hediff": "Frostbite",
+   "bodyPart": "Hand"
+  },
+  "ms": 14,
+  "result": {
+   "success": true,
+   "action": "remove",
+   "didWhat": "removed Frostbite",
+   "partsAvailable": null,
+   "hediffCount": 4,
+   "hediffs": [
+    {
+     "def": "Cut",
+     "part": "Torso",
+     "severity": 4.36363649
+    },
+    {
+     "def": "Crack",
+     "part": "Clavicle",
+     "severity": 4.36363649
+    },
+    {
+     "def": "Cut",
+     "part": "Shoulder",
+     "severity": 4.28363657
+    },
+    {
+     "def": "BloodLoss",
+     "part": null,
+     "severity": 0.0031322185
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "5_rm_Cut": {
+  "tool": "jawa/pawn_health",
+  "params": {
+   "pawn": "Human693",
+   "action": "remove",
+   "hediff": "Cut",
+   "bodyPart": "Shoulder"
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "remove",
+   "didWhat": "removed Cut",
+   "partsAvailable": null,
+   "hediffCount": 1,
+   "hediffs": [
+    {
+     "def": "BloodLoss",
+     "part": null,
+     "severity": 0.0031322185
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "5_rm_Crack": {
+  "tool": "jawa/pawn_health",
+  "params": {
+   "pawn": "Human693",
+   "action": "remove",
+   "hediff": "Crack",
+   "bodyPart": "Clavicle"
+  },
+  "ms": 6,
+  "result": {
+   "success": true,
+   "action": "remove",
+   "didWhat": "removed Crack",
+   "partsAvailable": null,
+   "hediffCount": 2,
+   "hediffs": [
+    {
+     "def": "Cut",
+     "part": "Shoulder",
+     "severity": 4.28363657
+    },
+    {
+     "def": "BloodLoss",
+     "part": null,
+     "severity": 0.0031322185
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "6_food": {
+  "tool": "jawa/pawn_need",
+  "params": {
+   "pawn": "Human693",
+   "action": "need",
+   "need": "Food",
+   "level": 1.0
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "need",
+   "notes": [
+    "set Food to 1"
+   ],
+   "needs": [
+    {
+     "need": "Mood",
+     "level": 0.4996875,
+     "pct": 0.4996875
+    },
+    {
+     "need": "Food",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "Rest",
+     "level": 0.9493964,
+     "pct": 0.9493964
+    },
+    {
+     "need": "Joy",
+     "level": 0.544925034,
+     "pct": 0.544925034
+    },
+    {
+     "need": "Beauty",
+     "level": 0.485600024,
+     "pct": 0.485600024
+    },
+    {
+     "need": "Comfort",
+     "level": 0.492799968,
+     "pct": 0.492799968
+    },
+    {
+     "need": "Outdoors",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "DrugDesire",
+     "level": 0.5,
+     "pct": 0.5
+    },
+    {
+     "need": "RoomSize",
+     "level": 0.66200006,
+     "pct": 0.66200006
+    }
+   ],
+   "memories": [
+    {
+     "def": "CrashedTogether",
+     "age": 450
+    },
+    {
+     "def": "CrashedTogether",
+     "age": 450
+    },
+    {
+     "def": "NewColonyOptimism",
+     "age": 450
+    },
+    {
+     "def": "WitnessedDeathAlly",
+     "age": 300
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "6_mood": {
+  "tool": "jawa/pawn_need",
+  "params": {
+   "pawn": "Human693",
+   "action": "need",
+   "need": "Mood",
+   "level": 0.9
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "need",
+   "notes": [
+    "set Mood to 0.9"
+   ],
+   "needs": [
+    {
+     "need": "Mood",
+     "level": 0.9,
+     "pct": 0.9
+    },
+    {
+     "need": "Food",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "Rest",
+     "level": 0.9493964,
+     "pct": 0.9493964
+    },
+    {
+     "need": "Joy",
+     "level": 0.544925034,
+     "pct": 0.544925034
+    },
+    {
+     "need": "Beauty",
+     "level": 0.485600024,
+     "pct": 0.485600024
+    },
+    {
+     "need": "Comfort",
+     "level": 0.492799968,
+     "pct": 0.492799968
+    },
+    {
+     "need": "Outdoors",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "DrugDesire",
+     "level": 0.5,
+     "pct": 0.5
+    },
+    {
+     "need": "RoomSize",
+     "level": 0.66200006,
+     "pct": 0.66200006
+    }
+   ],
+   "memories": [
+    {
+     "def": "CrashedTogether",
+     "age": 450
+    },
+    {
+     "def": "CrashedTogether",
+     "age": 450
+    },
+    {
+     "def": "NewColonyOptimism",
+     "age": 450
+    },
+    {
+     "def": "WitnessedDeathAlly",
+     "age": 300
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "6b": {
+  "tool": "jawa/pawn_need",
+  "params": {
+   "pawn": "Human693",
+   "action": "list"
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "list",
+   "notes": [],
+   "needs": [
+    {
+     "need": "Mood",
+     "level": 0.9,
+     "pct": 0.9
+    },
+    {
+     "need": "Food",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "Rest",
+     "level": 0.9493964,
+     "pct": 0.9493964
+    },
+    {
+     "need": "Joy",
+     "level": 0.544925034,
+     "pct": 0.544925034
+    },
+    {
+     "need": "Beauty",
+     "level": 0.485600024,
+     "pct": 0.485600024
+    },
+    {
+     "need": "Comfort",
+     "level": 0.492799968,
+     "pct": 0.492799968
+    },
+    {
+     "need": "Outdoors",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "DrugDesire",
+     "level": 0.5,
+     "pct": 0.5
+    },
+    {
+     "need": "RoomSize",
+     "level": 0.66200006,
+     "pct": 0.66200006
+    }
+   ],
+   "memories": [
+    {
+     "def": "CrashedTogether",
+     "age": 450
+    },
+    {
+     "def": "CrashedTogether",
+     "age": 450
+    },
+    {
+     "def": "NewColonyOptimism",
+     "age": 450
+    },
+    {
+     "def": "WitnessedDeathAlly",
+     "age": 300
+    }
+   ],
+   "ticksGame": 371
+  }
+ },
+ "6_step": {
+  "tool": "rimworld/step_game_ticks",
+  "params": {
+   "ticks": 120,
+   "pauseFirst": true
+  },
+  "ms": 363,
+  "result": {
+   "success": true,
+   "stepId": "step_c14cfd97684c40a2904231a7479f33a8",
+   "status": "completed",
+   "requestedTicks": 120,
+   "completedTicks": 120,
+   "remainingTicks": 0,
+   "startTicksGame": 371,
+   "endTicksGame": 491,
+   "advancedTicks": 120,
+   "initialFrame": 219423,
+   "lastFrame": 219542,
+   "advancedFrames": 120,
+   "initialTimeSpeed": "Paused",
+   "startedAtUtc": "2026-10-01T23:44:38.133843+00:00",
+   "completedAtUtc": "2026-10-01T23:44:38.492394+00:00",
+   "message": "Advanced 120 game tick(s) across 120 Unity update frame(s).",
+   "state": {
+    "programState": "Playing",
+    "inEntryScene": false,
+    "hasCurrentGame": true,
+    "currentMapId": "Map_0",
+    "currentMapIndex": 0,
+    "mapCount": 1,
+    "longEventPending": false,
+    "paused": true,
+    "timeSpeed": "Paused",
+    "screenFading": false,
+    "fadeOverlayAlpha": 0.0,
+    "gameDataReady": true,
+    "mapDataReady": true,
+    "currentMapReady": true,
+    "screenFadeClear": true,
+    "playable": true,
+    "visualReady": true,
+    "automationReady": true
+   }
+  }
+ },
+ "6c": {
+  "tool": "jawa/pawn_need",
+  "params": {
+   "pawn": "Human693",
+   "action": "list"
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "list",
+   "notes": [],
+   "needs": [
+    {
+     "need": "Mood",
+     "level": 0.895199955,
+     "pct": 0.895199955
+    },
+    {
+     "need": "Food",
+     "level": 0.996,
+     "pct": 0.996
+    },
+    {
+     "need": "Rest",
+     "level": 0.947021365,
+     "pct": 0.947021365
+    },
+    {
+     "need": "Joy",
+     "level": 0.543425,
+     "pct": 0.543425
+    },
+    {
+     "need": "Beauty",
+     "level": 0.480800033,
+     "pct": 0.480800033
+    },
+    {
+     "need": "Comfort",
+     "level": 0.490399957,
+     "pct": 0.490399957
+    },
+    {
+     "need": "Outdoors",
+     "level": 1.0,
+     "pct": 1.0
+    },
+    {
+     "need": "DrugDesire",
+     "level": 0.5,
+     "pct": 0.5
+    },
+    {
+     "need": "RoomSize",
+     "level": 0.7160001,
+     "pct": 0.7160001
+    }
+   ],
+   "memories": [
+    {
+     "def": "CrashedTogether",
+     "age": 600
+    },
+    {
+     "def": "CrashedTogether",
+     "age": 600
+    },
+    {
+     "def": "NewColonyOptimism",
+     "age": 600
+    },
+    {
+     "def": "WitnessedDeathAlly",
+     "age": 450
+    }
+   ],
+   "ticksGame": 491
+  }
+ },
+ "7_dbg_before": {
+  "tool": "jawa/debug_settings",
+  "params": {
+   "action": "list"
+  },
+  "ms": 6,
+  "result": {
+   "success": true,
+   "action": "list",
+   "count": 47,
+   "fields": [
+    {
+     "name": "activateAllBuildingDemands",
+     "value": false
+    },
+    {
+     "name": "activateAllIdeoRoles",
+     "value": false
+    },
+    {
+     "name": "allowUndraftedMechOrders",
+     "value": false
+    },
+    {
+     "name": "alwaysDoLovin",
+     "value": false
+    },
+    {
+     "name": "alwaysNegativeCatches",
+     "value": false
+    },
+    {
+     "name": "alwaysRareCatches",
+     "value": false
+    },
+    {
+     "name": "alwaysSocialFight",
+     "value": false
+    },
+    {
+     "name": "anomalyDarkeningFX",
+     "value": true
+    },
+    {
+     "name": "DebugBuild",
+     "value": false
+    },
+    {
+     "name": "detectRegionListersBugs",
+     "value": false
+    },
+    {
+     "name": "devPalette",
+     "value": true
+    },
+    {
+     "name": "editableGlowerColors",
+     "value": false
+    },
+    {
+     "name": "enableDamage",
+     "value": true
+    },
+    {
+     "name": "enablePlayerDamage",
+     "value": true
+    },
+    {
+     "name": "enableRandomDiseases",
+     "value": true
+    },
+    {
+     "name": "enableRandomMentalStates",
+     "value": true
+    },
+    {
+     "name": "enableStoryteller",
+     "value": true
+    },
+    {
+     "name": "enableTranslationWindowInEnglish",
+     "value": false
+    },
+    {
+     "name": "fastCaravans",
+     "value": false
+    },
+    {
+     "name": "fastCrafting",
+     "value": false
+    },
+    {
+     "name": "fastEcology",
+     "value": false
+    },
+    {
+     "name": "fastEcologyRegrowRateOnly",
+     "value": false
+    },
+    {
+     "name": "fastLearning",
+     "value": false
+    },
+    {
+     "name": "fastMapUnpollution",
+     "value": false
+    },
+    {
+     "name": "fastMonolithRespawn",
+     "value": false
+    },
+    {
+     "name": "fastResearch",
+     "value": false
+    },
+    {
+     "name": "godMode",
+     "value": false
+    },
+    {
+     "name": "ignoreGravshipRange",
+     "value": false
+    },
+    {
+     "name": "instantRecruit",
+     "value": false
+    },
+    {
+     "name": "instantVisitorsGift",
+     "value": false
+    },
+    {
+     "name": "logMismatchedLayoutFactions",
+     "value": false
+    },
+    {
+     "name": "logPsychicRitualTransitions",
+     "value": false
+    },
+    {
+     "name": "logRaidInfo",
+     "value": false
+    },
+    {
+     "name": "logTranslationLookupErrors",
+     "value": false
+    },
+    {
+     "name": "loopGravshipCutscene",
+     "value": false
+    },
+    {
+     "name": "lowFPS",
+     "value": false
+    },
+    {
+     "name": "noAnimals",
+     "value": false
+    },
+    {
+     "name": "pathThroughWalls",
+     "value": false
+    },
+    {
+     "name": "pauseOnError",
+     "value": false
+    },
+    {
+     "name": "playRitualAmbience",
+     "value": true
+    },
+    {
+     "name": "searchIgnoresRestrictions",
+     "value": false
+    },
+    {
+     "name": "showHiddenInfo",
+     "value": false
+    },
+    {
+     "name": "showHiddenPawns",
+     "value": false
+    },
+    {
+     "name": "showLocomotionUrgency",
+     "value": false
+    },
+    {
+     "name": "simulateUsingSteamDeck",
+     "value": false
+    },
+    {
+     "name": "skipGravshipTileSelection",
+     "value": false
+    },
+    {
+     "name": "unlimitedPower",
+     "value": false
+    }
+   ],
+   "ticksGame": 491
+  }
+ },
+ "7_set": {
+  "tool": "jawa/debug_settings",
+  "params": {
+   "action": "set",
+   "name": "enableStoryteller",
+   "value": false
+  },
+  "ms": 0,
+  "result": {
+   "EXC": "UnknownParameterError",
+   "msg": "jawa/debug_settings does not declare name. The bridge would DISCARD it silently and run on its defaults, returning success. Declared: action, field, value"
+  }
+ },
+ "7_dbg_after": {
+  "tool": "jawa/debug_settings",
+  "params": {
+   "action": "list"
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "list",
+   "count": 47,
+   "fields": [
+    {
+     "name": "activateAllBuildingDemands",
+     "value": false
+    },
+    {
+     "name": "activateAllIdeoRoles",
+     "value": false
+    },
+    {
+     "name": "allowUndraftedMechOrders",
+     "value": false
+    },
+    {
+     "name": "alwaysDoLovin",
+     "value": false
+    },
+    {
+     "name": "alwaysNegativeCatches",
+     "value": false
+    },
+    {
+     "name": "alwaysRareCatches",
+     "value": false
+    },
+    {
+     "name": "alwaysSocialFight",
+     "value": false
+    },
+    {
+     "name": "anomalyDarkeningFX",
+     "value": true
+    },
+    {
+     "name": "DebugBuild",
+     "value": false
+    },
+    {
+     "name": "detectRegionListersBugs",
+     "value": false
+    },
+    {
+     "name": "devPalette",
+     "value": true
+    },
+    {
+     "name": "editableGlowerColors",
+     "value": false
+    },
+    {
+     "name": "enableDamage",
+     "value": true
+    },
+    {
+     "name": "enablePlayerDamage",
+     "value": true
+    },
+    {
+     "name": "enableRandomDiseases",
+     "value": true
+    },
+    {
+     "name": "enableRandomMentalStates",
+     "value": true
+    },
+    {
+     "name": "enableStoryteller",
+     "value": true
+    },
+    {
+     "name": "enableTranslationWindowInEnglish",
+     "value": false
+    },
+    {
+     "name": "fastCaravans",
+     "value": false
+    },
+    {
+     "name": "fastCrafting",
+     "value": false
+    },
+    {
+     "name": "fastEcology",
+     "value": false
+    },
+    {
+     "name": "fastEcologyRegrowRateOnly",
+     "value": false
+    },
+    {
+     "name": "fastLearning",
+     "value": false
+    },
+    {
+     "name": "fastMapUnpollution",
+     "value": false
+    },
+    {
+     "name": "fastMonolithRespawn",
+     "value": false
+    },
+    {
+     "name": "fastResearch",
+     "value": false
+    },
+    {
+     "name": "godMode",
+     "value": false
+    },
+    {
+     "name": "ignoreGravshipRange",
+     "value": false
+    },
+    {
+     "name": "instantRecruit",
+     "value": false
+    },
+    {
+     "name": "instantVisitorsGift",
+     "value": false
+    },
+    {
+     "name": "logMismatchedLayoutFactions",
+     "value": false
+    },
+    {
+     "name": "logPsychicRitualTransitions",
+     "value": false
+    },
+    {
+     "name": "logRaidInfo",
+     "value": false
+    },
+    {
+     "name": "logTranslationLookupErrors",
+     "value": false
+    },
+    {
+     "name": "loopGravshipCutscene",
+     "value": false
+    },
+    {
+     "name": "lowFPS",
+     "value": false
+    },
+    {
+     "name": "noAnimals",
+     "value": false
+    },
+    {
+     "name": "pathThroughWalls",
+     "value": false
+    },
+    {
+     "name": "pauseOnError",
+     "value": false
+    },
+    {
+     "name": "playRitualAmbience",
+     "value": true
+    },
+    {
+     "name": "searchIgnoresRestrictions",
+     "value": false
+    },
+    {
+     "name": "showHiddenInfo",
+     "value": false
+    },
+    {
+     "name": "showHiddenPawns",
+     "value": false
+    },
+    {
+     "name": "showLocomotionUrgency",
+     "value": false
+    },
+    {
+     "name": "simulateUsingSteamDeck",
+     "value": false
+    },
+    {
+     "name": "skipGravshipTileSelection",
+     "value": false
+    },
+    {
+     "name": "unlimitedPower",
+     "value": false
+    }
+   ],
+   "ticksGame": 491
+  }
+ },
+ "7_restore": {
+  "tool": "jawa/debug_settings",
+  "params": {
+   "action": "set",
+   "name": "enableStoryteller",
+   "value": true
+  },
+  "ms": 0,
+  "result": {
+   "EXC": "UnknownParameterError",
+   "msg": "jawa/debug_settings does not declare name. The bridge would DISCARD it silently and run on its defaults, returning success. Declared: action, field, value"
+  }
+ },
+ "7_dbg_final": {
+  "tool": "jawa/debug_settings",
+  "params": {
+   "action": "list"
+  },
+  "ms": 5,
+  "result": {
+   "success": true,
+   "action": "list",
+   "count": 47,
+   "fields": [
+    {
+     "name": "activateAllBuildingDemands",
+     "value": false
+    },
+    {
+     "name": "activateAllIdeoRoles",
+     "value": false
+    },
+    {
+     "name": "allowUndraftedMechOrders",
+     "value": false
+    },
+    {
+     "name": "alwaysDoLovin",
+     "value": false
+    },
+    {
+     "name": "alwaysNegativeCatches",
+     "value": false
+    },
+    {
+     "name": "alwaysRareCatches",
+     "value": false
+    },
+    {
+     "name": "alwaysSocialFight",
+     "value": false
+    },
+    {
+     "name": "anomalyDarkeningFX",
+     "value": true
+    },
+    {
+     "name": "DebugBuild",
+     "value": false
+    },
+    {
+     "name": "detectRegionListersBugs",
+     "value": false
+    },
+    {
+     "name": "devPalette",
+     "value": true
+    },
+    {
+     "name": "editableGlowerColors",
+     "value": false
+    },
+    {
+     "name": "enableDamage",
+     "value": true
+    },
+    {
+     "name": "enablePlayerDamage",
+     "value": true
+    },
+    {
+     "name": "enableRandomDiseases",
+     "value": true
+    },
+    {
+     "name": "enableRandomMentalStates",
+     "value": true
+    },
+    {
+     "name": "enableStoryteller",
+     "value": true
+    },
+    {
+     "name": "enableTranslationWindowInEnglish",
+     "value": false
+    },
+    {
+     "name": "fastCaravans",
+     "value": false
+    },
+    {
+     "name": "fastCrafting",
+     "value": false
+    },
+    {
+     "name": "fastEcology",
+     "value": false
+    },
+    {
+     "name": "fastEcologyRegrowRateOnly",
+     "value": false
+    },
+    {
+     "name": "fastLearning",
+     "value": false
+    },
+    {
+     "name": "fastMapUnpollution",
+     "value": false
+    },
+    {
+     "name": "fastMonolithRespawn",
+     "value": false
+    },
+    {
+     "name": "fastResearch",
+     "value": false
+    },
+    {
+     "name": "godMode",
+     "value": false
+    },
+    {
+     "name": "ignoreGravshipRange",
+     "value": false
+    },
+    {
+     "name": "instantRecruit",
+     "value": false
+    },
+    {
+     "name": "instantVisitorsGift",
+     "value": false
+    },
+    {
+     "name": "logMismatchedLayoutFactions",
+     "value": false
+    },
+    {
+     "name": "logPsychicRitualTransitions",
+     "value": false
+    },
+    {
+     "name": "logRaidInfo",
+     "value": false
+    },
+    {
+     "name": "logTranslationLookupErrors",
+     "value": false
+    },
+    {
+     "name": "loopGravshipCutscene",
+     "value": false
+    },
+    {
+     "name": "lowFPS",
+     "value": false
+    },
+    {
+     "name": "noAnimals",
+     "value": false
+    },
+    {
+     "name": "pathThroughWalls",
+     "value": false
+    },
+    {
+     "name": "pauseOnError",
+     "value": false
+    },
+    {
+     "name": "playRitualAmbience",
+     "value": true
+    },
+    {
+     "name": "searchIgnoresRestrictions",
+     "value": false
+    },
+    {
+     "name": "showHiddenInfo",
+     "value": false
+    },
+    {
+     "name": "showHiddenPawns",
+     "value": false
+    },
+    {
+     "name": "showLocomotionUrgency",
+     "value": false
+    },
+    {
+     "name": "simulateUsingSteamDeck",
+     "value": false
+    },
+    {
+     "name": "skipGravshipTileSelection",
+     "value": false
+    },
+    {
+     "name": "unlimitedPower",
+     "value": false
+    }
+   ],
+   "ticksGame": 491
+  }
+ }
+}

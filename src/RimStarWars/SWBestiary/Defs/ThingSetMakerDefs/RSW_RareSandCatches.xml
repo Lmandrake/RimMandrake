@@ -5,7 +5,7 @@
   the same way `RareFishingCatches_Hot` is, so it plugs straight into
   `BiomeDef.fishTypes.rareCatchesSetMaker` (RUT: Patches/SandFishing_CrackedLands.xml).
 
-  This is where "the rare prize" (RSW_GlassPearl) and "the thing that catches the
+  This is where "the rare prize" (RM_GlassPearl) and "the thing that catches the
   catcher" (RSW_SandStalker, here as a corpse) both live — mirroring vanilla's own
   RareFishingCatches_Hot pattern of occasional predator corpses (Iguana/Rat/Vulture/
   MonitorLizard, alive:false) mixed with an item reward. "You didn't catch a dune
@@ -26,13 +26,13 @@
         <li>
           <weight>4</weight>
           <thingSetMaker Class="ThingSetMaker_StackCount">
-            <!-- StackCount (not Count) because RSW_GlassPearl is a stackable raw
+            <!-- StackCount (not Count) because RM_GlassPearl is a stackable raw
                  resource, not equipment — matches RareFishingCatchesBase's own
                  "Human meat and leather" ThingSetMaker_StackCount precedent. -->
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li>RSW_GlassPearl</li>
+                  <li>RM_GlassPearl</li>
                 </thingDefs>
               </filter>
               <countRange>1~3</countRange>

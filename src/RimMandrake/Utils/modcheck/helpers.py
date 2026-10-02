@@ -160,6 +160,16 @@ class SettingsTransaction(object):
 
 
 # ------------------------------------------------------------------ helpers
+def companion_available(session):
+    """True iff the situational companion answers (jawa/pawn_census with limit=1 succeeds). Probed once per
+    Watch; a missing companion DLL means the detectors fall back to inference, never to silence."""
+    try:
+        r = session.call("jawa/pawn_census", limit=1) or {}
+    except Exception:                                           # noqa: BLE001
+        return False
+    return bool(r.get("success"))
+
+
 def pause(session):
     clockgate.ensure_paused(session)
     return HelperResult("pause", acted=0, verified=True)
@@ -315,6 +325,16 @@ def restore_colonists(session, baseline, resurrect=False):
             if (not r.get("success") and "no hediff" in str(r.get("message", "")).lower()
                     and not any(k[0] == h["def"] for k in base)):
                 session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"])
+    after = dict((r["id"], r) for r in read_pawns(session))
+    live = [pid for pid in baseline if pid in after and not after[pid]["dead"]]
+    # MEASURED live 2026-10-01 (J2 predator case): 'Gunshot/Shoulder' on a colonist read back as unremoved right
+    # after a part-qualified remove, yet the pawn was clean minutes later. One retry by def alone, then re-read.
+    for pid in live:
+        for h in after[pid]["health"]["hediffs"]:
+            if (hediff_key(h) not in baseline[pid] and h["def"] in INJURY_DEFS
+                    and not any(k[0] == h["def"] for k in baseline[pid])):     # never sweep up a baseline instance
+                session.call("jawa/pawn_health", pawn=pid, action="remove", hediff=h["def"])
+                acted += 1
     after = dict((r["id"], r) for r in read_pawns(session))
     live = [pid for pid in baseline if pid in after and not after[pid]["dead"]]
     for pid in live:

@@ -1,0 +1,38 @@
+{
+  "attempt_elapsed_s": 4.889802878000012,
+  "channel": "codex",
+  "daemon_attempts": 2,
+  "elapsed_s": 9.954845275000025,
+  "id": "feverwood_plant_thulvane",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/24/rollout-2026-09-24T20-55-35-01a0d6b4-4c68-7391-b72c-5b1ecefe0bda.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": null,
+    "primary_used_percent": null,
+    "primary_window_minutes": null,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/24/rollout-2026-09-24T20-55-21-01a0d6b4-14cd-78c2-abfa-bb6dda1d14aa.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "worker exited 1, image_present=False \u2014 a failed/timed-out run is never trusted regardless, 2 attempt(s)",
+  "status": "failed",
+  "timed_out": false,
+  "validator": "not_run",
+  "worker_self_report": null,
+  "worker_status": "worker_error",
+  "worker_stderr_tail": "ERROR no image produced after 2s (exit 1).\n--- last codex output ---\nReading additional input from stdin...\nOpenAI Codex v0.153.4\n--------\nworkdir: D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\feverwood_plant_thulvane\nmodel: gpt-5.6-sol\nprovider: openai\napproval: never\nsandbox: workspace-write [workdir, /tmp, $TMPDIR]\nreasoning effort: low\nreasoning summaries: none\nsession id: 01a0d6b4-4c68-7391-b72c-5b1ecefe0bda\n--------\nuser\nUse $imagegen to [artpipe job feverwood_plant_thulvane] RimWorld plant sprite, top-down view, painterly vanilla-RimWorld flora art style: a colossal grey-green fused column tree, the trunk a tower of merged boles, crown permanently out of frame, bark in wet black-grooved plates. Single specimen, centered, no ground shadow, no background scenery. Heavy clean black outline around the whole silhouette and major internal linework, thick enough to read at standard RimWorld zoom. Canvas: exactly 256x256 pixels. Background: a genuinely transparent alpha channel \u2014 no backdrop, floor, shadow or gradient.\n\nThen copy the generated image into the current working directory as feverwood_plant_thulvane.png. Report the absolute path of the file you saved.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\nERROR: You've hit your usage limit. Upgrade to Pro (https://chatgpt.com/explore/pro), visit https://chatgpt.com/codex/settings/usage to purchase more credits or try again at 9:03 PM.\n\n",
+  "worker_stdout_tail": ""
+}

@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:04Z",
+  "derive_from": "RM_Doublemaw_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Doublemaw_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the doublemaw, a fast lean scavenger with two complete sets of jaws on one skull \u2014 the second maw set where the throat should be, both fringed with mismatched teeth, wet gums exposed; ropey low-slung body built for sprinting between carcasses. It reads as a mouth that grew a spare. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the fast carcass picker with the infecting bite, bs~0.6; the read is the stacked double jaws; storm-dark red-valley register: raw reds and gum pinks against wet dark hide, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the head and body"
+}

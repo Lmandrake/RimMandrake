@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "derive_from": "RM_Crispling_east",
+  "drawsize": 1.0,
+  "facing": "north",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Crispling_north",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the crispling, a hunched scavenger crusted in its own char \u2014 its back and crown baked into a cracked black carbonised shell with ember-red seams where the crust has split, soft raw pink flesh visible beneath at the joints and belly, strong picking forelimbs for turning scorched carrion. It reads as a creature wearing its own burn as armour. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the burn-line scavenger, bs~0.4, armored in char above and soft beneath; the read is cracked black crust over raw pink; scorch register within the storm-red palette: carbon blacks, grey-white ash, ember-red seams, raw pink underflesh, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the charred back crust"
+}

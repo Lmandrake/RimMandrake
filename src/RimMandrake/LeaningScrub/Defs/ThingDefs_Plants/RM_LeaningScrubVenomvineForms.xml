@@ -20,7 +20,7 @@
 -->
 <Defs>
 
-  <!-- Harvest gives RM_RawVenom (RM_LeaningScrubItems.xml). Whether harvesting leaves the stand standing, and any harvest-side venom exposure, is LEANINGSCRUB_MECHANICS_BUILD_1. -->
+  <!-- Harvest gives RM_RawVenom (RM_LeaningScrubItems.xml). Harvesting leaves the stand standing and it beads again (RM_RegrowingHarvestExtension below, LEANINGSCRUB_GPT_ENRICHMENT_1). No ruling asks for harvest-side venom exposure. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_DrippingVenomvine</defName>
     <label>dripping venomvine</label>
@@ -76,6 +76,13 @@
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
         <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1: the timed harvest (Source/RM_VenomvineRooms.cs).
+           Applied to plant.harvestAfterGrowth at startup while its Mod Setting is on.
+           TUNED 0.3: from 0.3 back to the vanilla harvestable growth at growDays 12 is
+           roughly four days between venom harvests. -->
+      <li Class="RimMandrake.LeaningScrub.RM_RegrowingHarvestExtension">
+        <harvestAfterGrowth>0.3</harvestAfterGrowth>
       </li>
     </modExtensions>
   </ThingDef>
@@ -196,7 +203,7 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- STUB: the wind-keyed dustflutter mobbing is LEANINGSCRUB_MECHANICS_BUILD_1 and is keyed on the wind dropping, never on day/night. Rare landmark: single stand, no clustering. Art is a 512 canvas. -->
+  <!-- Dustflutter mobbing keys on the Stall (the wind dropping), never on day/night: RM_StallMobExtension below. Rare landmark: single stand, no clustering. Art is a 512 canvas. -->
   <ThingDef ParentName="PlantBaseNonEdible">
     <defName>RM_CrownVenomvine</defName>
     <label>crown venomvine</label>
@@ -250,6 +257,16 @@
     <modExtensions>
       <li Class="RimMandrake.EnvironmentalHazards.RM_MechanicGateExtension">
         <gateKey>leaningscrub.venomvinePassability</gateKey>
+      </li>
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1: the Stall cloud (Source/RM_VenomvineRooms.cs).
+           TUNED: draw from 40 cells (a cloud that reads across a screen, not the whole
+           map), settle within 3, at most 30 per stand (the top of one wild group's 8~20,
+           plus stragglers). -->
+      <li Class="RimMandrake.LeaningScrub.RM_StallMobExtension">
+        <mobber>RM_Dustflutter</mobber>
+        <drawRadius>40</drawRadius>
+        <settleRadius>3</settleRadius>
+        <maxMobbers>30</maxMobbers>
       </li>
     </modExtensions>
   </ThingDef>

@@ -56,7 +56,7 @@
       </li>
       <!-- SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - the Scald: the_scald.md "A crater sea that boils. Volcanic heat rises under it".
            heatOffsetC is an invented first value; the owner-watched sitting tunes it. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
         <heatKind>ambient</heatKind>
         <heatOffsetC>15</heatOffsetC>
       </li>

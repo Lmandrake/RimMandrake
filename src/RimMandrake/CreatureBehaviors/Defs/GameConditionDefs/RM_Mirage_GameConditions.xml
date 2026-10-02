@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Mirage_GameConditions.xml   CreatureBehaviors - STILLSAND_MIRAGE_CONDITION_1
+
+  RM_Mirage is never fired as an incident. RM_Mirage.Sync (on every shade-grid recompute)
+  registers it permanently on a map whose biome's RM_SunHeatExtension names it, while the sun
+  stands at or above mirageMinElevationDegrees, and ends it otherwise. It shows on the
+  conditions readout, so the player can always see why the horizon shimmers.
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_Mirage</defName>
+    <label>mirage</label>
+    <description>The sun stands so high that the air over the sand shimmers. The far edge of the land shows water that is not there. Long shots taken from full sun go wide, and someone already suffering from the heat may set off walking for the water.</description>
+    <conditionClass>RimMandrake.CreatureBehaviors.RM_GameCondition_Mirage</conditionClass>
+    <allowUnderground>false</allowUnderground>
+    <natural>true</natural>
+  </GameConditionDef>
+
+</Defs>

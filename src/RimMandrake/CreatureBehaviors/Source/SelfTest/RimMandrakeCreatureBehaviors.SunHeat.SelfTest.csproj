@@ -52,7 +52,9 @@
 
   <ItemGroup>
     <Compile Include="..\RM_SunHeatMath.cs" />
+    <Compile Include="..\RM_MovingShadeMath.cs" />
     <Compile Include="..\RM_ShadePatchGraph.cs" />
+    <Compile Include="..\..\..\MovingDunes\Source\DuneWindBearing.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T10:31:26Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "rm_chillauroracollector_v1",
+  "priority": 100,
+  "prompt": "RimWorld building sprite, painterly vanilla-RimWorld industrial-tech art style: a slender vertical antenna mast on a small square base, strung with thin taut filament wires along its length, dark weathered metal frame with a faint violet-teal glow running along its spine like caught lightning. Single structure, centered, no ground shadow, no background scenery. Heavy, clean black outline around the whole silhouette and all major internal linework, thick enough to read clearly at standard RimWorld zoom and below.",
+  "reference": null,
+  "rimflow_item_id": "CHILL_AURORA_SURGE_1",
+  "style_notes": "CHILL_AURORA_SURGE_1's harvest-building deliverable, defName RM_ChillAuroraCollector, label 'electrojet mast'. Single 1x1-footprint, non-rotatable, drawSize (1,1.4). Ships today with a placeholder texPath reusing vanilla's own Things/Building/Misc/DropBeacon (tinted); this job supplies the real replacement. registry.jsonl/pending/done all checked 2026-09-28 for pre-existing collector/antenna/aurora-surge art before filing this job \u2014 none found."
+}

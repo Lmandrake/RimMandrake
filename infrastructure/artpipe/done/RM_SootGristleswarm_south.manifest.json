@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 172.95699553500162,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 36.12189303175451,
+  "derive_from_palette_distance": 7.5846059663737995,
+  "elapsed_s": 172.95699553500162,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_SootGristleswarm_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T10-23-45-01a0e90b-47a7-78a3-9b5a-8d90ab2aa318.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 44.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T10-17-02-01a0e905-1fc3-7cb1-b399-d9ef54b714b5.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_SootGristleswarm_south",
+    "note": "Derived a true frontal south-facing view from the accepted east master; preserved the soot-black palette, six-legged anatomy, painterly treatment, and transparent background.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_SootGristleswarm_south\\RM_SootGristleswarm_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_SootGristleswarm_south/RM_SootGristleswarm_south.png\n    256x256  rgba  41,133 bytes  (171s)\n"
+}

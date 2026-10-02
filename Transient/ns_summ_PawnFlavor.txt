@@ -1,0 +1,13 @@
+trait_defs_readback v=PASS,FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   forced_only_trait_resolves FAIL: ExpectationFailed: TraitDef/RUT_Jawa_Numbered.commonality = 0.0, expected commonality 0 (forcedTraits-only)
+backstory_defs_readback v=PASS,PASS,PASS,FAIL,UNMEASURED,UNMEASURED,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   backstory_RUT_Jawa_ColdForged FAIL: ExpectationFailed: BackstoryDef/RUT_Jawa_ColdForged.slot = 'Childhood', expected slot=Adulthood
+   backstory_RUT_Jawa_AshSpeaker UNMEASURED: upstream failed -- this chain's state is meaningless
+   backstory_RUT_Jawa_MootSpeaker UNMEASURED: upstream failed -- this chain's state is meaningless
+   backstory_RUT_Jawa_RetrievalAgent UNMEASURED: upstream failed -- this chain's state is meaningless
+vqe_rakata_categories_readback v=PASS,FAIL bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   experiment_pool_marked FAIL: ExpectationFailed: BackstoryDef/RUT_Jawa_RakataLastGeneration.spawnCategories = ['VQE_AncientPatient'], expected VQE_Experiment present
+faction_patch_wired_vanilla v=FAIL,UNMEASURED bland=True sweeps=0 ticks=0 surprises=0 aborted=[]
+   empire_filter_wired FAIL: ExpectationFailed: FactionDef/Empire.backstoryFilters = ['BackstoryCategoryFilter', 'BackstoryCategoryFilter'], expected JawaBSC_Empire present
+   pirate_filter_wired UNMEASURED: upstream failed -- this chain's state is meaningless
+empire_pawn_generation v=PASS bland=True sweeps=1 ticks=0 surprises=0 aborted=[]

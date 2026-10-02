@@ -8,13 +8,13 @@
   </supportedVersions>
   <modDependencies>
     <li>
-      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <packageId>mandrake.rm.biomes</packageId>
       <displayName>RimMandrake: Creature Behaviors</displayName>
       <steamWorkshopUrl />
     </li>
   </modDependencies>
   <loadAfter>
-    <li>mandrake.rm.creaturebehaviors</li>
+    <li>mandrake.rm.biomes</li>
   </loadAfter>
   <description>HOSTILE_MOBILE_PLANTS_1 / REACTION_MECHANISM_GENERALISE_1 step 2 —
 owner ruling 2026-09-22, verbatim: "yes we should ALSO make some 'animals' that

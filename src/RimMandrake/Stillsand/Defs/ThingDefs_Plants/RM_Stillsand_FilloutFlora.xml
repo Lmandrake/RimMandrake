@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Stillsand_FilloutFlora.xml           RimMandrake — STILLSAND_BEDAZZLE_CONTENT_1
+
+  The three ruled fill-out plants of design/Jawa/worldbuilding/biomes/
+  stillsand_roster_fillout_2026-09-27.md §3: the hourbloom, the kneel ollim and
+  the glasscrust. Nothing here is green, leafy, lush or a fuel source. Each uses
+  its own render, Textures/Things/Plant/RM_<Name>/RM_<Name>A.png (the kneel
+  ollim and hourbloom/glasscrust renders as ruled 2026-09-27).
+
+  Wiring: RM_KneelOllim and RM_Glasscrust are in RM_Stillsand's wildPlants. The
+  hourbloom is NEVER map-resident: it exists only as the output of a bloom
+  incident (RM_IncidentWorker_BloomBurst's bloomPlant). Its seeds are
+  "already everywhere"; the incident def that names it is owned by the
+  ExplosiveGrowth wiring, not this mod.
+-->
+<Defs>
+
+  <!-- ============== Hourbloom — the flood made visible ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Hourbloom</defName>
+    <label>hourbloom</label>
+    <description>When free water reaches the deep desert, a freak flood, a breached cistern, a spilled tank, the sand answers within hours: a carpet of pale, bone-and-rose cups that flower, seed, desiccate and blow away inside days. The bloom is dead land proving it was never dead, and then being dead land again. Its seeds are already everywhere; a sandstorm is an aerosol of them.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>3</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Hourbloom</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>0</pathCost>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <plant>
+      <!-- The hours-to-days clock is deep_desert §4's own text ("the ground
+           blooms within hours and is dead again within days"), the same
+           carve-out as the sarlacc's breach flood. growDays 0.5 x
+           lifespanDaysPerGrowDays 8 = a four-day life. No sowTags: never
+           sowable. No harvestedThingDef: never harvestable. -->
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>0.5</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.5~0.8</visualSizeRange>
+      <topWindExposure>0.3</topWindExposure>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Kneel ollim — the second growth form ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_KneelOllim</defName>
+    <label>kneel ollim</label>
+    <description>The ollim's other body. Where the tall form is a bone-white truncate, the kneel form is the shield: a low, swept, wind-aligned dome that grows where the buried moisture is too thin to fund a tower, which is most places the ollim grows at all. A bone-field usually carries one tower and a scatter of kneels, all one organism's slow children. It casts a hard black crescent of shade a grain animal can live in; a loomma cannot, the shadow is too small.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_OllimWood</ThingDef>
+    </descriptionHyperlinks>
+    <fillPercent>0.25</fillPercent>
+    <graphicData>
+      <texPath>Things/Plant/RM_KneelOllim</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Mass>90</Mass>
+      <Nutrition>0</Nutrition>
+      <Beauty>3</Beauty>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
+    <plant>
+      <!-- Same law as the ollim: accretion, effectively geological, never
+           sowable, fertility-independent. It IS a silverbole, not a fourth
+           shade source. -->
+      <fertilityMin>0.03</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>400</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <visualSizeRange>1.6~2.6</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <treeCategory>Full</treeCategory>
+      <!-- One material for both forms: the same RM_OllimWood, a smaller yield. -->
+      <harvestedThingDef>RM_OllimWood</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <harvestWork>450</harvestWork>
+      <harvestTag>Wood</harvestTag>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+      <allowAutoCut>false</allowAutoCut>
+      <warnIfMarkedForCut>true</warnIfMarkedForCut>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Glasscrust — the graze base ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Glasscrust</defName>
+    <label>glasscrust</label>
+    <description>The floor of the food web, and almost invisible: a living crust one grain thick, silica-cemented, that fuses the top millimetre of sand into a faint, frosted glitter. It is the light-pipe's poor relation, same chemistry with no lens and no depth, and it is what the kreetle, the scurrier and the liikka actually eat. Walked on, it crunches; a caravan's track through glasscrust stays legible for years, which in this biome is a feature: the sand remembers.</description>
+    <descriptionHyperlinks>
+      <ThingDef>RM_BiosilicaGrit</ThingDef>
+    </descriptionHyperlinks>
+    <statBases>
+      <MaxHitPoints>15</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.05</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Glasscrust</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>0</pathCost>
+    <plant>
+      <!-- Flush with the surface, never green, growth glacial, never sowable.
+           A grazing animal is allowed to eat it: Nutrition above is what makes
+           it the grains' food. -->
+      <fertilityMin>0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>60</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.9~1.1</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>5</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <!-- A pinch of biosilica grit: the feeder input for the biosilica lens
+           item (the nub gives the lens; the crust gives the grit). -->
+      <harvestedThingDef>RM_BiosilicaGrit</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>120</harvestWork>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <harvestFailable>false</harvestFailable>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BiosilicaGrit</defName>
+    <label>biosilica grit</label>
+    <description>A pinch of silica-cemented crust scraped off the top millimetre of the sand. Worthless alone, but it is the feeder input a patient hand turns into biosilica lenses.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Biosilica</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(214,206,190)</color>
+      <drawSize>0.7</drawSize>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>75</stackLimit>
+    <techLevel>Neolithic</techLevel>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+      <Mass>0.05</Mass>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0.2</DeteriorationRate>
+    </statBases>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Gorestalk",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the gorestalk, a stand of tall red columnar plants like stood-up entrails \u2014 thick glossy tubular stalks in twisted vertical loops, surfaces wet and faintly ridged with peristaltic swellings, deep red shading to bruise-purple, a few pallid buds at the crowns. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the tall sight-blocking aberration; the read is glossy vertical entrail columns; storm-dark red-valley register: deep glossy reds to bruise-purple, wet highlights, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

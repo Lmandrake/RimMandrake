@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TheReturn.xml                RimUtinni - STILLSAND_RETURN_RITUAL_1 spec 1-4, 6
+
+  The Sun-Debt, given its place. Design: design/Jawa/worldbuilding/biomes/
+  stillsand_turn3_development_2026-09-30.md §2.3. Owner, typed: "I like your religious
+  implication of a ritual here." Builds on the built Sun-Debt ideoligion
+  (UtinniPatches/Patches/DeepDesertTribes.xml: "The sun lends and the sand collects").
+
+  XML only. Every worker is the RM tier's engine in mandrake.rm.stillsand
+  (Source/RM_WaterLedger.cs, RM_StillsandWater.cs), which never names a faith; the
+  faith is data here, the same split as RUT_KraytAttack.xml. Without these defs the
+  RM ledger is inert: no counter, no mood, no debt UI (spec 5).
+
+    RUT_SunDebt               the ledger: water drawn on Stillsand maps, its bands
+                              (Paid / Seeker / Debtor / Collector, the sarlacc's
+                              Sun-Debt stage labels), the Deep Desert Tribes'
+                              goodwill, and the event incidents it weights.
+    RUT_SunDebtOwed           the believers' mood line, one stage per band.
+    RUT_Ritual_TheReturn      the precept. A believer is a pawn whose ideo holds it.
+                              Opens only on an event (a gale passing, a krayt
+                              killed, the debt past its threshold), never by clock.
+    RUT_DebtStone             the ritual focus, built on open sand in full sun.
+                              Art: the artpipe's RM_DebtStone render (STILLSAND_RETURN_RITUAL_1).
+
+  Gates: mandrake.rm.biomes (every worker: Stillsand is composed into it, BAROQUE_BIOMES_COMPOSE_1) and Ideology (every ritual def type).
+-->
+<Defs>
+
+  <RimMandrake.Stillsand.RM_WaterLedgerDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_SunDebt</defName>
+    <label>the Sun-Debt</label>
+    <description>Water drawn from the Stillsand is borrowed from the sun, and the sand collects.</description>
+    <biomes>
+      <li>RM_Stillsand</li>
+    </biomes>
+    <believerPrecept>RUT_Ritual_TheReturn</believerPrecept>
+    <goodwillFaction>TribeCivil</goodwillFaction>
+    <bandLitres>
+      <li>0</li>
+      <li>30</li>
+      <li>90</li>
+      <li>180</li>
+    </bandLitres>
+    <bandLabels>
+      <li>Paid</li>
+      <li>Seeker</li>
+      <li>Debtor</li>
+      <li>Collector</li>
+    </bandLabels>
+    <goodwillPerBandUp>-4</goodwillPerBandUp>
+    <goodwillOnPositiveReturn>4</goodwillOnPositiveReturn>
+    <openingThresholdLitres>90</openingThresholdLitres>
+    <minTicksBetweenOpenings>30000</minTicksBetweenOpenings>
+    <weightedIncidents>
+      <li>RUT_KraytAttack</li>
+      <li>RM_MuurrokEmergence</li>
+      <li>RM_SandBusterEruption</li>
+    </weightedIncidents>
+    <weightPerHundredLitres>0.5</weightPerHundredLitres>
+    <maxWeight>3</maxWeight>
+    <waterSearchRadius>4.9</waterSearchRadius>
+    <returnMinLitres>12</returnMinLitres>
+    <returnMaxLitres>60</returnMaxLitres>
+    <repayFactorTerrible>0</repayFactorTerrible>
+    <repayFactorPoor>0.5</repayFactorPoor>
+    <repayFactorGood>1.5</repayFactorGood>
+    <repayFactorGreat>2.5</repayFactorGreat>
+    <bloomRingRadius>2.9</bloomRingRadius>
+    <buriedCacheDef>RM_Dunes_BuriedCache</buriedCacheDef>
+    <giveBackRadius>40</giveBackRadius>
+    <refusalKind>RM_Siidda</refusalKind>
+    <refusalCount>2~3</refusalCount>
+    <openingMessage>The sand is owed: {REASON}. The Return can be held at a debt stone in the sun.</openingMessage>
+  </RimMandrake.Stillsand.RM_WaterLedgerDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_SunDebtOwed</defName>
+    <thoughtClass>Thought_Situational</thoughtClass>
+    <workerClass>RimMandrake.Stillsand.RM_ThoughtWorker_WaterLedger</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <stages>
+      <li>
+        <label>the sun is paid</label>
+        <description>What we drew from the sand, we have given back. The ledger is clean.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>Sun-Debt: seeker</label>
+        <description>We have drawn water from the sand. It is noted.</description>
+        <baseMoodEffect>0</baseMoodEffect>
+      </li>
+      <li>
+        <label>Sun-Debt: debtor</label>
+        <description>We have taken too much. The sand remembers every mouthful.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>Sun-Debt: the collector comes</label>
+        <description>We have taken far too much, and paid nothing back. The sand is coming to collect.</description>
+        <baseMoodEffect>-9</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_DebtStone</defName>
+    <label>debt stone</label>
+    <description>A single rough standing stone, its face cut with straight grooves that all run one way: toward the star. The Sun-Debt's faithful carry water out to it and pour it into the sand in a line toward the sun, paying back what was drawn. It must stand on open sand in full sun; a stone in shade is owed nothing.</description>
+    <graphicData>
+      <texPath>Things/Building/RUT_DebtStone/RUT_DebtStone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.4,1.4)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.35</fillPercent>
+    <castEdgeShadows>false</castEdgeShadows>
+    <staticSunShadowHeight>0.3</staticSunShadowHeight>
+    <canOverlapZones>false</canOverlapZones>
+    <stuffCategories>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>40</costStuffCount>
+    <statBases>
+      <WorkToBuild>1800</WorkToBuild>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Ideology</designationCategory>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+      <buildingTags>
+        <li>RitualFocus</li>
+      </buildingTags>
+    </building>
+    <ritualFocus>
+      <spectateDistance>2</spectateDistance>
+      <allowedSpectateSides>All</allowedSpectateSides>
+    </ritualFocus>
+  </ThingDef>
+
+  <PreceptDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_Ritual_TheReturn</defName>
+    <label>the Return</label>
+    <description>The Sun-Debt's settling-up. When the sand is owed (a gale has passed, a krayt has been killed, or too much water has been drawn), believers carry water out to a debt stone standing in full sun and pour it into the sand in a line toward the star. A good Return pays down the debt and the sand blooms; a great one, and the sand gives something back. A bad one wakes what sleeps.</description>
+    <issue>Ritual</issue>
+    <impact>Medium</impact>
+    <iconPath>Things/Building/RUT_DebtStone/RUT_DebtStone</iconPath>
+    <preceptClass>Precept_Ritual</preceptClass>
+    <ritualPatternBase>RUT_TheReturnPattern</ritualPatternBase>
+    <allowDuplicates>false</allowDuplicates>
+    <countsTowardsPreceptLimit>false</countsTowardsPreceptLimit>
+    <canGenerateAsSpecialPrecept>false</canGenerateAsSpecialPrecept>
+    <!-- Precept_Ritual.AddObligation drops an obligation unless the ideo's obligations
+         are active or this is set; the Return's openings are events and must land. -->
+    <allowOptionalRitualObligations>true</allowOptionalRitualObligations>
+    <receivesExpectationsQualityOffset>true</receivesExpectationsQualityOffset>
+    <associatedMemes>
+      <li>NaturePrimacy</li>
+      <li>Structure_Animist</li>
+    </associatedMemes>
+  </PreceptDef>
+
+  <RitualPatternDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_TheReturnPattern</defName>
+    <ritualBehavior>RUT_TheReturnBehavior</ritualBehavior>
+    <ritualObligationTargetFilter>RUT_DebtStoneWithWater</ritualObligationTargetFilter>
+    <ritualObligationTriggers>
+      <li Class="RimMandrake.Stillsand.RM_RitualObligationTriggerProperties_WaterReturn">
+        <mustBePlayerIdeo>true</mustBePlayerIdeo>
+      </li>
+    </ritualObligationTriggers>
+    <ritualOutcomeEffect>RUT_TheReturnOutcome</ritualOutcomeEffect>
+    <canStartAnytime>false</canStartAnytime>
+    <shortDescOverride>the Return</shortDescOverride>
+    <descOverride>Believers pour water into the sand at a debt stone, in a line toward the star, to pay the Sun-Debt.</descOverride>
+    <ritualExpectedDesc>The sand is owed. {MEMBERS} can hold the Return at a debt stone in the sun.</ritualExpectedDesc>
+    <ritualExplanation>Set water (canteen eggs, still flasks) within a few cells of a debt stone that stands in full sun, then begin. Everything set there is poured.</ritualExplanation>
+    <iconPathOverride>Things/Building/RUT_DebtStone/RUT_DebtStone</iconPathOverride>
+  </RitualPatternDef>
+
+  <RitualObligationTargetFilterDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_DebtStoneWithWater</defName>
+    <workerClass>RimMandrake.Stillsand.RM_RitualObligationTargetWorker_WaterReturn</workerClass>
+    <thingDefs>
+      <li>RUT_DebtStone</li>
+    </thingDefs>
+    <colonistThingsOnly>true</colonistThingsOnly>
+  </RitualObligationTargetFilterDef>
+
+  <RitualBehaviorDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_TheReturnBehavior</defName>
+    <durationTicks>3000</durationTicks>
+    <spectatorsLabel>Pourers</spectatorsLabel>
+    <spectatorGerund>pour</spectatorGerund>
+    <stages>
+      <li>
+        <defaultDuty>Spectate</defaultDuty>
+        <essential>True</essential>
+        <endTriggers>
+          <li Class="StageEndTrigger_DurationPercentage">
+            <percentage>1</percentage>
+          </li>
+        </endTriggers>
+      </li>
+    </stages>
+  </RitualBehaviorDef>
+
+  <RitualOutcomeEffectDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Ideology">
+    <defName>RUT_TheReturnOutcome</defName>
+    <description>The water is poured toward the star. Depending on the Return's quality, the debt is paid down, the sand blooms at the stone, and it may give back something buried, or wake what sleeps.</description>
+    <workerClass>RimMandrake.Stillsand.RM_RitualOutcomeEffectWorker_WaterReturn</workerClass>
+    <startingQuality>0.3</startingQuality>
+    <comps>
+      <li Class="RitualOutcomeComp_ParticipantCount">
+        <label>pourers</label>
+        <curve>
+          <points>
+            <li>(1, 0.0)</li>
+            <li>(4, 0.3)</li>
+            <li>(8, 0.5)</li>
+          </points>
+        </curve>
+      </li>
+    </comps>
+    <outcomeChances>
+      <li>
+        <chance>0.1</chance>
+        <label>Refused</label>
+        <description>The {0} was refused. The water went into the sand and woke what sleeps under it.</description>
+        <positivityIndex>-2</positivityIndex>
+      </li>
+      <li>
+        <chance>0.2</chance>
+        <label>Grudging</label>
+        <description>The {0} was grudging. The sand took the water and gave back only part of the debt.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.5</chance>
+        <label>Accepted</label>
+        <description>The {0} was accepted. The debt is lighter, and the sand at the stone will flower.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+      <li>
+        <chance>0.2</chance>
+        <label>Paid</label>
+        <description>The {0} was paid in full measure. The sand flowers at the stone, and it gives something back.</description>
+        <positivityIndex>2</positivityIndex>
+      </li>
+    </outcomeChances>
+  </RitualOutcomeEffectDef>
+
+</Defs>

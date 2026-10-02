@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 104.09444636599801,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 56.1391652975816,
+  "derive_from_palette_distance": 15.052583907092865,
+  "elapsed_s": 104.09444636599801,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "rsw_tunnelsnake_v1_north",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T01-42-29-01a0ec54-67b2-7161-b46a-0264e392fd41.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 52.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w2/sessions/2026/09/29/rollout-2026-09-29T01-36-30-01a0ec4e-eb95-7921-a467-cf2c82984324.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "rsw_tunnelsnake_v1_north",
+    "note": "Derived the same creature as a true rear-facing north view; resized to exactly 256\u00d7256 with transparent corners.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\rsw_tunnelsnake_v1_north\\rsw_tunnelsnake_v1_north.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/rsw_tunnelsnake_v1_north/rsw_tunnelsnake_v1_north.png\n    256x256  rgba  29,394 bytes  (102s)\n"
+}

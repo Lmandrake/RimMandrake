@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T11:28:10Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_SootBrick",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: a soot brick, a fuel-grade brick pressed from ash-fall deposition by a sootgrazer -- a rectangular compressed block of dense grey-black soot and ash, faintly greasy surface sheen, visible compression striations, a few paler ash flecks caught in the surface. It reads as a cheap, endlessly renewable burnable fuel block. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_RULED_CONTENT_1",
+  "style_notes": "chemfuel-adjacent burnable, sells low, endless supply; wasteland survivor register: soot blacks and ash greys, faint grease sheen, vitrified black-green accents minimal, harsh dry light; realistic painted illustration, grounded believable compressed-material form, matte natural surface texture, never cartoonish, no outlines"
+}

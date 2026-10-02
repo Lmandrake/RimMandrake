@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T11:28:10Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_VitrifiedBezoar",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: a vitrified bezoar, a rarer and larger grade of contaminant bezoar mined from the Middenshell's hardened corpse-shell -- a dense rounded lump of glassy black-green vitrified mineral fused with metal-salt layers, glossy fracture facets, deep sickly-radiance seams glowing faintly inside the glass. It reads as the richest, most concentrated refined waste prize in the biome. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_RULED_CONTENT_1",
+  "style_notes": "the excretor-refining prize grade, priced in the dose taken digging it; wasteland survivor register: vitrified black-green glass dominant, sickly-radiance seams glowing from within, salt-white crust remnants, harsh dry light; realistic painted illustration, grounded believable mineral form, matte-to-glossy fractured surface, never cartoonish, no outlines"
+}

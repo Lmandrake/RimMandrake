@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "drawsize": 2.5,
+  "facing": null,
+  "facings": [],
+  "id": "RM_ShardMind",
+  "priority": 52,
+  "prompt": "RimWorld building sprite seen from above: a Shard-mind, a sentient immobile crystal, one massive dark faceted crystal grown up through the cave floor with thin wire-like veins of light running out of it along the ground toward a dead droid's power port, its surface unnervingly still and evenly lit. Aware, not alive in any animal way.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_WORKING_DEAD_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; crystal life: crystals AS creatures, never an animal studded with crystals; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is DEEP INDIGO AND COLD WHITE: deep indigo-black facets with a steady cold white inner light and silver-white vein lines top-down view, no figures, no ground shadow."
+}

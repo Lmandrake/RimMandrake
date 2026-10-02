@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:01Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RUT_CrackWax",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: crack-wax, a small pile of pale waxy burrow-lining shed by a woken Sealed sleeper \u2014 three or four curved translucent-pale wax fragments still holding the curve of the burrow they lined, edges crumbled, surfaces smooth on the inner face and clay-crusted on the outer, one fragment catching light with a faint moist sheen. It reads as a strange organic waterproofing material gathered off the flats. Single item stack, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon for the biome's signature raw resource (defName RUT_CrackWax, resolving a placeholder texPath); the read is curved pale wax burrow-lining fragments, smooth inside and clay-crusted outside; cracked lands register: translucent pale wax cream, cracked-clay grey-white crust, faint red-brown clay staining, no green, hard dry light; realistic painted natural-history illustration, grounded believable organic material, matte wax surface with one faint sheen, never cartoonish, no outlines"
+}

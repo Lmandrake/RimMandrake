@@ -1,0 +1,467 @@
+{
+ "name": "Droidworks__detonation__colonist_died__t661__001",
+ "when_utc": "2026-10-02T00:09:31Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Maria died (death_letter+pawn_row_dead)",
+   "evidence": {
+    "name": "Maria",
+    "ticks": [
+     607
+    ],
+    "sources": [
+     "death_letter",
+     "pawn_row_dead"
+    ],
+    "ids": [
+     "Human130"
+    ],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    129
+   ],
+   "fingerprint": "colonist_died:Maria"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Thunder died (death_letter+pawn_row_dead)",
+   "evidence": {
+    "name": "Thunder",
+    "ticks": [
+     609
+    ],
+    "sources": [
+     "death_letter",
+     "pawn_row_dead"
+    ],
+    "ids": [
+     "Human141"
+    ],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    121,
+    129
+   ],
+   "fingerprint": "colonist_died:Thunder"
+  }
+ ],
+ "snapshot": {
+  "tick": 661,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human130",
+    "name": "Maria",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": true,
+    "downed": false,
+    "spawned": false,
+    "x": 125,
+    "z": 129,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": null,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Destroyed",
+      "part": "Lung",
+      "severity": 0.5
+     },
+     {
+      "def": "Shredded",
+      "label": "shredded",
+      "part": "Torso",
+      "severity": 75.0
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Destroyed",
+      "part": "Liver",
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0
+   },
+   {
+    "id": "Human141",
+    "name": "Thunder",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": true,
+    "downed": false,
+    "spawned": false,
+    "x": 121,
+    "z": 129,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": null,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Shredded",
+      "label": "shredded",
+      "part": "Torso",
+      "severity": 75.0
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off (fresh)",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Femur",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Tibia",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off",
+      "part": "Foot",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off",
+      "part": "Toe",
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Archonic Eulogy opportunity for Luxs",
+    "arrivalTick": 601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archonic Eulogy opportunity for Luxs",
+     601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Luxs",
+    "arrivalTick": 601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Luxs",
+     601
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Manhunter: Aloysius",
+    "arrivalTick": 607,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Manhunter: Aloysius",
+     607
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archonic Eulogy opportunity for Maria",
+    "arrivalTick": 607,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archonic Eulogy opportunity for Maria",
+     607
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Maria",
+    "arrivalTick": 607,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Maria",
+     607
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Victoryist Sanguinarian role deactivated",
+    "arrivalTick": 609,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Victoryist Sanguinarian role deactivated",
+     609
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archonic Eulogy opportunity for Thunder",
+    "arrivalTick": 609,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archonic Eulogy opportunity for Thunder",
+     609
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thunder",
+    "arrivalTick": 609,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thunder",
+     609
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 3,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 4,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 661
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "AB_AmbientRadiation",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare37654 pos=(125, 0, 125) size=(1, 1) covered=True coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STANDING_COUNT=0 SUMMED_MASS=0.00 THR"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] SCAN_DONE RM_OpenPit_Bare covered=False sprung=True"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare37654 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=WovenScrap triggerMassKg=40.0 depthTier=Shallow sprung=True occupants=1 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STANDING_COUNT=0 SUMMED_MASS=0.00 THR"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] STRUGGLE RM_OpenPit_Bare occupantsBefore=1 occupantsAfter=0"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser31144"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] ARM RM_OpenPit_Bare covered=True coverTier=WovenScrap triggerMassKg=40.0"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] UNCOVER RM_OpenPit_Bare covered=False coverTier=None"
+  ],
+  [
+   "Message",
+   "[RMPitsDebug] REPORT_PIT def=RM_OpenPit_Bare id=RM_OpenPit_Bare37661 pos=(125, 0, 125) size=(1, 1) covered=False coverTier=None triggerMassKg=340282300000000000000000000000000000000.0 depthTier=Shallow sprung=False occupants=0 maxOccupants=1 triggerCompCount=1 fittingCompCount=0 fitting=none\n  STAND"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser31144"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] created Test place at tile 16282,0 for Meeria, archetype RM_InhabitedPlace_Scrapyard."
+  ],
+  [
+   "Warning",
+   "Tried to directly add implied pawn relation Sibling, pawn=Kiyoshi, otherPawn=Vent"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] roster of Test place now holds 3."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] ROSTER REPORT  Test place -> C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\InhabitedReports\\roster_reports.txt"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] moved 3 into the pool; roster now 0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] drew 3; pool now 0.\r\n  Human37662  Kiyoshi Lozano  age=24y (89756227 ticks)  relations=0  hediffs=2  traits=1  dead=False  faction=Meeria\r\n  Human37667  Andrew Gwynn  age=14y (50647748 ticks)  relations=1  hediffs=1  traits=3  dead=False  faction=Meeria\r\n  Human37672  Larian "
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser31144"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Inhabited] a place already exists at tile 16282,0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.Inhabited] Test place holds no goods. Its archetype is RM_InhabitedPlace_Scrapyard; check its larder table."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser31144"
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - brrainz.rimbridgeserver\n  - 7f.alien"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957246,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957120,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 60,
+  "overhead_spent": 0,
+  "total_spent": 60,
+  "epoch": 0,
+  "last_seen_tick": 661,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 601,
+    "tick_to": 661,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "Droidworks",
+  "chain": "detonation",
+  "policy": "abort"
+ },
+ "png": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T170924\\Droidworks__detonation__colonist_died__t661__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3606006,
+  "width": 1810,
+  "height": 1183,
+  "md5": "7df7afedb04e36bcb0d6a37c324b0c8d",
+  "why": ""
+ },
+ "notes": []
+}

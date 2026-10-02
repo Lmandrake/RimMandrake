@@ -52,13 +52,22 @@
     </statBases>
     <tools>
       <li>
-        <label>front leg</label>
+        <label>front left leg</label>
         <capacities>
           <li>Blunt</li>
         </capacities>
         <power>28</power>
         <cooldownTime>3.0</cooldownTime>
-        <linkedBodyPartsGroup>FrontLegs</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>front right leg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>28</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
       </li>
       <li>
         <label>head</label>
@@ -472,6 +481,13 @@
       <li Class="RimMandrake.TheForge.CompProperties_ForgeCycleDormancy">
         <awakeDuringRain>true</awakeDuringRain>
         <awakeDuringFlashWindow>true</awakeDuringFlashWindow>
+        <!-- FORGE_GPT_ENRICHMENT_1 §7, the dhuvvox clock: countdown, slowing in
+             the final quarter-hour, a click as each nodule opens, a visible curl
+             when it reseals. -->
+        <runClock>true</runClock>
+        <slowFinalHours>0.25</slowFinalHours>
+        <slowHediff>RM_DhuvvoxRunSlowing</slowHediff>
+        <wakeSound>RM_DhuvvoxNoduleClick</wakeSound>
       </li>
     </comps>
     <race>

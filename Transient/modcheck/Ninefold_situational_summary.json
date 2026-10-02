@@ -1,0 +1,607 @@
+{
+ "chains": [
+  {
+   "name": "research_completed",
+   "components": [
+    {
+     "name": "research_completed_ledger",
+     "toggle": "engineEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/research_finish_project",
+       "result": {
+        "success": true,
+        "wasAlreadyFinished": false,
+        "prerequisitesTouched": [],
+        "reapplyUnlocksCalled": true,
+        "doCompletionDialog": false,
+        "doCompletionLetter": false,
+        "researcher": null,
+        "result": {
+         "defName": "Smithing",
+         "label": "Smithing",
+         "cost": 700.0,
+         "baseCost": 700.0,
+         "progress": 700.0,
+         "isFinished": true,
+         "techprintsApplied": 0,
+         "techprintCount": 0,
+         "techprintRequirementMet": true,
+         "isCurrentProject": false
+        },
+        "operation": {
+         "OperationId": "op_f7ed1756fbfb4b909c0778d1f1357613",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/research-finish-project",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:04.5210769+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:04.5292149+00:00",
+         "DurationMs": 8,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ozzik satiation +15.0, None=None)",
+       "result": true
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Ohm satiation +3.0, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\research_completed_ledger_1790903344.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 10 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mental_break_started",
+   "components": [
+    {
+     "name": "mental_break_ledger",
+     "toggle": "eventMagnitudeMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_force_mental_break",
+       "result": {
+        "success": true,
+        "started": true,
+        "breakDef": "Wander_Sad",
+        "reason": "Forced via bridge",
+        "mentalStateBefore": null,
+        "mentalStateAfter": "Wander_Sad",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_b94195d1291f4005821f88b251da0783",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-force-mental-break",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:05.9788468+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:05.9933534+00:00",
+         "DurationMs": 14,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Zizzik satiation +15.0, None=None)",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mental_break_ledger_1790903346.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "ticks_spent": 0,
+    "surprises": [
+     {
+      "sidecar": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T180903\\Ninefold__mental_break_started__mental_break__t1__001.json",
+      "png": "D:\\Luke\\dev\\RimMandrake\\Transient\\modcheck\\surprises\\20261001T180903\\Ninefold__mental_break_started__mental_break__t1__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 1,
+      "detector": "mental_break",
+      "severity": "SURPRISE",
+      "summary": "mental-break letter: Sad wander: Chaz"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "building_repaired_and_deconstructed",
+   "components": [
+    {
+     "name": "building_repaired",
+     "toggle": "firstContactLettersEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Rekko satiation +15.0 (repaired' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with Bomb 40.",
+        "damageDef": "Bomb",
+        "harmsHealth": true,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Wall40523",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 195.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Wall40523",
+          "def": "Wall",
+          "isPawn": false,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": 195,
+          "hitPointsAfter": 0,
+          "destroyed": true,
+          "totalDamageDealt": 195.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 0,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1e70a6b93c8f4cbdbda98c862ef952d2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:08.1076276+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:08.1256884+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/ordered_job",
+       "result": {
+        "success": false,
+        "accepted": true,
+        "interruptibleBefore": true,
+        "beforeJobDef": null,
+        "requestedJobDef": "Repair",
+        "afterJobDef": "Wait_MaintainPosture",
+        "nowRunningRequested": false,
+        "ticksElapsed": 0,
+        "pausedDuringWait": true,
+        "plantDefToSow": null,
+        "queueLength": 0,
+        "note": "Job was accepted (enqueued) but curJob after 0 tick(s) is 'Wait_MaintainPosture', not 'Repair' - it may have finished, failed immediately, or be queued rather than current. \u26a0\ufe0f THE GAME WAS PAUSED for this wait, so NO ticks passed and this reading proves nothing about whether the job would run. Unpause, or step ticks, and ask again.",
+        "operation": {
+         "OperationId": "op_0dd797d0172e4848a18e6688271ecb67",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/ordered-job",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:08.1455044+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:08.1635852+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(5000) [watched] -> 5000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 5000,
+        "requested": 5000
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Rekko satiation +15.0 (repaired, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "building_deconstructed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 9,
+    "ticks_spent": 5000,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 601,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 1201,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 1801,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 2401,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 3001,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 3601,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 4201,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 4801,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 5001,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "birth_outcome",
+   "components": [
+    {
+     "name": "birth_outcome_ledger",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[Ninefold] Oomo satiation +15.0 (birth' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "start",
+        "notes": [
+         "pregnancy started with PregnantHuman, no father"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 0.001,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 5001,
+        "operation": {
+         "OperationId": "op_a47b8ec483ed482bb3bccfa5ff077937",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:24.5900698+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:24.6053068+00:00",
+         "DurationMs": 15,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_pregnancy",
+       "result": {
+        "success": true,
+        "action": "progress",
+        "notes": [
+         "gestation (= hediff Severity) set to 1 - LABOUR WILL BEGIN ON THE NEXT TICK"
+        ],
+        "pregnant": true,
+        "hediff": "PregnantHuman",
+        "gestation": 1.0,
+        "mother": null,
+        "father": null,
+        "note": "Gestation IS the hediff severity - there is no separate progress field.",
+        "ticksGame": 5001,
+        "operation": {
+         "OperationId": "op_e19af7299c6446d0b065fbbdf8e27679",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-pregnancy",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:24.6168438+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:24.6232064+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(3000) [watched] -> 3000 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 3000,
+        "requested": 3000
+       }
+      },
+      {
+       "call": "expect_log_contains([Ninefold] Oomo satiation +15.0 (birth, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "ticks_spent": 3000,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 5601,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Marjot(/Name) in labor!"
+     },
+     {
+      "tick": 6201,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Marjot(/Name) in labor!"
+     },
+     {
+      "tick": 6801,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Marjot(/Name) in labor!"
+     },
+     {
+      "tick": 7401,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Marjot(/Name) in labor!"
+     },
+     {
+      "tick": 8001,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] (*Name)Marjot(/Name) in labor!"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "mood_walk_tick",
+   "components": [
+    {
+     "name": "mood_walk_advances",
+     "toggle": "moodWalkMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "wait_ticks(2600) [watched] -> 2600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2600,
+        "requested": 2600
+       }
+      },
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": false,
+        "ticksGame": 10601,
+        "operation": {
+         "OperationId": "op_32f8504ef2f94dacb1af237f7792b402",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:09:46.1764279+00:00",
+         "CompletedAtUtc": "2026-10-02T01:09:46.1832455+00:00",
+         "DurationMs": 6,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\mood_walk_advances_1790903386.png"
+     ],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 6,
+    "ticks_spent": 2600,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001D5C8D7BB10>",
+  "<suite.Component object at 0x000001D5C8DA6650>"
+ ],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\RimMandrake\\design\\validation_walks\\RimMandrake\\Ninefold.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

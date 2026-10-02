@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T15:47:00Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Sloghog_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the sloghog, a warty barrel-bodied hog grazing poisoned ground in total contentment \u2014 dense wart fields down both flanks, short tusks capped in pale mineral crust, small content half-shut eyes, a heavy low-slung belly, sturdy trotters. It reads as livestock that turned the waste into a living and is pleased about it. No nameable Earth pig breed.",
+  "reference": null,
+  "rimflow_item_id": "WASTELAND_BEDAZZLE_SITTING_1",
+  "style_notes": "the ranchable excretor, bs~1.2, the herd is a slow refinery; the read is a content wart-flanked barrel hog mid-graze; wasteland survivor register: salt-white and ash-grey palette, wart fields in dull flesh greys, mineral-crusted tusk caps, vitrified black-green accents, harsh dry light; tough content survivor, never pitiable; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with warts, grime and crust, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the warted back and hindquarters"
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandCatches.xml                      RimMandrake — STILLSAND_BEDAZZLE_CONTENT_1 (Q11a tier move)
+
+  The item half of the sand-swimmer family, moved here from SWBestiary: the catch
+  (RM_DuneCrawler, was RSW_DuneCrawler) and the rare prize (RM_GlassPearl, was
+  RSW_GlassPearl). Both are invented, so they belong in the franchise-free RM
+  tier. RSW_SandStalker, the predator that catches the catcher, stays RSW until
+  the owner rules otherwise. The fishing hookup itself (fishTypes on RM_Stillsand)
+  is STILLSAND_SAND_SWIM_KIT_1's job; the references in other mods were repointed.
+
+  NEVER FISH-SHAPED (owner's explicit instruction): both are armored/crystalline
+  analogs, not fish. ANTI-EXPONENTIAL: Nutrition/MarketValue stay at or below the
+  vanilla Fish_* tier; the thin-windfall cap lives on the biome side.
+
+  ART: both icons are PLACEHOLDERS (the old SWBestiary egg and trophy icons, copied
+  into this mod's own Textures/Things/Item/Resource). Real art is queued in
+  infrastructure/artpipe/art_lists/stillsand_content_fill.csv (RM_DuneCrawler,
+  RM_GlassPearl).
+-->
+<Defs>
+
+  <ThingDef ParentName="FishBase">
+    <defName>RM_DuneCrawler</defName>
+    <label>dune crawler</label>
+    <description>A fist-sized, many-legged scavenger with a fused mineral shell, pulled up out of deep sand on a fishing line. It spends its whole life below the surface filtering decayed organics out of the sand — silverbole leaf-fall, dead things the dune swallowed, whatever a wreck sheds — and only ever reaches the light when something eats it or something catches it. Nothing about it says "fish." Cooked, it eats like a shrimp with regrets.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DuneCrawler</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GlassPearl</defName>
+    <label>glass pearl</label>
+    <description>A smooth, water-clear nodule fused out of silica deep inside a deep-sand pool — kin to the light-pipe nubs that dot the dune sea's surface, but rounder, and rarer, because nothing usually digs this deep to find one. Desert-world optics traders call a good one "a lens that grew a skin." Sold whole, or cut for what's inside.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_GlassPearl</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>38</MarketValue>
+      <Mass>0.15</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>25</stackLimit>
+    <tradeability>Sellable</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+  </ThingDef>
+
+</Defs>

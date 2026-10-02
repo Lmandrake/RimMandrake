@@ -116,19 +116,13 @@ cells only, registered on the vanilla "Zone" tab) and
 "the honest hard part", pattern stolen from `RM_LiquidBody`/`RM_LiquidStock`
 (FlowWorks): a sticky body per pen, scribed, computing a Healthy/Thin/Silent/
 Vhorrin READ state from a live census of pool fauna standing in the pen.
-STILL OWED: the STOCK/FEED/HARVEST/OVERDRAW/CULL/RECAPTURE jobs (nothing yet
-places or moves fauna into a pen — population reads whatever is already
-standing there), the vhorrin emergence trigger (a live one is correctly
-detected; nothing spawns one), ring-density overlay art (the gauge is
-exposed via the zone's inspect string instead), handler injuries, and the
-vizhik escape event.
+STILL OWED: ring-density overlay art (the gauge is exposed via the zone's
+inspect string instead). The jobs, the vhorrin emergence trigger, handler
+injuries and the vizhik escape event shipped in waves 3 and 4.
 
 **Mod Settings** (MOD_OPTIONS_RETROFIT_1 doctrine): a master "Stocked pools
 enabled" toggle gates the pen-zone designator and PoolStock's tick logic.
-Stays OFF by default this wave too — the toggle now gates a real mechanism,
-but one nothing can populate yet (no STOCK job), so surfacing it by default
-would hand a player a zone that tracks a population it has no way to fill.
-Flip to true once the job set lands and a pen is playable end to end. Wild
-fishing (the ruled gentle six) and the bestiary/cuisine content itself are
-never touched by this setting.</description>
+ON by default: the full husbandry loop (NET/STOCK/FEED/HARVEST/CULL) is built
+and a pen is playable end to end. Wild fishing (the ruled gentle six) and the
+bestiary/cuisine content itself are never touched by this setting.</description>
 </ModMetaData>

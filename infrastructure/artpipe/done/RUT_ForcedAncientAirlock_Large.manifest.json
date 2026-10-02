@@ -1,0 +1,60 @@
+{
+  "attempt_elapsed_s": 97.06528904000879,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 97.06528904000879,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RUT_ForcedAncientAirlock_Large",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 49.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/28/rollout-2026-09-28T23-27-55-01a0ebd9-31c6-7f13-9a9a-d7504aaa1af1.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 49.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/28/rollout-2026-09-28T23-22-39-01a0ebd4-60cd-7cb1-9290-2a0a090c8fc2.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 2,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RUT_ForcedAncientAirlock_Large",
+    "note": "Generated via built-in imagegen, then resized and centered to 256\u00d7256 with transparent margins. First converter was unavailable; Windows imaging succeeded.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RUT_ForcedAncientAirlock_Large\\RUT_ForcedAncientAirlock_Large.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RUT_ForcedAncientAirlock_Large/RUT_ForcedAncientAirlock_Large.png\n    256x256  rgba  59,683 bytes  (94s)\n"
+}

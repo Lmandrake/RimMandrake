@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T05:10:17Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_FossilDisplayMount",
+  "priority": 65,
+  "prompt": "RimWorld game furniture sprite: a free-standing fossil skeleton mount, a sculpture-class centerpiece seen face-on \u2014 a simple worked stone-and-metal armature holding up a complete articulated alien skeleton in display pose, bones mineral-dark against the pale frame, a small engraved base plaque. It reads as the centerpiece of a homestead room or a gravship galley. Single furniture item, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CRACKEDLANDS_RULED_CONTENT_1",
+  "style_notes": "quality-bearing sculpture-class furniture, the centerpiece display tier for an articulated skeleton fossil; the read is a free-standing armature holding a complete alien skeleton upright; cracked lands register: pale sedimentary grey-white frame, mineral-dark bone, dark worked-metal armature, no green, hard dry light; realistic painted illustration, grounded believable alien osteology and craftsmanship, matte stone/bone/metal texture, never cartoonish, no outlines"
+}

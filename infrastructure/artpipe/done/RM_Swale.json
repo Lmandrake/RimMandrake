@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T21:20:01Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Swale",
+  "priority": 70,
+  "prompt": "RimWorld game building sprite: the swale, a hand-graded perforated irrigation canal seen as one buildable tile section \u2014 a shallow open channel of fitted stone and packed clay carrying a modest run of brown-clear water, its side walls deliberately pierced with small weep-holes where water seeps out into the banks, the ground along both edges visibly darker and moss-greened where the seepage feeds it. It reads as a canal that farms its own banks. Single structure tile, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "FLOODEDCANYON_BEDAZZLE_SITTING_1",
+  "style_notes": "the seep canal buildable, a FlowWorks channel variant discovered from this biome; the read is a perforated stone-and-clay channel with darkened seep-fed green banks; cracked lands register: cracked-clay grey-white and fitted stone, red-brown water, moss green confined to the seep-fed bank lines, hard dry light; realistic painted illustration, grounded believable construction, matte natural stone and clay texture, never cartoonish, no outlines"
+}

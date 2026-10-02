@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "derive_from": "RM_Danglemaw_east",
+  "drawsize": 1.0,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Danglemaw_south",
+  "priority": 70,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game creature sprite: the danglemaw, a mouth on a tendon \u2014 a thick wet muscular cord descending from above to a free-hanging set of jaws, slack and slightly open, lips loose around crowded inward-curving teeth, the cord knotted with pulsing swellings along its length; no eyes, no head, just the hang and the mouth. It reads as an ambush that is only a mouth. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the canopy ambusher, bs~1.0; the read is a slack hanging jaw on a thick pulsing tendon; storm-dark red-valley register: wet muscle reds and gum pinks, bruise-purple cord, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the cord and closed jaw from behind"
+}

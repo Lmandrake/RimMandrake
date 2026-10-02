@@ -89,16 +89,36 @@ def bioferrite_stockpile_reveal(t):
     `>= threshold` check exactly as a single stack of 50 would."""
     t.clear_area(size=12)
     x, z = t.anchor
+    # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): the mod reads map.resourceCounter, and
+    # ResourceCounter.UpdateResourceCounts counts ONLY things held by a storage SlotGroup (a stockpile
+    # zone or storage building) -- loose Bioferrite on bare ground counts 0, so 50 of it never reached the
+    # threshold. The chain said "stockpiling" but never made a stockpile. Build the zone first.
+    known = set(z_.get("label") for z_ in ((t.bridge_call("jawa/map_zones", action="listZones") or {})
+                                          .get("zones") or []))
+    t.bridge_call("jawa/map_zones", action="createZone", zoneType="stockpile",
+                  rect="%d,%d,1,1" % (x, z))
+    zone = None
+    for z_ in ((t.bridge_call("jawa/map_zones", action="listZones") or {}).get("zones") or []):
+        if z_.get("label") not in known and z_.get("type") == "Zone_Stockpile":
+            zone = z_.get("label")
+    if _live(t) and not zone:
+        raise ExpectationFailed("jawa/map_zones createZone did not leave a new stockpile zone at %d,%d" % (x, z))
     t.spawn("Bioferrite", count=50, at="pile")   # same cell each call -> one pile
-    t.wait_ticks(700)   # >= one 600-tick GameComponentTick check boundary
+    # ResourceCounter refreshes every 200 ticks and the gate checks only on multiples of 600, so a 700 window
+    # can see its one boundary land BEFORE the first count refresh; 1000 always holds a boundary after one.
+    t.wait_ticks(1000)
 
     with t.component("reveals_on_stockpile", toggle="shipMemoryEnabled"):
-        found = _reveal_letters(t)
-        if _live(t) and len(found) < 1:
-            raise ExpectationFailed(
-                "expected a '%s' letter after stockpiling 50 Bioferrite and "
-                "waiting past the 600-tick check interval; letter_list had none "
-                "matching" % REVEAL_LABEL)
+        try:
+            found = _reveal_letters(t)
+            if _live(t) and len(found) < 1:
+                raise ExpectationFailed(
+                    "expected a '%s' letter after stockpiling 50 Bioferrite and "
+                    "waiting past the 600-tick check interval; letter_list had none "
+                    "matching" % REVEAL_LABEL)
+        finally:
+            if zone:
+                t.bridge_call("jawa/map_zones", action="deleteZone", zone=zone)
         t.screenshot()
 
 

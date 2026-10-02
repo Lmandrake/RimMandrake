@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:05Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Eyebark",
+  "priority": 70,
+  "prompt": "RimWorld game plant sprite: the eyebark, a gnarled alien canopy tree whose red-brown bark is studded with working eyes \u2014 dozens of them, different sizes, set in welted sockets up the trunk and along the boughs, all open; wet dark-red foliage in ragged tiers, roots gripping like knuckles. Single organism, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the biome's dominant canopy tree; the read is bark full of open watching eyes; storm-dark red-valley register: red-brown wet bark, sclera whites at every socket, dark storm-red foliage, pink-blue aberrant accents, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable botany, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

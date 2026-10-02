@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T02:36:55Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_Vexxith",
+  "priority": 70,
+  "prompt": "RimWorld game item sprite: vexxith, sheared armor plates from a living colossus \u2014 three or four curved plates stacked like roof slates, each still holding the curve of the animal's flank, layered slag-lamination visible on the cut edges like growth rings, surfaces a deep matte iron-black with a purple-red mineral sheen, cut edges pale and crystalline; one plate showing beads of powerful acid standing on the surface and wetting nothing, because nothing wets this material and no heat warms it. It reads as armor waiting to be asked. Single item stack, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "item icon and stuff-color master for the rare shear material (defName RM_Vexxith): immune to powerful acids and temperature, only obtainable by shearing a LIVING vexxiss; the read is curved sheared plates with laminated cut edges and acid beading off harmlessly; deep matte iron-black body, purple-red crust sheen, pale crystalline cut edges; cauldron register: a poison forest of glass and acid under chemical fog, the ground loud with slow-steam-engine chemistry; wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains, condensate beading and mineral rings on every surface; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}

@@ -1,0 +1,188 @@
+{
+ "chains": [
+  {
+   "name": "fire_tick_effects",
+   "components": [
+    {
+     "name": "<chain setup, outside any component>",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: set_terrain(RM_FE_Ground_Sand) over 188,38,24,24 did not paint the whole rect: cellsChanged=0",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ashfall_weather_accumulation",
+   "components": [
+    {
+     "name": "ashfall_accumulates",
+     "toggle": "ashfallAccumulationEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: expected >=1 RM_FE_Filth_LooseAsh in 188,38,24,24 after 2600 ticks under RM_FE_Weather_AshFall, got 0",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/weather_set",
+       "result": {
+        "success": false,
+        "message": "No WeatherDef 'RM_FE_Weather_AshFall'.",
+        "details": [],
+        "operation": {
+         "OperationId": "op_d8763241b4e843dfbcd3b208f9f3640c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/weather-set",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:00:59.2193246+00:00",
+         "CompletedAtUtc": "2026-10-02T01:00:59.2284061+00:00",
+         "DurationMs": 9,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(2600) [watched] -> 2600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2600,
+        "requested": 2600
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 43272,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 8,
+        "perDef": {},
+        "ticksGame": 5201,
+        "message": "NOTHING MATCHED. 43272 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_0f3be08b3e0144b99d95175995e2ad32",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-02T01:01:06.7302684+00:00",
+         "CompletedAtUtc": "2026-10-02T01:01:06.7423813+00:00",
+         "DurationMs": 12,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 5,
+    "ticks_spent": 2600,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "startup_and_def_wiring",
+   "components": [
+    {
+     "name": "fulgurite_armed_only",
+     "toggle": "fulguriteEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[RimMandrake.StarWars.FireEcology] fulgurite-spawn' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "expect_log_contains([RimMandrake.StarWars.FireEcology] fulgurite-spawn, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "biome_def_wiring",
+     "toggle": "biomeGenerationEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001CB5E585D30>",
+  "<suite.Component object at 0x000001CB5E3B4E10>",
+  "<suite.Component object at 0x000001CB5E3B7ED0>"
+ ],
+ "refused": "",
+ "walk": "D:\\Luke\\dev\\RimMandrake\\design\\validation_walks\\RimMandrake\\Pyrelands.md",
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

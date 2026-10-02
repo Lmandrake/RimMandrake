@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GiantSkeletons.xml                RimMandrake — STILLSAND_SKELETONS_TRACKS_1 §1–3
+  "Huge skeletons on the sand." Design: stillsand_turn3_development_2026-09-30.md §3.1.
+  Mechanism: Source/RM_GiantSkeletons.cs header.
+
+  Each skeleton is TWO buildings: the ribcage (this file's RM_*Skeleton) and the skull
+  (RM_GiantSkull), laid beside it by RM_SkeletonPlacer.
+  - Ribs: partial cover 0.5 (fillPercent) and a 0.5 lee stripe through CreatureBehaviors'
+    shipped shade-gear comp (lee mode). The ribs carry NO staticSunShadowHeight on purpose:
+    the shade grid turns any static shadow into FULL cast shade, which would erase the
+    stripe-not-pocket distinction the design asks for.
+  - Skull: a full cast-shade pocket over its footprint (shade-gear footprint mode, depth 1,
+    both sun kinds), standable, with a rendered shadow (staticSunShadowHeight).
+  - Bone harp: RM_CompBoneHarp + RM_BoneHarp sound, louder in wind.
+  - Deconstruct (slowly, the 3000-work ceiling) for the leavings on RM_GiantSkeletonExtension.
+    Giant bone is NOT yet among them: it waits on DESIGN_MATERIALS_REVIEW_1 naming the one
+    bone material (no bone family is added here).
+
+  PLACEHOLDER ART: vanilla RubblePile (as RM_TitanicCorpseSite). The skeleton sprites are
+  queued in the artpipe (RM_OommokSkeleton, RM_MuurrokSkeleton, RM_GuzzkaSkeleton,
+  RM_VozzikSkeleton, 1024x512 / 512, pending); wiring them is a follow-up.
+-->
+<Defs>
+
+  <ThingDef Name="RM_GiantSkeletonBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>RimMandrake.Stillsand.Building_GiantSkeleton</thingClass>
+    <category>Building</category>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Building/RubblePile</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(232,224,204)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <canOverlapZones>false</canOverlapZones>
+    <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+    <statBases>
+      <MaxHitPoints>2000</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <repairable>false</repairable>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
+        <mode>lee</mode>
+        <shadeDepth>0.5</shadeDepth>
+        <overheadFactor>1</overheadFactor>
+        <lowSunFactor>1</lowSunFactor>
+        <leeHeight>1.5</leeHeight>
+        <fallbackLeeCells>2</fallbackLeeCells>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_BoneHarp">
+        <sound>RM_BoneHarp</sound>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase">
+    <defName>RM_OommokSkeleton</defName>
+    <label>oommok skeleton</label>
+    <description>The ribcage of an oommok, the mirror giant, standing out of the sand like the frame of a hall. Flakes of its shed mirror-plate still cling to the ribs and flash in the sun. Wind across the ribs makes a low moan. The arcs throw striped shade, and the skull lies close by, big enough to walk into.</description>
+    <size>(7,3)</size>
+    <graphicData>
+      <drawSize>(8,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <skull>RM_GiantSkull</skull>
+        <genstepWeight>3</genstepWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase">
+    <defName>RM_MuurrokSkeleton</defName>
+    <label>muurrok skeleton</label>
+    <description>The bones of a muurrok, the crest-spine still fused into one long blade of chalk-white bone with a dark stain along it. Something took this one from below; the sand around the ribs was churned once. The crest still carries a few plates worth cutting free.</description>
+    <size>(7,3)</size>
+    <graphicData>
+      <drawSize>(8,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <skull>RM_GiantSkull</skull>
+        <genstepWeight>2</genstepWeight>
+        <leavings>
+          <li>
+            <thing>RM_CrestPlate</thing>
+            <count>2</count>
+          </li>
+        </leavings>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase">
+    <defName>RM_GuzzkaSkeleton</defName>
+    <label>guzzka skeleton</label>
+    <description>The salt-crusted bones of a guzzka, the shaggy cave beast, dragged or wandered far from any cavern before it died. Smaller than the true giants, but still a landmark on open sand.</description>
+    <size>(3,3)</size>
+    <graphicData>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <genstepWeight>1</genstepWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_GiantSkeletonBase">
+    <defName>RM_VozzikSkeleton</defName>
+    <label>vozzik skeleton</label>
+    <description>The plated skeleton of a vozzik, its chalky armour still lying in overlapping rows where the hide used to be.</description>
+    <size>(3,3)</size>
+    <graphicData>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_GiantSkeletonExtension">
+        <genstepWeight>1</genstepWeight>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- The skull: a cast-shade pocket that fully counts. Standable, so you can walk in. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GiantSkull</defName>
+    <label>giant skull</label>
+    <description>A skull the size of a hut, half sunk in the sand, its dome a roof of bone. Under the low sun it is the best shade on open sand, and the small life of the desert knows it.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <size>(3,3)</size>
+    <graphicData>
+      <texPath>Things/Building/RubblePile</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(240,234,214)</color>
+      <drawSize>(3.5,3.5)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>20</pathCost>
+    <fillPercent>0.25</fillPercent>
+    <staticSunShadowHeight>0.6</staticSunShadowHeight>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <canOverlapZones>false</canOverlapZones>
+    <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+      <WorkToBuild>3000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <alwaysDeconstructible>true</alwaysDeconstructible>
+      <repairable>false</repairable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ShadeGear">
+        <mode>footprint</mode>
+        <shadeDepth>1</shadeDepth>
+        <overheadFactor>1</overheadFactor>
+        <lowSunFactor>1</lowSunFactor>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

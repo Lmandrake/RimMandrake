@@ -1,0 +1,56 @@
+{
+  "attempt_elapsed_s": 109.8114034839964,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "elapsed_s": 109.8114034839964,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 1024,
+  "id": "RM_MiddenshellTrack",
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T17-24-07-01a0f4d8-d994-77d3-aed4-e427c137b1d2.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 56.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w1/sessions/2026/09/30/rollout-2026-09-30T17-19-38-01a0f4d4-bd7a-7c12-aa0f-404119ca186d.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "generate",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 1024,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "#6b6452",
+    "corners_transparent": false,
+    "has_alpha": false,
+    "height": 1024,
+    "id": "RM_MiddenshellTrack",
+    "note": "Generated with built-in imagegen and normalized from the tool's 1254px output to the required opaque 1024x1024 PNG.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_MiddenshellTrack\\RM_MiddenshellTrack.png",
+    "status": "ok",
+    "width": 1024
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_MiddenshellTrack/RM_MiddenshellTrack.png\n    1024x1024  rgb  2,226,959 bytes  (106s)\n"
+}

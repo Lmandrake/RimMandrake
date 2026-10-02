@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T02:58:05Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Veessa_east",
+  "priority": 70,
+  "prompt": "RimWorld game animal sprite: the veessa, a flat oval grain-scale miller of the mummified fields \u2014 dusty bone-and-tan plates, a broad rasp-mouth on the shaded side, a faint bloom of pale powder trailing it from the dry tissue it grinds. Timid, low, plated. No nameable Earth insect.",
+  "reference": null,
+  "rimflow_item_id": "STILLSAND_DESIGN_SITTING_1",
+  "style_notes": "grain-scale carrion miller, bs~0.15; the read is the flat plated oval with a powder bloom; eternal noon: hard white overhead light, hard black shadow, bleached bone-and-tan palette; painterly vanilla-RimWorld animal art style"
+}

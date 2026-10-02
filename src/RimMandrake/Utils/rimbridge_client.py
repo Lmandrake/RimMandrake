@@ -367,6 +367,12 @@ class RimBridge:
                 continue
             if msg.get("id") == want_id or want_id is None:
                 return msg
+            if msg.get("id") in getattr(self, "abandoned", ()):
+                # The late answer to a request this client already gave up on (timed out). MEASURED live 2026-10-01:
+                # FlowWorks' heavy flood ticks outran the call timeout, and the late reply then made every LATER call
+                # in the run die with "unexpected response id". It belongs to nobody; drop it.
+                self.abandoned.discard(msg.get("id"))
+                continue
             # A response for some other id means the stream desynced.
             raise RimBridgeError("unexpected response id %r (wanted %r)"
                                  % (msg.get("id"), want_id))
@@ -380,7 +386,14 @@ class RimBridge:
             "method": method,
             "params": params or {},
         })
-        msg = self._recv_response(rid)
+        try:
+            msg = self._recv_response(rid)
+        except RimBridgeError as ex:
+            if str(ex).startswith("timed out"):
+                if not hasattr(self, "abandoned"):
+                    self.abandoned = set()
+                self.abandoned.add(rid)
+            raise
         err = msg.get("error")
         if err:
             raise RimBridgeError("%s failed: %s" % (

@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "drawsize": 1.8,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Candler_east",
+  "priority": 60,
+  "prompt": "RimWorld game animal sprite: the candler, a hydrocarbon animal of the Lantern Deeps. A slow slab: a low, flattened ovoid two cells long and one wide, like a loaf pressed down, skin pale blue and slightly translucent so that a long yellow reservoir shows along its spine \u2014 a swollen dorsal sac, brighter and more opaque than the rest, the way a full wineskin looks. Underneath, a broad soft foot; it has no legs and moves as a single slow ripple. At the front, three short blunt feelers, no eyes, no mouth visible (it feeds through the foot). When full the sac stands proud of the back; when milked it sags. House palette, but the sac should be the most saturated yellow on any creature here \u2014 it is the point of the animal.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; hydrocarbon life (owner's own remake brief): pale glowing blue skin, YELLOW hydrocarbon internal fluids (oil, wax, light gas) visible through it, never red blood, never fur, never an Earth animal; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is MILKY BLUE AND WAX-CREAM: translucent milky-blue body, a bright cream-yellow wax sac along the spine; bs~1.2, drawSize ~1.8. north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}

@@ -1,3 +1,4 @@
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -55,6 +56,68 @@ namespace RimMandrake.CreatureBehaviors
         public float substellarLongitude = 0f;
         public float minElevationDegrees = 5f;
         public float maxElevationDegrees = 60f;
+
+        // ── STILLSAND_SUN_FROM_LATITUDE_1: the sun's height decides ─────
+        // All three are off by default, so every existing sun-heat biome is
+        // unchanged. Elevation is the map's sun elevation: the pinned sun's
+        // when the biome has one, else the geometry above — always from the
+        // tile's planet position, never from a region name.
+
+        /// <summary>When ≥ 0: at or above this elevation the heat kind is
+        /// overhead (roofs and parasols count), below it lowSun (only a lee
+        /// or rock counts). Ignored for ambient heat. Negative = off.</summary>
+        public float overheadAboveElevationDegrees = -1f;
+
+        /// <summary>When true, heatOffsetC is the offset at the substellar
+        /// point (sun at 90°) and the map's offset is heatOffsetC ×
+        /// sin(elevation), never below minScaledHeatOffsetC.</summary>
+        public bool heatScalesWithElevation = false;
+        public float minScaledHeatOffsetC = 0f;
+
+        /// <summary>Sand glare: exposure on natural sand (TerrainDef
+        /// categoryType Sand, not a constructed floor) never drops below this,
+        /// even in shade, before the Mod Settings strength dial. 0 = off.</summary>
+        public float sandGlareExposureFloor = 0f;
+
+        // ── STILLSAND_GLARE_BLIND_GOGGLES_1: glare-blind (RM_GlareBlind.cs) ─
+        /// <summary>The hediff unprotected humanlike eyes take in full glare
+        /// (it carries its own Sight stages and SeverityPerDay recovery).
+        /// Null = this biome does not blind. Protection is a gene or apparel
+        /// carrying RM_GlareProtectionExtension, or apparel tagged
+        /// RM_GlareProtection — never a race or defName list.</summary>
+        public HediffDef glareBlindHediff;
+
+        /// <summary>Exposure (RM_MapComponent_ShadeGrid.ExposureFor) at or
+        /// above which a pawn stands in full glare.</summary>
+        public float glareBlindExposureMin = 0.6f;
+
+        /// <summary>Severity gained per day spent in full glare, before the
+        /// hediff's own decay and the Mod Settings rate dial.</summary>
+        public float glareBlindSeverityPerDay = 4f;
+
+        // ── STILLSAND_MIRAGE_CONDITION_1: the mirage (RM_Mirage.cs) ──────
+        /// <summary>The permanent GameCondition (class RM_GameCondition_Mirage)
+        /// held on this map while the sun stands at or above
+        /// mirageMinElevationDegrees. Null = no mirage here.</summary>
+        public GameConditionDef mirageCondition;
+
+        public float mirageMinElevationDegrees = 45f;
+
+        /// <summary>The "chasing the water" state a heat-struck pawn can break
+        /// into (class RM_MentalState_ChasingWater).</summary>
+        public MentalStateDef mirageMentalState;
+
+        /// <summary>Heatstroke severity at or above which a pawn standing in
+        /// full sun may break.</summary>
+        public float mirageHeatstrokeMin = 0.2f;
+
+        /// <summary>Mean days between breaks for one such pawn, before the
+        /// Mod Settings dial.</summary>
+        public float mirageBreakMtbDays = 1.5f;
+
+        /// <summary>Exposure at or above which a pawn is "in full sun" for the
+        /// break and for the heat-shimmer accuracy cut.</summary>
+        public float mirageFullSunExposureMin = 0.6f;
 
         // ── §5 shade hopping / §6 dash ring (RM_ShadeHop.cs) ───────────
         /// <summary>A cell with exposure at or below this counts as shade in

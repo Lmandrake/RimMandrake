@@ -19,7 +19,7 @@
   Below this note is the ORIGINAL header, kept for provenance of the numbers
   now living in RUT_CrackedLands.xml — SAND_SWIMMERS_MOD_1's original
   framing: biome wiring that put the sand-swimmer fish family (RimStarWars:
-  SWBestiary — RSW_DuneCrawler / RSW_SandStalker / RSW_GlassPearl /
+  SWBestiary — RM_DuneCrawler / RSW_SandStalker / RM_GlassPearl /
   RSW_RareSandCatches) into `ZBiome_Badlands` (the Cracked Lands, More
   Vanilla Biomes) as its `fishTypes`, replacing the vanilla
   Fish_Guppy/Fish_Tilapia/RareFishingCatches_Hot that ship on that def.
@@ -64,7 +64,7 @@
   cucumber+squid uncommons — defs in this folder's sibling
   RUT_CrackedLandsFish_Items.xml) are added into the SAME two bucket
   PatchOperationReplace values below, alongside the already-shipped
-  RSW_DuneCrawler/RSW_Rocktooth/RSW_Boneblade — a full replace of the whole
+  RM_DuneCrawler/RSW_Rocktooth/RSW_Boneblade — a full replace of the whole
   bucket dictionary each time (PatchOperationReplace on a Dictionary field
   fully overwrites it), so the new species are folded into the existing
   values rather than appended by a second operation. The rocktooth/boneblade pair
@@ -95,7 +95,7 @@
         <maxFishPopulation>90</maxFishPopulation>
         <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
           <freshwater_Common>
-            <RSW_DuneCrawler MayRequire="mandrake.rsw.swbestiary">1</RSW_DuneCrawler>
+            <RM_DuneCrawler MayRequire="mandrake.rm.biomes">1</RM_DuneCrawler>
             <RUT_Tubbik>1</RUT_Tubbik>
             <RUT_Zhurr>0.6</RUT_Zhurr>
           </freshwater_Common>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_ChillGrowers.xml     CHILL_CRYOPONICS_GROWER_1 + CHILL_FLOOR_GROWING_BED_1
+  ============================================================================
+  Owner ruling 2026-09-30: "A cryoponics growing objects for these plants
+  that's fully enclosed. And a normal growing bed that can only be placed on
+  the floor of the Chill."
+
+  Both are Building_PlantGrower with building.sowTag RM_ChillBed, which the
+  Chill's six deep-bed plants (RM_TheChillFlora.xml: Eldspar, Tarspool,
+  Stonewater, Fuselight, ChillStillbloom, Pitchpearl) now carry in sowTags.
+  Those plants are completelyIgnoreFertility, so fertility is irrelevant.
+
+  The engine checks that would reject them (maxGrowthTemperature -20 C,
+  wildTerrainTags) are lifted by RM_Patch_ChillGrowers.cs:
+    * cryoponics vat: temperature + terrain-tag checks lifted while POWERED
+      (the bath is the vat's own environment, so it grows anywhere);
+    * floor bed: terrain-tag death lifted only; the bed relies on the seabed's
+      own -110 C ambient, so it is placeable only there (placeWorker).
+
+  Mod Settings gates: chillCryoponicsEnabled / chillFloorBedEnabled
+  (RM_TerminalBiomesSettings). Art: procedural 256px sprites in
+  Textures/Things/Building/Production/ (RM_ChillCryoponicsVat, RM_ChillFloorBed).
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ChillCryoponicsVat</defName>
+    <label>cryoponics vat</label>
+    <description>A sealed, frost-rimed vat that carries its own bath of cryogenic propane, so the Chill's deep-bed plants can be raised anywhere at all, not only on the liquid floor they came from. The bath is pumped and chilled continuously; if power is cut, the plants lose their cold and die back to whatever the room allows.</description>
+    <thingClass>RimMandrake.TerminalBiomes.RM_Building_CryoGrower</thingClass>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <graphicData>
+      <texPath>Things/Building/Production/RM_ChillCryoponicsVat</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <altitudeLayer>LowPlant</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <constructEffect>ConstructMetal</constructEffect>
+    <fillPercent>0.30</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <statBases>
+      <WorkToBuild>4200</WorkToBuild>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <fertility>1</fertility>
+    <building>
+      <sowTag>RM_ChillBed</sowTag>
+      <defaultPlantToGrow>RM_Tarspool</defaultPlantToGrow>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <tickerType>Rare</tickerType>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>220</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+    </comps>
+    <researchPrerequisites>
+      <li>Hydroponics</li>
+    </researchPrerequisites>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <designationCategory>Production</designationCategory>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ChillFloorBed</defName>
+    <label>Chill floor growing bed</label>
+    <description>A plain steel growing bed for the Chill's deep-bed plants, built to be laid on the frozen seabed where the cold already does the rest. It needs no power, and it can be built nowhere else.</description>
+    <thingClass>Building_PlantGrower</thingClass>
+    <noRightClickDraftAttack>true</noRightClickDraftAttack>
+    <graphicData>
+      <texPath>Things/Building/Production/RM_ChillFloorBed</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <castEdgeShadows>true</castEdgeShadows>
+    <altitudeLayer>LowPlant</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <constructEffect>ConstructMetal</constructEffect>
+    <fillPercent>0.30</fillPercent>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <WorkToBuild>1200</WorkToBuild>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <size>(2,2)</size>
+    <costList>
+      <Steel>60</Steel>
+    </costList>
+    <fertility>1</fertility>
+    <building>
+      <sowTag>RM_ChillBed</sowTag>
+      <defaultPlantToGrow>RM_Tarspool</defaultPlantToGrow>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.TerminalBiomes.RM_PlaceWorker_ChillFloorOnly</li>
+    </placeWorkers>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Production</designationCategory>
+  </ThingDef>
+
+</Defs>

@@ -13,7 +13,9 @@
          global raidDelayHours. Add more biomes here freely; no code change needed. -->
     <surveyShadowMultiplier>4</surveyShadowMultiplier>
     <surveyShadowBiomes>
-      <li>AB_RockyCrags</li> <!-- Alpha Biomes: "Forsaken Crags" -->
+      <li>RUT_Abyss</li> <!-- the campaign def the world's tiles carry -->
+      <li>RM_Abyss</li> <!-- the free-tier biome -->
+      <li>AB_RockyCrags</li> <!-- Alpha Biomes donor def, relabelled "the Abyss" -->
     </surveyShadowBiomes>
   </ScenPartDef>
 </Defs>

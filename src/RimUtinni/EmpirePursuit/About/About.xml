@@ -20,7 +20,7 @@ original; do not run both, they collide on the same defName and class.
 WHAT'S DIFFERENT FROM UPSTREAM
 
 Upstream has one global `raidDelayHours` for every map. The owner wanted poorly-surveyed
-biomes (the Forsaken Crags to start; more may be added) to buy the player 20-30 days instead
+biomes (the Abyss to start; more may be added) to buy the player 20-30 days instead
 of the usual 5-8 — "it takes them that long to relocate the ship" through a survey shadow.
 Added `ScenPartDef_RuthlessPursuit` with a `surveyShadowBiomes` list and a
 `surveyShadowMultiplier` (default 4x) read directly off the def, so the owner can edit the

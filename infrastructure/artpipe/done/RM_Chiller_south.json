@@ -1,0 +1,23 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-10-02T02:41:58Z",
+  "derive_from": "RM_Chiller_east",
+  "drawsize": 1.6,
+  "facing": "south",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_Chiller_south",
+  "priority": 60,
+  "prompt": "Derive this facing from the attached accepted master render of the SAME creature: same individual, same palette, same keyline weight, same painterly style, same scale \u2014 rotated to the view described below. Do not restyle. RimWorld game animal sprite: the chiller, a hydrocarbon animal of the Lantern Deeps. A creature that is colder than the cave. A squat barrel body one cell wide on four thick short columns, skin pale blue and heavily frosted \u2014 the only animal here whose surface is opaque, crusted white with rime that flakes off as it walks, so it leaves a faint powder trail. Where the frost cracks the yellow fluid shows through in fine lines. Along its back a row of tall thin fins, vanes of nearly clear blue, that stand up and fan when it is working hard. No visible eyes; a broad blunt front. It moves slowly and deliberately and the air around it should be drawn with a faint distortion or a fall of frost motes. Palette: house style under a white crust.",
+  "reference": null,
+  "rimflow_item_id": "LANTERNDEEPS_HYDROCARBON_FAUNA_BUILD_1",
+  "style_notes": "lantern deeps register: an enclosed cavern under the mountain, no sky, the only ambient light the cold blue of lanternstone crystal and glow-fungi; blue-on-black, fungal grey; bake NO cast shadow; painterly vanilla-RimWorld art style, grounded believable anatomy and materials, matte, never cartoonish, never cute, no outlines; hydrocarbon life (owner's own remake brief): pale glowing blue skin, YELLOW hydrocarbon internal fluids (oil, wax, light gas) visible through it, never red blood, never fur, never an Earth animal; owner law verbatim: \"Your color palette is too uniform per biome. Needs more variety.\" \u2014 this subject's palette anchor is RIME WHITE AND ICE-CYAN CRACKS: opaque frosted white crust, ice-cyan showing where the rime cracks, little yellow visible; bs~1.4, drawSize ~1.6. north facing is a true rear view seen from directly behind: no face or frontal features visible."
+}

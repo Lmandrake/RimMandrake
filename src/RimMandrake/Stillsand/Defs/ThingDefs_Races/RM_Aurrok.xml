@@ -23,10 +23,8 @@
   since "a small walking mountain" (§7 Q8) is a materially bigger, tougher animal,
   not a re-labelled cow.
 
-  ART: no render exists for "aurrok"/"spined gow" tied to this biome (checked
-  artpipe done/_artsrc/registry.jsonl this pass — none found). Donor's own texture
-  used as a loud TEMP PLACEHOLDER, matching this codebase's standing port
-  convention, until a real render lands.
+  ART: own 3-facing render, Textures/Things/Pawn/Animal/RM_Aurrok (STILLSAND_BEDAZZLE_CONTENT_1): the
+  donor Alpha Animals texture is no longer referenced, so the free mod has no Alpha Animals dependency.
 -->
 <Defs>
 
@@ -150,28 +148,27 @@
         <label>aurrok calf</label>
         <labelPlural>aurrok calves</labelPlural>
         <bodyGraphicData>
-          <!-- TEMP PLACEHOLDER: donor Alpha Animals texture, until artpipe renders land. -->
-          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowBaby</texPath>
+          <texPath>Things/Pawn/Animal/RM_Aurrok/RM_Aurrok</texPath>
           <drawSize>2.0</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale</texPath>
+          <texPath>Things/Pawn/Animal/RM_Aurrok/RM_Aurrok</texPath>
           <drawSize>3.2</drawSize>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale</texPath>
+          <texPath>Things/Pawn/Animal/RM_Aurrok/RM_Aurrok</texPath>
           <drawSize>2.9</drawSize>
         </femaleGraphicData>
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowMale</texPath>
+          <texPath>Things/Pawn/Animal/RM_Aurrok/RM_Aurrok</texPath>
           <drawSize>4.3</drawSize>
         </bodyGraphicData>
         <femaleGraphicData>
-          <texPath>Things/Pawn/Animal/AA_SpinedGow/AA_SpinedGowFemale</texPath>
+          <texPath>Things/Pawn/Animal/RM_Aurrok/RM_Aurrok</texPath>
           <drawSize>3.9</drawSize>
         </femaleGraphicData>
       </li>

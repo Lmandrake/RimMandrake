@@ -1,0 +1,62 @@
+{
+  "attempt_elapsed_s": 178.4204713040017,
+  "channel": "codex",
+  "daemon_attempts": 1,
+  "derive_from_distance": 71.18386606923882,
+  "derive_from_palette_distance": 19.89301529868262,
+  "elapsed_s": 178.4204713040017,
+  "facts": "PASS",
+  "facts_findings": [],
+  "height": 256,
+  "id": "RM_SparkleechGrub_south",
+  "legibility": "skipped",
+  "legibility_findings": [
+    "gate disabled by default (ART_PAINTERLY_RESTORATION_1) \u2014 set ARTPIPE_LEGIBILITY_THRESHOLDS=<path> to re-enable; skipped, not a pass"
+  ],
+  "meter_after": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T01-39-13-01a0e72b-0ce2-7200-b7e2-d24f58d18ab9.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "meter_before": {
+    "grumpy": false,
+    "ok": true,
+    "primary_resets_at": 1791050685,
+    "primary_used_percent": 40.0,
+    "primary_window_minutes": 10080,
+    "rollout": "/mnt/c/Users/Mandrake/.codex_workers/artpipe/w0/sessions/2026/09/28/rollout-2026-09-28T01-31-08-01a0e723-a64d-7640-b12a-c85c33b4ce8e.jsonl",
+    "secondary_resets_at": null,
+    "secondary_used_percent": null,
+    "secondary_window_minutes": null
+  },
+  "mode": "edit",
+  "note": "no reference to validate against",
+  "status": "ok",
+  "timed_out": false,
+  "validator": "skipped",
+  "validator_findings": [
+    "no reference on this job \u2014 validator skipped, not a pass"
+  ],
+  "width": 256,
+  "worker_self_report": {
+    "attempts": 1,
+    "background_used": "transparent",
+    "corners_transparent": true,
+    "has_alpha": true,
+    "height": 256,
+    "id": "RM_SparkleechGrub_south",
+    "note": "Derived a direct south-facing frontal view from the accepted east master using built-in imagegen, then reduced it to the exact 256x256 transparent PNG.",
+    "out": "D:\\Luke\\dev\\Rimworld\\infrastructure\\artpipe\\_artsrc\\RM_SparkleechGrub_south\\RM_SparkleechGrub_south.png",
+    "status": "ok",
+    "width": 256
+  },
+  "worker_status": "ok",
+  "worker_stderr_tail": "",
+  "worker_stdout_tail": "OK  /mnt/d/Luke/dev/Rimworld/infrastructure/artpipe/_artsrc/RM_SparkleechGrub_south/RM_SparkleechGrub_south.png\n    256x256  rgba  63,063 bytes  (174s)\n"
+}

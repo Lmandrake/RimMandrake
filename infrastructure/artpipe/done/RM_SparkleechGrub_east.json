@@ -1,0 +1,22 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-28T05:49:04Z",
+  "drawsize": 1.0,
+  "facing": "east",
+  "facings": [
+    "south",
+    "east",
+    "north"
+  ],
+  "id": "RM_SparkleechGrub_east",
+  "priority": 70,
+  "prompt": "RimWorld game creature sprite: the sparkleech grub, a fat wet segmented larva with the same round socket-mouth of concentric hooks as its adult and no wings yet \u2014 pale translucent body showing dark half-formed wing buds curled inside it, clinging with rings of stub feet. It reads as the theft before it can fly. No nameable Earth animal.",
+  "reference": null,
+  "rimflow_item_id": "CONTAGION_BEDAZZLE_SITTING_1",
+  "style_notes": "the thief's larval stage, bs~0.2; the read is a translucent grub with wing buds visible inside; storm-dark red-valley register: pale wet translucent pinks and greys, faint charge flicker at the mouth, dim storm light; grotesque body-horror as realistic painted natural-history illustration, grounded believable anatomy, matte-wet natural surface texture, never cartoonish, never cute, no outlines, alien but biologically plausible; north facing is a true rear view seen from directly behind: no eyes, no face, no mouth or frontal features visible, only the back of the segments"
+}

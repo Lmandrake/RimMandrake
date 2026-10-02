@@ -19,7 +19,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Meatvine/RM_Meatvine</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <selectable>false</selectable>
     <plant>
@@ -58,7 +58,7 @@
     <pathCost>30</pathCost>
     <graphicData>
       <texPath>Things/Plant/RM_Toothmoss/RM_Toothmoss</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <selectable>false</selectable>
     <plant>
@@ -100,7 +100,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Wombpod/RM_Wombpod</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <selectable>true</selectable>
     <plant>
@@ -158,7 +158,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Eyebark/RM_Eyebark</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>
         <offset>(0,0,-0.38)</offset>
@@ -218,7 +218,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_Lashgrass/RM_Lashgrass</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
     <selectable>false</selectable>
@@ -486,7 +486,7 @@
     </statBases>
     <graphicData>
       <texPath>Things/Plant/RM_HalfmadeTree/RM_HalfmadeTree</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shadowData>
         <volume>(0.24, 0.3, 0.15)</volume>
         <offset>(0,0,-0.38)</offset>

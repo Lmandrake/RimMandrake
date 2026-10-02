@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T11:00:41Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_WarcasketJunker",
+  "priority": 65,
+  "prompt": "RimWorld game item sprite: the Junker-adjusted warcasket, a full-body heavy survival suit laid out flat as an apparel item \u2014 the same bulky riveted patchwork tank-around-a-person shape, but further modified with makeshift extraction tools strapped to one forearm (clamps, a hooked prying tool), extra fuel-stained canisters lashed to the chest unit, and hazard-striped patches painted crudely over the plating. It reads as a suit built and rebuilt by someone who dives into contaminated wrecks for a living and has died in suits like it before. Single item, centered, no ground shadow, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "WARCASKET_SUIT_CLASS_1",
+  "style_notes": "item icon for the Junker-variant warcasket, adapted for fuel extraction in the Wasteland; the read is the same bulky scavenged-plate suit with extraction tools strapped on and fuel-stained canisters; rust-brown and scorched-grey scavenged metal with dirty yellow hazard-stripe patches and soot staining; realistic painted illustration, grounded believable improvised engineering, matte worn-metal surface texture with rivets and weld seams, never cartoonish, no outlines"
+}

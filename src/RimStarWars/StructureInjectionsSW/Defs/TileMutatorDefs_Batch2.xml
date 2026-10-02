@@ -12,8 +12,10 @@
     <defName>RSW_KraytGraveyard</defName>
     <label>krayt graveyard</label>
     <description>A crescent of bones too big for anything that still walks. Whatever left them may not be finished with the ground it is buried in.</description>
+    <!-- STILLSAND_SKELETONS_TRACKS_1 §6: also the Stillsand (the RM biome that is the deep desert). -->
     <biomeWhitelist>
       <li>ExtremeDesert</li>
+      <li MayRequire="mandrake.rm.stillsand">RM_Stillsand</li>
     </biomeWhitelist>
     <extraGenSteps>
       <li>RSW_GenStep_KraytGraveyard</li>

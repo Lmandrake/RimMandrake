@@ -44,16 +44,14 @@
   mod, RM_CompSapSuckerRefusal.cs) — see that class for why a shared hediff-
   refusal comp beat tripling the fear-scan pattern.
 
-  🔴 Deferred, not guessed: §6n's OTHER refusal trigger ("mishandled" during
-  a failed taming/training attempt, alongside "frightened") — which job/
-  interaction hook fires on a failed handling attempt is a real engine
-  question this pass could not verify (RimSage does not connect from this
-  machine) and did not want to invent. What ships instead is the trigger
-  this pass COULD verify for real: every member's refusal fires on taking
-  damage, deterministically, cooldown-gated, never a random roll (the
-  design doc's own explicit requirement). FEVERWOOD_SAP_SUCKER_TUNING_1
-  owns the mishandling half, plus every INVENTED stat/value in this file
-  and its sibling Hediff/Item defs — none of the numbers below are ruled.
+  §6n's two refusal triggers: taking damage, and being "mishandled" in a
+  failed taming attempt. The second is a Harmony postfix on
+  Pawn_MindState.CheckStartMentalStateBecauseRecruitAttempted(Pawn tamer)
+  (RM_Patch_SapSuckerMishandle.cs, FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1),
+  which calls RM_CompSapSuckerRefusal.NotifyMishandled — ollareth carries
+  that comp hediff-less so a failed tame rings its alarm. Both triggers are
+  deterministic and share one cooldown, never a random roll. Numeric values
+  are tuned by FEVERWOOD_SAP_SUCKER_TUNING_1.
 
   Body: BeetleLike (11 existing repo uses for small insectoid fauna,
   Greentide's own RM_GreatboleGrub among them) — the guild's own legibility
@@ -76,7 +74,7 @@
 
   <ThingDef Name="RM_SapSuckerBase" ParentName="AnimalThingBase" Abstract="true">
     <statBases>
-      <!-- INVENTED placeholders, all four rows: small clamped bark-dwellers,
+      <!-- TUNED (FEVERWOOD_SAP_SUCKER_TUNING_1), all four rows: small clamped bark-dwellers,
            deliberately sluggish rather than fleeing (§6's "does not flee"
            read as the closest safe engine approximation — a genuinely
            locked-in-place animal risks breaking core taming/herding AI). -->
@@ -134,8 +132,8 @@
         <li>
           <def>AnimalAdult</def>
           <minAge>0.4</minAge>
-          <soundWounded>Pawn_Insect_Ambient</soundWounded>
-          <soundDeath>Pawn_Insect_Ambient</soundDeath>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
         </li>
       </lifeStageAges>
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
@@ -272,6 +270,10 @@
         <tag>FeverWoodCrown</tag>
         <cooldownTicks>2500</cooldownTicks>
       </li>
+      <!-- Hediff-less on purpose: it exists only so a failed tame
+           (FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1) can ring the alarm above,
+           which never sees a failed tame on its own (not damage). -->
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_SapSuckerRefusal" />
     </comps>
   </ThingDef>
 

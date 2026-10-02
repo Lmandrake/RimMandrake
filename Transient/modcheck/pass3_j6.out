@@ -1,0 +1,5 @@
+== J6_bland_base
+UNMEASURED J6_bland_base -- RuntimeError: quicktest world start FAILED (programState was 'Entry'): imeSpeed": null, "screenFading": false, "fadeOverlayA
+programState: Entry after 370s
+get_game_info: {"status": "no_game", "message": "No game is currently loaded", "operation": {"OperationId": "op_a723f9f6b3b94edf8a36caf72276b3f6", "CapabilityId": "rimbridge.core/diagnostics/get-game-info", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-02T05:29:30.5762424+00:00", "CompletedAtUtc": "2026-10-02T05:29:30.577303+00:00", "DurationMs": 1, "Result": null, "HasResult": true, "ResultWasTruncated
+  results: D:\Luke\dev\RimMandrake\Transient\modcheck\live_queue_results.jsonl

@@ -12,10 +12,9 @@
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
-    No Harmony, no BiomeWorker: the def reuses vanilla Core's own
+    No BiomeWorker (Harmony arrived with STILLSAND_GLASS_LENS_CHAIN_1, below; STILLSAND_SKELETONS_TRACKS_1's horizon warning also uses it): the def reuses vanilla Core's own
     RimWorld.BiomeWorker_ExtremeDesert unchanged (item's own MEASURED STATE —
-    the donor twin never named a third-party workerClass). The one class
-    here is the Mod Settings pair (ModSettings + Mod).
+    the donor twin never named a third-party workerClass).
   -->
 
   <PropertyGroup>
@@ -47,7 +46,56 @@
     <Compile Include="RM_StillsandDefOf.cs" />
     <Compile Include="RM_SandBusterTunnelSpawner.cs" />
     <Compile Include="RM_IncidentWorker_SandBusterEruption.cs" />
+    <!-- STILLSAND_BEDAZZLE_CONTENT_1: the zuurrik blood-waker -->
+    <Compile Include="RM_MapComponent_Zuurrik.cs" />
+    <!-- STILLSAND_EVENT_CREATURES_1: the sand-leviathan incident (muurrok, krayt attack),
+         the muurrok's mirror beam, and their settings. Uses the sand-swim kit in
+         RimMandrake.CreatureBehaviors (a declared hard dependency); build that first. -->
+    <Compile Include="RM_SandLeviathan.cs" />
+    <Compile Include="RM_Verb_MirrorBeam.cs" />
+    <Compile Include="RM_StillsandEventsMod.cs" />
+    <!-- STILLSAND_PRECIOUS_CAVES_1 -->
+    <Compile Include="RM_PreciousCaveGeometry.cs" />
+    <Compile Include="RM_PreciousCaves.cs" />
+    <Compile Include="RM_PreciousCaveSettings.cs" />
+    <!-- STILLSAND_RETURN_RITUAL_1: sand remembers water (RM) + the inert water-ledger engine -->
+    <Compile Include="RM_StillsandWater.cs" />
+    <Compile Include="RM_WaterLedger.cs" />
+    <!-- STILLSAND_DUNE_GALE_1: the dune gale (condition, carry-and-return, settings) and the dust devil -->
+    <Compile Include="RM_DuneGale.cs" />
+    <Compile Include="RM_DustDevil.cs" />
+    <!-- STILLSAND_SKELETONS_TRACKS_1: giant skeletons, bone harp, corpse-to-skeleton,
+         the horizon warning (a Harmony prefix on Storyteller.TryFire) and their settings -->
+    <Compile Include="RM_GiantSkeletons.cs" />
+    <Compile Include="RM_HorizonWarning.cs" />
+    <Compile Include="RM_SkeletonSettings.cs" />
+    <!-- STILLSAND_GLASS_LENS_CHAIN_1: sun-fed work tables (Harmony, see below) -->
+    <Compile Include="RM_SunPowered.cs" />
+    <Compile Include="RM_GlassChainMod.cs" />
   </ItemGroup>
+
+  <!-- STILLSAND_GLASS_LENS_CHAIN_1: Harmony IS referenced (one postfix on
+       Building_WorkTable.UsableForBillsAfterFueling, the sun gate). Same path
+       as CreatureBehaviors' csproj; brrainz.harmony is declared in About.xml. -->
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- STILLSAND_PRECIOUS_CAVES_1: the cave rows reuse EnvironmentalHazards'
+       RM_SetPieceElement hook, and the shade face reads CreatureBehaviors'
+       pinned-sun geometry. Both mods are declared in About.xml. -->
+  <PropertyGroup Condition="'$(EnvironmentalHazardsDll)' == ''">
+    <EnvironmentalHazardsDll>$(MSBuildThisFileDirectory)..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</EnvironmentalHazardsDll>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
+    <CreatureBehaviorsDll>$(MSBuildThisFileDirectory)..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</CreatureBehaviorsDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -64,6 +112,22 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>$(EnvironmentalHazardsDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>$(CreatureBehaviorsDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

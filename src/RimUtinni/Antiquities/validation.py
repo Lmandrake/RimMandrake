@@ -101,6 +101,7 @@ STAGES = ["RUT_Antiq_Language", "RUT_Antiq_Religion", "RUT_Antiq_Culture",
 # FullDayTicks(60000) * worst-case skillFactor(1.5, skillAvg=0) + buffer.
 # See module docstring #1/#2 for why this is sized to the worst case.
 READ_WAIT_TICKS = 95000
+READ_CHUNK_TICKS = 30000
 
 
 def _inspect_contains(t, thing_id, needle):
@@ -116,7 +117,7 @@ def _inspect_contains(t, thing_id, needle):
     return r
 
 
-@suite.chain("reading_completes_and_advances_research")
+@suite.chain("reading_completes_and_advances_research", tick_cap=READ_WAIT_TICKS + 15000)
 def reading_completes_and_advances_research(t):
     """The whole reading loop, forced via jawa/ordered_job with the driver's
     own two targets (antiquity=A, station=B) rather than waiting on the
@@ -149,7 +150,16 @@ def reading_completes_and_advances_research(t):
         if not (r or {}).get("accepted"):
             raise ExpectationFailed("jawa/ordered_job(%s) was not accepted: %r" % (JOB, r))
 
-        t.wait_ticks(READ_WAIT_TICKS)
+        # Chunked: the situational envelope refuses a single wait near its 60000 session cap (MEASURED
+        # 2026-10-01: BudgetExceeded). Same 95000 total, in pieces under it, with a detector sweep between
+        # each; the chain declares its own larger session cap above.
+        _left = READ_WAIT_TICKS
+        while _left > 0:
+            _n = min(READ_CHUNK_TICKS, _left)
+            t.wait_ticks(_n)
+            _left -= _n
+            if _left > 0 and getattr(t, "watch", None) is not None:
+                t.watch.check()
 
         _inspect_contains(t, urn_id, "Catalogued")
 

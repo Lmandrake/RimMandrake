@@ -1,0 +1,18 @@
+{
+  "background": "transparent",
+  "canvas": {
+    "height": 256,
+    "width": 256
+  },
+  "channel": "codex",
+  "created": "2026-09-29T02:36:56Z",
+  "drawsize": 1.0,
+  "facing": null,
+  "facings": [],
+  "id": "RM_CorrodedWellhead",
+  "priority": 70,
+  "prompt": "RimWorld game ruin sprite: a corroded capped wellhead from before the collapse \u2014 a low industrial stub of flanged pipe collar and welded dome cap with chain-dog clamps, half-swallowed by climbing mineral-ring terracing like bark, acid-etch patina over every surface, one seam weeping a thin green-amber stain. Welded down by people who were not coming back for it. It reads as proof that the ground's breath can be held. Single ruin piece, centered, no background scenery.",
+  "reference": null,
+  "rimflow_item_id": "CAULDRON_BEDAZZLE_SITTING_1",
+  "style_notes": "corroded ruin kit piece 1 of 3 (study-interactable set that teaches the filter-works); dead industry being eaten by the biome; heavy acid-etch and mineral-ring takeover, green-amber only at the one weeping seam; cauldron register: a poison forest of glass and acid under chemical fog, the ground loud with slow-steam-engine chemistry; wet-lacquered black-green and char-brown darks, dark-crust purple-red film sheen, pale glass-crystal accents, sick green-amber ONLY where chemistry pools or beads or stains, condensate beading and mineral rings on every surface; realistic painted natural-history illustration, grounded believable anatomy, matte natural surface texture with wet sheen, never cartoonish, never cute, no outlines, alien but biologically plausible"
+}
