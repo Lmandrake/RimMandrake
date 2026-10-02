@@ -30,6 +30,7 @@ namespace RimMandrake.MessyConduit
         private Dictionary<IntVec2, List<LaidPiece>> bySection = new Dictionary<IntVec2, List<LaidPiece>>();
         private Dictionary<Cell, bool> liveEnds = new Dictionary<Cell, bool>();
         private int builtFrame = -1;
+        private bool buildErrorLogged;
         public int Builds, LastPlanned, LastReused;
         public CordWorld LastWorld;
 
@@ -61,7 +62,13 @@ namespace RimMandrake.MessyConduit
             CordWorld world = CordWorldAdapter.Snapshot(map);
             LastWorld = world;
             CordBuilder b = builder;
-            List<LaidPiece> next = b.Build(world, MessyConduitSettings.BuildOptions(), c => LiveNow(c));
+            List<LaidPiece> next;
+            try { next = b.Build(world, MessyConduitSettings.BuildOptions(), c => LiveNow(c)); }
+            catch (Exception ex)
+            {
+                if (!buildErrorLogged) { buildErrorLogged = true; Log.Error("[MessyConduit] cord build failed, drawing no cords: " + ex); }
+                next = new List<LaidPiece>();
+            }
             Builds++;
             LastPlanned = b.LastPlanned;
             LastReused = b.LastReused;
@@ -89,7 +96,7 @@ namespace RimMandrake.MessyConduit
         }
 
         private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s) =>
-            d.TryGetValue(s, out List<LaidPiece> l) ? string.Join("\n", l.Select(p => p.Key)) : "";
+            d.TryGetValue(s, out List<LaidPiece> l) ? string.Join("\n", l.Select(p => p.Key + "@" + p.GeometryHash())) : "";
 
         private bool LiveNow(Cell c)
         {

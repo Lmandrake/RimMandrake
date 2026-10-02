@@ -59,8 +59,8 @@ namespace RimMandrake.MessyConduit.Core
             foreach (CordStrand s in Strands)
                 foreach (V2 p in s.Pts)
                 {
-                    h = (h ^ (ulong)Math.Round(p.X * 1000)) * 1099511628211UL;
-                    h = (h ^ (ulong)Math.Round(p.Z * 1000)) * 1099511628211UL;
+                    h = (h ^ unchecked((ulong)(long)Math.Round(p.X * 1000))) * 1099511628211UL;
+                    h = (h ^ unchecked((ulong)(long)Math.Round(p.Z * 1000))) * 1099511628211UL;
                 }
             return h;
         }
@@ -95,12 +95,19 @@ namespace RimMandrake.MessyConduit.Core
             LastPlanned = LastReused = 0;
             var pairCount = new Dictionary<string, int>();
             List<CordEdge> cordEdges = g.CordEdges().ToList();
+            var pairTotal = new Dictionary<string, int>();
+            foreach (CordEdge x in cordEdges)
+            {
+                string k = PairKey(x.A, x.B);
+                pairTotal.TryGetValue(k, out int tot);
+                pairTotal[k] = tot + 1;
+            }
             foreach (CordEdge e in cordEdges)
             {
                 string pk = PairKey(e.A, e.B);
                 pairCount.TryGetValue(pk, out int mult);
                 pairCount[pk] = mult + 1;
-                bool parallel = cordEdges.Count(x => PairKey(x.A, x.B) == pk) > 1 || e.A == e.B;
+                bool parallel = pairTotal[pk] > 1 || e.A == e.B;
                 string ekey = EdgeKey(g, e, mult);
                 var full = new StringBuilder(ekey).Append('#');
                 foreach (VId v in e.Chain()) full.Append(v.ToString()).Append(';');

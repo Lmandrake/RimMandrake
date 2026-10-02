@@ -207,7 +207,13 @@ namespace RimMandrake.MessyConduit.Core
                 foreach (Cell h in m.Hookups)
                     if (Cells.Contains(h)) { Link(mv, Vid(h), null, h); any = true; }
                 foreach (string other in m.MachineLinks)
-                    if (world.Machines.Any(x => x.Id == other)) { Link(mv, VId.Mach(other), null, null); any = true; }
+                {
+                    MachineInfo om = world.Machines.FirstOrDefault(x => x.Id == other);
+                    if (om == null) continue;
+                    Link(mv, VId.Mach(other), null, null);
+                    MachineOf[VId.Mach(other)] = om;   // a machine reached only through a link still needs its node
+                    any = true;
+                }
                 if (any) MachineOf[mv] = m;
             }
             foreach (var kv in adj) kv.Value.Sort();
