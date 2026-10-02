@@ -16,6 +16,16 @@ draft turn-1 card (§7) in the review doc. Findings regardless of the volley:
   both corrected in the same commit).
 - Shipped text still calls Sh'kaar "the evil sun god" (`TheSump/About/About.xml` and four comments).
 
+## Turn 1 ruled (2026-10-01, ledger `372642ebb`, `c71911f79`) and ticketed
+
+Q1 all content into the free tier (Baroque Biomes); Q2 the full station-eater; Q3 the capstan
+(revised into a turret on Melee Animation's lasso pull, lassos removed) and the kethrel; Q4 none of
+the offered rites, his own tar-offering rite instead. FOUNDRY: `SUMP_FREE_TIER_MOVE_BUILD_1`,
+`SUMP_FAUNA_WIRING_BUILD_1`, `SUMP_HUNGRY_GOD_TEXT_1`, `SUMP_TAR_BEAST_BUILD_1`,
+`SUMP_KETHREL_BUILD_1`, `SUMP_CAPSTAN_TURRET_BUILD_1`, `LASSO_CHERRYPICKER_REMOVAL_1`. Art: 17 jobs
+from `infrastructure/artpipe/art_lists/sump_bedazzle_cast.csv`. **Open:** the Tar Offering rite,
+review doc §6, draft turn-2 card §8 (GPT: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md`).
+
 ## spec
 
 Movements 1-2, the required five-idea GPT consult and the found-rite pitch, in
