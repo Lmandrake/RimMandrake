@@ -1,4 +1,4 @@
-# The Sump: bedazzle review (grandfathered sitting, turn 1 ruled and ticketed; the tar-offering rite open)
+# The Sump: bedazzle review (grandfathered sitting, turns 1 and 2 ruled; the tar rites' turn 3 open)
 
 Item: `SUMP_BEDAZZLE_SITTING_1` (BENCH). Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 4.
 
@@ -339,97 +339,122 @@ its tailoring recipe (`recipeMaker`).
   plus the Cherry Picker cut. No saved Melee Animation settings file exists in the Config folder
   today, so it runs on defaults.
 
-## 6. The tar offering: the owner's rite (OPEN, turn 2)
+## 6. The tar offerings: two rites (turn 2 ruled; turn 3 open)
 
-None of the three offered rites was taken (the Giving-Back, the Deep Draw, the Reckoning of Owners;
-the consult file and git keep them). The owner wrote his own, typed:
+The owner's first rite (turn 1, typed) asked for one object of value plus an effigy of something
+hated. At turn 2 he split it, typed:
 
-> *"There should be a rite where the tribe tosses an object of value as sacrifice into the tar, as
-> well as an effigy of something hated. If it's the Empire, it might reduce the current heat level.
-> If it's one of the factions, perhaps some of their members when next seen appear covered in tar.
-> You should keep going on these ideas and flesh them out more. What else could be put in the tar?
-> What else could it do?"*
+> *"I could see two rites here. Throwing one thing in the tar of value lowers heat, erases ownership
+> as part of RimProperty (perhaps of something you still keep...), and lowers raid frequency.
+> Whereas throwing in one good thing and one hated effigy to Mob'Unloo brings about unfortunate
+> consequences on someone else, paid for by you."*
 
-Working name: **the Tar Offering**. Campaign tier (a Salvation rite: found here, learned through the
-Rites tab's found-rites row, performable anywhere there is tar after: the mere, a pond, a poured
-moat, a tar vault). The laws hold: **cohesion, never a material reward or a power**; **favour shows
-only through events, world state and subtle odds**, told by the Narrator; a risky world event is
-welcome.
+Both are campaign-tier Salvation rites, found at the Sump, learned through the Rites tab's
+found-rites row (`mandrake.rut.rites`), performable after at any tar: the mere, a pond, a poured
+moat, a tar vault. Both keep the laws: **cohesion, never a material reward**; **favour shows only
+through events, world state and subtle odds**, told by the Narrator; a risky world event is welcome.
+Nothing living or dead is ever thrown in.
 
-### The shape
+### Rite A, the Sinking (one thing of value; god on the turn-3 card)
 
-- **Found:** at a Junker station's edge, a sunk barrel-ring of effigies half-swallowed by the black,
-  straw-and-rag figures in the colours of half the planet's factions, one still holding a carved
-  stormtrooper's helmet out of the tar. A tally board names what each cost.
-- **Asks:** two things, carried to the tar's edge and thrown in by the participants: **an object of
-  value** (the sacrifice) and **an effigy of something hated** (the curse). Both are gone for good:
-  the tar keeps them perfectly, and nothing comes back.
-- **The object of value:** any single item over a market-value floor (a Mod Settings number). Its
-  value sets the rite's quality, alongside the usual attendance and role terms. Weapons, art, gold,
-  a masterwork: the tar takes them all. ⛔ No pawn, prisoner, corpse or animal: no living or dead
-  body is ever thrown in (no human sacrifice; nothing vanishes without a sign).
-- **The effigy:** a new craftable, cheap item made at a crafting spot, with a target picked when it
-  is made (its label then reads "effigy of the Galactic Empire", etc.). The effigy carries the
-  curse; the object carries the price.
+- **Found:** at a Junker barrel yard, a sunk ring of tar where the stations throw a thing of worth
+  before a hard season; a tally board lists what went down, and no owner is written beside any of it.
+- **Asks:** one object of value, thrown into the tar by the participants and gone for good. Its
+  value sets the rite's quality with attendance and roles. A market-value floor is a Mod Settings
+  number.
+- **Effect 1, Imperial Heat falls.** Imperial Heat is the GM layer's measure of the Empire's
+  attention, kept outside the save (`design/Jawa/build_plan.md` §2, M4); today it runs only in
+  shadow mode in `src/RimMandrake/Utils/gm_blackboard_shadow.py` (item `GM_BLACKBOARD_SHADOW_M4_1`),
+  logging what it would fire. The rite emits a history event the blackboard reads and lowers Heat by
+  a step scaled by the offering's value (placeholder bands there: low 10, high 40). ⚠ **This breaks
+  the standing K2 rule** that Heat is *"never scrubbed by success"* (`kyber_trade_plot_spec.md`;
+  `cathedral_surveyor_misdirection_quest.md`). **His words override it for this rite.** The rule
+  stays true everywhere else, and it is why size and cadence matter (card Q3).
+- **Effect 2, raid frequency falls.** For a while after the rite, raids come less often on this map.
+  Mechanism UNMEASURED: vanilla raid cadence lives in the storyteller's threat comps, and the
+  campaign also runs raid-pacing mods (`required_mods.md` "Imperial Heat / 3-act escalation"
+  governors). A map condition that a Harmony postfix on the storyteller's raid roll reads is the
+  likely shape; FOUNDRY reads the storyteller and those mods first.
+- **Effect 3, ownership erased (RimProperty, measured).** RimProperty (`mandrake.rm.property`,
+  `src/RimMandrake/RimProperty/`) is a decaying-claim engine. Every Thing can carry recorded claims,
+  each a (claimant, strength 0–1, basis, timestamp). The recorded bases are `Stolen`, `Purchased`,
+  `ClaimFeePaid`, `Gifted`, `Inherited`, `Looted` and `BattleLootOrigin` (the pre-loot owner's
+  record, kept alongside the looter's at about 1.0); `Territorial` and `Situational` are computed
+  live, never stored (`ClaimBasis.cs`). A claim decays linearly to zero over a lifetime set by the
+  Thing's **recognizability** (quality, market value, a persistent name, mechanoid identity;
+  `RecognizabilityUtility.cs`): *"a steel bar's stolen-claim dies in days; a named astromech's never
+  does."* Separately, each faction keeps a **FactionRecord** of witness entries against individual
+  pawns (suspicion that propagates "to the top"). The Bazaar's ruled stolen-goods trade reads these
+  claims (`bazaar_trade_window_design.md`, *"this may be stolen"*).
+  - **So "erase ownership" means:** strip every **other party's** recorded claim off one item the
+    colony keeps (its `Stolen`, `BattleLootOrigin`, and any rival `Purchased`/`Gifted`/`Inherited`
+    records), leaving only the colony's own. The thing is now plainly the colony's: its old owner
+    cannot recognise it, a fence or registry scan reads it clean, and no recovery or bounty can
+    point at it. That is *"perhaps of something you still keep"*: the tar takes the offering, and
+    the **kept** thing's history goes down with it. It is laundering a stolen item's provenance, and
+    it is exactly what makes a high-recognizability theft (a named droid, a legendary weapon) safe.
+  - **Built today:** `GameComponent_PropertyLedger` exposes `TryGetRecords` and `RecordClaim` only;
+    there is **no remove or clear call**, and nothing reads `FactionRecord.GetSuspicion` yet (the
+    consequence layer is unbuilt). The rite needs one new ledger method (clear the records of other
+    claimants on a Thing).
+  - **Open (card Q2):** which kept item is cleansed (one the player picks, or everything in the
+    colony stolen before the rite), and whether the faction's suspicion of the thief is erased too.
+- **Readable signs:** the offering sinking with a slow bubble; a letter naming the cleansed item and
+  whose claim was wiped; the Heat change voiced by the Narrator; the raid lull shown as a map
+  condition with its days left.
+- **Collision check:** the Unburdening (Ozzik) destroys wealth to vent pride, with no effect on the
+  world's attention; the Cold Ledger (Mob'Unloo) seals a counter-gift to pay one dead man's debt.
+  The Sinking hides the colony: from the Empire, from raiders, from its own thefts.
 
-### What the effigy can be
+### Rite B, Mob'Unloo's Price (one good thing plus one hated effigy; RULED)
 
-| Effigy | Allowed | Effect (the world, never a buff) |
-|---|---|---|
-| **The Galactic Empire** | yes | Imperial Heat falls (below). |
-| **Any other faction** (Hutt Cartel, Homestead Defense League, Deep Desert Tribes, Free Droid Enclaves, Wildsteam Clan, Deepwater Compact, Geonosian Foundry Hive, Ascendant Helix, Blackstar Company, Jawa Trade Moot, the Junkers) | yes | Some of their members, the next time any group of theirs is seen, arrive covered in tar (below). Goodwill is untouched: they never learn who did it. |
-| **A hated beast** (a species: the skarrid that took a child, a thrummel warden) | yes, proposed | For a while, that species keeps its distance from the colony: the next ones that wander in arrive tarred and slow, and the mouse-lines bend around where they lie up. Never deleted, never vanished. |
-| **A god** | **no** | No god is ever evil, and no god may be made an enemy; the Salvation does not curse its own gods. The rite refuses a god as a target (the effigy cannot be made with one). |
-| **The colony's own faction or a colonist** | no | A curse on your own is a different story and this rite does not tell it. |
+- **God: Mob'Unloo** (his words). Debt and exchange; his devotion "the Collected Grudge" is this
+  rite's plainest form. Kind: settlement. *"Unfortunate consequences on someone else, paid for by
+  you."*
+- **Found:** at a Junker station's edge, a sunk ring of effigies half-swallowed by the black,
+  straw-and-rag figures in half the planet's colours, one still holding a carved stormtrooper's
+  helmet above the tar; a tally board names what each cost.
+- **Asks:** one good thing (the price, destroyed) and one effigy (the curse), both thrown in. The
+  effigy is a cheap craftable item whose target is picked when it is made ("effigy of the Galactic
+  Empire"). ⛔ Never a god (no god is evil or an enemy; the effigy cannot be made with one).
+- **The Empire effigy (RULED, turn 2):** his words, *"(3) but it effectively holds off the Empire for
+  x5 the normal time on this map"*. Imperial Heat is untouched (so this rite never launders Heat:
+  Rite A does that). Instead the Empire's pressure on **this map** is held off for five times its
+  normal interval. The "normal time" is the GM layer's **orbital-detection timer**, which drains
+  toward the Empire finding the colony (placeholder start 60,000 ticks, about a day, in
+  `gm_blackboard_shadow.py`); the curse multiplies the time left on this map's timer by 5 and holds
+  any Empire raid or inspection off this map for the same span. ⚠ The real constants are still
+  placeholders, and the vanilla-side Empire raid gate is UNMEASURED; it rides M4.
+- **A faction effigy (RULED, turn 2):** **all** members of the next group of that faction seen on any
+  map the player sees (raid, caravan, visitors, quest camp) arrive covered in tar: the moved
+  `RM_Tarred` condition (slowed, stinking, filthy), black-coated, leaving a tar trail. One curse, one
+  appearance. Goodwill untouched; they never learn who did it. The Narrator names it when they arrive.
+- **A beast effigy** (proposed at turn 1, not ruled): the next of that species to wander in arrive
+  tarred. Carried as a card option only if the owner wants it.
+- **Readable signs:** the effigy sinking; the Narrator's line when the cursed group arrives; the
+  black coats and trails; for the Empire, a map condition with its days left.
 
-### "The current heat level" is Imperial Heat
+### What else could go in the tar: round 2, things a player on THIS map cares about
 
-The campaign's Empire attention mechanic is **Imperial Heat**: one number kept by the GM layer
-outside the save, not a stat in the game (`design/Jawa/build_plan.md` §2 and milestone M4,
-*"Put all GM state outside the game. Imperial Heat, the orbital timer, the dark-tile flag..."*).
-Sales of kyber raise it (`kyber_trade_plot_spec.md` §2–3); the Cathedral arc reads it
-(`cathedral_concealment_arc_spec.md`). **Built state:** `src/RimMandrake/Utils/gm_blackboard_shadow.py`
-computes it in **shadow mode only** (it logs what it would fire and fires nothing), under the open
-item `GM_BLACKBOARD_SHADOW_M4_1`; the in-game gauge is a fast-follow at M4, not v1.
+Round 1 (`sump_tar_rite.md`) missed. His words, typed: *"These are all really poignant, but they're
+just not hitting. But so close! Try again, and try to make it something a player on THIS map would
+care about. Really close though."* Round 1 reached outward (a faction's officers, a visitor, the
+Narrator's past, a distant Junker station). Round 2 (`sump_tar_rite_r2.md`, prompt beside it, model
+`gpt-5.6-sol`, his feedback quoted to GPT verbatim) asked for offerings from this colony with
+consequences on this map within a day or two. The rule BENCH added on top: **the offering decides
+where the rite's gamble lands**. Each is a further offering inside Rite A or B; the thrown thing is
+destroyed, nothing comes back out.
 
-So the Empire effigy's effect is an **input to that blackboard**: the rite fires a history event
-(`RUT_TarOffering_Empire`), and the blackboard reads it and lowers Heat. Until M4 leaves shadow
-mode, the effect is logged, and the Narrator still speaks it. ⚠ **It collides with a standing
-rule:** the kyber spec's K2 anti-laundering law says Heat is *"never scrubbed by success"*. The
-owner's rite is a deliberate exception, and how big it is decides whether it becomes a laundering
-loop (turn-2 card Q2).
+| # | Offering | Rite | What happens on this map | BENCH's assessment |
+|---|---|---|---|---|
+| 1 | **The beast turns over:** the colony's ground-penetrating scanner, still holding its last survey | A | Within a day and a half the mice run outward from the tar beast's bulge and the Narrator marks a radius. The beast does not wake: it rolls once in its sleep, sending two or three slow pressure rings across the ground that crack glasswalk, collapse dig shafts and damage whatever was built in reach. | **Strongest:** it uses the giant he just ruled, on his own map, and punishes building where you knew you should not. L. |
+| 2 | **The pump pays backward:** a sealed barrel of a day's output from the busiest pump | A | Within a day the pump's gauges reverse, the mice abandon its pipe route, and tar floods back out of its own barrel yard and pump shed. Depowering slows it; it cannot be stopped. | **The Sump's industry turned on itself**, and layout decides the damage. M. |
+| 3 | **The empty stall:** the bed a bonded animal last slept in (never the animal) | A | Next night a thin ring of tar closes slowly around that animal's pen; the animal is named and visible, and the colony has hours to rope the herd out or lay duckboards across. The ring slumps back after a day. | **A beloved animal at stake** without sacrificing it; a rescue scene. M. |
+| 4 | **The grudge at the table:** the best dining table as the price, and an effigy of a colonist another colonist truly hates | B | At the next meal, tar handprints appear at the gathering place, the hated pawn and up to four colonists with real grudges against them gather, and a visible lottery gives accusations, a social fight, or smashed furniture. All of it through ordinary social mechanics. | **The most personal**: the colony's own people. ⚠ It breaks BENCH's turn-1 line "no effigy of your own colonist"; that line was BENCH's, not his, and the card asks. M. |
 
-### Covered in tar: the faction curse as a readable sign
-
-The next time any group of the cursed faction appears on any map the player sees (a raid, a
-caravan, visitors, a camp on a quest site), a share of its members (proposed: a third to a half,
-scaled by rite quality) arrive **tarred**: the moved `RM_Tarred` condition (slowed, stinking,
-filthy), black-coated sprites, and a tar trail of filth behind them. One curse, one appearance:
-after that group it is spent. The Narrator names it when they arrive (*"the tar remembers who you
-gave it"*). This is the readable sign the owner asked for; it is also an advantage in a fight, which
-he chose, and the odds stay subtle (some, not all).
-
-### Which god: Mob'Unloo, proposed
-
-Mob'Unloo is debt, trade and exchange, and his catalog devotion already includes **the Collected
-Grudge**. The rite is an exchange in its plainest form: a price paid (the object) for a grudge
-collected (the effigy). Kind: **settlement**. Collision check: his Blind Offering (Abyss) is left in
-the dark overnight; his Cold Ledger (Nightside Ice) seals a counter-gift to pay a dead man's debt.
-Here a price is paid to curse a living enemy, and the tar keeps both. Alternatives are on the card.
-
-### What else could go in the tar, and what else could it do? (GPT, five)
-
-Consult: `Transient/bedazzle_gpt_enrich_2026-10-01/sump_tar_rite.md` (prompt beside it), model
-`gpt-5.6-sol`, run 2026-10-01 on exactly the owner's question, five ideas, each a further offering
-within this one rite. Assessed:
-
-| # | GPT's idea | What goes in → what follows | BENCH's assessment |
-|---|---|---|---|
-| 1 | **The Weapon That Lost the Argument** | A weapon that has killed, bent first → the effigy faction's next armed group halts while its commanders quarrel, then either splits into two hostile groups or reconciles into one sharp, coordinated attack. | **Good gamble**: it can make the fight worse, which is the rite shape he picks. Needs a second lord job for a split force, M. |
-| 2 | **The Threshold the Tar Keeps** | A door torn from the colony's cleanest room → hours later, tar seals every doorway of another very clean room until cut or dissolved with acid. | **Most Sump of the five** (the tidy are punished, the law he set), and small (S). It is a cost to the player, so it is a pure gamble with nothing gained. |
-| 3 | **The Last Tool Has Standing** | A dead colonist's last tool or relic → a visitor who knew them (friend, rival, creditor) comes to argue the story of their life; no reward either way. | **Consolation, honestly grounded** in the pawn's real relations and tales. Weaker tie to the tar; M. |
-| 4 | **A Black Box for Yesterday** | A recorder holding the colony's last three big incidents → the Narrator stages a dangerous "rhyme" of one of them. | **Not carded**: L, and it hands the storyteller a new authoring system that overlaps the GM layer. Kept in the consult file. |
-| 5 | **Give the Pump Its Answer** | A working derrick head → a tar beast sets off toward one pumping site picked by an open lottery: it may wipe out a Junker station or cross the player's map. | **The biggest gamble**, and it uses the giant he just ruled. L (a tracked world journey); nothing spawns that can be fought. |
+Not carried: GPT's fifth (*the field keeps one candle*: a wick harvest thrown in, and a fire walks
+the wick-garden's exact footprint), small and good, but it overlaps the seep-flame work already
+ruled; kept in the consult file.
 
 ## 7. Turn 1 rulings (owner, 2026-10-01) and ticket-out
 
@@ -440,7 +465,7 @@ Recorded on the ledger at `372642ebb` and `c71911f79` (OWNER notes on this item)
 | 1. Free tier | *"Move it all into the free mod that is now part of the Baroque Biomes mod"* (typed). | Rows 0, 0b, 0c |
 | 2. Tar beast | **The full station-eater.** Decision taken by question card. | row 1 |
 | 3. New ideas | **The Blackline capstan, revised into a turret on the lasso's pull** (typed, §5), **and the kethrel**. Pump rhythm and the buried dragline not taken. Lassos removed from the game. | rows 2, 3, 6 |
-| 4. Rites | **None of the three offered.** His own rite, typed (§6). | open: turn 2 |
+| 4. Rites | **None of the three offered.** His own rite, typed (§6), split into two at turn 2. | open: turn 3 |
 
 FOUNDRY items, each `--caused-by SUMP_BEDAZZLE_SITTING_1`:
 
@@ -458,51 +483,62 @@ FOUNDRY items, each `--caused-by SUMP_BEDAZZLE_SITTING_1`:
 Rows 4 (seep flames and the discovery pilot) and 5 (sound) are not filed in this pass: row 4 is
 ruled under `SUMP_GASLIGHT_1` pieces 5–6 and rides the tier move; row 5 stays the ordered backlog.
 
-## 8. Draft turn-2 card: the Tar Offering
+## 8. Turn 2 rulings and the draft turn-3 card
 
-For BENCH to put to the owner. Four questions; Q4 is multi-select. Each explains its subject in
-full.
+Turn 2, ledger `6daef10b1` (OWNER notes on this item), all typed:
 
-**Q1. Header: `Which god`.** *Your tar rite: the colony throws a valuable object and an effigy of
-something it hates into the tar, and the tar keeps both forever. Every Salvation rite belongs to one
-of the nine gods. Which god does the tar offering speak to?*
+| Card item | Ruling |
+|---|---|
+| Which god | Two rites: Rite A (one thing of value: Heat down, ownership erased through RimProperty, fewer raids); Rite B to Mob'Unloo (a good thing plus a hated effigy, consequences on someone else, paid for by you). §6. |
+| Empire heat | *"(3) but it effectively holds off the Empire for x5 the normal time on this map"*: the lull, five times the normal hold-off on this map, Heat untouched (now Rite B's Empire effigy). |
+| Faction tar | All of the next group arrive tarred. |
+| More offers | None of round 1 (*"just not hitting... make it something a player on THIS map would care about"*); round 2 in §6. |
 
-| Option | What it buys | What it costs |
-|---|---|---|
-| **Mob'Unloo** *(recommended: he is debt and exchange, and "a price paid for a grudge collected" is his plainest form)* | A clean fit: the object is the price, the effigy is the grudge. His existing devotion "the Collected Grudge" already names the idea. | He already has two offering rites (the Blind Offering in the dark, the Cold Ledger in the ice); this is his third. |
-| **Ishko** | The god of hiding and the prepared ambush: the curse is a trap laid ahead for an enemy who has not arrived yet. | A looser fit for a rite that pays a price; Ishko's rites so far are about stillness and the dark. |
-| **Zizzik** | The wrong spark: the tar fouls the enemy's works and their next group arrives broken and filthy. He loves this kind of mischief. | He already has five rites, so he keeps growing while others stay thin. |
+### Draft turn-3 card
 
-**Q2. Header: `Empire heat`.** *"The current heat level" is Imperial Heat: one number the game-master
-layer keeps outside the save, measuring how hard the Empire is looking for you. Selling kyber raises
-it; raids, inspections and orbital detection key off it. Today it runs in a watch-only test mode
-that fires nothing. A standing rule says Heat is never lowered by success, so it cannot be
-laundered. How strong should an Empire effigy be?*
+For BENCH to put to the owner. Four questions; Q4 is multi-select. Each explains its subject in full.
 
-| Option | What it buys | What it costs |
-|---|---|---|
-| **A modest drop, once a season** *(recommended: your rite stays real without becoming a way to wash Heat clean)* | Each Empire offering lowers Heat by a small step, scaled by the value thrown in, at most once a season. The Narrator tells it. | The effect is quiet: a slight easing you feel over weeks, not a reprieve. |
-| **A big drop, with a gamble** | A large drop, but sometimes the Empire hears of a burned stormtrooper and Heat rises instead. A real bet. | Can backfire badly; the odds need tuning in play. |
-| **A lull, not a drop** | Heat is untouched (the no-laundering rule holds), but the Empire's next raid or inspection is delayed for a while. | It does not lower "the heat level" as you said; it only buys time. |
-
-**Q3. Header: `Faction tar`.** *An effigy of any other faction curses that faction: the next time a
-group of theirs is seen (a raid, a caravan, visitors), some of its members arrive covered in tar:
-slowed, stinking and leaving a black trail, and the Narrator says why. Goodwill does not change;
-they never learn who did it. How much tar?*
+**Q1. Header: `Sinking god`.** *Rite A, the Sinking: the colony throws one thing of value into the
+tar, and in return the Empire's attention on you falls, raids come less often for a while, and the
+old owners' claims on one thing you kept are wiped clean. Mob'Unloo already has Rite B. Which god
+does the Sinking belong to?*
 
 | Option | What it buys | What it costs |
 |---|---|---|
-| **Some of the next group** *(recommended: your words were "some of their members", and subtle odds are the rule for a god's favour)* | A third to a half of that one group arrives tarred, more if the offering was rich. One curse, one appearance. | A modest edge in that one fight or trade. |
-| **All of the next group** | Unmistakable: every member arrives black with tar. | A big edge against a raid, which leans toward a reward. |
-| **Lasting, thinning** | Their groups arrive with a few tarred members for a season, fewer each time. | Longer bookkeeping; the curse becomes a background condition rather than an event. |
+| **Ishko** *(recommended: he is the god of hiding, and every effect of this rite hides the colony: from the Empire, from raiders, from its own thefts)* | A clean fit: the price paid to vanish a little. His rites so far are about stillness; this gives him a hiding rite with teeth. | He already has two found rites (the Dark Vigil, the Charged Reed). |
+| **Sh'kaar** | The hungry sun god's warding kind: the colony pays to keep the sky's eye off it. It ties the rite to the Empire "from orbit". | Sh'kaar already has the Holy Flame here, the Snuffing, the Shade Tithe and the Anvil Gift; he grows crowded. |
+| **Rekko** | The salvage god: the tar is the planet's great salvage store, and wiping a salvaged thing's old owner makes it truly yours. | Fits only the ownership effect, not the Heat or raid effects. |
 
-**Q4. Header: `More offers`.** *You asked what else could go in the tar and what else it could do.
-GPT gave five; four are here (the fifth, a recorder whose incidents the Narrator re-stages, is too
-large and overlaps the game-master layer). Each is a further offering within the same rite. Pick any.*
+**Q2. Header: `Erase claims`.** *RimProperty is the mod that remembers who owns what. Every stolen or
+looted thing carries its old owner's claim, which fades over time, slowly for anything memorable (a
+named droid, a masterwork weapon) and fast for plain goods; traders and registries can recognise
+stolen goods by it, and each faction quietly remembers which of your pawns they suspect. Your words:
+the Sinking "erases ownership ... perhaps of something you still keep". What should it erase?*
 
 | Option | What it buys | What it costs |
 |---|---|---|
-| **Threshold kept** *(recommended: it is the Sump's own law, the tidy punished, and it is the smallest build)* | Throw in a door torn from your cleanest room; hours later the tar seals every doorway of another very clean room until you cut it free or dissolve it with acid. | Pure risk to yourself, nothing gained but the rite's cohesion. Small build. |
-| **Pump's answer** | Throw in a working derrick head; a tar beast sets off toward one pumping site picked by an open lottery: it may wipe out a Junker station or cross your own map. | The biggest gamble, and a large build (a tracked journey across the world map). |
-| **Weapon's quarrel** | Throw in a weapon that has killed; the cursed faction's next armed group halts while its commanders argue, then splits into two hostile bands or comes at you as one sharper attack. | Can make the fight worse. Medium build. |
-| **Last tool** | Throw in a dead colonist's last tool; someone who knew them (a friend, a rival, a creditor) comes to argue the story of their life, with no reward either way. | A quiet, sad event; the weakest tie to the tar. Medium build. |
+| **One kept thing, chosen** *(recommended: one deliberate act per rite, and the price you throw in has to be worth the thing you are cleaning)* | The colony picks one item it holds; every other party's claim on it is wiped, so no owner, trader or registry will ever call it stolen again. | One item per rite; a hoard of loot takes many offerings. |
+| **Everything stolen, at once** | Every claim by others on everything the colony holds is wiped in one go. | A very strong reset button for a thieving colony; the stolen-goods game loses its teeth. |
+| **The thing and the suspicion** | One chosen item cleaned, and the faction it came from also forgets which of your pawns it suspected. | Stronger, and it touches the faction memory that bounties and guards will read when they are built. |
+
+**Q3. Header: `Heat size`.** *A standing rule elsewhere says the Empire's attention (Imperial Heat)
+is never lowered by success, so the player cannot wash it clean. Your Sinking overrides that for
+this rite. Heat today is a number the game-master layer keeps outside the save, in a watch-only test
+mode. How hard should one Sinking push it down?*
+
+| Option | What it buys | What it costs |
+|---|---|---|
+| **By value, once a season** *(recommended: your rite stays real without becoming a way to wash Heat clean every week)* | Heat falls by a step scaled to what was thrown in, at most once a season. | A slow easing rather than a reprieve. |
+| **By value, any time** | Each Sinking lowers Heat as much as the offering is worth, as often as the colony can pay. | A rich colony can keep Heat near zero; the Empire threat thins. |
+| **A big fixed drop, once a year** | One dramatic reset a year, a real event in the campaign. | Rare; most seasons it does nothing to Heat. |
+
+**Q4. Header: `More offers`.** *You asked for offerings a player on THIS map would care about. These
+four come from your own colony, and each decides where the rite's gamble lands, on your own map
+within a day or two. The thing thrown in is destroyed; nothing comes back. Pick any.*
+
+| Option | What it buys | What it costs |
+|---|---|---|
+| **Beast turns over** *(recommended: it makes the tar beast you just ruled matter between wakes, on your own map)* | Throw in your ground scanner: within a day and a half the mice flee the tar beast's bulge, and the sleeping beast rolls once, sending slow pressure rings that crack walkways, collapse dig shafts and damage whatever you built in reach. It never wakes. | A large build, and real damage to anything you placed near the bulge. |
+| **Pump backflow** | Throw in a barrel of your busiest pump's day: within a day its gauges reverse and tar floods back out of its own barrel yard and pump shed; you can slow it by cutting power, not stop it. | Damage to your own industry; a medium build. |
+| **Empty stall** | Throw in the bed your bonded animal last slept in (never the animal): next night a ring of tar closes slowly around its pen, and you have hours to get the herd out or lay boards across. | A rescue scramble; a medium build. |
+| **Grudge at table** | For Mob'Unloo's rite: your best dining table as the price and an effigy of a colonist someone in the colony truly hates. At the next meal the grudges come out in front of everyone: accusations, a fist fight, or smashed furniture. | It turns the colony on one of its own; a medium build. |
