@@ -34,6 +34,14 @@ Narrator compères between them). Outside the temple, every divine act arrives
 *narrated*: "Ta'Baa is pleased" is his line; "I am pleased" is Ta'Baa's, and
 belongs only in the chorus.
 
+**He is closer to the gods than to the colonists.** Owner, 2026-10-01, typed: *"The Narrator
+speaks of the gods with full living color. He seems closer to them than to the "strange creatures
+that dwell within the vessel now.""* He speaks of the nine vividly, as kin he knows: their
+moods, appetites and quarrels in full colour. He speaks of the colonists at a slight remove. The
+world itself gives the Jawa almost no proof of the gods (favour only tilts the odds, unlabelled:
+`design/Jawa/nine_faults_permanent_rite_2026-10-01.md` §4), so his voice is where their
+certainty comes from. He never cites one event as a god's proof.
+
 ### Worked lines — imitate these, don't just obey the rules
 
 1. *"The Hooded One looks down upon the ship with an unseen frown, and the

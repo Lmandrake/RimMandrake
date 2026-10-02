@@ -38,12 +38,14 @@ are the ways a well-run clan pays the entropy tax on its own schedule._
   binge's stores, the lost day. · BUYS: bank shrink scaled to what the break
   cost you; taboo-proof during his reign. · SIGN: the wrecked room's lamp
   flickers in his palette as the pawn comes to.
-- **The Gift of Working Things** — ACT: the burnt offering formalized — select
-  one FUNCTIONING machine and destroy it at the shrine-heart (matrix demand M,
-  now always available). · COST: the machine, and Rekko's grief (a small
-  `↓Rekko` rides every gift — feed one god, bruise another). · BUYS: the
-  largest single bank payment available outside a full rite. · SIGN: the
-  smoke curls against the ventilation draft.
+- **Zizzik's Nine Faults** — ACT: the burnt offering formalized, as a found
+  rite (Lantern Deeps): break a machine the clan has JUST FOUND, never yet run,
+  nine faults in sequence, until it burns out (matrix demand M, available
+  whenever a fresh find stands on the map). · COST: the find, forever, and
+  Rekko's favour (what Zizzik gains, Rekko loses). · BUYS: the largest single
+  bank payment available outside a full rite. · SIGN: nine bulbs fail in
+  sequence; the smoke curls against the ventilation draft. Full design:
+  `design/Jawa/nine_faults_permanent_rite_2026-10-01.md`.
 
 ## ① Ishko the Unmaskable
 

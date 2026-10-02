@@ -116,8 +116,8 @@ tree linking and tree connection are **RULED OUT** (`design/Jawa/ideoligion_prec
 ### B5. The devotions (acts the rite frames; SPECCED, `design/Jawa/devotional_sacrifice_catalog.md`)
 
 Each is an act, not a ritual precept; several are "formalized as rite" in the catalog's words.
-Zizzik (feeding, the bank): the Weathered Cell, the Open Latch, the Honored Break, the Gift of
-Working Things. Ishko (feeding): the Deep Berth, the Hour of Stillness, the Passed Cup. Ohm
+Zizzik (feeding, the bank): the Weathered Cell, the Open Latch, the Honored Break, Nine Faults
+(the burnt offering, also row B8). Ishko (feeding): the Deep Berth, the Hour of Stillness, the Passed Cup. Ohm
 (feeding): the Idle Made Whole, the Choir Hour, the Day of Current. Oomo (feeding): the Nursed
 Stranger, the Open Table, the Overpaid Kin. Mob'Unloo (settlement): the Named Debt, the God's
 Account, the Collected Grudge. Rekko (feeding, consolation): the Woken Sleeper, the Mourning, the
@@ -170,9 +170,15 @@ to rule**.
 | The Vindication Walk | Ta'Baa | consolation | a Settling; ends when wind lifts the prints | Warscar, chalk inside a firing slit | pitched, owner to rule | `biome_rites_pass_2026-10-01.md` §10.2 |
 | The Cold Ledger | Mob'Unloo | consolation | a frozen dead man's debt, a ledger tablet calved from the ice | Nightside Ice, a calved body carrying a tablet | ruled-kept (owner, 2026-10-01, question card) | `design/Jawa/worldbuilding/biomes/nightsideice_bedazzle_review_2026-10-01.md` §6 R1 |
 
-**Count (by hand from the tables above, not an instrument): 98 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 22. **89 are the Salvation's** (B1 to B5 and B7; the Unburdening appears
-in both B4 and B5, so 88 distinct). B6's 8 are other faiths' rites or unassigned biome pitches,
+### B8. Found rites of the Lantern Deeps (RULED)
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| Zizzik's Nine Faults | Zizzik (Rekko pays) | feeding, the bank (a favour transfer) | a newly found machine, never run, still on its map | Lantern Deeps, a dead droid with nine wires crossed | RULED (owner, 2026-10-01) | `design/Jawa/nine_faults_permanent_rite_2026-10-01.md` |
+
+**Count (by hand from the tables above, not an instrument): 99 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 22 + B8 1. **90 are the Salvation's** (B1 to B5, B7 and B8; the
+Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 88 distinct). B6's 8 are other faiths' rites or unassigned biome pitches,
 one ruled out. The calling-pyre is a form of B4's controlled waking, so it has no row of its own.
 
 ## (c) The four Abyss rites
