@@ -235,9 +235,19 @@ Unrooted — flight, the refusal to root"* (`divine_satiation_engine.md` ⑥).
 Ta'Baa carries four found rites (the Returned, B7, ruled-kept; the Shadow Walk and the Vindication Walk, B7,
 pitched; the Unjoining, B13): one under the cap.
 
-**Count (by hand from the tables above, not an instrument): 108 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1. **99 are the Salvation's** (B1 to B5, B7 to B13;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 97 distinct). Sh'kaar
+### B14. Found rites ruled at the Sump sitting (RULED)
+
+Ruled 2026-10-02 (turn 2, owner typed the split into two rites; the Sinking's god by question card 06:24 PDT).
+These two were ticketed without a register row; added here.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Sinking | Ishko | warding | one valuable thrown into the tar: the next Imperial probe or raid is pushed 5x further away (Heat untouched), other raids lull on this map, other parties' ownership claims on almost anything the colony owns are erased; offering riders: the tar beast sleeps a season, the next three dug-up ancient traps fizzle | the Sump, a sunk tar ring with a tally board at a barrel yard | RULED (owner, 2026-10-02, typed + question card); build `SUMP_SINKING_RITE_BUILD_1` | `design/Jawa/worldbuilding/biomes/sump_bedazzle_review_2026-10-01.md` §6, §9 |
+| Mob'Unloo's Price | Mob'Unloo | venting | one good thing plus one hated effigy into the tar: misfortune on someone else, paid by you; Empire effigy holds the Empire off 5x on this map (Heat untouched), faction effigy makes that faction's next group arrive tarred | the Sump, a ring of half-sunk effigies, one holding a carved stormtrooper helmet | RULED (owner, 2026-10-02, typed); build `SUMP_EFFIGY_RITE_BUILD_1` | same, §6, §9 |
+
+**Count (by hand from the tables above, not an instrument): 110 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2. **101 are the Salvation's** (B1 to B5, B7 to B14;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 99 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
