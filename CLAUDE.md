@@ -912,6 +912,10 @@ only copy of anything, and never a committed doc citing a file inside it.
 
 ```
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod <name>   dry run; --apply writes
+python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>           C# build from an ext4 clone: staged on
+                                                     D:\Luke\dev\_rmbuild, DLL+.srchash copied back
+./mirror sync | status                              D:\…\RimMandrake as a writer-free origin/main export
+python3 src/RimMandrake/Utils/gpt_consult.py "q" -f <file>...  ask GPT via codex.exe; files inlined
 python3 src/RimMandrake/Utils/refresh.py            rebuild the offline def dump
 measure count <DefType>                             one line; never a bare number
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...

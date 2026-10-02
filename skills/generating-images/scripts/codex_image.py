@@ -62,6 +62,18 @@ HARVEST_POLL_S = 2
 # $CODEX_HOME/models_cache.json: gpt-5.6-sol (the configured model) lists
 # low/medium/high/xhigh/max/ultra, so "low" is a legal value, not a guess.
 DEFAULT_REASONING_EFFORT = "low"
+
+# 🔴 The model codex.exe falls back to is whatever $CODEX_HOME/config.toml names, and on this
+# ChatGPT-auth install that has been a model the account cannot use (MEASURED 2026-10-02:
+# `gpt-6.1-sol` fails, `-m gpt-5.5` works). Every call therefore passes -m explicitly;
+# CODEX_MODEL overrides, and `--model inherit` restores the config.toml choice.
+DEFAULT_MODEL = os.environ.get("CODEX_MODEL", "gpt-5.5")
+
+# codex.exe FAILS with an ext4 cwd and HANGS reading \\wsl.localhost paths (MEASURED,
+# git_workflow_plan_2026-10-01.md §2.3). When a caller's output/input paths are not on a Windows
+# drive (a repo clone on ext4), the call is staged: cwd + inputs copied into
+# D:\Luke\dev\_rmscratch\codex\<job>\, run there, outputs copied back. Untracked, outside any repo.
+CODEX_SCRATCH = Path(os.environ.get("CODEX_SCRATCH", "/mnt/d/Luke/dev/_rmscratch/codex"))
 REASONING_EFFORTS = ("low", "medium", "high", "xhigh", "max", "inherit")
 
 # Files copied when seeding an isolated CODEX_HOME. MEASURED 2026-09-06: with
@@ -668,7 +680,7 @@ def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
     """
     cli = find_codex_cli()
     cmd = [str(cli), "exec", "--sandbox", "workspace-write", "--skip-git-repo-check"]
-    if model:
+    if model and model != "inherit":
         cmd += ["-m", model]
     if reasoning_effort and reasoning_effort != "inherit":
         cmd += ["-c", f'model_reasoning_effort="{reasoning_effort}"']
@@ -795,7 +807,75 @@ def build_prompt(user_prompt: str, out_name: str) -> str:
     ])
 
 
+def on_windows_drive(p: Path) -> bool:
+    return (not in_wsl()) or str(p.resolve()).startswith("/mnt/")
+
+
+def needs_staging(args) -> bool:
+    paths = [Path(args.out).resolve().parent] + [Path(i) for i in (args.image or [])]
+    for attr in ("output_schema", "output_last_message"):
+        if getattr(args, attr, None):
+            paths.append(Path(getattr(args, attr)))
+    return any(not on_windows_drive(p) for p in paths)
+
+
+def stage_and_run(args) -> int:
+    """Run do_image with cwd + inputs on D: (codex.exe cannot use ext4), then copy outputs back."""
+    import copy
+    real_out = Path(args.out).resolve()
+    real_out.parent.mkdir(parents=True, exist_ok=True)
+    if real_out.exists() and not args.force:
+        print(f"ERROR refusing to overwrite {real_out} (pass --force)", file=sys.stderr)
+        return 1
+    job = CODEX_SCRATCH / re.sub(r"[^A-Za-z0-9_.-]", "_", "%s-%d-%s" % (
+        time.strftime("%Y%m%d-%H%M%S"), os.getpid(), real_out.stem))[:120]
+    for img in args.image or []:
+        if not Path(img).resolve().is_file():
+            raise EnvError(f"Input image does not exist: {Path(img).resolve()}")
+    job.mkdir(parents=True, exist_ok=True)
+    inner = copy.copy(args)
+    inner.out = str(job / real_out.name)
+    inner.force = True
+    staged_imgs = []
+    for n, img in enumerate(args.image or []):
+        src = Path(img).resolve()
+        dst = job / ("in%02d_%s" % (n, src.name))
+        shutil.copy2(src, dst)
+        staged_imgs.append(str(dst))
+    inner.image = staged_imgs
+    if getattr(args, "output_schema", None):
+        dst = job / ("schema_" + Path(args.output_schema).name)
+        shutil.copy2(Path(args.output_schema).resolve(), dst)
+        inner.output_schema = str(dst)
+    real_olm = Path(args.output_last_message).resolve() if getattr(
+        args, "output_last_message", None) else None
+    if real_olm:
+        inner.output_last_message = str(job / ("lastmsg_" + real_olm.name))
+    if args.verbose or args.dry_run:
+        print(f"[codex] staged in {job} (caller paths are not on a Windows drive)", file=sys.stderr)
+
+    def finalize(staged: Path) -> Path:
+        shutil.copyfile(staged, real_out)    # not copy2: drvfs reports 0777, which git would commit
+        return real_out
+
+    rc = _do_image(inner, finalize=finalize)
+    if real_olm and Path(inner.output_last_message).is_file():
+        real_olm.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(inner.output_last_message, real_olm)
+    if rc == 0 or args.dry_run:
+        shutil.rmtree(job, ignore_errors=True)      # outputs are back with the caller
+    else:
+        print(f"note: staging dir kept for inspection: {job}", file=sys.stderr)
+    return rc
+
+
 def do_image(args) -> int:
+    if needs_staging(args):
+        return stage_and_run(args)
+    return _do_image(args)
+
+
+def _do_image(args, finalize=None) -> int:
     out = Path(args.out).resolve()
     out.parent.mkdir(parents=True, exist_ok=True)
     if out.exists() and not args.force:
@@ -811,6 +891,7 @@ def do_image(args) -> int:
         print(f"codex:   {find_codex_cli()}")
         print(f"auth:    {auth_mode(home)}")
         print(f"home:    {home}")
+        print(f"model:   {getattr(args, 'model', None)}")
         print(f"effort:  {args.reasoning_effort}")
         print(f"workdir: {workdir}")
         print(f"images:  {[str(i) for i in images] or 'none'}")
@@ -883,6 +964,8 @@ def do_image(args) -> int:
             print(output[-2000:], file=sys.stderr)
         return 1
 
+    if finalize is not None:
+        out = finalize(out)
     info = png_info(out) if out.suffix.lower() == ".png" else {}
     print(f"OK  {out}")
     if info:
@@ -954,9 +1037,10 @@ def main() -> int:
         p.add_argument("--out", required=True, help="destination PNG path")
         p.add_argument("--prompt", required=True)
         p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_S)
-        p.add_argument("--model", default=None, metavar="MODEL",
-                       help="codex exec -m override; use when the default "
-                            "model reports 'at capacity'")
+        p.add_argument("--model", default=DEFAULT_MODEL, metavar="MODEL",
+                       help="codex exec -m (default %(default)s, or $CODEX_MODEL); "
+                            "'inherit' uses config.toml's model, which on this "
+                            "ChatGPT account has been one it cannot run")
         p.add_argument("--reasoning-effort", default=DEFAULT_REASONING_EFFORT,
                        choices=REASONING_EFFORTS,
                        help="reasoning effort for the Codex turn AROUND the "
