@@ -1,0 +1,1 @@
+A walk file filed under a mod's old name is invisible to the tool that validates it: `find_walk("FlowWorks")` returned None while `FluidCanals.md` sat on disk, so yesterday's walked checklist could not have been validated at all. Check `find_walk` resolves before spending a sitting on a checklist. (2026-09-17, BENCH)

@@ -1,0 +1,1 @@
+Round-2 decisions keys: a creature lives at fauna:<biome>:<name> OR homeless:<name> — verify keys exist before an edit script; a KeyError mid-script silently kills every later edit while the commit message overclaims (bit twice in one sitting: Wampa, Blarth)

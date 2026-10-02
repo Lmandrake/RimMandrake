@@ -1,0 +1,1 @@
+2026-10-01 FOUNDRY: debugging is script-first (design/RimMandrake/debug_process.md) — a live poke that ends without its lesson committed as a check (plus informative false theories) is lost work; on 2026-10-01 the ns_probe_* scratch files vanished and survived only in commit messages.

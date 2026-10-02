@@ -1,0 +1,1 @@
+2026-09-30 BENCH: handoff.py says UNPUSHED for commits shared_sync.py already replayed onto origin when the shared tree can't reset (peer dirty files); verify by subject against origin/main before believing it.

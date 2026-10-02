@@ -1,0 +1,1 @@
+handoff.py --wake run in the stale shared checkout prints that checkout's newest handoff, not origin's: it woke BENCH on a 05:27 handoff while 21:19 existed on origin. Read `git show origin/main:infrastructure/state/handoffs/<newest>` instead (BENCH, 2026-10-01).

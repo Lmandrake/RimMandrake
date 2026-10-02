@@ -1,0 +1,1 @@
+The block_forged_owner_said transcript guard cannot see the CURRENT turn's typed message or cross-session relayed quotes; take its prescribed exit (bare seat note quoting him verbatim, or bare ./game form) instead of retrying (2026-09-29, BENCH).

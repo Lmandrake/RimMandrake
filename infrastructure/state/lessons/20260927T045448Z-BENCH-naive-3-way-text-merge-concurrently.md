@@ -1,0 +1,1 @@
+2026-09-27 BENCH: a naive 3-way text merge of concurrently-edited C# dropped a closing brace during a worktree rebase — caught only because dotnet build runs after EVERY rebase. The rebuild-after-rebase rule is the catcher, not a formality.

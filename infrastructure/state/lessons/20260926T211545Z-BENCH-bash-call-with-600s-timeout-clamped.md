@@ -1,0 +1,1 @@
+2026-09-26 BENCH: a Bash call with a >600s timeout is clamped and killed at 600s, and a python `finally` cleanup may not run — a control run left its daemon alive and 120 job files held aside. Split long runs into start / poll / collect calls instead of one long one.

@@ -1,0 +1,1 @@
+FOUNDRY 2026-09-25: bridge-lock "idle" time in the rimflow ledger only counts rimflow EVENTS (take/release/note), not actual GABP tool calls — a subagent doing 90+ live bridge calls can show "idle 58 min" the whole time. Don't read ledger idle-time as evidence a bridge session is stalled; check the actual Player.log or ask the agent directly. Proposed home: `using-rimflow`.

@@ -1,0 +1,1 @@
+2026-09-24 BENCH: deploy_custom_mods.py has no per-file option; a mod whose plan carries a peer's uncommitted drift (UtinniPatches, 5 biome files) cannot be deployed partially - either deploy it all knowingly or wait.

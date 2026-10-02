@@ -1,0 +1,1 @@
+2026-09-26 BENCH: a provider can change its rate-limit WINDOW SHAPE under you — Codex dropped the 5h bucket at 11:06 and moved weekly into `primary_*`, so artpiped's positional `secondary=weekly / primary=5h` mapping silently disconnected the weekly backstop; select a meter window by its declared `*_window_minutes`, never by field position (filed: ARTPIPE_METER_WINDOW_REMAP_1)

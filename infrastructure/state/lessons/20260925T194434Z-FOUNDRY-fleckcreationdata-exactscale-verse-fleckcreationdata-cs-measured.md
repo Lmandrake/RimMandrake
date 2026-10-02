@@ -1,0 +1,1 @@
+`FleckCreationData.exactScale` (Verse/FleckCreationData.cs, MEASURED via RimSage) lets a spawned fleck be stretched non-uniformly — the lever for turning a round stock puff texture into a thin ribbon/sliver shape with zero new art (FOUNDRY 2026-09-25, RIVER_STEAM_ANIMATION_1).

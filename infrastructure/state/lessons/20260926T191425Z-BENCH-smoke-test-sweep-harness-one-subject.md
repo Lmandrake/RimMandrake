@@ -1,0 +1,1 @@
+2026-09-26 BENCH: smoke-test a sweep harness on ONE subject before trusting it with N — one biome exposed five bugs, four of which produced confident wrong verdicts (filed: CLAUDE.md instruments section)

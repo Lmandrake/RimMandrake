@@ -1,0 +1,1 @@
+2026-10-01 BENCH: in a private worktree a commit can fail on index.lock (the health publisher) while `merge-base --is-ancestor HEAD origin/main` still passes, because HEAD is the base. Check your commit's subject first.

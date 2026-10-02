@@ -1,0 +1,1 @@
+broadcast.py stores some emoji as LITERAL \uXXXX escape text in comments; the Edit tool fails to match those regions in both raw and rendered form — patch such comment blocks with a python re.sub instead (hit 2026-09-29, stamp-only relay change).

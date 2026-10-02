@@ -84,9 +84,9 @@ JUDGEMENT_SECTIONS = [
      "`doing` with no line here is a trap for the next seat."),
     ("Traps learned",
      "Instruments that lied, silent failures, commands that ate their own input. "
-     "ONE line each, ending with where it now lives -- file it to "
-     "LESSONS_INBOX.md the moment it is learned, then cite `(filed: "
-     "LESSONS_INBOX)` or `(see: <item/doc>)`. Never re-explain a trap that is "
+     "ONE line each, ending with where it now lives -- file it with "
+     "`lessons.py add` the moment it is learned, then cite `(filed: "
+     "lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is "
      "already recorded somewhere durable."),
 ]
 
@@ -406,7 +406,7 @@ def todo_scan(path):
                  if not re.search(r"\((filed|see):", b)]
         if loose:
             bad.append("trap(s) with no `(filed: ...)`/`(see: ...)` citation — "
-                       "file each to LESSONS_INBOX.md (or cite where it already "
+                       "file each with lessons.py add (or cite where it already "
                        "lives):\n      " + "\n      ".join(b[:120] for b in loose[:6]))
     return bad
 
@@ -473,17 +473,21 @@ def _corpus_commit_times():
 
 
 def last_drain_ts():
-    """Commit time (ledger-format UTC) of the last LESSONS_INBOX drain — the
-    newest commit in which the inbox SHRANK (deletions > additions, via one
-    `--numstat` walk). Ordinary filing only appends; only a curation drain
-    removes lines. None if no drain is on record."""
-    out = sh("git", "log", "--format=@@%cI", "--numstat", "--",
-             "infrastructure/state/LESSONS_INBOX.md")
-    ts = ""
+    """Commit time (ledger-format UTC) of the last lessons drain — the newest
+    commit in which the inbox SHRANK (a file's deletions > additions, via one
+    `--numstat` walk). Filing only adds; only a curation drain removes lines or
+    lesson files. Walks both the one-file-per-lesson dir and the old
+    LESSONS_INBOX.md history; a commit whose subject carries `[no-drain]` (the
+    2026-10-02 split into lessons/) is not a drain. None if none on record."""
+    out = sh("git", "log", "--format=@@%cI %s", "--numstat", "--",
+             "infrastructure/state/lessons", "infrastructure/state/LESSONS_INBOX.md")
+    ts, skip = "", False
     for line in out.splitlines():
         if line.startswith("@@"):
-            ts = line[2:].strip()
-        elif line.strip():
+            head = line[2:].strip()
+            ts, _, subject = head.partition(" ")
+            skip = "[no-drain]" in subject
+        elif line.strip() and not skip:
             parts = line.split("\t")
             if (len(parts) == 3 and parts[0].isdigit() and parts[1].isdigit()
                     and int(parts[1]) > int(parts[0])):
@@ -690,7 +694,7 @@ def main():
                     help="print the seat's latest handoff + live pointer status "
                          "— run on the first turn after a reboot")
     ap.add_argument("--harvest", action="store_true",
-                    help="extract lesson sections since the last LESSONS_INBOX "
+                    help="extract lesson sections since the last lessons "
                          "drain into Transient/ for the curation sitting")
     ap.add_argument("--cull", action="store_true",
                     help="list handoffs superseded + harvest-covered + older "

@@ -1,0 +1,1 @@
+desert.md / desert.json are the LONG SHADE's record; Leaning Scrub's legacy label is arid_shrubland — verify a biome's two-name mapping from About.xml/BiomeDef headers, never infer it (2026-09-29, cost one inverted review brief, agent self-corrected).

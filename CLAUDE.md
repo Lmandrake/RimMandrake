@@ -1024,5 +1024,5 @@ unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 Roster: `skills/README.md`. Most reached for: `rimworld-modding` · `rimworld-deploy`
 · `rimworld-load-round` · `rimbridge` · `efficient-subagents` ·
 `generating-rimworld-sprites`. Lessons go to
-`infrastructure/state/LESSONS_INBOX.md` (one line); skills are edited only in
+`infrastructure/state/lessons/` (one file each: `python3 src/RimMandrake/Utils/lessons.py add "…"`); skills are edited only in
 fresh-context curation sessions.

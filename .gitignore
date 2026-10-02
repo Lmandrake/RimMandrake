@@ -299,3 +299,5 @@ Transient/triposr_prototype/torchmcubes/
 
 # git plan Phase 5: code-review records are append-only shards
 infrastructure/state/code_review/.lock
+# git plan Phase 5: rendered view of infrastructure/state/lessons/ (lessons.py render)
+infrastructure/state/LESSONS_INBOX.md

@@ -1,0 +1,1 @@
+Owner art law (typed 3x on one review night, 2026-09-29): per-biome art palettes are TOO UNIFORM - "Your color palette is too uniform per biome. Needs more variety." Every artpipe brief should push palette diversity within the biome.

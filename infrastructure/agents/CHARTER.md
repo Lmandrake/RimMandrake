@@ -125,8 +125,8 @@ item, same commit. A ruling under 24 h old is a draft — reversible without cer
 
 An enforced rule is a **hook** (`.claude/hooks/`); propose the hook, not a paragraph.
 A default worth stating is a **line in this charter**, replacing one. Everything else
-is deleted — git is the archive. Lessons: one line each into
-`infrastructure/state/LESSONS_INBOX.md`, at any time and at reboot; skills are edited
+is deleted — git is the archive. Lessons: one file each into
+`infrastructure/state/lessons/` (`python3 src/RimMandrake/Utils/lessons.py add "…"`), at any time and at reboot; skills are edited
 only in a fresh-context curation session, never at end-of-context. A fact that
 outgrows its doc goes to `infrastructure/state/facts/` — unbudgeted, never dropped
 for space.

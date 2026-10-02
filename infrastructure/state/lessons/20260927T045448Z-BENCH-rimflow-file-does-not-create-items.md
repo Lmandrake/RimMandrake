@@ -1,0 +1,1 @@
+2026-09-27 BENCH: `rimflow file` does NOT create items/<ID>.md — a commit that stages the imagined prose path dies on "pathspec did not match"; the filed event lives only in the seat shard (plus the OWNER shard when a note carries his quote). Commit the shards.

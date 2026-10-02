@@ -1,0 +1,1 @@
+`git commit <path> -F -` fails with "pathspec did not match any files" if `-F -` comes AFTER a `--` pathspec separator (git parses `-F` and `-` as more pathspecs) — put `-F -` BEFORE `--`, or skip `--` entirely when the paths aren't ambiguous. Proposed home: `git-efficiency`.

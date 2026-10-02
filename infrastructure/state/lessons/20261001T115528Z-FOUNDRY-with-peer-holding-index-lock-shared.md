@@ -1,0 +1,1 @@
+2026-10-01 FOUNDRY: with a peer holding index.lock in the shared tree, commit from a private `git worktree add --detach <path> origin/main` (creation takes minutes on /mnt/d — run it in the background); ledger shard union goes by plumbing (hash-object / update-index / checkout-index), built in the scratchpad, never written in-repo.

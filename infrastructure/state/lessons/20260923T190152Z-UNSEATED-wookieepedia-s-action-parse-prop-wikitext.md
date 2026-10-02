@@ -1,0 +1,1 @@
+🔑 **Wookieepedia's `action=parse&...&prop=wikitext` API works unauthenticated from the Mac laptop, no size cap** (MEASURED 2026-09-23, 13 pages). ⇒ Prefer it over Fetcher for canon work: Fetcher silently TRUNCATES AT 50,000 chars and has eaten a species' Biology section. Resolve titles with `action=query&list=search&srsearch=`, never a guessed page title.

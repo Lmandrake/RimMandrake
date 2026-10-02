@@ -1,0 +1,1 @@
+A north-star bar about CHANGE was structurally unjudgeable and nothing said so: `judge.py` took `shots[-1]` under a prompt telling the model to answer about that image alone, while 10 of AtmosphericBase's 23 bars were about motion. Count how many of a checklist's bars the judge can actually see before drafting more of them. (2026-09-17, BENCH)

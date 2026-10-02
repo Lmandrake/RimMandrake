@@ -1,0 +1,1 @@
+Before filing an artpipe job, grep pending/ AND done/ for the subject in every spelling (rutwelcomeblanket vs scald_welcomeblanket) — a same-subject job under another naming convention filed a duplicate that had to be pulled back (BENCH 2026-09-25).

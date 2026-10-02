@@ -1,0 +1,1 @@
+2026-09-24 BENCH: a def builder authored RUT_PropaneShallow while FlowWorks already shipped RM_PropaneShallow/RM_PropaneDeep (generate_liquid_suite.py LIQUID_ROWS + RM_LiquidBodyRegistry.xml). Before authoring ANY liquid terrain, read that registry and the generator table; the owner caught it, not the build. Brief every terrain builder with the registry path.

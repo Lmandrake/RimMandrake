@@ -1,0 +1,1 @@
+A `Monitor` polling loop that reads `tail -c +$((START_SIZE+1))` on a growing file must update `START_SIZE` after each read, or it re-emits the same matched lines every poll cycle forever — hit this watching a Player.log for a restart to finish (2026-09-18).

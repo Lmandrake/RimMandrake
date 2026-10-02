@@ -1,0 +1,1 @@
+2026-09-26 BENCH: an auth-plumbing ceiling looks exactly like a rate limit from the queue — artpipe's "max 3 concurrent" was 3 stale worker-home auth.json files losing a refresh-token race, while the account meter never moved off 12% and refused nothing even at N=32 (filed: ARTPIPE_WORKER_AUTH_STALENESS_1)

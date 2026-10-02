@@ -1,0 +1,1 @@
+deploy_custom_mods.py keeps `-` strays by default: deleting a file in the repo does NOT undeploy it, and --prune sweeps every stray including peers' — targeted rm of the named files in the Mods folder is the precise fix (BENCH 2026-09-25).

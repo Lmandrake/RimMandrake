@@ -1,0 +1,1 @@
+2026-09-27 BENCH: 3 of 4 worktree build agents deadlocked waiting on a BACKGROUNDED selftest run — the brief said "foreground only" for the design agents but not the build agents; the brief line must FORBID backgrounding explicitly every time, and a SendMessage nudge ("run it foreground now, re-running is safe") recovers a stalled agent cleanly.

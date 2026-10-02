@@ -1,0 +1,1 @@
+MatLoader.LoadMat can never load a mod asset: it reads only Unity Resources/, returns null, and MaterialAllocator.Create(null) throws — in a static field that is a TypeInitializationException on every Update() and a black map. Build overlay materials from a texture or use a vanilla material (BENCH 2026-09-25, 70607e667).

@@ -1,0 +1,1 @@
+"Terramorph" in the Mods folder is OUR art override for the AA_Terramorph CREATURE, not a terraforming mod — the real slow-terraform donor on disk is Fertile Fields 1.6 (workshop 3225843229, license unstated, pattern only); a mod NAME match is not a mechanism match (BENCH 2026-09-24, recorded in OASIS_MAKER_BUILD_1).

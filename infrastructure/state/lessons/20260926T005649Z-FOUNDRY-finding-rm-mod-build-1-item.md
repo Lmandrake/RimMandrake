@@ -1,0 +1,1 @@
+Finding a `*_RM_MOD_BUILD_1` item is "already built" is not the same as closing it — two prior sessions (`d596347ef`, `e4753ee0f`) left ledger NOTES on `STILLSAND_RM_MOD_BUILD_1`/`THEROT_RM_MOD_BUILD_1` instead of calling `rimflow close`, so both sat `proposed` and kept getting re-offered to later FOUNDRY windows (FOUNDRY 2026-09-25).

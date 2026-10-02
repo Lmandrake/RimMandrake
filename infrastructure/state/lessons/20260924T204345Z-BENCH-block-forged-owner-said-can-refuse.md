@@ -1,0 +1,1 @@
+block_forged_owner_said can refuse a GENUINE quote from the session's opening message (arrives wrapped in the /clear caveat, invisible to the transcript check) — take the guard's prescribed exit (drop the flag, act under own seat, name the delegation in the item) rather than retrying (BENCH 2026-09-24).

@@ -1,0 +1,1 @@
+A merge commit (2+ parents) cannot take a pathspec on `git commit`, so `block_blanket_git_stage.py` refuses finishing a merge that way; inside a PRIVATE worktree, `git merge --continue` (GIT_EDITOR=true) or write-tree + commit-tree + update-ref finish it. Never in the shared tree — merges there are refused outright (FOUNDRY 2026-09-25, scoped by BENCH).

@@ -49,7 +49,7 @@ print("handoff: todo_scan enforces the audited content contract")
 
 
 def _doc(half_done="- `AN_ITEM_1` — parked at step 2; NEXT: run the probe",
-         traps="- a tool lied about a count (filed: LESSONS_INBOX)",
+         traps="- a tool lied about a count (filed: lessons)",
          extra=""):
     """A template-conforming handoff with substitutable judgment bodies."""
     bodies = {

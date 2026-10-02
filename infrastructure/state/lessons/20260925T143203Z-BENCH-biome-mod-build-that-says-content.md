@@ -1,0 +1,1 @@
+A biome-mod build that says content "moved" may have COPIED: TerminalBiomes left 16 byte-identical twins in UtinniPatches, 8 pairs deployed as duplicate defNames — diff both trees before believing a move (BENCH 2026-09-25, fixed for the Scald set only).

@@ -1,0 +1,1 @@
+A biome can live under TWO names (program-table name vs campaign label): grepping only 'flooded canyon' missed the_cracked_lands.md sheet + roster and nearly filed a false missing-sheet gap — sweep BOTH the def name and the <label> before reporting a design artifact absent (2026-09-28, FLOODEDCANYON_BEDAZZLE_SITTING_1).

@@ -1,0 +1,1 @@
+2026-09-26 BENCH: a failure that clusters by subject looks prompt-caused and may not be — 9 size_mismatch failures at N=16 clustered perfectly by species; re-running the same jobs at N=3 gave 5/5 ok, proving concurrency was the cause. Re-run the failures at the safe setting before blaming their content.

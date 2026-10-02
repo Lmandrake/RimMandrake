@@ -1,0 +1,1 @@
+A staged review strip with no colonist in sight draws terrain but NO things (items, buildings, pawns — vanilla steel too): Real Fog of War hides whatever no colonist currently sees. Spawn PlayerColony colonists beside the subject before shooting; live pawns farther than their sight still vanish (BENCH 2026-09-25).

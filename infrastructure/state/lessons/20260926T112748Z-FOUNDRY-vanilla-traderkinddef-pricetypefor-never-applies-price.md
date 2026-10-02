@@ -1,0 +1,1 @@
+Vanilla `TraderKindDef.PriceTypeFor` never applies a price premium on the player-SELL side — there is no XML lever for "this trader pays more/less for tag X." Kills any pure-XML buy-premium/bounty-discount design; needs a Harmony postfix if the owner still wants it (FOUNDRY 2026-09-26, `WEBWORK_EGG_BLACKMARKET_BUILD_1`).

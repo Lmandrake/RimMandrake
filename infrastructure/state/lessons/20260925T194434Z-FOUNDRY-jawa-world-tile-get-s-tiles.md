@@ -1,0 +1,1 @@
+`jawa/world_tile_get`'s `tiles` param wants a comma-separated STRING, not a JSON list — passing a Python list raises `Object must implement IConvertible` with a stack trace that never names the parameter (FOUNDRY 2026-09-25).

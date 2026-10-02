@@ -1,0 +1,1 @@
+A `jawa/world_tile_map_generate`'d map with no player pawn on it (an NPC `Settlement`/`DestroyedSettlement`) gets auto-culled by the engine once it stops being the current map — it will not still be there a few calls later. Anchor with a player colonist first if the map needs to persist across a sequence of calls (FOUNDRY 2026-09-25, SCALD_WATER_AGITATION_FLECKS_1).

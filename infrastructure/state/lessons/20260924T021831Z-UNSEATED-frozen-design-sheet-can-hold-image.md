@@ -1,0 +1,1 @@
+⚠️ A frozen design sheet can hold an image that is **false for the setting**, not merely stale: the Miasma's *"its mother is the reason ships sink"* — in a world with **no nautical ships** (owner, 2026-09-23). ⇒ Check a metaphor against the WORLD, not just against other docs; a phrase can be internally consistent everywhere and still describe nothing that exists.

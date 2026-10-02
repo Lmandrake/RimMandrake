@@ -1,0 +1,1 @@
+(BENCH 2026-09-24) `block_forged_owner_said` can refuse a GENUINE multi-sentence quote typed in the current session (transcript check missed a mid-turn chat message); the prescribed exit — drop the flag, act under your own seat, name whose call in prose — worked and the ruling lost nothing.

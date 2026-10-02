@@ -1,0 +1,1 @@
+Codex consult route: codex.exe exec --ignore-user-config --ephemeral -m gpt-5.6-sol --sandbox read-only with the plan on stdin; without --ignore-user-config it reached for computer-control tools on the desktop (FOUNDRY, 2026-10-01).

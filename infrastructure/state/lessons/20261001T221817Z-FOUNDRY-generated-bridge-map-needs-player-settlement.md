@@ -1,0 +1,1 @@
+2026-10-01 FOUNDRY: generated bridge map needs a player settlement (colony_found) or it is culled on save; load saves from the main menu, once; naming-dialog close hops the map; paused site no-ops ordered_job waitTicks; step_game_ticks needs timeoutMs; zsh needs ${=P} for multi-path vars.

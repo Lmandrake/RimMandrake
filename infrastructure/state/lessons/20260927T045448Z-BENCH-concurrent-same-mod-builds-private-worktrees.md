@@ -1,0 +1,1 @@
+2026-09-27 BENCH: concurrent same-mod builds in private worktrees WORK at four-wide: keep BOTH sides' csproj Compile Include lines and settings blocks on conflict, rebuild DLL+srchash after every rebase, push HEAD:main. All four landed on one mod's csproj/Mod.cs/DLL.
