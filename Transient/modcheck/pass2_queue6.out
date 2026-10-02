@@ -1,0 +1,49 @@
+=== J0 20:14:30
+>> J0_preflight  (fails when: any required tool is missing, the recorder is not installed, or a suite mod is not active)
+== J0_preflight
+  ok   a Playing map exists (or was started)
+  ok   every tool the queue drives is in the live census
+  ok   companion answers (jawa/pawn_census success)
+  ok   damage recorder installed (damage and kill hooks)
+  ok   every J1 suite mod is active in ModsConfig (prep_wsl.py composed them)
+MEASURED PASS J0_preflight -- 5/5 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J0 done exit 0 20:14:41
+=== J1 20:14:41
+>> J1_situational_rerun  (fails when: a suite crashes, FlowWorks is refused, Antiquities' long chain is UNMEASURED by budget, or a chain records a surprise whose detector is the chain's own declared act)
+== J1_situational_rerun
+  -- Aftermath
+     refused='' verdicts={'PASS': 2, 'UNMEASURED': 1} surprises=1 serious=['hostile_pawns:SURPRISE']
+  -- Antiquities
+     refused='' verdicts={'UNMEASURED': 1, 'PASS': 1} surprises=1 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- Droidworks
+     refused='' verdicts={'PASS': 19, 'UNMEASURED': 1, 'FAIL': 1} surprises=1 serious=['mental_break:SURPRISE']
+  -- FlowWorks
+     refused='' verdicts={'PASS': 41, 'FAIL': 16, 'UNMEASURED': 29} surprises=2 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- Inhabited
+     refused='' verdicts={'PASS': 10} surprises=0 serious=[]
+  -- JawaIonWeapons
+     refused='' verdicts={'PASS': 8, 'FAIL': 2} surprises=0 serious=[]
+  -- Ninefold
+     refused='' verdicts={'PASS': 3, 'UNMEASURED': 3} surprises=3 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- PawnFlavor
+     refused='' verdicts={'PASS': 14} surprises=0 serious=[]
+  -- Pyrelands
+     refused='' verdicts={'FAIL': 23} surprises=0 serious=[]
+  -- ResearchRetag
+     refused='' verdicts={'PASS': 2} surprises=0 serious=[]
+  -- ShipMemory
+     refused='' verdicts={'FAIL': 1, 'PASS': 2} surprises=0 serious=[]
+  -- StarWarsRaces
+     refused='' verdicts={'PASS': 2, 'FAIL': 2} surprises=0 serious=[]
+  -- StructureInjections
+     refused='' verdicts={'PASS': 3} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   FlowWorks ran (not refused)
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS J1_situational_rerun -- 5/5 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J1 done exit 0 20:30:51
+ALLDONE

@@ -1,0 +1,43 @@
+=== J2 19:58:15
+>> J2_abort_proof  (fails when: a hazard does not abort, aborts on the wrong detector, leaves no sidecar, or a control aborts)
+== J2_abort_proof
+  ok   control control_quiet: no abort and no SURPRISE/FATAL hit
+  ok   hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused
+  ok   hazard fire_near_colonist: aborts via fire_on_map with sidecar on disk, game paused
+  ok   hazard colonist_killed: aborts via colonist_died with sidecar on disk, game paused
+  ok   hazard predator_hunts_colonist: aborts via predator_hunting with sidecar on disk, game paused
+  ok   hazard colonist_berserk: aborts via mental_break with sidecar on disk, game paused
+  ok   hazard raid_queued: aborts via incident_queued with sidecar on disk, game paused
+  ok   control control_declared: no abort and no SURPRISE/FATAL hit
+  ok   runner path: the component meeting a hostile is UNMEASURED naming hostile_pawns
+  ok   control control_after_cleanup: no abort and no SURPRISE/FATAL hit
+MEASURED PASS J2_abort_proof -- 10/10 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J2 done exit 0 20:01:05
+=== J1 20:01:05
+>> J1_situational_rerun  (fails when: a suite crashes, FlowWorks is refused, Antiquities' long chain is UNMEASURED by budget, or a chain records a surprise whose detector is the chain's own declared act)
+== J1_situational_rerun
+  -- Aftermath
+     refused='' verdicts={'PASS': 1, 'FAIL': 1, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- Antiquities
+     refused='' verdicts={'UNMEASURED': 1, 'PASS': 1} surprises=1 serious=['wildlife_near_colonist:SURPRISE']
+  -- Droidworks
+     refused='' verdicts={'PASS': 8, 'FAIL': 7, 'UNMEASURED': 6} surprises=1 serious=['mental_break:SURPRISE']
+  -- FlowWorks
+  -- Inhabited
+  -- JawaIonWeapons
+  -- Ninefold
+  -- PawnFlavor
+  -- Pyrelands
+  -- ResearchRetag
+  -- ShipMemory
+  -- StarWarsRaces
+  -- StructureInjections
+  FAIL no suite raised out of run_suite  -- ["FlowWorks: RimBridgeError: unexpected response id 'c4295f71-8e55-4b82-9e8f-02aeb6716d73' (wanted '2c8f93a3-6a38-4691-88b5-1cbeb5962f53')", "Inhabited: RimBridgeError: unexpected response id '2c8f93a3-6a38-4691-88b5-1cbeb5962f53' (wanted '849561ef-c7a8-45c6-9afe-1756ac57167f')", "JawaIonWeapons: Ri
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL J1_situational_rerun -- 3/4 checks ; failed: no suite raised out of run_suite
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J1 done exit 1 20:08:58
+ALLDONE

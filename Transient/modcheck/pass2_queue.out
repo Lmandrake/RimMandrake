@@ -1,0 +1,87 @@
+=== J0 19:23:33
+>> J0_preflight  (fails when: any required tool is missing, the recorder is not installed, or a suite mod is not active)
+== J0_preflight
+  ok   a Playing map exists (or was started)
+  ok   every tool the queue drives is in the live census
+  ok   companion answers (jawa/pawn_census success)
+  ok   damage recorder installed (damage and kill hooks)
+  ok   every J1 suite mod is active in ModsConfig (prep_wsl.py composed them)
+MEASURED PASS J0_preflight -- 5/5 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J0 done exit 0 19:23:35
+=== J2 19:23:35
+>> J2_abort_proof  (fails when: a hazard does not abort, aborts on the wrong detector, leaves no sidecar, or a control aborts)
+== J2_abort_proof
+  ok   control control_quiet: no abort and no SURPRISE/FATAL hit
+  ok   hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused
+  ok   hazard fire_near_colonist: aborts via fire_on_map with sidecar on disk, game paused
+  ok   hazard colonist_killed: aborts via colonist_died with sidecar on disk, game paused
+  FAIL predator_hunts_colonist: bland map established before the hazard  -- ["restore_colonists unverified: [('Human87019', 'hediff Bite/Arm')]"]
+  ok   hazard colonist_berserk: aborts via mental_break with sidecar on disk, game paused
+  ok   hazard raid_queued: aborts via incident_queued with sidecar on disk, game paused
+  ok   control control_declared: no abort and no SURPRISE/FATAL hit
+  ok   runner path: the component meeting a hostile is UNMEASURED naming hostile_pawns
+  ok   control control_after_cleanup: no abort and no SURPRISE/FATAL hit
+MEASURED FAIL J2_abort_proof -- 9/10 checks ; failed: predator_hunts_colonist: bland map established before the hazard
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J2 done exit 1 19:25:38
+=== J3 19:25:38
+>> J3_bland_tile  (fails when: the map is not current, wildlife remains, no colonist stands on it, or ruins are present)
+== J3_bland_tile
+  ok   a candidate tile has no mutators, roads or rivers
+  ok   colony_found settled the tile for the player
+  ok   map generated with no failed finalize steps
+  ok   the new map is current and on the chosen tile
+  ok   destroy_bulk factionlessAnimals succeeded
+  ok   >=3 colonists stand on the bland map (census isColonist)
+  ok   no wildlife left on the map
+  FAIL no non-player artificial buildings (ruins) on the map  -- 161 ruin things, complete=True
+  ok   helpers.assert_bland passes on the new map
+  ok   2000 idle ticks on the bland map raise no SURPRISE/FATAL
+MEASURED FAIL J3_bland_tile -- 9/10 checks ; failed: no non-player artificial buildings (ruins) on the map
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J3 done exit 1 19:26:24
+=== J4 19:26:24
+>> J4_companion_live  (fails when: a direct-read detector does not fire, or fires without its direct-read evidence)
+== J4_companion_live
+  ok   census consistency: pawn_census and list_pawns name the same living pawns
+UNMEASURED J4_companion_live -- RuntimeError: jawa/damage refused: Damaged 0 thing(s) with Cut 3; 1 player colonist(s) skipped (allowColonists=false).
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J4 done exit 2 19:26:30
+=== J5 19:26:30
+>> J5_motion_frames  (fails when: fewer than N valid frames, all frames byte-identical, or the fill state never moved)
+== J5_motion_frames
+  ok   the capture ran without a surprise abort
+  ok   8 valid PNG frames captured
+  ok   frames are not all byte-identical
+  ok   the channel fill vector advanced between first and last frame (engine state = motion witness)
+MEASURED PASS J5_motion_frames -- 4/4 checks
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J5 done exit 0 19:27:32
+=== J1 19:27:32
+>> J1_situational_rerun  (fails when: a suite crashes, FlowWorks is refused, Antiquities' long chain is UNMEASURED by budget, or a chain records a surprise whose detector is the chain's own declared act)
+== J1_situational_rerun
+  -- Aftermath
+     refused='' verdicts={'PASS': 3} surprises=0 serious=[]
+  -- Antiquities
+     refused='' verdicts={'UNMEASURED': 1, 'PASS': 1} surprises=1 serious=['colonist_died:FATAL']
+  -- Droidworks
+     refused='' verdicts={'PASS': 17, 'FAIL': 2, 'UNMEASURED': 2} surprises=1 serious=['mental_break:SURPRISE']
+  -- FlowWorks
+  -- Inhabited
+  -- JawaIonWeapons
+  -- Ninefold
+  -- PawnFlavor
+  -- Pyrelands
+  -- ResearchRetag
+  -- ShipMemory
+  -- StarWarsRaces
+  -- StructureInjections
+  FAIL no suite raised out of run_suite  -- ["FlowWorks: RimBridgeError: unexpected response id '7d4bf478-60ae-4feb-9a77-bae5dab646a0' (wanted '0d2a3eb0-0fed-4604-8225-cb024b4cc33c')", "Inhabited: RimBridgeError: unexpected response id '0d2a3eb0-0fed-4604-8225-cb024b4cc33c' (wanted '0526ed31-bfae-4d1b-9cd6-e7fd22c70bd4')", "JawaIonWeapons: Ri
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL J1_situational_rerun -- 3/4 checks ; failed: no suite raised out of run_suite
+  results: D:\Luke\dev\wt_live2\Transient\modcheck\live_queue_results.jsonl
+=== J1 done exit 1 19:38:31
+ALLDONE
