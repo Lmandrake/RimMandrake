@@ -68,17 +68,25 @@ class PulseOracle(object):
     so neither changes the predicted vector (plan section 3, E-tier). Deterministic by
     construction: recipients sorted (-D, cell index), donors scanned N,E,S,W with strict '>'.
 
+    algo="old" is that engine as measured live 2026-10-01 (east/north channels oscillate).
+    algo="fixed" (default) is FLOWWORKS_CHANNEL_OSCILLATION_1's fix: a per-component flow order
+    gates cell-to-cell gifts and orders recipients (see _downstream). O6 proves it.
+
     VALIDATED once against live data (INT section 2): given plot D's geometry (5x5 limited pond,
     12-cell D=3 channel running east, stock 125) it reproduces BOTH oscillating F vectors the
     2026-10-01 run recorded at ticks 538,130..539,880, exactly."""
 
-    def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None):
+    def __init__(self, w, h, sources, bodies, per=1, budget=True, sink_band=None, algo="fixed"):
         self.w, self.h = w, h
         self.D, self.F = {}, {}
         self.src = dict(sources)          # cell -> body id
         self.bodies = bodies              # id -> {"limitless": bool, "stock": float}
         self.per, self.budget, self.sink_band = per, budget, sink_band
+        assert algo in ("old", "fixed")
+        self.algo = algo                  # "old" = pre-FLOWWORKS_CHANNEL_OSCILLATION_1 engine
         self.drained = 0
+        self.credited = 0                 # units sources paid in (limited AND limitless)
+        self.key = {}                     # fixed algo: cell -> (dSrc, -dSink), this component
 
     def idx(self, c):
         return c[1] * self.w + c[0]
@@ -134,10 +142,52 @@ class PulseOracle(object):
                 continue
             if dr <= dn and fn < dn:
                 continue
+            if self.algo == "fixed" and not src and not self._downstream(n, r, dn, dr):
+                continue
             score = 1000 if src else fn * 10 + dn
             if score > best_score:
                 best_score, best = score, n
         return best
+
+    def _downstream(self, n, r, dn, dr):
+        """FIXED algo's one new gate (mirrors RM_StockMath.MayFlowBetween, wired in PickDonor;
+        keys from ComputeFlowOrder/HopsFrom; recipients sorted by CompareDeepestFirst). A non-source donor n
+        may give to r only if r is strictly further along the component's flow order: key =
+        (hops from a SUPPLYING source, -hops to a sink), then depth. A brimming donor may
+        overflow only to a strictly later key; at an equal key only GRAVITY (deeper r) moves.
+        A static strict order is acyclic, so no unit can come back: no period-2 shuttle, and
+        the result no longer depends on cell-index order."""
+        kn, kr = self.key.get(n), self.key.get(r)
+        if kn is None or kr is None:
+            return False
+        if kn < kr:
+            return True
+        return kn == kr and dr > dn
+
+    def _keys(self, comp):
+        """Per component: BFS hops from every supplying source (0 if none supply) and to the
+        nearest sink cell (0 if none), through excavated cells only."""
+        exc = [c for c in comp if self.exc(c)]
+        excset = set(exc)
+
+        def bfs(seeds, seeds_excavated):        # mirrors HopsFrom (multi-seed BFS, hop 0 at seeds)
+            dist = {c: 0 for c in seeds} if seeds_excavated else {}
+            q, i = list(seeds), 0
+            while i < len(q):
+                c = q[i]
+                i += 1
+                for dx, dz in CARDINAL:
+                    m = (c[0] + dx, c[1] + dz)
+                    if m in excset and m not in dist:
+                        dist[m] = dist.get(c, 0) + 1
+                        q.append(m)
+            return dist
+
+        src = [c for c in comp if self.is_source(c) and self.can_supply(c)]
+        snk = [c for c in exc if self.is_sink(c)]
+        ds = bfs(src, False)
+        dk = bfs(snk, True)
+        self.key = {c: (ds.get(c, 0), -dk.get(c, 0)) for c in exc}
 
     def pulse(self):
         seen = set()
@@ -163,8 +213,13 @@ class PulseOracle(object):
                     take = min(self.F[c], self.per)
                     self.F[c] -= take
                     self.drained += take
-            rec = sorted([c for c in comp if self.exc(c) and self.F[c] < self.D[c]],
-                         key=lambda c: (-self.D[c], self.idx(c)))
+            if self.algo == "fixed":
+                self._keys(comp)
+                rec = sorted([c for c in comp if self.exc(c) and self.F[c] < self.D[c]],
+                             key=lambda c: (-self.D[c], self.key[c], self.idx(c)))
+            else:
+                rec = sorted([c for c in comp if self.exc(c) and self.F[c] < self.D[c]],
+                             key=lambda c: (-self.D[c], self.idx(c)))
             for r in rec:
                 moved = 0
                 while moved < self.per and self.F[r] < self.D[r]:
@@ -177,6 +232,7 @@ class PulseOracle(object):
                             if b["stock"] < 1:
                                 break
                             b["stock"] -= 1
+                        self.credited += 1
                     else:
                         self.F[d] -= 1
                     self.F[r] += 1
@@ -424,7 +480,7 @@ def o5_oracle_selftest():
     # (1) the live reproduction (INT section 2) -- plot D geometry, 2026-10-01 run
     px, pz = 167, 204
     o = PulseOracle(250, 250, {c: 0 for c in rect_cells(px, pz, 5, 5)},
-                    {0: {"limitless": False, "stock": 125.0}})
+                    {0: {"limitless": False, "stock": 125.0}}, algo="old")
     cells = _run(px + 5, pz + 2, 12, 1, 0)
     for c in cells:
         o.dig(c, 3)
@@ -434,7 +490,7 @@ def o5_oracle_selftest():
         probs.append("oracle no longer reproduces the measured live oscillation")
     # (2) hand-worked: 3-cell east channel off a limitless source oscillates, south fills
     def chan(dx, dz, n=3, p=12):
-        oo = PulseOracle(100, 100, {(50, 50): 0}, {0: {"limitless": True, "stock": 0}})
+        oo = PulseOracle(100, 100, {(50, 50): 0}, {0: {"limitless": True, "stock": 0}}, algo="old")
         cs = _run(50 + dx, 50 + dz, n, dx, dz)
         for c in cs:
             oo.dig(c)
@@ -457,8 +513,180 @@ def o5_oracle_selftest():
     return Check("O5", not probs, "; ".join(probs) or "live oscillation reproduced; hand cases; budget 5")
 
 
+DIRS = {"E": (1, 0), "N": (0, 1), "W": (-1, 0), "S": (0, -1)}   # E/N: cell index rises away
+O6_LENGTHS = (3, 4, 6, 12)
+
+
+def _o6_channel(algo, d, n, depth=1, pulses=None, limitless=True, stock=0.0, src_cells=None):
+    """A depth-`depth` channel of n cells running direction d off a source; returns (oracle, cells, hist)."""
+    dx, dz = DIRS[d]
+    src = src_cells or [(100, 100)]
+    o = PulseOracle(200, 200, {c: 0 for c in src}, {0: {"limitless": limitless, "stock": stock}}, algo=algo)
+    x0, z0 = src[0]
+    cs = _run(x0 + dx, z0 + dz, n, dx, dz)
+    for c in cs:
+        o.dig(c, depth)
+    return o, cs, o.run(cs, pulses if pulses is not None else 4 * n * depth + 8)
+
+
+def o6_fill_bound(n, depth):
+    """Stated convergence bound (pulses) for an n-cell, depth-D straight channel off one source
+    at FlowPerPulse 1. The mouth admits <= 1 level per pulse, so n*D pulses is also the LOWER
+    bound; the fixed engine meets it exactly (the brigade carries each level to the far end in
+    the pulse it enters). Measured 2026-10-02: n=3,4,6,12 x D=1,3, every direction, = n*D."""
+    return n * depth
+
+
+def _is_fixed_point(o):
+    before = dict(o.F)
+    stock = [b["stock"] for b in o.bodies.values()]
+    o.pulse()
+    same = o.F == before and stock == [b["stock"] for b in o.bodies.values()]
+    return same
+
+
+def o6_channel_directions():
+    """FLOWWORKS_CHANNEL_OSCILLATION_1 (INT section 2). OLD algo: east/north oscillate, west/south
+    fill, and the live 2026-10-01 vectors reproduce. FIXED algo: all four directions fill, with
+    IDENTICAL per-pulse vectors (no cell-index dependence), within o6_fill_bound, conserving stock,
+    and a partly filled / spent / sink-draining run comes to rest (fixed point)."""
+    probs, notes = [], []
+    # --- OLD: the defect, as measured
+    for n in O6_LENGTHS:
+        for d in "ENWS":
+            _, cs, h = _o6_channel("old", d, n)
+            full = h[-1] == [1] * n
+            if d in "EN":
+                if full or h[-1] != h[-3] or h[-1] == h[-2]:
+                    probs.append("old %s%d should oscillate period 2: %s" % (d, n, h[-2:]))
+            elif not full:
+                probs.append("old %s%d should fill: %s" % (d, n, h[-1]))
+    _, _, h = _o6_channel("old", "E", 3)
+    if sorted(map(tuple, h[-2:])) != [(1, 0, 1), (1, 1, 0)]:
+        probs.append("old E3 hand vector %s" % h[-2:])
+    _, _, h = _o6_channel("old", "E", 6)
+    if sorted(map(tuple, h[-2:])) != [(1, 1, 0, 1, 1, 0), (1, 1, 1, 0, 0, 1)]:
+        probs.append("old E6 doc vector %s" % h[-2:])
+    pond = rect_cells(167, 204, 5, 5)
+    live = [(3, 3, 2, 3, 3, 2, 2, 3, 3, 2, 2, 3), (3, 3, 3, 2, 2, 3, 3, 2, 2, 3, 3, 2)]
+    for algo in ("old", "fixed"):
+        o = PulseOracle(250, 250, {c: 0 for c in pond}, {0: {"limitless": False, "stock": 125.0}}, algo=algo)
+        cells = _run(172, 206, 12, 1, 0)
+        for c in cells:
+            o.dig(c, 3)
+        hh = [tuple(v) for v in o.run(cells, 80)]
+        stock = o.bodies[0]["stock"]
+        if algo == "old":
+            if not all(v in hh[-10:] for v in live) or stock != 94:
+                probs.append("old plot-D: live vectors/stock 94 not reproduced (stock %s)" % stock)
+        else:
+            first = next((i + 1 for i, v in enumerate(hh) if v == (3,) * 12), None)
+            if first is None or stock != 125 - 36 or not _is_fixed_point(o):
+                probs.append("fixed plot-D: final %s stock %s (want all 3, stock 89, at rest)" % (hh[-1], stock))
+            else:
+                notes.append("plot-D full at pulse %d (bound %d), stock 89" % (first, o6_fill_bound(12, 3)))
+    # --- FIXED: every direction fills, identically, within the bound, conserving stock
+    worst = -10 ** 9
+    for n in O6_LENGTHS:
+        for depth in (1, 3):
+            hist = {}
+            for d in "ENWS":
+                o, cs, h = _o6_channel("fixed", d, n, depth)
+                hist[d] = h
+                first = next((i + 1 for i, v in enumerate(h) if v == [depth] * n), None)
+                if first is None:
+                    probs.append("fixed %s%d D%d never fills: %s" % (d, n, depth, h[-1]))
+                    continue
+                worst = max(worst, first - o6_fill_bound(n, depth))
+                if first > o6_fill_bound(n, depth):
+                    probs.append("fixed %s%d D%d full at pulse %d > bound %d" % (d, n, depth, first, o6_fill_bound(n, depth)))
+                if not _is_fixed_point(o):
+                    probs.append("fixed %s%d D%d not at rest when full" % (d, n, depth))
+                if o.credited != n * depth:
+                    probs.append("fixed %s%d D%d credited %d != capacity %d" % (d, n, depth, o.credited, n * depth))
+            if len({str(v) for v in hist.values()}) != 1:
+                probs.append("fixed n%d D%d: per-pulse vectors differ by direction (cell-index dependence)" % (n, depth))
+            # limited stock: conservation every pulse, exact delivery, then rest
+            for d in "ENWS":
+                cap = n * depth
+                stock0 = float(cap // 2 + 1)
+                o, cs, _ = _o6_channel("fixed", d, n, depth, pulses=0, limitless=False, stock=stock0)
+                for p in range(4 * cap + 8):
+                    o.pulse()
+                    if sum(o.F[c] for c in cs) + o.bodies[0]["stock"] != stock0:
+                        probs.append("fixed %s%d D%d: conservation broken at pulse %d" % (d, n, depth, p + 1))
+                        break
+                if sum(o.F[c] for c in cs) != stock0 or not _is_fixed_point(o):
+                    probs.append("fixed %s%d D%d limited: delivered %d of %d, rest=%s"
+                                 % (d, n, depth, sum(o.F[c] for c in cs), stock0, _is_fixed_point(o)))
+    # --- FIXED: the "second symptom" (INT section 2) -- a 5-level pond into 8-cell D=1 comes to rest
+    for d in "ENWS":
+        o, cs, h = _o6_channel("fixed", d, 8, 1, pulses=30, limitless=False, stock=5.0)
+        if sum(h[-1]) != 5 or h[-1] != h[-2] or not _is_fixed_point(o):
+            probs.append("fixed %s: spent 1-cell pond run not at rest: %s / %s" % (d, h[-2], h[-1]))
+    # --- FIXED: a full, sourceless channel breached into the sink band drains (ruling 9), to the
+    # same end state the OLD engine reaches: D=1 empties; D=2 keeps its bottom level, because
+    # only a BRIMMING cell overflows sideways (unchanged semantics, both algos).
+    for d in "ENWS":
+        dx, dz = DIRS[d]
+        x0, z0 = {"E": (230, 100), "W": (19, 100), "N": (100, 230), "S": (100, 19)}[d]
+        for depth in (1, 2):
+            ends = {}
+            for algo in ("old", "fixed"):
+                o = PulseOracle(250, 250, {}, {}, sink_band=SINK_BAND, algo=algo)
+                cs = _run(x0 - dx * 12, z0 - dz * 12, 25, dx, dz)   # 12+ interior cells, then the band
+                for c in cs:
+                    o.dig(c, depth)
+                    o.set_fill(c, depth)
+                o.run(cs, 200)
+                ends[algo] = [o.F[c] for c in cs]
+                if algo == "fixed" and not _is_fixed_point(o):
+                    probs.append("fixed sink %s D%d not at rest" % (d, depth))
+            want = [0] * 25 if depth == 1 else [1 if edge_distance(c) >= SINK_BAND else 0 for c in cs]
+            if ends["fixed"] != want or ends["old"] != want:
+                probs.append("sink %s D%d: fixed %s old %s want %s" % (d, depth, ends["fixed"], ends["old"], want))
+    # --- FIXED: random small networks reach a fixed point and the ledger balances
+    import random
+    rng = random.Random(1234)
+    for trial in range(300):
+        W = H = 9
+        srcs = {}
+        bodies = {}
+        for b in range(rng.randint(0, 2)):
+            c = (rng.randrange(W), rng.randrange(H))
+            srcs[c] = b
+            bodies[b] = {"limitless": rng.random() < 0.5, "stock": float(rng.randint(0, 20))}
+        o = PulseOracle(W, H, srcs, bodies, per=rng.randint(1, 3),
+                        sink_band=rng.choice([None, 1]), algo="fixed")
+        for _ in range(rng.randint(3, 30)):
+            c = (rng.randrange(W), rng.randrange(H))
+            if c in srcs:
+                continue
+            o.dig(c, rng.randint(1, 4))
+            o.set_fill(c, rng.randint(0, 4))
+        f0 = sum(o.F.values())
+        rest = False
+        for p in range(400):
+            o.pulse()
+            if _is_fixed_point(o):
+                rest = True
+                break
+        total = sum(o.F.values())
+        if total != f0 + o.credited - o.drained:
+            probs.append("fuzz %d: ledger %d != %d+%d-%d" % (trial, total, f0, o.credited, o.drained))
+        if not rest:
+            probs.append("fuzz %d: no fixed point in 400 pulses" % trial)
+        if len(probs) > 12:
+            break
+    return Check("O6", not probs, "; ".join(probs[:12]) or
+                 "old: E/N oscillate, W/S fill, live reproduced; fixed: ENWS identical & full for n=%s D=1,3 "
+                 "within n*D pulses (worst first-full minus bound: %d), stock conserved, spent/partial runs rest, sinks drain, "
+                 "300 fuzz nets reach a fixed point; %s" % (list(O6_LENGTHS), worst, "; ".join(notes)))
+
+
 def run_offline():
-    checks = [o1_defs(), o2_settings_defaults(), o3_unbuilt_register(), o4_geometry(), o5_oracle_selftest()]
+    checks = [o1_defs(), o2_settings_defaults(), o3_unbuilt_register(), o4_geometry(), o5_oracle_selftest(),
+              o6_channel_directions()]
     for c in checks:
         print(c)
     print("E2 predictions (8 pulses, last 2):")
@@ -634,7 +862,7 @@ if Suite is not None:
                               "%s pulse %d: live %s != oracle %s (HARNESS if A==B, else MOD)" % (k, p, live, pred[k][p - 1]))
             _need(_vec(t, SCENES["E2_east_A"]["cells"]) == _vec(t, SCENES["E2_east_B"]["cells"]), "twins differ")
         with t.component("E2_channels_fill", shows=[]):
-            # The bar-level claim. EXPECTED RED on east/north until FLOWWORKS_CHANNEL_OSCILLATION_1;
+            # The bar-level claim. Expected GREEN on all four directions since the FLOWWORKS_CHANNEL_OSCILLATION_1 fix;
             # the south twin is the negative control that must be GREEN.
             south = _vec(t, SCENES["E2_south"]["cells"])
             _need(all(f == 1 for f in south), "south channel did not fill: %s" % south)

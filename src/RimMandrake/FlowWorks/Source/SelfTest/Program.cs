@@ -587,6 +587,48 @@ namespace RimMandrake.FlowWorks.SelfTest
                     "and the pond is back to exactly what the one remaining dug level took from it");
             });
 
+            // ── flow order (FLOWWORKS_CHANNEL_OSCILLATION_1) ──────────────
+            Case("FlowOrder_equal_depth_overflow_only_runs_away_from_the_source", () =>
+            {
+                // A brimming D=1 mouth (1 hop) may hand a level to the next cell
+                // (2 hops) — and that cell may never hand it back. The back-gift is
+                // exactly the period-2 shuttle measured live on plot D.
+                Assert(RM_StockMath.MayFlowBetween(1, 0, 1, 2, 0, 1), "mouth -> next cell");
+                Assert(!RM_StockMath.MayFlowBetween(2, 0, 1, 1, 0, 1), "next cell -> mouth is refused");
+                Assert(!RM_StockMath.MayFlowBetween(2, 0, 1, 2, 0, 1), "equal key, equal depth: no sideways swap");
+            });
+
+            Case("FlowOrder_gravity_survives_at_an_equal_key", () =>
+            {
+                // No supplying source and no sink: every key is (0, 0), so only
+                // gravity moves — a breach into a deeper cell still drains.
+                Assert(RM_StockMath.MayFlowBetween(0, 0, 1, 0, 0, 3), "shallow -> deeper at equal key");
+                Assert(!RM_StockMath.MayFlowBetween(0, 0, 3, 0, 0, 1), "deeper -> shallow at equal key is refused");
+            });
+
+            Case("FlowOrder_without_a_source_levels_run_toward_the_sink", () =>
+            {
+                Assert(RM_StockMath.MayFlowBetween(0, 5, 1, 0, 4, 1), "one hop nearer the sink");
+                Assert(!RM_StockMath.MayFlowBetween(0, 4, 1, 0, 5, 1), "away from the sink is refused");
+            });
+
+            Case("FlowOrder_is_a_strict_order_so_no_level_can_return", () =>
+            {
+                // Exhaustive over a small key space: never both a->b and b->a, and
+                // never a->a. That antisymmetry is the whole oscillation fix.
+                for (int s1 = 0; s1 < 4; s1++)
+                for (int k1 = 0; k1 < 4; k1++)
+                for (int d1 = 1; d1 <= 4; d1++)
+                for (int s2 = 0; s2 < 4; s2++)
+                for (int k2 = 0; k2 < 4; k2++)
+                for (int d2 = 1; d2 <= 4; d2++)
+                {
+                    bool ab = RM_StockMath.MayFlowBetween(s1, k1, d1, s2, k2, d2);
+                    bool ba = RM_StockMath.MayFlowBetween(s2, k2, d2, s1, k1, d1);
+                    Assert(!(ab && ba), $"both ways at ({s1},{k1},{d1}) / ({s2},{k2},{d2})");
+                }
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

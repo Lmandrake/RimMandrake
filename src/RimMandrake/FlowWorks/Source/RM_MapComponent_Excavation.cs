@@ -100,6 +100,18 @@ namespace RimMandrake.FlowWorks
 
 		private readonly List<IntVec3> pulseRecipients = new List<IntVec3>();
 
+		/// <summary>FLOWWORKS_CHANNEL_OSCILLATION_1. Per component, per pulse: hops
+		/// from the nearest supplying source and to the nearest sink, through
+		/// excavated cells. Together they are the flow order RM_StockMath.MayFlowBetween
+		/// enforces. Derived, never scribed.</summary>
+		private readonly Dictionary<IntVec3, int> pulseSourceHops = new Dictionary<IntVec3, int>();
+
+		private readonly Dictionary<IntVec3, int> pulseSinkHops = new Dictionary<IntVec3, int>();
+
+		private readonly List<IntVec3> pulseHopFrontier = new List<IntVec3>();
+
+		private readonly HashSet<IntVec3> pulseComponentSet = new HashSet<IntVec3>();
+
 		/// <summary>A single connected excavation this big is already far past
 		/// anything a colony digs by hand; the cap exists so one pathological
 		/// map cannot turn a bounded pulse into a frame hitch.</summary>
@@ -855,6 +867,8 @@ namespace RimMandrake.FlowWorks
 				sinkTransferredTotal += externalDrain;
 			}
 
+			ComputeFlowOrder();
+
 			pulseRecipients.Clear();
 			for (int i = 0; i < pulseComponent.Count; i++)
 			{
@@ -874,9 +888,10 @@ namespace RimMandrake.FlowWorks
 				RenderComponentFill();
 				return;
 			}
-			// Step 1 of §21: deepest first. The comparison is on D alone, with a
-			// cell-index tie-break so the order is identical on every machine
-			// and survives a save — a pulse must not depend on hash ordering.
+			// Step 1 of §21: deepest first, then along the flow order (nearest the
+			// source first, so a level entering at the mouth is carried down the
+			// channel the same pulse), with a cell-index tie-break only for true
+			// ties so the order is identical on every machine and survives a save.
 			pulseRecipients.Sort(CompareDeepestFirst);
 
 			float externalCredit = 0f;
@@ -952,7 +967,94 @@ namespace RimMandrake.FlowWorks
 			{
 				return db - da;
 			}
+			int sa = HopsOf(pulseSourceHops, a);
+			int sb = HopsOf(pulseSourceHops, b);
+			if (sa != sb)
+			{
+				return sa - sb;
+			}
+			int ka = HopsOf(pulseSinkHops, a);
+			int kb = HopsOf(pulseSinkHops, b);
+			if (ka != kb)
+			{
+				return kb - ka;
+			}
 			return map.cellIndices.CellToIndex(a) - map.cellIndices.CellToIndex(b);
+		}
+
+		private static int HopsOf(Dictionary<IntVec3, int> hops, IntVec3 c)
+		{
+			return hops.TryGetValue(c, out int h) ? h : 0;
+		}
+
+		/// <summary>FLOWWORKS_CHANNEL_OSCILLATION_1. Fills <see cref="pulseSourceHops"/>
+		/// (BFS from every source cell that can still supply; empty if none can) and
+		/// <see cref="pulseSinkHops"/> (BFS from every sink cell; empty if sinks are
+		/// off or absent) over this component's excavated cells. Reads only the grid
+		/// and the stock, so the order is fixed for the whole pulse.</summary>
+		private void ComputeFlowOrder()
+		{
+			pulseSourceHops.Clear();
+			pulseSinkHops.Clear();
+			pulseHopFrontier.Clear();
+			pulseComponentSet.Clear();
+			for (int i = 0; i < pulseComponent.Count; i++)
+			{
+				IntVec3 c = pulseComponent[i];
+				pulseComponentSet.Add(c);
+				if (IsSourceCell(c) && (stock == null || stock.CanSupply(map, c, this)))
+				{
+					pulseHopFrontier.Add(c);
+				}
+			}
+			HopsFrom(pulseSourceHops, false);
+			pulseHopFrontier.Clear();
+			if (RimMandrakeFlowWorksSettings.edgeSinksEnabled)
+			{
+				for (int i = 0; i < pulseComponent.Count; i++)
+				{
+					IntVec3 c = pulseComponent[i];
+					if (IsExcavated(c) && IsSinkCell(c))
+					{
+						pulseHopFrontier.Add(c);
+					}
+				}
+			}
+			HopsFrom(pulseSinkHops, true);
+		}
+
+		/// <summary>Multi-seed BFS from <see cref="pulseHopFrontier"/> (hop 0) into
+		/// this component's excavated cells. A source seed is not excavated, so it is
+		/// a root only and is never recorded; a sink seed is excavated and records 0.</summary>
+		private void HopsFrom(Dictionary<IntVec3, int> hops, bool seedsAreExcavated)
+		{
+			if (pulseHopFrontier.Count == 0)
+			{
+				return;
+			}
+			if (seedsAreExcavated)
+			{
+				for (int i = 0; i < pulseHopFrontier.Count; i++)
+				{
+					hops[pulseHopFrontier[i]] = 0;
+				}
+			}
+			int head = 0;
+			while (head < pulseHopFrontier.Count)
+			{
+				IntVec3 c = pulseHopFrontier[head++];
+				int hc = hops.TryGetValue(c, out int h) ? h : 0;
+				for (int i = 0; i < 4; i++)
+				{
+					IntVec3 n = c + GenAdj.CardinalDirections[i];
+					if (hops.ContainsKey(n) || !pulseComponentSet.Contains(n) || !IsExcavated(n))
+					{
+						continue;
+					}
+					hops[n] = hc + 1;
+					pulseHopFrontier.Add(n);
+				}
+			}
 		}
 
 		/// <summary>The two clauses that are the entire flow model.
@@ -1013,6 +1115,16 @@ namespace RimMandrake.FlowWorks
 				if (depthR <= dn && fn < dn)
 				{
 					continue; // neither deeper than the donor nor brimming
+				}
+				// FLOWWORKS_CHANNEL_OSCILLATION_1: a cell-to-cell level only moves
+				// strictly later in this pulse's flow order, or it could come back.
+				// A neighbour outside the component (truncated) has no order: no gift.
+				if (!source && (!pulseComponentSet.Contains(n)
+						|| !RM_StockMath.MayFlowBetween(
+							HopsOf(pulseSourceHops, n), HopsOf(pulseSinkHops, n), dn,
+							HopsOf(pulseSourceHops, r), HopsOf(pulseSinkHops, r), depthR)))
+				{
+					continue;
 				}
 				int score = source ? 1000 : (fn * 10 + dn);
 				if (score > bestScore)
