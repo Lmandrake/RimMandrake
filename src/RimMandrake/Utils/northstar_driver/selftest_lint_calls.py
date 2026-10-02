@@ -62,6 +62,10 @@ check("transport check= not a param", kinds('s.call("a/t", x=1, check=False)', m
 # --- never silently pass what cannot be seen
 check("**kwargs UNCHECKED", kinds('s.call("a/t", **kw)', mini) == [("a/t", "UNCHECKED")])
 check("**kwargs does not also claim missing required", ("a/t", "MISSING_REQUIRED") not in kinds('s.call("a/t", **kw)', mini))
+check("literal-key splat checked: declared passes", kinds('s.call("a/t", **{"x": 1})', mini) == [])
+check("literal-key splat checked: undeclared flagged",
+      kinds('s.call("a/t", x=1, **{"def": 1})', mini) == [("a/t", "UNDECLARED_PARAM")])
+check("non-literal-key splat still UNCHECKED", kinds('s.call("a/t", **{k: 1})', mini) == [("a/t", "UNCHECKED")])
 check("non-literal tool UNCHECKED", kinds('s.call(tool, x=1)', mini) == [("?", "UNCHECKED")])
 check("non-literal params dict UNCHECKED", kinds('s.call("a/t", d)', mini) == [("a/t", "UNCHECKED")])
 check("unparseable file UNCHECKED", kinds('def (:', mini)[0][1] == "UNCHECKED")

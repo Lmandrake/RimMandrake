@@ -11,6 +11,7 @@ Recognised call shapes, with a LITERAL tool name:
     X.call("tool", {"k": v})  /  X.call("tool", params={"k": v})   (literal-key dict)
 Output: `file:line  tool  KIND  detail`, KIND in
     UNKNOWN_TOOL | UNDECLARED_PARAM | MISSING_REQUIRED | UNCHECKED
+`**{"k": v}` with literal keys (the only way to pass a Python keyword such as `def`) is checked.
 Anything the lint cannot see through (**kwargs, non-literal tool name, non-literal
 params dict, dict with non-literal keys) is UNCHECKED, never silently passed.
 Exit 0 only if there are no problems of ANY kind (UNCHECKED counts: it is unproven).
@@ -81,7 +82,12 @@ def lint_source(src, fname, tools):
         unchecked = []
         for kw in node.keywords:
             if kw.arg is None:
-                unchecked.append("**kwargs")
+                d = kw.value         # `**{"def": x}` -- a literal-key splat is as checkable as k=v
+                if isinstance(d, ast.Dict) and all(k is not None and _str(k) for k in d.keys):
+                    for k in d.keys:
+                        given[_str(k)] = True
+                else:
+                    unchecked.append("**kwargs")
             elif kw.arg == "params":
                 d = kw.value
                 if isinstance(d, ast.Dict) and all(_str(k) for k in d.keys):
