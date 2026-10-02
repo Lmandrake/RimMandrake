@@ -367,3 +367,8 @@ Sources: **G** = `git_plan_gpt_review_2026-10-02.md`, **L** = `git_plan_literatu
 | 28 | rsync build reintroduces drvfs I/O | L3 | **Accept as cost** | One project dir per build, not the repo (§2.3) |
 | 29 | Jujutsu "not even a pilot" as permanent is too strong | L7 | **Accept** | Softened to "not now", with a revisit condition (§3) |
 | 30 | Phase 1 needs consumers of queue views migrated or warned first | G5.1 | **Accept** | Render-on-read means consumers migrate in the same commit (Phase 4) |
+
+## 8. Owner decisions — taken by question card, 2026-10-02 00:10 PDT
+
+- **Choice 1 → A.** Each window lands its own helpers' work; helpers hand in on `submit/` branches and never push the main line. The one-checker gate (B) stays available as a later layer.
+- **Choice 2 → A.** Queue pages leave git and are read through rimflow or the hub page; no github.com copy.
