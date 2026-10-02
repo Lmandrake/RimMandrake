@@ -37,14 +37,10 @@
     RM_Skellarn (0.15) - per sump_fauna_roster_2026-09-24.md. These five have
     no existing donor slot to evict: the mouse's placeholder was never wired
     into wildAnimals at all, and the other four are wholly new niches. The
-    OTHER four rows the roster names (RM_Gulveth, RM_Thrummel,
-    RM_ThrummelWarden, RM_ThrummelBroodmother) are built in full
-    (ThingDefs_Races/RM_SumpFauna.xml) but deliberately NOT wired here - the
-    doc's own §7 marks replacing today's AA_TarGuzzler/AA_Bumbledrone/
-    AA_BumbledroneHierophant/AA_BumbledroneQueen rows "PROPOSED for this
-    biome's own sitting, executed by nobody here", per the owner's standing
-    evictions-are-stopped ruling (2026-09-22). The 4 donor rows below are
-    UNCHANGED this pass.
+    The four donor Alpha Animals rows (tar guzzler, bumbledrone, hierophant, queen) were
+    replaced 1:1, same commonality, by RM_Gulveth/RM_Thrummel/RM_ThrummelWarden/
+    RM_ThrummelBroodmother (ThingDefs_Races/RM_SumpFauna.xml) on 2026-10-02, per the
+    owner-ruled replacement of 2026-09-24 (sump_fauna_roster_2026-09-24.md SS7).
 
     wildPlants: AB_TarPuddle carries a fresh MayRequire="sarg.alphabiomes" here
     that the twin's own copy never needed (same-mod, no gate required there) -
@@ -151,14 +147,12 @@
       <li>RUT_SumpDuskLock</li>
     </biomeMapConditions>
     <wildAnimals>
-      <AA_TarGuzzler MayRequire="sarg.alphaanimals">0.5</AA_TarGuzzler>  <!-- tar guzzler - tar-eater, adjust-keep -->
-      <AA_Bumbledrone MayRequire="sarg.alphaanimals">0.35</AA_Bumbledrone>  <!-- bumbledrone - under-layer, keep -->
-      <AA_BumbledroneHierophant MayRequire="sarg.alphaanimals">0.2</AA_BumbledroneHierophant>  <!-- bumbledrone hierophant - under-layer, keep -->
-      <AA_BumbledroneQueen MayRequire="sarg.alphaanimals">0.5</AA_BumbledroneQueen>  <!-- bumbledrone queen - rides the hive verdict, roster round-2 move mapping -->
-      <!-- SUMP_FAUNA_ROSTER_1: 5 wholly-new rows, no donor slot evicted (see
-           header). RM_Gulveth/RM_Thrummel/RM_ThrummelWarden/
-           RM_ThrummelBroodmother are built but not wired - PROPOSED
-           donor-replacement dispositions await the Sump's own sitting. -->
+      <RM_Gulveth>0.5</RM_Gulveth>  <!-- tar guzzler - tar-eater, adjust-keep -->
+      <RM_Thrummel>0.35</RM_Thrummel>  <!-- bumbledrone - under-layer, keep -->
+      <RM_ThrummelWarden>0.2</RM_ThrummelWarden>  <!-- bumbledrone hierophant - under-layer, keep -->
+      <RM_ThrummelBroodmother>0.5</RM_ThrummelBroodmother>  <!-- bumbledrone queen - rides the hive verdict, roster round-2 move mapping -->
+      <!-- SUMP_FAUNA_ROSTER_1: the four rows above are our replacements of the former donor
+           rows; the five below are wholly new, no donor slot evicted (see header). -->
       <RM_SumpMouse>0.8</RM_SumpMouse>  <!-- sump-mouse - the instrument, the prey base -->
       <RM_Brommet>0.4</RM_Brommet>  <!-- brommet - the ring's ordinary grazer -->
       <RM_Dredgel>0.2</RM_Dredgel>  <!-- dredgel - the archive's janitor -->
