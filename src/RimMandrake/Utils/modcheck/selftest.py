@@ -534,7 +534,34 @@ def t_compose_test_list_appends_once_and_reads_back():
         os.unlink(path)
 
 
+def t_dependency_closure_and_composed_folders():
+    """`mod_dependency_ids` returns the hard deps (not Ludeon.*, not the mod itself, lowercased, once each);
+    `composed_into` maps a folded dev folder to its composed mod's id and leaves an ordinary mod alone."""
+    d = tempfile.mkdtemp()
+    try:
+        os.makedirs(os.path.join(d, "About"))
+        with open(os.path.join(d, "About", "About.xml"), "w", encoding="utf-8") as f:
+            f.write("<ModMetaData><packageId>Mandrake.Test.Mod</packageId><modDependencies>"
+                    "<li><packageId>Ludeon.RimWorld.Biotech</packageId></li>"
+                    "<li><packageId>Some.DonorMod</packageId></li>"
+                    "<li><packageId>some.donormod</packageId></li>"
+                    "<li><packageId>mandrake.test.mod</packageId></li>"
+                    "</modDependencies><loadAfter><li>not.a.dependency</li></loadAfter></ModMetaData>")
+        check("deps: donor kept, DLC/self/duplicate/loadAfter dropped",
+             runner.mod_dependency_ids(d) == ["some.donormod"], runner.mod_dependency_ids(d))
+        with open(os.path.join(d, "About", "About.xml"), "w", encoding="utf-8") as f:
+            f.write("<ModMetaData><packageId>a.b</packageId></ModMetaData>")
+        check("deps: no <modDependencies> block -> empty", runner.mod_dependency_ids(d) == [])
+    finally:
+        shutil.rmtree(d)
+    c = runner.composed_into("Pyrelands")
+    check("composed: Pyrelands ships inside mandrake.rm.biomes",
+         c == ("biomes", "mandrake.rm.biomes"), c)
+    check("composed: an ordinary mod is not folded", runner.composed_into("Droidworks") is None)
+
+
 TESTS = [
+    t_dependency_closure_and_composed_folders,
     t_floor_uncovered,
     t_floor_triage_positive_counts,
     t_compose_test_list_appends_once_and_reads_back,

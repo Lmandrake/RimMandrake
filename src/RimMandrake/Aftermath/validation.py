@@ -168,14 +168,31 @@ def battle_lifecycle_repelled(t):
     line in Close()."""
     t.clear_area(size=90)
 
+    # The raid below is this test's OWN act: declare it so the situational detectors do not report the raid
+    # (threat letter, raid counter, raiders) as a surprise. The raiders are bounded by phase so the test may
+    # kill them in the next component without a broken-contract hit.
+    _w = getattr(t, "watch", None)
+    if _w is not None:
+        _w.expect("raid", {})
+        _w.expect("hostile", lambda p: bool(p.get("hostile")), phase="raid")
+        _w.exps.set_phase("raid")
+
     with t.component("devmode_and_raid_fire", beyond_toggle=True):
         t.bridge_call("jawa/prefs", devMode=True)
         t.ensure_faction("Pirate")
-        r = t.bridge_call("jawa/storyteller_fire", incidentDef="RaidEnemy",
-                          points=120, faction="Pirate", dryRun=False)
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): was jawa/storyteller_fire, which routes
+        # through Storyteller.TryFire -> IncidentWorker.CanFireNow. MEASURED live: canFireNow=false at
+        # ticksGame 1, identically with and without the situational envelope. Decompiled 1.6
+        # IncidentWorker.CanFireNow refuses every ThreatBig incident while
+        # TicksGame < GameEnder.newWanderersCreatedTick(-99999) + 300000, i.e. for the first 200001
+        # ticks of any game, and a fresh quicktest is at tick 1. The mod under test is reached by
+        # IncidentWorker_Raid.TryGenerateRaidInfo, which TryExecute reaches without the CanFireNow gate;
+        # jawa/fire_incident calls TryExecute directly (and reports canFireNow separately).
+        r = t.bridge_call("jawa/fire_incident", incidentDef="RaidEnemy",
+                          points=120, faction="Pirate")
         if not (r or {}).get("fired"):
             raise ExpectationFailed(
-                "jawa/storyteller_fire did not report fired=true: %r" % r)
+                "jawa/fire_incident did not report fired=true: %r" % r)
         t.expect_log_contains("[RimMandrake.Aftermath] battle opened")
         t.screenshot()
 
@@ -187,6 +204,8 @@ def battle_lifecycle_repelled(t):
                 "no hostile pawn visible via jawa/list_pawns(faction='hostile') after "
                 "the raid fired -- either arrival is slower than 200 ticks, or the raid "
                 "landed on a different loaded map (see module docstring #1/#2).")
+        if _w is not None:
+            _w.exps.set_phase("after")       # the raiders' presence contract ends here; their deaths are the test's act
         for p in pawns:
             pid = p.get("id")
             if pid:

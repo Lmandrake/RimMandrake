@@ -126,8 +126,12 @@ class Expectations(object):
 
     kinds: 'hostile' | 'pawn' (presence alarms of that entity), 'letter',
     'condition', 'fire', 'litter' (a sacrificial colonist whose death is the
-    test's own act), 'mental' (a pawn the test drove into a mental state),
-    'incident' (a queue row {defName, fireTick} the test scheduled itself).  matcher: dict of field==value (letters also take
+    test's own act), 'mental' (a pawn the test drove into a mental state; the matcher is tried against the
+    pawn row, which carries `id`/`name`, AND against the break's letter, which carries `label`, so a callable
+    can serve both), 'incident' (a queue row {defName, fireTick} the test scheduled itself), 'raid' (the test
+    fires a raid itself: its threat letter and the raid counter stop being a `raid_arrived` signal; the
+    raiders still need their own 'hostile' declaration, best bounded by `phase` so the test may kill them
+    afterwards).  matcher: dict of field==value (letters also take
     'label_contains') or a callable(entity)->bool.  until_tick / phase bound the
     lifetime; expired or other-phase expectations match nothing.
     """
@@ -466,14 +470,17 @@ def wildlife_near_colonist(snap, baseline, exps, ctx):
 
 def raid_arrived(snap, baseline, exps, ctx):
     sig = []
+    declared = bool(exps.live(("raid",), snap["tick"]))    # t.expect("raid", {}): the TEST fired this raid
     for l, extra in new_letters(snap, baseline):
         if l["defName"] in ("ThreatBig", "ThreatSmall"):
             if exps.matches("letter", l, snap["tick"]):
                 continue
             ctx["consumed"].add(l["fingerprint"])
+            if declared:
+                continue
             sig.append(("letter", l["arrivalTick"], l["label"]))
     cur, base = snap["story"].get("numRaidsEnemy"), baseline.story.get("numRaidsEnemy")
-    if cur is not None and base is not None and cur > base:
+    if cur is not None and base is not None and cur > base and not declared:
         sig.append(("story_stats", baseline.tick, "numRaidsEnemy %s->%s" % (base, cur)))
     if not sig:
         return []
@@ -515,6 +522,9 @@ def mental_break(snap, baseline, exps, ctx):
     for l, extra in new_letters(snap, baseline):
         if l["defName"] == "NegativeEvent" and MENTAL_LABEL_RE.search(l["label"]) \
                 and not exps.matches("letter", l, snap["tick"]):
+            if exps.matches("mental", l, snap["tick"]):
+                ctx["consumed"].add(l["fingerprint"])       # the induced break's own letter: consumed, not a hit
+                continue
             ctx["consumed"].add(l["fingerprint"])
             if hits:            # the census already named the break; the letter is its echo, not a second event
                 continue

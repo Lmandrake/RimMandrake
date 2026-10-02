@@ -103,6 +103,16 @@ _JAWA_FIRST_NAMES_PATH = os.path.join(
     "Jawa", "First.txt")
 
 
+def _declared_genes():
+    """The <genes> list of RSW_MandrakeJawa, read from this mod's own XML (the thing under test)."""
+    import re
+    path = os.path.join(_MOD_DIR, "Defs", "XenotypeDefs", "MandrakeJawaXenotype.xml")
+    with open(path, "r", encoding="utf-8") as f:
+        xml = f.read()
+    m = re.search(r"<genes>(.*?)</genes>", xml, re.S)
+    return re.findall(r"<li>\s*([A-Za-z0-9_]+)\s*</li>", m.group(1)) if m else []
+
+
 def _spawn_pawn_forced_xenotype(t, kind_def, xenotype, count=1):
     """Mirrors `TestContext.spawn_pawn` exactly (same cell math, same
     teardown tracking via `t.session.track`) but adds `xenotype=`, which the
@@ -151,23 +161,44 @@ def jawa_xenotype_mechanism(t):
         if row.get("now") != JAWA_XENOTYPE:
             raise ExpectationFailed(
                 "pawn's xenotype reads back as %r, not %r" % (row.get("now"), JAWA_XENOTYPE))
-        if row.get("genesInDef") != 38:
+        # CORRECTED 2026-10-02 (MODCHECK_SUITE_CORRECTIONS_1): "38" is the count the XML DECLARES, but 18 of
+        # those 38 genes are donor genes (Alpha Genes, VRE, SEX_, Outland, Aptitude ...) and RimWorld drops a
+        # gene whose def is not loaded. MEASURED live on the minimal list: genesInDef 24 of 38 = the 14
+        # donor genes that environment lacked, not a silent loss in this mod. Compare against the declared
+        # genes that EXIST in the run: a gene that does exist and still goes missing is the loss this
+        # assertion is for; a gene the environment cannot supply is reported as evidence, not failed.
+        declared = _declared_genes()
+        resolved = t.bridge_call("jawa/get_defs",
+                                 defs=";".join("GeneDef/%s" % g for g in declared), fields="label") or {}
+        absent = set(resolved.get("notFound") or [])
+        absent = set(a_.split("/", 1)[-1] for a_ in absent)
+        present = [g for g in declared if g not in absent]
+        t._record("genes declared=%d resolvable-in-this-load=%d unresolvable=%s"
+                  % (len(declared), len(present), sorted(absent)), True)
+        if len(declared) != 38:
             raise ExpectationFailed(
-                "RSW_MandrakeJawa reports %r genes, expected 38 (this def's own "
-                "documented count -- a changed count here means the xenotype was "
-                "edited without updating this suite, OR a gene silently dropped)"
-                % row.get("genesInDef"))
+                "MandrakeJawaXenotype.xml now declares %d genes, this suite documents 38 -- the xenotype "
+                "was edited without updating this suite" % len(declared))
+        if not resolved.get("success", True) or not present:
+            raise ExpectationFailed("could not resolve any declared gene def: %r" % resolved)
+        if row.get("genesInDef") != len(present):
+            raise ExpectationFailed(
+                "RSW_MandrakeJawa reports %r genes, expected %d (the %d declared genes whose defs exist in "
+                "this load; %d are donor genes this load lacks: %s) -- a gene silently dropped"
+                % (row.get("genesInDef"), len(present), len(declared), len(absent), sorted(absent)))
 
         genes = t.bridge_call("jawa/pawn_genes", pawn=pawn, action="list")
         endo = set((genes or {}).get("endogenes") or [])
-        missing_fragile = JAWA_FRAGILE_GENES - endo
+        missing_fragile = (JAWA_FRAGILE_GENES & set(present)) - endo
+        if "RSW_Jawa_MiningDisabled" not in present:
+            raise ExpectationFailed("this mod's OWN RSW_Jawa_MiningDisabled gene def is not loaded")
         if missing_fragile:
             raise ExpectationFailed(
                 "JAWA_FRAGILE_GENES missing after xenotype conversion: %s -- this is "
                 "the exact silent-loss failure MandrakeJawaXenotype.xml's own header "
                 "warns about (a re-transcribe from the owner's .xtp drops these three)"
                 % sorted(missing_fragile))
-        missing_other = JAWA_OTHER_EXPECTED_GENES - endo
+        missing_other = (JAWA_OTHER_EXPECTED_GENES & set(present)) - endo
         if missing_other:
             raise ExpectationFailed(
                 "expected Jawa genes missing after conversion: %s" % sorted(missing_other))
