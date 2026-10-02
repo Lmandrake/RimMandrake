@@ -5,15 +5,10 @@
     ./publish -F msg.txt path/one                message from a file ('-' = stdin)
     ./publish                                    push local commits already made (no new commit)
 
-Plan: design/RimMandrake/git_workflow_plan_2026-10-01.md §2.6 (and §2.1 for the push rules).
-
 It is exactly: `git add --all -- <paths>` + `git commit -- <paths>` (pathspec on the commit, so
 nothing else staged rides along) + `git pull --rebase --autostash origin main` + push, retried up
-to 8 times when origin moved under it, never forced. Where it pushes:
-
-  * a seat clone (/home/mandrake/rm/<seat>)            -> HEAD:main
-  * a pool slot  (/home/mandrake/rm/pool/<seat>/slotN) -> refs/heads/submit/<seat>/<branch>
-    (§8 choice 1 = A: helpers hand in on submit/ branches; the seat lands them on main)
+to 8 times when origin moved under it, never forced. It pushes a seat clone
+(/home/mandrake/rm/<seat>) to HEAD:main.
 
 A push that fails for any reason other than a clean non-fast-forward is AMBIGUOUS (the remote may
 have accepted it before the client gave up): it fetches and checks `merge-base --is-ancestor HEAD
@@ -33,7 +28,6 @@ import time
 
 REMOTE, BRANCH = "origin", "main"
 RM_ROOT = os.environ.get("PUBLISH_RM_ROOT", "/home/mandrake/rm")
-POOL_ROOT = os.environ.get("PUBLISH_POOL_ROOT", os.path.join(RM_ROOT, "pool"))
 MAX_TRIES = 8
 before_push = None          # selftest hook: called(attempt) between rebase and push
 
@@ -73,16 +67,6 @@ def guard_mnt(top):
 
 def target_ref(top):
     """(refspec destination, remote-tracking ref to check ancestry against, label)."""
-    real = os.path.realpath(top)
-    pool = os.path.realpath(POOL_ROOT) + os.sep
-    if real.startswith(pool):
-        seat = real[len(pool):].split(os.sep)[0]
-        branch = out(top, "branch", "--show-current")
-        if not branch:
-            raise Refuse("pool slot %s is on a detached HEAD; check out agent/<name> first" % real)
-        name = re.sub(r"^agent/", "", branch)
-        ref = "submit/%s/%s" % (seat, name)
-        return "refs/heads/" + ref, "refs/remotes/%s/%s" % (REMOTE, ref), ref
     return "refs/heads/" + BRANCH, "refs/remotes/%s/%s" % (REMOTE, BRANCH), BRANCH
 
 
