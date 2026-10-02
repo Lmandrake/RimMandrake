@@ -36,11 +36,10 @@ plant (only Veqma shows green); no columns/cacti/Earth trees.
    low yield, `blockAdjacentSow`); rare, roots in floor soil beside walls (NOT wall face — talus clasps
    own that).
 
-Roster — IMPORTANT TWO-PLACE EDIT: the live `RM_FloodedCanyon_Biome.xml` `<wildPlants>` holds only
-`RM_Veqma` 0.15, BUT `src/RimUtinni/UtinniPatches/Patches/WildAnimals_CrackedLands.xml` **Op 3
-replaces that whole list** (donor grass/moss/thorns + Veqma). Rows added only to the BiomeDef are
-silently wiped when the campaign layer loads. Add the six rows (shorthand
-`<DefName>commonality</DefName>`) to BOTH the BiomeDef and Op 3's `<value>`. Suggested: Nabbuq 0.25,
+Roster: add the six rows (shorthand `<DefName>commonality</DefName>`) to the free
+`RM_FloodedCanyon_Biome.xml` `<wildPlants>` only. The campaign patch's wholesale replace (Op 3 of
+`WildAnimals_CrackedLands.xml`) is being deleted by `CRACKEDLANDS_PLANT_LIST_OWNED_1`; land that
+first, or these rows are wiped when the campaign layer loads. Suggested: Nabbuq 0.25,
 Ruqqal 0.3, Sevvuq 0.2, Zennaq 0.1, Luqqim 0.1, Harrovaq 0.06; calibrate in test.
 
 Mod Settings: add `floraExpansionEnabled` (default true) and `zennaqLightningPullEnabled` (default
