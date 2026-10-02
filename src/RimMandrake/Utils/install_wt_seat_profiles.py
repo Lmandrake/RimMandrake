@@ -181,7 +181,10 @@ SEATS = {
     # window was briefly converted into a Claude seat on a mistaken premise and
     # reverted the same day — the daemon console IS the design, don't "fix" it.
     "ARTIST":  ("#B48EFF", None, "purple — the artpipe daemon's console, NOT a Claude seat", ARTIST_HOME,
-                f"export ARTPIPE_STATE_DIR={ARTIST_STATE} && python3 src/RimMandrake/Utils/artpipe/artpiped.py"),
+                # The daemon itself is the systemd user service rm-artpiped.service (2026-10-02,
+                # git_migration_freeze_2026-10-02.md); the tile only follows its journal, so
+                # opening it can never start a second daemon.
+                "journalctl --user -fu rm-artpiped"),
     # ⭐ SERVER IS NOT A CLAUDE SEAT EITHER — it is the standalone Remote Control
     # server (owner, 2026-09-19), white so it reads as infrastructure in the tab
     # strip, not as a voice. It spawns sessions on demand; it never holds a role.
