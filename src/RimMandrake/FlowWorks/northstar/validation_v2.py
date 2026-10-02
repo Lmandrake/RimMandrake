@@ -44,6 +44,13 @@ LEARNED, 2026-10-02 (five live runs; each is a check or guard below, not prose o
     colonist makes pawn_stats log a red error and returns 0.1 (re-roll); pawns left to the
     WorkGivers wandered 60 cells away on a Tundra map (order the job; WorkGiver selection is
     UNCOVERED); the E4 OFF window must straddle the scheduled tick or it proves nothing.
+  * HARNESS (rerun 1 with jawa/flowworks_job_probe): J_workgiver_selection failed for 2 of 3 fresh
+    colonists -- WorkGiver said yes (hasJobOnCell, RM_FillInCanalJob) but Mining sat at priority 0,
+    so the giver was not in their normal list. Generator activates only top work types; setting the
+    skill after spawn does not. J now sets Mining priority 1; the mock starts every pawn at 0 so
+    dropping that call turns the row red. Rerun B: a pawn with the Mining SKILL enabled but the
+    Mining WORK TYPE disabled made set_work_priority refuse and the run ABORTED -> re-rolled now
+    (mock fault worktype_disabled_once guards it).
 RULED OUT (guards keep them visible):
   * "P2's [1,0,0,0] means the brigade order regressed" -- RULED OUT: a foreign D=4 cell had
     claimed the shared source (oracle reproduced live exactly; E2s_shared_source_oracle guards it).
@@ -1159,6 +1166,14 @@ class Live(object):
         self._log("    pulse[%s] x%d: %d cells, %d mismatching scenes %s" % (tag, n, len(cells), len(mism), sorted(mism)))
         return probs, mism, per_scene, r
 
+    def probe(self, c, kind="dig", pawn=None):
+        """jawa/flowworks_job_probe: the designator's and the WorkGiver's own answer for one cell,
+        nothing designated or ordered. Returned raw: callers judge success and name failures."""
+        kw = dict(x=c[0], z=c[1], kind=kind)
+        if pawn:
+            kw["pawnId"] = pawn
+        return self.B.call("jawa/flowworks_job_probe", **kw)
+
     def body(self, name, classify=True):
         c = BODIES[name]["cells"][0]
         r = self.B.call("jawa/flowworks_body_report", x=c[0], z=c[1], classify=classify)
@@ -1422,9 +1437,31 @@ def phase_S(L, args):
                 if not g["limitless"]:
                     L.o.bodies[k]["stock"] = float(g.get("stock") or 0)
                     L.o.bodies[k]["capacity"] = float(g.get("capacity") or 0)
-        L.row("S6_digToDepth_gate", True, "", "jawa/designate_batch adds Designations directly, bypassing "
-              "Designator_DigCanal.CanDesignateCell; the WorkGiver gate needs a HasJobOnCell probe tool (owed)",
-              status="UNCOVERED")
+        # S6 (was UNCOVERED until jawa/flowworks_job_probe, 2026-10-02): designate_batch bypasses
+        # Designator_DigCanal.CanDesignateCell, so ask the designator itself. D=1 deepens with the
+        # toggle ON and is refused OFF; D=4 is refused either way; undug soil is accepted even OFF
+        # (the toggle gates DEEPENING only -- the control that makes "refused OFF" mean something).
+        undug = SCENES["S2_clamp"]["cells"][1]
+        on1, on4 = L.probe(cells[0]), L.probe(cells[3])
+        L.sset(S_FW, "digToDepthEnabled", False)
+        try:
+            off1, off0 = L.probe(cells[0]), L.probe(undug)
+        finally:
+            L.sset(S_FW, "digToDepthEnabled", True)
+        got6 = [on1, on4, off1, off0]
+        if not all(g.get("success") for g in got6):
+            L.row("S6_digToDepth_gate", False, "HARNESS", "flowworks_job_probe failed: %s" % [
+                g.get("message") or g.get("error") for g in got6 if not g.get("success")][:2], status="UNMEASURED")
+        elif any(g.get("fogged") for g in got6):
+            L.row("S6_digToDepth_gate", False, "SITE", "probe cell fogged (designator refuses fog): %s" % [
+                (g["cell"], g["fogged"]) for g in got6], status="UNMEASURED")
+        else:
+            acc = lambda g: (g.get("designator") or {}).get("accepted")          # noqa: E731
+            why = lambda g: (g.get("designator") or {}).get("reason") or ""      # noqa: E731
+            L.row("S6_digToDepth_gate", acc(on1) is True and acc(on4) is False and "SUPERDEEP" in why(on4)
+                  and acc(off1) is False and "Deepening" in why(off1) and acc(off0) is True, "MOD",
+                  "Designator_DigCanal: D1 ON %s; D4 %s (%s); D1 OFF %s (%s); undug soil OFF %s" % (
+                      acc(on1), acc(on4), why(on4)[:40], acc(off1), why(off1)[:50], acc(off0)))
         L.row("S7_S9_capture_ladder", True, "", "pit model (pit = depth-4 cell, no holder building) is being "
               "redesigned by other helpers; only the S1p holder smoke runs", status="SKIP")
         s, d = _src_all(), _xml_blocks()
@@ -1591,6 +1628,17 @@ def phase_J(L, args):
                 if (sk.get("before") or {}).get("disabled") or not sk.get("readBackMatches", True):
                     rejected.append(pid)
                     continue
+                # Rerun 1 (2026-10-02, the first run with jawa/flowworks_job_probe): two of three job
+                # colonists had Mining at priority 0 -- the generator activates only the pawn's top
+                # work types, and set_pawn_skill afterwards does not re-run that -- so the WorkGiver
+                # was not in their normal giver list and would never have chosen the job unprompted
+                # (likely also why run 3's colonists wandered off). HARNESS: switch Mining on.
+                # Rerun B (same day): a pawn whose Mining SKILL read enabled had the Mining WORK TYPE
+                # disabled (set_work_priority refused) -> the run aborted. Re-roll, like a disabled skill.
+                wp = B.call("jawa/set_work_priority", pawnId=pid, workType="Mining", priority=1)
+                if not wp.get("success"):
+                    rejected.append(pid)
+                    continue
                 ms = B.call("jawa/pawn_stats", pawn=pid, stats="MiningSpeed")
                 pawns[k] = (pid, float(((ms.get("stats") or [{}])[0]).get("value") or 0))
                 break
@@ -1611,6 +1659,36 @@ def phase_J(L, args):
         # 3,540 ticks. So the job is ORDERED (TryTakeOrderedJob with the exact JobDef the WorkGiver
         # builds, on the designated cell) -- the JobDriver + designation path is exercised; the
         # WorkGiver's own selection stays UNCOVERED (owed HasJobOnCell probe, same as S6).
+        # J_workgiver_selection (was UNCOVERED until jawa/flowworks_job_probe, 2026-10-02): BEFORE any
+        # order, ask WorkGiver_DigCanal / WorkGiver_FillInCanal whether they would hand each job pawn
+        # its designated cell unprompted (forced=false), and -- the negative control -- that the dig
+        # giver offers nothing on an excavated but UNdesignated cell. The pawn's walk to the job stays
+        # untimed on purpose (AI noise); this is the selection decision itself.
+        sel, bad = [], []
+        neg_cell = SCENES["E4_engine"]["cells"][0]
+        for k, c, kind, jd in (("E8_dig", e8, "dig", "RM_DigCanalJob"), ("E7a_fillin", e7a, "fillin", "RM_FillInCanalJob"),
+                               ("E7b_overflow", e7b, "fillin", "RM_FillInCanalJob")):
+            g = L.probe(c, kind=kind, pawn=pawns[k][0])
+            wg, pw = g.get("workGiver") or {}, g.get("pawn") or {}
+            good = (g.get("success") and g.get("designationPresent") is True and wg.get("shouldSkip") is False
+                    and wg.get("cellInPotentialWorkCells") is True and wg.get("hasJobOnCell") is True
+                    and wg.get("jobDef") == jd and wg.get("designationDeletedByWorkGiver") is False
+                    and pw.get("workTypeDisabled") is False and pw.get("giverInNormalList") is True)
+            sel.append("%s:%s/%s skip=%s cell=%s has=%s prio=%s" % (k, kind, wg.get("jobDef"), wg.get("shouldSkip"),
+                                                               wg.get("cellInPotentialWorkCells"), wg.get("hasJobOnCell"),
+                                                               pw.get("priority")))
+            if not good:
+                bad.append((k, g.get("message") or {"wg": wg, "pawn": pw, "des": g.get("designationPresent")}))
+        gn = L.probe(neg_cell, kind="dig", pawn=pawns["E8_dig"][0])
+        wgn = gn.get("workGiver") or {}
+        neg_ok = gn.get("success") and gn.get("designationPresent") is False and wgn.get("hasJobOnCell") is False \
+            and wgn.get("cellInPotentialWorkCells") is False
+        if not neg_ok:
+            bad.append(("negative control: undesignated %s" % (neg_cell,), gn.get("message") or wgn))
+        if any("no tool" in str(b[1]) or "Unknown" in str(b[1]) for b in bad):
+            L.row("J_workgiver_selection", False, "HARNESS", "flowworks_job_probe unavailable: %s" % bad[:1], status="UNMEASURED")
+        else:
+            L.row("J_workgiver_selection", not bad, "MOD", bad[:3] or "%s; undesignated dug cell -> no job" % "; ".join(sel))
         orders = []
         for k, c, jd in (("E8_dig", e8, "RM_DigCanalJob"), ("E7a_fillin", e7a, "RM_FillInCanalJob"),
                          ("E7b_overflow", e7b, "RM_FillInCanalJob")):
@@ -1618,8 +1696,6 @@ def phase_J(L, args):
             orders.append((k, o.get("accepted"), o.get("note") or o.get("error") or o.get("message")))
         if not L.row("J_orders_accepted", all(x[1] for x in orders), "HARNESS", orders):
             raise Abort("ordered jobs refused")
-        L.row("J_workgiver_selection", True, "", "WorkGiver_DigCanal/FillInCanal choosing the designation unprompted is "
-              "not timed here (pawn AI noise; run 3 never chose it) -- owed HasJobOnCell probe tool", status="UNCOVERED")
         sum7 = {k: sum(q["f"] for q in L.cells_read(SCENES[k]["cells"])) for k in ("E7a_fillin", "E7b_overflow")}
         w = B.call("jawa/weather_set", weather="Rain", lockWeather=True)
         L.sset(S_FW, "rainFillsExcavationsEnabled", False)
@@ -1826,6 +1902,10 @@ class MockBridge(object):
         "fluid_switch_allowed": ["T0n_fluid_switch_refused"],
         "settings_drift": ["L4_settings_default"],
         "rain_toggle_ignored": ["E6n_rain_toggle_off"],
+        "deepen_gate_ignored": ["S6_digToDepth_gate"],
+        "workgiver_blind": ["J_workgiver_selection"],
+        "workgiver_greedy": ["J_workgiver_selection"],
+        "worktype_disabled_once": [],    # no row may go red: the run must re-roll the pawn, not abort
     }
 
     def __init__(self, faults=()):
@@ -1843,6 +1923,7 @@ class MockBridge(object):
         self.weather, self.weather_age = "Clear", 0
         self.logs = [dict(Sequence=1, Level="warning", Message="[RimBridge] STARTUP_TIMING mock", RepeatCount=1)]
         self.jobs = {}            # cell -> [kind, work_left]
+        self.prio = {}            # pawn id -> Mining priority (0 until set_work_priority)
         self.fluid = "RM_Fluid_Water"
         self.classified = {}      # cell -> body name
         self.body_seq = 0
@@ -1965,6 +2046,10 @@ class MockBridge(object):
         self.__init__(self.faults)
         return dict(success=True)
 
+    def t_jawa_running_mods(self, assembly=None, details=True):
+        return dict(success=True, count=3, packageIds=["ludeon.rimworld", "brrainz.harmony", "mandrake.rm.flowworks"],
+                    assembly=dict(name=assembly, matchCount=1, matches=[dict(sha256="0" * 64)]))
+
     def t_jawa_map_info(self):
         return dict(success=True, sizeX=MAP_W, sizeZ=MAP_H, mapBiome="MockDesert")
 
@@ -2074,6 +2159,36 @@ class MockBridge(object):
         name = self.classify((x, z)) if classify else self.classified.get((x, z))
         return dict(success=True, body=self.body_rec(name) if name else None)
 
+    def t_jawa_flowworks_job_probe(self, x, z, kind="dig", pawnId=None, forced=False):
+        """The mod's designator + WorkGiver logic (Designator_DigCanal.CanDesignateCell,
+        WorkGiver_*Canal.HasJobOnCell) over the mock's cells and designations."""
+        c = (x, z)
+        d = self.o.D.get(c, 0)
+        des = {"dig": "RM_DigCanal", "fillin": "RM_FillInCanal"}[kind]
+        present = (self.jobs.get(c) or [None])[0] == des
+        if kind == "dig":
+            if d >= 4:
+                acc, why = False, "Already SUPERDEEP — this is as far down as digging goes."
+            elif d and not self.S("digToDepthEnabled") and "deepen_gate_ignored" not in self.faults:
+                acc, why = False, "Deepening is switched off in this mod's settings."
+            else:
+                acc, why = True, None
+        else:
+            acc, why = (d > 0), (None if d > 0 else "Nothing to fill in.")
+        wg = pw = None
+        if pawnId:
+            has = (present and "workgiver_blind" not in self.faults) or ("workgiver_greedy" in self.faults and d > 0)
+            cells = [k for k, j in self.jobs.items() if j[0] == des]
+            wg = dict(def_="mock", shouldSkip=not cells, cellInPotentialWorkCells=(c in cells) or
+                      ("workgiver_greedy" in self.faults and d > 0), hasJobOnCell=has,
+                      jobDef=(des + "Job") if has else None, designationDeletedByWorkGiver=False, designationRestored=False)
+            pr = self.prio.get(pawnId, 0)      # a fresh colonist's Mining may be OFF (rerun 1, 2026-10-02)
+            pw = dict(id=pawnId, workType="Mining", workTypeDisabled=False, workActive=pr > 0, priority=pr,
+                      giverInNormalList=pr > 0, missingCapacity=None, canReach=True)
+        return dict(success=True, kind=kind, cell=dict(x=x, z=z), fogged=False, terrain=self.terrain_of(c),
+                    designationPresent=present, designator=dict(accepted=acc, reason=why), workGiver=wg, pawn=pw,
+                    ticksGame=self.tick)
+
     def t_jawa_flowworks_pit_report(self, x, z):
         return dict(success=True, holderPresent=self.o.D.get((x, z)) == 4, holder=dict(occupantCount=0)
                     if self.o.D.get((x, z)) == 4 else None)
@@ -2098,6 +2213,12 @@ class MockBridge(object):
 
     def t_jawa_set_pawn_skill(self, **kw):
         return dict(success=True, before=dict(disabled=False), readBackMatches=True)
+
+    def t_jawa_set_work_priority(self, pawnId=None, workType=None, priority=3):
+        if "worktype_disabled_once" in self.faults and pawnId == "M0":
+            return dict(success=False, message="SetPriority silently refuses: 'Mining' is DISABLED for this pawn")
+        self.prio[pawnId] = priority
+        return dict(success=True, readBack=priority, manualPrioritiesOn=True)
 
     def t_jawa_pawn_stats(self, **kw):
         return dict(success=True, stats=[dict(defName="MiningSpeed", value=1.95)])
@@ -2202,6 +2323,25 @@ def run_live(args, B=None, quiet=False):
         L._log("- fresh quicktest map: %s" % load)
         if st != "Playing":
             L.row("L0_fresh_map", False, "SITE", load)
+    # The recording contract (`modcheck record`, Utils/modcheck/record.py): the mod hash the run
+    # was made AT and the mod list it ran ON, both read now, so a later record can refuse a stale
+    # or off-tier result instead of trusting it.
+    env = dict(running=None, running_sha256=None, assembly_sha256=None, assembly_matches=None)
+    rm = B.call("jawa/running_mods", assembly="RimMandrakeFlowWorks", details=False)
+    if rm.get("success"):
+        import hashlib
+        env["running"] = [p.lower() for p in rm.get("packageIds") or []]
+        env["running_sha256"] = hashlib.sha256("\n".join(env["running"]).encode("utf-8")).hexdigest()
+        ms = (rm.get("assembly") or {}).get("matches") or []
+        env["assembly_matches"] = len(ms)
+        env["assembly_sha256"] = ms[0].get("sha256") if len(ms) == 1 else None
+    try:
+        sys.path.insert(0, os.path.join(UTILS, "modcheck"))
+        import status as _mc_status    # noqa: E402
+        mod_hash = _mc_status.mod_hash(MOD)
+    except Exception as ex:            # noqa: BLE001 - recorded as absent; record then refuses
+        mod_hash = None
+        L._log("- mod_hash unavailable: %s" % ex)
     ticks0 = None
     aborted = None
     fns = dict(L=phase_L, site=phase_site, S=phase_S, A=phase_A, B=phase_B, C=phase_C, R=phase_R, J=phase_J,
@@ -2222,7 +2362,8 @@ def run_live(args, B=None, quiet=False):
             if aborted is None and any(r["id"] == "E9_log_budget" for r in L.rows):
                 pass
     ticks1 = L.eng().get("ticksGame")
-    res = dict(script="validation_v2", mode="mock" if args.mock else "live", faults=list(args.fault or []),
+    res = dict(script="validation_v2", mod="FlowWorks", mod_hash=mod_hash, env=env,
+               mode="mock" if args.mock else "live", faults=list(args.fault or []),
                started=time.strftime("%Y-%m-%dT%H:%M:%S", time.localtime(t0)), wall_s=round(time.time() - t0, 1),
                ticks_spent=(ticks1 - ticks0) if (ticks0 is not None and ticks1 is not None) else None,
                fresh_map=load, calls=B.n, aborted=aborted, steps=L.steps, rows=L.rows,

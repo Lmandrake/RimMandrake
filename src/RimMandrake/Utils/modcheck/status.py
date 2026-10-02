@@ -68,8 +68,12 @@ LOG_PATH = os.path.join(ROOT, "infrastructure", "state", "modcheck_status.json")
 LOCK_PATH = LOG_PATH + ".lock"
 
 # Never part of a mod's behavioural hash: editing the validator does not
-# change what the mod DOES. Case-insensitive basename match.
-_EXCLUDED_BASENAMES = {"validation.py", "__pycache__"}
+# change what the mod DOES. Case-insensitive basename match. `northstar` is the
+# functional-script harness folder (FlowWorks/northstar: validation_v2.py, its
+# site spec, mock game and the result JSONs each live run writes BESIDE it) --
+# without this, every recorded run changed the hash it was recorded at, so a
+# run could never be current (MEASURED 2026-10-02, `modcheck record`).
+_EXCLUDED_BASENAMES = {"validation.py", "__pycache__", "northstar"}
 
 
 def mod_hash(mod_dir):
@@ -198,13 +202,17 @@ def verdict_for(all_green, walk, refused="", reviewed=False):
     return "GREEN"
 
 
-def record_run(mod, mod_dir, run_id, all_green, walk=None, refused=""):
+def record_run(mod, mod_dir, run_id, all_green, walk=None, refused="", extra=None):
     """Called once per `modcheck run <mod>`. Never hand-called mid-run --
     the runner calls this exactly once, after every chain has finished.
 
     `all_green` is the run's BOTH-HALVES verdict (state and judge); `walk` is the
     mod's validation walk, whose checklist state and the owner's recorded review
-    decide whether an all-green run is allowed to be called GREEN."""
+    decide whether an all-green run is allowed to be called GREEN.
+
+    `extra` (optional) is merged into the entry -- `modcheck record` stores the
+    run's per-row tally and its environment fingerprint there (`components`,
+    `source`). It can never override the verdict fields above."""
     with _locked():
         data = load()
         prior = data.get(mod) or {}
@@ -220,6 +228,9 @@ def record_run(mod, mod_dir, run_id, all_green, walk=None, refused=""):
             "owner_review": review,
             "refused": refused or None,
         }
+        for k, v in (extra or {}).items():
+            if k not in data[mod]:
+                data[mod][k] = v
         save(data)
     return data[mod]
 
@@ -335,6 +346,10 @@ def check(mod, mod_dir):
     if not entry:
         return "NEVER RUN"
     recorded = entry.get("status")
+    if recorded == "REFUSED" and entry.get("refused"):
+        # the stored reason, not the generic visual-floor text: a `modcheck record`
+        # refusal names its UNBUILT/UNCOVERED bars, which the generic line would hide
+        return "REFUSED (%s)" % entry["refused"]
     if recorded != "GREEN":
         return _NOT_GREEN_WHY.get(recorded, str(recorded))
     if mod_hash(mod_dir) != entry.get("hash"):
