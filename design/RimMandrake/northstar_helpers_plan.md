@@ -646,3 +646,42 @@ Settles most §2 UNMEASURED rows. Read these before trusting any detector writte
   the UI state (`Dialog_DevPalette` was open and top window — `clear_ui` is needed to get a clean frame).
 - **`time_clock`:** `{ticksGame, ticksAbs, curTimeSpeed:"Normal", paused:true}` — `curTimeSpeed` is **not** `"Paused"` while
   paused; the `paused` flag is the truth (clockgate's verify_pause must not require a speed string).
+
+## 12. BUILT and PROVEN live, 2026-10-01 (what shipped, what it found)
+
+Code (`src/RimMandrake/Utils/modcheck/` unless noted): `clockgate.py` (python-enforced tick budget, epochs, pause
+verification, supervisor) · `snapshot.py` + `detectors.py` (20 detectors, one severity table, fixture/expectation
+model) · `helpers.py` (exact-id, read-back-verified helpers, settings transaction, `prepare_bland_map`, `safe_anchor`) ·
+`surprise.py` (evidence-first capture: sidecar, one screenshot copied beside it) · `watch.py` (the per-chain envelope) ·
+`jev_questions.py` + `jev_triage.py` (shadow-mode Jev, every threshold None) · `vacuity.py` (code-first lint) ·
+`rimdrive/fake.py` (a world-model fake with the measured lies). Selftests: clockgate 41, detectors 85, helpers 40,
+watch 31, jev 19, vacuity 8 (all offline, all with negative controls); the existing suites still pass.
+Use: `python.exe src/RimMandrake/Utils/modcheck/cli.py run <Mod> --situational [--policy abort|record]`; in a script,
+`t.expect(kind, matcher)` declares what the chain causes on purpose, `t.check_surroundings()` sweeps now.
+
+**The "everyone is dead / the meat vanished / no one knows why" causes, measured not guessed:**
+1. **The harness killed its own fixtures.** `Session.sweep` tears down test-spawned player-faction walkers with
+   `Bomb 99999`; each becomes a dead colonist with a Death letter that the NEXT suite reads as a casualty. This is
+   ShipMemory E1 (7 "colonist deaths", two "Roof collapse" letters). Re-run on a bland map the same suite spent 700
+   ticks with zero deaths. Fix: fixtures are registered (even when spawned through raw `bridge_call`), carried across
+   chains and runs (`Transient/modcheck/fixtures.json`, reset when the clock goes backwards).
+2. **The harness set the map on fire.** Killing ONE Boomalope = 25 fires in 5 ticks (39 by 30). A fresh quicktest map
+   carries explosive wildlife; the old "122 fires in 120 ticks" and a Droidworks fire surprise were `kill_wildlife`.
+   Fix: wildlife is removed with `jawa/destroy_bulk` (no death, no corpse, no fire).
+3. **The test explodes next to the colonists.** The default anchor is the map centre, where the colony spawns; a droid
+   detonation test killed two starting colonists. Fix: `safe_anchor` picks the point farthest from every colonist.
+4. **The map is not bland.** The quicktest tile is random (swamp/forest/tundra), with ruins, dense plants, 58 wild
+   animals, 2 strangers, and a colonist with Frostbite or an old gunshot at tick 60 (`NORTHSTAR_BLAND_TILE_1`).
+5. **Time runs where nobody asked.** `order_pawn` can run the clock 18,000 ticks; now charged and aborted at 1500.
+
+**Live pilot results (abort policy, one fresh map, suites back to back):** ShipMemory 700 ticks, no surprise; a real
+FAIL remains (the letter never arrives: a mod/suite finding on a clean map). JawaIonWeapons: genuine FAILs now free of
+"pawn not found / E3" noise. Droidworks: 12 PASS, 0 surprises, 5 real FAILs, 4 UNMEASURED by cascade. FlowWorks 3 PASS.
+`vacuity.py` over 280 components found exactly 1 that asserts nothing (Ninefold `mood_walk_advances`, self-declared
+"UNVERIFIED BY DESIGN"); the first, naive pass flagged 48, 28 of them helpers: calibration the Jev lint will need.
+
+**Still UNMEASURED / owed:** whether stepping 1 tick before a screenshot is harmless (policy stays "never step");
+how often a bland tile changes results (`NORTHSTAR_BLAND_TILE_1`); a manhunter's mental state without the pawn census
+(`NORTHSTAR_COMPANION_GAPS_1`); Jev's actual accuracy (no key on Archmagi: `JEV_KEY_ARCHMAGI_1`; every threshold is None,
+so it logs to `Transient/modcheck/jev_shadow.jsonl` and acts on nothing); wall-clock ticks/second under the full list.
+Rollout: `NORTHSTAR_SITUATIONAL_ROLLOUT_1` (flip the default after an abort-only pass over every suite).
