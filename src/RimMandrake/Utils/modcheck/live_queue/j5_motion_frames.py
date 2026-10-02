@@ -23,7 +23,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from common import ROOT, call, main   # noqa: E402
+from common import ROOT, call, main, rel   # noqa: E402
 
 N_FRAMES = 8
 
@@ -81,7 +81,7 @@ def body(s, job):
     with open(manifest, "w", encoding="utf-8") as f:
         json.dump({"bars": ["canal_fill_front_watchable", "canal_fill_spreads_along_itself"], "frames": frames,
                    "aborted": aborted, "judge": "DEFERRED (owner 2026-09-17, NORTHSTAR_MOTION_FRAMES_1)"}, f, indent=1)
-    job.note("manifest", os.path.relpath(manifest, ROOT))
+    job.note("manifest", rel(manifest))
     job.note("frames", frames)
     job.check("the capture ran without a surprise abort", aborted is None, aborted)
     good = [fr for fr in frames if fr["ok"]]
