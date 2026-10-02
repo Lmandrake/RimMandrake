@@ -1,4 +1,4 @@
-# The Fever Wood: bedazzle review (grandfathered sitting, turn 1 drafted)
+# The Fever Wood: bedazzle review (grandfathered sitting, turn 1 ruled)
 
 Program: `BEDAZZLE_TOP_SHAPE_PROGRAM_1`, track (a), worst-first, sitting 9. Item to be filed by the
 parent (`FEVERWOOD_SCORING_SITTING_1` shape).
@@ -509,3 +509,34 @@ the dianoga covers only the tank**, while the Mod Settings screen is clean.
 
 Held off the card (in the doc only): the Wildsteam drum (§3; it spends the plot-reserved emergence),
 the closing crown (§5 idea 3, the weather alternative), bough-grafting (§4 row 4, the tech alternative).
+
+## 8. Turn 1 rulings (2026-10-02) and ticket-out
+
+Items 1, 2 and 3 decision taken by question card 2026-10-02 11:12 PDT (ledger `FEVERWOOD_SCORING_SITTING_1`,
+seat BENCH, 19:07 UTC). Item 4 the owner answered in typed words (seat OWNER, 19:07 UTC), quoted verbatim below.
+
+| Card item | Ruling | Ticket |
+|---|---|---|
+| 1. Build first | **Land it and add the giant's story together.** Decision taken by question card. Row 0 in full (§4): the seven creatures ratified on 2026-09-24 (`RM_Lommerel`, `RM_Silloch`, `RM_Brathek`, `RM_Nemmel`, `RM_Grolth`, `RM_Gorrameth`, and `RM_Skreth` as the free second front, which replaces the lure's ants-only fallback; art MEASURED done for all seven in the artpipe `done/`/`_artsrc/` as `feverwood_<name>_*`); the ants carry thornbugs off alive so the column can be tracked and raided back (the haul parts exist and nothing calls them; the lure raid runs with stealing off); the crown's ambient sound so the sentinel's silence cuts something; the heat kind **ambient** (still, shadeless heat; one kind of heat); the canon dianoga lines out of the free tentacles and the dianoga over the whole monster in the campaign; the three Biomes! ports (glow slug, jewel beetle, acid slug) judged out of this campaign roster, their other homes untouched; the free mod's ten `RUT_` defs renamed; the ancient-danger block the donor alone carries put on `RM_FeverWood`. "Land what was already decided" alone and "new ideas first" are **NOT CHOSEN**. The gorrameth's doomed-herd incident stays in its ruled later wave (2026-09-24). | `FEVERWOOD_RM_CAST_COMPLETION_1`, `FEVERWOOD_ANT_THEFT_RAIDBACK_1`, `FEVERWOOD_CROWN_SOUND_HEAT_1`, `FEVERWOOD_DIANOGA_GIANT_MAP_1`, `FEVERWOOD_TIER_LEAKS_FIX_1`; amended: `BIOME_TIER_CLEANUP_1` (the ten `RUT_` defs; its (b) already owned the free canon text), `FEVERWOOD_TWO_FRONT_LURE_TUNING_1` (spec 4 moved to the cast item; its "NOT owner-ruled" line was false since 2026-09-24 and is corrected) |
+| 2. The giant | **The ransom of its young** (§3, the Brood Ransom), decision taken by question card: the small tentacled things towns keep in prison tanks are the sekkulaath's young; the more of them the world holds, the bolder the pools get; freeing one into a pool makes the deep set down one great gift from the bottom; Sporefall's famous display tank holds the biggest young ever caught, and freeing it buys a gift and breaks the town's peace; the clan can buy young from prisons and "return" them for salvage. The salvage house that feeds it (GPT's Varruth's Catalogue) and the lost crawler are **NOT CHOSEN**; the Wildsteam drum was held off the card and stays unticketed (it spends the plot-reserved emergence). | `FEVERWOOD_BROOD_RANSOM_1` |
+| 3. New marks | **The oil boil (weather) only**, decision taken by question card: on the hottest still days the swamp oil boils into a low rainbow haze; oil gathering doubles; one spark (a gunshot, a torch, dry lightning) flashes fire along the haze, and a burning pool edge wakes the deep. The mooring (ship), the pressure wedge (technology) and "all three" are **NOT CHOSEN**; marks 6 (ship) and 2 (technology) stay open. The closing crown (§5 idea 3) and bough-grafting (§4 row 4) were held off the card and stay unticketed. | `FEVERWOOD_OIL_BOIL_WEATHER_1` |
+| 4. Rite | Owner, typed: *"none, move on"*. **Recorded as none: the Fever Wood teaches no rite.** The Gate Between (Ishko), the Last Customer (Mob'Unloo) and Cutting the Stilts (Ta'Baa) are **NOT CHOSEN**; no god's last slot is spent here, and the cap table in §6 is unchanged. Per the register's R1 rule (*"A biome may answer "none"; the question must still be asked and recorded"*), this row is that record. | none |
+
+FOUNDRY items, each `--caused-by FEVERWOOD_SCORING_SITTING_1`:
+
+| slate row | item |
+|---:|---|
+| 0 | `FEVERWOOD_RM_CAST_COMPLETION_1` (six roster creatures inline, the skreth and its brood faction as the free second front; art deployed, not regenerated) |
+| 0 | `FEVERWOOD_ANT_THEFT_RAIDBACK_1` (the theft LordJob, the letter and track, the column camp and the hive leg) |
+| 0 | `FEVERWOOD_CROWN_SOUND_HEAT_1` (`soundsAmbient` the hush can cut; `RM_SunHeatExtension` ambient) |
+| 0 | `FEVERWOOD_DIANOGA_GIANT_MAP_1` (campaign labels and texts over the six limbs; after `BIOME_TIER_CLEANUP_1` (b)) |
+| 0 | `FEVERWOOD_TIER_LEAKS_FIX_1` (ancient-danger block, Ashkarr label/description and fish strip onto `RM_FeverWood`; the three ports out of this roster; inert `MayRequire` guards replaced) |
+| 0 | `BIOME_TIER_CLEANUP_1`, 2026-10-02 additions (the ten `RUT_` defs and `RUT_HaulPawnAndExit` renamed `RM_`) |
+| 1 | `FEVERWOOD_BROOD_RANSOM_1` |
+| 3 | `FEVERWOOD_OIL_BOIL_WEATHER_1` |
+| 6 | art: `infrastructure/artpipe/art_lists/feverwood_turn1_2026-10-02.csv` (3 jobs: the young's cask, Sporefall's display tank, the oil-boil haze overlay). The seven creatures need no new art (MEASURED, above). |
+
+Sequencing: row 0 first (`FEVER_WOOD_FIRST_SCRIPT_1` is written against row 0's state); the cast item before the
+theft (the lure's two fronts are tested together); `BIOME_TIER_CLEANUP_1` (b) before the dianoga mapping; the
+crown sound and heat before the oil boil (same heat reading, and the boil wakes the same deep the silence warns
+of).

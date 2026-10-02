@@ -24,3 +24,25 @@ Note for the Sump: `RM_TheSump` already lists `RUT_SumpDuskLock` in its own `bio
 - Load proves each feature still fires on the `RM_` biome; `Player.log` clean of unresolved refs after the gene renames.
 - No `Force`, `dianoga`, `Lekku`, `Bantha` or `Jawaese` remains under any `RM_` mod's text/defNames.
 - No `RUT_` def under `src/RimMandrake/`.
+
+## 2026-10-02 additions (Fever Wood)
+
+`FEVERWOOD_SCORING_SITTING_1` turn 1 (decision taken by question card 2026-10-02 11:12 PDT): **fix the free
+mod's ten `RUT_`-prefixed defs**, which the 2026-10-01 scores doc missed
+(`feverwood_bedazzle_review_2026-10-02.md` §1):
+- **(c) Fever Wood, rename `RUT_` → `RM_` in place** (they are the free biome's own content, like the Sump's
+  dusk, so moving them to the campaign layer would strip the free biome): `RUT_FeverWoodMirrorPool`,
+  `RUT_Boughway`, `RUT_BoughSoil`, `RUT_StiltPlatform`, `RUT_FeverTrunkCore`, `RUT_FeverTrunkHeartwood`,
+  `RUT_FeverWood_MirrorBreak`, `RUT_FeverWood_MirrorList`, `RUT_GenStep_GroundRefusal`,
+  `RUT_GenStep_ScatterPools` (files under `src/RimMandrake/FeverWood/Defs/`, several named `RUT_*.xml`), with
+  every reference (`RM_FeverWood.xml`, C# string lookups, `RM_LurkingWaterExtension` pool lists,
+  `PlantGrowthConfig.cs`, the frozen twin `RUT_FeverWood.xml` if it names them, patches) in the same change.
+  Also in the free kit: the C# `RUT_HaulPawnAndExit` (and its JobDef, if `RUT_`-named) in
+  `mandrake.rm.environmentalhazards`. Placed terrain in saves: the world remake is the last step, so a save
+  carrying the old names is not a blocker; if a keeper save must load, add `BackCompatibility`-style
+  defName aliases rather than keeping the `RUT_` names.
+- **(b) Fever Wood** above is unchanged and is now depended on by `FEVERWOOD_DIANOGA_GIANT_MAP_1`, which puts
+  the canon facts the free text drops back in the campaign layer.
+- verify, Fever Wood: offline parse finds no `<defName>RUT_` and no `"RUT_` string literal under
+  `src/RimMandrake/FeverWood/` or `src/RimMandrake/EnvironmentalHazards/`; `jawa/get_defs` on the ten `RM_`
+  names returns `foundCount` 10; `Player.log` has no `Could not resolve` naming any old or new name.
