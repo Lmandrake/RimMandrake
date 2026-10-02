@@ -21,7 +21,7 @@ Caused by `GELATINOUSSLIME_SCORING_SITTING_1` (turn 1). Owner, typed 2026-10-02 
    antidote and dry ground undo it. Readable: a green burst, the alert naming who was drenched.
 3. **It does not keep:** off the body the chunk shrinks like the giant does, so it is a carried, timed weapon,
    never a stockpile (keeps sheet ban 6, no shelf-stable extraction). A settings slider for the shelf time.
-4. **It is not the body arming itself.** ⚠ Tension with sheet §6 ban 7 (*"no re-arming… content re-arming it
+4. **It is not the body arming itself.** Ruled an exception (decision taken by question card, 2026-10-02 14:44 PDT) to sheet §6 ban 7 (*"no re-arming… content re-arming it
    (weapon-generation behavior) is a violation"*): the owner's explicit ask makes a harvested piece a weapon in
    the clan's hands; the body itself still never generates weapons. Recorded as his, not altered.
 5. Settings: on/off for the chunk weapon.

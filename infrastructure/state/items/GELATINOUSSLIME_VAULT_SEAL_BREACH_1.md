@@ -18,7 +18,7 @@ vault, vault dungeon. **The vaults exist; an "Assailant seal" does not.**
   Assailant complex's *"previously-sealed passages"* that open on the thaw (spec §2.3, `ASSAILANT_DUNGEON_BUILD_1`).
   Neither is called an Assailant seal, and **no seal mechanic, door def or "nothing else opens it" rule exists**.
 
-## spec (BENCH's proposal, to be confirmed with the owner at the vault hand-finish sitting)
+## spec
 
 1. An **Assailant seal**: a sealing growth or plug of the Assailant's flesh across one vault's inner door
    (candidate: a type ② vault; V5 at the Slough is the obvious first), impervious to ordinary breaching.
@@ -26,9 +26,8 @@ vault, vault dungeon. **The vaults exist; an "Assailant seal" does not.**
    work), opening the way; the cost is the chunk's drench radius at the door.
 3. Built inside the vault family's templates, not as a separate site. Notes on `VAULT_DUNGEON_BUILD_1` and
    `VAULT_THAW_QUEST_FAMILY_1` point here.
-4. **Owner to confirm:** which vault(s) carry a seal, and whether the seal is the only way in or a shortcut.
+4. **Ruled (decision taken by question card, 2026-10-02 14:44 PDT):** only the Slough vault (V5) carries the seal, and a chunk is the only way through it.
 
 ## criteria
 
-- The owner's confirmation recorded on this item before build.
 - Live: a vault map with the seal; a chunk dissolves it; ordinary explosives do not.

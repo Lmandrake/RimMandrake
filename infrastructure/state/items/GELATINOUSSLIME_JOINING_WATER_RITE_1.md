@@ -8,16 +8,9 @@ connected not so unlike the slime. Separate for now. Everyone briefly joins hand
 permanent hediffs on one person to weak hediffs on several instead."* None of the three pitched rites (the
 walked-off reading, the moving grave, all accounts come due) was chosen; this replaces them.
 
-## God: **Pomp (as typed; unresolved — likely Oomo, owner to confirm)**
+## God: **Oomo** (decision taken by question card, 2026-10-02 14:44 PDT)
 
-- "Pomp" is not one of the nine register gods (Ishko, Ohm, Oomo, Mob'Unloo, Sh'kaar, Ozzik, Zizzik, Rekko,
-  Ta'Baa). Searched `design/`, `src/`, `infrastructure/state/` (canon.yml included) 2026-10-02: **no god, alias
-  or figure named Pomp**; the only hits are random strings in generated HTML and a donor creature's name.
-- Likely reading, by voice-typing: **Oomo** the Unspilled, *"water, thirst, rationing (+ all the body's waters)"*,
-  whose sacred act is *"the passing of waters between each other"* (`divine_satiation_engine.md` ③). *"The joining
-  water"* fits him closely. Oomo holds four found rites; this would be his fifth, **the cap**.
-- *"Separate for now"* is unresolved too: it may mean the rite stands apart from the nine gods (its own faith, or
-  no god yet), or that it stays its own rite rather than a variant. **Not assigned to any god's cap until he says.**
+Oomo's fifth found rite: **the cap**. The injury-spreading effect is a power and is ruled an exception to the register's cohesion-only rule (decision taken by question card, 2026-10-02 14:44 PDT). Build it as typed.
 
 ## spec
 
