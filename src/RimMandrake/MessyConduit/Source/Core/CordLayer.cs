@@ -273,27 +273,93 @@ namespace RimMandrake.MessyConduit.Core
             return P;
         }
 
-        /// <summary>render.split_tail for a DEAD end: the last 0.42 cell curls sideways and lies limp.</summary>
-        public static void LimpTail(List<V2> P, bool atEnd, int side, int strandIndex)
+        /// <summary>A DEAD end lies limp: the last 0.7 cell falls sideways off the conduit's line
+        /// (0.30 cell at the tip) and curls over, so it reads as slack and still next to a live end
+        /// that sticks straight out. Tried on the seeded side, then the other, then at half size;
+        /// a shape that would put any point on unwalkable ground is not used.</summary>
+        public static void LimpTail(CordWorld w, List<V2> P, bool atEnd, int side, int strandIndex)
         {
             if (P.Count < 4) return;
             if (!atEnd) P.Reverse();
             double[] sl = Geo.CumLen(P);
             double L = sl[sl.Length - 1];
-            int j = Array.BinarySearch(sl, L - 0.42);
+            int j = Array.BinarySearch(sl, L - Math.Min(0.7, L * 0.5));
             if (j < 0) j = ~j;
             j = Math.Max(1, Math.Min(j, P.Count - 2));
             int m = P.Count - j;
             var orig = P.GetRange(j, m);
-            for (int k = 0; k < m; k++)
+            foreach (double amp in new[] { 1.0, -1.0, 0.5, -0.5 })
             {
-                double u = m == 1 ? 1 : k / (double)(m - 1);
-                Geo.TanNorm(orig, k, out V2 t, out V2 n);
-                double curl = side * (0.07 + 0.035 * strandIndex) * Math.Pow(u, 2.2);
-                double back = -0.05 * u * u * u;
-                P[j + k] = orig[k] + n * curl + t * back;
+                var cand = new V2[m];
+                bool ok = true;
+                for (int k = 0; k < m; k++)
+                {
+                    double u = m == 1 ? 1 : k / (double)(m - 1);
+                    Geo.TanNorm(orig, k, out V2 t, out V2 nrm);
+                    double curl = amp * side * (0.30 + 0.025 * strandIndex) * Math.Pow(u, 2.4);
+                    double back = -0.12 * Math.Abs(amp) * u * u * u;
+                    cand[k] = orig[k] + nrm * curl + t * back;
+                    if (w != null && !w.IsWalkable(cand[k].Floor)) { ok = false; break; }
+                }
+                if (!ok) continue;
+                for (int k = 0; k < m; k++) P[j + k] = cand[k];
+                break;
             }
             if (!atEnd) P.Reverse();
+        }
+
+        /// <summary>Replace the last stretch of a strand (its first stretch when atEnd is false) with a
+        /// smooth curve that ends exactly at target travelling along arrive, finishing with a straight
+        /// run of `straight` cells. Left unchanged if the curve would touch unwalkable ground.</summary>
+        public static List<V2> Approach(CordWorld w, List<V2> P, bool atEnd, V2 target, V2 arrive, double straight)
+        {
+            var Q = new List<V2>(P);
+            if (!atEnd) Q.Reverse();
+            arrive = arrive.Norm();
+            if (Q.Count < 4 || Geo.Length(Q) < 0.6)
+            {
+                // a very short cord (a junction right beside the wall it runs into): a straight piece
+                // from its far end to the target
+                V2 a0 = Q[0];
+                var line = new List<V2>();
+                int nl = Math.Max(2, (int)(V2.Dist(a0, target) / 0.05) + 1);
+                for (int q = 0; q < nl; q++) line.Add(a0 + (target - a0) * (q / (double)(nl - 1)));
+                if (!atEnd) line.Reverse();
+                return line;
+            }
+            double[] cl = Geo.CumLen(Q);
+            double L = cl[cl.Length - 1];
+            foreach (double frac in new[] { 1.0, 0.6 })
+            {
+                double use = Math.Min((0.45 + straight) * frac, Math.Max(L * 0.4, straight + 0.3));
+                // cut back to the last point a full `use` from the TARGET (not from the old end: a
+                // junction cord ran on to the node centre, past the arm tip it must now stop at)
+                int j = Q.Count - 2;
+                while (j > 1 && V2.Dist(Q[j], target) < use) j--;
+                V2 s0 = Q[j], tS = (Q[j] - Q[j - 1]).Norm();
+                double st = Math.Min(straight, Math.Max(0, V2.Dist(s0, target) - 0.15));
+                V2 bend = target - arrive * st;
+                double k = V2.Dist(s0, bend) * 0.45;
+                V2 c1 = s0 + tS * k, c2 = bend - arrive * k;
+                var add = new List<V2>();
+                int nb = Math.Max(6, (int)(V2.Dist(s0, bend) / 0.05));
+                for (int q = 1; q <= nb; q++)
+                {
+                    double t = q / (double)nb, it = 1 - t;
+                    add.Add(s0 * (it * it * it) + c1 * (3 * it * it * t) + c2 * (3 * it * t * t) + bend * (t * t * t));
+                }
+                int ns = Math.Max(1, (int)(st / 0.05));
+                for (int q = 1; q <= ns; q++) add.Add(bend + arrive * (st * q / ns));
+                bool ok = true;
+                for (int q = 0; q < add.Count - 1; q++)
+                    if (w != null && !w.IsWalkable(add[q].Floor)) { ok = false; break; }
+                if (!ok) continue;
+                var R = Q.GetRange(0, j + 1);
+                R.AddRange(add);
+                if (!atEnd) R.Reverse();
+                return R;
+            }
+            return P;
         }
 
         /// <summary>The broken end that hangs out of a wall terminal's hole and droops down the face

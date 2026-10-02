@@ -136,9 +136,8 @@ namespace RimMandrake.MessyConduit.Core
                 if (nd.Type == NodeType.Junction)
                 {
                     var p = new LaidPiece { Key = "node:" + kv.Key, Owner = nd.Cell };
-                    CordRng r = CordRng.Of(opt.Seed, "jdecal", nd.Cell.X, nd.Cell.Z);
-                    p.Decals.Add(new CordDecal(nd.Cls == 'x' || nd.IsBlob ? DecalKind.JunctionTin : DecalKind.JunctionTape,
-                                               nd.Pos, r.Range(-0.6, 0.6), nd.IsBlob ? 1.0 : 0.85));
+                    JunctionPose jp = PoseJunction(g, kv.Key, opt.Seed);
+                    p.Decals.Add(new CordDecal(jp.Kind, jp.Centre, jp.Angle, JunctionScale));
                     outp.Add(p);
                 }
                 else if (nd.Type == NodeType.Tangle)
@@ -238,9 +237,12 @@ namespace RimMandrake.MessyConduit.Core
                 }
                 for (int k = 0; k < e.Knots.Count; k++)
                     P = CordLayer.SpliceLoop(w, P, e.Knots[k], CordRng.Of(opt.Seed, "knot", key, i, k), 0.28 + 0.06 * i);
+                // every end arrives the way its art expects (junction arm, plug, stub, conduit end)
+                P = AttachEnd(w, g, e, true, P, i, n);
+                P = AttachEnd(w, g, e, false, P, i, n);
                 // terminal ends: dead = limp curl; live = straight (sparks come from the registry)
-                if (na.Type == NodeType.Terminal && !isLive(na.Cell)) CordLayer.LimpTail(P, false, limpSideA, i);
-                if (nb.Type == NodeType.Terminal && !isLive(nb.Cell)) CordLayer.LimpTail(P, true, limpSideB, i);
+                if (na.Type == NodeType.Terminal && !isLive(na.Cell)) CordLayer.LimpTail(w, P, false, limpSideA, i);
+                if (nb.Type == NodeType.Terminal && !isLive(nb.Cell)) CordLayer.LimpTail(w, P, true, limpSideB, i);
                 // the floor rule (risk register row 2): if anything still sits in an unwalkable cell,
                 // fall back to the planned centreline rather than draw a cord through a wall
                 bool fell = false;
@@ -268,6 +270,126 @@ namespace RimMandrake.MessyConduit.Core
             return piece;
         }
 
+        // ---------------------------------------------------------------- art fit (polish pass 2026-10-02)
+        // Geometry of the shipped art, measured from the PNGs in canvas units (1 = the decal's side):
+        // Junction_Tape is a T whose arms (art +X, -X, -Z) meet 0.152 above the canvas centre;
+        // Junction_Tin is a centred 4-arm cross; StubRock's hole is centred +0.11 along X.
+        public const double JunctionScale = 1.0, TapeAnchorZ = 0.152, ArmTuck = 0.40;
+        public const double PlugScale = 0.55, PlugInset = 0.05, StubScale = 0.7, RockHoleX = 0.11;
+
+        public struct JunctionPose
+        {
+            public DecalKind Kind;
+            public double Angle;
+            public V2 Centre;
+            public int Arms;
+        }
+
+        public static V2 Snap4(V2 d)
+        {
+            if (Math.Abs(d.X) >= Math.Abs(d.Z)) return new V2(d.X < 0 ? -1 : 1, 0);
+            return new V2(0, d.Z < 0 ? -1 : 1);
+        }
+
+        /// <summary>The cardinal direction an edge leaves a cell node in: toward the next cell of its chain.</summary>
+        public static V2 ArmDir(CordGraph g, CordEdge e, bool atA)
+        {
+            VId v = atA ? e.A : e.B;
+            VId nxt = e.Via.Count > 0 ? (atA ? e.Via[0] : e.Via[e.Via.Count - 1]) : (atA ? e.B : e.A);
+            Cell c = g.Nodes[v].Cell;
+            V2 d;
+            if (nxt.IsCellish) d = new V2(nxt.A.X - c.X, nxt.A.Z - c.Z);
+            else if (nxt.T == 's') d = nxt.A == c ? new V2(nxt.B.X - c.X, nxt.B.Z - c.Z) : new V2(nxt.A.X - c.X, nxt.A.Z - c.Z);
+            else d = (atA ? e.PB : e.PA) - g.Nodes[v].Pos;
+            return Snap4(d);
+        }
+
+        /// <summary>Which junction piece and how it is turned so an arm lies along every arriving cord:
+        /// four directions take the tin cross, fewer the taped T with its missing arm where no cord comes.</summary>
+        public static JunctionPose PoseJunction(CordGraph g, VId v, ulong seed)
+        {
+            CordNode nd = g.Nodes[v];
+            CordRng r = CordRng.Of(seed, "jdecal", nd.Cell.X, nd.Cell.Z);
+            if (nd.IsBlob || !v.IsCellish)
+                return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = 0, Centre = nd.Pos, Arms = 4 };
+            var dirs = new HashSet<Cell>();
+            foreach (CordEdge e in g.CordEdges())
+            {
+                if (e.A == v) { V2 a = ArmDir(g, e, true); dirs.Add(new Cell((int)a.X, (int)a.Z)); }
+                if (e.B == v) { V2 a = ArmDir(g, e, false); dirs.Add(new Cell((int)a.X, (int)a.Z)); }
+            }
+            if (dirs.Count >= 4)
+                return new JunctionPose { Kind = DecalKind.JunctionTin, Angle = r.Int(0, 3) * Math.PI / 2, Centre = nd.Pos, Arms = 4 };
+            var order = new[] { new Cell(0, 1), new Cell(1, 0), new Cell(0, -1), new Cell(-1, 0) };
+            List<Cell> missing = order.Where(c => !dirs.Contains(c)).ToList();
+            Cell m = missing[r.Int(0, missing.Count - 1)];
+            double angle = Math.Atan2(m.Z, m.X) - Math.PI / 2;           // the art's missing arm is its +Z
+            V2 anchor = new V2(0, TapeAnchorZ * JunctionScale);
+            V2 rot = new V2(anchor.X * Math.Cos(angle) - anchor.Z * Math.Sin(angle), anchor.X * Math.Sin(angle) + anchor.Z * Math.Cos(angle));
+            return new JunctionPose { Kind = DecalKind.JunctionTape, Angle = angle, Centre = nd.Pos - rot, Arms = 3 };
+        }
+
+        /// <summary>The cardinal direction from a point just outside a machine's footprint into it.</summary>
+        public static V2 IntoMachine(MachineInfo m, V2 p)
+        {
+            double l = m.X0 - p.X, rgt = p.X - (m.X0 + m.W), b = m.Z0 - p.Z, t = p.Z - (m.Z0 + m.H);
+            double best = Math.Max(Math.Max(l, rgt), Math.Max(b, t));
+            if (best == l) return new V2(1, 0);
+            if (best == rgt) return new V2(-1, 0);
+            if (best == b) return new V2(0, 1);
+            return new V2(0, -1);
+        }
+
+        /// <summary>The lateral spread axis for parallel strands, the same whichever way the cord runs,
+        /// so a strand keeps its side from one end of a short cord to the other.</summary>
+        private static V2 Side(V2 a) => new V2(Math.Abs(a.Z), Math.Abs(a.X)).Norm();
+
+        /// <summary>Reshape one end of a laid strand so it arrives where and how the end's art expects:
+        /// into a junction arm's tip along the arm, onto the plug point heading into the machine, onto
+        /// a stub face heading into it, or straight out of a conduit end.</summary>
+        private static List<V2> AttachEnd(CordWorld w, CordGraph g, CordEdge e, bool atA, List<V2> P, int i, int n)
+        {
+            VId v = atA ? e.A : e.B;
+            CordNode nd = g.Nodes[v];
+            double lat = n == 1 ? 0 : (i - (n - 1) / 2.0);
+            V2 target, arrive;
+            double straight = 0.15;
+            if (nd.Type == NodeType.Junction && !nd.IsBlob && v.IsCellish)
+            {
+                V2 a = ArmDir(g, e, atA);
+                target = nd.Pos + a * ArmTuck + Side(a) * (lat * 0.03);
+                arrive = -a;
+            }
+            else if (nd.IsMachine && nd.Machine != null)
+            {
+                target = atA ? e.PA : e.PB;
+                arrive = IntoMachine(nd.Machine, target);
+            }
+            else if (nd.IsStub && nd.Into.Len > 0.5)
+            {
+                // a junction in the same cell (the run ends one cell into the wall right at a T): line
+                // the stub up with the junction's arm, which starts on the junction's own (jittered) point
+                CordNode other = g.Nodes[atA ? e.B : e.A];
+                V2 basePos = nd.Pos;
+                if (other.Type == NodeType.Junction && other.Cell == nd.Cell)
+                {
+                    V2 d = nd.Pos - other.Pos;
+                    basePos = other.Pos + nd.Into * (d.X * nd.Into.X + d.Z * nd.Into.Z);
+                }
+                target = basePos + Side(nd.Into) * (lat * 0.03);
+                arrive = nd.Into;
+            }
+            else if (nd.Type == NodeType.Terminal)
+            {
+                V2 o = new V2(nd.Out.X, nd.Out.Z).Norm();
+                target = nd.Pos + Side(o) * (lat * 0.03);
+                arrive = o;
+                straight = 0.6;
+            }
+            else return P;
+            return CordLayer.Approach(w, P, !atA, target, arrive, straight);
+        }
+
         private static double EndAngle(List<V2> P, bool atStart)
         {
             V2 a, b;
@@ -286,11 +408,10 @@ namespace RimMandrake.MessyConduit.Core
             V2 tip = atStart ? first[0] : first[first.Count - 1];
             if (nd.IsMachine)
             {
-                foreach (CordStrand s in piece.Strands)
-                {
-                    V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
-                    piece.Decals.Add(new CordDecal(DecalKind.Plug, t, EndAngle(s.Pts, atStart), 0.55));
-                }
+                // one plug per end (every strand of the edge converges on the plug point), its head
+                // pointing INTO the machine and pushed past the footprint edge
+                V2 into = IntoMachine(nd.Machine, tip);
+                piece.Decals.Add(new CordDecal(DecalKind.Plug, tip + into * PlugInset, Math.Atan2(into.Z, into.X), PlugScale));
             }
             else if (nd.Type == NodeType.Terminal)
             {
@@ -305,8 +426,12 @@ namespace RimMandrake.MessyConduit.Core
             {
                 double ang = Math.Atan2(nd.Into.Z, nd.Into.X);
                 V2 hole = nd.Face + nd.Into * 0.04;
-                if (nd.Type == NodeType.StubWall) piece.Decals.Add(new CordDecal(DecalKind.StubWall, hole, ang + Math.PI / 2, 0.7));
-                else if (nd.Type == NodeType.StubRock) piece.Decals.Add(new CordDecal(DecalKind.StubRock, hole, ang + Math.PI / 2, 0.7));
+                // the real art's cord runs along its +X into the plate/hole, so +X points INTO the face;
+                // the plate (centred on the canvas) or the hole (+0.11 canvas) sits on the face line
+                if (nd.Type == NodeType.StubWall)
+                    piece.Decals.Add(new CordDecal(DecalKind.StubWall, nd.Face + nd.Into * 0.02, ang, StubScale));
+                else if (nd.Type == NodeType.StubRock)
+                    piece.Decals.Add(new CordDecal(DecalKind.StubRock, nd.Face + nd.Into * (0.06 - RockHoleX * StubScale), ang, StubScale));
                 else if (nd.Type == NodeType.StubDevice) piece.Decals.Add(new CordDecal(DecalKind.PowerStrip, nd.Face - nd.Into * 0.2, ang + Math.PI / 2, 0.8));
                 if (nd.WallTerminal)
                 {

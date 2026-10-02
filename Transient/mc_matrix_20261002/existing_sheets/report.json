@@ -1,0 +1,384 @@
+{
+ "thresholds": {
+  "std_min": 6.0,
+  "magenta_px_max": 50,
+  "bright": [
+   25.0,
+   230.0
+  ],
+  "diff_px": 40,
+  "diff_frac_min": 0.002,
+  "pair_median_max": 4.0
+ },
+ "images": 21,
+ "ok": 21,
+ "wire_evidence": {
+  "PASS": 0,
+  "FAIL": 0,
+  "UNMEASURED": 21
+ },
+ "cases_without_shot": [],
+ "sheets": [
+  "sheet_01.png",
+  "sheet_02.png"
+ ],
+ "per_image": [
+  {
+   "file": "art_swap_compare.png",
+   "size": [
+    1120,
+    300
+   ],
+   "lum_mean": 106.73,
+   "lum_std": 30.68,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "mc_01_wide.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 66.81,
+   "lum_std": 21.02,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "mc_02_break_live_end.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 67.11,
+   "lum_std": 21.91,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "mc_03_room_junction_lamp_wallterminal.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 68.51,
+   "lum_std": 21.0,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "mc_04_master_off_vanilla.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 53.78,
+   "lum_std": 22.19,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "offline_csharp_downed.png",
+   "size": [
+    560,
+    400
+   ],
+   "lum_mean": 111.75,
+   "lum_std": 20.7,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "offline_csharp_needless.png",
+   "size": [
+    800,
+    520
+   ],
+   "lum_mean": 112.03,
+   "lum_std": 24.43,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "offline_csharp_nodal.png",
+   "size": [
+    1040,
+    720
+   ],
+   "lum_mean": 104.66,
+   "lum_std": 27.81,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "offline_csharp_tangle.png",
+   "size": [
+    720,
+    520
+   ],
+   "lum_mean": 100.75,
+   "lum_std": 30.75,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "offline_csharp_under.png",
+   "size": [
+    880,
+    520
+   ],
+   "lum_mean": 103.02,
+   "lum_std": 27.34,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_01_wide.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 86.86,
+   "lum_std": 24.04,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_02_junctions_X_and_T.png",
+   "size": [
+    1330,
+    540
+   ],
+   "lum_mean": 62.47,
+   "lum_std": 23.94,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_03_wall_grommet_and_rock_hole.png",
+   "size": [
+    1090,
+    540
+   ],
+   "lum_mean": 59.16,
+   "lum_std": 20.12,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_04_break_live_vs_dead.png",
+   "size": [
+    640,
+    400
+   ],
+   "lum_mean": 66.97,
+   "lum_std": 20.45,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_06_T_junction_and_lamp_plug.png",
+   "size": [
+    726,
+    774
+   ],
+   "lum_mean": 62.41,
+   "lum_std": 25.49,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_06_X_junction.png",
+   "size": [
+    660,
+    648
+   ],
+   "lum_mean": 68.03,
+   "lum_std": 20.04,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_06_dead_vs_live_end.png",
+   "size": [
+    645,
+    549
+   ],
+   "lum_mean": 70.47,
+   "lum_std": 18.66,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_06_pawn_and_items_over_pieces.png",
+   "size": [
+    1474,
+    516
+   ],
+   "lum_mean": 38.25,
+   "lum_std": 20.34,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_06_wall_and_rock_stubs.png",
+   "size": [
+    1318,
+    645
+   ],
+   "lum_mean": 62.01,
+   "lum_std": 18.83,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "real_art_06_wide.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.06,
+   "lum_std": 22.96,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  },
+  {
+   "file": "textures_contact_sheet.png",
+   "size": [
+    4668,
+    600
+   ],
+   "lum_mean": 52.15,
+   "lum_std": 30.22,
+   "magenta_px": 0,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "case": null
+  }
+ ]
+}

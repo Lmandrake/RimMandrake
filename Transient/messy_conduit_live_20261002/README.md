@@ -33,3 +33,29 @@ No seams, z-fighting or floating cords were seen at this zoom. The strand textur
 Saves: `MC_LIVE2_20261002.rws` (made BEFORE the fixes: it holds the component entry, so keep it as an M9 regression
 fixture); `MC_LIVE2B_20261002.rws` (the keeper scene); `MC_LIVE2C_inplace_20261002.rws` (save without reload, used to
 check the running component survives a save). Saves folder backup: `D:\Luke\dev\_rmscratch\saves_backup_20261002_messyconduit`.
+
+## Polish pass: the art fits the cords (2026-10-02, ~16:00)
+
+Same keeper scene (`MC_LIVE2B_20261002.rws`), reloaded after the fix; one paused frame at about noon,
+`real_art_06_wide.png` (zoom root 11, 54 px per cell); the other 06 files are crops of that frame upscaled 3x
+(LANCZOS). No pixels edited. State proof: probe `artfit` = 0 faults (2 junctions, 8 plug ends, 2 stubs, 9 dead
+ends, 1 live end), the same on a fresh validation map; `validation.py --live` 19/19, `--save-load MC_POLISH_20261002`
+3/3, `--removal-check MC_POLISH_20261002` PASS.
+
+| file | what it shows | still imperfect |
+|---|---|---|
+| `real_art_06_T_junction_and_lamp_plug.png` | the room's T: the taped T is turned so its arms point west, east and north, and each bundle of cords runs into an arm. Top: the lamp's plug now sits on the lamp's east side, head pointing into it | the lamp shows its no-power bolt (the room is on the dead side of the break, as designed); the plug head tucks under the lamp sprite |
+| `real_art_06_X_junction.png` | the X: the tin cross now draws over the cords, its four arms on the four cords | none seen |
+| `real_art_06_wall_and_rock_stubs.png` | left: the grommet plate on the east wall's face with the hanging tail below it. Right: the hole on the rock face with the cord going in | the rock-side conduit ends inside the rock, so a wall-style tail hangs down the rock face as a thin dark line |
+| `real_art_06_dead_vs_live_end.png` | the break: west (live) end straight out of the conduit end with a glow at the tip; east (dead) end curled over with a dull fray | the dead curl (0.27-0.38 cell sideways) is clear at this zoom but subtle zoomed out; no whip on the live end (phase 1b) |
+| `real_art_06_pawn_and_items_over_pieces.png` | a check, not a review shot: colonists and item stacks spawned ON the tin, the T, the plug, the live end and next to the stub all draw over the pieces | taken at dusk on `MC_POLISH_20261002` |
+| `real_art_06_wide.png` | the whole scene after the fix | the granite block is still a staging slab, not an outcrop |
+
+What changed: junction art posed from the arriving cords (tin cross for 4 directions, taped T with its gap where
+no cord comes); cords end at the arm tips, the plug point and the stub faces, arriving along the art; plugs point
+into the machine; stubs turned along the cord; explicit render queues (every section submesh shares one bounds box,
+so altitude alone never ordered them; walls and the Transparent shader are both queue 2900, measured); face pieces
+at `BuildingOnTop`; dead ends curl 0.7 cell; live ends straight with a per-frame glow.
+
+Art the pipeline could still improve (not queued): a real `EndFrayed_Live` (bright copper strands; the procedural one
+reads fine with the glow), and a rock-face tail variant if the hanging tail on rock bothers you.

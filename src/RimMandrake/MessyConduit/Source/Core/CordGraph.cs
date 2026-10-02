@@ -519,11 +519,10 @@ namespace RimMandrake.MessyConduit.Core
             return new V2(x / cells.Count, z / cells.Count);
         }
 
-        private V2 Knot(Cell c)
-        {
-            CordRng r = CordRng.Of(seed, "knot", c.X, c.Z);
-            return new V2(c.X + 0.5 + r.Range(-0.08, 0.08), c.Z + 0.5 + r.Range(-0.08, 0.08));
-        }
+        /// <summary>A junction sits on its cell centre: the junction art's arms run along the conduit
+        /// axes, so a jittered centre put two neighbouring junctions' arms out of line (polish pass
+        /// 2026-10-02; the old +-0.08 jitter predates the real art).</summary>
+        private V2 Knot(Cell c) => c.Centre;
 
         private V2 Away(VId v)
         {

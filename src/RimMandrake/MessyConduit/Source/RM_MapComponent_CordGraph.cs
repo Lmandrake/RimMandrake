@@ -148,6 +148,31 @@ namespace RimMandrake.MessyConduit
         public bool? EndLive(Cell c) => liveEnds.TryGetValue(c, out bool v) ? v : (bool?)null;
 
         private const int MaxSparkingEnds = 24;
+        public static int LastGlowDraws;
+
+        /// <summary>The live half of the break readout, every frame and while paused: a flickering
+        /// glow at each live tip (the sparks are thrown flecks and only fly while time runs).</summary>
+        private void DrawLiveGlow()
+        {
+            LastGlowDraws = 0;
+            if (!MessyConduitSettings.enabled || !MessyConduitSettings.breakReadout || MessyConduitSettings.sparkIntensity <= 0.01f) return;
+            if (Find.CurrentMap != map || CordMaterials.LiveGlow == null || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
+            float t = Time.realtimeSinceStartup;
+            float y = AltitudeLayer.MoteLow.AltitudeFor();
+            int n = 0;
+            foreach (LaidPiece p in pieces)
+                foreach (CordEnd e in p.Ends)
+                {
+                    if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) continue;
+                    if (++n > MaxSparkingEnds) return;
+                    int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
+                    float f = Mathf.PerlinNoise(t * 9f, (h & 0xff) * 0.37f);
+                    float size = (0.38f + 0.42f * f * f) * Mathf.Min(1.5f, MessyConduitSettings.sparkIntensity);
+                    var pos = new Vector3((float)e.Tip.X, y, (float)e.Tip.Z);
+                    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(size, 1f, size)), CordMaterials.LiveGlow, 0);
+                    LastGlowDraws++;
+                }
+        }
 
         private void Sparks(int tick)
         {
@@ -170,6 +195,7 @@ namespace RimMandrake.MessyConduit
         public override void MapComponentUpdate()
         {
             MessyConduitProbe.Service(map, this);
+            DrawLiveGlow();
             if (!MessyConduitSettings.enabled || !MessyConduitSettings.debugDraw || Find.CurrentMap != map) return;
             CordGraph g = builder.Graph;
             if (g == null) return;

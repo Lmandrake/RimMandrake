@@ -212,6 +212,7 @@ namespace RimMandrake.MessyConduit.SelfTest
                     if (!okA) detached++;
                 }
             Check(detached == 0, $"{name}: {detached} laid strands do not start and end at their edge's two nodes");
+            ArtFitChecks(name, w, g, p1, live);
             // determinism: a fresh builder gives bit-identical geometry
             List<LaidPiece> p2 = new CordBuilder().Build(World(sc), new BuildOptions(), live.Contains);
             Check(p1.Count == p2.Count && p1.Zip(p2, (a, b) => a.Key == b.Key && a.GeometryHash() == b.GeometryHash()).All(x => x),
@@ -228,6 +229,20 @@ namespace RimMandrake.MessyConduit.SelfTest
                 Check(med >= 1.2, $"{name}: median laid/path ratio {med:0.00} < 1.2 (not loopy)");
                 Console.WriteLine($"  {name}: {g.Nodes.Count} nodes, {g.CordEdges().Count()} cord edges, {strands} strands ({fell} fell back), laid/path median {med:0.00}, unroutable {p1.Count(p => p.Unroutable)}");
             }
+        }
+
+        // ------------------------------------------------------------------ the real art fits the cords (polish pass 2026-10-02)
+        private static void ArtFitChecks(string name, CordWorld w, CordGraph g, List<LaidPiece> ps, HashSet<Cell> live)
+        {
+            ArtFitResult r = CordAudit.ArtFit(g, ps, live.Contains);
+            string msg = string.Join("; ", r.Messages.Take(4));
+            Check(r.JunctionFaults == 0, $"{name}: junction art does not fit its cords ({r.JunctionFaults} faults over {r.Junctions} junctions): {msg}");
+            Check(r.PlugFaults == 0, $"{name}: plugs do not enter their machines ({r.PlugFaults}/{r.PlugEnds}): {msg}");
+            Check(r.StubFaults == 0, $"{name}: {r.StubFaults}/{r.Stubs} wall/rock stub decals not on the face along the cord: {msg}");
+            Check(r.DeadFaults == 0, $"{name}: {r.DeadFaults}/{r.DeadEnds} dead ends not visibly limp (tip must fall >=0.22 cell off the conduit line and curl >=50deg)");
+            Check(r.LiveFaults == 0, $"{name}: {r.LiveFaults}/{r.LiveEnds} live ends not straight out of the conduit end: {msg}");
+            Console.WriteLine($"  {name}: art fit: {r.Junctions} junctions ({r.JunctionFaults} faults), {r.PlugEnds} plug ends ({r.PlugFaults}), {r.Stubs} stubs ({r.StubFaults}); " +
+                              $"dead tip off-line [{string.Join(" ", r.DeadOffLine.Select(x => x.ToString("0.00")))}] live arrival deg [{string.Join(" ", r.LiveArrivalDeg.Select(x => x.ToString("0")))}]");
         }
 
         // ------------------------------------------------------------------ local invalidation (§8.2.5/§8.2.7)
