@@ -105,7 +105,7 @@ pointing at the same constant is real corroboration — unlike two guesses that 
 agree.
 
 ⚠️ Corroboration is not proof. `raw - 8192` is still marked **strongly supported, not
-verified** in `D:\Luke\dev\Rimworld\skills\rimworld-world-editing\SKILL.md` §13, because
+verified** in `D:\Luke\dev\RimMandrake\skills\rimworld-world-editing\SKILL.md` §13, because
 no engine output was ever made to print an elevation for a named tile. Say which one you
 have.
 
@@ -121,7 +121,7 @@ pollution     raw / 65535         -> 0..1        ⚠️ HYPOTHESIS
 swampiness    raw                 -> 0..1        ⚠️ scale unconfirmed
 ```
 
-`D:\Luke\dev\Rimworld\src\RimMandrake\Utils\worldmap.py` exposes `get(array, tile)` and
+`D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\worldmap.py` exposes `get(array, tile)` and
 `set(array, tiles, value)` in **physical units**, and **refuses to write any array whose
 encoding is unconfirmed**. That refusal is the point of the labelling — a status that
 only lives in a comment gets read by nobody at the moment it matters.

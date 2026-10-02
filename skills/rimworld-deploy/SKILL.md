@@ -23,6 +23,12 @@ invisible in game because the deployed copy was untouched. **And never edit in
 place under `Mods/`** — that copy is disposable, overwritten by the next `--apply`,
 and not in version control.
 
+🔑 **Where you run it.** Edit and commit in your seat clone (`/home/mandrake/rm/<seat>`);
+`deploy_custom_mods.py` runs from the clone and plans/copies from it. C# mods are built with
+`python3 src/RimMandrake/Utils/winbuild.py <Mod|csproj>` (stages on `D:\Luke\dev\_rmbuild`, Windows
+dotnet, DLL and `.srchash` copied back as a pair). `D:\Luke\dev\RimMandrake` is a read-only
+mirror of origin/main: Windows tools read it, nothing writes it.
+
 🔴 **A subagent's clean `dotnet build`/`validate_patch.py` pass, plus a real
 commit+push, is NOT proof the fix was deployed.** Twice in one wave a
 genuinely-fixed patch/DLL sat undeployed in the repo while a live re-test still

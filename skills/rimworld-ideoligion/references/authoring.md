@@ -125,7 +125,7 @@ the absolute cap, one above what the NPC generator would ever produce, and worth
 deliberate decision rather than a default.
 
 ⇒ `validate_ideoligion.py` correctly leaves `DEFAULT_IMPACT_BUDGET = None`
-(`D:\Luke\dev\Rimworld\src\RimMandrake\Utils\validate_ideoligion.py` line 58).
+(`D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\validate_ideoligion.py` line 58).
 **Do not pass `--impact-budget`.** There is nothing to enforce.
 
 **UNVERIFIED:** whether `forcedMemes` listing 5+ normal memes is clamped, ignored
@@ -423,7 +423,7 @@ Exactly one installed style carries it: `Horaxian` (`ludeon.rimworld.anomaly`).
 Such a style is reachable only through a `fixedIdeo` faction's `styles` list.
 
 **The live list is the palette, not this file:**
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\data\ideology_palette.md`
+`D:\Luke\dev\RimMandrake\design\Jawa\worldbuilding\data\ideology_palette.md`
 §"Style categories (41)", line 1204. 41 installed, from 8 mods — 10 Ideology,
 13 Alpha Memes, 13 VIE-Memes, 1 each from Anomaly, `det.keshig`,
 `asp.halituisamaricanous`, `kxp.ideosymbolsasideograms`, `tleno.wireheadstyle`.

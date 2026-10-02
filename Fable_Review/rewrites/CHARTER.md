@@ -54,7 +54,7 @@ under 24 h old is a draft and may be reversed without ceremony.
 An enforced rule is a **hook** (`.claude/hooks/`); propose the hook, not a paragraph.
 A default worth stating is a **line in this charter**, replacing one. Everything else
 is deleted — git is the archive. Lessons go to
-`infrastructure/state/LESSONS_INBOX.md`, one line each; skills are edited only in a
+`infrastructure/state/lessons/`, one file each; skills are edited only in a
 fresh-context curation session, never at end-of-context.
 
 ## Instruments, in order

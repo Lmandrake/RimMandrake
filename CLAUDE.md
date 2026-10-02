@@ -741,7 +741,7 @@ standing is believed by everyone who reads it next; the seat boundary was never
 supposed to protect one.
 
 - **Commit it at once, explicit paths.** The danger was always the UNCOMMITTED fix in
-  a tree four threads share — erased by the next checkout, nobody told. Committing is
+  an uncommitted change is erased by the next checkout, nobody told. Committing is
   the safeguard, not the risk.
 - **The commit says what was WRONG**, not merely what changed.
 - ⛔ **Correcting is not redirecting.** Their scope, priorities and open decisions stay
@@ -763,86 +763,18 @@ a duplicate, write a pointer instead.
 
 ## Git
 
-The laptop's `chore(sync): laptop` sweep commits whatever is in progress under a generic message — if the message matters, commit each unit the moment it lands (2026-09-15).
+**Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
 
-🔑 **Publish with `./publish` from your OWN ext4 clone** — `/home/mandrake/rm/<seat>`, or a pool
-slot under `/home/mandrake/rm/pool/<seat>/` (2026-10-02,
-`design/RimMandrake/git_workflow_plan_2026-10-01.md` §2.6). It is plain git, wrapped:
-
-```
-./publish -m "subject" path/one path/two     # commit those paths, rebase on origin, push, PUBLISHED <sha>
-./publish                                    # push local commits already made
-```
-
-`git commit -- <paths>` + `git pull --rebase --autostash origin main` + push (`HEAD:main` from a
-seat clone, `submit/<seat>/<branch>` from a pool slot), up to 8 retries on non-ff, and a
-fetch + `merge-base --is-ancestor` check after any ambiguous push. A rebase conflict is aborted
-and named; the commit stays on HEAD for you to resolve in a tree only you write. It **refuses in
-`/mnt/d/Luke/dev/RimMandrake`**, which becomes a read-only mirror (`./mirror sync`). The old
-temp-index route and `--catchup`/`--sync`/`--commit`/`--worktrees` are deleted, and
-`shared_sync.py` only prints its retirement. Pass the printed sha to `rimflow close --sha`.
-
-Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Never `--force`. Never a file
-over ~50 MB.
-
-🔴 **The pathspec goes on the `commit`, not just the `add`** — `git commit <paths> -F -`
-(hook-enforced). Four threads share this working tree *and* its index, so a bare
-`git commit -m` sweeps a peer's staged files into your commit under your message.
-⚠️ The hook is `PreToolUse`, so it refuses a **compound** command whole: if you chain a
-file write to a commit, the write never happens either. Keep writes and commits separate.
-
-🔴 **No real merge in the shared `/mnt/d` tree** (owner, 2026-09-25; hook-enforced by
-`block_shared_tree_merge.py`) — it is retiring to a writer-free mirror; work in an ext4 clone.
-
-⚠️ **An empty `git log origin/main..HEAD` is not proof your commit is published** (a peer
-commit was once dropped exactly that way, 2026-09-26). The proof is
-`git merge-base --is-ancestor <sha> origin/main`, which `./publish` runs itself.
-
-⚠️ **A REFUSED merge is not harmless**: git's internal restore_state() stashes, hard-resets
-and re-applies, and if a peer holds `index.lock` the re-apply fails — that erased 215 files'
-edits 2026-09-25 07:54 with nothing in the reflog. The same hook refuses whole-tree
-`reset --hard`/`checkout .`/`restore .`/pathless `stash`/`--autostash`/`clean -f` here.
-
-🔴 **A committed mod DLL carries a `.srchash` sidecar and must be pushed together with it**
-(`DLL_SOURCE_STAMP_GUARD_1`, `src/Directory.Build.targets` + `src/RimMandrake/Utils/dll_source_stamp.py`) —
-after any merge touching a mod's `Source/`, rebuild in the merge worktree; never pick a
-side's DLL. Enforced on `git push` by `.claude/hooks/block_dll_source_mismatch.py`.
-Proven four-wide 2026-09-27: concurrent worktree builds into ONE mod's csproj/Mod.cs/DLL
-merge clean when every csproj/settings conflict keeps BOTH sides' lines and the DLL is
-rebuilt after each rebase — the rebuild is the catcher (it found a merge-dropped brace).
-
-🔴 **A subagent that runs `git reset --hard HEAD` destroys THIS window's staged work** — one
-tree, one index. It ate 3 staged files 2026-09-18. Recovery: `git add` writes blobs before any
-commit, so `git fsck --unreachable` + `git cat-file -p <sha>` restores them byte-exact. Brief
-every subagent that `reset --hard`, `checkout --` and `stash` on shared paths are FORBIDDEN and
-that a conflict is reported back, never cleared — "leave those files alone" reads as licence to
-clear them another way.
-
-🔴 **`git rebase --continue` saying "You must edit all merge conflicts" while `git status` says
-all conflicts are fixed means the WORKTREE is dirty, not that a conflict remains.** Usually
-self-inflicted: `code_review_status.py`'s `_trigger_health_rebuild` spawns the health publisher,
-so every `prune`/`list` re-dirties 5 tracked artifacts. Commit them and the rebase finishes
-(MIN_INTERVAL is 900 s, so it holds long enough).
-
-🔴 **The ledger is SHARDED PER SEAT since 2026-09-23** (`EVENTS_JSONL_SHARDING_1`, `2b5947555`):
-`events.jsonl` is frozen history nothing appends to, and every new event lands in
-`infrastructure/state/ledger/events/<SEAT>.jsonl`, so BENCH and FOUNDRY can never rebase-conflict
-in one ledger file again. **Two windows of the SAME seat still share one shard**; publish it
-with `./publish -m "…" infrastructure/state/ledger/events/<SEAT>.jsonl`; a rebase conflict on it
-is a union of lines (upstream's, then yours it lacks), never a pick of one side. ⛔ **Never resolve a shard with `checkout --ours/--theirs`:** that silently discards a
-concurrent window's events. Regenerate the two derived queue views with
-`rimflow render -- --overwrite-queues` — that flag belongs to `render.py`, must come **after
-`--`**, and `reindex` does not accept it; do not publish a hand-merged queue view.
-
-⚠️ **A `cd` in one Bash call PERSISTS into later calls.** `modcheck` needs
-`python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`, and after that `cd` a git query
-or a glob makes `infrastructure/` look DELETED. Use absolute paths, or `cd` back.
-
-✅ **On the Desktop, origin is SSH since 2026-09-29** (`git@github.com:Lmandrake/RimMandrake.git`,
-key `~/.ssh/id_ed25519`), so pushes from WSL worktrees never touch the Windows Git Credential
-Manager, which crashes on every https call from a worktree (`fatal: not a git repository:
-(NULL)`, 8+ agents, 2026-09-27). If a push ever falls back to https there, use a one-shot token header:
-`git -c credential.helper= -c http.https://github.com/.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$(gh auth token)" | base64 -w0)" push origin HEAD:main`.
+- **Work in your seat clone** — `/home/mandrake/rm/bench` or `/home/mandrake/rm/foundry`, ext4, one writer each. `D:\Luke\dev\RimMandrake` is a **read-only mirror** of origin/main (no `.git`, refreshed every 5 min); never write it. Windows tools read it.
+- **Land with plain git or the wrapper:** commit explicit paths → `git pull --rebase origin main` → `git push origin HEAD:main`, or `./publish -m "subject" path…` (prints `PUBLISHED <sha>`; pass that to `rimflow close --sha`). Pathspec on the `commit` (`git commit <paths> -F -`), never `git add -A`/`.`/`-a` (hook-enforced), never `--force`, never a file over ~50 MB.
+- Committed *and pushed* is the only durable state: commit each finished unit and push at once. Proof of publication is `git merge-base --is-ancestor <sha> origin/main`, not an empty `git log origin/main..HEAD`.
+- The pre-push and PreToolUse hooks refuse a compound command whole: keep file writes and commits in separate Bash calls.
+- **Subagents:** `isolation: worktree` takes a pool slot (2 per seat, `/home/mandrake/rm/pool/<seat>/`) through the WorktreeCreate hook; pool full → queue, or run unisolated for a one-path edit. Helpers `./publish` to `submit/<seat>/<name>`, never `main`; the seat lands them with `land_submissions.py`. Rescue refs are local (`refs/rescue/`). Brief helpers that `reset --hard`, `checkout --` and `stash` are forbidden and a conflict is reported, never cleared.
+- **Per-writer state, nothing shared:** ledger shards `ledger/events/<SEAT>.jsonl` (`merge=union`, `ledger_lint.py`; never `checkout --ours/--theirs` one); queue views are rendered on read (`rimflow queue <SEAT>`); lessons are one file each under `infrastructure/state/lessons/`; review status records under `infrastructure/state/code_review/`; artpipe state is outside git at `D:\Luke\dev\_artpipe\`.
+- **Windows-side tools:** builds go through `winbuild.py <Mod|csproj>`; `codex.exe` needs `D:\Luke\dev\_rmscratch\codex\` staging (`gpt_consult.py`, `codex_image.py` do it). 🔴 A committed mod DLL carries a `.srchash` and is pushed with it (`DLL_SOURCE_STAMP_GUARD_1`, hook on push); after a merge touching a mod's `Source/`, rebuild — never pick a side's DLL.
+- Drained historical work lives in `archive/*` tags on origin.
+- Origin is SSH (`git@github.com:Lmandrake/RimMandrake.git`); a push that falls back to https can use a one-shot token header (`gh auth token`).
+- ⚠️ A `cd` in one Bash call persists into later calls (`modcheck` needs `python3 -m modcheck.cli <verb>` from `src/RimMandrake/Utils`); use absolute paths or `cd` back.
 
 ## Code isn't clean until a review says so
 

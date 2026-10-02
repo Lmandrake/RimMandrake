@@ -15,7 +15,7 @@ merging. Measured result: the same 52-line section three times in one skill.
 1. At ~75%, say: *"prepare for reboot."* The window writes **two things only**:
    - a handoff note (current item, state, next step, open questions) — one screen,
      into the item or `Transient/`;
-   - **one line per lesson** appended to `infrastructure/state/LESSONS_INBOX.md` —
+   - **one file per lesson** via `python3 src/RimMandrake/Utils/lessons.py add "…"` into `infrastructure/state/lessons/` —
      claim only, no essay: `sprite facings: generate individually, composite sheets
      drift — seen twice`.
 2. **No skill, memory, or doctrine file is edited at reboot time. Ever.**
@@ -60,7 +60,7 @@ and any "lessons journal" without a procedure at its core.
 **The curation session — the missing institution.** Once a week, or at each milestone
 (a load round shipped, a v1 step closed), open a **fresh** window and say:
 *"curation pass."* That session, and only that session:
-1. drains `LESSONS_INBOX.md` into the right skills, **merging into existing sections
+1. drains `infrastructure/state/lessons/` into the right skills, **merging into existing sections
    rather than appending** (it has full context room to read the whole skill first);
 2. deletes duplicated blocks (start with the known triplication in
    `generating-rimworld-sprites` and the 10k-word `traps.md` — its own contract says

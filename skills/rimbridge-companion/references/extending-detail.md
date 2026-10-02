@@ -6,9 +6,9 @@ Paths, assembly references and the csproj pattern live in
 ## Paths
 
 ```
-source   D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\JawaBench.BridgeTools\*.cs
+source   D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\JawaBench.BridgeTools\*.cs
 csproj   ...\JawaBench.BridgeTools\JawaBench.BridgeTools.csproj      (SDK-style, globs .cs)
-build    D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py
+build    D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\build.py
 artifact ...\bridgetools\artifacts\BridgeTools\JawaBench\JawaBench.BridgeTools.dll
 deployed C:\Program Files (x86)\Steam\steamapps\common\RimWorld\BridgeTools\JawaBench\
 ```

@@ -20,9 +20,9 @@ Check, in this order:
 
 ```bash
 # 1. what the LIVE bridge reports (authoritative - companions register at startup)
-python.exe D:\Luke\dev\Rimworld\src\RimMandrake\Utils\rimbridge_client.py --list-tools
+python.exe D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbridge_client.py --list-tools
 # 2. or, with the game down, what the SOURCE declares
-grep -ho '"jawa/[a-z_]*"' D:/Luke/dev/Rimworld/src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs | sort -u
+grep -ho '"jawa/[a-z_]*"' D:/Luke/dev/RimMandrake/src/RimMandrake/bridgetools/JawaBench.BridgeTools/*.cs | sort -u
 ```
 
 Then, and only then, check whether it is *possible*:
@@ -46,16 +46,17 @@ fields (a `ThoughtDef.stages` array, say). That gap is a deep-serialize upgrade 
 
 ```
 taskkill.exe /F /IM RimWorldWin64.exe          # MUST be first; the DLL is memory-mapped
-python.exe   D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --apply
-             D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\launch_and_wait.sh
-python.exe   D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\prove_<thing>.py
+python3      src/RimMandrake/bridgetools/build.py --gm --apply     # from your seat clone: stages on D:\Luke\dev\_rmbuild, builds with Windows dotnet, copies the DLL back
+             D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\launch_and_wait.sh
+python.exe   D:\Luke\dev\RimMandrake\src\RimMandrake\bridgetools\prove_<thing>.py
 ```
 
 * 🔑 **Two interpreters, and it is not a contradiction.** You run everything from a **WSL
   bash shell**; `launch_and_wait.sh` is a bash script that drives Windows through `.exe`
-  shims (`taskkill.exe`, `cmd.exe /c start`). Only the **Python** parts must be Windows
-  `python.exe`: `build.py` hard-exits under WSL by design, and the bridge binds Windows
-  loopback, which the WSL client cannot reach — `rimbridge_client.py` prints exactly that
+  shims (`taskkill.exe`, `cmd.exe /c start`). Only the bridge-talking **Python** parts must be Windows
+  `python.exe` (run against the read-only mirror `D:\Luke\dev\RimMandrake`, which tracks
+  origin/main within 5 min — `./mirror sync` forces it; push your change first): the bridge
+  binds Windows loopback, which the WSL client cannot reach — `rimbridge_client.py` prints exactly that
   and tells you to re-run under `python.exe`, so you will not be left guessing.
 * ⚠️ **Kill the game BEFORE building.** `build.py` cannot overwrite a running DLL and says
   so — but a piped `grep` hides the refusal and you then test stale code and conclude your
@@ -208,7 +209,7 @@ nobody writes down:
 
 ```python
 import sys, json, time
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
+sys.path.insert(0, r"D:\Luke\dev\RimMandrake\src\RimMandrake\Utils")
 import rimbridge_client as rb
 host, port, token = rb.resolve_endpoint()          # scrapes the LIVE token from Player.log
 S = rb.RimBridge(host=host, port=port, token=token, timeout=600.0); S.connect()

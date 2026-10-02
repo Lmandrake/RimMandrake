@@ -27,7 +27,7 @@ nodes with the same layer have undefined order relative to each other
 attachments at 51, glowing eyes at 55.
 
 A full node, from `RimMandrake_Jawa_Eyes_HugeOrange` in
-`D:\Luke\dev\Rimworld\src\Jawa\RimMandrake_StarWarsRaces\Defs\GeneDefs\Jawa_EyeColours.xml`:
+`D:\Luke\dev\RimMandrake\src\Jawa\RimMandrake_StarWarsRaces\Defs\GeneDefs\Jawa_EyeColours.xml`:
 
 ```xml
 <li Class="PawnRenderNodeProperties_Eye">

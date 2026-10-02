@@ -225,21 +225,14 @@ run** ("exceeds the dimension limit for many-image requests"), not just fail
 that one read. Check dimensions first and view a downscaled copy, keeping the
 full-size original as the reference asset.
 
-**A worktree agent lands its own work.** End every `isolation: "worktree"`
-brief with: `git fetch origin && git rebase origin/main && git push origin
-HEAD:main`, run inside the worktree, fetch+rebase again on a rejected push,
-never force. ⛔ Never merge its branch into the shared tree — a refused merge
-hard-resets that tree (see `git-efficiency`), and `block_shared_tree_merge.py`
-refuses it; the shared tree catches up with `src/RimMandrake/Utils/shared_sync.py`.
-Three agents briefed this way on 2026-09-25 all landed cleanly.
-
-**A finished agent's worktree can stay locked.** `.git/worktrees/<name>/locked`
-names the SPAWNING session's pid, not the agent's, so it stays "live" while your
-session runs. Once `git rev-list --count origin/main..<branch>` is 0 and its
-tracked files are clean: `git worktree unlock`, `git worktree remove --force`,
-`git branch -D`. Unpushed commits from a dead agent are reachable by sha (one
-object store): replay or cherry-pick them in a private worktree and push, never
-merge them into the shared tree.
+**A worktree agent hands in; the seat lands.** `isolation: "worktree"` takes a pool slot
+(2 per seat, `/home/mandrake/rm/pool/<seat>/`, via the WorktreeCreate hook). End the brief with
+`./publish -m "…" <paths>`, which pushes `submit/<seat>/<name>` — a helper never pushes `main`.
+The seat runs `python3 src/RimMandrake/Utils/land_submissions.py`. Pool full → the hook errors
+naming the holders: queue the work, or run unisolated for a one-path edit. Brief: `reset --hard`,
+`checkout --` and `stash` are forbidden; a conflict is reported back, never cleared. A dead
+agent's slot is snapshotted to a local `refs/rescue/<seat>/…` ref on the next allocation
+(`worktree_pool.py rescue-list`). Full account: `design/RimMandrake/GIT_WORKFLOW.md`.
 
 ## Limits that actually exist
 
@@ -261,7 +254,7 @@ merge them into the shared tree.
 > Look into our mod patches and see if anything conflicts.
 
 **After:**
-> In `/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Jawa_Patches/Patches/` only, list
+> In `src/RimMandrake/Jawa_Patches/Patches/` only, list
 > every `<xpath>` that targets `ThingDef[defName="Gun_Autopistol"]`. Return rows
 > of `file:line -> xpath`. Max 12 rows. If none, return NONE. Do not read
 > anything outside that directory.

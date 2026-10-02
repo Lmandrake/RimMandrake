@@ -12,7 +12,7 @@ textures and sometimes a C# assembly, and each of those fails silently on its
 own.
 
 Measured on this project's 587-mod 1.6 stack, rescuing 69 Star Wars species into
-`D:\Luke\dev\Rimworld\src\Jawa\RimMandrake_StarWarsRaces`. Everything below was
+`D:\Luke\dev\RimMandrake\src\Jawa\RimMandrake_StarWarsRaces`. Everything below was
 observed there unless marked *inferred*.
 
 | I want to… | Start at | Reference |

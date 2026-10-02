@@ -50,7 +50,7 @@ WHAT IS NOT BLOCKED
 ===================
   git merge --ff-only / --abort / --continue / --quit
   git reset --keep                  aborts rather than touch a dirty file; it is how
-                                    src/RimMandrake/Utils/shared_sync.py moves this tree
+                                    how a tree that keeps local edits moves forward
   git pull --ff-only / --rebase / -r
   any merge inside a linked worktree (`git worktree add`, `isolation: worktree`)
 

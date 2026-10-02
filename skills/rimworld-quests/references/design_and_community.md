@@ -157,7 +157,7 @@ GiveRewards 12 · GeneratePawn 12 · EvaluateSimpleCurve 10
 - **[W]** Ludeon ships fixes for this class of bug repeatedly — "QuestNode_GetRandomPawnKindForFaction sometimes makes the quest description unresolvable" (1.1.2610), "Wastepack dump quests descriptions unresolved" (1.4.3563), "Quests incorrectly capitalize words inside curly brackets" (1.1.2598). Assume your first draft has an unresolvable branch.
 - **[W]** Labels containing `[]{},` break grammar resolution — keep them out of any def a quest names. `nameMustBeUnique` exists because duplicate quest names are a real failure (1.1.2598 improved the duplicate-name warning).
 - **[W]** Test without waiting for natural generation: dev mode → debug-actions icon → **Quests → Generate quest…** (has a search filter). A quest-script-defs debug table also exists (1.1.2610 fixed an error in it).
-- **[V]** Writing a file is not deploying it — the game loads from the Steam Mods folder, not this repo. See `/mnt/d/Luke/dev/Rimworld/skills/rimworld-deploy/SKILL.md`.
+- **[V]** Writing a file is not deploying it — the game loads from the Steam Mods folder, not this repo. See `/mnt/d/Luke/dev/RimMandrake/skills/rimworld-deploy/SKILL.md`.
 
 ## A11. Sources for Part A
 

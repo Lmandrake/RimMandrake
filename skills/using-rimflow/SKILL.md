@@ -116,7 +116,7 @@ three distinct traps, all live-caught:
   the literal `"c1"` (a packet's short name typed by mistake) with no error.
 - **A `--sha` that fails to parse (bad quoting, wrong flag position) silently
   falls back to `git rev-parse HEAD` AT CALL TIME**, not to a resolved value
-  from earlier — in a shared worktree that can be a concurrent peer's commit
+  from earlier — in a clone shared by two windows of one seat that can be the other window's commit
   that landed in the gap between your fix's commit and the close call.
 
 Rule: **commit the fix first**, then close with the real hash from *after*
