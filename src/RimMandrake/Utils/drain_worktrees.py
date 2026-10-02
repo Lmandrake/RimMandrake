@@ -38,7 +38,11 @@ LEFTOVERS = "/mnt/d/Luke/dev/_rm_shared_tree_leftovers_2026-10"
 UNTRACKED_MAX = 5 * 1024 * 1024        # §2.2: untracked files above this are listed, not stored
 TRACKED_MAX = 50 * 1024 * 1024         # never put a >50 MB blob in a pushed commit
 SAFE_IGNORED = re.compile(r"(^|/)(obj|bin|__pycache__|\.vs|node_modules)(/|$)|\.pyc$|(^|/)\.DS_Store$"
-                          r"|^vendor/mod_sources/|^mod_sources/")
+                          r"|^vendor/mod_sources/|^mod_sources/"
+                          # per-checkout runtime state, regenerated: lock files, the health hook log,
+                          # the BRIDGE mirror (re-derived by `rimflow bridge who`), state/derived/
+                          r"|\.lock$|^Transient/codebase_health_hook\.log$|^infrastructure/state/BRIDGE$"
+                          r"|^infrastructure/state/derived/")
 SECRET_NAME = re.compile(r"(\.pem|\.key|\.pfx|\.p12)$|(^|/)id_[^/]*$|(^|/)\.env|token", re.I)   # §2.2
 SECRET_BODY = re.compile(rb"-----BEGIN [A-Z ]*PRIVATE KEY-----|ghp_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{20,}"
                          rb"|sk-ant-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}|xox[abpr]-[A-Za-z0-9-]{10,}"
@@ -623,6 +627,17 @@ def verify(args):
         log("  MISSING", m)
 
 
+def reverdict(args):
+    """Re-apply verdict() after a SAFE_IGNORED change, without re-running status."""
+    c = load()
+    for r in c["worktrees"]:
+        if r.get("ignored_unsafe"):
+            r["ignored_unsafe"] = [x for x in r["ignored_unsafe"] if not SAFE_IGNORED.search(x)]
+        r["verdict"] = verdict(r)
+    save(c)
+    summary(c)
+
+
 def table(args):
     """Markdown census table for the report."""
     c = load()
@@ -645,7 +660,7 @@ def table(args):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("verb", choices=["census", "archive", "snapshot", "shared", "remove", "verify", "table"])
+    ap.add_argument("verb", choices=["census", "archive", "snapshot", "shared", "remove", "verify", "table", "reverdict"])
     ap.add_argument("--jobs", type=int, default=8)
     ap.add_argument("--timeout", type=int, default=300, help="per-worktree git status timeout (s)")
     ap.add_argument("--budget", type=int, default=420, help="remove: stop starting removals after S seconds")
