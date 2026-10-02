@@ -1,6 +1,7 @@
 # Ship cargo hoist — universal vertical cargo device (design, 2026-10-01)
 
-Item: `SHIP_CARGO_HOIST_DESIGN_1`. Status: DESIGN. Nothing is built. Open questions for the owner are in §6.
+Item: `SHIP_CARGO_HOIST_DESIGN_1`. Status: **RULED** 2026-10-01 (owner cards on design `b30a0032d`; ledger notes on `SHIP_CARGO_HOIST_DESIGN_1`).
+Nothing is built. Build items: §5.
 
 ## 1. What already exists
 
@@ -13,11 +14,11 @@ Origin: GPT's idea 2, "The Veyrline Keel Hoist", in
 there as *"unique mechanism, thin need ... pawns already carry things through a pocket-map
 portal."* The owner's answer is to widen the need rather than drop the mechanism.
 
-### 1a. Our own source — four MapPortals already ship, and one is on the gravship
+### 1a. Our own source
 
 | what | path | what it gives the hoist |
 |---|---|---|
-| `RM_SeaDiveHatch` (`MapPortal` subclass, 2×2, steel 150 + 4 components) | `src/RimMandrake/DivingInteraction/Source/RM_SeaDiveHatch.cs`, `.../Defs/ThingDefs_Buildings/RM_SeaDiveHatch.xml` | **The gravship-component form already exists.** It is buildable only inside a structure carrying a `GravEngine` (`PlaceWorker_NeedsGravEngine.cs`), picks its pocket-map generator at generate time from the parent tile's biome, and has a master Mod Settings toggle (`RM_DivingSettings.cs`). The hoist is this class generalised. |
+| `PlaceWorker_NeedsGravEngine` | `src/RimMandrake/DivingInteraction/Source/PlaceWorker_NeedsGravEngine.cs` | An existing place-worker that limits a building to structures carrying a `GravEngine`. The ship form needs the same rule; **copy it into the hoist mod** rather than referencing it, because it lives in `DivingInteraction` beside the sea dive hatch. (The hatch that used it is a leftover of an earlier build, being retired as `SEA_DIVE_HATCH_RETIRE_1`. Nothing here depends on the hatch.) |
 | `RM_LanternDeepMineshaft` (vanilla `MapPortal`, 5×5, PitGate art, `CompProperties_Sealable`) | `src/RimMandrake/LanternDeeps/Defs/ThingDefs_Buildings/RM_LanternDeepMineshaft.xml` | A cave mouth into the Lantern Deeps pocket map. It is where the Keel Hoist was first pictured. |
 | `RM_LanternDeepEmergence` | `src/RimMandrake/LanternDeeps/Defs/ThingDefs_Buildings/RM_LanternDeepEmergence.xml` | A second Deeps mouth. |
 | `RUT_FoundryTowerEntrance` (vanilla `MapPortal`, 80×80 pocket floor) | `src/RimUtinni/UtinniPatches/Defs/ThingDefs_Buildings/RUT_FoundryTowerEntrance.xml` | A dungeon entrance that already works. Its header records *"one deep floor per tower in v1, no multi-floor/portal chaining attempted."* |
@@ -37,20 +38,15 @@ portal."* The owner's answer is to widen the need rather than drop the mechanism
 | Acklay homing | `design/Jawa/worldbuilding/review/round2/move_mapping_v2.md` | *"Hutt arena fodder and territories"*, OPEN |
 | Sarlacc pocket-map route | `design/Jawa/worldbuilding/sarlacc_discussion_pack.md` D-1 | `PitGate`-style stacked pocket maps. Measured there: **pocket-map nesting is not enforced, so stacked levels are legal.** |
 
-### 1b. The pit and oubliette conflict — RECONCILE, NOT DECIDED HERE
+### 1b. The pit oubliette and the Hutt oubliette — RULED, no conflict
 
-`infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md` (owner rulings, 2026-09-17):
-- A pit is a **superdeep cell** (depth 4) in FlowWorks terrain, not a building. An enclosed superdeep area
-  is a **room**, and a prisoner bed makes it a real prison room. **`capture down` and `convert down`** happen
-  **from the lip**: *"nobody who enters can leave."* A ladder near the lip is the way out, and it works *"like
-  opening a prison door."*
-- ⛔ **The `Oubliette` fitting was CUT.** Verbatim: *"forget the oubliette/ion thing."* That fitting was the
-  pit-hardware version: a building with an ion charge, and the only anti-mechanoid fitting.
+`infrastructure/state/items/PIT_SUPERDEEP_COLLAPSE_1.md` (2026-09-17) cut the pit **fitting** called the
+oubliette (*"forget the oubliette/ion thing"*). The Hutt oubliette is a different thing, ruled 2026-10-01:
 
-The owner now describes a **Hutt "oubliette" holding slaves who cannot get out**. That reads as a
-*place*: an enclosed superdeep room or a pocket map below a hoist. The cut covered a *fitting*. These are
-probably different things, and the 2026-09-17 model (a trapped room, served from the lip) is already
-most of a Hutt oubliette. **That is a question for him (§6 Q1), not something decided here.**
+> *"It is a special map feature you can't go into and don't want to. But your shop winch could reach down and lift up the slaves if you attacked the place and took it over."*
+
+So it is **neither an enterable map nor a pit room.** It is a sealed feature on the Hutt site's map that holds
+slaves. **Only the ship's hoist reaches it, and only after the site has been taken by force.**
 
 ### 1c. The engine (RimSage, decompiled 1.6, read 2026-10-01)
 
@@ -71,9 +67,7 @@ most of a Hutt oubliette. **That is a question for him (§6 Q1), not something d
   `pocketMapProperties.canLaunchGravship == false`, no substructure, disconnected, fuel, thrusters and
   cooldown. A "tethered: reel in first" refusal therefore needs a **Harmony postfix** on it. **VERIFIED**
   (`Building_GravEngine.cs:299`).
-- No gravship source file mentions `MapPortal` or `PocketMap`. **What happens today when a ship lifts off
-  while `RM_SeaDiveHatch`'s pocket map still holds pawns is UNMEASURED.** Nothing in
-  `DivingInteraction/Source` mentions launch. The hoist's tether lock closes that hole for the sea hatch as well.
+- No gravship source file mentions `MapPortal` or `PocketMap`, so a ship that lifts off with its cable down a portal has no engine guard of its own. The tether lock is that guard.
 
 ### 1d. Installed mods — prior art sweep
 
@@ -86,220 +80,177 @@ Sweep: every `About.xml` under both `…/common/RimWorld/Mods` and `…/workshop
 |---|---|---|---|
 | **Vanilla Quests Expanded – Ancients** (`vanillaquestsexpanded.ancients`) | **yes** | `VQEA_PneumaticTubeLaunchPort` (5×5, `Building_PneumaticTubeLaunchPort`, `CompProperties_PneumaticTransporter` with `massCapacity 100`). Description, verbatim: *"used to send supply capsules between distant vaults ... Cargo can still be loaded and launched, and a return capsule may arrive from another vault after some time."* Keyed: *"You may receive some goods from another vault in return."* | **This is almost certainly the owner's "catapult in their vault."** It lives in the vaults, you send cargo, and goods come back. **How the return is valued** (equal value? random?) is in the DLL and **UNVERIFIED**; no decompiler is on this machine. *"Items of similar value"* is the owner's recollection, and it is the rule we will build either way. |
 | Vanilla Factions Expanded – Ancients (the "supply slingshot") | **not installed** | Known only from `Dismantle Ancient Junk`'s compatibility note (*"Ancient supply slingshot ... will be dismantleable"*). | Same idea, older mod. Not readable here. |
-| **GravTide** (`gravtide.mod`) | **yes** | Ship-to-sea-floor travel, a `GravTide_VesselCrane` deck crane (within-map heavy cargo, pile driving), and a `GravTide_CargoWinch` that is a **damaged quest-site prop** (*"The contracted cases must be hauled home"*). Its docs use a **launch lock** pattern: *"its vessel cannot launch, cast off, dive or crane into another move."* It also has **individual-pawn diving** (helmets, suits). | Prior art for the tether lock and for cranes. **None of it moves cargo map-to-map vertically.** Its pawn diving **contradicts our ship-only ruling**, and must not leak into how our seas are reached. |
+| **GravTide** (`gravtide.mod`) | **yes** | Ship-to-sea-floor travel, a `GravTide_VesselCrane` deck crane (within-map heavy cargo, pile driving), and a `GravTide_CargoWinch` that is a **damaged quest-site prop** (*"The contracted cases must be hauled home"*). Its docs use a **launch lock** pattern: *"its vessel cannot launch, cast off, dive or crane into another move."* It also has **individual-pawn diving** (helmets, suits). | Prior art for the tether lock and for cranes. **None of it moves cargo map-to-map vertically.** Its pawn diving **contradicts our ship-only ruling**. Our seas are reached by the ship flying to the `RM_SeabedLayer` sea-floor planet layer. |
 | Hospitality: Casino (`Adamas.HospitalityCasino`) | installed | Guest gambling | Possible donor for the lottery's *joy/guest* side. Not the device. |
 | Dungeon Core (`HaiLuan.Dungeon`) | installed | Dungeon content | Not read further. Outside this design. |
 | hoist / winch / elevator / cargo lift / arena | — | **0** hits in names or descriptions | **No installed mod ships a vertical cargo device.** The hoist is genuinely new. |
 
-## 2. The core device
+## 2. The core device (RULED)
 
-**Working name: the keel hoist.** It is a winch, a cable and a cradle that moves cargo **vertically
-between two places that walking does not connect, or connects badly.** It is one mechanism with one
-comp, wherever it appears. Every reuse in §3 is the same device pointed at a different target.
+**Working name: the keel hoist.** It is a winch, a cable and a cradle that moves cargo **vertically between
+two places that walking does not connect.** It is one comp (`RM_CompKeelHoist`) wherever it appears.
 
-### 2a. Two forms, one comp (`RM_CompKeelHoist`)
+### 2a. Two forms: a ship part, and fixed hoists built into sites
 
-| | **ship form** `RM_KeelHoist` | **placed form** `RM_HoistFrame` (a head-frame) |
+Owner ruling: the hoist is **a ship part, plus fixed hoists that come built into sites. Players do not build
+fixed hoists.**
+
+| | **ship form** `RM_KeelHoist` | **fixed form** `RM_HoistFrame` (a head-frame) |
 |---|---|---|
-| where | a gravship fitting, gated by the existing `PlaceWorker_NeedsGravEngine` exactly as `RM_SeaDiveHatch` is | built on the ground over a mouth, or **pre-placed by gensteps** at Hutt pits, vault shafts, mines |
-| travels | **yes**: it flies with the ship, so it reaches any mouth the ship can park over | no |
-| what makes it special | the **only** form that can drop a cable from the sky onto a mouth it was not built over. This is the unique gravship component the owner asked for. | cheap, local, the thing NPC sites own |
-| player-buildable | yes, ship research tier | **open question (§6 Q4)** |
-
-The ship form is the campaign's signature, so it lands first. The placed form is the same comp on a
-different building, with `range` 0: it serves only the mouth it stands on.
+| where | a gravship fitting, limited by the existing `PlaceWorker_NeedsGravEngine` | **placed only by site gensteps**: the Hutt slave pit, the lottery chute, old vault shafts, mines |
+| travels | yes. It flies with the ship and drops its cable onto any mouth, cell or feature the ship parks over | no |
+| player-buildable | yes, through ship research | **no**. The player uses it while on the site, and does not designate or build it |
+| what makes it special | the only form that reaches a target it was not built over. This is the unique gravship component. | the NPC sites' own machinery |
 
 ### 2b. What it moves
 
-| cargo | today through a vanilla portal? | hoist |
-|---|---|---|
-| items, stacks, minified buildings | yes (`Dialog_EnterPortal`) | yes. **Mass per cycle is the capacity stat**, not volume. |
-| colonists, slaves, secure prisoners, tame animals | yes | yes. **Whether pawns ride the cradle awake is §6 Q2.** |
-| **downed colony pawns** | yes (`allowEvenIfDowned: true`) | yes. This is the rescue lift. |
-| **downed strangers, downed wild animals** | **no** (`allowCapturableDownedPawns: false`) | **yes, and this is the one engine gap.** The owner's *"unconscious beasts even if not tamed"* needs it. A hauler carries the body to the cradle the way vanilla carries a capture target. |
-| corpses | as items | yes (sarlacc feeding, arena disposal) |
+| cargo | hoist |
+|---|---|
+| items, stacks, minified buildings | yes. **Mass per cycle is the capacity.** |
+| colonists, **awake** (owner: colonists may ride) | yes. The cradle is an entrance as well as a lift. |
+| slaves, secure prisoners, tame animals, downed colony pawns | yes (vanilla portal loading already allows these) |
+| **downed strangers and downed wild animals** | yes. **This is the one engine gap** (`allowCapturableDownedPawns: false`, §1c). They arrive **captured** (prisoner / wild-captive status applied on arrival), never silently kidnapped. |
+| corpses | yes |
 
-### 2c. Two target kinds: map-to-map and within-map
+### 2c. Three target kinds
 
-1. **Map-to-map (a portal target).** The cable is paired with an existing `MapPortal`: a cave mouth, the
-   sea dive hatch, a dungeon entrance, or a Hutt pit's oubliette mouth. Lowering moves cargo to that
-   portal's other side and puts it down beside its `exit`. Raising takes whatever stands on a **cradle cell
-   at the bottom** (a small `RM_HoistCradle` dropped beside the exit on first use, or a stockpile-like zone)
-   and brings it up beside the hoist. **No pawn has to walk the shaft.** That is the hoist's whole value over a
-   plain portal: it turns a dungeon or cave into a supply line rather than a carry.
-2. **Within-map (a cell target).** The cable drops onto a cell on the same map that is **unreachable on foot**:
-   the floor of a FlowWorks superdeep pit room, a cliff shelf, or a sealed courtyard. Lowering puts the cargo
-   on that cell. Raising lifts from it. This is how a pit is **served from the lip**, which matches the
-   2026-09-17 *capture down / convert down* model: food down, a prisoner up, a body up.
+1. **A portal (map-to-map).** The cable pairs with an existing `MapPortal`: a cave mouth, a dungeon entrance.
+   Lowering puts cargo beside the portal's exit below. A cradle cell below sends things up. **One pairing per
+   hoist.** Stacked dungeons are chains of ordinary pairs, never a portal graph.
+2. **A cell (within-map).** A cell nobody can walk to: the floor of a superdeep pit room, a cliff shelf. This is
+   how a pit is served from the lip, consistent with *capture down*.
+3. **A holder feature (within-map).** A sealed building on the map that **contains** pawns and cannot be entered,
+   the **Hutt oubliette**. The hoist lifts its contents out. The ship form may target it **only once the site is
+   taken**: its owning faction is defeated, or the site is the player's.
 
-### 2d. Engine route (VERIFIED where marked, in §1c)
+### 2d. Engine route
 
-- `RM_KeelHoist : MapPortal`. Overriding `GetOtherMap()` and `GetDestinationLocation()` (both **virtual**,
-  VERIFIED) lets the hoist reuse **the whole vanilla load pipeline**: `leftToLoad`, `Dialog_EnterPortal`,
-  `JobDriver_HaulToPortal`, `ITab_ContentsMapPortal`. The hoist does not generate a map of its own. It
-  **borrows** its target portal's other map. A within-map target returns `Map` itself and the target cell.
-- **Transit is a timed hold, not an animation.** Loaded things go into the hoist's `ThingOwner`, a
-  `cycleTicks` timer runs (scaled by mass), and then everything spawns at the destination. The pattern is a
-  transport pod's (UNVERIFIED as a reuse; it is a few lines either way).
-- **Downed strangers and wild animals:** add them to the send list. Prefer a hoist-owned dialog subclass
-  (or a postfix scoped to `RM_KeelHoist`) over patching the shared `AllSendablePawns` call, which every
-  caravan reads. Capturing a stranger this way should apply vanilla's capture (they arrive as **prisoners**),
-  never a silent kidnap.
-- **Tether lock:** a Harmony **postfix on `Building_GravEngine.CanLaunch`** (non-virtual, VERIFIED) refuses
-  launch while any `RM_KeelHoist` on the ship has a cable deployed. Message: *"Reel in the keel hoist first."*
-  This doubles as the long-missing guard on `RM_SeaDiveHatch` (launching with pawns below is UNMEASURED today, §1c).
-- **Pairing:** a targeting gizmo, "Drop cable", picks a portal or a cell within `hoistRange` (ship form)
-  or the portal underneath (placed form). The pairing is saved by reference. A destroyed or sealed target
-  drops the cable automatically.
+- `RM_KeelHoist : MapPortal`. Overriding `GetOtherMap()` / `GetDestinationLocation()` (both **virtual**,
+  VERIFIED) reuses the whole vanilla load pipeline: `leftToLoad`, `Dialog_EnterPortal`,
+  `JobDriver_HaulToPortal`, `ITab_ContentsMapPortal`. A within-map target returns `Map` itself. A holder target
+  unloads the holder's `ThingOwner`.
+- **Transit is a hidden timer**, not an animation: loaded things sit in the hoist's `ThingOwner` for
+  `cycleTicks` (scaled by mass), then spawn at the destination.
+- **Downed strangers and wild animals:** a hoist-owned dialog subclass, or a postfix scoped to `RM_KeelHoist`.
+  **Never** patch the shared `AllSendablePawns` call that every caravan reads.
+- **Tether lock:** a Harmony postfix on `Building_GravEngine.CanLaunch` (non-virtual, VERIFIED) refuses launch
+  while any of the ship's hoists has a cable down: *"Reel in the keel hoist first."*
+- **Manifest:** every cycle records what went, who it was, from where and to where, readable in an inspect tab.
+  This is the record the "nothing vanishes without a sign" rule needs. It is also what Hutt letters and the
+  lottery read.
+- **Open Line meter (from GPT, adopted):** a per-map counter that rises while a cable is down and raises a
+  site-specific consequence (noise, hostile interest, instability, Hutt scrutiny). It costs, and it never limits
+  what can be carried. Slice 1 ships the counter and its readout. Consequences are wired per site later.
 
-### 2e. Gating and cost — balance by cost, never by narrowing scope
+### 2e. Gating and cost — by cost, never by narrowing scope
 
-- **Research:** one project on the gravship branch (defName to be measured, never guessed, as
-  `RM_SeaDiveHatch.xml`'s comment already insists).
-- **Build:** steel, components, and plasteel for the ship form, which is heavy. The placed form is wood/steel and cheap.
-- **Running:** power while cycling. A cycle's time grows with mass, so a one-mass shipment is fast and a
-  minified generator is slow.
-- **Exposure:** while the cable is deployed **the ship cannot leave.** That is the honest cost, and the
-  risk: a raid arrives while your cable is down a hole. Optional later: the cable can be cut (an
-  incident), which strands the cradle below.
-- **Mod Settings** (every mod, owner 2026-09-12): master on/off; ship form; placed form; tether lock (on
-  by default, labelled as a safety rule); capacity multiplier; cycle-time multiplier; pawns-may-ride;
-  downed-wild-animals; and, in the RimUtinni layer, the Hutt pit trade and the lottery as separate toggles.
+- **Research:** one row on the gravship branch. GPT's order is adopted: rigging (within-map) → portal coupler
+  → restraint cradle (downed beings) → heavy drum (mass, speed) → manifest logic. The defName of the prerequisite
+  is measured, never guessed.
+- **Build (ship form):** steel, components, plasteel. **Running:** power while cycling, and time that scales with mass.
+- **Exposure:** the ship cannot leave while the cable is down, and the Open Line meter climbs.
+- **Mod Settings:** master on/off; tether lock (on by default, labelled as a safety rule); capacity and
+  cycle-time multipliers; colonists-may-ride; downed-wild-animals and strangers; the Open Line meter. In the
+  RimUtinni layer: Hutt pit trade, pit price multiplier, lottery on/off and odds sliders.
 
-### 2f. Tiers and names
+### 2f. Tiers
 
-The device is **invented**, so it lives in the free **`RM_`** tier (`mandrake.rm.*`). Suggested home: a
-generalisation of `DivingInteraction`, or a new small `RimMandrake.KeelHoist` mod; that is a packaging call.
-Everything Hutt (the slave pit, the oubliette, arena fodder, the lottery's Hutt dressing) is canon and goes to
-**`RUT_`** under `UtinniPatches`/a RimUtinni mod. The lottery's *mechanism* (send cargo, get value back) can
-be an `RM_` building any faction can own; the Hutts just wear it best.
+The device is invented, so it goes in **`RM_`** (`mandrake.rm.*`, a small `RimMandrake.KeelHoist` mod).
+Everything Hutt (the slave pit, the oubliette, arena hints, the lottery's dressing) is **`RUT_`**. The chute's
+*mechanism* (stake cargo, a value-matched crate comes back) is `RM_`. The Hutts own the one the player meets.
 
 ## 3. Reuse sites
 
-Every row below is **the same comp with a different target**. Rows marked **(RUT)** are campaign/canon.
+### 3a. The Hutt slave pit (RUT) — built first, at a small stand-alone test site
 
-### 3a. The Hutt slave pit (RUT) — the owner's first example
+Owner: *"Yes for small test site."* Not Gorga's Palace yet.
 
-- **The site.** An inhabited Hutt place whose centrepiece is a **pit with a Hutt-owned head-frame**
-  (`RM_HoistFrame`, owned by `RUT_Jawa_HuttCartel`) over an oubliette.
-- **Selling.** The pit's keeper buys: **any slave** (Ideology slave status), **secure prisoners** (open: §6 Q5),
-  and **unconscious beasts, tame or not**. The player's own pawns **walk the sold pawn to the head-frame and
-  lower them.** On arrival below, payment comes up the same cable as silver, or as Hutt favour (open).
-  The price is the pawn's market value times a Hutt pit multiplier. Wild animals already carry a market value,
-  so beasts need no new pricing.
-  *Mechanically this is the hoist's load dialog with a sell side.* Vanilla caravan trade already sells
-  prisoners; the pit is the version you do with your own hands.
-- **The oubliette.** Below the pit, slaves are **already there and cannot get out**: a pocket map, or an
-  enclosed superdeep room, with no exit except the cable. Its residents are pawns of a captive/slave faction
-  with the Hutt holding-pens cast (`hutt_holding_pens.lua` already names "guard" and "debtor" roles).
-  **The player can buy one up** (pay, and the cable brings them up as your slave). They can **go down**
-  (pay for the ride, if pawns may ride: §6 Q2) to free or recruit. Or they can **cut a deal** to remove one.
-  `RUT_HuttCartel_Captives`' droid debtors belong here too: its header names this exact plug-in point.
-- **Arena fodder.** The oubliette is the arena's larder. A Hutt arena event draws fodder from it. Whether the
-  arena is a place the player visits and bets at, or an offstage consumer reported by letter, is §6 Q8.
-  The hoist's job ends at "fodder goes up to the arena". The arena itself is its own item.
-- **Prerequisite (the big one):** no Hutt place spawns cast or composes a holding-pens district today (§1a).
-  Two routes: a small **standalone slave-pit site** (one map, one template, its own cast def), or wait for
-  Gorga's Palace multi-district composition. §6 Q7.
+- **The site.** One small Hutt map with a `RUT_` cast (keeper, guards) and a fixed `RM_HoistFrame` over the pit.
+- **Selling, for silver.** The keeper buys **slaves, unenslaved prisoners, and knocked-out beasts, tame or
+  not.** The player's own pawns **walk the sold pawn to the fixed hoist and lower them.** Silver comes back up
+  the cable. The price is market value times a Hutt pit multiplier (a Mod Settings slider).
+- **The oubliette.** A sealed map feature (§2c target 3) holding slaves who cannot get out. Nobody enters it.
+  **While the Hutts hold the site, it is just there**: it is seen, it is heard in letters, and its people are
+  out of reach. **If the player attacks and takes the site, the ship's hoist can lift them out**, to free,
+  recruit or keep. Taking a Hutt site is its own hostile act, with Hutt consequences.
+- **The arena is offstage for now.** It shows up only in pit prices ("fighters fetch more this week") and in
+  letters about where the sold went. A visitable arena is a separate, later build.
+- **Prerequisite the owner named:** *"We need a way for gravship to land properly in settlement and not be seen
+  as attacking. That remains to be proven."* Filed as `GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1`. The peaceful
+  sale needs it. Taking the site by force does not.
 
-### 3b. Dungeon entrances — the owner's second example
+### 3b. Dungeon entrances — fixed head-frames built into the sites
 
 | dungeon | item | how the hoist serves it |
 |---|---|---|
-| Foundry towers | live (`RUT_FoundryTowerEntrance`) | a ruined head-frame beside the tower mouth: repair it and heavy salvage comes up without carrying |
-| Breached vaults V1–V6 | `VAULT_DUNGEON_BUILD_1` | vault shafts with dead lifts; **the frozen Rakata** (V6) come up on a cable, sealed, rather than being walked out |
-| Assailant first-impact site | `ASSAILANT_DUNGEON_BUILD_1` | the thaw-gate's *"old power core"* is too heavy to carry: it has to be **lowered** to its socket. That is a reason to bring the ship |
-| Fever Wood ant hives | `FEVERWOOD_ANT_HIVE_DUNGEON_1` | none by default. A hive is a crawl. Listed so nobody forces it |
-| Sarlacc (D-1) | `sarlacc_discussion_pack.md` | **feeding the sarlacc** is the hoist lowering a body or offering (`design/Jawa/devotional_sacrifice_catalog.md`), and pulling a swallowed colonist **up** is the rescue |
+| Foundry towers | live (`RUT_FoundryTowerEntrance`) | a ruined head-frame beside the tower mouth carries heavy salvage up without carrying |
+| Breached vaults V1–V6 | `VAULT_DUNGEON_BUILD_1` | dead vault lifts. The frozen Rakata (V6) come up sealed. |
+| Assailant first-impact site | `ASSAILANT_DUNGEON_BUILD_1` | the thaw-gate's *"old power core"* is lowered to its socket, a reason to bring the ship |
+| Sarlacc (D-1) | `sarlacc_discussion_pack.md` | feeding the sarlacc by cable, and pulling a swallowed colonist up |
 
-### 3c. Lantern Deeps cave mouths — where it started
+### 3c. Lantern Deeps cave mouths
 
-The ship parks over `RM_LanternDeepMineshaft` and drops its cable: crystal and Working-Dead salvage come up,
-and supplies and light go down. GPT's original form, unchanged. **It is the best first test site because the
-portal already exists and the Deeps already need logistics.**
+The ship parks over `RM_LanternDeepMineshaft` and drops its cable. **This is the first test site**, because the
+portal exists and the Deeps need logistics.
 
-### 3d. The seas — ship-only rule respected
+### 3d. The seas
 
-The owner's rule: *"You can't 'dive' as an individual pawn nor return as one. It's ship or nothing."* The keel
-hoist **is part of the ship**, so it does not break the rule. A gravship over a sea **drops its cable down its
-own sea dive hatch** as the target. Sea-floor salvage, catch and bodies come up by cable while the crew works
-below, and the tether lock stops the ship leaving with the crew still on the floor. Whether the hoist then
-**replaces** the hatch, **sits beside it**, or **is** the hatch in another mode is §6 Q3.
+**No dependency.** The ship flies to the `RM_SeabedLayer` sea-floor planet layer itself. The hoist works there as
+it does anywhere (a trench, a wreck shelf), and adds no route of its own to or from the floor.
 
-### 3e. More sites (BENCH's list; GPT's in §7)
+### 3e. More sites
 
-- **Our own superdeep pits** (FlowWorks): serve a pit prison from the lip, lift a prisoner out without a
-  ladder, and lower a meal. Within-map target. Already consistent with *capture down*.
-- **Fall-zone lost cargo** (`FALLZONE_LOST_CARGO_QUESTS_1`): a manifest points at a crate down a crevasse
-  or under a wreck. Recovery means bringing the ship.
-- **The sandcrawler** (Jawa canon): the Jawa sandcrawler's **canon suction tube/lift pulls droids aboard**.
-  The keel hoist is the Jawa identity in device form. That pairing is worth GPT's eyes.
-- **Rescue:** a downed colonist at the bottom of a hole, pulled up before the cave-in.
-- **Mines and deep drills:** ore up a shaft.
+Our own superdeep pits (serve a pit prison from the lip); fall-zone lost cargo (`FALLZONE_LOST_CARGO_QUESTS_1`);
+the sandcrawler (the Jawa canon suction lift, GPT moment 24); rescue of a downed colonist from a hole; ore up a
+mine shaft.
 
-## 4. The Hutt lottery — "the chance chute"
+## 4. The Hutt lottery — "the chance chute" (RULED)
 
-**Prior art:** the owner's *"catapult in their vault"* is, by the evidence, **VQE Ancients'
-`VQEA_PneumaticTubeLaunchPort`** (active in his list). Cargo goes into a capsule and down the tube, and *"you
-may receive some goods from another vault in return."* Its valuation is UNVERIFIED (in its DLL). The
-campaign also pitched the same thing as **XX4 "The casino"**: *"gamble silver against a crate."*
+Prior art: VQE Ancients' `VQEA_PneumaticTubeLaunchPort` (active in his list); XX4 "The casino".
 
-**The design:** a Hutt-owned **chance chute**, the hoist's comp in "send-only" mode, at Hutt trading posts.
-1. You load cargo into the cradle (the same dialog) and pay the house a stake.
-2. It goes down. A timer runs: hours, not seconds, so it is a decision rather than a slot machine.
-3. A crate comes **up** holding items of **similar total market value**, built by vanilla's own
-   `ThingSetMakerParams.totalMarketValueRange` (VERIFIED field) around a roll: mostly 0.7 to 1.1 times,
-   rarely a 3× jackpot, rarely a 0.3 dud. **The house keeps a cut.** Hutts never run a fair game.
-4. **Optional:** slaves and beasts are cargo too. You send a beast and a crate comes back. This connects to §3a.
+1. At a Hutt site, a fixed chute (`RM_HoistFrame` in chute mode). You load a stake and pay the house.
+   **The stake may be goods, slaves or beasts** (owner ruling).
+2. It goes down. A timer of hours runs.
+3. A crate comes up with items of similar total value, built with vanilla's
+   `ThingSetMakerParams.totalMarketValueRange` (VERIFIED field) around a rolled multiplier: mostly 0.7–1.1×,
+   rarely 3×, rarely 0.3×. **The house always takes a cut** (owner ruling), so the expected value is below 1.
+4. Slaves and beasts staked are recorded in the manifest. Letters may later say where they went.
 
-**Why it is cheap:** no new UI (the portal load dialog), no new item generator (vanilla
-`ThingSetMaker` with a value range), and no animation (a fade, then the crate is simply there on the cradle).
-**What it must not become:** a free trader. The stake plus the cut keeps its expected value below 1, and a
-Mod Settings slider owns the odds.
+No new UI, no new generator, and no animation (a fade, then the crate is on the cradle). It lives at the Hutt test
+site, so it shares the peaceful-landing prerequisite.
 
-## 5. Build ladder — smallest shippable slice first, animation last
+## 5. Build ladder (filed as FOUNDRY items) — animation is optional polish, last
 
-**The guard against endless animation (owner: *"careful we don't get caught in endless animation
-development"*):** the shipped visual is **a line and two static sprites**. The cable is `GenDraw.DrawLineBetween`
-(VERIFIED) from the hoist to the mouth while deployed, and the cradle is one static texture with a "loaded"
-variant. Transit is invisible: things vanish, a timer runs, and things appear. **No step on this ladder waits on
-art or animation.** Art is a final, separate row, and it may never happen.
+The shipped visual is **a drawn cable line (`GenDraw.DrawLineBetween`, VERIFIED) and two static cradle sprites**
+(empty, loaded). Transit is invisible: things vanish, a timer runs, things appear. **No item waits on art or
+animation. Art is the last step of each item and may be skipped. A descent animation is never in scope.**
 
-| # | slice | proves | size |
-|---:|---|---|---|
-| **0** | **Ship form, items only, one target type.** `RM_KeelHoist : MapPortal` fitting, "Drop cable" onto any `MapPortal` within range, lower and raise items via the vanilla load dialog plus a bottom cradle, cycle timer, **tether lock** postfix, Mod Settings, a placeholder sprite, and a cable line. Test site: `RM_LanternDeepMineshaft`. | the comp, the pairing, the lock | **M** |
-| 1 | **Pawns:** colonists, slaves, prisoners, downed colony pawns (vanilla already allows these), plus **downed strangers and wild animals** arriving captured (the engine gap). | the owner's beasts | S–M |
-| 2 | **Placed form** `RM_HoistFrame` and **within-map cell targets** (superdeep pit floors). | pit service from the lip | M |
-| 3 | **Sea hatch as a target**, after the owner rules on §6 Q3. | ship-only seas get cargo | S |
-| 4 | **Chance chute** (RM mechanism, RUT dressing) at existing Hutt **traders/posts**. Needs no Hutt map. | lottery | M |
-| 5 | **Hutt slave pit**: sell-to-pit, buy-up, and the oubliette. **Blocked on a Hutt map with cast** (§6 Q7). | the owner's first example | L (+ the site) |
-| 6 | Arena fodder hook, dungeon head-frames (vaults, foundry, assailant core), sarlacc feeding. | reuse | S each |
-| 7 | **Art, optional:** head-frame and cradle sprites through artpipe (check `artpipe/done/` first). **A cradle descent animation is not on this ladder.** | — | — |
+| # | item | what | depends on | size |
+|---:|---|---|---|---|
+| 1 | `HOIST_SHIP_PART_BUILD_1` | ship form; items, awake colonists, prisoners, downed colonists, **downed strangers and wild animals captured on arrival**; portal and cell targets; tether lock; manifest; Open Line counter stub; research row; Mod Settings. Test: `RM_LanternDeepMineshaft`. | — | M |
+| 2 | `HOIST_FIXED_SITE_FRAMES_1` | `RM_HoistFrame` (genstep-placed, not buildable), holder-feature target kind, dungeon head-frames (Foundry tower first) | 1 | S–M |
+| 3 | `HUTT_SLAVE_PIT_TEST_SITE_1` | stand-alone Hutt test site, cast, fixed hoist, sell-to-pit for silver (slaves, prisoners, downed beasts), sealed oubliette feature unlocked to the ship's hoist only when the site is taken, arena hinted in prices and letters | 1, 2, `GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1` | L |
+| 4 | `HUTT_LOTTERY_CHUTE_BUILD_1` | chance chute at the test site: stake goods, slaves or beasts; house cut; value-matched crate; odds in Mod Settings | 3 | M |
 
-**Recommended first slice: 0 + 1 together**, the ship hoist on the Lantern Deeps mouth moving items and
-downed beasts. It exercises everything the Hutt pit will later need, on a portal that already exists.
+Later and unfiled: the visitable arena (its own build); vault, assailant and sarlacc head-frames when those
+dungeons are built.
 
-## 6. Open questions for the owner (plain language)
+## 6. Owner rulings (2026-10-01)
 
-1. **The oubliette.** On 2026-09-17 you cut the pit "oubliette" fitting (*"forget the oubliette/ion thing"*).
-   Now you have described a Hutt oubliette full of slaves who cannot get out. Is the Hutt one a **place** (a
-   hole with people in it, reached only by the hoist) while the cut fitting stays cut? And is that place a
-   **separate underground map** below the pit, or a **walled superdeep room** on the surface map, like our own pits?
-2. **Do people ride the cable?** Should colonists be able to ride the cradle down and up awake, which makes the
-   hoist an entrance as well as a lift? Or should it carry only goods, plus people who are carried (prisoners,
-   the downed, the sold)?
-3. **The seas.** Your ship already has a dive hatch. Should the hoist **replace** it, **sit beside it** as the
-   cargo route, or should the hatch simply **become** the hoist's sea mode?
-4. **Only on the ship?** Should players also be able to build a cheaper fixed head-frame on the ground, or is the
-   hoist the ship's alone, with fixed ones appearing only at Hutt pits and old dungeons?
-5. **What the pit buys.** You said "any slave" and unconscious beasts. Should it also buy **prisoners who are not
-   yet slaves**, and does it pay in **silver** or in **Hutt favour**?
-6. **The lottery's odds.** Should the house always take a cut (on average you lose a little)? Can you send
-   **slaves and beasts** down the chute, or only goods?
-7. **Where the pit lives.** No Hutt place has people or a holding-pens area yet. Should we build **one small,
-   stand-alone slave-pit site** first, or wait until Gorga's Palace is built out properly?
-8. **The arena.** Is the arena a place you **visit and bet at**, or something offstage that the pit feeds, which you
-   only hear about?
+All eight questions are answered. Ledger notes on `SHIP_CARGO_HOIST_DESIGN_1`.
+
+1. **Hutt oubliette:** a sealed map feature nobody enters. The ship's winch lifts the slaves out only after the
+   site is attacked and taken. (Verbatim in §1b.)
+2. **Colonists may ride the hoist awake.**
+3. **Seas:** no hatch. The ship flies to the `RM_SeabedLayer` sea-floor layer (*"the sea hatch might have been
+   something from a previous build. Now the ship just flies to a new planetary layer called sea floor."*). The hatch
+   retirement is `SEA_DIVE_HATCH_RETIRE_1`.
+4. **A ship part, plus fixed hoists built into sites.** Players do not build fixed hoists.
+5. **The pit buys** slaves, knocked-out beasts (tame or not) and unenslaved prisoners, **for silver**.
+6. **The lottery** takes a house cut, and slaves and beasts may be staked.
+7. **The slave pit is built first at a small stand-alone Hutt test site.** Prerequisite: peaceful gravship landing in
+   a settlement (`GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1`).
+8. **The arena is offstage for now** (pit prices, letters), and visitable later as its own build.
 
 ## 7. GPT commentary and assessment
 
@@ -370,10 +321,7 @@ limit on what can be carried.
   campaign starts from a **fixed shipped save**, so a pre-installed broken fitting must be placed in that start
   save's ship (`rimworld-savegame` / `gravship-layout`). That is a RUT_ scenario edit, not a mechanic. The RM_
   tier simply researches and builds it.
-- **Correct: moment 18 (the seas)** assumes the whole ship sinks to the floor, which is GravTide's model. **Our
-  shipped mechanism is different:** `RM_SeaDiveHatch` sits in the ship while it rides the sea tile, and its pocket
-  map *is* the floor. Under ours, the hoist's sea target is that hatch. GPT's version is stricter than the
-  owner's rule requires. It feeds §6 Q3 and changes nothing until he rules.
+- **Moot: moment 18 (the seas).** The owner has since ruled the ship flies to the `RM_SeabedLayer` sea-floor layer, so the hoist has no sea route to provide (§3d).
 - **Correct: moment 23 gives Ozzik a *liberation* rite.** Ozzik is the god who always seeks to enslave and
   always fails. A rite of his belongs at the **sale**, as the clan's temptation, and his *failure* is the
   breakout. Any rite here goes to the owner through the usual rites card. None is adopted.
@@ -382,9 +330,6 @@ limit on what can be carried.
 - **Scope traps:** all five agree with §5. Trap 3 (one pairing per hoist, dungeons as chains of pairs) becomes
   a design rule here, as does trap 4's "capture status applied on arrival".
 - **What GPT did not catch:** the downed-stranger and wild-animal gap is a real engine change
-  (`allowCapturableDownedPawns: false`, §1c). The tether lock also has to cover the existing sea hatch, whose
-  behaviour on launch is UNMEASURED today.
+  (`allowCapturableDownedPawns: false`, §1c).
 
-**Revised first slice:** ladder 0 + 1 (the ship hoist on the Lantern Deeps mouth; items, pawns and downed
-beasts), **plus the manifest and an Open Line counter stub.** That stays size M, and it is the whole skeleton
-every later moment hangs on.
+**First slice (ruled):** `HOIST_SHIP_PART_BUILD_1` (§5 row 1). That is the ship hoist on the Lantern Deeps mouth, carrying items, pawns and downed beasts, with the manifest and an Open Line counter stub. Size M.
