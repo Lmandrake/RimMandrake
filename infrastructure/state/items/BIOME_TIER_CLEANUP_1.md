@@ -6,7 +6,6 @@ Decision taken by question card (owner, 2026-10-01): one FOUNDRY item for all th
 ## (a) Move twin-only features onto the `RM_` biomes, so the repaint does not lose them
 - **Greentide** roil (steam-fog) and wet-bulb locks: `src/RimUtinni/UtinniPatches/Patches/RUT_RoilLock_BiomeWiring.xml`,
   `RUT_GreentideWetBulbLock_BiomeWiring.xml`, weather `RUT_RoilWeather` (overlay C# is already free: `RM_WeatherOverlay_GreentideRoil.cs`). Target `RM_Greentide`.
-- **The Sump** dusk: `RUT_SumpDuskLock`, `RUT_SumpWeather` via `Patches/RUT_SumpDuskLock_BiomeWiring.xml`, wired only to `RUT_Sump`. Target `RM_TheSump`.
 - **Webwork** web front: `RM_FrontCreepExtension` on the twin `RUT_Webwork` only; the free def leaves it off at `RM_Webwork_Biome.xml` l.26 pending `WEBWORK_WEB_STRUCTURES_1`. Target `RM_Webwork`.
 
 ## (b) Scrub Star Wars IP from free-tier text
@@ -19,7 +18,7 @@ Decision taken by question card (owner, 2026-10-01): one FOUNDRY item for all th
 - Miasma: weather, conditions, hediffs, gensteps (`RUT_MiasmaWeather`, `RUT_MiasmaWeatherLock` inline in `RM_Miasma.xml` l.104, `RUT_SurgeWeather`, `RUT_GenStep_*`, `RUT_FeverForged_*`).
 - Rust Cathedral: many `RUT_` defs, e.g. `RUT_LivingBolt` inline in the free def, `RUT_HumLayer*`.
 - Lantern Deeps: `RUT_DeepHum` in `RM_DeepAmbience.xml`.
-Note (a) and (c) interact for the Sump: the dusk moves onto `RM_TheSump` and its defs leave the free mod; resolve the order when building.
+Note for the Sump: `RM_TheSump` already lists `RUT_SumpDuskLock` in its own `biomeMapConditions`, so its dusk is free content under a campaign prefix. Moving those defs to the campaign layer would strip the free biome's dusk; renaming them `RM_` keeps it (`sump_bedazzle_review_2026-10-01.md` §1).
 
 ## verify
 - Load proves each feature still fires on the `RM_` biome; `Player.log` clean of unresolved refs after the gene renames.
