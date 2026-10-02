@@ -15,8 +15,10 @@ sheet shipped with working (internal) defNames only:
 - `RSW_CanopySwinger` is NOT wired into the live-carrying `RUT_Greentide.xml`
   (that def is FROZEN, `GREENTIDE_RM_MOD_BUILD_1`) — it reaches the campaign
   world via `src/RimUtinni/UtinniPatches/Patches/WildAnimals_Greentide.xml`'s
-  `PatchOperationAdd` onto `RM_Greentide`, filling the slot the dianoga
-  vacated (owner ruling 2026-09-23). Renaming it only needs that one patch
+  `PatchOperationAdd` onto `RM_Greentide`. It does not fill the slot the
+  dianoga vacated: the owner filled that with the Illisk and the Vurrak
+  (`GREENTIDE_TERROR_REPLACEMENT_1`). `GREENTIDE_FREE_ROSTER_OWNED_1` moves it
+  (and the yearning fruit) to the free tier as `RM_` working names; rename those. Renaming it only needs that one patch
   file's row changed plus the ThingDef/PawnKindDef's own defName/label — it
   does NOT touch the frozen `RUT_Greentide.xml` at all.
 - `RUT_YearningFruit` is not wired anywhere in the live world yet (see

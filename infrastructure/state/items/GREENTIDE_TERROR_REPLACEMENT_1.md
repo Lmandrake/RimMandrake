@@ -37,14 +37,12 @@ exclusions that a replacement must respect — both visible in `rosters/the_gree
 |---|---|---|
 | band | `lunger` | the vacated row's own band |
 | commonality | 0.15 | the vacated row's weight; keeps the roster sum at 9.168 if matched |
-| tier | ⚠️ **UNDECIDED** — see below | |
+| tier | `RM_` (free), inline in `RM_Greentide`'s list | Q11a (both names invented); `GREENTIDE_SCORING_SITTING_1` turn 1 (2026-10-02, card) ended the Core-only roster, `GREENTIDE_FREE_ROSTER_OWNED_1` |
 
-🔴 **Tier is a real decision, not a default.** The Greentide ships as a franchise-free `RM_` mod
-whose own header commits it to a **Core-only** roster, with all franchise cast added by
-`UtinniPatches/Patches/WildAnimals_Greentide.xml`. ⇒ An **invented** exotic name may live in the
-`RM_` tier and be cast inline (CLAUDE.md Q11a: *"Star Wars style naming is NOT Star Wars IP"*), but
-`RM_Greentide`'s Core-only promise means it would still be cast through the patch layer unless that
-promise is revisited. Resolve before authoring defs.
+**Tier: `RM_`.** Both names are invented, so Q11a puts them in the free tier, and the free roster is no
+longer Core-only: the Greentide scoring sitting (turn 1, 2026-10-02, decision taken by question card) gave
+`RM_Greentide` its own cast and turned the campaign patch into canon-only Adds (`GREENTIDE_FREE_ROSTER_OWNED_1`).
+Both creatures are cast inline in `RM_Greentide`'s `<wildAnimals>`.
 
 ## ✅ what was already done, 2026-09-23 — do not redo
 
@@ -139,7 +137,6 @@ competes with the Fever Wood's horror.
 - **The Vurrak's silhouette and disguise mechanism**, and how it reads as animal rather than trap.
 - ⚠️ **Impassable-water interaction with Odyssey**, flagged as a risk on the card and unresolved —
   Odyssey ships water content, and an effectively-walled river may fight it.
-- **Tier**, per the Core-only tension above.
 
 ## verify
 
