@@ -31,8 +31,12 @@ staggered two-raider raid). Owed work the v1 build deliberately did not guess.
    Per Q11a (`biome_mod_architecture.md` §7) the franchise-free `RM_FeverWood`
    mod should look the same without Star Wars content, cast-in inline — this
    needs an INVENTED, non-canon second raider species for that tier.
-   `fever_wood_rm_cast_proposal_2026-09-24.md` names "skreth" as a proposed
-   but NOT owner-ruled candidate. Do not invent the ruling here.
+   **Ruled 2026-09-24** (decision taken by question card,
+   `fever_wood_rm_cast_proposal_2026-09-24.md` § Rulings): the **skreth** is
+   the free-tier face of the Webwork brood and the two-front war is identical
+   in both tiers. **Moved to `FEVERWOOD_RM_CAST_COMPLETION_1`** (spec 2),
+   which builds `RM_Skreth` and its brood faction and replaces the
+   ants-only fallback; not this item's work any more.
 5. **Release-anytime vs. wager-locked-in.** v1's `RM_CompLureStake.ReleaseBait`
    lets the player free a staked pawn at any time, including after a raid is
    already inbound — a real, if minor, deviation from the design sheet's
@@ -87,3 +91,11 @@ Not closing: points 1 and 4 remain genuinely open and need the owner.
 §5/§6l/§7 · `the_webwork.md` (Wyyyschokk/Feralisk naming ruling) ·
 `WYYYSCHOKK_FERALISK_MERGE_1` (closed — AA_Feralisk already cut from LIVE
 Cherry Picker; never reference it) · Q11a, `biome_mod_architecture.md` §7.
+
+## 2026-10-02 additions
+
+`FEVERWOOD_SCORING_SITTING_1` turn 1 (decision taken by question card 2026-10-02 11:12 PDT, build first =
+land the decided work plus the giant's story): spec 4 (the free-tier second raider) is owned by
+`FEVERWOOD_RM_CAST_COMPLETION_1`. The kurreth front now steals (`FEVERWOOD_ANT_THEFT_RAIDBACK_1` changes the
+lure's `LordJob_AssaultColony(… canSteal: false)` call); retune this item's numbers against the theft raid,
+not the plain assault. Points 1 and 5 still need owner rulings and are untouched.
