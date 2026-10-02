@@ -18,3 +18,37 @@ status-hint: the campaign's menu/loading-screen shell — ten VBE.BackgroundImag
 4. [D] with vanillaexpanded.backgrounds active: def read-back defType=VBE.BackgroundImageDef defName=RUT_BG_PantheonSlide exists; path = "RimUtinni/MenuShell/BG_PantheonSlide", iconPath = same value
 5. [D] with vanillaexpanded.backgrounds active: def read-back defType=VBE.BackgroundImageDef defName=RUT_BG_God_Ozzik exists; path = "RimUtinni/MenuShell/BG_God_Ozzik"
 6. [S] (human pass) the main menu actually shows BGPlanet.png (VBE absent) or the VBE picker offers the pantheon/god backgrounds (VBE present), and a loading-screen tip from RUT_TipSet_Jawa appears during a cold load
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The main menu**
+- [ ] `menushell_background_is_campaign_art` — the main menu shows a campaign
+      background (the pantheon slide or one of the god icons), not RimWorld's stock
+      art.
+- [ ] `menushell_fallback_planet` — without Vanilla Backgrounds Expanded the menu
+      still shows the campaign's own planet background (`UI/HeroArt/BGPlanet`).
+- [ ] `menushell_background_fills_screen` — the art fills the screen at common
+      resolutions without stretching or letterboxing. (guess)
+
+**Loading tips**
+- [ ] `menushell_jawa_tips_show` — the loading screen shows a Jawa-voiced tip from
+      `RUT_TipSet_Jawa`. (guess: may belong to the read axis instead)
+
+### cannot show
+
+- [ ] `menushell_never_stock_menu` — the vanilla RimWorld main-menu art while this
+      mod is active.

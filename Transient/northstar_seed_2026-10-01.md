@@ -24,3 +24,12 @@ Lint/floor: no new findings. Notable seeded question: Cindermare/Skarnix/Karrask
 Armoury, StarWarsRaces, Droidworks, KotORBandolierNorthFix, CereanManeFix, MSEDroidFix, JawaIonWeapons,
 DesertVehicleReskin — 8 walks. Lint/floor: no new findings. The three single-PNG fixes get a tight
 must/cannot pair naming the exact defect they repair.
+
+### Batch 3 — biomes, world art, UI skin, structures
+Contagion, LeaningScrub, Cauldron, FireEcology, AshkarrLandmarkArt, RustChrome, MenuShell,
+StructureInjectionsSW, StructureInjectionsRUT — 9 walks. Lint/floor: no new findings.
+Deliberately NOT seeded: BeastLairs, DesertFixtures, UtinniShell — each is the second walk of an
+unresolved duplicate-PNG pair (item step 3); seeding both halves would make competing demands on one
+image, so only the mod-named walk of each pair got lines.
+Noticed, not fixed: FireEcology.md's `## must be true` still names `RSW_FE_*` defs; the shipped defs are
+`RM_FE_*` (src/RimMandrake/Pyrelands/Defs). The seeded section uses the live `RM_FE_*` names.

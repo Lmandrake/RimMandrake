@@ -25,3 +25,45 @@ status-hint: generic desert-savanna fire-ecology engine — scorchable-ground �
 8. [B] jawa/set_terrain {terrain: RSW_FE_Ground_Sand} on a test cell → jawa/get_terrain_batch on that cell → expect RSW_FE_Ground_Sand read back
 9. [B] jawa/spawn_thing {def: RSW_FE_Fulgurite} → expect a live thing (proves the def itself instantiates cleanly outside the Harmony hook's own rare-chance path)
 X. [S] (human pass) ash-ladder terrain visual ramp (Trace→Deep) and Black Rain's sky-color/overlay read — out of scope here
+
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**The ash ladder**
+- [ ] `fireeco_burn_leaves_ash_ladder` — ground that has burned reads as ash, and a
+      heavily burned patch (`RM_FE_Ash_Deep`) looks visibly deeper and darker than
+      lightly burned ground (`RM_FE_Ash_Trace`).
+- [ ] `fireeco_ash_gradient_follows_fire` — after a grass fire the ash shades from
+      trace at the edges to heavy where the fire burned longest. (guess)
+
+**Black rain**
+- [ ] `fireeco_black_rain_reads_black` — `RM_FE_BlackRain` reads as dark, dirty rain
+      over a fire, visibly different from ordinary rain. (guess)
+
+**Fire's leftovers**
+- [ ] `fireeco_fulgurite_reads_as_glass` — an `RM_FE_Fulgurite` on sand after a
+      lightning strike reads as fused glass. (guess)
+- [ ] `fireeco_scorchfruit_after_fire` — `RM_FE_Plant_ScorchFruit` pods appear on
+      freshly burned ground and nowhere else.
+
+**Fire control**
+- [ ] `fireeco_firebreak_reads_as_strip` — an `RM_FE_FirebreakLine` reads as a
+      cleared strip that a fire visibly stops at.
+
+### cannot show
+
+- [ ] `fireeco_never_green_after_fire` — burned ground still reading as green
+      grass.

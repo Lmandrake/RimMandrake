@@ -77,6 +77,49 @@ Nettles on toxic shores
 3. [L] Player.log after load has no `Config error` naming an `RM_` Cauldron def and no cross-reference error naming one   # load-time
 Offline: `python3 src/RimMandrake/Cauldron/selftest_cauldron.py` runs the suite against a scripted fake game: healthy, then once per mod behaviour broken, each of which must turn exactly its own component red.
 
+## north star
+state: DRAFT
+validated-hash:
+
+Seeded 2026-10-01 by an agent (NORTH_STAR_WALK_AUTHORING_1) from this walk's
+`## must be true` and the mod's shipped sprites, defs and settings, on the owner's
+ruling that day: *"You are mostly seeding the field right now with reasonable
+initial guesses for refinement later through debugging needs or live feedback."*
+Every line is an agent guess for him to accept, edit or cut; `(guess)` marks the
+least certain. `### the experience` is his to dictate.
+
+### the experience  (OWNER'S WORDS)
+(not yet dictated)
+
+### must show
+
+**Permanent dusk**
+- [ ] `cauldron_reads_wet_black_dusk` — an `RM_Cauldron` map at noon reads as a low,
+      wet-black forest in dusk light, never full daylight.
+- [ ] `cauldron_vent_bloom_reads_as_gas` — under the vent bloom the air visibly
+      thickens with a coloured haze. (guess)
+- [ ] `cauldron_no_rain_or_snow` — no rain, snow or clear-sky day is ever on
+      screen.
+
+**Metal-sweating trees and the soils**
+- [ ] `cauldron_trees_read_metallic` — the martyr and thornwood trees read as
+      sweating metal, distinct from vanilla trees. (guess)
+- [ ] `cauldron_soils_read_dark` — the biome's two soils read as dark, gassy ground,
+      the rich one visibly different from the plain one. (guess)
+
+**Natives**
+- [ ] `cauldron_natives_distinct` — the suush (`RM_Suush`), the vexxiss
+      (`RM_Vexxiss`) and the other two natives read as four different animals.
+- [ ] `cauldron_suush_floats` — the suush reads as floating above the ground, not
+      walking. (guess)
+
+### cannot show
+
+- [ ] `cauldron_never_bright_day` — a Cauldron map in bright noon light with hard
+      shadows.
+- [ ] `cauldron_never_magenta` — a magenta square for any plant, creature or
+      item.
+
 ## anti-guessing notes
 - RULED OUT: "`jawa/get_defs` returns `wildAnimals`/`wildPlants` for a BiomeDef" — they are private (`Scalars()` reads public fields only); the roster is read with `jawa/biome_probe` (`findResults[].state`: spawning / zeroed / absent), and that probe is itself sanity-checked with an absent name (JawaBenchTerrainTools.cs, `jawa/biome_probe` header).
 - RULED OUT: "`baseWeatherCommonalities` comes back as rows without `deep`" — a list of non-scalar objects comes back as bare type names unless `deep=true`; load.biome_weather_table passes it and records UNMEASURED if the rows are not dicts.
