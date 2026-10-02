@@ -1,135 +1,259 @@
 """validation.py -- modcheck suite for RimUtinni Ishko's Dark Landmarks
 (mandrake.rut.ishkolandmarks).
 
-Pure-XML content mod: no Source/ folder, no C# at all, no ModSettings class --
-`suite.toggles = []` and every component below is `beyond_toggle=True`. The
-entire mod is one file, `Defs/LandmarkDefs_IshkoDark.xml` (read whole for
-this pass), plus `About.xml` (read whole -- confirms the Odyssey
-`modDependencies`/`loadAfter` and the `mandrake.rut.ashkarrlandmarkart`
-`loadAfter` for the icon textures).
+Pure-XML content mod: no Source/, no C#, no ModSettings -- `suite.toggles = []`
+and every component is `beyond_toggle=True`. The whole mod is
+`Defs/LandmarkDefs_IshkoDark.xml` plus `About/About.xml`.
 
-THE CONTENT (read directly off the XML, not the mod's own description):
-three `LandmarkDef`s, each `MayRequire="Ludeon.RimWorld.Odyssey"` (Landmarks
-are an Odyssey-only DefType) and each anchored on exactly one real, legal
-`TileMutatorDef` marked `Required="True"` inside its own `mutatorChances`
-block -- the same pattern every vanilla LandmarkDef in Core/Odyssey's own
-`Landmarks.xml` uses, per the file's own header comment:
+THE CONTENT (read off the XML):
 
     RUT_LightlessSink     category=mountain  commonality=0.08  Hollow Required=True
     RUT_ShadowedOverhang  category=mountain  commonality=0.08  Chasm  Required=True
     RUT_ColdLavaTube      category=mountain  commonality=0.06  Cavern Required=True
 
-Each `iconTexturePath` (`World/Landmarks/Ashkarr/Hollow` / `.../Chasm` /
-`.../Cavern`) points at `src/RimUtinni/AshkarrLandmarkArt/Textures/World/
-Landmarks/Ashkarr/{Hollow,Chasm,Cavern}.png` -- confirmed present on disk
-(all three files exist, checked directly, not assumed from the `loadAfter`
-declaration alone).
+each `MayRequire="Ludeon.RimWorld.Odyssey"`, each `iconTexturePath`
+`World/Landmarks/Ashkarr/{Hollow,Chasm,Cavern}`, supplied by
+mandrake.rut.ashkarrlandmarkart.
 
-WHAT THIS MOD DELIBERATELY DOES NOT DO, per both the file's own header
-comment and About.xml's own description: it does not place any of the three
-landmarks on the actual Ash'karr planet -- "the owner's hand, per the item's
-own title" (ISHKO_DARK_LANDMARKS_1). This suite's last chain proves that
-absence rather than treating it as an oversight: none of the three defNames
-should appear among `jawa/world_landmarks_get`'s currently-placed landmarks.
+Chains (walk: design/validation_walks/RimUtinni/IshkoDarkLandmarks.md):
+  source      offline reads of our own XML and the art mod's PNGs (no bridge)
+  defs        jawa/get_defs readback of the RESOLVED defs (deep=true: a
+              List<MutatorChance> without deep comes back as bare type names,
+              so the old substring check could never have passed live)
+  placement   the BEHAVIOUR: jawa/world_landmarks_set add (forced) on a plain
+              land tile -> the tile carries our landmark AND its Required anchor
+              mutator. Engine fact (WorldLandmarks.AddLandmark, decompiled 1.6):
+              a mutatorChance is added when `Rand.Chance(chance) && ((required &&
+              forced) || mutator.IsValidTile(..))`; a Required entry has chance 1,
+              so with forced=true the anchor is certain. Removed again afterwards
+              (and the anchor mutator stripped if the tile did not have it).
 
-Still not proven / structurally offline-only:
-  1. This suite proves the DEFS resolve with the expected fields once
-     Odyssey + AshkarrLandmarkArt are active -- it does not prove the icon
-     PNG actually renders correctly in the in-game landmark legend/tooltip
-     (walk doc step 7, "(human pass) once the owner places one of the
-     three"). No bridge tool renders a landmark icon for inspection; this is
-     a genuine visual gap, left for the owner's own placement pass.
-  2. `jawa/get_defs` on a `mutatorChances` dict-shaped field: the walk doc's
-     own step 5 describes filtering the resolved field for the anchor
-     mutator's `Required=True` entry as a substring check on the returned
-     value's repr, the same pattern PawnFlavor/validation.py uses for a
-     list-shaped field with no dedicated "does this dict contain this key
-     with this value" bridge verb -- not independently confirmed against a
-     live `jawa/get_defs` return shape for a `mutatorChances` field
-     specifically (no other suite in this family reads one).
+RULED OUT (kept here and in the walk's anti-guessing notes):
+  * "none of the three is placed on the planet" as a bar. The old chain read
+    `row["defName"]` from jawa/world_landmarks_get, whose rows carry `def`, so
+    it was vacuous -- it passed whatever the planet held. And on a quicktest
+    world it is not even true by design: worldgen places LandmarkDefs by
+    commonality, and ours have 0.06-0.08, so a generated world may carry one.
+    Placement is the owner's hand on the ASH'KARR save, not a property a test
+    world can witness.
 """
+import os
+import xml.etree.ElementTree as ET
+
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("IshkoDarkLandmarks")
 suite.toggles = []   # no Source/, no ModSettings -- every component beyond_toggle
 
+PACKAGE_ID = "mandrake.rut.ishkolandmarks"
 LANDMARKS = [
-    ("RUT_LightlessSink", "mountain", "0.08", "Hollow"),
-    ("RUT_ShadowedOverhang", "mountain", "0.08", "Chasm"),
-    ("RUT_ColdLavaTube", "mountain", "0.06", "Cavern"),
+    ("RUT_LightlessSink", "mountain", 0.08, "Hollow"),
+    ("RUT_ShadowedOverhang", "mountain", 0.08, "Chasm"),
+    ("RUT_ColdLavaTube", "mountain", 0.06, "Cavern"),
 ]
+HERE = os.path.dirname(os.path.abspath(__file__))
+DEFS_XML = os.path.join(HERE, "Defs", "LandmarkDefs_IshkoDark.xml")
+ART_TEX = os.path.join(os.path.dirname(HERE), "AshkarrLandmarkArt", "Textures")
+TILE_SCAN = "0-1999"          # world tiles examined for a placement candidate
 
 
-def _get_defs(t, defs, fields):
-    return t.bridge_call("jawa/get_defs", defs=defs, fields=fields)
+class _Unmeasured(Exception):
+    pass
 
 
-def _row_for(r, def_key):
-    for d in (r or {}).get("defs", (r or {}).get("results", [])) or []:
-        if d.get("defName") == def_key.split("/", 1)[-1]:
+def _unmeasured(t, why):
+    """Stop this component as UNMEASURED (could not ask), never a pass or a fail."""
+    t.upstream_failed = True
+    t.upstream_reason = "UNMEASURED: " + why
+    raise _Unmeasured(why)
+
+
+class _independent(object):
+    """`with _independent(t, name):` -- a component whose FAIL/UNMEASURED does not
+    poison the next one (each landmark is its own read or its own tile)."""
+
+    def __init__(self, t, name):
+        self.t, self.name = t, name
+
+    def __enter__(self):
+        self.before = self.t.upstream_failed
+        self.ctx = self.t.component(self.name, beyond_toggle=True)
+        return self.ctx.__enter__()
+
+    def __exit__(self, *exc):
+        r = self.ctx.__exit__(*exc)
+        if not self.before:
+            self.t.upstream_failed = False
+            self.t.upstream_reason = "upstream failed -- this chain's state is meaningless"
+        return r
+
+
+def _live(t):
+    return t.session is not None
+
+
+def _fail(msg):
+    raise ExpectationFailed(msg)
+
+
+# ------------------------------------------------------------------ source (offline)
+
+def _parse_defs():
+    root = ET.parse(DEFS_XML).getroot()
+    out = {}
+    for el in root.findall("LandmarkDef"):
+        name = (el.findtext("defName") or "").strip()
+        req = [m.tag for m in (el.find("mutatorChances") or [])
+               if (m.get("Required") or "").lower() == "true"]
+        out[name] = {"mayRequire": el.get("MayRequire"), "required": req,
+                     "icon": (el.findtext("iconTexturePath") or "").strip()}
+    return out
+
+
+@suite.chain("source")
+def source(t):
+    """Our own files, read whole. Runs in the live run too: it is what the defs chain
+    is checking the RESOLVED game against."""
+    with _independent(t, "defs_gated_on_odyssey"):
+        if not _live(t):
+            return
+        got = _parse_defs()
+        t._record("defs in %s" % os.path.basename(DEFS_XML), sorted(got))
+        if sorted(got) != sorted(n for n, _, _, _ in LANDMARKS):
+            _fail("LandmarkDefs in the XML are %s, expected exactly %s"
+                  % (sorted(got), [n for n, _, _, _ in LANDMARKS]))
+        bad = [n for n, d in got.items() if d["mayRequire"] != "Ludeon.RimWorld.Odyssey"]
+        if bad:
+            _fail("not MayRequire=\"Ludeon.RimWorld.Odyssey\": %s" % bad)
+    with _independent(t, "icons_supplied_by_art_mod"):
+        if not _live(t):
+            return
+        if not os.path.isdir(ART_TEX):
+            _unmeasured(t, "art mod source folder not found at %s" % ART_TEX)
+        missing = []
+        for n, d in _parse_defs().items():
+            png = os.path.join(ART_TEX, *(d["icon"].split("/"))) + ".png"
+            t._record("%s icon %s" % (n, d["icon"]), os.path.isfile(png))
+            if not d["icon"] or not os.path.isfile(png):
+                missing.append("%s -> %r" % (n, d["icon"]))
+        if missing:
+            _fail("iconTexturePath not supplied by AshkarrLandmarkArt: %s" % missing)
+
+
+# ------------------------------------------------------------------ defs (live readback)
+
+def _row(r, def_name):
+    for d in (r or {}).get("defs") or []:
+        if d.get("defName") == def_name:
             return d
     return None
 
 
-@suite.chain("landmark_defs_readback")
-def landmark_defs_readback(t):
-    """Each of the three Ishko LandmarkDefs resolves with its exact
-    category/commonality/anchor-mutator, read straight off
-    `LandmarkDefs_IshkoDark.xml` above -- catches a whole-file load break
-    (a bad `MayRequire`, a malformed `mutatorChances` block) as much as it
-    confirms the specific numbers."""
-    t.clear_area(size=10)
-    for def_name, category, commonality, anchor_mutator in LANDMARKS:
-        with t.component("landmark_%s_resolves" % def_name, beyond_toggle=True):
-            r = _get_defs(t, "LandmarkDef/%s" % def_name,
-                         "category,commonality,mutatorChances,iconTexturePath")
-            row = _row_for(r, "LandmarkDef/%s" % def_name)
-            fields = (row or {}).get("fields") or {}
-
-            got_cat = fields.get("category", "(no such field)")
-            ok_cat = got_cat == category
-            t._record("%s.category -> %r" % (def_name, got_cat), ok_cat)
-            if not ok_cat:
-                raise ExpectationFailed(
-                    "%s.category = %r, expected %r" % (def_name, got_cat, category))
-
-            got_comm = fields.get("commonality", "(no such field)")
-            ok_comm = str(got_comm) == commonality
-            t._record("%s.commonality -> %r" % (def_name, got_comm), ok_comm)
-            if not ok_comm:
-                raise ExpectationFailed(
-                    "%s.commonality = %r, expected %r" % (def_name, got_comm, commonality))
-
-            got_mut = fields.get("mutatorChances", "(no such field)")
-            ok_mut = anchor_mutator in str(got_mut) and "Required" in str(got_mut)
-            t._record("%s.mutatorChances -> %r" % (def_name, got_mut), ok_mut)
-            if not ok_mut:
-                raise ExpectationFailed(
-                    "%s.mutatorChances = %r, expected to contain a Required "
-                    "%s anchor" % (def_name, got_mut, anchor_mutator))
-
-            got_icon = fields.get("iconTexturePath", "")
-            ok_icon = bool(got_icon)
-            t._record("%s.iconTexturePath -> %r" % (def_name, got_icon), ok_icon)
-            if not ok_icon:
-                raise ExpectationFailed(
-                    "%s.iconTexturePath is empty -- icon did not resolve" % def_name)
+def _chances(raw):
+    """deep get_defs of List<MutatorChance> -> [(mutator, chance, required)]; [] if not structured."""
+    out = []
+    for e in raw if isinstance(raw, list) else []:
+        if isinstance(e, dict):
+            out.append((str(e.get("mutator")), e.get("chance"),
+                        str(e.get("required")).lower() == "true"))
+    return out
 
 
-@suite.chain("not_placed_on_planet")
-def not_placed_on_planet(t):
-    """Confirms the mod's own deliberate omission (About.xml: "Placement on
-    the actual Ash'karr world is deliberately NOT done here") -- none of the
-    three defNames should appear among the planet's currently-placed
-    landmarks. A hit here would mean something ELSE placed one of these
-    (or the owner already did, post-review), not a defect in this mod."""
-    with t.component("no_ishko_landmark_placed_yet", beyond_toggle=True):
-        r = t.bridge_call("jawa/world_landmarks_get")
-        rows = (r or {}).get("landmarks") or []
-        placed = [row.get("defName") for row in rows]
-        hits = [name for name, _, _, _ in LANDMARKS if name in placed]
-        t._record("world_landmarks_get placed defNames -> %r" % placed, not hits)
-        if hits:
-            raise ExpectationFailed(
-                "expected none of %s placed on the planet yet, found %s "
-                "already placed" % ([n for n, _, _, _ in LANDMARKS], hits))
+@suite.chain("defs")
+def defs(t):
+    """Each LandmarkDef resolves in the running game, from OUR package (a defName
+    collision would resolve to whichever mod loaded last), with the exact category,
+    commonality, single Required anchor and a non-empty icon path."""
+    for def_name, category, commonality, anchor in LANDMARKS:
+        with _independent(t, "%s_resolves" % def_name):
+            r = t.bridge_call("jawa/get_defs", defs="LandmarkDef/%s" % def_name,
+                              fields="category,commonality,mutatorChances,iconTexturePath",
+                              deep=True)
+            if not _live(t):
+                continue
+            if not (r or {}).get("success"):
+                _unmeasured(t, "jawa/get_defs did not answer: %s" % (r or {}).get("message"))
+            row = _row(r, def_name)
+            if not row or not row.get("found"):
+                _fail("%s does not resolve (notFound=%s)" % (def_name, (r or {}).get("notFound")))
+            t._record("%s packageId" % def_name, row.get("packageId"))
+            if str(row.get("packageId") or "").lower() != PACKAGE_ID:
+                _fail("%s resolves from %r, not %s -- a defName collision"
+                      % (def_name, row.get("packageId"), PACKAGE_ID))
+            f = row.get("fields") or {}
+            t._record("%s fields" % def_name, f)
+            if str(f.get("category")) != category:
+                _fail("%s.category = %r, expected %r" % (def_name, f.get("category"), category))
+            try:
+                comm = float(f.get("commonality"))
+            except (TypeError, ValueError):
+                _fail("%s.commonality unreadable: %r" % (def_name, f.get("commonality")))
+            if abs(comm - commonality) > 1e-6:
+                _fail("%s.commonality = %r, expected %r" % (def_name, comm, commonality))
+            ch = _chances(f.get("mutatorChances"))
+            if not ch:
+                _unmeasured(t, "%s.mutatorChances came back unstructured: %r"
+                            % (def_name, f.get("mutatorChances")))
+            req = [m for m, _, rq in ch if rq]
+            if req != [anchor]:
+                _fail("%s Required mutators = %s, expected exactly [%s]" % (def_name, req, anchor))
+            if not f.get("iconTexturePath"):
+                _fail("%s.iconTexturePath is empty" % def_name)
+
+
+# ------------------------------------------------------------------ placement (behaviour)
+
+def _candidate_tiles(t, n):
+    r = t.bridge_call("jawa/world_mutators_get", range=TILE_SCAN, limit=2000)
+    if not (r or {}).get("success"):
+        _unmeasured(t, "jawa/world_mutators_get did not answer: %s" % (r or {}).get("message"))
+    rows = [x for x in (r.get("tiles") or [])
+            if not x.get("waterCovered") and not x.get("landmark")]
+    if len(rows) < n:
+        _unmeasured(t, "only %d land tiles without a landmark in %s" % (len(rows), TILE_SCAN))
+    return rows[:n]
+
+
+def _tile(t, tile):
+    r = t.bridge_call("jawa/world_mutators_get", tiles=str(tile))
+    rows = (r or {}).get("tiles") or []
+    if not (r or {}).get("success") or not rows:
+        _unmeasured(t, "could not read tile %s back: %s" % (tile, (r or {}).get("message")))
+    return rows[0]
+
+
+@suite.chain("placement")
+def placement(t):
+    """Placing each landmark (the owner's act on the real save) does what the def says:
+    the tile carries our LandmarkDef and its Required anchor mutator. Each landmark on
+    its own fresh land tile; cleaned up after."""
+    picks = None
+    for i, (def_name, _cat, _comm, anchor) in enumerate(LANDMARKS):
+        with _independent(t, "%s_places_with_anchor" % def_name):
+            if not _live(t):
+                continue
+            if picks is None:
+                picks = _candidate_tiles(t, len(LANDMARKS))
+            tile = int(picks[i]["tile"])
+            had_anchor = anchor in [m.get("def") for m in (picks[i].get("mutators") or [])]
+            r = t.bridge_call("jawa/world_landmarks_set", action="add", tiles=str(tile),
+                              forced=True, checkValid=True, **{"def": def_name})
+            try:
+                if not (r or {}).get("success") or int(r.get("added") or 0) != 1:
+                    _fail("world_landmarks_set add %s on tile %d: success=%s added=%s errors=%s"
+                          % (def_name, tile, (r or {}).get("success"), (r or {}).get("added"),
+                             (r or {}).get("errors")))
+                back = _tile(t, tile)
+                muts = [m.get("def") for m in (back.get("mutators") or [])]
+                t._record("tile %d after add" % tile, {"landmark": back.get("landmark"), "mutators": muts,
+                                                      "validity": r.get("validity")})
+                if back.get("landmark") != def_name:
+                    _fail("tile %d landmark = %r after add, expected %s" % (tile, back.get("landmark"), def_name))
+                if anchor not in muts:
+                    _fail("tile %d carries %s but not its Required anchor %s (mutators %s)"
+                          % (tile, def_name, anchor, muts))
+            finally:
+                t.session.call("jawa/world_landmarks_set", action="remove", tiles=str(tile))
+                if not had_anchor:
+                    t.session.call("jawa/world_mutators_set", action="remove", mutators=anchor,
+                                   tiles=str(tile))
