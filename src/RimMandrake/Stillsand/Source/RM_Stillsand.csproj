@@ -58,6 +58,8 @@
     <Compile Include="RM_PreciousCaveGeometry.cs" />
     <Compile Include="RM_PreciousCaves.cs" />
     <Compile Include="RM_PreciousCaveSettings.cs" />
+    <!-- STILLSAND_CAVE_AS_PLACE_1: preservation, drip, grown-biosilica wall ring, tribal mark -->
+    <Compile Include="RM_CavePlace.cs" />
     <!-- STILLSAND_RETURN_RITUAL_1: sand remembers water (RM) + the inert water-ledger engine -->
     <Compile Include="RM_StillsandWater.cs" />
     <Compile Include="RM_WaterLedger.cs" />

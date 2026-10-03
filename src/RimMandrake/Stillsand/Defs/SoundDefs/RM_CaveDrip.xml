@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_CAVE_AS_PLACE_1: the cave's drip, the one water sound in the biome. A 9 s synthesized
+     loop (Sounds/RM/CaveDrip.wav: four drips with cave echoes), sustained from RM_CaveDripSource.
+     PLACEHOLDER GRAIN: procedurally synthesized, replace with a recorded drip when one exists. -->
+<Defs>
+  <SoundDef>
+    <defName>RM_CaveDrip</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <maxVoices>1</maxVoices>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>RM/CaveDrip</clipPath>
+          </li>
+        </grains>
+        <volumeRange>40</volumeRange>
+        <pitchRange>1~1</pitchRange>
+        <distRange>2~14</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

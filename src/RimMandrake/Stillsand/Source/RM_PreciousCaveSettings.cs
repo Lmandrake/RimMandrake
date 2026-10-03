@@ -19,6 +19,12 @@ namespace RimMandrake.Stillsand
         public static bool torEnabled = true;
         public static float torChance = 0.25f;
 
+        // STILLSAND_CAVE_AS_PLACE_1. Preservation acts live on every cave; the others on NEW maps.
+        public static bool preservationEnabled = true;
+        public static bool dripEnabled = true;
+        public static bool wallRingEnabled = true;
+        public static bool tribalMarkEnabled = true;
+
         // Per-row overrides keyed by RM_PreciousCaveDef.defName. A row absent
         // from either dictionary uses its def's own default (enabled, def.weight).
         public static Dictionary<string, bool> rowEnabled = new Dictionary<string, bool>();
@@ -44,6 +50,10 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref yardangShapingEnabled, "preciousCaves_yardangShapingEnabled", true);
             Scribe_Values.Look(ref torEnabled, "preciousCaves_torEnabled", true);
             Scribe_Values.Look(ref torChance, "preciousCaves_torChance", 0.25f);
+            Scribe_Values.Look(ref preservationEnabled, "preciousCaves_preservationEnabled", true);
+            Scribe_Values.Look(ref dripEnabled, "preciousCaves_dripEnabled", true);
+            Scribe_Values.Look(ref wallRingEnabled, "preciousCaves_wallRingEnabled", true);
+            Scribe_Values.Look(ref tribalMarkEnabled, "preciousCaves_tribalMarkEnabled", true);
             Scribe_Collections.Look(ref rowEnabled, "preciousCaves_rowEnabled", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref rowWeight, "preciousCaves_rowWeight", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
@@ -68,6 +78,15 @@ namespace RimMandrake.Stillsand
                 list.Label("Rockless-map tor chance: " + torChance.ToStringPercent());
                 torChance = list.Slider(torChance, 0f, 1f);
             }
+
+            list.CheckboxLabeled("Nothing rots in the cave", ref preservationEnabled,
+                "Corpses and food lying on a roofed cave cell do not rot, and desiccated remains stay. Acts live, on existing caves too. Off: vanilla rot resumes.");
+            list.CheckboxLabeled("The cave drips", ref dripEnabled,
+                "Each new cave carries one ambient water-drip sound, the only water sound in the biome. New maps only.");
+            list.CheckboxLabeled("Lens grotto: grown-biosilica walls", ref wallRingEnabled,
+                "The lens grotto rings its chamber with mineable biosilica wall. Off: the grotto is bare rock. New maps only.");
+            list.CheckboxLabeled("Taken cave: tribal mark on the wall", ref tribalMarkEnabled,
+                "The emptied cave carries its own tribal glyph. New maps only.");
 
             list.Label("What the cave holds (one weighted roll per cave):");
             foreach (RM_PreciousCaveDef def in DefDatabase<RM_PreciousCaveDef>.AllDefsListForReading)
