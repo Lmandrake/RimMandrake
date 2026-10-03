@@ -64,6 +64,7 @@ class FWGame(MockGame):
         for group, deftype, names, _ in V.GROUPS:
             for n in names:
                 self.known[(deftype, n)] = "mandrake.rm.biomes"
+        self.known[("SoundDef", "RM_FeverWood_CrownHum")] = "mandrake.rm.biomes"
         self.known[("ThingDef", "TableMachining")] = "Ludeon.RimWorld"
         self.known[("MapGeneratorDef", "Base_Player")] = "Ludeon.RimWorld"
         if "missing_def" in self.brk:
@@ -137,7 +138,9 @@ class FWGame(MockGame):
         allf = {}
         if typ == "BiomeDef":
             exts = [c for c in V.EXT_CLASSES if not ("no_ext" in self.brk and c == "RM_AntHiveBiomeExtension")]
-            allf = {"modExtensions": [{"Class": "RimMandrake.X." + c} for c in exts]}
+            allf = {"modExtensions": [dict({"Class": "RimMandrake.X." + c},
+                                           **({"heatKind": "ambient"} if c == "RM_SunHeatExtension" else {}))
+                                      for c in exts]}
         elif typ == "MapGeneratorDef":
             allf = {"genSteps": [n for n, _ in V.GENSTEPS_REGISTERED
                                  if not ("genstep_unregistered" in self.brk and n == "RM_GenStep_AntHiveDungeon")] + ["Terrain"]}
