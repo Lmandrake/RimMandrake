@@ -2,7 +2,7 @@
 <!-- WARSCAR_TURRETS_TRACK_1. The refit result of a broken ancient turret: slow, long-ranged, heavy,
      player-owned, powered. Shape re-authored from RUT_AncientShieldedTurret (AssailantSalvage), on RM.
      Cost is steel, three advanced components and etchant (drawn from a reaction pool, WARSCAR_RAINBOW_POOLS_1). The long WorkToBuild is the "slower" half of that fallback.
-     Art owed: reuses a vanilla turret base until a Warscar sprite exists. -->
+     Art: RM_OldLineTurret_Base / _Top (artpipe). -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
     <defName>RM_OldLineTurret</defName>
@@ -11,7 +11,7 @@
     <thingClass>Building_TurretGun</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/Security/TurretMini_Base</texPath>
+      <texPath>Things/Building/Security/RM_OldLineTurret_Base</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
       <damageData><rect>(0.2,0.2,0.6,0.6)</rect></damageData>
@@ -88,7 +88,7 @@
     <label>old-line turret</label>
     <description>The long barrel of a refitted old-line turret.</description>
     <graphicData>
-      <texPath>Things/Building/Security/TurretMini_Top</texPath>
+      <texPath>Things/Building/Security/RM_OldLineTurret_Top</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>

@@ -5,15 +5,15 @@
     (never on a buried-ordnance cell, so a shell shows as a clean round spot). Tagged with the shared
     track grid's extension (FOOTPRINT_TRACK_GRID_1, CreatureBehaviors): every crossing is recorded, invisible
     walkers included. The wind wipes film and prints together at the end of a Settling; cleaning in the
-    home area works as for any filth. Art is the vanilla grainy cluster tinted pale grey until real art exists.
+    home area works as for any filth. Art: RM_Filth_SettledFilm (artpipe), half-transparent.
   -->
   <ThingDef ParentName="BaseFilth">
     <defName>RM_Filth_SettledFilm</defName>
     <label>settled film</label>
     <description>A pale grey film of fine war dust, settled out of a still sky. It keeps every footprint pressed into it until the wind comes back.</description>
     <graphicData>
-      <texPath>Things/Filth/Grainy</texPath>
-      <color>(205,205,198,120)</color>
+      <texPath>Things/Filth/RM_SettledFilm</texPath>
+      <color>(255,255,255,150)</color>
     </graphicData>
     <filth>
       <placementMask>

@@ -2,7 +2,7 @@
 <!-- WARSCAR_PILGRIM_CAMPS_1: the pilgrim's journal. Reading it once moves the Scarlands lore ladder one
      rung (RUT_PilgrimJournals.Read); the letter quotes pages[n - 1] for the rung it reached. Pages are
      warscar_bedazzle_cast_2026-09-30.md section 6B, verbatim (ruled final by card 2026-09-30).
-     Graphic is a PLACEHOLDER (vanilla novel). -->
+     Art: RUT_PilgrimJournal (artpipe). -->
 <Defs>
   <ThingDef>
     <defName>RUT_PilgrimJournal</defName>
@@ -18,7 +18,7 @@
     <stackLimit>1</stackLimit>
     <tradeability>None</tradeability>
     <graphicData>
-      <texPath>Things/Item/Book/Novel/Novel</texPath>
+      <texPath>Things/Item/RUT_PilgrimJournal</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.7</drawSize>
     </graphicData>
