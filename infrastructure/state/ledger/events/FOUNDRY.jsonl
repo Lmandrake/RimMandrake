@@ -1974,3 +1974,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"NORTHSTAR_BLAND_TILE_1 bland tile generate","ts":"2026-10-03T03:44:37Z","tsn":1790999077746261172}
 {"seat":"FOUNDRY","event":"close","id":"NORTHSTAR_BLAND_TILE_1","sha":"596735161","reason":"J3_bland_tile MEASURED PASS in live_queue_results.jsonl; built 596735161","ts":"2026-10-03T03:44:57Z","tsn":1790999097063589952}
 {"seat":"FOUNDRY","event":"close","id":"LIQUID_TYPES_MOD_1","sha":"eaf0e96e4","reason":"stale-sweep: roster+cross-mod index shipped eaf0e96e4 (ancestor of origin/main); remainder ruled into LIQUID_REGISTRY_CORE_1 (done)","ts":"2026-10-03T03:45:32Z","tsn":1790999132367104295}
+{"seat":"FOUNDRY","event":"claim","id":"CONTAGION_GROWN_LIMBS_ART_1","ts":"2026-10-03T05:30:16Z","tsn":1791005416046936805}
+{"seat":"FOUNDRY","event":"start","id":"CONTAGION_GROWN_LIMBS_ART_1","ts":"2026-10-03T05:30:16Z","tsn":1791005416615380136}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SAND_SIEVE_CHORE_1","ts":"2026-10-03T05:30:25Z","tsn":1791005425964107184}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_SAND_SIEVE_CHORE_1","ts":"2026-10-03T05:30:26Z","tsn":1791005426541596603}

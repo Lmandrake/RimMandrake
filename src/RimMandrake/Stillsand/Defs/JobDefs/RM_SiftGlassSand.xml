@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_SAND_SIEVE_CHORE_1: sift glass sand with a carried sand sieve (RM_SandSieve.cs). -->
+<Defs>
+
+  <JobDef>
+    <defName>RM_SiftGlassSand</defName>
+    <driverClass>RimMandrake.Stillsand.RM_JobDriver_SiftGlassSand</driverClass>
+    <reportString>sifting TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_SiftGlassSand</defName>
+    <label>sift glass sand</label>
+    <giverClass>RimMandrake.Stillsand.RM_WorkGiver_SiftGlassSand</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>12</priorityInType>
+    <verb>sift</verb>
+    <gerund>sifting</gerund>
+    <scanThings>true</scanThings>
+    <scanCells>false</scanCells>
+    <canBeDoneByNonColonists>false</canBeDoneByNonColonists>
+  </WorkGiverDef>
+
+  <WorkGiverDef>
+    <defName>RM_TakeSandSieve</defName>
+    <label>take a sand sieve</label>
+    <giverClass>RimMandrake.Stillsand.RM_WorkGiver_TakeSieve</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>13</priorityInType>
+    <verb>fetch</verb>
+    <gerund>fetching a sand sieve</gerund>
+    <scanThings>true</scanThings>
+    <scanCells>false</scanCells>
+    <canBeDoneByNonColonists>false</canBeDoneByNonColonists>
+  </WorkGiverDef>
+
+</Defs>

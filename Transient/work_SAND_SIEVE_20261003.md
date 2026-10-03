@@ -1,0 +1,3 @@
+# SAND_SIEVE work 2026-10-03
+- claimed+started item. Plan: RM_SandSieve tool item, RM_WorkGiver_SiftGlassSand, RM_JobDriver_SiftGlassSand, WorkGiverDef+JobDef, settings (toggle+yield), validation.py checks.
+- DONE offline: RM_SandSieve.cs (+csproj Compile), Defs/ThingDefs_Items/RM_SandSieve.xml, Defs/JobDefs/RM_SiftGlassSand.xml, settings sieveEnabled/sieveYieldMultiplier in RM_GlassChainMod.cs, validation.py sand_sieve_defs + roundtrip. Build OK (needed sibling DLLs via stage_build extra_dirs; plain winbuild fails on missing CreatureBehaviors/EnvHazards refs). selftest 71/71. validate_patch: only error = sieve texPath art pending (artpipe RM_SandSieve).

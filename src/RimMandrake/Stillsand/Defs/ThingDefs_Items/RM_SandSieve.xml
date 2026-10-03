@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_SAND_SIEVE_CHORE_1: the carried sand sieve. A cheap hand tool: a pawn carrying one (inventory)
+  sifts glass sand in the home area into fine sand (RM_SandSieve.cs). Art: artpipe job RM_SandSieve
+  (infrastructure/artpipe/art_lists/stillsand_bedazzle_cast.csv) lands at the texPath below.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_SandSieve</defName>
+    <label>sand sieve</label>
+    <description>A staked driftwood frame strung with fine wire mesh. A colonist who carries one sifts glass sand in the home area into fine sand, a handful of grains at a time, and now and then something harder turns up in the mesh.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <graphicData>
+      <!-- art pending: artpipe RM_SandSieve -->
+      <texPath>Things/Item/RM_SandSieve</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <techLevel>Neolithic</techLevel>
+    <stackLimit>1</stackLimit>
+    <thingCategories>
+      <li>Items</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>18</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0.8</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <costList>
+      <WoodLog>12</WoodLog>
+      <Steel>4</Steel>
+    </costList>
+    <recipeMaker>
+      <recipeUsers>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <workAmount>600</workAmount>
+    </recipeMaker>
+  </ThingDef>
+
+</Defs>

@@ -25,6 +25,8 @@ namespace RimMandrake.Stillsand
         public static bool lensBenchEnabled = true;
         public static bool solarOvenEnabled = true;
         public static float sunWorkSpeedMultiplier = 1f;
+        public static bool sieveEnabled = true;
+        public static float sieveYieldMultiplier = 1f;
 
         public static bool TableEnabled(RM_SunTableKind kind)
         {
@@ -44,6 +46,8 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref lensBenchEnabled, "lensBenchEnabled", true);
             Scribe_Values.Look(ref solarOvenEnabled, "solarOvenEnabled", true);
             Scribe_Values.Look(ref sunWorkSpeedMultiplier, "sunWorkSpeedMultiplier", 1f);
+            Scribe_Values.Look(ref sieveEnabled, "sieveEnabled", true);
+            Scribe_Values.Look(ref sieveYieldMultiplier, "sieveYieldMultiplier", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -61,6 +65,11 @@ namespace RimMandrake.Stillsand
                 "Cooks meals with no fuel. The crest-plate oven also bakes sun glass. Off: both stand idle.");
             list.Label("Sun work speed: x" + sunWorkSpeedMultiplier.ToString("0.00"));
             sunWorkSpeedMultiplier = list.Slider(sunWorkSpeedMultiplier, 0.25f, 3f);
+            list.GapLine();
+            list.CheckboxLabeled("Sand sieve chore", ref sieveEnabled,
+                "Pawns carrying a sand sieve sift glass sand in the home area into fine sand, unordered. Off: nobody sifts and no pawn fetches a sieve.");
+            list.Label("Sieve yield: x" + sieveYieldMultiplier.ToString("0.00") + " fine sand");
+            sieveYieldMultiplier = list.Slider(sieveYieldMultiplier, 0.25f, 3f);
             list.GapLine();
             list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\". Fulgurites on sand "
                        + "follow the Pyrelands' fulgurite toggle.");
