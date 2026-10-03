@@ -78,41 +78,37 @@
   "MessyConduit": {
     "components": {
       "counts": {
-        "PASS": 19,
-        "UNBUILT": 6,
-        "UNCOVERED": 2
+        "PASS": 58,
+        "UNBUILT": 3,
+        "UNCOVERED": 1
       },
       "not_ok": [],
       "unbuilt": [
-        "U_whip_tails",
-        "U_downed_wire_bursts",
-        "U_pbd_settle",
-        "U_selection_highlight",
-        "U_sway",
+        "U_sway_shader_path",
+        "U_floor_ripple",
         "U_other_styles"
       ],
       "uncovered": [
-        "M4_save_load_hash",
-        "M9_remove_mod_clean"
+        "U_motion_look"
       ]
     },
-    "hash": "93fd84eddaccd259bfd7dbb8de0dcf7bfd3578726bb4e067187846c763a4d5d7",
+    "hash": "0e7bbf9eccf04a197b7415df7b2a272ff7acfe31c996a453dfbf8b1058d037cc",
     "minor": null,
     "owner_review": null,
-    "refused": "19 live rows PASS but 6 bars UNBUILT, 2 UNCOVERED: U_whip_tails, U_downed_wire_bursts, U_pbd_settle, U_selection_highlight, U_sway, U_other_styles, M4_save_load_hash, M9_remove_mod_clean",
-    "run_id": "MessyConduit/script@validation_result_20261002T150809.json",
+    "refused": "58 live rows PASS but 3 bars UNBUILT, 1 UNCOVERED: U_sway_shader_path, U_floor_ripple, U_other_styles, U_motion_look",
+    "run_id": "MessyConduit/validation.py+validation_aerial.py@validation_merged_laneb_20261002T1727.json",
     "source": {
       "assembly_sha256": null,
       "env_running_count": 9,
       "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "src/RimMandrake/MessyConduit/northstar/validation_result_20261002T150809.json",
-      "started": "2026-10-02T15:07:31",
+      "result": "src/RimMandrake/MessyConduit/northstar/validation_merged_laneb_20261002T1727.json",
+      "started": "2026-10-02T17:20:02",
       "ticks_spent": null,
       "tier": "messyconduit",
       "verb": "modcheck record"
     },
     "status": "REFUSED",
-    "ts": 1790979061.0020213
+    "ts": 1790987226.0743093
   },
   "Ninefold": {
     "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",

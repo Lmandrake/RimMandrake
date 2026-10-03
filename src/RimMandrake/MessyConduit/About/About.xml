@@ -12,7 +12,9 @@ The conduit itself becomes invisible and keeps working exactly like vanilla cond
 
 Breaks read at a glance: a conduit end still on a powered net sparks; a dead end lies limp.
 
-Cosmetic only. Nothing is saved, so adding or removing the mod mid-game is safe; vanilla's Hidden Conduit stays the tidy invisible option, and the power overlay's connection lines are left alone. Every behaviour has a Mod Settings switch, and turning the master switch off brings the vanilla conduit art back at once.
+The floor cords are cosmetic only. Nothing of theirs is saved, so adding or removing the mod mid-game is safe for them; vanilla's Hidden Conduit stays the tidy invisible option, and the power overlay's connection lines are left alone. Every behaviour has a Mod Settings switch, and turning the master switch off brings the vanilla conduit art back at once.
+
+Aerial power lines (own Mod Settings entry): scrap masts, lamp masts and wall brackets carry real power over open ground on sagging overhead wires that sway in the wind and may pass over roofed rooms. A mast that is destroyed drops its wires as sparking cords on the ground (look only); explosions can cut a wire. A power-tap clamp quietly drains another faction's grid into yours without merging the two. Unlike the cords these are real buildings with saved links: removing the mod from a save that holds them loses them, with missing-definition errors.
 
 Phase 1a: Jawa (matte black) art set only, placeholder textures, canned slack shapes.</description>
   <modDependencies>

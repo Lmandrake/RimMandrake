@@ -200,6 +200,7 @@ namespace RimMandrake.MessyConduit.Core
                     }
                 }
             }
+            MergeStubs();
             foreach (MachineInfo m in world.Machines)
             {
                 VId mv = VId.Mach(m.Id);
@@ -247,6 +248,97 @@ namespace RimMandrake.MessyConduit.Core
             if (ca.HasValue && !linkCell.ContainsKey((a, b))) linkCell[(a, b)] = ca.Value;
             if (cb.HasValue && !linkCell.ContainsKey((b, a))) linkCell[(b, a)] = cb.Value;
         }
+
+        // ------------------------------------------------------------------ stub merge (§8.7.3, phase 1b B2)
+        /// <summary>Stubs of ONE buried run (same buried component) whose walk cells lie on the same
+        /// floor chain within 2 cells (floor-conduit path distance) are one opening: the middle one is
+        /// kept, the rest are unlinked, so a run hugging a wall that carries its own buried conduit
+        /// shows one hole instead of a comb. Stubs on opposite faces of a wall are never merged (their
+        /// walk cells are not floor-connected within 2), so a run through a wall keeps both openings.
+        /// Connectivity is unchanged: every dropped stub's walk cell reaches the kept one over floor.</summary>
+        private void MergeStubs()
+        {
+            var stubs = adj.Keys.Where(v => v.T == 's').ToList();
+            if (stubs.Count < 2) return;
+            stubs.Sort();
+            var comp = new Dictionary<Cell, int>();
+            int k = 0;
+            var buried = BuriedCells.ToList();
+            buried.Sort();
+            foreach (Cell c in buried)
+            {
+                if (comp.ContainsKey(c)) continue;
+                var st = new Stack<Cell>();
+                st.Push(c);
+                comp[c] = k;
+                while (st.Count > 0)
+                {
+                    Cell q = st.Pop();
+                    foreach (Cell n in nb[q])
+                        if (BuriedCells.Contains(n) && !comp.ContainsKey(n)) { comp[n] = k; st.Push(n); }
+                }
+                k++;
+            }
+            int Floor2(Cell a, Cell b)
+            {
+                if (a == b) return 0;
+                var seenF = new HashSet<Cell> { a };
+                var frontier = new List<Cell> { a };
+                for (int d = 1; d <= 2; d++)
+                {
+                    var nextF = new List<Cell>();
+                    foreach (Cell q in frontier)
+                        foreach (Cell n in nb[q])
+                        {
+                            if (BuriedCells.Contains(n) || !seenF.Add(n)) continue;
+                            if (n == b) return d;
+                            nextF.Add(n);
+                        }
+                    frontier = nextF;
+                }
+                return -1;
+            }
+            var parent = new int[stubs.Count];
+            for (int i = 0; i < parent.Length; i++) parent[i] = i;
+            int Find(int i) { while (parent[i] != i) i = parent[i] = parent[parent[i]]; return i; }
+            for (int i = 0; i < stubs.Count; i++)
+                for (int j = i + 1; j < stubs.Count; j++)
+                {
+                    VId a = stubs[i], b = stubs[j];
+                    if (Math.Abs(a.A.X - b.A.X) > 2 || Math.Abs(a.A.Z - b.A.Z) > 2) continue;
+                    if (comp[a.B] != comp[b.B]) continue;
+                    if (Floor2(a.A, b.A) < 0) continue;
+                    parent[Find(i)] = Find(j);
+                }
+            var groups = new Dictionary<int, List<VId>>();
+            for (int i = 0; i < stubs.Count; i++)
+            {
+                int r = Find(i);
+                if (!groups.TryGetValue(r, out List<VId> l)) groups[r] = l = new List<VId>();
+                l.Add(stubs[i]);
+            }
+            foreach (List<VId> grp in groups.Values)
+            {
+                if (grp.Count < 2) continue;
+                grp.Sort();
+                VId keepStub = grp[grp.Count / 2];
+                foreach (VId s in grp)
+                {
+                    if (s == keepStub) continue;
+                    foreach (VId o in adj[s])
+                    {
+                        adj[o].Remove(s);
+                        linkCell.Remove((o, s));
+                        linkCell.Remove((s, o));
+                    }
+                    adj.Remove(s);
+                    MergedStubs++;
+                }
+            }
+        }
+
+        /// <summary>How many stubs MergeStubs folded into a neighbour (probe/SelfTest evidence).</summary>
+        public int MergedStubs;
 
         // ------------------------------------------------------------------ dense fields (§8.7.4)
         private static List<List<Cell>> DenseClusters(HashSet<Cell> cells)

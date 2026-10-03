@@ -33,7 +33,11 @@
     <Compile Include="..\Core\CordLayer.cs" />
     <Compile Include="..\Core\CordBuilder.cs" />
     <Compile Include="..\Core\CordAudit.cs" />
+    <Compile Include="..\Core\CordMotion.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="LaneAChecks.cs" />
+    <Compile Include="..\Aerial\AerialMath.cs" />
+    <Compile Include="AerialSelfTest.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace RimMandrake.MessyConduit.Core
 {
-    public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive }
+    public enum DecalKind { Plug, JunctionTape, JunctionTin, StubWall, StubRock, PowerStrip, FrayDead, FrayLive, PowerStripDark }
 
     public struct CordDecal
     {
@@ -16,7 +16,9 @@ namespace RimMandrake.MessyConduit.Core
         /// <summary>Radians, 0 = +X; the art's long axis points along it.</summary>
         public double Angle;
         public double Scale;
-        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; }
+        /// <summary>A live fray that rides the whipping tail: printed statically only with whip off.</summary>
+        public bool OnWhip;
+        public CordDecal(DecalKind k, V2 p, double a, double s) { Kind = k; Pos = p; Angle = a; Scale = s; OnWhip = false; }
     }
 
     public sealed class CordStrand
@@ -28,6 +30,15 @@ namespace RimMandrake.MessyConduit.Core
         public bool OverFace;
         /// <summary>The slack could not be laid clear of obstacles; this is the planned centreline.</summary>
         public bool FellBack;
+        /// <summary>Points at the start / end of Pts that form a live terminal's whipping tail (phase 1b
+        /// B3): the section layer leaves them out of the static mesh while whipping is on, and the map
+        /// component draws them bent per frame. 0 = no tail.</summary>
+        public int WhipA, WhipB;
+        /// <summary>A lifted piece (wall-hanging tail): sways in the wind, weight per point (0 at the pin).</summary>
+        public bool Lifted;
+        public double[] SwayW;
+        /// <summary>Rope-settle diagnostics (phase 1b B1); null when the strand was not settled.</summary>
+        public SettleStats Settle;
     }
 
     /// <summary>A conduit end that reads live or dead: where sparks go (design §8.5).</summary>
@@ -46,6 +57,9 @@ namespace RimMandrake.MessyConduit.Core
         public List<CordStrand> Strands = new List<CordStrand>();
         public List<CordDecal> Decals = new List<CordDecal>();
         public List<CordEnd> Ends = new List<CordEnd>();
+        /// <summary>Net cells whose live flag this piece's LOOK depends on beyond its Ends (tangle and
+        /// device-strip LEDs): the component's live poll re-prints the piece when one flips.</summary>
+        public List<Cell> LiveKeys = new List<Cell>();
         public bool Unroutable;
         public double PathLen, LaidRatio;
         /// <summary>Corridor rect and the walkability hash it was planned on (§8.2.7).</summary>
@@ -72,6 +86,8 @@ namespace RimMandrake.MessyConduit.Core
         public bool Tangles = true;
         public bool NeedlessLoops = true;
         public ulong Seed = 1;
+        /// <summary>Messiness: dense fields of at least this many cells become a tangle (setting, 6-20).</summary>
+        public int TangleMin = CordGraph.TangleMin;
     }
 
     /// <summary>
@@ -87,7 +103,7 @@ namespace RimMandrake.MessyConduit.Core
 
         public List<LaidPiece> Build(CordWorld w, BuildOptions opt, Func<Cell, bool> isLive)
         {
-            CordGraph g = CordGraph.Reduce(w, opt.Seed, opt.Tangles ? CordGraph.TangleMin : int.MaxValue,
+            CordGraph g = CordGraph.Reduce(w, opt.Seed, opt.Tangles ? opt.TangleMin : int.MaxValue,
                                            opt.NeedlessLoops ? CordGraph.SpurMax : 0);
             Graph = g;
             var next = new Dictionary<string, LaidPiece>();
@@ -112,7 +128,7 @@ namespace RimMandrake.MessyConduit.Core
                 var full = new StringBuilder(ekey).Append('#');
                 foreach (VId v in e.Chain()) full.Append(v.ToString()).Append(';');
                 foreach (VId v in new[] { e.A, e.B })
-                    if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
+                    if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
                 full.Append('#').Append(opt.Lay.Fingerprint());
                 string fk = full.ToString();
                 if (cache.TryGetValue(fk, out LaidPiece old) && CorridorHash(w, old) == old.CorridorHash)
@@ -223,8 +239,9 @@ namespace RimMandrake.MessyConduit.Core
                     double ramp = Math.Min(1, Math.Min(cl[k], L - cl[k]) / 0.3) * 0.6 + 0.4;
                     P.Add(C[k] + nn * (lat * ramp));
                 }
+                SettleStats settle = null;
                 if (pl.Ok && L > 1.2 && prm.SlackScale > 0)
-                    P = CordLayer.Sprawl(w, P, prm, slack, maxExtra, CordRng.Of(opt.Seed, "bundle", key), CordRng.Of(opt.Seed, "strand", key, i), n);
+                    P = CordLayer.Sprawl(w, P, prm, slack, maxExtra, CordRng.Of(opt.Seed, "bundle", key), CordRng.Of(opt.Seed, "strand", key, i), n, out settle);
                 else
                 {
                     int sgn = rr.Sign();
@@ -251,7 +268,7 @@ namespace RimMandrake.MessyConduit.Core
                     P = new List<V2>(C);
                     fell = true;
                 }
-                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell });
+                piece.Strands.Add(new CordStrand { Pts = P, S0 = rr.Value(), FellBack = fell, Settle = settle });
                 laid += Geo.Length(P);
             }
             piece.PathLen = L;
@@ -390,6 +407,23 @@ namespace RimMandrake.MessyConduit.Core
             return CordLayer.Approach(w, P, !atA, target, arrive, straight);
         }
 
+        /// <summary>Points from one end of P whose arc length stays within len (at least 3), never more than half the strand.</summary>
+        public static int TailCount(List<V2> P, bool atStart, double len)
+        {
+            int n = P.Count;
+            if (n < 6) return 0;
+            double acc = 0;
+            int c = 1;
+            for (int k = 1; k < n / 2; k++)
+            {
+                int i = atStart ? k : n - 1 - k, j = atStart ? k - 1 : n - k;
+                acc += V2.Dist(P[i], P[j]);
+                if (acc > len) break;
+                c++;
+            }
+            return c >= 3 ? c : 0;
+        }
+
         private static double EndAngle(List<V2> P, bool atStart)
         {
             V2 a, b;
@@ -415,10 +449,18 @@ namespace RimMandrake.MessyConduit.Core
             }
             else if (nd.Type == NodeType.Terminal)
             {
+                bool liveEnd = isLive(nd.Cell);
                 foreach (CordStrand s in piece.Strands)
                 {
                     V2 t = atStart ? s.Pts[0] : s.Pts[s.Pts.Count - 1];
-                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.FrayLive : DecalKind.FrayDead, t, EndAngle(s.Pts, atStart), 0.5));
+                    var fd = new CordDecal(liveEnd ? DecalKind.FrayLive : DecalKind.FrayDead, t, EndAngle(s.Pts, atStart), 0.5);
+                    if (liveEnd && !s.OverFace)
+                    {
+                        int cnt = TailCount(s.Pts, atStart, CordMotion.WhipLen);
+                        if (atStart) s.WhipA = cnt; else s.WhipB = cnt;
+                        fd.OnWhip = cnt > 0;
+                    }
+                    piece.Decals.Add(fd);
                 }
                 piece.Ends.Add(new CordEnd { Tip = tip, Dir = new V2(nd.Out.X, nd.Out.Z), NetCell = nd.Cell, Wall = false });
             }
@@ -432,11 +474,18 @@ namespace RimMandrake.MessyConduit.Core
                     piece.Decals.Add(new CordDecal(DecalKind.StubWall, nd.Face + nd.Into * 0.02, ang, StubScale));
                 else if (nd.Type == NodeType.StubRock)
                     piece.Decals.Add(new CordDecal(DecalKind.StubRock, nd.Face + nd.Into * (0.06 - RockHoleX * StubScale), ang, StubScale));
-                else if (nd.Type == NodeType.StubDevice) piece.Decals.Add(new CordDecal(DecalKind.PowerStrip, nd.Face - nd.Into * 0.2, ang + Math.PI / 2, 0.8));
+                else if (nd.Type == NodeType.StubDevice)
+                {
+                    // the strip's LEDs read the net (phase 1b B6): lit when live, dark when not
+                    piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.PowerStrip : DecalKind.PowerStripDark, nd.Face - nd.Into * 0.2, ang + Math.PI / 2, 0.8));
+                    piece.LiveKeys.Add(nd.Cell);
+                }
                 if (nd.WallTerminal)
                 {
                     var tail = CordLayer.HangingTail(hole, nd.Into);
-                    piece.Strands.Add(new CordStrand { Pts = tail, OverFace = true, S0 = 0.3 });
+                    var sw = new double[tail.Count];
+                    for (int k = 0; k < sw.Length; k++) sw[k] = Math.Pow(k / (double)(sw.Length - 1), 1.3);
+                    piece.Strands.Add(new CordStrand { Pts = tail, OverFace = true, S0 = 0.3, Lifted = true, SwayW = sw });
                     V2 tt = tail[tail.Count - 1];
                     piece.Decals.Add(new CordDecal(isLive(nd.Cell) ? DecalKind.FrayLive : DecalKind.FrayDead, tt, -Math.PI / 2, 0.5));
                     piece.Ends.Add(new CordEnd { Tip = tt, Dir = new V2(0, -1), NetCell = nd.Cell, Wall = true });
@@ -473,11 +522,13 @@ namespace RimMandrake.MessyConduit.Core
                 CordLayer.Smooth(w, P, 3);
                 if (P.All(q => w.IsWalkable(q.Floor))) p.Strands.Add(new CordStrand { Pts = P, S0 = r.Value() });
             }
+            bool lit = isLive(nd.Cell);
+            p.LiveKeys.Add(nd.Cell);
             for (int k = 0; k < 1 + comp.Count / 7; k++)
             {
                 CordRng r = CordRng.Of(opt.Seed, "strip", nd.Cell.X, nd.Cell.Z, k);
                 Cell c = comp[r.Int(0, comp.Count - 1)];
-                p.Decals.Add(new CordDecal(DecalKind.PowerStrip, c.Centre + new V2(r.Range(-0.25, 0.25), r.Range(-0.25, 0.25)), r.Range(-0.8, 0.8), 0.9));
+                p.Decals.Add(new CordDecal(lit ? DecalKind.PowerStrip : DecalKind.PowerStripDark, c.Centre + new V2(r.Range(-0.25, 0.25), r.Range(-0.25, 0.25)), r.Range(-0.8, 0.8), 0.9));
             }
             return p;
         }

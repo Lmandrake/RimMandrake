@@ -41,6 +41,7 @@
     <Compile Include="Core\CordLayer.cs" />
     <Compile Include="Core\CordBuilder.cs" />
     <Compile Include="Core\CordAudit.cs" />
+    <Compile Include="Core\CordMotion.cs" />
   </ItemGroup>
 
   <!-- game side: power-network adapter, map component, drawer, settings, probe -->
@@ -53,6 +54,21 @@
     <Compile Include="RM_MapComponent_CordGraph.cs" />
     <Compile Include="SectionLayer_RM_MessyCords.cs" />
     <Compile Include="MessyConduitProbe.cs" />
+  </ItemGroup>
+
+  <!-- aerial power lines, lane B / L5 (design phase2 section 2): AerialMath.cs is Verse-free and ALSO compiled by SelfTest -->
+  <ItemGroup>
+    <Compile Include="Aerial\AerialMath.cs" />
+    <Compile Include="Aerial\AerialDefOf.cs" />
+    <Compile Include="Aerial\AerialSettings.cs" />
+    <Compile Include="Aerial\AerialMaterials.cs" />
+    <Compile Include="Aerial\AerialPowerPatch.cs" />
+    <Compile Include="Aerial\CompAerialAnchor.cs" />
+    <Compile Include="Aerial\CompPowerTap.cs" />
+    <Compile Include="Aerial\PlaceWorkers_Aerial.cs" />
+    <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
+    <Compile Include="Aerial\SectionLayer_RM_AerialGround.cs" />
+    <Compile Include="Aerial\AerialProbe.cs" />
   </ItemGroup>
 
   <ItemGroup>
