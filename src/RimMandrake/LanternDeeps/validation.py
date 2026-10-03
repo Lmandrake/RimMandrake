@@ -73,6 +73,8 @@ Still not proven / structurally offline-only:
      map generates as a crystal cavern, test the seal command) is
      explicitly out of scope for a scripted suite.
 """
+import re
+
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("LanternDeeps")
@@ -486,3 +488,44 @@ def hydrocarbon_wave1(t):
         res = str((r or {}).get("result", ""))
         if t._guard() and not res.startswith("placed"):
             raise ExpectationFailed("galuush not placed: %r" % (r,))
+
+
+@suite.chain("creep_cleavers")
+def creep_cleavers(t):
+    """LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1: the Creep stalks a downed body and grows over it; a Cleaver struck hard
+    splits. Run in a Deep (the Creep's map component lives only there). Not proven here: the crust art on screen,
+    mining the crust, the shard trail while a Cleaver runs, and a wild Cleaver pack hunting."""
+    CP = "RimMandrake.LanternDeeps.RM_CreepCleaversProof"
+    with t.component("crystal_life_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RM_CreepCrust", "HediffDef/RM_CreepEngulfed", "GenStepDef/RM_DeepCreep",
+                  "ThingDef/RM_Cleaver", "PawnKindDef/RM_Cleaver", "ThingDef/RM_Filth_CleaverShards"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("creep_stalks_and_engulfs", toggle="creepEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCreep", args="10") or {}).get("result", ""))
+        m = re.search(r"before=([\d.]+) after=([\d.]+) engulf=([\d.]+)", res)
+        if t._guard() and (not m or float(m.group(2)) >= float(m.group(1)) or float(m.group(3)) <= 0):
+            raise ExpectationFailed("the Creep did not close on and engulf the downed body: %r" % res)
+    with t.component("cleaver_splits_when_struck", toggle="cleavingEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=CP, method="ProofCleave", args="") or {}).get("result", ""))
+        m = re.search(r"before=(\d+) after=(\d+)", res)
+        if t._guard() and (not m or int(m.group(2)) <= int(m.group(1))):
+            raise ExpectationFailed("no shard walked away: %r" % res)
+
+
+@suite.chain("aurora_collapse")
+def aurora_collapse(t):
+    """LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1: the Deep's aurora condition brightens lanternstone; a marked roof cell is
+    held for its warning (dust, sand, grumble) instead of falling the same tick. Run in a Deep. Not proven here: the
+    Chorus sound, the dust/sand on screen, a propped roof holding, a galuush blast bringing its roof down."""
+    AP = "RimMandrake.LanternDeeps.RM_AuroraCollapseProof"
+    with t.component("aurora_brightens_lanternstone", toggle="auroraEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofAurora", args="") or {}).get("result", ""))
+        m = re.search(r"glow=([\d.]+)->([\d.]+)", res)
+        if t._guard() and ("active=True" not in res or not m or float(m.group(2)) <= float(m.group(1))):
+            raise ExpectationFailed("aurora did not start or did not brighten lanternstone: %r" % res)
+    with t.component("roof_warns_before_it_falls", toggle="collapseWarningsEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofCollapse", args="") or {}).get("result", ""))
+        if t._guard() and "heldForWarning=True" not in res:
+            raise ExpectationFailed("the roof was not held for its warning: %r" % res)

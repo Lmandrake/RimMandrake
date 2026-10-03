@@ -69,6 +69,17 @@ namespace RimMandrake.LanternDeeps
         public static bool hydrocarbonIgnitionEnabled = true;   // live: drifter/galuush detonate when killed hot
         public static bool chillerColdEnabled = true;           // live: a chiller cools the room around it
         public static bool galuushEnabled = true;               // new Deeps: a galuush may hang in the biggest chamber
+        // LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1
+        public static bool creepEnabled = true;                 // new Deeps: a Creep may be seeded; live: it grows
+        public static float creepGrowthMultiplier = 1f;         // cells precipitated per hour while stalking
+        public static bool cleavingEnabled = true;              // live: a Cleaver struck hard splits
+        public static int cleaverMapCap = 24;                   // no cleave past this many Cleavers on one map
+        // LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1
+        public static bool auroraEnabled = true;                // live: the aurora storm overhead reaches the Deep
+        public static float auroraMtbDays = 8f;                 // mean days between storms when none is mirrored
+        public static bool collapseWarningsEnabled = true;      // live: dust, sand and the grumble before a roof falls
+        public static int collapseWarningTicks = 900;           // the warning window
+        public static bool galuushRoofFallEnabled = true;       // live: a galuush killed hot brings its roof down
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -194,6 +205,15 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref hydrocarbonIgnitionEnabled, "hydrocarbonIgnitionEnabled", true);
             Scribe_Values.Look(ref chillerColdEnabled, "chillerColdEnabled", true);
             Scribe_Values.Look(ref galuushEnabled, "galuushEnabled", true);
+            Scribe_Values.Look(ref creepEnabled, "creepEnabled", true);
+            Scribe_Values.Look(ref creepGrowthMultiplier, "creepGrowthMultiplier", 1f);
+            Scribe_Values.Look(ref cleavingEnabled, "cleavingEnabled", true);
+            Scribe_Values.Look(ref cleaverMapCap, "cleaverMapCap", 24);
+            Scribe_Values.Look(ref auroraEnabled, "auroraEnabled", true);
+            Scribe_Values.Look(ref auroraMtbDays, "auroraMtbDays", 8f);
+            Scribe_Values.Look(ref collapseWarningsEnabled, "collapseWarningsEnabled", true);
+            Scribe_Values.Look(ref collapseWarningTicks, "collapseWarningTicks", 900);
+            Scribe_Values.Look(ref galuushRoofFallEnabled, "galuushRoofFallEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -298,6 +318,40 @@ namespace RimMandrake.LanternDeeps
             list.CheckboxLabeled("A galuush may hang in a Deep", ref galuushEnabled,
                 "On: about half of newly generated Deeps have one galuush, a living sun hung in the biggest chamber. "
               + "Off: none. Affects newly generated Deeps only.");
+            list.CheckboxLabeled("The Creep grows in the Deeps", ref creepEnabled,
+                "On: about half of newly generated Deeps hold a Creep, a crystal crust that drifts across the cavern over days "
+              + "and grows toward anything asleep or down within reach, engulfing it (a letter names it; break the crust to free it). "
+              + "Off: no new Creep, and an existing crust stops growing.");
+            if (creepEnabled)
+            {
+                list.Label("Creep growth: " + creepGrowthMultiplier.ToString("0.00") + "x (shipped: one cell an hour toward a sleeper)");
+                creepGrowthMultiplier = list.Slider(creepGrowthMultiplier, 0.25f, 3f);
+            }
+            list.CheckboxLabeled("Cleavers split when struck", ref cleavingEnabled,
+                "On: a Cleaver hit hard may fracture, and the shard walks away as a new Cleaver. Off: they only take damage. Safe mid-game.");
+            if (cleavingEnabled)
+            {
+                list.Label("Most Cleavers on one map before splitting stops: " + cleaverMapCap);
+                cleaverMapCap = (int)list.Slider(cleaverMapCap, 4f, 60f);
+            }
+            list.CheckboxLabeled("The aurora storm reaches the Deep", ref auroraEnabled,
+                "On: now and then (and whenever a reconnection storm rages on the surface) the Deep has its feast day: lanternstone "
+              + "glows wider, the Chorus rises, Cleavers quicken. Off: never. Safe mid-game.");
+            if (auroraEnabled)
+            {
+                list.Label("Mean days between storms: " + auroraMtbDays.ToString("0.0"));
+                auroraMtbDays = list.Slider(auroraMtbDays, 2f, 30f);
+            }
+            list.CheckboxLabeled("A failing roof warns before it falls", ref collapseWarningsEnabled,
+                "On: in a Deep, an unsupported roof grumbles, trails dust and piles sand for a while before it falls; prop it in time "
+              + "and it holds. Off: vanilla, it falls at once. Safe mid-game.");
+            if (collapseWarningsEnabled)
+            {
+                list.Label("Warning time: " + (collapseWarningTicks / 60f).ToString("0") + " seconds at normal speed");
+                collapseWarningTicks = (int)list.Slider(collapseWarningTicks, 300f, 3600f);
+            }
+            list.CheckboxLabeled("A galuush killed hot brings its roof down", ref galuushRoofFallEnabled,
+                "On: the galuush's blast brings down the roof over its chamber (after the warning, propped or not). Off: blast and fire only.");
 
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();

@@ -60,6 +60,8 @@
     <Compile Include="RM_WorkingDead.cs" />
     <Compile Include="RM_OrunGhal.cs" />
     <Compile Include="RM_HydrocarbonFauna.cs" />
+    <Compile Include="RM_CreepCleavers.cs" />
+    <Compile Include="RM_AuroraCollapse.cs" />
   </ItemGroup>
 
   <ItemGroup>

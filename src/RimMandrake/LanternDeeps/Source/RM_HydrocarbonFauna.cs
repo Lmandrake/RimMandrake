@@ -37,6 +37,9 @@ namespace RimMandrake.LanternDeeps
         // Injuries that count as a COLD kill: no ignition.
         public List<HediffDef> coldInjuries = new List<HediffDef>();
         public string ignitionMessageKey = "RM_HotKillIgnition";
+        // LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1: the galuush brings its chamber's roof down (through the Deep's
+        // collapse warnings when those are on). 0 = no roof fall.
+        public float collapseRoofRadius = 0f;
 
         public RM_DeathActionProperties_HotKill()
         {
@@ -65,6 +68,18 @@ namespace RimMandrake.LanternDeeps
                 MessageTypeDefOf.NegativeEvent);
             GenExplosion.DoExplosion(corpse.PositionHeld, corpse.MapHeld, Props.radius, Props.damageDef ?? DamageDefOf.Flame, pawn,
                 chanceToStartFire: Props.chanceToStartFire);
+            if (Props.collapseRoofRadius > 0f && LanternDeepsSettings.galuushRoofFallEnabled)
+            {
+                Map map = corpse.MapHeld;
+                foreach (IntVec3 c in GenRadial.RadialCellsAround(corpse.PositionHeld, Props.collapseRoofRadius, true))
+                {
+                    if (c.InBounds(map) && c.Roofed(map) && c.GetRoof(map).canCollapse)
+                    {
+                        map.GetComponent<RM_MapComponent_DeepCollapse>()?.MarkForced(c);
+                        map.roofCollapseBuffer.MarkToCollapse(c);
+                    }
+                }
+            }
         }
 
         // The killing wound is the newest injury. No injury at all (starvation, cold) = no ignition.

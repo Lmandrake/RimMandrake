@@ -10,8 +10,8 @@
   Deviations from the proposals, on purpose: candler milk is the existing RM_ColdWax (the
   Blue Desert's cold wax, same composed mod) rather than a new RUT_ item; the galuush is placed by
   RM_GenStep_Galuush (one per Deep at most, ~half of Deeps), never by the roster. The galuush's
-  "roof comes down" waits on the ruled collapse (LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1): today its
-  hot death is a chamber-sized blast and fire.
+  hot death is a chamber-sized blast and fire, and its roof comes down through the Deep's collapse
+  warnings (collapseRoofRadius, LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1).
 -->
 <Defs>
 
@@ -246,6 +246,7 @@
         <damageDef>Bomb</damageDef>
         <chanceToStartFire>0.6</chanceToStartFire>
         <ignitionMessageKey>RM_GaluushIgnition</ignitionMessageKey>
+        <collapseRoofRadius>4.9</collapseRoofRadius>
           <coldInjuries>
             <li>Cut</li><li>Stab</li><li>Crush</li><li>Bruise</li><li>Bite</li><li>Scratch</li><li>Crack</li>
           </coldInjuries>

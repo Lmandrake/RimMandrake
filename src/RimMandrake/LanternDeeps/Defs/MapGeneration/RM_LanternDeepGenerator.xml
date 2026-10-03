@@ -32,6 +32,10 @@
            Vanilla's WildPlantSpawner never consults them under a natural roof
            (only the planet-wide cavePlant set) — see the .cs header. -->
       <li>RimMandrake.LanternDeeps.MapComponent_DeepFloraRegrowth</li>
+      <!-- LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1 / LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1 -->
+      <li>RimMandrake.LanternDeeps.RM_MapComponent_Creep</li>
+      <li>RimMandrake.LanternDeeps.RM_MapComponent_DeepAurora</li>
+      <li>RimMandrake.LanternDeeps.RM_MapComponent_DeepCollapse</li>
     </customMapComponents>
     <genSteps>
       <li>ElevationFertility</li>
@@ -64,6 +68,7 @@
       <li>RM_DeepWellProvisionedDead</li>
       <li>RM_DeepOrunGhal</li>
       <li>RM_DeepGaluush</li>
+      <li>RM_DeepCreep</li>
       <li>MutatorFinal</li>
       <li>Fog</li>
     </genSteps>
