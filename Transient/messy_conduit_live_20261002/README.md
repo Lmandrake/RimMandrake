@@ -59,3 +59,23 @@ at `BuildingOnTop`; dead ends curl 0.7 cell; live ends straight with a per-frame
 
 Art the pipeline could still improve (not queued): a real `EndFrayed_Live` (bright copper strands; the procedural one
 reads fine with the glow), and a rock-face tail variant if the hanging tail on rock bothers you.
+
+## Art styles (lane C, 2026-10-02 18:00)
+
+Same keeper scenes, same rects, one per style (`validation.py --style-shots` on the `--live` map; the cord site is
+34x14 cells at ~26 px/cell, the aerial site 46x20 at ~26 px/cell). State proof is the ST rows (all PASS), not these.
+
+| file | style | what is wrong (candid) |
+|---|---|---|
+| `style_jawa.png` / `style_jawa_aerial.png` | Jawa, matte black (default) | unchanged from 1b; the aerial span is the floor strand overhead |
+| `style_starwars.png` / `style_starwars_aerial.png` | Star Wars: black rubber 60%, corrugated steel 20%, coiled 20%, per net | at this zoom it is indistinguishable from Jawa: the steel ribbing and the coil helix do not read at 26 px/cell, and the Jawa ochre-taped T sits beside a steel junction box |
+| `style_extcord.png` / `style_extcord_aerial.png` | Extension cords, one colour per net (mixed) | the main net drew BROWN, which almost vanishes on desert soil; 4 nets used 3 of the 5 colours (seeded by net, not balanced). Every aerial span uses the first colour (orange), not its net's |
+| `style_extcord_single_brown.png` | Extension cords, single colour (brown) | proves the single-colour mode; brown-on-soil contrast as above |
+| `style_cybertek.png` / `style_cybertek_aerial.png` | Cybertek grey metallic | reads as dull grey-green, not "ultra-sleek": the teal accent line is lost at this scale and the light grey is muted under the map's lighting |
+
+Every style: the power strips in a tangle, the live frayed end and the cord shadow are still the Jawa pieces (no
+family art exists: `PowerStrip`, `EndFrayed_Live`, `StrandShadow` per family were never queued). No tile seam is
+visible at this zoom (offline: every strip passes the edge-column test; Orange, Blue, the aerial shadow and the
+aerial wire needed one wrap crossfade). The masts are the real wooden pole now: thin and small at review zoom; wire to
+insulator alignment only judged at ~26 px/cell. The wall bracket art is unfaced, so it draws the same for every
+rotation. Placeholder vs real per family: `art_families_compare.png`; per-piece numbers: `art_families_report.json`.
