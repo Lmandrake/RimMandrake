@@ -88,6 +88,8 @@
       <RM_Eesh>1.2</RM_Eesh>
       <RM_Doss>1.0</RM_Doss>
       <RM_Muddal>0.7</RM_Muddal>
+      <!-- SCALD_WALKING_PASTURE_1: the bottom-walker herd (RM_ScaldWalker.xml). -->
+      <RM_ScaldWalker>0.35</RM_ScaldWalker>
       <RM_Bladderboil>0.6</RM_Bladderboil>
       <RM_Thuum>0.5</RM_Thuum>
       <RM_Karrash>0.45</RM_Karrash>

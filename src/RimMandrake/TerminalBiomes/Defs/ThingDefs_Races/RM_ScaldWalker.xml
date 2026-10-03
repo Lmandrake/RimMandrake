@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_ScaldWalker.xml                     TerminalBiomes — 2026-10-03
+  SCALD_WALKING_PASTURE_1, step one: the missing bottom-walker as a plain grazing herd animal.
+  Authority: the_scald.md (the owner's "huge creatures walking the crater floor ... mowing the mats")
+  and sitting ruling Q1 (the_scald_floor_sitting_agenda_2026-10-02.md). The muddal's own description
+  names it "the bottom-walkers' small cousin ... of the same make", so the walker is that plan scaled up.
+  Invented name -> RM_ tier (Q11a). Butchery yields RM_ScaldWalkerChitin (DivingInteraction; TerminalBiomes
+  already depends on that mod), retiring the "walker part with no walker" orphan.
+  The graze/exposure and crew-follow behaviour is C# in DivingInteraction (RM_MapComponent_ScaldWalkerGrazing,
+  RM_WorkGiver_GatherGrazedMat); this def is plain on purpose, so the creature still exists if that is off.
+  Heavy and slow, never hostile: manhunterOnDamageChance 0, trainability None, ban 5 (nothing tames).
+  Art: Muddal silhouettes copied as placeholders; real art queued as artpipe job scaldwalker_v1_*.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_ScaldWalker</defName>
+    <label>bottom-walker</label>
+    <description>A domed, heat-glossed giant that walks the Scald's floor on a hundred short thick legs, head low, scraping the rainbow mats off the bottom in slow broad swathes. It is the muddal's far larger kin and unmistakably the same make. It barely notices anything the size of a person; it is simply very large and has somewhere to be. Where it grazes, the mats' pigment-rich underside is left briefly bare.</description>
+    <statBases>
+      <MoveSpeed>1.1</MoveSpeed>
+      <MarketValue>400</MarketValue>
+      <ComfyTemperatureMin>15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>110</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>5</baseBodySize>
+      <baseHealthScale>4</baseHealthScale>
+      <baseHungerRate>0.6</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <lifeExpectancy>40</lifeExpectancy>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <leatherDef>Leather_Plain</leatherDef>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>6</minAge>
+        </li>
+      </lifeStageAges>
+      <hediffGiverSets Inherit="False">
+        <li>RM_OrganicScaldNative</li>
+      </hediffGiverSets>
+    </race>
+    <butcherProducts>
+      <RM_ScaldWalkerChitin>25</RM_ScaldWalkerChitin>
+    </butcherProducts>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_ScaldWalker</defName>
+    <label>bottom-walker</label>
+    <race>RM_ScaldWalker</race>
+    <combatPower>180</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_ScaldWalker/RM_ScaldWalker</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.2</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

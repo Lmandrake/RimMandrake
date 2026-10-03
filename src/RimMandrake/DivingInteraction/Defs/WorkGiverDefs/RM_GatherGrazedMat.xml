@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The crew job: gathers the pigment-rich mat the herd has just exposed. Scanner logic is C# (SCALD_WALKING_PASTURE_1). -->
+  <WorkGiverDef>
+    <defName>RM_GatherGrazedMat</defName>
+    <label>gather grazed mat</label>
+    <giverClass>RimMandrake.DivingInteraction.RM_WorkGiver_GatherGrazedMat</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>45</priorityInType>
+    <verb>gather</verb>
+    <gerund>gathering grazed mat</gerund>
+    <scanThings>true</scanThings>
+    <canBeDoneByNonColonists>false</canBeDoneByNonColonists>
+  </WorkGiverDef>
+
+</Defs>
