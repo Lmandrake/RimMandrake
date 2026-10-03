@@ -55,6 +55,7 @@
     <Compile Include="RM_MapComponentShipCover.cs" />
     <Compile Include="RM_AbyssLight.cs" />
     <Compile Include="RM_AbyssSoundscape.cs" />
+    <Compile Include="RM_AbyssCryptid.cs" />
   </ItemGroup>
 
   <ItemGroup>

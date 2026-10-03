@@ -37,6 +37,11 @@ the fourteen wildAnimals entries are individually MayRequire'd on Alpha
 Animals and degrade gracefully without it.
 
 Two invented predators, the cindermare (cold-drain grip) and the skarnix
-(flees firelight), hunt here as RM_Cindermare and RM_Skarnix. The Forsakens (the campaign's mystery race) and the six Forsaken vaults
-are campaign plot content and stay in Utinni entirely.</description>
+(flees firelight), hunt here as RM_Cindermare and RM_Skarnix. The six Forsaken vaults are campaign plot
+content and stay in Utinni entirely.
+
+The Abyss has its own cryptid (ABYSS_FREE_CRYPTID_1): visitors who come for the Dark and are never seen,
+known only by signs anyone can explain away (extra rings and caches, things swapped on a ring of shards,
+a clear pocket over nothing, whispers and a dream). No pawn, faction or certain structure of theirs
+exists. One setting turns it all off.</description>
 </ModMetaData>

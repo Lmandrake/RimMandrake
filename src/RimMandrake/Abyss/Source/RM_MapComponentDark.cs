@@ -92,7 +92,9 @@ namespace RimMandrake.Abyss
                 t += (n - 0.5f) * 2f * PocketAmplitude;
             }
             // ABYSS_FOLD_LAMP_BUILD_1: a lit fold-lamp's lane of warm air holds the Dark open toward its throat.
-            return DarknessForTemperature(t) * (1f - RM_MapComponent_FoldLanes.ClearanceAt(map, c));
+            // ABYSS_FREE_CRYPTID_1: and, very rarely, a clear pocket opens over nothing at all.
+            return DarknessForTemperature(t) * (1f - RM_MapComponent_FoldLanes.ClearanceAt(map, c))
+                * (1f - RM_MapComponent_AbyssCryptid.PhantomClearanceAt(map, c));
         }
 
         /// <summary>0..1 darkness of air at an effective temperature (no lane, no slider).</summary>

@@ -511,6 +511,54 @@ def soundscape_check():
     return bad
 
 
+def cryptid_check():
+    """Offline (ABYSS_FREE_CRYPTID_1): the name lives in exactly one def of this mod; no pawn/faction of the cryptid;
+    every grammar consumer includes the pack; the Utinni patch only adds, with no rename and no ancients wording."""
+    bad = []
+    name = "Nhaleth"
+    hits = []
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
+        for fn in files:
+            if fn.endswith(".xml"):
+                for el in ET.parse(os.path.join(dp, fn)).getroot():
+                    if isinstance(el.tag, str) and name in ET.tostring(el, encoding="unicode"):
+                        hits.append(el.findtext("defName"))
+    if hits != ["RM_AbyssCryptid"]:
+        bad.append("the name must live only in RulePackDef RM_AbyssCryptid, found in %r" % hits)
+    if not any("RM_Durrgak" in (d.findtext("defName") or "") for d in _defs("ThingDefs_Races/RM_Durrgak.xml")):
+        bad.append("sanity probe: could not read the durrgak defs")
+    root = _defs("MapGeneration/RM_AbyssCryptid.xml")
+    for d in root:
+        if d.tag in ("PawnKindDef", "FactionDef") or (d.tag == "ThingDef" and d.find("race") is not None):
+            bad.append("ban 7: the cryptid may not have a %s (%s)" % (d.tag, d.findtext("defName")))
+        if name.lower() in (d.findtext("defName") or "").lower():
+            bad.append("defName names the cryptid: " + d.findtext("defName"))
+    for tag in ("InteractionDef", "TaleDef"):
+        for d in root.iter(tag):
+            if "RM_AbyssCryptid" not in [li.text for li in d.iter("li")]:
+                bad.append("%s %s does not include RM_AbyssCryptid" % (tag, d.findtext("defName")))
+    biome = ET.tostring(_defs("BiomeDefs/RM_Abyss.xml"), encoding="unicode")
+    if "RM_AbyssRumorSites" not in biome:
+        bad.append("rumor-sites genstep not in RM_Abyss extraGenSteps")
+    src = os.path.join(HERE, "Source")
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    if mod.count("cryptidSignsEnabled") < 3:
+        bad.append("Mod Settings lacks cryptidSignsEnabled (field, Scribe, control)")
+    if "PhantomClearanceAt" not in open(os.path.join(src, "RM_MapComponentDark.cs")).read():
+        bad.append("the Dark has no clear-pocket-around-nothing hook")
+    if 'Compile Include="RM_AbyssCryptid.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_AbyssCryptid.cs not in csproj")
+    ut = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "Abyss_CryptidSithWhisper.xml")
+    if not os.path.isfile(ut):
+        bad.append("Utinni Sith whisper patch missing")
+    else:
+        txt = open(ut).read()
+        body = re.sub(r"<!--.*?-->", "", txt, flags=re.S)
+        if "Sith" not in body or re.search(r"rakat|ancient|terraform|forsaken|PatchOperationReplace", body, re.I):
+            bad.append("Utinni patch must only ADD a Sith whisper (no rename, no Rakata/ancients/Forsaken wording)")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -631,6 +679,32 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    @suite.chain("cryptid")
+    def cryptid(t):
+        """ABYSS_FREE_CRYPTID_1, live. The name resolves from the one pack (campaign build: a whisper may name the Sith);
+        an unwatched item on a ring is swapped and a watched one is not; a clear pocket opens over nothing. Run with no
+        colonist near the map centre for the unwatched read; the art tale and the dream are a joint look with the owner."""
+        def _c(method):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Abyss.RM_MapComponent_AbyssCryptid", method=method, args="current")
+            return str((r or {}).get("result", ""))
+        with t.component("cryptid_defs_loaded", beyond_toggle=True):
+            for d in ("RulePackDef/RM_AbyssCryptid", "InteractionDef/RM_AbyssWhisper", "TaleDef/RM_WhisperedInTheDark",
+                      "ThoughtDef/RM_DreamtNoLight", "GenStepDef/RM_AbyssRumorSites"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+        with t.component("name_from_one_pack", beyond_toggle=True):
+            txt = _c("ProofName")
+            if t._guard() and "NAME the Nhaleth" not in txt:
+                raise ExpectationFailed("the cryptid name did not resolve from RM_AbyssCryptid: %r" % txt)
+        with t.component("exchange_never_watched", beyond_toggle=True):
+            txt = _c("ProofExchange")
+            if t._guard() and not (("watched=False swapped=1" in txt) or ("watched=True swapped=0" in txt)):
+                raise ExpectationFailed("exchange broke the watched rule or did nothing: %r" % txt)
+        with t.component("clear_pocket_around_nothing", beyond_toggle=True):
+            txt = _c("ProofPhantom")
+            if t._guard() and (not txt.startswith("PHANTOM") or "clearance=1.00" not in txt):
+                raise ExpectationFailed("no clear pocket opened: %r" % txt)
 except ImportError:
     suite = None
 
@@ -657,4 +731,6 @@ if __name__ == "__main__":
     print("LAMP CROPS + FOLD LAMP static: %s" % ("PASS" if not lc else "FAIL " + "; ".join(lc)))
     ss = soundscape_check()
     print("SOUNDSCAPE static: %s" % ("PASS" if not ss else "FAIL " + "; ".join(ss)))
-    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss) else 0)
+    cy = cryptid_check()
+    print("CRYPTID static: %s" % ("PASS" if not cy else "FAIL " + "; ".join(cy)))
+    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss or cy) else 0)
