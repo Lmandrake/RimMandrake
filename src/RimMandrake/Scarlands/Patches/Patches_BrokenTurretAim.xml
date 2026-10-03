@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_TURRETS_TRACK_1. Gives the broken ancient turrets the verbless aim comp (+ a ticker and a
+     real-time drawer so the barrel top turns). Targets Odyssey's broken turrets and our retextured
+     RUT_BustedShieldedTurret. Each op is guarded by a Conditional on the def itself: a patch that
+     matches nothing logs nothing, and no top-level MayRequire is used (inert in 1.6). -->
+<Patch>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]</xpath>
+        <match Class="PatchOperationSequence"><operations>
+          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/comps</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]</xpath><value><comps/></value></nomatch></li>
+          <li Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/comps</xpath><value><li Class="RimMandrake.Scarlands.CompProperties_TurretAim"/></value></li>
+        </operations></match>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]</xpath>
+        <match Class="PatchOperationSequence"><operations>
+          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/comps</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]</xpath><value><comps/></value></nomatch></li>
+          <li Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/comps</xpath><value><li Class="RimMandrake.Scarlands.CompProperties_TurretAim"/></value></li>
+        </operations></match>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]</xpath>
+        <match Class="PatchOperationSequence"><operations>
+          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/comps</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]</xpath><value><comps/></value></nomatch></li>
+          <li Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/comps</xpath><value><li Class="RimMandrake.Scarlands.CompProperties_TurretAim"/></value></li>
+        </operations></match>
+      </li>
+    </operations>
+  </Operation>
+</Patch>
