@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1: wire the campaign mindstone gallery into the free-tier
+     Deep. Same guard shape as RUT_LanternDeepGateKyber.xml: the Conditional's xpath targets
+     RM_LanternDeepGenerator itself, so with Lantern Deeps absent nothing is added. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/MapGeneratorDef[defName="RM_LanternDeepGenerator"]/genSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/MapGeneratorDef[defName="RM_LanternDeepGenerator"]/genSteps</xpath>
+      <value>
+        <li>RUT_LanternDeepMindstoneGallery</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

@@ -256,3 +256,22 @@ def planet_name_patch_on_quicktest_world(t):
                     "jawa/world_info_get's world name is %r, expected exactly "
                     "\"Ash'karr\" (U+0027 apostrophe) from JawaWorld_Name.xml's "
                     "unconditional NamerWorld patch: %r" % (name, r))
+
+
+@suite.chain("mindstone_gallery")
+def mindstone_gallery(t):
+    """LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1: run on a LANTERN DEEP map that has a Shard-mind. The gallery
+    placement threads mindstone veins into the rock face around it. Not proven here: that a freshly generated
+    Deep carries it (the genSteps patch) -- enter a new Deep and count RUT_MindstoneVein; and that mining one
+    yields RUT_Mindstone (vanilla mineableThing)."""
+    with t.component("mindstone_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RUT_Mindstone", "ThingDef/RUT_MindstoneVein", "GenStepDef/RUT_LanternDeepMindstoneGallery"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("gallery_veins_placed", toggle="mindstoneGalleryEnabled"):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UtinniPatches.RUT_MindstoneGalleryProof",
+                          method="ProofGallery", args="")
+        res = str((r or {}).get("result", ""))
+        if t._guard() and (not res.startswith("veins=") or res.startswith("veins=0")):
+            raise ExpectationFailed("no mindstone veins placed: %r" % (r,))

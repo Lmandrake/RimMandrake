@@ -57,6 +57,9 @@ namespace RimMandrake.Utinni.UtinniPatches
         public static float greatboleCatastropheThreshold = 0.70f;
         public static bool greatboleCatastropheEnabled = true;
 
+        // LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1 — worldgen-affecting (new Deeps only).
+        public static bool mindstoneGalleryEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -69,6 +72,7 @@ namespace RimMandrake.Utinni.UtinniPatches
             Scribe_Values.Look(ref greatboleHealingThreshold, "greatboleHealingThreshold", 0.60f);
             Scribe_Values.Look(ref greatboleCatastropheThreshold, "greatboleCatastropheThreshold", 0.70f);
             Scribe_Values.Look(ref greatboleCatastropheEnabled, "greatboleCatastropheEnabled", true);
+            Scribe_Values.Look(ref mindstoneGalleryEnabled, "mindstoneGalleryEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -119,6 +123,12 @@ namespace RimMandrake.Utinni.UtinniPatches
               + "footprint is removed. The Great Shaking and the violent healing still fire.");
             list.Label("The catastrophe: " + (greatboleCatastropheThreshold * 100f).ToString("0") + "% removed");
             greatboleCatastropheThreshold = list.Slider(greatboleCatastropheThreshold, 0.1f, 0.99f);
+
+            list.GapLine();
+            list.CheckboxLabeled("Mindstone galleries in the Lantern Deeps", ref mindstoneGalleryEnabled,
+                "On: in a newly generated Lantern Deep, the rock around one Shard-mind carries a few veins of mindstone, "
+              + "the only place on the planet it can be mined. Off: no gallery, and no mindstone anywhere. "
+              + "Worldgen-affecting: applies to Deeps generated after the change.");
 
             list.End();
         }

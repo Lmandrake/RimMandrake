@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Mindstone.xml        UtinniPatches · LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1
+  Name ruling N1 (RUT_mechanoid_origin_canon.md): KEEP "mindstone", def token RUT_Mindstone.
+  RUT_MindstoneVein is placed ONLY by RUT_GenStep_MindstoneGallery in a Lantern Deep
+  (mineableScatterCommonality 0, never a deep resource), so it is findable there and only there.
+  No tradeTags: no trader stocks it ("nobody mines the crystals today"). Text follows the legends
+  register (mindstone_arc_legends.md Entry I) and the hard knowledge gate: nothing names who else
+  wants it. Art: artpipe RUT_Mindstone, generated for this item. The vein uses vanilla RockBase's
+  linked rock atlas, tinted pale.
+  The mindstone head (RSW_DW_Head_Mindstone) recipe and the Kindled's first making are
+  MINDSTONE_MATRIX_KINDLED_BUILD_1.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_Mindstone</defName>
+    <label>mindstone</label>
+    <description>A fist-sized crystal, smooth as a river pebble, with a pale light deep inside it that never flickers. The miners' word for it is mindstone. Speak near it and it hums a half-beat after you, never with you, as if it were learning the shape of your voice. Droids do not like to be near it.</description>
+    <graphicData>
+      <texPath>Things/Item/RUT_Mindstone/RUT_Mindstone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <MarketValue>900</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Beauty>6</Beauty>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RUT_MindstoneVein</defName>
+    <label>mindstone vein</label>
+    <description>Rock threaded with mindstone, in the walls of a gallery a shard-mind keeps. The seams are smooth where everything else in the Deep is faceted, and they brighten very slightly a moment after anyone speaks.</description>
+    <graphicData>
+      <color>(170,190,215)</color>
+      <colorTwo>(220,228,240)</colorTwo>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>1500</MaxHitPoints>
+      <Beauty>2</Beauty>
+    </statBases>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RUT_Mindstone</mineableThing>
+      <mineableYield>1</mineableYield>
+      <mineableYieldWasteable>false</mineableYieldWasteable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+      <veinMineable>true</veinMineable>
+    </building>
+  </ThingDef>
+
+</Defs>
