@@ -18,6 +18,7 @@ BENCH puts them to him as cards in this order unless he picks another.
 | 12 | Rites: what counts toward a god's cap, build order, re-explanation — `SALVATION_RITES_UNIFICATION_1` | `design/Jawa/salvation_rites_unification_audit_2026-10-02.md` | 4 |
 | 13 | Empire escalation ladder (probe to bombardment, reset by moving) — `EMPIRE_ESCALATION_LADDER_1` | `design/Jawa/proposals/empire_escalation_ladder_design_2026-10-02.md` | 4 |
 | 14 | Minerals: where each ore belongs and in what form — `MINERALS_WHERE_THEY_BELONG_1` | `design/RimMandrake/minerals_where_they_belong_design_2026-10-02.md` | 4 |
+| 15 | Sweetline tree names (made-up + nickname layers) — `LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1` | `design/Jawa/worldbuilding/biomes/leaningscrub_sweetline_name_register_2026-10-03.md` | 3 |
 | 10 | 18 older owner questions from the BENCH triage | `Transient/bench_claimables_triage_2026-10-02.md` (OWNER rows) | 18 |
 
 Also for his eyes, no question: the Atlas (`src/RimUtinni/Atlas`) is built and with FOUNDRY for its
