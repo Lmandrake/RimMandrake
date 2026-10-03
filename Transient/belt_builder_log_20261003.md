@@ -13,3 +13,9 @@
 - FEVERWOOD_CROWN_SOUND_HEAT_1 closed 8d477f2e8 (live proof owed)
 - selftest fallout from my items fixed (weepingstones fake world, sound_paths allowlist); run_selftests was 120/122 before this
 - LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1: built 62bd455b2 (66-def closure via port_fauna.py, RM_ in LanternDeeps/Defs/Fauna, art+sounds copied, CreatureBehaviors hard dep, DLL rebuilt, Utinni patch deleted; live load proof owed)
+- SHIPVERMIN_MYNOCK_KIND_NAME_1 closed ab8053cbc (real defect: roster named donor kinds; ported tried first now; live proof owed)
+- SILTTRAP_TERRAINS_UNBUILT_1 closed 86b7f4115 (2 terrains built, weir/trap gate on master only; ChannelBed/FordStones still unbuilt)
+- ART QUEUED: weepingstones_turn1 (7), miasma_turn1 (13 incl dups refused 6), stillsand_content_fill (8) = 28 jobs via fill_queue (art lists authored by BENCH sittings; none had pending/done jobs)
+- MINERAL_BIOME_LEAKS_1 closed 45346bd11 (silk knot scatter 0.6->0; lanternstone deep gate + setting; Rust Cathedral half was already fixed; live proof owed)
+- SCALD_SIMMERLACE_EKKEL_LORE_1 dropped (already built e3aba0de8)
+- PYRELANDS_FAUNA_TIER_PORT_BUILD_1 closed c0f2e9842 (13 defs git-mv'd to Pyrelands as RM_, textures moved, wildAnimals inline, Utinni patch shrunk to 7 canon Adds with FindMod, DLLs rebuilt; live load proof owed; Ashwallow/Emberscythe art still owed per PYRELANDS_SHIP_READINESS_1; Pyrelands heat-kind item now unblocked)

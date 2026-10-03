@@ -2289,3 +2289,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"MINERAL_BIOME_LEAKS_1","ts":"2026-10-03T15:44:24Z","tsn":1791042264255988974}
 {"seat":"FOUNDRY","event":"start","id":"MINERAL_BIOME_LEAKS_1","ts":"2026-10-03T15:44:25Z","tsn":1791042265006180747}
 {"seat":"FOUNDRY","event":"close","id":"MINERAL_BIOME_LEAKS_1","sha":"45346bd11394811159a24da015e4a22917f858c3","ts":"2026-10-03T15:44:36Z","tsn":1791042276481224520}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_SIMMERLACE_EKKEL_LORE_1","ts":"2026-10-03T15:45:51Z","tsn":1791042351485062139}
+{"seat":"FOUNDRY","event":"drop","id":"SCALD_SIMMERLACE_EKKEL_LORE_1","reason":"stale: ekkel creature and catch descriptions already carry the simmerlace line (e3aba0de8, ekkel_lore_checks in TerminalBiomes validation passes); kettlewick/seepcandle yields are the flora build's, not this item","ts":"2026-10-03T15:45:52Z","tsn":1791042352359857446}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:47:02Z","tsn":1791042422780603776}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:47:03Z","tsn":1791042423435113768}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FAUNA_TIER_PORT_BUILD_1","sha":"c0f2e9842212ecf06df8d326f38d9e7ea1056a80","ts":"2026-10-03T15:52:36Z","tsn":1791042756025471025}
