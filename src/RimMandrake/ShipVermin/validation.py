@@ -65,7 +65,7 @@ def roster():
     """[defName] the nest may pick, parsed from NestSpeciesRoster in the C#."""
     src = open(os.path.join(HERE, "Source", "RM_ShipVerminMod.cs"), encoding="utf-8").read()
     blk = src.split("NestSpeciesRoster =", 1)[1].split("};", 1)[0]
-    return re.findall(r'\("(\w+)",\s*\(\)', blk)
+    return re.findall(r'\("(\w+)",\s*(?:"\w+"|null),\s*\(\)', blk)
 
 
 def patch_expectations():
@@ -287,9 +287,12 @@ def _build_suite():
             if _live(t):
                 gone = [x.split("/")[-1] for x in (r.get("notFound") or [])]
                 if "Mynock" in gone and PATCHED_DEF not in gone:
-                    raise ExpectationFailed("the nest roster names kind `Mynock` but the only mynock loaded is `%s`: with "
-                                            "mlie.starwarsanimalcollection absent the 'Mynock' row never resolves, so wreck nests "
-                                            "cannot produce the mod's own headline species" % PATCHED_DEF)
+                    # SHIPVERMIN_MYNOCK_KIND_NAME_1: not a failure once the roster row carries the ported kind first.
+                    src = open(os.path.join(HERE, "Source", "RM_ShipVerminMod.cs"), encoding="utf-8").read()
+                    if '("Mynock", "%s"' % PATCHED_DEF not in src:
+                        raise ExpectationFailed("the nest roster names kind `Mynock` but the only mynock loaded is `%s`: with "
+                                                "mlie.starwarsanimalcollection absent the 'Mynock' row never resolves, so wreck nests "
+                                                "cannot produce the mod's own headline species" % PATCHED_DEF)
 
     @suite.chain("alert")
     def alert(t):
