@@ -42,7 +42,19 @@ def suite_mods():
     """The suites J1 re-runs: every mod in the modcheck status registry (13 on 2026-10-01). Derived, never listed."""
     with open(SUITE_REGISTRY, encoding="utf-8") as f:
         d = json.load(f)
-    return sorted(d.get("mods", d))
+    mods = sorted(d.get("mods", d))
+    import re
+    import runner
+    out = []
+    for m in mods:      # a standalone script (MessyConduit: own --live runner) has no `suite =`; it is not a modcheck suite
+        try:
+            src = open(os.path.join(runner.find_mod_dir(m), "validation.py"), encoding="utf-8").read()
+        except Exception:                                       # noqa: BLE001
+            out.append(m)       # unreadable: keep it, so J1 reports the load error instead of hiding it
+            continue
+        if re.search(r"^suite\s*=", src, re.M):
+            out.append(m)
+    return out
 
 
 def latest(dry_run=False, path=None):
