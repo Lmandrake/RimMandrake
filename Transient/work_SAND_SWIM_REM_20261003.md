@@ -1,0 +1,10 @@
+# SAND_SWIM_REM work 2026-10-03
+- claimed+started STILLSAND_SAND_SWIM_REMAINDER_1.
+- Skipped: wake track records (FOOTPRINT_TRACK_GRID_1 unbuilt).
+- Order: thumper, drift depth, sand fishing, the Listening.
+- Slice1 thumper BUILT (RM_Thumper.cs, RM_Thumper.xml, Patches/RM_Thumper_Groundcaller.xml; CompRefuelable fed RM_StilledWater = water charge; Goto call by thumper itself since CreatureBehaviors is outside scope; art copied from artpipe _artsrc/RM_Thumper). Settings class RM_SandSwimRemSettings (all slices), drawn from RM_StillsandSettings.
+- Slice2-4 BUILT: drift depth = Harmony postfix on RM_SandSwimUtility.IsSwimTerrain reading vanilla map.sandGrid when MovingDunes registry active (soft reflection); sand fishing = fishTypes+maxFishPopulation on RM_Stillsand, RM_RareSandCatches (pearl), RM_MapComponent_SandFishing rolls once per session on RM_DeepSand and Goto-calls nearest submerged swimmer (stalker wake); Listening = own RM_MapComponent_SandListening (wind-param camera sustainers hiss+saltation; deviates from spec's ProximitySoundscape which is thing-tag driven, can't scale on wind), singing via Harmony prefix on MapComponent_DuneField.SetDepthHysteretic (private, soft; slab-shed cell = slip face), one-line warning scribed once, rumble/breach SoundDefs injected into every RM_SandSwimExtension lacking them at startup (needs restart). Placeholder grain clips all existing vanilla clips.
+- Drazzik/Sarlacc reconciliation: see below.
+- Drazzik/Sarlacc reconciliation (decided, no code): Drazzik's visibility owner stays RM_CompDrumLure (RM_DrumLureSubmersion); no RM_SandSwimExtension added. Sarlacc swimmer stays CompSarlaccSwimmer (RSW, outside this folder). Thumper only calls RM_CompSandSwim swimmers; the geophone already hears lurers. Qorrax/Duumma still unbuilt (STILLSAND_BEDAZZLE_CONTENT_1).
+- Skipped: wake track records (FOOTPRINT_TRACK_GRID_1 unbuilt). Live criteria NOT run (no live bridge); modcheck validation.py extended (offline block sand_swim_remainder + settings roundtrips); selftest 88/88.
+- Build: winbuild stage_build OK after each slice; DLL+.srchash copied back to Stillsand/Assemblies.

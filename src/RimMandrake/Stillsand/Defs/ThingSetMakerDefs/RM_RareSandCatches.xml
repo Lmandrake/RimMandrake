@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_RareSandCatches.xml               RimMandrake — STILLSAND_SAND_SWIM_REMAINDER_1 §6
+  The rare-catch pool for sand fishing on RM_Stillsand: the glass pearl, the free tier's own prize
+  (RM_GlassPearl, RM_SandCatches.xml). The RSW pool (RSW_RareSandCatches, which adds the stalker corpse)
+  is wired by the Utinni patch layer onto the campaign twin.
+-->
+<Defs>
+  <ThingSetMakerDef ParentName="RareFishingCatchesBase">
+    <defName>RM_RareSandCatches</defName>
+    <root Class="ThingSetMaker_RandomOption">
+      <options>
+        <li>
+          <weight>1</weight>
+          <thingSetMaker Class="ThingSetMaker_StackCount">
+            <fixedParams>
+              <filter><thingDefs><li>RM_GlassPearl</li></thingDefs></filter>
+              <countRange>1~2</countRange>
+            </fixedParams>
+          </thingSetMaker>
+        </li>
+      </options>
+    </root>
+  </ThingSetMakerDef>
+</Defs>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Groundcaller becomes a thumper variant (STILLSAND_SAND_SWIM_REMAINDER_1 §4). Guarded with
+  PatchOperationFindMod (a MayRequire on an Operation node is inert). Skipped when LongHunger is absent.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>mandrake.rut.longhunger</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RUT_Groundcaller"]/tickerType</xpath>
+          <value><tickerType>Normal</tickerType></value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RUT_Groundcaller"]</xpath>
+          <value>
+            <comps>
+              <li Class="CompProperties_Refuelable">
+                <fuelLabel>Water charge</fuelLabel>
+                <fuelGizmoLabel>Water</fuelGizmoLabel>
+                <fuelFilter><thingDefs><li>RM_StilledWater</li></thingDefs></fuelFilter>
+                <fuelCapacity>10</fuelCapacity>
+                <initialFuelPercent>0</initialFuelPercent>
+                <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+                <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+              </li>
+              <li Class="RimMandrake.Stillsand.RM_CompProperties_Thumper">
+                <beatIntervalTicks>600</beatIntervalTicks>
+              </li>
+            </comps>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

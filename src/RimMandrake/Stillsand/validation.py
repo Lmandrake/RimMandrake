@@ -89,6 +89,12 @@ SETTINGS = {
                                    "solarStillEnabled": True, "stillRateMultiplier": 1.0,
                                    "wringingStillEnabled": True, "sunLanceEnabled": True,
                                    "geophoneEnabled": True, "geophoneRadius": 20.0},
+    NS + "RM_SandSwimRemSettings": {"thumperEnabled": True, "thumperRadius": 40.0,
+                                    "sandFishingWakeEnabled": True, "sandFishingWakeChance": 0.15,
+                                    "driftSwimEnabled": True, "driftSwimDepth": 0.3,
+                                    "listeningHissEnabled": True, "listeningSingingEnabled": True,
+                                    "listeningWarningEnabled": True, "listeningRumbleEnabled": True,
+                                    "singingWarningCells": 12.0},
     NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0, "abrasionEnabled": True,
                                  "carryEnabled": True, "staticEnabled": True, "emergenceEnabled": True,
                                  "seedingEnabled": True, "dustDevilsEnabled": True,
@@ -750,6 +756,40 @@ def defs_chain(t):
             if not _same(_get_setting(t, "geophoneRadius"), 20.0):
                 _fail("geophoneRadius is not at its shipped default 20")
 
+    with _comp(t, "sand_swim_remainder"):
+        # STILLSAND_SAND_SWIM_REMAINDER_1 (offline half): the thumper, drift depth, sand fishing and the
+        # Listening are all wired to the kit's own query/hooks, not private copies; art and sounds exist.
+        # The LIVE half (a charged thumper calling a submerged swimmer, a catch, the singing warning) is
+        # owed to a bridge session and is NOT claimed here. Wake track records wait on FOOTPRINT_TRACK_GRID_1.
+        for need in ("ThingDef/RM_Thumper", "SoundDef/RM_SandHiss", "SoundDef/RM_SandSaltation", "SoundDef/RM_DuneSong",
+                     "SoundDef/RM_SandSwimRumble", "SoundDef/RM_SandSwimBreach", "BiomeDef/RM_Stillsand"):
+            if need not in SHIPPED:
+                _fail("%s is not parsed from this mod's Defs/" % need)
+        rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read()
+        thump, rem = rd("Source", "RM_Thumper.cs"), rd("Source", "RM_SandSwimRemainder.cs")
+        if "SubmergedSwimmersNear" not in thump:
+            _fail("RM_Thumper.cs does not use the kit's SubmergedSwimmersNear query")
+        if "IsSwimTerrain" not in rem or "sandGrid" not in rem:
+            _fail("drift depth is not wired as a postfix on IsSwimTerrain over map.sandGrid")
+        biome = rd("Defs", "BiomeDefs", "RM_Stillsand_Biome.xml")
+        if "<fishTypes" not in biome or "RM_DuneCrawler" not in biome or "RM_RareSandCatches" not in biome:
+            _fail("RM_Stillsand carries no fishTypes with the dune crawler and the rare-catch pool")
+        if "RM_GlassPearl" not in rd("Defs", "ThingSetMakerDefs", "RM_RareSandCatches.xml"):
+            _fail("RM_RareSandCatches does not yield the glass pearl")
+        if "StilledWater" not in rd("Defs", "ThingDefs_Buildings", "RM_Thumper.xml"):
+            _fail("the thumper's water charge is not fed by RM_StilledWater")
+        if "RM_Thumper.cs" not in rd("Source", "RM_Stillsand.csproj") or "RM_SandSwimRemainder.cs" not in rd("Source", "RM_Stillsand.csproj"):
+            _fail("a remainder .cs is not in the csproj <Compile Include> list (it would compile into nothing)")
+        if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "Production", "RM_Thumper.png")):
+            _fail("RM_Thumper.png is missing")
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Thumper", fields="defName", limit=5)
+            _ok(r, "get_defs(thumper)")
+            if r.get("notFound"):
+                _fail("thumper def did not resolve live: %s" % r.get("notFound"))
+            if not _same(_get_setting(t, "driftSwimDepth"), 0.3):
+                _fail("driftSwimDepth is not at its shipped default 0.3")
+
     with _comp(t, "cave_tier_rows"):
         # STILLSAND_CAVE_TIER_ROWS_1: the krayt den, sarlacc seep and debt cave rows live in their own
         # tier mods; with all tiers loaded the Mod Settings list eight rows. Offline: each file must
@@ -932,7 +972,8 @@ def settings_chain(t):
     # Toggles whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "geophoneEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "geophoneEnabled", "thumperEnabled", "sandFishingWakeEnabled", "driftSwimEnabled",
+                  "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "listeningRumbleEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
                   "seedingEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):

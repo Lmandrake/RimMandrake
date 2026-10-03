@@ -32,6 +32,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref zuurrikBloodThreshold, "zuurrikBloodThreshold", 8);
             RM_PreciousCaveSettings.Expose(); // STILLSAND_PRECIOUS_CAVES_1
             RM_StillsandWaterSettings.Expose(); // STILLSAND_RETURN_RITUAL_1
+            RM_SandSwimRemSettings.Expose(); // STILLSAND_SAND_SWIM_REMAINDER_1
         }
 
         public void DoWindowContents(Rect inRect)
@@ -56,6 +57,7 @@ namespace RimMandrake.Stillsand
               + "creatures (muurrok, krayt attack) have their own panel: \"Stillsand: event creatures\".");
             RM_PreciousCaveSettings.Draw(list); // STILLSAND_PRECIOUS_CAVES_1
             RM_StillsandWaterSettings.Draw(list); // STILLSAND_RETURN_RITUAL_1
+            RM_SandSwimRemSettings.Draw(list); // STILLSAND_SAND_SWIM_REMAINDER_1
 
             list.End();
         }
