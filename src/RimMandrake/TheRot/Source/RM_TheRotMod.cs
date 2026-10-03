@@ -54,6 +54,12 @@ namespace RimMandrake.TheRot
         public static float hwelgrueCastingDays = 2f;
         public static float hwelgrueRotMultiplier = 3f;
         public static int hwelgrueMapCap = 1;
+        // ROT_STILL_ALIVE_SWALLOW_1
+        public static bool hwelgrueSwallow = true;
+        public static float swallowHoursPerBodySize = 24f;
+        public static float swallowBellyCutDamage = 150f;
+        public static float swallowStrangerChance = 0.15f;
+        public static float swallowLoudness = 1f;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -87,6 +93,11 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref hwelgrueCastingDays, "hwelgrueCastingDays", 2f);
             Scribe_Values.Look(ref hwelgrueRotMultiplier, "hwelgrueRotMultiplier", 3f);
             Scribe_Values.Look(ref hwelgrueMapCap, "hwelgrueMapCap", 1);
+            Scribe_Values.Look(ref hwelgrueSwallow, "hwelgrueSwallow", true);
+            Scribe_Values.Look(ref swallowHoursPerBodySize, "swallowHoursPerBodySize", 24f);
+            Scribe_Values.Look(ref swallowBellyCutDamage, "swallowBellyCutDamage", 150f);
+            Scribe_Values.Look(ref swallowStrangerChance, "swallowStrangerChance", 0.15f);
+            Scribe_Values.Look(ref swallowLoudness, "swallowLoudness", 1f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -189,6 +200,17 @@ namespace RimMandrake.TheRot
             hwelgrueRotMultiplier = list.Slider(hwelgrueRotMultiplier, 1f, 10f);
             list.Label("  Most on one map: " + hwelgrueMapCap);
             hwelgrueMapCap = Mathf.RoundToInt(list.Slider(hwelgrueMapCap, 1f, 5f));
+            list.CheckboxLabeled("  Swallows the downed (Still Alive In There)", ref hwelgrueSwallow,
+                "A hwelgrue takes a downed pawn lying in the open, any faction, and digests it slowly enough to rescue. "
+              + "Knocking from inside says someone is still alive. Off: it never swallows anyone.");
+            list.Label("  Hours to digest, per unit of body size: " + swallowHoursPerBodySize.ToString("0"));
+            swallowHoursPerBodySize = list.Slider(swallowHoursPerBodySize, 3f, 72f);
+            list.Label("  Damage that cuts its belly open: " + swallowBellyCutDamage.ToString("0"));
+            swallowBellyCutDamage = list.Slider(swallowBellyCutDamage, 25f, 600f);
+            list.Label("  Chance a newly met hwelgrue already holds someone: " + (swallowStrangerChance * 100f).ToString("0") + "%");
+            swallowStrangerChance = list.Slider(swallowStrangerChance, 0f, 1f);
+            list.Label("  Knocking loudness: " + swallowLoudness.ToString("0.00") + "x");
+            swallowLoudness = list.Slider(swallowLoudness, 0f, 2f);
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");

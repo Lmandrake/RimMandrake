@@ -144,6 +144,11 @@ def static_checks():
         bad.append("biome worker class %s not found" % WORKER)
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", MOD + ".md")):
         bad.append("walk missing")
+    hw = open(os.path.join(HERE, "Defs", "Fauna", "RM_Hwelgrue.xml"), encoding="utf-8").read()
+    if "CompProperties_RM_GutSwallow" not in hw or "CompProperties_Devourer" in hw:
+        bad.append("RM_Hwelgrue must carry RM_CompGutSwallow and never CompDevourer (ROT_STILL_ALIVE_SWALLOW_1)")
+    if "<defName>RM_GutKnocking</defName>" not in hw:
+        bad.append("SoundDef RM_GutKnocking missing")
     bad += cast_checks()
     return bad
 
@@ -379,6 +384,13 @@ def _build_suite():
         r = t.bridge_call("jawa/static_call", **kw)
         return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
 
+    def _hp_s(t, method, args=None):
+        kw = dict(type="RimMandrake.TheRot.RM_HwelgrueSwallowProof", method=method)
+        if args is not None:
+            kw["args"] = args
+        r = t.bridge_call("jawa/static_call", **kw)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
     @suite.chain("hwelgrue")
     def hwelgrue(t):
         """ROT_HWELGRUE_GIANT_BUILD_1. Runs on the CURRENT map (any map: the mechanism is the comp, not the
@@ -396,6 +408,21 @@ def _build_suite():
             text = _hp(t, "ProofCasting")
             if _live(t) and not ("castings on map 1" in text and "all full hp True" in text and "gut now 0" in text):
                 raise ExpectationFailed("the casting did not hold and polish the gut's metal: %s" % text)
+        with t.component("swallow_then_cut_out", toggle="hwelgrueSwallow"):
+            text = _hp_s(t, "ProofSwallow")
+            if _live(t) and not (text.startswith("SWALLOW held") and "spawned False" in text and "still alive in there" in text):
+                raise ExpectationFailed("a downed drifter was not swallowed with a naming inspect line: %s" % text)
+            text = _hp_s(t, "ProofCut", "200")
+            if _live(t) and not ("released True" in text and "spawned True" in text):
+                raise ExpectationFailed("200 damage did not cut the swallowed pawn out alive: %s" % text)
+        with t.component("knocking_louder_early", toggle="swallowLoudness"):
+            hi, lo = _hp_s(t, "ProofKnock", "0.8"), _hp_s(t, "ProofKnock", "0.2")
+            try:
+                vh, vl = float(hi.split("volume ")[1]), float(lo.split("volume ")[1])
+            except (IndexError, ValueError):
+                vh = vl = None
+            if _live(t) and not (vh is not None and vh > vl and "RM_GutKnocking " in hi + " " and "RM_GutKnocking_Failing" in lo):
+                raise ExpectationFailed("knocking is not louder/stronger early: %s || %s" % (hi, lo))
         with t.component("rest_accelerates_rot", toggle="hwelgrueRotMultiplier"):
             if _live(t):
                 _unmeasured(t, "needs an idle hwelgrue, two meat stacks at 3 and 20 cells, and ticks; RotProgress read per stack")

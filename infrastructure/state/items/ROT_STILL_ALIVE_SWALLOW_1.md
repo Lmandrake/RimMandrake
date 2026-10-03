@@ -64,3 +64,7 @@ Deterministic, in `THE_ROT_FIRST_SCRIPT_1`'s `validation.py`, through debug `[To
 </invoke>
 <invoke name="Bash">
 <parameter name="command">head -1 /home/mandrake/rm/bench/infrastructure/state/items/ROT_STILL_ALIVE_SWALLOW_1.md
+## built (2026-10-03, FOUNDRY offline builder r14)
+- `Source/RM_HwelgrueSwallow.cs`: `RM_CompGutSwallow` (CompDevourer's shape, own class; `CompDevourer` not attached), downed-first branch in the graze giver -> `RM_GutSwallow` job; digestion hours = setting x body size (min 3 h); release alive on downed / killed / belly-cut threshold, stunned + `RM_SheenCoating` + acid scaled by time inside; timeout kills and passes the corpse to `RM_CompGutDigest` (metal gear to a casting); inspect line names the pawn and hours; letter when a colonist or colony animal is swallowed, message when the knocking stops; strangers (Drifter or Muffalo, 2-6 h left) at the setting chance on a wild one's first sweep.
+- Deviations: knocking is scheduled one-shots (volume and interval by time left), not a sustainer. PLACEHOLDER AUDIO: the four SoundDefs (`RM_GutKnocking`, `_Weak`, `_Failing`, `RM_GutScrabbling`) use vanilla clip folders (`Impact/PunchHitBuilding/Wood`, `Pawn/Animal/Melee_Small/Hit_Pawn`) pitched down; no authored knocking/voice audio exists yet — owed.
+- 5 settings in the Giant section; validation chain `hwelgrue` components `swallow_then_cut_out`, `knocking_louder_early` via `RM_HwelgrueSwallowProof`. Live proof owed — first poke: `ProofSpawn 1` then `ProofSwallow` then `ProofCut 200`.

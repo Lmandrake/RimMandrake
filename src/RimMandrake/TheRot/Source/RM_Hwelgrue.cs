@@ -39,6 +39,12 @@ namespace RimMandrake.TheRot
         public static ThingDef RM_Hwelgrue;
         public static ThingDef RM_SheenCasting;
         public static JobDef RM_GutGraze;
+        public static JobDef RM_GutSwallow;
+        public static HediffDef RM_SheenCoating;
+        public static SoundDef RM_GutKnocking;
+        public static SoundDef RM_GutKnocking_Weak;
+        public static SoundDef RM_GutKnocking_Failing;
+        public static SoundDef RM_GutScrabbling;
 
         static RM_HwelgrueDefOf()
         {
@@ -277,6 +283,18 @@ namespace RimMandrake.TheRot
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.hwelgrue) return null;
             RM_CompGutDigest comp = pawn.TryGetComp<RM_CompGutDigest>();
             if (comp == null || pawn.Downed || pawn.InMentalState) return null;
+            // ROT_STILL_ALIVE_SWALLOW_1: a downed pawn in the open comes before any item, one at a time.
+            RM_CompGutSwallow swallow = pawn.TryGetComp<RM_CompGutSwallow>();
+            if (swallow != null && RM_TheRotSettings.hwelgrueSwallow && !swallow.Holding)
+            {
+                Pawn downed = RM_CompGutSwallow.FindDowned(pawn, comp.Props.grazeRadius);
+                if (downed != null)
+                {
+                    Job sj = JobMaker.MakeJob(RM_HwelgrueDefOf.RM_GutSwallow, downed);
+                    sj.expiryInterval = 6000;
+                    return sj;
+                }
+            }
             Thing target = FindFood(pawn, comp.Props.grazeRadius);
             if (target == null) return null;
             Job job = JobMaker.MakeJob(RM_HwelgrueDefOf.RM_GutGraze, target);
