@@ -31,9 +31,8 @@ built and reusable.
    it holds only when the *design* chooses for the player, not when the player opts in).
 5. **The seed's actual planting/growth mechanic (§3c)** — DEFERRED, not attempted in
    `GREATBOLE_HARVEST_LADDER_1`. `RM_GreatboleSeed` exists as a real, tradeable item (a product of
-   `RM_ButcherGreatboleFruit`), but wiring it to plant a real `RM_Greatbole` is blocked on
-   `GREENTIDE_JUNGLE_TREE_ROSTER_1` shipping that def — checked 2026-09-25, still OWED, only a
-   mechanism-proof placeholder (`RUT_Placeholder_GreentideGiantTree`) exists. The growth-rate
+   `RM_ButcherGreatboleFruit`); `RM_Greatbole` itself shipped at `f521c0c79`
+   (`GREENTIDE_JUNGLE_TREE_ROSTER_1`, 2026-09-26), so wiring the seed to plant it is unblocked. The growth-rate
    mechanism itself (a `Plant` subclass overriding the virtual `GrowthRate` to read adjacent
    terrain) is already ANSWERED and buildable — see the harvest spec's own §10 answer, MEASURED
    2026-09-23 against the decompiled engine — this item only owes the wiring once the real tree
