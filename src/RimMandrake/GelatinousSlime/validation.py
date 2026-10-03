@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True}
+          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True, "sealBreach": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -442,6 +442,32 @@ def defs_static(t):
             rows, nf = _defs(t, ["RecipeDef/%s" % n for n in want])
             if nf:
                 _fail("pit solvent recipes not resolving live (foundCount != 3): %s" % nf)
+
+    with _comp(t, "seal_breach_defs", toggle="sealBreach"):
+        # GELATINOUSSLIME_VAULT_SEAL_BREACH_1 (Slime-side slice): chunk item is targetable on a breachable
+        # building and destroys itself in its own effect comp; the abstract seal base carries the extension
+        # and cannot be damaged away (ordinary explosives do nothing). The V5 seal Thing is VAULT_DUNGEON_BUILD_1's.
+        sx = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "SlimeSealBreach.xml")).getroot()
+        names = [e.findtext("defName") or e.get("Name") for e in sx.findall("ThingDef")]
+        if "RM_TitanoslimeChunk" not in names or "RM_SlimeBreachableSealBase" not in names:
+            _fail("SlimeSealBreach.xml must define RM_TitanoslimeChunk and RM_SlimeBreachableSealBase: %s" % names)
+        chunk = [e for e in sx.findall("ThingDef") if e.findtext("defName") == "RM_TitanoslimeChunk"][0]
+        base = [e for e in sx.findall("ThingDef") if e.get("Name") == "RM_SlimeBreachableSealBase"][0]
+        classes = [e.get("Class", "") + (e.findtext("compClass") or "") for e in chunk.findall("comps/li")]
+        for need in ("CompTargetable_SlimeBreachable", "CompTargetEffect_SlimeBreach"):
+            if not any(need in c for c in classes):
+                _fail("chunk lacks comp %s: %s" % (need, classes))
+        if base.get("Abstract") != "True" or base.find("modExtensions/li") is None:
+            _fail("seal base must be Abstract with the RM_SlimeBreachable extension")
+        if base.findtext("destroyable") != "false":
+            _fail("seal base must be destroyable=false (ordinary explosives must not open it)")
+        rx = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Races", "Titanoslime.xml")).getroot()
+        if "RM_TitanoslimeChunk" not in ET.tostring(rx, encoding="unicode"):
+            _fail("a titanoslime must butcher into the chunk")
+        if t._guard():
+            rows, nf = _defs(t, ["ThingDef/RM_TitanoslimeChunk"])
+            if nf:
+                _fail("chunk not resolving live (foundCount != 1): %s" % nf)
 
     with _comp(t, "terrain_tagged"):
         if t._guard():
@@ -989,5 +1015,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False)):
+                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False), ("sealBreach", False)):
         _flip(t, "%s_setting_flips" % field, field, off)
