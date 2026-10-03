@@ -57,7 +57,7 @@
          two Alpha Animals borrowings (AuroraSylph, Skyeel) are OFF this roster;
          they wait for a surface home at the surface sitting. Their ThingDefs
          (RM_TheChillFauna.xml) stay. The living zhiil body is
-         CHILL_ZHIIL_FLOOR_BODY_1. Heemin/oovanam: lake residents from
+         RM_Zhiil (CHILL_ZHIIL_FLOOR_BODY_1). Heemin/oovanam: lake residents from
          RM_TheChillFauna.xml. -->
     <wildAnimals>
       <RM_Heemin>0.7</RM_Heemin>
@@ -66,7 +66,7 @@
            catch-only rows in <fishTypes> below (RUT_Fessu, RUT_Krellik,
            RUT_Oddu, RUT_Oovu, RUT_Iliss, RUT_Tarnn) now have living
            counterparts, authored from those items' own descriptions.
-           RUT_Zhiil's floor body is owed (CHILL_ZHIIL_FLOOR_BODY_1).
+           RM_Zhiil is its floor body (CHILL_ZHIIL_FLOOR_BODY_1).
            Defs: RM_TheChillFloorLife.xml.
            ⚠️ Shorthand form only — an <li> wrapper here silently discards
            the whole entry (BiomeAnimalRecord's custom loader). -->
@@ -76,6 +76,8 @@
       <RM_Oovu>0.4</RM_Oovu>
       <RM_Iliss>0.3</RM_Iliss>
       <RM_Tarnn>0.2</RM_Tarnn>
+      <!-- CHILL_ZHIIL_FLOOR_BODY_1 (Q3a): the zhiil's own floor body. -->
+      <RM_Zhiil>0.25</RM_Zhiil>
       <!-- CHILL_WAX_PROCESSION_GIANT_1: the floor's giant (Q4b), a slow file. -->
       <RM_Hesuun>0.12</RM_Hesuun>
     </wildAnimals>

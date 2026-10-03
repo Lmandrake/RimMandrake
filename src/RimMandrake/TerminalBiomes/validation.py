@@ -14,7 +14,7 @@ FLOOR_C = -110.0
 NATIVE_MIN_C = -150.0
 FILES = ["RM_TheChillFauna.xml", "RM_TheChillFloorLife.xml"]
 NATIVES = ["RM_Heemin", "RM_Oovanam", "RM_Hoolen", "RM_Vaunoom", "RM_Fessu", "RM_Krellik", "RM_Oddu",
-           "RM_Oovu", "RM_Iliss", "RM_Tarnn"]
+           "RM_Oovu", "RM_Iliss", "RM_Tarnn", "RM_Zhiil"]
 
 
 def static_checks():
@@ -53,7 +53,7 @@ def roster_checks():
     rows = {c.tag: c.text for c in wa} if wa is not None else {}
     if len(rows) < 6:
         bad.append("roster sanity probe: only %d rows (expected the 6 floor natives)" % len(rows))
-    for n in ("RM_Heemin", "RM_Oovanam", "RM_Fessu", "RM_Krellik", "RM_Oddu", "RM_Oovu", "RM_Iliss", "RM_Tarnn"):
+    for n in ("RM_Heemin", "RM_Oovanam", "RM_Fessu", "RM_Krellik", "RM_Oddu", "RM_Oovu", "RM_Iliss", "RM_Tarnn", "RM_Zhiil"):
         if n not in rows:
             bad.append("floor native %s missing from wildAnimals" % n)
     for n in OFF_FLOOR:
@@ -66,7 +66,6 @@ def roster_checks():
 
 CATCH_FILE = os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_TheChillCatch.xml")
 RARE_FILE = os.path.join(HERE, "Defs", "ThingSetMakerDefs", "RM_ChillRareCatch.xml")
-NO_FLOOR_BODY = {"Zhiil"}  # CHILL_ZHIIL_FLOOR_BODY_1 (sitting Q3) - caught, not yet alive on the floor
 
 
 def catch_checks():
@@ -99,7 +98,7 @@ def catch_checks():
         if r not in items:
             bad.append("%s not defined in RM_TheChillCatch.xml" % r)
         name = r[3:-5] if r.startswith("RM_") and r.endswith("Catch") else r
-        if name not in NO_FLOOR_BODY and ("RM_" + name) not in wa:
+        if ("RM_" + name) not in wa:
             bad.append("catch %s has no floor resident RM_%s in wildAnimals" % (r, name))
     rare = ET.parse(RARE_FILE).getroot().findall("ThingSetMakerDef")
     if [r.findtext("defName") for r in rare] != ["RM_RareChillCatches"]:
