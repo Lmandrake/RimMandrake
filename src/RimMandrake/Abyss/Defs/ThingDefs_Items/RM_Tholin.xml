@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ABYSS_ETCHFALL_BUILD_1. What the Dark's falling grain leaves when it eats unroofed rock and steel. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Tholin</defName>
+    <label>tholin dust</label>
+    <description>A reddish-brown, faintly oily powder with a greasy sheen: what is left when the Dark's grain has eaten stone or steel. It sweeps up easily, and refines to chemfuel.</description>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Item/Tholin</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>1.2</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>1.2</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+</Defs>

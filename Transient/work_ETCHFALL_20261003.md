@@ -1,0 +1,3 @@
+# ABYSS_ETCHFALL_BUILD_1 progress
+- no grain exists (ABYSS_DARK_BUILD_1 unbuilt). Plan: standalone MapComponent erosion gated on RM_Abyss biome via a single IsGrainfall hook DARK can later replace; RM_TholinDust item + recipes (tholin, gill-ash -> chemfuel), RM_EtchHollow placement where rock erodes, slider in settings, validation.
+- BUILT: RM_Tholin item (art copied from artpipe RM_Tholin), recipes tholin+gill-ash -> chemfuel (BiofuelRefinery via recipeUsers), RM_MapComponent_Etchfall (unroofed rock+steel, hollow on rock breach), etchfallStrength slider, validation etchfall_check PASS 4/4, winbuild OK. Grain hook IsGrainfall = biome RM_Abyss until ABYSS_DARK_BUILD_1 replaces it. Dust is a loose item (hauled), not Filth. Owed: live proof, validate_patch not run.

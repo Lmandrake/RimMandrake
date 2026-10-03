@@ -2,8 +2,7 @@
 <!--
   ABYSS_ETCHCAP_BUILD_1 - the etch-hollow: the low cells where the Dark's collapse-grain settles.
   A STATIC terrain feature for now; ABYSS_DARK_BUILD_1 supplies the grain and ABYSS_ETCHFALL_BUILD_1
-  the erosion that will make hollows. Nothing places this terrain on a map yet (owed: a scatter or
-  the etchfall hook), so the etchcap has no home until then.
+  the erosion that will make hollows. RM_MapComponent_Etchfall (ABYSS_ETCHFALL_BUILD_1) sets this terrain where it erodes unroofed natural rock through.
   The texture is a flat dark-violet noise placeholder, not generated art (terrain is authored with
   its def, not a sprite job). Fertility 1.0 on this terrain alone is what restricts the etchcap:
   RM_Etchcap's fertilityMin is 0.9, and the Abyss's native ground has far lower fertility.

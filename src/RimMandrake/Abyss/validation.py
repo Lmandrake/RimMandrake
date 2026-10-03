@@ -145,6 +145,40 @@ def durrgak_check():
     return bad
 
 
+def etchfall_check():
+    """Offline: tholin, both chemfuel recipes (tholin + gill-ash), erosion comp, slider, csproj."""
+    bad = []
+    items = _defs("ThingDefs_Items/RM_Tholin.xml")
+    tho = next((d for d in items.iter("ThingDef") if d.findtext("defName") == "RM_Tholin"), None)
+    if tho is None:
+        return ["RM_Tholin def missing"]
+    if not os.path.isfile(os.path.join(HERE, "Textures", tho.findtext("graphicData/texPath") + ".png")):
+        bad.append("tholin texture missing")
+    rec = {r.findtext("defName"): r for r in _defs("RecipeDefs/RM_Recipes_Chemfuel.xml").iter("RecipeDef")}
+    for name, ing in (("RM_Make_ChemfuelFromTholin", "RM_Tholin"), ("RM_Make_ChemfuelFromGillAsh", "RM_GillAsh")):
+        r = rec.get(name)
+        if r is None:
+            bad.append("recipe missing: " + name)
+            continue
+        if r.findtext("ingredients/li/filter/thingDefs/li") != ing or r.find("products/Chemfuel") is None:
+            bad.append("%s does not turn %s into Chemfuel" % (name, ing))
+        if r.findtext("recipeUsers/li") != "BiofuelRefinery":
+            bad.append(name + " has no recipeUsers BiofuelRefinery")
+    ter = _defs("TerrainDefs/RM_EtchHollow.xml").find(".//TerrainDef/defName")
+    src = os.path.join(HERE, "Source")
+    cs = open(os.path.join(src, "RM_MapComponentEtchfall.cs")).read() if os.path.isfile(os.path.join(src, "RM_MapComponentEtchfall.cs")) else ""
+    for needle in ("RM_EtchHollow", "RM_Tholin", "c.Roofed(map)", "isNaturalRock", "ThingDefOf.Steel", "etchfallStrength"):
+        if needle not in cs:
+            bad.append("etchfall source lacks " + needle)
+    if ter is None or ter.text != "RM_EtchHollow":
+        bad.append("RM_EtchHollow terrain def missing")
+    if 'Compile Include="RM_MapComponentEtchfall.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_MapComponentEtchfall.cs not in csproj")
+    if "etchfallStrength" not in open(os.path.join(src, "RM_AbyssMod.cs")).read():
+        bad.append("Mod Settings slider etchfallStrength missing")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -177,6 +211,14 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    @suite.chain("etchfall_defs_resolve")
+    def etchfall_defs_resolve(t):
+        """Live: tholin and both chemfuel recipes loaded."""
+        with t.component("etchfall_defs_loaded", beyond_toggle=True):
+            for d in ("ThingDef/RM_Tholin", "RecipeDef/RM_Make_ChemfuelFromTholin", "RecipeDef/RM_Make_ChemfuelFromGillAsh"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
 except ImportError:
     suite = None
 
@@ -187,4 +229,6 @@ if __name__ == "__main__":
     print("GHARREK static: %s" % ("PASS" if not g else "FAIL " + "; ".join(g)))
     d = durrgak_check()
     print("DURRGAK static: %s" % ("PASS" if not d else "FAIL " + "; ".join(d)))
-    sys.exit(1 if (f or g or d) else 0)
+    e = etchfall_check()
+    print("ETCHFALL static: %s" % ("PASS" if not e else "FAIL " + "; ".join(e)))
+    sys.exit(1 if (f or g or d or e) else 0)

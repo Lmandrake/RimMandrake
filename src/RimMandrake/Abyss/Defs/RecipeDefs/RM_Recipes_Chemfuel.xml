@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ABYSS_ETCHFALL_BUILD_1 (tholin) and ABYSS_GHARREK_BUILD_1 (gill-ash): Abyss feedstocks to chemfuel. -->
+  <RecipeDef>
+    <defName>RM_Make_ChemfuelFromTholin</defName>
+    <label>make chemfuel from tholin</label>
+    <description>Refine tholin dust into chemfuel.</description>
+    <jobString>Refining chemfuel from tholin.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1600</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_Tholin</li></thingDefs></filter>
+        <count>40</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter><thingDefs><li>RM_Tholin</li></thingDefs></fixedIngredientFilter>
+    <products><Chemfuel>30</Chemfuel></products>
+    <recipeUsers><li>BiofuelRefinery</li></recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_ChemfuelFromGillAsh</defName>
+    <label>make chemfuel from gill-ash</label>
+    <description>Press and refine gill-ash into chemfuel.</description>
+    <jobString>Refining chemfuel from gill-ash.</jobString>
+    <effectWorking>Cremate</effectWorking>
+    <soundWorking>Recipe_Cremate</soundWorking>
+    <workAmount>1600</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_GillAsh</li></thingDefs></filter>
+        <count>50</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter><thingDefs><li>RM_GillAsh</li></thingDefs></fixedIngredientFilter>
+    <products><Chemfuel>30</Chemfuel></products>
+    <recipeUsers><li>BiofuelRefinery</li></recipeUsers>
+  </RecipeDef>
+</Defs>
