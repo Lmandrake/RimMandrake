@@ -57,6 +57,7 @@
     <Compile Include="MapComponent_DeepFloraRegrowth.cs" />
     <Compile Include="DeepFloraPlanter.cs" />
     <Compile Include="LanternDeepsMod.cs" />
+    <Compile Include="RM_WorkingDead.cs" />
   </ItemGroup>
 
   <ItemGroup>

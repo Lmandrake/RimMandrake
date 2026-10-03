@@ -60,6 +60,8 @@
       <!-- CAVERNS_PARITY_BUILD_1: order 950, runs right after Plants(900); a
            no-op unless the owner turns cave flora off in Mod Settings. -->
       <li>RM_LanternDeepFloraGate</li>
+      <!-- LANTERNDEEPS_WORKING_DEAD_BUILD_1: the well-provisioned dead and the Shard-minds (order 955). -->
+      <li>RM_DeepWellProvisionedDead</li>
       <li>MutatorFinal</li>
       <li>Fog</li>
     </genSteps>
