@@ -2472,3 +2472,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROT_STILL_ALIVE_SWALLOW_1","ts":"2026-10-03T19:53:45Z","tsn":1791057225851425458}
 {"seat":"FOUNDRY","event":"start","id":"ROT_STILL_ALIVE_SWALLOW_1","ts":"2026-10-03T19:53:46Z","tsn":1791057226396057350}
 {"seat":"FOUNDRY","event":"close","id":"ROT_STILL_ALIVE_SWALLOW_1","sha":"83f5b76f4346","ts":"2026-10-03T19:57:29Z","tsn":1791057449196298867}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_SWALLOWED_NAVIGATOR_1","ts":"2026-10-03T19:58:45Z","tsn":1791057525654330715}
+{"seat":"FOUNDRY","event":"start","id":"ROT_SWALLOWED_NAVIGATOR_1","ts":"2026-10-03T19:58:46Z","tsn":1791057526165986665}
+{"seat":"FOUNDRY","event":"file","id":"ROT_NAVIGATOR_LOG_SITES_1","title":"Swallowed Navigator part B: landing ping, the dead ship's log and its salvage sites, campaign carrier tile","kind":"build","target":"v1","needs":"offline","caused_by":"ROT_SWALLOWED_NAVIGATOR_1","for":"FOUNDRY","ts":"2026-10-03T20:02:51Z","tsn":1791057771393156134}
+{"seat":"FOUNDRY","event":"close","id":"ROT_SWALLOWED_NAVIGATOR_1","sha":"480a0abec753","ts":"2026-10-03T20:03:20Z","tsn":1791057800637604309}
