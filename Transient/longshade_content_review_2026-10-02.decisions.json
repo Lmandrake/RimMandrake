@@ -3,7 +3,7 @@
   "decisions": {
     "gloomcast_art": {
       "decision": "keep",
-      "note": "",
+      "note": "owner, typed in BENCH chat 2026-10-02: \"accept colossus shade whale\" (wire the new render)",
       "prefill": "keep"
     },
     "maidenbloom": {
@@ -55,5 +55,6 @@
   },
   "savedAt": "2026-10-02T06:36:25-0700",
   "savedBy": "review-sheet-sidecar",
-  "writeCount": 14
+  "writeCount": 14,
+  "approvalRoute": "gloomcast_art ruled by the owner in chat; the other rows are superseded by Transient/longshade_fills_art.decisions.json (same subjects, newer art)"
 }
