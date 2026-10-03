@@ -98,6 +98,7 @@ except the Appearances/Sources listings.
 - **Era:** **blank.** `firstmade=` and `retired=` are empty in **both** infoboxes. In-text the
   droid is a Clone Wars unit (Christophsis, Malastare, Carlac), but that is narrative and is not
   promoted here.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "used ... during the Clone Wars, most prominently at the Battle of Christophsis" (lead). No year stated. [LR-57 combat/retail droid](https://starwars.fandom.com/wiki/LR-57_combat/retail_droid)
 - **Typical owners:** **Retail Caucus** and the **Confederacy of Independent Systems** — those
   two, in both continuities, and nothing else. `DROIDS_INDEX.md:1030–1031` agrees exactly. One
   off-faction possession is attested but not an affiliation: a captured unit (Battle droid 513)

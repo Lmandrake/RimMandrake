@@ -48,7 +48,7 @@ Command Droid** and **Super Tactical Command and Control Droid**.
 
 The **ST-series military strategic analysis and tactics droid** was an advanced tactical droid
 used as an **enhanced version of the T-series military strategic analysis and tactics droid**. In
-the **second year of the Clone Wars (20 BBY)**, because of the T-series' "inflexible and
+the **second year of the Clone Wars**, because of the T-series' "inflexible and
 predictable deficiencies," the ST-series was produced by **Baktoid Combat Automata** for the CIS
 as a solution.
 [ST-series military strategic analysis and tactics droid](https://starwars.fandom.com/wiki/ST-series_military_strategic_analysis_and_tactics_droid)
@@ -121,8 +121,9 @@ chars) was **read in full.**
   `DROIDS_INDEX.md:1627`, the row the repo is mapped to, shows a blank manufacturer while
   line 1603 shows Baktoid. Same droid, one blank row.
 - **Era:** **blank.** `firstmade=` and `retired=` are empty in both infoboxes. The article does
-  date production to the **second year of the Clone Wars, 20 BBY**, in prose — narrative, not an
+  date production to the **second year of the Clone Wars**, in prose, with no BBY year — narrative, not an
   infobox era, and not promoted here.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** produced "in the **second year of the Clone Wars**" (lead); T-series "phased out" by then. Prose gives no BBY year for production -- the **20 BBY** in this file's other text is a gloss, not the article's; **20 BBY** and **19 BBY** appear only as deployments (Onderon, Ringo Vinda). [ST-series ...](https://starwars.fandom.com/wiki/ST-series_military_strategic_analysis_and_tactics_droid)
 - **Typical owners:** **Confederacy of Independent Systems** and its **Confederacy military**;
   **Infinite Coil**; **Separatist holdouts**, specifically the **Agamar garrison**. The Legends
   row lists the CIS only. `DROIDS_INDEX.md:1603` matches the canon infobox; `:1627` matches the

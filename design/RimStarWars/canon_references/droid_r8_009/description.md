@@ -73,6 +73,7 @@ world. What is absent here is genuinely absent from the source, not unread.
   body text *does* name the **Old Republic era** in prose ("used during the Old Republic
   era"), which is unusual for a droid article; it is recorded here as a cited prose statement
   and **not** promoted into the era field, per the brief.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "used during the **Old Republic era**" (lead sentence); no year. [R-8009 utility droid](https://starwars.fandom.com/wiki/R-8009_utility_droid)
 - **Typical owners:** ⚠️ **none recorded.** The infobox `affiliation` field is empty and
   `DROIDS_INDEX.md:1336` carries a blank owners column. No faction, species or world owns
   this droid. The only sourced statement about who had them is geographic and deliberately

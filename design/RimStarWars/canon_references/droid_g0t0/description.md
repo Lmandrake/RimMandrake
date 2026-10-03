@@ -92,6 +92,7 @@ there is no canon description of it at all.**
   inferred: R&D after the Great Sith War; first prototypes under the Coruscant Financial
   Exchange Establishment Act in **3985 BBY**; mass assignment by Chancellor Cressa in
   **3955 BBY**; the Gordian Reach intelligence report **3946 BBY**.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** first prototypes under the Coruscant Financial Exchange Establishment Act in **3985 BBY**; put to greatest use by Chancellor Cressa from **3955 BBY** (lead/History). [G0-T0 infrastructure planning system](https://starwars.fandom.com/wiki/G0-T0_infrastructure_planning_system)
 - **Typical owners:** **Galactic Republic** (the infobox `affiliation`, and
   `Category:Droid models of the Galactic Republic`). In practice the article's owners are the
   Republic's **planetary reconstruction projects** — one unit per planet, each with a

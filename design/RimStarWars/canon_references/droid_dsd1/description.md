@@ -63,6 +63,7 @@ Sourced hard numbers and appearance facts, all from that article:
 - **Era:** **blank.** The infobox's `firstmade=` and `retired=` fields are literally empty
   in the wikitext. In-text the model appears from *Attack of the Clones* through the Battle
   of Kashyyyk, but that is narrative and is not promoted into this field.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "a mainstay in the droid army of the CIS ... during the Clone Wars" (lead). No year stated. [DSD1 dwarf spider droid](https://starwars.fandom.com/wiki/DSD1_dwarf_spider_droid)
 - **Typical owners:** **Commerce Guild** (and its **Punitive Security Forces**), **Trade
   Federation**, **Confederacy of Independent Systems** / **Separatist Droid Army** —
   infobox `affiliation=`, same article. The earliest sourced use is corporate suppression

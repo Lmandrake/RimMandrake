@@ -116,6 +116,7 @@ and guide troops to assigned posts.** From that article:
 - **Era:** **blank.** `firstmade=` and `retired=` are empty on **both** articles. The MSE
   series article's dated statement that some mouse droid existed by **229 BBY** is narrative
   text, not an infobox era, and is not promoted here.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** MSE series article: "some form of mouse droid had existed as far back as **229 BBY**"; MSE-6 article: made "in the days of the Galactic Republic", units seen **28 BBY**, **20 BBY**, **1 BBY**, **9 ABY**. [MSE series](https://starwars.fandom.com/wiki/MSE_series) / [MSE-6](https://starwars.fandom.com/wiki/MSE-6_series_repair_droid)
 - **Typical owners:** the widest owner list of any droid in this batch, and the reason it is
   the most freely-placeable — **Galactic Republic; Confederacy of Independent Systems;
   Separatist holdouts; Galactic Empire; Imperial remnants (Ubrik Adelhard's, Gideon's); New

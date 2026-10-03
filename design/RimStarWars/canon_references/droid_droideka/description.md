@@ -82,6 +82,7 @@ gladiatorial arena champion.
   empty in the wikitext). In-text history places them at the Invasion of Naboo through the
   end of the Clone Wars, with a shutdown order after Mustafar, but that is narrative, not
   an infobox era, and is not promoted into this field.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** used by the Trade Federation "during the Invasion of Naboo", then the CIS in the Clone Wars; Oppressor and Sentinel variants "during the Galactic Civil War" (lead). No year is stated for the baseline. [Droideka](https://starwars.fandom.com/wiki/Droideka)
 - **Typical owners**: Trade Federation (Trade Federation Droid Army), Confederacy of
   Independent Systems (Separatist Droid Army), Separatist holdouts (Desix, the Agamar
   garrison), Xrexus Cartel, Bedlam Raiders, Klik-Klak's droid army, Crymorah-backed

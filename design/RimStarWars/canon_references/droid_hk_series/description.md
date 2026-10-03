@@ -108,6 +108,7 @@ read as **Legends**. The current-canon HK is a different, much thinner article
   the text does give, cited rather than inferred: HK-51 manufacture near the end of the Great
   Galactic War; the Clone Wars rediscovery in **19 BBY**; the wreck lying undiscovered until
   **1 ABY**. `DROIDS_INDEX.md:784` carries **3668 BBY** as the HK-51 series' `firstmade`.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** HK-47 built "shortly after the Mandalorian Wars"; HK-51s made "close to the end of the Great Galactic War"; wreck found by the CIS in **19 BBY** (article body). [HK-series assassin droid](https://starwars.fandom.com/wiki/HK-series_assassin_droid)
 - **Typical owners:** Czerka Corporation; Adascorp (Arkoh Adasca, the HK-24s); Revan;
   the Sith Empire (HK-51s, and the "Imperial Shock Droid" variants on Corellia); the Galactic
   Republic and the Eternal Alliance (HK-51 after salvage); the **GenoHaradan** bounty-hunting

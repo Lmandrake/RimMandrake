@@ -68,6 +68,7 @@ scrappers and in pit fighting.
   Battle of Geonosis; all units shut down at the end of the Clone Wars) but those are
   history, not an infobox era, and are recorded above as history rather than promoted
   into this field.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** saw "greater production after the Battle of Geonosis"; B2s under construction on Geonosis in **21 BBY**; a "vintage cache" sold shortly before the **35 ABY** Battle of Exegol (lead and History). No introduction date stated. [B2-series super battle droid](https://starwars.fandom.com/wiki/B2-series_super_battle_droid)
 - **Typical owners**: Techno Union, Trade Federation, Confederacy of Independent Systems
   (Separatist Droid Army), Separatist holdouts, Bedlam Raiders, Plazir-15's government,
   Droid Gotra, "The Twins". The groundmech's owners are instead the **Andor family and

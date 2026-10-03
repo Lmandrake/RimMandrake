@@ -96,6 +96,7 @@ self-declared incomplete.
   [Pistoeka sabotage droid](https://starwars.fandom.com/wiki/Pistoeka_sabotage_droid) ·
   [Mark One Pistoeka sabotage droid](https://starwars.fandom.com/wiki/Mark_One_Pistoeka_sabotage_droid)
 - **Era:** **blank.** `firstmade=` and `retired=` are empty in both infoboxes.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** fielded by the CIS "during the later stages of the Clone Wars" (lead). No year stated. [Pistoeka sabotage droid](https://starwars.fandom.com/wiki/Pistoeka_sabotage_droid)
 - **Typical owners:** **Confederacy of Independent Systems**; **Free Ryloth Movement**;
   **Mining Guild**; **Galactic Empire**. The Mark One's sole listed affiliation is
   **Mitth'raw'nuruodo (Thrawn)** personally — a *collector*, not a military user, which is why
