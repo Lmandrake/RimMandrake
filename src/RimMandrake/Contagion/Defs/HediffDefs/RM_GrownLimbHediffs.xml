@@ -13,10 +13,13 @@
     Removal: HediffCompProperties_UnfinishedEmerge (ours) spawns a manhunter
     RM_TheUnfinished: vanilla FleshbeastEmerge is hard-coded to Fingerspike.
 
-    ART: the render nodes below reuse Anomaly's shipped TentacleLimb and
-    FleshWhipLimb textures as PLACEHOLDERS (checked: no RM_PillarArm/RM_Lash
-    art exists in artpipe done/ or _artsrc/). Bespoke art is owed to
-    CONTAGION_GROWN_LIMBS_ART_1.
+    ART (CONTAGION_GROWN_LIMBS_ART_1): Pillar Arm uses RM_PillarArmA, Lash
+    uses RM_LashA/RM_LashC (artpipe _artsrc, east/north/south; west mirrors
+    east). Variants PillarArmB (south is a grey blank) and LashB (coil) are
+    unused. Eyeburst and Caudal Spring still reuse Anomaly placeholders. The
+    rotationOffset/flip values were zeroed because the vanilla whip art they
+    were tuned for is oriented differently: UNVERIFIED in game, needs a live
+    look with the owner present.
   -->
 
   <HediffDef ParentName="AddedMutationBase">
@@ -36,7 +39,7 @@
     </stages>
     <renderNodeProperties>
       <li>
-        <texPath>Things/Pawn/Humanlike/BodyAttachments/FleshWhipLimb/FleshWhipLimbA</texPath>
+        <texPath>Things/Pawn/Humanlike/BodyAttachments/RM_PillarArm/RM_PillarArmA</texPath>
         <parentTagDef>Body</parentTagDef>
         <overrideMeshSize>1</overrideMeshSize>
         <drawSize>1.6</drawSize>
@@ -57,19 +60,17 @@
             <layer>49</layer>
           </defaultData>
           <dataNorth>
-            <rotationOffset>310</rotationOffset>
-            <flip>true</flip>
+            <rotationOffset>0</rotationOffset>
             <layer>0</layer>
           </dataNorth>
           <dataEast>
-            <rotationOffset>270</rotationOffset>
-            <flip>true</flip>
+            <rotationOffset>0</rotationOffset>
           </dataEast>
           <dataSouth>
-            <rotationOffset>220</rotationOffset>
+            <rotationOffset>0</rotationOffset>
           </dataSouth>
           <dataWest>
-            <rotationOffset>270</rotationOffset>
+            <rotationOffset>0</rotationOffset>
           </dataWest>
         </drawData>
       </li>
@@ -123,9 +124,8 @@
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Spastic">
         <texPaths>
-          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbA</li>
-          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbB</li>
-          <li>Things/Pawn/Humanlike/BodyAttachments/TentacleLimb/TentacleLimbC</li>
+          <li>Things/Pawn/Humanlike/BodyAttachments/RM_Lash/RM_LashA</li>
+          <li>Things/Pawn/Humanlike/BodyAttachments/RM_Lash/RM_LashC</li>
         </texPaths>
         <parentTagDef>Body</parentTagDef>
         <overrideMeshSize>1</overrideMeshSize>
@@ -150,19 +150,17 @@
             <layer>49</layer>
           </defaultData>
           <dataNorth>
-            <rotationOffset>310</rotationOffset>
-            <flip>true</flip>
+            <rotationOffset>0</rotationOffset>
             <layer>0</layer>
           </dataNorth>
           <dataEast>
-            <rotationOffset>270</rotationOffset>
-            <flip>true</flip>
+            <rotationOffset>0</rotationOffset>
           </dataEast>
           <dataSouth>
-            <rotationOffset>220</rotationOffset>
+            <rotationOffset>0</rotationOffset>
           </dataSouth>
           <dataWest>
-            <rotationOffset>270</rotationOffset>
+            <rotationOffset>0</rotationOffset>
           </dataWest>
         </drawData>
       </li>

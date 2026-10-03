@@ -1,0 +1,29 @@
+[
+ {
+  "id": "RM_EyeburstItem",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld inventory item icon, one grown monstrous organ seen on its own: a wet cluster of mismatched eyes of different sizes fused into one lump, glistening, a few lidded. Pink-grey raw flesh palette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [],
+  "style_notes": "texPath Things/Item/Health/RM_EyeburstItem, Graphic_Single. Contagion grown organ item icon, single object centered, painterly vanilla-RimWorld art style matching the Pillar Arm and Lash limb art, heavy clean dark outline, no ground shadow, transparent background"
+ },
+ {
+  "id": "RM_CaudalSpringItem",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld inventory item icon, one grown monstrous organ seen on its own: a coiled spring of muscle and gristle like a short fleshy tail, ridged, ending in a blunt knot. Pink-grey raw flesh palette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [],
+  "style_notes": "texPath Things/Item/Health/RM_CaudalSpringItem, Graphic_Single. Contagion grown organ item icon, single object centered, painterly vanilla-RimWorld art style matching the Pillar Arm and Lash limb art, heavy clean dark outline, no ground shadow, transparent background"
+ },
+ {
+  "id": "RM_BellowsItem",
+  "rimflow_item_id": "CONTAGION_GROWN_LIMBS_ART_1",
+  "prompt": "RimWorld inventory item icon, one grown monstrous organ seen on its own: a pair of pink-grey fleshy bellows sacs joined by a ridged bone-and-vein tube, wet. Pink-grey raw flesh palette.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "facings": [],
+  "style_notes": "texPath Things/Item/Health/RM_BellowsItem, Graphic_Single. Contagion grown organ item icon, single object centered, painterly vanilla-RimWorld art style matching the Pillar Arm and Lash limb art, heavy clean dark outline, no ground shadow, transparent background"
+ }
+]
