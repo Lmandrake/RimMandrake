@@ -43,13 +43,13 @@ ONE shared footprint grid with the Warscar*). Design source:
 7. **Consumers (XML only):**
    - **Stillsand** (wired): `src/RimMandrake/Stillsand/Patches/RM_TrackSurface_Stillsand.xml` puts the
      extension on `Sand` and `RM_DeepSand`, `biomes` = `RM_Stillsand` (both are shared terrains),
-     `invisibleTexPath` = the drag placeholder until wake art exists. Its eraser (drift depth past a
-     threshold clears a cell, from `MapComponent_DuneField`) is NOT wired: Stillsand prints persist
-     until the cap evicts them.
-   - **Warscar** (not wired: `RM_Filth_SettledFilm` does not exist yet, it is
-     `WARSCAR_SETTLING_WEATHER_1`'s): the film filth carries
-     `<li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension" />` in its `modExtensions`, and
-     the Settling's end calls `BeginDownwindSweep` + `SweepStep` from its own tick.
+     `invisibleTexPath` = the drag placeholder until wake art exists. Its eraser is
+     `src/RimMandrake/Stillsand/Source/RM_DuneTrackEraser.cs`: a postfix on `SandGrid.SetDepth` (the dunes
+     engine writes through it) clears a cell's print when its sand moves by 0.08 or more on an
+     RM_Stillsand map; setting `duneErasesTracks`.
+   - **Warscar** (wired by `WARSCAR_SETTLING_WEATHER_1`): `RM_Filth_SettledFilm`
+     (`src/RimMandrake/Scarlands/Defs/ThingDefs_Filth/RM_SettledFilm.xml`) carries the extension, and the
+     Settling's end calls `BeginDownwindSweep` + `SweepStep` by reflection (`RM_Settling.cs`).
 8. **State window for tests:** `RM_TrackGridDiag` (public static session counters, never saved), read
    through `jawa/mod_settings_field action=list`; no new bridge tool.
 

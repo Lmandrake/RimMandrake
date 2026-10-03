@@ -11,8 +11,8 @@
   recorded and flagged, and draw a wake trough instead of feet. The trough sprite is the shared drag
   placeholder until wake art exists (STILLSAND_SAND_SWIM_REMAINDER_1 wake records).
 
-  The eraser (a cell whose drift depth changes past a threshold clears) belongs to the dunes engine
-  and is not wired here: no prints are erased on the Stillsand until it is.
+  The eraser (a cell whose sand depth changes by 0.08 or more clears) is Source/RM_DuneTrackEraser.cs,
+  a postfix on SandGrid.SetDepth, which the dunes engine writes through (setting duneErasesTracks).
 
   Each target is guarded with a Conditional on its own existence, then on whether it already has a
   modExtensions list (an Add of a second <modExtensions> node would be silently lost).
