@@ -28,6 +28,12 @@ namespace RimMandrake.Scarlands
         // (currently nonexistent) mechanics run on other biomes too.
         // Persisted and exposed here honestly as NOT YET WIRED to any
         // mechanic — there is no mechanic in this mod for it to gate yet.
+        // WARSCAR_TURRETS_TRACK_1 toggles.
+        public static bool turretTrackingEnabled = true;   // broken turrets' barrels follow movers
+        public static bool turretRefitEnabled = true;      // wreck -> RM_OldLineTurret gizmo
+        public static float oldLineDamageFactor = 1f;      // applied at game start
+        public static float oldLineCooldownFactor = 1f;    // applied at game start
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -37,6 +43,10 @@ namespace RimMandrake.Scarlands
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
+            Scribe_Values.Look(ref turretTrackingEnabled, "turretTrackingEnabled", true);
+            Scribe_Values.Look(ref turretRefitEnabled, "turretRefitEnabled", true);
+            Scribe_Values.Look(ref oldLineDamageFactor, "oldLineDamageFactor", 1f);
+            Scribe_Values.Look(ref oldLineCooldownFactor, "oldLineCooldownFactor", 1f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -52,6 +62,16 @@ namespace RimMandrake.Scarlands
             list.Label("At 0 Warscar never generates on a new planet. Affects planets "
                        + "generated afterwards, never one that already exists.");
             biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Broken turrets track movement", ref turretTrackingEnabled,
+                "The barrel of a broken ancient turret turns to follow the nearest moving pawn. It never fires.");
+            list.CheckboxLabeled("Allow refitting broken turrets", ref turretRefitEnabled,
+                "Adds a Refit button to broken turrets that converts them into an old-line turret.");
+            list.Label("Old-line turret damage: x" + oldLineDamageFactor.ToString("0.00") + " (applies after restart)");
+            oldLineDamageFactor = list.Slider(oldLineDamageFactor, 0.25f, 3f);
+            list.Label("Old-line turret cooldown: x" + oldLineCooldownFactor.ToString("0.00") + " (applies after restart)");
+            oldLineCooldownFactor = list.Slider(oldLineCooldownFactor, 0.25f, 3f);
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");

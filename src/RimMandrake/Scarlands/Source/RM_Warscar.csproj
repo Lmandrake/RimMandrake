@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="RM_WarscarMod.cs" />
+    <Compile Include="RM_CompTurretAim.cs" />
   </ItemGroup>
 
   <ItemGroup>
