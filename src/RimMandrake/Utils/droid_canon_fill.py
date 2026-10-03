@@ -57,7 +57,8 @@ def wikitext(title):
 
 
 def infobox(w):
-    m = re.search(r"\{\{\s*(DroidSeries|Droid)\s*\n", w) or re.search(r"\{\{\s*(DroidSeries|Droid)\s*\|", w)
+    # 33 of 1,739 cached pages spell the infobox Droid_series (or Droid series)
+    m = re.search(r"\{\{\s*(DroidSeries|Droid[ _]series|Droid)\s*[\n|]", w)
     if not m:
         return None
     i, depth, start = m.start(), 0, m.start()
