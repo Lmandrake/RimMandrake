@@ -83,6 +83,7 @@ namespace RimMandrake.Pyrelands
         public static bool burnLineEnabled = true;
         public static bool fireHawkSpreadEnabled = true;
         public static bool furnaceThermalEnabled = true;
+        public static float furnaceWarmthStrength = 1f;
         public static bool fireClockEnabled = true;
 
         // FURNACEBEAST_WORLD_MIGRATION_1 — the world leg
@@ -137,6 +138,7 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref burnLineEnabled, "burnLineEnabled", true);
             Scribe_Values.Look(ref fireHawkSpreadEnabled, "fireHawkSpreadEnabled", true);
             Scribe_Values.Look(ref furnaceThermalEnabled, "furnaceThermalEnabled", true);
+            Scribe_Values.Look(ref furnaceWarmthStrength, "furnaceWarmthStrength", 1f);
             Scribe_Values.Look(ref fireClockEnabled, "fireClockEnabled", true);
             Scribe_Values.Look(ref furnaceWorldMigrationEnabled, "furnaceWorldMigrationEnabled", true);
             Scribe_Values.Look(ref furnaceHerdCount, "furnaceHerdCount", PyrelandsTuning.WorldHerdDefaultCount);
@@ -285,8 +287,11 @@ namespace RimMandrake.Pyrelands
                 "A fire-hawk can carry a live ember and drop it to start a new burn elsewhere. "
               + "Off: fire-hawks never do this job.");
             list.CheckboxLabeled("Furnace-beast thermal circuit", ref furnaceThermalEnabled,
-                "The furnace-beast's heat-hoarding warmth aura, bed ignition and thermal charge "
+                "The furnace-beast's local warmth (a felt-temperature offset around it), bed ignition and thermal charge "
               + "cycle. Off: it behaves as an ordinary heat-immune grazer.");
+            list.Label("Furnace-beast warmth strength: " + furnaceWarmthStrength.ToString("0.00") + "x (+"
+                       + (PyrelandsTuning.FurnaceWarmthMaxC * furnaceWarmthStrength).ToString("0") + " C at the beast)");
+            furnaceWarmthStrength = list.Slider(furnaceWarmthStrength, 0f, 2f);
             list.CheckboxLabeled("Fire clock (flame harvest / fire raid / fire rite)", ref fireClockEnabled,
                 "The Deep Desert Tribes' incidents that answer the burn. Off: those incidents never "
               + "fire.");

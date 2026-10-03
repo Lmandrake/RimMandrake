@@ -63,6 +63,7 @@
     <Compile Include="JobGiver_RUT_FireHawkCarryEmber.cs" />
     <Compile Include="JobDriver_RUT_FireHawkCarryEmber.cs" />
     <Compile Include="CompFurnaceWarmthAura.cs" />
+    <Compile Include="FurnaceWarmthMath.cs" />
     <Compile Include="CompFurnaceBedIgnition.cs" />
     <Compile Include="CompFurnaceThermalCharge.cs" />
     <Compile Include="JobGiver_RUT_FurnaceThermalCycle.cs" />
