@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_SETTLING_WEATHER_1: sweeping war dust, defusing and shooting revealed ordnance. -->
+  <JobDef>
+    <defName>RM_SweepWarDust</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_SweepWarDust</driverClass>
+    <reportString>sweeping up war dust.</reportString>
+  </JobDef>
+  <JobDef>
+    <defName>RM_DefuseOrdnance</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_DefuseOrdnance</driverClass>
+    <reportString>defusing TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RM_TriggerOrdnance</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_TriggerOrdnance</driverClass>
+    <reportString>setting off TargetA from range.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_SweepWarDust</defName>
+    <label>sweep war dust</label>
+    <giverClass>RimMandrake.Scarlands.WorkGiver_SweepWarDust</giverClass>
+    <workType>Cleaning</workType>
+    <priorityInType>5</priorityInType>
+    <verb>sweep</verb>
+    <gerund>sweeping</gerund>
+    <scanThings>true</scanThings>
+    <prioritizeSustains>false</prioritizeSustains>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RM_DefuseOrdnance</defName>
+    <label>defuse ordnance</label>
+    <giverClass>RimMandrake.Scarlands.WorkGiver_DefuseOrdnance</giverClass>
+    <workType>Crafting</workType>
+    <priorityInType>60</priorityInType>
+    <verb>defuse</verb>
+    <gerund>defusing</gerund>
+    <scanThings>true</scanThings>
+    <prioritizeSustains>false</prioritizeSustains>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RM_TriggerOrdnance</defName>
+    <label>set off ordnance from range</label>
+    <giverClass>RimMandrake.Scarlands.WorkGiver_TriggerOrdnance</giverClass>
+    <workType>Hunting</workType>
+    <priorityInType>10</priorityInType>
+    <verb>shoot</verb>
+    <gerund>shooting</gerund>
+    <scanThings>true</scanThings>
+    <prioritizeSustains>false</prioritizeSustains>
+  </WorkGiverDef>
+</Defs>

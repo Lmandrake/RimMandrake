@@ -86,6 +86,7 @@
       <li>RM_KneelingRings</li>
       <li>RM_ReactionPools</li>
       <li>RM_ChotrixOnMap</li>
+      <li>RM_BuriedOrdnance</li>
     </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

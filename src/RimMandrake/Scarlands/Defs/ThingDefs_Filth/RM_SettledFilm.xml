@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    WARSCAR_SETTLING_WEATHER_1: the settled film. Laid on unroofed open cells by RM_GameCondition_Settling
+    (never on a buried-ordnance cell, so a shell shows as a clean round spot). Tagged with the shared
+    track grid's extension (FOOTPRINT_TRACK_GRID_1, CreatureBehaviors): every crossing is recorded, invisible
+    walkers included. The wind wipes film and prints together at the end of a Settling; cleaning in the
+    home area works as for any filth. Art is the vanilla grainy cluster tinted pale grey until real art exists.
+  -->
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_SettledFilm</defName>
+    <label>settled film</label>
+    <description>A pale grey film of fine war dust, settled out of a still sky. It keeps every footprint pressed into it until the wind comes back.</description>
+    <graphicData>
+      <texPath>Things/Filth/Grainy</texPath>
+      <color>(205,205,198,120)</color>
+    </graphicData>
+    <filth>
+      <placementMask>
+        <li>Terrain</li>
+      </placementMask>
+      <disappearsInDays>30~40</disappearsInDays>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>25</cleaningWorkToReduceThickness>
+      <canFilthAttach>false</canFilthAttach>
+      <maxThickness>4</maxThickness>
+    </filth>
+    <statBases>
+      <Beauty>-3</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
+        <biomes><li>RM_Warscar</li></biomes>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

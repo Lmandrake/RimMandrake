@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_SETTLING_WEATHER_1 spec 6: war dust is a recipe input for tox-gas shells. Insecticide (blight cure) and
+       the pigment filler need mechanisms this mod does not have yet; they are not built here. -->
+  <RecipeDef>
+    <defName>RM_MakeToxShellFromWarDust</defName>
+    <label>make tox shell from war dust</label>
+    <description>Pack war dust into a tox-gas shell.</description>
+    <jobString>Packing a tox shell.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>800</workAmount>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_WarDust</li></thingDefs></filter>
+        <count>12</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>Steel</li></thingDefs></filter>
+        <count>8</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>RM_WarDust</li><li>Steel</li></thingDefs>
+    </fixedIngredientFilter>
+    <products><Shell_Toxic>1</Shell_Toxic></products>
+    <skillRequirements><Crafting>4</Crafting></skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers><li>TableMachining</li></recipeUsers>
+  </RecipeDef>
+</Defs>

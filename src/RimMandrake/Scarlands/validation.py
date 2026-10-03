@@ -34,7 +34,13 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
             "enableChatrak": True, "enableTetchik": True, "enablePallbearer": True, "enableScarRoach": True,
             "enableWreckLichenSeeder": True, "enableInterimDonors": True,
-            "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True}
+            "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True,
+            "settlingEnabled": True, "settlingCalmThreshold": 0.35, "settlingCalmHours": 4.0, "settlingEndWind": 0.8,
+            "settlingEndHours": 1.0, "settlingToxicStrength": 1.0, "liftFrontEnabled": True, "warDustEnabled": True,
+            "ordnancePerMap": 3.0}
+SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
+                 "ThingDef/RM_BuriedOrdnance", "JobDef/RM_SweepWarDust", "JobDef/RM_DefuseOrdnance",
+                 "JobDef/RM_TriggerOrdnance"]
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
@@ -326,13 +332,37 @@ def static_checks():
     for prey in ("RM_Tetchik", "RM_Chatrak"):
         if "<li>%s</li>" % prey in ch and prey not in fd:
             bad.append("chotrix prey %s does not resolve" % prey)
+    # WARSCAR_SETTLING_WEATHER_1
+    if 'Compile Include="RM_Settling.cs"' not in csproj:
+        bad.append("RM_Settling.cs missing from RM_Warscar.csproj")
+    st = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Settling.cs")).read())
+    for needle in ("DoAirbornePawnToxicDamage", "windManager.WindSpeed", "WeatherOverlay_Fallout", "BeginDownwindSweep",
+                   "SweepStep", "IsOrdnanceCell(c)", "DoCellSteadyEffects", "c.Roofed(map)"):
+        if needle not in st:
+            bad.append("RM_Settling.cs lacks %s" % needle)
+    if "CreatureBehaviors" in csproj and "Reference Include=\"RimMandrake.CreatureBehaviors" in csproj:
+        bad.append("Warscar must reach the track grid by reflection, not an assembly reference (the condition runs without it)")
+    sd = os.path.join(HERE, "Defs")
+    film = open(os.path.join(sd, "ThingDefs_Filth", "RM_SettledFilm.xml")).read()
+    if "RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension" not in film:
+        bad.append("RM_Filth_SettledFilm does not carry RM_TrackSurfaceExtension")
+    cond = ET.parse(os.path.join(sd, "GameConditionDefs", "RM_Settling.xml")).getroot()[0]
+    if cond.findtext("conditionClass") != NS + "RM_GameCondition_Settling":
+        bad.append("RM_Settling conditionClass wrong")
+    if "The wind has dropped. The Settling begins." != cond.findtext("startMessage") or \
+            "The wind is back. The ground forgets." != cond.findtext("endMessage"):
+        bad.append("RM_Settling start/end messages are not the ruled readable signs")
+    if "RM_BuriedOrdnance" not in open(os.path.join(sd, "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("RM_Warscar biome does not list the RM_BuriedOrdnance genstep")
+    for f in ("RM_Settling.xml",):
+        pass
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled"]
+    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL): the harness's own route is upstream_failed, which
@@ -546,6 +576,41 @@ def _build_suite():
             _unmeasured(t, "a quicktest Warscar map spawning chatrak and tetchik (tetchik only within 6 cells of glower), "
                            "wreck-lichen only beside ruins, a butchered chatrak yielding undyeable chatrak plate, "
                            "and the canonical save loading with no new reference error need a live map")
+
+    @suite.chain("settling")
+    def settling(t):
+        with t.component("settling_defs_resolve", toggle="settlingEnabled"):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(SETTLING_DEFS), fields="defName", limit=20)
+            if t.session is None:
+                return
+            if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                raise ExpectationFailed("Settling defs did not resolve live: %r" % r)
+            if int(r.get("foundCount", 0)) != len(SETTLING_DEFS):
+                raise ExpectationFailed("expected %d Settling defs, found %r" % (len(SETTLING_DEFS), r.get("foundCount")))
+        with t.component("calm_starts_and_wind_ends_the_settling", toggle="settlingEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "forcing calm on a quicktest Warscar map to start RM_Settling after the configured hours and wind "
+                           "to end it needs a live Warscar map with a controllable wind")
+        with t.component("film_roofed_and_toxic", toggle="settlingEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "film only on unroofed cells, a roofed pawn taking no toxic buildup and an unroofed one taking it, "
+                           "need a live running Settling")
+        with t.component("lift_front_wipes_film_and_tracks", toggle="liftFrontEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "the lift front crossing the map downwind and clearing film and tracks behind it needs a live "
+                           "Settling plus the track grid (CreatureBehaviors); state read of the grid is owed to a live round")
+        with t.component("war_dust_sweep", toggle="warDustEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "a sweep job on a film cell yielding RM_WarDust (more in crater bowls) needs a live film cell and a pawn")
+        with t.component("buried_ordnance_revealed_and_defusable", beyond_toggle=True):
+            if t.session is None:
+                return
+            _unmeasured(t, "every buried-shell cell being film-free and inspectable after a Settling, and defusing yielding a shell, "
+                           "need a live map generated with the RM_BuriedOrdnance genstep")
 
     return suite
 
