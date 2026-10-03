@@ -21,9 +21,9 @@
        to the ruled width; dessicatedBodyGraphicData left untouched (out of
        ruling scope). bodySize/combat stats are NOT touched by this file.
 
-       AA_Agaripod and RSW_FungalMantis are "keep + rename" (owner's own
-       decision) — name only, no size, no art job; RSW_FungalMantis is edited
-       directly in SWBestiary (ours), not here. -->
+       AA_Agaripod and the skerrith are "keep + rename" (owner's own
+       decision) — name only, no size, no art job; the skerrith (RM_Skerrith) is owned
+       directly in Defs/Fauna (ROT_RM_CAST_MIGRATION_1), not here. -->
 
   <!-- ============== AB_AgaricusDomeCap -> skarrow dome (7 wide) ============== -->
   <Operation Class="PatchOperationConditional">
