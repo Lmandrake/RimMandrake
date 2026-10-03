@@ -1,0 +1,12 @@
+# belt bridge log 2026-10-03
+- deploy applied, marker touched
+- launched via steam 08:13:50
+- game loading, log 120KB at 08:16
+- waiting on Bridge token (bg watcher); early log: String-default-ctor XML exception x2
+- 08:19:09 monitor armed for Bridge token
+- 08:33:46 game UP; harvest in Transient/belt_harvest_20261003.txt (19 xref, 54 tex, 50 configerror, 9 patchfail, 1 dead static ctor); String-ctor exception is a donor About.xml, not ours. starting situational_rerun
+- 08:36:01 FOUND: my first deploy was non-composed; game loaded stale RimMandrake.Biomes (compose drift: ~25 files + 4 DLLs). Killing rerun, closing game, deploy --compose biomes --apply, relaunch
+- 08:43:57 composed redeployed (sibling rebuilt TerminalBiomes mid-way), relaunched
+- 09:06:33 relaunched game UP; harvest2 saved; rerun2 started
+- 09:10:04 2nd load: SWBestiary stale ThingDefs_Abyss.xml (source moved to Abyss, deploy w/o --prune leaves old) discarded def -> raceless pawnkind cascade (AlphaMemes/GeneticRim static ctor dead), launch gate refuses. Fix: deploy --prune, relaunch
+- 09:13:52 pruned both deploys; removed 4 deployed copies of HELD files (hold never deletes -> dangling xrefs: TheSump biome, FoundryScatter x2, TibannaTap patch). relaunch 3
