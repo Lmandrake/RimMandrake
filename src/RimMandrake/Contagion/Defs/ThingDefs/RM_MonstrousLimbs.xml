@@ -20,8 +20,7 @@
       <HediffDef>RM_PillarArm</HediffDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Item/Health/HealthItem</texPath>
-      <color>(150, 60, 70)</color>
+      <texPath>Things/Item/Health/RM_PillarArmItem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.80</drawSize>
     </graphicData>
@@ -41,8 +40,7 @@
       <HediffDef>RM_Lash</HediffDef>
     </descriptionHyperlinks>
     <graphicData>
-      <texPath>Things/Item/Health/HealthItem</texPath>
-      <color>(205, 110, 130)</color>
+      <texPath>Things/Item/Health/RM_LashItem</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.80</drawSize>
     </graphicData>
