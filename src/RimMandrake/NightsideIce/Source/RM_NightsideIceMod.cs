@@ -10,7 +10,7 @@ namespace RimMandrake.NightsideIce
     // Precedent: src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs.
     //
     // Master switch, the heat dial (NIGHTSIDEICE_HEAT_DIAL_1, RM_HeatDial.cs) and the shivven
-    // (NIGHTSIDEICE_SHIVVEN_BUILD_1, RM_Shivven.cs). The breach cracks are filed, unbuilt.
+    // (NIGHTSIDEICE_SHIVVEN_BUILD_1, RM_Shivven.cs) and the breach cracks (NIGHTSIDEICE_BREACH_CRACKS_1).
     // ════════════════════════════════════════════════════════════════════
     public class RM_NightsideIceSettings : ModSettings
     {
@@ -29,6 +29,12 @@ namespace RimMandrake.NightsideIce
         public static bool shivvenIceOnly = true;             // they never step off the ice (floors are not ice)
         public static bool shivvenStrikeHeaters = true;       // they surface and claw a heater they reach
 
+        // NIGHTSIDEICE_BREACH_CRACKS_1 -- the breach loop (RM_BreachCracks.cs)
+        public static bool breachEnabled = true;              // cracks open at the base's edge when the dial is up
+        public static float breachFrequencyScale = 1f;        // 1: a full dial averages one breach a day
+        public static int breachFirstCountdownHours = 24;     // the first, taught crack's countdown
+        public static bool breachWarnings = true;             // the 6 h / 1 h warnings and later cracks' message
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -41,6 +47,10 @@ namespace RimMandrake.NightsideIce
             Scribe_Values.Look(ref shivvenSenseRange, "shivvenSenseRange", 60f);
             Scribe_Values.Look(ref shivvenIceOnly, "shivvenIceOnly", true);
             Scribe_Values.Look(ref shivvenStrikeHeaters, "shivvenStrikeHeaters", true);
+            Scribe_Values.Look(ref breachEnabled, "breachEnabled", true);
+            Scribe_Values.Look(ref breachFrequencyScale, "breachFrequencyScale", 1f);
+            Scribe_Values.Look(ref breachFirstCountdownHours, "breachFirstCountdownHours", 24);
+            Scribe_Values.Look(ref breachWarnings, "breachWarnings", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -85,7 +95,21 @@ namespace RimMandrake.NightsideIce
                 "A floor or any ground that is not ice stops them: they strike from the edge or wait. Off: once "
               + "surfaced they walk anywhere, like any animal.");
             list.GapLine();
-            list.Label("Not built yet, so no settings: the breach cracks that answer the dial.");
+            list.Label("Breach cracks");
+            list.CheckboxLabeled("Cracks open at the base's edge", ref breachEnabled,
+                "When the dial is up, a crack opens in open ice near the base (never through a floor) and breaks "
+              + "open after a while to let shivven up, unless you destroy it first. A higher dial means sooner "
+              + "cracks and more shivven; a zero dial means none. Off: no cracks.");
+            if (breachEnabled)
+            {
+                list.Label("How often: x" + breachFrequencyScale.ToString("0.00") + " (x1: a full dial averages one a day)");
+                breachFrequencyScale = list.Slider(breachFrequencyScale, 0.1f, 4f);
+                list.Label("The first crack breaks open after " + breachFirstCountdownHours + " hours");
+                breachFirstCountdownHours = Mathf.RoundToInt(list.Slider(breachFirstCountdownHours, 2f, 72f));
+                list.CheckboxLabeled("Warnings", ref breachWarnings,
+                    "The first crack always gets its letter. This adds its 6-hour and 1-hour warnings and a short "
+                  + "message when a later crack opens. Off: later cracks open silently.");
+            }
 
             list.End();
         }

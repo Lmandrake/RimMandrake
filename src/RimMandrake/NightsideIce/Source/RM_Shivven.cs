@@ -17,8 +17,8 @@ namespace RimMandrake.NightsideIce
     // CELLS ONLY (so the vanilla pathfinder is never asked to route across a floor), a few cells at a
     // time. Reaching ice beside the heater it starts a melee job on it, which breaches it (the strike).
     // A heater with no ice beside it (inside a floored, walled base) is out of reach: the shivven wait at
-    // the nearest ice. That is the hull rule, and the opening the breach cracks
-    // (NIGHTSIDEICE_BREACH_CRACKS_1) are for.
+    // the nearest ice. That is the hull rule; the breach cracks (RM_BreachCracks.cs) bring them up at
+    // the base's edge.
     //
     // It leaves a pawn fight alone (a melee threat, or a melee job on a pawn) so a struck shivven fights
     // back like any animal.
