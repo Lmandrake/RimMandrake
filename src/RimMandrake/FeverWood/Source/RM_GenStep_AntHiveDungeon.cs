@@ -23,8 +23,7 @@ namespace RimMandrake.FeverWood
     // whole thing reads as a dug-out enclosure — then populates every
     // non-entrance room with workers and the last (deepest) room with one
     // queen. See RM_AntHiveBiomeExtension's own header for what is
-    // deliberately NOT built here (the reactive alarm/rally mechanism, the
-    // three symbiotic chambers) and why.
+    // deliberately NOT built here (the three symbiotic chambers) and why.
     public class RM_GenStep_AntHiveDungeon : GenStep
     {
         private static readonly IntVec3[] EightDirs =
@@ -233,12 +232,28 @@ namespace RimMandrake.FeverWood
             }
         }
 
-        // Wild, faction-less, immediately hostile — same pattern already
-        // shipped in this mod (RM_CompCapturedSpecimen.Escape): generate with
-        // a null faction, then force a Manhunter mental state so the pawn
-        // fights on sight rather than reading as tame/neutral wildlife. This
-        // is the honest v1: real defenders, no alarm/rally/seal-and-hunt yet
-        // (see this GenStep's own header for why that is deferred).
+        // REACTION_MECHANISM_GENERALISE_1 step 3. A defender whose race
+        // carries the shared reaction source (RM_Kurreth does) is placed CALM
+        // and tethered to its room: it notices an intruder, rings the alarm,
+        // and the alarm rallies the hive — the reacting dungeon the owner
+        // chose. A race without that comp falls back to the v1 behaviour
+        // (spawned Manhunter), so a content swap can never leave a hive that
+        // ignores intruders entirely.
+        private static void SettleDefender(Pawn pawn, IntVec3 room)
+        {
+            if (pawn.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompReactionSource>() != null)
+            {
+                pawn.TryGetComp<RimMandrake.CreatureBehaviors.RM_CompHomeTether>()?.SetHome(room);
+                return;
+            }
+
+            pawn.mindState?.mentalStateHandler?.TryStartMentalState(
+                MentalStateDefOf.Manhunter, reason: "Ant hive defender", forceWake: true, causedByMood: false);
+        }
+
+        // Wild, faction-less defenders: every non-entrance room gets workers,
+        // the deepest gets the queen and an escort; SettleDefender decides
+        // calm-and-reacting vs v1 Manhunter per race.
         private void Populate(Map map, RM_AntHiveBiomeExtension ext, List<IntVec3> rooms)
         {
             for (int i = 1; i < rooms.Count; i++)
@@ -262,8 +277,7 @@ namespace RimMandrake.FeverWood
                     }
 
                     GenSpawn.Spawn(pawn, spawnCell, map);
-                    pawn.mindState?.mentalStateHandler?.TryStartMentalState(
-                        MentalStateDefOf.Manhunter, reason: "Ant hive defender", forceWake: true, causedByMood: false);
+                    SettleDefender(pawn, rooms[i]);
                 }
 
                 if (isQueenRoom)
@@ -286,8 +300,7 @@ namespace RimMandrake.FeverWood
                         }
 
                         GenSpawn.Spawn(escort, spawnCell, map);
-                        escort.mindState?.mentalStateHandler?.TryStartMentalState(
-                            MentalStateDefOf.Manhunter, reason: "Ant hive defender", forceWake: true, causedByMood: false);
+                        SettleDefender(escort, rooms[i]);
                     }
                 }
             }

@@ -10,20 +10,12 @@ namespace RimMandrake.FeverWood
     // same idiom as every other BiomeDef-modExtension-gated GenStep in this
     // mod set (RM_MirrorPoolBiomeExtension, RM_RootCausewayBiomeExtension).
     //
-    // ⛔ Deliberately NOT here: the reactive alarm/rally/seal/hunt behaviour
-    // the owner named as what makes this a dungeon rather than a nest to
-    // clear. That mechanism is `REACTION_MECHANISM_GENERALISE_1`'s own step 3
-    // (its spec: "the ant hive is last... built under FEVERWOOD_ANT_HIVE_
-    // DUNGEON_1"), in-flight this same session (steps 1-2 landed under
-    // GREENTIDE_WASP_SWARM_1/HOSTILE_MOBILE_PLANTS_1 as of this build) —
-    // adding a second, ad hoc alarm implementation here would duplicate that
-    // work and was explicitly the failure mode a sibling item (
-    // HOSTILE_MOBILE_PLANTS_1) was blocked to avoid. v1 workers/queen are
-    // plain hostile pawns (Manhunter-style, same as RM_CompCapturedSpecimen's
-    // escaped-occupant pattern already shipped in this mod) — they fight when
-    // found, but do not yet notice-at-range, rally, or seal doors. Wiring the
-    // shared reaction mechanism onto RM_Kurreth is follow-on work once that
-    // mechanism lands.
+    // The reaction (notice, alarm, rally, hunt) is NOT in this extension:
+    // it rides on the defender RACE (RM_Kurreth's RM_CompReactionSource, the
+    // shared CreatureBehaviors mechanism, REACTION_MECHANISM_GENERALISE_1
+    // step 3). RM_GenStep_AntHiveDungeon places a reacting race calm and
+    // tethered to its room, and falls back to spawned-Manhunter only for a
+    // race without the comp.
     //
     // Also NOT here: the three symbiotic chambers (farm/parasite/guard) the
     // owner ruled for. The farm chamber's livestock is RM_Thornbug
