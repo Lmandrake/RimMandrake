@@ -48,6 +48,7 @@
     <Compile Include="RM_CompKrizzak.cs" />
     <Compile Include="RM_MapComponentEtchfall.cs" />
     <Compile Include="RM_MapComponentDark.cs" />
+    <Compile Include="RM_MapComponentShipCover.cs" />
   </ItemGroup>
 
   <ItemGroup>
