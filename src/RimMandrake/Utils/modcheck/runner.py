@@ -454,6 +454,14 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                     session.call("jawa/window_list_close", action="close", typeName=_dlg, closeAll=True)
                 except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
                     pass
+            # The quicktest map's biome is whatever tile the game picked (TheRot LIVE 2026-10-03), and that biome's own
+            # ambient weather (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain: a modal-free
+            # `colonist_injured_unexpectedly` that aborted every later component. Every chain starts under locked Clear;
+            # a chain that tests weather sets its own afterwards.
+            try:
+                session.call("jawa/weather_set", weather="Clear", lockWeather=True)
+            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                pass
             from watch import Watch  # noqa: E402
             cap_kw = ({"session_cap": suite.chain_caps[name]}
                       if name in getattr(suite, "chain_caps", {}) else {})
