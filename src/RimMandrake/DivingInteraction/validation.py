@@ -154,3 +154,40 @@ def scald_return_gallery(t):
         if gen.count("GalleryRole.Return,") != 1:
             raise ExpectationFailed("role set must hold exactly one Return")
         t.screenshot()
+
+
+@suite.chain("chill_return_comb")
+def chill_return_comb(t):
+    """CHILL_RETURN_COMB_LANDMARK_1: comb defs exist; only the Chill generator lists the step; the comb is inert scenery (no puzzle)."""
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    with t.component("comb_defs", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_ReturnCombIce;ThingDef/RM_ReturnCombBusbar;ThingDef/RM_ReturnCombStud")
+        if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
+            raise ExpectationFailed("comb defs missing: %r" % r)
+        t.screenshot()
+    with t.component("chill_generator_lists_comb_only", beyond_toggle=True):
+        text = open(os.path.join(here, "Defs", "MapGeneration", "RM_SeaDiveGenerators.xml"), encoding="utf-8").read()
+        seen = 0
+        for b in text.split("<MapGeneratorDef>")[1:]:
+            name = b.split("<defName>")[1].split("</defName>")[0]
+            seen += 1
+            if (name == "RM_SeaDiveGenerator_TheChill") != ("RM_ChillReturnComb" in b):
+                raise ExpectationFailed("%s comb listing wrong" % name)
+        if seen < 2:
+            raise ExpectationFailed("generator file parse found %d generators" % seen)
+        t.screenshot()
+    with t.component("comb_is_inert_scenery", beyond_toggle=True):
+        xml = open(os.path.join(here, "Defs", "ThingDefs_Buildings", "RM_ReturnComb.xml"), encoding="utf-8").read()
+        if "<comps>" in xml or "Comp" in xml:
+            raise ExpectationFailed("comb defs carry comps; the ruling is scenery and lore only")
+        src = open(os.path.join(here, "Source", "GenStep_ChillReturnComb.cs"), encoding="utf-8").read()
+        code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("//"))
+        for banned in ["Gravship", "Hediff", "TakeDamage", "GameCondition", "MapComponent", "Job"]:
+            if banned in code:
+                raise ExpectationFailed("comb step touches %s" % banned)
+        t.screenshot()
+    with t.component("comb_laid_on_live_floor", beyond_toggle=True):
+        # UNMEASURED offline: a real Chill floor map must be generated live; a count of RM_ReturnCombStud on it is the check.
+        t.screenshot()

@@ -93,6 +93,7 @@
     <Compile Include="RM_ReturnGallery.cs" />
     <Compile Include="RM_WorkGiver_ProbeGalleryOutlet.cs" />
     <Compile Include="GenStep_ScaldReturnGallery.cs" />
+    <Compile Include="GenStep_ChillReturnComb.cs" />
   </ItemGroup>
 
   <ItemGroup>
