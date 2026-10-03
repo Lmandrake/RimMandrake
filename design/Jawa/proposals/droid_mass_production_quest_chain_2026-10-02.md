@@ -108,17 +108,12 @@ There are 12 shipped `QuestScriptDef`s. The relevant precedents:
   `QuestNode_GenerateMonumentMarker`, `QuestNode_SignalActivable`, `QuestNode_Signal`,
   `QuestNode_GenerateSite`, `QuestNode_QuestUnique`.
 
-### 1.5 Contradictions found (owed propagation once he rules; not edited here)
+### 1.5 Contradictions found — RULED and propagated 2026-10-03
 
-1. `faction_roster_v2.md` §8 still says the Hive fields *"mass-produced battle droids"* at 35–55 % of
-   combat points, and §6 lists Geonosian droids as *"mass-produced Foundry product"*. Under the
-   2026-09-26 ruling, the Hive's droids are **company-era leftovers kept running by repair**.
-2. `reconciled_lore/09_arcs_dungeons_quests.md` arc 6, the *"droid-theft heist"*, says *"the secret
-   of manufacture is a prize to steal from the territorial droid enclaves"*. The 2026-09-26 ruling
-   says the Enclaves do **not** have it. This chain replaces that heist's premise (Q3 covers what
-   happens to theft as a path).
-3. `faction_tech_alignment.md` §2.8 still lists battle-droid mass production as a Hive holding,
-   "contested". The item already says it becomes *latent, not held*.
+The three contradictions (roster Hive droids as mass-produced at 35–55 % of combat points; the
+Enclave-theft heist premise; the tech-alignment "contested" holding) were corrected in place in
+`faction_roster_v2.md`, `FACTION_SPEC.md`, `faction_tech_alignment.md`, `09_arcs_dungeons_quests.md`
+and their inbound references. The Hive's droids are repaired company-era leftovers (share unset).
 
 ---
 
@@ -417,6 +412,11 @@ uses the dev actions (jump to beat N) to watch each `End` fire. No storyteller w
 ---
 
 ## 7. Questions for the owner
+
+**Ruled 2026-10-03 (owner, typed):** *"Either it must be somehow bartered from the Hive (unlikely) or
+stolen from the Hive by the Jawa (likely)."* The Enclaves never hold the secret; it is latent with the
+Hive. Theft from the Hive is the likely path, barter the unlikely one, and the sell-out fork
+(Q3-A, selling the pattern cores in beat 3) stands as ruled in the chain. Questions below remain open.
 
 **Q1. When the chain is done, what actually changes?**
 - **A (recommended). The Enclaves get a working line, and you get its fruits.** Their settlements

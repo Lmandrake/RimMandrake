@@ -479,8 +479,8 @@ briefly. Sonic capstone stays its T4 prize.
 17. **The Unbolting** — *building droids at all — a liberation rite paid one
 freed droid at a time.* Faction-held (Enclaves); tonight's ladder (workers →
 civilians → military → legends) now reads as the Enclaves' trust-curriculum.
-C2 makes them fellow readers; the heist arc (09_arcs §6) remains the
-alternative, thief's route in.
+C2 makes them fellow readers; the heist arc (09_arcs §6, stealing the latent
+factory tech from the Hive) remains the alternative, thief's route in.
 
 **The cross-tree grammar — one gate economy.** The four ruled access classes
 (`tech_gating_ruled`) absorb everything new without a fifth concept if G5

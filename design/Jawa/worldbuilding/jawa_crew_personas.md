@@ -74,7 +74,7 @@ Grounding sources, in priority order: **(a) canon Jawa material** — small hood
 - **Role:** the primary **crafter/constructor/miner** — the industrial spine of a crew whose whole economy is salvage-and-repair. ◇
 - **Skills:** high **Crafting** + **Construction**, good **Mining**, passions in the making-things skills. The pawn who actually *runs* the VFE-Factory salvage loop and (eventually) the stolen Droid Factory. ◇
 - **Traits:** *Hard worker* or an *industrious*-style vanilla trait + a **greed/haggler** flavor to tie into haggling-as-devotion (§2.7). **No production-speed multiplier from a trait pack** — keep it vanilla. 🔎
-- **Arc seed — the §4.8 droid-theft protagonist:** Griz is the natural lead for the **steal-the-secret-of-droid-building** heist against the neutral territorial droids (DUM Squad / Rogue Droids). He's the one whose theology (repair, don't breed new hands) is *personally* tested when the clan finally seizes the means of manufacture. His `DarkVision` + Tunneler flavor makes him the ruin-crawler. ◇
+- **Arc seed — the §4.8 droid-theft protagonist:** Griz is the natural lead for the **steal-the-secret-of-droid-building** heist against the Geonosian Hive, whose databases hold the latent factory tech (not the droid Enclaves). He's the one whose theology (repair, don't breed new hands) is *personally* tested when the clan finally seizes the means of manufacture. His `DarkVision` + Tunneler flavor makes him the ruin-crawler. ◇
 - **Comedy/voice hook:** narrates loving repair monologues to half-dead droids; physically pained by scrapping something "still good."
 - **Embodies:** the industrial pillar + the droid-theft arc + Tunneler burrowing-scavenger identity.
 

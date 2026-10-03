@@ -255,7 +255,7 @@ groups       Water caravan (trades with EVERY faction, Empire included) ·
 
 ```
 label        Geonosian Foundry Hive
-description  A hive mass-producing droids in ancient factories under the rock,
+description  A hive keeping company-era droids running by repair in ancient factories under the rock (the factory tech is latent in its databases),
              ruled by winged aristocrats under one immobile queen. The only
              power on the planet that can sustain a siege in deep desert.
 pawnSingular warrior drone    pawnsPlural warrior drones

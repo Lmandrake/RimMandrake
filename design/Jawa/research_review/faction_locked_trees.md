@@ -69,7 +69,7 @@ explicitly factionless hidden wanderers (`:309-317`).
   seven warcasket research rows in the model are all `VFEP_*` from that mod. **Verified.**
 - *"genosians"* = **the Geonosian Foundry Hive**, `Jawa_GeonosianFoundryHive`. Warrior
   Drone carries a *sonic blaster* (`:1667`); the faction equipment table reads
-  *"Geonosian: sonic weapons plus mass-produced droids"* (`:359`); `FACTION_SPEC.md:388`
+  *"Geonosian: sonic weapons plus repaired company-era droids"* (`:359`, since corrected); `FACTION_SPEC.md:388`
   names the hive **the campaign's authored insectoid power**. **Verified.**
 
 ---
@@ -236,7 +236,7 @@ fails its own gate-leak assertion. No defName is renamed.
 
 ### 5.2 The Foundry Hive — `Jawa_GeonosianFoundryHive`, tag `GeonosianHive` (NEW)
 
-The hive's two named products, per its own dossier: **sonic** and **mass-produced droids**.
+The hive's two named products, per its own dossier: **sonic** and **repaired company-era droids** (the production tech is latent, not held).
 Five rows.
 
 | tier | row | cost | why the hive |
@@ -245,7 +245,7 @@ Five rows.
 | T1 | `VFEI2_StandardHivetech` | 1,000 | " |
 | T2 | `VFEI2_ExoticHivetech` | 2,000 | " |
 | T2 | `guy762_ResearchKotOR_sonic` | 2,000 | the owner's own example; Warrior Drone's sonic blaster |
-| T2 | `OuterRim_BattleDroids` | 2,000 | *"sonic weapons plus mass-produced droids"* (`:359`) — Geonosian foundries built the droid army |
+| T2 | `OuterRim_BattleDroids` | 2,000 | *"sonic weapons plus repaired company-era droids"* (`:359`) — Geonosian foundries built the droid army long ago; the tech is latent, not held (`DROID_MASS_PRODUCTION_QUEST_CHAIN_1`) |
 
 **Access rule — you trade for it.** The hive descends from `OutlanderFactionBase`, whose
 `baseTraderKinds` / `caravanTraderKinds` / `visitorTraderKinds` already carry
