@@ -99,16 +99,10 @@
           </li>
         </capMods>
         <statFactors>
-          <li>
-            <stat>WorkSpeedGlobal</stat>
-            <value>0.8</value>
-          </li>
+          <WorkSpeedGlobal>0.8</WorkSpeedGlobal>
         </statFactors>
         <statOffsets>
-          <li>
-            <stat>SocialImpact</stat>
-            <value>-0.35</value>
-          </li>
+          <SocialImpact>-0.35</SocialImpact>
         </statOffsets>
       </li>
 
