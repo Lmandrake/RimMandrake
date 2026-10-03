@@ -1,0 +1,62 @@
+[
+ {
+  "id": "RM_MessyConduit_Hose_Strand_Flat_v2",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of a limp empty hose lying flat on the ground, a wide relaxed collapsed ribbon of rough woven brown burlap sackcloth in Jawa-robe umber brown about 34 px tall, coarse visible weave, a clear stitched seam down the centre and two small stitched cloth patches in lighter tan-brown, soft wrinkles, edge to edge left to right, centred vertically with transparent margin, left and right ends meet at identical height, shading and patch-free edges so copies join invisibly.",
+  "canvas_w": 256,
+  "canvas_h": 64,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, soft dark keyline, value over detail, transparent background, rough woven brown burlap sackcloth like Jawa robes in earthy umber brown (about #5b4129 with lighter #7a5a3a threads), patched and hand-stitched with coarse pale thread, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 66,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Strand_Plump_v2",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Seamless horizontally tileable straight strip of a fully swollen taut hose seen from above, a round plump cylinder about 42 px tall made of rough woven brown burlap sackcloth in Jawa-robe umber brown, coarse visible weave, a stitched seam running along the length with slight bulges at the stitches, soft matte highlight along the top third, edge to edge left to right, centred vertically with transparent margin, left and right ends meet at identical height and shading so copies join invisibly.",
+  "canvas_w": 256,
+  "canvas_h": 64,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, soft dark keyline, value over detail, transparent background, rough woven brown burlap sackcloth like Jawa robes in earthy umber brown (about #5b4129 with lighter #7a5a3a threads), patched and hand-stitched with coarse pale thread, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 66,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Coupling_Brass_v2",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Brass hose coupling: a threaded tarnished brass cylindrical end fitting with two lugs and ribbed grip, about 56 px long, a rough woven brown burlap sackcloth hose in Jawa-robe umber brown with stitched seam entering from the left edge at the vertical centre and clamped into it, the threaded end on the right.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, soft dark keyline, value over detail, transparent background, rough woven brown burlap sackcloth like Jawa robes in earthy umber brown (about #5b4129 with lighter #7a5a3a threads), patched and hand-stitched with coarse pale thread, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 66,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Nozzle_v2",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Hose nozzle: a tarnished brass and dark steel hand nozzle with a pistol-grip valve lever and tapered tip pointing right, a rough woven brown burlap sackcloth hose in Jawa-robe umber brown with a stitched seam entering from the left edge at the vertical centre, about 90 px long overall.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, soft dark keyline, value over detail, transparent background, rough woven brown burlap sackcloth like Jawa robes in earthy umber brown (about #5b4129 with lighter #7a5a3a threads), patched and hand-stitched with coarse pale thread, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 66,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_Reel_PumpHookup_v2",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Hose reel and pump hookup: a squat dark red-brown steel pump housing about 70 px across with a round brass inlet valve wheel, a brass outlet coupling on the left edge at the vertical centre, a few coils of rough woven brown burlap sackcloth hose in Jawa-robe umber brown with stitched patches wound on a small reel, grease stains.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, soft dark keyline, value over detail, transparent background, rough woven brown burlap sackcloth like Jawa robes in earthy umber brown (about #5b4129 with lighter #7a5a3a threads), patched and hand-stitched with coarse pale thread, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 66,
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Hose_EndCap_v2",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "prompt": "Hose end cap: a threaded brass blanking cap screwed onto the end of a rough woven brown burlap sackcloth hose in Jawa-robe umber brown with a stitched seam, entering from the left edge at the vertical centre, a short chain tying the cap to the hose, tarnished and dented, about 44 px long.",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "style_notes": "painterly RimWorld game sprite, matte low-shine surface, soft dark keyline, value over detail, transparent background, rough woven brown burlap sackcloth like Jawa robes in earthy umber brown (about #5b4129 with lighter #7a5a3a threads), patched and hand-stitched with coarse pale thread, tarnished brass fittings, warm 70s-brown palette, grubby and used",
+  "priority": 66,
+  "background": "transparent"
+ }
+]
