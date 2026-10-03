@@ -26,4 +26,17 @@
     <defName>RUT_LineCountDroidKept</defName>
     <label>kept one of their people as property</label>
   </HistoryEventDef>
+  <!-- UNFINISHED_LINE_ENVOY_BEAT_1 -->
+  <HistoryEventDef>
+    <defName>RUT_LineEnvoyHosted</defName>
+    <label>hosted the Hive's envoy to the line</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineEnvoyEscorted</defName>
+    <label>kept the Enclaves' word between them and the Hive</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineEnvoyHarmed</defName>
+    <label>harmed the envoy under a brokered truce</label>
+  </HistoryEventDef>
 </Defs>

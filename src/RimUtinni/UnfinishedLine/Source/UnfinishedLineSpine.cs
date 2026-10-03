@@ -123,6 +123,14 @@ namespace RimMandrake.Utinni.UnfinishedLine
                 + " | failures " + FailuresOf(beat) + " | pending " + PendingCount + " | broken " + broken;
         }
 
+        /// <summary>The chain is over, whatever the outcome: a truce still running ends quietly
+        /// (a hostile ending has already ended it).</summary>
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            GameComponent_RUT_UnfinishedLine.Get?.EndTruce(false);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();

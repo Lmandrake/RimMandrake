@@ -16,6 +16,7 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static int daysBetweenBeatsMin = 5;
         public static int daysBetweenBeatsMax = 10;
         public static int failuresAllowedPerBeat = 2;
+        public static bool brokeredTruceEnabled = true;
 
         public override void ExposeData()
         {
@@ -26,6 +27,7 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref daysBetweenBeatsMin, "daysBetweenBeatsMin", 5);
             Scribe_Values.Look(ref daysBetweenBeatsMax, "daysBetweenBeatsMax", 10);
             Scribe_Values.Look(ref failuresAllowedPerBeat, "failuresAllowedPerBeat", 2);
+            Scribe_Values.Look(ref brokeredTruceEnabled, "brokeredTruceEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -51,6 +53,13 @@ namespace RimMandrake.Utinni.UnfinishedLine
             list.Label("Failed attempts a beat may take before the chain breaks: " + failuresAllowedPerBeat);
             list.Label("A failed beat is offered again; one failure past this number ends the chain.");
             failuresAllowedPerBeat = Mathf.RoundToInt(list.Slider(failuresAllowedPerBeat, 0f, 5f));
+            list.GapLine();
+
+            list.CheckboxLabeled("The Enclaves broker a truce with the Hive", ref brokeredTruceEnabled,
+                "On: from the moment you accept the Hive's envoy until the chain ends, the Geonosian Foundry "
+              + "Hive is held at least neutral to you, so it does not raid while the chain runs. Harming the "
+              + "envoy breaks the truce and the chain. Off: the Hive stays as it is, and only the goodwill "
+              + "each beat earns moves it.");
 
             list.End();
         }

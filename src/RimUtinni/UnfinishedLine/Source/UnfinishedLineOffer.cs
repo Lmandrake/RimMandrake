@@ -134,6 +134,20 @@ namespace RimMandrake.Utinni.UnfinishedLine
             return "CHAIN " + q.State + " | " + (spine?.Describe() ?? "no spine part") + " | children [" + kids + "]";
         }
 
+        /// <summary>Starts (true) or quietly ends (false) the brokered truce and reads the Hive back:
+        /// "TRUCE active|off | hive goodwill N | relation K".</summary>
+        public static string ProofTruce(bool start)
+        {
+            GameComponent_RUT_UnfinishedLine comp = GameComponent_RUT_UnfinishedLine.Get;
+            if (comp == null) return "REFUSED: no GameComponent_RUT_UnfinishedLine";
+            if (start) comp.StartTruce();
+            else comp.EndTruce(false);
+            Faction hive = LineFactions.Hive;
+            if (hive == null) return "REFUSED: no Hive faction";
+            return "TRUCE " + (comp.truceActive ? "active" : "off") + " | hive goodwill " + hive.GoodwillWith(Faction.OfPlayer)
+                + " | relation " + hive.RelationKindWith(Faction.OfPlayer);
+        }
+
         [DebugAction("Quests", "Offer The Unfinished Line (skip gates)", allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void DebugOffer()
         {

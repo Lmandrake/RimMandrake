@@ -1,0 +1,1 @@
+rimworld-quests validate_quest.py does not read <addToLists><li>X</li></addToLists> on QuestNode_GeneratePawn (a real field: decompiled 1.6 RunInt loops addToLists into AddToOrMakeList), so a list built only that way reads as [unwritten-slate] WARN. False positive; seen on RUT_UnfinishedLine_2_Envoy 2026-10-03. Fix belongs in the skill's next curation pass (collect_writes).

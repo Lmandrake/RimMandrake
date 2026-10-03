@@ -8,9 +8,9 @@
 
 A five-beat quest chain (design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md). The chain is offered once the Free Droid Enclaves like you (goodwill 20), you can repair droids at a shop, and day 30 has passed. Each beat follows the last after a few days; a failed beat is offered again, and too many failures break the chain.
 
-Built so far: the chain itself, and beat 1, "The Count": three badly damaged Enclave droids brought to your shop. Fit them your own good parts or scrounge worn ones; the Enclaves judge the job by the worst droid that walks out. Later beats (the envoy, the pattern cores, the tithe, first light) are filed and not built yet; the chain waits after beat 1 until they ship.
+Built so far: the chain itself; beat 1, "The Count": three badly damaged Enclave droids brought to your shop (fit them your own good parts or scrounge worn ones; the Enclaves judge the job by the worst droid that walks out); and beat 2, "The Envoy": two Hive overseers and their Enclave escort stay four days, and accepting them starts a truce the Enclaves broker, holding the Hive's raids off while the chain runs. Harm a guest and the truce and the chain are over. Later beats (where the line stands, the pattern cores, the tithe, first light) are filed and not built yet; the chain waits after beat 2 until they ship.
 
-Mod Settings ("The Unfinished Line"): chain on/off, the goodwill and day gates, days between beats, failures allowed per beat. Dev mode: Debug actions, Quests, "Offer The Unfinished Line (skip gates)" and "offer next beat now".</description>
+Mod Settings ("The Unfinished Line"): chain on/off, the goodwill and day gates, days between beats, failures allowed per beat, the brokered truce on/off. Dev mode: Debug actions, Quests, "Offer The Unfinished Line (skip gates)" and "offer next beat now".</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rut.droidrepairjobs</packageId>
