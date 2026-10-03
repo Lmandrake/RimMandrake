@@ -405,3 +405,34 @@ def lanternstone_deep_gate_toggle(t):
     with t.component("lanternstone_deep_gate_setting_flips", toggle="lanternstoneDeepGateEnabled"):
         t.set_setting(SETTINGS_TYPE, {"lanternstoneDeepGateEnabled": False})
         t.set_setting(SETTINGS_TYPE, {"lanternstoneDeepGateEnabled": True})
+
+
+@suite.chain("working_dead")
+def working_dead(t):
+    """LANTERNDEEPS_WORKING_DEAD_BUILD_1: the well-provisioned dead, the Shard-minds and the Working Dead.
+    Run on a LANTERN DEEP map (current map). ProofPlace runs the real placement with both halves on; every
+    chassis placed around a Shard-mind must then STAND after one ProofAnimate pass. Not proven here: that a
+    freshly generated Deep carries them (genSteps wiring) -- enter a new Deep and count RM_ShardMind; and the
+    droid stop, which needs a player droid in range (ProofPull, then read the droid's job report)."""
+    WD = "RimMandrake.LanternDeeps.RM_WorkingDeadProof"
+    with t.component("working_dead_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RM_WorkingDead", "ThingDef/RM_ShardMind", "JobDef/RM_ListenToShardMind",
+                  "GenStepDef/RM_DeepWellProvisionedDead"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("well_provisioned_dead_placed", toggle="wellProvisionedDeadEnabled"):
+        r = t.bridge_call("jawa/static_call", type=WD, method="ProofPlace", args="current")
+        res = str((r or {}).get("result", ""))
+        if t._guard() and ("minds=0" in res or "corpses=0" in res or not res.startswith("sites=")):
+            raise ExpectationFailed("placement short: %r" % (r,))
+    with t.component("chassis_stand_near_shard_mind", toggle="workingDeadAnimateEnabled"):
+        r = t.bridge_call("jawa/static_call", type=WD, method="ProofAnimate", args="current")
+        res = str((r or {}).get("result", ""))
+        if t._guard() and (res.startswith("standing=0 facingLight=0") or not res.startswith("standing=")):
+            raise ExpectationFailed("no chassis stood up next to a Shard-mind: %r" % (r,))
+    with t.component("working_dead_toggles_flip", beyond_toggle=True):
+        for k in ("wellProvisionedDeadEnabled", "shardMindsEnabled", "workingDeadAnimateEnabled",
+                  "shardMindDroidPullEnabled"):
+            t.set_setting(SETTINGS_TYPE, {k: False})
+            t.set_setting(SETTINGS_TYPE, {k: True})

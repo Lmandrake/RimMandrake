@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LANTERNDEEPS_WORKING_DEAD_BUILD_1 (Source/RM_WorkingDead.cs). The dead chassis that stand near a
+     Shard-mind, and the Shard-mind itself. Both are placed only by RM_DeepWellProvisionedDead in a new
+     Deep. Destroying a chassis yields its salvage (killedLeavings); nothing about either is buildable. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_WorkingDead</defName>
+    <label>dead chassis</label>
+    <description>A high-technology work droid, long dead: its power cell slagged, its plating scored by years in the dark. A thin vein of blue crystal has grown into its open power port. Near one of the aware crystals, such a chassis stands up and labours at the rock, patient as water, at a task nobody assigned. It does not answer hails and it does not defend itself. When light comes near, it stops and turns toward it.</description>
+    <thingClass>RimMandrake.LanternDeeps.Building_RM_WorkingDead</thingClass>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/WorkingDead/RM_WorkingDead</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <drawerType>RealtimeOnly</drawerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>40</pathCost>
+    <fillPercent>0.35</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <killedLeavings>
+      <Steel>30</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </killedLeavings>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <isInert>true</isInert>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.LanternDeeps.RM_WorkingDeadExtension">
+        <slumpedGraphicData>
+          <texPath>RM_LanternDeeps/Things/WorkingDead/RM_WorkingDead_Slumped</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>(1.6,1.6)</drawSize>
+        </slumpedGraphicData>
+        <shardMindDef>RM_ShardMind</shardMindDef>
+        <mindRadius>7</mindRadius>
+        <lightRadius>10</lightRadius>
+        <colonistGlowAtLeast>0.3</colonistGlowAtLeast>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ShardMind</defName>
+    <label>shard-mind</label>
+    <description>One massive dark crystal grown up through the cave floor, its faces unnervingly still and evenly lit. Fine veins of light run out of it along the ground. It is aware. Dead machines near it stand up and work, and living ones sometimes stop and stand facing it, as if listening.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/WorkingDead/RM_ShardMind</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.6,2.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockLight>false</blockLight>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>900</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>4</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <isInert>true</isInert>
+    </building>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.CompProperties_RM_ShardMind">
+        <droidRadius>9</droidRadius>
+        <stopChancePerRareTick>0.04</stopChancePerRareTick>
+        <stopTicks>900~2400</stopTicks>
+        <listenJob>RM_ListenToShardMind</listenJob>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RM_ListenToShardMind</defName>
+    <driverClass>RimMandrake.LanternDeeps.JobDriver_RM_ListenToShardMind</driverClass>
+    <reportString>stopped, listening to the shard-mind.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>

@@ -57,6 +57,11 @@ namespace RimMandrake.LanternDeeps
         public static bool deepFloraEnabled = true;
         // MINERAL_BIOME_LEAKS_1: on = a deep-scanner strike off the Deeps never returns lanternstone (steel instead).
         public static bool lanternstoneDeepGateEnabled = true;
+        // LANTERNDEEPS_WORKING_DEAD_BUILD_1
+        public static bool wellProvisionedDeadEnabled = true;   // new Deeps: remains, gear, dead chassis
+        public static bool shardMindsEnabled = true;            // new Deeps: Shard-minds grow
+        public static bool workingDeadAnimateEnabled = true;    // live: chassis near a Shard-mind stand and work
+        public static bool shardMindDroidPullEnabled = true;    // live: colony droids near one stop and listen
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -173,12 +178,19 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref lanternstoneDensityMultiplier, "lanternstoneDensityMultiplier", 1f);
             Scribe_Values.Look(ref deepFloraEnabled, "deepFloraEnabled", true);
             Scribe_Values.Look(ref lanternstoneDeepGateEnabled, "lanternstoneDeepGateEnabled", true);
+            Scribe_Values.Look(ref wellProvisionedDeadEnabled, "wellProvisionedDeadEnabled", true);
+            Scribe_Values.Look(ref shardMindsEnabled, "shardMindsEnabled", true);
+            Scribe_Values.Look(ref workingDeadAnimateEnabled, "workingDeadAnimateEnabled", true);
+            Scribe_Values.Look(ref shardMindDroidPullEnabled, "shardMindDroidPullEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // the screen outgrew one page: the whole of it scrolls, the biome checklist keeps its own box
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, outerHeight));
+            Widgets.BeginScrollView(inRect, ref outerScroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.CheckboxLabeled("Lantern Deeps enabled", ref lanternDeepsEnabled,
                 "Off: neither entrance (cave-mouth emergence or ruined mineshaft) can ever appear on "
@@ -245,6 +257,19 @@ namespace RimMandrake.LanternDeeps
                 "On: a ground-penetrating scanner on any other map finds steel where it would have found lanternstone. "
               + "Off: vanilla's global deep-resource table, lanternstone anywhere. Applies at scan time.");
 
+            list.CheckboxLabeled("The well-provisioned dead lie in the Deeps", ref wellProvisionedDeadEnabled,
+                "On: a newly generated Deep holds old remains in good gear along its galleries and at the shaft bottom, "
+              + "with salvage and dead droid chassis beside them. Off: none. Affects newly generated Deeps only.");
+            list.CheckboxLabeled("Shard-minds grow in the Deeps", ref shardMindsEnabled,
+                "On: a newly generated Deep has one or two aware crystals with dead chassis around them. "
+              + "Off: none. Affects newly generated Deeps only.");
+            list.CheckboxLabeled("Dead chassis near a Shard-mind stand and work", ref workingDeadAnimateEnabled,
+                "On: a dead chassis near a Shard-mind stands up, works at the rock (it never digs) and turns toward light. "
+              + "Off: every chassis lies slumped. Safe mid-game.");
+            list.CheckboxLabeled("Colony droids near a Shard-mind stop to listen", ref shardMindDroidPullEnabled,
+                "On: now and then a droid of yours near a Shard-mind stops what it is doing and stands facing it for a while "
+              + "(drafting breaks it). Off: droids ignore it. Safe mid-game.");
+
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();
             list.Label("World generation: entrance biomes (affects new maps only)");
@@ -289,13 +314,15 @@ namespace RimMandrake.LanternDeeps
             }
             list.Gap(4f);
 
-            float usedHeight = list.CurHeight;
+            Rect outRect = list.GetRect(260f);
+            outerHeight = list.CurHeight + 12f;
             list.End();
-
-            Rect outRect = new Rect(inRect.x, inRect.y + usedHeight, inRect.width,
-                Mathf.Max(inRect.height - usedHeight, 120f));
             DrawBiomeChecklist(outRect);
+            Widgets.EndScrollView();
         }
+
+        private static Vector2 outerScroll = Vector2.zero;
+        private static float outerHeight = 1400f;
 
         private static Vector2 biomeScrollPosition = Vector2.zero;
         private static List<BiomeDef> allBiomesSortedCached;

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LANTERNDEEPS_WORKING_DEAD_BUILD_1 (Source/RM_WorkingDead.cs): the well-provisioned dead along the
+     galleries and at the shaft bottom (first site, near the cave exit), and the Shard-minds with dead
+     chassis around them. Sheet hard ban 7: never poorly equipped. Reached through
+     RM_LanternDeepGenerator's genSteps. Order 955: after Plants (900) and the flora gate (950). -->
+<Defs>
+  <GenStepDef>
+    <defName>RM_DeepWellProvisionedDead</defName>
+    <order>955</order>
+    <genStep Class="RimMandrake.LanternDeeps.RM_GenStep_WellProvisionedDead">
+      <corpseKinds>
+        <li>Mercenary_Heavy</li>
+        <li>Mercenary_Elite</li>
+        <li>Mercenary_Gunner</li>
+      </corpseKinds>
+      <loot>
+        <li><thing>ComponentIndustrial</thing><count>2~5</count></li>
+        <li><thing>ComponentSpacer</thing><count>1~1</count><chance>0.35</chance></li>
+        <li><thing>Plasteel</thing><count>10~30</count><chance>0.6</chance></li>
+        <li><thing>MedicineIndustrial</thing><count>2~5</count><chance>0.6</chance></li>
+        <li><thing>Chemfuel</thing><count>15~35</count><chance>0.5</chance></li>
+      </loot>
+      <chassisDef>RM_WorkingDead</chassisDef>
+      <shardMindDef>RM_ShardMind</shardMindDef>
+      <gallerySites>3~5</gallerySites>
+      <corpsesPerSite>1~2</corpsesPerSite>
+      <chassisPerSiteChance>0.5</chassisPerSiteChance>
+      <shardMinds>1~2</shardMinds>
+      <chassisPerShardMind>2~4</chassisPerShardMind>
+      <corpseAgeDays>400~4000</corpseAgeDays>
+    </genStep>
+  </GenStepDef>
+</Defs>
