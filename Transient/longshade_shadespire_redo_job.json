@@ -1,0 +1,12 @@
+[
+ {
+  "id": "RM_Shadespire_c",
+  "rimflow_item_id": "LONGSHADE_BEDAZZLE_CONTENT_1",
+  "canvas_w": 512,
+  "canvas_h": 512,
+  "priority": 60,
+  "prompt": "RimWorld game plant sprite: shadespire, the only tall thing that grows in this desert, a single slow, hard, three-to-four-metre column drawn upright and centred. An alien trunk of stacked segmented chitinous drums like a vertical joint-stack, in one restrained family of dull sage green and grey-green with slightly darker green between the segments, plain smooth surfaces. A few crooked branching limbs of unequal length near the top, each ending in a husk-like fruit: a papery, ribbed, lantern-shaped husk of dull green with a faint paler green seam, every husk the same muted green family as the trunk. Matte, quiet, sombre and simple, with calm unadorned silhouettes. Single plant on a transparent background with the faintest contact shadow.",
+  "style_notes": "long shade register, restyle of the owner-kept shadespire: owner direction verbatim: \"Keep the interesting husk-like fruits, but make it dull green without all that wild color and frills.\" Palette: dull muted green only, desaturated sage and olive-grey with slightly deeper green in the recesses; matte painted natural-history illustration, soft warm top-front light, no outlines, no cast shadow baked onto the ground; the husk-like lantern fruits at the limb tips are the one interesting feature and stay; drawSize ~3.0; Graphic_Random master; transparent background",
+  "drawsize": 3.0
+ }
+]
