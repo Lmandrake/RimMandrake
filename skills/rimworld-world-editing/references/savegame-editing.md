@@ -184,7 +184,7 @@ how a whole afternoon gets spent on float16 theories that were never right.
 | `tilePollution` | `raw / 65535` → 0..1 | ⚠️ hypothesis |
 | `tileHilliness` | `raw` → enum 0..5 | |
 | `tileSwampiness` | `raw` → 0..1 | ⚠️ scale unconfirmed |
-| `tileFeature` | index into `world/features`, `0xFFFF` = none | |
+| `tileFeature` | the feature's **`uniqueID`**, NOT its position in `world/features`; `0xFFFF` = none. Join on `<uniqueID>` (Ash'karr: 21..92) | ✅ MEASURED 2026-09-21, `1a96f1e2a` |
 
 `worldmap.py` exposes `get(array, tile)` / `set(array, tiles, value)` in **physical
 units** and **refuses to write** any array whose encoding is unconfirmed.

@@ -67,7 +67,7 @@ was wrong.
 ## Traps learned
 
 - 🔴 **A savegame's `tileFeature` grid stores the feature's uniqueID, not its list index.**
-  `worldview.py` read it as an index and mislabelled every region on every Ash'karr render,
+  `worldview.py` read it as an index and mislabelled every region on every `.rws`-sourced render (bundle renders unaffected),
   with matching wrong tile counts. Fixed at `1a96f1e2a`. An id-vs-index confusion never
   errors — it just renames everything. (filed: LESSONS_INBOX.md 2026-09-21; item `WORLDVIEW_MISLABEL_FALLOUT_1`)
 - 🔴 **Never type a `jawa/` leaf or a parameter name you have not just read.**
