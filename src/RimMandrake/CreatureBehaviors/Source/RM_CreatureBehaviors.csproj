@@ -146,6 +146,11 @@
     <Compile Include="RM_MentalState_ScopedAggression.cs" />
     <Compile Include="RM_CompProperties_ReactionSource.cs" />
     <Compile Include="RM_CompReactionSource.cs" />
+    <Compile Include="RM_ReactionSuppression.cs" />
+    <Compile Include="RM_CompHomeTether.cs" />
+    <Compile Include="RM_ReactionPropagationRule_RespondersWithinRadius.cs" />
+    <Compile Include="RM_ReactionResponseRule_Rally.cs" />
+    <Compile Include="RM_ReactionResponseRule_WakeResponders.cs" />
     <Compile Include="RM_DamageWorker_StingAccumulate.cs" />
     <Compile Include="RM_CompProperties_AdhesiveSlick.cs" />
     <Compile Include="RM_CompAdhesiveSlick.cs" />

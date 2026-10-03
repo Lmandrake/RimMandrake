@@ -209,6 +209,15 @@ namespace RimMandrake.CreatureBehaviors
     //      the experience" shape as breedRateMultiplier. No new setting is
     //      owed for the plant swarm specifically: it shares this exact dial
     //      because it shares the exact mechanism.
+    //  34b. reactionDetectionEnabled — RM_CompReactionSource's proximity
+    //      trigger (REACTION_MECHANISM_GENERALISE_1 step 3, the ant hive). Off:
+    //      a sentry never rings on SIGHT, only when damaged.
+    //  34c. reactionSuppressionEnabled / reactionSuppressionDurationMultiplier
+    //      — RM_ReactionSuppression (step 5). Off: no zone is laid and every
+    //      IsSuppressed reads false. The dial scales how long a zone lasts
+    //      (never its radius, which the caller sets).
+    //  34d. homeTetherEnabled — RM_CompHomeTether. Off: a tethered calm
+    //      pawn wanders like any wild animal.
     //  35. adhesiveSlickEnabled / adhesiveSlickSeverityMultiplier —
     //      RM_CompAdhesiveSlick (WEBWORK_WEB_STRUCTURES_1, kit §3's deferred
     //      "commandable adhesive slick/locked" mechanism — v1). Off: a
@@ -357,6 +366,10 @@ namespace RimMandrake.CreatureBehaviors
         public static float speciesSpacingCookDamageMultiplier = 1f;
         public static bool reactionSourceSpawnEnabled = true;
         public static float reactionSourceBudgetMultiplier = 1f;
+        public static bool reactionDetectionEnabled = true;
+        public static bool reactionSuppressionEnabled = true;
+        public static float reactionSuppressionDurationMultiplier = 1f;
+        public static bool homeTetherEnabled = true;
         public static bool adhesiveSlickEnabled = true;
         public static float adhesiveSlickSeverityMultiplier = 1f;
         // GREENTIDE_PLANT_SIGHT_BLOCK_ENGINE_1 (RM_SightBlockPatches). Defaults =
@@ -458,6 +471,10 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref speciesSpacingCookDamageMultiplier, "speciesSpacingCookDamageMultiplier", 1f);
             Scribe_Values.Look(ref reactionSourceSpawnEnabled, "reactionSourceSpawnEnabled", true);
             Scribe_Values.Look(ref reactionSourceBudgetMultiplier, "reactionSourceBudgetMultiplier", 1f);
+            Scribe_Values.Look(ref reactionDetectionEnabled, "reactionDetectionEnabled", true);
+            Scribe_Values.Look(ref reactionSuppressionEnabled, "reactionSuppressionEnabled", true);
+            Scribe_Values.Look(ref reactionSuppressionDurationMultiplier, "reactionSuppressionDurationMultiplier", 1f);
+            Scribe_Values.Look(ref homeTetherEnabled, "homeTetherEnabled", true);
             Scribe_Values.Look(ref adhesiveSlickEnabled, "adhesiveSlickEnabled", true);
             Scribe_Values.Look(ref adhesiveSlickSeverityMultiplier, "adhesiveSlickSeverityMultiplier", 1f);
             Scribe_Values.Look(ref sightBlockEnabled, "sightBlockEnabled", true);
@@ -705,6 +722,20 @@ namespace RimMandrake.CreatureBehaviors
               + "budget spent.");
             list.Label("Reaction spawn budget: " + reactionSourceBudgetMultiplier.ToString("0.00") + "x");
             reactionSourceBudgetMultiplier = list.Slider(reactionSourceBudgetMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Hive sentries notice intruders", ref reactionDetectionEnabled,
+                "On: a reaction source built to watch (an ant hive's sentries) rings its alarm when it "
+              + "SEES an intruder nearby — a colonist, a tamed animal, a raider — and the hive rallies "
+              + "after them. Off: it only rings when hurt, so you can walk a hive until you strike first.");
+            list.CheckboxLabeled("Reaction suppression (stench smoke)", ref reactionSuppressionEnabled,
+                "On: a suppressing counter-tool (the stench grenade) marks an area where no reaction "
+              + "source rings, no alarm spreads, no responder answers, and swarming or rallied creatures "
+              + "give up. Off: the smoke still does whatever else it does, but reactions ignore it.");
+            list.Label("Suppression duration: " + reactionSuppressionDurationMultiplier.ToString("0.00") + "x");
+            reactionSuppressionDurationMultiplier = list.Slider(reactionSuppressionDurationMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Hive residents stay home", ref homeTetherEnabled,
+                "On: a calm creature tethered to a home (an ant hive's residents) drifts back when it "
+              + "wanders too far, so a hive is still occupied when you find it. Off: they wander the "
+              + "map like any wild animal.");
             list.GapLine();
 
             list.CheckboxLabeled("Adhesive slick surfaces", ref adhesiveSlickEnabled,

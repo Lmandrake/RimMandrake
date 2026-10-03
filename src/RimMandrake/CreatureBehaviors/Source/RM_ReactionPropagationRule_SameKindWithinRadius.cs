@@ -86,6 +86,16 @@ namespace RimMandrake.CreatureBehaviors
                     continue; // same species, but this individual carries no reaction source at all
                 }
 
+                if (comp.HasHandled(evt))
+                {
+                    continue; // already reached by another path — do not charge the shared budget twice
+                }
+
+                if (RM_ReactionSuppression.IsSuppressed(evt.Map, p.Position))
+                {
+                    continue; // step 5: an event does not propagate into a suppressed cell
+                }
+
                 int granted = evt.Spend(budgetPerNeighbor);
                 if (granted < budgetPerNeighbor)
                 {

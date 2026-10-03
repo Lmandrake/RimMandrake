@@ -6,8 +6,9 @@ namespace RimMandrake.CreatureBehaviors
     // event's RESPONSE actually does. GREENTIDE_WASP_SWARM_1 needs "spawn a
     // bounded group" (RM_ReactionResponseRule_SpawnPawns, this pass); a later
     // step needs "wake existing responders to Manhunter" (the shipped
-    // RM_CompPlantAlarm's own behaviour, migrated on its own item, NOT this
-    // one) and "rally responders inward without berserking" (the ant hive).
+    // RM_CompPlantAlarm's own behaviour: RM_ReactionResponseRule_WakeResponders,
+    // step 4) and "rally responders inward without berserking" (the ant hive:
+    // RM_ReactionResponseRule_Rally, step 3).
     // Abstract class for the same XML-polymorphism reason as
     // RM_ReactionPropagationRule.
     public abstract class RM_ReactionResponseRule

@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using RimWorld;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -68,64 +66,30 @@ namespace RimMandrake.CreatureBehaviors
             }
             lastTriggerTick = now;
 
-            IntVec3 origin = parent.Position;
-            float radiusSq = Props.radius * Props.radius;
-            bool wokeAny = false;
-
-            // Snapshot: TryStartMentalState can trigger further reactions
-            // (fleeing, aggro) that mutate the map's pawn list underneath us.
-            List<Pawn> pawns = new List<Pawn>(map.mapPawns.AllPawnsSpawned);
-            for (int i = 0; i < pawns.Count; i++)
-            {
-                Pawn p = pawns[i];
-                if (p == null || p.Dead || p.Downed)
-                {
-                    continue;
-                }
-
-                if ((p.Position - origin).LengthHorizontalSquared > radiusSq)
-                {
-                    continue;
-                }
-
-                RM_AlarmResponderExtension ext = p.def.GetModExtension<RM_AlarmResponderExtension>();
-                if (ext == null || ext.tag.NullOrEmpty())
-                {
-                    continue; // this race never answers any grove alarm
-                }
-
-                if (!Props.tag.NullOrEmpty() && ext.tag != Props.tag)
-                {
-                    continue; // wrong group for this specific alarm source
-                }
-
-                if (p.mindState == null || p.mindState.mentalStateHandler == null)
-                {
-                    continue;
-                }
-
-                if (p.InMentalState)
-                {
-                    continue;
-                }
-
-                if (p.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.Manhunter, forceWake: true))
-                {
-                    wokeAny = true;
-                }
-            }
-
-            if (wokeAny)
-            {
-                // Literal, not a translation key: this mod ships no
-                // Languages/ folder (same posture as CompActiveGasEmitter's
-                // own inspect string in EnvironmentalHazards).
-                Messages.Message(
-                    "The grove's mycelial network answers the disturbance.",
-                    new TargetInfo(origin, map),
-                    MessageTypeDefOf.ThreatBig);
-            }
+            // REACTION_MECHANISM_GENERALISE_1 step 4: the same behaviour, now
+            // on the general path — one event (propagation none), one
+            // RM_ReactionResponseRule_WakeResponders built from this comp's
+            // own radius/tag. The event budget is effectively unbounded so the
+            // radius stays the only bound, exactly as before the migration.
+            // No instigator is recorded: the wake response never reads one.
+            RM_ReactionEvent evt = new RM_ReactionEvent(
+                parent, map, parent.Position, Props.tag, null, int.MaxValue);
+            evt.TryMarkActivated(parent);
+            WakeResponse.Respond(evt, parent);
         }
+
+        private RM_ReactionResponseRule_WakeResponders wakeResponse;
+
+        // Built once per comp from its props. Literal message, not a
+        // translation key: this mod ships no Languages/ folder for it (same
+        // posture as CompActiveGasEmitter's own inspect string in
+        // EnvironmentalHazards).
+        private RM_ReactionResponseRule_WakeResponders WakeResponse =>
+            wakeResponse ?? (wakeResponse = new RM_ReactionResponseRule_WakeResponders
+            {
+                radius = Props.radius,
+                wokeMessage = "The grove's mycelial network answers the disturbance.",
+            });
 
         public override void PostExposeData()
         {
