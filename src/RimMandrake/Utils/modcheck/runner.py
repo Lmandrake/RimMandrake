@@ -201,6 +201,19 @@ def composed_into(mod_folder):
     return "biomes", manifest["about"]["packageId"].lower()
 
 
+def tier_package_ids(mod_folder):
+    """The `want` packageIds of the `modset_builder` tier named after `mod_folder` (lowercased), or `[]`.
+    A COMPOSED biome has no standalone closure of its own: its walk needs the Utinni patch layer and the
+    bestiary too, and `modset_builder` already records exactly that per biome (MODCHECK_COMPOSED_BIOMES_LIST_1)."""
+    sys.path.insert(0, _UTILS)
+    try:
+        import modset_builder
+        tier = modset_builder.TIERS.get(mod_folder.lower())
+    except Exception:     # noqa: BLE001 - a broken tier table must not hide an ordinary mod
+        return []
+    return [p.lower() for p in tier["want"]] if tier else []
+
+
 def compose_test_list(package_ids, config_path=None):
     """Append `package_ids` (the mods under test) to the live ModsConfig's
     <activeMods>, after `modlist_swap.py --minimal --apply` has made MINIMAL
@@ -590,6 +603,8 @@ def run(mods, debug=False, dry_run=False, situational=False, policy="abort"):
                 own = folded[1] if folded else mod_package_id(mod_dir)
                 if own not in package_ids:
                     package_ids.append(own)
+                if folded:      # the composed mod's tier closure (patches, bestiary ...), not just its own id
+                    package_ids.extend(t for t in tier_package_ids(mod_folder) if t not in package_ids)
             compose_test_list(package_ids)
         for mod_folder, item_id in mods:
             if dry_run:
