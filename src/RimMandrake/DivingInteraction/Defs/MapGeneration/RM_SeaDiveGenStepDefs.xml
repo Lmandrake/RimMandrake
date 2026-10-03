@@ -45,6 +45,15 @@
     <genStep Class="RimMandrake.DivingInteraction.GenStep_ChillRimeTerraces" />
   </GenStepDef>
 
+  <!-- SCALD_FLOOR_VENT_FIELDS_1. order 870: after terrain/exit, before RM_SeaFloorFauna (900)
+       and Plants. Listed only on RM_SeaDiveGenerator_TheScald; the step also refuses any map
+       that is not a Scald floor. -->
+  <GenStepDef>
+    <defName>RM_ScaldVentField</defName>
+    <order>870</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_ScaldVentField" />
+  </GenStepDef>
+
   <!-- GREYSEA_FLOOR_FORMATIONS_1 etc., 2026-09-26. The Grey Sea floor's
        terrain dressing: the deepest-pool basin and its jacket ring, the
        Brine Elder that rises from it, a seep apron around every salt

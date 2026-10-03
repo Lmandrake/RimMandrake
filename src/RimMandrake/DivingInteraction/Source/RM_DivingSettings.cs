@@ -165,6 +165,18 @@ namespace RimMandrake.DivingInteraction
         public static bool scaldBerthEnabled = true;
         public static float scaldBerthIntensity = 1f;
 
+        // SCALD_FLOOR_VENT_FIELDS_1, 2026-10-03. WORLDGEN-AFFECTING (ventFieldsEnabled): the Scald
+        // floor map generates vents, vent flora and bubble-sailors. Floors already generated keep
+        // them. Forecast: sailors gather over a vent before it discharges. Harms: the discharge
+        // burns and interrupts anyone within a few cells (off: the warning still plays, nothing burns).
+        public static bool scaldVentFieldsEnabled = true;
+        public static bool scaldVentForecastEnabled = true;
+        public static bool scaldVentDischargeHarms = true;
+
+        // SCALD_WALKING_PASTURE_1, 2026-10-03. Bottom-walker grazing exposes pigment-rich mat and the crew
+        // gathers it behind the herd. Off: walkers are plain scenery animals; nothing is exposed, no job offered.
+        public static bool walkerGrazingEnabled = true;
+
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
         // its hearing pass from reading pawns left behind on the previous map
@@ -194,6 +206,10 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref seaFloorBandsEnabled, "seaFloorBandsEnabled", true);
             Scribe_Values.Look(ref scaldBerthEnabled, "scaldBerthEnabled", true);
             Scribe_Values.Look(ref scaldBerthIntensity, "scaldBerthIntensity", 1f);
+            Scribe_Values.Look(ref scaldVentFieldsEnabled, "scaldVentFieldsEnabled", true);
+            Scribe_Values.Look(ref scaldVentForecastEnabled, "scaldVentForecastEnabled", true);
+            Scribe_Values.Look(ref scaldVentDischargeHarms, "scaldVentDischargeHarms", true);
+            Scribe_Values.Look(ref walkerGrazingEnabled, "walkerGrazingEnabled", true);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -233,6 +249,28 @@ namespace RimMandrake.DivingInteraction
                     list.Label("Immersion heat intensity: " + scaldBerthIntensity.ToString("0.00") + "x");
                     scaldBerthIntensity = list.Slider(scaldBerthIntensity, 0.25f, 3f);
                 }
+
+                list.Gap();
+                list.CheckboxLabeled("The Scald: floor vent fields (affects floor generation)", ref scaldVentFieldsEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map generates "
+                  + "3-5 steam vents, glass and bead flora around them, and bubble-sailors riding "
+                  + "each vent. Floors already generated keep what they have. Off: new floors have none.");
+                list.CheckboxLabeled("The Scald: Sail Forecast (sailors warn before a vent discharges)", ref scaldVentForecastEnabled,
+                    "Shipped default: ON. Before a vent discharges, every bubble-sailor gathers over "
+                  + "it for about 40 seconds; the same behaviour precedes every discharge. Off: vents "
+                  + "never discharge and sailors only stay near their vents.");
+                if (scaldVentForecastEnabled)
+                {
+                    list.CheckboxLabeled("Vent discharge burns and interrupts nearby people", ref scaldVentDischargeHarms,
+                        "Shipped default: ON. Off: the warning and discharge look the same but hurt nobody.");
+                }
+
+                list.Gap();
+                list.CheckboxLabeled("The Scald: bottom-walkers expose mat (the Walking Pasture)", ref walkerGrazingEnabled,
+                    "Shipped default: ON. Where a bottom-walker grazes standing still, the crowncarpet mat is "
+                  + "cropped and its pigment-rich underside is left bare; colonists doing hauling gather it behind "
+                  + "the herd, stop when the herd moves on, and keep away from the walkers. Off: walkers are plain "
+                  + "grazing animals and no job is offered.");
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,

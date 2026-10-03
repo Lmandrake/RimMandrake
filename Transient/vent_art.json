@@ -1,0 +1,4 @@
+[
+{"id":"scald_glasskelle_v1","rimflow_item_id":"SCALD_FLOOR_VENT_FIELDS_1","prompt":"RimWorld plant sprite, top-down 3/4 view: RM_Glasskelle, a branching clear glass spire coral growing from a hot vent, glass-white with cyan refraction, living tips picked out in ember orange. Painterly, transparent background.","canvas_w":256,"canvas_h":256,"facings":[],"style_notes":"vent-adjacent coral, faint glow at tips only, drawSize 1.2","priority":100},
+{"id":"scald_pulsebead_v1","rimflow_item_id":"SCALD_FLOOR_VENT_FIELDS_1","prompt":"RimWorld plant sprite, top-down 3/4 view: RM_Pulsebead, a tight cluster of small matte celadon green buttons baked onto dark stone, a geyser-margin bacterial colony. Painterly, transparent background.","canvas_w":128,"canvas_h":128,"facings":[],"style_notes":"no glow, small","priority":100}
+]
