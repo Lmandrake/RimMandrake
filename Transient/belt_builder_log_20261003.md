@@ -31,3 +31,4 @@
 - ROT_WOUND_SHARING_WIRING_1 closed 8d2f36142 (patch on 5 AA bodies + RM_CompGrantHediff in CB + RM_KinMendingNetwork; Health sharing checkbox back, restart-to-apply; CB+Rot DLLs rebuilt; live split/mend reads UNMEASURED)
 - CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 built (6 flora, 3 items, RM_ZennaqLightningPatch on WeatherEvent_LightningStrike.DoStrike, 2 settings, art wired from _artsrc, 3 item icons queued; pending sha)
 - WEBWORK_BASE_PORT_BUILD_1 built (RM_ anchor/web/gutter/slick + creep ext + thrixweave rename/strip/butcher/killedLeavings, 3 settings, validation chain; silk-knot/nest scatter stay campaign-side; sha pending)
+- ART WIRED: Rot thozzik/illoth south frames from _artsrc (ART_OWED emptied); Yammeth_south, Selvix, item icons, Qeshra roe/char-lace still pending/failed in artpipe
