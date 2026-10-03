@@ -443,3 +443,15 @@ At an old wax tablet beside the sea, the clan finds a practice for **Sh’kaar�
 All five use the existing ship-only `PlanetLayer` route, ordinary temperature and the existing suit/fire rules; finite claims need a tile-keyed ledger so regenerated floors cannot duplicate rewards.
 
 **The Return Comb would most make the Chill memorable as a place: an immense black electrical instrument embedded in ice-rock, answering the aurora beneath a sea of fuel.**
+
+## Rulings — 2026-10-02 sitting (decision taken by question card, 19:30–19:40 PDT)
+
+| Q | Ruling | Item (FOUNDRY) |
+|---|---|---|
+| Q1 | Move all four non-floor animals off the floor (hoolen, vaunoom, both Alpha Animals borrowings); they wait for a surface home | `CHILL_FLOOR_CAST_TRIM_1` |
+| Q2 | Move all seven campaign-only catch species into the free mod, as the Grey Sea did; settle the duplicate rare-catch table; amend `rosters/the_propane_lakes.json` | `CHILL_FREE_TIER_CATCH_1` |
+| Q3 | The zhiil gets its own small floor body | `CHILL_ZHIIL_FLOOR_BODY_1` |
+| Q4 | The Return Comb, as scenery and lore only (no tracing puzzle) | `CHILL_RETURN_COMB_LANDMARK_1` |
+| Q4b | The Wax Procession becomes the floor's giant | `CHILL_WAX_PROCESSION_GIANT_1` |
+| Q5 | Natives comfortable to −150 °C; the floor stays −110 °C | `CHILL_NATIVE_COLD_TOLERANCE_1` |
+| Q6 | Make density actually govern a dive's spawns; the number is set on a live walk with the owner, leaning 2–4 per dive | `CHILL_DIVE_DENSITY_SAMPLER_1` |
