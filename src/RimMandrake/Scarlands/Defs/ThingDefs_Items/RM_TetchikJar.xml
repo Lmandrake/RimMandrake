@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_GEIGER_CHOIR_1 turn-4 IN: the tetchik in a jar. Art: artpipe RM_TetchikJar (done 2026-09-30).
+     "Captured" choice: the tetchik is too small to tame or cage; a butchered corpse of a freshly killed one leaves a
+     living beetle's worth of shell-and-click as RM_CapturedTetchik (butcherProducts). -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CapturedTetchik</defName>
+    <label>captured tetchik</label>
+    <description>A tetchik pinched alive out of its shell-crust. It clicks in the hand. Put it in glass.</description>
+    <graphicData><texPath>Things/Item/RM_TetchikJar</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></graphicData>
+    <stackLimit>5</stackLimit>
+    <statBases><MarketValue>6</MarketValue><Mass>0.05</Mass><Flammability>0</Flammability><DeteriorationRate>10</DeteriorationRate></statBases>
+    <thingCategories><li>Manufactured</li></thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_TetchikJar</defName>
+    <label>tetchik jar</label>
+    <description>A tetchik sealed in glass with a crumb of glower crust. It clicks slowly in clean air and fast over hot ground, in poisoned weather and on polluted tiles. A caravan that carries one hears it speed up before the tile arrives.</description>
+    <graphicData><texPath>Things/Item/RM_TetchikJar</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
+    <stackLimit>1</stackLimit>
+    <tradeability>All</tradeability>
+    <statBases><MarketValue>45</MarketValue><Mass>0.4</Mass><Flammability>0</Flammability><DeteriorationRate>0</DeteriorationRate></statBases>
+    <thingCategories><li>Manufactured</li></thingCategories>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_MakeTetchikJar</defName>
+    <label>jar a tetchik</label>
+    <description>Seal a captured tetchik in glass with glower crust.</description>
+    <jobString>Jarring a tetchik.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>400</workAmount>
+    <ingredients>
+      <li><filter><thingDefs><li>RM_CapturedTetchik</li></thingDefs></filter><count>1</count></li>
+      <li><filter><thingDefs><li>RM_GlowerCrust</li></thingDefs></filter><count>1</count></li>
+      <li><filter><thingDefs><li>Steel</li></thingDefs></filter><count>5</count></li>
+    </ingredients>
+    <fixedIngredientFilter><thingDefs><li>RM_CapturedTetchik</li><li>RM_GlowerCrust</li><li>Steel</li></thingDefs></fixedIngredientFilter>
+    <products><RM_TetchikJar>1</RM_TetchikJar></products>
+    <skillRequirements><Crafting>3</Crafting></skillRequirements>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers><li>TableMachining</li></recipeUsers>
+  </RecipeDef>
+</Defs>

@@ -37,7 +37,11 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True,
             "settlingEnabled": True, "settlingCalmThreshold": 0.35, "settlingCalmHours": 4.0, "settlingEndWind": 0.8,
             "settlingEndHours": 1.0, "settlingToxicStrength": 1.0, "liftFrontEnabled": True, "warDustEnabled": True,
-            "ordnancePerMap": 3.0}
+            "ordnancePerMap": 3.0,
+            "choirEnabled": True, "choirVolume": 1.0, "choirTickVolumeCeiling": 1.0, "choirTickDensity": 1.0,
+            "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True}
+CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil",
+              "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
                  "ThingDef/RM_BuriedOrdnance", "JobDef/RM_SweepWarDust", "JobDef/RM_DefuseOrdnance",
                  "JobDef/RM_TriggerOrdnance"]
@@ -356,6 +360,27 @@ def static_checks():
         bad.append("RM_Warscar biome does not list the RM_BuriedOrdnance genstep")
     for f in ("RM_Settling.xml",):
         pass
+    # WARSCAR_GEIGER_CHOIR_1
+    if 'Compile Include="RM_GeigerChoir.cs"' not in csproj:
+        bad.append("RM_GeigerChoir.cs missing from RM_Warscar.csproj")
+    choir = open(os.path.join(HERE, "Source", "RM_GeigerChoir.cs")).read()
+    for needle in ("RM_MapComponent_GeigerChoir", "RM_WorldComponent_JarCaravans", "CompChotrix.All", "RM_Settling",
+                   "choirWindEnabled", "choirJarWarnings", "choirReducedRepetition"):
+        if needle not in choir:
+            bad.append("RM_GeigerChoir.cs lacks %s" % needle)
+    for f in ("SoundDefs/RM_GeigerChoir.xml", "ChoirDefs/RM_GeigerChoirDef.xml", "ThingDefs_Items/RM_TetchikJar.xml"):
+        try:
+            ET.parse(os.path.join(HERE, "Defs", f))
+        except Exception as e:
+            bad.append("%s does not parse: %s" % (f, e))
+    snd = open(os.path.join(HERE, "Defs", "SoundDefs", "RM_GeigerChoir.xml")).read()
+    for n in ("RM_GeigerTick", "RM_WindOnMetal", "RM_ProjectorHum", "RM_PoolBoil"):
+        if "<defName>%s</defName>" % n not in snd:
+            bad.append("sound def %s missing" % n)
+    if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Item", "RM_TetchikJar.png")):
+        bad.append("RM_TetchikJar texture missing")
+    if "RM_CapturedTetchik" not in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_WarscarFauna.xml")).read():
+        bad.append("tetchik butcherProducts does not yield RM_CapturedTetchik")
     return bad
 
 
@@ -611,6 +636,32 @@ def _build_suite():
                 return
             _unmeasured(t, "every buried-shell cell being film-free and inspectable after a Settling, and defusing yielding a shell, "
                            "need a live map generated with the RM_BuriedOrdnance genstep")
+
+    @suite.chain("geiger_choir")
+    def geiger_choir(t):
+        with t.component("choir_defs_resolve", toggle="choirEnabled"):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(CHOIR_DEFS), fields="defName", limit=20)
+            if t.session is None:
+                return
+            if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                raise ExpectationFailed("choir defs did not resolve live: %r" % r)
+            if int(r.get("foundCount", 0)) != len(CHOIR_DEFS):
+                raise ExpectationFailed("expected %d choir defs, found %r" % (len(CHOIR_DEFS), r.get("foundCount")))
+        with t.component("tick_tempo_follows_glower_density", toggle="choirEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "standing over thick glower ticking faster than bare slag (RM_MapComponent_GeigerChoir.TickDensity) "
+                           "needs a live Warscar map with a camera; no bridge reader for the component yet")
+        with t.component("wind_layer_silent_during_settling", toggle="choirWindEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "WindSustainerActive false while RM_Settling runs and true again after needs a live map with ancient "
+                           "metal in range and a forced Settling")
+        with t.component("jar_caravan_warning", toggle="choirJarWarnings"):
+            if t.session is None:
+                return
+            _unmeasured(t, "a caravan carrying RM_TetchikJar receiving the message approaching a polluted tile needs a live world "
+                           "with a polluted tile and a caravan on a path")
 
     return suite
 

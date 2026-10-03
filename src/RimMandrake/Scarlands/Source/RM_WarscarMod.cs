@@ -93,6 +93,15 @@ namespace RimMandrake.Scarlands
         public static bool warDustEnabled = true;            // film can be swept up for war dust
         public static float ordnancePerMap = 3f;             // buried shells per new map (0-8)
 
+        // WARSCAR_GEIGER_CHOIR_1 toggles.
+        public static bool choirEnabled = true;              // the whole choir (ticks, wind, hum, boil, jar sound)
+        public static float choirVolume = 1f;                // one global volume
+        public static float choirTickVolumeCeiling = 1f;     // cap on how loud the tick gets
+        public static float choirTickDensity = 1f;           // tick tempo scale
+        public static bool choirWindEnabled = true;          // wind-on-metal layer
+        public static bool choirReducedRepetition = false;   // fewer, jittered clicks
+        public static bool choirJarWarnings = true;          // caravan message before a polluted tile
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -147,6 +156,13 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref liftFrontEnabled, "liftFrontEnabled", true);
             Scribe_Values.Look(ref warDustEnabled, "warDustEnabled", true);
             Scribe_Values.Look(ref ordnancePerMap, "ordnancePerMap", 3f);
+            Scribe_Values.Look(ref choirEnabled, "choirEnabled", true);
+            Scribe_Values.Look(ref choirVolume, "choirVolume", 1f);
+            Scribe_Values.Look(ref choirTickVolumeCeiling, "choirTickVolumeCeiling", 1f);
+            Scribe_Values.Look(ref choirTickDensity, "choirTickDensity", 1f);
+            Scribe_Values.Look(ref choirWindEnabled, "choirWindEnabled", true);
+            Scribe_Values.Look(ref choirReducedRepetition, "choirReducedRepetition", false);
+            Scribe_Values.Look(ref choirJarWarnings, "choirJarWarnings", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -254,6 +270,21 @@ namespace RimMandrake.Scarlands
                 "Colonists may sweep the film into war dust (thickest in crater bowls), a toxic powder for tox shells.");
             list.Label("Buried shells per map: up to " + Mathf.RoundToInt(ordnancePerMap) + " (new maps)");
             ordnancePerMap = Mathf.Round(list.Slider(ordnancePerMap, 0f, 8f));
+            list.GapLine();
+
+            list.CheckboxLabeled("Geiger choir (Warscar soundscape)", ref choirEnabled,
+                "Tetchik tick over glower and beetles, wind on ancient metal (silent during the Settling), the projector hum, the pool boil, and the tetchik jar's sound.");
+            list.Label("Choir volume: " + choirVolume.ToString("0.00"));
+            choirVolume = list.Slider(choirVolume, 0f, 1f);
+            list.Label("Tick volume ceiling: " + choirTickVolumeCeiling.ToString("0.00"));
+            choirTickVolumeCeiling = list.Slider(choirTickVolumeCeiling, 0.1f, 1f);
+            list.Label("Tick density: x" + choirTickDensity.ToString("0.00"));
+            choirTickDensity = list.Slider(choirTickDensity, 0.25f, 3f);
+            list.CheckboxLabeled("Wind-on-metal layer", ref choirWindEnabled);
+            list.CheckboxLabeled("Reduced-repetition mode", ref choirReducedRepetition,
+                "Far fewer clicks, each with a slightly different pitch.");
+            list.CheckboxLabeled("Tetchik jar warnings", ref choirJarWarnings,
+                "A caravan carrying a tetchik jar gets a message before it enters a polluted tile.");
             list.GapLine();
 
             list.Label("Species (restart required; affects maps generated afterwards)");

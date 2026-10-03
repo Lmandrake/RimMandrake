@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_GEIGER_CHOIR_1 source groups, by defName so a missing def (the projector, until WARSCAR_AEROSOL_SCREEN_1 lands) is skipped silently.
+     tick: plants and creatures whose density sets the click tempo. wind: ancient metal the wind sings on.
+     hum: live projector rings and the aerosol screen. boil: pool markers (a slow boil under every reaction pool). -->
+<Defs>
+  <RimMandrake.Scarlands.RM_GeigerChoirDef>
+    <defName>RM_GeigerChoir</defName>
+    <tickPlants><li>RM_Glower</li><li>RUT_Glower</li></tickPlants>
+    <tickCreatures><li>RM_Tetchik</li></tickCreatures>
+    <windMetal>
+      <li>AncientFortifiedWall</li><li>AncientAutocannonTurret</li><li>AncientUraniumSlugTurret</li><li>AncientSecurityTurret</li>
+      <li>AncientCraneArm</li><li>AncientCraneArmSmall</li><li>AncientCraneBase</li><li>AncientCraneColumn</li>
+    </windMetal>
+    <hum><li>RM_WarscarProjector</li><li>RM_AerosolScreen</li></hum>
+    <boil><li>RM_ReactionPool</li></boil>
+  </RimMandrake.Scarlands.RM_GeigerChoirDef>
+</Defs>

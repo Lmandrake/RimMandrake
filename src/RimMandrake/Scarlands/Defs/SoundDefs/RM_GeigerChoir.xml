@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_GEIGER_CHOIR_1 placeholder grain. Every clip is a VANILLA clip (paths copied from Core's SoundDefs):
+    RM_GeigerTick   UI/TickTiny                                  (Core Tick_Tiny)
+    RM_WindOnMetal  Ambience/Wind/Amb_Wind_Altitude1_Loop, pitched up, scaled by the "Wind" external param
+    RM_ProjectorHum Electricity/ChemfuelFiredGenerator_Ambience  (a generator drone)
+    RM_PoolBoil     Electricity/GeothermalPlant/Run/GeothermalPlantRun_Loop1a
+  The external param "Vol" is the Mod Settings global volume; "Wind" is the map's wind speed.
+-->
+<Defs>
+  <SoundDef>
+    <defName>RM_GeigerTick</defName>
+    <context>MapOnly</context>
+    <maxVoices>6</maxVoices>
+    <eventNames/>
+    <subSounds>
+      <li>
+        <grains><li Class="AudioGrain_Clip"><clipPath>UI/TickTiny</clipPath></li></grains>
+        <volumeRange>14~20</volumeRange>
+        <pitchRange>0.8~1.5</pitchRange>
+        <distRange>0~22</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_WindOnMetal</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Ambience/Wind/Amb_Wind_Altitude1_Loop</clipPath></li></grains>
+        <volumeRange>14</volumeRange>
+        <pitchRange>1.4~1.5</pitchRange>
+        <distRange>0~30</distRange>
+        <sustainLoop>True</sustainLoop>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_External"><inParamName>Wind</inParamName><defaultValue>1</defaultValue></inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve><points><li>(0,0)</li><li>(0.4,0.15)</li><li>(1,0.7)</li><li>(2,1)</li></points></curve>
+          </li>
+          <li>
+            <inParam Class="SoundParamSource_External"><inParamName>Vol</inParamName><defaultValue>1</defaultValue></inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve><points><li>(0,0)</li><li>(1,1)</li></points></curve>
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_ProjectorHum</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Electricity/ChemfuelFiredGenerator_Ambience</clipPath></li></grains>
+        <volumeRange>12</volumeRange>
+        <pitchRange>0.6~0.65</pitchRange>
+        <distRange>0~40</distRange>
+        <sustainLoop>True</sustainLoop>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_External"><inParamName>Vol</inParamName><defaultValue>1</defaultValue></inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve><points><li>(0,0)</li><li>(1,1)</li></points></curve>
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_PoolBoil</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Electricity/GeothermalPlant/Run/GeothermalPlantRun_Loop1a</clipPath></li></grains>
+        <volumeRange>10</volumeRange>
+        <pitchRange>1.1~1.2</pitchRange>
+        <distRange>0~28</distRange>
+        <sustainLoop>True</sustainLoop>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_External"><inParamName>Vol</inParamName><defaultValue>1</defaultValue></inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve><points><li>(0,0)</li><li>(1,1)</li></points></curve>
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>
