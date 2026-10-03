@@ -1,0 +1,17 @@
+{"cards":[{"title":"Mineral registry: four choices","questions":[
+{"question":"Should we pull other mods' gems and minerals into our own mods, or control them where they sit?","header":"Absorb mods","multiSelect":false,"options":[
+{"label":"Control them, absorb small pieces only (Recommended)","description":"Why recommended: one registry already decides where every mod's mineral appears, so owning the files buys no extra control. Buys: no licence trouble, donor fixes keep arriving, little porting. Costs: we can't restyle a donor gem without porting it, and we still depend on those mods. Small ports (e.g. the fossil seams) happen only where they remove real upkeep."},
+{"label":"Absorb the gem and crystal mods","description":"Buys: Jewelry's gems and the Minerals crystals become ours to rename, re-art and rebalance. Costs: weeks of porting a large code framework, Jewelry is non-commercial share-alike, Glowstone has no licence at all, and we lose their updates."},
+{"label":"Absorb every mineral mod","description":"Buys: total ownership, no outside dependency for any material. Costs: largest effort by far, two mods cannot legally be copied, and the registry has to be built anyway, so the control gain is nearly nothing."}]},
+{"question":"What unit should the settings screen use for how much of a mineral a biome holds?","header":"Unit","multiSelect":false,"options":[
+{"label":"Amount per map (Recommended)","description":"Why recommended: it answers the question a player actually asks. Example: 'gold 1,500 per map, about 1 deposit'. Buys: easy to reason about, and it converts straight into deposits. Costs: a rock-poor flat map can come in under the number, so the screen shows an estimate."},
+{"label":"Deposits per map","description":"Buys: matches what you see on the map. Costs: a deposit of gold and a deposit of steel are very different amounts, so comparing materials gets harder."},
+{"label":"Ore per 1,000 rock cells","description":"Buys: a true 'ore grade', honest on any terrain. Costs: does not fit nodules, crystals, sea floors or salvage, and is hard to picture."}]},
+{"question":"When a newly installed mod adds an ore the registry has never heard of, what should happen to it?","header":"New mod ore","multiSelect":false,"options":[
+{"label":"Keep it off the map until it gets a row (Recommended)","description":"Why recommended: matches your 'carefully selected, period'. Buys: nothing appears anywhere by accident; a warning names it. Costs: a new mod's ore silently does nothing until someone adds its row."},
+{"label":"Let it behave as the mod intended","description":"Buys: new mods work out of the box. Costs: the random-outcrop problem comes back with every mineral mod added."},
+{"label":"Refuse to start the game","description":"Buys: impossible to miss. Costs: one unregistered ore blocks play until fixed."}]},
+{"question":"What should a quarry give in a biome that holds no quarryable minerals at all?","header":"Bare quarry","multiSelect":false,"options":[
+{"label":"Only chunks of the local rock (Recommended)","description":"Why recommended: follows your ruling, local materials only. Buys: no ore from nowhere. Costs: a quarry in those biomes is a stone source only."},
+{"label":"A small trickle of steel","description":"Buys: quarries stay useful everywhere. Costs: brings iron into biomes you ruled have none."},
+{"label":"Quarry cannot be built there","description":"Buys: the player is told up front. Costs: also blocks the quarry's stone and block output, which is local and fine."}]}]}]}

@@ -122,7 +122,7 @@ Mineral-relevant hits, plus every mod the def dump shows adding a mineral:
 | [ZAV] Fantasy Metals | **no** | fictional metals | — | — | leave out |
 | Asteroid Mineral Scanner | no | asteroid scanning | — | — | leave out (orbital already covered by Odyssey) |
 
-**Verdict: control, don't own.** The thing the owner wants — *every* material appearing only where
+**Verdict: control, don't own — with one widening from the GPT consult (§9).** The thing the owner wants — *every* material appearing only where
 the registry says, in amounts the registry says — does not require owning the def. Placement is
 decided by six engine/framework entry points (C1–C5 plus the quarry), and one runtime mod that
 rewrites those weights and filters those draws controls every material from every mod, including
@@ -130,6 +130,8 @@ mods added next year, the moment they get a CSV row. Absorbing a mod buys contro
 itself* (name, art, stats, recipes), which is only wanted for:
 
 1. materials we are renaming or merging (durasteel ← plasteel + three donors; duranium/doonium new);
+1a. a small subset whose port retires a substantial integration burden, with licence provenance per
+    file (candidate: Biomes! Fossils' amber/fossil seams, at the Flooded Canyon sitting);
 2. a donor whose only content is a leak (LK Mineable Outer Rim → simply removed from the list);
 3. a gem whose art/stats fail our canon or normalization passes, decided per material at that pass.
 
@@ -154,16 +156,23 @@ Why this unit, against the engine (RimSage, decompiled 1.6):
   `CountFromPer10kCells` turns that into `round(size² / round(10000/n))` — **69 lumps** on a 250² large-
   hills map. Each lump is `mineableScatterLumpSizeRange` cells (default 20–40, mean 30), each cell
   yields `mineableYield` (40 for metals). So one lump of a 40/cell ore ≈ 1,200 units, and EPM converts
-  exactly into lumps: `lumps = EPM / (yield_per_cell × mean_lump_cells)`. The generator can therefore
-  hit the stated number, not just a weight.
+  into an *attempted* lump count `EPM / (yield_per_cell × mean_lump_cells)`, rounded **stochastically**
+  (GPT 1.1: a 600-gold setting is half a lump; deterministic rounding would give 0 or 1 every time and
+  destroy the expectation). What a colony actually recovers is lower (clipped lumps, overlaps, mining
+  yield), so the contract is "expected placed", and the first functional script measures recovered vs
+  stated across seeds before any number is called calibrated.
 - Today's weights are relative shares (`RandomElementByWeight`), so a weight means nothing on its own:
   adding one mod changes every other ore's abundance. EPM is absolute, so rows are independent.
 - Reference values (worked from the above): Core-only vanilla large hills ≈ 34,000 steel EPM
   (40% share); under today's modded weight sum 6.09, steel ≈ 13,600, gold ≈ 950, components ≈ 680.
-- **Hilliness and map size scale EPM** with the vanilla curve (×4/11 flat … ×16/11 impassable; ×size²/
-  62,500), so mountains still hold more ore. Lumps also need natural rock to land in
-  (`CanScatterAt` requires an `isNaturalRock` edifice), so a flat map can fall short of its EPM —
-  the settings screen states EPM as "up to".
+- **Map size scales EPM by area** (×size²/62,500). **Hilliness scaling is a deliberate policy**, not
+  geology (GPT 1.2): we keep vanilla's ×4/11 flat … ×16/11 impassable because players expect mountains
+  to be richer, and say so on the settings screen. Lumps need natural rock to land in (`CanScatterAt`
+  requires an `isNaturalRock` edifice), so a rock-poor map can fall short; the generator logs a
+  diagnostic **ore per 1,000 eligible rock cells** for each map so a shortfall is visible, not silent.
+- The vanilla nomadic factor (`nomadicMineableResourcesFactor`, applied only when
+  `useNomadicMineables` and not the starting map) and gravship-landing value rules are applied once,
+  explicitly, because a forced-count scatter bypasses them (GPT 3.3).
 
 **Secondary units**, one per source kind, each stated in the CSV's `unit` column:
 
@@ -171,8 +180,9 @@ Why this unit, against the engine (RimSage, decompiled 1.6):
 |---|---|---|
 | EPM | units per standard map, exhaustible | veins, nodules, crystals, seams, salvage seams on the map |
 | EPM/yr | units per standard map per in-game year | regrowing sources: crusts, vent growth, organism yields |
-| deep share | relative weight among the deep finds **allowed in that biome**, with `units_per_cell_or_find` = units per deep cell | deep scanner/drill (deep is time-unbounded, so an absolute total would be fiction) |
-| UPY | units per in-game year obtainable off-map | salvage, trade, quests (`salvage_per_year`, `trade_per_year`) |
+| deep share + units/find | selection weight among the deep finds **allowed in that biome**, shown to the player as "% of finds" and "units per find" (`units_per_cell_or_find`), plus finds per scanner-year at the default scan rate | deep scanner/drill (a share alone is composition, not abundance: GPT 1.3) |
+| units per 100 jobs | quarry output per 100 completed resource jobs (`quarry_per_100_jobs`, default `derive` = proportional to the biome's EPM) | quarry, and later FlowWorks digging/sluice/panning |
+| UPY | units per in-game year **offered** off-map at a stated encounter rate (one trader visit per season, one salvage site per quadrum within 10 tiles) — offered, never guaranteed acquisition | salvage, trade, quests (`salvage_per_year`, `trade_per_year`) |
 
 Settings show both the EPM and its translation ("≈ 4 deposits of ~30 cells").
 
@@ -193,6 +203,15 @@ are one material in the fiction share a row: e.g. four beskar defs). Columns:
 - `salvage_per_year`, `trade_per_year`, `quest_or_site` (off-map sources);
 - `status` (RULED / BUILT / PROMISED with path / PROPOSED / GUESS / UNMEASURED) and `notes`.
 
+**Draft vs emitted (GPT 3.1, taken).** The draft is the owner's reading sheet, so `defs` holds prose,
+promised names and the `OTHER_vanilla_biomes` pseudo-column (expanded by the generator to every
+BiomeDef not ours). The emitted registry is stricter: the generator splits each row into a stable
+`material_id`, an exact **bindings** list (item defs, producer defs, yields) and source permissions,
+and **emits only rows whose status is RULED or BUILT and whose every def resolves**; PROMISED/PROPOSED/
+GUESS rows stay in the sheet and are reported, not shipped. Rows that merge materials for reading
+(salts, bezoars, brine beds, donor oddities) split into one material each at emission so each has its
+own setting.
+
 51 rows today: every one of the 73 inventoried materials is covered (donor oddities that never reach a
 map share one row), plus durasteel, duranium, doonium and the promised Scald materials.
 **Every biome value is marked GUESS unless its status says otherwise**; the numbers are a starting
@@ -211,15 +230,22 @@ point for each biome's sitting, never a ruling.
 2. **At startup** (C#, `StaticConstructorOnStartup`): for every def any row governs, zero
    `mineableScatterCommonality` and `deepCommonality`, clear `isResourceRock` on mineables that are not
    allowed in meteorites, and for MineralsFramework defs set `allowedBiomes` from the row (C2) — so
-   no vanilla or donor path can place it any more. Unregistered mineables are left at vanilla
-   behaviour and reported (§8).
+   no vanilla or donor path can place it any more. **Unregistered minerals are suppressed by default**
+   (weights zeroed, one warning naming each), with a setting to leave them vanilla (GPT 3.4: leaving
+   them vanilla silently contradicts "carefully selected, period"). All of this lives in one
+   **policy service** with one adapter per source (vein, framework, deep, quarry, meteorite, mutator,
+   scanner, outpost), and pools are cached per biome × channel × settings revision (GPT 3.5).
+   Ordering against other mods' static constructors is not guaranteed, so the service also re-asserts
+   at `Game.FinalizeInit` and the Quarry `OreDictionary` is rebuilt after it.
 3. **Map generation**: one `GenStep` added to every surface map generator after `RocksFromGrid`. For
    `map.Biome`, it reads each row's effective EPM (CSV value × user setting × hilliness × size), turns
    it into a lump count, and scatters with the vanilla `GenStep_ScatterLumpsMineable` machinery
    (`forcedDefToScatter`, the same field Core uses for Glaciers and Odyssey uses for obsidian). Forms
    that are not veins (nodules, crystals, crusts) are each placed by their biome's own GenStep,
    which reads its count from the same registry instead of a hard-coded number.
-4. **Deep drill / scanner**: Harmony postfix on `CompDeepScanner.ChooseLumpThingDef` draws from rows
+4. **Deep drill / scanner**: Harmony **prefix** (replacing the original, GPT 3.2: a postfix lets the
+   global draw run first, and the caller dereferences the result immediately) on
+   `CompDeepScanner.ChooseLumpThingDef`, with an explicit empty-pool path (no deposit created), draws from rows
    whose biome cell is non-zero (or `deep-only`), weighted by `deep_weight`. Steel is a row like any
    other, so "iron everywhere" is the default data, and a biome with steel 0 has no deep iron either
    (consistent with "some doesn't even have iron"). Ancient mining industry's automated rig is audited
@@ -234,9 +260,11 @@ rock types under the quarry (already local) or, for `Resources`, `OreDictionary.
 planet-wide list built once from every `isResourceRock` mineable plus `ComponentIndustrial`, weighted
 by scatter × deep ÷ value. **That draw is the "barfing out any old material".** Design:
 
-- Harmony **prefix on `OreDictionary.TakeOne`** cannot know the map, so instead a **postfix on
-  `Building_Quarry.GiveResources`**: when the result came from the resource branch (not rubble, not a
-  chunk/block), replace it with a draw from this map's biome: rows with `quarry=local` and a non-zero
+- A prefix on `OreDictionary.TakeOne` cannot know the map, and a postfix on `GiveResources` lets the
+  global draw run first (GPT 3.2). So a **transpiler on `Building_Quarry.GiveResources` replaces the
+  single `OreDictionary.TakeOne()` call** with `MineralRegistry.QuarryDraw(this.Map)`, and the
+  empty-pool fallback returns a local chunk **with `singleSpawn` reset to true**. The draw is from this
+  map's biome: rows with `quarry=local` and a non-zero
   biome cell, weighted by that cell's EPM ÷ `units_per_cell_or_find` (proportional to how much of it
   the land actually holds). Components and every salvage-only row are `quarry=no`, so they cannot come
   out. If the biome has no quarryable row, the job yields chunks of the local rock.
@@ -269,8 +297,12 @@ One screen, `RimMandrake: Minerals`:
 - Labels say which settings affect **new maps only** (veins, nodules) versus live (deep, quarry,
   trade).
 
-Stored as deltas against the registry, so a registry update still reaches a player who changed only
-one cell.
+Stored as **sparse absolute overrides** (only the cells a player edited, as values, not arithmetic
+deltas — GPT 3.5), so a registry update still reaches every cell he did not touch. Existing maps keep
+their placed deposits; changed vein settings apply to new maps, deep/quarry pools rebuild live.
+
+**Save compatibility.** Old defNames (plasteel, donor durasteels, donor beskars) are kept loadable until
+stack, stuff and deep-grid migration is done; nothing is deleted in the first build.
 
 ## 8. Normalization process fit
 
@@ -292,7 +324,54 @@ registry joins as the **materials axis** of that process:
   need duranium/doonium, trader stock tables.
 
 ## 9. GPT consult — taken and rejected
-(pending)
+
+One consult, `gpt-6.1-sol`, effort high, via `src/RimMandrake/Utils/gpt_consult.py` with this doc and the
+CSV inlined. GPT numbered its points; citations above use them.
+
+**Taken.**
+- 1.1 stochastic rounding of the attempted lump count, and "expected placed" measured by the
+  functional script instead of claimed exact (§4).
+- 1.2 a per-map "ore per 1,000 eligible rock cells" diagnostic; hilliness kept but labelled policy (§4).
+- 1.3 deep and quarry get absolute units: units/find + finds per scanner-year; quarry units per 100
+  jobs (new CSV column `quarry_per_100_jobs`). UPY redefined as *offered* at a stated encounter rate.
+- 2.1 the absorption criterion is changed (§3): not only "materials we rename/merge" but also
+  **"small subsets whose absorption retires a substantial integration burden"**, with per-file licence
+  provenance. Applied: LK Mineable Outer Rim is retired outright; Biomes! Fossils' amber/fossil seams
+  are an absorb candidate at the Flooded Canyon sitting if its LICENSE.md covers assets; Glowstone has
+  no licence and stays controlled (or is replaced by our own crystal).
+- 3.1 draft/emitted split, exact bindings, merged rows split at emission; components and durasteel
+  rows now name every producer they disable.
+- 3.2 deep scanner by **prefix** with an empty-pool path; quarry by **transpiler** on the one
+  `TakeOne()` call with `singleSpawn` reset on fallback.
+- 3.3 nomadic factor and gravship value rules applied explicitly.
+- 3.4 unregistered minerals **suppressed by default**, not left vanilla.
+- 3.5 one policy service with per-source adapters; pool caches by revision; sparse absolute overrides;
+  keep old defNames until migration.
+
+**Rejected.**
+- A value-weighted unit (1.2 itself argues against it: it would tie abundance to the market-value
+  normalization, a circular dependency).
+- Making "ore per 1,000 rock cells" the player-facing unit: it does not cover nodules, crystals,
+  salvage seams or sea floors, and is harder to reason about than "how much do I get from this map".
+- Absorbing Jewelry's gems now: its crafting gameplay is still wanted, and NC-SA obligations follow
+  any port. Revisit only if the jewellery mechanic is cut.
+- Absorbing Minerals Framework/Rock/Sparkle: GPT agrees control wins for the full overhaul.
 
 ## 10. Open questions (cards)
-(pending)
+
+`Transient/minerals_cards_2026-10-03.json` holds the cards: absorb-or-control (recommended: control,
+absorb only small subsets that retire integration burden), the primary unit (recommended: EPM), what
+happens to an unregistered mineral from a new mod (recommended: suppressed), and the quarry's
+behaviour on a biome with no quarryable minerals (recommended: local rock chunks only).
+
+## 11. Build waves (FOUNDRY, after the cards)
+
+| wave | what | size |
+|---|---|---|
+| R1 | `gen_mineral_registry.py`: CSV validate, coverage check against the def dump, emit `RM_MineralRegistryDef` for RULED/BUILT rows | S |
+| R2 | `RimMandrake.Minerals` policy service: startup zeroing, unregistered suppression, settings screen | M, C#, Opus |
+| R3 | surface adapter: per-biome GenStep with stochastic lump counts + rock diagnostic | M |
+| R4 | deep adapter (prefix) and quarry adapter (transpiler) | S each |
+| R5 | MineralsFramework, meteorite, mineral-rich mutator, long-range scanner, VOE outpost adapters | M |
+| R6 | durasteel rename + donor merge; duranium/doonium defs and the large-build requirement | M |
+| R7 | first functional script: stated vs placed EPM across seeds per biome; deep/quarry draws never leave the local pool; master toggle restores vanilla | S |
