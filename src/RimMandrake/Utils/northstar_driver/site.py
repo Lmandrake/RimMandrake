@@ -69,8 +69,9 @@ def unfog(s, rect):
 def unroof(s, rect):
     _ok(s.call("jawa/set_roof_batch", ops=rect_str(rect), roofDef="None"), "set_roof_batch")
     r = _ok(s.call("jawa/get_roof_batch", rects=rect_str(rect)), "get_roof_batch")
-    if r.get("roofedCells"):
-        raise AssertionError("%s roofed cell(s) remain in %s" % (r.get("roofedCells"), rect))
+    # the real answer carries `roofs` (distinct roof names, "None" = open sky), not a `roofedCells` count (LIVE 2026-10-03)
+    if r.get("roofedCells") or any(x not in (None, "None") for x in (r.get("roofs") or [])):
+        raise AssertionError("roofed cell(s) remain in %s: %s" % (rect, r.get("roofedCells") or r.get("roofs")))
 
 
 def weather_lock(s, weather="Clear"):
