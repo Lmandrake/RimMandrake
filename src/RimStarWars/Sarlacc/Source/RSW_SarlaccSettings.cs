@@ -58,6 +58,10 @@ namespace RimMandrake.StarWars.Sarlacc
         /// patch of shade breaks from it at once.</summary>
         public static bool rootingEvacuatesPatch = true;
 
+        /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: the once-per-map incident (Stillsand maps)
+        /// in which one swimmer swims for the largest buried seep and roots there.</summary>
+        public static bool swimmerSeepEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -71,6 +75,7 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_Values.Look(ref takeSignsEnabled, "takeSignsEnabled", true);
             Scribe_Values.Look(ref swimmerRoadEnabled, "swimmerRoadEnabled", true);
             Scribe_Values.Look(ref rootingEvacuatesPatch, "rootingEvacuatesPatch", true);
+            Scribe_Values.Look(ref swimmerSeepEnabled, "swimmerSeepEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -114,6 +119,13 @@ namespace RimMandrake.StarWars.Sarlacc
             list.CheckboxLabeled("Rooting empties the patch", ref rootingEvacuatesPatch,
                 "When the road swimmer roots, every wild animal sheltering in that shade breaks from "
               + "it at once. Off: they stay until the mouth takes one.");
+            list.GapLine();
+
+            list.Label("The swimmer comes to root (Stillsand)");
+            list.CheckboxLabeled("Seep-rooting incident", ref swimmerSeepEnabled,
+                "Once per map, ever, on a Stillsand map with a sarlacc seep: one swimmer comes up at the map "
+              + "edge and swims for the largest buried seep, then roots over it for good. Needs no other mod. "
+              + "Off: the incident never fires, and a swimmer already on its way wanders like any other.");
             list.GapLine();
 
             list.Label("Changed on return");

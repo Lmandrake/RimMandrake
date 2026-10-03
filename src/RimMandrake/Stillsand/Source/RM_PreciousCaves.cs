@@ -321,6 +321,10 @@ namespace RimMandrake.Stillsand
         // STILLSAND_CAVE_AS_PLACE_1: the cave floor, kept (it used to be mapgen-only) so the
         // preservation register can tell a cave cell later; and the things it has frozen.
         public List<IntVec3> caveCells = new List<IntVec3>();
+
+        /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: set once the den quest clears the den.</summary>
+        public bool denCleared;
+
         public List<Thing> frozenThings = new List<Thing>();
 
         // Mapgen-only hand-off from the carve step to the contents step.
@@ -349,6 +353,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref compassWord, "compassWord");
             Scribe_Values.Look(ref rowDefName, "rowDefName");
             Scribe_Values.Look(ref lookCell, "lookCell", IntVec3.Invalid);
+            Scribe_Values.Look(ref denCleared, "denCleared");
             Scribe_Collections.Look(ref caveCells, "caveCells", LookMode.Value);
             Scribe_Collections.Look(ref frozenThings, "frozenThings", LookMode.Reference);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
@@ -372,6 +377,24 @@ namespace RimMandrake.Stillsand
             letterSent = true;
             Find.LetterStack.ReceiveLetter("Rock island", LetterText(), LetterDefOf.NeutralEvent,
                 lookCell.IsValid ? new LookTargets(new TargetInfo(lookCell, map)) : LookTargets.Invalid);
+        }
+
+        /// <summary>A giant (body size 3 or more) that no one owns is inside the cave and the den has not
+        /// been cleared: the cave is a den, not yet a precious cave, and preserves nothing.</summary>
+        public bool DenHeld()
+        {
+            if (denCleared || !hasCave)
+            {
+                return false;
+            }
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (!p.Dead && p.Faction == null && p.RaceProps.Animal && p.BodySize >= 3f && caveCells.Contains(p.Position))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public string LetterText()

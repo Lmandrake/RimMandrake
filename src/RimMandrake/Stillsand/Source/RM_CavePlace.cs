@@ -26,7 +26,7 @@ namespace RimMandrake.Stillsand
         public static void Scan(RM_MapComponent_PreciousCave comp)
         {
             Map map = comp.map;
-            bool on = RM_PreciousCaveSettings.preservationEnabled;
+            bool on = RM_PreciousCaveSettings.preservationEnabled && !comp.DenHeld();
 
             // Release first: anything that left the cave, lost its roof, or whose switch went off.
             for (int i = comp.frozenThings.Count - 1; i >= 0; i--)

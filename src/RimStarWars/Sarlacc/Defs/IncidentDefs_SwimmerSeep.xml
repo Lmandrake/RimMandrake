@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_EVENT_CREATURES_REMAINDER_1 section 1 - the sarlacc swimmer comes to root.
+
+  RSW tier (the sarlacc is canon). Once per map, ever, on a Stillsand map that has a sarlacc
+  seep (RSW_PreciousCave_SarlaccSeep: a brine pool plus the RSW_DeepDesertSeep marker), one
+  young swimmer comes up at the map edge, swims for the LARGEST seep (most brine cells around
+  its marker) and roots over it into RSW_SarlaccAnchored. Code: Source/RSW_SwimmerRoad.cs,
+  RSW_IncidentWorker_SwimmerSeep / RSW_SwimmerSeepLogic; it shares the road's map component
+  (one swimmer per map) and the Devourer_PreWander job giver, and needs no shade graph.
+
+  One-home note: same as the road (the swimmer is the sarlacc's moving life stage; the seep is
+  where it settles).
+
+  Biome gate is data (defName, so nothing cross-references the Stillsand mod). The incident
+  refuses every other map. Toggle: Sarlacc Mod Settings, "Seep-rooting incident".
+  The swimmer's take signs are the comp's (disturbed sand + a message), so nothing vanishes unseen.
+-->
+<Defs>
+
+  <IncidentDef MayRequire="Ludeon.RimWorld.Anomaly">
+    <defName>RSW_SwimmerSeepRoot</defName>
+    <label>sarlacc swimmer comes to root</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.StarWars.Sarlacc.RSW_IncidentWorker_SwimmerSeep</workerClass>
+    <baseChance>0.5</baseChance>
+    <earliestDay>15</earliestDay>
+    <letterLabel>Sarlacc swimmer</letterLabel>
+    <letterText>A sarlacc swimmer has come up out of the deep desert, and the sand at the map edge is moving.\n\nIt is not hunting you. It is following the buried water: the biggest seep on the map, where the brine lies under the stone. If it gets there it roots for good, a permanent well with a mouth over the seep. It spends water on every metre and every strike, and whatever stands in its path stops standing.</letterText>
+    <letterDef>ThreatSmall</letterDef>
+    <modExtensions>
+      <li Class="RimMandrake.StarWars.Sarlacc.RSW_SwimmerRoadExtension">
+        <biomes>
+          <li>RM_Stillsand</li>
+        </biomes>
+        <pawnKind>RSW_SarlaccSwimmer</pawnKind>
+        <rootWithinCells>2.9</rootWithinCells>
+        <seepMarker>RSW_DeepDesertSeep</seepMarker>
+        <seepTerrain>RM_WaterBrineShallow</seepTerrain>
+        <seepScoreRadius>6.9</seepScoreRadius>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
+</Defs>

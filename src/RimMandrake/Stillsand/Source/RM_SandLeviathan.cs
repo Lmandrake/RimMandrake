@@ -201,6 +201,19 @@ namespace RimMandrake.Stillsand
             }
         }
 
+        public static Thing ChargedThumper(Map map)
+        {
+            foreach (Building b in map.listerBuildings.allBuildingsColonist)
+            {
+                RM_CompThumper c = b.TryGetComp<RM_CompThumper>();
+                if (c != null && c.Charged)
+                {
+                    return b;
+                }
+            }
+            return null;
+        }
+
         /// <summary>The thing it swims toward: a working drill first, else a fresh pour (wet sand), else the colony.</summary>
         public static IntVec3 LoudestCell(Map map)
         {
@@ -208,6 +221,16 @@ namespace RimMandrake.Stillsand
             if (drill != null)
             {
                 return drill.Position;
+            }
+            Thing thumper = ChargedThumper(map);
+            if (thumper != null)
+            {
+                return thumper.Position; // STILLSAND_EVENT_CREATURES_REMAINDER_1 §4: a charged thumper is a drum
+            }
+            Thing loud = RM_LoudDraws.First(map);
+            if (loud != null)
+            {
+                return loud.Position; // a landing or landed ship
             }
             IntVec3 pour = RM_MapComponent_WetSand.For(map)?.LatestPourCell ?? IntVec3.Invalid;
             if (pour.IsValid)

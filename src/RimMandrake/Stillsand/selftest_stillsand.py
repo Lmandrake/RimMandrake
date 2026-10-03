@@ -732,7 +732,11 @@ def _main(bad):
     # glass.* below: STILLSAND_GLASS_CHAIN_REMAINDER_1 live-proof arms, UNMEASURED until a driven session
     owed = ("glass.drift_clear_drops_glass_sand", "glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof",
             "glass.oven_cooks_in_sun_not_shade", "glass.lightning_on_deepsand_leaves_fulgurite_pyrelands_off",
-            "glass.recipe_toggles_hide_recipes")
+            "glass.recipe_toggles_hide_recipes",
+            # STILLSAND_EVENT_CREATURES_REMAINDER_1: RSW/RUT content, not on the driven tier
+            "remainder.remainder_horn_routs_and_logs_roll",
+            "remainder.remainder_seep_incident_refuses_other_maps_roots_at_seep",
+            "remainder.remainder_den_quest_generates", "remainder.remainder_charged_thumper_is_loudest")
     for k in owed:
         if healthy.get(k, ("",))[0] != "UNMEASURED":
             bad.append("%s should read UNMEASURED: %s" % (k, healthy.get(k)))

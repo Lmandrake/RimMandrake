@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_KraytDenQuest - the greater krayt's den. STILLSAND_EVENT_CREATURES_REMAINDER_1 section 2.
+  RUT tier: the Deep Desert Tribes and a Jawa crew are the campaign's, the krayt is canon.
+
+  SPEC (rimworld-quests skill section 2):
+    ask       clear the den of the greater krayt dragon that lairs in the stone on your map
+    reason    the Deep Desert Tribes and a Jawa salvage crew both lost people to it on the
+              water road; neither can take it. [asker_nameDef] of [faction_name] asks for you.
+    how       the quest does not script the fight (text only, not enforced): bait it with a
+              bantha or an eopie, call it with a drumming thumper, and put charges in the tunnels.
+    reward    the standard reward roll for the points (Util_GetDefaultRewardValueFromPoints)
+    deadline  the shown timer is 20 days; the OFFER expires in 6-10 days
+    failure   the timer runs out, the faction turns hostile, or the map is lost
+    effect    the dragon dead: the den is cleared and becomes a precious cave
+              (RM_QuestNode_ClaimCaveDen -> comp.denCleared; preservation resumes)
+
+  It is offered through the natural random pool (route 1). The custom node
+  RM_QuestNode_GetCaveDen (mandrake.rm.biomes, Stillsand) makes TestRun fail, so the quest is simply
+  never rolled, unless a player map HAS the RSW_PreciousCave_KraytDen row with the greater krayt
+  alive inside (the row's 25% live-dragon branch). Toggle: Mod Settings "Stillsand: event creatures",
+  "Krayt den quest". The wrapper stays XML so the lifecycle is editable without a rebuild.
+
+  Signals: krayt.Destroyed is the dead-quest-pawn signal vanilla uses (Quest_Stranded.xml notes
+  .Killed has no XML precedent). The slate var `krayt` is what tags the pawn.
+-->
+<Defs>
+
+  <QuestScriptDef MayRequire="mandrake.rm.biomes,mandrake.rsw.swbestiary">
+    <defName>RUT_KraytDenQuest</defName>
+
+    <rootSelectionWeight>1.0</rootSelectionWeight>
+    <rootMinPoints>600</rootMinPoints>
+    <minRefireDays>40</minRefireDays>
+    <expireDaysRange>6~10</expireDaysRange>
+    <defaultChallengeRating>4</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->RUT_KraytDenQuest</li>
+        <li>questName->The Greater Krayt's Den</li>
+        <li>questName->Under the Stone</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The Deep Desert tribes and a Jawa salvage crew have the same story: a greater krayt dragon lairs in the stone to the [denCompass] of your land, and everyone who took the water road past it has paid something.\n\n[asker_nameDef] of [faction_name] asks you to clear the den. It will not come out for nothing: bait it with a bantha or an eopie, call it with a drumming thumper, and put charges in the tunnels before you go in. When it is dead the den is yours, a cool dry cave with a drip in the dark, and the tribes will have their road back.\n\nYou have [timeLimit_duration] to do it.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <!-- Finds the den and the dragon; sets map, krayt, denCell, denCompass. -->
+        <li Class="RimMandrake.Stillsand.RM_QuestNode_GetCaveDen">
+          <caveRow>RSW_PreciousCave_KraytDen</caveRow>
+          <pawnKind>RSW_GreaterKraytDragon</pawnKind>
+          <storeMapAs>map</storeMapAs>
+          <storePawnAs>krayt</storePawnAs>
+          <storeCellAs>denCell</storeCellAs>
+          <storeCompassAs>denCompass</storeCompassAs>
+        </li>
+
+        <li Class="QuestNode_GetNearbySettlement">
+          <storeAs>settlement</storeAs>
+          <storeFactionLeaderAs>asker</storeFactionLeaderAs>
+          <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
+          <maxTileDistance>32</maxTileDistance>
+        </li>
+        <li Class="QuestNode_GetFactionOf">
+          <thing>$asker</thing>
+          <storeAs>faction</storeAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>timeLimit</name>
+          <value>$(20*60000)</value>
+        </li>
+
+        <!-- The shown timer, and the quest's own clock. -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$timeLimit</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringTimeLeft">Time left: {0}</inspectString>
+          <outSignalComplete>TimeUp</outSignalComplete>
+        </li>
+
+        <!-- SUCCESS: the dragon is dead. The den is claimed first, then paid, then the quest ends. -->
+        <li Class="RimMandrake.Stillsand.RM_QuestNode_ClaimCaveDen">
+          <inSignal>krayt.Destroyed</inSignal>
+          <map>$map</map>
+          <letterLabel TKey="LetterLabelKraytDenCleared">The den is cleared</letterLabel>
+          <letterText TKey="LetterTextKraytDenCleared">The greater krayt is dead and the stone is quiet. The den is a cave now: cool, dry, with a drip somewhere in the dark. Nothing in it will spoil.\n\nThe tribes and the Jawa crew will hear by nightfall.</letterText>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>krayt.Destroyed</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <allowRoyalFavor>false</allowRoyalFavor>
+          </parms>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>krayt.Destroyed</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+
+        <!-- FAILURE: out of time (no goodwill penalty: nobody was promised a date), hostile, or lost map. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>TimeUp</inSignal>
+          <label TKey="LetterLabelKraytDenTimeUp">The den is still held</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextKraytDenTimeUp">[asker_nameDef] sent word that the water road is closed to them again. The greater krayt still holds the den.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>TimeUp</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

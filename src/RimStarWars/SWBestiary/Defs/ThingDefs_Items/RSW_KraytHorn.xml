@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_KraytHorn.xml                  RimStarWars - STILLSAND_EVENT_CREATURES_REMAINDER_1 section 3
+
+  The krayt horn: a great horn cut from a krayt dragon skull and bound in krayt hide. Blown, it plays
+  the krayt's own call (RSW_Pawn_KraytDragon_Call), routs smaller predators and tribal raiders in a
+  radius, and may be answered. RSW tier because the krayt is canon; the mechanism is generic RM code
+  (RimMandrake.Stillsand.RM_CompUseEffect_Horn, RM_HornExtension, in mandrake.rm.biomes) and the answer
+  incident is named by the Utinni layer (Patches/RUT_KraytHorn_Answer.xml), never here.
+
+  Every def is MayRequire mandrake.rm.biomes: the comp class and extension live in the composed
+  biomes assembly, and a missing comp class discards the whole def.
+  Art: PLACEHOLDER (the bantha horn's texture, a real file). No krayt-horn art exists in artpipe state
+  (searched KraytHorn / krayt_horn / krayt 2026-10-03: only creature art) - art owed, name Things/Item/RSW_KraytHorn.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase" MayRequire="mandrake.rm.biomes">
+    <defName>RSW_KraytHorn</defName>
+    <label>krayt horn</label>
+    <description>A great curved horn cut from a krayt dragon's skull and bound in its hide, wide as a man's shoulders at the mouth. Blown, it gives the dragon's own call out over the dunes: small predators and tribal raiders break and run from it. Something larger may hear it too, and answer.</description>
+    <graphicData>
+      <!-- art placeholder: bantha horn texture; krayt horn art owed -->
+      <texPath>swresource/Trophies/BanthaHorn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <healthAffectsPrice>true</healthAffectsPrice>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <MarketValue>900</MarketValue>
+      <Mass>4</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>Exotic</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Blow {0_label}</useLabel>
+        <useDuration>240</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_UseEffect">
+        <compClass>RimMandrake.Stillsand.RM_CompUseEffect_Horn</compClass>
+        <doCameraShake>true</doCameraShake>
+      </li>
+      <li Class="CompProperties_UseEffectPlaySound">
+        <soundOnUsed>RSW_Pawn_KraytDragon_Call</soundOnUsed>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_HornExtension">
+        <radius>30</radius>
+        <maxRoutBodySize>3</maxRoutBodySize>
+        <cooldownTicks>15000</cooldownTicks>
+        <answerDelayTicks>2500~7500</answerDelayTicks>
+        <answerRetryTicks>15000</answerRetryTicks>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>
