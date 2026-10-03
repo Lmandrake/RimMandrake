@@ -1,0 +1,8 @@
+# LOADLOG SET B 2026-10-03 (dispositions)
+
+1. Nutrition==0 RawBad (RM_Shadespire, RM_Pulsebead, RM_Glasskelle): FIXED. Intent is non-edible (no nutrition anywhere, Shadespire is a tree harvested for wood). Added `<ingestible><preferability>NeverForNutrition</preferability></ingestible>` to all three.
+   - src/RimMandrake/DivingInteraction/Defs/ThingDefs_Plants/RM_ScaldVentFlora.xml (Glasskelle, Pulsebead)
+   - src/RimMandrake/LongShade/Defs/ThingDefs_Plants/RM_LongShade_FillPlants.xml (Shadespire)
+   validate_patch: 0 errors.
+2. burnedDef flammable (RM_FE_Ground_Sand/Gravel/Soil/SoilRich, RM_FE_Ash_Trace/Light): NOT FIXED, deliberate. Pre-existing since 2026-09-01; the ash ladder (trace -> light -> heavy -> deep) is flammable by design so repeat burns escalate. Both src/RimMandrake/Pyrelands/Defs/TerrainDefs/AshLadder.xml and ScorchableGround.xml carry a header saying "DO NOT FIX by zeroing Flammability or clearing burnedDef"; advisory only.
+3. MissingMethodException Default constructor for System.String: NOT OUR CONTENT. It fires at line 74 of Player.log during mod metadata loading (before any Def/patch loads). No About.xml in this repo (306 scanned) has the shape. Scan of all 1412 installed About.xml found exactly one with child elements in a string field: Steam workshop mod 3506645273 "Invisible Conduit Continued" (GlitchGoblin.InvisibleConduitCont) has `<author>` containing `<li>`. It is not in ModsConfig but is installed, so the metadata scan hits it. Likely culprit (inferred, not proven by a stack naming it). Remedy is third-party: unsubscribe the mod or edit its About.xml author to plain text; not changed here.
