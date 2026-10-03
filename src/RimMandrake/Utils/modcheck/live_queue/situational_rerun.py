@@ -138,8 +138,10 @@ def body(s, job):
         job.note("bland_world_setup", info)
         job.check("bland world established (tile %s, map %s)" % (info["tile"], info["mapIndex"]),
                   not info["problems"], info["problems"])
+    import belt_heartbeat
     for m, suite in plan:
         print("  -- %s" % m)
+        belt_heartbeat.step("suite %s" % m, budget_s=belt_heartbeat.DEFAULT_STEP_BUDGET_S)   # hang -> exit 4
         try:
             summ = runner.run_suite(suite, s, mod=None if job.dry_run else m, situational=True, policy="abort",
                                     bland_world=use_world)
