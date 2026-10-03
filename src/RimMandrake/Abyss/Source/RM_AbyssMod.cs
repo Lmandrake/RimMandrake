@@ -25,11 +25,15 @@ namespace RimMandrake.Abyss
         // ordinary always-active animals. Safe mid-game.
         public static bool gustFeedersEnabled = true;
 
+        // ABYSS_DURRGAK_BUILD_1: wild durrgaks place obsidian-shard rings. Off = none are placed (existing rings stay).
+        public static bool durrgakRingsEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
+            Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -45,6 +49,9 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Gharreks sleep in the still and feed at gusts", ref gustFeedersEnabled,
                 "On: gharreks lie dormant until a gust, then open and feed together. Off: they behave as ordinary animals.");
+
+            list.CheckboxLabeled("Wild durrgaks set rings of shards", ref durrgakRingsEnabled,
+                "On: wild durrgaks slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
 
             list.End();
         }

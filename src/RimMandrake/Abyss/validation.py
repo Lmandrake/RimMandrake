@@ -101,6 +101,50 @@ def gharrek_check():
     return bad
 
 
+def durrgak_check():
+    """Offline: durrgak defs, cairn, memory, art, comps, roster row, toggle, csproj. Returns failures."""
+    bad = []
+    root = _defs("ThingDefs_Races/RM_Durrgak.xml")
+    thing = next((d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_Durrgak"), None)
+    kind = next((d for d in root.iter("PawnKindDef") if d.findtext("defName") == "RM_Durrgak"), None)
+    cairn = next((d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_DurrgakCairn"), None)
+    mem = next((d for d in root.iter("ThoughtDef") if d.findtext("defName") == "RM_SawDurrgakRing"), None)
+    if None in (thing, kind, cairn, mem):
+        return ["missing def: thing=%s kind=%s cairn=%s memory=%s" % (thing is not None, kind is not None, cairn is not None, mem is not None)]
+    if kind.findtext("race") != "RM_Durrgak":
+        bad.append("PawnKind race != RM_Durrgak")
+    if thing.find("statBases/MaxFlightTime") is not None:
+        bad.append("durrgak must not fly")
+    if thing.findtext("race/trainability") != "Advanced":
+        bad.append("durrgak must be Advanced-trainable (vanilla Haul requires it) so tamed it tidies")
+    comp = thing.find("comps/li[@Class='RimMandrake.Abyss.CompProperties_Durrgak']")
+    if comp is None or comp.findtext("cairnDef") != "RM_DurrgakCairn":
+        bad.append("durrgak comp missing or not pointed at RM_DurrgakCairn")
+    cc = cairn.find("comps/li[@Class='RimMandrake.Abyss.CompProperties_DurrgakCairn']")
+    if cc is None or cc.findtext("memory") != "RM_SawDurrgakRing":
+        bad.append("cairn comp missing or not pointed at RM_SawDurrgakRing")
+    if cairn.findtext("tickerType") != "Rare":
+        bad.append("cairn needs tickerType Rare for CompTickRare")
+    if "who" in (cairn.findtext("description") or "").lower().split() or "durrgak" in (cairn.findtext("description") or "").lower():
+        bad.append("cairn description must never say who made it")
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    wa = biome.find(".//wildAnimals/RM_Durrgak")
+    if wa is None or not float(wa.text) > 0:
+        bad.append("RM_Abyss <wildAnimals> lacks <RM_Durrgak>commonality</RM_Durrgak>")
+    for tex in {l.findtext("bodyGraphicData/texPath") for l in kind.iter("li") if l.find("bodyGraphicData") is not None}:
+        for f in ("south", "east", "north"):
+            if not os.path.isfile(os.path.join(HERE, "Textures", "%s_%s.png" % (tex, f))):
+                bad.append("missing facing %s_%s.png" % (tex, f))
+    if not os.path.isfile(os.path.join(HERE, "Textures", cairn.findtext("graphicData/texPath") + ".png")):
+        bad.append("cairn texture missing")
+    proj = open(os.path.join(HERE, "Source", "RM_Abyss.csproj")).read()
+    if 'Compile Include="RM_CompDurrgak.cs"' not in proj or not os.path.isfile(os.path.join(HERE, "Source", "RM_CompDurrgak.cs")):
+        bad.append("RM_CompDurrgak.cs not compiled or missing")
+    if "durrgakRingsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
+        bad.append("Mod Settings toggle durrgakRingsEnabled missing")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -124,6 +168,15 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
+    @suite.chain("durrgak_defs_resolve")
+    def durrgak_defs_resolve(t):
+        """Live: the durrgak defs loaded."""
+        with t.component("durrgak_defs_loaded", beyond_toggle=True):
+            for d in ("ThingDef/RM_Durrgak", "PawnKindDef/RM_Durrgak", "ThingDef/RM_DurrgakCairn", "ThoughtDef/RM_SawDurrgakRing"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
 except ImportError:
     suite = None
 
@@ -132,4 +185,6 @@ if __name__ == "__main__":
     print("ETCHCAP static: %s" % ("PASS" if not f else "FAIL " + "; ".join(f)))
     g = gharrek_check()
     print("GHARREK static: %s" % ("PASS" if not g else "FAIL " + "; ".join(g)))
-    sys.exit(1 if (f or g) else 0)
+    d = durrgak_check()
+    print("DURRGAK static: %s" % ("PASS" if not d else "FAIL " + "; ".join(d)))
+    sys.exit(1 if (f or g or d) else 0)
