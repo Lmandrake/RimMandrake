@@ -436,3 +436,28 @@ def working_dead(t):
                   "shardMindDroidPullEnabled"):
             t.set_setting(SETTINGS_TYPE, {k: False})
             t.set_setting(SETTINGS_TYPE, {k: True})
+
+
+@suite.chain("orun_ghal")
+def orun_ghal(t):
+    """LANTERNDEEPS_ORUN_GHAL_BUILD_1: Orun-Ghal lives in the Deep, can be studied and befriended, and never digs.
+    Run on a LANTERN DEEP map with at least one colonist. ProofPlace spawns one (the genstep's own Place);
+    ProofStudy 9 completes nine study sessions on separate days and must reach the friend tier with no mining job.
+    Not proven here: the real study job by a colonist (Research work) and its rounds toward the Lantern."""
+    OG = "RimMandrake.LanternDeeps.RM_OrunGhalProof"
+    with t.component("orun_ghal_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RM_OrunGhal", "PawnKindDef/RM_OrunGhal", "JobDef/RM_StudyOrunGhal",
+                  "WorkGiverDef/RM_StudyOrunGhal", "GenStepDef/RM_DeepOrunGhal"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("orun_ghal_placed", toggle="orunGhalEnabled"):
+        r = t.bridge_call("jawa/static_call", type=OG, method="ProofPlace", args="")
+        res = str((r or {}).get("result", ""))
+        if t._guard() and not res.startswith("placed"):
+            raise ExpectationFailed("Orun-Ghal not placed: %r" % (r,))
+    with t.component("orun_ghal_befriended_never_digs", toggle="orunGhalStudyEnabled"):
+        r = t.bridge_call("jawa/static_call", type=OG, method="ProofStudy", args="9")
+        res = str((r or {}).get("result", ""))
+        if t._guard() and ("tier=3" not in res or "mining=False" not in res):
+            raise ExpectationFailed("nine visits did not befriend it, or it is mining: %r" % (r,))

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LanternDeeps · LANTERNDEEPS_ORUN_GHAL_BUILD_1 (RM_OrunGhal.cs) -->
+<LanguageData>
+  <RM_OrunGhalTier0>wary</RM_OrunGhalTier0>
+  <RM_OrunGhalTier1>curious</RM_OrunGhalTier1>
+  <RM_OrunGhalTier2>familiar</RM_OrunGhalTier2>
+  <RM_OrunGhalTier3>a friend</RM_OrunGhalTier3>
+  <RM_OrunGhalInspect>Toward your colony it is {0}. Studied {1} times.</RM_OrunGhalInspect>
+  <RM_OrunGhalRested>Studied recently; another visit tomorrow.</RM_OrunGhalRested>
+  <RM_OrunGhalTierMsg>Orun-Ghal is now {0} toward your colony.</RM_OrunGhalTierMsg>
+  <RM_OrunGhalFriendLabel>Orun-Ghal, a friend</RM_OrunGhalFriendLabel>
+  <RM_OrunGhalFriendText>After many visits, Orun-Ghal turned and walked with {STUDIER_nameDef} back toward the colony's light, and stood there a while before going back to its rounds.\n\nThe minds that wear it know your people now. It will come to stand near them in the Deep.</RM_OrunGhalFriendText>
+</LanguageData>

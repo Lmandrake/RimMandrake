@@ -2545,3 +2545,6 @@
 {"seat":"FOUNDRY","event":"file","id":"GREYSEA_LAMP_RESPONSE_BUILD_1","title":"Grey Sea lamp response (Q12, danger pass 2.1-2.2): generalised seek-glow gate + drawn-to mode, nissik/sallik/immu drawn in, fessk watches at the rim, reefback breaks worklight-class lamps after hours of steady burn, dowsing resets; split from GREYSEA_RULED_CONTENT_1","kind":"task","target":"v1","needs":"offline","caused_by":"GREYSEA_RULED_CONTENT_1","for":"FOUNDRY","ts":"2026-10-03T21:05:47Z","tsn":1791061547884463077}
 {"seat":"FOUNDRY","event":"claim","id":"GREYSEA_HULL_CRUST_BUILD_1","ts":"2026-10-03T21:06:24Z","tsn":1791061584130235153}
 {"seat":"FOUNDRY","event":"close","id":"GREYSEA_HULL_CRUST_BUILD_1","sha":"213f28292652","ts":"2026-10-03T21:06:24Z","tsn":1791061584706702215}
+{"seat":"FOUNDRY","event":"claim","id":"GREYSEA_LAMP_RESPONSE_BUILD_1","ts":"2026-10-03T21:11:28Z","tsn":1791061888334904273}
+{"seat":"FOUNDRY","event":"close","id":"GREYSEA_LAMP_RESPONSE_BUILD_1","sha":"a45dfc46f7f3","ts":"2026-10-03T21:11:28Z","tsn":1791061888903563187}
+{"seat":"FOUNDRY","event":"close","id":"GREYSEA_RULED_CONTENT_1","sha":"a45dfc46f7f3","ts":"2026-10-03T21:11:29Z","tsn":1791061889456934287}

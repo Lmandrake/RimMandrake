@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LanternDeeps · LANTERNDEEPS_ORUN_GHAL_BUILD_1: one Orun-Ghal per new Deep, near a Shard-mind.
+     Order 956: right after RM_DeepWellProvisionedDead (955) grows the Shard-minds. -->
+<Defs>
+  <GenStepDef>
+    <defName>RM_DeepOrunGhal</defName>
+    <order>956</order>
+    <genStep Class="RimMandrake.LanternDeeps.RM_GenStep_OrunGhal">
+      <kind>RM_OrunGhal</kind>
+    </genStep>
+  </GenStepDef>
+</Defs>

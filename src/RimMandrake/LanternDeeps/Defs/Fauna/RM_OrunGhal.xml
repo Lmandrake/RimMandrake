@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_OrunGhal.xml                LanternDeeps · LANTERNDEEPS_ORUN_GHAL_BUILD_1 (RM_OrunGhal.cs)
+  Owner, typed: "an inhabitant on the map to study and befriend. I don't think the crystals are
+  too keen mining." A wild pawn on an ordinary footprint, drawn huge (drawSize 4, the art's own).
+  Never a boss, never a worker: weak tools, manhunter chance 0, no food, no rest, untameable
+  (Wildness 1), not prey. Lancer (mechanical humanoid) body for the exoframe's shape; ordinary
+  flesh type so it lives as a wild animal on the map (a Mechanoid flesh type would stop it being
+  an animal). No meat, no leather: butchering yields the suit's steel and components.
+  Art: artpipe RM_OrunGhal_{south,east,north}, generated for this item, wired here.
+  The lore entries are DRAFT text (free tier, no franchise names) for BENCH/owner to revise.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_OrunGhal</defName>
+    <label>Orun-Ghal</label>
+    <description>A mining exoframe three times a man's height, dead for longer than anyone has kept count, and walking. Its cracked canopy still holds the skeleton of the miner who wore it; blue crystal has grown through every joint and out of its back like antlers of glass. The crystals move it now. Its drill-arms hang lowered and unused: whatever the minds in the rock want, it is not to dig. It walks its rounds through the Deep, it lingers by the light, and it lets itself be looked at.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <ArmorRating_Blunt>0.50</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.70</ArmorRating_Sharp>
+      <ArmorRating_Heat>0.40</ArmorRating_Heat>
+      <ComfyTemperatureMin>-80</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <MarketValue>1500</MarketValue>
+      <Wildness>1</Wildness>
+      <FilthRate>0</FilthRate>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ToxicResistance>1</ToxicResistance>
+    </statBases>
+    <tools>
+      <li>
+        <label>lowered drill-arm</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>LeftHand</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Lancer</body>
+      <baseBodySize>2.5</baseBodySize>
+      <baseHealthScale>4</baseHealthScale>
+      <foodType>None</foodType>
+      <needsRest>false</needsRest>
+      <bloodDef IsNull="True" />
+      <hasGenders>false</hasGenders>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <predator>false</predator>
+      <disableMating>true</disableMating>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>2000</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_MechanoidBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_MechanoidBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_MechanoidBash_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <Steel>60</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <RM_Lanternstone>12</RM_Lanternstone>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.CompProperties_RM_OrunGhal">
+        <studyTicks>2000</studyTicks>
+        <curiousAt>2</curiousAt>
+        <familiarAt>5</familiarAt>
+        <friendAt>9</friendAt>
+        <lore>
+          <li>
+            <session>1</session>
+            <label>Orun-Ghal: the suit is worn</label>
+            <text>{STUDIER_nameDef} spent an hour beside Orun-Ghal. The skeleton in the canopy does nothing; the suit is not piloted, it is WORN. Crystal runs through the hydraulic lines where fluid used to, and when it moves, the crystal in its joints brightens a moment before each step, the way a muscle tenses. Whatever moves it is in the crystal.</text>
+          </li>
+          <li>
+            <session>3</session>
+            <label>Orun-Ghal: it listens to the minds</label>
+            <text>{STUDIER_nameDef} has noticed that Orun-Ghal's crystal brightens in time with the nearest shard-mind's, a beat behind, like an answer. The minds in the rock are not one thing: each shard-mind is slow, and close, and aware of light. Orun-Ghal is how they go somewhere they did not grow.</text>
+          </li>
+          <li>
+            <session>6</session>
+            <label>Orun-Ghal: why it never digs</label>
+            <text>{STUDIER_nameDef} watched Orun-Ghal stand at a fresh face of lanternstone for a long time without lifting its drill. The crystal is the rock, and the rock is them. A miner's suit that cut stone was a wound walking toward them; this one they took and turned, and kept. They will walk it, carry it to the light, show it to you. They will not make it cut.</text>
+          </li>
+          <li>
+            <session>10</session>
+            <label>Orun-Ghal: what they want</label>
+            <text>{STUDIER_nameDef} thinks they understand at last. The minds grow toward light the way plants do, but they cannot move, and the Deep is dark. Everything they have done with the dead — standing them up, turning them toward a lamp, walking this suit to the Lantern — is the same wish: to be near light, and near whoever brings it. They are not hostile to the colony. They are glad of it.</text>
+          </li>
+        </lore>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_OrunGhal</defName>
+    <label>Orun-Ghal</label>
+    <race>RM_OrunGhal</race>
+    <combatPower>150</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/OrunGhal/OrunGhal</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

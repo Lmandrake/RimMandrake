@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- RM_ThinkTree_OrunGhal.xml  LanternDeeps · LANTERNDEEPS_ORUN_GHAL_BUILD_1
+     Vanilla Animal_PreMain insert; RM_JobGiver_OrunGhalRounds returns no job instantly for any pawn
+     without CompRM_OrunGhal, so every other animal is untouched. -->
+<Defs>
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_OrunGhalRounds</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.LanternDeeps.RM_JobGiver_OrunGhalRounds" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

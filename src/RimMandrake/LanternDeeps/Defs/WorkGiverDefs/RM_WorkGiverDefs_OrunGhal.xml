@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LanternDeeps · LANTERNDEEPS_ORUN_GHAL_BUILD_1: one study visit a day, Research work. -->
+<Defs>
+  <WorkGiverDef>
+    <defName>RM_StudyOrunGhal</defName>
+    <label>study Orun-Ghal</label>
+    <giverClass>RimMandrake.LanternDeeps.RM_WorkGiver_StudyOrunGhal</giverClass>
+    <workType>Research</workType>
+    <priorityInType>20</priorityInType>
+    <verb>study</verb>
+    <gerund>studying</gerund>
+    <requiredCapacities>
+      <li>Sight</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+</Defs>
