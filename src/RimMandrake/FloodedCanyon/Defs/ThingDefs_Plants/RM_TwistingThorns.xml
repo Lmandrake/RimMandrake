@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    CRACKEDLANDS_PLANT_LIST_OWNED_1: the Cracked Lands thorn family, moved from
+    UtinniPatches (RUT_PollutedFlora.xml) into the free tier (invented names, Q11a).
+    Field-for-field the same plants. RM_CrackedThornwood is the Cracked Lands copy of
+    the Cauldron's RM_TwistingThornwood (duplicate-then-diverge, Q13): one plant
+    family, two biomes, each mod self-contained. Art moved with them.
+  -->
+
+  <!-- ============== Twisting Thornwood (tree) — RM_FloodedCanyon (Cracked Lands) ============== -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_CrackedThornwood</defName>
+    <label>twisting thornwood</label>
+    <description>A large species of tree found in polluted arid environments. It is one of three closely related species of plant, alongside the thornweed and thorngrass.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>210</MaxHitPoints>
+      <Nutrition>2.0</Nutrition>
+      <Mass>100</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_CrackedThornwood</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.24, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>15</growDays>
+      <harvestWork>210</harvestWork>
+      <harvestYield>25</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.2</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <visualSizeRange>1.3~3.0</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Twisting thorngrass — RM_FloodedCanyon (Cracked Lands) ============== -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_TwistingThorngrass</defName>
+    <label>twisting thorngrass</label>
+    <description>Similar to grass yet covered in small thorn-like structures. It is related in part to the twisting thornwood and thornweed.</description>
+    <statBases>
+      <MaxHitPoints>85</MaxHitPoints>
+      <Flammability>1.3</Flammability>
+      <Nutrition>0.50</Nutrition>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_TwistingThorngrass</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+    </graphicData>
+    <hideAtSnowOrSandDepth>0.5</hideAtSnowOrSandDepth>
+    <selectable>false</selectable>
+    <plant>
+      <growDays>2.5</growDays>
+      <harvestWork>40</harvestWork>
+      <maxMeshCount>4</maxMeshCount>
+      <visualSizeRange>0.4~0.6</visualSizeRange>
+      <topWindExposure>0.4</topWindExposure>
+      <wildOrder>1</wildOrder>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+  <!-- ============== Twisting thornweed — RM_FloodedCanyon (Cracked Lands) ============== -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_TwistingThornweed</defName>
+    <label>twisting thornweed</label>
+    <description>A bush-sized plant related to the thornwood tree, hardy enough to survive on heavily polluted ground.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_TwistingThornweed</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>115</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <uiIconScale>0.85</uiIconScale>
+    <plant>
+      <growDays>5</growDays>
+      <fertilityMin>0.10</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+    </plant>
+  </ThingDef>
+
+</Defs>

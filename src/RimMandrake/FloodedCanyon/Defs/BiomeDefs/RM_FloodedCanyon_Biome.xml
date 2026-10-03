@@ -150,6 +150,9 @@
          Veqma as new flora content — not done here to avoid inventing beyond
          what was ruled. -->
     <wildPlants>
+      <RM_TwistingThorngrass>0.5</RM_TwistingThorngrass>  <!-- twisting thorngrass -->
+      <RM_TwistingThornweed>0.4</RM_TwistingThornweed>  <!-- twisting thornweed -->
+      <RM_CrackedThornwood>0.2</RM_CrackedThornwood>  <!-- twisting thornwood - tree -->
       <RM_Veqma>0.15</RM_Veqma>  <!-- the dowsing flora - shade line only -->
     </wildPlants>
   </BiomeDef>
