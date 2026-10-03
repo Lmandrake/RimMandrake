@@ -20,6 +20,9 @@ namespace RimMandrake.DivingInteraction
     {
         /// <summary>The generator a floor map on this biome uses.</summary>
         public MapGeneratorDef generator;
+
+        /// <summary>SEABED_FLOOR_AMBIENT_CARRYOVER_1: floor animalDensity = the sea's x this (the hatch mutator's 30).</summary>
+        public float animalDensityFactor = 30f;
     }
 
     public class RM_SeabedSiteParent : MapParent

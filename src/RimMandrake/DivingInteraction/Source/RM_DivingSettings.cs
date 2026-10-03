@@ -189,6 +189,9 @@ namespace RimMandrake.DivingInteraction
         // the four seas generates that sea's floor (terrain, vents, galleries, scatters, fauna). Off: a
         // generic encounter map, as before.
         public static bool seabedFloorContentEnabled = true;
+        // SEABED_FLOOR_AMBIENT_CARRYOVER_1. RESTART-REQUIRED: each sea-floor layer biome takes its sea's
+        // flora and cast at startup, so floors grow plants and refill their animals over time.
+        public static bool seabedFloorLifeEnabled = true;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -228,6 +231,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillDensityDrawEnabled, "chillDensityDrawEnabled", true);
             Scribe_Values.Look(ref chillDiveAnimalCount, "chillDiveAnimalCount", 3);
             Scribe_Values.Look(ref seabedFloorContentEnabled, "seabedFloorContentEnabled", true);
+            Scribe_Values.Look(ref seabedFloorLifeEnabled, "seabedFloorLifeEnabled", true);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -308,6 +312,10 @@ namespace RimMandrake.DivingInteraction
                   + "Scald, the Grey Sea, the Twilight Sea or the Chill finds that sea's own floor: its terrain, "
                   + "vents, ruins, formations and animals. Floors already generated keep what they have. Off: a "
                   + "plain encounter map.");
+                list.CheckboxLabeled("Sea-floor layer: floors grow their sea's plants and refill their animals (restart)", ref seabedFloorLifeEnabled,
+                    "Shipped default: ON. Takes effect after a restart. Each sea floor on the sea-floor layer grows "
+                  + "the flora of the sea above it and slowly repopulates with that sea's animals, as the hatch's "
+                  + "floors did. Off: floors keep only the animals placed when they were generated, and no plants.");
 
                 list.Gap();
                 list.CheckboxLabeled("The Chill: dive meets a few animals by weight (affects floor generation)", ref chillDensityDrawEnabled,

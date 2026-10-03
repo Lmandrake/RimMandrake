@@ -3,7 +3,10 @@
   SEABED_PER_SEA_FLOORS_1. One floor BiomeDef per sea, replacing the generic RM_SeabedFloor for
   tiles under that sea. Mapping is data: the surface biome carries RM_SeabedAccessExtension
   floorBiome (Patches/RM_SeabedFloorBiomeWiring.xml). Densities stay 0 until Phase 3 content
-  (plants/fauna on the floor map) is built and the plant guard is proven live. Fauna does not wait:
+  (plants/fauna on the floor map) is built and the plant guard is proven live. SEABED_FLOOR_AMBIENT_CARRYOVER_1:
+  the 0 densities are only the defaults; at startup RM_SeabedFloorLife copies the sea's flora and cast
+  onto its floor (animals x animalDensityFactor, 30 like the hatch mutator), and each floor holds its
+  sea's hatch temperature as constantOutdoorTemperature (Scald 55, Grey 12, Twilight 8, Chill -110). Fauna does not wait:
   RM_SeaFloorFauna reads the cast off the sea above (SEABED_FLOOR_GENERATORS_1); each floor names its
   generator (RM_SeabedGenerators.xml) through RM_SeabedFloorExtension. Propane Lake is
   a RUT_ Utinni biome and is not wired here (blocked, see item).
@@ -18,6 +21,7 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <constantOutdoorTemperature>55</constantOutdoorTemperature>
     <modExtensions>
       <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
         <generator>RM_SeabedGenerator_TheScald</generator>
@@ -33,6 +37,7 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <constantOutdoorTemperature>12</constantOutdoorTemperature>
     <modExtensions>
       <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
         <generator>RM_SeabedGenerator_GreySea</generator>
@@ -48,6 +53,7 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <constantOutdoorTemperature>8</constantOutdoorTemperature>
     <modExtensions>
       <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
         <generator>RM_SeabedGenerator_TwilightSea</generator>
@@ -63,6 +69,7 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <constantOutdoorTemperature>-110</constantOutdoorTemperature>
     <modExtensions>
       <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
         <generator>RM_SeabedGenerator_TheChill</generator>

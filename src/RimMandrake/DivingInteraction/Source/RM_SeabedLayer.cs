@@ -378,6 +378,16 @@ namespace RimMandrake.DivingInteraction
             // PHASE 3/5 SEAM: real seabed relief arrives with terrain and geology. Flat under
             // water, impassable under land, is the least-inventing pair that still reads sanely.
             floor.hilliness = hasFloor ? Hilliness.Flat : Hilliness.Impassable;
+
+            // SEABED_FLOOR_AMBIENT_CARRYOVER_1: a floor map's ambient is its biome's
+            // constantOutdoorTemperature (MapTemperature reads it directly). Write it onto the tile too
+            // so the world readout and tile-keyed samplers agree; a save whose tiles were mirrored
+            // earlier keeps the surface number on the tile, which no floor map's ambient reads.
+            float? constant = floor.PrimaryBiome?.constantOutdoorTemperature;
+            if (constant.HasValue)
+            {
+                floor.temperature = constant.Value;
+            }
         }
     }
 }
