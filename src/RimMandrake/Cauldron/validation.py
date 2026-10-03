@@ -160,6 +160,24 @@ FLORA = sorted(n for n, f in _FOLDER.items() if f == "ThingDefs_Plants")
 KINDS = DEFS_BY_TYPE.get("PawnKindDef", [])
 
 
+def _soil_blacklisted():
+    """Plants whose own <terrainBlacklist> names Soil/SoilRich (bare-rock plants such as RM_Sessarix). The flora pad is
+    laid in Soil, so set_plants put them on forbidden ground and they never stood (LIVE 2026-10-03)."""
+    import glob
+    import xml.etree.ElementTree as ET
+    out = set()
+    for f in glob.glob(os.path.join(HERE, "Defs", "ThingDefs_Plants", "*.xml")):
+        for td in ET.parse(f).getroot().iter("ThingDef"):
+            bl = [li.text for li in td.findall("./plant/terrainBlacklist/li")]
+            if td.findtext("defName") and ("Soil" in bl or "SoilRich" in bl):
+                out.add(td.findtext("defName"))
+    return out
+
+
+SOIL_FORBIDDEN = _soil_blacklisted()
+ROCK = "Gravel"
+
+
 # --------------------------------------------------------------------------- helpers
 
 def _live(t):
@@ -930,7 +948,9 @@ def suush_chain(t):
     def body():
         with _comp(t, "suush_ignores_melee"):
             if _live(t):
-                ids["melee"] = _spawn(t, SUUSH, x - 8, z)
+                # LIVE 2026-10-03: a WILD suush is a flier that flees damage and leaves the map, so "row is None" after 400 ticks
+                # could not tell "detonated" from "flew away". A player-faction animal stays put, so absence means it died.
+                ids["melee"] = _spawn(t, SUUSH, x - 8, z, "player")
                 t.bridge_call("jawa/damage", damageDef="Cut", amount=2, thingId=ids["melee"])
                 t.wait_ticks(400)
                 row = _rows(t).get(ids["melee"])
@@ -941,7 +961,7 @@ def suush_chain(t):
             if _live(t):
                 if ids.get("melee") not in _rows(t):
                     _unmeasured(t, "the melee control suush is gone, cannot attribute the shot suush")
-                ids["shot"] = _spawn(t, SUUSH, x + 8, z)
+                ids["shot"] = _spawn(t, SUUSH, x + 8, z, "player")
                 t.bridge_call("jawa/damage", damageDef="Bullet", amount=2, thingId=ids["shot"])
                 t.wait_ticks(400)
                 rows = _rows(t)
@@ -982,6 +1002,8 @@ def flora_chain(t):
                 for i, d in enumerate(FLORA):
                     cx, cz = rect[0] + 2 + (i % 4) * 3, rect[1] + 2 + (i // 4) * 3 + 8
                     cells[d] = (cx, cz)
+                    if d in SOIL_FORBIDDEN:
+                        t.bridge_call("jawa/set_terrain_batch", ops="%s:%d,%d,1,1" % (ROCK, cx, cz), layer="top")
                     t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, cx, cz), growth=1.0)
                 lost = [d for d, (cx, cz) in cells.items() if _count(t, d, "%d,%d,1,1" % (cx, cz)) < 1]
                 _note(t, "flora set", {"asked": len(FLORA), "lost": lost})
