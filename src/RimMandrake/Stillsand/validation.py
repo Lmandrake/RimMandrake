@@ -1626,8 +1626,25 @@ def _end_gale(t):
         print("[stillsand] could not end the gale: %s" % ex, file=sys.stderr, flush=True)
 
 
+def _weather_locks(t):
+    r = t.bridge_call("jawa/weather_get")
+    if not _live(t):
+        return 0
+    return sum(1 for c in ((r or {}).get("conditions") or [])
+               if c.get("def") == "WeatherController" and c.get("permanent") and c.get("affectsThisMap", True))
+
+
 def _run_gale(t, x, z):
     """Start a 6000-tick gale, return (weather sequence, ended-log line or None, letters at the end)."""
+    # A leftover permanent WeatherController (a weather lock) is listed ahead of the gale in the map's
+    # conditions and its forced weather shadows the gale's herald/gale weather (the 2026-10-03 run saw
+    # 'Clear' for 4000 ticks, then the gale, and never the herald). Let an unlock take its tick, then refuse
+    # to run on a shadowed map instead of reading a gale that was never in force.
+    t.wait_ticks(2)
+    left = _weather_locks(t)
+    if left:
+        _unmeasured(t, "%d permanent WeatherController condition(s) still force weather after unlock; they "
+                       "shadow the gale's herald/gale weather, so the phases cannot be read" % left)
     before_log = len(_log_lines(t, "dune gale ended")[0])
     before_letters = _letters(t)
     t.bridge_call("jawa/game_condition", action="start", condition="RM_DuneGale", durationTicks=6000)
@@ -1662,6 +1679,9 @@ def gale_chain(t):
             if _gale_incident_ok(t) is not True:
                 _unmeasured(t, "the gale cannot fire with its toggle on: the off arm proves nothing")
             with _setting(t, "galeEnabled", False):
+                # IncidentWorker.CanFireNow caches its result per game tick (lastCheckCanRunTick), and the
+                # game is paused: without one tick the off read returns the on-arm's cached True.
+                t.wait_ticks(1)
                 off = _gale_incident_ok(t)
             if off is not False:
                 _fail("galeEnabled is off and RM_DuneGale still reports canFireNow=%r" % off)
@@ -1690,12 +1710,12 @@ def gale_chain(t):
 
     with _comp(t, "gale_dims_sun_exposure"):
         if _live(t):
-            clear, gale = _STATE.get("gale_clear_exposure"), _STATE.get("gale_exposure")
-            if not isinstance(clear, (int, float)) or not isinstance(gale, (int, float)) or clear < 0.3:
-                _unmeasured(t, "exposure not read in both phases (%r / %r)" % (clear, gale))
-            if gale > 0.5 * clear:
-                _fail("sun exposure in the gale is %.2f against %.2f clear: the gale does not cut the sun "
-                      "(RM_WeatherSenseExtension not applied?)" % (gale, clear))
+            # shadegrid_read returns RM_MapComponent_ShadeGrid.ExposureAt(cell), which does NOT include the
+            # weather factor: RM_WeatherSenseExtension.SunFactor is applied only in ExposureFor(pawn). So a
+            # cell read is 1.00 in a gale by construction. No bridge tool reads pawn exposure.
+            _unmeasured(t, "shadegrid_read reads cell exposure, which excludes the gale's sun factor "
+                           "(applied per pawn in ExposureFor); no tool reads pawn exposure, so the dimming "
+                           "cannot be measured here")
 
     with _comp(t, "gale_emergence_off_quiet", toggle="emergenceEnabled"):
         if _live(t):
@@ -1748,6 +1768,7 @@ def devil_chain(t):
                 _unmeasured(t, "the dust devil incident cannot fire with its toggle on (weather, or no "
                                "free cell): the off arm proves nothing")
             with _setting(t, "dustDevilsEnabled", False):
+                t.wait_ticks(1)   # CanFireNow is cached per game tick (see the gale arm)
                 off = can()
             if off is not False:
                 _fail("dustDevilsEnabled is off and RM_DustDevil still reports canFireNow=%r" % off)
@@ -1822,6 +1843,14 @@ def eruption_chain(t):
     with _comp(t, "eruption_tunnel_then_mound"):
         if _live(t):
             before = _letters(t)
+            # IncidentWorker.CanFireNow refuses every ThreatBig while TicksGame < newWanderersCreatedTick +
+            # 300000 (RimSage-read), and fire_incident passes unforced parms. A young test game is therefore a
+            # precondition failure of the harness, not an eruption defect: say so instead of failing.
+            dry = _ok(t.bridge_call("jawa/fire_incident", incidentDef="RM_SandBusterEruption", points=800,
+                                    dryRun=True), "fire_incident dryRun")
+            if dry.get("canFireNow") is not True and (dry.get("ticksGame") or 0) < 300000:
+                _unmeasured(t, "the engine refuses ThreatBig incidents before game tick 300000 and this game is at "
+                               "tick %s; fire_incident cannot force it" % dry.get("ticksGame"))
             r = t.bridge_call("jawa/fire_incident", incidentDef="RM_SandBusterEruption", points=800)
             _ok(r, "fire_incident RM_SandBusterEruption")
             tun = _count(t, "RM_SandBusterTunnel")
@@ -1883,8 +1912,13 @@ def horizon_chain(t):
                                    "%s" % str(r)[:200])
                 warn = [l for l in _new_letters(before, _letters(t)) if l[0].startswith("Dust on the horizon")]
                 early = set(_foreign(t)) - ids0
-                t.wait_ticks(1500)
-                late = set(_foreign(t)) - ids0
+                # the delay is 0.5 h = 1250 ticks; poll to 4000 so a slow queue tick is not read as "lost"
+                late = set()
+                for _ in range(8):
+                    t.wait_ticks(500)
+                    late = set(_foreign(t)) - ids0
+                    if late:
+                        break
             _note(t, "horizon letters / pawns at once / pawns after the delay", [[l[0] for l in warn],
                                                                               len(early), len(late)])
             if not warn:
