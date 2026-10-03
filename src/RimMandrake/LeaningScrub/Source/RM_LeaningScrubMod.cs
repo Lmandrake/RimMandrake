@@ -75,6 +75,8 @@ namespace RimMandrake.LeaningScrub
         public static bool sweetlineStationsEnabled = true;
         public static bool sweetlineVisitorsEnabled = true;
         public static float sweetlineVisitIntervalDays = 8f;
+        // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
+        public static bool visslerArmFoodEnabled = true;
 
         private static Vector2 scroll;
         private static float viewHeight = 900f;
@@ -109,6 +111,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineStationsEnabled, "sweetlineStationsEnabled", true, true);
             Scribe_Values.Look(ref sweetlineVisitorsEnabled, "sweetlineVisitorsEnabled", true, true);
             Scribe_Values.Look(ref sweetlineVisitIntervalDays, "sweetlineVisitIntervalDays", 8f, true);
+            Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -213,6 +216,11 @@ namespace RimMandrake.LeaningScrub
                 list.Label("Days between visits (average): " + sweetlineVisitIntervalDays.ToString("F0"));
                 sweetlineVisitIntervalDays = Mathf.Round(list.Slider(sweetlineVisitIntervalDays, 2f, 30f));
             }
+
+            list.CheckboxLabeled("Vissler arms are carrion", ref visslerArmFoodEnabled,
+                "A shed vissler arm is meat: hungry wild predators, scavengers and omnivores come "
+                + "to it and eat it, and it rots in about six days. Off: arms are inedible trade goods "
+                + "that never rot (the arm's rot timer is a def field; off stops the eating only).");
 
             viewHeight = list.CurHeight + 20f;
             list.End();
