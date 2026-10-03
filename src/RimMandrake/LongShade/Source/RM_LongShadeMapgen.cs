@@ -28,7 +28,7 @@ namespace RimMandrake.LongShade
     // ════════════════════════════════════════════════════════════════════
     public static class RM_LongShadeMapgen
     {
-        public static bool CreatureBehaviorsActive => ModsConfig.IsActive("mandrake.rm.creaturebehaviors");
+        public static bool CreatureBehaviorsActive => ModsConfig.IsActive("mandrake.rm.biomes") || ModsConfig.IsActive("mandrake.rm.creaturebehaviors");
 
         public sealed class Survey
         {

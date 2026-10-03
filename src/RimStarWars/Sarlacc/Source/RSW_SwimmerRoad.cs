@@ -85,7 +85,7 @@ namespace RimMandrake.StarWars.Sarlacc
             return map?.GetComponent<RSW_MapComponent_SwimmerRoad>();
         }
 
-        public static bool CreatureBehaviorsActive => ModsConfig.IsActive("mandrake.rm.creaturebehaviors");
+        public static bool CreatureBehaviorsActive => ModsConfig.IsActive("mandrake.rm.biomes") || ModsConfig.IsActive("mandrake.rm.creaturebehaviors");
 
         public bool IsRoadSwimmer(Pawn p)
         {

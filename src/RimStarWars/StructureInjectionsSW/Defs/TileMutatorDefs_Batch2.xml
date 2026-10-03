@@ -15,7 +15,7 @@
     <!-- STILLSAND_SKELETONS_TRACKS_1 §6: also the Stillsand (the RM biome that is the deep desert). -->
     <biomeWhitelist>
       <li>ExtremeDesert</li>
-      <li MayRequire="mandrake.rm.stillsand">RM_Stillsand</li>
+      <li MayRequire="mandrake.rm.biomes">RM_Stillsand</li>
     </biomeWhitelist>
     <extraGenSteps>
       <li>RSW_GenStep_KraytGraveyard</li>

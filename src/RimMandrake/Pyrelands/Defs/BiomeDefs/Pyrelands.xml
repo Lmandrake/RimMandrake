@@ -93,7 +93,7 @@
            below 55 deg the cover that counts is lowSun's (lee/rock), above it roofs and parasols count.
            heatOffsetC is the offset at the substellar point, scaled by sin(elevation). Modest on purpose: the
            biome is already ~54 C median. Invented first value, tuned in live play. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
         <heatKind>overhead</heatKind>
         <heatOffsetC>10</heatOffsetC>
         <heatScalesWithElevation>true</heatScalesWithElevation>

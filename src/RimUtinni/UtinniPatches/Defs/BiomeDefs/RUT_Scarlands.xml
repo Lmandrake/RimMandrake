@@ -204,7 +204,7 @@
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>  <!-- rimclaw - weapon-descendant, keep -->
       <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>  <!-- helixien - mortuary-guild, adjust-keep (interim; RM_Pallbearer below is the dedicated body) -->
       <SW_Juggernautbeetles MayRequire="who.vfee.isopodageneline">0.05</SW_Juggernautbeetles>  <!-- Juggernautbeetles - weapon-descendant, keep -->
-      <RM_Pallbearer MayRequire="mandrake.rm.warscar">0.06</RM_Pallbearer>  <!-- pallbearer: RUT_MortuaryCrawler retired, WARSCAR_FREE_TIER_BODY_1 (moved to RM tier) -->
+      <RM_Pallbearer MayRequire="mandrake.rm.biomes">0.06</RM_Pallbearer>  <!-- pallbearer: RUT_MortuaryCrawler retired, WARSCAR_FREE_TIER_BODY_1 (moved to RM tier) -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

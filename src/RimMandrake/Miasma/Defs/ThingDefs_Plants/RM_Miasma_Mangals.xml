@@ -54,7 +54,7 @@
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
         <pollinatorRace>RM_FeverSwarm</pollinatorRace>
       </li>
     </modExtensions>
@@ -130,7 +130,7 @@
       <wildClusterRadius>-1</wildClusterRadius>
     </plant>
     <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
         <pollinatorRace>RM_FeverSwarm</pollinatorRace>
       </li>
     </modExtensions>
