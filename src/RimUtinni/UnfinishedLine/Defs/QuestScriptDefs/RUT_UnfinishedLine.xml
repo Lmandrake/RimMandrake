@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  THE UNFINISHED LINE — UNFINISHED_LINE_SPINE_COUNT_1 (split from DROID_MASS_PRODUCTION_QUEST_CHAIN_1).
+  Design: design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md, owner rulings
+  2026-10-03 on the item (payoff = a working line with shared fruits; Hive truce AND per-beat
+  goodwill; sell-out in beat 3; separate from but linked to the Geonosian Alliance arc).
+
+  THE SPEC (rimworld-quests §2), for the chain as a whole:
+    ask       repair, broker, salvage, supply and defend a droid line neither ally can build alone
+    reason    the Enclaves cannot replace a single fallen droid; the Hive's queen cannot bear work
+              left undone
+    choice    beat 1: your own good parts or worn ones; beat 2: where the line stands; beat 3: sell
+              the pattern cores
+    failure   each beat can fail survivably and is offered again; too many failures of one beat
+              breaks the chain with no verdict; the Enclaves turning on you fails it
+    reward    Enclave reputation, the construction branch, a line that runs in the world (later beats)
+    deadline  every beat carries a shown timer; between beats the spine waits the Mod Setting
+
+  FIRING: route 2. RUT_UnfinishedLine_Offer (IncidentDefs) is the only way in; this def is
+  isRootSpecial with weight 0 because an incident-given QuestScriptDef with a non-zero root weight
+  is a hard ConfigError. Dev mode -> Debug actions -> Quests -> "Offer The Unfinished Line (skip
+  gates)" for testing; never wait for the storyteller.
+
+  SHAPE: Relic Hunt's (QuestNode_Root_RelicHunt + QuestPart_SubquestGenerator, decompiled 1.6) with
+  the random pick replaced by an ordered one (QuestPart_RUT_SequentialSubquests). Children carry
+  epicParent so the quest tab nests them. Only BUILT beats are listed in <beats>; the chain is 5
+  long and idles after the last built beat.
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_UnfinishedLine</defName>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>10~15</expireDaysRange>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Unfinished Line</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A message from [enclaveFaction_name], relayed three times through droids who do not trust radio. It is short, and it is not a request yet.\n\nNobody on this world makes droids. [hiveFaction_name] know how: the factory patterns sit in their databases, left there by the company that bought them and then walked away. But they are workers left behind at a factory, not a whole people, and they cannot run the line they remember.\n\n[enclaveFaction_name] are escaped droids. They mend each other and nothing else. Every one of them that falls stays fallen.\n\nThe two are allies, and neither can do this alone. Neither will let the other hold it. The Jawa fix droids for anyone, and belong to neither. If you answer, they will come to you, one step at a time.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_QuestUnique">
+          <tag>RUT_UnfinishedLine</tag>
+        </li>
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>enclaveSettlement</storeSettlementAs>
+        </li>
+
+        <!-- The spine. Enabled on acceptance (the ambient inSignal is the quest's Initiate signal),
+             offers beats in order, and names its two out-signals here so the endings below can be
+             edited without a rebuild. -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_UnfinishedLineSpine">
+          <beats>
+            <li>RUT_UnfinishedLine_1_Count</li>
+          </beats>
+          <totalBeats>5</totalBeats>
+          <outSignalComplete>ChainComplete</outSignalComplete>
+          <outSignalBroken>ChainBroken</outSignalBroken>
+        </li>
+
+        <!-- The line is finished. The epilogue (UNFINISHED_LINE_FIRSTLIGHT_BEAT_1) replaces this
+             plain ending with the Unbolting letter and the reputation payoff. -->
+        <li Class="QuestNode_End">
+          <inSignal>ChainComplete</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+
+        <!-- One beat failed more times than the setting allows. Nobody betrayed anybody: the work
+             simply did not get done, so no verdict and no reputation beyond what the beats cost. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>ChainBroken</inSignal>
+          <label TKey="LetterLabelLineBroken">The line stays unfinished</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextLineBroken">[enclaveFaction_name] have stopped sending messages about the line. Nobody blames anyone out loud. The patterns stay in [hiveFaction_name]'s databases, and the fallen stay fallen.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>ChainBroken</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>enclaveFaction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!--
+    BEAT 1 — "The Count" (design §2.1). Built on DroidRepairJobs' shipped machinery
+    (Quest_DroidRepairJob.xml, whose provenance block cites the vanilla source of every node shape
+    used here), with the customer fixed to the Enclaves, three droids instead of one, and
+    gradeAllDroids so the job is judged by the worst droid that walks out.
+
+    SPEC: ask - three badly damaged Enclave droids, back on their feet within 6 days.
+          reason - the count: "forty-one of us fell this year; none were replaced; none can be".
+          choice - your own good parts (cost you, buy goodwill) or worn ones (cheap, the droids
+                   leave with the worn-part quirks and the Enclaves remember).
+          failure - untouched (-5), one lost on the bench (-15), one kept as property (-25); the
+                   spine offers the beat again.
+          reward - goodwill by tier, parts reimbursed in silver per droid; R-41 Rell asks the question.
+          deadline - 6 days, the quest's own shown timer.
+    The droid KINDS are Droidworks civilian kinds, as in the repair job: the Enclave faction's own
+    kinds still MayRequire Droid Depot (C1/C2 of DROID_UNIFIED_FRAMEWORK_DESIGN.md), so they are not
+    relied on here. The faction they belong to is the Enclaves'.
+  -->
+  <QuestScriptDef>
+    <defName>RUT_UnfinishedLine_1_Count</defName>
+    <epicParent>RUT_UnfinishedLine</epicParent>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>4~6</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Count</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A protocol droid from [settlement_label] is walking three of [enclaveFaction_name]'s fallen across the flats to your shop. It has asked you to listen to one sentence before you decide.\n\n"Forty-one of us fell this year. None were replaced. None can be."\n\nThe three it brings are not beyond saving, only beyond the Enclaves' own hands. They will stay with you for [jobTicks_duration]. Fit each of them a part at a repair bench.\n\nThey are not paying for the work; they are paying back the parts, [payHonest_money] a droid for a standard part, [payFine_money] for a better one, [payShoddy_money] for a worn one. The Enclaves will judge the job by the worst of the three that walks out.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_GetWalkInSpot" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>settlement</storeSettlementAs>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>jobTicks</name>
+          <value>360000</value>
+        </li>
+
+        <!-- Unscaled defaults; QuestNode_DroidRepairJob overwrites them with the scaled values.
+             They exist so a failure in that node costs accurate numbers, not the whole text. -->
+        <li Class="QuestNode_Set">
+          <name>payHonest</name>
+          <value>200</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>payFine</name>
+          <value>320</value>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>payShoddy</name>
+          <value>80</value>
+        </li>
+
+        <!-- Three droids, one RandomNode each so the trio varies. addToList, so the object
+             signals below hang on the list var. -->
+        <li Class="QuestNode_RandomNode">
+          <nodes>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_T3UD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_R8009UD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_GE3LD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidGood_3C</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+          </nodes>
+        </li>
+        <li Class="QuestNode_RandomNode">
+          <nodes>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_T3UD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_R8009UD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_GE3LD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidGood_3C</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+          </nodes>
+        </li>
+        <li Class="QuestNode_RandomNode">
+          <nodes>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_T3UD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_R8009UD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidColonist_GE3LD</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+            <li Class="QuestNode_GeneratePawn"><kindDef>RSW_DW_KotORDroidGood_3C</kindDef><faction>$enclaveFaction</faction><addToList>lodgers</addToList><ensureNonNumericName>true</ensureNonNumericName></li>
+          </nodes>
+        </li>
+
+        <li Class="QuestNode_ExtraFaction">
+          <faction>$enclaveFaction</faction>
+          <pawns>$lodgers</pawns>
+          <factionType>HomeFaction</factionType>
+        </li>
+
+        <!-- DroidRepairJobs' verb: breaks the droids, writes the fees, grades at PickupDue.
+             gradeAllDroids: the WORST droid's tier decides, and the fee is paid per droid. -->
+        <li Class="RimMandrake.Utinni.DroidRepairJobs.QuestNode_DroidRepairJob">
+          <inSignal>PickupDue</inSignal>
+          <droids>$lodgers</droids>
+          <customer>$enclaveFaction</customer>
+          <basePayment>200</basePayment>
+          <gradeAllDroids>true</gradeAllDroids>
+          <faultHediff>RUT_DroidJobFault</faultHediff>
+          <inferiorHediffs>
+            <li>RSW_DW_PartEffect_Leg_Inferior</li>
+            <li>RSW_DW_PartEffect_Manipulator_Inferior</li>
+            <li>RSW_DW_PartEffect_Sensor_Inferior</li>
+            <li>RSW_DW_PartEffect_Motivator_Inferior</li>
+            <li>RSW_DW_PartEffect_Servo_Inferior</li>
+          </inferiorHediffs>
+          <standardHediffs>
+            <li>RSW_DW_PartEffect_Leg_Standard</li>
+            <li>RSW_DW_PartEffect_Manipulator_Standard</li>
+            <li>RSW_DW_PartEffect_Sensor_Standard</li>
+            <li>RSW_DW_PartEffect_Motivator_Standard</li>
+            <li>RSW_DW_PartEffect_Servo_Standard</li>
+          </standardHediffs>
+          <superiorHediffs>
+            <li>RSW_DW_PartEffect_Leg_Superior</li>
+            <li>RSW_DW_PartEffect_Manipulator_Superior</li>
+            <li>RSW_DW_PartEffect_Sensor_Superior</li>
+            <li>RSW_DW_PartEffect_Motivator_Superior</li>
+            <li>RSW_DW_PartEffect_Servo_Superior</li>
+          </superiorHediffs>
+          <outSignalFine>WorkFine</outSignalFine>
+          <outSignalHonest>WorkHonest</outSignalHonest>
+          <outSignalShoddy>WorkShoddy</outSignalShoddy>
+          <outSignalNeglected>WorkNeglected</outSignalNeglected>
+        </li>
+
+        <li Class="QuestNode_PawnsArrive">
+          <pawns>$lodgers</pawns>
+          <joinPlayer>true</joinPlayer>
+          <customLetterLabel TKey="LetterLabelLineCountArrived">The Count: three of the fallen</customLetterLabel>
+          <customLetterText TKey="LetterTextLineCountArrived">[lodgers0_nameDef] and two others came in carried as much as walking. The protocol droid that brought them did not come in. It said it would be back in [jobTicks_duration], and that it was counting.\n\nOpen each panel at a repair bench and fit a part. Which parts is your business; the Enclaves will see what walks out.</customLetterText>
+        </li>
+
+        <li Class="QuestNode_LeaveOnCleanup">
+          <pawns>$lodgers</pawns>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$jobTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringLineCountTimeLeft">The Enclaves return in: {0}</inspectString>
+          <outSignalComplete>PickupDue</outSignalComplete>
+        </li>
+
+        <!-- Your own good parts. The protocol droid notes it, and Rell asks the question. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkFine</inSignal>
+          <label TKey="LetterLabelLineCountFine">The Count: they remember the parts</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineCountFine">The three walked out on better parts than the Enclaves have fitted anyone in years. The protocol droid ran a diagnostic on each, twice, and logged the result to [enclaveFaction_name] before it said anything to you.\n\nThen it gave you a second message, from the First Speaker, R-41 Rell. [hiveFaction_name] hold the patterns for making bodies. Would the Jawa carry the Enclaves' word to them?</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkFine</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>15</change>
+          <reason>RUT_LineCountFineParts</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkFine</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkHonest</inSignal>
+          <label TKey="LetterLabelLineCountHonest">The Count: three walk home</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineCountHonest">The three walked out straight and cycling clean. The protocol droid counted them, and then counted them again.\n\nIt carried a second message, from the First Speaker, R-41 Rell. [hiveFaction_name] hold the patterns for making bodies. Would the Jawa carry the Enclaves' word to them?</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkHonest</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>10</change>
+          <reason>RUT_LineCountHonestParts</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkHonest</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- Scrounged parts: a real, cheap answer, and the worn-part quirks go home with them. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkShoddy</inSignal>
+          <label TKey="LetterLabelLineCountShoddy">The Count: they walk, on worn parts</label>
+          <letterDef>NeutralEvent</letterDef>
+          <text TKey="LetterTextLineCountShoddy">The three walk. At least one of them walks the way scrap walks. The protocol droid logged every part number before it left, and said nothing about them.\n\nIt still carried the First Speaker's message, because there is nobody else to carry it to. [hiveFaction_name] hold the patterns for making bodies. Would the Jawa carry the Enclaves' word to them?</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkShoddy</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>5</change>
+          <reason>RUT_LineCountWornParts</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkShoddy</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>WorkNeglected</inSignal>
+          <label TKey="LetterLabelLineCountNeglected">The Count: nothing changed</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextLineCountNeglected">The protocol droid collected the three as they came in. It did not ask why. The count stands where it stood.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>WorkNeglected</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>-5</change>
+          <reason>RUT_LineCountNeglected</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>WorkNeglected</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- Kept as property: to the Enclaves this is slavery (04_factions.md §5). -->
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Arrested</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineCountKept">The Count: one more fallen</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextLineCountKept">[enclaveFaction_name] brought you their fallen and you kept one. They have a word for what you are now, and they will use it.</text>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <change>-25</change>
+                <faction>$enclaveFaction</faction>
+                <reason>RUT_LineCountDroidKept</reason>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>lodgers.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineCountLost">The Count: forty-two</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextLineCountLost">One of the three did not survive your shop. The protocol droid updated its count in front of you.</text>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <change>-15</change>
+                <faction>$enclaveFaction</faction>
+                <reason>RUT_LineCountDroidLost</reason>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>lodgers.LeftMap</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>enclaveFaction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UNFINISHED_LINE_SPINE_COUNT_1. Route 2 (rimworld-quests §7): a dedicated GiveQuest incident.
+     The quest it gives is isRootSpecial with rootSelectionWeight 0, which is mandatory: an IncidentDef
+     with questScriptDef AND a non-zero root weight is a hard ConfigError (IncidentDef.cs:235).
+     The worker adds the gates vanilla cannot express (goodwill, research, settlements, day, setting).
+     minRefireDays 9999: the chain is told once per game. Inherits Core's GiveQuestBase
+     (Data/Core/Defs/Storyteller/Incidents_World_Quests.xml: World target, NewQuest letter); the
+     storyteller's GiveQuest category comps then pick it like any other quest incident. -->
+<Defs>
+  <IncidentDef ParentName="GiveQuestBase">
+    <defName>RUT_UnfinishedLine_Offer</defName>
+    <label>the unfinished line</label>
+    <letterLabel>The Unfinished Line</letterLabel>
+    <workerClass>RimMandrake.Utinni.UnfinishedLine.IncidentWorker_RUT_UnfinishedLine</workerClass>
+    <questScriptDef>RUT_UnfinishedLine</questScriptDef>
+    <baseChance>1.5</baseChance>
+    <minRefireDays>9999</minRefireDays>
+  </IncidentDef>
+</Defs>

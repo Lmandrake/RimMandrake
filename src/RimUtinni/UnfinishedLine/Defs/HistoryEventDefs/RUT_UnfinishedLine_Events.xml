@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UNFINISHED_LINE_SPINE_COUNT_1. Goodwill reasons for The Unfinished Line, beat 1 "The Count".
+     A HistoryEventDef is the line the faction tab shows beside the number: one defName, one label. -->
+<Defs>
+  <HistoryEventDef>
+    <defName>RUT_LineCountFineParts</defName>
+    <label>fitted their fallen with your own good parts</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCountHonestParts</defName>
+    <label>sent three of their fallen home walking</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCountWornParts</defName>
+    <label>sent their fallen home on worn parts</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCountNeglected</defName>
+    <label>left their fallen untouched</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCountDroidLost</defName>
+    <label>lost one of their fallen on the bench</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCountDroidKept</defName>
+    <label>kept one of their people as property</label>
+  </HistoryEventDef>
+</Defs>
