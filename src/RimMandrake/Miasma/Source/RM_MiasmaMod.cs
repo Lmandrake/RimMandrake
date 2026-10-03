@@ -72,12 +72,18 @@ namespace RimMandrake.Miasma
         public static bool flotsamEnabled = true;
         public static float flotsamAmount = 1f;
 
+        // MIASMA_DECAY_CELLS_1: the old meter appears on Miasma maps, and built decay cells make power.
+        public static bool decayCellsEnabled = true;
+        public static float decayCellPowerMultiplier = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref youngCallEnabled, "youngCallEnabled", true, true);
             Scribe_Values.Look(ref flotsamEnabled, "flotsamEnabled", true, true);
             Scribe_Values.Look(ref flotsamAmount, "flotsamAmount", 1f, true);
+            Scribe_Values.Look(ref decayCellsEnabled, "decayCellsEnabled", true, true);
+            Scribe_Values.Look(ref decayCellPowerMultiplier, "decayCellPowerMultiplier", 1f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref wardenSuccessionEnabled, "wardenSuccessionEnabled", true, true);
             Scribe_Values.Look(ref selfTameChancePerCheck, "selfTameChancePerCheck", 0.12f, true);
@@ -174,6 +180,19 @@ namespace RimMandrake.Miasma
                 "Delta silt and salt refine into attar at the attar still. Glazing raises an artwork's beauty; balm "
                 + "fades one scar and heals nothing else. Off: the still's recipe is hidden and glaze and balm cannot "
                 + "be used (glazed artworks lose the bonus). Attar already made stays in the world.");
+
+            list.GapLine();
+            list.CheckboxLabeled("Decay cells: power from rot",
+                ref decayCellsEnabled,
+                "An old meter still reading current lies in a compost bed on each new Miasma map; analyzing it unlocks "
+                + "the decay cell research. A built cell fed rotting goods makes power, less as the feed runs down, and "
+                + "a cell that has digested its lifetime of feed becomes a rotting bed. Off: no meter is placed and "
+                + "cells make no power (built ones stay).");
+            if (decayCellsEnabled)
+            {
+                list.Label("  Power: " + decayCellPowerMultiplier.ToStringPercent());
+                decayCellPowerMultiplier = list.Slider(decayCellPowerMultiplier, 0.25f, 2f);
+            }
 
             list.End();
         }

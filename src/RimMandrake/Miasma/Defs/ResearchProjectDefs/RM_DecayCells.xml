@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MIASMA_DECAY_CELLS_1: learned only by analyzing the old meter (RM_OldCurrentMeter) found in a Miasma compost
+     bed: vanilla requiredAnalyzed + CompAnalyzableUnlockResearch, the Biotech signal-chip route (RimSage-read
+     ResearchProjectDef.cs; Biotech is always present by ruling). Buildable anywhere after. -->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_DecayCells</defName>
+    <label>decay cells</label>
+    <description>Bury plates of silt and salt in a bed of delta loam, feed it rot, and the bed hums with current, the way the old meter in the Miasma's compost said it would. Lets you build decay cells.</description>
+    <baseCost>700</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Electricity</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_OldCurrentMeter</li>
+    </requiredAnalyzed>
+    <researchViewX>5.00</researchViewX>
+    <researchViewY>6.40</researchViewY>
+  </ResearchProjectDef>
+</Defs>

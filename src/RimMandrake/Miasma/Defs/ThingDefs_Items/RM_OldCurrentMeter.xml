@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MIASMA_DECAY_CELLS_1: the old meter still reading current, half-buried in a Miasma compost bed
+     (RM_MapComponent_DecayMeter places one per new Miasma map). Analyze it to unlock RM_DecayCells. ART: placeholder
+     vanilla signal-chip texture, brass-tinted. analysisID is ours, chosen not to collide with Biotech's three. -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_OldCurrentMeter</defName>
+    <label>old current meter</label>
+    <description>A brass-cased meter wired to two corroded plates, dug out of a heap of rotting delta loam. Its needle still twitches. Somebody once drew power out of rot here, and the meter remembers how.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/SignalChip</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(190,150,80)</color>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <tradeNeverStack>true</tradeNeverStack>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <MarketValue>60</MarketValue>
+      <Mass>1.2</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <analysisID>618440213</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <analysisDurationHours>1</analysisDurationHours>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <completedLetterLabel>Old meter read: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} traced the old meter's wiring back to its plates and worked out what the bed was for.\n\nYour researchers can now research {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Analyze...</activateLabelString>
+        <activateDescString>Work out what the old meter was measuring.</activateDescString>
+        <jobString>Analyze the old meter</jobString>
+        <guiLabelString>Choose who should analyze this</guiLabelString>
+        <inspectString>Can be analyzed by a colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

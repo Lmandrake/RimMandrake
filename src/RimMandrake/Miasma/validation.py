@@ -21,9 +21,9 @@ DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTame
             "plantPredationEnabled": True, "pollinationGateEnabled": True,
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
             "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True,
-            "attarEnabled": True}
+            "attarEnabled": True, "decayCellsEnabled": True, "decayCellPowerMultiplier": 1.0}
 NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
-       "ambushFrogHunts", "attarEnabled", "youngCallEnabled"]
+       "ambushFrogHunts", "attarEnabled", "youngCallEnabled", "decayCellsEnabled", "decayCellPowerMultiplier"]
 
 
 def static_checks():
@@ -159,13 +159,37 @@ def static_checks():
               "Item/Resource/RM_DeltaLoam/RM_DeltaLoam_a.png"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", *t.split("/"))):
             bad.append("missing texture " + t)
+    # MIASMA_DECAY_CELLS_1 part A
+    dc = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_DecayCell.xml"), encoding="utf-8").read()
+    for d in ("RM_DecayCell", "RM_RottingBed"):
+        if dc.count("<defName>%s</defName>" % d) != 1:
+            bad.append("%s ThingDef missing or duplicated" % d)
+    for needle in ("RM_CompPowerPlantDecay", "<spentDef>RM_RottingBed</spentDef>", "<li>RM_DecayCells</li>",
+                   "<RM_DeltaLoam>", "<RM_DeltaSalt>"):
+        if needle not in dc:
+            bad.append("RM_DecayCell lacks %s" % needle)
+    rp = open(os.path.join(HERE, "Defs", "ResearchProjectDefs", "RM_DecayCells.xml"), encoding="utf-8").read()
+    if "<li>RM_OldCurrentMeter</li>" not in rp:
+        bad.append("RM_DecayCells is not gated on analyzing the old meter")
+    mt = open(os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_OldCurrentMeter.xml"), encoding="utf-8").read()
+    if "CompProperties_CompAnalyzableUnlockResearch" not in mt or "<requiresMechanitor>false" not in mt:
+        bad.append("old meter is not analyzable by any colonist")
+    cs = open(os.path.join(HERE, "Source", "RM_DecayCells.cs"), encoding="utf-8").read()
+    for needle in ("decayCellsEnabled", "decayCellPowerMultiplier", "BecomeRottingBed", "RM_OldCurrentMeter"):
+        if needle not in cs:
+            bad.append("RM_DecayCells.cs lacks %s" % needle)
+    # output curve, mirrored from DecayCellMath.OutputFraction (lerp(min, 1, fullness), 0 when empty)
+    def frac(full, mn=0.3):
+        return 0.0 if full <= 0 else mn + (1 - mn) * min(1.0, full)
+    if not (frac(0) == 0 and abs(frac(0.01) - 0.307) < 1e-3 and frac(1) == 1 and frac(0.5) < frac(1)):
+        bad.append("decay output curve: empty must be 0 and output must fall as feed is spent")
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Miasma")
-    suite.toggles = ["youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
+    suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL) via the harness's upstream_failed route."""
@@ -226,6 +250,15 @@ def _build_suite():
             _unmeasured(t, "jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
                              "recede on a free-only tier stranding at least one of them (spawn many), need "
                              "a live Miasma map with the bridge")
+            return
+
+    @suite.chain("decay_cells")
+    def decay_cells(t):
+        with t.component("cell_powers_then_rots", toggle="decayCellsEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "a fed RM_DecayCell lighting a lamp, output falling to 0 unfed, and a cell past "
+                             "600 digested swapping to RM_RottingBed need a live map (spawn the cell, refuel, step ticks)")
             return
 
     @suite.chain("young_call")
