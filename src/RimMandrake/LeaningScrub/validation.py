@@ -1197,7 +1197,9 @@ def sweetline_chain(t):
         # 19 cells off -> recovery and re-roost once the bar drains under 30%; Hunt on a sleeper (UNMEASURED).
         with _comp(t, "guardians_roost_on_spawn", toggle="sweetlineGuardiansEnabled"):
             if _live(t):
-                wardens = _things(t, "RM_Barkwarden", "%d,%d,9,9" % (x - 4, z - 4))
+                # a warden is a PAWN: jawa/list_things does not list pawns (list_pawns carries kindDef), so the first live
+                # run read 0 wardens whether or not any roosted (2026-10-03)
+                wardens = [w for w in _rows(t, "%d,%d,9,9" % (x - 4, z - 4)).values() if w.get("kindDef") == "RM_Barkwarden"]
                 _note(t, "bark-wardens within 4 of a fresh sweetline tree", [w.get("id") for w in wardens])
                 if not 2 <= len(wardens) <= 3:
                     _fail("a freshly spawned sweetline tree roosts %d bark-wardens (expect 2-3)" % len(wardens))

@@ -24,3 +24,15 @@
 - 11:51:37 round2 start: closing game (load4 stale), build companion, deploy once src/Greentide stops being mid-edit
 - 12:03:26 deployed plain+biomes --prune (UtinniStatues skipped, builder mid-edit), companion rebuilt, ModsConfig 635 incl FallLineArrivals; launching load 5
 - 12:04:02 detectors.py: ambient weather hediffs (SheenCoating/HazeFilm/GaleDeafened) no longer colonist_injured_unexpectedly; selftest 96/96. load 5 in progress
+- 12:14:01 load5 still loading; offline: BlueDesert charge_comps_wired generic-comp name check + Cauldron suush diagnosis prepped
+- 12:19:08 filed WEEPINGSTONES_NET_TARGET_FLEES_1 (BENCH decision) 28bfb7dab; load5 still loading
+- 12:24:33 load5 loading (log 2.6MB)
+- 12:25:30 load5 UP 12:24; harvest5: BrainWorms hediff still discarded (li shape wrong both ways; fixed no-li, deployed, needs restart), dead ctor JumppackForMeleeAI (donor). starting rerun7
+- 12:30:03 rerun7 running (Cauldron,LeaningScrub,BlueDesert,WeepingStones,TheForge,Bacta) in bg
+- 12:34:21 rerun7 in progress; Cauldron suush: melee Cut2 control dies at +400t with fires (real finding: melee kills/detonates suush?) to poke after batch
+- 12:38:54 rerun7 still running (LeaningScrub stage)
+- 12:43:36 rerun7 BlueDesert stage
+- 12:43:58 KILLED rerun7: quicktest map carried RM_WS_TerminatorFront (roof collapse, fires, Sheen lock) -> env surprises; rerunning with --bland-world. Also: runner weather_set lockWeather leaks dozens of WeatherController conditions per suite
+- 12:52:24 rerun8 (--bland-world w/ ZBiome_Grasslands added to bland_world DRY_BIOMES) running
+- 12:53:19 load5 WEDGED: bland_world destroy-ruins on 2nd map -> RimWorldRealFoW IndexOutOfRange every Update; step_game_ticks fails on every map. Relaunching load 6 without mlie.nwnrealfogofwar in ModsConfig; ZBiome_Grasslands bland tile kept
+- 13:00:07 load6 launched 12:59:40 (no RealFoW, 634 mods); committing lessons + LeaningScrub warden check fix (pawn rows)
