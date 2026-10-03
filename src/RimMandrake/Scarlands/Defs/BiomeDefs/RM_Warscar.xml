@@ -83,6 +83,7 @@
       <li>RM_InscribedPanels</li>
       <li>RM_KneelingRings</li>
       <li>RM_ReactionPools</li>
+      <li>RM_ChotrixOnMap</li>
     </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Chotrix (WARSCAR_CHOTRIX_BUILD_1): the Warscar's invisible hunter. Behaviour is Source/RM_Chotrix.cs.
+  predator=false ON PURPOSE: vanilla predator hunting has no lone-prey gate, so the hunt is its own
+  JobGiver in the RM_Chotrix think tree. Track prints (FOOTPRINT_TRACK_GRID_1) and the tetchik silence ring
+  (WARSCAR_GEIGER_CHOIR_1) are not wired yet; the grid records invisible pawns itself per its spec.
+  Not in any wildAnimals roster: it exists only through the RM_ChotrixOnMap genstep.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Chotrix</defName>
+    <label>chotrix</label>
+    <description>A lean, low, long-limbed scavenger that ate the old line's light-bending lacquer and carries it in its hide. Standing or stalking, it cannot be seen. It shows when it strikes, and for a few seconds after. It goes for lone small animals and lone people in the dark, never a group, and runs after one bite if it is hurt. Its hide still holds lacquer.</description>
+    <statBases>
+      <MoveSpeed>5.2</MoveSpeed>
+      <Wildness>1</Wildness>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MarketValue>150</MarketValue>
+    </statBases>
+    <tools>
+      <li><label>teeth</label><capacities><li>Bite</li></capacities><power>14</power><cooldownTime>1.6</cooldownTime><linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup></li>
+      <li><label>head</label><capacities><li>Blunt</li></capacities><power>3</power><cooldownTime>2</cooldownTime><linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup><chanceFactor>0.2</chanceFactor></li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.Scarlands.CompProperties_Chotrix">
+        <cloakHediff>RM_ChotrixCloak</cloakHediff>
+        <calfPreyDefNames>
+          <li>RM_Tetchik</li>
+          <li>RM_Chatrak</li>
+        </calfPreyDefNames>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <thinkTreeMain>RM_Chotrix</thinkTreeMain>
+      <predator>false</predator>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.7</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Light</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.15</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <RM_CloakLacquer>2</RM_CloakLacquer>
+    </butcherProducts>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Chotrix</defName>
+    <label>chotrix</label>
+    <race>RM_Chotrix</race>
+    <combatPower>70</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chotrix/RM_Chotrix</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chotrix/RM_Chotrix</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Chotrix/RM_Chotrix</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

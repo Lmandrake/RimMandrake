@@ -45,6 +45,7 @@
     <Compile Include="RM_OldTongue.cs" />
     <Compile Include="RM_Hospice.cs" />
     <Compile Include="RM_ReactionPools.cs" />
+    <Compile Include="RM_Chotrix.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

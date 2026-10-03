@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_CHOTRIX_BUILD_1. Both carry stock HediffCompProperties_Invisibility (the RM_AquaticAmbushInvisibility vocabulary). -->
+<Defs>
+  <!-- The chotrix's hide. Hidden from the player too: it is literally unseen until it strikes. -->
+  <HediffDef>
+    <defName>RM_ChotrixCloak</defName>
+    <label>cloaked</label>
+    <description>Light bends around the hide.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>60</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+  <!-- A lacquered cloak's wearer: the player still sees their own pawn (visibleToPlayer true). -->
+  <HediffDef>
+    <defName>RM_LacquerStill</defName>
+    <label>lacquer-cloaked</label>
+    <description>Standing still and unseen under a lacquered cloak. Moving, or being seen, breaks it until the next still moment.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>true</visibleToPlayer>
+        <fadeDurationTicks>45</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>true</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+</Defs>
