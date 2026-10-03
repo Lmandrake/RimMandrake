@@ -80,6 +80,11 @@ namespace RimMandrake.LanternDeeps
         public static bool collapseWarningsEnabled = true;      // live: dust, sand and the grumble before a roof falls
         public static int collapseWarningTicks = 900;           // the warning window
         public static bool galuushRoofFallEnabled = true;       // live: a galuush killed hot brings its roof down
+        // LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1
+        public static bool slickTrailEnabled = true;            // live: slicks leave burning-fuse fuel trails
+        public static bool blinkerFlashEnabled = true;          // live: a hurt blinker flashes and dazzles
+        public static bool knockerAlarmEnabled = true;          // live: knockers drum at a failing roof
+        public static float knockerWarningFactor = 2f;          // a tame knocker lengthens collapse warnings
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -214,6 +219,10 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref collapseWarningsEnabled, "collapseWarningsEnabled", true);
             Scribe_Values.Look(ref collapseWarningTicks, "collapseWarningTicks", 900);
             Scribe_Values.Look(ref galuushRoofFallEnabled, "galuushRoofFallEnabled", true);
+            Scribe_Values.Look(ref slickTrailEnabled, "slickTrailEnabled", true);
+            Scribe_Values.Look(ref blinkerFlashEnabled, "blinkerFlashEnabled", true);
+            Scribe_Values.Look(ref knockerAlarmEnabled, "knockerAlarmEnabled", true);
+            Scribe_Values.Look(ref knockerWarningFactor, "knockerWarningFactor", 2f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -352,6 +361,20 @@ namespace RimMandrake.LanternDeeps
             }
             list.CheckboxLabeled("A galuush killed hot brings its roof down", ref galuushRoofFallEnabled,
                 "On: the galuush's blast brings down the roof over its chamber (after the warning, propped or not). Off: blast and fire only.");
+            list.CheckboxLabeled("Slicks leave fuel trails", ref slickTrailEnabled,
+                "On: every cell a slick crosses is left wet with fuel that does not evaporate in the cold; one spark runs the corridor "
+              + "like a fuse. Off: no trail. Safe mid-game.");
+            list.CheckboxLabeled("A hurt blinker flashes", ref blinkerFlashEnabled,
+                "On: a blinker that is hurt flashes: everything that can see it is dazzled for a few seconds and the chamber is lit "
+              + "for a breath, which draws what light draws. Off: no flash. Safe mid-game.");
+            list.CheckboxLabeled("Knockers drum at a failing roof", ref knockerAlarmEnabled,
+                "On: a knocker that hears a roof failing (during the collapse warning) drums and runs; a tame one names the danger "
+              + "cells and lengthens every warning on its map. Off: they ignore it. Safe mid-game.");
+            if (knockerAlarmEnabled)
+            {
+                list.Label("Warning length with a tame knocker: " + knockerWarningFactor.ToString("0.0") + "x");
+                knockerWarningFactor = list.Slider(knockerWarningFactor, 1f, 4f);
+            }
 
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();

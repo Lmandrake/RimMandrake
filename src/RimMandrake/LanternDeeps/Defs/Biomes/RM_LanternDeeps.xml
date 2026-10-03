@@ -180,6 +180,10 @@
       <RM_Shoal>0.4</RM_Shoal>
       <!-- LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1: the crystal life (the Creep is seeded by RM_DeepCreep, not rostered) -->
       <RM_Cleaver>0.08</RM_Cleaver>
+      <!-- LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1 -->
+      <RM_Slick>0.3</RM_Slick>
+      <RM_Blinker>0.3</RM_Blinker>
+      <RM_Knocker>0.12</RM_Knocker>
     </wildAnimals>
 
     <allowedPackAnimals>

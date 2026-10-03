@@ -8,4 +8,6 @@
   <RM_DeepAuroraText>The aurora is storming overhead, and the Deep feels it through the rock. The lanternstone glows wider, the Chorus rises, and the Cleavers run. Down here it is a feast day.</RM_DeepAuroraText>
   <RM_DeepCollapseWarning>The roof is groaning: dust is trailing down and sand piling below. Prop it, or get clear.</RM_DeepCollapseWarning>
   <RM_DeepCollapseHeld>The groaning stops. The roof holds.</RM_DeepCollapseHeld>
+  <RM_KnockerDrums>{0} is drumming: the roof is failing here. Prop it or get clear.</RM_KnockerDrums>
+  <RM_KnockerDrumText>knock-knock-knock</RM_KnockerDrumText>
 </LanguageData>
