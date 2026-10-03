@@ -2,8 +2,8 @@
 <!--
   ROT_HWELGRUE_GIANT_BUILD_1 — the hwelgrue, the gut that walks. Mechanism in Source/RM_Hwelgrue.cs (read its
   header). Owner, typed 2026-10-02: "a huge slow maggot covered in small wriggling tentacles and eye spots".
-  Body: RM_RotLarvaLike (this mod's own legless larva body; no new BodyDef). Art: artpipe RM_Hwelgrue_east/_south
-  (done); _north failed and is requeued, so south stands in for north until it lands.
+  Body: RM_RotLarvaLike (this mod's own legless larva body; no new BodyDef). Art: artpipe RM_Hwelgrue_east/_south/_north
+  (all done; north wired 2026-10-03).
   Numbers PROPOSED (spec: body ~8, very high health, move ~1.2, hide halves sharp/blunt, fire full).
 -->
 <Defs>
