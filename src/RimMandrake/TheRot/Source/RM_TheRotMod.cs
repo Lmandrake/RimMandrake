@@ -60,6 +60,12 @@ namespace RimMandrake.TheRot
         public static float swallowBellyCutDamage = 150f;
         public static float swallowStrangerChance = 0.15f;
         public static float swallowLoudness = 1f;
+        // ROT_SWALLOWED_NAVIGATOR_1 (Ship section)
+        public static bool navigatorCore = true;
+        public static float navigatorPingHours = 12f;
+        public static float navigatorRangeBonus = 0.25f;
+        public static float navigatorShipDamageFactor = 0.5f;
+        public static float navigatorRuinThreshold = 25f;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -98,6 +104,11 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref swallowBellyCutDamage, "swallowBellyCutDamage", 150f);
             Scribe_Values.Look(ref swallowStrangerChance, "swallowStrangerChance", 0.15f);
             Scribe_Values.Look(ref swallowLoudness, "swallowLoudness", 1f);
+            Scribe_Values.Look(ref navigatorCore, "navigatorCore", true);
+            Scribe_Values.Look(ref navigatorPingHours, "navigatorPingHours", 12f);
+            Scribe_Values.Look(ref navigatorRangeBonus, "navigatorRangeBonus", 0.25f);
+            Scribe_Values.Look(ref navigatorShipDamageFactor, "navigatorShipDamageFactor", 0.5f);
+            Scribe_Values.Look(ref navigatorRuinThreshold, "navigatorRuinThreshold", 25f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -211,6 +222,20 @@ namespace RimMandrake.TheRot
             swallowStrangerChance = list.Slider(swallowStrangerChance, 0f, 1f);
             list.Label("  Knocking loudness: " + swallowLoudness.ToString("0.00") + "x");
             swallowLoudness = list.Slider(swallowLoudness, 0f, 2f);
+            list.GapLine();
+
+            list.Label("Ship: the swallowed navigator");
+            list.CheckboxLabeled("One hwelgrue per world carries an old drive core", ref navigatorCore,
+                "It pings your gravship while it lives; cut out, the core is a facility that multiplies the grav engine's "
+              + "total range. Off: no hwelgrue carries it, no pings, and an installed core adds nothing.");
+            list.Label("  Hours between pings: " + navigatorPingHours.ToString("0"));
+            navigatorPingHours = list.Slider(navigatorPingHours, 1f, 48f);
+            list.Label("  Range bonus at full integrity: +" + (navigatorRangeBonus * 100f).ToString("0") + "% of total range");
+            navigatorRangeBonus = list.Slider(navigatorRangeBonus, 0f, 1f);
+            list.Label("  Core integrity lost per point of ship-weapon damage: " + navigatorShipDamageFactor.ToString("0.00"));
+            navigatorShipDamageFactor = list.Slider(navigatorShipDamageFactor, 0f, 2f);
+            list.Label("  Integrity below which the core comes out ruined: " + navigatorRuinThreshold.ToString("0"));
+            navigatorRuinThreshold = list.Slider(navigatorRuinThreshold, 0f, 90f);
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");

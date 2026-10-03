@@ -81,6 +81,10 @@ VANILLA_PACKED = {
     "Misc/Hiss/HissJet": "vanilla HissJet",
     "Misc/RockCollapse": "vanilla Roof_Collapse",
     "Ambience/Spacedrone_Ambience_Loop_01a": "Ideology SpacedroneIdle_Ambience",
+    # ROT_SWALLOWED_NAVIGATOR_1 RM_CorePing / RM_CoreChirp placeholders (TheRot/Defs/ThingDefs_Buildings/
+    # RM_SwallowedDriveCore.xml); verbatim from the installed Core Building_Sustainers_Ambiences.xml 2026-10-03.
+    "Interact/Work/Scanner/LongRangeMineral/ScannerLongRangeMineral_Ambience_Start": "vanilla ScannerLongRangeMineral_Start",
+    "Interact/Work/Scanner/LongRangeMineral/ScannerLongRangeMineral_Ambience_Stop": "vanilla ScannerLongRangeMineral_Stop",
 }
 
 

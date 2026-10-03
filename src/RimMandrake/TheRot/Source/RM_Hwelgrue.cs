@@ -45,6 +45,10 @@ namespace RimMandrake.TheRot
         public static SoundDef RM_GutKnocking_Weak;
         public static SoundDef RM_GutKnocking_Failing;
         public static SoundDef RM_GutScrabbling;
+        public static SoundDef RM_CorePing;
+        public static SoundDef RM_CoreChirp;
+        public static ThingDef RM_SwallowedDriveCore;
+        public static ThingDef RM_RuinedDriveCore;
 
         static RM_HwelgrueDefOf()
         {

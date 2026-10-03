@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_SWALLOWED_NAVIGATOR_1 (part A). The drive core cut out of the world's one carrier hwelgrue, and its ruin.
+  Mechanism: Source/RM_SwallowedCore.cs. Facility shape copied from Odyssey's FuelOptimizer
+  (Buildings_Gravship.xml: CompProperties_GravshipFacility, requiresLOS false, maxDistance 500, Substructure
+  affordance); fields of GravshipComponentBase copied rather than inherited so this file never names an Odyssey
+  abstract. The range effect is RM_StatPart_SwallowedCore on GravshipRange (Patches/RM_SwallowedCore_Gravship.xml),
+  not a flat statOffset. Art from artpipe (_artsrc RM_SwallowedDriveCore_*, RM_RuinedDriveCore).
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SwallowedDriveCore</defName>
+    <label>swallowed drive core</label>
+    <description>A drive-coil housing from a much older ship's drive, cut out of a hwelgrue and still slick with gut. Installed on gravship substructure it links to the grav engine like any facility, and multiplies the ship's total range by what is left of it: the full bonus at full integrity, less if the ship's own guns were used on the animal that carried it.</description>
+    <graphicData>
+      <texPath>RM_TheRot/Buildings/RM_SwallowedDriveCore</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>20</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <blockWind>true</blockWind>
+    <canOverlapZones>false</canOverlapZones>
+    <terrainAffordanceNeeded>Substructure</terrainAffordanceNeeded>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <genericMarketSellable>false</genericMarketSellable>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>250</MaxHitPoints>
+      <Mass>40</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+      <MarketValue>2500</MarketValue>
+      <WorkToBuild>1500</WorkToBuild>
+    </statBases>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Big</destroySound>
+    </building>
+    <comps>
+      <li Class="CompProperties_GravshipFacility">
+        <requiresLOS>false</requiresLOS>
+        <maxSimultaneous>1</maxSimultaneous>
+        <maxDistance>500</maxDistance>
+      </li>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_DriveCoreIntegrity" />
+    </comps>
+    <tradeability>None</tradeability>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_RuinedDriveCore</defName>
+    <label>ruined drive core</label>
+    <description>What is left of an old drive core after a ship's guns were turned on the hwelgrue that carried it. Scrap now: smelt it for steel and a few components.</description>
+    <graphicData>
+      <texPath>RM_TheRot/Items/RM_RuinedDriveCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <statBases>
+      <MarketValue>200</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>25</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <smeltable>true</smeltable>
+    <smeltProducts>
+      <Steel>60</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </smeltProducts>
+  </ThingDef>
+
+  <!-- PLACEHOLDER AUDIO: vanilla long-range mineral scanner start/stop clips pitched; authored ping owed. -->
+  <SoundDef>
+    <defName>RM_CorePing</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Interact/Work/Scanner/LongRangeMineral/ScannerLongRangeMineral_Ambience_Start</clipPath>
+          </li>
+        </grains>
+        <volumeRange>14~18</volumeRange>
+        <pitchRange>0.55~0.6</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_CoreChirp</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Interact/Work/Scanner/LongRangeMineral/ScannerLongRangeMineral_Ambience_Stop</clipPath>
+          </li>
+        </grains>
+        <volumeRange>12~16</volumeRange>
+        <pitchRange>1.4~1.5</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>
