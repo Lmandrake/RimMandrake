@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.unfinishedline</packageId>
+  <name>RimUtinni: The Unfinished Line</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>Nobody on this planet mass-produces droids. The Geonosian Foundry Hive knows how, and the factory patterns sit latent in their databases, but they are left-behind workers from a factory site, not a whole people, and they cannot run the line. The Free Droid Enclaves need it badly: they are escaped droids who can only repair each other, and every one they lose is lost for good. The Jawa are the only ones who can stand between them.
+
+A five-beat quest chain (design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md). The chain is offered once the Free Droid Enclaves like you (goodwill 20), you can repair droids at a shop, and day 30 has passed. Each beat follows the last after a few days; a failed beat is offered again, and too many failures break the chain.
+
+Built so far: the chain itself, and beat 1, "The Count": three badly damaged Enclave droids brought to your shop. Fit them your own good parts or scrounge worn ones; the Enclaves judge the job by the worst droid that walks out. Later beats (the envoy, the pattern cores, the tithe, first light) are filed and not built yet; the chain waits after beat 1 until they ship.
+
+Mod Settings ("The Unfinished Line"): chain on/off, the goodwill and day gates, days between beats, failures allowed per beat. Dev mode: Debug actions, Quests, "Offer The Unfinished Line (skip gates)" and "offer next beat now".</description>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rut.droidrepairjobs</packageId>
+      <displayName>RimUtinni: Droid Repair Jobs</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rsw.droidworks</packageId>
+      <displayName>Droidworks</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rsw.droidworks</li>
+    <li>mandrake.rut.droidrepairjobs</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>

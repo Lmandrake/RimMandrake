@@ -53,6 +53,13 @@ namespace RimMandrake.Utinni.DroidRepairJobs
 
         public string outSignalNeglected;
 
+        /// <summary>Grade every droid and take the worst tier (see QuestNode_DroidRepairJob.gradeAllDroids).</summary>
+        public bool gradeAllDroids;
+
+        /// <summary>The tier the job was graded at, -1 until graded: 0 neglected, 1 shoddy, 2 honest,
+        /// 3 fine. Scribed so a later quest (the Unfinished Line's beat 2) can read what was fitted.</summary>
+        public int gradedTier = -1;
+
         private const int TierNeglected = 0;
         private const int TierShoddy = 1;
         private const int TierHonest = 2;
@@ -78,24 +85,37 @@ namespace RimMandrake.Utinni.DroidRepairJobs
             base.Notify_QuestSignalReceived(signal);
             if (signal.tag != inSignal) return;
 
-            Pawn droid = droids.FirstOrDefault(p => p != null && !p.Dead && p.health != null);
-            int tier = TierNeglected;
-
-            if (droid != null)
+            List<Pawn> graded = new List<Pawn>();
+            for (int i = 0; i < droids.Count; i++)
             {
-                HediffSet set = droid.health.hediffSet;
-                if (HasAnyOf(set, superiorHediffs)) tier = TierFine;
-                else if (HasAnyOf(set, standardHediffs)) tier = TierHonest;
-                else if (HasAnyOf(set, inferiorHediffs)) tier = TierShoddy;
-
-                // Any part at all gets it walking again; the fault is the thing
-                // the customer brought it in for.
-                if (tier != TierNeglected && faultHediff != null)
+                Pawn p = droids[i];
+                if (p != null && !p.Dead && p.health != null)
                 {
-                    Hediff fault = set.GetFirstHediffOfDef(faultHediff);
-                    if (fault != null) droid.health.RemoveHediff(fault);
+                    graded.Add(p);
+                    if (!gradeAllDroids) break;
                 }
             }
+
+            int tier = graded.Count == 0 ? TierNeglected : TierFine;
+            for (int i = 0; i < graded.Count; i++)
+            {
+                int t = TierOf(graded[i].health.hediffSet);
+                if (t < tier) tier = t;
+            }
+
+            // Any part at all gets a droid walking again; the fault is the thing the customer
+            // brought it in for. Each droid that got a part loses its fault, even when the job
+            // as a whole is graded down by a worse droid beside it.
+            for (int i = 0; i < graded.Count; i++)
+            {
+                HediffSet set = graded[i].health.hediffSet;
+                if (faultHediff != null && TierOf(set) != TierNeglected)
+                {
+                    Hediff fault = set.GetFirstHediffOfDef(faultHediff);
+                    if (fault != null) graded[i].health.RemoveHediff(fault);
+                }
+            }
+            gradedTier = tier;
 
             int pay;
             string outSignal;
@@ -119,11 +139,20 @@ namespace RimMandrake.Utinni.DroidRepairJobs
                     break;
             }
 
+            if (gradeAllDroids && graded.Count > 1) pay *= graded.Count;
             if (pay > 0) PaySilver(pay);
             if (!outSignal.NullOrEmpty())
             {
                 Find.SignalManager.SendSignal(new Signal(outSignal));
             }
+        }
+
+        private int TierOf(HediffSet set)
+        {
+            if (HasAnyOf(set, superiorHediffs)) return TierFine;
+            if (HasAnyOf(set, standardHediffs)) return TierHonest;
+            if (HasAnyOf(set, inferiorHediffs)) return TierShoddy;
+            return TierNeglected;
         }
 
         private static bool HasAnyOf(HediffSet set, List<HediffDef> defs)
@@ -191,6 +220,8 @@ namespace RimMandrake.Utinni.DroidRepairJobs
             Scribe_Values.Look(ref outSignalHonest, "outSignalHonest");
             Scribe_Values.Look(ref outSignalShoddy, "outSignalShoddy");
             Scribe_Values.Look(ref outSignalNeglected, "outSignalNeglected");
+            Scribe_Values.Look(ref gradeAllDroids, "gradeAllDroids", false);
+            Scribe_Values.Look(ref gradedTier, "gradedTier", -1);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {

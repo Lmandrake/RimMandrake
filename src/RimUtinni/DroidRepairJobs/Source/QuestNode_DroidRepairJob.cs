@@ -54,6 +54,11 @@ namespace RimMandrake.Utinni.DroidRepairJobs
 
         public SlateRef<List<HediffDef>> superiorHediffs;
 
+        /// <summary>UNFINISHED_LINE_SPINE_COUNT_1: false (default, the shipped repair job) grades the
+        /// first living droid only; true grades EVERY droid and the job takes the WORST fitted tier,
+        /// paying that tier's fee once per droid. The Unfinished Line's beat 1 brings three.</summary>
+        public SlateRef<bool> gradeAllDroids;
+
         [NoTranslate]
         public SlateRef<string> outSignalFine;
 
@@ -164,6 +169,7 @@ namespace RimMandrake.Utinni.DroidRepairJobs
                 payFine = fine,
                 payHonest = honest,
                 payShoddy = shoddy,
+                gradeAllDroids = gradeAllDroids.GetValue(slate),
                 outSignalFine = QuestGenUtility.HardcodedSignalWithQuestID(outSignalFine.GetValue(slate)),
                 outSignalHonest = QuestGenUtility.HardcodedSignalWithQuestID(outSignalHonest.GetValue(slate)),
                 outSignalShoddy = QuestGenUtility.HardcodedSignalWithQuestID(outSignalShoddy.GetValue(slate)),
