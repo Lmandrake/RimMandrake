@@ -149,9 +149,8 @@ def static_checks():
 CAST = ["Thozzik", "ThozzikColony", "ThozzikSpawned", "ThozzikQueen", "ThozzikColonyQueen",
         "Illoth", "Brullith", "Brogg", "Grellik", "Skerrith"]
 _BANNED = re.compile(r"wasp|hornet|moth|camel|llama|genetics|experiment|Force", re.I)
-# art owed: both south frames failed twice in artpipe and were re-queued (rot_thozzik_b_south, rot_illoth_b_south);
-# remove an entry here the moment its PNG lands, the check then binds.
-ART_OWED = {"Thozzik/Thozzik_south", "Illoth/Illoth_south"}
+# art owed: none (thozzik and illoth south frames landed from artpipe 2026-10-03)
+ART_OWED = set()
 
 
 def cast_checks():
