@@ -66,12 +66,16 @@ namespace RimMandrake.Miasma
         public static bool attarEnabled = true;
 
         // MIASMA_FLOTSAM_YARD_1: river goods washed into the root-lines at map start and after each surge recede.
+        // MIASMA_YOUNG_CALL_1: the stranded young's cry, the first-cry letter, and the warden mother heading for it.
+        public static bool youngCallEnabled = true;
+
         public static bool flotsamEnabled = true;
         public static float flotsamAmount = 1f;
 
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref youngCallEnabled, "youngCallEnabled", true, true);
             Scribe_Values.Look(ref flotsamEnabled, "flotsamEnabled", true, true);
             Scribe_Values.Look(ref flotsamAmount, "flotsamAmount", 1f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
@@ -147,6 +151,13 @@ namespace RimMandrake.Miasma
                 + "Off: it is a placid animal that hunts nothing.");
 
             list.GapLine();
+            list.CheckboxLabeled("Stranded young call",
+                ref youngCallEnabled,
+                "A stranded young cries out, a letter points at the first one, and the warden mother lumbers toward "
+                + "it through the water, never onto dry land. Off: the young are silent and the mother ignores them. "
+                + "Takes effect after the settings window closes.");
+
+            list.GapLine();
             list.CheckboxLabeled("Flotsam in the root-lines",
                 ref flotsamEnabled,
                 "River goods (scrap steel, wood, cloth, the odd component) wash into the roots at the start of "
@@ -199,10 +210,35 @@ namespace RimMandrake.Miasma
                 ApplyDeformation();
                 ApplyPollinationGate();
                 ApplyAttar();
+                ApplyYoungCall();
             }
             catch (System.Exception e)
             {
                 Log.Warning("[RM Miasma] settings applier failed, defs left as shipped: " + e.Message);
+            }
+        }
+
+        // The cry lives in the shared assembly's hediff comp props (read by reflection; the comp returns early
+        // when callSound is null). Props are shared by every hediff instance, so this reaches existing young too.
+        private static SoundDef stashedCall;
+
+        private static void ApplyYoungCall()
+        {
+            HediffDef hd = DefDatabase<HediffDef>.GetNamedSilentFail("RUT_StrandedDeformation");
+            if (hd == null || hd.comps == null) return;
+            foreach (HediffCompProperties cp in hd.comps)
+            {
+                System.Reflection.FieldInfo f = cp.GetType().GetField("callSound");
+                if (f == null) continue;
+                if (RM_MiasmaSettings.youngCallEnabled)
+                {
+                    if (stashedCall != null && f.GetValue(cp) == null) f.SetValue(cp, stashedCall);
+                }
+                else
+                {
+                    if (f.GetValue(cp) is SoundDef sd) stashedCall = sd;
+                    f.SetValue(cp, null);
+                }
             }
         }
 

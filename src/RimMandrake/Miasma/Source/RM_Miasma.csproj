@@ -53,6 +53,7 @@
     <Compile Include="RM_AmbushFrogHunting.cs" />
     <Compile Include="RM_Attar.cs" />
     <Compile Include="RM_MapComponent_FlotsamYard.cs" />
+    <Compile Include="RM_MapComponent_YoungCall.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
