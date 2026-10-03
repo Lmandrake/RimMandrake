@@ -177,8 +177,20 @@ def main(job_id, body, fake_builder=None, argv=None):
     if dry:
         sandbox_dry_outputs(job.outdir)
     print("== %s%s" % (job_id, " (DRY RUN on FakeWorld)" if dry else ""))
+    # Heartbeat + hard budget (belt_heartbeat.py, design/RimMandrake/live_test_hang_runbook.md): a watcher can tell
+    # slow from dead from finished, and a hang costs one budget, then exits 4 with an UNMEASURED(BUDGET) record.
+    import belt_heartbeat
+    from focus_heal import FocusLost, EXIT_FOCUS_LOST
+
+    def _on_budget(cause):
+        job.unmeasured(cause)
+        job.finish()
+    if not dry:
+        belt_heartbeat.start(job_id, on_budget=_on_budget)
+    focus_lost = False
     try:
         with open_session(dry, fake_builder) as s:
+            belt_heartbeat.step("session open")
             _close_name_dialog(s, dry)
             try:
                 body(s, job)
@@ -186,10 +198,19 @@ def main(job_id, body, fake_builder=None, argv=None):
                 _close_name_dialog(s, dry)
     except Unmeasurable as e:
         job.unmeasured(e)
+    except FocusLost as e:                                      # loud and distinct, never an instant silent abort
+        focus_lost = True
+        job.note("focus_attempts", e.attempts)
+        job.unmeasured("FOCUS_LOST: %s" % e)
+        print("!! FOCUS_LOST -- %s" % e, file=sys.stderr)
     except Exception as e:                                      # noqa: BLE001
         job.note("traceback", traceback.format_exc()[-2000:])
         job.unmeasured("%s: %s" % (type(e).__name__, e))
     rec = job.finish()
+    belt_heartbeat.stop(status=rec["status"] if rec["status"] == UNMEASURED else rec["verdict"],
+                        cause=rec.get("unmeasured_reason"))
+    if focus_lost:
+        return EXIT_FOCUS_LOST
     if rec["status"] == UNMEASURED:
         return 2
     return 0 if rec["verdict"] == PASS else 1

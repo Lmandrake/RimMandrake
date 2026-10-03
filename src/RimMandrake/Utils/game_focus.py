@@ -90,7 +90,9 @@ def focus_game(timeout_s=5, attempts=4, pause_s=3):
             last = e
             if i + 1 < attempts:
                 time.sleep(pause_s)
-    raise last
+    import focus_heal                         # escalate (minimise the blocker...); raises FocusLost, exit 3
+    focus_heal.heal(last)
+    return None
 
 
 def _focus_game_once():

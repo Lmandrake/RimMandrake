@@ -315,3 +315,6 @@ Transient/triposr_prototype/torchmcubes/
 infrastructure/state/code_review/.lock
 # git plan Phase 5: rendered view of infrastructure/state/lessons/ (lessons.py render)
 infrastructure/state/LESSONS_INBOX.md
+
+# belt_heartbeat.py: runner heartbeats a program reads (belt_watchdog.py), never committed
+/.belt_state/
