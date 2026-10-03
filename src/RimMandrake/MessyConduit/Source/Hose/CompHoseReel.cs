@@ -88,7 +88,10 @@ namespace RimMandrake.MessyConduit.Hose
             Map map = parent.Map;
             if (map == null) return "not spawned";
             RM_MapComponent_Hoses comp = map.GetComponent<RM_MapComponent_Hoses>();
-            string why = comp?.CheckInstall(this, target) ?? "no hose component";
+            // CheckInstall answers null for a valid target: a `?? "no hose component"` here turned every valid lay
+            // into a refusal (live lane F 2026-10-02: H2 "lay1: no hose component" while H1b's check read ok)
+            if (comp == null) return "no hose component";
+            string why = comp.CheckInstall(this, target);
             if (why != null) return why;
             far = target;
             laid = true;

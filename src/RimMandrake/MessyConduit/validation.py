@@ -26,6 +26,8 @@ MessyConduitProbe (written and read with the existing jawa/mod_settings_field to
 component answers on its next frame), never from screenshots.
 
 LEARNED (seed; each line is a check below, not prose only):
+  * HARNESS (lane F 2026-10-02): a fresh map can put a SteamGeyser inside the scene; the clear's destroy_batch then
+    logs a red "Tried to destroy non-destroyable thing" that Z_log_budget charged to the mod. Counted separately now.
   * Power nets and connector hookups are made on the next TICK (PowerNetManager in MapPreTick), so
     every build is followed by step_game_ticks 2 before a census; a census on a paused fresh build
     sees no nets and every cord edge reads "without net".
@@ -545,8 +547,12 @@ def run_live(args):
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
     new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > log_base]
     errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+    # the scene clear's own destroy_batch over a map geyser/monolith ("Tried to destroy non-destroyable thing
+    # SteamGeyser..."): the harness, not the mod -- counted, never charged to the mod (run_live.py does the same)
+    site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
+    errs = [e for e in errs if e not in site]
     row(rows, "Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
-        {"errors": [str(e.get("Message", ""))[:200] for e in errs[:6]], "newWarnings": len(new)})
+        {"errors": [str(e.get("Message", ""))[:200] for e in errs[:6]], "newWarnings": len(new), "siteClearErrors": len(site)})
     t_end = B.probe("census").get("ticksGame")
     res["ticks"] = (t_end - t_start) if isinstance(t_end, int) and isinstance(t_start, int) else None
     for rid, st, why in UNBUILT:

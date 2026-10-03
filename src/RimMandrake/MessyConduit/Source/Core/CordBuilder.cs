@@ -65,6 +65,10 @@ namespace RimMandrake.MessyConduit.Core
         /// <summary>Corridor rect and the walkability hash it was planned on (§8.2.7).</summary>
         public int CX0, CZ0, CX1, CZ1;
         public ulong CorridorHash;
+        /// <summary>What LayEdge reads from the graph beyond the cache key: the parallel flag (a pair joined by
+        /// more than one edge routes through its chain's middle cell) and the spur knots. A cached piece is reused
+        /// only when this matches too (lane F 2026-10-02: a ring split by a connector kept its parallel route).</summary>
+        public string LaySig;
         public string EndA, EndB;   // oracle-style "type:x,z"
 
         public ulong GeometryHash()
@@ -131,7 +135,8 @@ namespace RimMandrake.MessyConduit.Core
                     if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
                 full.Append('#').Append(opt.Lay.Fingerprint());
                 string fk = full.ToString();
-                if (cache.TryGetValue(fk, out LaidPiece old) && CorridorHash(w, old) == old.CorridorHash)
+                string sig = LaySignature(e, parallel);
+                if (cache.TryGetValue(fk, out LaidPiece old) && old.LaySig == sig && CorridorHash(w, old) == old.CorridorHash)
                 {
                     next[fk] = old;
                     outp.Add(old);
@@ -140,6 +145,7 @@ namespace RimMandrake.MessyConduit.Core
                 }
                 LaidPiece lp = LayEdge(w, g, e, ekey, parallel, opt, isLive);
                 lp.Key = fk;
+                lp.LaySig = sig;
                 lp.CorridorHash = CorridorHash(w, lp);
                 next[fk] = lp;
                 outp.Add(lp);
@@ -171,6 +177,17 @@ namespace RimMandrake.MessyConduit.Core
             }
             cache = next;
             return outp;
+        }
+
+        /// <summary>Everything LayEdge takes from the graph that the cache key (endpoints, chain, live flags, lay
+        /// fingerprint) does not already pin: the parallel flag and the knot points.</summary>
+        private static string LaySignature(CordEdge e, bool parallel)
+        {
+            var sb = new StringBuilder(parallel ? "P" : "S");
+            foreach (V2 k in e.Knots)
+                sb.Append(';').Append(k.X.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture))
+                  .Append(',').Append(k.Z.ToString("0.000", System.Globalization.CultureInfo.InvariantCulture));
+            return sb.ToString();
         }
 
         private static string PairKey(VId a, VId b) => a.CompareTo(b) <= 0 ? a + "|" + b : b + "|" + a;
