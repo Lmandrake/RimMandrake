@@ -2455,3 +2455,6 @@
 {"seat":"FOUNDRY","event":"start","id":"CANAL_BOTTOM_SPIKES_1","ts":"2026-10-03T19:19:45Z","tsn":1791055185205742672}
 {"seat":"FOUNDRY","event":"close","id":"CANAL_BOTTOM_SPIKES_1","sha":"05b688a8149d","ts":"2026-10-03T19:24:11Z","tsn":1791055451954946781}
 {"seat":"FOUNDRY","event":"file","id":"SPIKE_DAMAGE_NUMBERS_RULING_1","title":"Pit spike damage numbers for the owner's word: built PROPOSED 3 Stab hits totalling 40 x BodySize (human ~13/hit = 40, muffalo ~96, thrumbo ~160), armour applies; cost 30 wood; old pit was one flat 25 Stab","kind":"decision","target":"v1","needs":"owner","caused_by":"CANAL_BOTTOM_SPIKES_1","for":"BENCH","ts":"2026-10-03T19:24:12Z","tsn":1791055452454543940}
+{"seat":"FOUNDRY","event":"claim","id":"TOLLUK_CAP_ART_REGEN_1","ts":"2026-10-03T19:25:11Z","tsn":1791055511957499296}
+{"seat":"FOUNDRY","event":"start","id":"TOLLUK_CAP_ART_REGEN_1","ts":"2026-10-03T19:25:12Z","tsn":1791055512462246867}
+{"seat":"FOUNDRY","event":"close","id":"TOLLUK_CAP_ART_REGEN_1","sha":"ea39b4ad6edf","ts":"2026-10-03T19:25:24Z","tsn":1791055524969467207}
