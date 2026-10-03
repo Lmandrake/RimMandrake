@@ -1,7 +1,9 @@
 using System.Text;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 
 namespace RimMandrake.TheForge
 {
@@ -88,6 +90,40 @@ namespace RimMandrake.TheForge
                 shippedSavings = props.fuelSavingsPercent;
             }
             props.fuelSavingsPercent = RM_TheForgeSettings.Active(RM_TheForgeSettings.keelworkEnabled) ? shippedSavings : 0f;
+        }
+    }
+
+    // Glassy ring at launch. GravshipUtility.GenerateGravship(engine) is the launch
+    // entry point (RimSage 1.6): it runs once per launch, before anything is despawned,
+    // so the braces still stand on the departing map. One ring per linked, active brace,
+    // each a little higher so four braces chord instead of stacking into one hit.
+    [HarmonyPatch(typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship))]
+    public static class RM_Patch_KeelRing
+    {
+        public static void Prefix(Building_GravEngine engine)
+        {
+            if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.keelworkEnabled)
+                || !RM_TheForgeSettings.Active(RM_TheForgeSettings.keelRingEnabled)
+                || engine == null || !engine.Spawned)
+            {
+                return;
+            }
+            SoundDef ring = RM_TheForgeDefOf.RM_ForgeVoice_KeelRing;
+            if (ring == null)
+            {
+                return;
+            }
+            int n = 0;
+            foreach (CompGravshipFacility comp in engine.GravshipComponents)
+            {
+                if (comp.parent.Spawned && comp.CanBeActive && comp.parent.TryGetComp<RM_CompKeelBrace>() != null)
+                {
+                    SoundInfo info = SoundInfo.InMap(new TargetInfo(comp.parent.Position, comp.parent.Map));
+                    info.pitchFactor = 1f + 0.12f * n;
+                    ring.PlayOneShot(info);
+                    n++;
+                }
+            }
         }
     }
 }

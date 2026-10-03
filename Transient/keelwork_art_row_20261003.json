@@ -1,0 +1,12 @@
+[
+ {
+  "id": "RM_FloatstoneKeelBrace",
+  "rimflow_item_id": "FORGE_KEELWORK_REMAINDER_1",
+  "canvas_w": 128,
+  "canvas_h": 128,
+  "priority": 70,
+  "drawsize": 1.0,
+  "prompt": "RimWorld game building sprite, top-down 3/4 view, 1x1 tile: a floatstone keel brace for a gravship, a short pearl-white strut of spun floatstone, a lattice of fused glassy threads like spun sugar, two small flared mounting feet and a faint opal sheen at the joints. Reads light and airy but structural, a gravship frame component. Centered, no ground shadow, no background scenery.",
+  "style_notes": "forge register: hard white sun, seam-red glow only where melt shows; palette anchor OPAL-LACE shared with the floatstone item and garden (pearl-white body, warm cream swirl-bands, faint opal sheen), matte mineral texture over spun-glass lace, realistic painted illustration, no outlines, never cartoonish."
+ }
+]

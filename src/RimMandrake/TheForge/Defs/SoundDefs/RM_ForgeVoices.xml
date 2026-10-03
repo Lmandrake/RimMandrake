@@ -195,4 +195,23 @@
     </subSounds>
   </SoundDef>
 
+  <!-- Keelwork: each linked keel brace rings once as the gravship launches (RM_Patch_KeelRing). -->
+  <SoundDef>
+    <defName>RM_ForgeVoice_KeelRing</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>4</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>UI/TinyBell</clipPath>
+          </li>
+        </grains>
+        <volumeRange>10~12</volumeRange>
+        <pitchRange>0.8~0.95</pitchRange>
+        <distRange>15~140</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
 </Defs>

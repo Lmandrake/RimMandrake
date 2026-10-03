@@ -1,0 +1,7 @@
+# FORGE_KEELWORK_REMAINDER_1 work log (2026-10-03)
+- started. Existing: RM_FloatstoneKeelBrace + RM_CompKeelBrace + fuelSavingsPercent 0.05 x4 (fuel saving EXISTS). artpipe find brace/keel: no brace art (only RM_Floatstone item art).
+- Fuel saving confirmed existing (RM_CompKeelBrace, fuelSavingsPercent 0.05 x4; no work).
+- RING: Harmony prefix RM_Patch_KeelRing on GravshipUtility.GenerateGravship(engine) (RimSage: the launch entry, before despawn), one RM_ForgeVoice_KeelRing one-shot per linked active brace, pitch +12% each. Sound uses clip UI/TinyBell (same as existing GlassSing); toggle keelRingEnabled (sub-toggle of keelworkEnabled, default on). No new .cs, so csproj unchanged.
+- ART: no brace art in artpipe (only RM_Floatstone item and garden). Filed 1 job RM_FloatstoneKeelBrace (128px) via fill_queue; row in Transient/keelwork_art_row_20261003.json. Texture NOT wired: not rendered yet; placeholder stays. Wire when done/ has it.
+- PAYLOAD FLAG (owner may veto): spec text is "reduce launch cost OR raise effective payload". Fuel saving satisfies the "or"; vanilla has no payload. Decision: braces add NO SubstructureSupport (it would stack with grav field extenders' +250 and alter ship size, an unasked balance lever). If vetoed: add <statOffsets><SubstructureSupport>N</SubstructureSupport></statOffsets> to the brace's CompProperties_GravshipFacility (tune N << 250).
+- Validation: keelwork.keel_ring_wired (source), sound count 8->9, settings 26->27, selftest break for it. Live ring UNCOVERED (needs built gravship).

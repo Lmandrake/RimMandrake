@@ -16,7 +16,7 @@ GameCondition, `RM_ForgePulse` = `RM_GameCondition_ForgeCycle`, the six-phase fi
 temp-terrain layer) -> growth (floatstone gardens bloom on the crust) -> glowing cracks -> melt-back that burns what
 stands on the crust). Around it: four dormancy natives that keep the mountain's clock (dhokkur, julmox, dhuvvox
 seal and wake with the cycle; the dhuvvox also run a visible countdown), the floatstone economy (harvest, spunstone
-bonding research hidden until studied, gravship keel braces), the four phase voices, and 26 Mod Settings (six are the white-plume fronts).
+bonding research hidden until studied, gravship keel braces), the four phase voices, and 27 Mod Settings (six are the white-plume fronts).
 
 HOW THE CYCLE IS DRIVEN AND READ. A real cycle is ~5 in-game days, so this suite steps it with the mod's OWN
 `RMTheForge` debug actions (`Forge cycle: advance one phase`, `Forge cycle: report state`, the `Spunstone:`
@@ -143,7 +143,7 @@ GROUPS = [
     ("conditions", "GameConditionDef", _names("GameConditionDefs", "GameConditionDef"), 1),
     ("hediffs", "HediffDef", _names("HediffDefs", "HediffDef"), 1),
     ("research", "ResearchProjectDef", _names("ResearchProjectDefs", "ResearchProjectDef"), 1),
-    ("sounds", "SoundDef", _names("SoundDefs", "SoundDef"), 8),
+    ("sounds", "SoundDef", _names("SoundDefs", "SoundDef"), 9),
     ("render_trees", "PawnRenderTreeDef", _names("PawnRenderTreeDefs", "PawnRenderTreeDef"), 1),
     ("biome", "BiomeDef", _names("BiomeDefs", "BiomeDef"), 1),
 ]
@@ -204,7 +204,7 @@ SETTINGS_DEFAULTS = _settings_defaults()
 # the toggles that CHANGE something today (RM_TheForgeMod.cs header: the other five are scaffolding)
 WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabled", "cycleFloodingEnabled",
          "lavaFreezeEnabled", "meltBackDestroys", "floatstoneBloomEnabled", "cycleDormancyEnabled",
-         "cycleTelegraphLetters", "keelworkEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
+         "cycleTelegraphLetters", "keelworkEnabled", "keelRingEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
          "forgeVoicesVisualCues", "dhuvvoxClockEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength"]
@@ -1040,7 +1040,7 @@ def biome_wiring(t):
 
 @suite.chain("settings")
 def settings(t):
-    """The Mod Settings screen: 26 fields, each at its shipped default (read from the C# source), the assembly loaded,
+    """The Mod Settings screen: 27 fields, each at its shipped default (read from the C# source), the assembly loaded,
     and the five FORGE_MECHANICS_1 scaffolding fields present but inert."""
     with _comp(t, "settings_at_shipped_defaults", independent=True, toggle="modEnabled"):
         if _live(t):
@@ -1733,6 +1733,18 @@ def keelwork(t):
         v = savings(t)
         if _live(t) and abs(v - 0.05) > 1e-6:
             _fail("after restoring keelworkEnabled and a dialog close the brace saving is %r, not 0.05" % v)
+
+
+    with _comp(t, "keel_ring_wired", independent=True, toggle="keelRingEnabled"):
+        # the launch ring: a Harmony prefix on GravshipUtility.GenerateGravship (RM_Patch_KeelRing). Source-level proof
+        # only; a real launch needs a built gravship (UNCOVERED in the walk: FORGE_KEEL_GRAVSHIP_SITE_1).
+        src = _read_cs("RM_ForgeKeelwork.cs")
+        need = ('typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship)', "keelRingEnabled", "RM_ForgeVoice_KeelRing")
+        for n in need:
+            if n not in src:
+                _fail("RM_ForgeKeelwork.cs lacks %r: the launch ring is not wired" % n)
+        if "RM_ForgeVoice_KeelRing" not in ALL_DEFNAMES:
+            _fail("the RM_ForgeVoice_KeelRing SoundDef is not shipped in Defs/SoundDefs")
 
 
 @suite.chain("plume_fronts")
