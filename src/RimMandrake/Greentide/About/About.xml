@@ -52,15 +52,14 @@ Ships the four v1 mechanics the owner ruled MUST ship together, not deferred
   3. Seek-shade AI (deferral REJECTED — ships in v1): RM_JobGiver_SeekShade,
      added to the shared mandrake.rm.creaturebehaviors assembly (generic —
      any race carrying RM_SeekShadeExtension seeks a roofed cell once ambient
-     temperature crosses its threshold). Wired here onto Muffalo as a live,
-     testable demonstration; Greentide's own fauna roster is a follow-on item.
+     temperature crosses its threshold). 
   4. The silence cue (deferral REJECTED — ships in v1): RM_MapComponent_SilenceCue,
      also in the shared assembly — a predator carrying RM_SilenceAuraExtension
      hunting near the player's home area ends and later restores the map's
      biome ambience sustainers (Find.SoundRoot.sustainerManager /
      AmbientSoundManager.Notify_SwitchedMap — the one route RimSage confirmed
      for a live sustainer, since Sustainer/AmbientSoundManager expose no partial
-     volume-ramp API). Wired onto Warg for the same reason.
+     volume-ramp API). Carried by the dhollock (RM_Dhollock).
 
 NOT in this mod (scoped out by the calling item, not deferred sub rosa): the
 other seven GREENTIDE_MECHANICS_1 mechanics (wet-bulb, dry-air blower, scald/
@@ -128,6 +127,10 @@ rule, group/swarm wildGroupSize. The Shatterer mechanic
 — see the def's own header for why. NOT placed in WildAnimals_Greentide.xml
 or given a commonality/band: roster placement is owed to this biome's own
 review sitting, not this item. Art is queued, not yet generated.
+
+GREENTIDE_FREE_ROSTER_OWNED_1 (2026-10-03) gave the biome its own animal list, no vanilla rows: krannock,
+sulleth (grazer), dhollock (river ambusher), yammeth (flier), canopy swinger (working name) and the yearning
+fruit. The sytheclaw row is guarded on mandrake.rm.pyrelands and is deliberately multi-homed.
 
 Live proof is OWED at publish time — see the item's own verify record.</description>
 </ModMetaData>

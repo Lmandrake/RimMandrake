@@ -542,6 +542,43 @@ def static_checks():
         bad.append("BURY_WAIT %d is shorter than swallowTicks + one scan" % BURY_WAIT)
     if tdefs.get(SEALED) is None or tdefs[SEALED].find("modExtensions/li[@Class='RimMandrake.Greentide.RM_MireExtension']") is not None:
         bad.append("%s must exist and carry NO RM_MireExtension" % SEALED)
+    # GREENTIDE_FREE_ROSTER_OWNED_1: the free tier owns its list (wildAnimals read as ELEMENTS, never a <li> count).
+    bio = ET.parse(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Greentide_Biome.xml")).getroot()
+    gt = next((e for e in bio if e.findtext("defName") == "RM_Greentide"), None)
+    wa = [c.tag for c in gt.find("wildAnimals")] if gt is not None and gt.find("wildAnimals") is not None else []
+    if not wa:
+        bad.append("sanity probe: RM_Greentide wildAnimals parsed empty (parser broke)")
+    for v in ("Warg", "Muffalo", "Elephant", "Cobra", "Megaspider", "Rat", "Hare"):
+        if v in wa:
+            bad.append("free roster still names vanilla %s" % v)
+    for n in ("RM_Krannock", "RM_Sulleth", "RM_Dhollock", "RM_Yammeth", "RM_CanopySwinger"):
+        if n not in wa:
+            bad.append("free roster lacks %s" % n)
+        if n not in names:
+            bad.append("%s is in the roster but not shipped" % n)
+    wp = [c.tag for c in gt.find("wildPlants")] if gt is not None and gt.find("wildPlants") is not None else []
+    if "RM_YearningFruit" not in wp or "RM_YearningFruit" not in names:
+        bad.append("RM_YearningFruit not wired/shipped on the free tier")
+    races = {}
+    for dp, _, fs in os.walk(os.path.join(HERE, "Defs", "ThingDefs_Races")):
+        for f in fs:
+            if f.endswith(".xml"):
+                for e in ET.parse(os.path.join(dp, f)).getroot():
+                    if e.tag == "ThingDef":
+                        races[e.findtext("defName")] = e
+    def _has(n, cls):
+        e = races.get(n)
+        return e is not None and (e.find(".//li[@Class='%s']" % cls) is not None)
+    if not _has("RM_Dhollock", "RimMandrake.CreatureBehaviors.CompProperties_AquaticAmbusher"):
+        bad.append("RM_Dhollock lacks the aquatic ambusher comp")
+    if not _has("RM_Dhollock", "RimMandrake.CreatureBehaviors.RM_SilenceAuraExtension"):
+        bad.append("RM_Dhollock lacks the silence aura")
+    if not _has("RM_Sulleth", "RimMandrake.CreatureBehaviors.RM_SeekShadeExtension"):
+        bad.append("RM_Sulleth lacks seek-shade")
+    if races.get("RM_Yammeth") is None or float(races["RM_Yammeth"].findtext("statBases/MaxFlightTime") or 0) <= 0:
+        bad.append("RM_Yammeth MaxFlightTime must be > 0 (the stat is the flight switch)")
+    if os.path.exists(os.path.join(HERE, "Patches", "RM_Greentide_FaunaHooks.xml")):
+        bad.append("the vanilla Warg/Muffalo hook patch is back")
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
     return bad
