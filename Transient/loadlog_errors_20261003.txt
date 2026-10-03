@@ -1,0 +1,73 @@
+74:Exception loading from System.Xml.XmlElement: System.MissingMethodException: Default constructor not found for type System.String
+93:XML error: <xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+94:XML error: <value><tickerType>Normal</tickerType></value> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+96:XML error: <xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+97:XML error: <value><drawerType>MapMeshAndRealTime</drawerType></value> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+99:XML error: <xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+100:XML error: <value><tickerType>Normal</tickerType></value> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+102:XML error: <xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+103:XML error: <value><drawerType>MapMeshAndRealTime</drawerType></value> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+105:XML error: <xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+106:XML error: <value><tickerType>Normal</tickerType></value> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
+108:XML error: <xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+109:XML error: <value><drawerType>MapMeshAndRealTime</drawerType></value> doesn't correspond to any field in type PatchOperation. Context: <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+111:XML error: <canBeDoneByNonColonists>false</canBeDoneByNonColonists> doesn't correspond to any field in type WorkGiverDef. Context: <WorkGiverDef><defName>RM_GatherGrazedMat</defName><label>gather grazed mat</label><giverClass>RimMandrake.DivingInteraction.RM_WorkGiver_GatherGrazedMat</giverClass><workType>Hauling</workType><priorityInType>45</priorityInType><verb>gather</verb><gerund>gathering grazed mat</gerund><scanThings>true</scanThings><canBeDoneByNonColonists>false</canBeDoneByNonColonists></WorkGiverDef>
+112:XML error: <canBeDoneByNonColonists>false</canBeDoneByNonColonists> doesn't correspond to any field in type WorkGiverDef. Context: <WorkGiverDef><defName>RM_ProbeGalleryOutlet</defName><label>probe coolant outlet</label><giverClass>RimMandrake.DivingInteraction.RM_WorkGiver_ProbeGalleryOutlet</giverClass><workType>Research</workType><priorityInType>40</priorityInType><verb>probe</verb><gerund>probing a coolant outlet</gerund><scanThings>true</scanThings><canBeDoneByNonColonists>false</canBeDoneByNonColonists></WorkGiverDef>
+118:Could not resolve cross-reference: No Verse.SoundDef named Shot_Sniper found to give to Verse.VerbProperties VerbProperties(old-line turret) (using undefined sound instead)
+119:Could not resolve cross-reference: No Verse.SoundDef named LetterArrive_Neutral found to give to Verse.LetterDef RM_CondenserChoiceLetter (using undefined sound instead)
+120:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+121:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+122:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=allowedBiomes)
+123:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+124:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+125:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+126:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+127:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+128:Could not resolve cross-reference to RimWorld.BiomeDef named RUT_Miasma (wanter=onlyInBiomes)
+129:Could not resolve cross-reference: No Verse.PawnKindDef named RM_Dredgel found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+130:Could not resolve cross-reference: No Verse.ThingDef named RM_Soffeth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+131:Could not resolve cross-reference: No Verse.ThingDef named RM_Tolleth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+132:Could not resolve cross-reference: No Verse.PawnKindDef named RM_SumpMouse found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+133:Could not resolve cross-reference: No Verse.PawnKindDef named RM_Brommet found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+134:Could not resolve cross-reference: No Verse.PawnKindDef named RM_Skarrid found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+135:Could not resolve cross-reference: No Verse.PawnKindDef named RSW_SandLeaper found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+136:Could not resolve cross-reference: No Verse.PawnKindDef named RSW_SandPillar found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+137:Could not resolve cross-reference: No Verse.PawnKindDef named RSW_Creature_Mantrap found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+138:Could not resolve cross-reference: No Verse.PawnKindDef named RSW_MutagenicNorphea found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+139:Could not resolve cross-reference: No Verse.ThingDef named RM_Velloch found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+140:Could not resolve cross-reference: No Verse.ThingDef named RM_Mirrelin found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+141:Could not resolve cross-reference: No Verse.ThingDef named RM_Pallick found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+142:Could not resolve cross-reference: No Verse.TerrainDef named RUT_RootCauseway found to give to RimMandrake.EnvironmentalHazards.RM_RootCausewayPass RimMandrake.EnvironmentalHazards.RM_RootCausewayPass
+143:Could not resolve cross-reference: No Verse.ThingDef named Leather_Chitin found to give to Verse.RaceProperties Verse.RaceProperties
+144:Could not resolve cross-reference: No Verse.PawnKindDef named RM_Skellarn found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+145:Could not resolve cross-reference: No Verse.HediffDef named RUT_Tarred found to give to RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension
+146:Could not resolve cross-reference: No Verse.TerrainDef named RUT_ToxinSealant found to give to RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker RimMandrake.EnvironmentalHazards.CompProperties_LivingBoleMarker
+147:Could not resolve cross-reference: No Verse.PawnKindDef named RUT_SealedSleeper found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+148:Could not resolve cross-reference: No Verse.ThingDef named RM_Dorvel found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+149:Could not resolve cross-reference: No Verse.ThingDef named RM_Skelver found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+150:Could not resolve cross-reference: No Verse.ThingDef named RM_Korveth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+151:Could not resolve cross-reference: No Verse.ThingDef named RM_Brindeth found to give to RimWorld.BiomePlantRecord RimWorld.BiomePlantRecord
+152:Could not resolve cross-reference: No Verse.PawnKindDef named RUT_EmperorVulture found to give to RimWorld.BiomeAnimalRecord RimWorld.BiomeAnimalRecord
+153:Config error in Eclipse: world-targeting incident has a biome restriction list
+154:Config error in SolarFlare: world-targeting incident has a biome restriction list
+155:Config error in Aurora: world-targeting incident has a biome restriction list
+156:Config error in RM_FE_Ash_Trace: burnedDef is flammable
+157:Config error in RM_FE_Ash_Light: burnedDef is flammable
+158:Config error in RM_FE_Ground_Sand: burnedDef is flammable
+159:Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+160:Config error in RM_FE_Ground_Soil: burnedDef is flammable
+161:Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+162:Config error in RM_TheSump: RM_CarriedFilthHediffExtension has no hediffDef — this extension has nothing to give.
+169:Config error in RM_FeverWood: RM_RootCausewayBiomeExtension.additionalPasses[0] has no causewayTerrain — RM_GenStep_RootCauseways would have nothing to paint for it.
+170:Config error in RM_Glasskelle: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+171:Config error in RM_Glasskelle: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+172:Config error in RM_Pulsebead: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+173:Config error in RM_Pulsebead: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+174:Config error in RM_FE_Ash_Trace: burnedDef is flammable
+175:Config error in RM_FE_Ash_Light: burnedDef is flammable
+176:Config error in RM_FE_Ground_Sand: burnedDef is flammable
+177:Config error in RM_FE_Ground_Gravel: burnedDef is flammable
+178:Config error in RM_FE_Ground_Soil: burnedDef is flammable
+179:Config error in RM_FE_Ground_SoilRich: burnedDef is flammable
+180:Config error in RM_Shadespire: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
+181:Config error in RM_Shadespire: Nutrition == 0 but preferability is RawBad instead of NeverForNutrition
