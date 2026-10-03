@@ -21,3 +21,6 @@
 - 11:00:05 runner now closes naming+ModSettings dialogs before each chain; closed live; rerun5 results for Cauldron/LeaningScrub/BlueDesert are modal-tainted -> rerun after batch
 - 11:14:38 rerun6 started (Cauldron,BlueDesert,Bacta,LeaningScrub) with dialog fix
 - 11:50:35 END of my pass. rerun6 recorded RED: Cauldron, LeaningScrub, BlueDesert (Bacta crashed on a bridge timeout; no summary). Game UP (load 4, stale vs newest sibling content), bridge still held by FOUNDRY.
+- 11:51:37 round2 start: closing game (load4 stale), build companion, deploy once src/Greentide stops being mid-edit
+- 12:03:26 deployed plain+biomes --prune (UtinniStatues skipped, builder mid-edit), companion rebuilt, ModsConfig 635 incl FallLineArrivals; launching load 5
+- 12:04:02 detectors.py: ambient weather hediffs (SheenCoating/HazeFilm/GaleDeafened) no longer colonist_injured_unexpectedly; selftest 96/96. load 5 in progress
