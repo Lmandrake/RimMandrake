@@ -86,6 +86,7 @@
     <Compile Include="RM_SandSwimRemainder.cs" />
     <!-- STILLSAND_EVENT_CREATURES_REMAINDER_1: horn, den-quest nodes, loud draws -->
     <Compile Include="RM_EventRemainder.cs" />
+    <Compile Include="RM_DuneTrackEraser.cs" />
   </ItemGroup>
 
   <!-- STILLSAND_GLASS_LENS_CHAIN_1: Harmony IS referenced (one postfix on

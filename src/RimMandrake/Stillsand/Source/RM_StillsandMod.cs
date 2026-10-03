@@ -33,6 +33,7 @@ namespace RimMandrake.Stillsand
             RM_PreciousCaveSettings.Expose(); // STILLSAND_PRECIOUS_CAVES_1
             RM_StillsandWaterSettings.Expose(); // STILLSAND_RETURN_RITUAL_1
             RM_SandSwimRemSettings.Expose(); // STILLSAND_SAND_SWIM_REMAINDER_1
+            RM_DuneTrackEraserSettings.Expose(); // FOOTPRINT_TRACK_GRID_1
         }
 
         public void DoWindowContents(Rect inRect)
@@ -58,6 +59,7 @@ namespace RimMandrake.Stillsand
             RM_PreciousCaveSettings.Draw(list); // STILLSAND_PRECIOUS_CAVES_1
             RM_StillsandWaterSettings.Draw(list); // STILLSAND_RETURN_RITUAL_1
             RM_SandSwimRemSettings.Draw(list); // STILLSAND_SAND_SWIM_REMAINDER_1
+            RM_DuneTrackEraserSettings.Draw(list); // FOOTPRINT_TRACK_GRID_1
 
             list.End();
         }

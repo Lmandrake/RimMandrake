@@ -211,3 +211,16 @@ def track_grid(t):
                 _unmeasured(t, "the walker did not walk (moved %d cells)" % moved)
             if _delta(b, a, "printsWritten") != 0:
                 raise ExpectationFailed("tracksEnabled=false still laid %d prints" % _delta(b, a, "printsWritten"))
+
+    # The Stillsand's eraser (Stillsand RM_DuneTrackEraser.cs, a postfix on SandGrid.SetDepth): a print on a
+    # sand cell is gone once that cell's sand moves by 0.3. Needs an RM_Stillsand map (the biome filter).
+    with _comp(t, "stillsand_moving_sand_erases_print", beyond_toggle=True):
+        _need_surface_map(t)
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Stillsand.RM_DuneTrackEraser",
+                          method="ProofErase", args="current|0.3")
+        res = str((r or {}).get("result", ""))
+        if _live(t):
+            if res.startswith("REFUSED") or not res:
+                _unmeasured(t, "eraser proof could not run: %r" % (r,))
+            if res != "printed=True erased=True":
+                raise ExpectationFailed("moving sand did not bury the print: %r" % res)
