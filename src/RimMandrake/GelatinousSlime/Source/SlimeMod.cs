@@ -123,6 +123,12 @@ namespace RimMandrake.GelatinousSlime
         // GELATINOUSSLIME_VAULT_SEAL_BREACH_1: a titanoslime chunk dissolves a slime-breachable seal. Off: the chunk does nothing.
         public static bool sealBreach = true;
 
+        // GELATINOUSSLIME_TITAN_CHUNK_BOMB_1: a thrown titanoslime chunk bursts (drench + slime ground). Off: a thrown chunk lands inert.
+        public static bool chunkBomb = true;
+
+        // Days a chunk keeps off the body before it runs to slime (applies to every chunk, seal use included).
+        public static float chunkShelfDays = 1.5f;
+
         // GELATINOUSSLIME_ARCHIVE_RESURRECTION_1: the body files each colonist it reads, and the archive vat can grow a dead one back from the last entry. Off: no new entries, the vat does nothing.
         public static bool archiveResurrection = true;
 
@@ -132,6 +138,8 @@ namespace RimMandrake.GelatinousSlime
             Scribe_Values.Look(ref glurroSalve, "glurroSalve", true, true);
             Scribe_Values.Look(ref pitSolvent, "pitSolvent", true, true);
             Scribe_Values.Look(ref sealBreach, "sealBreach", true, true);
+            Scribe_Values.Look(ref chunkBomb, "chunkBomb", true, true);
+            Scribe_Values.Look(ref chunkShelfDays, "chunkShelfDays", 1.5f, true);
             Scribe_Values.Look(ref archiveResurrection, "archiveResurrection", true, true);
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
@@ -226,6 +234,12 @@ namespace RimMandrake.GelatinousSlime
             list.CheckboxLabeled("Titanoslime chunk breaches seals", ref sealBreach,
                 "On (default): a chunk cut from a titanoslime dissolves an Assailant seal and drenches the "
                 + "doorway in slime. Off: the chunk does nothing and seals stay shut.");
+            list.CheckboxLabeled("Titanoslime chunk is a thrown bomb", ref chunkBomb,
+                "On (default): a chunk thrown by a pawn bursts, drenching everyone near it to a late stage of "
+                + "slimification and turning the ground to slime for a day. No armour stops it; dry ground and "
+                + "the antidote undo it. Off: a thrown chunk lands inert.");
+            list.Label("Chunk keeps for: " + chunkShelfDays.ToString("0.0") + " days off the body");
+            chunkShelfDays = Mathf.Round(list.Slider(chunkShelfDays, 0.5f, 5f) * 10f) / 10f;
             list.CheckboxLabeled("Archive resurrection", ref archiveResurrection,
                 "On (default): every time the body reads a colonist it files them as they were, and an "
                 + "archive vat can grow a dead one back from that last entry, with no memory of anything since. "
