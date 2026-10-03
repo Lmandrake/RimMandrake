@@ -540,14 +540,22 @@ namespace RimMandrake.MessyConduit
     internal static class Patch_Section_TryUpdate_MarkStale
     {
         private static ulong mask;
+        // mask bits already reported per off-screen section: vanilla leaves them set until the section is viewed,
+        // so only NEWLY set bits mark the graph stale (one rebuild per dirty event, not one per frame).
+        private static readonly System.Collections.Generic.Dictionary<Section, ulong> seen = new System.Collections.Generic.Dictionary<Section, ulong>();
 
         private static void Prefix(Section __instance, CellRect view)
         {
-            if (__instance.dirtyFlags == 0UL || !MessyConduitSettings.enabled) return;
+            if (!MessyConduitSettings.enabled) return;
+            if (__instance.dirtyFlags == 0UL) { if (seen.Count > 0) seen.Remove(__instance); return; }
             if (mask == 0UL)
                 mask = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.PowerGrid | (ulong)MapMeshFlagDefOf.Terrain |
-                       (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MessyConduitDefOf.RM_MessyCords;
-            if ((__instance.dirtyFlags & mask) == 0UL || __instance.CellRect.Overlaps(view)) return;
+                       (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MapMeshFlagDefOf.Roofs | (ulong)MessyConduitDefOf.RM_MessyCords;
+            ulong m = __instance.dirtyFlags & mask;
+            if (m == 0UL || __instance.CellRect.Overlaps(view)) { if (seen.Count > 0) seen.Remove(__instance); return; }
+            seen.TryGetValue(__instance, out ulong prev);
+            if ((m & ~prev) == 0UL) return;
+            seen[__instance] = prev | m;
             RM_MapComponent_CordGraph comp = __instance.map?.GetComponent<RM_MapComponent_CordGraph>();
             if (comp != null) comp.StaleOffscreen = true;
         }

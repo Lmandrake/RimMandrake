@@ -38,7 +38,7 @@ namespace RimMandrake.MessyConduit.Hose
         public void Deregister(CompHoseReel r)
         {
             reels.Remove(r);
-            meshes.Remove(r);
+            DropMeshes(r);
         }
 
         // ------------------------------------------------------------------ world snapshot for hoses
@@ -101,7 +101,7 @@ namespace RimMandrake.MessyConduit.Hose
         {
             if (!r.laid || !r.far.IsValid) return null;
             string key = r.parent.Position + ">" + r.far + "|" + HoseSettings.ShapeFingerprint();
-            if (r.lay != null && r.layKey == key) return r.lay;
+            if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
             HoseLay lay = HoseMath.Lay(w, Start(r), new V2(r.far.x + 0.5, r.far.z + 0.5), HoseSettings.Shape(), r.Seed);
@@ -110,7 +110,7 @@ namespace RimMandrake.MessyConduit.Hose
             r.lay = lay.Ok ? lay : null;
             r.layKey = key;
             r.corridorHash = lay.Ok ? CorridorHash(w, lay) : 0;
-            meshes.Remove(r);
+            DropMeshes(r);
             return r.lay;
         }
 
@@ -159,7 +159,7 @@ namespace RimMandrake.MessyConduit.Hose
                     if (r.history.Count > 64) r.history.RemoveAt(0);
                 }
                 // an obstacle built or removed across the hose re-lays it (checked every 250 ticks)
-                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.lay != null && CorridorHash(World(), r.lay) != r.corridorHash) r.layKey = null;
+                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHash(World(), r.lay) != r.corridorHash)) r.layKey = null; // a failed lay (lay null) is retried at the same cadence
             }
         }
 
@@ -240,6 +240,11 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         private readonly List<Mesh> frameMeshes = new List<Mesh>(), oldFrame = new List<Mesh>();
+
+        private void DropMeshes(CompHoseReel r)
+        {
+            if (meshes.TryGetValue(r, out Cached c)) { DestroyMeshes(c); meshes.Remove(r); }
+        }
 
         private static void DestroyMeshes(Cached c)
         {

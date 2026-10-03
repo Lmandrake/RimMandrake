@@ -29,7 +29,7 @@ namespace RimMandrake.MessyConduit
         public SectionLayer_RM_MessyCords(Section section) : base(section)
         {
             relevantChangeTypes = (ulong)RimWorld.MapMeshFlagDefOf.Buildings | (ulong)RimWorld.MapMeshFlagDefOf.PowerGrid |
-                                  (ulong)RimWorld.MapMeshFlagDefOf.Terrain | (ulong)RimWorld.MapMeshFlagDefOf.FogOfWar |
+                                  (ulong)RimWorld.MapMeshFlagDefOf.Terrain | (ulong)RimWorld.MapMeshFlagDefOf.FogOfWar | (ulong)RimWorld.MapMeshFlagDefOf.Roofs |
                                   (ulong)MessyConduitDefOf.RM_MessyCords;
             bounds = section.CellRect;
         }
