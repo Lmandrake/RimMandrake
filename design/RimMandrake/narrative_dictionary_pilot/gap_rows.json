@@ -1,0 +1,38 @@
+[
+ {
+  "vignette": "A1_sorted_salvage",
+  "claim": "Someone sorts every scrap by kind, because nothing here can be wasted.",
+  "register": "state",
+  "need": "a REPAIRED-state variant (patched/welded/bound) of any furniture - nothing encodes 'mended'"
+ },
+ {
+  "vignette": "A3_daily_path",
+  "claim": "They walk door-to-bench every day; the rest of the floor is kept swept.",
+  "register": "wear",
+  "need": "a WORN-PATH floor (scuffed track / polished lane / footprints) - tar reads as one blob, not a route"
+ },
+ {
+  "vignette": "B2_nobody_for_years",
+  "claim": "Nobody has been in here for years; the desert is coming in through the door.",
+  "register": "wear",
+  "need": "a DRIFT edge (sand banked against walls / under a door) - Filth_Sand is uniform per cell and shares the dirt texture"
+ },
+ {
+  "vignette": "B3_fight_at_the_door",
+  "claim": "Someone fought their way in at the blast door, and a wounded defender crawled away.",
+  "register": "marking",
+  "need": "BLASTER SCARS on walls (bolt impact + scorch halo) - vanilla blast mark is a 3x3 floor explosion, nothing marks a wall"
+ },
+ {
+  "vignette": "B3_fight_at_the_door",
+  "claim": "Someone fought their way in at the blast door, and a wounded defender crawled away.",
+  "register": "state",
+  "need": "a BREACHED door (blown/buckled/off its track) - AncientBlastDoor has no damaged state to place"
+ },
+ {
+  "vignette": "B4_wrecked_on_purpose",
+  "claim": "The control station was smashed deliberately by people who hated the Empire, not left to rot.",
+  "register": "wear",
+  "need": "IMPACT/BLUNT-STRIKE marks (dents, cracked screens, a dropped tool) - 'smashed' vs 'decayed' is not distinguishable"
+ }
+]

@@ -251,10 +251,15 @@ defNames; 4,307 PNGs across 88 mods with a `Textures/` dir):
 | Rubble / wreck / debris | **4** |
 | Art / decor buildings | **1** |
 
-🔴 **We have essentially no "signs of something happening"** — not one blaster scar,
-scorch mark, scrape, drag trail or impact spall. The owner proposed the event-trace
-props library before this was counted; the count confirms it is the largest hole in
-the object universe for narrative purposes. Terrain is our one real strength, which
+🔴 **Our own XML ships almost no "signs of something happening"**: no blaster scar, scrape
+or impact spall. Across the live 628-mod set (def dump, 2026-09-26) a thin vanilla/DLC
+base does exist. `Filth_BlastMark` is a 3x3 floor explosion, `Filth_BloodSmear` is a crawl
+trail, `Filth_DriedBlood` is aged blood, and Ash, MachineBits, RubbleBuilding and
+ScatteredDocuments are there too. But nothing marks a wall, nothing has a heading, and
+only blood has an aged form. The owner proposed the event-trace props library before
+this was counted, and it remains the largest hole in the object universe for narrative
+purposes. Inventory and scope:
+`design/RimMandrake/narrative_dictionary_pilot/GAPS.md` §3–4. Terrain is our one real strength, which
 suits the owner's stated interest in ground coloration.
 
 ## 7. The pilot and its test — `ANALYSIS`
