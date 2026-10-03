@@ -99,6 +99,18 @@
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_BulgePumpWake">
         <radius>30</radius>
       </li>
+      <!-- SUMP_SOLVENT_WAKE_BUILD_1: pouring tar solvent in wakes the beast at once, manhunter. Defs named here are the
+           campaign solvents; SUMP_FREE_TIER_MOVE_BUILD_1 changes these names when the solvents move to RM_. -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_BulgeSolventPour">
+        <solventDefNames>
+          <li>RUT_WeakTarSolvent</li>
+          <li>RUT_StrongTarSolvent</li>
+        </solventDefNames>
+        <strongSolventDefNames>
+          <li>RUT_StrongTarSolvent</li>
+        </strongSolventDefNames>
+        <pourRange>6</pourRange>
+      </li>
     </comps>
   </ThingDef>
 

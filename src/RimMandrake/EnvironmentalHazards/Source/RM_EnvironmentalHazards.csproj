@@ -115,6 +115,7 @@
     <Compile Include="RM_CompBeastWakeRelay.cs" />
     <Compile Include="RM_CompStationEater.cs" />
     <Compile Include="RM_CompTarBeast.cs" />
+    <Compile Include="RM_TarSolventPour.cs" />
     <Compile Include="RM_GenStep_EdgeBandFilth.cs" />
     <Compile Include="RUT_IncidentWorker_ContagionProbe.cs" />
     <Compile Include="RM_HediffComp_SeverityFloor.cs" />

@@ -271,6 +271,9 @@ namespace RimMandrake.EnvironmentalHazards
     {
         public static JobDef RM_EatStructure;
 
+        // SUMP_SOLVENT_WAKE_BUILD_1 - see RM_TarSolventPour.cs.
+        public static JobDef RM_PourSolvent;
+
         // GREENTIDE_MECHANICS_2 M6, feller 3 — see RM_JobGiver_GnawTreeBase.cs.
         public static JobDef RM_GnawTreeBase;
 
