@@ -31,6 +31,8 @@ namespace RimMandrake.Stillsand
         public static float stillRateMultiplier = 1f;
         public static bool wringingStillEnabled = true;
         public static bool sunLanceEnabled = true;
+        public static bool geophoneEnabled = true;
+        public static float geophoneRadius = 20f;
 
         public static bool TableEnabled(RM_SunTableKind kind)
         {
@@ -57,6 +59,8 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref stillRateMultiplier, "stillRateMultiplier", 1f);
             Scribe_Values.Look(ref wringingStillEnabled, "wringingStillEnabled", true);
             Scribe_Values.Look(ref sunLanceEnabled, "sunLanceEnabled", true);
+            Scribe_Values.Look(ref geophoneEnabled, "geophoneEnabled", true);
+            Scribe_Values.Look(ref geophoneRadius, "geophoneRadius", 20f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -89,6 +93,11 @@ namespace RimMandrake.Stillsand
             list.GapLine();
             list.CheckboxLabeled("Sun lance", ref sunLanceEnabled,
                 "The heliostat turret focuses the fixed sun on one target. It heats and never ignites, scales with the sun's elevation, and does nothing in shade, under a roof or in a sand gale. Off: it stands idle.");
+            list.GapLine();
+            list.CheckboxLabeled("Geophone", ref geophoneEnabled,
+                "A staked biosilica resonator turns rumbles under the sand into a rough bearing and size class. It cannot tell a lure's drumming from a real swimmer. Off: it hears nothing.");
+            list.Label("Geophone radius: " + Mathf.RoundToInt(geophoneRadius) + " cells");
+            geophoneRadius = Mathf.Round(list.Slider(geophoneRadius, 8f, 40f));
             list.GapLine();
             list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\". Fulgurites on sand "
                        + "follow the Pyrelands' fulgurite toggle.");

@@ -78,6 +78,8 @@
     <Compile Include="RM_SandSieve.cs" />
     <!-- STILLSAND_SOLAR_STILL_1: solar still + wringing still -->
     <Compile Include="RM_SolarStill.cs" />
+    <!-- STILLSAND_GEOPHONE_1: biosilica geophone -->
+    <Compile Include="RM_Geophone.cs" />
   </ItemGroup>
 
   <!-- STILLSAND_GLASS_LENS_CHAIN_1: Harmony IS referenced (one postfix on

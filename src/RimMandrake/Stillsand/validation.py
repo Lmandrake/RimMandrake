@@ -87,7 +87,8 @@ SETTINGS = {
                                    "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0,
                                    "sieveEnabled": True, "sieveYieldMultiplier": 1.0,
                                    "solarStillEnabled": True, "stillRateMultiplier": 1.0,
-                                   "wringingStillEnabled": True, "sunLanceEnabled": True},
+                                   "wringingStillEnabled": True, "sunLanceEnabled": True,
+                                   "geophoneEnabled": True, "geophoneRadius": 20.0},
     NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0, "abrasionEnabled": True,
                                  "carryEnabled": True, "staticEnabled": True, "emergenceEnabled": True,
                                  "seedingEnabled": True, "dustDevilsEnabled": True,
@@ -731,6 +732,24 @@ def defs_chain(t):
             if not _same(_get_setting(t, "sunLanceEnabled"), True):
                 _fail("sunLanceEnabled is not at its shipped default True")
 
+    with _comp(t, "geophone_defs"):
+        # STILLSAND_GEOPHONE_1: the geophone and its comp must resolve live; it must read the sand-swim
+        # kit's query (not a private copy) and show only a bearing and a size class.
+        if "ThingDef/RM_Geophone" not in SHIPPED:
+            _fail("ThingDef/RM_Geophone is not parsed from this mod's Defs/ (parser or def missing)")
+        src = open(os.path.join(HERE, "Source", "RM_Geophone.cs"), encoding="utf-8").read()
+        if "RM_CompSandSwim" not in src or ".Submerged" not in src:
+            _fail("RM_Geophone.cs does not read the sand-swim kit's Submerged query")
+        if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "Production", "RM_Geophone.png")):
+            _fail("RM_Geophone.png is missing")
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Geophone", fields="defName", limit=5)
+            _ok(r, "get_defs(geophone)")
+            if r.get("notFound"):
+                _fail("geophone def did not resolve live: %s" % r.get("notFound"))
+            if not _same(_get_setting(t, "geophoneRadius"), 20.0):
+                _fail("geophoneRadius is not at its shipped default 20")
+
     with _comp(t, "cave_place_defs"):
         # STILLSAND_CAVE_AS_PLACE_1: wall, drip source, tribal mark, drip sound must resolve; the drip
         # clip must exist on disk; the grotto must use the wall ring (no floor biosilica stacks) and
@@ -876,7 +895,7 @@ def settings_chain(t):
     # Toggles whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "geophoneEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
                   "seedingEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
