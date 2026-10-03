@@ -49,9 +49,54 @@ namespace RimMandrake.ShipVermin
             ("Mynock", "RSW_Mynock", () => spawnMynock),
             ("Scavrat", "RSW_Scavrat", () => spawnScavrat),
             ("WompRat", "RSW_WompRat", () => spawnWompRat),
-            ("VFEI2_Fuelmite", null, () => spawnFuelmite),
-            ("Rat", null, () => spawnRat),
+            // FALL_LINE_ARRIVAL_MECHANISM_1: the fuelmite was ported as RSW_Zhakka (SWBestiary DesertPort);
+            // the stale donor-only entry made nests spawn the DONOR mite whenever VFE Insectoids 2 was loaded.
+            ("VFEI2_Fuelmite", "RSW_Zhakka", () => spawnFuelmite),
+            // "Rat" is OUT of the nest roster: under fall_line.md §8a the rat arrives only as the white
+            // lab rat out of a pod (mandrake.rut.falllinearrivals), never out of a wreck. spawnRat is kept
+            // as a scribed field so old settings files load; it no longer drives anything.
         };
+
+        /// <summary>FALL_LINE_ARRIVAL_MECHANISM_1: a nest with its own weights picks from them; a name that is
+        /// in the roster is skipped when its checkbox is off; a name outside the roster (a not-yet-ported
+        /// creature) is allowed whenever it resolves. Empty weights = the uniform roster pick.</summary>
+        public static PawnKindDef PickNestSpecies(List<RM_VerminWeight> weights)
+        {
+            if (weights == null || weights.Count == 0)
+            {
+                return PickEnabledNestSpecies();
+            }
+            List<(PawnKindDef kind, float w)> pool = new List<(PawnKindDef, float)>();
+            foreach (RM_VerminWeight vw in weights)
+            {
+                if (vw == null || vw.kind.NullOrEmpty() || vw.weight <= 0f || !RosterAllows(vw.kind))
+                {
+                    continue;
+                }
+                PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(vw.kind);
+                if (kind != null)
+                {
+                    pool.Add((kind, vw.weight));
+                }
+            }
+            if (pool.Count == 0)
+            {
+                return null;
+            }
+            return pool.RandomElementByWeight(e => e.w).kind;
+        }
+
+        private static bool RosterAllows(string kind)
+        {
+            foreach ((string defName, string ported, Func<bool> enabled) entry in NestSpeciesRoster)
+            {
+                if (entry.defName == kind || entry.ported == kind)
+                {
+                    return entry.enabled();
+                }
+            }
+            return true;
+        }
 
         public override void ExposeData()
         {
@@ -121,8 +166,7 @@ namespace RimMandrake.ShipVermin
                 list.CheckboxLabeled("  Mynock", ref spawnMynock);
                 list.CheckboxLabeled("  Scavrat", ref spawnScavrat);
                 list.CheckboxLabeled("  Womp rat", ref spawnWompRat);
-                list.CheckboxLabeled("  Fuelmite (needs VFE Insectoids 2)", ref spawnFuelmite);
-                list.CheckboxLabeled("  Rat", ref spawnRat);
+                list.CheckboxLabeled("  Zhakka (fuelmite)", ref spawnFuelmite);
             }
 
             list.End();

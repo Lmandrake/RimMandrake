@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_ARRIVAL_MECHANISM_1, spec §8 pacing: "never more than one wreck a week, ... a rat
+     every year or two". Both gated in C# on the Fall Line (RUT_FallLine mutator or a Fall Line
+     world feature) unless the "anywhere" Mod Setting is on; allowedBiomes is belt-and-braces
+     only. Frequency multipliers live in Mod Settings (BaseChanceThisGame). -->
+<Defs>
+
+  <IncidentDef>
+    <defName>RUT_FallArrival</defName>
+    <label>wreck falls</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.FallLineArrivals.IncidentWorker_FallArrival</workerClass>
+    <baseChance>2.0</baseChance>
+    <minRefireDays>6</minRefireDays>
+    <earliestDay>2</earliestDay>
+  </IncidentDef>
+
+  <IncidentDef>
+    <defName>RUT_LabRatFalls</defName>
+    <label>specimen</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.FallLineArrivals.IncidentWorker_LabRatFalls</workerClass>
+    <baseChance>0.15</baseChance>
+    <minRefireDays>90</minRefireDays>
+    <earliestDay>10</earliestDay>
+  </IncidentDef>
+
+</Defs>

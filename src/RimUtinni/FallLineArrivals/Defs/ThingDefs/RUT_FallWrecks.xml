@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_ARRIVAL_MECHANISM_1 Band A (spec §4): three wreck kinds, each a salvageable
+     building that is also a ShipVermin nest (RM_CompProperties_VerminNest with per-kind
+     speciesWeights from spec §4.2 and a 2~4 initial burst whose letter is the arrival letter),
+     and one incoming skyfaller per kind. Art: Odyssey's own ShipChunk_Mech set (spec §9 item 2;
+     no art commissioned). No explosion on impact: a wreck, not a bomb (no fire on the deep desert).
+     Weights are the spec's draft numbers, for the owner to tune at quicktest. -->
+<Defs>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RUT_FallWreck_Hull</defName>
+    <label>wrecked hull rib</label>
+    <description>A curved rib of somebody else's hull, torn off on the way down. Mynocks cling to it the way they clung to the ship.\n\nDeconstruct it for salvage. Until then, ship-vermin keep coming out of it.</description>
+    <graphicData>
+      <texPath>Things/Building/MechanoidShipChunk</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <costList Inherit="False">
+      <Steel>60</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <killedLeavings Inherit="False">
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </killedLeavings>
+    <comps>
+      <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+        <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
+        <nestSpawnRadius>4</nestSpawnRadius>
+        <populationGroupTag>ShipVermin</populationGroupTag>
+        <populationHardCap>12</populationHardCap>
+        <speciesWeights>
+            <li><kind>RSW_Mynock</kind><weight>6</weight></li>
+            <li><kind>RSW_Scavrat</kind><weight>2</weight></li>
+            <li><kind>RSW_WompRat</kind><weight>1</weight></li>
+        </speciesWeights>
+        <initialBurst>2~4</initialBurst>
+        <initialBurstDelayTicks>600~2400</initialBurstDelayTicks>
+        <burstLetterLabel>Wreck: hull rib</burstLetterLabel>
+        <burstLetterText>A rib of somebody else's ship has come down within sight of the colony. Something has already moved in under it: the mynocks that rode it down are crawling out.\n\nIt can be stripped for steel, if you want to be the one standing next to it. Left alone, more will come out of it.</burstLetterText>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RUT_FallWreckIncoming_Hull</defName>
+    <label>wrecked hull rib (incoming)</label>
+    <size>(2, 2)</size>
+    <skyfaller>
+      <shadowSize>(2.5, 2.5)</shadowSize>
+      <explosionRadius>0</explosionRadius>
+      <cameraShake>1</cameraShake>
+      <metalShrapnelCountRange>3~6</metalShrapnelCountRange>
+      <ticksToImpactRange>240~360</ticksToImpactRange>
+    </skyfaller>
+  </ThingDef>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RUT_FallWreck_Cargo</defName>
+    <label>wrecked cargo section</label>
+    <description>A crumpled cargo section, its hatches burst. Whatever it carried, scavrats and womp rats now nest in what is left.\n\nDeconstruct it for salvage. Until then, ship-vermin keep coming out of it.</description>
+    <graphicData>
+      <texPath>Things/Building/MechanoidShipChunk</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <costList Inherit="False">
+      <Steel>40</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <killedLeavings Inherit="False">
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </killedLeavings>
+    <comps>
+      <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+        <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
+        <nestSpawnRadius>4</nestSpawnRadius>
+        <populationGroupTag>ShipVermin</populationGroupTag>
+        <populationHardCap>12</populationHardCap>
+        <speciesWeights>
+            <li><kind>RSW_Scavrat</kind><weight>6</weight></li>
+            <li><kind>RSW_WompRat</kind><weight>4</weight></li>
+            <li><kind>RSW_Mynock</kind><weight>1</weight></li>
+        </speciesWeights>
+        <initialBurst>2~4</initialBurst>
+        <initialBurstDelayTicks>600~2400</initialBurstDelayTicks>
+        <burstLetterLabel>Wreck: cargo section</burstLetterLabel>
+        <burstLetterText>A cargo section of somebody else's ship has come down within sight of the colony, hatches burst. Scavrats are already nosing out of it.\n\nIt can be stripped for steel and components, if you want to be the one standing next to it. Left alone, more will come out of it.</burstLetterText>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RUT_FallWreckIncoming_Cargo</defName>
+    <label>wrecked cargo section (incoming)</label>
+    <size>(2, 2)</size>
+    <skyfaller>
+      <shadowSize>(2.5, 2.5)</shadowSize>
+      <explosionRadius>0</explosionRadius>
+      <cameraShake>1</cameraShake>
+      <metalShrapnelCountRange>3~6</metalShrapnelCountRange>
+      <ticksToImpactRange>240~360</ticksToImpactRange>
+    </skyfaller>
+  </ThingDef>
+
+  <ThingDef ParentName="ShipChunkBase">
+    <defName>RUT_FallWreck_Tank</defName>
+    <label>wrecked fuel tank</label>
+    <description>A ruptured fuel tank from a ship that did not make it. It still sweats chemfuel, and the zhakkas that drink it nest in the seams.\n\nDeconstruct it for salvage. Until then, ship-vermin keep coming out of it.</description>
+    <graphicData>
+      <texPath>Things/Building/MechanoidShipChunk</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <tickerType>Normal</tickerType>
+    <resourcesFractionWhenDeconstructed>1</resourcesFractionWhenDeconstructed>
+    <costList Inherit="False">
+      <Steel>50</Steel>
+      <Chemfuel>20</Chemfuel>
+    </costList>
+    <killedLeavings Inherit="False">
+      <ChunkSlagSteel>2</ChunkSlagSteel>
+    </killedLeavings>
+    <comps>
+      <li Class="RimMandrake.ShipVermin.RM_CompProperties_VerminNest">
+        <nestSpawnIntervalDays>2~4</nestSpawnIntervalDays>
+        <nestSpawnRadius>4</nestSpawnRadius>
+        <populationGroupTag>ShipVermin</populationGroupTag>
+        <populationHardCap>12</populationHardCap>
+        <speciesWeights>
+            <li><kind>RSW_Zhakka</kind><weight>6</weight></li>
+            <li><kind>RSW_Mynock</kind><weight>1</weight></li>
+            <li><kind>RSW_Scavrat</kind><weight>1</weight></li>
+        </speciesWeights>
+        <initialBurst>2~4</initialBurst>
+        <initialBurstDelayTicks>600~2400</initialBurstDelayTicks>
+        <burstLetterLabel>Wreck: fuel tank</burstLetterLabel>
+        <burstLetterText>A fuel tank from somebody else's ship has come down within sight of the colony, still sweating chemfuel. Zhakkas are already feeding at its seams.\n\nIt can be stripped for steel and the last of its fuel, if you want to be the one standing next to it. Left alone, more will come out of it.</burstLetterText>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="SkyfallerBase">
+    <defName>RUT_FallWreckIncoming_Tank</defName>
+    <label>wrecked fuel tank (incoming)</label>
+    <size>(2, 2)</size>
+    <skyfaller>
+      <shadowSize>(2.5, 2.5)</shadowSize>
+      <explosionRadius>0</explosionRadius>
+      <cameraShake>1</cameraShake>
+      <metalShrapnelCountRange>3~6</metalShrapnelCountRange>
+      <ticksToImpactRange>240~360</ticksToImpactRange>
+    </skyfaller>
+  </ThingDef>
+
+</Defs>

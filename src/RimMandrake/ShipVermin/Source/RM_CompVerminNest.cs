@@ -33,6 +33,10 @@ namespace RimMandrake.ShipVermin
 	{
 		private int nextSpawnTick = -1;
 
+		private int burstTick = -1;
+
+		private bool burstDone;
+
 		private RM_CompProperties_VerminNest Props => (RM_CompProperties_VerminNest)props;
 
 		public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -41,6 +45,10 @@ namespace RimMandrake.ShipVermin
 			if (nextSpawnTick < 0)
 			{
 				CalculateNextSpawnTick();
+			}
+			if (!respawningAfterLoad && !burstDone && burstTick < 0 && Props.initialBurst.max > 0)
+			{
+				burstTick = Find.TickManager.TicksGame + Props.initialBurstDelayTicks.RandomInRange;
 			}
 		}
 
@@ -54,6 +62,11 @@ namespace RimMandrake.ShipVermin
 			if (!ShipVerminSettings.wreckSpawningEnabled)
 			{
 				return; // mod option: wreck-anchored nests disabled entirely
+			}
+			if (!burstDone && burstTick >= 0 && Find.TickManager.TicksGame >= burstTick)
+			{
+				burstDone = true;
+				SpawnBurst(Props.initialBurst.RandomInRange, sendLetter: true);
 			}
 			if (Find.TickManager.TicksGame < nextSpawnTick)
 			{
@@ -98,7 +111,7 @@ namespace RimMandrake.ShipVermin
 				return Report(verbose, $"population cap reached ({currentPop}/{Props.populationHardCap}, tag '{Props.populationGroupTag}')");
 			}
 
-			PawnKindDef kind = ShipVerminSettings.PickEnabledNestSpecies();
+			PawnKindDef kind = ShipVerminSettings.PickNestSpecies(Props.speciesWeights);
 			if (kind == null)
 			{
 				// nothing enabled, or nothing enabled is actually installed
@@ -122,6 +135,27 @@ namespace RimMandrake.ShipVermin
 			}
 			GenSpawn.Spawn(pawn, spawnCell, map);
 			return Report(verbose, $"SPAWNED {kind.defName} ({pawn.ThingID}) at {spawnCell}, nest at {parent.Position}", success: true);
+		}
+
+		/// <summary>FALL_LINE_ARRIVAL_MECHANISM_1: spawn up to <paramref name="count"/> nest species at once
+		/// (each through AttemptSpawn, so the population cap and the settings roster still hold), then
+		/// send the props' burst letter if anything came out. Returns how many spawned.</summary>
+		public int SpawnBurst(int count, bool sendLetter)
+		{
+			int spawned = 0;
+			for (int i = 0; i < count; i++)
+			{
+				if (AttemptSpawn(verbose: false).StartsWith("SPAWNED"))
+				{
+					spawned++;
+				}
+			}
+			if (spawned > 0 && sendLetter && !Props.burstLetterLabel.NullOrEmpty() && parent.Spawned)
+			{
+				Find.LetterStack.ReceiveLetter(Props.burstLetterLabel, Props.burstLetterText ?? "",
+					LetterDefOf.NeutralEvent, new LookTargets(parent));
+			}
+			return spawned;
 		}
 
 		private string Report(bool verbose, string reason, bool success = false)
@@ -150,6 +184,8 @@ namespace RimMandrake.ShipVermin
 		{
 			base.PostExposeData();
 			Scribe_Values.Look(ref nextSpawnTick, "nextSpawnTick", -1);
+			Scribe_Values.Look(ref burstTick, "burstTick", -1);
+			Scribe_Values.Look(ref burstDone, "burstDone", false);
 		}
 	}
 }
