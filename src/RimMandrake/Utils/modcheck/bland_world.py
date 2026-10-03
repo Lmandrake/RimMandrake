@@ -22,7 +22,9 @@ import tempfile
 
 import helpers as H
 
-DRY_BIOMES = ("AridShrubland", "Desert")
+# The campaign world has no vanilla AridShrubland/Desert tile (2026-10-03: 119904 tiles, 0 candidates); donor ZBiome_Grasslands
+# is the plainest Flat 15-30 C biome there (260 tiles) and carries none of our hazards (TheRot Sheen, Terminator fronts).
+DRY_BIOMES = ("AridShrubland", "Desert", "ZBiome_Grasslands")
 NAMING_DIALOG = "Dialog_NamePlayer"       # colony-naming prompts: re-raised every ~600 ticks until named, harmless
 NATURAL_SCENERY = ("SteamGeyser",)         # in the BuildingArtificial group but indestructible and not a ruin
 HINT_TILE = 4375
