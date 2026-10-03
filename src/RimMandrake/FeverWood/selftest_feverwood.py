@@ -58,6 +58,7 @@ class FWGame(MockGame):
         self.msgs = []
         self.n = 0
         self.sett = dict((k, _fmt(d)) for k, (_, d) in V.SETTING_FIELDS.items())
+        self.sett["reactionDetectionEnabled"] = "True"     # CreatureBehaviors' field, same mock table
         if "settings_drift" in self.brk:
             self.sett["twoFrontLureRaidMtbHours"] = "7"
         self.known = {}                   # (DefType, name) -> packageId
@@ -243,6 +244,12 @@ class FWGame(MockGame):
                 and (not p.get("faction") or q.get("factionDef") == p.get("faction"))]
         return {"success": True, "pawns": rows}
 
+    def t_jawa_pawn_census(self, p):
+        ids = [i for i in str(p.get("ids") or "").split(",") if i]
+        rows = [{"id": q["id"], "kindDef": q["kindDef"], "mentalState": q.get("mental"),
+                 "job": {"def": "Wait_Wander"}} for q in self.pawns if not ids or q["id"] in ids]
+        return {"success": True, "pawns": rows}
+
     def t_jawa_list_things(self, p):
         r = self._rect(p)
         want = set(d.strip() for d in str(p.get("defName") or "").split(",") if d.strip())
@@ -402,6 +409,7 @@ class FWGame(MockGame):
         return r
 
     def _sim(self):
+        self._sim_hive()
         for o in list(self.objs):
             d = o["def"]
             if d.startswith("RM_Sekkulaath_") and o["first_hit"] is not None and d != "RM_Sekkulaath_Porter":
@@ -430,6 +438,31 @@ class FWGame(MockGame):
                     self.pawns.append({"id": "Pawn%d" % self._id(), "kindDef": "RM_Kurreth", "x": 5, "z": 5,
                                        "faction": "Hostile", "factionDef": SWARM, "hediffs": {}, "downed": False,
                                        "last_refusal": None, "refusals": 0})
+
+    def _sim_hive(self):
+        """RM_CompReactionSource detection (7, LOS assumed on the flat pad) + responder propagation (9 per hop)
+        + rally, as the C# does: wild kurreth only, the intruder is the event's instigator."""
+        if not (self.sb("reactionDetectionEnabled") or "hive_ignores_toggle" in self.brk) or "hive_blind" in self.brk:
+            return
+        wild = [q for q in self.pawns if q["kindDef"] == "RM_Kurreth" and q["faction"] is None]
+        intruders = [q for q in self.pawns if q["kindDef"] != "RM_Kurreth" and q["faction"] is not None]
+        for a in wild:
+            if a.get("mental"):
+                continue
+            col = next((c for c in intruders if math.hypot(c["x"] - a["x"], c["z"] - a["z"]) <= 7), None)
+            if col is None:
+                continue
+            reached, frontier = [a], [a]
+            while frontier and "hive_no_hop" not in self.brk:
+                cur = frontier.pop()
+                for b in wild:
+                    if b not in reached and not b.get("mental") and math.hypot(b["x"] - cur["x"], b["z"] - cur["z"]) <= 9:
+                        reached.append(b)
+                        frontier.append(b)
+            for b in reached[:11]:
+                b["mental"] = {"def": V.HIVE_RALLY, "causedByPawn": col["id"]}
+            if "hive_silent" not in self.brk:
+                self.msgs.append({"text": "The kurreth hive has noticed you. The alarm is spreading.", "reads": 0})
 
 
 def run(brk=(), log_lines=()):
@@ -569,6 +602,10 @@ def main():
         ("flora_noop", {"flora_harvest.every_flora_yields_its_harvest_item"}),
         ("raid_ignores_toggle", {"lure_raid.with_the_lure_toggle_off_no_raid_comes"}),
         ("raid_never", {"lure_raid.a_staked_lure_draws_the_swarm"}),
+        ("hive_blind", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
+        ("hive_no_hop", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
+        ("hive_silent", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
+        ("hive_ignores_toggle", {"hive_rally.with_detection_off_the_same_layout_rallies_nobody"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))

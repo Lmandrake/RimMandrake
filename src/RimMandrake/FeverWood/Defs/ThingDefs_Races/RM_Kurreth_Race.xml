@@ -22,9 +22,9 @@
      Ground-based, no flight — ants are not "airborne in the fiction", so
      the standing flyer rule does not apply here.
 
-     ⛔ NOT built here: the reactive alarm/rally comp (REACTION_MECHANISM_
-     GENERALISE_1's own step 3, in-flight this session — do not add a second
-     alarm implementation), and the off-map theft-hauling lord/job
+     The hive reaction (alarm/rally) is wired below on both castes via the
+     shared CreatureBehaviors reaction source. ⛔ NOT built here: the off-map
+     theft-hauling lord/job
      (FEVERWOOD_TWO_FRONT_LURE_1's F9 scope, "Ant theft-hauling: a
      steal-the-herd lord"). Both castes below are the shared population these
      defs owe either consumer, undecorated by either's behaviour. -->
@@ -103,6 +103,46 @@
     <tradeTags>
       <li>AnimalInsect</li>
     </tradeTags>
+    <!-- REACTION_MECHANISM_GENERALISE_1 step 3 / FEVERWOOD_ANT_HIVE_DUNGEON_1:
+         the hive reacts. A wild (faction-less) kurreth that SEES an intruder
+         within 7 cells, or is hurt, rings an alarm; the alarm hops resident to
+         resident (9 cells per hop, through the corridors) and each one reached
+         rallies after the intruder. BUDGET, stated as a total: one disturbance
+         rallies at most 11 kurreth (the ringer + 10 reached by propagation;
+         rallying itself costs nothing so the total is exactly the hop count).
+         Telegraph: an angry chitter + a ThreatBig message once per alarm, and
+         a "!" over every kurreth that answers. Raiding-column kurreth carry a
+         faction and ignore all of this (they answer their lord).
+         Disengage at 45 cells from the alarm's origin: leave the hive's reach
+         and the hunt ends. Stench smoke (Greentide grenade) suppresses it. -->
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ReactionSource">
+        <tag>KurrethHive</tag>
+        <eventBudget>10</eventBudget>
+        <cooldownTicks>2500</cooldownTicks>
+        <detectRadius>7</detectRadius>
+        <detectIntervalTicks>120</detectIntervalTicks>
+        <propagation Class="RimMandrake.CreatureBehaviors.RM_ReactionPropagationRule_RespondersWithinRadius">
+          <radius>9</radius>
+          <budgetPerNeighbor>1</budgetPerNeighbor>
+        </propagation>
+        <response Class="RimMandrake.CreatureBehaviors.RM_ReactionResponseRule_Rally">
+          <mentalState>RM_HiveRally</mentalState>
+          <disengageRadius>45</disengageRadius>
+          <budgetCost>0</budgetCost>
+          <alarmSound>Pawn_Megascarab_Angry</alarmSound>
+          <alarmMessage>The kurreth hive has noticed you. The alarm is spreading through the tunnels.</alarmMessage>
+        </response>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>6</tetherRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+        <tag>KurrethHive</tag>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -216,6 +256,35 @@
     <tradeTags>
       <li>AnimalInsect</li>
     </tradeTags>
+    <!-- Same hive reaction as RM_Kurreth (see its comment): the queen answers and rings the same alarm. -->
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ReactionSource">
+        <tag>KurrethHive</tag>
+        <eventBudget>10</eventBudget>
+        <cooldownTicks>2500</cooldownTicks>
+        <detectRadius>7</detectRadius>
+        <detectIntervalTicks>120</detectIntervalTicks>
+        <propagation Class="RimMandrake.CreatureBehaviors.RM_ReactionPropagationRule_RespondersWithinRadius">
+          <radius>9</radius>
+          <budgetPerNeighbor>1</budgetPerNeighbor>
+        </propagation>
+        <response Class="RimMandrake.CreatureBehaviors.RM_ReactionResponseRule_Rally">
+          <mentalState>RM_HiveRally</mentalState>
+          <disengageRadius>45</disengageRadius>
+          <budgetCost>0</budgetCost>
+          <alarmSound>Pawn_Megascarab_Angry</alarmSound>
+          <alarmMessage>The kurreth hive has noticed you. The alarm is spreading through the tunnels.</alarmMessage>
+        </response>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>6</tetherRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+        <tag>KurrethHive</tag>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

@@ -4,10 +4,8 @@ using Verse;
 namespace RimMandrake.FeverWood
 {
     // FEVERWOOD_ANT_HIVE_DUNGEON_1. Records what RM_GenStep_AntHiveDungeon
-    // actually carved on this map, so follow-on work (the reactive alarm
-    // mechanism once REACTION_MECHANISM_GENERALISE_1 reaches its ant-hive
-    // step; the farm/parasite/guard chamber population once their creatures
-    // exist) can place content into the already-generated layout instead of
+    // actually carved on this map, so follow-on work (the farm/parasite/guard
+    // chamber population once their creatures exist) can place content into the already-generated layout instead of
     // re-deriving room positions from scratch. A map with no generated hive
     // simply has an empty RoomCenters list — always present, never null,
     // same "component always exists, data may be empty" shape as

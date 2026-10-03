@@ -1496,3 +1496,72 @@ def lure_raid(t):
             except Exception as ex:
                 print("[fw] raid teardown failed: %s" % ex, file=sys.stderr, flush=True)
         _teardown(t)
+
+
+# ------------------------------------------------------------------------- hive rally
+
+CB_SETTINGS = "RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings"
+HIVE_RALLY = "RM_HiveRally"
+
+
+def _census(t, ids):
+    r = t.bridge_call("jawa/pawn_census", ids=",".join(i for i in ids if i))
+    if not _live(t):
+        return {}
+    return {p.get("id"): p for p in (_ok(r, "pawn_census").get("pawns") or [])}
+
+
+@suite.chain("hive_rally")
+def hive_rally(t):
+    """REACTION_MECHANISM_GENERALISE_1 step 3: three wild kurreth in a line 6 cells apart (one hop each, the
+    hop reach is 9) and a colonist 4 cells from the first, in its sight. The first notices, rings, and the
+    alarm hops down the line: all three end in RM_HiveRally aimed at that colonist, and the alarm message is
+    posted. With CreatureBehaviors' reactionDetectionEnabled OFF the same layout rallies nobody. Asleep
+    sentries notice nothing BY DESIGN, so an all-asleep line reads UNMEASURED, never FAIL."""
+    _enter(t)
+
+    def layout(t):
+        _reset_pad(t)
+        x, z = t.anchor
+        ants = [_spawn(t, "RM_Kurreth", x + dx, z, "none") for dx in (0, 6, 12)]
+        col = _spawn(t, "Colonist", x - 4, z, "player")
+        return ants, col
+
+    try:
+        with _comp(t, "a_seen_intruder_rallies_the_whole_line"):
+            ants, col = layout(t)
+            t.wait_ticks(400)
+            if _live(t):
+                rows = _census(t, ants)
+                states = [((rows.get(a) or {}).get("mentalState") or {}) for a in ants]
+                _note(t, "hive states", states)
+                if not any(s.get("def") == HIVE_RALLY for s in states):
+                    jobs = [(((rows.get(a) or {}).get("job") or {}).get("def")) for a in ants]
+                    if all(j == "LayDown" for j in jobs):
+                        _unmeasured(t, "every kurreth was asleep (a sleeping sentry notices nothing by design)")
+                    _fail("no kurreth rallied with a colonist 4 cells from the first sentry: %r jobs=%r" % (states, jobs))
+                bad = [s for s in states if s.get("def") != HIVE_RALLY]
+                if bad:
+                    _fail("the alarm did not hop down the line (6-cell gaps, 9-cell reach): %r" % states)
+                if any(str(s.get("causedByPawn") or "").replace("Thing_", "") != str(col).replace("Thing_", "")
+                       for s in states):
+                    _fail("a rallied kurreth is not aimed at the intruder %s: %r" % (col, states))
+                if "kurreth hive has noticed" not in _messages(t):
+                    _fail("no alarm message posted (the hive must telegraph)")
+
+        with _comp(t, "with_detection_off_the_same_layout_rallies_nobody", independent=True):
+            t.set_setting(CB_SETTINGS, {"reactionDetectionEnabled": False})
+            try:
+                ants, col = layout(t)
+                t.wait_ticks(400)
+                if _live(t):
+                    rows = _census(t, ants)
+                    rallied = [a for a in ants if ((rows.get(a) or {}).get("mentalState") or {}).get("def") == HIVE_RALLY]
+                    if rallied:
+                        _fail("reactionDetectionEnabled=false and %d kurreth still rallied on sight" % len(rallied))
+            finally:
+                if t.session is not None:
+                    t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="set",
+                                   field="reactionDetectionEnabled", value="True")
+    finally:
+        _teardown(t)
