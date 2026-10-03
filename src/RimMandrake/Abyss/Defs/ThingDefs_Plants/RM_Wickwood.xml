@@ -15,16 +15,19 @@
     Mod Setting lampCropsEnabled (RM_AbyssLampCrops, read at startup): off = no overlight (it lights, it
     does not farm) and it is struck from the Abyss's wild plants. Takes effect after a restart.
 
-    ART: placeholder vanilla TreeDrago until the RM_Wickwood artpipe job lands.
+    ART: RM_Wickwood from the artpipe (landed 2026-10-03, 256 px, own colours, no tint).
   -->
   <ThingDef ParentName="TreeBase">
     <defName>RM_Wickwood</defName>
     <label>wickwood tree</label>
     <description>A slim, black-barked tree of the Abyss whose sap carries a cold-burning light. The crown glows a steady blue-white bright enough to grow crops beneath it, and the Dark, which swallows every lamp men build, does not touch it.\n\nWickwoods can be extracted and replanted anywhere. A ring of them is a farm's sun.</description>
     <graphicData>
-      <texPath>Things/Plant/TreeDrago</texPath>
-      <graphicClass>Graphic_Random</graphicClass>
-      <color>(150,175,215)</color>
+      <texPath>RM_Abyss/Things/Plant/RM_Wickwood</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.35, 0.12)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
     </graphicData>
     <statBases>
       <Beauty>4</Beauty>
