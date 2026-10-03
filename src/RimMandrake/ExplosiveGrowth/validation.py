@@ -44,9 +44,14 @@ every settings arm restores the shipped default in a `finally` that bypasses the
 """
 import contextlib
 import json
+import os
 import re
 import sys
 import time
+import xml.etree.ElementTree as ET
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(HERE, "..", "Utils"))    # so `python3 validation.py` finds modcheck
 
 from modcheck import Suite, ExpectationFailed
 
@@ -937,3 +942,93 @@ def settings_restored(t):
                     bad.append((f, _get(t, f), _sv(d)))
             if bad:
                 _fail("settings left off their shipped default by an earlier arm: %s" % bad)
+
+
+# --------------------------------------------------------------------------- defs_resolve (first-script contract chain 1)
+
+def shipped_defs():
+    """(defType, defName) for every top-level def the mod's own Defs/ XML ships (parsed, never listed by hand)."""
+    out = []
+    for dp, _, files in os.walk(os.path.join(HERE, "Defs")):
+        for f in sorted(files):
+            if f.endswith(".xml"):
+                for e in ET.parse(os.path.join(dp, f)).getroot():
+                    n = e.findtext("defName")
+                    if n and not e.get("Abstract"):
+                        out.append((e.tag.split(".")[-1], n))
+    return out
+
+
+@suite.chain("defs_resolve")
+def defs_resolve(t):
+    """Every def the mod ships resolves in the running game; a control proves the probe can say absent.
+    The roster def's DefType name is UNPROVEN against get_defs: a failed ask is UNMEASURED, not FAIL."""
+    with _comp(t, "shipped_defs_resolve"):
+        want = shipped_defs()
+        sounds = ["%s/%s" % x for x in want if x[0] == "SoundDef"]
+        others = ["%s/%s" % x for x in want if x[0] != "SoundDef"]
+        r = t.bridge_call("jawa/get_defs", defs=";".join(sounds))
+        if _live(t):
+            if not isinstance(r, dict) or r.get("success") is not True:
+                _unmeasured(t, "get_defs could not be asked: %s" % str(r)[:140])
+            if r.get("notFound") or r.get("foundCount") != len(sounds):
+                _fail("shipped SoundDefs did not resolve: notFound=%r foundCount=%r of %d" % (r.get("notFound"), r.get("foundCount"), len(sounds)))
+        for d in others:
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if _live(t):
+                if not isinstance(r, dict) or r.get("success") is not True:
+                    _unmeasured(t, "get_defs %s could not be asked (DefType name unproven?): %s" % (d, str(r)[:140]))
+                if r.get("notFound") or r.get("foundCount") != 1:
+                    _fail("roster def did not load (a def with an unresolvable field is discarded silently): %s -> %r" % (d, r))
+    with _comp(t, "control_absent_def_reads_absent"):
+        r = t.bridge_call("jawa/get_defs", defs="SoundDef/RM_EG_NoSuchSoundForTheControl")
+        if _live(t):
+            if not isinstance(r, dict) or r.get("success") is not True:
+                _unmeasured(t, "control ask failed: %s" % str(r)[:140])
+            if r.get("foundCount") != 0 or not r.get("notFound"):
+                _fail("the probe cannot say absent: control returned %r" % r)
+
+
+# --------------------------------------------------------------------------- static (offline)
+
+def static_checks():
+    """Offline, no game. Returns failure strings; empty = pass."""
+    bad = []
+    src = open(os.path.join(HERE, "Source", "ExplosiveGrowthMod.cs"), encoding="utf-8").read()
+    fields = re.findall(r"public static (?:bool|float|int) (\w+)\s*=", src.split("class ExplosiveGrowthSettings")[1].split("ExposeData")[0]) \
+        if "class ExplosiveGrowthSettings" in src else []
+    if len(fields) < 1:
+        bad.append("sanity probe: found no settings fields in ExplosiveGrowthMod.cs (regex broke)")
+    for f in fields:
+        if f not in DEFAULT_OF:
+            bad.append("settings field %s is not in DEFAULTS (round-trip would skip it)" % f)
+    for f in DEFAULT_OF:
+        if f not in fields:
+            bad.append("DEFAULTS names %s but the settings class has no such field" % f)
+        if '"%s"' % f not in src:
+            bad.append("settings field %s is not Scribed" % f)
+    proj = open(os.path.join(HERE, "Source", "RM_ExplosiveGrowth.csproj"), encoding="utf-8").read() \
+        if os.path.isfile(os.path.join(HERE, "Source", "RM_ExplosiveGrowth.csproj")) else ""
+    if proj:
+        for cs in re.findall(r'Compile Include="([^"]+)"', proj):
+            if not os.path.isfile(os.path.join(HERE, "Source", cs.replace("\\", "/"))):
+                bad.append("csproj lists missing file " + cs)
+    defs = shipped_defs()
+    snd = {n for k, n in defs if k == "SoundDef"}
+    for s_ in SOUND_DEFS:
+        if s_ not in snd:
+            bad.append("SOUND_DEFS names %s but no shipped SoundDef" % s_)
+    if not any(k.endswith("RosterDef") for k, _ in defs):
+        bad.append("no roster def shipped")
+    if not os.path.isfile(os.path.join(HERE, "Assemblies", "RimMandrake.ExplosiveGrowth.dll")) and not any(
+            f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
+        bad.append("no DLL in Assemblies")
+    return bad
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p_ in problems:
+        print("  - " + p_)
+    sys.exit(1 if problems else 0)
