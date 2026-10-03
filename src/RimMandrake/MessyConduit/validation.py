@@ -56,6 +56,12 @@ LEARNED (seed; each line is a check below, not prose only):
   * HARNESS: modset_builder --apply writes its "before" backup per tier name, so swapping A->B->A overwrites
     the earlier backup of the same name; the pre-pass list is whatever tier you swap back to by name.
   * HARNESS: sparks are flecks thrown on ticks, so a paused screenshot never shows them (look, do not hunt).
+  * Phase 1b lane A (2026-10-02): frame_cell_rect moves the camera but KEEPS the zoom, so after the far-zoom LOD
+    read the camera stayed Furthest and every later read/screenshot was far (B8 FAILED in harness, fixed by
+    set_camera_zoom back). screenshot_cell_rect does NOT capture per-frame Graphics.DrawMesh draws (selection
+    highlight, whip, sway): the highlight was on screen (OS capture) yet absent from the cell-rect capture.
+    The first highlight material tinted the near-black strand texture and stayed near-black; it is now a warm
+    band on a white texture.
 RULED OUT: (none yet)
 """
 import glob
@@ -77,15 +83,16 @@ TRANSPARENT = "RimMandrake/MessyConduit/ConduitTransparent"
 
 SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", "sprawlCap": "16f",
            "cordsPerConnection": "3", "tangles": "true", "needlessLoops": "true", "breakReadout": "true",
-           "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false"}
+           "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
+           # phase 1b lane A
+           "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
+           "maxSparkingEnds": "24", "highlight": "true", "sway": "true", "swayAmplitude": "1f", "lod": "true"}
 
 # Bars this phase does not build or this short tier does not reach. Honest, named, never PASS.
 UNBUILT = [
-    ("U_whip_tails", "UNBUILT", "live tails whip (phase 1b); 1a tails are static, live = straight + sparks"),
-    ("U_downed_wire_bursts", "UNBUILT", "wall-terminal drip/flash schedule (phase 1b); 1a uses the plain spark poll"),
-    ("U_pbd_settle", "UNBUILT", "rope settle / SDF (phase 1b); 1a lays canned loops + smoothing"),
-    ("U_selection_highlight", "UNBUILT", "selecting a conduit highlights its net's cords (design 8.3, phase 1b)"),
-    ("U_sway", "UNBUILT", "CutoutPlant sway (phase 2)"),
+    ("U_sway_shader_path", "UNBUILT", "CutoutPlant vertex-shader sway (phase-2 doc 1.5 option 1); the CPU path is what ships"),
+    ("U_floor_ripple", "UNBUILT", "optional outdoor floor-cord ripple (phase-2 doc 1.3, default off)"),
+    ("U_motion_look", "UNCOVERED", "whip / drip rhythm / sway LOOK: motion is not a Northstar bar (owner); state proxies above"),
     ("U_other_styles", "UNBUILT", "Extension cord / Cybertek / Star Wars art families (art not installed)"),
     ("M4_save_load_hash", "UNCOVERED", "walk M4: same polylines after save/load -- its own mode, --save-load NAME"),
     ("M9_remove_mod_clean", "UNCOVERED", "walk M9: a save made with the mod loads clean without it -- its own mode, "
@@ -390,6 +397,10 @@ def run_live(args):
         {"west(battery side)": ew, "east": ee, "cordsAcrossNets": c2.get("cordsAcrossNets")})
     row(rows, "M8b_no_cord_across_gap", "PASS" if c2.get("cordsAcrossNets") == 0 else "FAIL", "MOD",
         {"cordsAcrossNets": c2.get("cordsAcrossNets"), "list": c2.get("cordsAcrossNetsList")})
+    try:
+        lane_a_live(B, rows, log)
+    except Exception as ex:  # noqa: BLE001
+        row(rows, "P1B_block", "FAIL", "HARNESS", "lane A block raised: %r" % ex)
     # source off -> the live end reads dead within one 250-tick poll, no manual poll
     if bat_id:
         B.call("jawa/battery_set", thing=bat_id, mode="setPct", value=0.0)
@@ -426,6 +437,171 @@ def run_live(args):
         row(rows, rid, st, "SCOPE", why)
     res["log"] = log
     return res
+
+
+# ============================================================================ phase 1b lane A (live)
+# A second plot north-east of the room: battery 2, a 4x3 conduit field (a TANGLE at the default threshold 9),
+# a run east into a wall that carries one buried conduit cell (a live WALL terminal = downed wire, outdoors so
+# it sways). Run after M8b, so the west end of the gap is a LIVE floor terminal (whip) on screen.
+BAT2 = (X0 + 19, Z0 + 8)
+FIELD = [(x, z) for x in range(X0 + 20, X0 + 24) for z in range(Z0 + 8, Z0 + 11)]
+RUN2 = [(X0 + 24, Z0 + 9), (X0 + 25, Z0 + 9), (X0 + 26, Z0 + 9)]
+WALL2 = [(X0 + 26, Z0 + 8), (X0 + 26, Z0 + 9), (X0 + 26, Z0 + 10)]
+SHOTS = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
+
+
+def shot(B, name, rect, log, pad=1, root=None):
+    import shutil
+    kw = {} if root is None else {"rootSize": root}
+    r = B.call("rimworld/screenshot_cell_rect", x=rect[0], z=rect[1], width=rect[2], height=rect[3], paddingCells=pad,
+               fileName=name, suppressMessage=True, **kw)
+    src = r.get("path") or r.get("filePath")
+    dst = None
+    try:
+        if src and os.path.exists(src):
+            os.makedirs(SHOTS, exist_ok=True)
+            dst = os.path.join(SHOTS, name + os.path.splitext(src)[1])
+            shutil.copyfile(src, dst)
+    except Exception as ex:  # noqa: BLE001
+        log.append("screenshot copy failed %s: %r" % (name, ex))
+    log.append({"shot": name, "src": src, "dst": dst, "ok": r.get("success")})
+    return dst
+
+
+def motion(B, frames=2):
+    """The motion counters describe the LAST drawn frame: read twice so a setting change has been drawn."""
+    m = {}
+    for _ in range(frames):
+        m = B.probe("motion")
+        time.sleep(0.25)
+    return m
+
+
+def lane_a_live(B, rows, log):
+    b1 = B.call("jawa/build_batch", ops=ops("Wall", WALL2), stuff="Steel", faction="player")
+    b2 = B.call("jawa/build_batch", ops="Battery:%d,%d,0" % BAT2, faction="player")
+    b3 = B.call("jawa/build_batch", ops=ops("PowerConduit", FIELD + RUN2), faction="player", wipeExisting=False)
+    bat2 = None
+    for t in B.call("jawa/list_things", defName="Battery", limit=10).get("things") or []:
+        pos = t.get("position") or t.get("pos") or t.get("cell")
+        if pos and tuple(pos[:1] + pos[-1:]) == BAT2 or (isinstance(pos, dict) and (pos.get("x"), pos.get("z")) == BAT2):
+            bat2 = t.get("id") or t.get("thingId")
+    if not bat2:
+        lst = B.call("jawa/list_things", defName="Battery", limit=10).get("things") or []
+        bat2 = (lst[-1].get("id") or lst[-1].get("thingId")) if lst else None
+    bs = B.call("jawa/battery_set", thing=bat2, mode="setPct", value=1.0) if bat2 else {}
+    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    B.ticks(2)
+    time.sleep(1.0)
+    B.probe("poll")
+    m0 = motion(B)
+    log.append({"lane_a_m0": m0, "plot": {"walls": b1.get("survived"), "battery": bat2, "conduit": b3.get("survived"),
+                                          "stored": bs.get("storedEnergyAfter")}})
+    row(rows, "P1B_plot_built", "PASS" if b3.get("survived") == len(FIELD + RUN2) and bs.get("storedEnergyAfter", 0) > 0 else "FAIL",
+        "SITE", {"conduit": b3.get("survived"), "battery2": bat2, "stored": bs.get("storedEnergyAfter")})
+    # B1 settle
+    row(rows, "B1_rope_settle", "PASS" if m0.get("settledStrands", 0) > 0 and m0.get("settleMaxStretch", 1) < 0.03 and
+        m0.get("settleMaxLenDev", 1) <= 0.05 else "FAIL", "MOD",
+        {k: m0.get(k) for k in ("settledStrands", "settleMaxStretch", "settleMaxLenDev", "endHeaps", "laidPoints", "lastRebuildMs")})
+    # L2 tangle entity + lit strips
+    row(rows, "B6_tangle_lit_strips", "PASS" if m0.get("tangles", 0) >= 1 and m0.get("litStrips", 0) > 0 and m0.get("darkStrips", 1) == 0 else "FAIL",
+        "MOD", {k: m0.get(k) for k in ("tangles", "tangleMinUsed", "litStrips", "darkStrips", "stubs", "mergedStubs")})
+    shot(B, "p1b_01_wide", SITE, log)
+    shot(B, "p1b_02_tangle_lit_and_downed_wire", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
+    # B3 whip
+    w_on = m0.get("whipDraws", 0)
+    B.probe("set:whip=False")
+    m1 = motion(B)
+    B.probe("set:whip=True")
+    m1b = motion(B)
+    row(rows, "B3_whip_live_ends", "PASS" if w_on > 0 and m0.get("whipTails", 0) > 0 and m1.get("whipDraws") == 0 and m1b.get("whipDraws", 0) > 0 else "FAIL",
+        "MOD", {"whipDraws_on": w_on, "whipTails": m0.get("whipTails"), "liveFloorEnds": m0.get("liveFloorEnds"),
+                "deadFloorEnds": m0.get("deadFloorEnds"), "whipDraws_off": m1.get("whipDraws"), "whipDraws_on_again": m1b.get("whipDraws")})
+    # B4 downed-wire schedule: real time, histogram of events (counts while paused; flecks only while time runs)
+    B.probe("motionreset")
+    hist, t0 = {}, time.time()
+    while time.time() - t0 < 45:
+        time.sleep(5)
+        hist = (B.probe("motion").get("downedHist") or {})
+        if all(hist.get(k, 0) > 0 for k in ("Drip", "Flash", "Quiet", "Crackle")):
+            break
+    m2 = B.probe("motion")
+    row(rows, "B4_downed_wire_bursts", "PASS" if m2.get("liveWallEnds", 0) >= 1 and all(hist.get(k, 0) > 0 for k in ("Drip", "Flash", "Quiet", "Crackle")) else "FAIL",
+        "MOD", {"liveWallEnds": m2.get("liveWallEnds"), "hist": hist, "events": m2.get("dripEvents"), "seconds": int(time.time() - t0)})
+    s0 = m2.get("sparksThrown", 0)
+    B.ticks(160)
+    m3 = B.probe("motion")
+    row(rows, "B4b_sparks_thrown_ticking", "PASS" if m3.get("sparksThrown", 0) > s0 else "FAIL", "MOD",
+        {"sparksBefore": s0, "sparksAfter160Ticks": m3.get("sparksThrown")})
+    # B7 sway (CPU path): two frames 30 ticks apart differ with sway ON, nothing drawn with it OFF
+    a = motion(B)
+    B.ticks(30)
+    b = motion(B)
+    B.probe("set:sway=False")
+    c = motion(B)
+    B.probe("set:sway=True")
+    sway_ok = a.get("swayDraws", 0) > 0 and a.get("swayHash") != b.get("swayHash") and c.get("swayDraws") == 0 and c.get("liftedSwaying") == 0
+    row(rows, "B7_sway_cpu_two_frame", ("PASS" if sway_ok else "FAIL") if a.get("plantWindSway") else "UNMEASURED", "MOD",
+        {"mode": a.get("swayMode"), "plantWindSway": a.get("plantWindSway"), "wind": a.get("windSpeed"), "amp": a.get("swayAmplitude"),
+         "lifted": a.get("liftedStrands"), "swaying": a.get("liftedSwaying"), "swayDraws": a.get("swayDraws"), "swayVerts": a.get("swayVerts"),
+         "hashA": a.get("swayHash"), "hashB_30ticks": b.get("swayHash"), "off_swayDraws": c.get("swayDraws"), "off_swaying": c.get("liftedSwaying")})
+    # B5 selection highlight
+    sa = B.probe("select:%d,%d" % (X0 + 5, Z0 + 3))
+    h1 = motion(B, 3)
+    # (no screenshot here: screenshot_cell_rect renders its own camera pass and does NOT include the per-frame
+    #  Graphics.DrawMesh calls -- highlight, whip, sway -- LEARNED live 1b; an OS capture does show them)
+    sb = B.probe("select:%d,%d" % (X0 + 24, Z0 + 9))
+    h2 = motion(B, 3)
+    B.probe("deselect")
+    h3 = motion(B)
+    per1, per2 = h1.get("cordsPerNet") or {}, h2.get("cordsPerNet") or {}
+    hl_ok = (sa.get("success") and sb.get("success") and h1.get("highlightCords", 0) > 0 and
+             h1.get("highlightCords") == per1.get(str(h1.get("selectedNet"))) and
+             h2.get("highlightCords") == per2.get(str(h2.get("selectedNet"))) and h1.get("selectedNet") != h2.get("selectedNet") and
+             h3.get("highlightCords") == 0)
+    row(rows, "B5_selection_highlight", "PASS" if hl_ok else "FAIL", "MOD",
+        {"net1": [h1.get("selectedNet"), h1.get("highlightCords"), per1.get(str(h1.get("selectedNet")))],
+         "net2": [h2.get("selectedNet"), h2.get("highlightCords"), per2.get(str(h2.get("selectedNet")))],
+         "stubRings": [h1.get("highlightStubs"), h2.get("highlightStubs")], "deselected": h3.get("highlightCords")})
+    # B8 LOD by zoom
+    cam = B.call("rimworld/get_camera_state")
+    B.call("rimworld/set_camera_zoom", rootSize=58)
+    f1 = motion(B, 3)
+    shot_far = shot(B, "p1b_04_far_zoom_lod", (SITE[0] - 10, SITE[1] - 10, SITE[2] + 20, SITE[3] + 20), log, pad=0)
+    # LEARNED run 1b-1: frame_cell_rect moves the camera but keeps a Furthest zoom; set the root back explicitly
+    B.call("rimworld/set_camera_zoom", rootSize=cam.get("rootSize") or 24)
+    B.call("rimworld/frame_cell_rect", x=SITE[0], z=SITE[1], width=SITE[2], height=SITE[3], paddingCells=1)
+    f2 = motion(B, 3)
+    lod_ok = f1.get("lodFarNow") and f1.get("lodEnabled", 0) > 0 and f1.get("fullEnabled") == 0 and \
+        (not f2.get("lodFarNow")) and f2.get("lodEnabled") == 0 and f2.get("fullEnabled", 0) > 0
+    row(rows, "B8_lod_far_zoom", "PASS" if lod_ok else "FAIL", "MOD",
+        {"far": {k: f1.get(k) for k in ("zoom", "lodFarNow", "lodSubMeshes", "lodEnabled", "fullSubMeshes", "fullEnabled")},
+         "close": {k: f2.get(k) for k in ("zoom", "lodFarNow", "lodEnabled", "fullEnabled")}, "camera0": cam.get("rootSize"), "shot": bool(shot_far)})
+    # B9 cutscene guard (state read; a gravship launch is not staged here)
+    row(rows, "B9_cutscene_guard_idle", "PASS" if f2.get("cutsceneInProgress") is False and f2.get("cutsceneHides") is False else "FAIL",
+        "MOD", {k: f2.get(k) for k in ("cutsceneInProgress", "cutsceneHides", "cutsceneSkips")})
+    shot(B, "p1b_05_downed_wire_close", (X0 + 23, Z0 + 7, 5, 4), log, root=4)
+    # B6 strips go dark when the field's net is dead (one 250-tick poll, no manual poll)
+    if bat2:
+        B.call("jawa/battery_set", thing=bat2, mode="setPct", value=0.0)
+    B.ticks(260)
+    d1 = motion(B)
+    shot(B, "p1b_06_tangle_dark", (X0 + 18, Z0 + 6, 10, 6), log, root=7)
+    row(rows, "B6b_strips_dark_when_dead", "PASS" if d1.get("darkStrips", 0) > 0 and d1.get("litStrips") == 0 else "FAIL", "MOD",
+        {k: d1.get(k) for k in ("litStrips", "darkStrips", "liveWallEnds")})
+    if bat2:
+        B.call("jawa/battery_set", thing=bat2, mode="setPct", value=1.0)
+    B.ticks(2)
+    # M10 the messiness (tangle threshold) setting changes the census on the same field
+    B.probe("set:tangleMin=20")
+    t20 = motion(B)
+    B.probe("set:tangleMin=6")
+    t6 = motion(B)
+    B.probe("set:tangleMin=9")
+    row(rows, "M10_tangle_threshold_setting", "PASS" if t20.get("tangles") == 0 and t6.get("tangles", 0) >= 1 else "FAIL", "MOD",
+        {"tangleMin20": t20.get("tangles"), "tangleMin6": t6.get("tangles")})
+    row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
+        {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
 
 
 # ============================================================================ M4 / M9 (own modes)

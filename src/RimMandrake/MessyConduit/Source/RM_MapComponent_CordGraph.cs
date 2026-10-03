@@ -33,6 +33,7 @@ namespace RimMandrake.MessyConduit
         private int builtFrame = -1;
         private bool buildErrorLogged;
         public int Builds, LastPlanned, LastReused;
+        public double LastRebuildMs;
         public CordWorld LastWorld;
 
         public RM_MapComponent_CordGraph(Map map) : base(map) { }
@@ -60,6 +61,7 @@ namespace RimMandrake.MessyConduit
                 bySection = new Dictionary<IntVec2, List<LaidPiece>>();
                 return;
             }
+            var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld world = CordWorldAdapter.Snapshot(map);
             LastWorld = world;
             CordBuilder b = builder;
@@ -71,6 +73,7 @@ namespace RimMandrake.MessyConduit
                 next = new List<LaidPiece>();
             }
             Builds++;
+            LastRebuildMs = sw.Elapsed.TotalMilliseconds;
             LastPlanned = b.LastPlanned;
             LastReused = b.LastReused;
             var nextBy = new Dictionary<IntVec2, List<LaidPiece>>();
@@ -126,37 +129,49 @@ namespace RimMandrake.MessyConduit
             if (!MessyConduitSettings.enabled) return;
             int t = Find.TickManager.TicksGame;
             if (t % 250 == map.uniqueID % 250) PollLive();
-            if (MessyConduitSettings.breakReadout && MessyConduitSettings.sparkIntensity > 0.01f) Sparks(t);
+            if (SparksAllowed) Sparks(t);
         }
 
-        /// <summary>Re-read live/dead for every conduit end; a flip dirties its owner section only.</summary>
+        /// <summary>Re-read live/dead for every conduit end and every LED key (tangle / device strips,
+        /// phase 1b B6); a flip dirties its owner section only.</summary>
         public int PollLive()
         {
             int flips = 0;
             foreach (LaidPiece p in pieces)
-                foreach (CordEnd e in p.Ends)
-                {
-                    bool now = CordWorldAdapter.IsLive(map, e.NetCell);
-                    if (liveEnds.TryGetValue(e.NetCell, out bool was) && was == now) continue;
-                    liveEnds[e.NetCell] = now;
-                    flips++;
-                    map.mapDrawer.MapMeshDirty(CordWorldAdapter.I(p.Owner), MessyConduitDefOf.RM_MessyCords);
-                }
+            {
+                foreach (CordEnd e in p.Ends) flips += Flip(p, e.NetCell);
+                foreach (Cell c in p.LiveKeys) flips += Flip(p, c);
+            }
             return flips;
+        }
+
+        private int Flip(LaidPiece p, Cell c)
+        {
+            bool now = CordWorldAdapter.IsLive(map, c);
+            if (liveEnds.TryGetValue(c, out bool was) && was == now) return 0;
+            liveEnds[c] = now;
+            map.mapDrawer.MapMeshDirty(CordWorldAdapter.I(p.Owner), MessyConduitDefOf.RM_MessyCords);
+            return 1;
         }
 
         public bool? EndLive(Cell c) => liveEnds.TryGetValue(c, out bool v) ? v : (bool?)null;
 
-        private const int MaxSparkingEnds = 24;
+        private static int MaxSparkingEnds => Mathf.Clamp(MessyConduitSettings.maxSparkingEnds, 1, 200);
         public static int LastGlowDraws;
+
+        /// <summary>Sparks/glow allowed right now (break readout on, intensity, the overlay-only option).</summary>
+        private static bool SparksAllowed =>
+            MessyConduitSettings.breakReadout && MessyConduitSettings.sparkIntensity > 0.01f &&
+            (!MessyConduitSettings.sparksOnlyOverlay || OverlayDrawHandler.ShouldDrawPowerGrid);
 
         /// <summary>The live half of the break readout, every frame and while paused: a flickering
         /// glow at each live tip (the sparks are thrown flecks and only fly while time runs).</summary>
         private void DrawLiveGlow()
         {
             LastGlowDraws = 0;
-            if (!MessyConduitSettings.enabled || !MessyConduitSettings.breakReadout || MessyConduitSettings.sparkIntensity <= 0.01f) return;
+            if (!MessyConduitSettings.enabled || !SparksAllowed) return;
             if (Find.CurrentMap != map || CordMaterials.LiveGlow == null || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
+            if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             float t = Time.realtimeSinceStartup;
             float y = AltitudeLayer.MoteLow.AltitudeFor();
             int n = 0;
@@ -168,6 +183,9 @@ namespace RimMandrake.MessyConduit
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     float f = Mathf.PerlinNoise(t * 9f, (h & 0xff) * 0.37f);
                     float size = (0.38f + 0.42f * f * f) * Mathf.Min(1.5f, MessyConduitSettings.sparkIntensity);
+                    // a downed wire's glow follows its burst schedule: a 2x flash, brief pops, an ember between
+                    if (e.Wall && MessyConduitSettings.downedWire && downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
+                        size = (float)(0.45 * dw.Glow(t)) * Mathf.Min(1.5f, MessyConduitSettings.sparkIntensity);
                     var pos = new Vector3((float)e.Tip.X, y, (float)e.Tip.Z);
                     Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(size, 1f, size)), CordMaterials.LiveGlow, 0);
                     LastGlowDraws++;
@@ -183,19 +201,242 @@ namespace RimMandrake.MessyConduit
                 {
                     if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) continue;
                     if (++n > MaxSparkingEnds) return;
+                    if (e.Wall && MessyConduitSettings.downedWire) continue;   // the drip schedule owns wall ends
                     int h = (e.NetCell.X * 73856093) ^ (e.NetCell.Z * 19349663);
                     int period = Mathf.Max(12, Mathf.RoundToInt((e.Wall ? 50 : 80) / k));
                     if ((tick + (h & 0x7fff)) % period != 0) continue;
                     var at = new Vector3((float)e.Tip.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z);
                     FleckMaker.ThrowMicroSparks(at, map);
+                    SparksThrown++;
                     if (((tick / period + h) & 3) == 0) FleckMaker.ThrowLightningGlow(at, map, e.Wall ? 0.6f : 0.4f);
                 }
         }
+
+        // ================================================================ phase 1b lane A: motion
+        // Whip (B3), downed-wire bursts (B4), selection highlight (B5), wind sway of lifted pieces (B7,
+        // CPU path). All runtime-only, drawn from MapComponentUpdate with two dynamic meshes rebuilt per
+        // frame for what is on screen; nothing here touches the static section meshes.
+        private bool motionErrorLogged;
+        private readonly Dictionary<Cell, DownedWireSchedule> downed = new Dictionary<Cell, DownedWireSchedule>();
+        private Mesh floorMesh, faceMesh, hiMesh;
+        private readonly List<Vector3> mv = new List<Vector3>();
+        private readonly List<Vector2> mu = new List<Vector2>();
+        private readonly List<int> mt = new List<int>();
+        private PowerNet hiNet;
+        private int hiBuilds = -1;
+        public static int WhipDraws, SwayDraws, SwayVerts, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
+        public static ulong SwayHash;
+        public static float LastWind;
+        public static readonly int[] DownedHist = new int[4];
+        public static string HighlightNetId;
+
+        /// <summary>Does this lifted strand sway right now (so the static layer leaves it out)? Setting on,
+        /// strength > 0, vanilla's plant-sway preference on, and not under a roof (design §8.4: 0 under a roof).</summary>
+        public static bool SwaysNow(Map map, CordStrand s)
+        {
+            if (!MessyConduitSettings.sway || MessyConduitSettings.swayAmplitude <= 0.01f || !Prefs.PlantWindSway) return false;
+            if (s.Pts == null || s.Pts.Count < 2 || s.SwayW == null) return false;
+            IntVec3 c = CordWorldAdapter.I(s.Pts[0].Floor);
+            return c.InBounds(map) && !map.roofGrid.Roofed(c);
+        }
+
+        private static Mesh Fresh(ref Mesh m)
+        {
+            if (m == null) { m = new Mesh { name = "RM_MessyCords_Motion" }; m.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32; m.MarkDynamic(); }
+            return m;
+        }
+
+        private void Flush(ref Mesh m, Material mat)
+        {
+            Mesh mesh = Fresh(ref m);
+            mesh.Clear();
+            if (mv.Count == 0 || mat == null) return;
+            mesh.SetVertices(mv);
+            mesh.SetUVs(0, mu);
+            mesh.SetTriangles(mt, 0);
+            mesh.RecalculateBounds();
+            Graphics.DrawMesh(mesh, Matrix4x4.identity, mat, 0);
+        }
+
+        private void DrawMotion()
+        {
+            WhipDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0;
+            if (!MessyConduitSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
+            if (SectionLayer_RM_MessyCords.CutsceneHides) return;
+            if (SectionLayer_RM_MessyCords.FarNow) return;            // far zoom: LOD only, no motion
+            CellRect view = Find.CameraDriver.CurrentViewRect.ExpandedBy(3);
+            float now = Time.realtimeSinceStartup;
+            float baseY = AltitudeLayer.Conduits.AltitudeFor() + 0.002f;
+            float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift;
+            bool whip = MessyConduitSettings.whip && MessyConduitSettings.breakReadout;
+            // ---- B3 whipping live tails (floor)
+            mv.Clear(); mu.Clear(); mt.Clear();
+            int cap = MaxSparkingEnds * 3;
+            if (whip)
+                foreach (LaidPiece p in pieces)
+                {
+                    if (WhipDraws >= cap) break;
+                    foreach (CordStrand s in p.Strands)
+                    {
+                        if (s.WhipA <= 0 && s.WhipB <= 0) continue;
+                        foreach (bool atStart in new[] { true, false })
+                        {
+                            int cnt = atStart ? s.WhipA : s.WhipB;
+                            if (cnt <= 0 || WhipDraws >= cap) continue;
+                            List<V2> tail = atStart ? s.Pts.GetRange(0, cnt) : s.Pts.GetRange(s.Pts.Count - cnt, cnt);
+                            if (atStart) tail.Reverse();                       // tail[0] = the joint
+                            V2 tip = tail[tail.Count - 1];
+                            if (!view.Contains(CordWorldAdapter.I(tip.Floor))) continue;
+                            ulong seed = CordRng.Hash("whip", p.Key, s.S0, atStart);
+                            List<V2> bent = CordMotion.Whip(tail, now, seed, 0.12);
+                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
+                            WhipDraws++;
+                            Material fray = CordMaterials.Decal(DecalKind.FrayLive);
+                            if (fray != null)
+                            {
+                                V2 d = bent[bent.Count - 1] - bent[Math.Max(0, bent.Count - 3)];
+                                float ang = (float)Math.Atan2(d.Z, d.X);
+                                var pos = new Vector3((float)bent[bent.Count - 1].X, baseY + 0.009f, (float)bent[bent.Count - 1].Z);
+                                // decal +X along the cord: rotate the plane so its +X maps to the angle
+                                Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.Euler(0f, -ang * Mathf.Rad2Deg, 0f), new Vector3(0.5f, 1f, 0.5f)), fray, 0);
+                            }
+                        }
+                    }
+                }
+            Flush(ref floorMesh, CordMaterials.Strand);
+            // ---- B7 sway of lifted pieces (wall-hanging tails), CPU path, game-time clock
+            mv.Clear(); mu.Clear(); mt.Clear();
+            float wind = map.windManager.WindSpeed;
+            LastWind = wind;
+            double gt = Find.TickManager.TicksGame / 60.0;
+            ulong h = 1469598103934665603UL;
+            foreach (LaidPiece p in pieces)
+                foreach (CordStrand s in p.Strands)
+                {
+                    if (!s.Lifted || !SwaysNow(map, s)) continue;
+                    if (!view.Contains(CordWorldAdapter.I(s.Pts[0].Floor))) continue;
+                    List<V2> sw = CordMotion.Sway(s.Pts, s.SwayW, gt, CordRng.Hash("sway", p.Key), 0.12 * MessyConduitSettings.swayAmplitude, wind);
+                    SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, sw, SectionLayer_RM_MessyCords.StrandWidth, faceY, s.S0);
+                    foreach (V2 q in sw)
+                    {
+                        h = (h ^ unchecked((ulong)(long)Math.Round(q.X * 10000))) * 1099511628211UL;
+                        h = (h ^ unchecked((ulong)(long)Math.Round(q.Z * 10000))) * 1099511628211UL;
+                    }
+                    SwayDraws++;
+                }
+            SwayVerts = mv.Count;
+            SwayHash = h;
+            Flush(ref faceMesh, CordMaterials.StrandFace ?? CordMaterials.Strand);
+            // ---- B4 downed-wire bursts at live wall terminals (real-time schedule; flecks only while time runs)
+            if (MessyConduitSettings.downedWire && SparksAllowed) DownedWires(now);
+            // ---- B5 selection highlight
+            if (MessyConduitSettings.highlight) DrawHighlight(baseY);
+        }
+
+        private void DownedWires(float now)
+        {
+            bool paused = Find.TickManager.Paused;
+            int n = 0;
+            foreach (LaidPiece p in pieces)
+                foreach (CordEnd e in p.Ends)
+                {
+                    if (!e.Wall) continue;
+                    if (!liveEnds.TryGetValue(e.NetCell, out bool live) || !live) { downed.Remove(e.NetCell); continue; }
+                    if (++n > MaxSparkingEnds) return;
+                    if (!downed.TryGetValue(e.NetCell, out DownedWireSchedule dw))
+                        downed[e.NetCell] = dw = new DownedWireSchedule(CordRng.Hash("downed", e.NetCell.X, e.NetCell.Z, map.uniqueID), now);
+                    if (dw.Due(now))
+                    {
+                        dw.Advance(now);
+                        DownedHist[(int)dw.State]++;
+                        DripEvents++;
+                        thrownOf[e.NetCell] = 0;
+                        if (!paused && dw.State == DripState.Flash)
+                            FleckMaker.ThrowLightningGlow(new Vector3((float)e.Tip.X, AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z), map, 0.8f * Mathf.Min(1.5f, MessyConduitSettings.sparkIntensity));
+                    }
+                    if (paused) continue;
+                    thrownOf.TryGetValue(e.NetCell, out int done);
+                    int due = dw.SparksDue(now);
+                    for (; done < due; done++)
+                    {
+                        var loc = new Vector3((float)e.Tip.X + Rand.Range(-0.06f, 0.06f), AltitudeLayer.MoteOverhead.AltitudeFor(), (float)e.Tip.Z);
+                        if (!loc.ShouldSpawnMotesAt(map)) continue;
+                        FleckCreationData d = FleckMaker.GetDataStatic(loc, map, FleckDefOf.MicroSparks, Rand.Range(0.7f, 1.1f));
+                        d.rotationRate = Rand.Range(-12f, 12f);
+                        d.velocityAngle = Rand.Range(160f, 200f);           // screen-down: the sparks fall down the face
+                        d.velocitySpeed = Rand.Range(0.5f, 1.3f);
+                        map.flecks.CreateFleck(d);
+                        SparksThrown++;
+                    }
+                    thrownOf[e.NetCell] = done;
+                }
+        }
+        private readonly Dictionary<Cell, int> thrownOf = new Dictionary<Cell, int>();
+
+        /// <summary>The net of whatever powered thing is selected (a conduit, a battery, a lamp), or null.</summary>
+        public PowerNet SelectedNet()
+        {
+            if (Find.Selector == null) return null;
+            foreach (object o in Find.Selector.SelectedObjectsListForReading)
+            {
+                if (!(o is ThingWithComps t) || t.Map != map) continue;
+                CompPower cp = t.TryGetComp<CompPower>();
+                if (cp?.PowerNet != null) return cp.PowerNet;
+            }
+            return null;
+        }
+
+        public PowerNet NetOf(Cell c) => map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(c));
+
+        private void DrawHighlight(float baseY)
+        {
+            PowerNet net = SelectedNet();
+            HighlightNetId = net == null ? null : net.GetHashCode().ToString();
+            if (net == null || CordMaterials.Highlight == null) { hiNet = null; return; }
+            if (net != hiNet || hiBuilds != Builds || hiMesh == null)
+            {
+                hiNet = net;
+                hiBuilds = Builds;
+                mv.Clear(); mu.Clear(); mt.Clear();
+                hiCount = 0;
+                float y = AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift + 0.004f;
+                foreach (LaidPiece p in pieces)
+                {
+                    if (NetOf(p.Owner) != net) continue;
+                    foreach (CordStrand s in p.Strands)
+                    {
+                        SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, s.Pts, SectionLayer_RM_MessyCords.StrandWidth + 0.02f, y, s.S0);
+                        hiCount++;
+                    }
+                }
+                Mesh m = Fresh(ref hiMesh);
+                m.Clear();
+                if (mv.Count > 0) { m.SetVertices(mv); m.SetUVs(0, mu); m.SetTriangles(mt, 0); m.RecalculateBounds(); }
+            }
+            HighlightCords = hiCount;
+            if (hiMesh.vertexCount > 0) Graphics.DrawMesh(hiMesh, Matrix4x4.identity, CordMaterials.Highlight, 0);
+            // a buried run's openings read as one: a ring at every stub on the net
+            CordGraph g = builder.Graph;
+            if (g == null) return;
+            float ry = AltitudeLayer.MetaOverlays.AltitudeFor();
+            foreach (CordNode nd in g.Nodes.Values)
+            {
+                if (!nd.IsStub || NetOf(nd.Cell) != net) continue;
+                GenDraw.DrawCircleOutline(new Vector3((float)nd.Face.X, ry, (float)nd.Face.Z), 0.3f, SimpleColor.Yellow);
+                HighlightStubs++;
+            }
+        }
+        private int hiCount;
 
         public override void MapComponentUpdate()
         {
             MessyConduitProbe.Service(map, this);
             DrawLiveGlow();
+            try { DrawMotion(); }
+            catch (Exception ex)
+            {
+                if (!motionErrorLogged) { motionErrorLogged = true; Log.Error("[MessyConduit] per-frame cord motion failed, skipping it: " + ex); }
+            }
             if (!MessyConduitSettings.enabled || !MessyConduitSettings.debugDraw || Find.CurrentMap != map) return;
             CordGraph g = builder.Graph;
             if (g == null) return;

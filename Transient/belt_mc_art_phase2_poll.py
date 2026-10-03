@@ -13,7 +13,7 @@ while time.time()<end:
             j=dict(jobs[f]);j['id']=f+'_v2'
             open(S+'/r.json','w').write(json.dumps([j]));subprocess.run(['python3','src/RimMandrake/Utils/artpipe/fill_queue.py','--input',S+'/r.json'],capture_output=True)
             st['refiled'].append(f);print('refiled',f)
-    if p+a<=3 and os.path.exists(f'{S}/b{st["n"]}.json'):
+    if p+a<=6 and os.path.exists(f'{S}/b{st["n"]}.json'):
         subprocess.run(['python3','src/RimMandrake/Utils/artpipe/fill_queue.py','--input',f'{S}/b{st["n"]}.json'],capture_output=True);st['n']+=1
     json.dump(st,open(ST,'w'))
     ids=[x for x in jobs]

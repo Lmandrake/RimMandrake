@@ -36,6 +36,33 @@ namespace RimMandrake.MessyConduit
 
         public override bool Visible => MessyConduitSettings.enabled;
 
+        /// <summary>Phase 1b B9 (gravship cutscene guard, risk 14): while the cutscene runs the map is not
+        /// drawn as a map; the cords stay only in the gravship capture pass, exactly like
+        /// SectionLayer_Things (decompiled 1.6: CutsceneInProgress &amp;&amp; !GravshipRenderInProgess hides it).</summary>
+        public static bool CutsceneHides => Verse.WorldComponent_GravshipController.CutsceneInProgress &&
+                                            !Verse.WorldComponent_GravshipController.GravshipRenderInProgess;
+
+        /// <summary>Phase 1b B8: far zoom shows only the decimated LOD sub-mesh.</summary>
+        public static bool FarNow => MessyConduitSettings.lod && Find.CameraDriver != null &&
+                                     Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
+        public static bool LastDrawFar;
+        public static int LastLodSubMeshes, LastFullSubMeshes, CutsceneSkips;
+
+        public override void DrawLayer()
+        {
+            if (!Visible) return;
+            if (CutsceneHides) { CutsceneSkips++; return; }
+            bool far = FarNow;
+            LastDrawFar = far;
+            for (int i = 0; i < subMeshes.Count; i++)
+            {
+                LayerSubMesh sm = subMeshes[i];
+                bool isLod = CordMaterials.IsLod(sm.material);
+                sm.disabled = MessyConduitSettings.lod ? (isLod ? !far : far) : isLod;
+            }
+            base.DrawLayer();
+        }
+
         public override CellRect GetBoundaryRect() => bounds;
 
         public override void Regenerate()
@@ -53,19 +80,39 @@ namespace RimMandrake.MessyConduit
                 // drawn on top of a building (Building_MechCharger, CompRitualFireOverlay).
                 float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + FaceLift;
                 int k = 0;
+                bool whip = MessyConduitSettings.whip && MessyConduitSettings.breakReadout;
                 foreach (LaidPiece p in owned)
                 {
+                    bool lodDone = false;
                     foreach (CordStrand s in p.Strands)
                     {
                         float y = s.OverFace ? faceY : baseY + 0.0006f * (k % 12);
+                        // a lifted piece that sways is drawn per frame by the component, not printed
+                        if (s.Lifted && RM_MapComponent_CordGraph.SwaysNow(Map, s)) { k++; continue; }
+                        List<V2> pts = s.Pts;
+                        if (whip && (s.WhipA > 0 || s.WhipB > 0))
+                        {
+                            int a = Math.Max(0, s.WhipA - 1), b = Math.Min(s.Pts.Count, s.Pts.Count - s.WhipB + 1);
+                            pts = b - a >= 2 ? s.Pts.GetRange(a, b - a) : new List<V2>();
+                        }
                         if (!s.OverFace && CordMaterials.Shadow != null)
-                            verts += Ribbon(CordMaterials.Shadow, s.Pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
+                            verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
                         verts += Ribbon(s.OverFace && CordMaterials.StrandFace != null ? CordMaterials.StrandFace : CordMaterials.Strand,
-                                        s.Pts, StrandWidth, y, s.S0, Vector2.zero);
+                                        pts, StrandWidth, y, s.S0, Vector2.zero);
+                        if (MessyConduitSettings.lod && !lodDone && !s.OverFace && CordMaterials.StrandLod != null && s.Pts.Count >= 2)
+                        {
+                            // B8: one strand per piece, every 3rd point, a little thinner, no decals
+                            var dec = new List<V2>(s.Pts.Count / 3 + 2);
+                            for (int i = 0; i < s.Pts.Count; i += 3) dec.Add(s.Pts[i]);
+                            if ((s.Pts.Count - 1) % 3 != 0) dec.Add(s.Pts[s.Pts.Count - 1]);
+                            verts += Ribbon(CordMaterials.StrandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
+                            lodDone = true;
+                        }
                         k++;
                     }
                     foreach (CordDecal d in p.Decals)
                     {
+                        if (whip && d.OnWhip) continue;          // the live fray rides the whipping tail
                         Material m = CordMaterials.Decal(d.Kind);
                         if (m == null) continue;
                         bool face = CordMaterials.IsFace(d.Kind);
@@ -77,6 +124,10 @@ namespace RimMandrake.MessyConduit
             }
             LastPrintedVerts = verts;
             FinalizeMesh(MeshParts.All);
+            int lodN = 0, fullN = 0;
+            foreach (LayerSubMesh sm in subMeshes) if (sm.verts.Count > 0) { if (CordMaterials.IsLod(sm.material)) lodN++; else fullN++; }
+            LastLodSubMeshes = lodN;
+            LastFullSubMeshes = fullN;
         }
 
         private void Grow(double x, double z)
@@ -87,6 +138,29 @@ namespace RimMandrake.MessyConduit
 
         /// <summary>A textured ribbon along a polyline; u runs along the cord (the strip tiles every
         /// 4 widths), v across it. Winding matches Printer_Plane.</summary>
+        /// <summary>The same ribbon written into plain lists (the component's per-frame meshes use it).</summary>
+        public static void RibbonInto(List<Vector3> verts, List<Vector2> uvs, List<int> tris, List<V2> pts, float width, float y, double s0)
+        {
+            if (pts.Count < 2) return;
+            int start = verts.Count;
+            float hw = width / 2f;
+            double tile = width * 4.0, u = s0 * 4.0;
+            for (int i = 0; i < pts.Count; i++)
+            {
+                Geo.TanNorm(pts, i, out V2 t, out V2 n);
+                if (i > 0) u += V2.Dist(pts[i - 1], pts[i]) / tile;
+                V2 l = pts[i] + n * hw, r = pts[i] - n * hw;
+                verts.Add(new Vector3((float)l.X, y, (float)l.Z));
+                verts.Add(new Vector3((float)r.X, y, (float)r.Z));
+                uvs.Add(new Vector2((float)u, 1f));
+                uvs.Add(new Vector2((float)u, 0f));
+                if (i == 0) continue;
+                int a = start + 2 * (i - 1);
+                tris.Add(a); tris.Add(a + 2); tris.Add(a + 3);
+                tris.Add(a); tris.Add(a + 3); tris.Add(a + 1);
+            }
+        }
+
         private int Ribbon(Material mat, List<V2> pts, float width, float y, double s0, Vector2 offset)
         {
             if (pts.Count < 2) return 0;

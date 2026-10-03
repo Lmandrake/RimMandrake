@@ -6,6 +6,7 @@
 // SelfTest checks the geometric PROPERTIES instead.
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RimMandrake.MessyConduit.Core
 {
@@ -21,8 +22,56 @@ namespace RimMandrake.MessyConduit.Core
         public int CordsMin = 1, CordsMax = 3;
         public const double RC = 0.07;     // cable clearance from an obstacle face, cells
 
+        // ---- phase 1b B1: rope settle + cord kind (wire vs stiff hose, phase-2 doc §3.5)
+        public CordKind Kind = CordKind.Wire;
+        /// <summary>Smallest bend radius the settle allows on free (unpinned) points, cells.</summary>
+        public double MinBendRadius = 0.15;
+        /// <summary>Bend-smoothing weight per settle iteration (rope.relax's 0.22; a hose is stiffer).</summary>
+        public double BendSmooth = 0.22;
+        /// <summary>PBD settle iterations (rope.py: 70). 0 = no settle (phase-1a canned smoothing).</summary>
+        public int SettleIters = 70;
+        /// <summary>Point-iteration budget per strand: a very long cord settles with fewer iterations
+        /// (never under 20) so one edit can never cost more than ~this many point updates.</summary>
+        public int SettleBudget = 160000;
+        public double SampleStep = 0.05;
+        /// <summary>Broad lateral excursions: length range along the cord (cells), and the small wobble.</summary>
+        public double ExcursionLo = 1.2, ExcursionHi = 2.6, Wobble = 0.06;
+
+        /// <summary>The stiff fire-hose parameter set (phase-2 doc §3.5). Parameters only: hoses
+        /// themselves are built later (lane L6); this is what the planner/settle will be handed.</summary>
+        public static LayParams Hose() => new LayParams
+        {
+            Kind = CordKind.Hose, SlackLo = 0.15, SlackHi = 0.30, MinExtra = 1.0, MaxExtra = 6.0, Cap = 1.2,
+            LoopsPerCell = 0, HeapP = 0, CordsMin = 1, CordsMax = 1, MinBendRadius = 1.2, BendSmooth = 0.8,
+            SampleStep = 0.25, ExcursionLo = 6.0, ExcursionHi = 10.0, Wobble = 0
+        };
+
         public string Fingerprint() =>
-            string.Join(",", SlackScale.ToString("0.###"), MinExtra, MaxExtra, Cap, LoopsPerCell, HeapP, CordsMin, CordsMax);
+            string.Join(",", SlackScale.ToString("0.###"), MinExtra, MaxExtra, Cap, LoopsPerCell, HeapP, CordsMin, CordsMax,
+                        Kind, MinBendRadius, BendSmooth, SettleIters, SettleBudget, SampleStep, ExcursionLo, ExcursionHi, Wobble);
+    }
+
+    public enum CordKind { Wire, Hose }
+
+    /// <summary>What one rope settle did (probe/SelfTest evidence; never drawn).</summary>
+    public sealed class SettleStats
+    {
+        public int Points, Iters;
+        /// <summary>Largest (segment - rest) / rest after the settle (extension), and the largest compression.</summary>
+        public double MaxStretch, MaxCompress;
+        /// <summary>Intended (rest-sum) length and the settled length.</summary>
+        public double RestLen, SettledLen;
+        /// <summary>Smallest discrete bend radius over free interior points.</summary>
+        public double MinBendR;
+        /// <summary>Point updates spent (iterations x points + the final rounds) and exact clearance reads.</summary>
+        public long Work, ObstacleTests;
+        public int WorstSeg;
+        /// <summary>Arc length (cells from the start) of every heap spliced in, the sprawled length, and
+        /// how many of the heaps were the long-run end heaps (§8.7.6, phase 1b B2).</summary>
+        public List<double> HeapsAt = new List<double>(), HeapsFromEnd = new List<double>();
+        public double SprawlLen;
+        public int EndHeaps;
+        public string WorstNote;
     }
 
     public static class CordLayer
@@ -102,8 +151,15 @@ namespace RimMandrake.MessyConduit.Core
         /// <summary>rope.sprawl without the PBD settle. P is the planned, rounded centreline.</summary>
         public static List<V2> Sprawl(CordWorld w, List<V2> P0, LayParams prm, double slack, double maxExtra,
                                       CordRng rrBundle, CordRng rrStrand, int nInBundle)
+            => Sprawl(w, P0, prm, slack, maxExtra, rrBundle, rrStrand, nInBundle, out _);
+
+        /// <summary>rope.sprawl: excursions, canned loops/heaps, then the PBD rope settle (phase 1b B1).</summary>
+        public static List<V2> Sprawl(CordWorld w, List<V2> P0, LayParams prm, double slack, double maxExtra,
+                                      CordRng rrBundle, CordRng rrStrand, int nInBundle, out SettleStats stats)
         {
-            List<V2> P = Geo.Resample(P0, 0.05);
+            stats = null;
+            double step = prm.SampleStep > 0 ? prm.SampleStep : 0.05;
+            List<V2> P = Geo.Resample(P0, step);
             double[] s = Geo.CumLen(P);
             double L = s[s.Length - 1];
             if (L < 1.2) return P;
@@ -133,11 +189,11 @@ namespace RimMandrake.MessyConduit.Core
             for (int i = 0; i < n; i++) { Geo.TanNorm(P, i, out V2 t, out V2 nn); T.Add(t); N.Add(nn); }
             double cap = prm.Cap;
             var lat = new double[n];
-            int nb = Math.Max(1, (int)Math.Round(L / 2.6));
+            int nb = Math.Max(1, (int)Math.Round(L / Math.Max(2.6, prm.ExcursionHi)));
             for (int b = 0; b < nb; b++)                       // 1. broad excursions, shared by the bundle
             {
                 double c = rrBundle.Range(0.15, 0.85) * L;
-                double wdt = rrBundle.Range(1.2, 2.6);
+                double wdt = rrBundle.Range(prm.ExcursionLo, prm.ExcursionHi);
                 int j = Array.BinarySearch(s, c);
                 if (j < 0) j = ~j;
                 j = Math.Min(Math.Max(j, 0), n - 1);
@@ -152,21 +208,258 @@ namespace RimMandrake.MessyConduit.Core
                 }
             }
             double kAmp = rrStrand.Range(0.85, 1.1), wav = rrStrand.Range(0.35, 0.6), ph = rrStrand.Range(0, 6);
-            for (int i = 0; i < n; i++) lat[i] = lat[i] * ramp[i] * kAmp + ramp[i] * 0.06 * Math.Sin(s[i] / wav + ph);
+            for (int i = 0; i < n; i++) lat[i] = lat[i] * ramp[i] * kAmp + ramp[i] * prm.Wobble * Math.Sin(s[i] / wav + ph);
             double[] up = FreeReach(w, P, N, 1, cap), down = FreeReach(w, P, N, -1, cap);
             var Q = new List<V2>(n);
-            for (int i = 0; i < n; i++) Q.Add(P[i] + N[i] * Geo.Clamp(lat[i], -down[i], up[i]));
+            double wantLen = 0, gotLen = 0;
+            for (int i = 0; i < n; i++)
+            {
+                Q.Add(P[i] + N[i] * Geo.Clamp(lat[i], -down[i], up[i]));
+                if (i > 0)
+                {
+                    wantLen += V2.Dist(P[i - 1] + N[i - 1] * lat[i - 1], P[i] + N[i] * lat[i]);
+                    gotLen += V2.Dist(Q[i - 1], Q[i]);
+                }
+            }
             double target = Math.Min(L * (1 + slack), L + maxExtra);
-            Q = AddLoops(w, Q, ramp, prm, rrStrand, target);
-            Q = Geo.Resample(Q, 0.05);
-            Smooth(w, Q, 6);
+            // what an excursion could not spend sideways (it met a wall) it keeps as LENGTH; the
+            // settle buckles that into a bunch against the obstacle (rope.sprawl's `lost`)
+            double lost = Math.Max(0, wantLen - gotLen);
+            var st = new SettleStats();
+            if (prm.LoopsPerCell > 0 || prm.HeapP > 0) Q = AddLoops(w, Q, ramp, prm, rrStrand, target, st);
+            Q = Geo.Resample(Q, step);
+            st.SprawlLen = Geo.Length(Q);
+            if (prm.SettleIters <= 0) { Smooth(w, Q, 6); stats = st; return Q; }
+            double Lq = st.SprawlLen;
+            // the budget survives the settle: never grow past the slack target (the clamp of §8.2.4)
+            double restLen = Math.Min(Lq + 0.8 * lost, Math.Max(Lq, target));
+            stats = Settle(w, Q, PinMask(w, Q), restLen, prm, st);
             return Q;
         }
 
-        private static List<V2> AddLoops(CordWorld w, List<V2> Q, double[] ramp, LayParams prm, CordRng rr, double target)
+        /// <summary>Pins: both ends (0.45 cell) and 0.55 cell either side of any doorway point (rope.pin_mask).</summary>
+        public static bool[] PinMask(CordWorld w, List<V2> Q)
         {
             double[] s = Geo.CumLen(Q);
             double L = s[s.Length - 1];
+            int n = Q.Count;
+            var pin = new bool[n];
+            for (int i = 0; i < n; i++) if (s[i] < 0.45 || s[i] > L - 0.45) pin[i] = true;
+            for (int i = 0; i < n; i++)
+            {
+                if (!w.IsDoor(Q[i].Floor)) continue;
+                for (int j = i; j >= 0 && s[i] - s[j] < 0.55; j--) pin[j] = true;
+                for (int j = i; j < n && s[j] - s[i] < 0.55; j++) pin[j] = true;
+            }
+            pin[0] = pin[n - 1] = true;
+            return pin;
+        }
+
+        /// <summary>
+        /// Phase 1b B1 -- the relaxed-rope settle (rope.relax, position-based dynamics): per iteration
+        /// bend smoothing, two Jacobi passes of inextensible segments (rest = restLen / segments),
+        /// a minimum-bend-radius pass (the stiff hose), and a hard projection out of unwalkable cells
+        /// along the clearance gradient; pinned points never move. Deterministic (pure arithmetic in a
+        /// fixed order, no RNG). Cost is bounded: iterations = min(prm.SettleIters, budget / points),
+        /// never under 20, and the obstacle test is skipped for any point whose cell and 8 neighbours
+        /// are all walkable (clearance there is >= 1 cell, far above RC), cached per cell.
+        /// </summary>
+        public static SettleStats Settle(CordWorld w, List<V2> Q, bool[] pin, double restLen, LayParams prm, SettleStats into = null)
+        {
+            int n = Q.Count;
+            SettleStats st = into ?? new SettleStats();
+            st.Points = n;
+            if (n < 3) { st.RestLen = st.SettledLen = Geo.Length(Q); return st; }
+            int iters = Math.Max(20, Math.Min(prm.SettleIters, prm.SettleBudget / Math.Max(1, n)));
+            iters = Math.Min(iters, Math.Max(20, prm.SettleIters));
+            st.Iters = iters;
+            // pinned-to-pinned segments keep their laid length; the free segments share the rest
+            double pinnedLen = 0;
+            int freeSegs = 0;
+            for (int i = 0; i < n - 1; i++)
+                if (pin[i] && pin[i + 1]) pinnedLen += V2.Dist(Q[i], Q[i + 1]);
+                else freeSegs++;
+            if (freeSegs == 0) { st.RestLen = st.SettledLen = Geo.Length(Q); return st; }
+            double rest = Math.Max(1e-4, (restLen - pinnedLen) / freeSegs);
+            st.RestLen = pinnedLen + rest * freeSegs;
+            var near = new Dictionary<int, bool>();
+            bool Near(V2 p)
+            {
+                Cell c = p.Floor;
+                int key = c.Z * 65536 + c.X;
+                if (near.TryGetValue(key, out bool v)) return v;
+                v = false;
+                for (int dz = -1; dz <= 1 && !v; dz++)
+                    for (int dx = -1; dx <= 1; dx++)
+                        if (!w.IsWalkable(new Cell(c.X + dx, c.Z + dz))) { v = true; break; }
+                near[key] = v;
+                return v;
+            }
+            var X = Q.ToArray();
+            var tmp = new V2[n];
+            double k = prm.BendSmooth;
+            double turnMax = prm.MinBendRadius > 0 ? rest / prm.MinBendRadius : double.MaxValue;
+            for (int it = 0; it < iters; it++)
+            {
+                // 1. bend smoothing
+                Array.Copy(X, tmp, n);
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (pin[i]) continue;
+                    V2 avg = (tmp[i - 1] + tmp[i + 1]) * 0.5;
+                    X[i] = tmp[i] + (avg - tmp[i]) * k;
+                }
+                // 2. stiffness: a free point bent tighter than the minimum radius is pulled toward the chord
+                if (prm.MinBendRadius > 0.2)
+                    for (int i = 1; i < n - 1; i++)
+                    {
+                        if (pin[i]) continue;
+                        double th = Turn(X[i - 1], X[i], X[i + 1]);
+                        if (th <= turnMax) continue;
+                        V2 avg = (X[i - 1] + X[i + 1]) * 0.5;
+                        X[i] = X[i] + (avg - X[i]) * Math.Min(0.9, 1 - turnMax / th);
+                    }
+                // 3. inextensible segments: one symmetric Gauss-Seidel sweep (forward then back), the
+                //    correction split between free ends (Gauss-Seidel converges where rope.relax's two
+                //    Jacobi passes leave ~20% stretch at 0.05-cell segments)
+                Inextensible(X, pin, rest);
+                // 4. obstacles: hard projection out of unwalkable cells, flattening/bunching the cable
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (pin[i]) continue;
+                    if (!Near(X[i])) continue;
+                    double sd = w.Clearance(X[i]);
+                    st.ObstacleTests++;
+                    if (sd >= LayParams.RC) continue;
+                    V2 g = w.ClearanceGradient(X[i]);
+                    if (g.Len < 1e-9) continue;
+                    X[i] = X[i] + g * (LayParams.RC - sd);
+                }
+                for (int i = 0; i < n; i++)
+                    X[i] = new V2(Geo.Clamp(X[i].X, 0.04, w.Width - 0.04), Geo.Clamp(X[i].Z, 0.04, w.Height - 0.04));
+                st.Work += n;
+            }
+            // final rounds: restore segment lengths and push out of obstacles, alternating, so the
+            // budget and the floor rule both hold when the settle hands the strand back
+            for (int pass = 0; pass < 16; pass++)
+            {
+                for (int i = 1; i < n - 1; i++)
+                {
+                    if (pin[i] || !Near(X[i])) continue;
+                    double sd = w.Clearance(X[i]);
+                    if (sd >= LayParams.RC) continue;
+                    V2 g = w.ClearanceGradient(X[i]);
+                    if (g.Len < 1e-9) continue;
+                    X[i] = X[i] + g * (LayParams.RC - sd + 0.01);
+                }
+                Inextensible(X, pin, rest);
+                st.Work += 2 * n;
+            }
+            // last word goes to the floor rule, but only for a point actually inside an unwalkable cell
+            for (int i = 1; i < n - 1; i++)
+            {
+                if (pin[i] || !Near(X[i]) || w.IsWalkable(X[i].Floor)) continue;
+                double sd = w.Clearance(X[i]);
+                V2 g = w.ClearanceGradient(X[i]);
+                if (g.Len > 1e-9) X[i] = X[i] + g * (LayParams.RC - sd + 0.01);
+            }
+            Inextensible(X, pin, rest);
+            Inextensible(X, pin, rest);
+            for (int i = 0; i < n; i++) Q[i] = X[i];
+            double maxStr = 0, minR = double.MaxValue;
+            for (int i = 0; i < n - 1; i++)
+                if (!(pin[i] && pin[i + 1]))
+                {
+                    double str = (V2.Dist(X[i], X[i + 1]) - rest) / rest;      // stretch only: a short segment is the rope bunching
+                    st.MaxCompress = Math.Max(st.MaxCompress, -str);
+                    if (str > maxStr) { maxStr = str; st.WorstSeg = i; st.WorstNote = (pin[i] ? "P" : "f") + (pin[i + 1] ? "P" : "f") + " len " + V2.Dist(X[i], X[i + 1]).ToString("0.0000") + " rest " + rest.ToString("0.0000") + " at " + X[i] + " pins " + string.Concat(Enumerable.Range(Math.Max(0, i - 3), Math.Min(n, i + 5) - Math.Max(0, i - 3)).Select(j => pin[j] ? "P" : "f")) + " lens " + string.Join(",", Enumerable.Range(Math.Max(0, i - 3), Math.Min(n - 1, i + 4) - Math.Max(0, i - 3)).Select(j => V2.Dist(X[j], X[j + 1]).ToString("0.0000"))); }
+                }
+            for (int i = 1; i < n - 1; i++)
+            {
+                if (pin[i] || pin[i - 1] || pin[i + 1]) continue;
+                double th = Turn(X[i - 1], X[i], X[i + 1]);
+                double seg = 0.5 * (V2.Dist(X[i - 1], X[i]) + V2.Dist(X[i], X[i + 1]));
+                if (th > 1e-9) minR = Math.Min(minR, seg / th);
+            }
+            st.MaxStretch = maxStr;
+            st.MinBendR = minR == double.MaxValue ? 99 : minR;
+            st.SettledLen = Geo.Length(Q);
+            return st;
+        }
+
+        private static void Inextensible(V2[] X, bool[] pin, double rest)
+        {
+            int n = X.Length;
+            for (int dir = 0; dir < 2; dir++)
+                for (int k = 0; k < n - 1; k++)
+                {
+                    int i = dir == 0 ? k : n - 2 - k;
+                    double wa = pin[i] ? 0 : 1, wb = pin[i + 1] ? 0 : 1, both = wa + wb;
+                    if (both <= 0) continue;
+                    V2 d = X[i + 1] - X[i];
+                    double ln = Math.Max(d.Len, 1e-9);
+                    V2 corr = d * ((ln - rest) / ln);
+                    X[i] = X[i] + corr * (wa / both);
+                    X[i + 1] = X[i + 1] - corr * (wb / both);
+                }
+        }
+
+        /// <summary>Turning angle at b (radians, 0 = straight).</summary>
+        public static double Turn(V2 a, V2 b, V2 c)
+        {
+            V2 u = b - a, v = c - b;
+            double lu = u.Len, lv = v.Len;
+            if (lu < 1e-12 || lv < 1e-12) return 0;
+            double cs = (u.X * v.X + u.Z * v.Z) / (lu * lv);
+            return Math.Acos(Geo.Clamp(cs, -1, 1));
+        }
+
+        /// <summary>A cord longer than this (cells) gets one extra heap within EndHeapReach of each end,
+        /// "where people look" (§8.7.6 very long runs; phase 1b B2).</summary>
+        public const double LongRun = 40, EndHeapReach = 6;
+
+        private static List<V2> AddLoops(CordWorld w, List<V2> Q, double[] ramp, LayParams prm, CordRng rr, double target, SettleStats st)
+        {
+            double[] s = Geo.CumLen(Q);
+            double L = s[s.Length - 1];
+            if (L > LongRun && prm.HeapP > 0)
+            {
+                // seeded from their own stream so a long cord's other shapes do not reshuffle
+                CordRng re = new CordRng(rr.NextULong());
+                foreach (bool atEnd in new[] { true, false })
+                {
+                    double d = re.Range(1.5, EndHeapReach - 1.0);
+                    double at = atEnd ? s[s.Length - 1] - d : d;
+                    int j = Array.BinarySearch(s, at);
+                    if (j < 0) j = ~j;
+                    if (j <= 2 || j >= Q.Count - 3) continue;
+                    var win = Q.GetRange(Math.Max(0, j - 3), Math.Min(Q.Count, j + 4) - Math.Max(0, j - 3));
+                    Geo.TanNorm(win, win.Count / 2, out V2 t, out V2 nrm);
+                    int side = w.Clearance(Q[j] + nrm * 0.8) >= w.Clearance(Q[j] - nrm * 0.8) ? 1 : -1;
+                    double r = 0.5 * prm.Cap / 1.6;
+                    List<V2> shape = null;
+                    for (int tries = 0; tries < 5 && r >= 0.18; tries++, r *= 0.7)
+                    {
+                        List<V2> c = Heap(Q[j], t, nrm, r, side, re);
+                        if (AllClear(w, c, LayParams.RC + 0.02)) { shape = c; break; }
+                    }
+                    if (shape == null) continue;
+                    double fromStart = s[j], fromEnd = s[s.Length - 1] - s[j];
+                    var nq = new List<V2>(Q.Count + shape.Count);
+                    nq.AddRange(Q.GetRange(0, j));
+                    nq.AddRange(shape);
+                    nq.AddRange(Q.GetRange(j + 1, Q.Count - j - 1));
+                    Q = nq;
+                    s = Geo.CumLen(Q);
+                    st.HeapsAt.Add(fromStart);
+                    st.HeapsFromEnd.Add(atEnd ? fromEnd : s[s.Length - 1] - fromStart);
+                    st.EndHeaps++;
+                }
+                L = s[s.Length - 1];
+                var rs = new double[Q.Count];
+                for (int i = 0; i < rs.Length; i++) rs[i] = Math.Min(1, Math.Min(s[i], L - s[i]) / 0.9);
+                ramp = rs;
+            }
             int nloops = (int)(prm.LoopsPerCell * L + rr.Value());
             bool heap = rr.Value() < prm.HeapP;
             var cands = new List<KeyValuePair<bool, double>>();      // (isHeap, fraction)
@@ -193,6 +486,7 @@ namespace RimMandrake.MessyConduit.Core
                     if (r < 0.18) break;
                 }
                 if (shape == null) continue;
+                if (cand.Key) { st?.HeapsAt.Add(s[j]); st?.HeapsFromEnd.Add(s[s.Length - 1] - s[j]); }
                 var nq = new List<V2>(Q.Count + shape.Count);
                 nq.AddRange(Q.GetRange(0, j));
                 nq.AddRange(shape);

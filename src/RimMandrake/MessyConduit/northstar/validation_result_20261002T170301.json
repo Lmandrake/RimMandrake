@@ -1,0 +1,724 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "tier": "messyconduit",
+ "started": "2026-10-02T17:00:31",
+ "rows": [
+  {
+   "id": "L0_fresh_map",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "start": true,
+    "programState": "Playing"
+   }
+  },
+  {
+   "id": "L1_tier_running",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": "9 mods running, messyconduit True"
+  },
+  {
+   "id": "L2_startup_log_clean",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "no MessyConduit error in 13 warn+ startup entries (sanity: [RimBridge] line seen=True)"
+  },
+  {
+   "id": "S0_scene_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "walls": [
+     27,
+     0
+    ],
+    "door": [
+     1,
+     0
+    ],
+    "battery": "Battery36291",
+    "conduit": [
+     21,
+     0
+    ],
+    "lamp": [
+     1,
+     0
+    ],
+    "stored": 600.0
+   }
+  },
+  {
+   "id": "M1_conduit_transparent",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "texPaths": {
+     "PowerConduit": "RimMandrake/MessyConduit/ConduitTransparent",
+     "WaterproofConduit": "RimMandrake/MessyConduit/ConduitTransparent"
+    },
+    "spawned": "ConduitTransparent"
+   }
+  },
+  {
+   "id": "M1_cords_exist",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "conduitCells": 21,
+    "cordEdges": 4,
+    "hiddenEdges": 1,
+    "strands": 13,
+    "layerVerts": 12780,
+    "layerSectionsWithCords": 2,
+    "nodes": {
+     "battery": 1,
+     "consumer": 1,
+     "hidden_end": 1,
+     "junction": 1,
+     "stub_wall": 1,
+     "terminal": 2
+    }
+   }
+  },
+  {
+   "id": "M1_node_census",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "need ['battery', 'consumer', 'junction', 'stub_wall'] + >=2 terminals (FAR run ends) + a live wall terminal; got {'battery': 1, 'consumer': 1, 'hidden_end': 1, 'junction': 1, 'stub_wall': 1, 'terminal': 2}, live wall ends 1"
+  },
+  {
+   "id": "M1c_end_pieces",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "decals": {
+     "FrayDead": 6,
+     "FrayLive": 1,
+     "JunctionTape": 1,
+     "Plug": 2,
+     "StubWall": 1
+    }
+   }
+  },
+  {
+   "id": "M2_cords_only_within_net",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cordsAcrossNets": 0,
+    "cordsAcrossNetsList": [],
+    "cordEndsWithoutNet": 0
+   }
+  },
+  {
+   "id": "M2b_no_vertex_unwalkable",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "verticesInUnwalkable": 0,
+    "interiorVertices": 2986,
+    "fellBack": 0,
+    "unroutable": 0
+   }
+  },
+  {
+   "id": "M6_overlay_lines_intact",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hookupWiresSuppressed": 2,
+    "overlayWiresPrinted": 2,
+    "overlayConnectorVerts": 4
+   }
+  },
+  {
+   "id": "D1_determinism_fresh_build",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "success": true,
+    "cmd": "fresh",
+    "edges": 4,
+    "same": 4,
+    "different": 0,
+    "missing": 0
+   }
+  },
+  {
+   "id": "M5_local_invalidation",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "changed": [],
+    "gone": [
+     "terminal:178,159|terminal:179,159"
+    ],
+    "lastPlanned": 1,
+    "lastReused": 3
+   }
+  },
+  {
+   "id": "M8_break_two_ends_live_dead",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "west(battery side)": {
+     "cell": [
+      156,
+      153
+     ],
+     "tip": [
+      156.86,
+      153.47
+     ],
+     "wall": false,
+     "registryLive": true,
+     "netLive": true,
+     "net": "53010664"
+    },
+    "east": {
+     "cell": [
+      158,
+      153
+     ],
+     "tip": [
+      158.26,
+      153.17
+     ],
+     "wall": false,
+     "registryLive": false,
+     "netLive": false,
+     "net": "827564498"
+    },
+    "cordsAcrossNets": 0
+   }
+  },
+  {
+   "id": "M8b_no_cord_across_gap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cordsAcrossNets": 0,
+    "list": []
+   }
+  },
+  {
+   "id": "P1B_plot_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "conduit": 15,
+    "battery2": "Battery36318",
+    "stored": 600.0
+   }
+  },
+  {
+   "id": "B1_rope_settle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "settledStrands": 16,
+    "settleMaxStretch": 0.02,
+    "settleMaxLenDev": 0.02,
+    "endHeaps": 0,
+    "laidPoints": 6823,
+    "lastRebuildMs": 8.56
+   }
+  },
+  {
+   "id": "B6_tangle_lit_strips",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tangles": 1,
+    "tangleMinUsed": 9,
+    "litStrips": 2,
+    "darkStrips": 0,
+    "stubs": 2,
+    "mergedStubs": 0
+   }
+  },
+  {
+   "id": "B3_whip_live_ends",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "whipDraws_on": 3,
+    "whipTails": 3,
+    "liveFloorEnds": 1,
+    "deadFloorEnds": 3,
+    "whipDraws_off": 0,
+    "whipDraws_on_again": 3
+   }
+  },
+  {
+   "id": "B4_downed_wire_bursts",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "liveWallEnds": 1,
+    "hist": {
+     "Drip": 3,
+     "Flash": 3,
+     "Quiet": 6,
+     "Crackle": 2
+    },
+    "events": 17,
+    "seconds": 14
+   }
+  },
+  {
+   "id": "B4b_sparks_thrown_ticking",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "sparksBefore": 0,
+    "sparksAfter160Ticks": 2
+   }
+  },
+  {
+   "id": "B7_sway_cpu_two_frame",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "mode": "CPU",
+    "plantWindSway": true,
+    "wind": 0.357,
+    "amp": 1,
+    "lifted": 2,
+    "swaying": 2,
+    "swayDraws": 2,
+    "swayVerts": 64,
+    "hashA": "43e18ed6a9d41f89",
+    "hashB_30ticks": "a6253a3a578f3f4a",
+    "off_swayDraws": 0,
+    "off_swaying": 0
+   }
+  },
+  {
+   "id": "B5_selection_highlight",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "net1": [
+     "53010664",
+     3,
+     3
+    ],
+    "net2": [
+     "-311355438",
+     12,
+     12
+    ],
+    "stubRings": [
+     0,
+     1
+    ],
+    "deselected": 0
+   }
+  },
+  {
+   "id": "B8_lod_far_zoom",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "far": {
+     "zoom": "Furthest",
+     "lodFarNow": true,
+     "lodSubMeshes": 2,
+     "lodEnabled": 2,
+     "fullSubMeshes": 13,
+     "fullEnabled": 0
+    },
+    "close": {
+     "zoom": "Middle",
+     "lodFarNow": false,
+     "lodEnabled": 0,
+     "fullEnabled": 13
+    },
+    "camera0": 24.0,
+    "shot": true
+   }
+  },
+  {
+   "id": "B9_cutscene_guard_idle",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cutsceneInProgress": false,
+    "cutsceneHides": false,
+    "cutsceneSkips": 0
+   }
+  },
+  {
+   "id": "B6b_strips_dark_when_dead",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "litStrips": 0,
+    "darkStrips": 2,
+    "liveWallEnds": 0
+   }
+  },
+  {
+   "id": "M10_tangle_threshold_setting",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "tangleMin20": 0,
+    "tangleMin6": 1
+   }
+  },
+  {
+   "id": "P1B_perf_rebuild",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lastRebuildMs": 8.56,
+    "laidPoints": 6823,
+    "note": "first C# rebuild timing; no bar set"
+   }
+  },
+  {
+   "id": "M8c_source_off_reads_dead_250",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "west": {
+     "cell": [
+      156,
+      153
+     ],
+     "tip": [
+      156.74,
+      153.77
+     ],
+     "wall": false,
+     "registryLive": false,
+     "netLive": false,
+     "net": "53010664"
+    }
+   }
+  },
+  {
+   "id": "M7_off_restores_vanilla",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "texPaths": {
+     "PowerConduit": "Things/Building/Linked/PowerConduit_Atlas",
+     "WaterproofConduit": "Things/Building/Linked/WaterproofConduit_Atlas"
+    },
+    "spawned": "PowerConduit_Atlas",
+    "layerVisible": false
+   }
+  },
+  {
+   "id": "M7b_on_again_invisible",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spawned": "ConduitTransparent",
+    "layerVerts": 28342
+   }
+  },
+  {
+   "id": "Z_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errors": [],
+    "newWarnings": 0
+   }
+  },
+  {
+   "id": "U_sway_shader_path",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "CutoutPlant vertex-shader sway (phase-2 doc 1.5 option 1); the CPU path is what ships"
+  },
+  {
+   "id": "U_floor_ripple",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "optional outdoor floor-cord ripple (phase-2 doc 1.3, default off)"
+  },
+  {
+   "id": "U_motion_look",
+   "status": "UNCOVERED",
+   "class": "SCOPE",
+   "detail": "whip / drip rhythm / sway LOOK: motion is not a Northstar bar (owner); state proxies above"
+  },
+  {
+   "id": "U_other_styles",
+   "status": "UNBUILT",
+   "class": "SCOPE",
+   "detail": "Extension cord / Cybertek / Star Wars art families (art not installed)"
+  },
+  {
+   "id": "M4_save_load_hash",
+   "status": "UNCOVERED",
+   "class": "SCOPE",
+   "detail": "walk M4: same polylines after save/load -- its own mode, --save-load NAME"
+  },
+  {
+   "id": "M9_remove_mod_clean",
+   "status": "UNCOVERED",
+   "class": "SCOPE",
+   "detail": "walk M9: a save made with the mod loads clean without it -- its own mode, --removal-check NAME on a tier without the mod"
+  }
+ ],
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mandrake.rm.messyconduit"
+  ],
+  "running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
+  "assembly_matches": 1
+ },
+ "mod_hash": "ba0dccdcae7ebb2f6462a119f56a80900a26d39a7727797732bc3bd3ad5b4293",
+ "ticks": 722,
+ "log": [
+  {
+   "census0": {
+    "success": true,
+    "cmd": "census",
+    "ticksGame": 3,
+    "enabled": true,
+    "settings": {
+     "enabled": "True",
+     "style": "StarWarsJawa",
+     "slack": "1",
+     "sprawlCap": "16",
+     "cordsPerConnection": "3",
+     "tangles": "True",
+     "needlessLoops": "True",
+     "breakReadout": "True",
+     "sparkIntensity": "1",
+     "hideHookupWires": "True",
+     "debugDraw": "False",
+     "tangleMin": "9",
+     "whip": "True",
+     "downedWire": "True",
+     "sparksOnlyOverlay": "False",
+     "maxSparkingEnds": "24",
+     "highlight": "True",
+     "sway": "True",
+     "swayAmplitude": "1",
+     "lod": "True"
+    },
+    "invisibleApplied": true,
+    "texPaths": {
+     "PowerConduit": "RimMandrake/MessyConduit/ConduitTransparent",
+     "WaterproofConduit": "RimMandrake/MessyConduit/ConduitTransparent"
+    },
+    "spawnedConduitTexture": "ConduitTransparent",
+    "hookupWiresSuppressed": 2,
+    "overlayWiresPrinted": 2,
+    "builds": 10,
+    "lastPlanned": 0,
+    "lastReused": 4,
+    "conduitCells": 21,
+    "buriedCells": 1,
+    "nodeTypes": {
+     "battery": 1,
+     "consumer": 1,
+     "hidden_end": 1,
+     "junction": 1,
+     "stub_wall": 1,
+     "terminal": 2
+    },
+    "cordEdges": 4,
+    "hiddenEdges": 1,
+    "cordsAcrossNets": 0,
+    "cordsAcrossNetsList": [],
+    "cordEndsWithoutNet": 0,
+    "pieces": 5,
+    "decals": {
+     "FrayDead": 6,
+     "FrayLive": 1,
+     "JunctionTape": 1,
+     "Plug": 2,
+     "StubWall": 1
+    },
+    "strands": 13,
+    "interiorVertices": 2986,
+    "verticesInUnwalkable": 0,
+    "fellBack": 0,
+    "unroutable": 0,
+    "ends": [
+     {
+      "cell": [
+       167,
+       152
+      ],
+      "tip": [
+       168.04,
+       151.943
+      ],
+      "wall": true,
+      "registryLive": true,
+      "netLive": true,
+      "net": "1269973518"
+     },
+     {
+      "cell": [
+       178,
+       159
+      ],
+      "tip": [
+       178.26,
+       159.17
+      ],
+      "wall": false,
+      "registryLive": false,
+      "netLive": false,
+      "net": "495419684"
+     },
+     {
+      "cell": [
+       179,
+       159
+      ],
+      "tip": [
+       179.74,
+       159.17
+      ],
+      "wall": false,
+      "registryLive": false,
+      "netLive": false,
+      "net": "495419684"
+     }
+    ],
+    "edgeHashes": {
+     "junction:163,153|battery:153,153": "1a4955a43697b4dd",
+     "junction:163,153|consumer:163,155": "e7cd0d47a1ef417b",
+     "junction:163,153|stub_wall:167,152": "b03dacff65b6d3bf",
+     "terminal:178,159|terminal:179,159": "d6b9bd3ae1c8a465"
+    },
+    "geometryHash": "96c4698350a53a73",
+    "layerVisible": true,
+    "layerVerts": 12780,
+    "layerSectionsWithCords": 2,
+    "overlayConnectorVerts": 4
+   }
+  },
+  {
+   "lane_a_m0": {
+    "success": true,
+    "cmd": "motion",
+    "ticksGame": 9,
+    "paused": true,
+    "frame": 2676,
+    "whipDraws": 3,
+    "whipTails": 3,
+    "liveFloorEnds": 1,
+    "deadFloorEnds": 3,
+    "swayMode": "CPU",
+    "plantWindSway": true,
+    "windSpeed": 0.363,
+    "swayAmplitude": 1,
+    "liftedStrands": 2,
+    "liftedSwaying": 2,
+    "swayDraws": 2,
+    "swayVerts": 64,
+    "swayHash": "32fe8619baf09f2d",
+    "downedHist": {
+     "Drip": 7,
+     "Flash": 2,
+     "Quiet": 0,
+     "Crackle": 1
+    },
+    "dripEvents": 10,
+    "sparksThrown": 0,
+    "liveWallEnds": 1,
+    "glowDraws": 2,
+    "highlightCords": 0,
+    "highlightStubs": 0,
+    "highlightNet": null,
+    "selectedNet": null,
+    "cordsPerNet": {
+     "53010664": 3,
+     "827564498": 10,
+     "-2023149496": 3,
+     "-311355438": 12
+    },
+    "lodSetting": true,
+    "zoom": "Middle",
+    "lodFarNow": false,
+    "lastDrawFar": false,
+    "lodSubMeshes": 2,
+    "lodEnabled": 0,
+    "fullSubMeshes": 13,
+    "fullEnabled": 13,
+    "cutsceneInProgress": false,
+    "cutsceneHides": false,
+    "cutsceneSkips": 0,
+    "tangles": 1,
+    "tangleMinUsed": 9,
+    "mergedStubs": 0,
+    "stubs": 2,
+    "settledStrands": 16,
+    "settleMaxStretch": 0.02,
+    "settleMaxLenDev": 0.02,
+    "endHeaps": 0,
+    "litStrips": 2,
+    "darkStrips": 0,
+    "lastRebuildMs": 8.56,
+    "laidPoints": 6823
+   },
+   "plot": {
+    "walls": 3,
+    "battery": "Battery36318",
+    "conduit": 15,
+    "stored": 600.0
+   }
+  },
+  {
+   "shot": "p1b_01_wide",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\p1b_01_wide__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\p1b_01_wide.png",
+   "ok": true
+  },
+  {
+   "shot": "p1b_02_tangle_lit_and_downed_wire",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\p1b_02_tangle_lit_and_downed_wire__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\p1b_02_tangle_lit_and_downed_wire.png",
+   "ok": true
+  },
+  {
+   "shot": "p1b_03_highlight_selected_net",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\p1b_03_highlight_selected_net__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\p1b_03_highlight_selected_net.png",
+   "ok": true
+  },
+  {
+   "shot": "p1b_04_far_zoom_lod",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\p1b_04_far_zoom_lod__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\p1b_04_far_zoom_lod.png",
+   "ok": true
+  },
+  {
+   "shot": "p1b_05_downed_wire_close",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\p1b_05_downed_wire_close__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\p1b_05_downed_wire_close.png",
+   "ok": true
+  },
+  {
+   "shot": "p1b_06_tangle_dark",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\p1b_06_tangle_dark__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\p1b_06_tangle_dark.png",
+   "ok": true
+  }
+ ]
+}

@@ -39,6 +39,25 @@ namespace RimMandrake.MessyConduit
         public static bool hideHookupWires = true;
         /// <summary>Draw the node graph (nodes, edges) over the map. Off by default.</summary>
         public static bool debugDraw = false;
+        // ---- phase 1b (lane A, 2026-10-02)
+        /// <summary>Messiness: a dense conduit field of at least this many cells becomes one tangle (6-20).</summary>
+        public static int tangleMin = 9;
+        /// <summary>Live floor ends whip (drawn per frame, also while paused).</summary>
+        public static bool whip = true;
+        /// <summary>Live wall-terminal ends drip sparks in irregular bursts (downed wire), never a steady arc.</summary>
+        public static bool downedWire = true;
+        /// <summary>Sparks and glow only while the power overlay is open.</summary>
+        public static bool sparksOnlyOverlay = false;
+        /// <summary>Most sparking/whipping/dripping ends per map (8-48).</summary>
+        public static int maxSparkingEnds = 24;
+        /// <summary>Selecting anything on a power net highlights every cord of that net.</summary>
+        public static bool highlight = true;
+        /// <summary>Lifted pieces (wall-hanging tails) sway in the wind; obeys vanilla's plant-sway preference.</summary>
+        public static bool sway = true;
+        /// <summary>Sway strength multiplier (0-2).</summary>
+        public static float swayAmplitude = 1f;
+        /// <summary>Far-zoom simplification: one thin strand per cord, no decals.</summary>
+        public static bool lod = true;
 
         public override void ExposeData()
         {
@@ -54,6 +73,15 @@ namespace RimMandrake.MessyConduit
             Scribe_Values.Look(ref sparkIntensity, "sparkIntensity", 1f);
             Scribe_Values.Look(ref hideHookupWires, "hideHookupWires", true);
             Scribe_Values.Look(ref debugDraw, "debugDraw", false);
+            Scribe_Values.Look(ref tangleMin, "tangleMin", 9);
+            Scribe_Values.Look(ref whip, "whip", true);
+            Scribe_Values.Look(ref downedWire, "downedWire", true);
+            Scribe_Values.Look(ref sparksOnlyOverlay, "sparksOnlyOverlay", false);
+            Scribe_Values.Look(ref maxSparkingEnds, "maxSparkingEnds", 24);
+            Scribe_Values.Look(ref highlight, "highlight", true);
+            Scribe_Values.Look(ref sway, "sway", true);
+            Scribe_Values.Look(ref swayAmplitude, "swayAmplitude", 1f);
+            Scribe_Values.Look(ref lod, "lod", true);
         }
 
         public static void ResetToDefaults()
@@ -69,11 +97,20 @@ namespace RimMandrake.MessyConduit
             sparkIntensity = 1f;
             hideHookupWires = true;
             debugDraw = false;
+            tangleMin = 9;
+            whip = true;
+            downedWire = true;
+            sparksOnlyOverlay = false;
+            maxSparkingEnds = 24;
+            highlight = true;
+            sway = true;
+            swayAmplitude = 1f;
+            lod = true;
         }
 
         public static BuildOptions BuildOptions()
         {
-            var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops };
+            var o = new BuildOptions { Tangles = tangles, NeedlessLoops = needlessLoops, TangleMin = Mathf.Clamp(tangleMin, 6, 20) };
             o.Lay.SlackScale = Mathf.Clamp(slack, 0f, 2f);
             o.Lay.MaxExtra = Mathf.Clamp(sprawlCap, 2f, 40f);
             o.Lay.MinExtra = Math.Min(o.Lay.MinExtra, o.Lay.MaxExtra);
@@ -113,10 +150,15 @@ namespace RimMandrake.MessyConduit
             MessyConduitSettings.Apply();
         }
 
+        private static Vector2 scroll;
+        private static float viewHeight = 1200f;
+
         public override void DoSettingsWindowContents(Rect inRect)
         {
+            var view = new Rect(0f, 0f, inRect.width - 20f, viewHeight);
+            Widgets.BeginScrollView(inRect, ref scroll, view);
             var l = new Listing_Standard();
-            l.Begin(inRect);
+            l.Begin(view);
             l.CheckboxLabeled("Messy cords (master switch)", ref MessyConduitSettings.enabled,
                 "Conduit becomes invisible and is drawn as loose, too-long cords between what it connects. " +
                 "Off: vanilla conduit art and hookup wires come back as soon as you close this window.");
@@ -147,15 +189,30 @@ namespace RimMandrake.MessyConduit
             MessyConduitSettings.cordsPerConnection = Mathf.RoundToInt(l.Slider(MessyConduitSettings.cordsPerConnection, 1f, 3f));
             l.CheckboxLabeled("Dense conduit fields become one tangle", ref MessyConduitSettings.tangles);
             l.CheckboxLabeled("Needless conduit stubs become pointless loops", ref MessyConduitSettings.needlessLoops);
+            l.Label("Messiness: a dense conduit field of " + MessyConduitSettings.tangleMin + "+ cells becomes one tangle",
+                    tooltip: "Lower = more of a crowded base turns into heaps of cord with power strips on top.");
+            MessyConduitSettings.tangleMin = Mathf.RoundToInt(l.Slider(MessyConduitSettings.tangleMin, 6f, 20f));
             l.GapLine();
             l.CheckboxLabeled("Break readout: live ends spark, dead ends lie limp", ref MessyConduitSettings.breakReadout);
             l.Label("Spark intensity: " + MessyConduitSettings.sparkIntensity.ToString("0.0") + "x");
             MessyConduitSettings.sparkIntensity = l.Slider(MessyConduitSettings.sparkIntensity, 0f, 2f);
+            l.CheckboxLabeled("Live broken ends whip about (also while paused)", ref MessyConduitSettings.whip);
+            l.CheckboxLabeled("Live wires hanging out of walls drip sparks in bursts", ref MessyConduitSettings.downedWire);
+            l.CheckboxLabeled("Sparks only while the power overlay is open", ref MessyConduitSettings.sparksOnlyOverlay);
+            l.Label("Most sparking ends per map: " + MessyConduitSettings.maxSparkingEnds);
+            MessyConduitSettings.maxSparkingEnds = Mathf.RoundToInt(l.Slider(MessyConduitSettings.maxSparkingEnds, 8f, 48f));
+            l.CheckboxLabeled("Selecting a powered building highlights every cord of its net", ref MessyConduitSettings.highlight);
+            l.CheckboxLabeled("Hanging cords sway in the wind (obeys the game's plant-sway option)", ref MessyConduitSettings.sway);
+            l.Label("Sway strength: " + MessyConduitSettings.swayAmplitude.ToString("0.0") + "x");
+            MessyConduitSettings.swayAmplitude = l.Slider(MessyConduitSettings.swayAmplitude, 0f, 2f);
+            l.CheckboxLabeled("Far zoom: simplify cords (one thin strand, no pieces)", ref MessyConduitSettings.lod);
             l.CheckboxLabeled("Hide vanilla's thin machine hookup wires (power overlay lines always stay)", ref MessyConduitSettings.hideHookupWires);
             l.CheckboxLabeled("Debug: draw the node graph", ref MessyConduitSettings.debugDraw);
             l.GapLine();
             if (l.ButtonText("Reset to defaults")) MessyConduitSettings.ResetToDefaults();
+            viewHeight = Mathf.Max(600f, l.CurHeight + 40f);
             l.End();
+            Widgets.EndScrollView();
         }
 
         public static string StyleLabel(CordStyle s)

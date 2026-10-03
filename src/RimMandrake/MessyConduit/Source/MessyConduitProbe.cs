@@ -46,6 +46,25 @@ namespace RimMandrake.MessyConduit
             if (cmd == "poll") { int f = comp.PollLive(); return "{\"success\":true,\"cmd\":\"poll\",\"flips\":" + f + "}"; }
             if (cmd == "fresh") return Fresh(map, comp);
             if (cmd == "artfit") return ArtFit(map, comp);
+            if (cmd == "motion") return Motion(map, comp);
+            if (cmd == "motionreset")
+            {
+                for (int i = 0; i < RM_MapComponent_CordGraph.DownedHist.Length; i++) RM_MapComponent_CordGraph.DownedHist[i] = 0;
+                RM_MapComponent_CordGraph.SparksThrown = 0;
+                RM_MapComponent_CordGraph.DripEvents = 0;
+                return "{\"success\":true,\"cmd\":\"motionreset\"}";
+            }
+            if (cmd.StartsWith("select:"))
+            {
+                // select the first powered thing at x,z (validation's selection-highlight row, B5)
+                string[] xz = cmd.Substring(7).Split(',');
+                var c = new IntVec3(int.Parse(xz[0], CultureInfo.InvariantCulture), 0, int.Parse(xz[1], CultureInfo.InvariantCulture));
+                Thing t = c.InBounds(map) ? c.GetThingList(map).FirstOrDefault(x => x.TryGetComp<CompPower>() != null) : null;
+                Find.Selector.ClearSelection();
+                if (t != null) Find.Selector.Select(t, playSound: false, forceDesignatorDeselect: false);
+                return "{\"success\":" + J.B(t != null) + ",\"cmd\":" + J.S(cmd) + ",\"thing\":" + J.S(t?.def.defName) + "}";
+            }
+            if (cmd == "deselect") { Find.Selector.ClearSelection(); return "{\"success\":true,\"cmd\":\"deselect\"}"; }
             if (cmd == "defaults")
             {
                 MessyConduitSettings.ResetToDefaults();
@@ -122,6 +141,88 @@ namespace RimMandrake.MessyConduit
             }
             F("faceEdifices", J.Arr(seen));
             F("glowDraws", RM_MapComponent_CordGraph.LastGlowDraws.ToString());
+            sb.Append("}");
+            return sb.ToString();
+        }
+
+        /// <summary>Phase 1b lane A state reads: whip/sway/highlight counters of the last drawn frame, the
+        /// downed-wire state histogram since motionreset, LOD and cutscene state, and per-net cord counts.</summary>
+        private static string Motion(Map map, RM_MapComponent_CordGraph comp)
+        {
+            var sb = new StringBuilder("{\"success\":true,\"cmd\":\"motion\"");
+            void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
+            F("ticksGame", Find.TickManager.TicksGame.ToString());
+            F("paused", J.B(Find.TickManager.Paused));
+            F("frame", UnityEngine.Time.frameCount.ToString());
+            F("whipDraws", RM_MapComponent_CordGraph.WhipDraws.ToString());
+            int whipTails = comp.Pieces.Sum(p => p.Strands.Sum(x => (x.WhipA > 0 ? 1 : 0) + (x.WhipB > 0 ? 1 : 0)));
+            F("whipTails", whipTails.ToString());
+            int liveFloorEnds = comp.Pieces.Sum(p => p.Ends.Count(e => !e.Wall && (comp.EndLive(e.NetCell) ?? false)));
+            int deadFloorEnds = comp.Pieces.Sum(p => p.Ends.Count(e => !e.Wall && !(comp.EndLive(e.NetCell) ?? false)));
+            F("liveFloorEnds", liveFloorEnds.ToString());
+            F("deadFloorEnds", deadFloorEnds.ToString());
+            F("swayMode", J.S("CPU"));
+            F("plantWindSway", J.B(Prefs.PlantWindSway));
+            F("windSpeed", J.D(map.windManager.WindSpeed));
+            F("swayAmplitude", J.D(MessyConduitSettings.swayAmplitude));
+            F("liftedStrands", comp.Pieces.Sum(p => p.Strands.Count(x => x.Lifted)).ToString());
+            F("liftedSwaying", comp.Pieces.Sum(p => p.Strands.Count(x => x.Lifted && RM_MapComponent_CordGraph.SwaysNow(map, x))).ToString());
+            F("swayDraws", RM_MapComponent_CordGraph.SwayDraws.ToString());
+            F("swayVerts", RM_MapComponent_CordGraph.SwayVerts.ToString());
+            F("swayHash", J.S(RM_MapComponent_CordGraph.SwayHash.ToString("x16")));
+            F("downedHist", "{\"Drip\":" + RM_MapComponent_CordGraph.DownedHist[0] + ",\"Flash\":" + RM_MapComponent_CordGraph.DownedHist[1] +
+                            ",\"Quiet\":" + RM_MapComponent_CordGraph.DownedHist[2] + ",\"Crackle\":" + RM_MapComponent_CordGraph.DownedHist[3] + "}");
+            F("dripEvents", RM_MapComponent_CordGraph.DripEvents.ToString());
+            F("sparksThrown", RM_MapComponent_CordGraph.SparksThrown.ToString());
+            F("liveWallEnds", comp.Pieces.Sum(p => p.Ends.Count(e => e.Wall && (comp.EndLive(e.NetCell) ?? false))).ToString());
+            F("glowDraws", RM_MapComponent_CordGraph.LastGlowDraws.ToString());
+            F("highlightCords", RM_MapComponent_CordGraph.HighlightCords.ToString());
+            F("highlightStubs", RM_MapComponent_CordGraph.HighlightStubs.ToString());
+            F("highlightNet", J.S(RM_MapComponent_CordGraph.HighlightNetId));
+            PowerNet sel = comp.SelectedNet();
+            F("selectedNet", J.S(sel?.GetHashCode().ToString()));
+            var perNet = comp.Pieces.GroupBy(p => comp.NetOf(p.Owner)?.GetHashCode().ToString() ?? "none")
+                .Select(gp => J.S(gp.Key) + ":" + gp.Sum(p => p.Strands.Count));
+            F("cordsPerNet", "{" + string.Join(",", perNet) + "}");
+            F("lodSetting", J.B(MessyConduitSettings.lod));
+            F("zoom", J.S(Find.CameraDriver.CurrentZoom.ToString()));
+            F("lodFarNow", J.B(SectionLayer_RM_MessyCords.FarNow));
+            F("lastDrawFar", J.B(SectionLayer_RM_MessyCords.LastDrawFar));
+            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0;
+            var sections = Traverse.Create(map.mapDrawer).Field("sections").GetValue<Section[,]>();
+            if (sections != null)
+                foreach (Section sec in sections)
+                    foreach (SectionLayer l in Traverse.Create(sec).Field("layers").GetValue<List<SectionLayer>>())
+                    {
+                        if (!(l is SectionLayer_RM_MessyCords)) continue;
+                        foreach (LayerSubMesh m in l.subMeshes.Where(m => m.finalized && m.verts.Count > 0))
+                        {
+                            if (CordMaterials.IsLod(m.material)) { lodSm++; if (!m.disabled) lodOn++; }
+                            else { fullSm++; if (!m.disabled) fullOn++; }
+                        }
+                    }
+            F("lodSubMeshes", lodSm.ToString()); F("lodEnabled", lodOn.ToString());
+            F("fullSubMeshes", fullSm.ToString()); F("fullEnabled", fullOn.ToString());
+            F("cutsceneInProgress", J.B(WorldComponent_GravshipController.CutsceneInProgress));
+            F("cutsceneHides", J.B(SectionLayer_RM_MessyCords.CutsceneHides));
+            F("cutsceneSkips", SectionLayer_RM_MessyCords.CutsceneSkips.ToString());
+            CordGraph g = comp.Graph;
+            if (g != null)
+            {
+                F("tangles", g.Nodes.Values.Count(n => n.Type == NodeType.Tangle).ToString());
+                F("tangleMinUsed", g.tangleMin.ToString());
+                F("mergedStubs", g.MergedStubs.ToString());
+                F("stubs", g.Nodes.Values.Count(n => n.IsStub).ToString());
+            }
+            var settled = comp.Pieces.SelectMany(p => p.Strands).Where(x => x.Settle != null).ToList();
+            F("settledStrands", settled.Count.ToString());
+            F("settleMaxStretch", J.D(settled.Count == 0 ? 0 : settled.Max(x => x.Settle.MaxStretch)));
+            F("settleMaxLenDev", J.D(settled.Count == 0 ? 0 : settled.Max(x => Math.Abs(x.Settle.SettledLen / Math.Max(1e-9, x.Settle.RestLen) - 1))));
+            F("endHeaps", settled.Sum(x => x.Settle.EndHeaps).ToString());
+            F("litStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStrip)).ToString());
+            F("darkStrips", comp.Pieces.Sum(p => p.Decals.Count(d => d.Kind == DecalKind.PowerStripDark)).ToString());
+            F("lastRebuildMs", J.D(comp.LastRebuildMs));
+            F("laidPoints", comp.Pieces.Sum(p => p.Strands.Sum(x => x.Pts.Count)).ToString());
             sb.Append("}");
             return sb.ToString();
         }

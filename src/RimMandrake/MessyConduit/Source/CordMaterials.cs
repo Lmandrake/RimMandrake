@@ -21,6 +21,9 @@ namespace RimMandrake.MessyConduit
         public static readonly Material LiveGlow;
         private static readonly Dictionary<DecalKind, Material> decals = new Dictionary<DecalKind, Material>();
         public static readonly Material DecalFrayLive;
+        /// <summary>Phase 1b: the far-zoom (LOD) strand, a separate Material instance so it lands in its own
+        /// sub-mesh; the selection highlight (strand texture, warm, translucent, drawn over the cords).</summary>
+        public static readonly Material StrandLod, Highlight;
 
         /// <summary>Render queues. Every SectionLayer submesh gets the SAME bounds
         /// (MapDrawLayer.RefreshSubMeshBounds, decompiled 1.6), so transparent submeshes tie on sort
@@ -49,7 +52,21 @@ namespace RimMandrake.MessyConduit
             // a dead end's fray is dulled further so it reads cold beside the live one
             decals[DecalKind.FrayDead] = Mat(Dir + "EndFrayed_Dead", PieceQueue, new Color(0.62f, 0.58f, 0.55f, 1f));
             decals[DecalKind.FrayLive] = Mat(Dir + "EndFrayed_Live", PieceQueue);
+            // phase 1b B6: LEDs dark when the net is dead. Until PowerStrip_Lit/_Dark art lands (artpipe), the
+            // dark strip is the placeholder strip tinted down.
+            Texture2D stripDark = ContentFinder<Texture2D>.Get(Dir + "PowerStrip_Dark", reportFailure: false);
+            decals[DecalKind.PowerStripDark] = stripDark != null
+                ? MaterialPool.MatFrom(new MaterialRequest(stripDark, ShaderDatabase.Transparent) { renderQueue = PieceQueue })
+                : Mat(Dir + "PowerStrip", PieceQueue, new Color(0.42f, 0.40f, 0.40f, 1f));
+            if (Strand != null)
+            {
+                StrandLod = new Material(Strand) { name = "RM_MessyCords_StrandLod" };
+                // a WHITE band tinted warm: tinting the near-black strand texture stayed near-black (live 1b-2 look)
+                Highlight = MaterialPool.MatFrom(new MaterialRequest(BaseContent.WhiteTex, ShaderDatabase.Transparent, new Color(1f, 0.85f, 0.35f, 0.42f)) { renderQueue = FaceQueue + 1 });
+            }
         }
+
+        public static bool IsLod(Material m) => m != null && m == StrandLod;
 
         public static Material Decal(DecalKind k) => decals.TryGetValue(k, out Material m) ? m : null;
 

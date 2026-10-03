@@ -31,7 +31,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             File.WriteAllText(Path.Combine(dumpDir, name + ".laid.json"), JsonSerializer.Serialize(o));
         }
 
-        private static void Check(bool ok, string msg)
+        internal static void Check(bool ok, string msg)
         {
             checks++;
             if (!ok) { fails++; Console.WriteLine("FAIL " + msg); }
@@ -62,6 +62,8 @@ namespace RimMandrake.MessyConduit.SelfTest
                 return probeFails == scenes.Count ? 0 : 1;
             }
             UnrelatedEditCheck(scenes.First(x => x.GetProperty("scene").GetProperty("name").GetString() == "nodal").GetProperty("scene"));
+            LaneAChecks.Run(scenes);       // phase 1b lane A (rope settle, graph, live ends): LaneAChecks.cs
+            AerialSelfTest.Run(Check);     // lane B (L5 aerial lines): AerialSelfTest.cs + ../Aerial/AerialMath.cs
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
         }
