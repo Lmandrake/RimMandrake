@@ -7,15 +7,15 @@
     reference) and src/RimUtinni/LanternDeeps/Source/
     RimMandrake.Utinni.LanternDeeps.csproj (plain GenStep subclasses) —
     this mod needs both: two self-gating GenStep subclasses (no Harmony)
-    plus one small Harmony postfix (RUT_LivePatternMetal's biome gate).
+    plus one small Harmony postfix (RM_LivePatternMetal's biome gate).
 
     RUSTCATHEDRAL_RM_MOD_BUILD_1: this assembly moved from the standalone
     mandrake.rut.rustcathedralwalls satellite mod into mandrake.rm.rustcathedral
     (option (b) of that item's assembly-merge trade — two DLLs kept under one
-    mod folder, zero namespace churn). Namespace/AssemblyName UNCHANGED.
+    mod folder). Renamed from RimMandrake.Utinni.* to RimMandrake.RustCathedral.* by RUSTCATHEDRAL_FREE_NAMES_TIDY_1.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Walls\RimMandrake.Utinni.RustCathedralWalls.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Walls\RimMandrake.RustCathedral.Walls.csproj -c Release
 
     Output lands in ../../Assemblies/, which is where RimWorld looks.
   -->
@@ -23,8 +23,8 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.Utinni.RustCathedralWalls</AssemblyName>
-    <RootNamespace>RimMandrake.Utinni.RustCathedralWalls</RootNamespace>
+    <AssemblyName>RimMandrake.RustCathedral.Walls</AssemblyName>
+    <RootNamespace>RimMandrake.RustCathedral.Walls</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\..\Assemblies\</OutputPath>

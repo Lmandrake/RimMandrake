@@ -4,7 +4,7 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §1 -- the hum-mood system. Per the kit spec's
 	// own build order this is the item everything else plugs into: §3 (living

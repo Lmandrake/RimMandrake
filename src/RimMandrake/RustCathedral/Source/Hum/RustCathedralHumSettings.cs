@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// MOD_OPTIONS_RETROFIT_1 -- Mod Settings for RustCathedralHum.
 	//

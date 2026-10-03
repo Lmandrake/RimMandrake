@@ -81,12 +81,12 @@ rather than an optional MayRequire — same disclosed trade RM_Miasma makes
 for its own flora textures. A future pass can generate this mod's own art
 and drop the dependency; nothing here blocks that.
 
-The absorbed kit's fishing consequences (RUT_CoolantEel, the sole entry in
+The absorbed kit's fishing consequences (RM_CoolantEelCatch, the sole entry in
 this biome's fishTypes) and wall-tier scatter (forceRockTypes plus two
 GenSteps added to the shared MapCommonBase) are now NATIVE fields/content on
 this mod's own RM_RustCathedral def, dissolved from the two self-patches the
 satellite kits used to carry onto the frozen twin (a self-patch is pointless
-once the def is owned outright). RUT_CoolantEel is Odyssey-only by
+once the def is owned outright). RM_CoolantEelCatch is Odyssey-only by
 construction (ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey"),
 so Odyssey ships as a hard dependency too — per the owner's 2026-09-25
 standing design ruling ("always assume all the DLCs"), every RimMandrake
@@ -94,7 +94,7 @@ biome mod may assume the full expansion set is present.
 
 wildAnimals: RM_CathedralRoach 0.12 (own, cleaner), GR_Mecharat 0.5 (donor
 mech-vermin, ruled — stays inline per Q11a: not Star Wars fauna, no Utinni
-patch owed), RUT_LivingBolt 0.06 (the hum's own display organ, wired here
+patch owed), RM_LivingBolt 0.06 (the hum's own display organ, wired here
 for the first time — the frozen twin's own copy never wired one, so the
 kit's §3 could never spawn). Ling_Cockroach is DROPPED — the roster's own
 2026-09-07 owner addendum supersedes the frozen twin's earlier reading that

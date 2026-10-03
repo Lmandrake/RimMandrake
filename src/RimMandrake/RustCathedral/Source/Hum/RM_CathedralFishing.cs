@@ -5,7 +5,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §4 -- eel-fishing consequences.
 	//
@@ -36,7 +36,7 @@ namespace RimMandrake.Utinni.RustCathedralHum
 	// biome has an RM_BiomeAttitudeDef -- i.e. everywhere but the Cathedral.
 	public static class RM_CathedralFishing
 	{
-		public const string CoolantEelDefName = "RUT_CoolantEel";
+		public const string CoolantEelDefName = "RM_CoolantEelCatch";
 
 		// INVENTED parameters, from the kit spec §4's own "INVENTED parameters"
 		// line, carried over verbatim: irritation +5 line-in, +2 per catch,

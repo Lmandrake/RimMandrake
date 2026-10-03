@@ -16,10 +16,10 @@
        (content pass, art-hungry). -->
 
   <GenStepDef>
-    <defName>RUT_CathedralSacredWallScatter</defName>
+    <defName>RM_CathedralSacredWallScatter</defName>
     <order>323</order>
-    <genStep Class="RimMandrake.Utinni.RustCathedralWalls.GenStep_ScatterSacredWalls">
-      <thingDef>RUT_SacredWall_Conduit</thingDef>
+    <genStep Class="RimMandrake.RustCathedral.Walls.GenStep_ScatterSacredWalls">
+      <thingDef>RM_SacredWall_Conduit</thingDef>
       <chancePerMap>0.15</chancePerMap>
       <countRange>1~1</countRange>
       <minEdgeDistance>8</minEdgeDistance>

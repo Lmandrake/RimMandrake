@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralWalls
+namespace RimMandrake.RustCathedral.Walls
 {
     // MOD_OPTIONS_RETROFIT_1 — Mod Settings for RustCathedralWalls.
     //

@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralWalls
+namespace RimMandrake.RustCathedral.Walls
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §2, Tier 3. A plain GenStep rather than a
 	// GenStep_ScatterGroup subclass: the vanilla scatter classes have no

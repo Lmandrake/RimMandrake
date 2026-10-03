@@ -17,8 +17,8 @@
     NO HARMONY REFERENCE — nothing here patches an engine method.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path), IN ORDER:
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.Utinni.RustCathedralHum.csproj -c Release
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Walls\RimMandrake.Utinni.RustCathedralWalls.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.RustCathedral.Hum.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Walls\RimMandrake.RustCathedral.Walls.csproj -c Release
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\RustCathedral\RM_RustCathedral.csproj -c Release
 
     Output lands in ../../Assemblies/, which is where RimWorld looks.
@@ -78,12 +78,12 @@
       <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="RimMandrake.Utinni.RustCathedralHum">
-      <HintPath>..\..\Assemblies\RimMandrake.Utinni.RustCathedralHum.dll</HintPath>
+    <Reference Include="RimMandrake.RustCathedral.Hum">
+      <HintPath>..\..\Assemblies\RimMandrake.RustCathedral.Hum.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="RimMandrake.Utinni.RustCathedralWalls">
-      <HintPath>..\..\Assemblies\RimMandrake.Utinni.RustCathedralWalls.dll</HintPath>
+    <Reference Include="RimMandrake.RustCathedral.Walls">
+      <HintPath>..\..\Assemblies\RimMandrake.RustCathedral.Walls.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

@@ -11,8 +11,8 @@
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/MapGeneratorDef[@Name="MapCommonBase"]/genSteps</xpath>
     <value>
-      <li>RUT_CathedralWallScatter</li>
-      <li>RUT_CathedralSacredWallScatter</li>
+      <li>RM_CathedralWallScatter</li>
+      <li>RM_CathedralSacredWallScatter</li>
     </value>
   </Operation>
 

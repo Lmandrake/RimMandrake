@@ -2,9 +2,9 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralWalls
+namespace RimMandrake.RustCathedral.Walls
 {
-	// RUST_CATHEDRAL_MECHANICS_1 §2, Tier 4. See RUT_LivePatternMetal.xml's
+	// RUST_CATHEDRAL_MECHANICS_1 §2, Tier 4. See RM_LivePatternMetal.xml's
 	// own header for the full "why a Harmony patch was unavoidable here"
 	// reasoning: vanilla's deep-resource pick (CompDeepScanner.
 	// ChooseLumpThingDef, RimWorld/CompDeepScanner.cs) is a flat, GLOBAL
@@ -27,7 +27,7 @@ namespace RimMandrake.Utinni.RustCathedralWalls
 	[HarmonyPatch(typeof(CompDeepScanner), "ChooseLumpThingDef")]
 	public static class HarmonyPatch_GateLivePatternMetal
 	{
-		private const string LivePatternMetalDefName = "RUT_LivePatternMetal";
+		private const string LivePatternMetalDefName = "RM_LivePatternMetal";
 
 		private const string CathedralBiomeDefName = "RM_RustCathedral";
 

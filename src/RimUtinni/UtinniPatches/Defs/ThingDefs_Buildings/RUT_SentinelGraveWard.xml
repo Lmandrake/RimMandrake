@@ -46,7 +46,7 @@
   (src/RimMandrake/EnvironmentalHazards/Source/, wired via
   Defs/MapGeneration/RUT_ScarlandsGraveWardScatter.xml into
   RUT_Scarlands.xml's own extraGenSteps) is the plain GenStep this needed —
-  same shape as RUT_SacredWall_Conduit.xml's own precedent
+  same shape as RM_SacredWall_Conduit.xml's own precedent
   (RustCathedralWalls, same "Forgotten"/Cathedral lore family):
   `.SetFaction(Faction.OfMechanoids)` at placement time, the SAME faction
   (vanilla `Mechanoid`, hidden/permanentEnemy, reskinned "the Forgotten
@@ -66,7 +66,7 @@
   files (confirmed this pass: zero *.png anywhere under the live Data/
   root), so the checker can never resolve ANY vanilla texPath by design —
   it only escalates WARN to ERROR here because UtinniPatches ships its own
-  Textures/Things/ folder (RUT_SacredWall_Conduit.xml, checked standalone
+  Textures/Things/ folder (RM_SacredWall_Conduit.xml, checked standalone
   outside that mod context, gets the softer WARN for the exact same class
   of miss on its own vanilla-styled path, with the tool's own text saying
   so: "cannot be called a typo... a correct vanilla path looks identical to

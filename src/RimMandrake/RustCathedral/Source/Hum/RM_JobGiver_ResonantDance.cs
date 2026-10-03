@@ -4,7 +4,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §3 -- "the one real piece of C#" the kit spec
 	// budgets for the living bolts.
@@ -15,7 +15,7 @@ namespace RimMandrake.Utinni.RustCathedralHum
 	// where the bolt already stands. The first job is returned to the think
 	// tree; the rest go on the pawn's own job queue and are dequeued by the
 	// ThinkNode_QueuedJob that sits directly above this node in
-	// RUT_ThinkTree_LivingBolt. VERIFIED this pass that Pawn_JobTracker.
+	// RM_ThinkTree_LivingBolt. VERIFIED this pass that Pawn_JobTracker.
 	// StartJob does NOT clear the job queue (Verse/AI/Pawn_JobTracker.cs --
 	// ClearQueuedJobs is called only from CaptureAndClearJobQueue,
 	// EndCurrentJob's explicit paths and the notify/cleanup paths, never from
@@ -29,12 +29,12 @@ namespace RimMandrake.Utinni.RustCathedralHum
 	// figures get smaller, shorter and rarer ("the bolts' dances go stiff,
 	// then stop", §1's own player-experience paragraph) and the separate
 	// higher-priority freeze node takes over at the top. See the band-
-	// direction note in RUT_ThinkTree_LivingBolt.xml for why this is
+	// direction note in RM_ThinkTree_LivingBolt.xml for why this is
 	// inverted relative to the kit spec's literal pre-§1 wording.
 	//
 	// This node is a no-op for every pawn that is not on a map governed by an
 	// RM_BiomeAttitudeDef, so nothing outside the Rust Cathedral changes --
-	// though in practice only RUT_LivingBolt's own think tree names it at
+	// though in practice only RM_LivingBolt's own think tree names it at
 	// all.
 	//
 	// DEFERRED per the kit spec's own v1 line, not forgotten: dance

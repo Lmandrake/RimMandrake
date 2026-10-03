@@ -33,7 +33,7 @@ namespace JawaBench.BridgeTools
         private static Type CathedralAttitudeComponentType() =>
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => { try { return a.GetTypes(); } catch { return Array.Empty<Type>(); } })
-                .FirstOrDefault(t => t.FullName == "RimMandrake.Utinni.RustCathedralHum.RM_MapComponent_BiomeAttitude");
+                .FirstOrDefault(t => t.FullName == "RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude");
 
         [Tool(
             "jawa/cathedral_attitude_set_stage",

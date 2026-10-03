@@ -1,7 +1,7 @@
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §3 -- the freeze half of the bolts'
 	// dance/freeze display.
@@ -12,7 +12,7 @@ namespace RimMandrake.Utinni.RustCathedralHum
 	// JobGiver_SelfShutdown and ThinkNode_ConditionalDeactivated wrapping
 	// JobGiver_Deactivated, both in Defs/Core/ThinkTreeDefs/Mechanoid.xml --
 	// rather than a priority branch hidden inside the dance giver. The tree
-	// file (Defs/ThinkTreeDefs/RUT_ThinkTree_LivingBolt.xml) is therefore
+	// file (Defs/ThinkTreeDefs/RM_ThinkTree_LivingBolt.xml) is therefore
 	// readable as the mechanism: whoever reads it can see that the freeze
 	// outranks both the queued figure and the dance.
 	//

@@ -34,7 +34,7 @@
        and RUT_CathedralRoachShell both use. Real bespoke item art is owed. -->
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_DeadSmartsteel</defName>
+    <defName>RM_DeadSmartsteel</defName>
     <label>dead smartsteel</label>
     <description>A dense, oddly patterned alloy pulled from the walls of the plateau. It was smart once — self-assembling, self-repairing — and now it is just very good metal, still worth real money to anyone who deals in the strange.</description>
     <thingCategories>
