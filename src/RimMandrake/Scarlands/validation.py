@@ -27,7 +27,9 @@ NS = "RimMandrake.Scarlands."
 SETTINGS_TYPE = NS + "RM_WarscarSettings"
 DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWakeRadius": 12.0,
             "totchakBiteScale": 1.0, "totchakGrazeDays": 8.0, "turretTrackingEnabled": True, "turretRefitEnabled": True,
-            "oldLineDamageFactor": 1.0, "oldLineCooldownFactor": 1.0}
+            "oldLineDamageFactor": 1.0, "oldLineCooldownFactor": 1.0,
+            "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8}
+PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
 
@@ -84,6 +86,39 @@ def static_checks():
         ET.parse(os.path.join(HERE, "Defs", *f.split("/")))
     if "RM_TotchakInWall" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
         bad.append("biome does not run the RM_TotchakInWall genstep")
+    # WARSCAR_OLD_TONGUE_1
+    if 'Compile Include="RM_OldTongue.cs"' not in csproj:
+        bad.append("RM_OldTongue.cs missing from RM_Warscar.csproj")
+    ot = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_OldTongue.cs")).read())
+    for needle in ("oldTongueSkillGate", "SkillDefOf.Intellectual", "level < gate".replace("level", "Level"), "read = true"):
+        if needle not in ot:
+            bad.append("RM_OldTongue.cs lacks %s" % needle)
+    tdefs = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_InscribedPanels.xml")).getroot()
+    rdefs = ET.parse(os.path.join(HERE, "Defs", "ResearchProjectDefs", "RM_OldTongue.xml")).getroot()
+    ids = set()
+    for k, n in PANELS.items():
+        t = [e for e in tdefs if e.findtext("defName") == "RM_InscribedPanel_" + k]
+        r = [e for e in rdefs if e.findtext("defName") == "RM_OldTongue_" + k]
+        if not t or not r:
+            bad.append("panel or project def missing for %s" % k)
+            continue
+        c = t[0].find("comps/li")
+        aid = c.findtext("analysisID")
+        if aid in ids:
+            bad.append("duplicate analysisID %s" % aid)
+        ids.add(aid)
+        if c.findtext("analysisRequiredRange") != "%d~%d" % (n, n):
+            bad.append("%s set size is not %d" % (k, n))
+        if c.findtext("canStudyInPlace") != "true":
+            bad.append("%s panel is not studiable in place" % k)
+        if r[0].findtext("requiredAnalyzed/li") != "RM_InscribedPanel_" + k:
+            bad.append("project %s does not require its panel def" % k)
+        for tex in (c.findtext("chalkTexPath"), t[0].findtext("graphicData/texPath")):
+            if not os.path.exists(os.path.join(HERE, "Textures", *tex.split("/")) + ".png"):
+                bad.append("texture %s missing" % tex)
+    if "RM_InscribedPanels" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("biome does not run the RM_InscribedPanels genstep")
+    ET.parse(os.path.join(HERE, "Defs", "GenStepDefs", "RM_InscribedPanels.xml"))
     p = ET.parse(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml")).getroot()
     txt = open(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml")).read()
     for b in BROKEN:
@@ -101,7 +136,7 @@ def static_checks():
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
+    suite.toggles = ["oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
 
     def _set(t, field, value):
         t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=field,
@@ -203,6 +238,20 @@ def _build_suite():
             # State reads need a Warscar quicktest with ruins; owner/FOUNDRY live round (criteria 1-4).
             raise ExpectationFailed("UNMEASURED: dormant placement, wake radius, ruin-before-player wall order "
                                     "and lie-down need a live Warscar map")
+
+    @suite.chain("old_tongue")
+    def old_tongue(t):
+        with t.component("old_tongue_defs_resolve", toggle="oldTongueEnabled"):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_InscribedPanel_Hospice", fields="defName", limit=2)
+            if t.session is None:
+                return
+            if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                raise ExpectationFailed("panel def did not resolve live: %r" % r)
+        with t.component("skill_gate_and_set_unlock", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: Intellectual-8 refusal, set-size unlock and chalk-mark swap need "
+                                    "a live Warscar map with pawns of differing skill")
 
     return suite
 

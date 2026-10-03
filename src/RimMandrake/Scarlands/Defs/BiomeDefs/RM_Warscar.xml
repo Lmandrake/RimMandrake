@@ -80,6 +80,7 @@
       <li>ScarlandsJunkClusters</li>
       <li>ScarlandsJunkPrefabs</li>
       <li>RM_TotchakInWall</li>
+      <li>RM_InscribedPanels</li>
     </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

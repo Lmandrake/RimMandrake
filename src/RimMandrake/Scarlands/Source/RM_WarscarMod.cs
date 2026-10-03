@@ -41,6 +41,12 @@ namespace RimMandrake.Scarlands
         public static float totchakBiteScale = 1f;          // wall-eating damage scale
         public static float totchakGrazeDays = 8f;          // awake days before it lies down again
 
+        // WARSCAR_OLD_TONGUE_1 toggles.
+        public static bool oldTongueEnabled = true;          // inscribed panels generate on new maps
+        public static float oldTonguePanelsPerMap = 3f;      // panel placement attempts per map
+        public static float oldTongueRevealChance = 0.8f;    // chance each attempt actually places a panel
+        public static int oldTongueSkillGate = 8;            // Intellectual needed to transcribe (0 = none)
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -59,6 +65,10 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref totchakWakeRadius, "totchakWakeRadius", 12f);
             Scribe_Values.Look(ref totchakBiteScale, "totchakBiteScale", 1f);
             Scribe_Values.Look(ref totchakGrazeDays, "totchakGrazeDays", 8f);
+            Scribe_Values.Look(ref oldTongueEnabled, "oldTongueEnabled", true);
+            Scribe_Values.Look(ref oldTonguePanelsPerMap, "oldTonguePanelsPerMap", 3f);
+            Scribe_Values.Look(ref oldTongueRevealChance, "oldTongueRevealChance", 0.8f);
+            Scribe_Values.Look(ref oldTongueSkillGate, "oldTongueSkillGate", 8);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -96,6 +106,16 @@ namespace RimMandrake.Scarlands
             totchakBiteScale = list.Slider(totchakBiteScale, 0.25f, 4f);
             list.Label("Totchak grazing days before it lies down: " + totchakGrazeDays.ToString("0.0"));
             totchakGrazeDays = list.Slider(totchakGrazeDays, 1f, 30f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Inscribed panels (old tongue)", ref oldTongueEnabled,
+                "Panels of an old script stand against ruin walls; reading a full set unlocks research. Affects new maps.");
+            list.Label("Panels per map: " + oldTonguePanelsPerMap.ToString("0"));
+            oldTonguePanelsPerMap = list.Slider(oldTonguePanelsPerMap, 1f, 8f);
+            list.Label("Panel reveal chance: " + oldTongueRevealChance.ToString("0%"));
+            oldTongueRevealChance = list.Slider(oldTongueRevealChance, 0.1f, 1f);
+            list.Label("Intellectual needed to read a panel: " + oldTongueSkillGate + (oldTongueSkillGate == 0 ? " (no gate)" : ""));
+            oldTongueSkillGate = Mathf.RoundToInt(list.Slider(oldTongueSkillGate, 0f, 20f));
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");

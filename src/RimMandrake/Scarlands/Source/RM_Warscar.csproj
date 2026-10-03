@@ -42,6 +42,7 @@
     <Compile Include="RM_WarscarMod.cs" />
     <Compile Include="RM_CompTurretAim.cs" />
     <Compile Include="RM_Totchak.cs" />
+    <Compile Include="RM_OldTongue.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
