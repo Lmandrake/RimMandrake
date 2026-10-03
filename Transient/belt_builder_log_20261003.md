@@ -23,3 +23,4 @@
 - ROT_RM_CAST_MIGRATION_1 closed 941b4805e (port_fauna.py; ten RM_ defs; thozzik/illoth south art re-queued in pending; live load proof owed)
 - WEBWORK_HEAT_SHADE_BUILD_1 closed 28601a9e6 (overhead heat ext on RM_Webwork, scald re-keyed to shade grid + 2 settings, selftest 47/47, DLL rebuilt; live proof owed)
 - PYRELANDS_FURNACE_WARMTH_AMBIENT_1 closed 5a87d9317 (hediff retired; AmbientTemperature postfix in Pyrelands DLL; selftest_furnace_warmth 5/5; live felt read UNMEASURED)
+- BLUEDESERT_FLORA_EXPANSION_BUILD_1 closed 5da96df3e (4 plants + roe + char-lace, art wired from _artsrc, item icons queued; killedLeavings fires on harvest so char-lace is in PlantCharge; winbuild.py now follows PropertyGroup ..\ paths; live proof owed)
