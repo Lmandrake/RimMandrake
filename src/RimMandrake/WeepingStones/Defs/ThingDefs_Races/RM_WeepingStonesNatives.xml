@@ -63,7 +63,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Sillik</defName>
     <label>sillik</label>
-    <description>A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them at wind-hour. It harvests the thinnest water in the biome and never joins the crowd at the pool — the one native the water truce barely touches.</description>
+    <description>A palm-sized silver-grey licker that lives ON the vertical weep-faces themselves, spread flat against the rock, its whisker-comb fanned around the muzzle to comb the thin water film off the stone. Whole faces stipple with them wherever the rock runs wet. It harvests the thinnest water in the biome and never joins the crowd at the pool — the one native the water truce barely touches.</description>
     <statBases>
       <MoveSpeed>3.0</MoveSpeed>
       <MarketValue>12</MarketValue>
@@ -179,7 +179,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Mirrik</defName>
     <label>mirrik</label>
-    <description>Thumb-sized insects with water-combing mesh wings that mist-dance over the pools at wind-hour — from any distance, smoke rising off the water that flows the wrong way. It pollinates the blade-flora, and its cocoons are the source of dewsilk, the biome's signature trade good. The swarm at wind-hour is the biome doing its actual living.</description>
+    <description>Thumb-sized insects with water-combing mesh wings that mist-dance over the pools at dusk — from any distance, smoke rising off the water that flows the wrong way. It pollinates the blade-flora, and its cocoons are the source of dewsilk, the biome's signature trade good. The dusk swarm is the biome doing its actual living.</description>
     <statBases>
       <MoveSpeed>1.0</MoveSpeed>
       <MarketValue>6</MarketValue>
@@ -310,7 +310,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ssurr</defName>
     <label>ssurr</label>
-    <description>A hound-sized reptile with one enormous half-circle crest-fan folded flat or blazing open — closed it is a blade, open it is a wheel. Its breeding displays happen at the pools, harmless and spectacular; the fan doubles as its dew-comb at wind-hour, so courtship and drinking are the same gesture. The tamable charmer of the biome.</description>
+    <description>A hound-sized reptile with one enormous half-circle crest-fan folded flat or blazing open — closed it is a blade, open it is a wheel. Its breeding displays happen at the pools, harmless and spectacular; the fan doubles as its dew-comb on the weeping faces, so courtship and drinking are the same gesture. The tamable charmer of the biome.</description>
     <statBases>
       <MoveSpeed>2.6</MoveSpeed>
       <MarketValue>220</MarketValue>

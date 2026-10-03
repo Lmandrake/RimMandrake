@@ -106,7 +106,7 @@
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_VizhikBreedingStock</defName>
     <label>vizhik breeding stock</label>
-    <description>Live vizhik, picked off wet stone at wind-hour and carried home in a wet skin, gloved. Release into a stocked pool pen.</description>
+    <description>Live vizhik, picked off wet stone after an escape and carried home in a wet skin, gloved. Release into a stocked pool pen.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>

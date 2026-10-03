@@ -252,10 +252,9 @@ namespace RimMandrake.WeepingStones
 		/// real emergence chance too.</summary>
 		private const float VhorrinEmergenceChanceCrashed = 0.01f;
 
-		/// <summary>Wave 4, vizhik ESCAPE (spec §2c/§3 RECAPTURE): "At
-		/// wind-hour... a vizhik pours itself out of the pen." One pulse is
-		/// roughly a wind-hour's worth of game time at this component's pulse
-		/// interval, so this fires per pulse rather than per day.</summary>
+		/// <summary>Wave 4, vizhik ESCAPE (spec §2c/§3 RECAPTURE): "When
+		/// a pen is overfull, a vizhik pours itself out of the pen." This fires
+		/// per pulse rather than per day.</summary>
 		private const float VizhikEscapeChance = 0.05f;
 
 		private const int VizhikEscapeSearchRadius = 8;

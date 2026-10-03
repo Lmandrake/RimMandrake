@@ -56,7 +56,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_SkarrinCatch</defName>
     <label>skarrin</label>
-    <description>A silver arc netted mid-air at wind-hour — the one catch you make above the water. A missed net is a bite.</description>
+    <description>A silver arc netted mid-air when the pool is fed — the one catch you make above the water. A missed net is a bite.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <color>(200, 200, 210)</color>
@@ -98,7 +98,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_VizhikCatch</defName>
     <label>vizhik</label>
-    <description>Picked off wet stone at wind-hour, gloved — not caught in the pool, caught traveling.</description>
+    <description>Picked off wet stone after an escape, gloved — not caught in the pool, caught traveling.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
       <color>(190, 195, 170)</color>
