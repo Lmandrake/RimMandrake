@@ -24,9 +24,9 @@
       <li><plant>Plant_HubbaGourd_Wild</plant><top>Burst</top></li>         <!-- ruled 2026-09-21: bursts in the Greentide too -->
       <li><plant>RSW_Plant_HubbaGourd_Wild</plant><top>Burst</top></li>
       <li><plant>RSW_Scrubgrass</plant><top>Burst</top></li>
-      <li><plant>RUT_TwistingThornwood</plant><top>Burst</top></li>        <!-- hard call 4 -->
-      <li><plant>RUT_TwistingThornweed</plant><top>Burst</top></li>
-      <li><plant>RUT_TwistingThorngrass</plant><top>Burst</top></li>
+      <li><plant>RM_CrackedThornwood</plant><top>Burst</top></li>        <!-- hard call 4 -->
+      <li><plant>RM_TwistingThornweed</plant><top>Burst</top></li>
+      <li><plant>RM_TwistingThorngrass</plant><top>Burst</top></li>
 
       <!-- FLUSH — the Fever Wood giant. -->
       <li><plant>Plant_HydenockTree_Wild</plant><top>Flush</top></li>

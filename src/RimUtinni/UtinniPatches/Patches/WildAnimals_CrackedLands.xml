@@ -54,12 +54,9 @@
       RSW_SandPillar was added 2026-09-23 (ROSTER_DEAD_BMT_NAMES_SWEEP_1
       step 4); it had an owner placement ruling from the round2 move mapping
       that nothing had ever executed.
-  wildPlants (Op 3) and baseWeatherCommonalities (Op 4) are each a single
-  unconditional PatchOperationReplace — none of that content is RSW_-gated
-  (the 3 RUT_TwistingThorn* plants are this mod's own defs, always loaded
-  with UtinniPatches; AB_HardyGrass/AB_GargantuanLithops/GRimMoss carry no
-  MayRequire in the source def either, preserved as-is, not this item's scope
-  to correct).
+  wildPlants is owned by the free RM_FloodedCanyon def (CRACKEDLANDS_PLANT_LIST_OWNED_1:
+  no patch touches it). baseWeatherCommonalities (Op 4) is a single unconditional
+  PatchOperationReplace, none of it RSW_-gated.
 
   🔑 terrainsByFertility (Op 5): RM_FloodedCanyon_Biome.xml ships a generic
   Sand/Soil split by fertility (soil forms naturally above 0.7 fertility) —
@@ -144,26 +141,6 @@
         <RM_Muttavaq>0.03</RM_Muttavaq>  <!-- the pan giant - one per pan, very rare -->
         <RM_Uttaqar>0.05</RM_Uttaqar>  <!-- the crag giant (rock troll) - rare -->
         <RM_Tarruq>0.12</RM_Tarruq>  <!-- the voice - year-round Patient resident -->
-      </value>
-    </match>
-  </Operation>
-
-  <!-- Op 3: the alien flora, replacing RM_'s generic vanilla-core plant list
-       wholesale (ban 2: "No green outside the shade line"). -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>Defs/BiomeDef[defName="RM_FloodedCanyon"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <AB_HardyGrass MayRequire="sarg.alphabiomes">1.0</AB_HardyGrass>  <!-- hardy grass -->
-          <GRimMoss MayRequire="GRimTerra.Biomesmod">0.8</GRimMoss>  <!-- moss -->
-          <RUT_TwistingThorngrass>0.5</RUT_TwistingThorngrass>  <!-- twisting thorngrass -->
-          <RUT_TwistingThornweed>0.4</RUT_TwistingThornweed>  <!-- twisting thornweed -->
-          <RUT_TwistingThornwood>0.2</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->
-          <AB_GargantuanLithops MayRequire="sarg.alphabiomes">0.15</AB_GargantuanLithops>  <!-- gargantuan lithops -->
-          <RM_Veqma>0.15</RM_Veqma>  <!-- the dowsing flora - CRACKEDLANDS_RULED_CONTENT_1, shade line only -->
-        </wildPlants>
       </value>
     </match>
   </Operation>

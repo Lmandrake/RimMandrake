@@ -33,13 +33,11 @@
         PatchOperationAdd onto this def instead. The other 13 rows (Genetic
         Rim, Alpha Animals, Alpha Memes, Horrors — none Star Wars, Q9) stay
         inline unchanged.
-      - wildPlants: RUT_TwistingThornwood, RUT_TreeMartyr and RUT_DarkCrust
-        are renamed+duplicated as RM_TwistingThornwood/RM_TreeMartyr/
-        RM_DarkCrust (this mod's own Defs/ThingDefs_Plants/
-        RM_CauldronFlora.xml) per §7 Q13 ("content wired into two biome
-        mods: duplicate, then diverge" — RM_TwistingThornwood's species is
-        also wired into RUT_CrackedLands, which keeps using the frozen
-        original). The 7 Alpha Biomes AB_ rows were RETIRED by
+      - wildPlants: RM_TwistingThornwood, RM_TreeMartyr and RM_DarkCrust are
+        this mod's own plants (Defs/ThingDefs_Plants/RM_CauldronFlora.xml) per
+        §7 Q13 ("content wired into two biome mods: duplicate, then diverge" —
+        the thornwood species is also wired into RM_FloodedCanyon as its own
+        copy RM_CrackedThornwood). The 7 Alpha Biomes AB_ rows were RETIRED by
         CAULDRON_RULED_CONTENT_1 (2026-09-29): diverged into owned RM_
         defs (RM_CrystalFlower, RM_BloodBouquet, RM_RavenNettle,
         RM_RedBugloss, RM_GiantAgariTox, RM_KeeningCordax,

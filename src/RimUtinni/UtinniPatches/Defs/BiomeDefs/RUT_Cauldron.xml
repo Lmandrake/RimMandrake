@@ -153,7 +153,7 @@
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
-      <RUT_TwistingThornwood>0.6</RUT_TwistingThornwood>  <!-- twisting thornwood - tree -->
+      <RM_TwistingThornwood>0.6</RM_TwistingThornwood>  <!-- twisting thornwood - tree -->
       <AB_CrystalFlower>0.5</AB_CrystalFlower>  <!-- crystal flower -->
       <RUT_TreeMartyr>0.5</RUT_TreeMartyr>  <!-- martyr tree - tree -->
       <AB_BloodBouquet>0.4</AB_BloodBouquet>  <!-- blood bouquet -->
