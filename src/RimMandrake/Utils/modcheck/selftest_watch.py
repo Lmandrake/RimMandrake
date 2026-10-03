@@ -136,6 +136,20 @@ def main():
         check("a non-wait verb that moves 18000 ticks aborts as clock_runaway (E6), UNMEASURED not FAIL",
               comp.verdict == "UNMEASURED" and "clock_runaway" in comp.detail, "%s | %s" % (comp.verdict, comp.detail))
 
+        # ---- a DELIBERATE warp by name (jawa/time_set_ticks) is not a runaway (LIVE 2026-10-03, LeaningScrub)
+        w = bland_world(tmp)
+        def time_set_ticks(**p):
+            w._t_rimworld_step_game_ticks(ticks=18000)
+            return {"success": True}
+        w._t_jawa_time_set_ticks = time_set_ticks
+        with Watch(w, (100, 100), tmp, mod="M", chain="warp", chunk=600, session_cap=60000) as wt:
+            ctx = TestContext(w, anchor=(100, 100), watch=wt)
+            with ctx.component("warp") as c:
+                ctx.bridge_call("jawa/time_set_ticks", ticks=18000)
+        comp = ctx.components[0]
+        check("a named time_set_ticks warp is re-based, not aborted as clock_runaway",
+              "clock_runaway" not in (comp.detail or ""), "%s | %s" % (comp.verdict, comp.detail))
+
         # ---- through TestContext: surprise -> UNMEASURED, no finding, later components inherit the reason
         w = bland_world(tmp)
         w.at(500, raid)
