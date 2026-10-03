@@ -180,6 +180,16 @@ def _ok(r, what):
 def _pad(t, name):
     dx, dz = PADS[name]
     ax, az = t._base if hasattr(t, "_base") else t.anchor
+    # The driver's anchor was read off the quicktest map and can be far from this map's centre (MEASURED
+    # 2026-10-03: base ~(53,50) on a 250x250 map put the burn/uv pads half off-map: "Cell is outside the
+    # map"). Re-base on the live map centre; the pads are +-45 and need >= ~100 cells.
+    if _live(t):
+        try:
+            mi = t.bridge_call("jawa/map_info")
+            if isinstance(mi, dict) and mi.get("sizeX") and mi.get("sizeZ"):
+                ax, az = int(mi["sizeX"]) // 2, int(mi["sizeZ"]) // 2
+        except Exception:
+            pass
     t._base = (ax, az)
     t.anchor = (ax + dx, az + dz)
 
@@ -396,8 +406,21 @@ def _jump(t, delta):
     now = t.session._ticks()
     if now is None:
         _unmeasured(t, "clock unreadable before a time jump")
-    r = t.bridge_call("jawa/time_set_ticks", ticks=int(now + delta))
+    # Through the SESSION, not t.bridge_call: bridge_call charges the clock move to the watch as an
+    # unplanned verb and aborts the chain as clock_runaway (cap 1500; MEASURED 2026-10-03, 90000 and
+    # 285000-tick jumps, 9 components UNMEASURED). The jump is the declared design (nothing is simulated),
+    # so re-base the clock gate as an EPOCH CHANGE: zero ticks charged, no budget spent.
+    r = t.session.call("jawa/time_set_ticks", ticks=int(now + delta))
+    try:
+        t._record("time_set_ticks +%d (declared jump)" % delta, r)
+    except Exception:
+        pass
     _ok(r, "time_set_ticks")
+    w = getattr(t, "watch", None)
+    if w is not None and getattr(w, "gate", None) is not None:
+        after = t.session._ticks()
+        if after is not None:
+            w.gate.observe(after, epoch_change=True, reason="time_set_ticks declared jump")
     if (r or {}).get("ticksGameAfter") is not None and r["ticksGameAfter"] < now + delta - 5:
         _fail("time_set_ticks did not take: %r" % r)
 
@@ -494,12 +517,14 @@ def defs_chain(t):
     with _comp(t, "biome_table_and_roster"):
         if _live(t):
             r = t.bridge_call("jawa/get_defs", defs="BiomeDef/" + BIOME, fields=(
-                "baseWeatherCommonalities,wildAnimals,wildPlants,animalDensity,modExtensions"),
-                limit=5)
+                "baseWeatherCommonalities,wildPlants,animalDensity,modExtensions"),
+                deep=True, limit=5)
             _ok(r, "get_defs(biome)")
             row = ((r.get("defs") or [{}])[0].get("fields")) or {}
             table = row.get("baseWeatherCommonalities")
-            if not isinstance(table, list) or not table:
+            # get_defs serialises a record list as bare type names unless deep=true (measured live
+            # 2026-10-03: ['WeatherCommonalityRecord', ...]); a non-dict row is unreadable, never a crash.
+            if not isinstance(table, list) or not table or not all(isinstance(x, dict) for x in table):
                 _unmeasured(t, "biome weather table unreadable: %r" % (table,))
             w = dict((x.get("weather"), x.get("commonality") or 0) for x in table)
             if not w.get("RM_ContagionBloom"):
@@ -514,12 +539,26 @@ def defs_chain(t):
             if "RM_ContagionSkyExtension" not in blob:
                 _fail("the biome does not carry RM_ContagionSkyExtension (the gate for the Burn, "
                       "the Bloom clock and the Coalescence): %s" % blob[:300])
-            missing = [a for a in WILD_ANIMALS if a not in json.dumps(row.get("wildAnimals"))]
-            if missing:
-                _fail("wildAnimals lacks %d rostered kind(s): %s" % (len(missing), missing[:8]))
             if "RM_Rattlegrope" not in json.dumps(row.get("wildPlants")):
                 _fail("wildPlants lacks RM_Rattlegrope (the Burn's plant tell)")
             _note(t, "biome roster", {"animals": len(WILD_ANIMALS), "plants": len(WILD_PLANTS)})
+
+    with _comp(t, "biome_roster_animals"):
+        if _live(t):
+            # BiomeDef.wildAnimals is a NON-PUBLIC list: get_defs cannot serialise it even with deep=true
+            # (returns "(non-public field ... not serialised)"). Read it only if a future tool can; never
+            # substring-match the placeholder string as 'absent'.
+            r = t.bridge_call("jawa/get_defs", defs="BiomeDef/" + BIOME, fields="wildAnimals", deep=True)
+            _ok(r, "get_defs(biome wildAnimals)")
+            if r.get("foundCount") != 1 or r.get("notFound"):
+                _fail("get_defs(%s): foundCount=%r notFound=%r" % (BIOME, r.get("foundCount"), r.get("notFound")))
+            wa = (((r.get("defs") or [{}])[0].get("fields")) or {}).get("wildAnimals")
+            if not isinstance(wa, (list, dict)):
+                _unmeasured(t, "wildAnimals is not serialisable by get_defs (non-public field): %r; the "
+                               "roster is checked statically from the XML" % (wa,))
+            missing = [a for a in WILD_ANIMALS if a not in json.dumps(wa)]
+            if missing:
+                _fail("wildAnimals lacks %d rostered kind(s): %s" % (len(missing), missing[:8]))
 
     with _comp(t, "organ_patch_comps"):
         if _live(t):
@@ -1000,6 +1039,17 @@ def coalescence(t):
                 with _setting(t, "coalescenceEnabled", False):
                     kid = _spawn(t, UNFINISHED, x + 3, z)
                     _wait(t, 400)
+                    if not _things(t, COALESCENCE, _rs(_rect(t, 24))):
+                        # the thing is GONE. A Burn collapses a Coalescence regardless of the toggle
+                        # (Building_RM_Coalescence.Tick), and leaves monstrous samples; an idle toggle-off
+                        # Coalescence must never just vanish.
+                        samples = _things(t, SAMPLE, _rs(_rect(t, 24)))
+                        if samples or _has_cond(t, BURN_COND):
+                            _unmeasured(t, "harness: a Burn collapsed the Coalescence during the arm "
+                                           "(burn condition %s, %d sample(s) left)"
+                                        % (_has_cond(t, BURN_COND), len(samples)))
+                        _fail("the Coalescence vanished with coalescenceEnabled off and no Burn collapse "
+                              "(no samples, no Burn condition)")
                     if not _alive(_rows(t).get(kid)):
                         _fail("the Coalescence absorbed an Unfinished with coalescenceEnabled off")
                     if _mass_stage(_inspect(t, _STATE["coal"])[1]) != (1, 0):
@@ -1129,13 +1179,26 @@ def genome(t):
                 made = None
                 x, z = t.anchor
                 t.bridge_call("jawa/spawn_batch", ops="Bed:%d,%d" % (x - 4, z + 4), stuff="WoodLog")
+                # A surgery's bill-giver is the PATIENT, and Pawn.UsableForBillsAfterFueling is true only
+                # while the patient is IN a bed (the tool words it "the giver needs fuel"; MEASURED live
+                # 2026-10-03: a bed existed but the patient stood beside it, so JobOnThing returned null
+                # on all three tries). Lay the patient down on the bed first.
+                beds = _things(t, "Bed", g["rect"])
+                if _live(t):
+                    if not beds:
+                        _unmeasured(t, "fixture: the Bed did not spawn for the surgery")
+                    t.bridge_call("jawa/ordered_job", pawnId=g["patient"], jobDef="LayDown",
+                                  targetAId=beds[0]["id"], waitTicks=300, timeoutSeconds=60)
+                    _wait(t, 300)
                 for attempt in range(3):     # surgery can fail on skill; three completed tries
                     t.bridge_call("jawa/bill_add", giverId=g["patient"], recipe="RM_ExtractGenomeSample",
                                   repeatMode="repeatcount", repeatCount=1)
                     r = t.bridge_call("jawa/do_bill_now", billGiverId=g["patient"], pawnId=g["doer"],
                                       workGiverDef="DoBillsMedicalHumanOperation", waitTicks=2500, timeoutSeconds=90)
-                    if (r or {}).get("jobOnThingReturnedNull"):
-                        _unmeasured(t, "the surgery job could not start: %r" % r)
+                    if (r or {}).get("jobOnThingReturnedNull") or (
+                            _live(t) and isinstance(r, dict) and r.get("success") is False):
+                        _unmeasured(t, "the surgery job could not start (patient not in a bed / giver "
+                                       "unusable): %s" % json.dumps((r or {}).get("details"), default=str)[:300])
                     _wait(t, 1500)
                     got = _things(t, SAMPLE, g["rect"])
                     if got:
