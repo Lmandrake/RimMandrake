@@ -221,6 +221,24 @@
       <li Class="RimMandrake.EnvironmentalHazards.RM_WaterTruceExtension">
         <radius>10</radius>
       </li>
+      <!-- WEEPINGSTONES_OASIS_MUTATOR_FLORA_1: Oasis mutator's bonus flora on our tiles (see RM_TileMutatorWorker_Oasis.cs).
+           Weights mirror vanilla's 5/4/6/5 scale; INVENTED. Plant_Reeds is a ruled keep and is not stripped. -->
+      <li Class="RimMandrake.WeepingStones.RM_OasisFloraExtension">
+        <stripDefNames>
+          <li>Plant_TreePalm</li>
+          <li>Plant_RatPalm</li>
+          <li>Plant_Grass</li>
+          <li>Plant_GrayGrass</li>
+          <li>TreePalma</li>
+          <li>VEE_Plant_DatePalm</li>
+        </stripDefNames>
+        <plants>
+          <RM_Dewblade>6</RM_Dewblade>
+          <RM_Bladderquill>4</RM_Bladderquill>
+          <RM_Steamfrond>3</RM_Steamfrond>
+          <RM_Dripfringe>1</RM_Dripfringe>
+        </plants>
+      </li>
     </modExtensions>
   </BiomeDef>
 

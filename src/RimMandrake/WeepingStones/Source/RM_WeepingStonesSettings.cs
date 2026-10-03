@@ -31,6 +31,9 @@ namespace RimMandrake.WeepingStones
         // WEEPINGSTONES_DEWSILK_COCOON_1: tamed mirrik leave dewsilk cocoons. Read once at startup.
         public static bool dewsilkEnabled = true;
 
+        // WEEPINGSTONES_OASIS_MUTATOR_FLORA_1: our oases grow the biome's own blade flora instead of Earth palms/grasses. Read live.
+        public static bool oasisNativeFloraEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -40,6 +43,7 @@ namespace RimMandrake.WeepingStones
             Scribe_Values.Look(ref condenserEnabled, "condenserEnabled", true);
             Scribe_Values.Look(ref condenserSeasonDays, "condenserSeasonDays", 15f);
             Scribe_Values.Look(ref dewsilkEnabled, "dewsilkEnabled", true);
+            Scribe_Values.Look(ref oasisNativeFloraEnabled, "oasisNativeFloraEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -82,6 +86,12 @@ namespace RimMandrake.WeepingStones
                 "Tamed mirrik leave dewsilk cocoons that colonists gather like wool and spin into dewsilk cloth at a tailor bench. "
               + "Off: mirrik yield nothing. Read once when the game starts, so a change needs a restart.");
 
+            list.Gap();
+            list.CheckboxLabeled("Native oasis flora", ref oasisNativeFloraEnabled,
+                "On a Weeping Stones oasis, the oasis mutator grows the biome's own blade flora (dewblade, bladderquill, steamfrond, dripfringe) "
+              + "instead of Earth palms and grasses. Vanilla desert oases are never affected. Off: our oases grow vanilla palms and grass. "
+              + "Takes effect for maps generated afterwards.");
+
             if (list.ButtonText("Reset to defaults"))
             {
                 stockedPoolsEnabled = true;
@@ -90,6 +100,7 @@ namespace RimMandrake.WeepingStones
                 condenserEnabled = true;
                 condenserSeasonDays = 15f;
                 dewsilkEnabled = true;
+                oasisNativeFloraEnabled = true;
             }
 
             list.End();
