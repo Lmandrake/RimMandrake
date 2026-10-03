@@ -558,3 +558,37 @@ def hydrocarbon_wave2(t):
         m = re.search(r"heard=(\d+)", res)
         if t._guard() and (not m or int(m.group(1)) == 0):
             raise ExpectationFailed("the knocker heard nothing: %r" % res)
+
+
+@suite.chain("hydrocarbon_wave3")
+def hydrocarbon_wave3(t):
+    """LANTERNDEEPS_HYDROCARBON_WAVE3_BUILD_1: hush, sipper, tapper, pooler load; a hush on unlit natural ground is
+    hidden and lunges at a beast set beside it; ten sippers on the brightest light shrink it; a wild tapper beside a
+    colony battery drains it; a pooler beside a fire puts it out and a flame hit does not hurt it. Run in a Deep with a
+    lit lamp and a charged colony battery. Not proven here: the hush genstep's placement on a fresh Deep, the tame
+    tapper's aurora charge, a pooler holding a powered heater off, the hypothermia on a warm body."""
+    WP = "RimMandrake.LanternDeeps.RM_HydrocarbonWave3Proof"
+    with t.component("wave3_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RM_Hush", "ThingDef/RM_Sipper", "ThingDef/RM_Tapper", "ThingDef/RM_Pooler",
+                  "HediffDef/RM_HushUnseen", "GenStepDef/RM_DeepHush"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("hush_hides_and_lunges", toggle="hushHidingEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofHush", args="") or {}).get("result", ""))
+        if t._guard() and ("hidden=True" not in res or "second=lunge" not in res):
+            raise ExpectationFailed("hush did not hide and lunge: %r" % res)
+    with t.component("sippers_drink_light", toggle="sipperDrinkingEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSipper", args="") or {}).get("result", ""))
+        m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
+        if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
+            raise ExpectationFailed("the light did not shrink: %r" % res)
+    with t.component("tapper_drains_battery", toggle="tapperEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofTapper", args="") or {}).get("result", ""))
+        m = re.search(r"before=([\d.]+) after=([\d.]+)", res)
+        if t._guard() and (not m or float(m.group(2)) >= float(m.group(1))):
+            raise ExpectationFailed("the battery did not drain: %r" % res)
+    with t.component("pooler_smothers_fire", toggle="poolerSmotherEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofPooler", args="") or {}).get("result", ""))
+        if t._guard() and ("fireLeft=False" not in res or "flameHurt=False" not in res):
+            raise ExpectationFailed("pooler did not put the fire out unhurt: %r" % res)

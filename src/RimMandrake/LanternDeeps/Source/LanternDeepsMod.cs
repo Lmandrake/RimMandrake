@@ -85,6 +85,12 @@ namespace RimMandrake.LanternDeeps
         public static bool blinkerFlashEnabled = true;          // live: a hurt blinker flashes and dazzles
         public static bool knockerAlarmEnabled = true;          // live: knockers drum at a failing roof
         public static float knockerWarningFactor = 2f;          // a tame knocker lengthens collapse warnings
+        // LANTERNDEEPS_HYDROCARBON_WAVE3_BUILD_1
+        public static bool hushHidingEnabled = true;            // new Deeps: 1-2 hush; live: unseen on unlit ground, lunge at 2
+        public static bool sipperDrinkingEnabled = true;        // live: sippers seek the brightest light and drink its radius
+        public static float sipperCellsPerSipper = 0.1f;        // glow radius lost per sipper sitting on a light
+        public static bool tapperEnabled = true;                // live: wild tappers drain batteries; tame ones store aurora charge
+        public static bool poolerSmotherEnabled = true;         // live: poolers smother fires, heaters and warm bodies
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -223,6 +229,11 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref blinkerFlashEnabled, "blinkerFlashEnabled", true);
             Scribe_Values.Look(ref knockerAlarmEnabled, "knockerAlarmEnabled", true);
             Scribe_Values.Look(ref knockerWarningFactor, "knockerWarningFactor", 2f);
+            Scribe_Values.Look(ref hushHidingEnabled, "hushHidingEnabled", true);
+            Scribe_Values.Look(ref sipperDrinkingEnabled, "sipperDrinkingEnabled", true);
+            Scribe_Values.Look(ref sipperCellsPerSipper, "sipperCellsPerSipper", 0.1f);
+            Scribe_Values.Look(ref tapperEnabled, "tapperEnabled", true);
+            Scribe_Values.Look(ref poolerSmotherEnabled, "poolerSmotherEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -375,6 +386,25 @@ namespace RimMandrake.LanternDeeps
                 list.Label("Warning length with a tame knocker: " + knockerWarningFactor.ToString("0.0") + "x");
                 knockerWarningFactor = list.Slider(knockerWarningFactor, 1f, 4f);
             }
+            list.CheckboxLabeled("The hush is unseen in the dark", ref hushHidingEnabled,
+                "On: one or two hush lie on the unlit floor of each new Deep; on an unlit cell a hush cannot be seen or targeted, and "
+              + "anything that walks within two cells is struck. Light it and it is a plain black slab. Off: no new hush are placed and "
+              + "any that exist stay visible. Safe mid-game.");
+            list.CheckboxLabeled("Sippers drink light", ref sipperDrinkingEnabled,
+                "On: sippers hop toward the brightest light near them and sit on it; every sipper on a light shrinks its glow "
+              + "(never below a quarter), and the light comes back as they leave. Off: they wander. Safe mid-game.");
+            if (sipperDrinkingEnabled)
+            {
+                list.Label("Glow lost per sipper: " + sipperCellsPerSipper.ToString("0.00") + " cells");
+                sipperCellsPerSipper = list.Slider(sipperCellsPerSipper, 0.02f, 0.5f);
+            }
+            list.CheckboxLabeled("Tappers eat electricity", ref tapperEnabled,
+                "On: wild tappers walk to your charged batteries and drain them while they sit beside them; a tame tapper never drains, "
+              + "stores charge while the aurora storms and pours it into any battery it stands beside. Off: neither. Safe mid-game.");
+            list.CheckboxLabeled("Poolers smother warmth", ref poolerSmotherEnabled,
+                "On: a wild pooler seeks the warmest thing near it: it puts out fires, drowns a fuelled heater flat, holds a powered "
+              + "heater off while it sits on it, and chills a warm body fast; a tame one only hunts fires. Fire never hurts it. Off: "
+              + "it wanders and any heater it held comes back on. Safe mid-game.");
 
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();
