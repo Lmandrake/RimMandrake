@@ -2463,3 +2463,6 @@
 {"seat":"FOUNDRY","event":"start","id":"UNFINISHED_LINE_ENVOY_BEAT_1","ts":"2026-10-03T19:26:51Z","tsn":1791055611612956363}
 {"seat":"FOUNDRY","event":"close","id":"UNFINISHED_LINE_ENVOY_BEAT_1","sha":"a1b5b72616aa","ts":"2026-10-03T19:30:20Z","tsn":1791055820758785393}
 {"seat":"FOUNDRY","event":"block","id":"UNFINISHED_LINE_SITE_CHOICE_1","reason":"Q1=A (no player-owned line) vs design site B 'your colony gets the building': BENCH/owner must say whether site B stays or is cut before the choice is built","ts":"2026-10-03T19:30:21Z","tsn":1791055821327941999}
+{"seat":"FOUNDRY","event":"claim","id":"UNFINISHED_LINE_CORES_BEAT_1","ts":"2026-10-03T19:36:09Z","tsn":1791056169601739823}
+{"seat":"FOUNDRY","event":"start","id":"UNFINISHED_LINE_CORES_BEAT_1","ts":"2026-10-03T19:36:10Z","tsn":1791056170132267593}
+{"seat":"FOUNDRY","event":"close","id":"UNFINISHED_LINE_CORES_BEAT_1","sha":"ff0375f15617","ts":"2026-10-03T19:43:43Z","tsn":1791056623663120237}
