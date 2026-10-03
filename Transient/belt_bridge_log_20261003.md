@@ -44,3 +44,5 @@
 - 13:29:28 FOUND (poke): jawa/damage skips player pawns without allowColonists; Pawn HitPoints ~0 so any damage detonates+kills a CompExplosive pawn (suush Cut1/Stun1). Fixed def requiredDamageTypeToExplode=Bullet (needs restart), suush chain, detectors MCR hediff ignore
 - 13:42:33 rerun10 in progress (LeaningScrub)
 - 13:48:32 FOUND: restore_needs read Food level (max 0.9) vs 0.95 -> every later suite 'no bland map'; fixed to pct. LeaningScrub _wait uses budgeted wait under watch. rerun11 starting
+- 13:58:38 rerun11 running; to poke after: martyr tree harvest paid 351 steel/47 wood (expect ~6), set_plants rejects flora on Grasslands tile
+- 14:13:08 harness fixes: _wait under watch uses budgeted wait (BlueDesert/Cauldron/Contagion/LeaningScrub), runner clears roofs per chain (Roof collapse Crush hit colonists)

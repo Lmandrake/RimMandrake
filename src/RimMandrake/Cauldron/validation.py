@@ -476,7 +476,9 @@ def _unlock_weather(t):
 def _wait(t, n):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact; ~53 ticks/s MEASURED live on a big
     list). Long waits run Ultrafast and poll the real clock, then pause; raises on a stall."""
-    if t.session is None or t.upstream_failed or n <= 4000:
+    # LIVE 2026-10-03: under the situational watch the Ultrafast poll below moves the clock outside the budgeted gate (ClockStall /
+    # BudgetExceeded), so a watched run uses the chunked, budgeted t.wait_ticks for every length.
+    if t.session is None or t.upstream_failed or n <= 4000 or getattr(t, "watch", None) is not None:
         return t.wait_ticks(n)
     s = t.session
     start = s._ticks()
