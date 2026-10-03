@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_CHOTRIX_BUILD_1: one or two chotrix per map, away from the map centre. -->
+  <GenStepDef>
+    <defName>RM_ChotrixOnMap</defName>
+    <order>530</order>
+    <genStep Class="RimMandrake.Scarlands.GenStep_ChotrixOnMap" />
+  </GenStepDef>
+</Defs>

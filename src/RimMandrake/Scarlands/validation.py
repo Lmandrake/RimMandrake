@@ -31,6 +31,7 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8,
             "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
             "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
+            "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
             "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True}
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
@@ -231,13 +232,48 @@ def static_checks():
     for t in ("RM_ReactionLiquorShallow", "RM_ReactionLiquorDeep"):
         if "<defName>%s</defName>" % t not in terr:
             bad.append("terrain %s missing from FlowWorks" % t)
+    # WARSCAR_CHOTRIX_BUILD_1
+    if 'Compile Include="RM_Chotrix.cs"' not in csproj:
+        bad.append("RM_Chotrix.cs missing from RM_Warscar.csproj")
+    for f in ("ThingDefs_Races/RM_Chotrix.xml", "HediffDefs/RM_ChotrixHediffs.xml", "ThingDefs_Items/RM_CloakLacquer.xml",
+              "GenStepDefs/RM_ChotrixOnMap.xml", "ThinkTreeDefs/RM_ThinkTree_Chotrix.xml"):
+        ET.parse(os.path.join(D, *f.split("/")))
+    cr = ET.parse(os.path.join(D, "ThingDefs_Races", "RM_Chotrix.xml")).getroot()
+    cth = [e for e in cr if e.tag == "ThingDef"][0]
+    if cth.findtext("race/predator") != "false":
+        bad.append("chotrix must be predator=false (vanilla hunting has no lone-prey gate)")
+    if cth.findtext("race/thinkTreeMain") != "RM_Chotrix":
+        bad.append("chotrix does not use its think tree")
+    if cth.findtext("butcherProducts/RM_CloakLacquer") is None:
+        bad.append("chotrix does not butcher into cloak lacquer")
+    if cth.findtext("comps/li/cloakHediff") != "RM_ChotrixCloak":
+        bad.append("chotrix comp does not name the cloak hediff")
+    chd = ET.parse(os.path.join(D, "HediffDefs", "RM_ChotrixHediffs.xml")).getroot()
+    for h in chd:
+        if h.find("comps/li[@Class='HediffCompProperties_Invisibility']") is None:
+            bad.append("%s lacks the stock invisibility comp" % h.findtext("defName"))
+        if h.find("comps/li/disappearsAfterTicks") is not None:
+            bad.append("%s is timed (owner ruling: cloak lacquer is permanent)" % h.findtext("defName"))
+    cl = open(os.path.join(D, "ThingDefs_Items", "RM_CloakLacquer.xml")).read()
+    if "Disappears" in cl or "Timed" in cl:
+        bad.append("lacquered cloak is timed")
+    if "RM_ChotrixOnMap" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("biome does not run the RM_ChotrixOnMap genstep")
+    for f in ("south", "east", "north"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_Chotrix", "RM_Chotrix_%s.png" % f)):
+            bad.append("chotrix texture %s missing" % f)
+    cx = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Chotrix.cs")).read())
+    for needle in ("Verb_MeleeAttack", "TryCastShot", "IsLone", "lonePawnRadius", "IsNight", "Fleeing", "chotrixEnabled",
+                   "lacquerCloakEnabled", "Notify_Unequipped", "GenSight.LineOfSight", "BecomeVisible"):
+        if needle not in cx:
+            bad.append("RM_Chotrix.cs lacks %s" % needle)
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
+    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL): the harness's own route is upstream_failed, which
@@ -411,6 +447,28 @@ def _build_suite():
             _unmeasured(t, "1-3 pools on a quicktest Warscar map, per-phase reagent, bloom burn, "
                                     "phase hold + doubled yield with crust, and the registry row resolving "
                                     "(RM_Liquid_ReactionLiquor) need a live map with FlowWorks loaded")
+
+    @suite.chain("chotrix")
+    def chotrix(t):
+        with t.component("chotrix_defs_resolve", toggle="chotrixEnabled"):
+            for d in ("ThingDef/RM_Chotrix", "HediffDef/RM_ChotrixCloak", "HediffDef/RM_LacquerStill",
+                      "ThingDef/RM_CloakLacquer", "ThingDef/RM_Apparel_LacquerCloak"):
+                r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
+                if t.session is None:
+                    return
+                if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                    raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
+        with t.component("invisible_reveal_on_strike_and_lone_gate", toggle="chotrixEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "spawn on a quicktest Warscar map, stays invisible, reveals on strike, ignores a group of 2+, "
+                           "flees after a hurt bite, and prints on the track grid (blocked on FOOTPRINT_TRACK_GRID_1) "
+                           "need a live map")
+        with t.component("lacquered_cloak_still_invisible_persists_save_load", toggle="lacquerCloakEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "equip a lacquered cloak, stand still unseen (hediff present), walk (absent), "
+                           "and save/load persistence need a live map")
 
     return suite
 

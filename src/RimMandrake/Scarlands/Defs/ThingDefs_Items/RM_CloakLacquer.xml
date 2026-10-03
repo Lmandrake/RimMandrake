@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WARSCAR_CHOTRIX_BUILD_1. Cloak lacquer is the chotrix's butcher product. A lacquered cloak is made at a
+  tailor bench from fabric plus lacquer; it is a distinct apparel def, so the effect is permanent (owner
+  ruling: never timed). ART OWED for both: stand-in vanilla textures (Chemfuel tinted, Cape).
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CloakLacquer</defName>
+    <label>cloak lacquer</label>
+    <description>A shimmering film scraped from a chotrix's hide. It bends light. Worked into a cloak at a tailoring bench, it makes the wearer vanish while they stand still and unseen. The effect never wears off.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(0.45,0.35,0.75)</color>
+    </graphicData>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>90</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <alwaysHaulable>true</alwaysHaulable>
+  </ThingDef>
+
+  <ThingDef ParentName="ApparelMakeableBase">
+    <defName>RM_Apparel_LacquerCloak</defName>
+    <label>lacquered cloak</label>
+    <description>A long cloak worked with chotrix lacquer. While its wearer stands still and no hostile can see them, they cannot be seen. The lacquer is part of the weave and never wears off.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Cape/Cape</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.05</drawSize>
+    </graphicData>
+    <costStuffCount>80</costStuffCount>
+    <stuffCategories>
+      <li>Fabric</li>
+      <li>Leathery</li>
+    </stuffCategories>
+    <costList>
+      <RM_CloakLacquer>2</RM_CloakLacquer>
+    </costList>
+    <thingCategories>
+      <li>ApparelNoble</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToMake>20000</WorkToMake>
+      <Mass>2</Mass>
+      <StuffEffectMultiplierArmor>0.3</StuffEffectMultiplierArmor>
+      <StuffEffectMultiplierInsulation_Cold>0.60</StuffEffectMultiplierInsulation_Cold>
+      <StuffEffectMultiplierInsulation_Heat>0.85</StuffEffectMultiplierInsulation_Heat>
+      <EquipDelay>3</EquipDelay>
+    </statBases>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Cape/Cape</wornGraphicPath>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <canBeGeneratedToSatisfyWarmth>false</canBeGeneratedToSatisfyWarmth>
+      <canBeGeneratedToSatisfyToxicEnvironmentResistance>false</canBeGeneratedToSatisfyToxicEnvironmentResistance>
+      <shellRenderedBehindHead>true</shellRenderedBehindHead>
+      <layers>
+        <li>Shell</li>
+      </layers>
+    </apparel>
+    <comps>
+      <li Class="RimMandrake.Scarlands.CompProperties_LacquerCloak">
+        <hediff>RM_LacquerStill</hediff>
+      </li>
+    </comps>
+    <colorGenerator Class="ColorGenerator_StandardApparel" />
+    <recipeMaker>
+      <displayPriority>236</displayPriority>
+      <skillRequirements>
+        <Crafting>6</Crafting>
+      </skillRequirements>
+    </recipeMaker>
+  </ThingDef>
+</Defs>

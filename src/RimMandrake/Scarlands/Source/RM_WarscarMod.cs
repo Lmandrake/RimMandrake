@@ -63,6 +63,13 @@ namespace RimMandrake.Scarlands
         public static float bloomDanger = 1f;                // scales the burn and toxic buildup of drawing the bloom
         public static bool catalystEnabled = true;           // glower crust holds a phase
 
+        // WARSCAR_CHOTRIX_BUILD_1 toggles.
+        public static bool chotrixEnabled = true;            // chotrix spawns on new maps and hunts
+        public static float chotrixPerMap = 2f;              // up to this many per map (0-2), new maps
+        public static float chotrixRevealSeconds = 4f;       // seconds visible after it strikes
+        public static bool lacquerCloakEnabled = true;       // lacquered cloaks grant still-and-unseen invisibility
+        public static float lacquerSeenRadius = 15f;         // a hostile with sight within this many cells "sees" the wearer
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -97,6 +104,11 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref poolCycleHours, "poolCycleHours", 24f);
             Scribe_Values.Look(ref bloomDanger, "bloomDanger", 1f);
             Scribe_Values.Look(ref catalystEnabled, "catalystEnabled", true);
+            Scribe_Values.Look(ref chotrixEnabled, "chotrixEnabled", true);
+            Scribe_Values.Look(ref chotrixPerMap, "chotrixPerMap", 2f);
+            Scribe_Values.Look(ref chotrixRevealSeconds, "chotrixRevealSeconds", 4f);
+            Scribe_Values.Look(ref lacquerCloakEnabled, "lacquerCloakEnabled", true);
+            Scribe_Values.Look(ref lacquerSeenRadius, "lacquerSeenRadius", 15f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -172,6 +184,18 @@ namespace RimMandrake.Scarlands
             bloomDanger = list.Slider(bloomDanger, 0f, 3f);
             list.CheckboxLabeled("Glower crust catalyst", ref catalystEnabled,
                 "Glower crust loaded into a tap holds the pool's phase (6 hours per crust) and doubles each draw.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Chotrix (invisible hunter)", ref chotrixEnabled,
+                "A lean cloaked scavenger hunts lone small animals, and lone pawns at night. It shows when it strikes. Spawning affects new maps.");
+            list.Label("Chotrix per map: up to " + Mathf.RoundToInt(chotrixPerMap) + " (new maps)");
+            chotrixPerMap = Mathf.Round(list.Slider(chotrixPerMap, 0f, 2f));
+            list.Label("Chotrix visible after a strike: " + chotrixRevealSeconds.ToString("0.0") + " seconds");
+            chotrixRevealSeconds = list.Slider(chotrixRevealSeconds, 1f, 15f);
+            list.CheckboxLabeled("Lacquered cloaks hide the wearer", ref lacquerCloakEnabled,
+                "A cloak made with cloak lacquer makes the wearer invisible while standing still and unseen. Permanent; never expires.");
+            list.Label("Lacquer: seen within " + lacquerSeenRadius.ToString("0") + " cells by a hostile with line of sight");
+            lacquerSeenRadius = list.Slider(lacquerSeenRadius, 3f, 40f);
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");
