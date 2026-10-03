@@ -60,6 +60,7 @@
     <Compile Include="PitSolvent.cs" />
     <Compile Include="FarmRuins.cs" />
     <Compile Include="SealBreach.cs" />
+    <Compile Include="ChunkBomb.cs" />
     <Compile Include="ArchiveResurrection.cs" />
   </ItemGroup>
 

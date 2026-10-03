@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True, "sealBreach": True, "archiveResurrection": True}
+          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True, "sealBreach": True, "chunkBomb": True, "chunkShelfDays": 1.5, "archiveResurrection": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -493,6 +493,30 @@ def defs_static(t):
             rows, nf = _defs(t, ["ThingDef/RM_TitanoslimeChunk"])
             if nf:
                 _fail("chunk not resolving live (foundCount != 1): %s" % nf)
+
+    with _comp(t, "chunk_bomb_defs", toggle="chunkBomb"):
+        # GELATINOUSSLIME_TITAN_CHUNK_BOMB_1: the existing chunk is also a grenade-shaped throw (verb ->
+        # RM_Proj_TitanoslimeChunk -> Projectile_SlimeChunk) and carries a shelf clock; the source is in the csproj.
+        sx = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "SlimeSealBreach.xml")).getroot()
+        chunk = [e for e in sx.findall("ThingDef") if e.findtext("defName") == "RM_TitanoslimeChunk"][0]
+        proj = [e for e in sx.findall("ThingDef") if e.findtext("defName") == "RM_Proj_TitanoslimeChunk"]
+        if not proj or "Projectile_SlimeChunk" not in (proj[0].findtext("thingClass") or ""):
+            _fail("RM_Proj_TitanoslimeChunk must exist with thingClass Projectile_SlimeChunk")
+        if chunk.findtext("verbs/li/defaultProjectile") != "RM_Proj_TitanoslimeChunk":
+            _fail("chunk must throw RM_Proj_TitanoslimeChunk")
+        if chunk.find("comps/li[@Class='CompProperties_Equippable']") is None:
+            _fail("chunk needs CompProperties_Equippable to be thrown")
+        if not any("CompProperties_ChunkShelf" in e.get("Class", "") for e in chunk.findall("comps/li")):
+            _fail("chunk needs the CompProperties_ChunkShelf shrink clock")
+        if chunk.findtext("stackLimit") != "1":
+            _fail("chunk must not stack (each carries its own clock)")
+        src = open(os.path.join(HERE, "Source", "RM_GelatinousSlime.csproj")).read()
+        if "ChunkBomb.cs" not in src:
+            _fail("ChunkBomb.cs missing from the csproj Compile list (compiles into nothing otherwise)")
+        if t._guard():
+            rows, nf = _defs(t, ["ThingDef/RM_TitanoslimeChunk", "ThingDef/RM_Proj_TitanoslimeChunk"])
+            if nf:
+                _fail("chunk bomb defs not resolving live: %s" % nf)
 
     with _comp(t, "archive_resurrection_defs", toggle="archiveResurrection"):
         # GELATINOUSSLIME_ARCHIVE_RESURRECTION_1 (Slime-side slice): vat building on its class + power, gated by a
@@ -1108,5 +1132,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False), ("sealBreach", False), ("archiveResurrection", False)):
+                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False), ("sealBreach", False), ("chunkBomb", False), ("chunkShelfDays", 3), ("archiveResurrection", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

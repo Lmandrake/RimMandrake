@@ -4,7 +4,7 @@
   <ThingDef ParentName="OrganicProductBase">
     <defName>RM_TitanoslimeChunk</defName>
     <label>titanoslime chunk</label>
-    <description>A fist-sized lump cut from a titanoslime, still hungry and still moving. It reads whatever it touches and eats what the Assailant made. Laid against an Assailant seal it dissolves the seal and drenches the doorway in slime. Nothing else opens one.\n\nIt keeps only a little while.</description>
+    <description>A fist-sized lump cut from a titanoslime, still hungry and still moving. It reads whatever it touches and eats what the Assailant made. Laid against an Assailant seal it dissolves the seal and drenches the doorway in slime. Nothing else opens one.\n\nThrown, it bursts: everyone near the landing is drenched to a late stage of slimification and the ground turns to slime for a day. No armour stops it; only dry ground and the antidote undo it.\n\nIt keeps only a little while.</description>
     <graphicData>
       <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -18,7 +18,25 @@
       <DeteriorationRate>6</DeteriorationRate>
     </statBases>
     <thingCategories />
-    <stackLimit>5</stackLimit>
+    <stackLimit>1</stackLimit>
+    <equipmentType>Primary</equipmentType>
+    <weaponTags><li>GrenadeDestructive</li></weaponTags>
+    <verbs>
+      <li>
+        <label>throw titanoslime chunk</label>
+        <verbClass>Verb_LaunchProjectile</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <range>12.9</range>
+        <forcedMissRadius>1.9</forcedMissRadius>
+        <warmupTime>1.5</warmupTime>
+        <noiseRadius>4</noiseRadius>
+        <soundCast>ThrowGrenade</soundCast>
+        <targetParams>
+          <canTargetLocations>true</canTargetLocations>
+        </targetParams>
+        <defaultProjectile>RM_Proj_TitanoslimeChunk</defaultProjectile>
+      </li>
+    </verbs>
     <tradeability>None</tradeability>
     <comps>
       <li Class="CompProperties_Usable">
@@ -27,6 +45,8 @@
         <useDuration>180</useDuration>
         <showUseGizmo>true</showUseGizmo>
       </li>
+      <li Class="CompProperties_Equippable" />
+      <li Class="RimMandrake.GelatinousSlime.CompProperties_ChunkShelf" />
       <li Class="CompProperties_Targetable">
         <compClass>RimMandrake.GelatinousSlime.CompTargetable_SlimeBreachable</compClass>
       </li>
@@ -34,6 +54,21 @@
         <compClass>RimMandrake.GelatinousSlime.CompTargetEffect_SlimeBreach</compClass>
       </li>
     </comps>
+  </ThingDef>
+
+  <!-- GELATINOUSSLIME_TITAN_CHUNK_BOMB_1: the thrown chunk. Burst logic is Projectile_SlimeChunk. -->
+  <ThingDef ParentName="BaseGrenadeProjectile">
+    <defName>RM_Proj_TitanoslimeChunk</defName>
+    <label>titanoslime chunk</label>
+    <thingClass>RimMandrake.GelatinousSlime.Projectile_SlimeChunk</thingClass>
+    <graphicData>
+      <texPath>Things/Projectile/Grenade</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(70, 140, 60)</color>
+    </graphicData>
+    <projectile>
+      <speed>12</speed>
+    </projectile>
   </ThingDef>
 
   <!-- Parent for the vault's seal (VAULT_DUNGEON_BUILD_1 owns the concrete Assailant seal). -->
