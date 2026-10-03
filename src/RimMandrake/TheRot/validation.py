@@ -14,6 +14,8 @@ CHAINS
                      and consumes the body; an unfed vat does not progress; the starter keeps, trades, and a split makes one.
   navigator_log      ROT_NAVIGATOR_LOG_SITES_1: 4 pings read one log entry, 8 read two and reveal one salvage site; after the
                      carrier dies, pings do not move the log. Landing ping UNMEASURED (needs a gravship landing).
+  unjoining          ROT_UNJOINING_DRAUGHT_1: the draught purges parasites + a symbiont (one husk, one scar, purge), only purges
+                     a clean patient, and forces a metalhorror implant to emerge.
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
@@ -176,6 +178,11 @@ def static_checks():
     for need in ("RM_NavigatorLog.Notify_Ping", "RM_NavigatorLog.Notify_CarrierDied", "engineSeen"):
         if need not in core:
             bad.append("RM_SwallowedCore.cs lacks %s (ROT_NAVIGATOR_LOG_SITES_1)" % need)
+    uj = open(os.path.join(HERE, "Defs", "Drugs", "RM_UnjoiningDraught.xml"), encoding="utf-8").read()
+    for need in ("RM_UnjoiningPurge", "RM_SymbiontHusk", "RM_Make_UnjoiningDraught", "IngestionOutcomeDoer_RM_Unjoining",
+                 "CompProperties_Drug", "<li>MuscleParasites</li>", "<li>GutWorms</li>", "<li>RM_SheenSymbiosis</li>"):
+        if need not in uj:
+            bad.append("RM_UnjoiningDraught.xml lacks %s (ROT_UNJOINING_DRAUGHT_1)" % need)
     bad += cast_checks()
     return bad
 
@@ -522,6 +529,28 @@ def _build_suite():
         with t.component("landing_pings_at_once", toggle="navigatorCore"):
             if _live(t):
                 _unmeasured(t, "needs a living carrier on a map and a gravship landing there; RM_SwallowedCoreProof.ProofClaim pings 0 -> 1, and 0 with no carrier")
+
+    @suite.chain("unjoining")
+    def unjoining(t):
+        """ROT_UNJOINING_DRAUGHT_1. Any map. Each call generates a fresh player colonist and runs the draught's outcome
+        doer on it. Not proven here: the drug-lab bill, the metalhorror actually bursting out (vanilla emergence delay),
+        the campaign rite finishing the research -- first poke: ProofDraught horror, then step ~2,500 ticks and count
+        Metalhorror pawns."""
+        def _uj(mode):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_UnjoiningProof", method="ProofDraught", args=mode)
+            return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        with t.component("purges_parasites_and_symbionts", toggle="unjoiningDraught"):
+            text = _uj("parasites")
+            if _live(t) and not ("left 0 " in text and "purge True" in text and "husks 1 " in text and "scars 1 " in text):
+                raise ExpectationFailed("the draught did not purge 3, drop one husk and leave one scar: %s" % text)
+        with t.component("clean_patient_only_purges", toggle="unjoiningOrganDamage"):
+            text = _uj("none")
+            if _live(t) and not ("purge True" in text and "husks 0 " in text):
+                raise ExpectationFailed("a clean patient got more than the purge: %s" % text)
+        with t.component("forces_metalhorror_out", toggle="unjoiningPurgeHours"):
+            text = _uj("horror")
+            if _live(t) and "horror emerging True" not in text:
+                raise ExpectationFailed("the metalhorror implant was not forced to emerge: %s" % text)
 
     return suite
 
