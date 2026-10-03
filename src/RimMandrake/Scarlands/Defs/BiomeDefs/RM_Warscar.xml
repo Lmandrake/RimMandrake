@@ -79,6 +79,7 @@
       <li>CratersSmall</li>
       <li>ScarlandsJunkClusters</li>
       <li>ScarlandsJunkPrefabs</li>
+      <li>RM_TotchakInWall</li>
     </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

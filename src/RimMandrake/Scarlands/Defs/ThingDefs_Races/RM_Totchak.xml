@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Totchak: MINIMAL BODY built by WARSCAR_TOTCHAK_WAKES_1 because WARSCAR_FREE_TIER_BODY_1 (its named
+  prerequisite) had not built it. Race + kind only; behaviour is RM_Totchak.cs. ART IS OWED: the kind points
+  at Things/Pawn/Animal/RM_Totchak/RM_Totchak (artpipe search: 0 existing, queued by the body item), so it
+  renders magenta until that lands. The dormant wall-pose graphic and breathing bob are NOT built (need
+  art); the readable dormant sign today is the inspect line plus the wall gap. Not placed in any
+  wildAnimals roster: it exists only through the RM_TotchakInWall genstep.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Totchak</defName>
+    <label>totchak</label>
+    <description>A plated colossus that passes for a stretch of the Last Line until something disturbs the ground around it. It was here after. Awake, it eats walls, ruin first, and when it has grazed enough it walks to another wall line and lies down in it. It is harmless unless harmed.</description>
+    <statBases>
+      <MoveSpeed>1.5</MoveSpeed>
+      <Mass>2400</Mass>
+      <MarketValue>0</MarketValue>
+      <Wildness>1</Wildness>
+      <ArmorRating_Sharp>1.0</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.7</ArmorRating_Blunt>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>90</ComfyTemperatureMax>
+    </statBases>
+    <tools>
+      <li><label>maw</label><capacities><li>Bite</li></capacities><power>40</power><cooldownTime>3</cooldownTime><linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup></li>
+      <li><label>head</label><capacities><li>Blunt</li></capacities><power>30</power><cooldownTime>3</cooldownTime><linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup></li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_CanBeDormant">
+        <startsDormant>true</startsDormant>
+        <jobDormancy>true</jobDormancy>
+        <dormantStateLabelKey>DormantCompStateDormant</dormantStateLabelKey>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+        <wakeUpOnThingConstructedRadius>12</wakeUpOnThingConstructedRadius>
+      </li>
+      <li Class="RimMandrake.Scarlands.CompProperties_Totchak" />
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <thinkTreeMain>RM_Totchak</thinkTreeMain>
+      <predator>false</predator>
+      <baseBodySize>14</baseBodySize>
+      <baseHealthScale>9</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>6</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>200</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalAdult</def><minAge>0</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Totchak</defName>
+    <label>totchak</label>
+    <race>RM_Totchak</race>
+    <combatPower>600</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Totchak/RM_Totchak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

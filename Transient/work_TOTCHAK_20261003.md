@@ -1,0 +1,11 @@
+# WARSCAR_TOTCHAK_WAKES_1 2026-10-03
+- started; checking for totchak def
+- Totchak def did NOT exist (WARSCAR_FREE_TIER_BODY_1 unbuilt): built minimal RM_Totchak race+kind (Defs/ThingDefs_Races). Art owed (artpipe 0 hits; magenta until BODY item lands). No wildAnimals row; spawns only via genstep RM_TotchakInWall.
+- Choices: own JobGiver/JobDriver in Scarlands assembly (not CreatureBehaviors' RM_GnawTargetExtension: separate assembly, would add dependency). Wall = Building with LinkFlags.Wall + Impassable; ruin = Faction null.
+- Dormancy uses jobDormancy=true; sleep job issued from first think node (JobGiver_TotchakLieDown) so a spawned dormant pawn stands still.
+- Waking letter is raised from comp tick on ANY wake (stock damage/build wake too).
+- Slag: ChunkSlagSteel dropped when a bitten wall dies. Nutrition clamped 0.05/bite.
+- NOT built (needs art / unbuilt kit): dormant wall-pose graphic + breathing bob; prints in a Settling (FOOTPRINT_TRACK_GRID_1 unbuilt). Dormant sign = inspect line + wall gap.
+- Added brrainz.harmony dependency + Harmony ref (Prefix patches: Mineable.DestroyMined, GenExplosion.DoExplosion, Thing.Destroy[Deconstruct]); prefix not postfix so Map is still set.
+- Genstep order 520 is a guess; verify live that it runs after AncientRuins_Scarlands.
+- Built OK via winbuild; validation.py static PASS; live criteria UNMEASURED (suite component raises UNMEASURED by design).
