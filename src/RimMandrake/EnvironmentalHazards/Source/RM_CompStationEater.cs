@@ -38,12 +38,7 @@ namespace RimMandrake.EnvironmentalHazards
     // so there is no code path by which this JobGiver can hand the pawn a
     // Pawn as a target.
     //
-    // NOT wired onto any live PawnKindDef/ThingDef this pass — same
-    // "compiles now, first XML consumer later" posture this item's own S1/S2
-    // spike pass already used for RM_CompFloodIgniter/RM_CompWorkedLottery.
-    // Wiring this comp onto the real tar-beast's ThingDef is roster-pass
-    // work (it requires authoring that ThingDef/PawnKindDef, explicitly out
-    // of this pass's scope — see RUT_BeastBulge.xml's own placeholder note).
+    // Wired onto RM_TarBeast (TheSump, SUMP_TAR_BEAST_BUILD_1); RM_CompTarBeast adds the tar trail, shoving and sinking.
     public class CompProperties_StationEater : CompProperties
     {
         /// <summary>How far to search for a player structure. INVENTED —
@@ -71,6 +66,14 @@ namespace RimMandrake.EnvironmentalHazards
         public int maxStructuresEaten = 8;
 
         public int maxTicksAwake = 3 * 60000; // 3 in-game days (GenDate.TicksPerDay = 60000)
+
+        /// <summary>SUMP_TAR_BEAST_BUILD_1: filth left where a structure was swallowed (a mound of it). Null = none.</summary>
+        public ThingDef moundFilthDef;
+        public int moundLayers = 4;
+
+        /// <summary>Letter on each swallow; {0} = the building's label. Blank = no letter.</summary>
+        public string letterLabel;
+        public string letterText;
 
         public CompProperties_StationEater()
         {
@@ -117,9 +120,34 @@ namespace RimMandrake.EnvironmentalHazards
             }
         }
 
+        public int StructuresEaten => structuresEaten;
+
         public void NotifyStructureDestroyed()
         {
             structuresEaten++;
+        }
+
+        /// <summary>Leaves the mound and sends the letter. Called by the driver with the target's facts
+        /// captured BEFORE the killing blow (a destroyed Thing has no Map).</summary>
+        public void OnStructureSwallowed(string label, IntVec3 cell, Map map)
+        {
+            CompProperties_StationEater props = Props;
+            if (props == null || map == null)
+            {
+                return;
+            }
+            if (props.moundFilthDef != null)
+            {
+                RM_TarCoatingUtility.CoatCells(map, new List<IntVec3> { cell }, props.moundFilthDef, props.moundLayers);
+            }
+            if (!string.IsNullOrEmpty(props.letterLabel))
+            {
+                Find.LetterStack.ReceiveLetter(
+                    props.letterLabel,
+                    string.Format(props.letterText ?? "{0}", label),
+                    LetterDefOf.NegativeEvent,
+                    new TargetInfo(cell, map));
+            }
         }
 
         /// <summary>Same GenClosest.ClosestThingReachable call
@@ -221,11 +249,15 @@ namespace RimMandrake.EnvironmentalHazards
                 DamageDef damageDef = props?.eatDamageDef ?? DamageDefOf.Crush;
                 ticksUntilNextBite = props?.ticksPerBite ?? 180;
 
+                string targetLabel = target.LabelCap;
+                IntVec3 targetCell = target.Position;
+                Map targetMap = target.Map;
                 target.TakeDamage(new DamageInfo(damageDef, damage, instigator: pawn));
 
                 if (target.Destroyed)
                 {
                     eater?.NotifyStructureDestroyed();
+                    eater?.OnStructureSwallowed(targetLabel, targetCell, targetMap);
                     ReadyForNextToil();
                 }
             };

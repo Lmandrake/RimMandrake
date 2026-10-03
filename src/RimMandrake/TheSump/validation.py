@@ -95,16 +95,35 @@ def static_checks():
     for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):
         if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj:
             bad.append("%s is not in the csproj (compiles into nothing)" % fn)
+    def names_pre():
+        return set(n for _t, n in SHIPPED) | set(h[1] for h in HELD_DEFS)
     kinds = set(ty for ty, _n in SHIPPED) | set(h[0] for h in HELD_DEFS)
     for need in ("BiomeDef", "ThingDef", "TerrainDef", "WeatherDef", "GameConditionDef", "IncidentDef"):
         if need not in kinds:
             bad.append("no %s parsed" % need)
     if not any(n == BIOME for _t, n in SHIPPED) and not any(h[1] == BIOME for h in HELD_DEFS):
         bad.append("BiomeDef %s missing" % BIOME)
-    if not HELD:
-        bad.append("DEPLOY_HOLD.txt names no TheSump file (hold parser sanity probe failed; ten files were held on 2026-10-03)")
-    if not HELD_DEFS:
-        bad.append("no held def parsed (hold parser or def parser is blind)")
+    # The 2026-10-03 hold was lifted (art existed); an empty hold list is now the correct state.
+    if not SHIPPED:
+        bad.append("no shipped def parsed (def parser is blind)")
+    # SUMP_TAR_BEAST_BUILD_1: defs, art, code seams (EnvironmentalHazards owns the C#)
+    for need in ("RM_TarBeast", "RM_TarBeastPace", "RM_ThinkTree_TarBeast"):
+        if need not in names_pre():
+            bad.append("%s is not defined" % need)
+    for fc in ("south", "east", "north"):
+        if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_TarBeast", "RM_TarBeast_%s.png" % fc)):
+            bad.append("tar beast %s sprite missing" % fc)
+    ehsrc = os.path.join(HERE, "..", "EnvironmentalHazards", "Source", "RM_CompTarBeast.cs")
+    if os.path.isfile(ehsrc):
+        ehs = open(ehsrc, encoding="utf-8").read()
+        for cls in ("RM_CompTarBeast", "RM_JobGiver_TarBeastEat", "RM_CompBulgePumpWake"):
+            if "class %s" % cls not in ehs:
+                bad.append("class %s not found in RM_CompTarBeast.cs" % cls)
+    else:
+        bad.append("EnvironmentalHazards/Source/RM_CompTarBeast.cs missing")
+    bx = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RUT_BeastBulge.xml"), encoding="utf-8").read()
+    if "<li>RM_TarBeast</li>" not in bx or "Thrumbo</li>" in bx:
+        bad.append("RUT_BeastBulge does not emerge RM_TarBeast (placeholder Thrumbo still wired?)")
     # SUMP_KETHREL_BUILD_1: defs, art, code seams (parsed from the source; no game needed)
     names = set(n for _t, n in SHIPPED) | set(h[1] for h in HELD_DEFS)
     for need in ("RM_Kethrel", "RM_KethrelShell", "RM_KethrelTree"):
@@ -232,8 +251,7 @@ def _build_suite():
     def biome_wiring(t):
         with t.component("biome_densities_positive", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, "BiomeDef %s is held from deploy by DEPLOY_HOLD.txt (LOAD_ERRORS_DEF_FIELDS_1: 'game copy left as-is'), "
-                               "so any live read describes a stale game copy, not this repo's def" % BIOME)
+                _unmeasured(t, "BiomeDef %s has 0 tiles until the one terminal repaint (BIOME_PAINT_ONCE_AT_THE_END_1), so densities are not exercised on a real map" % BIOME)
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
@@ -257,16 +275,16 @@ def _build_suite():
                 _unmeasured(t, 'rarity changes only planets generated afterwards; the world is frozen and the bridge cannot generate one')
         with t.component("poured_tar_moat_and_fuse_post", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'the moat ignition needs RUT_MoatFusePost, which is HELD from deploy (no art, DEPLOY_HOLD.txt) so it is UNMEASURED-by-hold, plus a poured moat and a fire')
+                _unmeasured(t, 'the moat ignition needs RUT_MoatFusePost, which needs a built post, a poured moat and a fire (not yet measured live)')
         with t.component("dig_shaft_stratum_lottery", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_DigShaft and RUT_DigStratumTable deploy and resolve, but the lottery draw needs a built shaft, a worker and ticks on a Sump map')
         with t.component("tar_beast_bulge_set_piece", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'RUT_BeastBulge, its gen step and its registration patches are all HELD from deploy (DEPLOY_HOLD.txt): UNMEASURED-by-hold')
+                _unmeasured(t, 'bulge -> wake (damage, construction, dig shaft, running deep drill) -> RM_TarBeast crawls to the densest building cluster, swallows one (mound + letter), lays tar, sinks into a new bulge: needs a Sump map and a wake; FIRST LIVE POKE: hit the bulge, step ticks, read RM_CompTarBeast/RM_CompStationEater via jawa/comp_read')
         with t.component("sump_mouse_filth_trail", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'RUT_Filth_MouseTrack is HELD from deploy (no art): UNMEASURED-by-hold')
+                _unmeasured(t, 'RUT_Filth_MouseTrack needs a sump mouse walking on tar (not yet measured live)')
         with t.component("wick_garden_crop", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_Plant_Wick resolves in defs_resolve; growth, glow and harvest need a sown plant and game days on a Sump map')

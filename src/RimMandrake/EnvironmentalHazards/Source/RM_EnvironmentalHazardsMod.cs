@@ -404,6 +404,11 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool leachmossEnabled = true;
         public static bool contactVenomEnabled = true;
         public static float contactVenomScratchMultiplier = 1f;
+        // SUMP_TAR_BEAST_BUILD_1 - RM_CompTarBeast / RM_JobGiver_TarBeastEat / RM_CompBulgePumpWake.
+        public static bool tarBeastEnabled = true;
+        public static float tarBeastPace = 1f;
+        public static float tarBeastMaxBuildings = 8f;
+        public static float tarBeastPumpWakeFactor = 1f;
         public static bool contactVenomLethal = true;
         public static bool bodySizeBarrierEnabled = true;
         public static float bodySizeBarrierThreadCostMultiplier = 1f;
@@ -476,6 +481,10 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref leachmossEnabled, "leachmossEnabled", true);
             Scribe_Values.Look(ref contactVenomEnabled, "contactVenomEnabled", true);
             Scribe_Values.Look(ref contactVenomScratchMultiplier, "contactVenomScratchMultiplier", 1f);
+            Scribe_Values.Look(ref tarBeastEnabled, "tarBeastEnabled", true);
+            Scribe_Values.Look(ref tarBeastPace, "tarBeastPace", 1f);
+            Scribe_Values.Look(ref tarBeastMaxBuildings, "tarBeastMaxBuildings", 8f);
+            Scribe_Values.Look(ref tarBeastPumpWakeFactor, "tarBeastPumpWakeFactor", 1f);
             Scribe_Values.Look(ref contactVenomLethal, "contactVenomLethal", true);
             Scribe_Values.Look(ref bodySizeBarrierEnabled, "bodySizeBarrierEnabled", true);
             Scribe_Values.Look(ref bodySizeBarrierThreadCostMultiplier, "bodySizeBarrierThreadCostMultiplier", 1f);
@@ -632,6 +641,10 @@ namespace RimMandrake.EnvironmentalHazards
               + "offered by the wild-plant spawner, on every map immediately. Moss already growing is left "
               + "standing; it just never re-takes an emptied cell or appears on fresh ground until this is "
               + "back on.");
+            list.CheckboxLabeled("Tar beast eats the colony's buildings", ref tarBeastEnabled,
+                "A woken tar beast crawls to the densest cluster of your buildings, swallows them, lays tar "
+              + "and finally sinks back into the deep tar. Off: a woken beast just stands inert where it "
+              + "emerged and never eats, coats or sinks.");
             list.CheckboxLabeled("Contact venom (thorn plants)", ref contactVenomEnabled,
                 "A plant built to scratch whoever stands in it goes inert — it still grows, still "
               + "slows movement and can still be cut, it just never scratches. Clocks already "
@@ -724,6 +737,12 @@ namespace RimMandrake.EnvironmentalHazards
               + "policy for hazard gear. The gear's actual protection is unaffected either way.");
             list.GapLine();
 
+            list.Label("Tar beast speed: " + tarBeastPace.ToString("0.0") + "x");
+            tarBeastPace = list.Slider(tarBeastPace, 0.5f, 2f);
+            list.Label("Tar beast sinks after swallowing: " + tarBeastMaxBuildings.ToString("0") + " buildings");
+            tarBeastMaxBuildings = list.Slider(tarBeastMaxBuildings, 1f, 30f);
+            list.Label("Tar bulge wake range for pumping and deep drills: " + tarBeastPumpWakeFactor.ToString("0.0") + "x (0 = never)");
+            tarBeastPumpWakeFactor = list.Slider(tarBeastPumpWakeFactor, 0f, 3f);
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
             list.Label("How hard a thorn plant scratches, on top of the overall hazard damage dial. "
                      + "The venom dose follows the damage, so this moves the poison too. At 0 the "
