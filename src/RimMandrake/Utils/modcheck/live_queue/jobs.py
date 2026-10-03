@@ -46,7 +46,7 @@ def suite_mods():
     import re
     import runner
     out = []
-    for m in mods:      # a standalone script (MessyConduit: own --live runner) has no `suite =`; it is not a modcheck suite
+    for m in mods:      # a standalone script with no `suite =` is not a modcheck suite (MessyConduit has one since 2026-10-03)
         try:
             src = open(os.path.join(runner.find_mod_dir(m), "validation.py"), encoding="utf-8").read()
         except Exception:                                       # noqa: BLE001
