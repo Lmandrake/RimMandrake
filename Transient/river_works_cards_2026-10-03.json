@@ -1,0 +1,205 @@
+{
+ "cards": [
+  {
+   "title": "River Works: the current",
+   "questions": [
+    {
+     "question": "When a river sweeps someone all the way to the edge of the map, what should happen to them?",
+     "header": "Map edge",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Stop at the edge (Recommended)",
+       "description": "They pile up at the map edge and wade out. Recommended because nobody ever disappears without you seeing it. Costs: the river's end becomes a known safe spot, so the threat is time lost, not people lost."
+      },
+      {
+       "label": "Washed away, back later",
+       "description": "They leave the map and walk home days later, hurt and hungry. Buys: real stakes and a story. Costs: a colonist missing for days from one bad crossing."
+      },
+      {
+       "label": "Washed away for good",
+       "description": "They leave the map and are gone, with a letter naming them. Buys: rivers are truly deadly. Costs: one careless haul can lose a colonist forever, which may feel unfair."
+      }
+     ]
+    },
+    {
+     "question": "Should every river shove equally hard, whatever its size?",
+     "header": "River size",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Same everywhere",
+       "description": "Every river uses the same push. Buys: simplest to learn and tune. Costs: a little creek feels as dangerous as a great river."
+      },
+      {
+       "label": "Bigger shoves harder (Recommended)",
+       "description": "Creeks barely push, great rivers are brutal. Recommended because rivers then read differently and the map tells you how dangerous it is. Costs: one more number to tune, and the size data still has to be measured."
+      },
+      {
+       "label": "Only the deep channel",
+       "description": "Shallow edges never push; only the deep middle carries you. Buys: easy to see and avoid. Costs: much gentler than the sea floor you asked to match."
+      }
+     ]
+    },
+    {
+     "question": "Should a spring flood make the river itself fiercer while it lasts?",
+     "header": "Flood surge",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Yes, fiercer (Recommended)",
+       "description": "While a flood is on, the river's edges push like its middle and the middle pushes twice as fast, the same as the sea floor's storm. Recommended because spring becomes the dangerous season and a weir's calm water matters most then. Costs: more colonists swept during floods."
+      },
+      {
+       "label": "No change",
+       "description": "The flood only spreads water onto land; the river pushes as usual. Buys: simpler. Costs: floods and currents feel like two unrelated systems."
+      }
+     ]
+    },
+    {
+     "question": "Should colonists learn to avoid strong water and walk to bridges and fords instead?",
+     "header": "Pathfinding",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Avoid strong water (Recommended)",
+       "description": "Ordinary work routes around fast water to bridges and fords; you can still order a drafted pawn straight in. Recommended because otherwise haulers get dragged over and over. Costs: longer walks on river maps, and a river with no crossing can cut a map in two."
+      },
+      {
+       "label": "Let them blunder",
+       "description": "No change to pathing; colonists wade in and get swept. Buys: chaotic and funny. Costs: constant interrupted jobs and frustration."
+      },
+      {
+       "label": "Avoid only in floods",
+       "description": "Normal pathing most of the year, extra caution while a flood is on. Buys: a middle ground. Costs: the rest of the year, haulers still get dragged."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "River Works: weir and harm",
+   "questions": [
+    {
+     "question": "How much of the river should a weir calm down?",
+     "header": "Weir calm",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Just its own cell",
+       "description": "It catches what drifts into it and nothing more. Buys: tight and simple. Costs: it does not give you a safe crossing."
+      },
+      {
+       "label": "A short pool (Recommended)",
+       "description": "About 3 cells upstream go calmer, making a place to cross and fish. Recommended because the weir then truly tames the river, as you asked. Costs: a well-placed weir partly solves the current for that spot."
+      },
+      {
+       "label": "A long stretch",
+       "description": "About 8 cells upstream go calm. Buys: one weir tames a whole reach. Costs: the current stops being much of a problem once you have one."
+      }
+     ]
+    },
+    {
+     "question": "Besides the river's own fish, what else should a weir catch?",
+     "header": "Weir catch",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Fish only (Recommended)",
+       "description": "It draws fish from the same stock your fishing zones use, plus whatever the current carried into it. Recommended because it is exactly your ruling and nothing is made from nothing. Costs: on an overfished river the weir goes quiet."
+      },
+      {
+       "label": "Fish and driftwood",
+       "description": "Adds the odd pile of wood floating down. Buys: weirs keep paying when fish run low. Costs: wood appearing from nowhere, and less pressure on the fish."
+      },
+      {
+       "label": "Fish and lost goods",
+       "description": "Adds rare items washed down from upriver. Buys: a little treasure-hunting. Costs: invents loot, and may feel out of place."
+      }
+     ]
+    },
+    {
+     "question": "Should being swept by a river hurt, or only move you?",
+     "header": "Harm",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Only moves you (Recommended)",
+       "description": "Being swept costs time and position, never health. Recommended because it stays readable and nobody dies from a hauling trip. Costs: once you know the rule, the river is an annoyance more than a danger."
+      },
+      {
+       "label": "Bruises and drops",
+       "description": "Fast water can bruise and make a pawn drop what it carries. Buys: crossings feel risky. Costs: dropped items float off, and more small injuries to manage."
+      },
+      {
+       "label": "Can drown the weak",
+       "description": "Downed pawns and small animals in fast water can drown. Buys: real danger and drama. Costs: lost pets and downed colonists after a fight near water."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "River Works: what goes in",
+   "questions": [
+    {
+     "question": "What should the first version of River Works include?",
+     "header": "First build",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Core plus fords (Recommended)",
+       "description": "Current, stakes, weir, silt trap, flood levee, fish, plus stepping-stone fords for shallow water. Recommended because fords are the cheap answer to how colonists cross, and the sea code already expects them. Costs: about a quarter-session more than core alone."
+      },
+      {
+       "label": "Core only",
+       "description": "Current and the three bank buildings. Buys: fastest to ship. Costs: no way to cross a river except bridges."
+      },
+      {
+       "label": "Core, fords, hazards",
+       "description": "Adds the harm you choose above. Buys: rivers with teeth from day one. Costs: more to tune before it ships."
+      },
+      {
+       "label": "Core, fords, ferry",
+       "description": "Adds a rope line across deep water that holds a pawn steady. Buys: deep rivers crossable without a bridge. Costs: the biggest extra piece, about two sessions, mostly teaching pathing to use it."
+      }
+     ]
+    },
+    {
+     "question": "Should River Works add its own river mill?",
+     "header": "Mills",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Leave it to vanilla (Recommended)",
+       "description": "The vanilla watermill already makes power from rivers. Recommended because a second mill overlaps it. Costs: strong currents give no extra reward beyond danger."
+      },
+      {
+       "label": "Add one later",
+       "description": "A no-power mill that grinds or saws faster in strong current, after the core ships. Buys: a reason to build where the river is fiercest. Costs: recipes and balance work later."
+      },
+      {
+       "label": "Add it now",
+       "description": "Same mill in the first version. Buys: the full river economy at once. Costs: delays the core by about a session."
+      }
+     ]
+    },
+    {
+     "question": "When the sea floor's weirs move into River Works, should weirs in existing saves be carried across?",
+     "header": "Old saves",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Carry them across (Recommended)",
+       "description": "A small compatibility mapping so saved weirs keep working. Recommended because it is about an hour and test saves keep their works. Costs: a little extra code to keep around."
+      },
+      {
+       "label": "Let them vanish",
+       "description": "Saved sea-floor weirs drop out on load. Buys: nothing extra to maintain. Costs: any test save with weirs loses them; fine since the world is remade at the end anyway."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
