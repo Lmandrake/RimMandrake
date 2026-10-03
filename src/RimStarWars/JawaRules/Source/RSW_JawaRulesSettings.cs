@@ -48,6 +48,10 @@ namespace RimMandrake.StarWars.JawaRules
         // false — raids, quests, faction rosters and KCSG dungeon layouts alike.
         public static bool pawnKindRedressFixEnabled = true;
 
+        // JAWA_SWIM_HOOD_KEEP_1: keep the worn Jawa hood drawn while swimming
+        // (Patch_ApparelHead_CanDrawNow_SwimHood). Read every frame; no restart.
+        public static bool swimHoodEnabled = true;
+
         public static bool worldLabelAlphaBoostEnabled = true;
         public static float worldLabelAlpha = 0.6f;
         public static bool worldLabelLiftEnabled = true;
@@ -60,6 +64,7 @@ namespace RimMandrake.StarWars.JawaRules
             Scribe_Values.Look(ref droidRelationsEnabled, "droidRelationsEnabled", true);
             Scribe_Values.Look(ref petNamesEnabled, "petNamesEnabled", true);
             Scribe_Values.Look(ref pawnKindRedressFixEnabled, "pawnKindRedressFixEnabled", true);
+            Scribe_Values.Look(ref swimHoodEnabled, "swimHoodEnabled", true);
             Scribe_Values.Look(ref worldLabelAlphaBoostEnabled, "worldLabelAlphaBoostEnabled", true);
             Scribe_Values.Look(ref worldLabelAlpha, "worldLabelAlpha", 0.6f);
             Scribe_Values.Look(ref worldLabelLiftEnabled, "worldLabelLiftEnabled", true);
@@ -100,6 +105,10 @@ namespace RimMandrake.StarWars.JawaRules
               + "raid, quest, faction or dungeon layout asked for, when a Humanoid Alien Races "
               + "compatibility patch blocks the engine's own kind correction. Off: vanilla "
               + "behaviour, including the mismatch.");
+            list.CheckboxLabeled("Jawa keep their hood while swimming", ref swimHoodEnabled,
+                "Vanilla hides all clothing and headgear on a swimming pawn. On: a worn Jawa "
+              + "hood stays drawn on the swimmer's head. Off: vanilla, and the smaller "
+              + "built-in fallback hood shows instead.");
             list.GapLine();
 
             list.Label("World map labels");
