@@ -79,6 +79,7 @@
          this mod's, copied from Star Wars Xenotypes and renamed, so this holds
          with every donor switched off. -->
     <nameMaker>RSW_KoTOR_NamerJawa</nameMaker>
+    <chanceToUseNameMaker>999</chanceToUseNameMaker>
     <genes>
       <!-- frame and constitution -->
       <li>RSW_BodySizeGene_smaller</li>
