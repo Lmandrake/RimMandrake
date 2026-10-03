@@ -1,0 +1,1270 @@
+{
+ "chains": [
+  {
+   "name": "track_grid",
+   "components": [
+    {
+     "name": "writer_patched",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Pawn_FilthTracker",
+        "methodName": "Notify_EnteredNewCell",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Notify_EnteredNewCell",
+          "declaringType": "RimWorld.Pawn_FilthTracker",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.AnimalBehaviours.VanillaExpandedFramework_Pawn_FilthTracker_Notify_EnteredNewCell_Patch.DontDealWithFilth",
+            "patchAssembly": "VEF"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.creaturebehaviors.trackgrid",
+            "priority": 400,
+            "patchMethod": "RimMandrake.CreatureBehaviors.RM_TrackGridPatches.Postfix_EnteredNewCell",
+            "patchAssembly": "RimMandrake.CreatureBehaviors"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 716870,
+        "note": null,
+        "operation": {
+         "OperationId": "op_300838a669f74f57be3e54de5a8bfbff",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.018853+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.0366364+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": false,
+        "message": "Invalid generic arguments\r\nParameter name: typeArguments",
+        "exception": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE]\n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.MakeGenericMethod_impl(System.Reflection.RuntimeMethodInfo,System.Type[])\n  at System.Reflection.RuntimeMethodInfo.MakeGenericMethod (System.Type[] methodInstantiation) [0x00083] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at JawaBench.BridgeTools.JawaBenchTerrainTools.FindModSettingsInstance (System.Type settingsType) [0x00022] in <089cb0260fc74c5ebfed62cc493a412d>:0 \n  at JawaBench.BridgeTools.JawaBenchTerrainTools+<>c__DisplayClass278_0.<ModSettingsField>b__0 () [0x00066] in <089cb0260fc74c5ebfed62cc493a412d>:0 \n  at RimBridgeServer.RimBridgeMainThread+MainThreadWorkItem`1[T].ExecuteIfPending () [0x0001d] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.RimBridgeMainThread.InvokeAsync[T] (System.Func`1[TResult] func, System.Threading.CancellationToken cancellationToken) [0x0010b] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at JawaBench.BridgeTools.JawaBenchTerrainTools.ModSettingsField (RimBridgeServer.Sdk.IRimBridgeContext ctx, System.Threading.CancellationToken cancellationToken, System.String typeName, System.String action, System.String field, System.String value) [0x000ca] in <089cb0260fc74c5ebfed62cc493a412d>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.AnnotatedExtensionCapabilityProvider.AwaitReturnValueAsync (System.Object result) [0x00097] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.AnnotatedExtensionCapabilityProvider.InvokeMethodAsync (RimBridgeServer.AnnotatedExtensionCapabilityProvider+ToolClass toolClass, System.Reflection.MethodInfo method, System.Collections.Generic.IDictionary`2[TKey,TValue] arguments, RimBridgeServer.Sdk.IRimBridgeContext sdkContext, System.Threading.CancellationToken cancellationToken) [0x000a9] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.RimBridgeAsyncScheduler+<>c__DisplayClass5_0.<RunAsync>b__1 (System.Object _) [0x000ce] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.Core.OperationRunner.RunAsync (System.Func`1[TResult] func, RimBridgeServer.Core.OperationExecutionOptions options) [0x00107] in <5f081ec2db344499a3cc73ddc96ec4ef>:0 ",
+        "operation": {
+         "OperationId": "op_15f276f8b0c042aabe58d6f03c9b0ba4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 3,
+         "Success": false,
+         "StartedAtUtc": "2026-10-03T10:54:11.0854509+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.2099232+00:00",
+         "DurationMs": 124,
+         "Result": null,
+         "HasResult": false,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": {
+          "Code": "capability.failed",
+          "Message": "Invalid generic arguments\r\nParameter name: typeArguments",
+          "ExceptionType": "System.ArgumentException",
+          "Details": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE]\n(wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.MakeGenericMethod_impl(System.Reflection.RuntimeMethodInfo,System.Type[])\n  at System.Reflection.RuntimeMethodInfo.MakeGenericMethod (System.Type[] methodInstantiation) [0x00083] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at JawaBench.BridgeTools.JawaBenchTerrainTools.FindModSettingsInstance (System.Type settingsType) [0x00022] in <089cb0260fc74c5ebfed62cc493a412d>:0 \n  at JawaBench.BridgeTools.JawaBenchTerrainTools+<>c__DisplayClass278_0.<ModSettingsField>b__0 () [0x00066] in <089cb0260fc74c5ebfed62cc493a412d>:0 \n  at RimBridgeServer.RimBridgeMainThread+MainThreadWorkItem`1[T].ExecuteIfPending () [0x0001d] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.RimBridgeMainThread.InvokeAsync[T] (System.Func`1[TResult] func, System.Threading.CancellationToken cancellationToken) [0x0010b] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at JawaBench.BridgeTools.JawaBenchTerrainTools.ModSettingsField (RimBridgeServer.Sdk.IRimBridgeContext ctx, System.Threading.CancellationToken cancellationToken, System.String typeName, System.String action, System.String field, System.String value) [0x000ca] in <089cb0260fc74c5ebfed62cc493a412d>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.AnnotatedExtensionCapabilityProvider.AwaitReturnValueAsync (System.Object result) [0x00097] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.AnnotatedExtensionCapabilityProvider.InvokeMethodAsync (RimBridgeServer.AnnotatedExtensionCapabilityProvider+ToolClass toolClass, System.Reflection.MethodInfo method, System.Collections.Generic.IDictionary`2[TKey,TValue] arguments, RimBridgeServer.Sdk.IRimBridgeContext sdkContext, System.Threading.CancellationToken cancellationToken) [0x000a9] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.RimBridgeAsyncScheduler+<>c__DisplayClass5_0.<RunAsync>b__1 (System.Object _) [0x000ce] in <46e27953d7324877a067e7458bf2c0d5>:0 \n--- End of stack trace from previous location where exception was thrown ---\n [0x0000c] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x0003e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00028] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00008] in <51fded79cd284d4d911c5949aff4cb21>:0 \n [0x00000] in <51fded79cd284d4d911c5949aff4cb21>:0 \n  at RimBridgeServer.Core.OperationRunner.RunAsync (System.Func`1[TResult] func, RimBridgeServer.Core.OperationExecutionOptions options) [0x00107] in <5f081ec2db344499a3cc73ddc96ec4ef>:0 "
+         },
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "walker_lays_prints",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/map_info",
+       "result": {
+        "success": true,
+        "tile": 21487,
+        "tileValid": true,
+        "mapId": 2,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "cellCount": 62500,
+        "tileInfo": {
+         "biome": "RM_Stillsand",
+         "hilliness": "Flat",
+         "hillinessInt": 1,
+         "elevation": 657.748657,
+         "rainfall": 1221.89539,
+         "swampiness": 0.325532138,
+         "temperature": 15.0,
+         "pollution": 0.0,
+         "waterCovered": false,
+         "isSurfaceTile": true,
+         "fieldErrors": null
+        },
+        "mapBiome": "RM_Stillsand",
+        "mapBiomeLabel": "the Stillsand",
+        "outdoorTempNow": 33.86533,
+        "latitude": 33.05428,
+        "longitude": 23.9393444,
+        "season": "Summer",
+        "mapParent": {
+         "defName": "Settlement",
+         "label": "Colony",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals"
+        },
+        "playerSettlementsOnThisTile": 1,
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_46d9f5abb4fe424294c0e16ed4d5073e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.2535175+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.3018099+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "clear_area(24)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 184 thing(s) across 576 cell(s).",
+        "cellsExamined": 576,
+        "outOfBounds": 0,
+        "destroyed": 184,
+        "pawnsSkipped": 0,
+        "perCategory": {
+         "Filth": 131,
+         "Item": 53
+        },
+        "samples": [
+         {
+          "x": 113,
+          "z": 113,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 113,
+          "z": 114,
+          "def": "ChunkSandstone",
+          "category": "Item"
+         },
+         {
+          "x": 113,
+          "z": 114,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 113,
+          "z": 115,
+          "def": "ChunkSandstone",
+          "category": "Item"
+         },
+         {
+          "x": 113,
+          "z": 115,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 113,
+          "z": 116,
+          "def": "ChunkSandstone",
+          "category": "Item"
+         },
+         {
+          "x": 113,
+          "z": 116,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         },
+         {
+          "x": 113,
+          "z": 117,
+          "def": "Filth_RubbleRock",
+          "category": "Filth"
+         }
+        ],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_bcab47d9e3fd4a9b9c41a5f8af7944a2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.3528864+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.4014451+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_roof_batch",
+       "result": {
+        "success": true,
+        "message": "Roofed 0 cell(s) across 1 op(s).",
+        "opsRequested": 1,
+        "cellsChanged": 0,
+        "cellsFailedVerify": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {},
+        "errors": [],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_e1273a1b64684565b87482385aec9873",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-roof-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.4024423+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.4514987+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 0 cell(s) changed, 90 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 90,
+        "cellsChanged": 0,
+        "cellsAlreadyCorrect": 90,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": false,
+        "cellsRefreshed": 0,
+        "errors": [],
+        "samples": [
+         {
+          "x": 123,
+          "z": 123,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 124,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 125,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 126,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 127,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 123,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 124,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 125,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_cd9a8f5cecc2406ab8b02e079cc38760",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-terrain-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.5029385+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.55191+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_roof_batch",
+       "result": {
+        "success": true,
+        "message": "Roofed 0 cell(s) across 1 op(s).",
+        "opsRequested": 1,
+        "cellsChanged": 0,
+        "cellsFailedVerify": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {},
+        "errors": [],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_2c5f01eff00c48b7bc892ebee1dbf4eb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-roof-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.6024601+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.6519435+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 90 cell(s) changed, 0 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 90,
+        "cellsChanged": 90,
+        "cellsAlreadyCorrect": 0,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": true,
+        "cellsRefreshed": 90,
+        "errors": [],
+        "samples": [
+         {
+          "x": 123,
+          "z": 129,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 130,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 131,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 132,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 133,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 129,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 130,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 131,
+          "before": "Sand",
+          "after": "Gravel",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_73c078ee393549618e02f38702498f84",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-terrain-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.7024834+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.7515291+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn Colonist hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human105770",
+          "name": "Cait",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_df93ed24ef3843a089d586b529d2a868",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:11.8020724+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.8521965+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": false,
+        "message": "Invalid generic arguments\r\nParameter name: typeArguments",
+        "exception": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE] Duplicate stacktrace, see ref for original",
+        "operation": {
+         "OperationId": "op_15da19d1f0c44061b8580e6f55f88960",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 3,
+         "Success": false,
+         "StartedAtUtc": "2026-10-03T10:54:11.8521965+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:11.9687742+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": false,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": {
+          "Code": "capability.failed",
+          "Message": "Invalid generic arguments\r\nParameter name: typeArguments",
+          "ExceptionType": "System.ArgumentException",
+          "Details": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE] Duplicate stacktrace, see ref for original"
+         },
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "invisible_walker_recorded_flagged",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/map_info",
+       "result": {
+        "success": true,
+        "tile": 21487,
+        "tileValid": true,
+        "mapId": 2,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "cellCount": 62500,
+        "tileInfo": {
+         "biome": "RM_Stillsand",
+         "hilliness": "Flat",
+         "hillinessInt": 1,
+         "elevation": 657.748657,
+         "rainfall": 1221.89539,
+         "swampiness": 0.325532138,
+         "temperature": 15.0,
+         "pollution": 0.0,
+         "waterCovered": false,
+         "isSurfaceTile": true,
+         "fieldErrors": null
+        },
+        "mapBiome": "RM_Stillsand",
+        "mapBiomeLabel": "the Stillsand",
+        "outdoorTempNow": 33.86533,
+        "latitude": 33.05428,
+        "longitude": 23.9393444,
+        "season": "Summer",
+        "mapParent": {
+         "defName": "Settlement",
+         "label": "Colony",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals"
+        },
+        "playerSettlementsOnThisTile": 1,
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_8d7e499fd11d4bb99701ece8e4ed7187",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.0043097+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.0516266+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "clear_area(24)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 576 cell(s); 1 pawn(s) left alone.",
+        "cellsExamined": 576,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 1,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_39eb08433bb347918b5e4c3f19a91f8d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.1017079+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.1511494+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_roof_batch",
+       "result": {
+        "success": true,
+        "message": "Roofed 0 cell(s) across 1 op(s).",
+        "opsRequested": 1,
+        "cellsChanged": 0,
+        "cellsFailedVerify": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {},
+        "errors": [],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_724a762ed72949448e89dc848377b5cc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-roof-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.15214+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.2012986+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 0 cell(s) changed, 90 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 90,
+        "cellsChanged": 0,
+        "cellsAlreadyCorrect": 90,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": false,
+        "cellsRefreshed": 0,
+        "errors": [],
+        "samples": [
+         {
+          "x": 123,
+          "z": 123,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 124,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 125,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 126,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 127,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 123,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 124,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 125,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_df1b39f85ac44f7ea814b2aa0a38b359",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-terrain-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.2523809+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.3013857+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "spawn_pawn Colonist hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human105773",
+          "name": "Elena",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_9557e0be6a0c407d8472bb4c495570e5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.3522869+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.4014187+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_health",
+       "result": {
+        "success": true,
+        "action": "add",
+        "didWhat": "added PsychicInvisibility (whole body)",
+        "partsAvailable": [
+         "Torso",
+         "Ribcage",
+         "Sternum",
+         "Pelvis",
+         "Spine",
+         "Stomach",
+         "Heart",
+         "Lung",
+         "Kidney",
+         "Liver",
+         "Neck",
+         "Head",
+         "Skull",
+         "Brain",
+         "Eye",
+         "Ear",
+         "Nose",
+         "Jaw",
+         "Tongue",
+         "Shoulder"
+        ],
+        "hediffCount": 2,
+        "hediffs": [
+         {
+          "def": "Scratch",
+          "part": "Arm",
+          "severity": 2.0
+         },
+         {
+          "def": "PsychicInvisibility",
+          "part": null,
+          "severity": 1.0
+         }
+        ],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_17d44c9f36a240078d3b83a769bd560b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.4024159+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.451412+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": false,
+        "message": "Invalid generic arguments\r\nParameter name: typeArguments",
+        "exception": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE] Duplicate stacktrace, see ref for original",
+        "operation": {
+         "OperationId": "op_0974faad17a446b9976f79daa3924d04",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 3,
+         "Success": false,
+         "StartedAtUtc": "2026-10-03T10:54:12.5019747+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.6167241+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": false,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": {
+          "Code": "capability.failed",
+          "Message": "Invalid generic arguments\r\nParameter name: typeArguments",
+          "ExceptionType": "System.ArgumentException",
+          "Details": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE] Duplicate stacktrace, see ref for original"
+         },
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "toggle_off_no_prints",
+     "toggle": "tracksEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/map_info",
+       "result": {
+        "success": true,
+        "tile": 21487,
+        "tileValid": true,
+        "mapId": 2,
+        "sizeX": 250,
+        "sizeZ": 250,
+        "cellCount": 62500,
+        "tileInfo": {
+         "biome": "RM_Stillsand",
+         "hilliness": "Flat",
+         "hillinessInt": 1,
+         "elevation": 657.748657,
+         "rainfall": 1221.89539,
+         "swampiness": 0.325532138,
+         "temperature": 15.0,
+         "pollution": 0.0,
+         "waterCovered": false,
+         "isSurfaceTile": true,
+         "fieldErrors": null
+        },
+        "mapBiome": "RM_Stillsand",
+        "mapBiomeLabel": "the Stillsand",
+        "outdoorTempNow": 33.86533,
+        "latitude": 33.05428,
+        "longitude": 23.9393444,
+        "season": "Summer",
+        "mapParent": {
+         "defName": "Settlement",
+         "label": "Colony",
+         "faction": "PlayerColony",
+         "factionName": "New Arrivals"
+        },
+        "playerSettlementsOnThisTile": 1,
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_e9be235fcb5f4518b771a1c0a2a0fb08",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.6521719+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.684404+00:00",
+         "DurationMs": 32,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "clear_area(24)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 576 cell(s); 2 pawn(s) left alone.",
+        "cellsExamined": 576,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 2,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_d7e6a2efe7bf46abbac0c29f0b53258f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.7344766+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.7838695+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_roof_batch",
+       "result": {
+        "success": true,
+        "message": "Roofed 0 cell(s) across 1 op(s).",
+        "opsRequested": 1,
+        "cellsChanged": 0,
+        "cellsFailedVerify": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {},
+        "errors": [],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_30e1d20a23ef48eda55a9c543d84b9cc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-roof-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.7848702+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.8344852+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_terrain_batch",
+       "result": {
+        "success": true,
+        "message": "Applied 1/1 op(s): 0 cell(s) changed, 90 already correct.",
+        "layer": "top",
+        "opsRequested": 1,
+        "opsApplied": 1,
+        "cellsRequested": 90,
+        "cellsChanged": 0,
+        "cellsAlreadyCorrect": 90,
+        "cellsOutOfBounds": 0,
+        "cellsFailedVerify": 0,
+        "refreshed": false,
+        "cellsRefreshed": 0,
+        "errors": [],
+        "samples": [
+         {
+          "x": 123,
+          "z": 123,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 124,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 125,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 126,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 123,
+          "z": 127,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 123,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 124,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         },
+         {
+          "x": 124,
+          "z": 125,
+          "before": "Sand",
+          "after": "Sand",
+          "applied": true
+         }
+        ],
+        "mapSize": {
+         "x": 250,
+         "z": 250
+        },
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_b69d6237482a450db6eac3af9a7c0695",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-terrain-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:12.8845718+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:12.9346346+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings, {'tracksEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "spawn_pawn Colonist hostile=False",
+       "result": {
+        "success": true,
+        "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+        "spawnedCount": 1,
+        "failedCount": 0,
+        "substitutedCount": 0,
+        "xenotypeRequested": null,
+        "pawns": [
+         {
+          "ok": true,
+          "id": "Human105776",
+          "name": "Bennett",
+          "kindRequested": "Colonist",
+          "kindActual": "Colonist",
+          "kindSubstituted": false,
+          "faction": "PlayerColony",
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "xenotype": "Baseliner",
+          "xenotypeRequested": null,
+          "xenotypeApplied": true
+         }
+        ],
+        "ticksGame": 716870,
+        "operation": {
+         "OperationId": "op_895b7e763c474dd4a664257fae0aedc8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:54:13.1989852+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:13.257268+00:00",
+         "DurationMs": 58,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": false,
+        "message": "Invalid generic arguments\r\nParameter name: typeArguments",
+        "exception": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE] Duplicate stacktrace, see ref for original",
+        "operation": {
+         "OperationId": "op_8fa305b7f36b431e9bba9d42b30a8a6d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 3,
+         "Success": false,
+         "StartedAtUtc": "2026-10-03T10:54:13.257268+00:00",
+         "CompletedAtUtc": "2026-10-03T10:54:13.3528995+00:00",
+         "DurationMs": 95,
+         "Result": null,
+         "HasResult": false,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": {
+          "Code": "capability.failed",
+          "Message": "Invalid generic arguments\r\nParameter name: typeArguments",
+          "ExceptionType": "System.ArgumentException",
+          "Details": "System.ArgumentException: Invalid generic arguments\r\nParameter name: typeArguments\r\n[Ref 4631C2AE] Duplicate stacktrace, see ref for original"
+         },
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "UNMEASURED",
+       "result": "could not read RimMandrake.CreatureBehaviors.RM_TrackGridDiag: {'success': False, 'message': 'Invalid generic arguments\\r\\nParameter name: typeArguments', 'exception': 'System.ArgumentException: Invalid generic arguments\\r\\nParameter name: typeArguments\\r\\n[Ref 4"
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 3 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

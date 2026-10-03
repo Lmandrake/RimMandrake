@@ -2233,3 +2233,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"TITANIC_CREATURES_FIRST_SCRIPT_1","ts":"2026-10-03T10:30:30Z","tsn":1791023430639113883}
 {"seat":"FOUNDRY","event":"start","id":"TITANIC_CREATURES_FIRST_SCRIPT_1","ts":"2026-10-03T10:30:31Z","tsn":1791023431131741679}
 {"seat":"FOUNDRY","event":"file","id":"SHIPVERMIN_MYNOCK_KIND_NAME_1","title":"Verify: ShipVermin wreck-nest roster names PawnKind 'Mynock' but the ported species is RSW_Mynock (script reports it red live; with the donor mod absent no nest can spawn a mynock). Read the roster source first; may be a donor-name convention, not a defect","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-03T10:30:59Z","tsn":1791023459035100735}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-03T15:04:09Z","tsn":1791039849768098499}

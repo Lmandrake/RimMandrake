@@ -1,0 +1,1144 @@
+{
+ "chains": [
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "roundtrip_plantPredationEnabled",
+     "toggle": "plantPredationEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "plantPredationEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_89506953f2ea48cb9f0167da463d1b53",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:41.2953927+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:41.4123597+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "plantPredationEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_c7b56842b4e540e3a9e1ee661a6a26ba",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:41.4418934+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:41.5392369+00:00",
+         "DurationMs": 97,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "plantPredationEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_20781a72a4fc4c5f979a079d120fe825",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:41.5914351+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:41.7079525+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "plantPredationEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_9a72119a65d849678bf6c2eb6720bd99",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:41.726983+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:41.8202499+00:00",
+         "DurationMs": 93,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_pollinationGateEnabled",
+     "toggle": "pollinationGateEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "pollinationGateEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_fb20a356d0c94fea9862d8467aba4413",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:41.8488052+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:41.9635802+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "pollinationGateEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_016aa73d8d704dbab8a952956608a752",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:41.9831449+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.0744481+00:00",
+         "DurationMs": 91,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "pollinationGateEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_f9439981498242c08de082bb63340a9d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.1132951+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.2280814+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "pollinationGateEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_afa4867aaed140ee9180a0409eb42bd2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.2631389+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.378734+00:00",
+         "DurationMs": 115,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_strandedDeformationEnabled",
+     "toggle": "strandedDeformationEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "strandedDeformationEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_83667b700906487585b3de0d5af0f2d2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.3922439+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.5068108+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "strandedDeformationEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_72b36c47f85c4617ad0410204ca5068c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.5220588+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.635374+00:00",
+         "DurationMs": 113,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "strandedDeformationEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_2982b3ff0fc3486f89881bde45890673",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.6578958+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.7650735+00:00",
+         "DurationMs": 107,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "strandedDeformationEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_943e0a7c308d48018f055f5a800674ae",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.782589+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:42.8894241+00:00",
+         "DurationMs": 106,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_strandedDeformationChance",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "strandedDeformationChance",
+        "fieldKind": "static",
+        "value": "0.25",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_5a170ac167aa4a46bb309c406842ab51",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:42.924964+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.0404572+00:00",
+         "DurationMs": 115,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "strandedDeformationChance",
+        "fieldKind": "static",
+        "valueBefore": "0.25",
+        "valueAfter": "0.5",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_e3b830c32f78485e90435b52dbf8c7ac",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.0745083+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.1888711+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "strandedDeformationChance",
+        "fieldKind": "static",
+        "value": "0.5",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_85c0fc74bb614b97aa29feed56671911",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.218394+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.3153243+00:00",
+         "DurationMs": 96,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "strandedDeformationChance",
+        "fieldKind": "static",
+        "valueBefore": "0.5",
+        "valueAfter": "0.25",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_a3090d7f7d94439eaef439087e426a4f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.3520701+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.4659724+00:00",
+         "DurationMs": 113,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_ambushFrogHunts",
+     "toggle": null,
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "ambushFrogHunts",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_ac58493e1f6444d0ba33af63f9b4037e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.501105+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.6142576+00:00",
+         "DurationMs": 113,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "ambushFrogHunts",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_fa72590e385142eaa598cfed37b16fdd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.6417866+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.7394032+00:00",
+         "DurationMs": 97,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "ambushFrogHunts",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_7c60ef50dbf94f79b4af34e48b27c3da",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.7730743+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:43.8892795+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "ambushFrogHunts",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_2e96784856e8435bafefc86fa6e354b6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:43.9188093+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.017673+00:00",
+         "DurationMs": 98,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_attarEnabled",
+     "toggle": "attarEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_425934c4aa6e4f9c9fd68a513a33acc7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.0520884+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.1651997+00:00",
+         "DurationMs": 113,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1a0467223a8f4c78868fc8f739f73ae0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.1827354+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.2966651+00:00",
+         "DurationMs": 113,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_642ce70d6f6d4ad98159ba0e369fe030",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.3305676+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.4490126+00:00",
+         "DurationMs": 118,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "attarEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_8ff5f137bf9947a5b7a9f3544cdb5f00",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.4800586+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.6060403+00:00",
+         "DurationMs": 125,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roundtrip_youngCallEnabled",
+     "toggle": "youngCallEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "youngCallEnabled",
+        "fieldKind": "static",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_4025ed2496e9497c8c41981d4ecbeb56",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.6120698+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.6959108+00:00",
+         "DurationMs": 83,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "youngCallEnabled",
+        "fieldKind": "static",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_a3d86c3de01b4b04b0a3fa3bacefde03",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.7480035+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:44.8621614+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "youngCallEnabled",
+        "fieldKind": "static",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_ebbdee9754ab427584e2bf40343baaf5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:44.9067276+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:45.0208595+00:00",
+         "DurationMs": 114,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "youngCallEnabled",
+        "fieldKind": "static",
+        "valueBefore": "False",
+        "valueAfter": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_c39654e9c0ce4ef89da0e4b223b2d268",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-03T10:15:45.0554013+00:00",
+         "CompletedAtUtc": "2026-10-03T10:15:45.1722545+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "switches_gate_mechanics",
+   "components": [
+    {
+     "name": "mechanics_stop_with_switch_off",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: predation (plant beside a wild scuttler), the pollination gate (worldgen plant pass) and stranded deformation (a stranding pool) each need a live Miasma quicktest map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "salt_crust_free_tier",
+   "components": [
+    {
+     "name": "salt_crust_paints_without_campaign",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: no 'Could not resolve' for a salt crust and a surge recede repainting land to RM_MiasmaSaltCrust need a tier without mandrake.rut.patches and a live Miasma map (also a bar for MIASMA_FIRST_SCRIPT_1)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "nursery_young_free_tier",
+   "components": [
+    {
+     "name": "four_young_def_and_strand",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a recede on a free-only tier stranding at least one of them (spawn many), need a live Miasma map with the bridge",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "young_call",
+   "components": [
+    {
+     "name": "cry_and_mother_heads_for_water",
+     "toggle": "youngCallEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: a placed stranded young emitting the cry, and its warden mother's CurJob target moving toward it and stopping at the water edge, need a live Miasma quicktest map with the bridge",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "ambush_frog_free_tier",
+   "components": [
+    {
+     "name": "bozzuga_defs_and_hunts",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live Miasma quicktest map with the bridge",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "swarm_composter_free_tier",
+   "components": [
+    {
+     "name": "swarm_karrobel_spawn_and_gate",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: jawa/get_defs foundCount 3 on RM_FeverSwarm/RM_Karrobel/RM_DeltaLoam, both creatures spawning on a free-only Miasma map, and a gated mangal (RM_Thessamor) not spreading where no swarm lives, need a live Miasma quicktest map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "flotsam_yard",
+   "components": [
+    {
+     "name": "flotsam_after_surge_in_root_lines",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: flotsam stacks standing on root-line cells after a debug surge and recede (and none on dry inland ground) need a live Miasma quicktest map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "attar_glaze_and_balm",
+   "components": [
+    {
+     "name": "attar_recipe_glaze_balm",
+     "toggle": "attarEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_MakeAttar resolves on RM_AttarStill, a glazed sculpture's Beauty stat rises by 3, and a balmed pawn's permanent scar fades while no non-permanent injury changes; each needs a live Miasma quicktest map with an artwork and a scarred pawn",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}
