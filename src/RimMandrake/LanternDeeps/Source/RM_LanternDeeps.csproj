@@ -58,6 +58,7 @@
     <Compile Include="DeepFloraPlanter.cs" />
     <Compile Include="LanternDeepsMod.cs" />
     <Compile Include="RM_WorkingDead.cs" />
+    <Compile Include="RM_OrunGhal.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LanternDeeps · LANTERNDEEPS_ORUN_GHAL_BUILD_1 -->
+<Defs>
+  <JobDef>
+    <defName>RM_StudyOrunGhal</defName>
+    <driverClass>RimMandrake.LanternDeeps.RM_JobDriver_StudyOrunGhal</driverClass>
+    <reportString>studying TargetA.</reportString>
+  </JobDef>
+</Defs>

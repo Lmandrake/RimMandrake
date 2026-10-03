@@ -62,6 +62,9 @@ namespace RimMandrake.LanternDeeps
         public static bool shardMindsEnabled = true;            // new Deeps: Shard-minds grow
         public static bool workingDeadAnimateEnabled = true;    // live: chassis near a Shard-mind stand and work
         public static bool shardMindDroidPullEnabled = true;    // live: colony droids near one stop and listen
+        // LANTERNDEEPS_ORUN_GHAL_BUILD_1
+        public static bool orunGhalEnabled = true;              // new Deeps: one Orun-Ghal; live: it walks its rounds
+        public static bool orunGhalStudyEnabled = true;         // live: colonists study and befriend it
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -182,6 +185,8 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref shardMindsEnabled, "shardMindsEnabled", true);
             Scribe_Values.Look(ref workingDeadAnimateEnabled, "workingDeadAnimateEnabled", true);
             Scribe_Values.Look(ref shardMindDroidPullEnabled, "shardMindDroidPullEnabled", true);
+            Scribe_Values.Look(ref orunGhalEnabled, "orunGhalEnabled", true);
+            Scribe_Values.Look(ref orunGhalStudyEnabled, "orunGhalStudyEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -269,6 +274,14 @@ namespace RimMandrake.LanternDeeps
             list.CheckboxLabeled("Colony droids near a Shard-mind stop to listen", ref shardMindDroidPullEnabled,
                 "On: now and then a droid of yours near a Shard-mind stops what it is doing and stands facing it for a while "
               + "(drafting breaks it). Off: droids ignore it. Safe mid-game.");
+            list.CheckboxLabeled("Orun-Ghal lives in the Deeps", ref orunGhalEnabled,
+                "On: a newly generated Deep holds Orun-Ghal, a huge dead mining suit worn and walked by the Shard-minds, its miner's "
+              + "skeleton still inside. It never mines and never attacks; it walks its rounds between the Shard-minds and any lit "
+              + "Lantern. Off: none in new Deeps, and one already there only wanders like an animal.");
+            list.CheckboxLabeled("Orun-Ghal can be studied and befriended", ref orunGhalStudyEnabled,
+                "On: a colonist doing research work visits it once a day and studies it (it stands still for the visit). Study "
+              + "reveals what the crystals are and want; each visit on a new day raises its standing, and as it comes to know "
+              + "you it walks over to your people. Off: no study work. Safe mid-game.");
 
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();
