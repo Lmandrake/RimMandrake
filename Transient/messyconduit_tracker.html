@@ -1,0 +1,90 @@
+<title>Messy Conduit Tracker</title>
+<style>
+/* Layout: a header with a done/total gauge, then four status columns (Doing, Next, Blocked, Done) that stack on a phone. Palette follows the owner's warm 70s brown. */
+:root {
+  --bg: #f3ece1; --panel: #fbf7f0; --fg: #2e2218; --muted: #7a6753; --line: #dccfbc;
+  --accent: #b5561f; --doing: #b5561f; --todo: #5f6b3a; --blocked: #9b2d2d; --done: #6a7b8c;
+  --font-display: "Bitter", Georgia, serif; --font-body: "IBM Plex Sans", system-ui, sans-serif; --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #201710; --panel: #2b2017; --fg: #efe3d2; --muted: #a8957f; --line: #44352a;
+  --accent: #e08a4f; --doing: #e08a4f; --todo: #9db06a; --blocked: #e0706a; --done: #8aa0b5; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #201710; --panel: #2b2017; --fg: #efe3d2; --muted: #a8957f; --line: #44352a;
+  --accent: #e08a4f; --doing: #e08a4f; --todo: #9db06a; --blocked: #e0706a; --done: #8aa0b5; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 15px; line-height: 1.45; padding-inline: 16px; padding-block: 20px 40px; }
+main { max-width: 1100px; margin: 0 auto; }
+header { display: flex; flex-wrap: wrap; gap: 8px 24px; align-items: end; justify-content: space-between; margin-bottom: 20px; }
+h1 { font-family: var(--font-display); font-size: 1.9rem; margin: 0; text-wrap: balance; }
+.sub { color: var(--muted); font-family: var(--font-mono); font-size: 12px; letter-spacing: .04em; }
+.gauge { min-width: 220px; flex: 1 1 220px; max-width: 360px; }
+.gauge .bar { height: 10px; background: var(--line); border-radius: 5px; overflow: hidden; display: flex; }
+.gauge .bar i { display: block; height: 100%; }
+.gauge .lbl { font-family: var(--font-mono); font-size: 12px; color: var(--muted); margin-top: 4px; font-variant-numeric: tabular-nums; }
+.cols { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 900px) { .cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .cols { grid-template-columns: minmax(0, 1fr); } }
+.col h2 { font-family: var(--font-mono); font-size: 12px; text-transform: uppercase; letter-spacing: .1em; margin: 0 0 8px; display: flex; justify-content: space-between; border-bottom: 2px solid var(--c); padding-bottom: 4px; }
+.col { --c: var(--muted); }
+.col.doing { --c: var(--doing); } .col.todo { --c: var(--todo); } .col.blocked { --c: var(--blocked); } .col.done { --c: var(--done); }
+.items { display: flex; flex-direction: column; gap: 8px; }
+.item { background: var(--panel); border: 1px solid var(--line); border-radius: 4px; padding: 10px 12px; min-width: 0; overflow-wrap: anywhere; }
+.item b { font-weight: 600; display: block; }
+.item .note { color: var(--muted); font-size: 13px; margin-top: 3px; }
+.item .meta { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 6px; }
+.empty { color: var(--muted); font-size: 13px; font-style: italic; padding: 6px 0; }
+#status { color: var(--muted); font-family: var(--font-mono); font-size: 12px; margin-top: 18px; }
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600&family=IBM+Plex+Mono&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<main>
+  <header>
+    <div>
+      <h1>Messy Conduit</h1>
+      <div class="sub">mandrake.rm.messyconduit &middot; live tracker, updated from the FOUNDRY session</div>
+    </div>
+    <div class="gauge" aria-label="progress">
+      <div class="bar" id="bar"></div>
+      <div class="lbl" id="lbl">loading</div>
+    </div>
+  </header>
+  <div class="cols" id="cols"></div>
+  <div id="status">connecting to the tracker store...</div>
+</main>
+<script>
+(function () {
+  var COLS = [["doing", "Doing"], ["todo", "Next"], ["blocked", "Blocked"], ["done", "Done"]];
+  var colsEl = document.getElementById("cols");
+  function esc(s) { var d = document.createElement("div"); d.textContent = s == null ? "" : String(s); return d.innerHTML; }
+  function render(rows) {
+    var by = { doing: [], todo: [], blocked: [], done: [] };
+    rows.forEach(function (r) { (by[r.status] || by.todo).push(r); });
+    Object.keys(by).forEach(function (k) { by[k].sort(function (a, b) { return (a.order || 0) - (b.order || 0); }); });
+    colsEl.innerHTML = COLS.map(function (c) {
+      var list = by[c[0]];
+      var body = list.length ? list.map(function (r) {
+        return '<div class="item"><b>' + esc(r.title) + '</b>' + (r.note ? '<div class="note">' + esc(r.note) + '</div>' : '') +
+          ((r.ref || r.sha) ? '<div class="meta">' + esc([r.ref, r.sha].filter(Boolean).join(" · ")) + '</div>' : '') + '</div>';
+      }).join("") : '<div class="empty">nothing here</div>';
+      return '<section class="col ' + c[0] + '"><h2><span>' + c[1] + '</span><span>' + list.length + '</span></h2><div class="items">' + body + '</div></section>';
+    }).join("");
+    var n = rows.length, d = by.done.length, g = by.doing.length, b = by.blocked.length;
+    var pct = function (x) { return n ? (100 * x / n) : 0; };
+    document.getElementById("bar").innerHTML =
+      '<i style="width:' + pct(d) + '%;background:var(--done)"></i><i style="width:' + pct(g) + '%;background:var(--doing)"></i><i style="width:' + pct(b) + '%;background:var(--blocked)"></i>';
+    document.getElementById("lbl").textContent = d + " of " + n + " done · " + g + " doing · " + b + " blocked";
+  }
+  render([]);
+  document.getElementById("lbl").textContent = "no items yet";
+  var st = document.getElementById("status");
+  (async function () {
+    var db = null;
+    try { db = await window.claude.use("db"); } catch (e) { db = null; }
+    if (!db) { st.textContent = "The tracker store is not available in this view. Sign in to see live items."; return; }
+    db.collection("todos").onSnapshot(function (snap) {
+      render(snap.docs.map(function (d) { return d.data() || {}; }));
+      st.textContent = "live · last update " + new Date().toLocaleTimeString();
+    }, function (e) { st.textContent = "Could not read the tracker store: " + (e && e.code || "error"); });
+  })();
+})();
+</script>

@@ -1,4 +1,4 @@
-"""J5 (STUB): FlowWorks motion frames -- capture a frame SEQUENCE of a canal filling from a limitless source.
+"""motion_frames (STUB): FlowWorks motion frames -- capture a frame SEQUENCE of a canal filling from a limitless source.
 
 Bars this feeds (FlowWorks north star, all about CHANGE, which one still frame cannot show):
 canal_fill_front_watchable, canal_fill_spreads_along_itself. The other motion bars (reservoir_fill_visibly_drops,
@@ -96,10 +96,10 @@ def fake_world():
     import common
     from rimdrive.fake import FakeWorld, pawn_row
     w = FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103)])
-    w.shot_dir = os.path.join(common.DRY_OUTDIR, "J5_fake_shots")
+    w.shot_dir = os.path.join(common.DRY_OUTDIR, "motion_frames_fake_shots")
     os.makedirs(w.shot_dir, exist_ok=True)
     return w
 
 
 if __name__ == "__main__":
-    sys.exit(main("J5_motion_frames", body, fake_builder=fake_world))
+    sys.exit(main("motion_frames", body, fake_builder=fake_world))

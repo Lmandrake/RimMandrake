@@ -26,7 +26,7 @@ python.exe src/RimMandrake/Utils/modcheck/live_queue/run_next.py --all
 - A job counts as **done** once its latest live record is `MEASURED`, whether PASS or FAIL. A measured FAIL
   is a finding, not a reason to re-run.
 - An `UNMEASURED` job is offered again. `--all` moves past it instead of idling on it.
-- `--list` shows the queue state. `--job J3` runs one job regardless of state. `--dry-run` rehearses on
+- `--list` shows the queue state. `--job bland_tile` runs one job regardless of state. `--dry-run` rehearses on
   FakeWorld, and its results and outputs go to the temp dir, never to the repo.
 - Exit codes: 0 PASS, 1 FAIL, 2 UNMEASURED, 3 queue done.
 
@@ -35,7 +35,7 @@ reach it.
 
 ## Session setup (once, before launch; WSL `python3`)
 
-1. `rimflow bridge who`, then `rimflow bridge take --for "northstar live queue J0-J5"`.
+1. `rimflow bridge who`, then `rimflow bridge take --for "northstar live queue preflight..motion_frames"`.
 2. If RimWorld is running, quit it. The next step refuses while it runs.
 3. `python3 src/RimMandrake/Utils/modcheck/live_queue/prep_wsl.py --apply`. This does three things:
    - runs `modlist_swap --minimal --apply`, which captures FULL first;
@@ -47,20 +47,20 @@ reach it.
    Pyrelands, ResearchRetag, ShipMemory, StarWarsRaces, StructureInjections. Run it with no flags to see the
    plan only.
 4. Check the companion DLL is the one carrying `JawaBenchSituationalTools.cs` (it is deployed from
-   `bridgetools/build.py --gm --apply`). J0 checks this live and FAILs if it is not.
+   `bridgetools/build.py --gm --apply`). preflight checks this live and FAILs if it is not.
 5. Launch through Steam, never the bare exe:
    `powershell.exe -NoProfile -Command "Start-Process 'steam://rungameid/294100'"`. Then run the queue.
-   J0 starts the quicktest map itself if none is Playing.
+   preflight starts the quicktest map itself if none is Playing.
 
 ## Jobs
 
-The jobs run in this order, all inside one game session. J3 leaves the bland map **current**, so J4 and J5
+The jobs run in this order, all inside one game session. bland_tile leaves the bland map **current**, so companion_live and motion_frames
 run on it.
 
-### J0 preflight — `j0_preflight.py`
+### preflight preflight — `preflight.py`
 Checks that this game session is the one the queue needs:
 - a Playing map exists (it runs `runner.ensure_playing_map`, which starts the quicktest world if needed);
-- every tool the queue drives is in the live tool census, including J5's FlowWorks reads;
+- every tool the queue drives is in the live tool census, including motion_frames's FlowWorks reads;
 - `jawa/pawn_census` answers;
 - the damage recorder has both its hooks installed;
 - every suite mod is in the live `ModsConfig` activeMods (parsed with ElementTree, never grepped).
@@ -68,11 +68,11 @@ Checks that this game session is the one the queue needs:
 **Fails when** a tool is missing, the recorder is not installed, or a suite mod is not active. If so, the
 deploy or the compose did not take: fix that, then re-launch.
 
-### J1 situational re-run of every suite — `j1_situational_rerun.py`
+### situational_rerun situational re-run of every suite — `situational_rerun.py`
 Runs `runner.run_suite(..., situational=True, policy="abort")` for every suite. It calls it directly,
 because the swap, deploy and compose already happened in setup. This uses the fixed runner (`f9d1b4c70`),
 under which python.exe runs end to end and Antiquities' reading chain declares `tick_cap`. Each mod's
-summary goes to `Transient/modcheck/live_queue/J1_situational_rerun/<Mod>_summary.json`, and the record
+summary goes to `Transient/modcheck/live_queue/situational_rerun/<Mod>_summary.json`, and the record
 carries a digest per mod (refused, verdict counts, surprises, serious detectors).
 
 **Fails when** any of these happens:
@@ -85,14 +85,14 @@ carries a digest per mod (refused, verdict counts, surprises, serious detectors)
 Surprises are **listed, not failed**. Deciding whether a hit is the chain's own act is a reading of that
 chain. For example, Ninefold's induced mental break was a false surprise on 10-01. The fix for that is a
 declared expectation in the suite: `t.expect("mental", {...})`, or `"incident"` for a scheduled incident.
-Both kinds are new and come from J4.
+Both kinds are new and come from companion_live.
 
-⚠️ The detectors now read the companion directly (J4). That can surface **new** surprises in suites that
+⚠️ The detectors now read the companion directly (companion_live). That can surface **new** surprises in suites that
 damage or break their own colonists on purpose. Before filing any surprise from the `colonist_damaged`,
 `predator_hunting`, `mental_break` or `incident_queued` detectors, check whether the chain caused it.
 `--mods A,B` re-runs a subset after a fix.
 
-### J2 abort-path proof — `j2_abort_proof.py`
+### abort_proof abort-path proof — `abort_proof.py`
 The abort path has never fired live: no real hazard occurred in the 10-01 pass. Each case opens its own
 Watch, which does the bland prep and takes a baseline. The case then applies ONE hazard and sweeps, either
 with `check()` or a short wait. The next case's bland prep cleans up after it: it kills hostiles and
@@ -113,9 +113,9 @@ wildlife, extinguishes fires, calms pawns and resurrects the dead.
 
 **Fails when** a hazard does not abort, aborts with kind `harness`, aborts on the wrong detector, leaves no
 sidecar json, or leaves the game unpaused. It also fails when any control aborts. The evidence is under
-`Transient/modcheck/live_queue/J2_abort_proof/<case>/`.
+`Transient/modcheck/live_queue/abort_proof/<case>/`.
 
-### J3 bland tile — `j3_bland_tile.py` (NORTHSTAR_BLAND_TILE_1)
+### bland_tile bland tile — `bland_tile.py` (NORTHSTAR_BLAND_TILE_1)
 **The quicktest world is re-rolled every launch.** Tile 4375 was bland on 10-01, but that is only a
 preference. Each run picks the tile again:
 
@@ -141,7 +141,7 @@ Untested live: whether `world_tile_map_generate` builds the map for the Settleme
 just placed. If it refuses, the job reports UNMEASURED with the tool's message. Next step after that: run
 `world_tile_map_generate` first and settle second.
 
-### J4 companion detectors live — `j4_companion_live.py`
+### companion_live companion detectors live — `companion_live.py`
 This is the live half of the companion detector work. The offline half is
 `modcheck/selftest_companion_detectors.py` (16/16 on FakeWorld).
 
@@ -170,7 +170,7 @@ This job checks each detector's **evidence**, not just its name:
 
 **Fails when** a direct-read detector does not fire, or fires without its direct-read evidence.
 
-### J5 FlowWorks motion-frames capture (stub) — `j5_motion_frames.py`
+### motion_frames FlowWorks motion-frames capture (stub) — `motion_frames.py`
 This job **captures only. Nothing is judged.** The owner deferred the frame-sequence judge on 2026-09-17,
 as recorded in `NORTHSTAR_MOTION_FRAMES_1`: *"file it as TBD ... until we can play with it live first"*.
 
@@ -179,7 +179,7 @@ The setup is FlowWorks plot C, built through the suite's own helpers (`_prep_plo
 8 frames of the same cell rect, one per engine pulse (250 ticks), and reads each frame's fill vector from
 `flowworks_excavation_report`.
 
-It writes `Transient/modcheck/live_queue/J5_motion_frames/motion_manifest.json` for the owner to look at.
+It writes `Transient/modcheck/live_queue/motion_frames/motion_manifest.json` for the owner to look at.
 That file holds the frames, ticks and fill vectors, and names the bars
 `canal_fill_front_watchable` and `canal_fill_spreads_along_itself`.
 
@@ -191,7 +191,7 @@ reservoir draw-down, shoreline recession, tar lagging water, and a pawn lowering
 ## Teardown
 
 1. Look at the queue state with `run_next.py --list`. File each MEASURED FAIL as a finding against its item:
-   J1 against NORTHSTAR_SITUATIONAL_ROLLOUT_1, J3 against NORTHSTAR_BLAND_TILE_1, J2 and J4 against
+   situational_rerun against NORTHSTAR_SITUATIONAL_ROLLOUT_1, bland_tile against NORTHSTAR_BLAND_TILE_1, abort_proof and companion_live against
    NORTHSTAR_COMPANION_GAPS_1.
 2. Quit the game, then `python3 src/RimMandrake/Utils/modcheck/live_queue/prep_wsl.py --restore`.
 3. `rimflow bridge release`.
@@ -199,6 +199,6 @@ reservoir draw-down, shoreline recession, tar lagging water, and a pawn lowering
    `Transient/modcheck/live_queue/` with explicit paths.
 
 Flip `--situational` to the default (NORTHSTAR_SITUATIONAL_ROLLOUT_1) only once all of these hold:
-- J2 is MEASURED PASS (the abort path is proven live);
-- J1 is MEASURED with every surprise attributed;
-- J4 is MEASURED PASS.
+- abort_proof is MEASURED PASS (the abort path is proven live);
+- situational_rerun is MEASURED with every surprise attributed;
+- companion_live is MEASURED PASS.

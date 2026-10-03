@@ -1,4 +1,4 @@
-"""J1: `--situational --policy abort` re-run of every registered suite, in ONE session, on the fixed runner.
+"""situational_rerun: `--situational --policy abort` re-run of every registered suite, in ONE session, on the fixed runner.
 
 Calls runner.run_suite directly (the swap/deploy/compose half of runner.run() is WSL-side and was done once by
 prep_wsl.py before launch). Per mod it writes <outdir>/<Mod>_summary.json; the record carries a per-mod digest.
@@ -104,7 +104,7 @@ def body(s, job):
                 crashed.append("%s: load: %s" % (m, e))
     use_world = "--bland-world" in argv
     if use_world:
-        # the J3 recipe once, then bland_world.reset() between suites (no relaunch)
+        # the bland_tile recipe once, then bland_world.reset() between suites (no relaunch)
         import bland_world
         info = bland_world.setup(s, log=lambda *a: print("     bland_world:", *a))
         job.note("bland_world_setup", info)
@@ -129,4 +129,4 @@ def body(s, job):
 
 
 if __name__ == "__main__":
-    sys.exit(main("J1_situational_rerun", body))
+    sys.exit(main("situational_rerun", body))

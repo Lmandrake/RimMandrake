@@ -1,7 +1,7 @@
 """Shared plumbing for the northstar live job queue (design/RimMandrake/northstar_live_queue_2026-10-01.md).
 
-Every job is one file `jN_*.py` with a `body(session, job)` and runs as
-    python.exe src/RimMandrake/Utils/modcheck/live_queue/jN_x.py [--dry-run]
+Every job is one file `<job_id>.py` with a `body(session, job)` and runs as
+    python.exe src/RimMandrake/Utils/modcheck/live_queue/<job_id>.py [--dry-run]
 It prints exactly one verdict line, `MEASURED PASS|FAIL <job> ...` or `UNMEASURED <job> ...`, and appends one
 JSON line to the results file. `--dry-run` drives rimdrive.fake.FakeWorld instead of the bridge and writes to a
 separate dry-run results file, so a rehearsal can never mark a live job done.
@@ -9,6 +9,8 @@ separate dry-run results file, so a rehearsal can never mark a live job done.
 MEASURED means the job read the game and every check it needed was answered; its verdict is PASS only if every
 check passed. UNMEASURED means it could not ask (bridge down, tool missing, setup refused) -- that is never a
 FAIL against anything, and run_next.py offers the job again.
+
+Old ids (renamed 2026-10-03): J0_preflight=preflight J1_situational_rerun=situational_rerun J2_abort_proof=abort_proof J3_bland_tile=bland_tile J4_companion_live=companion_live J5_motion_frames=motion_frames J6_bland_base=bland_base (jobs.OLD_IDS maps history).
 """
 import contextlib
 import json

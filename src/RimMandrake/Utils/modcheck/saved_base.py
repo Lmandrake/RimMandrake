@@ -2,7 +2,7 @@
 
 Owner 2026-10-01: suites run back to back on one dirty world (corpses, blood, 21 colonists, 'Forced weather'
 alert spam, leftover hediffs) and the colony-naming dialogs re-raise every 1000 ticks (Faction.FactionTick,
-TicksGame % 1000 == 200) until named. So: build the bland world ONCE (j6_bland_base.py), name the colony,
+TicksGame % 1000 == 200) until named. So: build the bland world ONCE (bland_base.py), name the colony,
 assert_bland, save it as BLAND_NORTHSTAR_BASE, and `world_reset()` = LOAD that save.
 
   induce_and_finish_naming(s)  name faction+settlement directly (jawa/name_colony == what the dialogs' OK does),
@@ -107,7 +107,7 @@ def cleanup(s, keep_colonists=3):
     steps["fires_extinguished"] = s.call("jawa/map_fire", action="extinguish",
                                          rect="0,0,%d,%d" % (250, 250)).get("firesExtinguished")
     steps["non_colonists_destroyed"] = s.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False).get("matchedCount")
-    # UNVERIFIED live: category names for corpses/filth in destroy_batch (J3 proved only "Building,Item")
+    # UNVERIFIED live: category names for corpses/filth in destroy_batch (bland_tile proved only "Building,Item")
     info = s.call("jawa/map_info")
     n = int(info.get("sizeX", 250))
     steps["corpses_filth"] = bool(s.call("jawa/destroy_batch", rects="0,0,%d,%d" % (n, int(info.get("sizeZ", n))),

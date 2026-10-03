@@ -65,17 +65,17 @@ def main():
         # ---- criteria can FAIL
         def no_census(w):
             w._t_jawa_pawn_census = lambda **k: {"success": False, "message": "absent"}
-        rec = run_body("j0_preflight", no_census)
-        check("J0 FAILs when the companion does not answer", rec["verdict"] == "FAIL", rec["failed"])
+        rec = run_body("preflight", no_census)
+        check("preflight FAILs when the companion does not answer", rec["verdict"] == "FAIL", rec["failed"])
 
-        import j1_situational_rerun as j1
-        jb = common.Job("j1_judge_selftest", dry_run=True)
+        import situational_rerun as rerun
+        jb = common.Job("judge_selftest", dry_run=True)
         bad = [{"mod": "FlowWorks", "refused": "validated must-show lines no component claims: x", "budget_unmeasured": [],
                 "unbland_chains": [], "surprises": [{"chain": "c", "sidecar": "/nonexistent.json", "png": None}]},
                {"mod": "Antiquities", "refused": "", "budget_unmeasured": ["reading/x"], "unbland_chains": ["reading"],
                 "surprises": []}]
-        j1.judge(jb, bad, ["Ninefold: KeyError: x"])
-        check("J1 judge FAILs each of: crash, FlowWorks refused, budget, unbland, missing evidence",
+        rerun.judge(jb, bad, ["Ninefold: KeyError: x"])
+        check("situational_rerun judge FAILs each of: crash, FlowWorks refused, budget, unbland, missing evidence",
               [c["ok"] for c in jb.checks] == [False] * 5, jb.checks)
 
         def blind_hostiles(w):
@@ -90,30 +90,30 @@ def main():
             w._t_jawa_spawn_pawn = spawn
             w._t_jawa_ordered_job = lambda **k: {"success": True, "accepted": True}   # the hunt never starts
             w._t_jawa_incident_schedule = lambda **k: {"success": True}                # nothing queued
-        rec = run_body("j2_abort_proof", blind_hostiles)
-        check("J2 FAILs when hazards do not reach the detectors",
+        rec = run_body("abort_proof", blind_hostiles)
+        check("abort_proof FAILs when hazards do not reach the detectors",
               rec["verdict"] == "FAIL" and "hazard hostile_raid: aborts via hostile_pawns with sidecar on disk, game paused"
               in rec["failed"] and any("predator" in f for f in rec["failed"]), rec["failed"])
 
         def noisy(w):
             w.at(w.ticks + 300, lambda W: W.add_fire(100, 100))   # a fire nobody asked for, inside the quiet control
-        rec = run_body("j2_abort_proof", noisy)
-        check("J2 FAILs when the quiet control is not quiet", any("control_quiet" in f for f in rec["failed"]), rec["failed"])
+        rec = run_body("abort_proof", noisy)
+        check("abort_proof FAILs when the quiet control is not quiet", any("control_quiet" in f for f in rec["failed"]), rec["failed"])
 
         def wildlife_stays(w):
             w._t_jawa_destroy_bulk = lambda **k: {"success": True, "matchedCount": 0, "destroyed": []}
-        rec = run_body("j3_bland_tile", wildlife_stays)
-        check("J3 FAILs when the arrival wildlife is not cleared", "no wildlife left on the map" in rec["failed"], rec["failed"])
+        rec = run_body("bland_tile", wildlife_stays)
+        check("bland_tile FAILs when the arrival wildlife is not cleared", "no wildlife left on the map" in rec["failed"], rec["failed"])
 
         def roads(w):
             w.tile_overrides = {4375: {"roadCount": 1}}
-        rec = run_body("j3_bland_tile", roads)
-        check("J3 FAILs when the only candidate tile carries a road", rec["verdict"] == "FAIL", rec["failed"])
+        rec = run_body("bland_tile", roads)
+        check("bland_tile FAILs when the only candidate tile carries a road", rec["verdict"] == "FAIL", rec["failed"])
 
         def no_damage_log(w):
             w.recorder_installed = False
-        rec = run_body("j4_companion_live", no_damage_log)
-        check("J4 FAILs when damage_log cannot be read (no direct read -> no colonist_damaged)",
+        rec = run_body("companion_live", no_damage_log)
+        check("companion_live FAILs when damage_log cannot be read (no direct read -> no colonist_damaged)",
               rec["verdict"] == "FAIL" and any("damage" in f for f in rec["failed"]), rec["failed"])
 
         def frozen_frames(w):
@@ -126,14 +126,14 @@ def main():
                     f.write(png)
                 return {"success": True, "path": p}
             w._t_rimworld_take_screenshot = shot
-        rec = run_body("j5_motion_frames", frozen_frames)
-        check("J5 FAILs when every frame is byte-identical", "frames are not all byte-identical" in rec["failed"], rec["failed"])
+        rec = run_body("motion_frames", frozen_frames)
+        check("motion_frames FAILs when every frame is byte-identical", "frames are not all byte-identical" in rec["failed"], rec["failed"])
 
         # ---- saved_base: naming, save proof, load-reset, cleanup fallback
         import saved_base as BW
         for n_ in os.listdir(sv):
             if n_ != 'keeper.rws':
-                os.remove(os.path.join(sv, n_))      # J6's dry run wrote the base; start the unit tests clean
+                os.remove(os.path.join(sv, n_))      # bland_base's dry run wrote the base; start the unit tests clean
         from rimdrive.fake import FakeWorld, pawn_row
         def clean_world():
             w = FakeWorld(pawns=[pawn_row("Col1"), pawn_row("Col2", x=103), pawn_row("Col3", x=106)])
@@ -190,12 +190,12 @@ def main():
 
         # ---- run_next: order, skip-past-UNMEASURED, done
         open(res, "w").close()
-        check("empty results -> next is J0", jobs.next_job(path=res)["id"] == "J0_preflight")
+        check("empty results -> next is preflight", jobs.next_job(path=res)["id"] == "preflight")
         with open(res, "a") as f:
-            f.write(json.dumps({"job": "J0_preflight", "status": "MEASURED", "verdict": "PASS"}) + "\n")
-            f.write(json.dumps({"job": "J1_situational_rerun", "status": "UNMEASURED", "verdict": None}) + "\n")
-        check("J0 done, J1 UNMEASURED -> next is J1 again", jobs.next_job(path=res)["id"] == "J1_situational_rerun")
-        check("--all skips past an UNMEASURED job", jobs.next_job(path=res, skip={"J1_situational_rerun"})["id"] == "J2_abort_proof")
+            f.write(json.dumps({"job": "preflight", "status": "MEASURED", "verdict": "PASS"}) + "\n")
+            f.write(json.dumps({"job": "situational_rerun", "status": "UNMEASURED", "verdict": None}) + "\n")
+        check("preflight done, situational_rerun UNMEASURED -> next is situational_rerun again", jobs.next_job(path=res)["id"] == "situational_rerun")
+        check("--all skips past an UNMEASURED job", jobs.next_job(path=res, skip={"situational_rerun"})["id"] == "abort_proof")
         with open(res, "a") as f:
             for j in jobs.JOBS:
                 f.write(json.dumps({"job": j["id"], "status": "MEASURED", "verdict": "FAIL"}) + "\n")

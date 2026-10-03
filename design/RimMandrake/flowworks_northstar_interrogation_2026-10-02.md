@@ -39,8 +39,8 @@ the fake `zz_fake`. It reports 38 + 5 bars, 86 components and 0 uncovered ids. T
 
 **Defs:** all 49 XML files, parsed. They hold 191 defNames, and the parser found `RM_Channel_Empty`, which it must.
 
-**The one recorded live run:** `D:\Luke\dev\wt_live2\Transient\modcheck\live_queue\J1_situational_rerun\FlowWorks_summary.json`.
-- It is J1 `--bland-world` #2, 2026-10-01 ~21:41. It ran 85 components: **PASS 28, FAIL 21, UNMEASURED 36**.
+**The one recorded live run:** `D:\Luke\dev\wt_live2\Transient\modcheck\live_queue\situational_rerun\FlowWorks_summary.json`.
+- It is situational_rerun `--bland-world` #2, 2026-10-01 ~21:41. It ran 85 components: **PASS 28, FAIL 21, UNMEASURED 36**.
 - The time ledger measures 112,921 ticks and 21.4 min for it, at 33 ticks/s, with 799 report polls.
 - This run is the strongest evidence below, because it shows each predicate meeting the real game.
 

@@ -3,7 +3,7 @@
     python.exe src/RimMandrake/Utils/modcheck/live_queue/run_next.py            run the next job
     python.exe .../run_next.py --all                                            run every remaining job in order
     python.exe .../run_next.py --list                                           show the queue and each job's state
-    python.exe .../run_next.py --job J3_bland_tile                              run one job regardless of state
+    python.exe .../run_next.py --job bland_tile                              run one job regardless of state
     add --dry-run to rehearse on FakeWorld (separate results file)
 
 Each job runs in its own process (rimdrive allows one Session per process). Exit code is the last job's:
@@ -17,7 +17,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _HERE)
 
 from common import ROOT, results_path   # noqa: E402
-from jobs import JOBS, latest, next_job  # noqa: E402
+from jobs import JOBS, latest, next_job, canonical_id  # noqa: E402
 
 
 def show(dry):
@@ -45,7 +45,8 @@ def main(argv):
         return 0
     if "--job" in argv:
         want = argv[argv.index("--job") + 1]
-        hit = [j for j in JOBS if j["id"] == want or j["id"].split("_")[0] == want]
+        want = canonical_id(want)      # accepts the old J-codes
+        hit = [j for j in JOBS if j["id"] == want]
         if not hit:
             print("no job %r; known: %s" % (want, ", ".join(j["id"] for j in JOBS)))
             return 3

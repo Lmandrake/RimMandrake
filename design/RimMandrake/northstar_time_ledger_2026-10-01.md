@@ -2,7 +2,7 @@
 
 Owner, 2026-10-01: *"research where the time went so we can make them faster."*
 
-Scope: **pass 2**, 18:33 to 22:03:11 PDT, which is **210 min**. That is the period the queue logs cover. 22:03 to ~22:30 is **UNMEASURED**: no runner output exists for it, and commit `b3b4290c4` (21:59) says the agent stopped mid-J1. Pass 1 (17:57 to 18:19, 14 suites in about 20 min) is used here only as a comparison.
+Scope: **pass 2**, 18:33 to 22:03:11 PDT, which is **210 min**. That is the period the queue logs cover. 22:03 to ~22:30 is **UNMEASURED**: no runner output exists for it, and commit `b3b4290c4` (21:59) says the agent stopped mid-situational_rerun. Pass 1 (17:57 to 18:19, 14 suites in about 20 min) is used here only as a comparison.
 Read-only research. No bridge calls were made.
 
 **Instruments, cited by tag in the tables below**
@@ -24,42 +24,42 @@ Read-only research. No bridge calls were made.
 | 4 | 18:47:49–18:52:33 | 4.7 | gap [F] | agent |
 | 5 | 18:52:33–19:21:36 | 29.0 | FlowWorks, situational. Ran at **36–65 ticks/s** [T][N]. Same seat crash, so the **summary is lost**. Only the html sheet survived | lost run |
 | 6 | 19:21:36–19:23:33 | 1.9 | rebase wt_live2, start queue | agent |
-| 7 | 19:23:33–19:27:33 | 4.0 | J0 J2 J3 J4 J5 (J2/J3 FAIL, J4 UNMEASURED) | harness self-test |
-| 8 | 19:27:33–19:38:31 | 11.0 | J1: after 3 suites, FlowWorks dies on `unexpected response id`, and so does every later suite | lost run |
+| 7 | 19:23:33–19:27:33 | 4.0 | preflight abort_proof bland_tile companion_live motion_frames (abort_proof/bland_tile FAIL, companion_live UNMEASURED) | harness self-test |
+| 8 | 19:27:33–19:38:31 | 11.0 | situational_rerun: after 3 suites, FlowWorks dies on `unexpected response id`, and so does every later suite | lost run |
 | 9 | 19:38:31–19:39:41 | 1.2 | gap | agent |
-| 10 | 19:39:41–19:42:45 | 3.1 | J3 J4 J2 again (settlement exists, modal_open) | harness self-test |
-| 11 | 19:42:45–19:44:48 | 2.1 | J1 started, then killed (modal_open would abort every chain) | lost run |
-| 12 | 19:44:48–19:46:59 | 2.2 | J3 J4 J2 again | harness self-test |
-| 13 | 19:46:59–19:49:43 | 2.7 | J1 started, then killed | lost run |
-| 14 | 19:49:43–19:53:45 | 4.0 | J3 J4 PASS, J2 FAIL (modal reopens) | harness self-test |
-| 15 | 19:53:45–19:58:15 | 4.5 | J1 started, then killed; agent fixes | lost run |
-| 16 | 19:58:15–20:01:05 | 2.8 | J2 PASS 10/10 | harness self-test |
-| 17 | 20:01:05–20:08:58 | 7.9 | J1 dies on `unexpected response id` again | lost run |
-| 18 | 20:08:58–20:14:30 | 5.5 | game relaunch (38.3 s to bridge-start [P]), then 2× J0/J1 UNMEASURED "could not bring RimWorld forward" (20:11:48, 20:12:53) | relaunch + focus |
-| 19 | 20:14:30–20:30:51 | **16.4** | **J0 + J1 MEASURED PASS: all 13 suites on a fresh 1-map game** | productive |
+| 10 | 19:39:41–19:42:45 | 3.1 | bland_tile companion_live abort_proof again (settlement exists, modal_open) | harness self-test |
+| 11 | 19:42:45–19:44:48 | 2.1 | situational_rerun started, then killed (modal_open would abort every chain) | lost run |
+| 12 | 19:44:48–19:46:59 | 2.2 | bland_tile companion_live abort_proof again | harness self-test |
+| 13 | 19:46:59–19:49:43 | 2.7 | situational_rerun started, then killed | lost run |
+| 14 | 19:49:43–19:53:45 | 4.0 | bland_tile companion_live PASS, abort_proof FAIL (modal reopens) | harness self-test |
+| 15 | 19:53:45–19:58:15 | 4.5 | situational_rerun started, then killed; agent fixes | lost run |
+| 16 | 19:58:15–20:01:05 | 2.8 | abort_proof PASS 10/10 | harness self-test |
+| 17 | 20:01:05–20:08:58 | 7.9 | situational_rerun dies on `unexpected response id` again | lost run |
+| 18 | 20:08:58–20:14:30 | 5.5 | game relaunch (38.3 s to bridge-start [P]), then 2× preflight/situational_rerun UNMEASURED "could not bring RimWorld forward" (20:11:48, 20:12:53) | relaunch + focus |
+| 19 | 20:14:30–20:30:51 | **16.4** | **preflight + situational_rerun MEASURED PASS: all 13 suites on a fresh 1-map game** | productive |
 | 20 | 20:30:51–20:36:58 | 6.1 | agent builds `bland_world.py` | agent |
-| 21 | 20:36:58–20:37:59 | 1.0 | J2 with reset proof | harness self-test |
-| 22 | 20:37:59–21:03:27 | 25.5 | J1 `--bland-world` #1: suites run, but the setup gate FAILs (hostile insects on map 1) | gated-out run |
+| 21 | 20:36:58–20:37:59 | 1.0 | abort_proof with reset proof | harness self-test |
+| 22 | 20:37:59–21:03:27 | 25.5 | situational_rerun `--bland-world` #1: suites run, but the setup gate FAILs (hostile insects on map 1) | gated-out run |
 | 23 | 21:03:27–21:03:57 | 0.5 | gap | agent |
-| 24 | 21:03:57–22:03:11 | **59.2** | J1 `--bland-world` #2 on map 2 (3 maps alive): the setup gate FAILs (Stab), and 7 suites end UNMEASURED or not bland | gated-out run |
+| 24 | 21:03:57–22:03:11 | **59.2** | situational_rerun `--bland-world` #2 on map 2 (3 maps alive): the setup gate FAILs (Stab), and 7 suites end UNMEASURED or not bland | gated-out run |
 | 25 | 22:03–22:30 | ~27 | **UNMEASURED** (no runner output) | — |
 
 ## 2. Ledger by category (210 min, 18:33–22:03)
 
 | category | min | share | basis |
 |---|---|---|---|
-| Runs that FAILed their own bland-world setup gate (J1bw #1, #2) | 84.7 | 40% | MEASURED [Q] |
+| Runs that FAILed their own bland-world setup gate (situational_rerun bw #1, #2) | 84.7 | 40% | MEASURED [Q] |
 | ↳ of which slowdown versus the clean pass (59.2 − 16.4 for the same 13 suites) | 42.8 | 20% | MEASURED [Q]; cause UNMEASURED (§3) |
 | Runs lost or voided by harness defects (rows 3, 5, 8, 11, 13, 15, 17) | 64.0 | 30% | MEASURED [Q][F] |
 | ↳ rimflow seat crash in `emit_verify` (rows 3, 5) | 35.8 | 17% | MEASURED |
 | ↳ `unexpected response id`: late reply of a timed-out step (rows 8, 17) | 18.9 | 9% | MEASURED |
-| ↳ colony-naming dialog → modal_open: J1 runs killed (rows 11, 13, 15) | 9.3 | 4% | MEASURED |
+| ↳ colony-naming dialog → modal_open: situational_rerun runs killed (rows 11, 13, 15) | 9.3 | 4% | MEASURED |
 | Agent gaps: prep, fixing and building between jobs (rows 1, 4, 6, 9, 20, 23) | 21.4 | 10% | MEASURED [Q][F]; row 1 start from [N] |
-| Harness self-test jobs J0/J2/J3/J4/J5, including 5 fail-and-rerun rounds | 17.1 | 8% | MEASURED [Q] |
+| Harness self-test jobs preflight/abort_proof/bland_tile/companion_live/motion_frames, including 5 fail-and-rerun rounds | 17.1 | 8% | MEASURED [Q] |
 | Clean, productive full-suite run (row 19) | 16.4 | 8% | MEASURED [Q] |
 | Relaunch + focus failures (row 18) | 5.5 | 3% | MEASURED [Q][P] |
 | ↳ of which the cold launch itself | 0.6 | 0.3% | MEASURED [P] |
-| World / map setup: J3 ×4 (≈0.8 min each) + bland_world setup (≤13 s per J1bw, first op 21:04:10 after start 21:03:57 [O]) | ≈3.5 | 2% | MEASURED; already counted inside the self-test and J1bw rows |
+| World / map setup: bland_tile ×4 (≈0.8 min each) + bland_world setup (≤13 s per situational_rerun bw, first op 21:04:10 after start 21:03:57 [O]) | ≈3.5 | 2% | MEASURED; already counted inside the self-test and situational_rerun bw rows |
 
 **Cold launches are not the problem.** Pass 2 had two launches (18:40 and ~20:09), and each took **36–38 s** to bridge-start on the 32-mod list [P]. Pass 1 recorded "game up (35s)", and the companion proof launched at 18:25 and was up by 18:26 [N]. All four launches that day together came to about **2.5 min**.
 
@@ -78,11 +78,11 @@ Measured rates [T][O], by segment:
 
 | segment | ticks/s | context |
 |---|---|---|
-| 20:14:49→20:17:03 (J1 PASS, Aftermath→Antiquities) | **416** | fresh game, 1 map, game focused (right after the Alt-tap focus fix) |
-| 20:17:52→20:22:59 (J1 PASS, Droidworks→FlowWorks) | 109–307 | same |
-| 20:45→20:56 (J1bw #1, Droidworks/FlowWorks) | 114–217 | 2 maps |
-| **21:04:10→21:35:42 (J1bw #2, Antiquities chain)** | **50** | 3 maps. 95,000 ticks in 1,892 s, 166 sweeps, **11.6 s per 600-tick chunk** |
-| 21:41→21:46 (J1bw #2, FlowWorks excavation) | 33 | 799 `flow-works-excavation-report` polls [O] |
+| 20:14:49→20:17:03 (situational_rerun PASS, Aftermath→Antiquities) | **416** | fresh game, 1 map, game focused (right after the Alt-tap focus fix) |
+| 20:17:52→20:22:59 (situational_rerun PASS, Droidworks→FlowWorks) | 109–307 | same |
+| 20:45→20:56 (situational_rerun bw #1, Droidworks/FlowWorks) | 114–217 | 2 maps |
+| **21:04:10→21:35:42 (situational_rerun bw #2, Antiquities chain)** | **50** | 3 maps. 95,000 ticks in 1,892 s, 166 sweeps, **11.6 s per 600-tick chunk** |
+| 21:41→21:46 (situational_rerun bw #2, FlowWorks excavation) | 33 | 799 `flow-works-excavation-report` polls [O] |
 | 18:52→19:15 (first FlowWorks run) | 36–65 | 1 map, before the focus fix; the "~57 ticks/s" note |
 
 - **Settings, MEASURED [S]:** `runInBackground True`, `devMode True`, `autosaveIntervalDays 0.25`, `pauseOnLoad True`.
@@ -95,25 +95,25 @@ Measured rates [T][O], by segment:
   - **Median bridge call: 48 ms.** MEASURED across 950 operations [O]. The figure is suspiciously close to one frame, which points to calls being serviced once per frame.
   - **What a sweep makes:** every 600-tick chunk, `watch._on_chunk` runs one full snapshot of 13 calls (`snapshot.take_snapshot` tier `full` + companion). It also runs the food feed, which makes 1 + (1–2 per colonist) `pawn_need` calls. That comes to roughly **17–20 calls per chunk**, about **0.8–1.0 s per 600 ticks**.
   - **Effect at full speed:** at 416 ticks/s the step itself takes about 1.4 s per chunk, so the sweeps add roughly 40–70% on top. This is ESTIMATED from the measured call median, not timed per chunk.
-  - **In J1bw #2:** 166 + 253 + 18 + 19 + 5 = 461 sweeps, so about **6–8 min of pure sweep calls**. ESTIMATED.
+  - **In situational_rerun bw #2:** 166 + 253 + 18 + 19 + 5 = 461 sweeps, so about **6–8 min of pure sweep calls**. ESTIMATED.
 - **Autosave:**
   - Interval: every 0.25 day, i.e. every 15,000 ticks, so about **65 autosaves** over the pass. ESTIMATED as 975k / 15k.
   - Size and spacing: ~11 MB each by the end; 10 autosaves landed between 21:30 and 22:01 [S].
   - Cost per save: **UNMEASURED**, since Player.log logs no save timing. A guess of 1–3 s each gives 1–3 min in total.
-- **Tick cost by suite (J1bw #2, MEASURED summary `ticks_spent` + mtime [F]):**
+- **Tick cost by suite (situational_rerun bw #2, MEASURED summary `ticks_spent` + mtime [F]):**
   - Antiquities: 95,600 ticks, 32.1 min.
   - FlowWorks: 112,921 ticks, 21.4 min.
-  - These two are **94% of the ticks and 91% of the wall time** of a full J1 run.
+  - These two are **94% of the ticks and 91% of the wall time** of a full situational_rerun run.
   - The other 11 suites together: ~12,300 ticks, under 6 min. Inhabited, PawnFlavor, ResearchRetag, StarWarsRaces and StructureInjections spend 0 ticks and finish in 5–12 s each.
 
 ## 4. Per-suite wall time and wait budget
 
 Columns:
 - **literal wait ticks:** sum of the integer literals and module constants passed to `wait_ticks`/`wait`, plus `waitTicks=`/`ticks=` keywords, found by AST over each `validation.py`.
-- **measured:** `ticks_spent` and `sweeps` summed from `live_queue\J1_situational_rerun\<Mod>_summary.json` (J1bw #2).
+- **measured:** `ticks_spent` and `sweeps` summed from `live_queue\situational_rerun\<Mod>_summary.json` (situational_rerun bw #2).
 - **wall:** the gap between consecutive summary mtimes [F].
 
-| suite | literal wait ticks | non-literal waits | ticks_spent | sweeps | wall (J1bw #2) |
+| suite | literal wait ticks | non-literal waits | ticks_spent | sweeps | wall (situational_rerun bw #2) |
 |---|---|---|---|---|---|
 | Aftermath | 500 | 0 | 0 | 1 | 0:20 |
 | **Antiquities** | 780 + `READ_WAIT_TICKS` chunks (95,000) | 1 | **95,600** | 166 | **32:05** |
@@ -141,13 +141,13 @@ Single longest waits:
 | rank | fix | addresses | saving per full pass | basis |
 |---|---|---|---|---|
 | 1 | **Never lose a run to a post-step crash.** Write `<Mod>_summary.json` *before* `emit_verify`, and make `emit_verify` non-fatal (warn, keep the result). Also keep the late-reply drop, the naming-dialog ignore and the focus fallback; all three are already fixed in wt_live2 and need to stay. | 64 min of lost or voided runs | **~64 min** (≈54 min already banked by the fixes; the seat-crash fix is 36 min of it) | MEASURED loss |
-| 2 | **One bland map, not one per run.** `bland_world.setup` should remove earlier generated maps (or reuse the tile-254 map and only `reset()` it). Better still, relaunch between full runs: a launch costs 36–38 s [P] and buys a 1-map, 416-ticks/s game. Run the 3-minute A/B probe first (§6) to tell maps from focus. | the 416 → 50 ticks/s collapse; J1bw #2 took 59.2 min vs 16.4 clean | **~40 min** per full J1 | MEASURED delta, cause UNMEASURED |
+| 2 | **One bland map, not one per run.** `bland_world.setup` should remove earlier generated maps (or reuse the tile-254 map and only `reset()` it). Better still, relaunch between full runs: a launch costs 36–38 s [P] and buys a 1-map, 416-ticks/s game. Run the 3-minute A/B probe first (§6) to tell maps from focus. | the 416 → 50 ticks/s collapse; situational_rerun bw #2 took 59.2 min vs 16.4 clean | **~40 min** per full situational_rerun | MEASURED delta, cause UNMEASURED |
 | 3 | **Re-assert focus per chunk, not per job.** In `watch._on_chunk`, re-check the foreground window cheaply and re-run `game_focus.focus_game()` only if RimWorld lost it. Then **rate-gate inside the runner**: if measured ticks/s over the last 5 chunks drops below 150, log `THROUGHPUT_DEGRADED` with map count and foreground window, so the next ledger is measured, not inferred. | candidate (b) for the collapse; it was invisible this time | part of rank 2's 40 min, plus diagnosability | hypothesis |
 | 4 | **Antiquities: wait-until instead of wait-for-worst-case.** Poll research progress or the `Catalogued` inspect string each chunk and stop when done. Also set the reader's Intellectual skill high in setup, so the job needs the minimum ticks. | 95,000 fixed idle ticks: 32 min at 50 ticks/s, ~4 min at 416 | **3–28 min** depending on the rate regime (ESTIMATED: skill-20 reading is well under the skill-0 90,000 ticks) | MEASURED cost, saving ESTIMATED |
-| 5 | **Cheaper sweeps on idle waits.** Use the `tripwire` tier (4 calls) per chunk and escalate to `full` + companion only on a tripwire hit. Raise the chunk from 600 to 2,000–2,500 for waits with no declared hazard. Run `feed_colonists` every 5th chunk, not every chunk. | ~17–20 calls × 48 ms per 600 ticks; 461 sweeps in J1bw #2 | **~5–7 min** per full J1 | ESTIMATED from the MEASURED call median |
-| 6 | **Don't rerun the self-tests after every fix.** J0/J2–J5 are harness proofs. Cache a PASS keyed on the hash of `modcheck/*.py` + `live_queue/*.py`, and rerun only the job whose code changed. Batch fixes, then relaunch once, instead of four queue relaunches in 35 min (19:23–19:58). | 17.1 min of self-test jobs, ~10 min of them reruns | **~10 min** | MEASURED |
+| 5 | **Cheaper sweeps on idle waits.** Use the `tripwire` tier (4 calls) per chunk and escalate to `full` + companion only on a tripwire hit. Raise the chunk from 600 to 2,000–2,500 for waits with no declared hazard. Run `feed_colonists` every 5th chunk, not every chunk. | ~17–20 calls × 48 ms per 600 ticks; 461 sweeps in situational_rerun bw #2 | **~5–7 min** per full situational_rerun | ESTIMATED from the MEASURED call median |
+| 6 | **Don't rerun the self-tests after every fix.** preflight/abort_proof–motion_frames are harness proofs. Cache a PASS keyed on the hash of `modcheck/*.py` + `live_queue/*.py`, and rerun only the job whose code changed. Batch fixes, then relaunch once, instead of four queue relaunches in 35 min (19:23–19:58). | 17.1 min of self-test jobs, ~10 min of them reruns | **~10 min** | MEASURED |
 | 7 | **Skip suites whose result is cached by source hash.** Key: hash(mod `validation.py` + deployed mod files + harness). Only Antiquities and FlowWorks are worth it. The other 11 cost under 6 min together. | the cost of unchanged suites | 0–50 min, only when FlowWorks/Antiquities are unchanged | MEASURED per-suite costs |
-| 8 | **Turn off autosave for harness runs.** Set `autosaveIntervalDays` very high through `prefs-tool` at J0 and restore it after. Autosaves are ~11 MB every 15k ticks, ~65 per pass. | autosave stalls | **1–3 min** (UNMEASURED per-save cost) | ESTIMATED |
+| 8 | **Turn off autosave for harness runs.** Set `autosaveIntervalDays` very high through `prefs-tool` at preflight and restore it after. Autosaves are ~11 MB every 15k ticks, ~65 per pass. | autosave stalls | **1–3 min** (UNMEASURED per-save cost) | ESTIMATED |
 | 9 | **One prep script.** Worktree + swap + deploy + compose + launch + bridge take as one command (`prep_wsl.py` is most of it). Also keep worktrees off `/tmp`: it filled twice that day. | 7 min prep, 4.7 + 1.9 min gaps | **~8 min** | MEASURED [N][F] |
 | — | Not worth doing: faster cold launch (0.6 min each), parallel suites (one bridge, one socket: the side-connection calls are what mixed replies), world setup (≤13 s on the bland_world path). | — | ~0 | MEASURED |
 

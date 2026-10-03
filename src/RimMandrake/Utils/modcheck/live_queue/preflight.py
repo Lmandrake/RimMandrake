@@ -1,8 +1,8 @@
-"""J0 preflight: is this game session the one the queue needs?
+"""preflight: is this game session the one the queue needs?
 
 Checks (each can FAIL): a Playing map (starts the quicktest world if not); every bridge tool the queue drives
 is in the live tool census; the companion answers (pawn_census) and its damage recorder is installed; every
-suite mod J1 re-runs is in the live ModsConfig activeMods (parsed, never grepped).
+suite mod situational_rerun re-runs is in the live ModsConfig activeMods (parsed, never grepped).
 """
 import os
 import sys
@@ -18,7 +18,7 @@ REQUIRED_TOOLS = (
     "jawa/set_current_map", "jawa/destroy_bulk", "jawa/list_things", "jawa/list_pawns",
     "rimworld/take_screenshot", "rimworld/step_game_ticks",
 )
-# J5's FlowWorks plot reads; FakeWorld has no FlowWorks, so these are checked live only
+# motion_frames's FlowWorks plot reads; FakeWorld has no FlowWorks, so these are checked live only
 LIVE_ONLY_TOOLS = ("rimworld/screenshot_cell_rect", "jawa/flowworks_excavation_report", "jawa/set_terrain_batch")
 
 
@@ -61,8 +61,8 @@ def body(s, job):
         raise Unmeasurable("cannot parse the live ModsConfig: %s" % e)
     absent = {m: p for m, p in want.items() if p not in live}
     job.note("active_count", len(live))
-    job.check("every J1 suite mod is active in ModsConfig (prep_wsl.py composed them)", not absent, absent)
+    job.check("every situational_rerun suite mod is active in ModsConfig (prep_wsl.py composed them)", not absent, absent)
 
 
 if __name__ == "__main__":
-    sys.exit(main("J0_preflight", body))
+    sys.exit(main("preflight", body))
