@@ -73,7 +73,8 @@ WEAPON_CAUSES = ("weapon",)
 # listing them as colonist_injured_unexpectedly aborted every later component of a chain (2026-10-03, WeepingStones/
 # Cauldron/LeaningScrub/BlueDesert). A chain that TESTS one asserts it with its own component.
 # MCR_MoodChainWatcher is the donor mod "Mood Chain Reaction"'s passive marker, added to every colonist on spawn (13:23 2026-10-03).
-AMBIENT_WEATHER_HEDIFFS = frozenset(("RM_SheenCoating", "RM_HazeFilm", "RM_GaleDeafened", "MCR_MoodChainWatcher", "RM_VentMetalLoad"))
+AMBIENT_WEATHER_HEDIFFS = frozenset(("RM_SheenCoating", "RM_HazeFilm", "RM_GaleDeafened", "MCR_MoodChainWatcher", "RM_VentMetalLoad",
+                                      "PregnantHuman"))   # random pregnancy from the donor romance mods: not an injury
 HOSTILE_NEAR_CELLS = 30
 FAR_CELLS = 40
 RAID_WINDOW_TICKS = 600
