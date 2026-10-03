@@ -46,7 +46,7 @@ namespace RimMandrake.Miasma
 		public override void CompTickLong()
 		{
 			base.CompTickLong();
-			if (!parent.Spawned || Props.preyDefNames.NullOrEmpty())
+			if (!RM_MiasmaSettings.plantPredationEnabled || !parent.Spawned || Props.preyDefNames.NullOrEmpty())
 			{
 				return;
 			}
