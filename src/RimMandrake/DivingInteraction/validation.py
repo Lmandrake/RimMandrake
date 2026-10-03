@@ -191,3 +191,34 @@ def chill_return_comb(t):
     with t.component("comb_laid_on_live_floor", beyond_toggle=True):
         # UNMEASURED offline: a real Chill floor map must be generated live; a count of RM_ReturnCombStud on it is the check.
         t.screenshot()
+
+
+@suite.chain("chill_dive_density_sampler")
+def chill_dive_density_sampler(t):
+    """CHILL_DIVE_DENSITY_SAMPLER_1: the offline sampler reads the Chill roster and the weighted draw yields exactly the set count; live floor count is UNMEASURED."""
+    import os, random, sys
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    with t.component("offline_sampler_reads_roster", beyond_toggle=True):
+        sys.path.insert(0, here)
+        import density_sampler as ds
+        density, roster = ds.load_roster()
+        if len(roster) < 5 or density <= 0:
+            raise ExpectationFailed("sampler cannot read the Chill roster: %d species, density %s" % (len(roster), density))
+        rng = random.Random(7)
+        legacy = [len(ds.legacy_draw(density, roster, rng)) for _ in range(500)]
+        if min(legacy) < 5:  # sanity probe: the legacy one-of-each sampler is known to meet ~7-8
+            raise ExpectationFailed("sampler sanity probe failed: legacy dive met %d animals" % min(legacy))
+        t.screenshot()
+    with t.component("weighted_draw_obeys_count", beyond_toggle=True):
+        for c in (2, 3, 4):
+            if any(len(ds.weighted_draw(roster, c, rng)) != c for _ in range(200)):
+                raise ExpectationFailed("weighted draw did not return %d animals" % c)
+        src = open(os.path.join(here, "Source", "GenStep_SeaFloorFauna.cs"), encoding="utf-8").read()
+        if "GenerateWeightedDraw" not in src or "chillDensityDrawEnabled" not in src:
+            raise ExpectationFailed("GenStep_SeaFloorFauna lacks the weighted-draw path or its toggle")
+        t.screenshot()
+    with t.component("live_dive_animal_count", beyond_toggle=True):
+        # UNMEASURED offline: the number of animals on a freshly generated Chill floor needs a live dive; the
+        # owner sets the final count (leaning 2-4) on a walk. Run density_sampler.py for the offline expectation.
+        t.screenshot()

@@ -36,6 +36,12 @@ namespace RimMandrake.DivingInteraction
                 return;
             }
 
+            if (biome.defName == "RM_TheChill" && RM_DivingSettings.chillDensityDrawEnabled)
+            {
+                GenerateWeightedDraw(map, biome);
+                return;
+            }
+
             int totalToSpawn = Mathf.Max(1, Mathf.RoundToInt(countPerAnimalDensity * Mathf.Max(biome.animalDensity, 0.05f)));
 
             foreach (PawnKindDef kind in biome.AllWildAnimals)
@@ -71,6 +77,55 @@ namespace RimMandrake.DivingInteraction
                     Pawn pawn = PawnGenerator.GeneratePawn(request);
                     GenSpawn.Spawn(pawn, cell, map);
                 }
+            }
+        }
+
+        // CHILL_DIVE_DENSITY_SAMPLER_1. The Chill's animalDensity (0.08) rounds the legacy path to one of nearly
+        // every species. Here the dive instead meets chillDiveAnimalCount animals, each drawn by commonality
+        // weight with replacement. The count is a provisional setting owed to a live walk with the owner.
+        // Mirrored offline by density_sampler.py.
+        private static void GenerateWeightedDraw(Map map, BiomeDef biome)
+        {
+            var kinds = new System.Collections.Generic.List<PawnKindDef>();
+            var weights = new System.Collections.Generic.List<float>();
+            foreach (PawnKindDef kind in biome.AllWildAnimals)
+            {
+                float w = biome.CommonalityOfAnimal(kind);
+                if (w > 0f)
+                {
+                    kinds.Add(kind);
+                    weights.Add(w);
+                }
+            }
+            if (kinds.Count == 0)
+            {
+                return;
+            }
+
+            int count = Mathf.Clamp(RM_DivingSettings.chillDiveAnimalCount, 1, 8);
+            for (int n = 0; n < count; n++)
+            {
+                float total = 0f;
+                for (int i = 0; i < weights.Count; i++) total += weights[i];
+                float roll = Rand.Value * total;
+                int pick = kinds.Count - 1;
+                for (int i = 0; i < weights.Count; i++)
+                {
+                    roll -= weights[i];
+                    if (roll <= 0f) { pick = i; break; }
+                }
+
+                if (!CellFinder.TryFindRandomCell(map, c => c.Standable(map) && !c.Fogged(map), out IntVec3 cell))
+                {
+                    continue;
+                }
+                PawnGenerationRequest request = new PawnGenerationRequest(
+                    kinds[pick],
+                    null,
+                    PawnGenerationContext.NonPlayer,
+                    forceGenerateNewPawn: true,
+                    canGeneratePawnRelations: false);
+                GenSpawn.Spawn(PawnGenerator.GeneratePawn(request), cell, map);
             }
         }
     }
