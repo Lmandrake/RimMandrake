@@ -120,11 +120,15 @@ namespace RimMandrake.GelatinousSlime
         // meat, glurro concentrate). Off: only the original slime-to-meal bill (applied by PitSolvent).
         public static bool pitSolvent = true;
 
+        // GELATINOUSSLIME_VAULT_SEAL_BREACH_1: a titanoslime chunk dissolves a slime-breachable seal. Off: the chunk does nothing.
+        public static bool sealBreach = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref glurroSalve, "glurroSalve", true, true);
             Scribe_Values.Look(ref pitSolvent, "pitSolvent", true, true);
+            Scribe_Values.Look(ref sealBreach, "sealBreach", true, true);
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
             Scribe_Values.Look(ref dwommoFlies, "dwommoFlies", true, true);
@@ -215,6 +219,9 @@ namespace RimMandrake.GelatinousSlime
                 "On (default): the slime pit also renders toxipotatoes and twisted meat safe to eat and "
                 + "boils a glurro carcass down to salve concentrate. Off: the pit only makes simple meals "
                 + "from raw slime.");
+            list.CheckboxLabeled("Titanoslime chunk breaches seals", ref sealBreach,
+                "On (default): a chunk cut from a titanoslime dissolves an Assailant seal and drenches the "
+                + "doorway in slime. Off: the chunk does nothing and seals stay shut.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");

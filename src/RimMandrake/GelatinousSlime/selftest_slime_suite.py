@@ -22,6 +22,7 @@ CASES = {
     "nosalve": ["glurro_salve_slows_growth"],
     "nodef:ThingDef/RM_GlurroSalve": ["glurro_salve_defs"],
     "nodef:RecipeDef/RM_Render_TwistedMeat": ["pit_solvent_defs"],
+    "nodef:ThingDef/RM_TitanoslimeChunk": ["seal_breach_defs"],
     "nodry": ["drying_biomes_tagged"],
     "nostep": ["visitor_genstep_registered"],
     "nofarmstep": ["farm_ruins_genstep_registered"],

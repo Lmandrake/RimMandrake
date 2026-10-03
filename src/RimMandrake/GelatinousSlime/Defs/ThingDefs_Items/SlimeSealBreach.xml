@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- GELATINOUSSLIME_VAULT_SEAL_BREACH_1 (Slime-side slice). Invented names, RM_ tier. -->
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RM_TitanoslimeChunk</defName>
+    <label>titanoslime chunk</label>
+    <description>A fist-sized lump cut from a titanoslime, still hungry and still moving. It reads whatever it touches and eats what the Assailant made. Laid against an Assailant seal it dissolves the seal and drenches the doorway in slime. Nothing else opens one.\n\nIt keeps only a little while.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(70, 140, 60)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>40</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>6</DeteriorationRate>
+    </statBases>
+    <thingCategories />
+    <stackLimit>5</stackLimit>
+    <tradeability>None</tradeability>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Press {0_label} to the seal</useLabel>
+        <useDuration>180</useDuration>
+        <showUseGizmo>true</showUseGizmo>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>RimMandrake.GelatinousSlime.CompTargetable_SlimeBreachable</compClass>
+      </li>
+      <li Class="CompProperties">
+        <compClass>RimMandrake.GelatinousSlime.CompTargetEffect_SlimeBreach</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- Parent for the vault's seal (VAULT_DUNGEON_BUILD_1 owns the concrete Assailant seal). -->
+  <ThingDef Name="RM_SlimeBreachableSealBase" Abstract="True">
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>true</selectable>
+    <rotatable>false</rotatable>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <isInert>true</isInert>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.RM_SlimeBreachable">
+        <drenchRadius>3.9</drenchRadius>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>
