@@ -34,6 +34,8 @@ namespace RimMandrake.LanternDeeps
         public static float mineshaftChanceMultiplier = 1f;
         public static bool darknessMechanicEnabled = true;
         public static float darknessThresholdMultiplier = 1f;
+        // LANTERNDEEPS_LANTERN_LIGHT_BUILD_1: light from Lanterns alone does not count toward the darkness mechanic.
+        public static bool safeLanternEnabled = true;
 
         // CAVERNS_PARITY_BUILD_1 — the two features the mod now OWNS rather than
         // borrows from Biomes! Caverns, each gated per the standing rule
@@ -164,6 +166,7 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref mineshaftChanceMultiplier, "mineshaftChanceMultiplier", 1f);
             Scribe_Values.Look(ref darknessMechanicEnabled, "darknessMechanicEnabled", true);
             Scribe_Values.Look(ref darknessThresholdMultiplier, "darknessThresholdMultiplier", 1f);
+            Scribe_Values.Look(ref safeLanternEnabled, "safeLanternEnabled", true);
             Scribe_Values.Look(ref lanternstoneFormationsEnabled, "lanternstoneFormationsEnabled", true);
             Scribe_Values.Look(ref lanternstoneDensityMultiplier, "lanternstoneDensityMultiplier", 1f);
             Scribe_Values.Look(ref deepFloraEnabled, "deepFloraEnabled", true);
@@ -213,6 +216,9 @@ namespace RimMandrake.LanternDeeps
                 list.Label("Trigger threshold: " + darknessThresholdMultiplier.ToString("0.00")
                     + "x the base sensitivity (higher = more light tolerated before something notices)");
                 darknessThresholdMultiplier = list.Slider(darknessThresholdMultiplier, 0.25f, 4f);
+                list.CheckboxLabeled("Lantern light is safe", ref safeLanternEnabled,
+                    "On (default): the glow of a Lantern, where no other light reaches, is not counted toward drawing predators. "
+                  + "Off: a Lantern lights the place like any lamp (it is still buildable and still shines).");
             }
 
             list.Gap();

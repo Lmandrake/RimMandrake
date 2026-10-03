@@ -105,4 +105,43 @@
     </comps>
   </ThingDef>
 
+  <!-- LANTERNDEEPS_LANTERN_LIGHT_BUILD_1 - the Lantern: a farmable colony crystal whose glow the darkness mechanic
+       (MapComponent_LanternDeepDarkness) does not count, so it is the one safe light. Harvested it yields ordinary
+       lanternstone, whose light counts like any lamp: light now (the Lantern) versus light later (sold). The exclusion
+       is by ThingDef name, and only holds where no other light also reaches the cell. Gated by
+       LanternDeepsSettings.safeLanternEnabled. -->
+  <ThingDef ParentName="RM_LanternstonePlantBase">
+    <defName>RM_Lantern</defName>
+    <label>Lantern</label>
+    <description>A living colony crystal, a bunch of rounded blue lobes grown from one root and lit softly from within. Its light is warmer and steadier than raw lanternstone, and the things of the Deep do not come to it. Harvested, it breaks down into ordinary lanternstone, and that light they do notice.</description>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/Crystals/Lantern</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+    </statBases>
+    <plant>
+      <immatureGraphicPath>RM_LanternDeeps/Things/Crystals/LanternstoneSowableImmature</immatureGraphicPath>
+      <visualSizeRange>0.8~1.0</visualSizeRange>
+      <harvestedThingDef>RM_Lanternstone</harvestedThingDef>
+      <harvestYield>4</harvestYield>
+      <growDays>20</growDays>
+      <harvestTag>Standard</harvestTag>
+      <fertilityMin>0.1</fertilityMin>
+      <sowMinSkill>5</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.5</glowRadius>
+        <glowColor>(150,200,235,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
 </Defs>
