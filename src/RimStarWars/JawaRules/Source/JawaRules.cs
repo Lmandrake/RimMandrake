@@ -47,6 +47,10 @@ namespace RimMandrake.StarWars.JawaRules
                   "armed; KCSG_PAWNKIND_COLONIST_FALLBACK_1 — a redressed world pawn is forced "
                   + "onto the requested kind and xenotype even when ChangeKind was blocked");
 
+            Apply(h, AccessTools.Method(typeof(PawnRenderNodeWorker_Apparel_Head), "CanDrawNow"),
+                  typeof(Patch_ApparelHead_CanDrawNow_SwimHood), "swim-hood",
+                  "armed; a worn hood carrying RSW_KeepHoodWhileSwimming stays drawn while swimming");
+
             ApplyTranspiler(h, AccessTools.Method(typeof(WorldFeatures), "UpdateAlpha"),
                   typeof(Patch_WorldFeatures_UpdateAlpha), "world-labels",
                   "armed; world feature names peak at "

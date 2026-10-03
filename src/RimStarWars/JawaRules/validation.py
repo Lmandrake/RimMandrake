@@ -131,7 +131,7 @@ suite = Suite("JawaRules")
 suite.toggles = [
     "sowBanEnabled", "droidRelationsEnabled", "petNamesEnabled",
     "worldLabelAlphaBoostEnabled", "worldLabelAlpha",
-    "worldLabelLiftEnabled", "worldLabelLift",
+    "worldLabelLiftEnabled", "worldLabelLift", "swimHoodEnabled",
 ]
 
 JAWA_XENOTYPE = "RSW_MandrakeJawa"
@@ -152,6 +152,9 @@ ARM_LINES = [
     ("world-label-lift",
      "[RimMandrake.StarWars.JawaRules] world-label-lift: armed; world "
      "feature names sit 1.50 above the surface instead of 0.40"),
+    ("swim-hood",
+     "[RimMandrake.StarWars.JawaRules] swim-hood: armed; a worn hood carrying "
+     "RSW_KeepHoodWhileSwimming stays drawn while swimming"),
 ]
 
 
@@ -284,7 +287,8 @@ def toggle_flips(t):
     setting."""
     with t.component("boolean_settings_flip", toggle=None, beyond_toggle=True):
         for field in ("sowBanEnabled", "droidRelationsEnabled", "petNamesEnabled",
-                      "worldLabelAlphaBoostEnabled", "worldLabelLiftEnabled"):
+                      "worldLabelAlphaBoostEnabled", "worldLabelLiftEnabled",
+                      "swimHoodEnabled"):
             t.set_setting(SETTINGS_TYPE, {field: False})
             t.set_setting(SETTINGS_TYPE, {field: True})
 
@@ -293,3 +297,55 @@ def toggle_flips(t):
         t.set_setting(SETTINGS_TYPE, {"worldLabelAlpha": 0.6})
         t.set_setting(SETTINGS_TYPE, {"worldLabelLift": 2.0})
         t.set_setting(SETTINGS_TYPE, {"worldLabelLift": 1.5})
+
+
+@suite.chain("swim_hood_kept")
+def swim_hood_kept(t):
+    """JAWA_SWIM_HOOD_KEEP_1. Engine (decompiled 1.6): PawnRenderer.
+    ParallelGetPreRenderResults clears Clothes|Headgear while pawn.Swimming, and
+    PawnRenderNodeWorker_Apparel_Head.CanDrawNow needs both, so the worn hood
+    vanished. The postfix re-asks that worker with the two flags restored, only
+    for apparel carrying RSW_KeepHoodWhileSwimming. Offline: the wiring is
+    checked from source. Live: the drawn result is UNMEASURED here."""
+    import os
+    import xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=6)
+    with t.component("swim_hood_wiring_offline", toggle="swimHoodEnabled"):
+        src = open(os.path.join(here, "Source", "Patch_JawaHoodSwimming.cs"), encoding="utf-8").read()
+        rules = open(os.path.join(here, "Source", "JawaRules.cs"), encoding="utf-8").read()
+        proj = open(os.path.join(here, "Source", "JawaRules.csproj"), encoding="utf-8").read()
+        fallback = open(os.path.join(here, "Source", "PawnRenderNodeWorker_JawaHoodFallback.cs"),
+                        encoding="utf-8").read()
+        needs = [
+            (proj, '<Compile Include="Patch_JawaHoodSwimming.cs" />', "csproj compiles the patch file"),
+            (rules, "typeof(PawnRenderNodeWorker_Apparel_Head), \"CanDrawNow\"", "Harmony target is the apparel-head worker"),
+            (src, "RSW_JawaRulesSettings.swimHoodEnabled", "postfix is gated by the toggle"),
+            (src, "HasModExtension<RSW_KeepHoodWhileSwimming>", "postfix is scoped to flagged hoods"),
+            (src, "[ThreadStatic]", "re-entry guard is per render thread"),
+            (fallback, "JawaHoodRender.EffectiveParms", "fallback yields to the kept hood while swimming"),
+        ]
+        for text, needle, what in needs:
+            ok = needle in text
+            t._record("%s: %r present -> %s" % (what, needle, ok), ok)
+            if not ok:
+                raise ExpectationFailed("swim-hood wiring missing: %s (%r)" % (what, needle))
+        root = ET.parse(os.path.join(here, "Patches", "RSW_JawaHood.xml")).getroot()
+        exts = [li.get("Class") for li in root.iter("li")
+                if li.get("Class") == "RimMandrake.StarWars.JawaRules.RSW_KeepHoodWhileSwimming"]
+        hood_ops = [op for op in root.findall("Operation")
+                    if 'guy762_JawaHood' in (op.findtext("xpath") or "")]
+        ok = len(exts) == 1 and len(hood_ops) == 1
+        t._record("patch flags guy762_JawaHood with RSW_KeepHoodWhileSwimming -> %s" % ok, ok)
+        if not ok:
+            raise ExpectationFailed("RSW_JawaHood.xml does not add exactly one RSW_KeepHoodWhileSwimming "
+                                    "to guy762_JawaHood (ext=%d, ops=%d)" % (len(exts), len(hood_ops)))
+        t.screenshot()
+    with t.component("swim_hood_drawn_live", beyond_toggle=True):
+        # UNMEASURED offline: the live check is a STATE read, not a screenshot hunt. Order a hooded
+        # Jawa into JobDefOf.GoSwimming, confirm pawn.Swimming, find its render-tree node whose
+        # apparel.def is guy762_JawaHood, and read node.Worker.CanDrawNow(node, parms) on the parms
+        # PawnRenderer built this frame (flags lack Clothes|Headgear): true = kept. Flip
+        # swimHoodEnabled off and it must read false while the gene fallback node reads true.
+        # No bridge tool exposes render-node CanDrawNow yet.
+        t.screenshot()

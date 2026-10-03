@@ -67,12 +67,15 @@ namespace RimMandrake.StarWars.JawaRules
             }
         }
 
-        // Skip this fallback only when the REAL apparel hood is both worn and
-        // actually going to render (Clothes + Headgear both set — the same two
-        // flags PawnRenderNodeWorker_Apparel_Head checks). Any other state —
-        // not worn, or worn but flag-suppressed (swimming strips exactly these
-        // two bits; see PawnRenderer.ParallelGetPreRenderResults) — leaves this
-        // fallback drawing.
+        // Skip this fallback only when the REAL apparel hood is both worn and actually
+        // going to render. Visibility is vanilla's own test
+        // (PawnRenderNodeWorker_Apparel_Head.HeadgearVisible: Clothes+Headgear, bed
+        // bed_showSleeperBody, HatsOnlyOnMap) evaluated on the flags the hood really draws
+        // under: while swimming, Patch_ApparelHead_CanDrawNow_SwimHood puts Clothes|Headgear
+        // back for a kept hood, so JawaHoodRender.EffectiveParms mirrors that. Any other
+        // state (not worn, a no-body bed, swim rule toggled off) leaves this fallback drawing.
+        // JAWA_SWIM_HOOD_KEEP_1, 2026-10-03: the old raw-flag check said "drawing" in a bed
+        // that hides headgear, which would have left a sleeping Jawa bare-headed.
         private static bool RealHoodIsDrawing(PawnDrawParms parms)
         {
             ThingDef hood = JawaHoodDef;
@@ -80,8 +83,7 @@ namespace RimMandrake.StarWars.JawaRules
             {
                 return false;
             }
-            if (!parms.flags.FlagSet(PawnRenderFlags.Clothes)
-                || !parms.flags.FlagSet(PawnRenderFlags.Headgear))
+            if (!PawnRenderNodeWorker_Apparel_Head.HeadgearVisible(JawaHoodRender.EffectiveParms(parms)))
             {
                 return false;
             }

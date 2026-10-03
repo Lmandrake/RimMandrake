@@ -25,4 +25,16 @@
       </value>
     </nomatch>
   </Operation>
+  <!-- JAWA_SWIM_HOOD_KEEP_1: flags the real Jawa hood (Armoury) so
+       Patch_ApparelHead_CanDrawNow_SwimHood keeps it drawn while swimming. Conditional,
+       so an absent Armoury is a silent no-op rather than a failed patch. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="guy762_JawaHood"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/ThingDef[defName="guy762_JawaHood"]</xpath>
+      <value>
+        <li Class="RimMandrake.StarWars.JawaRules.RSW_KeepHoodWhileSwimming" />
+      </value>
+    </match>
+  </Operation>
 </Patch>
