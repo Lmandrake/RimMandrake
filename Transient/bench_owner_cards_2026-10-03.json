@@ -1,0 +1,997 @@
+{
+ "sittings": [
+  {
+   "n": 1,
+   "subject": "Where our sounds come from",
+   "doc": "design/RimMandrake/sound_sourcing_options_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "A sound workshop already exists at D:\\Luke\\dev\\MandrakeAudio with 23 GB of free-to-use sound libraries downloaded, but nothing has been made for the biomes yet, and six biomes are waiting on audio. Where should the roughly 80 sounds still owed come from?",
+       "header": "Sound source",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Free libraries + synthesis (Recommended)",
+         "description": "We script hums, chimes, ticks, hisses and rumbles ourselves and layer free recordings for the rest. No money, cleanest to publish. Costs your ear on an audition page per batch; creature calls stay the weakest part."
+        },
+        {
+         "label": "Add paid AI calls",
+         "description": "Same base, plus ElevenLabs (about $6 a month, needs your account and card) for vexxiss and tarruq calls. Stranger, more alien calls we own, but a subscription to manage and uneven quality you must judge."
+        },
+        {
+         "label": "Add free local AI generator",
+         "description": "Same base, plus Stable Audio Open running on this PC. No money, but you accept its licence once on Hugging Face, and it puts heavy GPU work on this machine, the kind of local AI you parked for images."
+        },
+        {
+         "label": "Keep retuned vanilla sounds",
+         "description": "Ships today at zero effort, revisit at release. But the biomes sound like RimWorld with a cold, and the Fever Wood silence and Cathedral hum will not feel like new places."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 2,
+   "subject": "Greentide terror: the Vurrak's body",
+   "doc": "design/Jawa/worldbuilding/biomes/greentide_terror_replacement_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "The Vurrak is the Greentide's riverbank ambusher you chose: a silted creature that looks like bank until weight lands on it. You gave no body or mechanism, so the design offers candidates. Which body should it have?",
+       "header": "Vurrak body",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Buckling bank-wedge (Recommended)",
+         "description": "A lopsided three-legged wedge: step on it and the bank rises and bites. Cheapest and fairest to build, though a bit less shocking than the other candidates."
+        },
+        {
+         "label": "Walking terrace",
+         "description": "Two silt steps: the first arms it, crossing to the second fires it. The scariest moment of the candidates and looks most like a trap, but costs the most to animate."
+        },
+        {
+         "label": "Weighted crown",
+         "description": "Only something your size or bigger sets it off; small animals just reveal it. Clever and readable once learned, but the size rule feels arbitrary at first."
+        }
+       ]
+      },
+      {
+       "question": "How much warning should there be between stepping on a Vurrak and its bite?",
+       "header": "Warning",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "1.5 seconds plus pause (Recommended)",
+         "description": "About 90 ticks of warning, and the game pauses the first time one is ever revealed. Fair to learn; a drafted pawn can usually step clear."
+        },
+        {
+         "label": "1.5 seconds, no pause",
+         "description": "Same warning but no pause on first reveal. Tenser, and an undrafted hauler will usually get bitten."
+        },
+        {
+         "label": "Almost none",
+         "description": "It bites the moment weight lands. Pure terror, but it plays like a hidden trap, which is the risk you accepted on the earlier card."
+        }
+       ]
+      },
+      {
+       "question": "The river also carries the Illisk fish shoals and a possible deep-water lunger, so danger stacks. How common should the Vurrak be on Greentide riverbanks?",
+       "header": "Commonness",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "0.15 (Recommended)",
+         "description": "The old dianoga's weight: a few per map, so every bank is a gamble without being hopeless."
+        },
+        {
+         "label": "0.08",
+         "description": "A rare legend. Most crossings are fine, which is exactly what makes the bite land, but many players may never meet one."
+        },
+        {
+         "label": "0.25",
+         "description": "Banks are routinely deadly and players will build causeways early. Stacked with the Illisk and the deep-water lunger, the river may feel unwinnable."
+        }
+       ]
+      },
+      {
+       "question": "Should the Vurrak bite other animals that step on it, or only people?",
+       "header": "Who it bites",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Anything that steps (Recommended)",
+         "description": "Fits the no-truce rule. Players can watch wildlife set them off and learn where they lie."
+        },
+        {
+         "label": "Only people",
+         "description": "Colonists, visitors and raiders only, so every bite is a story about your people. Needs a special exception that goes against the free-for-all rule."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 3,
+   "subject": "Shy watcher creatures, piinnok first",
+   "doc": "design/RimMandrake/watcher_creatures_kit_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "The piinnok is a shy watcher creature that lives hidden in the Stillsand's fine sand and peeks out. Which ground counts as its fine sand, the only place it can live?",
+       "header": "Piinnok sand",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Deep sand only (Recommended)",
+         "description": "The sinking sand the swimmers swim in, most of the Stillsand. Strongest lurking-under-the-surface feel, and the engine already treats it like water. A piinnok on a cut-off patch stays there."
+        },
+        {
+         "label": "Any loose sand",
+         "description": "Plain, soft and deep sand together, giving more room to live. But plain sand has nothing under the surface to lurk in, and the lock becomes all custom code."
+        },
+        {
+         "label": "A new fine sand terrain",
+         "description": "Truest to the name, painted into the Stillsand. Costs a new terrain, new ground art and a map-generation change before any watcher exists."
+        }
+       ]
+      },
+      {
+       "question": "The game can show one picture while an animal stands still and another while it walks, with no code; vanilla's hermit crab does this. How should a piinnok look when it moves?",
+       "header": "Piinnok look",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Two pictures (Recommended)",
+         "description": "Standing still it shows the peek (a lens over a sand rim); in the rare moment it moves you see the whole creature. Costs two art sets instead of one."
+        },
+        {
+         "label": "One picture always",
+         "description": "The peek pose only, as first planned. Cheapest, but a lens and rim sliding across the sand when it relocates looks odd."
+        }
+       ]
+      },
+      {
+       "question": "Does a tamed piinnok have to stay on deep sand?",
+       "header": "Taming",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Yes, always",
+         "description": "A tamed one lives in a pen with deep sand or heads back to it. Pure to the fiction, but fussier for the player to keep."
+        },
+        {
+         "label": "Wild stay, tamed roam",
+         "description": "Tamed ones may go anywhere but only hide on deep sand. Easier pet, weaker rule."
+        },
+        {
+         "label": "It cannot be tamed",
+         "description": "Simplest to build, but loses the idea of a living alarm at your base."
+        }
+       ]
+      },
+      {
+       "question": "How should the player hunt a piinnok?",
+       "header": "Hunting",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Flush only (Recommended)",
+         "description": "You cannot target the dimple; a pawn sent to it makes it bolt, and then it can be hunted. Costs one more order to build."
+        },
+        {
+         "label": "Shoot it while it peeks",
+         "description": "No extra build, but hunting becomes reaction speed, which the game always wins for you."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 4,
+   "subject": "River weirs and stake-lines",
+   "doc": "design/RimMandrake/surface_river_weirs_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "You asked for sea-style weirs and stake-lines to be ported to ordinary river tiles. On an ordinary river nothing drifts past, so what should a weir catch?",
+       "header": "Weir catch",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Fish from the river",
+         "description": "Real daily food drawn from the river's own fish stock. Competes with your fishing zones on the same water and needs its own small catch roll."
+        },
+        {
+         "label": "Driftwood and flotsam",
+         "description": "Wood and the odd lost item. No food and never depletes fish, but a weaker reason to build one."
+        },
+        {
+         "label": "Nothing",
+         "description": "The weir is only a flood guard with a breach risk. Simplest, but the tend-the-weir job then has nothing to haul."
+        }
+       ]
+      },
+      {
+       "question": "Should a continuous stake-line hold back the vanilla spring floods completely?",
+       "header": "Flood guard",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Yes, like a levee",
+         "description": "A solid line stops the flood; only a breach lets it in. Clear and satisfying, but a careful player can turn spring flooding off for good."
+        },
+        {
+         "label": "Mostly",
+         "description": "Stakes slow the flood, but each flood has a small chance to topple one anyway. Floods always matter a little, but the rule is harder to read."
+        },
+        {
+         "label": "No, only a warning",
+         "description": "Stakes are a boundary and warning; the flood ignores them. Matches the sea version, but the line does no work on the surface."
+        }
+       ]
+      },
+      {
+       "question": "Where should the weir feature live as a mod?",
+       "header": "Mod home",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "New River Works mod (Recommended)",
+         "description": "A small new mod that the sea-floor biome then uses too. One extra mod, and any weir in an existing save is lost."
+        },
+        {
+         "label": "Inside Terminal Biomes",
+         "description": "No move, but a river weir then needs four sea biomes loaded and is switched by the Twilight Sea's settings."
+        }
+       ]
+      },
+      {
+       "question": "When a weir breaches, what should happen to the catch it was holding?",
+       "header": "Breach loss",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Wash downstream",
+         "description": "The catch washes a few cells downstream into the water. Recoverable if you hurry, rotting meanwhile."
+        },
+        {
+         "label": "Lose it outright",
+         "description": "Harsher and simpler, with no rescue play."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 5,
+   "subject": "Salvage wrecks in every biome",
+   "doc": "design/RimMandrake/salvage_wreckage_everywhere_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "You liked the Scald's crashed-ship wrecks and asked for lots of them everywhere. Eight biomes (Greentide, Pyrelands, Slime, Contagion, Lantern Deeps, Webwork, Leaning Scrub, Terminator Sea) promised none, and Lantern Deeps turned the wreck rite down. Should those get wrecks too?",
+       "header": "Wreck reach",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Only where a sheet promises",
+         "description": "About 20 biomes. Respects past sittings and keeps wrecks meaning this region had a fall, but some places stay clean."
+        },
+        {
+         "label": "Everywhere, light default",
+         "description": "One or two small wrecks in silent biomes. Matches all over the place, but blurs the Fall Line's identity as the wreck land."
+        },
+        {
+         "label": "Decide per biome sitting",
+         "description": "Slowest, but consistent with going biome by biome rather than sweeping changes."
+        }
+       ]
+      },
+      {
+       "question": "What should happen to the vanilla tanks, trucks and cars that spawn on every map today?",
+       "header": "Vanilla junk",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Switch them off",
+         "description": "The new wreck fields replace them for one coherent look, but it removes vanilla junk from non-Ash'karr maps too unless put behind a setting."
+        },
+        {
+         "label": "Reskin as Star Wars junk",
+         "description": "They stay everywhere and wreck fields are added on top. More junk overall and more art to make."
+        },
+        {
+         "label": "Leave them for now",
+         "description": "Wreck fields come first and the vanilla junk is decided at the later roster sitting. Nothing changes until then."
+        }
+       ]
+      },
+      {
+       "question": "Today field wrecks are stripped and the Wrecked Machines are repaired in tiers, but some set-pieces blur that line. Can a scattered wreck ever be repaired instead of stripped for parts?",
+       "header": "Repairable?",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Never",
+         "description": "Field wrecks are always strip-only. Simple and clear."
+        },
+        {
+         "label": "A rare few",
+         "description": "A few live wrecks can be repaired through the Wrecked Machines tiers. A great find, but it adds a second mechanism to the field."
+        },
+        {
+         "label": "Only named set-pieces",
+         "description": "Weeping Stones condensers and the Ship in the Wall only; the field stays strip-only."
+        }
+       ]
+      },
+      {
+       "question": "Should smashing a wreck apart give the same as taking it apart carefully?",
+       "header": "Smash/care",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "No, care pays more",
+         "description": "Careful deconstruction adds a loot roll and smashing gives slag. Rewards the skilled path, the Jawa fantasy."
+        },
+        {
+         "label": "Both give the same",
+         "description": "Simpler and close to vanilla ship chunks, but no reason to be careful."
+        },
+        {
+         "label": "Care scales with skill",
+         "description": "Careful work gives loot and the chance of rare parts scales with the colonist's skill. Goes deepest, but is one more number to balance."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 6,
+   "subject": "Sweetline Bark-warden guardian",
+   "doc": "design/Jawa/worldbuilding/biomes/leaningscrub_sweetline_guardian_activation_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "Sweetline trees in the Leaning Scrub are guarded by sleeping bark-wardens. What should happen when someone just walks up to a tree?",
+       "header": "Walk-up",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Nothing hostile (Recommended)",
+         "description": "The wardens wake enough to watch you, visibly. Only harm wakes them. Traders and travellers are safe and a colony can live beside a tree."
+        },
+        {
+         "label": "Charge within 9 cells",
+         "description": "The earlier spec's rule: no warning. Makes every tree a no-go zone, mauls traders and visitors, and needs a fix for nearby colonies."
+        },
+        {
+         "label": "Charge after an hour",
+         "description": "Only someone lingering under the tree an hour or more is charged. A middle ground, but one more rule to learn."
+        }
+       ]
+      },
+      {
+       "question": "Does harvesting the tree's wool wake the bark-wardens?",
+       "header": "Wool harvest",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Yes, gradually (Recommended)",
+         "description": "They stir, turn restless, then drop on the harvester about halfway through. Stop at the first warning or bring guards. The harvest is a fight unless you are ready."
+        },
+        {
+         "label": "No, only wounding",
+         "description": "Harvest is free; only hurting the tree wakes them. Simpler and safer, but the guardian only matters if you attack the tree."
+        },
+        {
+         "label": "Yes, instantly",
+         "description": "They wake the moment work starts, with no build-up. Harsher, with a smaller window to back off."
+        }
+       ]
+      },
+      {
+       "question": "Are the guardians on the tree from the start, or do they burst out only when it is harmed?",
+       "header": "Visibility",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Visible sleepers (Recommended)",
+         "description": "You can see what you are about to disturb, and can hunt or tame them first to clear a tree on purpose."
+        },
+        {
+         "label": "Hidden until harm",
+         "description": "They burst from the crown when harm happens. Cheapest build (wasp-gall machinery does it), but a surprise attack, against your readable-sign rule."
+        }
+       ]
+      },
+      {
+       "question": "After a fight, how long until a harmed tree forgives you?",
+       "header": "Forgiveness",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "About 5 days (Recommended)",
+         "description": "It calms over roughly five days (adjustable in settings), then they sleep again."
+        },
+        {
+         "label": "Never",
+         "description": "A harmed tree stays hostile to everyone nearby until its wardens are dead. A permanent danger zone."
+        },
+        {
+         "label": "Right away",
+         "description": "Once the culprit leaves they settle. Very forgiving, so a second harvest attempt the same day is easy."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 7,
+   "subject": "Droid mass production quest",
+   "doc": "design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "The Unfinished Line is a five-beat quest in which the Jawa help the dying Droid Enclaves and the Hive build a working droid production line. When the chain is done, what actually changes?",
+       "header": "Chain payoff",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Working line, shared fruits (Recommended)",
+         "description": "Enclave settlements regrow, traders sell good droid frames and parts, free droids sometimes join you. You still need a salvaged head per droid. Moderate build work, visible world change."
+        },
+        {
+         "label": "Plus your own Foundry Line",
+         "description": "All of that plus a building that turns out frames in bulk. Most satisfying, but bends we do not breed new hands and needs Empire heat to keep it honest."
+        },
+        {
+         "label": "Reputation and story only",
+         "description": "A big goodwill jump and epilogue, nothing runs. Cheapest, but the Enclaves' every-loss-is-permanent clock never stops."
+        }
+       ]
+      },
+      {
+       "question": "The Hive starts hostile to you. How do you deal with them during the chain?",
+       "header": "Hive stance",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Enclaves broker a truce (Recommended)",
+         "description": "The Hive is held neutral while the chain runs and snaps back to hostile if you betray them or harm their envoy. A little custom code; reads cleanly."
+        },
+        {
+         "label": "Earn it slowly",
+         "description": "Each beat raises Hive goodwill until they stop being hostile around beat 3. No special code, but it takes +100 goodwill and Hive raids keep hitting you mid-chain."
+        },
+        {
+         "label": "Only via Enclave go-betweens",
+         "description": "Simplest, but you lose the envoy-at-your-colony scene, the best one."
+        }
+       ]
+      },
+      {
+       "question": "Can the player sell out?",
+       "header": "Betrayal",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Sell the cores (Recommended)",
+         "description": "Sell the pattern cores to the Empire or a Hutt fence in beat 3 for a big payday; Hive and Enclaves turn on you for good. Gives the chain weight."
+        },
+        {
+         "label": "Sell and keep them",
+         "description": "Build a line with no partners while both factions turn hostile. The most Jawa option and the hardest to balance."
+        },
+        {
+         "label": "No betrayal path",
+         "description": "Simpler, but the chain has no moral fork."
+        }
+       ]
+      },
+      {
+       "question": "How should this chain relate to the existing Geonosian Alliance arc, where the Hive trades you a fortified base until the Empire wipes them out?",
+       "header": "Alliance arc",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Separate but linked (Recommended)",
+         "description": "This chain's final battle is the first time the Empire notices the Hive, and running the line raises the odds the Alliance arc ends in destruction later."
+        },
+        {
+         "label": "Merge into one arc",
+         "description": "The droid line and fortified base become the same deal. Tighter, but longer and harder to build in pieces."
+        },
+        {
+         "label": "No Empire involvement",
+         "description": "The finale loses its antagonist and needs a new one."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "questions": [
+      {
+       "question": "Faction roster notes say the Hive fields mass-produced battle droids at 35 to 55 percent of its combat points. Since 2026-09-26 the Hive's droids are company-era leftovers kept running by repair. Fix the old text?",
+       "header": "Hive droids",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Fix the roster (Recommended)",
+         "description": "Rewrite the roster notes so Hive droids are repaired leftovers, matching your 2026-09-26 ruling. Keeps the chain and lore consistent."
+        },
+        {
+         "label": "Keep mass-produced",
+         "description": "Leave the roster as it is. Then the Hive already has a factory, which undercuts the premise that it cannot run its line."
+        }
+       ]
+      },
+      {
+       "question": "The lore notes' droid-theft heist says the secret of manufacture is a prize to steal from the Enclaves. Your 2026-09-26 ruling says the Enclaves do not have it. Replace the heist's premise with this chain?",
+       "header": "Droid heist",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Replace the premise (Recommended)",
+         "description": "The chain replaces the heist: the secret sits latent with the Hive, not the Enclaves. Theft survives only as the sell-out path in your earlier answer."
+        },
+        {
+         "label": "Keep the heist too",
+         "description": "Leave the heist as a separate arc. It contradicts your ruling that the Enclaves lack the secret, so it would need its own explanation."
+        }
+       ]
+      },
+      {
+       "question": "The faction tech notes still list battle-droid mass production as a contested Hive holding. The item says it should become latent, not held. Fix that line?",
+       "header": "Tech notes",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Mark it latent (Recommended)",
+         "description": "Change the entry to latent, not held, so the chain is the only way it wakes. Consistent with the item."
+        },
+        {
+         "label": "Leave as contested",
+         "description": "Keep it listed as a contested Hive holding. Contradicts the item and implies the Hive could build droids today."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 8,
+   "subject": "Cauldron sounds and visuals",
+   "doc": "design/Jawa/worldbuilding/biomes/cauldron_enrichment_audio_visuals_spec_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "Nothing in the repo makes or licenses audio, and two other biomes (Cracked Lands, Rust Cathedral) are stuck on the same question. Where should the Cauldron's roughly 25 sounds come from?",
+       "header": "Cauldron snd",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Keep pitched vanilla",
+         "description": "Ships this week at no cost, but sounds like RimWorld with a cold, and a thrumbo under the vexxiss may be recognisable."
+        },
+        {
+         "label": "Licensed sound libraries",
+         "description": "Free or royalty-free packs sound real and are legally clean, but someone must pick each clip by ear and every pack needs a provenance record."
+        },
+        {
+         "label": "AI-generated sound effects",
+         "description": "Can be briefed per clip like our art and scale across every biome. A new tool to set up, uneven quality, so each clip still needs your ear."
+        },
+        {
+         "label": "Build one sound pipeline",
+         "description": "Generate or select, normalise, mono ogg, path check, used for all three stuck biomes. Costs the most upfront and pays back across the planet."
+        }
+       ]
+      },
+      {
+       "question": "The biome's own law says nothing green (green here is a rendering error), but the enrichment asked for green-amber accents and brilliant chemical colour. What colours may the dew and saturated flowers use?",
+       "header": "Dew colours",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "No green, ever",
+         "description": "Purple, blood-red, glass-white and amber only. Keeps the biome's strongest visual rule intact at the cost of a narrower palette."
+        },
+        {
+         "label": "Green only in the dew",
+         "description": "Dew drops may flash a toxic green-amber because chemical, not living; plants stay in law. Striking, but bends a hard ban."
+        },
+        {
+         "label": "Lift ban for dewfall",
+         "description": "The whole garden briefly blooms in wrong colours at dewfall. Most dramatic, and makes green is a mistake an event rather than a law."
+        }
+       ]
+      },
+      {
+       "question": "Should the vexxiss giant's footprints fade in seconds, or stay as a trail you can follow?",
+       "header": "Footprints",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Fade in seconds",
+         "description": "Like vanilla snow prints. Purely cosmetic, zero cost, gone on reload."
+        },
+        {
+         "label": "Stay about a day",
+         "description": "A trail you can track across the map, hover a print to see what made it, and it survives saving. Adds a few dozen map objects while it walks."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 11,
+   "subject": "Greatbole song, sanctuary, pilgrims",
+   "doc": "design/Jawa/worldbuilding/biomes/greatbole_atmosphere_crossovers_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "Pilgrims are meant to visit the greatbole, the giant living tree you can mine. But the mineable landmark exists only in the Jawa campaign patches; the free Greentide mod has just the fellable tree. What should generic pilgrims come to?",
+       "header": "Pilgrims",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Move to free mod (Recommended)",
+         "description": "Heartwood, core, mining ladder and song become free-mod content; the campaign adds Wildsteam on top. Most work, with save risk on live regrowth state, but the free mod gets the full experience."
+        },
+        {
+         "label": "Campaign-only pilgrims",
+         "description": "Cheapest, but the free mod gets no pilgrims until a later move, contradicting the same game minus Star Wars ruling."
+        },
+        {
+         "label": "Visit the fellable tree",
+         "description": "Pilgrims judge chopped versus standing giants. Cheap, but loses the sealed and open-wound ledger that made the idea good."
+        }
+       ]
+      },
+      {
+       "question": "When pilgrims witness a Great Shaking (a blast in the tree) and attack outright, how big is the consequence?",
+       "header": "Fallout",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Local frenzy (Recommended)",
+         "description": "Pilgrims on the map go berserk and fight; their faction loses goodwill but is not at war. Hurts, is survivable, and the clan can be won back with seeds."
+        },
+        {
+         "label": "Whole faction hostile",
+         "description": "Vanilla visitor logic fights back. Very strong, and in the campaign one mistimed blast ends the Wildsteam relationship."
+        },
+        {
+         "label": "Flee, hostile later",
+         "description": "They flee and the faction turns hostile after they get home. Softer-feeling, with time to prepare."
+        }
+       ]
+      },
+      {
+       "question": "Should the greatbole's chambers pull toward a cool 15 degrees Celsius, or be pinned there?",
+       "header": "Chamber cool",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Strong, weakens with mining (Recommended)",
+         "description": "Shelter quality becomes another cost of greed; heaters and coolers still work inside."
+        },
+        {
+         "label": "Hard pin at 15 C",
+         "description": "Simplest to understand, but no freezer or warm room can ever be built inside, and mining costs no comfort."
+        },
+        {
+         "label": "Fixed-strength pull",
+         "description": "Middle ground, simpler to tune, but not tied to how much you mine."
+        }
+       ]
+      },
+      {
+       "question": "For the opt-in wooden servants a connected colonist can call, should we reuse vanilla's Gauranlen dryad system or build a simpler one?",
+       "header": "Servants",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Simpler, our own (Recommended)",
+         "description": "A connected colonist calls a few wooden servants that ignore nearby buildings. Works for a colony living in the tree, the very case the sanctuary creates. More code."
+        },
+        {
+         "label": "Vanilla Gauranlen as is",
+         "description": "Least code and familiar, but it weakens with every nearby building, so a colony living in the bole would barely get servants."
+        },
+        {
+         "label": "Gauranlen, penalty off",
+         "description": "Familiar and works in a colony, but depends on an engine check not yet done: whether the system accepts a non-plant host."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 12,
+   "subject": "Rites: caps, build order, review",
+   "doc": "design/Jawa/salvation_rites_unification_audit_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "A rite is a ceremony the clan holds to move one of its nine gods' moods. Each god is meant to have at most five rites, but counting is inconsistent: one god's controlled waking counts while another's Seating, a rite from the gods' own design, does not. What should count?",
+       "header": "Rite limit",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Only biome-found rites",
+         "description": "Zizzik drops to four and nobody is over. Simple; the gods'-design rites become extras on top."
+        },
+        {
+         "label": "Every rite counts",
+         "description": "Rekko, Ohm and Ozzik go to six, over the limit, so three rites must move or go. Strictest, most work now."
+        },
+        {
+         "label": "Drop the limit",
+         "description": "Nothing to police, but some gods end up with many more rites than others."
+        }
+       ]
+      },
+      {
+       "question": "You said you may not have liked the rites and want to revisit which god each serves. Should we build now or re-sort the gods first?",
+       "header": "Build order",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Machinery now, rites after",
+         "description": "Build the shared rite machinery now and the rites after the re-sort. Nothing built gets redone; rites appear later."
+        },
+        {
+         "label": "Everything now, editable",
+         "description": "Each rite's gods are kept as editable data. Rites arrive soonest and the re-sort becomes a data edit, but it may still change how a rite feels."
+        },
+        {
+         "label": "Re-sort first",
+         "description": "Cleanest result, but nothing playable for the longest."
+        }
+       ]
+      },
+      {
+       "question": "The Wasteland's Rite of Tipping was accepted with only a name: no description, god or faith. What should become of it?",
+       "header": "Tipping rite",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "A Salvation rite",
+         "description": "Give it to a god with room (Ishko, Ta'Baa or Sh'kaar) and design it at the Wasteland's next sitting."
+        },
+        {
+         "label": "A local custom",
+         "description": "Make it a custom of another faith, like the Sun-Debt's Return. Uses no god slot."
+        },
+        {
+         "label": "Drop it",
+         "description": "The Wasteland already teaches three rites, so nothing is lost but the name."
+        }
+       ]
+      },
+      {
+       "question": "How would you like to re-review the rites, now that the explanation is in front of you?",
+       "header": "Re-review",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "One sheet per god",
+         "description": "About five rites each. See a god's whole set at once and judge balance."
+        },
+        {
+         "label": "One sheet per biome",
+         "description": "As they were pitched. Judge whether each place's rite fits the place."
+        },
+        {
+         "label": "Keep accept-all",
+         "description": "Only revisit a rite once it is built and you can play it. Least review work, but problems surface late."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 13,
+   "subject": "Empire escalation ladder",
+   "doc": "design/Jawa/proposals/empire_escalation_ladder_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "The Empire's pursuit is to become a ladder of raid kinds, from evadable probes up to orbital bombardment, that escalates until the clan moves. When the clan lands on a new tile, how much does the Empire still know?",
+       "header": "After moving",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Full reset, leak floor (Recommended)",
+         "description": "Back to the first rung with probes again, but a leak sets a permanent floor. Moving is always worth it, though a late game can grow easy if the player hops often."
+        },
+        {
+         "label": "Drop two rungs",
+         "description": "Never below zero. Moving helps but a careless clan stays hunted; a short hop can land straight into a strike team, which may feel unfair."
+        },
+        {
+         "label": "Reset, shorter timer",
+         "description": "Back to the first rung but the timer starts shorter the higher you were. A middle path that is harder to read."
+        }
+       ]
+      },
+      {
+       "question": "Can a ladder rung touch the ship itself?",
+       "header": "Ship target",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Only to stall it (Recommended)",
+         "description": "An ion cordon disables the engine for hours, so staying is frightening but escape is never closed. Needs an ion emplacement def and art."
+        },
+        {
+         "label": "Never",
+         "description": "The ladder only throws raids and the bombardment. Simpler, but the fourth rung loses its they-are-pinning-you-down kind."
+        },
+        {
+         "label": "Yes, real damage",
+         "description": "The cordon can damage hull and engine. Most tension, but it can strand a clan, working against until you move."
+        }
+       ]
+      },
+      {
+       "question": "Does the orbital bombardment rung destroy buildings on the map?",
+       "header": "Bombardment",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Yes, with warning (Recommended)",
+         "description": "On a full day's warning and a marked target area. An unmistakable leave-now, but it can wipe out a base that took real effort."
+        },
+        {
+         "label": "Open ground only",
+         "description": "Hits open ground and pawns, never structures. Gentler, but becomes something to wait out rather than flee."
+        },
+        {
+         "label": "No bombardment",
+         "description": "The top rung stays the existing endless waves, the more-troopers ending you said escalation should not be."
+        }
+       ]
+      },
+      {
+       "question": "The droid line's Empire heat and the clan's Visibility: should the player watch one meter or two?",
+       "header": "Heat meters",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "One meter (Recommended)",
+         "description": "Running the line raises Visibility and its discovery sets a ladder floor, so the player watches one number. The droid chain's strike becomes a ladder rung, not its own incident."
+        },
+        {
+         "label": "Two meters",
+         "description": "The line keeps its own heat and a site-specific Foundry strike separate from the ship's ladder. Richer site play, but two clocks to read and a home-map strike could stack with a ladder rung."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "n": 14,
+   "subject": "Minerals: where each ore belongs",
+   "doc": "design/RimMandrake/minerals_where_they_belong_design_2026-10-02.md",
+   "cards": [
+    {
+     "questions": [
+      {
+       "question": "You called random outcrops of gold and silver absurd. How strictly should gold, silver, uranium and jade be tied to their home biomes (Scald nodules, Blue Desert meteoritic metal, canyon jade, cave gems)?",
+       "header": "Precious ore",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Home biomes only (Recommended)",
+         "description": "Every ordinary map has iron and stone only. A colony far from the home biomes must buy or travel for precious metals."
+        },
+        {
+         "label": "Home plus thin trace",
+         "description": "About a fifth of today's rate everywhere. Softer, but keeps a little of the random outcrop you called absurd."
+        },
+        {
+         "label": "Salvage and trade only",
+         "description": "No natural gold or silver at all. Strongest flavour, harshest economy."
+        }
+       ]
+      },
+      {
+       "question": "Three materials already called durasteel exist (Outer Rim's, the KotOR alloy in our Armoury, and the Outer Rim mining ore) beside vanilla plasteel. What should we do about the names?",
+       "header": "Plasteel",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Rename plasteel to durasteel (Recommended)",
+         "description": "Retire the three donor durasteels into it with conversion recipes. One material with a canon name; costs a migration pass on recipes naming the donor defs."
+        },
+        {
+         "label": "Keep plasteel",
+         "description": "Donor durasteels stay as salvage curiosities. Least work, but two super-metals sit side by side."
+        },
+        {
+         "label": "Only stop the mining",
+         "description": "Leave all names as they are. No naming decision, but the confusion remains."
+        }
+       ]
+      },
+      {
+       "question": "Duranium and doonium do not exist in any mod we load. Should we make them?",
+       "header": "New metals",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "No, beskar only (Recommended)",
+         "description": "Beskar is the one canon salvage metal, found only in troves and wrecks. Nothing new to balance."
+        },
+        {
+         "label": "Yes, salvage-only relics",
+         "description": "Both as rare relic metals with their own uses. More treasure to find, but two new materials to design and give art."
+        },
+        {
+         "label": "Yes, trader-only",
+         "description": "Bought at the Bazaar, keeping them out of the world entirely. Still two new materials to design."
+        }
+       ]
+      },
+      {
+       "question": "How should the deep drilling scanner (ground-penetrating) decide what it finds?",
+       "header": "Deep drill",
+       "multiSelect": false,
+       "options": [
+        {
+         "label": "Iron plus home-biome (Recommended)",
+         "description": "Iron everywhere; every other deep deposit only in its home biome. Drilling matches what the surface says about a place. Needs one small code change."
+        },
+        {
+         "label": "Vanilla table, no SW metals",
+         "description": "Keep the vanilla deep table minus Star Wars metals. No code, but deep drilling still finds gold and lanternstone anywhere."
+        },
+        {
+         "label": "Iron and fuels only",
+         "description": "Simplest, but drilling stops being a treasure hunt."
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
