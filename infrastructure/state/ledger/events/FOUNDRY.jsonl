@@ -2052,3 +2052,22 @@
 {"seat":"FOUNDRY","event":"start","id":"SCALD_RETURN_GALLERY_1","ts":"2026-10-03T08:27:49Z","tsn":1791016069092922946}
 {"seat":"FOUNDRY","event":"file","id":"SCALD_GALLERY_SCHEMATIC_UNLOCK_1","title":"Return Gallery: what the immersion-engineering schematic unlocks (RM_ImmersionSchematic is an inert item today)","kind":"task","target":"v1","needs":"owner","caused_by":"SCALD_RETURN_GALLERY_1","for":"FOUNDRY","ts":"2026-10-03T08:31:36Z","tsn":1791016296953942611}
 {"seat":"FOUNDRY","event":"block","id":"SCALD_GALLERY_SCHEMATIC_UNLOCK_1","reason":"Owner decision: the schematic must unlock something (e.g. immersion cooler recipe or Berth heat reduction) and the sitting names none; a research/techprint choice is design, not assumed.","ts":"2026-10-03T08:31:37Z","tsn":1791016297505393217}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_FUBBUM_HUNTER_1","ts":"2026-10-03T08:36:05Z","tsn":1791016565154043909}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_FUBBUM_HUNTER_1","ts":"2026-10-03T08:36:05Z","tsn":1791016565676536720}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_MURRIN_CATCH_WIRING_1","ts":"2026-10-03T08:38:55Z","tsn":1791016735018534294}
+{"seat":"FOUNDRY","event":"start","id":"WEEPINGSTONES_MURRIN_CATCH_WIRING_1","ts":"2026-10-03T08:38:55Z","tsn":1791016735527456126}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_DWOMMO_FLIER_1","ts":"2026-10-03T08:39:01Z","tsn":1791016741584247943}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_DWOMMO_FLIER_1","ts":"2026-10-03T08:39:02Z","tsn":1791016742088732135}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_FREE_SALT_CRUST_1","ts":"2026-10-03T08:41:11Z","tsn":1791016871425751882}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_FREE_SALT_CRUST_1","ts":"2026-10-03T08:41:11Z","tsn":1791016871981017705}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_GLURRO_SALVE_1","ts":"2026-10-03T08:41:18Z","tsn":1791016878300028319}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_GLURRO_SALVE_1","ts":"2026-10-03T08:41:18Z","tsn":1791016878811249172}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_FREE_NURSERY_YOUNG_1","ts":"2026-10-03T08:41:50Z","tsn":1791016910809263230}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_FREE_NURSERY_YOUNG_1","ts":"2026-10-03T08:41:51Z","tsn":1791016911330526728}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_AMBUSH_FROG_REMAKE_1","ts":"2026-10-03T08:43:10Z","tsn":1791016990196075399}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_AMBUSH_FROG_REMAKE_1","ts":"2026-10-03T08:43:10Z","tsn":1791016990697604671}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_PIT_SOLVENT_1","ts":"2026-10-03T08:44:15Z","tsn":1791017055016975482}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_PIT_SOLVENT_1","ts":"2026-10-03T08:44:15Z","tsn":1791017055509750914}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_WARDEN_MOTHER_ART_1","ts":"2026-10-03T08:45:23Z","tsn":1791017123636219117}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_WARDEN_MOTHER_ART_1","ts":"2026-10-03T08:45:24Z","tsn":1791017124121966940}
+{"seat":"FOUNDRY","event":"block","id":"GELATINOUSSLIME_PIT_SOLVENT_1","reason":"Free slice built (3 pit recipes, toggle, validation) uncommitted; remaining: spec 3 Rot's finest input patch in src/RimUtinni (campaign tier, outside GelatinousSlime) and live bill proof (needs bridge).","ts":"2026-10-03T08:46:13Z","tsn":1791017173009751035}
