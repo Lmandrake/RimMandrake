@@ -33,6 +33,11 @@ namespace RimMandrake.Abyss
         // ABYSS_KRIZZAK_BUILD_1: wild krizzaks dim glow plants and lit lamps they settle on. Off = they just fly. Safe mid-game.
         public static bool krizzakLightEatingEnabled = true;
 
+        // ABYSS_DONOR_BEASTS_FREED_1: the summ regenerates and burns in daylight; the drokattak hackles before it lunges.
+        public static bool summRegenerates = true;
+        public static bool summUVSensitive = true;
+        public static bool drokattakHackleEnabled = true;
+
         // ABYSS_ETCHFALL_BUILD_1: grain erosion strength on unroofed rock and steel. 0 = off, 1 = shipped.
         public static float etchfallStrength = 1f;
 
@@ -60,6 +65,9 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
             Scribe_Values.Look(ref durrgakMapSignsEnabled, "durrgakMapSignsEnabled", true, true);
             Scribe_Values.Look(ref krizzakLightEatingEnabled, "krizzakLightEatingEnabled", true, true);
+            Scribe_Values.Look(ref summRegenerates, "summRegenerates", true, true);
+            Scribe_Values.Look(ref summUVSensitive, "summUVSensitive", true, true);
+            Scribe_Values.Look(ref drokattakHackleEnabled, "drokattakHackleEnabled", true, true);
             Scribe_Values.Look(ref etchfallStrength, "etchfallStrength", 1f, true);
             Scribe_Values.Look(ref darkEnabled, "darkEnabled", true, true);
             Scribe_Values.Look(ref darkStrength, "darkStrength", 1f, true);
@@ -93,6 +101,13 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
                 "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
+
+            list.CheckboxLabeled("Summs regenerate", ref summRegenerates,
+                "On: a summ slowly heals its wounds on its own. Off: it heals like any animal. Safe mid-game.");
+            list.CheckboxLabeled("Summs burn in daylight", ref summUVSensitive,
+                "On: a summ under an open daylit sky takes a daylight burn (pain, slowness) that fades in shade or darkness. Off: daylight does nothing to it. Safe mid-game.");
+            list.CheckboxLabeled("Drokattaks rattle their quills before they lunge", ref drokattakHackleEnabled,
+                "On: a drokattak that starts a hunt or an attack stops for a moment and rattles its quills, a warning. Off: it lunges at once. Safe mid-game.");
 
             list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
             etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);

@@ -118,6 +118,8 @@
       <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>
       <RM_Cindermare MayRequire="mandrake.rm.biomes">0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: free-tier predators, same rows as RM_Abyss -->
       <RM_Skarnix MayRequire="mandrake.rm.biomes">0.09</RM_Skarnix>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
+      <RM_Drokattak MayRequire="mandrake.rm.biomes">0.12</RM_Drokattak>  <!-- ABYSS_DONOR_BEASTS_FREED_1: same rows as RM_Abyss -->
+      <RM_Summ MayRequire="mandrake.rm.biomes">0.01</RM_Summ>
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
       <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
       <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->

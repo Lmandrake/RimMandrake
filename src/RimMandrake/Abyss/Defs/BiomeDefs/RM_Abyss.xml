@@ -99,6 +99,8 @@
       <RM_Durrgak>0.4</RM_Durrgak>  <!-- ABYSS_DURRGAK_BUILD_1: the placer; this biome only -->
       <RM_Gharrek>0.6</RM_Gharrek>  <!-- ABYSS_GHARREK_BUILD_1: gust-feeder, base of the web; this biome only -->
       <RM_Krizzak>0.3</RM_Krizzak>  <!-- ABYSS_KRIZZAK_BUILD_1: light-thief flier; this biome only -->
+      <RM_Drokattak>0.12</RM_Drokattak>  <!-- ABYSS_DONOR_BEASTS_FREED_1: quill ambusher, replaces the donor zhurrakor; this biome only -->
+      <RM_Summ>0.01</RM_Summ>  <!-- ABYSS_DONOR_BEASTS_FREED_1: storm giant, a rare passing terror (also comes down in Witchfire storms); this biome only -->
       <RM_Cindermare>0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: grip-drain solitary predator; rarer than the skarnix; this biome only -->
       <RM_Skarnix>0.09</RM_Skarnix>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: firelight-averse ambush stalker; this biome only -->
       <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
