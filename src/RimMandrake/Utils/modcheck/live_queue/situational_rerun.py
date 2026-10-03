@@ -59,6 +59,32 @@ def evidence_present(path):
     return os.path.isfile(p)
 
 
+def record_summary(mod, summ, path, dry_run, _record=None, _resolve=None):
+    """Record one mod's run_suite summary in modcheck_status.json exactly as runner.run() would (same record_run
+    arguments: verdict = summary all_green, refused text carried, genuine hash). Returns a note string.
+    Never records on a dry run, never invents a PASS: a summary with no all_green key is not recorded."""
+    if dry_run:
+        return "dry run: not recorded"
+    if "all_green" not in summ:
+        return "not recorded: summary carries no all_green verdict"
+    import time
+    refused = summ.get("refused") or ""
+    green = bool(summ.get("all_green")) and not refused
+    if _resolve is None:
+        import runner
+        mod_dir = runner.find_mod_dir(mod)
+        walk = runner.northstar_for(mod)[0]
+    else:
+        mod_dir, walk = _resolve(mod)
+    rec = _record
+    if rec is None:
+        import status
+        rec = status.record_run
+    entry = rec(mod, mod_dir, "%s@%d" % (mod, int(time.time())), green, walk=walk, refused=refused,
+                extra={"source": {"verb": "situational_rerun", "summary": path}})
+    return "recorded %s" % entry.get("status")
+
+
 def judge(job, digests, crashed):
     job.check("no suite raised out of run_suite", not crashed, crashed)
     fw = [d for d in digests if d["mod"] == "FlowWorks"]
@@ -85,7 +111,7 @@ def body(s, job):
     mods = suite_mods()
     if "--mods" in argv:
         mods = [m for m in argv[argv.index("--mods") + 1].split(",") if m]
-    digests, crashed = [], []
+    digests, crashed, recorded = [], [], {}
     if not job.dry_run:        # a freshly launched game sits at the main menu: every suite would die with ClockLost (2026-10-03)
         job.note("map", runner.ensure_playing_map())
     if job.dry_run:
@@ -122,11 +148,18 @@ def body(s, job):
             continue
         with open(os.path.join(job.outdir, "%s_summary.json" % m), "w", encoding="utf-8") as f:
             json.dump(summ, f, indent=1, default=str)
+        spath = os.path.join(job.outdir, "%s_summary.json" % m)
+        try:
+            recorded[m] = record_summary(m, summ, spath, job.dry_run)
+        except Exception as e:                                  # noqa: BLE001
+            recorded[m] = "RECORDING FAILED (status NOT updated): %s: %s" % (type(e).__name__, e)
+            print("     !! %s: %s" % (m, recorded[m]))
         d = digest(m, summ)
         digests.append(d)
         print("     refused=%r verdicts=%s surprises=%d serious=%s" % (d["refused"][:80], d["verdicts"],
                                                                      len(d["surprises"]), d["serious_detectors"]))
     job.note("digests", digests)
+    job.note("status_recording", recorded)
     judge(job, digests, crashed)
 
 

@@ -834,7 +834,7 @@ def main():
     cases = [
         ("missing_def", {"defs_resolve.defs_resolve_ThingDef"}),
         ("donor_shadow", {"defs_resolve.defs_resolve_PawnKindDef"}),
-        ("default_flipped", {"settings_defaults.default_stormDoseMultiplier"}),
+        ("default_flipped", {"settings_defaults.default_stormDoseMultiplier", "settings_roundtrip.stormDoseMultiplier_round_trips"}),   # the round-trip chain (added 2026-10-03) reads the same flipped value
         ("natural_gen", {"biome_roster.biome_flags_and_densities"}),
         ("zero_density", {"biome_roster.biome_flags_and_densities"}),
         ("roster_drift", {"biome_roster.wild_animals_wired"}),

@@ -78,6 +78,31 @@ def main():
         check("situational_rerun judge FAILs each of: crash, FlowWorks refused, budget, unbland, missing evidence",
               [c["ok"] for c in jb.checks] == [False] * 5, jb.checks)
 
+        # ---- status recording: dry run records nothing; a fake run lands in a TEMP status file only
+        import status as _st
+        old_lp, old_lk = _st.LOG_PATH, _st.LOCK_PATH
+        _st.LOG_PATH = os.path.join(tmp, "modcheck_status.json")
+        _st.LOCK_PATH = _st.LOG_PATH + ".lock"
+        try:
+            moddir = os.path.join(tmp, "FakeMod")
+            os.makedirs(moddir)
+            with open(os.path.join(moddir, "a.xml"), "w") as f:
+                f.write("<x/>")
+            res_ = lambda m: (moddir, None)                       # noqa: E731
+            n = rerun.record_summary("FakeMod", {"all_green": True}, "s.json", True, _resolve=res_)
+            check("situational_rerun dry run records nothing", "dry run" in n and not os.path.exists(_st.LOG_PATH), n)
+            rerun.record_summary("FakeMod", {"all_green": True}, "s.json", False, _resolve=res_)
+            e1 = _st.load().get("FakeMod") or {}
+            check("situational_rerun records a green run in the status file", e1.get("status") == "GREEN"
+                  and e1.get("source", {}).get("summary") == "s.json", e1)
+            rerun.record_summary("FakeMod", {"all_green": False, "refused": "no bar"}, "s.json", False, _resolve=res_)
+            e2 = _st.load().get("FakeMod") or {}
+            check("a refused summary records REFUSED/RED, never PASS", e2.get("status") != "GREEN" and e2.get("refused") == "no bar", e2)
+            n = rerun.record_summary("FakeMod", {}, "s.json", False, _resolve=res_)
+            check("a summary with no verdict is not recorded", "not recorded" in n and _st.load()["FakeMod"] == e2, n)
+        finally:
+            _st.LOG_PATH, _st.LOCK_PATH = old_lp, old_lk
+
         def blind_hostiles(w):
             orig = w._t_jawa_spawn_pawn
 

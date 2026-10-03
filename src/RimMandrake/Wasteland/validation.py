@@ -699,7 +699,8 @@ def settings_roundtrip(t):
                     _fail("%s: wrote %r, read %r" % (field, new, _get()))
             finally:
                 t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=str(old))
-            if not _same(_get(), old):
+            # `old` is the tool's string ('True'): compare a bool field as a bool, a number as a number
+            if not _same(_get(), (str(old).lower() == "true") if isinstance(default, bool) else old):
                 _fail("%s did not restore to %r (read %r)" % (field, old, _get()))
 
 
