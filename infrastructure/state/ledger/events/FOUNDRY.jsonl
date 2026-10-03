@@ -2305,3 +2305,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"WEBWORK_HEAT_SHADE_BUILD_1","ts":"2026-10-03T16:05:30Z","tsn":1791043530454192424}
 {"seat":"FOUNDRY","event":"start","id":"WEBWORK_HEAT_SHADE_BUILD_1","ts":"2026-10-03T16:05:30Z","tsn":1791043530957010739}
 {"seat":"FOUNDRY","event":"close","id":"WEBWORK_HEAT_SHADE_BUILD_1","sha":"28601a9e6254ddd3a651ae1e194ce6296eaba214","ts":"2026-10-03T16:07:48Z","tsn":1791043668362862699}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-03T16:11:25Z","tsn":1791043885697736036}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_FURNACE_WARMTH_AMBIENT_1","ts":"2026-10-03T16:13:59Z","tsn":1791044039768806926}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_FURNACE_WARMTH_AMBIENT_1","ts":"2026-10-03T16:14:01Z","tsn":1791044041142123619}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FURNACE_WARMTH_AMBIENT_1","sha":"5a87d93178f36ee16d51ca9714a055786ee1afd6","ts":"2026-10-03T16:14:16Z","tsn":1791044056739443922}
