@@ -1970,3 +1970,7 @@
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-03T02:39:47Z","tsn":1790995187425900328}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-10-03T03:03:59Z","tsn":1790996639970147378}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-10-03T03:27:45Z","tsn":1790998065250425019}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-10-03T03:44:07Z","tsn":1790999047746792189}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"NORTHSTAR_BLAND_TILE_1 bland tile generate","ts":"2026-10-03T03:44:37Z","tsn":1790999077746261172}
+{"seat":"FOUNDRY","event":"close","id":"NORTHSTAR_BLAND_TILE_1","sha":"596735161","reason":"J3_bland_tile MEASURED PASS in live_queue_results.jsonl; built 596735161","ts":"2026-10-03T03:44:57Z","tsn":1790999097063589952}
+{"seat":"FOUNDRY","event":"close","id":"LIQUID_TYPES_MOD_1","sha":"eaf0e96e4","reason":"stale-sweep: roster+cross-mod index shipped eaf0e96e4 (ancestor of origin/main); remainder ruled into LIQUID_REGISTRY_CORE_1 (done)","ts":"2026-10-03T03:45:32Z","tsn":1790999132367104295}
