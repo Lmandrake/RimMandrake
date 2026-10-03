@@ -2352,3 +2352,16 @@
 {"seat":"FOUNDRY","event":"close","id":"SUMP_TAR_BEAST_BUILD_1","sha":"0e0d94f34afd","ts":"2026-10-03T17:17:03Z","tsn":1791047823017485003}
 {"seat":"FOUNDRY","event":"close","id":"STILLSAND_CAVE_TIER_ROWS_1","sha":"8986b740f","ts":"2026-10-03T17:17:25Z","tsn":1791047845672272451}
 {"seat":"FOUNDRY","event":"close","id":"CHILL_FREE_TIER_CATCH_1","sha":"a8a4998ec","ts":"2026-10-03T17:17:36Z","tsn":1791047856643984690}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-03T17:17:46Z","tsn":1791047866853657830}
+{"seat":"FOUNDRY","event":"claim","id":"RUSTCATHEDRAL_FREE_NAMES_TIDY_1","ts":"2026-10-03T17:20:39Z","tsn":1791048039674565278}
+{"seat":"FOUNDRY","event":"start","id":"RUSTCATHEDRAL_FREE_NAMES_TIDY_1","ts":"2026-10-03T17:20:40Z","tsn":1791048040185585102}
+{"seat":"FOUNDRY","event":"close","id":"RUSTCATHEDRAL_FREE_NAMES_TIDY_1","sha":"84d2b3626ea5","ts":"2026-10-03T17:22:53Z","tsn":1791048173845368788}
+{"seat":"FOUNDRY","event":"close","id":"SCALD_CROWNCARPET_NO_HABITAT_1","sha":"ca774b8b9","ts":"2026-10-03T17:23:13Z","tsn":1791048193148277644}
+{"seat":"FOUNDRY","event":"close","id":"TWILIGHT_TENANCY_PAPER_REMOVAL_1","sha":"3e6a74b87","ts":"2026-10-03T17:23:40Z","tsn":1791048220070120947}
+{"seat":"FOUNDRY","event":"close","id":"TWILIGHT_REVIEW_FIXES_1","sha":"3e6a74b87","ts":"2026-10-03T17:23:40Z","tsn":1791048220583668263}
+{"seat":"FOUNDRY","event":"close","id":"OFFBIOME_SHEET_RERENDERS_1","sha":"cc28f2f0b","ts":"2026-10-03T17:23:41Z","tsn":1791048221090779133}
+{"seat":"FOUNDRY","event":"close","id":"MIASMA_SHIPPING_NAMES_1","sha":"8f59422c7","ts":"2026-10-03T17:23:41Z","tsn":1791048221591603991}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_SOLVENT_WAKE_BUILD_1","ts":"2026-10-03T17:27:52Z","tsn":1791048472442731892}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_SOLVENT_WAKE_BUILD_1","ts":"2026-10-03T17:27:52Z","tsn":1791048472957393661}
+{"seat":"FOUNDRY","event":"close","id":"SUMP_SOLVENT_WAKE_BUILD_1","sha":"8ebbd2448742","ts":"2026-10-03T17:27:53Z","tsn":1791048473463059423}
+{"seat":"FOUNDRY","event":"note","id":"CRACKEDLANDS_WOOLAMANDER_FLIGHT_1","text":"Canon checked 2026-10-03 (Wookieepedia parse API, page Woolamander): Yavin 4 Massassi-canopy arboreal creature, long arms, tufted tail, NO wings or flight anywhere in the article. So canon says it does not fly; the 'woolamander migrants physically fly in' text and the flier-commuter label are in conflict with canon. Owner choice: keep it a walking/climbing resident and correct the roster label + feast text, or deliberately depart from canon and give it flight.","ts":"2026-10-03T17:28:14Z","tsn":1791048494961494416}
