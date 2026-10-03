@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ABYSS_DURRGAK_BUILD_1 remainder (Source/RM_GenStep_DurrgakSigns.cs): the durrgak's signs on a new
+     Abyss map - one stocked den, a loose row of shard rings, sometimes a salvage cache inside its own
+     ring. Reached only through RM_Abyss's extraGenSteps. Order 915: after Plants (900), before
+     Animals (1200). Mod Setting durrgakMapSignsEnabled. -->
+<Defs>
+  <GenStepDef>
+    <defName>RM_DurrgakSigns</defName>
+    <order>915</order>
+    <genStep Class="RimMandrake.Abyss.RM_GenStep_DurrgakSigns">
+      <denDef>RM_DurrgakDen</denDef>
+      <cacheDef>RM_DurrgakSalvageCache</cacheDef>
+      <cairnDef>RM_DurrgakCairn</cairnDef>
+      <cairnCount>3~6</cairnCount>
+      <cacheChance>0.4</cacheChance>
+      <denSteel>15~40</denSteel>
+      <denComponents>0~2</denComponents>
+      <cacheSteel>10~25</cacheSteel>
+      <cacheComponents>1~3</cacheComponents>
+    </genStep>
+  </GenStepDef>
+</Defs>

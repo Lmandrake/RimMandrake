@@ -5,7 +5,8 @@
   Wild: shy, arranges obsidian-shard rings (RM_DurrgakCairn) on the ground it wanders; nothing in any
   description says who made them. Tamed: tidies, via vanilla Haul training (Advanced trainability);
   tamed durrgaks stop building rings. Not a flyer: no flight stat on purpose.
-  OWED: stocked-den / salvage-cache placement (art exists, defs not built).
+  Map signs: RM_DurrgakDen + RM_DurrgakSalvageCache + rings placed by RM_GenStep_DurrgakSigns (RM_Abyss extraGenSteps).
+  No glow-berry item exists, so glow-berry caches are painted into the den art only.
 -->
 <Defs>
 
@@ -143,6 +144,60 @@
         <radius>5</radius>
       </li>
     </comps>
+  </ThingDef>
+
+  <!-- The den and the salvage cache: placed only by RM_GenStep_DurrgakSigns on a new Abyss map.
+       The steel and components are real stacks lying around them (forbidden), not part of the def. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DurrgakDen</defName>
+    <label>tidy den</label>
+    <description>A low den mouth dug into the black rock, lined with scavenged scrap: bent steel strips, a component, shards stood in rows, and a small pile of faintly glowing berries by the entrance, stacked far too neatly. Nothing is living in it just now.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Building/DurrgakDen</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DurrgakSalvageCache</defName>
+    <label>salvage cache</label>
+    <description>A tidy stack of salvage set squarely on the rock: plates, a coil of cable, a few components, all of it squared off as if for inspection. It was made with great care, and not recently.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Building/DurrgakSalvageCache</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
   </ThingDef>
 
   <ThoughtDef>

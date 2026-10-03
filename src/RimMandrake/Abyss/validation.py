@@ -142,6 +142,29 @@ def durrgak_check():
         bad.append("RM_CompDurrgak.cs not compiled or missing")
     if "durrgakRingsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
         bad.append("Mod Settings toggle durrgakRingsEnabled missing")
+    # map signs: den + salvage cache defs with art, the GenStep wired through RM_Abyss extraGenSteps
+    for dn in ("RM_DurrgakDen", "RM_DurrgakSalvageCache"):
+        d = next((x for x in root.iter("ThingDef") if x.findtext("defName") == dn), None)
+        if d is None:
+            bad.append("missing def %s" % dn)
+            continue
+        if not os.path.isfile(os.path.join(HERE, "Textures", (d.findtext("graphicData/texPath") or "") + ".png")):
+            bad.append("%s texture missing" % dn)
+        if "durrgak" in (d.findtext("description") or "").lower():
+            bad.append("%s description must never say who made it" % dn)
+    gs = next((g for g in _defs("MapGeneration/RM_DurrgakSigns_GenStep.xml").iter("GenStepDef")
+               if g.findtext("defName") == "RM_DurrgakSigns"), None)
+    if gs is None or gs.find("genStep").get("Class") != "RimMandrake.Abyss.RM_GenStep_DurrgakSigns":
+        bad.append("GenStepDef RM_DurrgakSigns missing or wrong class")
+    elif {gs.findtext("genStep/denDef"), gs.findtext("genStep/cacheDef"), gs.findtext("genStep/cairnDef")} != {
+            "RM_DurrgakDen", "RM_DurrgakSalvageCache", "RM_DurrgakCairn"}:
+        bad.append("RM_DurrgakSigns not pointed at den/cache/cairn")
+    if "RM_DurrgakSigns" not in [li.text for li in biome.findall(".//extraGenSteps/li")]:
+        bad.append("RM_Abyss extraGenSteps lacks RM_DurrgakSigns")
+    if 'Compile Include="RM_GenStep_DurrgakSigns.cs"' not in proj:
+        bad.append("RM_GenStep_DurrgakSigns.cs not compiled")
+    if "durrgakMapSignsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
+        bad.append("Mod Settings toggle durrgakMapSignsEnabled missing")
     return bad
 
 
@@ -368,10 +391,19 @@ try:
     def durrgak_defs_resolve(t):
         """Live: the durrgak defs loaded."""
         with t.component("durrgak_defs_loaded", beyond_toggle=True):
-            for d in ("ThingDef/RM_Durrgak", "PawnKindDef/RM_Durrgak", "ThingDef/RM_DurrgakCairn", "ThoughtDef/RM_SawDurrgakRing"):
+            for d in ("ThingDef/RM_Durrgak", "PawnKindDef/RM_Durrgak", "ThingDef/RM_DurrgakCairn", "ThoughtDef/RM_SawDurrgakRing",
+                      "ThingDef/RM_DurrgakDen", "ThingDef/RM_DurrgakSalvageCache", "GenStepDef/RM_DurrgakSigns"):
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+        # the real map-sign placement run on the current map (RM_GenStep_DurrgakSigns.ProofSigns). Not proven
+        # here: a freshly GENERATED Abyss map carrying them (extraGenSteps) -- generate an Abyss quicktest.
+        with t.component("durrgak_signs_placed", beyond_toggle=True):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Abyss.RM_GenStep_DurrgakSigns",
+                              method="ProofSigns", args="current")
+            res = str((r or {}).get("result", ""))
+            if t._guard() and not res.startswith("den=1"):
+                raise ExpectationFailed("no den placed: %r" % (r,))
     @suite.chain("etchfall_defs_resolve")
     def etchfall_defs_resolve(t):
         """Live: tholin and both chemfuel recipes loaded."""

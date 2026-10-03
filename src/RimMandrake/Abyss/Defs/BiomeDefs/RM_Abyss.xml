@@ -129,6 +129,10 @@
       <RM_Etchcap>0.15</RM_Etchcap>  <!-- ABYSS_ETCHCAP_BUILD_1: grows only on RM_EtchHollow -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
+    <!-- ABYSS_DURRGAK_BUILD_1: the durrgak's den, shard rings and salvage cache on each new map (Mod Setting). -->
+    <extraGenSteps>
+      <li>RM_DurrgakSigns</li>
+    </extraGenSteps>
     <modExtensions>
       <!-- ABYSS_HIDDEN_SHIP_PROBES_1: scouts that test a hidden gravship. Empty list = a vanilla light mech. The campaign layer patches its probe droids in here. -->
       <li Class="RimMandrake.Abyss.RM_AbyssProbeExtension">

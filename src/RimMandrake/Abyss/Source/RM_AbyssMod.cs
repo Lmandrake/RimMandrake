@@ -27,6 +27,8 @@ namespace RimMandrake.Abyss
 
         // ABYSS_DURRGAK_BUILD_1: wild durrgaks place obsidian-shard rings. Off = none are placed (existing rings stay).
         public static bool durrgakRingsEnabled = true;
+        // ABYSS_DURRGAK_BUILD_1: a new Abyss map gets a stocked den, a row of rings, sometimes a salvage cache. Off = none on maps generated afterwards.
+        public static bool durrgakMapSignsEnabled = true;
 
         // ABYSS_KRIZZAK_BUILD_1: wild krizzaks dim glow plants and lit lamps they settle on. Off = they just fly. Safe mid-game.
         public static bool krizzakLightEatingEnabled = true;
@@ -56,6 +58,7 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
+            Scribe_Values.Look(ref durrgakMapSignsEnabled, "durrgakMapSignsEnabled", true, true);
             Scribe_Values.Look(ref krizzakLightEatingEnabled, "krizzakLightEatingEnabled", true, true);
             Scribe_Values.Look(ref etchfallStrength, "etchfallStrength", 1f, true);
             Scribe_Values.Look(ref darkEnabled, "darkEnabled", true, true);
@@ -68,8 +71,11 @@ namespace RimMandrake.Abyss
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // the screen outgrew one page: scroll it (view height measured from the last draw)
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, lastHeight));
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 the Abyss never generates on a new planet. "
@@ -82,6 +88,8 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Wild durrgaks set rings of shards", ref durrgakRingsEnabled,
                 "On: wild durrgaks slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
+            list.CheckboxLabeled("New maps carry a durrgak den and rings", ref durrgakMapSignsEnabled,
+                "On: each new Abyss map has a tidy den lined with scrap steel, a row of shard rings, and sometimes a salvage cache. Off: none. Affects maps generated afterwards (map generation).");
 
             list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
                 "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
@@ -115,8 +123,13 @@ namespace RimMandrake.Abyss
             list.CheckboxLabeled("Probes hunt the hidden ship", ref probesEnabled,
                 "On: while the ship is hidden, probes come now and then. A probe that keeps a moving colonist or lit lamp in sight reports and the cover collapses. Off: the cover is never tested.");
 
+            lastHeight = list.CurHeight + 12f;
             list.End();
+            Widgets.EndScrollView();
         }
+
+        private static Vector2 scroll;
+        private static float lastHeight = 1200f;
 
         private static string RarityLabel()
         {
