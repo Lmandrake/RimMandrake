@@ -30,6 +30,7 @@ namespace RimMandrake.BlueDesert
 
         public static bool nativeDetonationsEnabled = true;
         public static bool floraChainReactionsEnabled = true;
+        public static bool floraExpansionEnabled = true;
         public static bool coldWaxWarmReactiveEnabled = true;
         public static bool butaneGutEnabled = true;
         public static bool burnerHaloEnabled = true;
@@ -76,6 +77,7 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
             Scribe_Values.Look(ref nativeDetonationsEnabled, "nativeDetonationsEnabled", true);
             Scribe_Values.Look(ref floraChainReactionsEnabled, "floraChainReactionsEnabled", true);
+            Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true);
             Scribe_Values.Look(ref coldWaxWarmReactiveEnabled, "coldWaxWarmReactiveEnabled", true);
             Scribe_Values.Look(ref butaneGutEnabled, "butaneGutEnabled", true);
             Scribe_Values.Look(ref burnerHaloEnabled, "burnerHaloEnabled", true);
@@ -118,6 +120,9 @@ namespace RimMandrake.BlueDesert
             list.CheckboxLabeled("Flora chain reactions", ref floraChainReactionsEnabled,
                 "The transparent fractal flora detonates when warmed or killed by damage. Off: "
               + "the flora is inert.");
+            list.CheckboxLabeled("Flora expansion (restart to apply)", ref floraExpansionEnabled,
+                "Qeshra, kethevar, lisqueth and vashpuk in the wild roster, and kethevar's char-lace. "
+              + "Off: only palefloss, glassfern, virr and chimeglobe grow. The roster change applies on the next launch.");
             list.CheckboxLabeled("Warm-reactive cold wax", ref coldWaxWarmReactiveEnabled,
                 "Cold wax ruined by a warm room starts its own wick. Off: ruined cold wax just "
               + "decays, it does not explode.");

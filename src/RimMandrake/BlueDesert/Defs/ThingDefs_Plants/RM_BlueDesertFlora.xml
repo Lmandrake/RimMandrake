@@ -310,4 +310,261 @@
     </comps>
   </ThingDef>
 
+
+  <!-- ============================================================================================
+       BLUEDESERT_FLORA_EXPANSION_BUILD_1: four admitted flora (card 2026-10-02), per
+       design/Jawa/worldbuilding/biomes/bluedesert_flora_expansion_pitch_2026-10-02.md.
+       Palefloss recipe: never sowable, cold band, 40 HP or less, PlantCharge. Gated by
+       RM_BlueDesertSettings.floraExpansionEnabled (roster rows removed at startup when off; char-lace
+       drop off). Art: single sprites from the artpipe renders (bluedesert_flora_expansion_2026-10-02.csv).
+       ============================================================================================ -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Qeshra</defName>
+    <label>qeshra</label>
+    <description>A knee-low cushion of glassy beads, each a translucent scarlet-to-tangerine sphere packed like roe on a clear stalk-mat, frost-rimmed at the edge. The one red thing on the plateau. The native grazers seek it out, and a patch draws a herd.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Nutrition>0.9</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>3</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Qeshra/RM_Qeshra</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>12</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_QeshraRoe</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <harvestWork>100</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.45~0.7</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>4</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.5</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Kethevar</defName>
+    <label>kethevar</label>
+    <description>A hand-high spiral coil of pleated glassy ribbon, pale chartreuse-gold with a faint inner glitter. Harmless until killed: cut, it gives plain cold wax; set it alight or blast it and what is left is a silver-black lattice of pure carbon.</description>
+    <statBases>
+      <MaxHitPoints>25</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Kethevar/RM_Kethevar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>10</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>90</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.6~0.9</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.3</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+        <killedLeavingDef>RM_CharLace</killedLeavingDef>
+        <killedLeavingCount>1</killedLeavingCount>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Lisqueth</defName>
+    <label>lisqueth</label>
+    <description>A flat starburst rosette, waist-wide, of smoky-violet translucent ribs whose edges fluoresce a cool magenta-pink under starlight. Dim and never warm: the nightside's one natural lamp.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>6</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Lisqueth/RM_Lisqueth</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>9</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>80</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <visualSizeRange>0.7~1.0</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.5</glowRadius>
+        <glowColor>(210,80,170,0)</glowColor>
+      </li>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>1.3</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Vashpuk</defName>
+    <label>vashpuk</label>
+    <description>A squat waist-high bladder of smoky honey-amber skin, a slow milky sediment swirling inside, ringed at the base by stubby clear feeder roots. Visibly full. Tap it and it gives up a great deal of cold wax, then slowly refills. Warm it and it is the biggest charge on the plateau after the chimeglobe.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.3</Nutrition>
+      <Flammability>0.05</Flammability>
+      <BeautyOutdoors>4</BeautyOutdoors>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Vashpuk/RM_Vashpuk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.BlueDesert.RM_IngestionOutcomeDoer_ButaneGut">
+          <hediffDef>RM_ButaneGut</hediffDef>
+          <severity>0.25</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <plant>
+      <completelyIgnoreFertility>true</completelyIgnoreFertility>
+      <fertilityMin>0</fertilityMin>
+      <minGrowthTemperature>-90</minGrowthTemperature>
+      <minOptimalGrowthTemperature>-60</minOptimalGrowthTemperature>
+      <maxOptimalGrowthTemperature>-20</maxOptimalGrowthTemperature>
+      <maxGrowthTemperature>-1</maxGrowthTemperature>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <dieIfNoSunlight>false</dieIfNoSunlight>
+      <dieIfLeafless>false</dieIfLeafless>
+      <dieFromToxicFallout>false</dieFromToxicFallout>
+      <neverBlightable>true</neverBlightable>
+      <growDays>14</growDays>
+      <lifespanDaysPerGrowDays>8</lifespanDaysPerGrowDays>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ColdWax</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <harvestWork>140</harvestWork>
+      <harvestMinGrowth>0.65</harvestMinGrowth>
+      <harvestAfterGrowth>0.2</harvestAfterGrowth>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <maxMeshCount>1</maxMeshCount>
+      <wildOrder>2</wildOrder>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <topWindExposure>0</topWindExposure>
+      <interferesWithRoof>false</interferesWithRoof>
+    </plant>
+    <comps>
+      <li Class="RimMandrake.BlueDesert.CompProperties_PlantCharge">
+        <radius>2.5</radius>
+        <damage>40</damage>
+        <fireChance>0.2</fireChance>
+      </li>
+    </comps>
+  </ThingDef>
+
+
 </Defs>

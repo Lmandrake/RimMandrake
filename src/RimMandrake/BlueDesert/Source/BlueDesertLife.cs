@@ -122,6 +122,13 @@ namespace RimMandrake.BlueDesert
         public float damage = 40f;
         public float fireChance = 0.2f;
 
+        /// <summary>BLUEDESERT_FLORA_EXPANSION_BUILD_1: left behind ONLY when the plant is killed by damage
+        /// (KillFinalize), never on cut/harvest. Vanilla killedLeavings also fires on harvest
+        /// (GenLeaving.DoLeavingsFor treats KillFinalizeLeavingsOnly as a kill), so the kethevar's char-lace
+        /// is dropped here instead.</summary>
+        public ThingDef killedLeavingDef;
+        public int killedLeavingCount = 1;
+
         public CompProperties_PlantCharge()
         {
             compClass = typeof(CompPlantCharge);
@@ -194,11 +201,21 @@ namespace RimMandrake.BlueDesert
             {
                 return;
             }
-            if (!RM_BlueDesertSettings.masterEnabled || !RM_BlueDesertSettings.floraChainReactionsEnabled)
+            if (!RM_BlueDesertSettings.masterEnabled)
             {
                 return;
             }
             if (previousMap == null)
+            {
+                return;
+            }
+            if (Props.killedLeavingDef != null && RM_BlueDesertSettings.floraExpansionEnabled)
+            {
+                Thing leaving = ThingMaker.MakeThing(Props.killedLeavingDef);
+                leaving.stackCount = Props.killedLeavingCount;
+                GenPlace.TryPlaceThing(leaving, parent.Position, previousMap, ThingPlaceMode.Near);
+            }
+            if (!RM_BlueDesertSettings.floraChainReactionsEnabled)
             {
                 return;
             }
@@ -328,6 +345,28 @@ namespace RimMandrake.BlueDesert
                 return; // the Swallower's "anaerobic gut" and the other natives' own metabolism
             }
             base.DoIngestionOutcomeSpecial(pawn, ingested, ingestedCount);
+        }
+    }
+
+    /// <summary>BLUEDESERT_FLORA_EXPANSION_BUILD_1: with the setting off, the four expansion plants are removed from
+    /// RM_BlueDesert's wildPlants at startup (takes effect on restart), so the biome degrades to its original four.</summary>
+    [StaticConstructorOnStartup]
+    public static class RM_BlueDesertFloraGate
+    {
+        private static readonly string[] Expansion = { "RM_Qeshra", "RM_Kethevar", "RM_Lisqueth", "RM_Vashpuk" };
+
+        static RM_BlueDesertFloraGate()
+        {
+            if (RM_BlueDesertSettings.floraExpansionEnabled)
+            {
+                return;
+            }
+            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_BlueDesert");
+            if (biome == null)
+            {
+                return;
+            }
+            biome.wildPlants.RemoveAll(r => r.plant != null && System.Array.IndexOf(Expansion, r.plant.defName) >= 0);
         }
     }
 }

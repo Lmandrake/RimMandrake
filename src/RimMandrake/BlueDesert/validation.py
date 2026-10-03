@@ -66,6 +66,7 @@ MOD_IDS = ("mandrake.rm.biomes", "mandrake.rm.bluedesert")      # open_mod_setti
 # re-reads the C# and fails if this table drifts from it.
 DEFAULTS = {
     "masterEnabled": True, "nativeDetonationsEnabled": True, "floraChainReactionsEnabled": True,
+    "floraExpansionEnabled": True,
     "coldWaxWarmReactiveEnabled": True, "butaneGutEnabled": True, "burnerHaloEnabled": True,
     "warmDetonationThresholdC": 5.0, "vhaulkHeatGateEnabled": True, "vhaulkEmpTrapEnabled": True,
     "ruledWeathersEnabled": True, "hazeExposureEnabled": True, "thawRollEnabled": True,
@@ -510,7 +511,7 @@ def defs_chain(t):
     with _comp(t, "defs_resolve"):
         if _live(t):
             # The parser must see the mod: a broken regex would read "all 0 defs resolve".
-            if len(SHIPPED) < 60 or len(NATIVES) != 10 or not DEFS_BY_TYPE.get("WeatherDef") or len(FLORA) != 4:
+            if len(SHIPPED) < 60 or len(NATIVES) != 10 or not DEFS_BY_TYPE.get("WeatherDef") or len(FLORA) != 8:
                 _fail("parsed only %d shipped defs / %d natives / %d flora from %s (parser broken?)"
                       % (len(SHIPPED), len(NATIVES), len(FLORA), HERE))
             r = t.bridge_call("jawa/get_defs", defs=";".join(SHIPPED), fields="defName", limit=200)
@@ -526,6 +527,40 @@ def defs_chain(t):
             if "RM_BlueDesert_NoSuchDef_Probe" not in json.dumps((probe or {}).get("notFound")):
                 _fail("sanity probe: an absent def was not reported in notFound: %r" % probe)
             _note(t, "shipped defs resolved", len(SHIPPED))
+
+    with _comp(t, "flora_expansion_shape", toggle="floraExpansionEnabled"):
+        # BLUEDESERT_FLORA_EXPANSION_BUILD_1: parsed from the mod's own XML, so it needs no live game.
+        txt = _xml_text("ThingDefs_Plants/RM_BlueDesertFlora.xml")
+        itxt = _xml_text("ThingDefs_Items/RM_FloraExpansionItems.xml")
+        biome = _xml_text("BiomeDefs/RM_BlueDesert.xml")
+        bad = []
+        for n in ("RM_Qeshra", "RM_Kethevar", "RM_Lisqueth", "RM_Vashpuk"):
+            m = re.search(r"<defName>%s</defName>(.*?)</ThingDef>" % n, txt, flags=re.S)
+            if not m:
+                bad.append("%s missing" % n)
+                continue
+            body = m.group(1)
+            if "sowTags" in body:
+                bad.append("%s is sowable" % n)
+            if "PlantCharge" not in body:
+                bad.append("%s has no PlantCharge" % n)
+            hp = re.search(r"<MaxHitPoints>(\d+)</MaxHitPoints>", body)
+            if not hp or int(hp.group(1)) > 40:
+                bad.append("%s MaxHitPoints > 40" % n)
+            if not re.search(r"<%s>[\d.]+</%s>" % (n, n), biome):
+                bad.append("%s not in RM_BlueDesert wildPlants (XML element form)" % n)
+        if "CompGlower" not in txt and "CompProperties_Glower" not in txt:
+            bad.append("lisqueth has no glower")
+        if "harvestAfterGrowth" not in txt:
+            bad.append("vashpuk does not regrow")
+        roe = re.search(r"<defName>RM_QeshraRoe</defName>(.*?)</ThingDef>", itxt, flags=re.S)
+        lace = re.search(r"<defName>RM_CharLace</defName>(.*?)</ThingDef>", itxt, flags=re.S)
+        if not roe or not all(c in roe.group(1) for c in ("CompProperties_Explosive", "CompProperties_TemperatureRuinable", "RM_CompRuinedDetonator")):
+            bad.append("RM_QeshraRoe lacks the three cold-wax comps")
+        if not lace or "CompProperties_Explosive" in lace.group(1):
+            bad.append("RM_CharLace missing or carries CompExplosive")
+        if bad:
+            _fail("; ".join(bad))
 
     with _comp(t, "biome_weather_table"):
         if _live(t):
