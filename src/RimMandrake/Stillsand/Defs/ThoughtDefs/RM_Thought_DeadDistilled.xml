@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_SOLAR_STILL_1: witness thought for the wringing still (RM_SolarStill.cs). RM tier: a
+     plain mood penalty. The Utinni layer (RUT) adds the Sun-Debt believers' "drawing" stage by patch. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RM_Thought_DeadDistilled</defName>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>the dead were wrung for water</label>
+        <description>A corpse went into the still and water came out. I will not drink it.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

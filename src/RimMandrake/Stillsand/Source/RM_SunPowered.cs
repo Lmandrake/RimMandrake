@@ -60,6 +60,7 @@ namespace RimMandrake.Stillsand
         furnace,
         lensBench,
         oven,
+        still,
     }
 
     public class RM_CompSunPowered : ThingComp

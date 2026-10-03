@@ -74,6 +74,8 @@
     <Compile Include="RM_GlassChainMod.cs" />
     <!-- STILLSAND_SAND_SIEVE_CHORE_1: the sand sieve pawn chore -->
     <Compile Include="RM_SandSieve.cs" />
+    <!-- STILLSAND_SOLAR_STILL_1: solar still + wringing still -->
+    <Compile Include="RM_SolarStill.cs" />
   </ItemGroup>
 
   <!-- STILLSAND_GLASS_LENS_CHAIN_1: Harmony IS referenced (one postfix on

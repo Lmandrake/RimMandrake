@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SolarStill.xml                        RimMandrake — STILLSAND_SOLAR_STILL_1
+
+  Solar still and wringing still: a storage building whose contents are the feedstock. The sun gate
+  is RM_CompProperties_SunPowered (kind still); the cycle is RM_CompProperties_SolarStill
+  (Source/RM_SolarStill.cs). A pearl lens left in the still doubles the rate.
+  Art: artpipe job RM_SolarStill (done, copied to Textures). The wringing still reuses it, warmed
+  and darkened, the way the crest-plate oven reuses the solar oven; it has no art job of its own.
+-->
+<Defs>
+
+  <ThingDef Name="RM_StillBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>Building_Storage</thingClass>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <pathCost>50</pathCost>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <useHitPoints>true</useHitPoints>
+    <designationCategory>Production</designationCategory>
+    <surfaceType>Item</surfaceType>
+    <canOverlapZones>false</canOverlapZones>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <defaultPlacingRot>South</defaultPlacingRot>
+    <inspectorTabs>
+      <li>ITab_Storage</li>
+    </inspectorTabs>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_StillBase">
+    <defName>RM_SolarStill</defName>
+    <label>solar still</label>
+    <description>A shallow black-bottomed tray under a glazed lens, tilted to the sun. Brine, eggs and raw meat set in the tray give up their water, which runs down the glass and into a flask. It works only in open sun and stops under a roof, in shade and in a sand gale. A pearl lens laid in the tray doubles its rate.</description>
+    <graphicData>
+      <texPath>Things/Building/Production/RM_SolarStill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <costList>
+      <RM_SunGlass>20</RM_SunGlass>
+      <RM_PrecisionLens>2</RM_PrecisionLens>
+      <Steel>20</Steel>
+    </costList>
+    <statBases>
+      <WorkToBuild>1500</WorkToBuild>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>20</Mass>
+    </statBases>
+    <building>
+      <maxItemsInCell>2</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <categories><li>EggsFertilized</li><li>EggsUnfertilized</li><li>MeatRaw</li></categories>
+          <thingDefs><li>RM_PearlLens</li><li>RM_Brine</li></thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories><li>EggsFertilized</li><li>EggsUnfertilized</li><li>MeatRaw</li></categories>
+          <thingDefs><li>RM_PearlLens</li><li>RM_Brine</li></thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SunPowered">
+        <kind>still</kind>
+        <minSunFactor>0.3</minSunFactor>
+        <scaleWorkSpeed>false</scaleWorkSpeed>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SolarStill">
+        <ticksPerCycle>6000</ticksPerCycle>
+        <feeds>
+          <li><defName>RM_Brine</defName><perCycle>1</perCycle><litres>3</litres></li>
+          <li><defName>EggsFertilized</defName><perCycle>1</perCycle><litres>2</litres></li>
+          <li><defName>EggsUnfertilized</defName><perCycle>1</perCycle><litres>2</litres></li>
+          <li><defName>MeatRaw</defName><perCycle>5</perCycle><litres>2</litres></li>
+        </feeds>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_StillBase">
+    <defName>RM_WringingStill</defName>
+    <label>wringing still</label>
+    <description>A solar still with a long trough and a press. It takes everything the solar still takes and also the dead: a body laid in the trough is wrung dry under the glass and the water drawn off. The sand wastes nothing. Outsiders find it hard to watch.</description>
+    <graphicData>
+      <!-- reuses the solar still art, warmed -->
+      <texPath>Things/Building/Production/RM_SolarStill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(205,185,165)</color>
+    </graphicData>
+    <size>(3,2)</size>
+    <costList>
+      <RM_SunGlass>30</RM_SunGlass>
+      <RM_PrecisionLens>3</RM_PrecisionLens>
+      <Steel>40</Steel>
+    </costList>
+    <statBases>
+      <WorkToBuild>2400</WorkToBuild>
+      <MaxHitPoints>160</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>35</Mass>
+    </statBases>
+    <building>
+      <maxItemsInCell>2</maxItemsInCell>
+      <blueprintClass>Blueprint_Storage</blueprintClass>
+      <preventDeteriorationOnTop>true</preventDeteriorationOnTop>
+      <ignoreStoredThingsBeauty>true</ignoreStoredThingsBeauty>
+      <fixedStorageSettings>
+        <filter>
+          <categories><li>EggsFertilized</li><li>EggsUnfertilized</li><li>MeatRaw</li><li>Corpses</li></categories>
+          <thingDefs><li>RM_PearlLens</li><li>RM_Brine</li></thingDefs>
+        </filter>
+      </fixedStorageSettings>
+      <defaultStorageSettings>
+        <filter>
+          <categories><li>EggsFertilized</li><li>EggsUnfertilized</li><li>MeatRaw</li><li>Corpses</li></categories>
+          <thingDefs><li>RM_PearlLens</li><li>RM_Brine</li></thingDefs>
+        </filter>
+      </defaultStorageSettings>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SunPowered">
+        <kind>still</kind>
+        <minSunFactor>0.3</minSunFactor>
+        <scaleWorkSpeed>false</scaleWorkSpeed>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_SolarStill">
+        <ticksPerCycle>6000</ticksPerCycle>
+        <allowCorpses>true</allowCorpses>
+        <feeds>
+          <li><defName>RM_Brine</defName><perCycle>1</perCycle><litres>3</litres></li>
+          <li><defName>EggsFertilized</defName><perCycle>1</perCycle><litres>2</litres></li>
+          <li><defName>EggsUnfertilized</defName><perCycle>1</perCycle><litres>2</litres></li>
+          <li><defName>MeatRaw</defName><perCycle>5</perCycle><litres>2</litres></li>
+        </feeds>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

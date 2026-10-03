@@ -83,7 +83,9 @@ SETTINGS = {
                                        "ledgerIncidentWeighting": True},
     NS + "RM_GlassChainSettings": {"sunFurnaceEnabled": True, "lensBenchEnabled": True,
                                    "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0,
-                                   "sieveEnabled": True, "sieveYieldMultiplier": 1.0},
+                                   "sieveEnabled": True, "sieveYieldMultiplier": 1.0,
+                                   "solarStillEnabled": True, "stillRateMultiplier": 1.0,
+                                   "wringingStillEnabled": True},
     NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0, "abrasionEnabled": True,
                                  "carryEnabled": True, "staticEnabled": True, "emergenceEnabled": True,
                                  "seedingEnabled": True, "dustDevilsEnabled": True,
@@ -111,7 +113,7 @@ _STATE = {}                    # readings shared between components of ONE run
 
 STD_TYPES = ("ThingDef", "WorkGiverDef", "PawnKindDef", "HediffDef", "WeatherDef", "IncidentDef", "JobDef", "RecipeDef",
              "BiomeDef", "GameConditionDef", "GenStepDef", "SoundDef", "BodyDef", "BodyPartDef",
-             "BodyPartGroupDef", "DamageDef")
+             "BodyPartGroupDef", "DamageDef", "ThoughtDef")
 
 
 def _read_defs():
@@ -686,6 +688,24 @@ def defs_chain(t):
             if not _same(_get_setting(t, "sieveYieldMultiplier"), 1.0):
                 _fail("sieveYieldMultiplier is not at its shipped default 1.0")
 
+    with _comp(t, "solar_still_defs"):
+        # STILLSAND_SOLAR_STILL_1: both stills, the water + brine items and the witness thought must
+        # resolve live (a missing compClass or thoughtClass discards the def silently).
+        need = ["ThingDef/RM_SolarStill", "ThingDef/RM_WringingStill", "ThingDef/RM_StilledWater",
+                "ThingDef/RM_Brine", "ThoughtDef/RM_Thought_DeadDistilled"]
+        for d in need:
+            if d not in SHIPPED:
+                _fail("%s is not parsed from this mod's Defs/ (parser or def missing)" % d)
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(need), fields="defName", limit=20)
+            _ok(r, "get_defs(solar still)")
+            if r.get("notFound"):
+                _fail("solar still def(s) did not resolve live: %s" % r.get("notFound"))
+            if not _same(_get_setting(t, "stillRateMultiplier"), 1.0):
+                _fail("stillRateMultiplier is not at its shipped default 1.0")
+            if not _same(_get_setting(t, "solarStillEnabled"), True):
+                _fail("solarStillEnabled is not at its shipped default True")
+
     with _comp(t, "custom_defs_resolve"):
         if _live(t):
             if len(CUSTOM_SHIPPED) < 5:
@@ -794,7 +814,7 @@ def settings_chain(t):
     # Toggles whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                  "ledgerIncidentWeighting", "sieveEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
                   "seedingEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
