@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- SCALD_RETURN_GALLERY_1: scanner logic is C#. -->
+  <WorkGiverDef>
+    <defName>RM_ProbeGalleryOutlet</defName>
+    <label>probe coolant outlet</label>
+    <giverClass>RimMandrake.DivingInteraction.RM_WorkGiver_ProbeGalleryOutlet</giverClass>
+    <workType>Research</workType>
+    <priorityInType>40</priorityInType>
+    <verb>probe</verb>
+    <gerund>probing a coolant outlet</gerund>
+    <scanThings>true</scanThings>
+    <canBeDoneByNonColonists>false</canBeDoneByNonColonists>
+  </WorkGiverDef>
+</Defs>

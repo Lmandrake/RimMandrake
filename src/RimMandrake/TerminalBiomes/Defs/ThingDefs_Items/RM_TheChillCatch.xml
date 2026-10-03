@@ -3,12 +3,9 @@
   RM_TheChillCatch.xml                TerminalBiomes — authored 2026-09-24
   ==========================================================================
   terminal_seas_cast_proposal_2026-09-25.md verdict 3: the Chill IS
-  fishable — heemin common, oovanam uncommon dredge become the catch. Added
-  as two ADDITIONAL rows in RM_TheChill.xml's own pre-existing fishTypes
-  block (RUT_Fessu/Krellik/Oddu/Oovu common + RUT_Iliss/Tarnn/Zhiil uncommon,
-  RUT_RarePropaneCatches), not a replacement — that block predates this
-  proposal and is out of this pass's scope; see this pass's own build
-  report. hoolen is NOT a catch (surface wildAnimals only, verdict 4).
+  fishable — heemin common, oovanam uncommon dredge become the catch. Since
+  CHILL_FREE_TIER_CATCH_1 (2026-10-03) the other seven catches live here too
+  and RM_TheChill's whole fishTypes block is RM_*Catch. hoolen is NOT a catch (surface wildAnimals only, verdict 4).
 
   Item-only catch defs (heemin/oovanam's own floor-resident forms are the
   SEPARATE roster work in RM_TheChillFauna.xml). Register stats follow
@@ -22,7 +19,7 @@
     <label>heemin</label>
     <description>A near-transparent sliver hauled off the Chill's top layer, aurora colours still faintly refracting through it before it stiffens in the cold.</description>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaE</texPath>
+      <texPath>Things/Pawn/Animal/RM_Heemin/RM_Heemin</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -44,7 +41,7 @@
     <label>oovanam</label>
     <description>A soot-dark, flattened crawler dredged off the solid-propane floor, still dusted pale with tholin ash. Uncommon.</description>
     <graphicData>
-      <texPath>Things/Plant/Echeveria/EcheveriaF</texPath>
+      <texPath>Things/Pawn/Animal/RM_Oovanam/RM_Oovanam</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
@@ -55,6 +52,174 @@
     <comps>
       <li Class="CompProperties_Rottable">
         <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+
+  <!-- CHILL_FREE_TIER_CATCH_1 (sitting 2026-10-02 Q2a): the seven species that lived only in
+       UtinniPatches (RUT_Fessu..RUT_Zhiil) now ship here as RM_*Catch, text and stats copied
+       from the originals (which stay, frozen, with the RUT_PropaneLake twin). Every fuel-born
+       catch is Flammability 1.0 and none is kyber (ban 2). Art: each catch draws its creature's
+       own free-mod pawn sprite until real item icons are made. -->
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_FessuCatch</defName>
+    <label>fessu</label>
+    <description>A hand-wide, paper-thin fish-thing that is more crystal than flesh: a translucent lattice of frozen hydrocarbon grown around a thread of something alive, flat as a snowflake, drifting edge-on through the fuel where the snow falls thickest. It feeds by growing — each night's fall adds a rim to it, and an old fessu is a plate. Landed it steams in the cold, and it is so light it can be held up to the aurora and read through. Cooked it is a thin bitter wafer that burns blue if you leave it in the pan.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Fessu/RM_Fessu</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>6</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_KrellikCatch</defName>
+    <label>krellik</label>
+    <description>A crab-thing plated in hydrocarbon frost, each plate a clear crystal grown from the fuel snow and shed and regrown nightly, so a krellik is always half new. It walks the solid propane at the lake's edge and the floor beneath, picking at the crystal flora's fallen fragments, and it is the one thing on the shore the Frostmite will not eat — the shell is too cold even for that. Cracked, the plates ring like glass. The meat inside is dense and oily and takes fire the moment it dries.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Krellik/RM_Krellik</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.20</Nutrition>
+      <MarketValue>7</MarketValue>
+      <Mass>0.6</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>3</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_OdduCatch</defName>
+    <label>oddu</label>
+    <description>Kin to the rime nodule and the reason anyone fishes this shore: a fist-sized shell-thing that sits in the fuel and does what the nodule does on land — draws propane out of its surroundings into a sac of clear jelly that is, eaten, a very mild euphoric. The shell is frost-white and closes when the aurora fades. Raised from the lake it is cold enough to burn, and the scrapers of the Flats carry them home in mittens to eat by the tap-wire, which is as close to a good evening as the nightside offers.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Oddu/RM_Oddu</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>9</MarketValue>
+      <Mass>0.7</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>5</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_OovuCatch</defName>
+    <label>oovu</label>
+    <description>A bell of frozen hydrocarbon jelly that rides at the surface of the fuel where the snow lands, catching it — a floating cup with a crystal rim, tipping and righting, faintly green under the aurora because the aurora is the only light. It has no sting; it has almost nothing. Netted it is a bell of propane with a frost crust, and the shore-folk keep them for the lamp, not the pot: an oovu on a wire burns steadily for an hour.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Oovu/RM_Oovu</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_IlissCatch</defName>
+    <label>iliss</label>
+    <description>A wire-thin eel the length of a forearm, black, with a spine of conductive mineral that the auroral ground currents run through — it lives along the bed of the lake where the electrojet's currents cross, and on a reconnection night the whole floor of a bay hums with them. It hunts nothing; it feeds on the charge, or on what the charge kills. Landed on a wet line it bites with a shock that has knocked scrapers down. Cooked, it is a good oily eel. Raw, it is still live in a sense that matters.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Iliss/RM_Iliss</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>7</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_TarnnCatch</defName>
+    <label>tarnn</label>
+    <description>A colony, not a creature — or a creature that grew like a colony. A branching lattice of clear crystal the size of a bucket, half of it frozen hydrocarbon and half of it something alive threaded through the crystal, growing a hand's width every night from the fuel snow and fracturing back when the aurora is weak. It is the sea's version of the crystal flora on the shore, and nobody has decided which side of the line it stands on. A net brings up a piece of it. The piece keeps growing on the shore for a day, then stops. Chipped and boiled it is bitter and it is barely food; dried it is the best kindling on the nightside.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Tarnn/RM_Tarnn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.08</Nutrition>
+      <MarketValue>8</MarketValue>
+      <Mass>0.8</Mass>
+      <Beauty>2</Beauty>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_ZhiilCatch</defName>
+    <label>zhiil</label>
+    <description>The young of the thing that makes the V-wake. Hand-long, black, ridged, a body built of the same propane-native chemistry as its parent and already agitated by anything that moves in the fuel — a zhiil in a net thrashes until it freezes solid, and then it is a spiny black icicle that thaws back to thrashing on the fire. Scrapers who have fished up a zhiil pull the line and leave, because the parent is a thing that attacks pipe on sight and has a fairly clear idea of where its young went.</description>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/RM_Vaunoom/RM_Vaunoom</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.15</Nutrition>
+      <MarketValue>5</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>1.0</Flammability>
+      <FoodPoisonChanceFixedHuman>0.08</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
         <rotDestroys>true</rotDestroys>
       </li>
     </comps>

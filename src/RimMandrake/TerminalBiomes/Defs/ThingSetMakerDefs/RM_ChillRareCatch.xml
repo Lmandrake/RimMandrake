@@ -5,6 +5,10 @@
   table. Parented on vanilla's own RareFishingCatchesBase, same shape as
   RM_RareScaldCatches/RM_RareTwilightCatches/RUT_RareGreyCatches.
 
+  CHILL_FREE_TIER_CATCH_1 (2026-10-03): renamed RUT_RarePropaneCatches ->
+  RM_RareChillCatches (file RM_ChillRareCatch.xml) and RUT_Oddu -> RM_OdduCatch, so
+  the free tier no longer shares a defName with the frozen campaign table.
+
   🔴 CHILL_FLORA_BUILD_1, 2026-09-28 — RUT_AuroraGlass REMOVED from this
   table (ruling 7, the_propane_lake_flora_pass_2026-09-27.md: "AuroraGlass
   moves into the garden" — Eldspar hearts yield it now,
@@ -22,7 +26,7 @@
 <Defs>
 
   <ThingSetMakerDef ParentName="RareFishingCatchesBase">
-    <defName>RUT_RarePropaneCatches</defName>
+    <defName>RM_RareChillCatches</defName>
     <root Class="ThingSetMaker_RandomOption">
       <options>
         <li>
@@ -44,7 +48,7 @@
             <fixedParams>
               <filter>
                 <thingDefs>
-                  <li MayRequire="mandrake.rut.patches">RUT_Oddu</li>
+                  <li>RM_OdduCatch</li>
                 </thingDefs>
               </filter>
               <countRange>4~6</countRange>

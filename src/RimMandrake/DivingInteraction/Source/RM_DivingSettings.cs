@@ -176,6 +176,8 @@ namespace RimMandrake.DivingInteraction
         // SCALD_WALKING_PASTURE_1, 2026-10-03. Bottom-walker grazing exposes pigment-rich mat and the crew
         // gathers it behind the herd. Off: walkers are plain scenery animals; nothing is exposed, no job offered.
         public static bool walkerGrazingEnabled = true;
+        // SCALD_RETURN_GALLERY_1. WORLDGEN-AFFECTING: new Scald floors may lay the Return Gallery ruin.
+        public static bool scaldReturnGalleryEnabled = true;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -210,6 +212,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref scaldVentForecastEnabled, "scaldVentForecastEnabled", true);
             Scribe_Values.Look(ref scaldVentDischargeHarms, "scaldVentDischargeHarms", true);
             Scribe_Values.Look(ref walkerGrazingEnabled, "walkerGrazingEnabled", true);
+            Scribe_Values.Look(ref scaldReturnGalleryEnabled, "scaldReturnGalleryEnabled", true);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -271,6 +274,13 @@ namespace RimMandrake.DivingInteraction
                   + "cropped and its pigment-rich underside is left bare; colonists doing hauling gather it behind "
                   + "the herd, stop when the herd moves on, and keep away from the walkers. Off: walkers are plain "
                   + "grazing animals and no job is offered.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Scald: Return Gallery coolant ruin (affects floor generation)", ref scaldReturnGalleryEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Scald floor map lays a half-buried "
+                  + "Rust Cathedral coolant manifold: probe its five branch outlets, read the gauges, and mark "
+                  + "the branch that still returns warm water to open its locker. A wrong mark only jams the "
+                  + "latch for a day. Floors already generated keep what they have. Off: new floors have none.");
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,

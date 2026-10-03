@@ -54,6 +54,13 @@
     <genStep Class="RimMandrake.DivingInteraction.GenStep_ScaldVentField" />
   </GenStepDef>
 
+  <!-- SCALD_RETURN_GALLERY_1: the Return Gallery coolant ruin. Scald floor only (the step refuses other maps). -->
+  <GenStepDef>
+    <defName>RM_ScaldReturnGallery</defName>
+    <order>875</order>
+    <genStep Class="RimMandrake.DivingInteraction.GenStep_ScaldReturnGallery" />
+  </GenStepDef>
+
   <!-- GREYSEA_FLOOR_FORMATIONS_1 etc., 2026-09-26. The Grey Sea floor's
        terrain dressing: the deepest-pool basin and its jacket ring, the
        Brine Elder that rises from it, a seep apron around every salt

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SCALD_RETURN_GALLERY_1 — what the service locker holds. PLACEHOLDER ART. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ImmersionSchematic</defName>
+    <label>immersion-engineering schematic</label>
+    <description>Corroded plates of engineer's drawings: how to keep a sealed hull livable while it sits in hot water, as the Rust Cathedral's own crews did. What it unlocks is not wired yet (SCALD_GALLERY_SCHEMATIC_UNLOCK_1).</description>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(120,150,160)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>400</MarketValue>
+      <Mass>0.5</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <techLevel>Spacer</techLevel>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CathedralHeatLog</defName>
+    <label>Cathedral heat-dump log</label>
+    <description>A service log of where the Rust Cathedral vented its waste heat after the collapse. Every entry names the Scald: it re-tapped the crater lake as a coolant sink, dumping heat where a boiling sea makes more heat invisible, and its captured outflow is the Rustwave.</description>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,120,100)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>150</MarketValue>
+      <Mass>0.2</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>1</stackLimit>
+    <techLevel>Spacer</techLevel>
+  </ThingDef>
+
+</Defs>

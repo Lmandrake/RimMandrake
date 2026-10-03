@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- SCALD_RETURN_GALLERY_1: hook a gauge to a Return Gallery branch outlet and read it. -->
+  <JobDef>
+    <defName>RM_ProbeGalleryOutlet</defName>
+    <driverClass>RimMandrake.DivingInteraction.RM_JobDriver_ProbeGalleryOutlet</driverClass>
+    <reportString>probing a coolant outlet.</reportString>
+  </JobDef>
+</Defs>
