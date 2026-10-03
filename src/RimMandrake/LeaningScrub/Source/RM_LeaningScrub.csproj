@@ -49,6 +49,13 @@
     <EnvironmentalHazardsDll>$(MSBuildThisFileDirectory)..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</EnvironmentalHazardsDll>
   </PropertyGroup>
 
+  <!-- SHRUBLAND_TREE_GUARDIAN_1: the bark-warden rage is the kit's
+       RM_MentalState_ScopedAggression, so this compiles against CreatureBehaviors
+       and declares mandrake.rm.creaturebehaviors in About.xml. -->
+  <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
+    <CreatureBehaviorsDll>$(MSBuildThisFileDirectory)..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</CreatureBehaviorsDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="RM_LeaningScrubMod.cs" />
     <Compile Include="RM_LeaningScrubDefOf.cs" />
@@ -60,6 +67,7 @@
     <Compile Include="RM_RunwayBloom.cs" />
     <Compile Include="RM_SweetlineStation.cs" />
     <Compile Include="RM_VisslerArm.cs" />
+    <Compile Include="RM_SweetlineGuardians.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -79,8 +87,20 @@
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>$(CreatureBehaviorsDll)</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="RimMandrake.EnvironmentalHazards">

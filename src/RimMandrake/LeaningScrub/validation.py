@@ -70,6 +70,8 @@ DEFAULTS = {
     "drippingRegrowEnabled": True, "crownMobEnabled": True, "runwayBloomEnabled": True,
     "sweetlineStationsEnabled": True, "sweetlineVisitorsEnabled": True, "sweetlineVisitIntervalDays": 8.0,
     "visslerArmFoodEnabled": True,
+    "sweetlineGuardiansEnabled": True, "sweetlineGuardianMaxPerTree": 3, "sweetlineHarvestDisturbance": 1.0,
+    "sweetlineForgivenessDays": 5.0, "sweetlineProximityCharge": False,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1174,6 +1176,24 @@ def sweetline_chain(t):
                 if not tree:
                     _unmeasured(t, "the sweetline tree did not stand after set_plants")
                 ids["tree"] = tree[0]["id"]
+        # SHRUBLAND_TREE_GUARDIAN_1: a newly spawned tree roosts 2-3 sleeping bark-wardens (owner card
+        # 2026-10-03: visible, asleep against the trunk, "Roosting in the crown of <tree>" when selected).
+        # Not yet proven here (first pokes, in order): a colonist harvesting the tree -> "stirring" then
+        # "restless" messages then RM_RoostDefence on the wardens at ~60% of the work; the colonist walking
+        # 19 cells off -> recovery and re-roost once the bar drains under 30%; Hunt on a sleeper (UNMEASURED).
+        with _comp(t, "guardians_roost_on_spawn", toggle="sweetlineGuardiansEnabled"):
+            if _live(t):
+                wardens = _things(t, "RM_Barkwarden", "%d,%d,9,9" % (x - 4, z - 4))
+                _note(t, "bark-wardens within 4 of a fresh sweetline tree", [w.get("id") for w in wardens])
+                if not 2 <= len(wardens) <= 3:
+                    _fail("a freshly spawned sweetline tree roosts %d bark-wardens (expect 2-3)" % len(wardens))
+                for w in wardens:
+                    _, wl = _inspect(t, w["id"])
+                    if not re.search(r"Roosting in the crown of ", " ".join(wl)):
+                        _fail("bark-warden %s is not roosting: inspect %s" % (w.get("id"), wl))
+                _, tl = _inspect(t, ids["tree"])
+                if not re.search(r"Bark-wardens roost here \((2|3)\)\. Calm\.", " ".join(tl)):
+                    _fail("tree inspect carries no calm roost line: %s" % tl)
         with _comp(t, "station_named_and_timed", toggle="sweetlineStationsEnabled"):
             if _live(t):
                 label, lines = _inspect(t, ids["tree"])

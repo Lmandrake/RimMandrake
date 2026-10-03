@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Barkwarden.xml                       SHRUBLAND_TREE_GUARDIAN_1
+
+  The bark-warden: the sweetline tree's guardian. Creature per
+  design/Jawa/worldbuilding/biomes/sweetline_guardian_spec.md §1/§4/§5/§8;
+  activation per leaningscrub_sweetline_guardian_activation_2026-10-02.md,
+  as ruled by the owner 2026-10-03 (visible sleepers on the trunk, harvest
+  wakes them gradually, walk-up only makes them watch, ~5 days to forgive).
+
+  ⛔ NOT a wildAnimals entry, and must never become one: every bark-warden
+  comes from a sweetline tree's RM_CompGuardianRoost (RM_SweetlineTree.xml).
+
+  Art: none exists (artpipe searched 2026-10-03, 0 hits). Interim reskin of
+  vanilla Core's cougar body, silver-grey, per spec §10 ("reskin, then the
+  owner decides on new art after a review save"). No art queued.
+
+  Rage state: RM_RoostDefence below reuses the kit's
+  RM_MentalState_ScopedAggression (hostile to one pawn, never a faction flip).
+-->
+<Defs>
+
+  <MentalStateDef>
+    <defName>RM_RoostDefence</defName>
+    <label>defending its tree</label>
+    <stateClass>RimMandrake.CreatureBehaviors.RM_MentalState_ScopedAggression</stateClass>
+    <category>Aggro</category>
+    <baseInspectLine>Defending its tree</baseInspectLine>
+    <recoveryMessage>{0} has stopped defending its tree.</recoveryMessage>
+    <nameColor>(0.8,0.55,0.3)</nameColor>
+    <minTicksBeforeRecovery>600</minTicksBeforeRecovery>
+    <recoveryMtbDays>0.5</recoveryMtbDays>
+    <stopsJobs>true</stopsJobs>
+    <recoverFromDowned>true</recoverFromDowned>
+    <recoverFromSleep>false</recoverFromSleep>
+    <inCaravanCanDo>false</inCaravanCanDo>
+  </MentalStateDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Barkwarden</defName>
+    <label>bark-warden</label>
+    <description>The sweetline tree is the only thing on the plain that stands taller than a person, and the bark-warden is what took it. A knuckle-walking climber about the mass of a large dog, long-armed and hook-clawed, with a flat wide head and a coat the silver-grey of the giant-wool it sleeps in. Two or three roost against every trunk, asleep and easy to see, and they open their eyes when someone comes near.\n\nThey do not care who walks past. They care who works the tree: strip its wool or wound its bark and they stir, then grow restless, then drop from the crown onto whoever is doing it. Walk away far enough and they climb back up. A tree forgives in a few days.\n\nIt cannot fly. It climbs, and it drops.</description>
+    <statBases>
+      <MoveSpeed>4.8</MoveSpeed>
+      <MarketValue>420</MarketValue>
+      <Mass>55</Mass>
+      <Flammability>0.5</Flammability>
+      <ArmorRating_Sharp>0.20</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.95</Wildness>
+      <FilthRate>2</FilthRate>
+    </statBases>
+    <uiIconScale>1.15</uiIconScale>
+    <tools>
+      <li>
+        <label>left hook-claw</label>
+        <labelNoLocation>hook-claw</labelNoLocation>
+        <capacities><li>Scratch</li></capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li><def>Stun</def><amount>6</amount></li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <label>right hook-claw</label>
+        <labelNoLocation>hook-claw</labelNoLocation>
+        <capacities><li>Scratch</li></capacities>
+        <power>12</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <surpriseAttack>
+          <extraMeleeDamages>
+            <li><def>Stun</def><amount>6</amount></li>
+          </extraMeleeDamages>
+        </surpriseAttack>
+      </li>
+      <li>
+        <capacities><li>Bite</li></capacities>
+        <power>15</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>6</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>1.6</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Panthera</leatherDef>
+      <trainability>Advanced</trainability>
+      <petness>0</petness>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">AttackTarget</li>
+      </specialTrainables>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.0</manhunterOnDamageChance>
+      <gestationPeriodDays>12</gestationPeriodDays>
+      <lifeExpectancy>16</lifeExpectancy>
+      <soundEating>PredatorLarge_Eat</soundEating>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.4</minAge></li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>1.0</minAge>
+          <soundWounded>Pawn_Cougar_Injured</soundWounded>
+          <soundDeath>Pawn_Cougar_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.27)</li>
+        <li>(0.36, 0, 0.1)</li>
+        <li>(0.0, 0, 0.03)</li>
+        <li>(-0.36, 0, 0.1)</li>
+      </headPosPerRotation>
+    </race>
+    <comps>
+      <!-- Visible sleeper on the trunk (owner card 2026-10-03). Needs frozen while
+           roosting so a tree nobody visits never starves its wardens. -->
+      <li Class="CompProperties_CanBeDormant">
+        <compClass>RimMandrake.LeaningScrub.RM_CompGuardianDormant</compClass>
+        <startsDormant>true</startsDormant>
+        <jobDormancy>true</jobDormancy>
+        <showSleepingZs>false</showSleepingZs>
+        <dontShowDevGizmos>false</dontShowDevGizmos>
+        <freezeNeeds>
+          <li>Food</li>
+          <li>Rest</li>
+        </freezeNeeds>
+      </li>
+      <!-- Shooting a roosting warden wakes THAT one (then vanilla revenge).
+           No radius wake: walking past is not harm (owner card 2026-10-03). -->
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+        <wakeUpCheckRadius>-1</wakeUpCheckRadius>
+        <wakeUpIfAnyTargetClose>false</wakeUpIfAnyTargetClose>
+        <onlySendSignalOnce>true</onlySendSignalOnce>
+      </li>
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_RoostGuardian">
+        <checkInterval>250</checkInterval>
+        <leashRadius>6</leashRadius>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Barkwarden</defName>
+    <label>bark-warden</label>
+    <race>RM_Barkwarden</race>
+    <combatPower>110</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cougar/Cougar</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+          <color>(168,170,172)</color>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cougar/Dessicated_Cougar</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cougar/Cougar</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.35</drawSize>
+          <color>(168,170,172)</color>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cougar/Dessicated_Cougar</texPath>
+          <drawSize>1.35</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cougar/Cougar</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.7</drawSize>
+          <color>(168,170,172)</color>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,-0.1)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cougar/Dessicated_Cougar</texPath>
+          <drawSize>1.7</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

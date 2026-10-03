@@ -80,7 +80,22 @@ namespace RimMandrake.LeaningScrub
         private static int VisitIntervalTicks =>
             (int)(Mathf.Max(1f, RM_LeaningScrubSettings.sweetlineVisitIntervalDays) * GenDate.TicksPerDay);
 
-        private bool Mature => parent is Plant plant && plant.LifeStage == PlantLifeStage.Mature;
+        private bool everMature;
+
+        // Owner 2026-10-03 (LEANINGSCRUB_SWEETLINE_GUARDIAN_1 ruling, "a harvested tree keeps
+        // shedding"): a harvest resets growth to 0.05, so a tree that has once matured counts
+        // as grown for shedding, visits and the inspect line.
+        private bool Mature
+        {
+            get
+            {
+                if (!everMature && parent is Plant plant && plant.LifeStage == PlantLifeStage.Mature)
+                {
+                    everMature = true;
+                }
+                return everMature;
+            }
+        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -217,6 +232,15 @@ namespace RimMandrake.LeaningScrub
             AddHistory("struck by " + by + ".");
         }
 
+        /// <summary>SHRUBLAND_TREE_GUARDIAN_1: the bark-warden roost writes its events here.</summary>
+        public void Remember(string text)
+        {
+            if (Enabled)
+            {
+                AddHistory(text);
+            }
+        }
+
         private void AddHistory(string text)
         {
             Map m = parent.MapHeld;
@@ -297,6 +321,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref campCount, "rmSweetlineCamps", 0);
             Scribe_Values.Look(ref pilgrimCount, "rmSweetlinePilgrims", 0);
             Scribe_Values.Look(ref lastStruckTick, "rmSweetlineLastStruck", -999999);
+            Scribe_Values.Look(ref everMature, "rmSweetlineEverMature", false);
             Scribe_Collections.Look(ref history, "rmSweetlineHistory", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && history == null)
             {

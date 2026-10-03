@@ -16,10 +16,15 @@
       <packageId>mandrake.rm.environmentalhazards</packageId>
       <displayName>RimMandrake: Environmental Hazards</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>mandrake.rm.environmentalhazards</li>
+    <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
   <description>LEANINGSCRUB_RM_MOD_BUILD_1 (Phase A row 9 of
 design/RimMandrake/biome_mod_architecture.md). A flat, wind-scoured plain
@@ -65,8 +70,11 @@ And the Lean: each map keeps one wind heading, wild prey smell people
 standing upwind of them, and fire races downwind.
 Each effect has its own switch in Mod Settings.
 
-NOT in this mod yet: the campaign's tree-guardian creature
-(SHRUBLAND_TREE_GUARDIAN_1), the vaporator desertification mechanic and the
+Also the bark-wardens (SHRUBLAND_TREE_GUARDIAN_1): two or three sleep on
+every sweetline tree, watch whoever passes, and drop on whoever harvests or
+wounds the tree after two readable warnings; the tree forgives in days.
+
+NOT in this mod yet: the vaporator desertification mechanic and the
 canopy-concealment stat.
   </description>
 </ModMetaData>
