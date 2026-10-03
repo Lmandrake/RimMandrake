@@ -88,6 +88,12 @@
         <RSW_LaaJuv>0.3</RSW_LaaJuv>
         <RSW_YobshrimpJuv>0.3</RSW_YobshrimpJuv>
         <RSW_OpeeSeaKillerJuv>0.05</RSW_OpeeSeaKillerJuv>
+        <!-- MIASMA_ROUND2_IMPORTS_1: owner-ruled round-2 imports (rosters/the_miasma.json, commonality 0.5 each).
+             RSW_Blarth is also faction stock (dual-listed); the faction-stock half is not wired here. -->
+        <RSW_Blarth>0.5</RSW_Blarth>
+        <RSW_Blixus>0.5</RSW_Blixus>
+        <RSW_Bogwing>0.5</RSW_Bogwing>
+        <RSW_MarshHaunt>0.5</RSW_MarshHaunt>
       </value>
     </match>
   </Operation>

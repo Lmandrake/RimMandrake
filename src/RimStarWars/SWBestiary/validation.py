@@ -115,6 +115,10 @@ NEWLY_ABSORBED_SPECIES = [
     "RSW_Reefback",       # SeaBeasts / Colossi
     "RSW_TelluroxShell",  # HelixTellurox
     "RSW_Mynock",         # ShipVermin
+    "RSW_Blarth",         # MIASMA_ROUND2_IMPORTS_1 (live: UNMEASURED)
+    "RSW_Blixus",
+    "RSW_Bogwing",        # flyer: flight verified by state read only, never a live flight hunt
+    "RSW_MarshHaunt",
 ]
 
 

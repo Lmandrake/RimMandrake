@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MIASMA_ROUND2_IMPORTS_1 - blixus roe and bogwing eggs (fert/unfert), ported from the donor.
+  swresource/EggRoe and EggWiggly already ship in this mod. tasteThought AteCrustapodRoe stays a
+  bare donor reference, same as RSW_Yobshrimp (see RSW_MlieWaveC_Resources.xml).
+-->
+<Defs>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBlixusFertilized</defName>
+    <label>blixus roe (fert.)</label>
+    <description>A fertilized blixus egg. If all goes well, it should hatch into a baby blixus. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,175,250)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>10</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Blixus</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBlixusUnFertilized</defName>
+    <label>blixus roe (unfert.)</label>
+    <description>An unfertilized blixus egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggRoe</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(100,175,250)</color>
+      <drawSize>1.0</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>1.0</Nutrition>
+      <MarketValue>50.0</MarketValue>
+    </statBases>
+    <ingestible>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <tasteThought>AteCrustapodRoe</tasteThought>
+      <specialThoughtAsIngredient>AteCrustapodRoe</specialThoughtAsIngredient>
+      <optimalityOffsetFeedingAnimals>-50</optimalityOffsetFeedingAnimals>
+    </ingestible>
+  </ThingDef>
+  <ThingDef ParentName="EggFertBase">
+    <defName>RSW_EggBogwingFertilized</defName>
+    <label>bogwing egg (fert.)</label>
+    <description>A fertilized bogwing egg. If all goes well, it should hatch into a baby bogwing. It can be eaten raw, but it's much better cooked.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <texPath>swresource/EggWiggly</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,175,175)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>10.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <hatcherDaystoHatch>3</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Bogwing</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+  <ThingDef ParentName="EggUnfertBase">
+    <defName>RSW_EggBogwingUnFertilized</defName>
+    <label>bogwing egg (unfert.)</label>
+    <description>An unfertilized bogwing egg. It can be eaten raw, but it's much better cooked.</description>
+    <graphicData>
+      <texPath>swresource/EggWiggly</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(150,175,175)</color>
+      <drawSize>0.5</drawSize>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.5</Nutrition>
+      <MarketValue>10.0</MarketValue>
+    </statBases>
+  </ThingDef>
+</Defs>
