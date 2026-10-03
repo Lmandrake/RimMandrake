@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    GELATINOUSSLIME_GAPPO_FAMILY_1: the filter-feeder line of the Slime ("a whole family of
+    scooping-mouthed animals grazing the Slime itself", owner). One stem, three sizes (the oomb
+    precedent): lesser gappo (skimming swarm), gappo (the middle size, the old RUT_SlimeGrazer
+    moved here with its v2 art), greater gappo (slow bulk feeder; its scoop leaves a clean channel,
+    RM_CompGappoChannel, gated by SlimeSettings.gappoChannels).
+    Resistant by identity (filter-feeders on the body): RM_SlimeResistant extension. Never hostile.
+    One home: the Slime only (wired inline on RM_GelatinousSlime/wildAnimals). No member flies.
+    All numbers are // INVENTED. Art: gappo = artpipe rutslimegrazer_v2; lesser and greater are
+    queued from art_lists/gelatinousslime_turn1_2026-10-02.csv and render magenta until they land.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GappoLesser</defName>
+    <label>lesser gappo</label>
+    <description>A knee-high skimmer with a shovel-lipped scoop, pale amber and smooth as a wet pebble. Lesser gappos move in fast, shifting swarms across the body's surface, sieving the film off the top in long shallow passes. The Slime does not seem to notice the grazing.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <Mass>6</Mass>
+      <MarketValue>45</MarketValue>
+      <Wildness>0.5</Wildness>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <tools>
+      <li>
+        <label>scoop-mouth ram</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <predator>false</predator>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <herdAnimal>true</herdAnimal>
+      <maxPreyBodySize>0</maxPreyBodySize>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>4</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gappo</defName>
+    <label>gappo</label>
+    <description>A loose-skinned grazer with a wide, muscular scoop where most animals keep a mouth, built to sieve the Slime's own flesh the way a filter-feeder sieves water. It moves in slow drifting swarms across the body's surface, scooping and straining, never quite eating so much as skimming. The Slime, for its part, never seems to mind the grazing any more than skin minds being brushed.</description>
+    <statBases>
+      <MoveSpeed>1.7</MoveSpeed>
+      <Mass>28</Mass>
+      <MarketValue>110</MarketValue>
+      <Wildness>0.45</Wildness>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <tools>
+      <li>
+        <label>scoop-mouth ram</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <predator>false</predator>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <herdAnimal>true</herdAnimal>
+      <maxPreyBodySize>0</maxPreyBodySize>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>4</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GappoGreater</defName>
+    <label>greater gappo</label>
+    <description>A heavy, slow bulk feeder with a scoop the width of a barn door and a smooth amber-grey body that never seems to hurry. It ploughs the body's skin in long lines, and behind it the green nap is left scraped and set into a dull clean channel that the film is slow to close over. It has no temper and nothing to hunt with; being large is its whole defence.</description>
+    <statBases>
+      <MoveSpeed>0.9</MoveSpeed>
+      <Mass>420</Mass>
+      <MarketValue>420</MarketValue>
+      <Wildness>0.6</Wildness>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.05</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <comps>
+      <li Class="RimMandrake.GelatinousSlime.RM_CompProperties_GappoChannel" />
+    </comps>
+    <tools>
+      <li>
+        <label>scoop-mouth ram</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>forehoof</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <predator>false</predator>
+      <baseBodySize>3.0</baseBodySize>
+      <baseHealthScale>3.0</baseHealthScale>
+      <baseHungerRate>0.9</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <herdAnimal>true</herdAnimal>
+      <maxPreyBodySize>0</maxPreyBodySize>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GappoLesser</defName>
+    <label>lesser gappo</label>
+    <race>RM_GappoLesser</race>
+    <combatPower>15</combatPower>
+    <wildGroupSize>6~14</wildGroupSize>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_GappoLesser</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_GappoLesser</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_GappoLesser</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gappo</defName>
+    <label>gappo</label>
+    <race>RM_Gappo</race>
+    <combatPower>35</combatPower>
+    <wildGroupSize>3~7</wildGroupSize>
+    <ecoSystemWeight>0.7</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_Gappo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_Gappo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_Gappo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GappoGreater</defName>
+    <label>greater gappo</label>
+    <race>RM_GappoGreater</race>
+    <combatPower>110</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>2.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_GappoGreater</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_GappoGreater</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Gappo/RM_GappoGreater</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

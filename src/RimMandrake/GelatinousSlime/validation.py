@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1}
+          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -837,5 +837,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("visitorsEnabled", False), ("visitorArrivalRate", 4)):
+                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False)):
         _flip(t, "%s_setting_flips" % field, field, off)
