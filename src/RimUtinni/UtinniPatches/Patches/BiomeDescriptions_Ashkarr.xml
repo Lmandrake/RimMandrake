@@ -34,22 +34,12 @@
          the sheet's own "every ancient danger here has already been opened and
          destroyed." Fixed below with RUT_Scarlands' description AND settleWarning
          (the_scarlands.md).
-      3. AB_PropaneLakes ("the Propane Lakes", 2,531 tiles): donor text asserted an
-         industrial-accident origin ("some weird ecological or industrial experiment
-         gone awry") for what is terramanufacture's far end (§GM,
-         TERRAMANUFACTURE_CANON_1) — a past-why the player is not cleared to read.
-         🔴 JUDGMENT CALL, recorded: AB_PropaneLakes is the LAND biome (2,531 tiles);
-         the campaign's only already-authored "propane" description lives on
-         RUT_PropaneLake, a SEPARATE, not-yet-painted WORLD-TILE WATER biome for the
-         lake proper (RUT_PropaneLake.xml's own header: "NOT painted onto any tile by
-         this file or this pass... this item does not touch it"). Its description
-         text ("A black mirror of liquid fuel under the brightest sky on the planet,
-         ringed by a crust of the same compound frozen solid...") is themed to the
-         same region and is verified SSP-clean against the_propane_lakes.md (no
-         mention of the buried war lab, which is SSGM-gated per that sheet's own
-         ban 8). No other already-written text exists for the propane biome, so this
-         reuses that description verbatim rather than composing new prose from the
-         .md sheet (which DOES carry SSGM content that must never reach a def field).
+      3. AB_PropaneLakes ("the Rimefall", 2,531 tiles): donor text asserted an
+         industrial-accident origin for what is terramanufacture's far end (§GM,
+         TERRAMANUFACTURE_CANON_1). Fixed below with land-only text drawn from
+         the_propane_lakes.md §0/§1/§4/§4b (owner approved by card 2026-10-03,
+         PROPANE_LANDS_RENAME_1); it omits the lake (the Chill), the war lab
+         (SSGM ban 8) and the crater ending.
       4. AB_RockyCrags ("the Abyss", 1,135 tiles): donor text invented a
          rival ancient race ("Forsakens... a mysterious humanoid alien race"),
          corrupting the campaign's one reveal ladder. Fixed below with
@@ -97,9 +87,9 @@
     <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/description</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/description</xpath>
-      <value><description>A black mirror of liquid fuel under the brightest sky on the planet, ringed by a crust of the same compound frozen solid. The cold here is total, and the stillness is older than anyone's records.</description></value>
+      <value><description>Frozen ground under the brightest sky on the planet, where the cold is far below the point at which fuel turns liquid and a fine snow of hydrocarbon crystals falls without end. Translucent crystal growth rises overnight from what settles, and the aurora lights the ice from above at all hours. The few things that move across it do so in a halo of blue flame.</description></value>
     </match>
-  </Operation>   <!-- "the Propane Lakes" [PLOT LEAK 3] - RUT_PropaneLake, see header note -->
+  </Operation>   <!-- "the Rimefall" [PLOT LEAK 3] - see header note -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="BiomeGRimond"]/description</xpath>
