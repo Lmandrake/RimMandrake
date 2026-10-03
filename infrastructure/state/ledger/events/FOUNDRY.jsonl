@@ -2322,3 +2322,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROT_MOD_SETTINGS_WIRING_1","ts":"2026-10-03T16:35:23Z","tsn":1791045323465823346}
 {"seat":"FOUNDRY","event":"start","id":"ROT_MOD_SETTINGS_WIRING_1","ts":"2026-10-03T16:35:23Z","tsn":1791045323950046251}
 {"seat":"FOUNDRY","event":"close","id":"ROT_MOD_SETTINGS_WIRING_1","sha":"9046342e1c22","ts":"2026-10-03T16:39:14Z","tsn":1791045554608587634}
+{"seat":"FOUNDRY","event":"note","id":"ROT_WOUND_SHARING_WIRING_1","text":"9046342e1: healthSharing field kept but its checkbox is HIDDEN (no reader). When wiring it, re-add the checkbox in RM_TheRotMod.cs DoWindowContents and drop the healthSharing exception in TheRot/validation.py static_checks.","ts":"2026-10-03T16:39:24Z","tsn":1791045564710080461}
