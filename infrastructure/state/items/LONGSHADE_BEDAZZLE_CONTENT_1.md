@@ -40,3 +40,4 @@ All seven kept: maidenbloom (`_b`), tazzok (`_b`), skarrok (`_b`), pavecrust, vr
 pending a redo. Owner notes, typed: shadespire *"Keep the interesting husk-like fruits, but make it dull green
 without all that wild color and frills."*; skarrok *"Keep art, redo description based on image."*; vrekka
 *"Tint it a bit darker please."* Defs are owed for all seven (spec point 8).
+Gloomcast (spec 5): owner, typed: *"accept colossus shade whale"*: wire its own finished 3-facing render in place of the Horax copy.
