@@ -1,0 +1,4 @@
+id,rimflow_item_id,prompt,canvas_w,canvas_h,reference,facings,style_notes,priority,background,channel
+RM_NabbuqBladder,CRACKEDLANDS_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: nabbuq bladders, two or three fist-sized glossy indigo-violet water bladders with a trace of lavender bract at the stem. Single small heap, centered, no background, no green.",128,128,,,,100,transparent,codex
+RM_RuqqalFibre,CRACKEDLANDS_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: ruqqal cloth, a small folded stack of coarse coral-salmon woven cloth with a slightly twisted rope-like weave. Centered, no background.",128,128,,,,100,transparent,codex
+RM_ZennaqFilament,CRACKEDLANDS_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: zennaq filament, a loose bundle of springy thin verdigris-copper wires with silver tips. Centered, no background.",128,128,,,,100,transparent,codex

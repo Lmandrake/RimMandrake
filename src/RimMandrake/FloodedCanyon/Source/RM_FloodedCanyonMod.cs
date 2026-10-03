@@ -100,6 +100,12 @@ namespace RimMandrake.FloodedCanyon
         // TUNED: 3 days — "decaying fast" (review §H), shorter than the soak.
         public static float salvageDecayDays = 3f;
 
+        // CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 — six admitted flora in the wild roster
+        // (applies at startup: off removes the rows on the next launch), and the
+        // zennaq's pull on lightning strikes.
+        public static bool floraExpansionEnabled = true;
+        public static bool zennaqLightningPullEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -128,6 +134,8 @@ namespace RimMandrake.FloodedCanyon
             Scribe_Values.Look(ref irqitCohortMax, "irqitCohortMax", 40, true);
             Scribe_Values.Look(ref floodlineSalvageEnabled, "floodlineSalvageEnabled", true, true);
             Scribe_Values.Look(ref salvageDecayDays, "salvageDecayDays", 3f, true);
+            Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true, true);
+            Scribe_Values.Look(ref zennaqLightningPullEnabled, "zennaqLightningPullEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -232,6 +240,14 @@ namespace RimMandrake.FloodedCanyon
                 + "the flood line. Unclaimed, the mud takes it back.");
             list.Label("Salvage lies exposed for: " + salvageDecayDays.ToString("0.0") + " days");
             salvageDecayDays = list.Slider(salvageDecayDays, 1f, 10f);
+
+            list.GapLine();
+            list.CheckboxLabeled("Six extra native plants (restart to apply)", ref floraExpansionEnabled,
+                "Nabbuq, ruqqal, sevvuq, zennaq, luqqim and harrovaq in the wild roster. "
+                + "Off removes them from the roster on the next launch; the original plants stay.");
+            list.CheckboxLabeled("Lightning is drawn to zennaq", ref zennaqLightningPullEnabled,
+                "A random lightning strike that would land near a zennaq plant lands on it instead. "
+                + "Zennaq is dry as tinder, so a storm on the mesa tops can start a fire.");
 
             viewHeight = list.CurHeight + 24f;
             list.End();

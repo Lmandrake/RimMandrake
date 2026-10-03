@@ -154,6 +154,13 @@
       <RM_TwistingThornweed>0.4</RM_TwistingThornweed>  <!-- twisting thornweed -->
       <RM_CrackedThornwood>0.2</RM_CrackedThornwood>  <!-- twisting thornwood - tree -->
       <RM_Veqma>0.15</RM_Veqma>  <!-- the dowsing flora - shade line only -->
+      <!-- CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 (gated by floraExpansionEnabled) -->
+      <RM_Nabbuq>0.25</RM_Nabbuq>
+      <RM_Ruqqal>0.3</RM_Ruqqal>
+      <RM_Sevvuq>0.2</RM_Sevvuq>
+      <RM_Zennaq>0.1</RM_Zennaq>
+      <RM_Luqqim>0.1</RM_Luqqim>
+      <RM_Harrovaq>0.06</RM_Harrovaq>
     </wildPlants>
   </BiomeDef>
 

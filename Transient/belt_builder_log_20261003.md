@@ -29,3 +29,4 @@
 - ROT_MOD_SETTINGS_WIRING_1 closed 9046342e1 (RM_KitFronts seam in EH + RM_TheRotFront; sheen/rot/produce/warm/live-prep/spore wired, groves/pale tree gate roster at startup, crossBiome donor ext; healthSharing checkbox hidden; both DLLs rebuilt; live flips UNMEASURED)
 - ROT_SPORE_ALLERGY_PORT_1 closed 891c1d14a (2 hediffs + 2 incidents in EnvironmentalHazards, AB_ pair gone from free Rot+Contagion, Rot screen on/off+incidence, Contagion now depends on EH; Contagion maps NOT governed by Rot screen toggle; live proof owed)
 - ROT_WOUND_SHARING_WIRING_1 closed 8d2f36142 (patch on 5 AA bodies + RM_CompGrantHediff in CB + RM_KinMendingNetwork; Health sharing checkbox back, restart-to-apply; CB+Rot DLLs rebuilt; live split/mend reads UNMEASURED)
+- CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 built (6 flora, 3 items, RM_ZennaqLightningPatch on WeatherEvent_LightningStrike.DoStrike, 2 settings, art wired from _artsrc, 3 item icons queued; pending sha)
