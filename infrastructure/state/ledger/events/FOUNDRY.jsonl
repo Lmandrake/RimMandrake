@@ -2399,3 +2399,6 @@
 {"seat":"FOUNDRY","event":"start","id":"FALL_LINE_FERAL_SURVIVORS_BUILD_1","ts":"2026-10-03T18:15:13Z","tsn":1791051313890261590}
 {"seat":"FOUNDRY","event":"close","id":"FALL_LINE_FERAL_SURVIVORS_BUILD_1","sha":"da199b9d2f54","ts":"2026-10-03T18:15:32Z","tsn":1791051332563190014}
 {"seat":"FOUNDRY","event":"note","id":"FALL_LINE_FERAL_SURVIVOR_PAWNKIND_1","text":"Reusable now (da199b9d2): RimMandrake.Utinni.FallLineArrivals ThinkNode_ConditionalFeralFree/JobGiver_FeralFlee/JobGiver_FeralLurk are species-agnostic and gated on RUT_Hediff_Feral; a feral race needs its own permanent scar hediff (RUT_Hediff_Feral self-clears on joining the player, which is the droid path, not this one).","ts":"2026-10-03T18:15:33Z","tsn":1791051333059294680}
+{"seat":"FOUNDRY","event":"claim","id":"SWEETLINE_TREE_MAP_STEP_1","ts":"2026-10-03T18:18:05Z","tsn":1791051485262447267}
+{"seat":"FOUNDRY","event":"start","id":"SWEETLINE_TREE_MAP_STEP_1","ts":"2026-10-03T18:18:05Z","tsn":1791051485798790598}
+{"seat":"FOUNDRY","event":"close","id":"SWEETLINE_TREE_MAP_STEP_1","sha":"fc4fa853025f","ts":"2026-10-03T18:18:22Z","tsn":1791051502894564872}
