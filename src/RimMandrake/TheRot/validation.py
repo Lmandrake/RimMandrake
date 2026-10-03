@@ -107,6 +107,9 @@ def static_checks():
     ui_start = reader_text.index("public void DoWindowContents")
     ui_end = reader_text.index("public class RM_TheRotFront") if "public class RM_TheRotFront" in reader_text else reader_text.index("static class RM_TheRotFront")
     reader_text = reader_text[:ui_start] + reader_text[ui_end:]
+    for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):   # readers may live in the mechanism's own file
+        if fn.endswith(".cs") and fn != "RM_TheRotMod.cs":
+            reader_text += open(os.path.join(HERE, "Source", fn), encoding="utf-8").read()
     for n in fields:
         if len(re.findall(r"\b%s\b" % n, reader_text)) < 2:
             bad.append("settings field %s has a control but no reader (moves and does nothing)" % n)
@@ -366,6 +369,36 @@ def _build_suite():
         with t.component("cross_biome_opt_in", toggle="crossBiomeEnabled"):
             if _live(t):
                 _unmeasured(t, 'the cross-biome mechanics apply once right after a NEW map generates on a non-Rot biome; the bridge cannot generate a map')
+
+    HWEL = "RimMandrake.TheRot.RM_HwelgrueProof"
+
+    def _hp(t, method, args=None):
+        kw = dict(type=HWEL, method=method)
+        if args is not None:
+            kw["args"] = args
+        r = t.bridge_call("jawa/static_call", **kw)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    @suite.chain("hwelgrue")
+    def hwelgrue(t):
+        """ROT_HWELGRUE_GIANT_BUILD_1. Runs on the CURRENT map (any map: the mechanism is the comp, not the
+        biome). Not proven here: graze pathing over 30,000 ticks, the stockpile/roof exclusion, rest rot, the
+        never-starts-a-fight read -- first poke: ProofGrazeTarget with a knife on open ground vs in a stockpile."""
+        with t.component("map_cap_holds", toggle="hwelgrueMapCap"):
+            text = _hp(t, "ProofSpawn", "3")
+            if _live(t) and not text.startswith("HWELGRUE alive 1"):
+                raise ExpectationFailed("three spawn attempts did not leave exactly one hwelgrue: %s" % text)
+        with t.component("digest_keeps_metal_only", toggle="hwelgrue"):
+            text = _hp(t, "ProofDigest")
+            if _live(t) and not ("kept 1" in text and "wood destroyed True" in text):
+                raise ExpectationFailed("digest did not keep the steel knife and destroy the wood: %s" % text)
+        with t.component("casting_polishes_contents", toggle="hwelgrueCastingDays"):
+            text = _hp(t, "ProofCasting")
+            if _live(t) and not ("castings on map 1" in text and "all full hp True" in text and "gut now 0" in text):
+                raise ExpectationFailed("the casting did not hold and polish the gut's metal: %s" % text)
+        with t.component("rest_accelerates_rot", toggle="hwelgrueRotMultiplier"):
+            if _live(t):
+                _unmeasured(t, "needs an idle hwelgrue, two meat stacks at 3 and 20 cells, and ticks; RotProgress read per stack")
 
     return suite
 

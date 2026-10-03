@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_HWELGRUE_GIANT_BUILD_1 — the hwelgrue, the gut that walks. Mechanism in Source/RM_Hwelgrue.cs (read its
+  header). Owner, typed 2026-10-02: "a huge slow maggot covered in small wriggling tentacles and eye spots".
+  Body: RM_RotLarvaLike (this mod's own legless larva body; no new BodyDef). Art: artpipe RM_Hwelgrue_east/_south
+  (done); _north failed and is requeued, so south stands in for north until it lands.
+  Numbers PROPOSED (spec: body ~8, very high health, move ~1.2, hide halves sharp/blunt, fire full).
+-->
+<Defs>
+
+  <ThingDef ParentName="RM_PollutedLands_AnimalThingBase">
+    <defName>RM_Hwelgrue</defName>
+    <label>hwelgrue</label>
+    <description>A colossal, slow decomposer of the Rot: a bone-white maggot as long as a hauler, lilac underneath, its whole length crawling with small wriggling feeding tendrils and scattered with dark eye spots. Its blunt front end opens into a dredge mouth rimmed with hyphae.\n\nIt eats whatever lies down on open ground. It keeps only the metal, and days later passes it in glossy Sheen castings that crack open to show the metal polished bright. Where it rests, things rot faster. It never starts a fight, and it finishes every one.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <MarketValue>1500</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.5</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.5</ArmorRating_Blunt>
+      <ArmorRating_Heat>0</ArmorRating_Heat>
+      <FilthRate>4</FilthRate>
+      <Wildness>1</Wildness>
+      <LeatherAmount>40</LeatherAmount>
+    </statBases>
+    <race>
+      <hasGenders>false</hasGenders>
+      <body>RM_RotLarvaLike</body>
+      <leatherDef>RM_FragileChitin</leatherDef>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <baseBodySize>8</baseBodySize>
+      <baseHealthScale>10</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal, OvivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <petness>0</petness>
+      <wildness>1</wildness>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <lifeExpectancy>60</lifeExpectancy>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tools>
+      <li>
+        <label>crushing bulk</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>dredge mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_GutDigest">
+        <grazeRadius>30</grazeRadius>
+        <restRadius>6</restRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Hwelgrue</defName>
+    <label>hwelgrue</label>
+    <race>RM_Hwelgrue</race>
+    <combatPower>500</combatPower>
+    <ecoSystemWeight>2</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_TheRot/Fauna/Hwelgrue/RM_Hwelgrue</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6</drawSize>
+          <shadowData>
+            <volume>(1.6, 0.6, 1.2)</volume>
+            <offset>(0,0,-0.4)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>RM_TheRot/Fauna/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet_dessicated</texPath>
+          <drawSize>5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SheenCasting</defName>
+    <label>Sheen casting</label>
+    <description>A glossy, Sheen-glazed shell passed by a hwelgrue. Inside, sealed in hardened gut-glaze, is the metal it could not digest. Cracking it open takes a minute with any tool and drops what it holds polished bright, as good as the day it was made.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>RM_TheRot/Items/RM_SheenCasting</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <statBases>
+      <MarketValue>5</MarketValue>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Mass>6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <comps>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_SheenCasting" />
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Crack open {0_label}</useLabel>
+        <useDuration>600</useDuration>
+      </li>
+      <li Class="CompProperties_UseEffect">
+        <compClass>RimMandrake.TheRot.RM_CompUseEffect_CrackCasting</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <JobDef>
+    <defName>RM_GutGraze</defName>
+    <driverClass>RimMandrake.TheRot.RM_JobDriver_GutGraze</driverClass>
+    <reportString>dredging up TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <!-- The graze branch: spliced into the vanilla animal think tree before wander (RM_ScratchOnSweetline idiom).
+       The giver returns null at once for anything that is not a hwelgrue. -->
+  <ThinkTreeDef>
+    <defName>RM_GutGraze_Splice</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>45</insertPriority>
+    <thinkRoot Class="RimMandrake.TheRot.RM_JobGiver_GutGraze" />
+  </ThinkTreeDef>
+
+</Defs>
