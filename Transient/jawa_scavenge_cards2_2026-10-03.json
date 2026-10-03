@@ -1,0 +1,48 @@
+{"cards":[
+{"title":"The Salvaging skill",
+ "questions":[
+  {"question":"How far should a new Salvaging skill reach?","header":"Skill reach","multiSelect":false,"options":[
+   {"label":"New skill, salvage only (Recommended)","description":"Why: your 'taking apart is not building' where it matters, with the smallest blast radius. Buys: stripping wrecks, the nest, appraisal, recycling gear and shredding mechs all train Salvaging; Jawa are legendary at it, not builders. Costs: every pawn in every faction gets a 13th skill row; tearing down your own walls still trains Construction."},
+   {"label":"New skill, every teardown","description":"Buys: the full statement; deconstructing anything trains Salvaging and skilled hands get more back. Costs: every colony, Jawa or not, stops training builders by tearing down, and teardown yields rise; the biggest change to ordinary play."},
+   {"label":"No skill, a hidden rating","description":"Buys: the game looks unchanged and the mod comes out cleanly; Jawa genes and tools raise the rating. Costs: no row, no passion, no getting better with practice; salvage talent stays tied to genes or to Construction."}]},
+  {"question":"How much more should a master salvager get out of a wreck than a novice?","header":"Yield","multiSelect":false,"options":[
+   {"label":"Modest: half to four-fifths (Recommended)","description":"Why: a visible gap without turning wrecks into a mine. Buys: a novice recovers about half, a master with tools about 80%, and rare parts favour the master. Costs: a master's edge is felt over many wrecks, not one."},
+   {"label":"Large: under half to all of it","description":"Buys: the legendary Jawa is unmistakable; a master recovers nearly everything. Costs: the clan's best hand becomes a resource engine, and balance gets harder everywhere else."},
+   {"label":"Same amount, only faster","description":"Buys: no balance risk at all. Costs: skill never changes what comes home, which loses most of the point of a Jawa who is good at this."}]},
+  {"question":"If the new skill row does not fit on the character card next to your UI mods, what should happen?","header":"Card row","multiSelect":false,"options":[
+   {"label":"Run the test, then decide (Recommended)","description":"Why: it probably fits, and a short test settles it. Buys: no work spent on a problem that may not exist. Costs: one more small decision after the test."},
+   {"label":"Patch the card taller","description":"Buys: the skill always shows, whatever the mods do. Costs: touches every pawn screen in the game and may fight the UI mods that redraw it."},
+   {"label":"Fall back to the hidden rating","description":"Buys: no UI risk at all. Costs: loses the visible skill and growth with practice that you wanted."}]}
+ ]},
+{"title":"The scavenging loop",
+ "questions":[
+  {"question":"The salvage god, Rekko, is currently angered by every teardown the clan does; should that move?","header":"Rekko","multiSelect":false,"options":[
+   {"label":"Anger for smelting and the mendable (Recommended)","description":"Why: matches his doctrine, mourn the dead, punish waste. Buys: smelting and stripping a repairable machine anger him heavily; stripping a dead wreck is mourned lightly. Costs: a change to the gods mod, and the lever of scrap now and pay later gets narrower."},
+   {"label":"Keep it as it is","description":"Buys: nothing to change. Costs: the god of salvage hates the clan for its core loop, every wreck stripped is a large offence."},
+   {"label":"Only smelting angers him","description":"Buys: the simplest rule to read. Costs: stripping a machine that could have been repaired costs nothing, which loses his 'destroying the mendable' sin."}]},
+  {"question":"Should carrying a big salvage piece slow the carrier down?","header":"Hauling","multiSelect":false,"options":[
+   {"label":"Yes, a salvage sled removes it (Recommended)","description":"Why: makes the long walk home a real cost and gives tools a job. Buys: heavy pieces slow the hauler; the repulsor sled and hauling droids are worth having. Costs: slower hauling until the sled is researched."},
+   {"label":"No slowdown","description":"Buys: hauling feels like vanilla, nothing to manage. Costs: weight only matters for caravans and the ship, and the sled has nothing to do."},
+   {"label":"Only the heaviest pieces","description":"Buys: hull sections feel huge, small parts stay easy. Costs: one more threshold to learn and balance."}]},
+  {"question":"Recycle This is on your mod list now and does the same job as the nest; what should happen to it?","header":"Recycle This","multiSelect":false,"options":[
+   {"label":"Remove it; the nest takes over (Recommended)","description":"Why: you asked for loud incompatibility, and its job moves to the nest. Buys: one recycling system, Jawa-flavoured, on Salvaging. Costs: loses its click-to-recycle orders; recycling happens through the nest's work."},
+   {"label":"Keep it, warning only","description":"Buys: nothing on your list changes. Costs: two systems recycle the same gear in different ways, against your own ruling."},
+   {"label":"Keep it, but on Salvaging","description":"Buys: its convenient orders survive. Costs: we maintain a patch into someone else's mod, which breaks when they update it."}]},
+  {"question":"How should the scavenger's nest grow?","header":"Nest shape","multiSelect":false,"options":[
+   {"label":"A few pieces each, so nests specialise (Recommended)","description":"Why: turns building the nest into a choice. Buys: each nest links about four pieces, so one is a bulk-metal nest and another an intact-parts and appraisal nest. Costs: you cannot have everything in one nest."},
+   {"label":"No limit, bigger is better","description":"Buys: the messiest, richest nest you can build; easy to understand. Costs: everyone builds the same maxed nest, so no choice."},
+   {"label":"One single building","description":"Buys: cheapest to build and draw. Costs: back to a bench, which is the thing you did not want."}]}
+ ]},
+{"title":"Carried over",
+ "questions":[
+  {"question":"The clan's crashed-ship landmark sits on every desert map, but the wreck law calls deserts travelled land; what should happen to it?","header":"Desert hulk","multiSelect":false,"options":[
+   {"label":"Make it rare (Recommended)","description":"Why: matches your law without losing the landmark. Buys: finding one becomes an event. Costs: most desert maps lose their one big wreck."},
+   {"label":"Keep it on every desert map","description":"Buys: the clan's home ground keeps its familiar landmark. Costs: breaks the law that travelled land is cleaned within decades."},
+   {"label":"Deep desert only","description":"Buys: the wreck sits where few go, which the law likes. Costs: the ordinary desert has no big wreck at all."},
+   {"label":"Remove it","description":"Buys: the cleanest reading of the law. Costs: throws away built content and the start area's one landmark."}]},
+  {"question":"What should be built first?","header":"Build order","multiSelect":false,"options":[
+   {"label":"Two wreck kinds, end to end (Recommended)","description":"Why: proves the whole loop before anything big is rewired. Buys: you play hull and droid wrecks from strip to nest to stock in about two weeks. Costs: other wreck kinds and the fancy cut choices wait."},
+   {"label":"The skill alone first","description":"Buys: the Salvaging skill in a few days, before any new items. Costs: nothing to salvage with it yet, so it barely shows."},
+   {"label":"Everything at once","description":"Buys: one big landing, about four weeks. Costs: nothing to play or judge until the end, and mistakes surface late."}]}
+ ]}
+]}
