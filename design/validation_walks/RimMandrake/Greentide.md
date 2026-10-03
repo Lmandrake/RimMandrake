@@ -27,6 +27,11 @@ Sources: `About/About.xml`, `Source/RM_GreentideMod.cs` (16 settings), `RM_MapCo
 - `canopySwarmEnabled` gates the Krannock's wild spawning. → UNCOVERED: a deliberate no-op until the Krannock is rostered at the biome's own review sitting; chain canopy_swarm records UNMEASURED
 - The seek-shade AI and the silence cue live in the shared Creature Behaviors assembly. → UNCOVERED: owned by the CreatureBehaviors script, not this mod's code
 - The jungle's look, audio and ambience. → UNCOVERED: visual and audio, judge pass or owner
+- A person-sized pawn stepping on a vurrak lying flat on a bank cell is bitten at once (owner card 2026-10-03). → vurrak.vurrak_bites_a_person
+- A hare (lighter than `vurrakTriggerBodySize`) on a flat vurrak only reveals it. → vurrak.vurrak_hare_only_reveals
+- `vurrakAmbushEnabled` off stops the contact check. → vurrak.vurrak_toggle_off_refused
+- The first reveal seen by colonists pauses the game and sends "The bank moved", once per game. → UNCOVERED: needs the letter stack and pause state read after a reveal; first poke after the chain.
+- A wild vurrak lies back down flat on bank after `revealHoldTicks` and eats what it bit. → UNCOVERED: think-tree cycle over ~1 h of game time; watch one on a quicktest.
 
 ## anti-guessing notes
 RULED OUT: "a drafted colonist wanders off the mud" — drafted pawns hold their cell; the mire and swallow chains draft the subjects (the GelatinousSlime pattern).

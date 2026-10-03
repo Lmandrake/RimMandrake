@@ -21,14 +21,7 @@
   recipeMaker workSpeedStat GeneralLaborSpeed/workSkill Artistic/
   unfinishedThingDef UnfinishedSculpture/effectWorking Sculpt/
   soundWorking Recipe_Sculpt/recipeUsers TableSculpting, thingCategories
-  BuildingsArt, stuffCategories, costStuffCount). NOT built by
-  ParentName="SculptureBase" — RimWorld XML list-field inheritance REPLACES
-  a parent's <comps> entirely the moment a child declares its own <comps>
-  (confirmed: SculptureSmall/SculptureLarge/SculptureGrand never repeat
-  <comps> themselves, so nothing in this repo demonstrates a safe way to
-  ADD a comp on top of an inherited list) — so every field below is
-  declared explicitly, copied from the same vanilla source, rather than
-  risking a silently-incomplete inherited comps list.
+  BuildingsArt, stuffCategories, costStuffCount), declared explicitly below.
 
   The "flames issue from the statue, quality scales the fire show":
   RM_CompProperties_WarblingGlow's own qualityScalingEnabled=true reads the

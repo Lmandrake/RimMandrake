@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  UTINNI_STATUES_SKELETON_BUILD_1, statue_mods_spec.md §1 (Mod 1). Three statue tiers, made at the sculptor's
+  table like vanilla sculptures, each carrying a picker over the carvings of its own size (§1.2). Owner R8 asked
+  for ONE statue buildable with a picker; a def has one footprint and the carvings span 1x1 and 2x2 (§6 left this
+  to FOUNDRY), so the one statue is three tiers that mirror vanilla's small/large/grand sculptures, and the
+  subject is picked on the placed statue ("Dedicate"). Stats copy the matching vanilla tier (§1.3).
+  ParentName SculptureBase is safe: a child's <comps> list APPENDS to the parent's (XmlInheritance
+  RecursiveNodeCopyOverwriteElements appends list elements unless Inherit="False"), so CompQuality/CompArt stay.
+  Placeholder art: the vanilla sculpture folder until a carving is chosen AND its PNG has landed in
+  Textures/Things/Building/Art/RUT_UtinniIdols/<id>.png (16 jobs, art list utinni_statues_wave1_2026-10-03.csv).
+-->
+<Defs>
+
+  <ThingDef ParentName="SculptureBase">
+    <defName>RUT_StatueSmall</defName>
+    <label>Utinni votive</label>
+    <description>A votive stone of the Utinni faith, carved small enough to sit on a shelf. Once placed, choose which votive it is.</description>
+    <thingClass>RimMandrake.Utinni.UtinniStatues.RUT_Building_Statue</thingClass>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Art/SculptureSmall</texPath>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <fillPercent>0.35</fillPercent>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Mass>3</Mass>
+      <Beauty>50</Beauty>
+      <WorkToMake>18000</WorkToMake>
+      <StyleDominance MayRequire="Ludeon.RimWorld.Ideology">10</StyleDominance>
+    </statBases>
+    <costStuffCount>50</costStuffCount>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <comps>
+      <li Class="RimMandrake.Utinni.UtinniStatues.CompProperties_StatuePicker">
+        <carvings>
+          <li><id>RUT_Votive_Bandolier</id><label>votive: the Bandolier</label><honours>the clan</honours><depicts>A votive stone: a bandolier strap coiled twice on a rough block, its heavy buckle upright and scratched with the clan's mark.</depicts></li>
+          <li><id>RUT_Votive_Droplet</id><label>votive: the Droplet</label><honours>Oomo the Unspilled</honours><depicts>A votive stone: a cracked dish holding one carved, polished droplet. Oomo's tithe.</depicts></li>
+          <li><id>RUT_Votive_Tally</id><label>votive: the Tally</label><honours>Mob'Unloo the Ever-Owed</honours><depicts>A votive stone: scavenged tokens stacked under a slab covered in tally marks, several crossed out. Mob'Unloo's ledger.</depicts></li>
+        </carvings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="SculptureBase">
+    <defName>RUT_Statue</defName>
+    <label>Utinni statue</label>
+    <description>A person-sized statue of one of the Nine, hooded and robed, eyes the only lit feature. Once placed, choose which god it honours.</description>
+    <thingClass>RimMandrake.Utinni.UtinniStatues.RUT_Building_Statue</thingClass>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Art/SculptureLarge</texPath>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <castEdgeShadows>true</castEdgeShadows>
+    <uiIconScale>0.666</uiIconScale>
+    <fillPercent>0.5</fillPercent>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>7</Mass>
+      <Beauty>100</Beauty>
+      <WorkToMake>30000</WorkToMake>
+      <StyleDominance MayRequire="Ludeon.RimWorld.Ideology">20</StyleDominance>
+    </statBases>
+    <costStuffCount>100</costStuffCount>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <comps>
+      <li Class="RimMandrake.Utinni.UtinniStatues.CompProperties_StatuePicker">
+        <carvings>
+          <li><id>RUT_Idol_Ishko</id><label>idol of Ishko</label><honours>Ishko the Unmaskable</honours><depicts>A hooded figure half-sunk in the plinth as if rising through a hatch, only two low, dim eyes lit.</depicts></li>
+          <li><id>RUT_Idol_Ohm</id><label>idol of Ohm</label><honours>Ohm the All-Current</honours><depicts>A hooded figure with both too-long hands raised and reaching; a dormant droid head lies at its feet.</depicts></li>
+          <li><id>RUT_Idol_Oomo</id><label>idol of Oomo</label><honours>Oomo the Unspilled</honours><depicts>A hunched hooded figure cupping a single carved droplet to its chest, its hem sagging as if damp.</depicts></li>
+          <li><id>RUT_Idol_MobUnloo</id><label>idol of Mob'Unloo</label><honours>Mob'Unloo the Ever-Owed</honours><depicts>A hooded figure seated on a ledger-stone, scales in one hand, tally scratches carved down its robe.</depicts></li>
+          <li><id>RUT_Idol_Rekko</id><label>idol of Rekko</label><honours>Rekko of the Second Hand</honours><depicts>A kneeling hooded figure mending a broken droid in its lap, its robe a patchwork of salvaged plates.</depicts></li>
+          <li><id>RUT_Idol_TaBaa</id><label>idol of Ta'Baa</label><honours>Ta'Baa the Unrooted</honours><depicts>A hooded figure mid-stride off the plinth's edge, robe wind-caught, face turned away.</depicts></li>
+          <li><id>RUT_Idol_Zizzik</id><label>idol of Zizzik</label><honours>Zizzik the Spark-Maker</honours><depicts>A crouched hooded figure with slanted, delighted eyes, one hand on a cracked machine part.</depicts></li>
+          <li><id>RUT_Idol_Shkaar</id><label>idol of Sh'kaar</label><honours>Sh'kaar the All-Searing</honours><depicts>A tall, rigid figure, hood thrown back into a carved sun-disc, the widest and hottest eyes of the nine.</depicts></li>
+          <li><id>RUT_Idol_Ozzik</id><label>idol of Ozzik</label><honours>Ozzik the Shamed</honours><depicts>A hooded figure in a torn grand robe under a broken salvaged crown, eyes proud and grieving.</depicts></li>
+        </carvings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="SculptureBase">
+    <defName>RUT_StatueGrand</defName>
+    <label>Utinni grand statue</label>
+    <description>A huge Utinni carving sized to dominate a room. Once placed, choose its subject.</description>
+    <thingClass>RimMandrake.Utinni.UtinniStatues.RUT_Building_Statue</thingClass>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Art/SculptureGrand</texPath>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <castEdgeShadows>true</castEdgeShadows>
+    <uiIconScale>0.6666</uiIconScale>
+    <fillPercent>0.5</fillPercent>
+    <size>(2,2)</size>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Beauty>400</Beauty>
+      <Mass>28</Mass>
+      <WorkToMake>105000</WorkToMake>
+      <StyleDominance MayRequire="Ludeon.RimWorld.Ideology">40</StyleDominance>
+    </statBases>
+    <costStuffCount>400</costStuffCount>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Woody</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <comps>
+      <li Class="RimMandrake.Utinni.UtinniStatues.CompProperties_StatuePicker">
+        <carvings>
+          <li><id>RUT_Idol_Ohm_Grand</id><label>grand idol of Ohm</label><honours>Ohm the All-Current</honours><depicts>Ohm, arms raised, above a heap of three dormant droids leaning on the plinth like pilgrims.</depicts></li>
+          <li><id>RUT_Idol_Rekko_Grand</id><label>grand idol of Rekko</label><honours>Rekko of the Second Hand</honours><depicts>Rekko at a workbench-slab strewn with parts, a mended droid standing at his shoulder.</depicts></li>
+          <li><id>RUT_Idol_Shkaar_Grand</id><label>grand idol of Sh'kaar</label><honours>Sh'kaar the All-Searing</honours><depicts>Sh'kaar with palms cupped upward and a bowl-crowned sun-disc, on a ring of fire-pit stones.</depicts></li>
+          <li><id>RUT_Relief_Crawler</id><label>relief of the Crawler</label><honours>the clan's ark</honours><depicts>A sand crawler carved in high relief: wedge hull, rusted plates, great treads, ramp lowered. The clan's ark before the ship.</depicts></li>
+        </carvings>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
