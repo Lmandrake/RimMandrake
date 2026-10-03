@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True}
+          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -325,6 +325,31 @@ def defs_static(t):
             if miss:
                 _fail("%d of %d shipped defs do not resolve live (silently discarded or wrong type): %s"
                       % (len(miss), len(specs), miss[:12]))
+
+    with _comp(t, "fubbum_hunter_def", toggle="fubbumHunts"):
+        # GELATINOUSSLIME_FUBBUM_HUNTER_1: predator whose prey ceiling covers the gelatid, not a colonist
+        if t._guard():
+            rows, nf = _defs(t, ["ThingDef/RM_Fubbum", "ThingDef/RM_Gelatid"], fields="race", deep=True)
+            fr, gr = rows.get("ThingDef/RM_Fubbum"), rows.get("ThingDef/RM_Gelatid")
+            if fr is None:
+                _fail("ThingDef/RM_Fubbum absent live")
+            if gr is None:
+                _unmeasured(t, "ThingDef/RM_Gelatid did not resolve; cannot compare prey size")
+            race = (fr.get("fields") or {}).get("race")
+            grace = (gr.get("fields") or {}).get("race")
+            if not isinstance(race, dict) or not isinstance(grace, dict):
+                _unmeasured(t, "race not serialised as a dict: %s" % str(race)[:120])
+            try:
+                mp, gb = float(race.get("maxPreyBodySize")), float(grace.get("baseBodySize"))
+            except (TypeError, ValueError):
+                _unmeasured(t, "maxPreyBodySize/baseBodySize unreadable: %s / %s" % (race.get("maxPreyBodySize"), grace.get("baseBodySize")))
+            if str(race.get("predator")).lower() != "true":
+                _fail("RM_Fubbum is not a predator live (race.predator %r); with fubbumHunts on it must be" % race.get("predator"))
+            if not (gb <= mp < 1.0):
+                _fail("maxPreyBodySize %.2f must cover the gelatid (%.2f) and stay under an adult colonist (1.0)" % (mp, gb))
+            for k in ("manhunterOnDamageChance", "manhunterOnTameFailChance"):
+                if float(race.get(k, 1) or 0) != 0:
+                    _fail("%s %r != 0: the fubbum must never turn manhunter" % (k, race.get(k)))
 
     with _comp(t, "terrain_tagged"):
         if t._guard():
@@ -837,5 +862,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False)):
+                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

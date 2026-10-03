@@ -100,10 +100,15 @@ namespace RimMandrake.GelatinousSlime
         // clean channel. Off: it still grazes, the ground is left as it was.
         public static bool gappoChannels = true;
 
+        // GELATINOUSSLIME_FUBBUM_HUNTER_1: the fubbum hunts gelatid herds. Off: it is a placid
+        // grazer-of-nothing that ignores prey (race.predator false); applied by FubbumHunting.
+        public static bool fubbumHunts = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
+            Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
             Scribe_Values.Look(ref preferHigherPriorityArchive, "preferHigherPriorityArchive", true, true);
             Scribe_Values.Look(ref rarityFactor, "rarityFactor", 1f, true);
             Scribe_Values.Look(ref flavorEntryRecorded, "flavorEntryRecorded", true, true);
@@ -172,6 +177,9 @@ namespace RimMandrake.GelatinousSlime
                 "On (default): the greater gappo's scoop hardens the soft slime under it and wipes "
                 + "the smear, leaving a clean channel behind it. Off: it grazes and the ground is "
                 + "left as it was.");
+            list.CheckboxLabeled("Fubbum hunts gelatids", ref fubbumHunts,
+                "On (default): the fubbum, the Slime's one hunter, stalks the gelatid herds. It "
+                + "never hunts colonists first. Off: it stays on the map but hunts nothing.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");
@@ -268,6 +276,7 @@ namespace RimMandrake.GelatinousSlime
         {
             base.WriteSettings();
             TitanoslimeSpawnTuning.Apply();
+            FubbumHunting.Apply();
             GeneArchiveDef.InvalidateActiveCache();
         }
     }
