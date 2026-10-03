@@ -86,7 +86,15 @@
       <li Class="RimMandrake.TheRot.CompProperties_RM_GutSwallow">
         <minHoursToDigest>3</minHoursToDigest>
       </li>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_SwallowedCore" />
     </comps>
+    <modExtensions>
+      <!-- ROT_SWALLOWED_NAVIGATOR_1: -1 = free tier (the first wild hwelgrue on the world carries the core).
+           The campaign patch sets the authored Ash'karr tile. -->
+      <li Class="RimMandrake.TheRot.RM_SwallowedCoreExtension">
+        <campaignTile>-1</campaignTile>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

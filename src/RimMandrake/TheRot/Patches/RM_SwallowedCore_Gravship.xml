@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ROT_SWALLOWED_NAVIGATOR_1: the swallowed drive core links to the grav engine, and its range factor is a stat
+     part on GravshipRange (applied after the thrusters' flat facility offsets). Odyssey defs; every DLC is assumed,
+     and the FindMod guard only keeps a DLC-less load quiet. -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Odyssey</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="GravEngine"]/comps/li[@Class="CompProperties_AffectedByFacilities"]/linkableFacilities</xpath>
+          <value>
+            <li>RM_SwallowedDriveCore</li>
+          </value>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/StatDef[defName="GravshipRange"]/parts</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/StatDef[defName="GravshipRange"]</xpath>
+            <value>
+              <parts />
+            </value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/StatDef[defName="GravshipRange"]/parts</xpath>
+          <value>
+            <li Class="RimMandrake.TheRot.RM_StatPart_SwallowedCore" />
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

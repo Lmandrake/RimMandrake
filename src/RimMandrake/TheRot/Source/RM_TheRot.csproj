@@ -46,6 +46,7 @@
     <Compile Include="RM_TheRotMod.cs" />
     <Compile Include="RM_Hwelgrue.cs" />
     <Compile Include="RM_HwelgrueSwallow.cs" />
+    <Compile Include="RM_SwallowedCore.cs" />
   </ItemGroup>
 
   <ItemGroup>

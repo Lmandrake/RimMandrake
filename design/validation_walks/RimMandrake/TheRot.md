@@ -18,6 +18,10 @@ Sources: `src/RimMandrake/TheRot/About/About.xml`, `Defs/**`, `Source/RM_TheRotM
 - A downed pawn lying in the open is swallowed whole (not spawned, held by the comp, named with hours left in the inspect line); 150 damage to the hwelgrue cuts it out alive. → hwelgrue.swallow_then_cut_out
 - Knocking from inside is louder and of the strong kind early, fainter and failing late. → hwelgrue.knocking_louder_early
 - Left inside past the digestion time the pawn dies and its metal gear joins the gut; swallowing toggled off, a downed pawn beside it is never taken. → UNCOVERED: needs a day of ticks; first poke: ProofSwallow, then step_game_ticks past the inspect line's hours.
+- Exactly one hwelgrue per world carries the swallowed drive core; once it drops, none ever carries it again. → hwelgrue.one_core_per_world
+- The carrier drops the drive core at or above the ruin threshold, the ruined core below it. → hwelgrue.ruined_below_threshold
+- An installed, linked core multiplies the grav engine's TOTAL range (thrusters included) by 1 + bonus x integrity. → hwelgrue.core_multiplies_total_range
+- Only the ship's own guns lower the core's integrity. → hwelgrue.ship_guns_wreck_the_core
 - An idle hwelgrue crawls to and eats the nearest corpse or item on open ground, never one in a stockpile zone or under a roof, and never starts a fight. → UNCOVERED: needs ticks; first poke: RM_HwelgrueProof.ProofGrazeTarget with a knife on open ground and one in a stockpile.
 
 ## the walk

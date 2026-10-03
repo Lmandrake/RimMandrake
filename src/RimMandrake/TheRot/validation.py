@@ -149,6 +149,11 @@ def static_checks():
         bad.append("RM_Hwelgrue must carry RM_CompGutSwallow and never CompDevourer (ROT_STILL_ALIVE_SWALLOW_1)")
     if "<defName>RM_GutKnocking</defName>" not in hw:
         bad.append("SoundDef RM_GutKnocking missing")
+    gp = open(os.path.join(HERE, "Patches", "RM_SwallowedCore_Gravship.xml"), encoding="utf-8").read()
+    if "RM_StatPart_SwallowedCore" not in gp or "<li>RM_SwallowedDriveCore</li>" not in gp:
+        bad.append("the gravship patch must link the core to GravEngine and add the range stat part")
+    if "CompProperties_RM_SwallowedCore" not in hw:
+        bad.append("RM_Hwelgrue must carry RM_CompSwallowedCore (ROT_SWALLOWED_NAVIGATOR_1)")
     bad += cast_checks()
     return bad
 
@@ -423,6 +428,24 @@ def _build_suite():
                 vh = vl = None
             if _live(t) and not (vh is not None and vh > vl and "RM_GutKnocking " in hi + " " and "RM_GutKnocking_Failing" in lo):
                 raise ExpectationFailed("knocking is not louder/stronger early: %s || %s" % (hi, lo))
+        with t.component("one_core_per_world", toggle="navigatorCore"):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_SwallowedCoreProof", method="ProofClaim", args="3")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if _live(t) and not (text.startswith("CORE carriers 1 ") or "spent True" in text):
+                raise ExpectationFailed("spawning hwelgrue did not leave exactly one core carrier: %s" % text)
+        with t.component("ruined_below_threshold", toggle="navigatorRuinThreshold"):
+            outs = []
+            for integ in ("80", "10"):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_SwallowedCoreProof", method="ProofDrop", args=integ)
+                outs.append(str((r or {}).get("result", "")) if isinstance(r, dict) else "")
+            if _live(t) and outs != ["DROP RM_SwallowedDriveCore", "DROP RM_RuinedDriveCore"]:
+                raise ExpectationFailed("integrity 80/10 should drop the core / the ruin: %r" % outs)
+        with t.component("core_multiplies_total_range", toggle="navigatorRangeBonus"):
+            if _live(t):
+                _unmeasured(t, "needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it")
+        with t.component("ship_guns_wreck_the_core", toggle="navigatorShipDamageFactor"):
+            if _live(t):
+                _unmeasured(t, "needs a turret on gravship substructure firing at the carrier; read the carrier's inspect integrity before/after, and a rifle hit for the control")
         with t.component("rest_accelerates_rot", toggle="hwelgrueRotMultiplier"):
             if _live(t):
                 _unmeasured(t, "needs an idle hwelgrue, two meat stacks at 3 and 20 cells, and ticks; RotProgress read per stack")
