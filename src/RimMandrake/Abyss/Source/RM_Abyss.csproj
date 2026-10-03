@@ -45,6 +45,7 @@
     <Compile Include="RM_GustController.cs" />
     <Compile Include="RM_CompGharrek.cs" />
     <Compile Include="RM_CompDurrgak.cs" />
+    <Compile Include="RM_CompKrizzak.cs" />
     <Compile Include="RM_MapComponentEtchfall.cs" />
   </ItemGroup>
 

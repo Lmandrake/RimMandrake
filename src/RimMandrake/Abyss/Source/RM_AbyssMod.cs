@@ -28,6 +28,9 @@ namespace RimMandrake.Abyss
         // ABYSS_DURRGAK_BUILD_1: wild durrgaks place obsidian-shard rings. Off = none are placed (existing rings stay).
         public static bool durrgakRingsEnabled = true;
 
+        // ABYSS_KRIZZAK_BUILD_1: wild krizzaks dim glow plants and lit lamps they settle on. Off = they just fly. Safe mid-game.
+        public static bool krizzakLightEatingEnabled = true;
+
         // ABYSS_ETCHFALL_BUILD_1: grain erosion strength on unroofed rock and steel. 0 = off, 1 = shipped.
         public static float etchfallStrength = 1f;
 
@@ -37,6 +40,7 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
+            Scribe_Values.Look(ref krizzakLightEatingEnabled, "krizzakLightEatingEnabled", true, true);
             Scribe_Values.Look(ref etchfallStrength, "etchfallStrength", 1f, true);
         }
 
@@ -56,6 +60,9 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Wild durrgaks set rings of shards", ref durrgakRingsEnabled,
                 "On: wild durrgaks slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
+
+            list.CheckboxLabeled("Wild krizzaks eat light", ref krizzakLightEatingEnabled,
+                "On: wild krizzaks settle on glow plants and lit lamps and shrink their light until they leave. Off: they only fly about. Light recovers on its own. Safe mid-game.");
 
             list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
             etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);
