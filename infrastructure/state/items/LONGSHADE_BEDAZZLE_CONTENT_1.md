@@ -33,3 +33,10 @@ and defs whose outcome a screenshot or atlas proves.
 - A Long Shade quicktest atlas shows no magenta and no donor texture on any free-tier def.
 - There is one glitter-bird def.
 - Fill defs exist only for the subjects the owner kept on the review sheet.
+
+## Fills art ruled 2026-10-02 (owner, review sheet `Transient/longshade_fills_art.decisions.json`)
+
+All seven kept: maidenbloom (`_b`), tazzok (`_b`), skarrok (`_b`), pavecrust, vrekka, sippra, and shadespire
+pending a redo. Owner notes, typed: shadespire *"Keep the interesting husk-like fruits, but make it dull green
+without all that wild color and frills."*; skarrok *"Keep art, redo description based on image."*; vrekka
+*"Tint it a bit darker please."* Defs are owed for all seven (spec point 8).
