@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_HIVE_PARASITE_CHAMBER_1. Chamber 2 of 3 of the kurreth hive
+     (owner ruling 2026-09-22, recorded in FEVERWOOD_ANT_HIVE_DUNGEON_1): "a
+     parasite the ants tolerate or cannot see — something feeding on the hive
+     itself. The horror chamber, and the one that can be an ally: whatever eats
+     ants is not your enemy."
+
+     glomvar: INVENTED name (RM_ tier per Q11a, franchise-free). Never a
+     wildAnimals row: it exists only inside a generated hive
+     (RM_GenStep_AntHiveDungeon.PlaceParasite).
+
+     Behaviour is RM_CompHiveParasite (this mod): race predator=false, so
+     vanilla never hunts a colonist with it; its only hunt is the host hive's
+     residents, one a day when hungry, and a feeding frenzy whenever the hive
+     raises an alarm nearby. RM_ReactionUnseenExtension makes it invisible to
+     the hive's reaction network (a bite rings no alarm). manhunterOnDamageChance
+     0: it does not turn on a colonist who hurts it — it flees like any wild
+     animal.
+
+     Art: PLACEHOLDER — the kurreth renders retinted pale and drawn larger.
+     Bespoke art queued in infrastructure/artpipe/art_lists/feverwood_glomvar_2026-10-03.csv. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Glomvar</defName>
+    <label>glomvar</label>
+    <description>A pale, eyeless, many-legged thing the size of a calf, its soft back slick with a film that smells exactly like a kurreth hive. The ants walk past it, over it, feed their young beside it, and never notice that their numbers keep shrinking. It eats one a day. When the hive is busy fighting something else, it eats more.\n\nIt has no interest in anything that is not a kurreth.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>160</MarketValue>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>hooked mouthparts</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>16</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>1.2</baseHealthScale>
+      <baseHungerRate>0.6</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+    <comps>
+      <li Class="RimMandrake.FeverWood.RM_CompProperties_HiveParasite">
+        <hostTag>KurrethHive</hostTag>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>5</tetherRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_ReactionUnseenExtension">
+        <unseenBy>
+          <li>KurrethHive</li>
+        </unseenBy>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Glomvar</defName>
+    <label>glomvar</label>
+    <race>RM_Glomvar</race>
+    <combatPower>70</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <color>(226,218,200)</color>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <color>(226,218,200)</color>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <color>(226,218,200)</color>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

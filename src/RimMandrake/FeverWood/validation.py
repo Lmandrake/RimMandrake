@@ -1565,3 +1565,53 @@ def hive_rally(t):
                                    field="reactionDetectionEnabled", value="True")
     finally:
         _teardown(t)
+
+
+# ------------------------------------------------------------------------- hive parasite
+
+@suite.chain("hive_parasite")
+def hive_parasite(t):
+    """FEVERWOOD_HIVE_PARASITE_CHAMBER_1: a hungry glomvar 3 cells from a calm wild kurreth kills it, the
+    hive's alarm never rings (the glomvar is unseen by it), and a colonist 12 cells off is left alone (it is no
+    predator of anything but the hive). With antHiveParasiteChamberEnabled OFF the same hungry glomvar leaves
+    the kurreth alive."""
+    _enter(t)
+    window = 2500
+
+    def layout(t):
+        _reset_pad(t)
+        x, z = t.anchor
+        g = _spawn(t, "RM_Glomvar", x, z, "none")
+        k = _spawn(t, "RM_Kurreth", x + 3, z, "none")
+        c = _spawn(t, "Colonist", x - 12, z, "player")
+        t.bridge_call("jawa/pawn_need", pawn=g, action="need", need="Food", level=0.1)
+        return g, k, c
+
+    def alive(t, pid):
+        row = _census(t, [pid]).get(pid)
+        return row is not None and not row.get("dead") and not row.get("downed")
+
+    try:
+        with _comp(t, "a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist",
+                   toggle="antHiveParasiteChamberEnabled"):
+            g, k, c = layout(t)
+            phrase = "kurreth hive has noticed"
+            before = _messages(t).count(phrase)      # a count delta: earlier chains' alarms never count here
+            t.wait_ticks(window)
+            if _live(t):
+                if alive(t, k):
+                    _fail("a hungry glomvar 3 cells from a calm kurreth left it standing after %d ticks" % window)
+                if not alive(t, c):
+                    _fail("the colonist 12 cells off is down or dead: the glomvar must hunt nothing but the hive")
+                if _messages(t).count(phrase) > before:
+                    _fail("the kurreth alarm rang: the hive must not perceive the glomvar")
+
+        with _comp(t, "with_the_parasite_toggle_off_the_kurreth_lives", independent=True,
+                   toggle="antHiveParasiteChamberEnabled"):
+            with _settings(t, antHiveParasiteChamberEnabled=False):
+                g, k, c = layout(t)
+                t.wait_ticks(window)
+                if _live(t) and not alive(t, k):
+                    _fail("antHiveParasiteChamberEnabled=false and the glomvar still killed the kurreth")
+    finally:
+        _teardown(t)

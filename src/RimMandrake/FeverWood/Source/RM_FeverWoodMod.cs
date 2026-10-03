@@ -132,6 +132,11 @@ namespace RimMandrake.FeverWood
         /// plugs the corridor behind the intruder. Default ON.</summary>
         public static bool antHiveSealingEnabled = true;
 
+        /// <summary>FEVERWOOD_HIVE_PARASITE_CHAMBER_1. Off: a new hive carries
+        /// no glomvar (WORLDGEN-AFFECTING), and an existing glomvar stops
+        /// hunting the hive (it lives on as an ordinary animal). Default ON.</summary>
+        public static bool antHiveParasiteChamberEnabled = true;
+
         /// <summary>Multiplies RM_AntHiveBiomeExtension.hiveChance. INVENTED
         /// default 1.0 (matches shipped behavior); exposed because the base
         /// chance itself is an invented placeholder a play-test should be
@@ -217,6 +222,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
             Scribe_Values.Look(ref antHiveFarmChamberEnabled, "antHiveFarmChamberEnabled", true);
             Scribe_Values.Look(ref antHiveSealingEnabled, "antHiveSealingEnabled", true);
+            Scribe_Values.Look(ref antHiveParasiteChamberEnabled, "antHiveParasiteChamberEnabled", true);
             Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
             Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
@@ -302,6 +308,10 @@ namespace RimMandrake.FeverWood
                 "When the hive raises its alarm it plugs the tunnel behind the intruder with resin "
               + "(one tunnel per alarm; the plugs crumble after a few hours or can be broken). Off: "
               + "the way out stays open.");
+            list.CheckboxLabeled("Ant hive parasite chamber (worldgen)", ref antHiveParasiteChamberEnabled,
+                "A mid-depth hive room hides a glomvar, a pale thing the kurreth cannot perceive that "
+              + "eats them one a day, and falls on them in a frenzy while they are busy fighting you. "
+              + "Off: new hives carry none and an existing one stops hunting the hive.");
             list.GapLine();
             list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
                 "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
@@ -348,6 +358,8 @@ namespace RimMandrake.FeverWood
             new HarmonyLib.Harmony("mandrake.rm.feverwood").PatchAll(typeof(RM_FeverWoodMod).Assembly);
             // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the hive answers its own alarms.
             RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_HiveSealing.OnAlarm;
+            // FEVERWOOD_HIVE_PARASITE_CHAMBER_1: an alarm sends the glomvar into a feeding frenzy.
+            RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_CompHiveParasite.OnAlarm;
         }
 
         public override string SettingsCategory()
