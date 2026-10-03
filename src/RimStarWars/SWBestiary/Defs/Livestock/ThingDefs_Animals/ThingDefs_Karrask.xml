@@ -21,8 +21,7 @@
      Body/stat shape patterned off vanilla Alpaca (RimSage get_def_details:
      AnimalThingBase, QuadrupedAnimalWithHooves is Alpaca's own body, but
      karrask is "armadillo-to-pangolin... low and armored" so this uses
-     QuadrupedAnimalWithPawsAndTail instead - the same body already proven
-     in this mod for Cindermare).
+     QuadrupedAnimalWithPawsAndTail instead - the same body Cindermare uses).
 
      2026-09-09 fix (LIVESTOCK_STARTER_TRIO_1, this pass): statBases/Mass
      was 36 (bodySize 0.6 * beast_normalization_spec's 60 kg/bs scale,

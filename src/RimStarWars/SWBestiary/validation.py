@@ -16,7 +16,7 @@ assemblies, no patches" and only describes the ORIGINAL absorption (Bantha,
 Jerba, 8 ex-Jurassic dinosaurs, 589 SoundDefs). The CURRENT mod has since
 absorbed FIVE MORE sibling mods into this same folder (About.xml's own
 "MECHANICAL_FAUNA_MERGE_WAVE_A" section): SeaBeasts (18 creatures),
-Livestock (Cindermare/Skarnix/Karrask/Onnik + two live ThingComps),
+Livestock (Karrask/Onnik/Moornak + live ThingComps),
 HelixTellurox, JawaIkee (a live ThingComp + ModSettings), BeastNorm/
 SeasWaterline patches -- plus SAND_SWIMMERS_MOD_1 and
 LIVESTOCK_STARTER_TRIO_1 afterward. It now ships `Patches/` (four
@@ -44,10 +44,9 @@ tolerantXenotypes`, stage 1/unsettled otherwise, checked against any
 the ThingDef defName the C# compares against AND a real PawnKindDef defName
 via `RimUtinni/UtinniPatches/Defs/ScenarioDefs/Scenario_Utinni.xml`'s own
 `<animalKind>AA_Eyeling</animalKind>`, not guessed); `Source/Livestock/
-RSW_LivestockSettings.cs` (two mechanisms, four fields: `kilnBellyEnabled`/
-`kilnCooldownMultiplier` for `CompKilnBelly`, `lightAversionEnabled`/
-`fleeRadiusMultiplier` for `CompLightAversion`) and both comps'
-`Source/Livestock/CompKilnBelly.cs`/`CompLightAversion.cs`.
+RSW_LivestockSettings.cs` (`kilnBellyEnabled`/`kilnCooldownMultiplier` for
+`CompKilnBelly`, plus the moornak fields) and `Source/Livestock/CompKilnBelly.cs`.
+(The skarnix's light-aversion comp and its two settings moved to the Abyss mod.)
 
 A REAL, CONFIRMED ENVIRONMENT GAP in the Ikee mechanism: every entry in
 `IkeeToleranceExtension.tolerantXenotypes` (`Thought_IkeeWatching.xml`) is
@@ -59,8 +58,7 @@ toggle` below asserts stage 1 (unsettled, -5) for a plain Colonist and
 documents why stage 0 cannot be proven on this environment, rather than
 silently only testing the reachable half.
 
-WHAT THIS SUITE CANNOT PROVE, and why -- both `CompKilnBelly.cs` and
-`CompLightAversion.cs` carry the IDENTICAL comment in their own source,
+WHAT THIS SUITE CANNOT PROVE, and why -- `CompKilnBelly.cs` carries the comment in its own source,
 "NOT live-verified this pass (offline build only)", which this suite
 inherits rather than overriding with an invented pass:
   - `kilnBellyEnabled`/`kilnCooldownMultiplier`: the real cycle needs THREE
@@ -71,11 +69,6 @@ inherits rather than overriding with an invented pass:
     and no log line anywhere in this comp, so there is no read-back channel
     to confirm a dose registered even if this suite fed the animal and
     waited. Settings-only coverage (write + independent read-back).
-  - `lightAversionEnabled`/`fleeRadiusMultiplier`: the flee trigger depends
-    on the live PsychGlow grid at the animal's actual cell (`map.glowGrid.
-    PsychGlowAt`), which nothing on this bridge sets directly, and
-    `nextFleeCheckTick` is likewise a private field with no read-back.
-    Settings-only coverage.
   - Nothing exercises `Patches/BeastNorm` (targets the
     `mlie.starwarsanimalcollection` donor's own defNames, not this mod's)
     or `Patches/SeasWaterline`/`ProximityHatch` -- these are `PatchOperation`
@@ -97,7 +90,6 @@ suite = Suite("SWBestiary")
 suite.toggles = [
     "ikeeThoughtEnabled",
     "kilnBellyEnabled", "kilnCooldownMultiplier",
-    "lightAversionEnabled", "fleeRadiusMultiplier",
 ]
 
 IKEE_SETTINGS = "RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings"
@@ -108,8 +100,6 @@ CORE_SPECIES = ["RSW_Bantha", "RSW_Jerba", "RSW_Baseopsis"]
 
 # One representative species per absorption wave the walk doc never covers.
 NEWLY_ABSORBED_SPECIES = [
-    "RSW_Cindermare",    # Livestock / Abyss
-    "RSW_Skarnix",        # Livestock / Abyss -- CompLightAversion
     "RSW_Karrask",        # Livestock
     "RSW_Onnik",          # LIVESTOCK_STARTER_TRIO_1 -- CompKilnBelly
     "RSW_Reefback",       # SeaBeasts / Colossi
@@ -235,10 +225,3 @@ def livestock_settings_are_live_flippable(t):
         t.set_setting(LIVESTOCK_SETTINGS, {"kilnCooldownMultiplier": 2.0})
         t.set_setting(LIVESTOCK_SETTINGS, {"kilnCooldownMultiplier": 1.0})
 
-    with t.component("light_aversion_enabled_flips", toggle="lightAversionEnabled"):
-        t.set_setting(LIVESTOCK_SETTINGS, {"lightAversionEnabled": False})
-        t.set_setting(LIVESTOCK_SETTINGS, {"lightAversionEnabled": True})
-
-    with t.component("flee_radius_multiplier_flips", toggle="fleeRadiusMultiplier"):
-        t.set_setting(LIVESTOCK_SETTINGS, {"fleeRadiusMultiplier": 1.5})
-        t.set_setting(LIVESTOCK_SETTINGS, {"fleeRadiusMultiplier": 1.0})

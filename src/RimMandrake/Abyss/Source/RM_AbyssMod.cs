@@ -44,9 +44,15 @@ namespace RimMandrake.Abyss
         public static bool shipCoverEnabled = true;
         public static bool probesEnabled = true;
 
+        // ABYSS_INVENTED_CREATURES_TO_RM_1: the skarnix flees firelight and heated space. Off = it ignores light. Safe mid-game.
+        public static bool lightAversionEnabled = true;
+        public static float fleeRadiusMultiplier = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref lightAversionEnabled, "lightAversionEnabled", true, true);
+            Scribe_Values.Look(ref fleeRadiusMultiplier, "fleeRadiusMultiplier", 1f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
@@ -95,6 +101,14 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Storm giant calls in Witchfire storms", ref stormCallEnabled,
                 "On: some thunder in Witchfire storms is a summ calling, a flash with no lightning, and one may come down and cross the map. Off: ordinary storms.");
+
+            list.CheckboxLabeled("Skarnixes flee light", ref lightAversionEnabled,
+                "On: a skarnix standing in light breaks off what it is doing and slinks toward the nearest dark cell, so a lit camp neutralises it. Off: it ignores light entirely. Safe mid-game.");
+            if (lightAversionEnabled)
+            {
+                list.Label("  Flee search radius: " + fleeRadiusMultiplier.ToString("0.00") + "x (default searches 10 cells out)");
+                fleeRadiusMultiplier = list.Slider(fleeRadiusMultiplier, 0.5f, 2f);
+            }
 
             list.CheckboxLabeled("A landed gravship slowly hides", ref shipCoverEnabled,
                 "On: a gravship kept quiet (few lit lamps) in the Abyss slowly drops out of sight; the cover lapses after a while, resets when the engine leaves, and collapses if a probe reports. Off: no cover. Safe mid-game.");

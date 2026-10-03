@@ -15,7 +15,7 @@ namespace RimMandrake.StarWars.Livestock
     // death check, per the ruling's own words ("30-day release... manhunter
     // on release" - no mention of death as the trigger).
     //
-    // Zero new job types, same discipline as CompKilnBelly/CompLightAversion:
+    // Zero new job types, same discipline as CompKilnBelly:
     // self-taming, the ambient mood effect and the release are all driven
     // off CompTickRare, with no new work-giver or interaction.
     //

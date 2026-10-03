@@ -273,6 +273,51 @@ def dark_check():
     return bad
 
 
+def predators_check():
+    """Offline (ABYSS_INVENTED_CREATURES_TO_RM_1): cindermare + skarnix defs, wound chain, art, roster rows, comp, toggles."""
+    bad = []
+    cin = _defs("ThingDefs_Races/RM_Cindermare.xml")
+    ska = _defs("ThingDefs_Races/RM_Skarnix.xml")
+
+    def find(root, tag, name):
+        return next((d for d in root.iter(tag) if d.findtext("defName") == name), None)
+    things = {"RM_Cindermare": find(cin, "ThingDef", "RM_Cindermare"), "RM_Skarnix": find(ska, "ThingDef", "RM_Skarnix")}
+    kinds = {"RM_Cindermare": find(cin, "PawnKindDef", "RM_Cindermare"), "RM_Skarnix": find(ska, "PawnKindDef", "RM_Skarnix")}
+    dmg = find(cin, "DamageDef", "RM_ColdDrainDamage")
+    hed = find(cin, "HediffDef", "RM_ColdDrain")
+    if None in list(things.values()) + list(kinds.values()) + [dmg, hed]:
+        return ["missing def among cindermare/skarnix thing, kind, damage, hediff"]
+    for name in things:
+        if kinds[name].findtext("race") != name:
+            bad.append("%s PawnKind race mismatch" % name)
+        if float(things[name].findtext("statBases/Wildness")) < 1.0:
+            bad.append("%s must be untameable (Wildness 1.0)" % name)
+        tex = kinds[name].findtext(".//bodyGraphicData/texPath")
+        if not os.path.isfile(os.path.join(HERE, "Textures", tex + ".png")):
+            bad.append("texture missing: " + tex)
+    if dmg.findtext("hediff") != "RM_ColdDrain":
+        bad.append("cold-drain damage does not apply RM_ColdDrain")
+    if "RM_ColdDrainDamage" not in ET.tostring(things["RM_Cindermare"], encoding="unicode"):
+        bad.append("cindermare grip does not deal RM_ColdDrainDamage")
+    comp = things["RM_Skarnix"].find("comps/li[@Class='RimMandrake.Abyss.CompProperties_LightAversion']")
+    if comp is None:
+        bad.append("skarnix lacks CompProperties_LightAversion")
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    for name in things:
+        wa = biome.find(".//wildAnimals/" + name)
+        if wa is None or not float(wa.text) > 0:
+            bad.append("RM_Abyss <wildAnimals> lacks <%s>" % name)
+    src = os.path.join(HERE, "Source")
+    proj = open(os.path.join(src, "RM_Abyss.csproj")).read()
+    if 'Compile Include="RM_CompLightAversion.cs"' not in proj or not os.path.isfile(os.path.join(src, "RM_CompLightAversion.cs")):
+        bad.append("RM_CompLightAversion.cs not compiled or missing")
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    for needle in ("lightAversionEnabled", "fleeRadiusMultiplier"):
+        if mod.count(needle) < 3:
+            bad.append("Mod Settings lacks " + needle)
+    return bad
+
+
 def cover_check():
     """Offline: ship cover component, probe extension on the biome, settings, csproj."""
     bad = []
@@ -353,6 +398,16 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
+    @suite.chain("predators_defs_resolve")
+    def predators_defs_resolve(t):
+        """Live: cindermare/skarnix defs and the cold-drain wound chain loaded."""
+        with t.component("predators_defs_loaded", beyond_toggle=True):
+            for d in ("ThingDef/RM_Cindermare", "PawnKindDef/RM_Cindermare", "ThingDef/RM_Skarnix", "PawnKindDef/RM_Skarnix",
+                      "DamageDef/RM_ColdDrainDamage", "HediffDef/RM_ColdDrain"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
 except ImportError:
     suite = None
 
@@ -371,4 +426,6 @@ if __name__ == "__main__":
     print("DARK static: %s" % ("PASS" if not r else "FAIL " + "; ".join(r)))
     v = cover_check()
     print("SHIP COVER static: %s" % ("PASS" if not v else "FAIL " + "; ".join(v)))
-    sys.exit(1 if (f or g or d or e or k or r or v) else 0)
+    pr = predators_check()
+    print("PREDATORS static: %s" % ("PASS" if not pr else "FAIL " + "; ".join(pr)))
+    sys.exit(1 if (f or g or d or e or k or r or v or pr) else 0)

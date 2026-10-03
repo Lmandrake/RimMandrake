@@ -115,7 +115,9 @@
            Pyrelands (ECOSYSTEM_PYRAMID_LAW_1's first application): the two existing
            small residents become more common, no megafauna cut. -->
       <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
-      <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
+      <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>
+      <RM_Cindermare MayRequire="mandrake.rm.biomes">0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: free-tier predators, same rows as RM_Abyss -->
+      <RM_Skarnix MayRequire="mandrake.rm.biomes">0.09</RM_Skarnix>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->
       <AA_CrepuscularBeetle MayRequire="sarg.alphaanimals">0.35</AA_CrepuscularBeetle>  <!-- Crepuscular Beetle - large, keep -->
       <AA_DuskProwler MayRequire="sarg.alphaanimals">0.2</AA_DuskProwler>  <!-- dusk prowler - medium-pred, keep -->

@@ -36,9 +36,7 @@ Biomes and Alpha Genetics are therefore genuinely required for full function;
 the fourteen wildAnimals entries are individually MayRequire'd on Alpha
 Animals and degrade gracefully without it.
 
-NOT in this mod: the Star Wars-tier predators (Cindermare, Skarnix) that hunt
-here in the campaign — those ride a Utinni patch onto this mod's own
-RM_Abyss def rather than living inside it, per the Q11a naming-tier
-ruling. The Forsakens (the campaign's mystery race) and the six Forsaken vaults
+Two invented predators, the cindermare (cold-drain grip) and the skarnix
+(flees firelight), hunt here as RM_Cindermare and RM_Skarnix. The Forsakens (the campaign's mystery race) and the six Forsaken vaults
 are campaign plot content and stay in Utinni entirely.</description>
 </ModMetaData>

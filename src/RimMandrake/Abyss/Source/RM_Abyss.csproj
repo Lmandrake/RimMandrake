@@ -46,6 +46,7 @@
     <Compile Include="RM_CompGharrek.cs" />
     <Compile Include="RM_CompDurrgak.cs" />
     <Compile Include="RM_CompKrizzak.cs" />
+    <Compile Include="RM_CompLightAversion.cs" />
     <Compile Include="RM_MapComponentEtchfall.cs" />
     <Compile Include="RM_MapComponentDark.cs" />
     <Compile Include="RM_MapComponentShipCover.cs" />

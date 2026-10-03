@@ -13,17 +13,14 @@ namespace RimMandrake.StarWars.Livestock
     // see RSW_JawaIkeeSettings.cs's header for why this is a second
     // settings entry rather than one shared with Ikee.
     //
-    // Three runtime mechanics live here:
+    // Two runtime mechanics live here (the light-aversion comp moved to the Abyss mod with
+    // the skarnix, ABYSS_INVENTED_CREATURES_TO_RM_1):
     //   1. CompKilnBelly — Onnik's feed-cycle kiln (3 spaced doses -> good
     //      batch; rushed dump -> cracked batch; underfed -> kiln cools).
     //      The dose counts/windows are per-def CompProperties (a species
     //      design call, left in XML); the one number worth a global slider
     //      is the reheat/cooldown length between batches.
-    //   2. CompLightAversion — Skarnix's flee-to-darkness reflex. Its
-    //      search radius is per-def CompProperties; exposed here as a
-    //      global multiplier so the player can loosen or tighten how far
-    //      any light-averse creature will path to find shade.
-    //   3. CompMoornakGrief — moornak's self-tame / hidden grief-ledger /
+    //   2. CompMoornakGrief — moornak's self-tame / hidden grief-ledger /
     //      colony-wide unsettled hediff / 30-day manhunter-release timer
     //      (LIVESTOCK_STARTER_TRIO_1, 2026-09-19). Per-def numbers (self-
     //      tame MTB, grief charge, release delay) stay in XML; only the
@@ -36,9 +33,6 @@ namespace RimMandrake.StarWars.Livestock
         public static bool kilnBellyEnabled = true;
         public static float kilnCooldownMultiplier = 1f;
 
-        public static bool lightAversionEnabled = true;
-        public static float fleeRadiusMultiplier = 1f;
-
         public static bool moornakGriefEnabled = true;
         public static float moornakReleaseDelayMultiplier = 1f;
 
@@ -47,8 +41,6 @@ namespace RimMandrake.StarWars.Livestock
             base.ExposeData();
             Scribe_Values.Look(ref kilnBellyEnabled, "kilnBellyEnabled", true);
             Scribe_Values.Look(ref kilnCooldownMultiplier, "kilnCooldownMultiplier", 1f);
-            Scribe_Values.Look(ref lightAversionEnabled, "lightAversionEnabled", true);
-            Scribe_Values.Look(ref fleeRadiusMultiplier, "fleeRadiusMultiplier", 1f);
             Scribe_Values.Look(ref moornakGriefEnabled, "moornakGriefEnabled", true);
             Scribe_Values.Look(ref moornakReleaseDelayMultiplier, "moornakReleaseDelayMultiplier", 1f);
         }
@@ -69,18 +61,6 @@ namespace RimMandrake.StarWars.Livestock
                 list.Label("  Batch cooldown: " + kilnCooldownMultiplier.ToString("0.00")
                     + "x (default is 4 in-game days between batches)");
                 kilnCooldownMultiplier = list.Slider(kilnCooldownMultiplier, 0.25f, 3f);
-            }
-            list.GapLine();
-
-            list.Label("Light aversion (Skarnix and other light-averse creatures)");
-            list.CheckboxLabeled("Light aversion enabled", ref lightAversionEnabled,
-                "A light-averse creature interrupts what it is doing to flee toward the nearest "
-              + "dark cell when standing somewhere lit. Off: it ignores light entirely.");
-            if (lightAversionEnabled)
-            {
-                list.Label("  Flee search radius: " + fleeRadiusMultiplier.ToString("0.00")
-                    + "x (default searches 10 cells out)");
-                fleeRadiusMultiplier = list.Slider(fleeRadiusMultiplier, 0.5f, 2f);
             }
             list.GapLine();
 
