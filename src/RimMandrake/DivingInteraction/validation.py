@@ -297,11 +297,14 @@ def seabed_floor_ambient_carryover(t):
         if _live(t):
             if (r or {}).get("success") is False or (r or {}).get("notFound"):
                 raise ExpectationFailed("floor biome query failed: %r" % r)
-            text = str(r)
-            if "'plantDensity': 0.0" in text or "'animalDensity': 0.0" in text:
-                raise ExpectationFailed("a floor biome still has zero density live (startup copy off or failed): %s" % text[:400])
+            rows = {row.get("defName"): (row.get("fields") or {}) for row in (r or {}).get("defs") or []}
+            if len(rows) != len(SEAS):
+                raise ExpectationFailed("expected %d floor biome rows, read %d" % (len(SEAS), len(rows)))
+            flat = {d: f for d, f in rows.items()
+                    if float(f.get("plantDensity") or 0) <= 0 or float(f.get("animalDensity") or 0) <= 0}
+            if flat:
+                raise ExpectationFailed("floor biome(s) still at zero density live (startup copy off or failed): %r" % flat)
         t.screenshot()
-    with t.component("live_floor_reads_cold_and_grows", beyond_toggle=False):
-        # UNMEASURED offline: generate a Chill layer floor (needs SEABED_DESCENT_ASCENT_1 or a debug map on a
-        # floor tile), read OutdoorTemp ~ -110, count Twilight floor plants > 0, clear animals and step ticks.
-        t.screenshot()
+    # Not a component (it would record PASS with nothing asked): UNMEASURED until a Chill layer floor can be made
+    # live (SEABED_DESCENT_ASCENT_1 or a debug map on a floor tile): OutdoorTemp ~ -110, Twilight floor plants > 0,
+    # a cleared floor's animal count rising over ticks.

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HOIST_SHIP_PART_BUILD_1, design §2b: a downed wild beast arrives "captured". There is no animal prisoner
+     status in the engine, so the restraint cradle keeps it bound (Moving capped at 0 = downed) for the hours set in
+     Mod Settings (RM_KeelHoist.TryCapture overwrites ticksToDisappear), long enough to tame, pen or butcher it. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_HoistRestraint</defName>
+    <label>hoist restraints</label>
+    <description>Bound in the keel hoist's restraint cradle. The straps hold the legs until they wear loose.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.7, 0.5)</defaultLabelColor>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>60000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>
