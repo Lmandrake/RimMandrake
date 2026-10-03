@@ -3,17 +3,17 @@
   RM_ScaldFauna.xml                      TerminalBiomes — authored 2026-09-24
   ==========================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 wiring pass: the two floor-resident species
-  `terminal_seas_cast_proposal_2026-09-25.md` names for the Scald (noohm,
-  shulla) — APPROVED, owner sitting 2026-09-25, verdict 1. noohm settles the
+  `terminal_seas_cast_proposal_2026-09-25.md` names for the Scald (saal,
+  shulla) — APPROVED, owner sitting 2026-09-25, verdict 1. saal settles the
   slime-naming law (verdict 6: a gel-bodied jelly-analog counts as a slime
   for the naming law — monosyllable, applied).
 
-  noohm is the LIVING form of the "bubble-sailor" whose CATCH item
-  (RM_Saal, this mod's Defs/ThingDefs_Items/RUT_ScaldFish.xml) already
-  ships, with that file's own comment saying so: "the item face of the
-  bubble-sailor creature; the creature def is separate roster work." This
-  pass IS that separate roster work — noohm is not itself catchable (per
-  the proposal table), so RM_Saal is left exactly as it is.
+  The saal is the LIVING form of the "bubble-sailor" whose CATCH item
+  (RM_Saal, this mod's Defs/ThingDefs_Items/RUT_ScaldFish.xml) shares the
+  name: creature and catch are both "saal" (owner, typed, 2026-10-03,
+  SCALD_SAAL_ONE_NAME_1; the earlier name "noohm" is retired). The living
+  creature's defName stays RM_Noohm because shipped defs and C# bind to it
+  and RM_Saal is already the catch ThingDef; only labels and text say saal.
 
   Mechanically plain, pattern copied from RSW_SandStalker.xml's placeholder
   idiom (Graphic_Single, three lifeStages). Placeholder art: flat dark
@@ -25,19 +25,19 @@
 
   SCALD_STEAM_WEATHER_DESIGN_1 step 1: every Scald native takes
   RM_OrganicScaldNative, not the inherited AnimalThingBase/OrganicStandard
-  set — it drops HediffGiver_Terrain so noohm and shulla don't burn in the
+  set — it drops HediffGiver_Terrain so saal and shulla don't burn in the
   boiling water they live in.
 -->
 <Defs>
 
   <!-- =================================================================
-       RM_Noohm — the bubble-sailor jelly-analog. Not caught (its catch
-       analog, saal/RM_Saal, already ships separately).
+       RM_Noohm (labelled "saal") — the bubble-sailor jelly-analog. Not caught
+       (its catch face is the item RM_Saal, same name).
        ================================================================= -->
 
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Noohm</defName>
-    <label>noohm</label>
+    <label>saal</label>
     <description>A translucent bell heeled over on a bubble-line, sail-membrane raised, riding the Scald's rising steam-columns like a little solar sail — the boiling sea's signature silhouette. Harmless, gel-bodied, and never in a hurry.</description>
     <statBases>
       <MoveSpeed>1.5</MoveSpeed>
@@ -92,7 +92,7 @@
 
   <PawnKindDef ParentName="AnimalKindBase">
     <defName>RM_Noohm</defName>
-    <label>noohm</label>
+    <label>saal</label>
     <race>RM_Noohm</race>
     <combatPower>5</combatPower>
     <wildGroupSize>1</wildGroupSize>

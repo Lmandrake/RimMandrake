@@ -52,9 +52,9 @@ None of these needs to supply the Scald’s physics wholesale. Its strongest pre
 
 ## 2. The Sail Forecast — forecast
 
-**Experience.** A vent avenue forks around a basalt saddle. Noohm traffic shifts first: bells abandon one branch and gather over another as the feeding flow changes. Players learn to read that movement before approaching exposed vent-wall deposits. A dangerous discharge is localized, pushes loose objects and interrupts work; watching the sails earns a useful warning without a universal countdown. The creatures remain ordinary living residents, including the existing saal catch pairing.
+**Experience.** A vent avenue forks around a basalt saddle. Saal traffic shifts first: bells abandon one branch and gather over another as the feeding flow changes. Players learn to read that movement before approaching exposed vent-wall deposits. A dangerous discharge is localized, pushes loose objects and interrupts work; watching the sails earns a useful warning without a universal countdown. The creatures remain ordinary living residents, including the existing saal catch pairing.
 
-**System.** A vent-network `MapComponent` schedules local discharge states; noohm `ThingComp`/jobs visibly respond during a warning phase. Vent comps handle localized damage and bounded displacement. `FleckDef`, `SoundDef` and an inspect description reinforce the same tell. No computational fluid dynamics.
+**System.** A vent-network `MapComponent` schedules local discharge states; saal `ThingComp`/jobs visibly respond during a warning phase. Vent comps handle localized damage and bounded displacement. `FleckDef`, `SoundDef` and an inspect description reinforce the same tell. No computational fluid dynamics.
 
 **Nearest neighbours checked.** S4 already supplies geysers; the new system supplies **forecastable relationships between wildlife and individual vents**. Twilight’s current is environmental movement; this is information acquired from animal traffic. It adds no vertical travel, vent-powered lift, map-wide boil-rain or light lure.
 

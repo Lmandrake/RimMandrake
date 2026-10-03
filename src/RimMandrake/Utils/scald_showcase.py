@@ -7,7 +7,7 @@ through review:
 
     margin  (RUT_ScaldMargin)     catch items in a labelled row + crowncarpet
     shallows(RUT_ScaldWaterShallow) vents, a steam-catch on one vent, three wrecks,
-                                  the floor cast (noohm, shulla) spawned wild
+                                  the floor cast (saal, shulla) spawned wild
     deep    (RUT_ScaldWaterDeep / OceanDeep)  visual only
 
 Then unfog, midday, clear UI, frame, shoot clear + RUT_ScaldSteam, and save.

@@ -28,12 +28,10 @@
     RM_EkkelCatch     <-> RM_Ekkel       (new here)
     RM_BladderboilCatch <-> RM_Bladderboil (new here)
     RM_ShullaCatch    <-> RM_Shulla      (already shipped, RM_ScaldFauna.xml)
-    RM_Saal           <-> RM_Noohm       (already shipped; the one pair whose
-                                          two halves carry different species
-                                          names on purpose — the catch is
-                                          "saal", the living bubble-sailor is
-                                          "noohm", per RM_ScaldFauna.xml's own
-                                          header)
+    RM_Saal           <-> RM_Noohm       (already shipped; both halves are
+                                          labelled "saal" — one name, owner
+                                          2026-10-03; the creature defName
+                                          keeps its old spelling)
 
   ⚠️ SIX CATCH DEFS WERE RENAMED IN THE SAME PASS to make that table
   possible: RM_Eesh/Muddal/Karrash/Doss/Thuum/Ekkel (the ITEMS) became
@@ -99,7 +97,7 @@
   Placeholder silhouettes at each texPath, three facings each, real art
   filed to the artpipe in the same pass (scaldfloor_*). Checked first, per
   the standing rule: no existing render in done/ or _artsrc/ covers any of
-  these seven — the only Scald creature art that exists is noohm and shulla,
+  these seven — the only Scald creature art that exists is saal and shulla,
   both already wired.
 
   ── design gaps found while building, NOT resolved here ───────────────────
