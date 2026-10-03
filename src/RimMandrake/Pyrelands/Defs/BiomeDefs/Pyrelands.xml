@@ -294,22 +294,19 @@
     </wildPlants>
 
     <!--
-      Core-only roster, plains register, modest density.
+      The Pyrelands' own cast (PYRELANDS_FAUNA_TIER_PORT_BUILD_1, Q11a/Q12): eight invented residents,
+      all RM_ defs in this mod, at the owner-ruled weights. The campaign adds only the Star Wars canon
+      rows (UtinniPatches WildAnimals_Pyrelands.xml). Shorthand form is the only one the loader reads.
     -->
     <wildAnimals>
-      <Hare>1.2</Hare>
-      <Rat>1.0</Rat>
-      <Gazelle>0.7</Gazelle>
-      <Ostrich>0.5</Ostrich>
-      <Emu>0.5</Emu>
-      <Dromedary>0.4</Dromedary>
-      <Muffalo>0.35</Muffalo>
-      <Iguana>0.4</Iguana>
-      <Elephant>0.25</Elephant>
-      <Rhinoceros>0.2</Rhinoceros>
-      <Cougar>0.12</Cougar>
-      <Fox_Fennec>0.12</Fox_Fennec>
-      <Warg>0.05</Warg>
+      <RM_FireHawk>0.15</RM_FireHawk>
+      <RM_FurnaceBeast>0.08</RM_FurnaceBeast>
+      <RM_Emberscythe>0.05</RM_Emberscythe>
+      <RM_Sytheclaw>0.2</RM_Sytheclaw>
+      <RM_Barbslinger>0.15</RM_Barbslinger>
+      <RM_FireWasp>0.4</RM_FireWasp>
+      <RM_Flamefang>0.5</RM_Flamefang>
+      <RM_Ashwallow>0.18</RM_Ashwallow>
     </wildAnimals>
 
     <allowedPackAnimals>

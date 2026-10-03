@@ -16,10 +16,10 @@
         footing as the sibling Abyss/Blue Desert mods' own worker
         ranges — no worldgen run has been done for this mod and the campaign
         world is frozen and hand-authored, so one never will be for Ash'karr.
-      - RUT_Sytheclaw gains an explicit MayRequire="mandrake.rut.patches": it
+      - RM_Sytheclaw gains an explicit MayRequire="mandrake.rut.patches": it
         is a RimMandrake-tier creature (not Star Wars) whose ThingDef/
         PawnKindDef still live in the RimUtinni tier
-        (RUT_PyrelandsPortedFauna.xml), shared inline across three biomes
+        (RM_PyrelandsPortedFauna.xml), shared inline across three biomes
         (Pyrelands, Greentide, here). Without the gate this def would carry a
         live cross-tier hard dependency the franchise-free RimMandrake tier
         may not assume — same caution WildAnimals_Greentide.xml already
@@ -49,7 +49,7 @@
     out of this mod's scope, left for a separate sweep.
 
     ⭐ SUPERSEDED 2026-09-29 (CONTAGION_RULED_CONTENT_1 Wave A, then
-    CONTAGION_FLORA_PORT_1): every donor AA_/AB_ row and RUT_Sytheclaw (never
+    CONTAGION_FLORA_PORT_1): every donor AA_/AB_ row and RM_Sytheclaw (never
     admitted; Pyrelands is its home) were replaced outright — <wildAnimals> by
     the 16-def RM_ port in Defs/ThingDefs_Races/RM_ContagionFauna.xml,
     <wildPlants> by the 9-def RM_ port in Defs/PlantDefs/RM_ContagionFlora.xml
@@ -168,7 +168,7 @@
     </modExtensions>
     <wildAnimals>
       <!-- CONTAGION_RULED_CONTENT_1 Wave A, 2026-09-29: the donor AA_/AG_/GR_
-           cast and RUT_Sytheclaw (never admitted here; Pyrelands is its home)
+           cast and RM_Sytheclaw (never admitted here; Pyrelands is its home)
            are OUT — replaced outright by the RM_ port below, per the cast
            bible's full-RM-development ruling. Commonalities are the cast
            bible §2's ruled numbers verbatim. Shorthand element form only —

@@ -98,7 +98,7 @@
      UtinniPatches itself
      (Defs/ThingDefs_Plants/RUT_YearningFruit.xml), so it is always loaded
      whenever this file is — no MayRequire needed, same posture as the
-     RUT_Sytheclaw wildAnimals row above. Wired below.
+     RM_Sytheclaw wildAnimals row above. Wired below.
 
   🔴 REVISED 2026-09-26 (GREENTIDE_EXOTIC_JUNGLE_FISH_1) — the 2026-09-25
   fishTypes fix below was WRONG in one respect: it added the whole
@@ -119,7 +119,7 @@
   RSW_LaaCatch bonus option gated on its own `<li>`, so no patch op is
   needed for the rare table either.
 
-  ⚠️ RUT_Sytheclaw is cast under its current live defName. §7 Q10 renames it to
+  ⚠️ RM_Sytheclaw is cast under its current live defName. §7 Q10 renames it to
   RM_Sytheclaw as part of its own seven-creature sweep; this file follows that
   rename when it happens, it does not front-run it. Note also that the sytheclaw
   is wired to BOTH the Greentide (0.2 here) and the Pyrelands (0.2, in
@@ -150,8 +150,8 @@
 <Patch>
 
   <!-- Drop RM_Greentide's Core-only roster and seat this mod's own def. Guarded
-       on the target node rather than on a donor: RUT_Sytheclaw ships with
-       UtinniPatches itself (Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml),
+       on the target node rather than on a donor: RM_Sytheclaw ships with
+       UtinniPatches itself (Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml),
        so it is always loaded whenever this file is. -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
@@ -159,7 +159,7 @@
       <xpath>Defs/BiomeDef[defName="RM_Greentide"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <RUT_Sytheclaw>0.2</RUT_Sytheclaw>
+          <RM_Sytheclaw>0.2</RM_Sytheclaw>
         </wildAnimals>
       </value>
     </match>
@@ -244,7 +244,7 @@
        eaten" design line (rosters/the_greentide.json, attached there to
        Plant_JoganTree_Wild before this item split the mechanic into its own
        new plant). No MayRequire: this def ships with UtinniPatches itself,
-       same reasoning as the RUT_Sytheclaw wildAnimals op above. Guarded on
+       same reasoning as the RM_Sytheclaw wildAnimals op above. Guarded on
        the target node existing, same PatchOperationConditional shape as
        every other op in this file. -->
   <Operation Class="PatchOperationConditional">

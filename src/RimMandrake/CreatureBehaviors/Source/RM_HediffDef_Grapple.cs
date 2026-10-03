@@ -15,7 +15,7 @@ namespace RimMandrake.CreatureBehaviors
     // adds this hediff to the victim the instant a grapple-capable tool lands
     // a hit — see RM_Grapple_ToolCapacity.xml / RM_Grapple_DamageDefs.xml for
     // the ToolCapacityDef/ManeuverDef/DamageDef trio a race's pincer tool
-    // routes through, same shape as UtinniPatches' RUT_FlamefangBite trio.
+    // routes through, same shape as UtinniPatches' RM_FlamefangBite trio.
     public class RM_HediffDef_Grapple : HediffDef
     {
         /// <summary>Severity added to the hold each round the victim isn't

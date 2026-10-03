@@ -21,7 +21,7 @@
   are applied below on the furnace-beast: the VEF Untameable comp is GONE,
   trainability is Intermediate (matching the hawk), the description's closing
   line is rewritten, manhunterOnTameFailChance stays 0.9 as the taming
-  gauntlet, and leatherDef is RUT_FurnaceHide.
+  gauntlet, and leatherDef is RM_FurnaceHide.
 
   🔴 Wildness must stay strictly BELOW 1.0 or the reversal is silently undone:
   TameUtility.CanTame hard-refuses Wildness >= 1.0 (verified at source,
@@ -50,7 +50,7 @@
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_FireHawk</defName>
+    <defName>RM_FireHawk</defName>
     <label>fire-hawk</label>
     <description>A lean raptor of the standing burn, ash-grey and ember-orange, that flushes prey ahead of the flame-line and is said to carry a burning twig from one fire to the next when the burn stalls. The Pyrelands' first igniter with wings.</description>
     <statBases>
@@ -153,9 +153,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_FireHawk</defName>
+    <defName>RM_FireHawk</defName>
     <label>fire-hawk</label>
-    <race>RUT_FireHawk</race>
+    <race>RM_FireHawk</race>
     <combatPower>60</combatPower>
     <wildGroupSize>1~2</wildGroupSize>
     <ecoSystemWeight>0.3</ecoSystemWeight>
@@ -204,7 +204,7 @@
 
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_FurnaceBeast</defName>
+    <defName>RM_FurnaceBeast</defName>
     <label>furnace-beast</label>
     <description>A migratory megafauna whose banded mineral hide stores heat like a stove — a slow thermal capacitor on legs. It charges in the Deep Desert, basking for weeks, then walks into the Pyrelands on purpose when the grass burns: it helps the fire along and drinks the heat of it, glowing brighter at the seams between its plates. Fully charged, a herd marches all the way out to the near terminator and eats everything in sight — it is one of the only things that will strip a thornvine patch — bleeding its banked warmth into the cold air for weeks before turning back to charge again. Fire cannot touch it. Keeping one is possible. It is very hard, it goes badly more often than it goes well, and it never stops being a fire hazard: a kept beast heats your barn for nothing, and every so often it sets the floor of that barn alight.</description>
     <statBases>
@@ -273,8 +273,8 @@
       <baseHealthScale>2.8</baseHealthScale>
       <baseHungerRate>1.4</baseHungerRate>
       <foodType>VegetarianRoughAnimal</foodType>
-      <!-- §8a change 5 / §12: the bespoke hide, Defs/ThingDefs_Items/RUT_FurnaceHide.xml. -->
-      <leatherDef>RUT_FurnaceHide</leatherDef>
+      <!-- §8a change 5 / §12: the bespoke hide, Defs/ThingDefs_Items/RM_FurnaceHide.xml. -->
+      <leatherDef>RM_FurnaceHide</leatherDef>
       <gestationPeriodDays>12</gestationPeriodDays>
       <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
       <!-- §8a change 4: KEEP. Dead weight while the beast was untameable; now
@@ -314,9 +314,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_FurnaceBeast</defName>
+    <defName>RM_FurnaceBeast</defName>
     <label>furnace-beast</label>
-    <race>RUT_FurnaceBeast</race>
+    <race>RM_FurnaceBeast</race>
     <combatPower>220</combatPower>
     <wildGroupSize>3~7</wildGroupSize>
     <ecoSystemWeight>0.6</ecoSystemWeight>

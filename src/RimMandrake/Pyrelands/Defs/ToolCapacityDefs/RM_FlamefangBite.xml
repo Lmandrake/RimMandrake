@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_FlamefangBite.xml                 UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+  RM_FlamefangBite.xml                 UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
 
-  ToolCapacityDef + ManeuverDef pair routing RUT_Flamefang's bite tool to
-  RUT_FlamefangVenomBite (DamageDefs/). Named directly by that ThingDef in
-  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml since PYRELANDS_DONOR_PORT_4
+  ToolCapacityDef + ManeuverDef pair routing RM_Flamefang's bite tool to
+  RM_FlamefangVenomBite (DamageDefs/). Named directly by that ThingDef in
+  Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml since PYRELANDS_DONOR_PORT_4
   (2026-09-19). Shape copied from GR_VeryToxicBite's own trio in Vanilla
   Genetics Expanded (Defs/ToolCapacityDefs/ToolCapacity.xml +
   Defs/Maneuvers/Maneuvers.xml, both RimSage/grep-verified this pass) and
@@ -13,16 +13,16 @@
 <Defs>
 
   <ToolCapacityDef>
-    <defName>RUT_FlamefangBite</defName>
+    <defName>RM_FlamefangBite</defName>
     <label>venomous bite</label>
   </ToolCapacityDef>
 
   <ManeuverDef>
-    <defName>RUT_FlamefangBite</defName>
-    <requiredCapacity>RUT_FlamefangBite</requiredCapacity>
+    <defName>RM_FlamefangBite</defName>
+    <requiredCapacity>RM_FlamefangBite</requiredCapacity>
     <verb>
       <verbClass>Verb_MeleeAttackDamage</verbClass>
-      <meleeDamageDef>RUT_FlamefangVenomBite</meleeDamageDef>
+      <meleeDamageDef>RM_FlamefangVenomBite</meleeDamageDef>
     </verb>
     <logEntryDef>MeleeAttack</logEntryDef>
     <combatLogRulesHit>Maneuver_Bite_MeleeHit</combatLogRulesHit>

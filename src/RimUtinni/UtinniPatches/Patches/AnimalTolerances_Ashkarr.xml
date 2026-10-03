@@ -16577,37 +16577,37 @@
     </nomatch>
   </Operation>
 
-  <!-- fire-hawk (RUT_FireHawk) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  10..79.8 -->
+  <!-- fire-hawk (RM_FireHawk) - not in current cast_assignment.csv; pinned to today's live value so a regenerate cannot narrow it (ANIMAL_TOLERANCES_JOIN_BROKEN_1)  10..79.8 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases</xpath>
+    <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases/ComfyTemperatureMin</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases/ComfyTemperatureMin</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases/ComfyTemperatureMin</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases/ComfyTemperatureMin</xpath>
             <value><ComfyTemperatureMin>10</ComfyTemperatureMin></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases</xpath>
             <value><ComfyTemperatureMin>10</ComfyTemperatureMin></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases/ComfyTemperatureMax</xpath>
+          <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases/ComfyTemperatureMax</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases/ComfyTemperatureMax</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases/ComfyTemperatureMax</xpath>
             <value><ComfyTemperatureMax>79.8</ComfyTemperatureMax></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]/statBases</xpath>
+            <xpath>/Defs/ThingDef[defName="RM_FireHawk"]/statBases</xpath>
             <value><ComfyTemperatureMax>79.8</ComfyTemperatureMax></value>
           </nomatch>
         </li>
       </operations>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RUT_FireHawk"]</xpath>
+      <xpath>/Defs/ThingDef[defName="RM_FireHawk"]</xpath>
       <value>
         <statBases>
           <ComfyTemperatureMin>10</ComfyTemperatureMin>

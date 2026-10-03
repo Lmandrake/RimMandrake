@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Ashwallow.xml                          UtinniPatches — new file 2026-09-28
+  RM_Ashwallow.xml                          UtinniPatches — new file 2026-09-28
 
   PYRELANDS_DEDICATED_GRAZER_1: the "burrowers" family's own dedicated species
   (the_pyrelands.md §4 — "grazers that let the fire pass over and emerge into
@@ -54,7 +54,7 @@
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_Ashwallow</defName>
+    <defName>RM_Ashwallow</defName>
     <label>ashwallow</label>
     <description>A low, broad grazer of the burning savanna, plated across the shoulders in cracked grey hide the same colour as spent ash. It works the quickgrass in the calm between burns, and the instant it reads a front coming — heat on the wind, the hiss climbing before the light does — it drops flat, digs into the loosened root-mat with its forehooves, and goes still. The fire walks over it. It comes back up into the black once the ground has cooled, first into the fertilized ash and first to the regrowth sprint. It has no bite worth the name and nothing to hunt with; going to ground is the only trick it has, and it is enough.</description>
     <statBases>
@@ -155,9 +155,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_Ashwallow</defName>
+    <defName>RM_Ashwallow</defName>
     <label>ashwallow</label>
-    <race>RUT_Ashwallow</race>
+    <race>RM_Ashwallow</race>
     <combatPower>50</combatPower>
     <ecoSystemWeight>0.4</ecoSystemWeight>
     <wildGroupSize>1~3</wildGroupSize>

@@ -23,7 +23,7 @@ namespace RimMandrake.Pyrelands
     ///
     /// 🔑 SPECIES-AGNOSTIC BY CONSTRUCTION. This assembly is
     /// mandrake.rm.pyrelands (the franchise-free, standalone biome mod);
-    /// RUT_FurnaceBeast is campaign content one tier up, in RimUtinni, and
+    /// RM_FurnaceBeast is campaign content one tier up, in RimUtinni, and
     /// this file must not hard-depend on it — same rule
     /// JobGiver_RUT_FurnaceThermalCycle and Patch_FurnaceHerdMapRemoval both
     /// already follow: gate on the COMP (CompProperties_FurnaceThermalCharge),

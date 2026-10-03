@@ -13,7 +13,7 @@ namespace RimMandrake.Pyrelands
     /// global rather than gated per-race in XML.
     ///
     /// Deliberately generic: no species is named anywhere in this file.
-    /// RUT_Ashwallow is the first consumer; a second dedicated burrower the
+    /// RM_Ashwallow is the first consumer; a second dedicated burrower the
     /// biome wants later opts in with the same extension and needs no new C#.
     /// </summary>
     public class RM_BurrowOnFireExtension : DefModExtension

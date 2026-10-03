@@ -12,9 +12,9 @@ namespace RimMandrake.Pyrelands
     /// or sprite state is owed by this pass (the item's own step 9: art is
     /// follow-up, not a build blocker). RM_Burrowed's statOffsets are what
     /// let "the fire pass over" the pawn instead of killing it, the same
-    /// idiom RUT_FurnaceBeast's PERMANENT ArmorRating_Heat/Flammability
+    /// idiom RM_FurnaceBeast's PERMANENT ArmorRating_Heat/Flammability
     /// stats use for total immunity — applied here only WHILE burrowed.
-    /// RUT_Ashwallow's own ThingDef carries no such stats, so it is an
+    /// RM_Ashwallow's own ThingDef carries no such stats, so it is an
     /// ordinary vulnerable grazer the instant it is caught above ground,
     /// which is the whole point of the mechanic existing.
     ///

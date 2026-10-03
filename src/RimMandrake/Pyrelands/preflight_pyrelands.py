@@ -54,10 +54,10 @@ BIOME = "RM_Pyrelands"
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 BIOME_KEY = "Pyrelands"                    # RM_BiomesSettings.enabled key
 PLANTS = ("RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass", "RM_FE_Plant_ScorchFruit")
-ANIMALS = ("RUT_FireHawk", "RUT_FurnaceBeast",
+ANIMALS = ("RM_FireHawk", "RM_FurnaceBeast",
            "RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka",
-           "RUT_Emberscythe", "RUT_Sytheclaw", "RUT_Barbslinger", "RUT_FireWasp", "RUT_Flamefang",
-           "RUT_Ashwallow")
+           "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
+           "RM_Ashwallow")
 WEATHERS = ("RM_FE_Weather_AshFall", "RM_FE_Weather_Cinderfall", "RM_FE_BlackRain")
 GROUND = ("RM_FE_Ground_Sand", "RM_FE_Ground_Gravel", "RM_FE_Ground_Soil", "RM_FE_Ground_SoilRich")
 ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep")

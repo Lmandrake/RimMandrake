@@ -570,7 +570,7 @@ def print_table(findings) -> None:
 # needs re-staging, and the roster survives any sweep because it IS the repo.
 # Equivalent-or-broader coverage of the 71 files staged 2026-09-16: every
 # ArtOverride mod that contributed a facing set, plus the two donor-mod
-# subdirectories (SWBestiary's Bolotaur, UtinniPatches' Pyrelands animals) and
+# subdirectories (SWBestiary's Bolotaur, the Pyrelands mod's animals) and
 # the two Pyrelands item/plant directories that rounded out that staging.
 SELFTEST_ROSTER = (
     REPO_ROOT / "src/RimStarWars/AnoobaArtOverride/Textures",
@@ -583,7 +583,7 @@ SELFTEST_ROSTER = (
     REPO_ROOT / "src/RimUtinni/GreenGooArtOverride/Textures",
     REPO_ROOT / "src/RimUtinni/MantistanisArtOverride/Textures",
     REPO_ROOT / "src/RimStarWars/SWBestiary/Textures/swanimals/Bolotaur",
-    REPO_ROOT / "src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands",
+    REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Item/Resource",
     REPO_ROOT / "src/RimMandrake/Pyrelands/Textures/Things/Plant",
 )
@@ -674,7 +674,7 @@ BOUNDARY_MUST_NOT_FLAG_HIGH = [
 # fixing is a check that goes dark the moment they succeed. The fixture below
 # cannot go dark — it builds its own positive AND negative case from two copies
 # of one real sprite, so art churn can never silence it.
-DUPLICATE_FIXTURE_SRC = (REPO_ROOT / "src/RimUtinni/UtinniPatches/Textures"
+DUPLICATE_FIXTURE_SRC = (REPO_ROOT / "src/RimMandrake/Pyrelands/Textures"
                          "/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png")
 
 

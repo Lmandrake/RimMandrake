@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_FlamefangVenomBite.xml            UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
+  RM_FlamefangVenomBite.xml            UtinniPatches — FLAMEFANG_SNAKE_REBIRTH_1
 
-  Delivery half of the venom mechanism — see HediffDefs/RUT_FlamefangVenom.xml
+  Delivery half of the venom mechanism — see HediffDefs/RM_FlamefangVenom.xml
   for the full citation of the vanilla pattern this copies (Cobra's ToxicBite
   DamageDef, RimSage-verified: ParentName="Bite" + <additionalHediffs>
   injecting a HediffDef scaled by <severityPerDamageDealt>). ParentName="Bite"
@@ -11,20 +11,20 @@
   hediffSolid/impactSoundType/workerClass etc. from it unchanged; only the
   label and the venom injection are new.
 
-  Reached from RUT_Flamefang's own bite tool
-  (Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml) through the matching
-  ToolCapacityDefs/RUT_FlamefangBite.xml capacity + maneuver pair (mirrors
+  Reached from RM_Flamefang's own bite tool
+  (Defs/ThingDefs_Races/RM_PyrelandsPortedFauna.xml) through the matching
+  ToolCapacityDefs/RM_FlamefangBite.xml capacity + maneuver pair (mirrors
   GeneticRim's own GR_VeryToxicBite capacity/maneuver/damage trio, which the
   donor def this creature was ported off used).
 -->
 <Defs>
 
   <DamageDef ParentName="Bite">
-    <defName>RUT_FlamefangVenomBite</defName>
+    <defName>RM_FlamefangVenomBite</defName>
     <label>venomous bite</label>
     <additionalHediffs>
       <li>
-        <hediff>RUT_FlamefangVenom</hediff>
+        <hediff>RM_FlamefangVenom</hediff>
         <severityPerDamageDealt>0.06</severityPerDamageDealt>
       </li>
     </additionalHediffs>

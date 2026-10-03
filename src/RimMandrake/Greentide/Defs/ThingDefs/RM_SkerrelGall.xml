@@ -28,7 +28,7 @@
      ThingDef). No designationCategory: wild-spawned only, never
      player-buildable.
 
-     Placeholder texPath (RUT_FireWasp's own leathery insect-nest silhouette
+     Placeholder texPath (RM_FireWasp's own leathery insect-nest silhouette
      does not exist as a separate asset; reusing RM_RegenerantVeil's shipped
      plant-tissue texture as the nearest "organic growth" placeholder already
      in the mod set). Bespoke gall art is owed to the art pipeline. -->

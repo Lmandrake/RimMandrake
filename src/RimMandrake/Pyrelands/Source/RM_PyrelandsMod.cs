@@ -95,7 +95,7 @@ namespace RimMandrake.Pyrelands
         public static int furnaceHerdCount = PyrelandsTuning.WorldHerdDefaultCount;
 
         // PYRELANDS_DEDICATED_GRAZER_1 — generic, opt-in via
-        // RM_BurrowOnFireExtension; RUT_Ashwallow is the first consumer. Off:
+        // RM_BurrowOnFireExtension; RM_Ashwallow is the first consumer. Off:
         // an extension-carrying race stands its ground like any other animal
         // and takes ordinary fire damage — the mechanic simply stops firing,
         // nothing about the def breaks.
@@ -305,7 +305,7 @@ namespace RimMandrake.Pyrelands
 
             list.Label("Burrowers");
             list.CheckboxLabeled("Extension-carrying races burrow ahead of the fire", ref burrowOnFireEnabled,
-                "A race carrying RM_BurrowOnFireExtension (RUT_Ashwallow ships with it) goes to "
+                "A race carrying RM_BurrowOnFireExtension (RM_Ashwallow ships with it) goes to "
               + "ground and shelters near-immune to heat while a fire front is close, then "
               + "surfaces once it clears. Off: those races stand their ground like any other "
               + "animal and take ordinary fire damage — nothing about the def breaks.");

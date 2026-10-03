@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_PyrelandsPortedFauna.xml          UtinniPatches — new file 2026-09-19
+  RM_PyrelandsPortedFauna.xml          UtinniPatches — new file 2026-09-19
 
   PYRELANDS_DONOR_PORT_4: our own re-authors of the four Pyrelands creatures
   that were still riding a donor mod's defName while already being ours in
@@ -8,12 +8,12 @@
   added to the biome and any donors cut, period. Let's be done with these
   lingering traces," then "port all four" when shown the options.
 
-    GR_Boomsnake   (Vanilla Genetics Expanded)  ->  RUT_Flamefang
-    AA_Razorjack   (Alpha Animals)              ->  RUT_Sytheclaw
-    AA_Barbslinger (Alpha Animals)              ->  RUT_Barbslinger
-    AA_FireWasp    (Alpha Animals)              ->  RUT_FireWasp
+    GR_Boomsnake   (Vanilla Genetics Expanded)  ->  RM_Flamefang
+    AA_Razorjack   (Alpha Animals)              ->  RM_Sytheclaw
+    AA_Barbslinger (Alpha Animals)              ->  RM_Barbslinger
+    AA_FireWasp    (Alpha Animals)              ->  RM_FireWasp
 
-  🔑 SHAPE: RotSporeKit/Defs/ThingDefs_Races/RUT_Emberscythe.xml, this campaign's
+  🔑 SHAPE: RotSporeKit/Defs/ThingDefs_Races/RM_Emberscythe.xml, this campaign's
   already-correct port of the donor GR_Mantistanis — ParentName="AnimalThingBase"
   with a manually written race block, and NOT ONE class, comp, modExtension,
   ToolCapacityDef, BodyDef, leatherDef or SoundDef from a donor mod referenced
@@ -44,9 +44,9 @@
   more (checked: GR_Boomsnake and AA_FireWasp declare no race/wildBiomes at all;
   every AA_Barbslinger and AA_Razorjack self-registered biome is already stripped
   by Patches/BiomeCastEvictions_WildBiomes.xml + AnimalBiomeDuplicates_Generated.xml,
-  and the four remaining AA_Razorjack casts of ours are repointed to RUT_Sytheclaw
+  and the four remaining AA_Razorjack casts of ours are repointed to RM_Sytheclaw
   in the same change). Dessicated-corpse art stays on vanilla textures rather than
-  donor ones, same idiom RUT_Emberscythe uses.
+  donor ones, same idiom RM_Emberscythe uses.
 
   WHAT WAS DROPPED with the donor frameworks, all OWED rather than replaced:
     flamefang    VEF CompProperties_InitialAbility x2 (GR_DetonatePoison,
@@ -54,7 +54,7 @@
                  All three are boomalope-genome abilities; the owner cut boomalopes
                  outright (BOOMALOPE_CUT_EVERYWHERE_1) and the ruled niche here is
                  "venom-ambusher", not a bomb. The venom itself is NOT dropped — it
-                 is this mod's own RUT_FlamefangBite capacity, wired straight onto
+                 is this mod's own RM_FlamefangBite capacity, wired straight onto
                  the bite tool below, which is what retires Patches/FlamefangVenom.xml.
     sytheclaw    VEF CompProperties_Infecter (40% infection) and Alpha Animals'
                  AA_InfectedClaws capacity -> vanilla Scratch.
@@ -81,7 +81,7 @@
 <Defs>
 
   <!-- ======================================================================
-       RUT_Flamefang — was GR_Boomsnake (Vanilla Genetics Expanded).
+       RM_Flamefang — was GR_Boomsnake (Vanilla Genetics Expanded).
        Venom-ambusher band, Pyrelands commonality 0.50.
        Body Snake is Core's own (Defs/Bodies/Bodies_Animal_Snake.xml — Mouth and
        HeadAttackTool groups, exactly the two tool slots the donor used), so no
@@ -92,7 +92,7 @@
        so it is a carnivorous ambush predator with a small prey ceiling.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_Flamefang</defName>
+    <defName>RM_Flamefang</defName>
     <label>flamefang</label>
     <description>A serpent of the burning grass that reads a fire front the way other things read a scent trail. It beds down in the smoldering root-mat ahead of the flames and waits, coiled tight, until the heat rolls over it and drives every small thing running — then it strikes from the ash. Its bite carries a burning venom that keeps working long after the fangs are gone, a second, slower fire under the skin.</description>
     <statBases>
@@ -107,7 +107,7 @@
       <li>
         <label>venom-fangs</label>
         <capacities>
-          <li>RUT_FlamefangBite</li>
+          <li>RM_FlamefangBite</li>
         </capacities>
         <power>10</power>
         <cooldownTime>1.65</cooldownTime>
@@ -181,9 +181,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_Flamefang</defName>
+    <defName>RM_Flamefang</defName>
     <label>flamefang</label>
-    <race>RUT_Flamefang</race>
+    <race>RM_Flamefang</race>
     <combatPower>150</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
     <ecoSystemWeight>1</ecoSystemWeight>
@@ -237,7 +237,7 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       RUT_Sytheclaw — was AA_Razorjack (Alpha Animals).
+       RM_Sytheclaw — was AA_Razorjack (Alpha Animals).
        Fire-follower band, Pyrelands commonality 0.20; also the floor-predator /
        "the-pickers" rows in RUT_Greentide, RUT_Contagion, BiomeCypreJungle and
        AB_OcularForest, all repointed here in the same change.
@@ -248,7 +248,7 @@
        same four on that same body. The dual jaw was lore, never a body part.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_Sytheclaw</defName>
+    <defName>RM_Sytheclaw</defName>
     <label>sytheclaw</label>
     <description>A low-slung pack predator built for the tall gold grass of the burning plains. Above, its plates are the same dry yellow-gold as the standing quickgrass, so a hunting sytheclaw is a ripple in the field and nothing more; below, its underside is a raw furnace red that the prey only sees late. It trails the fire fronts the way other things trail water, taking whatever the smoke pushes out of cover, and its serrated forelimb blades leave a wound that ash gets into and keeps.</description>
     <statBases>
@@ -381,9 +381,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_Sytheclaw</defName>
+    <defName>RM_Sytheclaw</defName>
     <label>sytheclaw</label>
-    <race>RUT_Sytheclaw</race>
+    <race>RM_Sytheclaw</race>
     <combatPower>190</combatPower>
     <ecoSystemWeight>0.05</ecoSystemWeight>
     <!-- wildGroupSize is NEW, not the donor's (which had none, so groups of 1):
@@ -437,7 +437,7 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       RUT_BarbslingerTailGun — turret-gun weapon backing RUT_Barbslinger's
+       RM_BarbslingerTailGun — turret-gun weapon backing RM_Barbslinger's
        two tail-mounted ranged attacks. Owner ask, 2026-09-17 (approved
        2026-09-20 against barbslinger_redesign_v1_{south,east,north}):
        "shoot two venomous missile weapons in battle every few rounds, then
@@ -452,7 +452,7 @@
        NS_Pyrelands_site_1 2026-10-01.
 
        Verbs-only, no visible sprite — the CompProperties_TurretGun on
-       RUT_Barbslinger below carries no renderNodeProperties
+       RM_Barbslinger below carries no renderNodeProperties
        (RimSage-confirmed optional on CompProperties_TurretGun/CompTurretGun:
        CompRenderNodes() returns nothing without it), so the redesigned art's
        own two needle-tipped tails are the only thing drawn — this ThingDef
@@ -463,7 +463,7 @@
        Projectile is vanilla Anomaly's own Bullet_ToxicNeedleGun (Gun_ToxicNeedle's
        ammo) unchanged — its damageDef BulletToxic already carries the
        additionalHediffs injection into ToxicBuildup, which is the SAME
-       vanilla venom idiom RUT_Barbslinger's own existing "sting" tool uses
+       vanilla venom idiom RM_Barbslinger's own existing "sting" tool uses
        (ToxicBite capacity, above) — reusing it rather than inventing a
        third toxin pattern, and matching "javelin-like needle" in the art
        brief almost too well to pass up.
@@ -490,13 +490,13 @@
        is Core + mandrake.rm.weathersuite only, not Biotech, so this cannot
        be a bare reference — matches this file's own Odyssey-gated
        specialTrainables on Sytheclaw above and GeneSeeker.xml's identical
-       gating pattern. RUT_Barbslinger's referencing comp below is
+       gating pattern. RM_Barbslinger's referencing comp below is
        gated the same way, so without Biotech neither side of the
        cross-reference exists and Barbslinger simply keeps its melee
        pincers/sting with no dangling turretDef.
        ====================================================================== -->
   <ThingDef ParentName="BaseWeaponTurret" MayRequire="Ludeon.RimWorld.Biotech">
-    <defName>RUT_BarbslingerTailGun</defName>
+    <defName>RM_BarbslingerTailGun</defName>
     <label>barbslinger tail spike</label>
     <description>Not a real weapon — exists only to give a barbslinger's tails a ranged verb. Never spawned as a loose item.</description>
     <tradeability>None</tradeability>
@@ -529,7 +529,7 @@
   </ThingDef>
 
   <!-- ======================================================================
-       RUT_Barbslinger — was AA_Barbslinger (Alpha Animals).
+       RM_Barbslinger — was AA_Barbslinger (Alpha Animals).
        Ash-grazer band by the owner's routing call, Pyrelands commonality 0.15
        (the roster's own note is explicit that "ash-grazer" is a role label and
        not a diet claim — this is an omnivore that hunts).
@@ -543,14 +543,14 @@
        REDESIGN 2026-09-20 (owner: "Approve barbslinger", against
        barbslinger_redesign_v1_{south,east,north}): two independent tails,
        each ending in a javelin-like needle, now carry a ranged venomous
-       attack via one RUT_BarbslingerTailGun turret comp firing a 2-shot
+       attack via one RM_BarbslingerTailGun turret comp firing a 2-shot
        burst (below) — see
        that ThingDef's own header for the full mechanism. Pincers/sting
        tools above are UNCHANGED; "close for pincer assault" falls out of
        the turret's minRange rather than needing a rewrite of them.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_Barbslinger</defName>
+    <defName>RM_Barbslinger</defName>
     <label>barbslinger</label>
     <description>A shield-backed scorpion the size of a calf, plated in heat-cured chitin that the Pyrelands' burns have taught it to wear. It works the cooling ground behind a fire front, turning over the ash with its pincers for whatever cooked in place, and it will take living prey as readily as carrion if the living prey is slow. The barbed tail is not for hunting — it is what the barbslinger does to anything that stands over its find and refuses to move.</description>
     <statBases>
@@ -659,7 +659,7 @@
     </race>
     <comps>
       <li Class="CompProperties_TurretGun" MayRequire="Ludeon.RimWorld.Biotech">
-        <turretDef>RUT_BarbslingerTailGun</turretDef>
+        <turretDef>RM_BarbslingerTailGun</turretDef>
         <autoAttack>true</autoAttack>
       </li>
     </comps>
@@ -670,9 +670,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_Barbslinger</defName>
+    <defName>RM_Barbslinger</defName>
     <label>barbslinger</label>
-    <race>RUT_Barbslinger</race>
+    <race>RM_Barbslinger</race>
     <combatPower>500</combatPower>
     <ecoSystemWeight>0.3</ecoSystemWeight>
     <wildGroupSize>1~3</wildGroupSize>
@@ -714,17 +714,17 @@
   </PawnKindDef>
 
   <!-- ======================================================================
-       RUT_FireWasp — was AA_FireWasp (Alpha Animals).
+       RM_FireWasp — was AA_FireWasp (Alpha Animals).
        Small-predator band, Pyrelands commonality 0.40. Label unchanged;
        description rewritten, and deliberately makes no promise about eggs,
        because the donor's heat-producing egg items are not ported.
        Body is Core's BeetleLike (Mouth + HeadAttackTool). The donor's third
        tool linked LegAttackTool, a group BeetleLike does not carry, so it is
-       dropped rather than written dead — see RUT_PyrelandsFauna.xml's fire-hawk
+       dropped rather than written dead — see RM_PyrelandsFauna.xml's fire-hawk
        note for the same class of defect found and fixed there.
        ====================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
-    <defName>RUT_FireWasp</defName>
+    <defName>RM_FireWasp</defName>
     <label>fire wasp</label>
     <description>A slow, drifting insect that lives inside the heat rather than beside it, plated in a scale that will not take a flame at all. Fire wasps hang over a burn in loose swarms, riding the column of hot air and dropping onto whatever the fire has already killed or crippled; a single one is barely a threat to a grown person, and a swarm of them over a fresh burn is a reason to walk the long way around.</description>
     <statBases>
@@ -822,9 +822,9 @@
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
-    <defName>RUT_FireWasp</defName>
+    <defName>RM_FireWasp</defName>
     <label>fire wasp</label>
-    <race>RUT_FireWasp</race>
+    <race>RM_FireWasp</race>
     <combatPower>80</combatPower>
     <canArriveManhunter>false</canArriveManhunter>
     <ecoSystemWeight>0.5</ecoSystemWeight>

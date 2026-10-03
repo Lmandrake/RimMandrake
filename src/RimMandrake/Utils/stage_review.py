@@ -27,7 +27,7 @@ Usage:
   # stage a roster of wild animals on verified-open grass, midday, and shoot:
   python.exe stage_review.py --map 1 \
       --clear chunks,filth --kill-hostiles \
-      --spawn "RUT_FireHawk:2,AA_Barbslinger:1,Anooba:2,Gizka:2" \
+      --spawn "RM_FireHawk:2,AA_Barbslinger:1,Anooba:2,Gizka:2" \
       --at 85,205 --spread 6 \
       --frame 60,190,120,40 --daylight --shot pyrelands_animals \
       --save PYRELANDS_REVIEW
