@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Scavenger's Atlas: creatures (the reaching arm) and giants (the dead prong).
+       Every subject defName below was read from its def in src/ on 2026-10-02
+       (type, owning packageId, description); subjects are resolved by name at
+       runtime, so an absent mod reads "absent from this world", never an error.
+       Lore leaves are drafted from design/Jawa/reconciled_lore in voices inside
+       the world and state no hidden truth (ruling R25); a sitting owns final words. -->
+
+  <!-- RSW_GizkaFecundity: HediffDef, mandrake.rsw.gizkastowaway,
+       "This gizka descends from a ship's stowaway." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_GizkaAboard</defName>
+    <label>gizka aboard</label>
+    <description>Gizka that came aboard as stowaways breed on their own in the crowded hold, without a mate, and their line keeps the habit.</description>
+    <riddle>Count them at dusk. Count them at dawn. The numbers never agree, and nobody let them in.</riddle>
+    <hint>Something small is breeding in the ship's hold. Look for a gizka whose line began as a stowaway.</hint>
+    <loreVoice>a hold-boy's complaint</loreVoice>
+    <lore>"They were in the crates when we took her. They were in the crates when we sold the crates. They are in the crates now, and the crates are new. Rekko says a thing that keeps coming back has found its home. Oomo says nothing, which is worse: Oomo approves of anything that breeds."</lore>
+    <category>Creatures</category>
+    <completion>Seen</completion>
+    <order>10</order>
+    <subjectPackageId>mandrake.rsw.gizkastowaway</subjectPackageId>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_Hediff">
+        <hediffs><li>RSW_GizkaFecundity</li></hediffs>
+      </li>
+    </triggers>
+    <rewardThing>MealSimple</rewardThing>
+    <rewardCount>4</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RSW_Mynock: ThingDef, mandrake.rsw.swbestiary, "A leathery, wet-winged
+       ship-leech that drifts through vacuum toward any hull with power still
+       running through it." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Mynock</defName>
+    <label>mynocks on the hull</label>
+    <description>Leathery ship-leeches that drift toward any hull with power still running through it. One is a nuisance; a few that take hold become a brood.</description>
+    <riddle>It is drawn to a beating heart, though it has never seen one. It drinks the light you did not know you were spilling.</riddle>
+    <hint>A powered hull draws a winged leech. Keep the lights on long enough and one will come to feed.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"A ship with no mynocks is a ship with no power." The clan says it the way other peoples say a house with no mice is a house with no bread: a complaint and a boast in the same breath. Ohm is said to pity them. Nobody else does.</lore>
+    <category>Creatures</category>
+    <completion>Seen</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RSW_Mynock</li></things>
+      </li>
+    </triggers>
+    <rewardThing>ComponentIndustrial</rewardThing>
+    <rewardCount>1</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_Lanternwhale: ThingDef, mandrake.rm.terminalbiomes, "the largest living
+       thing in the seas. It does not notice you." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Lanternwhale</defName>
+    <label>the lanternwhale</label>
+    <description>Moss-shrouded and trailing blue lantern tendrils, the largest living thing in the seas. It does not notice you, until you make it.</description>
+    <riddle>Blue lamps walk the bottom of the brine, and the thing that carries them has never once looked up.</riddle>
+    <hint>The largest living thing in the salt seas trails blue lights. Look for it where the sea floor is open to you.</hint>
+    <loreVoice>a trader's tale</loreVoice>
+    <lore>A Trade Moot captain swears his crew once anchored to one for a full day, believing it was a reef. "It did not notice us," he says, "which is the most frightening thing anything has ever done to me." The seas here are too salt to drink and too full of food to leave alone.</lore>
+    <category>Creatures</category>
+    <completion>Seen</completion>
+    <order>30</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RM_Lanternwhale</li></things>
+      </li>
+    </triggers>
+    <rewardThing>Silver</rewardThing>
+    <rewardCount>30</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_Sekkulaath_*: six building ThingDefs, mandrake.rm.feverwood. The giant
+       is never drawn whole; its tentacles are what a player sees. Feeler: "the
+       first sign that something enormous is paying attention." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Sekkulaath</defName>
+    <label>the sekkulaath</label>
+    <description>Something enormous lives beneath the still pools of the Fever Wood. Its tentacles rise to search the shore after a loud noise; its eye has been glimpsed only once a bloom opens.</description>
+    <riddle>The pool is not deep. The pool is not a pool. Speak loudly near it, once, and you will learn which.</riddle>
+    <hint>Something under the Fever Wood's pools is listening. Make noise near still water and watch the shore.</hint>
+    <loreVoice>an elder's warning</loreVoice>
+    <lore>"In the poison wood, do not shout. Do not run the engine. Do not drop the crate. The water there has ears, and the ears have arms." The clan does not name the thing. Traders who do, name it differently each time, and all of them lower their voices.</lore>
+    <category>Giants</category>
+    <completion>Seen</completion>
+    <order>10</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things>
+          <li>RM_Sekkulaath_Feeler</li>
+          <li>RM_Sekkulaath_Snare</li>
+          <li>RM_Sekkulaath_Lash</li>
+          <li>RM_Sekkulaath_Porter</li>
+          <li>RM_Sekkulaath_Sentinel</li>
+          <li>RM_Sekkulaath_Bloom</li>
+        </things>
+      </li>
+    </triggers>
+    <rewardThing>MedicineHerbal</rewardThing>
+    <rewardCount>3</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_Muurrok: ThingDef, mandrake.rm.stillsand, "A giant that lives under the
+       deep sand and almost never shows itself ... its crest: one curved plate
+       polished like a mirror". -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Muurrok</defName>
+    <label>the muurrok</label>
+    <description>A giant that lives under the deep sand and almost never shows itself. All anyone sees is its crest, one curved mirror-bright plate breaking the surface as it cruises.</description>
+    <riddle>A line of glare crosses the still sand where no sun should strike, and the dune behind it is not where it was.</riddle>
+    <hint>In the still sands, watch for a moving line of glare. Something huge swims under the dunes.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"If the sand shines, walk the other way." Jawa children learn it before they learn to count salvage. Ishko, they say, admires the muurrok above every other beast: it is enormous, and it is almost never seen.</lore>
+    <category>Giants</category>
+    <completion>Seen</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RM_Muurrok</li></things>
+      </li>
+    </triggers>
+    <rewardThing>Steel</rewardThing>
+    <rewardCount>40</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_Gloomcast: ThingDef, mandrake.rm.longshade, "A colossal, slow-moving
+       grazer that crosses the open dayside in a single committed march". -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Gloomcast</defName>
+    <label>the gloomcast</label>
+    <description>A colossal grazer that crosses the open dayside in one committed march, absorbing a furnace's worth of heat and filter-feeding through the sand as it goes.</description>
+    <riddle>It carries its own night on its back, and it never stops walking toward the place where the night is real.</riddle>
+    <hint>Under the endless sun, something vast crosses the open sand in one long march. Its shadow is a place to stand.</hint>
+    <loreVoice>a trader's tale</loreVoice>
+    <lore>Caravans on the dayside used to walk in its shade, the story goes, a whole season's crossing done in the shadow of one animal. Nobody does it now. Nobody will say why, only that the shade is cooler than it should be, and that the walk never ends where you meant it to.</lore>
+    <category>Giants</category>
+    <completion>Seen</completion>
+    <order>30</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RM_Gloomcast</li></things>
+      </li>
+    </triggers>
+    <rewardThing>Chemfuel</rewardThing>
+    <rewardCount>20</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_Gorrask: ThingDef, mandrake.rm.weepingstones, "a stone-crab grew so vast
+       and so old that it no longer fits inside any canyon it did not carve itself". -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Gorrask</defName>
+    <label>the gorrask</label>
+    <description>A stone-crab grown so vast and so old that, the legend says, it no longer fits inside any canyon it did not carve itself. It never needs to hurry.</description>
+    <riddle>The cliff moved. Not far, and not quickly, and not again for a year. The cliff is patient. The cliff is hungry.</riddle>
+    <hint>Among the weeping stones, one of the rocks is alive. Watch the canyon walls for one that has changed place.</hint>
+    <loreVoice>an elder's warning</loreVoice>
+    <lore>"A rock that was not there yesterday is not a rock." Every clan that has camped by the weeping stones has a version of this, and every version ends with a camp that is not there any more. Rekko, they say, wants its shell. Rekko wants every shell.</lore>
+    <category>Giants</category>
+    <completion>Seen</completion>
+    <order>40</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RM_Gorrask</li></things>
+      </li>
+    </triggers>
+    <rewardThing>Steel</rewardThing>
+    <rewardCount>40</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+</Defs>

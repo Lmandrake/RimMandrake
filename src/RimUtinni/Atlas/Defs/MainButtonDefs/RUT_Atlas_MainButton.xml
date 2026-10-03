@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Shape taken from Core's MainButtonDef "Quests" (rimsage, 2026-10-02):
+       defName, label, description, tabWindowClass, order, validWithoutMap. -->
+  <MainButtonDef>
+    <defName>RUT_Atlas</defName>
+    <label>atlas</label>
+    <description>The Scavenger's Atlas: every strange thing the clan can find, drawn as a running light on the hull of the Utinni. Dark lamps hide riddles; click a card to flip it to a hint.</description>
+    <tabWindowClass>RimMandrake.Utinni.Atlas.MainTabWindow_Atlas</tabWindowClass>
+    <order>66</order>
+    <validWithoutMap>true</validWithoutMap>
+  </MainButtonDef>
+</Defs>

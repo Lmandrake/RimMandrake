@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Scavenger's Atlas: places (the flight deck), weather (the vanes) and
+       resources (the hold). Subjects verified in src/ 2026-10-02; see the header
+       of RUT_Atlas_Wilds.xml for the rules every entry follows. -->
+
+  <!-- RM_SeabedLayer: PlanetLayerDef, mandrake.rm.divinginteraction. Owner
+       2026-10-01: "the ship just flies to a new planetary layer called sea floor."
+       The ship is the only way down and the only way back. -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_SeaFloor</defName>
+    <label>the sea floor</label>
+    <description>The Utinni can fly below the shore, down through the brine to the floor of the salt seas, and back. No one goes down alone: it is the ship or nothing.</description>
+    <riddle>She has climbed above the storms. Has she ever gone the other way?</riddle>
+    <hint>The ship can go lower than the shore. Fly her down to the sea floor.</hint>
+    <loreVoice>a launch-day blessing</loreVoice>
+    <lore>"Ta'Baa, who forbids the root, forbid us also the bottom." The clan added the line the first time the hull went under. Nobody agrees whether a dive is a flight. The priests of the launch say yes, loudly, and keep their eyes on the hatch until she surfaces.</lore>
+    <category>Places</category>
+    <completion>Used</completion>
+    <order>10</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_PlanetLayer">
+        <layer>RM_SeabedLayer</layer>
+      </li>
+    </triggers>
+    <rewardThing>Chemfuel</rewardThing>
+    <rewardCount>30</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_FeverWoodMirrorPool: TerrainDef, mandrake.rm.feverwood, "Still, black
+       water, deep and unrippled. Big animals wander in to drink and are
+       sometimes simply gone." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_MirrorPools</defName>
+    <label>black mirror pools</label>
+    <description>Still, black water, deep and unrippled. Big animals wander in to drink and are sometimes simply gone. Nothing sane touches it, and nothing explains why.</description>
+    <riddle>The water shows you your face. Look longer. It shows you more than your face.</riddle>
+    <hint>In the Fever Wood there is water so still it shines like glass. Find it, and do not drink.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"Never trust water that does not move." On a world where every drop is stolen from a mountain, the Jawa still will not drink from these pools. The elders say a still pool is not resting. It is waiting.</lore>
+    <category>Places</category>
+    <completion>Seen</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_TerrainPresent">
+        <terrains><li>RUT_FeverWoodMirrorPool</li></terrains>
+      </li>
+    </triggers>
+    <rewardThing>MedicineHerbal</rewardThing>
+    <rewardCount>2</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_ScarlandsLadder: RM_LoreStageTableDef, mandrake.rut.scarlandsladder,
+       ladderId "Scarlands", stages 1..5; stage 5 is "the pilgrims" (design §4
+       worked example 16). Read only; the Atlas never advances the ladder. -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_PilgrimsEnd</defName>
+    <label>the pilgrims' end</label>
+    <description>The camps along the Ashfall Road all end facing the same direction, and nobody who made one walked back out. The clan has read the Scarlands to their last line.</description>
+    <riddle>Every footprint on the road points one way. Every footprint is old. None of them come home.</riddle>
+    <hint>Someone walked into the Scarlands to die on purpose. Learn the whole story the scarred land tells.</hint>
+    <loreVoice>a pilgrim's graffito, copied by a scavenger</loreVoice>
+    <lore>Scratched inside a dead projector ring, in a script no living trader reads: a line of marks, and a single arrow, and nothing after it. The clan copied it onto a hull plate and keeps it in the hold. Nobody can say why the plate feels warmer than the others.</lore>
+    <category>Places</category>
+    <completion>Performed</completion>
+    <order>30</order>
+    <subjectPackageId>mandrake.rut.scarlandsladder</subjectPackageId>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_LoreStage">
+        <ladder>Scarlands</ladder>
+        <minStage>5</minStage>
+        <requiresPackageId>mandrake.rut.scarlandsladder</requiresPackageId>
+      </li>
+    </triggers>
+    <rewardThing>Silver</rewardThing>
+    <rewardCount>60</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_WS_TerminatorFront: GameConditionDef, mandrake.rm.weathersuite, "The
+       standing weather-wall where the dayside furnace meets the nightside cold." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_TerminatorFront</defName>
+    <label>the terminator front</label>
+    <description>The standing weather-wall where the dayside furnace meets the nightside cold. It never moves and never passes, and lightning strikes here far above the ordinary rate.</description>
+    <riddle>Where the fire and the frost shake hands, the sky never stops arguing.</riddle>
+    <hint>On the seam between the hot face and the cold face, a storm that never ends sits on the ground. Live under it.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"Between the furnace and the freezer, the sky keeps the books." The clan crosses the seam fast, hull sealed, and counts the strikes. Sh'kaar's priests count them twice.</lore>
+    <category>Weather</category>
+    <completion>Seen</completion>
+    <order>10</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_GameCondition">
+        <conditions><li>RM_WS_TerminatorFront</li></conditions>
+      </li>
+    </triggers>
+    <rewardThing>ComponentIndustrial</rewardThing>
+    <rewardCount>1</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_WS_DarkAurora: GameConditionDef, mandrake.rm.weathersuite, "The deep
+       night has no sun, but it is not without light." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_DarkAurora</defName>
+    <label>the dark-side aurora</label>
+    <description>The deep night has no sun, but it is not without light. A magnetic aurora lights the sky: the one beauty this hemisphere owns for free.</description>
+    <riddle>Where no sun has ever risen, the sky still burns. It costs nothing to watch. Nothing else there is free.</riddle>
+    <hint>Go deep into the night side and wait. Sometimes the black sky lights itself.</hint>
+    <loreVoice>a hold-boy's story</loreVoice>
+    <lore>Mob'Unloo, the clan says, hates the aurora: it is the one thing on the cold face nobody can sell. The crew watch it anyway, from the hatch, wrapped in every blanket aboard, and do not speak about the price.</lore>
+    <category>Weather</category>
+    <completion>Seen</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_GameCondition">
+        <conditions><li>RM_WS_DarkAurora</li></conditions>
+      </li>
+    </triggers>
+    <rewardThing>Silver</rewardThing>
+    <rewardCount>30</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_BoilingRain: WeatherDef, mandrake.rut.patches, "A sudden, violent
+       downpour of scalding rain, flashing back to steam off the hot rock". -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_BoilingRain</defName>
+    <label>boiling rain</label>
+    <description>A sudden, violent downpour of scalding rain that flashes back to steam off the hot rock within seconds. It scalds anyone caught in the open.</description>
+    <riddle>Water falls from the sky here, as it does nowhere else, and still nobody holds out a cup.</riddle>
+    <hint>On hot rock, rain can arrive already boiling. Live through a scalding storm.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"Rain is a mountain's gift and a mountain's joke." Every drop of fresh water on this world is stolen from a peak; the clan knows rain mostly as rumour. The first time it fell on them, boiling, the youngest ran out to drink it.</lore>
+    <category>Weather</category>
+    <completion>Seen</completion>
+    <order>30</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_Weather">
+        <weathers><li>RUT_BoilingRain</li></weathers>
+      </li>
+    </triggers>
+    <rewardThing>MedicineHerbal</rewardThing>
+    <rewardCount>3</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_GreatboleHeartwood: ThingDef, mandrake.rut.patches, "Living wood grown
+       as dense and as still as stone ... Cut chamber into it and it heals,
+       slowly, unless you paint the wound shut." -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Heartwood</defName>
+    <label>greatbole heartwood</label>
+    <description>The outer mass of a Greatbole: living wood grown dense and still as stone, dug like rock. Cut a chamber into it and it heals, slowly, unless the wound is sealed.</description>
+    <riddle>You can dig into it like a mountain. It will close behind you like a mouth.</riddle>
+    <hint>In the Greentide, the biggest trees are as hard as stone. Find the living wood and dig.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"Wood that heals is a house that evicts." The clan admires the greatbole the way it admires any good bargain partner: it gives, and it takes back, and it never forgets the terms.</lore>
+    <category>Resources</category>
+    <completion>Seen</completion>
+    <order>10</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RUT_GreatboleHeartwood</li></things>
+      </li>
+    </triggers>
+    <rewardThing>WoodLog</rewardThing>
+    <rewardCount>50</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_TitanicCorpseSite: ThingDef, mandrake.rm.titaniccreatures, "The remains
+       of something titanic. Days of work here will yield meat and leather". -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_TitanicRemains</defName>
+    <label>titanic remains</label>
+    <description>The remains of something titanic. Days of work there yield meat and leather, before it spoils away or something else picks it clean.</description>
+    <riddle>A hill that smells. A hill with ribs. A whole season's meat, if you are quicker than everything else that smelled it.</riddle>
+    <hint>Something enormous died here. Find its remains and work them before the scavengers do.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"The biggest salvage is the one that used to walk." On this world the peaks wash the seas full of food, and the beasts grow to match. When one falls the whole country comes to the funeral, and the Jawa intend to arrive first.</lore>
+    <category>Resources</category>
+    <completion>Seen</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RM_TitanicCorpseSite</li></things>
+      </li>
+    </triggers>
+    <rewardThing>MealSimple</rewardThing>
+    <rewardCount>5</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+</Defs>
