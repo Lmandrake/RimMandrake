@@ -60,8 +60,9 @@ way. Owner's words and the three mechanics: see `DEEPS_FAUNA_MECHANICS_1`.
     cheaper alternative if the owner prefers to drop the comp.
   - **Drinker**: `RM_HydrocarbonBloodExtension` (empty `DefModExtension`,
     `Source/RM_HydrocarbonBloodExtension.cs`) — present on a victim's
-    ThingDef ⇒ safe blood regardless of fleshType; attached to NOTHING yet
-    (Deeps races are wired by a later pass). `RM_CompFluidSacs` gained the
+    ThingDef ⇒ safe blood regardless of fleshType; attached to `RSW_Gembug`,
+    `RSW_GlowSlug` (SWBestiary BiomesTeamPort races) and their `RM_Gembug`/`RM_GlowSlug` ports
+    (LanternDeeps fauna). `RM_CompFluidSacs` gained the
     visible gauge `RM_FluidSacks` (`Defs/HediffDefs/RM_FluidSacks_Hediffs.xml`,
     maxSeverity 1, three labelled stages, +`sackFillPerSeverity` 0.1 per
     drained severity, filled on every feed including a poisoning one) and a
@@ -108,3 +109,11 @@ found the deployed assembly loads clean and the comps ARE wired on the live defs
 but none of the three mechanics was observed to fire in ~2000 ticks of an
 in-game attempt. That is a behavior question, not a deploy question, and is not
 resolved by this correction.
+
+## offline part — 2026-10-03 (FOUNDRY belt r12)
+
+Nothing offline is left: the second pass is built and deployed (above), and the hydrocarbon-blood
+extension is wired on the two Deeps prey races and their RM_ ports. What remains is the live
+behaviour test this item's `needs bridge` names. NEXT: on a quicktest, spawn RSW_BovineBeetle beside a
+colonist and read RM_Grappled + torso injury; spawn the soulchime in LoS of a colonist; let the drinker feed
+on a gembug and read RM_FluidSacks severity.
