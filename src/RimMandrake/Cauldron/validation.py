@@ -1377,6 +1377,7 @@ def water_chain(t):
 @suite.chain("fire")
 def fire_chain(t):
     _prep(t, "fire")
+    t.expect("fire", lambda e: True)      # this chain lights its own fire on the wood (map_fire start): its own act
     x, z = t.anchor
     ids = {}
     fuel = "%d,%d,3,3" % (x + 2, z - 1)
