@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SandListening.xml                 RimMandrake — STILLSAND_SAND_SWIM_REMAINDER_1 §7 (the Listening)
+  PLACEHOLDER GRAIN: every clip below is an existing vanilla clip already used by shipped defs in this
+  repo, pitched and curved to the role; real recordings are a follow-up.
+  Hiss and saltation are camera sustainers (RM_MapComponent_SandListening) whose external param "Wind"
+  is the map's wind speed. Hiss never goes silent; saltation is only heard once the wind picks up.
+  Song, rumble and breach are one-shot / sustain sounds fired from the song hook and the sand-swim kit.
+-->
+<Defs>
+  <SoundDef>
+    <defName>RM_SandHiss</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Ambience/Wind/Amb_Wind_Fog2_Loop</clipPath></li></grains>
+        <volumeRange>12</volumeRange>
+        <pitchRange>0.9~0.95</pitchRange>
+        <sustainLoop>True</sustainLoop>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_External"><inParamName>Wind</inParamName><defaultValue>1</defaultValue></inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve><points><li>(0,0.35)</li><li>(1,0.6)</li><li>(2,1)</li></points></curve>
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_SandSaltation</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Ambience/Wind/Amb_Wind_Stormy_Loop</clipPath></li></grains>
+        <volumeRange>10</volumeRange>
+        <pitchRange>1.25~1.35</pitchRange>
+        <sustainLoop>True</sustainLoop>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_External"><inParamName>Wind</inParamName><defaultValue>1</defaultValue></inParam>
+            <outParam Class="SoundParamTarget_Volume"></outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve><points><li>(0,0)</li><li>(0.8,0.05)</li><li>(1.5,0.6)</li><li>(2.5,1)</li></points></curve>
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_DuneSong</defName>
+    <context>MapOnly</context>
+    <maxVoices>2</maxVoices>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Buildings/MechanoidStabilizerIdle_A</clipPath></li></grains>
+        <volumeRange>26</volumeRange>
+        <pitchRange>0.4~0.45</pitchRange>
+        <distRange>20~120</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_SandSwimRumble</defName>
+    <context>MapOnly</context>
+    <sustain>True</sustain>
+    <maxVoices>3</maxVoices>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Electricity/GeothermalPlant/Run/GeothermalPlantRun_Loop1a</clipPath></li></grains>
+        <volumeRange>16</volumeRange>
+        <pitchRange>0.4~0.5</pitchRange>
+        <distRange>8~45</distRange>
+        <sustainLoop>True</sustainLoop>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+  <SoundDef>
+    <defName>RM_SandSwimBreach</defName>
+    <context>MapOnly</context>
+    <maxVoices>3</maxVoices>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains><li Class="AudioGrain_Clip"><clipPath>Misc/RockCollapse</clipPath></li></grains>
+        <volumeRange>22</volumeRange>
+        <pitchRange>0.7~0.8</pitchRange>
+        <distRange>10~60</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

@@ -65,6 +65,17 @@
     <forageability>0.0</forageability>
     <movementDifficulty>1</movementDifficulty>
     <texture>World/Biomes/ExtremeDesert</texture>
+    <!-- STILLSAND_SAND_SWIM_REMAINDER_1 §6: sand fishing. RM_DeepSand carries the Water tag and a
+         Freshwater waterBodyType, so vanilla fishing zones form on it; this is the catch. The crawler is
+         the common catch, the glass pearl the rare one (the stalker catch is Utinni-patched onto the RSW
+         twin). A session may draw a swimmer's wake: Source/RM_SandSwimRemainder.cs. -->
+    <maxFishPopulation>90</maxFishPopulation>
+    <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
+      <freshwater_Common>
+        <RM_DuneCrawler>1</RM_DuneCrawler>
+      </freshwater_Common>
+      <rareCatchesSetMaker>RM_RareSandCatches</rareCatchesSetMaker>
+    </fishTypes>
     <diseaseMtbDays>90</diseaseMtbDays>
     <diseases>
       <li>
