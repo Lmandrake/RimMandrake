@@ -75,4 +75,48 @@
     </placeWorkers>
   </ThingDef>
 
+  <!-- CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a superdeep (D = 4) canal floor, the
+       ladder's shape: a Thing in the cell + placeworker + RM_SpikeUtility.HasSpikes. Owner Q2
+       2026-10-02 (by card): D = 4 only. Fire on descent only (RM_SuperdeepTrap.PitDescent), three
+       Sharp hits scaled by body size (numbers PROPOSED in RM_PitTrapMath, owner's word owed).
+       Graphic is a PLACEHOLDER (Ideology's skullspike: a spike at the pit's viewing angle; the item
+       forbids TrapSpikeArmed); the real floor-of-spikes art is EXCAVATION_WALL_ART_1. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_Spikes</defName>
+    <label>pit spikes</label>
+    <description>Sharpened stakes driven into the floor of a superdeep pit. Whoever falls, is pushed or jumps into this cell lands on them: several deep stab wounds, worse for bigger creatures, armour still counts. Walking up to the edge, or moving along the pit floor, is safe. Can only be built on the floor of the deepest pits.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/Skullspike/Skullspike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <shaderType>CutoutComplex</shaderType>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <designationCategory>Structure</designationCategory>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>1.0</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <building>
+      <!-- Not an edifice, like the ladder: an edifice would block the fill-in designator. -->
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.PlaceWorker_SpikesOnSuperdeep</li>
+    </placeWorkers>
+  </ThingDef>
+
 </Defs>

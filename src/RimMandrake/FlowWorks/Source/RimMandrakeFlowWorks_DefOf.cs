@@ -39,6 +39,9 @@ namespace RimMandrake.FlowWorks
 		/// <summary>PHASE 5. The one boolean that makes a dug cell exitable.</summary>
 		public static ThingDef RM_Ladder;
 
+		// CANAL_BOTTOM_SPIKES_1
+		public static ThingDef RM_Spikes;
+
 		/// <summary>PIT_LEGACY_CODE_RETIRE_1: merged from the retired RimMandrakePits_DefOf
 		/// (only the surviving hediffs). REWIRE pending: drowning keyed to fill at D=4
 		/// (PIT_FILL_EFFECTS_1); exposure driven by temperature (PIT_TEMPERATURE_SOFTENING_1).</summary>

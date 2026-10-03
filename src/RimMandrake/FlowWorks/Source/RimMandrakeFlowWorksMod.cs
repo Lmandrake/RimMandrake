@@ -138,6 +138,9 @@ namespace RimMandrake.FlowWorks
         public static float trapSensitivityMultiplier = 1f;
         public static bool fallDamageEnabled = true;
         public static float fallDamageMultiplier = 1f;
+        // CANAL_BOTTOM_SPIKES_1: RM_Spikes on a D=4 floor stab whoever drops in (3 Sharp hits, 40 x BodySize total, PROPOSED).
+        public static bool spikesEnabled = true;
+        public static float spikeDamageMultiplier = 1f;
 
         // ══════════════════════════════════════════════════════════════════
         // LIQUID_BOTTLE_LOOP_1 — FILL / USE / DIRTY / WASH.
@@ -260,6 +263,8 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref trapSensitivityMultiplier, "trapSensitivityMultiplier", 1f);
             Scribe_Values.Look(ref fallDamageEnabled, "fallDamageEnabled", true);
             Scribe_Values.Look(ref fallDamageMultiplier, "fallDamageMultiplier", 1f);
+            Scribe_Values.Look(ref spikesEnabled, "spikesEnabled", true);
+            Scribe_Values.Look(ref spikeDamageMultiplier, "spikeDamageMultiplier", 1f);
             // ── LIQUID_BOTTLE_LOOP_1 (see the block above; kept contiguous) ─
             Scribe_Values.Look(ref bottleLoopEnabled, "bottleLoopEnabled", true);
             Scribe_Values.Look(ref bottleDirtyStageEnabled, "bottleDirtyStageEnabled", true);
@@ -485,6 +490,16 @@ namespace RimMandrake.FlowWorks
             {
                 list.Label("Fall damage multiplier: " + fallDamageMultiplier.ToString("F2"));
                 fallDamageMultiplier = list.Slider(fallDamageMultiplier, 0f, 3f);
+            }
+
+            list.CheckboxLabeled("Spikes on a pit floor stab whoever drops in", ref spikesEnabled,
+                "Spikes built on the floor of a superdeep pit stab anyone who falls, is pushed or jumps "
+              + "into that cell: three Sharp hits through armour, bigger for bigger creatures. Never on "
+              + "walking up to the edge or moving along the pit floor. Off: spikes are harmless.");
+            if (spikesEnabled)
+            {
+                list.Label("Spike damage multiplier: " + spikeDamageMultiplier.ToString("F2"));
+                spikeDamageMultiplier = list.Slider(spikeDamageMultiplier, 0f, 3f);
             }
 
             list.CheckboxLabeled("Pit covers give way under enough weight", ref trapTriggerEnabled,

@@ -55,6 +55,7 @@ SETTINGS = {
         # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
         "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
+        "spikesEnabled": True, "spikeDamageMultiplier": 1.0,     # CANAL_BOTTOM_SPIKES_1
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,
