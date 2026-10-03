@@ -55,6 +55,8 @@ namespace RimMandrake.LanternDeeps
         public static bool lanternstoneFormationsEnabled = true;
         public static float lanternstoneDensityMultiplier = 1f;
         public static bool deepFloraEnabled = true;
+        // MINERAL_BIOME_LEAKS_1: on = a deep-scanner strike off the Deeps never returns lanternstone (steel instead).
+        public static bool lanternstoneDeepGateEnabled = true;
 
         // DEEP_ENTRANCE_BIOMES_SETTING_1 — owner, 2026-09-18: "The mod itself
         // will be (3) but for the Utinni scenario it's definitely (1)". The
@@ -170,6 +172,7 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref lanternstoneFormationsEnabled, "lanternstoneFormationsEnabled", true);
             Scribe_Values.Look(ref lanternstoneDensityMultiplier, "lanternstoneDensityMultiplier", 1f);
             Scribe_Values.Look(ref deepFloraEnabled, "deepFloraEnabled", true);
+            Scribe_Values.Look(ref lanternstoneDeepGateEnabled, "lanternstoneDeepGateEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -237,6 +240,10 @@ namespace RimMandrake.LanternDeeps
             list.CheckboxLabeled("Cave flora grows in the Deeps", ref deepFloraEnabled,
                 "Off: a newly entered Deep has no mycelium carpet, no mushroom trees and no glow-fungi — "
               + "no forageable food and no cloth or wood from below. Bare rock and crystal.");
+
+            list.CheckboxLabeled("Lanternstone deep deposits only in the Deeps", ref lanternstoneDeepGateEnabled,
+                "On: a ground-penetrating scanner on any other map finds steel where it would have found lanternstone. "
+              + "Off: vanilla's global deep-resource table, lanternstone anywhere. Applies at scan time.");
 
             // DEEP_ENTRANCE_BIOMES_SETTING_1 — worldgen-affecting biome checklist.
             list.Gap();
