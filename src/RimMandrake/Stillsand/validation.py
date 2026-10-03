@@ -85,7 +85,7 @@ SETTINGS = {
                                    "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0,
                                    "sieveEnabled": True, "sieveYieldMultiplier": 1.0,
                                    "solarStillEnabled": True, "stillRateMultiplier": 1.0,
-                                   "wringingStillEnabled": True},
+                                   "wringingStillEnabled": True, "sunLanceEnabled": True},
     NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0, "abrasionEnabled": True,
                                  "carryEnabled": True, "staticEnabled": True, "emergenceEnabled": True,
                                  "seedingEnabled": True, "dustDevilsEnabled": True,
@@ -706,6 +706,29 @@ def defs_chain(t):
             if not _same(_get_setting(t, "solarStillEnabled"), True):
                 _fail("solarStillEnabled is not at its shipped default True")
 
+    with _comp(t, "sun_lance_defs"):
+        # STILLSAND_SUN_LANCE_1: the turret, its gun and the shared mirror-beam verb must resolve live.
+        need = ["ThingDef/RM_SunLance", "ThingDef/RM_SunLance_Gun"]
+        for d in need:
+            if d not in SHIPPED:
+                _fail("%s is not parsed from this mod's Defs/ (parser or def missing)" % d)
+        # Static: the lance must never be able to ignite (no fire chance on the verb, heat-only damage).
+        import re as _re
+        xml = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_SunLance.xml"), encoding="utf-8").read()
+        for tag in ("beamChanceToStartFire", "beamChanceToAttachFire"):
+            m = _re.search(r"<%s>([^<]*)</%s>" % (tag, tag), xml)
+            if not m or float(m.group(1)) != 0.0:
+                _fail("%s is not explicitly 0 in RM_SunLance.xml" % tag)
+        if "RM_Verb_MirrorBeam" not in xml:
+            _fail("RM_SunLance_Gun does not use the shared RM_Verb_MirrorBeam")
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(need), fields="defName", limit=20)
+            _ok(r, "get_defs(sun lance)")
+            if r.get("notFound"):
+                _fail("sun lance def(s) did not resolve live: %s" % r.get("notFound"))
+            if not _same(_get_setting(t, "sunLanceEnabled"), True):
+                _fail("sunLanceEnabled is not at its shipped default True")
+
     with _comp(t, "custom_defs_resolve"):
         if _live(t):
             if len(CUSTOM_SHIPPED) < 5:
@@ -814,7 +837,7 @@ def settings_chain(t):
     # Toggles whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                  "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
                   "seedingEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):

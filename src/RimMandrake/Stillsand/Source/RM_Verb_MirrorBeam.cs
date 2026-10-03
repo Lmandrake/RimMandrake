@@ -95,6 +95,13 @@ namespace RimMandrake.Stillsand
                     return 0f;
                 }
                 RM_MirrorBeamExtension rules = SunRules ?? new RM_MirrorBeamExtension();
+                if (!CasterIsPawn)
+                {
+                    // STILLSAND_SUN_LANCE_1: a turret caster uses the same sun the sun tables use
+                    // (pinned-sun elevation, shade, roof, gale), so strength scales with elevation.
+                    float f = RM_SunPower.FactorAt(caster, rules.noSunWeathers, out string why);
+                    return f < rules.minSunGlow ? 0f : Mathf.Clamp01(f);
+                }
                 if (caster.Position.Roofed(map))
                 {
                     return 0f;
@@ -111,7 +118,8 @@ namespace RimMandrake.Stillsand
 
         public override bool Available()
         {
-            return base.Available() && RM_StillsandEventsSettings.mirrorBeamEnabled && SunFactor > 0f;
+            bool enabled = CasterIsPawn ? RM_StillsandEventsSettings.mirrorBeamEnabled : RM_GlassChainSettings.sunLanceEnabled;
+            return base.Available() && enabled && SunFactor > 0f;
         }
 
         protected override bool TryCastShot()

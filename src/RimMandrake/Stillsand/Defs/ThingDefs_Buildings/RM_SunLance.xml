@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SunLance.xml                          RimMandrake — STILLSAND_SUN_LANCE_1
+
+  Heliostat turret. Shares RM_Verb_MirrorBeam with the muurrok (a turret caster reads the sun through
+  RM_SunPower.FactorAt: pinned-sun elevation, shade, roof, gale). The verb has no fire path and the damage
+  is RM_MirrorGlare (Burn hediff, no ignition); both fire chances are pinned to 0 below. Needs no power.
+  Mod Settings: RM_GlassChainSettings.sunLanceEnabled. Art: artpipe RM_SunLance_Base / _Top (done).
+  Distinct from the Long Shade's heliograph, which signals; this one burns.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SunLance</defName>
+    <label>sun lance</label>
+    <description>A ring of tilted mirrors on a geared plinth, turning with the sun to focus it on one target. It burns what it is aimed at and sets nothing alight. Its beam is strongest when the sun stands high. It does nothing in shade, under a roof, at night or in a sand gale. It needs no power and no fuel.</description>
+    <thingClass>Building_TurretGun</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Things/Building/Security/RM_SunLance_Base</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData><rect>(0.05,0.05,0.9,0.9)</rect></damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <thingCategories><li>BuildingsSecurity</li></thingCategories>
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <WorkToBuild>9000</WorkToBuild>
+      <Mass>30</Mass>
+      <Beauty>-4</Beauty>
+      <ShootingAccuracyTurret>0.95</ShootingAccuracyTurret>
+    </statBases>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="CompProperties_Stunnable">
+        <affectedDamageDefs><li>Stun</li><li>EMP</li></affectedDamageDefs>
+      </li>
+    </comps>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <hasTooltip>true</hasTooltip>
+    <costList>
+      <RM_SunGlass>25</RM_SunGlass>
+      <RM_PrecisionLens>3</RM_PrecisionLens>
+      <Steel>60</Steel>
+    </costList>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <designationCategory>Security</designationCategory>
+    <building>
+      <combatPower>60</combatPower>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>RM_SunLance_Gun</turretGunDef>
+      <turretBurstCooldownTime>5</turretBurstCooldownTime>
+    </building>
+    <placeWorkers>
+      <li>PlaceWorker_TurretTop</li>
+      <li>PlaceWorker_ShowTurretRadius</li>
+    </placeWorkers>
+    <!-- on the BUILDING: the verb reads its sun rules from the caster's def, and a turret's caster is the building -->
+    <modExtensions>
+      <li Class="RimMandrake.Stillsand.RM_MirrorBeamExtension">
+        <minSunGlow>0.3</minSunGlow>
+        <heatPerHit>6</heatPerHit>
+        <noSunWeathers>
+          <li>Sandstorm</li>
+          <li>RM_DuneGale</li>
+          <li>RM_Gale</li>
+        </noSunWeathers>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseWeaponTurret">
+    <defName>RM_SunLance_Gun</defName>
+    <label>sun lance</label>
+    <description>The mirror array of a sun lance.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/RM_SunLance_Top</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <statBases>
+      <AccuracyTouch>0.9</AccuracyTouch>
+      <AccuracyShort>0.9</AccuracyShort>
+      <AccuracyMedium>0.9</AccuracyMedium>
+      <AccuracyLong>0.85</AccuracyLong>
+      <RangedWeapon_Cooldown>5</RangedWeapon_Cooldown>
+      <DeteriorationRate>0</DeteriorationRate>
+      <Mass>8</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>RimMandrake.Stillsand.RM_Verb_MirrorBeam</verbClass>
+        <label>sun lance</label>
+        <hasStandardCommand>false</hasStandardCommand>
+        <warmupTime>1.5</warmupTime>
+        <range>24.9</range>
+        <minRange>2.9</minRange>
+        <beamFullWidthRange>6.9</beamFullWidthRange>
+        <burstShotCount>5</burstShotCount>
+        <showBurstShotStats>false</showBurstShotStats>
+        <beamWidth>2</beamWidth>
+        <ticksBetweenBurstShots>22</ticksBetweenBurstShots>
+        <beamDamageDef>RM_MirrorGlare</beamDamageDef>
+        <soundCastBeam>BeamGraser_Shooting</soundCastBeam>
+        <beamGroundFleckDef>Fleck_BeamBurn</beamGroundFleckDef>
+        <beamFleckChancePerTick>0.25</beamFleckChancePerTick>
+        <beamMaxDeviation>0.6</beamMaxDeviation>
+        <beamCurvature>0.3</beamCurvature>
+        <beamMoteDef>Mote_GraserBeamBase</beamMoteDef>
+        <beamEndEffecterDef>GraserBeam_End</beamEndEffecterDef>
+        <beamStartOffset>0.8</beamStartOffset>
+        <!-- heats, never ignites: the verb has no fire path; these stay 0 -->
+        <beamChanceToStartFire>0</beamChanceToStartFire>
+        <beamChanceToAttachFire>0</beamChanceToAttachFire>
+      </li>
+    </verbs>
+  </ThingDef>
+</Defs>
