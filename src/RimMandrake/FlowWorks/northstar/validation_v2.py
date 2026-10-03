@@ -86,7 +86,8 @@ BOOL_DEFAULTS = {
                fillInDisplacementEnabled=True, sourceBudgetEnabled=True, stickyLimitlessEnabled=True,
                recessionEnabled=True, refillEnabled=True, rainFillsExcavationsEnabled=True,
                edgeSinksEnabled=True, superdeepCaptureEnabled=True, superdeepCapturesOwnFaction=False,
-               ladderRequiredToExitEnabled=True, superdeepShootingRuleEnabled=True,
+               ladderRequiredToExitEnabled=True, ladderPrisonDoorEnabled=True,
+               superdeepShootingRuleEnabled=True,
                bottleLoopEnabled=True, bottleDirtyStageEnabled=True, tankLoopEnabled=True,
                liquidDrillingEnabled=True, typedLiquidShoresEnabled=True,
                trapTriggerEnabled=True, fallDamageEnabled=True),    # rehoused from PitsSettings 2026-10-02

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimWorld;
 using Verse;
 
 namespace RimMandrake.FlowWorks
@@ -37,6 +38,125 @@ namespace RimMandrake.FlowWorks
 				}
 			}
 			return false;
+		}
+	}
+
+	/// <summary>
+	/// LADDER_PRISON_DOOR_1 — owner Q1, 2026-10-02 (by card): a ladder works like a prison door.
+	/// Lowered: your own people (and non-hostile visitors) climb it freely; trapped enemies and
+	/// wild things do not; prisoners only during a prison break. Raised: nobody climbs, your own
+	/// people included, so raising it with a colonist below strands them, by design ("jump into
+	/// pit... stuck there too"). The state is toggled by the player's command on the ladder; a pawn
+	/// standing in the pit has no way to reach it.
+	/// </summary>
+	public class RM_CompProperties_Ladder : CompProperties
+	{
+		public RM_CompProperties_Ladder()
+		{
+			compClass = typeof(RM_CompLadder);
+		}
+	}
+
+	public class RM_CompLadder : ThingComp
+	{
+		public bool raised;
+
+		public override IEnumerable<Gizmo> CompGetGizmosExtra()
+		{
+			foreach (Gizmo g in base.CompGetGizmosExtra())
+			{
+				yield return g;
+			}
+			if (parent.Faction != Faction.OfPlayer || !RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled)
+			{
+				yield break;
+			}
+			yield return new Command_Toggle
+			{
+				defaultLabel = raised ? "Ladder raised" : "Ladder lowered",
+				defaultDesc = "Lowered, your people and friendly visitors can climb out of this pit; trapped enemies "
+					+ "cannot, and prisoners only during a prison break. Raised, nobody can climb out, your own "
+					+ "people included.",
+				icon = TexCommand.ForbidOff,
+				isActive = () => !raised,
+				toggleAction = () => raised = !raised,
+			};
+		}
+
+		public override string CompInspectStringExtra()
+		{
+			if (!RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled)
+			{
+				return null;
+			}
+			return raised
+				? "Ladder raised: nobody can climb out."
+				: "Ladder lowered: your people climb; prisoners only in a prison break.";
+		}
+
+		public override void PostExposeData()
+		{
+			base.PostExposeData();
+			Scribe_Values.Look(ref raised, "rmLadderRaised", false);
+		}
+	}
+
+	public static class RM_LadderRules
+	{
+		/// <summary>Does the ladder in this cell (if any) let THIS pawn climb out? Without the prison-door
+		/// setting any ladder lets anyone out, the pre-LADDER_PRISON_DOOR_1 rule.</summary>
+		public static bool LadderLetsOut(Map map, IntVec3 c, Pawn p)
+		{
+			if (map == null || !c.InBounds(map))
+			{
+				return false;
+			}
+			ThingDef ladderDef = RimMandrakeFlowWorks_DefOf.RM_Ladder;
+			if (ladderDef == null)
+			{
+				return false;
+			}
+			List<Thing> things = c.GetThingList(map);
+			for (int i = 0; i < things.Count; i++)
+			{
+				if (things[i].def != ladderDef)
+				{
+					continue;
+				}
+				if (!RimMandrakeFlowWorksSettings.ladderPrisonDoorEnabled)
+				{
+					return true;
+				}
+				RM_CompLadder comp = things[i].TryGetComp<RM_CompLadder>();
+				if (comp != null && comp.raised)
+				{
+					return false;
+				}
+				return MayClimb(p);
+			}
+			return false;
+		}
+
+		/// <summary>The prison-door rule for a lowered ladder.</summary>
+		public static bool MayClimb(Pawn p)
+		{
+			if (p == null)
+			{
+				return false;
+			}
+			if (p.IsPrisoner)
+			{
+				return PrisonBreakUtility.IsPrisonBreaking(p);
+			}
+			if (p.Faction == null)
+			{
+				return false; // wild animals and factionless pawns stay down
+			}
+			if (p.Faction == Faction.OfPlayer)
+			{
+				return true;
+			}
+			return Faction.OfPlayer != null && !p.Faction.HostileTo(Faction.OfPlayer);
 		}
 	}
 

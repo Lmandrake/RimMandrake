@@ -37,7 +37,7 @@
   <ThingDef ParentName="BuildingBase">
     <defName>RM_Ladder</defName>
     <label>ladder</label>
-    <description>A rough ladder braced against the wall of an excavation. Anything held at the bottom of a superdeep hole can climb it. Take the ladder away and they stay down there.</description>
+    <description>A rough ladder braced against the wall of an excavation. Lowered, it works like a prison door: your people climb it, trapped enemies cannot, prisoners only in a prison break. Raised, nobody climbs out.</description>
     <thingClass>Building</thingClass>
     <graphicData>
       <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
@@ -66,6 +66,10 @@
       <isEdifice>false</isEdifice>
       <expandHomeArea>false</expandHomeArea>
     </building>
+    <comps>
+      <!-- LADDER_PRISON_DOOR_1: raised/lowered, prison-door climbing rule. -->
+      <li Class="RimMandrake.FlowWorks.RM_CompProperties_Ladder" />
+    </comps>
     <placeWorkers>
       <li>RimMandrake.FlowWorks.PlaceWorker_LadderOnExcavation</li>
     </placeWorkers>

@@ -58,7 +58,7 @@ FW_TOGGLES = [
     "stickyLimitlessEnabled", "recessionEnabled", "refillEnabled",
     "rainFillsExcavationsEnabled", "edgeSinksEnabled",
     "superdeepCaptureEnabled", "superdeepCapturesOwnFaction",
-    "ladderRequiredToExitEnabled", "superdeepShootingRuleEnabled",
+    "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "superdeepShootingRuleEnabled",
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
 ]
@@ -975,6 +975,35 @@ def toggle_ladder_required(t):
     with t.component("ladder_required_off", toggle="ladderRequiredToExitEnabled"):
         with _setting(t, "ladderRequiredToExitEnabled", False):
             _wait(t, PULSE)
+
+
+@suite.chain("ladder_prison_door")
+def ladder_prison_door(t):
+    """LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a lowered ladder is a prison door. Ladders on every
+    pit cell, pawns spawned straight onto the pit floor: your own (captured) colonist is NOT held, a
+    hostile IS held; with the prison-door setting off, a ladder lets the hostile out too.
+    Not proven here: the RAISED state (no bridge verb writes RM_CompLadder.raised yet; first poke is the
+    gizmo by hand, then flowworks_pit_report) and the prisoner-during-a-prison-break case."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    t.bridge_call("jawa/spawn_batch", ops=";".join("%s:%d,%d" % (LADDER, x, z) for x, z in pit))
+    with t.component("lowered_lets_colonist_out", toggle="ladderPrisonDoorEnabled"):
+        with _setting(t, "superdeepCapturesOwnFaction", True):
+            pid = _spawn_pawn_at(t, "Colonist", pit[4][0], pit[4][1])
+            _wait(t, PULSE)
+            if t._guard():
+                _expect(_pit_held(t, pid, pit) is False, "own colonist held in a pit with a lowered ladder")
+    with t.component("lowered_holds_hostile", toggle="ladderPrisonDoorEnabled"):
+        hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
+        _wait(t, PULSE)
+        if t._guard():
+            _expect(_pit_held(t, hid, pit) is True, "hostile NOT held despite the prison-door ladder")
+    with t.component("prison_door_off_lets_hostile_out", toggle="ladderPrisonDoorEnabled"):
+        with _setting(t, "ladderPrisonDoorEnabled", False):
+            _wait(t, PULSE)
+            if t._guard():
+                _expect(_pit_held(t, hid, pit) is False, "prison-door OFF but a ladder still holds the hostile")
 
 
 @suite.chain("toggle_superdeep_shooting")

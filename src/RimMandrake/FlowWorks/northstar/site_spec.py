@@ -49,7 +49,8 @@ SETTINGS = {
         "sourceBudgetMultiplier": 1.0, "minLimitlessBodyCells": 50.0, "refillRateMultiplier": 1.0,
         "rainFillPerPulse": 0.1,
         "superdeepCaptureEnabled": True, "superdeepCapturesOwnFaction": False,
-        "ladderRequiredToExitEnabled": True, "superdeepShootingRuleEnabled": True,
+        "ladderRequiredToExitEnabled": True, "ladderPrisonDoorEnabled": True,
+        "superdeepShootingRuleEnabled": True,
         "pitWidthBodySizeMultiplier": 1.0,
         # PIT_LEGACY_CODE_RETIRE_1: the four survivors of the retired PitsSettings, rehoused here
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,

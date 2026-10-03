@@ -124,6 +124,8 @@ namespace RimMandrake.FlowWorks
         public static bool superdeepCaptureEnabled = true;
         public static bool superdeepCapturesOwnFaction = false;
         public static bool ladderRequiredToExitEnabled = true;
+        // LADDER_PRISON_DOOR_1 (owner Q1 2026-10-02): a ladder is a prison door. Off = any ladder lets anyone out.
+        public static bool ladderPrisonDoorEnabled = true;
         public static bool superdeepShootingRuleEnabled = true;
         // SUPERDEEP_HOLDER_RETIRE_1, owner Q4: the pit must be as wide as the creature.
         // Required width W = max(1, round(sqrt(BodySize x this))). 1 = the proposed bands.
@@ -251,6 +253,7 @@ namespace RimMandrake.FlowWorks
             Scribe_Values.Look(ref superdeepCaptureEnabled, "superdeepCaptureEnabled", true);
             Scribe_Values.Look(ref superdeepCapturesOwnFaction, "superdeepCapturesOwnFaction", false);
             Scribe_Values.Look(ref ladderRequiredToExitEnabled, "ladderRequiredToExitEnabled", true);
+            Scribe_Values.Look(ref ladderPrisonDoorEnabled, "ladderPrisonDoorEnabled", true);
             Scribe_Values.Look(ref superdeepShootingRuleEnabled, "superdeepShootingRuleEnabled", true);
             Scribe_Values.Look(ref pitWidthBodySizeMultiplier, "pitWidthBodySizeMultiplier", 1f);
             Scribe_Values.Look(ref trapTriggerEnabled, "trapTriggerEnabled", true);
@@ -461,6 +464,11 @@ namespace RimMandrake.FlowWorks
                 "On, a pit holds whoever is in it until a ladder stands in their cell: pull the "
               + "ladder and they are stranded. Off: a pit still costs the fall, but anyone can walk "
               + "back out.");
+
+            list.CheckboxLabeled("A ladder works like a prison door", ref ladderPrisonDoorEnabled,
+                "On, a lowered ladder lets your people and friendly visitors climb out but not trapped "
+              + "enemies or wild animals, and prisoners only during a prison break; a raised ladder lets "
+              + "nobody out, your own people included. Off: any ladder lets anyone climb out.");
 
             list.Label("How wide a pit must be to hold a creature (body size multiplier): "
                      + pitWidthBodySizeMultiplier.ToString("F2"), tooltip:
