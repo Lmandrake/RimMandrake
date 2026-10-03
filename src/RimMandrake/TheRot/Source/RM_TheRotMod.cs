@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RimMandrake.EnvironmentalHazards;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,16 +13,20 @@ namespace RimMandrake.TheRot
     // from everywhere, Scribe_Values in ExposeData, a DoWindowContents helper
     // called from the Mod subclass. Defaults = shipped behavior throughout.
     //
-    // ⚠️ NOT YET WIRED to mandrake.rm.environmentalhazards' own settings
-    // screen, which already gates several of these same mechanics
-    // (RM_MapComponent_AcceleratedRot, RM_MapComponent_WarmGround,
-    // RM_MapComponent_LivingProduce, etc. read that assembly's own
-    // RM_EnvironmentalHazardsSettings fields, not these). This screen is the
-    // per-biome front described in the item's §6a spec; consolidating the two
-    // — or moving the gates — is OWED, not done here (see the build's own
-    // REMAINS note). Toggling a switch below therefore does not yet change
-    // whether the shared mechanic runs; it is scaffolding for that
-    // consolidation, not a behavior change today.
+    // ROT_MOD_SETTINGS_WIRING_1: every control on this screen is wired, or hidden until the item that
+    // wires it lands. This screen is the per-biome FRONT for mechanics living in mandrake.rm.environmentalhazards:
+    // RM_TheRotFront (below) registers into RM_KitFronts at startup, and the shared mechanics ask it before
+    // running on a map. The shared screen's own gate still applies first. A map that is neither The Rot nor an
+    // opted-in cross-biome map is never affected by this screen.
+    //   theRotEnabled             master: off = every gated mechanic reads off on Rot / cross-biome maps
+    //   sheenExposure             sheenExposure          acceleratedRot(+Rate)   acceleratedRot
+    //   livingProduceHeat(+PerUnit) livingProduceHeat    warmMat(+Warmth)        warmGround
+    //   livePreparations / ...StrictViability            livePrepStrict (both must be on for strict)
+    //   sporeCloudIncidentWeight  sporeCloud: 0 = never fires, otherwise scales the incident's chance
+    //   guardianGroves, paleTreeSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
+    //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
+    //   healthSharing: the field is kept and saved, but the checkbox is hidden until ROT_WOUND_SHARING_WIRING_1
+    //                  gives it a reader (a control that moves and does nothing is the defect)
     // ════════════════════════════════════════════════════════════════════
     public class RM_TheRotSettings : ModSettings
     {
@@ -137,12 +142,12 @@ namespace RimMandrake.TheRot
                 "Food/ingredient preparations stay biologically \"alive\" until used.");
             list.CheckboxLabeled("  Strict viability", ref livePreparationsStrictViability,
                 "Strict: viability lapses on any mishandling. Lenient: more forgiving window.");
-            list.CheckboxLabeled("Guardian groves", ref guardianGroves,
-                "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring.");
-            list.CheckboxLabeled("Health sharing", ref healthSharing,
-                "Kin-linked pawns share a portion of wound healing.");
-            list.CheckboxLabeled("Pale tree spawn", ref paleTreeSpawn,
-                "The rare pale tree (a door-ajar oddity) wild-spawns. Royalty-gated regardless of this toggle.");
+            list.CheckboxLabeled("Guardian groves (new maps, restart to apply)", ref guardianGroves,
+                "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring. WORLDGEN-AFFECTING: "
+              + "applies to maps generated after the next launch.");
+            list.CheckboxLabeled("Pale tree spawn (new maps, restart to apply)", ref paleTreeSpawn,
+                "The rare pale tree (a door-ajar oddity) wild-spawns. Royalty-gated regardless of this toggle. "
+              + "WORLDGEN-AFFECTING: applies to maps generated after the next launch.");
             list.Label("Spore cloud incident weight: " + sporeCloudIncidentWeight.ToString("0.00") + "x");
             sporeCloudIncidentWeight = list.Slider(sporeCloudIncidentWeight, 0f, 3f);
             list.GapLine();
@@ -163,12 +168,95 @@ namespace RimMandrake.TheRot
                     biomeListBuffer = list.TextEntry(biomeListBuffer);
                     crossBiomeBiomeList = biomeListBuffer;
                 }
-                list.Label("  Coverage: " + (crossBiomeCoverage * 100f).ToString("0") + "%");
+                list.Label("  Intensity on those maps: " + (crossBiomeCoverage * 100f).ToString("0") + "%");
                 crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
             }
 
             list.End();
         }
+    }
+
+    /// <summary>ROT_MOD_SETTINGS_WIRING_1: registers this screen as the front for the shared Rot mechanics.</summary>
+    [StaticConstructorOnStartup]
+    public static class RM_TheRotFront
+    {
+        public static bool IsRotBiome(BiomeDef biome)
+        {
+            return biome != null && (biome.defName == "RM_TheRot" || biome.defName == "RUT_TheRot");
+        }
+
+        /// <summary>True when this screen governs a map of this biome (the Rot itself, or an opted-in cross-biome map).</summary>
+        public static bool Governs(BiomeDef biome)
+        {
+            return IsRotBiome(biome) || RM_TheRotSettings.AppliesToBiome(biome);
+        }
+
+        public static bool Enabled(string key, BiomeDef biome)
+        {
+            if (!Governs(biome))
+            {
+                return true;
+            }
+            if (!RM_TheRotSettings.theRotEnabled)
+            {
+                return false;
+            }
+            switch (key)
+            {
+                case "sheenExposure": return RM_TheRotSettings.sheenExposure;
+                case "acceleratedRot": return RM_TheRotSettings.acceleratedRot;
+                case "livingProduceHeat": return RM_TheRotSettings.livingProduceHeat;
+                case "warmGround": return RM_TheRotSettings.warmMat;
+                case "livePrepStrict": return RM_TheRotSettings.livePreparations && RM_TheRotSettings.livePreparationsStrictViability;
+                case "sporeCloud": return RM_TheRotSettings.sporeCloudIncidentWeight > 0f;
+                default: return true;
+            }
+        }
+
+        public static float Factor(string key, BiomeDef biome)
+        {
+            if (!Governs(biome))
+            {
+                return 1f;
+            }
+            float f;
+            switch (key)
+            {
+                case "acceleratedRot": f = RM_TheRotSettings.acceleratedRotRate; break;
+                case "livingProduceHeat": f = RM_TheRotSettings.livingProduceHeatPerUnit; break;
+                case "warmGround": f = RM_TheRotSettings.warmMatWarmth; break;
+                case "sporeCloud": f = RM_TheRotSettings.sporeCloudIncidentWeight; break;
+                default: return 1f;
+            }
+            return IsRotBiome(biome) ? f : f * RM_TheRotSettings.crossBiomeCoverage;
+        }
+
+        static RM_TheRotFront()
+        {
+            RM_KitFronts.enabled = Enabled;
+            RM_KitFronts.factor = Factor;
+            RM_KitFronts.extensionDonor = biome =>
+                !IsRotBiome(biome) && RM_TheRotSettings.theRotEnabled && RM_TheRotSettings.AppliesToBiome(biome)
+                    ? DefDatabase<BiomeDef>.GetNamedSilentFail("RM_TheRot")
+                    : null;
+
+            // Wild-spawn gates take effect on the next launch (the roster is read at map generation).
+            BiomeDef rot = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_TheRot");
+            if (rot == null || rot.wildPlants == null)
+            {
+                return;
+            }
+            if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.paleTreeSpawn)
+            {
+                rot.wildPlants.RemoveAll(r => r.plant != null && r.plant.defName == "RM_PaleTree");
+            }
+            if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.guardianGroves)
+            {
+                rot.wildPlants.RemoveAll(r => r.plant != null && System.Array.IndexOf(GuardianGroveRows, r.plant.defName) >= 0);
+            }
+        }
+
+        private static readonly string[] GuardianGroveRows = { "RM_AgelessCap", "RM_RegenerantVeil", "RM_EuphoricCrown", "RM_FalseFruit" };
     }
 
     public class RM_TheRotMod : Mod

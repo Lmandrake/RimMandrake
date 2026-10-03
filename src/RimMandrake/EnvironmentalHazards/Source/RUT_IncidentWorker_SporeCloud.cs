@@ -1,4 +1,5 @@
 using RimWorld;
+using Verse;
 
 namespace RimMandrake.EnvironmentalHazards
 {
@@ -21,7 +22,22 @@ namespace RimMandrake.EnvironmentalHazards
                 return false; // mod option: spore cloud event disabled
             }
 
+            if (parms.target is Map map && !RM_KitFronts.Enabled("sporeCloud", map.Biome))
+            {
+                return false;
+            }
+
             return base.CanFireNowSub(parms);
+        }
+
+        public override float ChanceFactorNow(IIncidentTarget target)
+        {
+            float f = base.ChanceFactorNow(target);
+            if (target is Map map)
+            {
+                f *= RM_KitFronts.Factor("sporeCloud", map.Biome);
+            }
+            return f;
         }
     }
 }

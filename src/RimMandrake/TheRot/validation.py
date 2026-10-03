@@ -88,8 +88,22 @@ def static_checks():
     for n in fields:
         if '"%s"' % n not in scribed:
             bad.append("settings field %s is not Scribed" % n)
-        if not re.search(r"\b%s\b" % n, ui):
+        if n != "healthSharing" and not re.search(r"\b%s\b" % n, ui):
             bad.append("settings field %s has no control in DoWindowContents" % n)
+    # ROT_MOD_SETTINGS_WIRING_1: every field needs a READER outside its own Scribe line and the settings UI
+    # (declaration + one reader = 2 mentions). healthSharing is the one named exception until
+    # ROT_WOUND_SHARING_WIRING_1 gives it a reader; its checkbox is hidden meanwhile.
+    reader_text = re.sub(r"Scribe_Values\.Look\([^\n]*\n", "", src)
+    ui_start = reader_text.index("public void DoWindowContents")
+    ui_end = reader_text.index("public class RM_TheRotFront") if "public class RM_TheRotFront" in reader_text else reader_text.index("static class RM_TheRotFront")
+    reader_text = reader_text[:ui_start] + reader_text[ui_end:]
+    for n in fields:
+        if n == "healthSharing":
+            continue
+        if len(re.findall(r"\b%s\b" % n, reader_text)) < 2:
+            bad.append("settings field %s has a control but no reader (moves and does nothing)" % n)
+    if "RM_KitFronts" not in src:
+        bad.append("RM_TheRotFront does not register into RM_KitFronts")
     proj = open(os.path.join(HERE, "Source", "RM_TheRot.csproj"), encoding="utf-8").read()
     for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):
         if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj:
@@ -308,7 +322,7 @@ def _build_suite():
                 _unmeasured(t, 'the Sheen weather rotation bootstrapping a spore-coating hediff needs an RM_TheRot map with a colonist under the Sheen weather and game hours of ticks; weather_set is drivable but the biome-scoped rotation is not')
         with t.component("accelerated_rot_on_living_ground", toggle="acceleratedRot"):
             if _live(t):
-                _unmeasured(t, "faster decay of items/corpses on the biome's ground needs a generated RM_TheRot map (or a cross-biome map) and ticks; the rot MapComponent reads the shared environmentalhazards settings, not this screen (see the settings class header)")
+                _unmeasured(t, "faster decay of items/corpses on the biome's ground needs a generated RM_TheRot map (or a cross-biome map) and ticks; the rot MapComponent asks this screen through RM_KitFronts; needs a debug [Tool] to flip the setting")
         with t.component("living_produce_heat", toggle="livingProduceHeat"):
             if _live(t):
                 _unmeasured(t, 'live-preparation warmth needs a spawned live preparation and a temperature read after ticks on an RM_TheRot map')

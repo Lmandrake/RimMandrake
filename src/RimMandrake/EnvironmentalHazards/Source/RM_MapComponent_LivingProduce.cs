@@ -32,7 +32,8 @@ namespace RimMandrake.EnvironmentalHazards
         {
             base.MapComponentTick();
 
-            if (!RM_EnvironmentalHazardsSettings.livingProduceHeatEnabled)
+            if (!RM_EnvironmentalHazardsSettings.livingProduceHeatEnabled
+                || !RM_KitFronts.Enabled("livingProduceHeat", map.Biome))
             {
                 return;
             }
@@ -49,6 +50,7 @@ namespace RimMandrake.EnvironmentalHazards
         private void PushRoomHeat()
         {
             Dictionary<Room, float> energyByRoom = null;
+            float heatFactor = RM_KitFronts.Factor("livingProduceHeat", map.Biome);
             List<Thing> things = map.listerThings.AllThings;
             for (int i = 0; i < things.Count; i++)
             {
@@ -70,7 +72,7 @@ namespace RimMandrake.EnvironmentalHazards
                     continue; // Room.PushHeat itself no-ops on an outdoor room; skip the lookup work for it here too
                 }
 
-                float energy = t.stackCount * ext.heatPerUnit;
+                float energy = t.stackCount * ext.heatPerUnit * heatFactor;
                 energyByRoom ??= new Dictionary<Room, float>();
                 energyByRoom.TryGetValue(room, out float existing);
                 energyByRoom[room] = existing + energy;

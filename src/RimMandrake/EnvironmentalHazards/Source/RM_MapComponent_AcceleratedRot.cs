@@ -62,7 +62,8 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            if (map.Biome?.GetModExtension<RM_AcceleratedRotExtension>() == null)
+            if (RM_KitFronts.Extension<RM_AcceleratedRotExtension>(map.Biome) == null
+                || !RM_KitFronts.Enabled("acceleratedRot", map.Biome))
             {
                 return;
             }
@@ -102,7 +103,7 @@ namespace RimMandrake.EnvironmentalHazards
                 float multiplier = (t is Corpse)
                     ? RM_EnvironmentalHazardsSettings.acceleratedRotCorpseMultiplier
                     : RM_EnvironmentalHazardsSettings.acceleratedRotItemMultiplier;
-                float extra = multiplier - 1f; // vanilla's own tick already supplies the base ×1
+                float extra = (multiplier - 1f) * RM_KitFronts.Factor("acceleratedRot", map.Biome); // vanilla's own tick already supplies the base ×1
                 if (extra <= 0f)
                 {
                     continue;
