@@ -18,6 +18,23 @@
     <reportString>setting off TargetA from range.</reportString>
   </JobDef>
 
+  <JobDef>
+    <defName>RM_DustBlight</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_DustBlight</driverClass>
+    <reportString>dusting TargetA with war dust.</reportString>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_DustBlight</defName>
+    <label>dust blight with war dust</label>
+    <giverClass>RimMandrake.Scarlands.WorkGiver_DustBlight</giverClass>
+    <workType>Growing</workType>
+    <priorityInType>60</priorityInType>
+    <verb>dust</verb>
+    <gerund>dusting</gerund>
+    <scanThings>true</scanThings>
+    <requiredCapacities><li>Manipulation</li></requiredCapacities>
+  </WorkGiverDef>
   <WorkGiverDef>
     <defName>RM_SweepWarDust</defName>
     <label>sweep war dust</label>

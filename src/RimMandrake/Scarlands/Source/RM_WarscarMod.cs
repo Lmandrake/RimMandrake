@@ -91,6 +91,7 @@ namespace RimMandrake.Scarlands
         public static float settlingToxicStrength = 1f;      // scales the airborne toxic buildup (0 = harmless)
         public static bool liftFrontEnabled = true;          // the visible front with brief toxic exposure
         public static bool warDustEnabled = true;            // film can be swept up for war dust
+        public static bool warDustBlightCureEnabled = true;  // growers dust blighted plants with war dust (insecticide)
         public static float ordnancePerMap = 3f;             // buried shells per new map (0-8)
 
         // WARSCAR_GEIGER_CHOIR_1 toggles.
@@ -155,6 +156,7 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref settlingToxicStrength, "settlingToxicStrength", 1f);
             Scribe_Values.Look(ref liftFrontEnabled, "liftFrontEnabled", true);
             Scribe_Values.Look(ref warDustEnabled, "warDustEnabled", true);
+            Scribe_Values.Look(ref warDustBlightCureEnabled, "warDustBlightCureEnabled", true);
             Scribe_Values.Look(ref ordnancePerMap, "ordnancePerMap", 3f);
             Scribe_Values.Look(ref choirEnabled, "choirEnabled", true);
             Scribe_Values.Look(ref choirVolume, "choirVolume", 1f);
@@ -267,7 +269,9 @@ namespace RimMandrake.Scarlands
             list.CheckboxLabeled("Lift front", ref liftFrontEnabled,
                 "When the wind returns the film lifts as a grey front crossing the map downwind, with brief airborne toxic exposure as it passes.");
             list.CheckboxLabeled("War dust", ref warDustEnabled,
-                "Colonists may sweep the film into war dust (thickest in crater bowls), a toxic powder for tox shells.");
+                "Colonists may sweep the film into war dust (thickest in crater bowls), a toxic powder for tox shells, an insecticide and a dye filler.");
+            list.CheckboxLabeled("War dust cures blight", ref warDustBlightCureEnabled,
+                "Growers carry one war dust to each blighted plant and dust it: the blight dies and the plant lives. Off: blight is cut as in vanilla.");
             list.Label("Buried shells per map: up to " + Mathf.RoundToInt(ordnancePerMap) + " (new maps)");
             ordnancePerMap = Mathf.Round(list.Slider(ordnancePerMap, 0f, 8f));
             list.GapLine();

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <!-- WARSCAR_SETTLING_WEATHER_1: swept up from the settled film; exists only after calm. Art is a tinted vanilla
-       chemfuel stack until real art exists. Uses: tox-gas shell recipe (RM_MakeToxShellFromWarDust). -->
+       chemfuel stack until real art exists. Uses: tox-gas shell recipe (RM_MakeToxShellFromWarDust), dye filler (RM_StretchDyeWithWarDust),
+       blight cure (RM_DustBlight work giver). -->
   <ThingDef ParentName="ResourceBase">
     <defName>RM_WarDust</defName>
     <label>war dust</label>
-    <description>Fine grey powder swept off the settled film: ground-up munitions, slag and the poison of an old war. Toxic to handle without care. Packs into tox-gas shells.</description>
+    <description>Fine grey powder swept off the settled film: ground-up munitions, slag and the poison of an old war. Toxic to handle without care. Packs into tox-gas shells, kills blight on a dusted crop, and stretches dye as a grey filler.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Chemfuel</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
