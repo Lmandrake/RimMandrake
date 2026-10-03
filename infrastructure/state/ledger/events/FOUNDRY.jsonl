@@ -2294,3 +2294,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:47:02Z","tsn":1791042422780603776}
 {"seat":"FOUNDRY","event":"start","id":"PYRELANDS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:47:03Z","tsn":1791042423435113768}
 {"seat":"FOUNDRY","event":"close","id":"PYRELANDS_FAUNA_TIER_PORT_BUILD_1","sha":"c0f2e9842212ecf06df8d326f38d9e7ea1056a80","ts":"2026-10-03T15:52:36Z","tsn":1791042756025471025}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-03T15:54:11Z","tsn":1791042851507599714}
+{"seat":"FOUNDRY","event":"claim","id":"PYRELANDS_HEAT_KIND_BUILD_1","ts":"2026-10-03T15:54:36Z","tsn":1791042876233549853}
+{"seat":"FOUNDRY","event":"start","id":"PYRELANDS_HEAT_KIND_BUILD_1","ts":"2026-10-03T15:54:36Z","tsn":1791042876852218522}
+{"seat":"FOUNDRY","event":"file","id":"PYRELANDS_FURNACE_WARMTH_AMBIENT_1","title":"Retire RM_FurnaceWarmth hediff; furnace-beast warmth becomes a local AmbientTemperature offset (+ strength slider)","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md","for":"FOUNDRY","ts":"2026-10-03T15:54:40Z","tsn":1791042880605597126}
+{"seat":"FOUNDRY","event":"close","id":"PYRELANDS_HEAT_KIND_BUILD_1","sha":"23f664e468dac7bd817ef19fc79b2ed527d2ba05","ts":"2026-10-03T15:55:51Z","tsn":1791042951007237817}
