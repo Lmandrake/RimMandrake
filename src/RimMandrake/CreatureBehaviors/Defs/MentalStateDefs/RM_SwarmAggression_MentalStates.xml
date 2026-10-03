@@ -48,4 +48,26 @@
     <inCaravanCanDo>false</inCaravanCanDo>
   </MentalStateDef>
 
+  <!-- REACTION_MECHANISM_GENERALISE_1 step 3: the hive rally's hunt
+       (RM_ReactionResponseRule_Rally.mentalState). Same class as the swarm —
+       hostile to the one intruder, anchored on the alarm's origin — but it
+       holds its grudge longer: a hive hunts you through its corridors, a wasp
+       is outrun in seconds. Its disengage radius (set by the rally rule, the
+       hive's size) is what normally ends it; these are the backstop. -->
+  <MentalStateDef>
+    <defName>RM_HiveRally</defName>
+    <label>rallying</label>
+    <stateClass>RimMandrake.CreatureBehaviors.RM_MentalState_ScopedAggression</stateClass>
+    <category>Aggro</category>
+    <baseInspectLine>Hunting an intruder through the hive</baseInspectLine>
+    <recoveryMessage>{0} has stopped hunting.</recoveryMessage>
+    <nameColor>(0.9,0.35,0.2)</nameColor>
+    <minTicksBeforeRecovery>600</minTicksBeforeRecovery>
+    <recoveryMtbDays>0.5</recoveryMtbDays>
+    <stopsJobs>true</stopsJobs>
+    <recoverFromDowned>true</recoverFromDowned>
+    <recoverFromSleep>true</recoverFromSleep>
+    <inCaravanCanDo>false</inCaravanCanDo>
+  </MentalStateDef>
+
 </Defs>

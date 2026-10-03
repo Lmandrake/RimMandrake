@@ -47,6 +47,23 @@ namespace RimMandrake.CreatureBehaviors
         // error, not a silent no-op (see ConfigErrors below).
         public RM_ReactionResponseRule response;
 
+        // REACTION_MECHANISM_GENERALISE_1 step 3 (the ant hive): a PROXIMITY
+        // trigger beside the damage one — "an intruder is detected". 0 (the
+        // default) = off, so every existing consumer (gall, gallowroot) is
+        // untouched. Only a ticking parent (a pawn) can detect; a plant or a
+        // non-ticking building never runs the scan.
+        public float detectRadius = 0f;
+
+        // Ticks between scans, hash-staggered per parent. INVENTED: 120 (~2 s).
+        public int detectIntervalTicks = 120;
+
+        // A sentry only notices what it can see — corridors and corners matter.
+        public bool detectRequiresLineOfSight = true;
+
+        // A sleeping sentry notices nothing (damage still wakes it). Makes a
+        // night descent quieter than a day one: a choice the player can read.
+        public bool detectRequiresAwake = true;
+
         public RM_CompProperties_ReactionSource()
         {
             compClass = typeof(RM_CompReactionSource);
@@ -72,6 +89,11 @@ namespace RimMandrake.CreatureBehaviors
             if (cooldownTicks < 0)
             {
                 yield return "RM_CompProperties_ReactionSource cooldownTicks must be >= 0.";
+            }
+
+            if (detectRadius > 0f && detectIntervalTicks <= 0)
+            {
+                yield return "RM_CompProperties_ReactionSource detectIntervalTicks must be > 0 when detectRadius is set.";
             }
         }
     }

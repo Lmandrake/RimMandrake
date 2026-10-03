@@ -43,6 +43,12 @@ namespace RimMandrake.CreatureBehaviors
 
         public int RemainingBudget { get; private set; }
 
+        // REACTION_MECHANISM_GENERALISE_1 step 3 (the ant hive). Set by the
+        // first response that telegraphs this event (alarm sound + message),
+        // so a rally that reaches twenty responders sounds the alarm ONCE,
+        // not twenty times. Responses that do not telegraph never read it.
+        public bool Announced;
+
         // REACTION_MECHANISM_GENERALISE_1 step 2 (HOSTILE_MOBILE_PLANTS_1).
         // Every source a propagation rule has already woken within THIS
         // event — not Scribed, not shared across events, discarded with the
@@ -75,6 +81,13 @@ namespace RimMandrake.CreatureBehaviors
             int granted = Mathf.Clamp(amount, 0, RemainingBudget);
             RemainingBudget -= granted;
             return granted;
+        }
+
+        // True if `source` was already reached by this event — lets a
+        // propagation rule skip it BEFORE spending budget on it.
+        public bool HasActivated(Thing source)
+        {
+            return _activatedSources != null && _activatedSources.Contains(source);
         }
 
         // Returns true the first time `source` is marked for this event

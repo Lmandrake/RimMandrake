@@ -95,6 +95,13 @@ namespace RimMandrake.CreatureBehaviors
 				return true;
 			}
 
+			// REACTION_MECHANISM_GENERALISE_1 step 5: a swarming/rallied pawn
+			// that stands in a reaction-suppressed cell (stench smoke) gives up.
+			if (RM_ReactionSuppression.IsSuppressed(pawn.Map, pawn.Position))
+			{
+				return true;
+			}
+
 			float radiusSq = disengageRadius * disengageRadius;
 			return (target.Position - anchorCell).LengthHorizontalSquared > radiusSq;
 		}

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -12,14 +14,13 @@ namespace RimMandrake.CreatureBehaviors
 	/// hardcoding "wake nearby responders to Manhunter" the way the shipped
 	/// comp does.
 	///
-	/// ⛔ This does NOT replace RM_CompPlantAlarm and nothing here migrates the
-	/// Rot's guardian groves onto this path — that migration is
-	/// REACTION_MECHANISM_GENERALISE_1's own step 4, explicitly out of this
-	/// pass's scope, and the item warns doing it early risks a live-content
-	/// regression. RM_CompPlantAlarm keeps shipping unchanged.
+	/// RM_CompPlantAlarm stays a separate comp (live XML names it) but since
+	/// step 4 it runs on the same event + RM_ReactionResponseRule_WakeResponders.
 	///
-	/// First consumer: RM_SkerrelGall (GREENTIDE_WASP_SWARM_1), with
-	/// propagation none and response RM_ReactionResponseRule_SpawnPawns.
+	/// Consumers: RM_SkerrelGall (spawn), RM_Gallowroot (same-kind
+	/// propagation + activate-self), RM_Kurreth hive (proximity detection +
+	/// responder propagation + rally, step 3). Every trigger, propagation hop
+	/// and response respects RM_ReactionSuppression (step 5).
 	/// </summary>
 	public class RM_CompReactionSource : ThingComp
 	{
@@ -54,6 +55,11 @@ namespace RimMandrake.CreatureBehaviors
 			if (map == null)
 			{
 				return;
+			}
+
+			if (RM_ReactionSuppression.IsSuppressed(map, parent.Position))
+			{
+				return; // step 5: a source standing in suppression does not ring
 			}
 
 			int now = Find.TickManager.TicksGame;
@@ -136,6 +142,94 @@ namespace RimMandrake.CreatureBehaviors
 			Props.response?.Respond(evt, parent);
 
 			return true;
+		}
+
+		/// <summary>True if `evt` already reached this source — a propagation rule asks before spending budget on it.</summary>
+		public bool HasHandled(RM_ReactionEvent evt)
+		{
+			return evt.HasActivated(parent);
+		}
+
+		/// <summary>
+		/// REACTION_MECHANISM_GENERALISE_1 step 3: the proximity trigger.
+		/// Off unless Props.detectRadius &gt; 0. A sentry that sees an
+		/// intruder rings exactly as if it had been hit, with the intruder as
+		/// the event's instigator — so the rally response has someone to hunt.
+		/// </summary>
+		public override void CompTickInterval(int delta)
+		{
+			base.CompTickInterval(delta);
+			if (Props.detectRadius <= 0f || !RM_CreatureBehaviorsSettings.reactionDetectionEnabled)
+			{
+				return;
+			}
+
+			if (!parent.Spawned || !parent.IsHashIntervalTick(Props.detectIntervalTicks, delta))
+			{
+				return;
+			}
+
+			Pawn self = parent as Pawn;
+			if (self != null && (self.Dead || self.Downed || self.InMentalState || self.Faction != null
+			                     || (Props.detectRequiresAwake && !self.Awake())))
+			{
+				return; // asleep, down, already answering, or a faction pawn (raiders of the same race answer their lord)
+			}
+
+			if (Find.TickManager.TicksGame - lastTriggerTick < Props.cooldownTicks)
+			{
+				return; // cheap early-out: TriggerReaction would refuse anyway
+			}
+
+			Pawn intruder = FindIntruder();
+			if (intruder != null)
+			{
+				TriggerReaction(intruder);
+			}
+		}
+
+		/// <summary>
+		/// An intruder is any pawn with a faction or a humanlike mind
+		/// (colonists, their animals, raiders, visitors) that does not itself
+		/// answer this source's tag. Wild faction-less animals — the hive's own
+		/// farmed livestock among them — are never intruders.
+		/// </summary>
+		private Pawn FindIntruder()
+		{
+			Map map = parent.Map;
+			float radiusSq = Props.detectRadius * Props.detectRadius;
+			IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
+			for (int i = 0; i < pawns.Count; i++)
+			{
+				Pawn p = pawns[i];
+				if (p == null || p == parent || p.Dead || !p.Spawned)
+				{
+					continue;
+				}
+
+				if ((p.Position - parent.Position).LengthHorizontalSquared > radiusSq)
+				{
+					continue;
+				}
+
+				if (p.Faction == null && !p.RaceProps.Humanlike)
+				{
+					continue;
+				}
+
+				if (RM_ReactionResponders.Answers(p, Props.tag) || p.def == parent.def)
+				{
+					continue; // kin never trip their own alarm
+				}
+
+				if (Props.detectRequiresLineOfSight && !GenSight.LineOfSight(parent.Position, p.Position, map))
+				{
+					continue;
+				}
+
+				return p;
+			}
+			return null;
 		}
 
 		public override void PostExposeData()

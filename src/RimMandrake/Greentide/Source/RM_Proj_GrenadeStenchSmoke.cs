@@ -1,3 +1,4 @@
+using RimMandrake.CreatureBehaviors;
 using Verse;
 
 namespace RimMandrake.Greentide
@@ -25,6 +26,8 @@ namespace RimMandrake.Greentide
     //     def loading.
     public class RM_Proj_GrenadeStenchSmoke : Projectile_Explosive
     {
+        private const int StenchSuppressionTicks = 5000;
+
         protected override void Explode()
         {
             if (!RM_GreentideSettings.stenchGrenadeEnabled)
@@ -35,6 +38,19 @@ namespace RimMandrake.Greentide
 
             def.projectile.explosionRadius =
                 RM_GreentideSettings.StenchGrenadeBaseRadius * RM_GreentideSettings.stenchGrenadeRadiusMultiplier;
+
+            // REACTION_MECHANISM_GENERALISE_1 step 5: the grenade is one CALLER
+            // of the general reaction suppression (owner: the stench repels
+            // every animal in the biome, wasps included). Inside the cloud no
+            // gall boils, no swarm spreads, and swarming pawns give up. Read
+            // Map/Position before base.Explode() destroys this projectile.
+            // Duration INVENTED: 2 in-game hours, scaled by CreatureBehaviors'
+            // own suppression-duration dial.
+            if (Map != null)
+            {
+                RM_ReactionSuppression.Suppress(Map, Position, def.projectile.explosionRadius, StenchSuppressionTicks);
+            }
+
             base.Explode();
         }
     }
