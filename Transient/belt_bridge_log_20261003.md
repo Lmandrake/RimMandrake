@@ -10,3 +10,4 @@
 - 09:06:33 relaunched game UP; harvest2 saved; rerun2 started
 - 09:10:04 2nd load: SWBestiary stale ThingDefs_Abyss.xml (source moved to Abyss, deploy w/o --prune leaves old) discarded def -> raceless pawnkind cascade (AlphaMemes/GeneticRim static ctor dead), launch gate refuses. Fix: deploy --prune, relaunch
 - 09:13:52 pruned both deploys; removed 4 deployed copies of HELD files (hold never deletes -> dangling xrefs: TheSump biome, FoundryScatter x2, TibannaTap patch). relaunch 3
+- 09:14:30 lesson committed; relaunch 3 loading
