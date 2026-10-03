@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UtinniPatches · LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1: the mindstone gallery around one Shard-mind.
+     Order 957: after RM_DeepWellProvisionedDead (955) grows the Shard-minds. Added to
+     RM_LanternDeepGenerator by Patches/RUT_LanternDeepMindstoneGallery.xml. -->
+<Defs>
+  <GenStepDef>
+    <defName>RUT_LanternDeepMindstoneGallery</defName>
+    <order>957</order>
+    <genStep Class="RimMandrake.Utinni.UtinniPatches.RUT_GenStep_MindstoneGallery">
+      <veinDef>RUT_MindstoneVein</veinDef>
+      <veins>3~5</veins>
+      <radius>10</radius>
+    </genStep>
+  </GenStepDef>
+</Defs>

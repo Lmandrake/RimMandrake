@@ -2548,3 +2548,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"GREYSEA_LAMP_RESPONSE_BUILD_1","ts":"2026-10-03T21:11:28Z","tsn":1791061888334904273}
 {"seat":"FOUNDRY","event":"close","id":"GREYSEA_LAMP_RESPONSE_BUILD_1","sha":"a45dfc46f7f3","ts":"2026-10-03T21:11:28Z","tsn":1791061888903563187}
 {"seat":"FOUNDRY","event":"close","id":"GREYSEA_RULED_CONTENT_1","sha":"a45dfc46f7f3","ts":"2026-10-03T21:11:29Z","tsn":1791061889456934287}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_ORUN_GHAL_BUILD_1","ts":"2026-10-03T21:16:53Z","tsn":1791062213141057562}
+{"seat":"FOUNDRY","event":"close","id":"LANTERNDEEPS_ORUN_GHAL_BUILD_1","sha":"a963cd096564","ts":"2026-10-03T21:16:53Z","tsn":1791062213674487273}
+{"seat":"FOUNDRY","event":"file","id":"MINDSTONE_MATRIX_KINDLED_BUILD_1","title":"Mindstone matrix + the Kindled's first making: RUT_Mindstone + head casing at the reassembly harness -> RUT_MindstoneMatrix -> RSW_DW_Head_Mindstone; harness head filter + KindForHeadDef accept it; wipe/spike immunity; split from LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1","kind":"task","target":"v1","needs":"offline","caused_by":"LANTERNDEEPS_MINDSTONE_GALLERY_BUILD_1","for":"FOUNDRY","ts":"2026-10-03T21:18:54Z","tsn":1791062334976386547}
