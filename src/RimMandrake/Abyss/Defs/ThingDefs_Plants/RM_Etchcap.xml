@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    ABYSS_ETCHCAP_BUILD_1. Grows only on RM_EtchHollow: fertilityMin 0.9 against that terrain's
+    fertility 1.0. Not sun-fed (no light needs). Slow (growDays 18), low yield (3). A PlantBase
+    def never ticks Tick(); nothing here needs a comp.
+  -->
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Etchcap</defName>
+    <label>etchcap</label>
+    <description>A tight cluster of glossy black caps with violet gill-edges, crusted with fine grey grain at the base. It lives on the chemistry of the Dark's collapse-grain and grows only in the low hollows where that grain settles.</description>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Plant/Etchcap</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Nutrition>0.2</Nutrition>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <plant>
+      <growMinGlow>0</growMinGlow>
+      <growOptimalGlow>0</growOptimalGlow>
+      <fertilityMin>0.9</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <growDays>18</growDays>
+      <lifespanDaysPerGrowDays>0</lifespanDaysPerGrowDays>
+      <harvestWork>120</harvestWork>
+      <harvestYield>3</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_EtchcapCap</harvestedThingDef>
+      <sowMinSkill>6</sowMinSkill>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <interferesWithRoof>false</interferesWithRoof>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+      <pollution>Any</pollution>
+    </plant>
+  </ThingDef>
+</Defs>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ABYSS_ETCHCAP_BUILD_1. A delicacy: lavish-meal ingredient and off-world trade good. -->
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_EtchcapCap</defName>
+    <label>etchcap caps</label>
+    <description>Dense black fungus caps with violet undersides, grown on grain chemistry in the Dark. Rich, mineral and faintly sweet; cooks prize them above any other mushroom.</description>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Item/EtchcapCap</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>9</MarketValue>
+      <Mass>0.05</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>12</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>Fungus</foodType>
+    </ingestible>
+    <ingredient>
+      <mergeCompatibilityTags>
+        <li MayRequire="Ludeon.RimWorld.Ideology">Fungus</li>
+      </mergeCompatibilityTags>
+    </ingredient>
+  </ThingDef>
+</Defs>

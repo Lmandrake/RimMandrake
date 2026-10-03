@@ -122,6 +122,7 @@
       <AB_GiantStikehr MayRequire="sarg.alphabiomes">0.3</AB_GiantStikehr>  <!-- giant stikehr -->
       <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
       <AB_GiantSeptimum MayRequire="sarg.alphabiomes">0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
+      <RM_Etchcap>0.15</RM_Etchcap>  <!-- ABYSS_ETCHCAP_BUILD_1: grows only on RM_EtchHollow -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
   </BiomeDef>

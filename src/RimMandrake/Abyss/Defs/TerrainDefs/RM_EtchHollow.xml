@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_ETCHCAP_BUILD_1 - the etch-hollow: the low cells where the Dark's collapse-grain settles.
+  A STATIC terrain feature for now; ABYSS_DARK_BUILD_1 supplies the grain and ABYSS_ETCHFALL_BUILD_1
+  the erosion that will make hollows. Nothing places this terrain on a map yet (owed: a scatter or
+  the etchfall hook), so the etchcap has no home until then.
+  The texture is a flat dark-violet noise placeholder, not generated art (terrain is authored with
+  its def, not a sprite job). Fertility 1.0 on this terrain alone is what restricts the etchcap:
+  RM_Etchcap's fertilityMin is 0.9, and the Abyss's native ground has far lower fertility.
+-->
+<Defs>
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_EtchHollow</defName>
+    <label>etch-hollow</label>
+    <description>A low bowl of black stone where the Dark's falling grain has settled and eaten the rock to a fine, chemically active crust. Nothing sun-fed grows here; one thing lives on the grain.</description>
+    <texturePath>RM_Abyss/Terrains/EtchHollow</texturePath>
+    <isPaintable>false</isPaintable>
+    <edgeType>FadeRough</edgeType>
+    <renderPrecedence>336</renderPrecedence>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>1</Beauty>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <Cleanliness>0</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+    </affordances>
+    <fertility>1.0</fertility>
+    <takeFootprints>false</takeFootprints>
+    <tags>
+      <li>Rocky</li>
+    </tags>
+  </TerrainDef>
+</Defs>
