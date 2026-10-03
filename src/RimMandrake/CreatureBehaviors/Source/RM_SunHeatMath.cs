@@ -372,6 +372,19 @@ namespace RimMandrake.CreatureBehaviors
             return exposure >= fullSunMin ? Clamp01(factor) : 1f;
         }
 
+        /// <summary>WEBWORK_HEAT_SHADE_BUILD_1: is a sun-sensitive pawn exposed to light?
+        /// When the shade grid is usable and the setting reads it, exposed means the cell's shade is below
+        /// the threshold AND it is not under a roof (a roof is shade 1, so the roof case falls out);
+        /// otherwise the vanilla primitive (inSunlight) decides, which is today's behaviour.</summary>
+        public static bool ScaldExposed(bool readsShade, bool gridUsable, float shadeAt, float threshold, bool inSunlight)
+        {
+            if (readsShade && gridUsable)
+            {
+                return inSunlight && shadeAt < threshold;
+            }
+            return inSunlight;
+        }
+
         public static float Clamp01(float v)
         {
             return v < 0f ? 0f : (v > 1f ? 1f : v);

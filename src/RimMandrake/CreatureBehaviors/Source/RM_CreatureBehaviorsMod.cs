@@ -313,6 +313,8 @@ namespace RimMandrake.CreatureBehaviors
         public static bool silenceCueEnabled = true;
         public static bool sunScaldEnabled = true;
         public static float sunScaldSeverityMultiplier = 1f;
+        public static bool sunScaldReadsShade = true;
+        public static float sunScaldShadeThreshold = 0.5f;
         public static bool senseWebEnabled = true;
         public static bool proximitySoundscapeEnabled = true;
         public static bool chewAnchorsBehaviorEnabled = true;
@@ -412,6 +414,8 @@ namespace RimMandrake.CreatureBehaviors
             Scribe_Values.Look(ref silenceCueEnabled, "silenceCueEnabled", true);
             Scribe_Values.Look(ref sunScaldEnabled, "sunScaldEnabled", true);
             Scribe_Values.Look(ref sunScaldSeverityMultiplier, "sunScaldSeverityMultiplier", 1f);
+            Scribe_Values.Look(ref sunScaldReadsShade, "sunScaldReadsShade", true);
+            Scribe_Values.Look(ref sunScaldShadeThreshold, "sunScaldShadeThreshold", 0.5f);
             Scribe_Values.Look(ref senseWebEnabled, "senseWebEnabled", true);
             Scribe_Values.Look(ref proximitySoundscapeEnabled, "proximitySoundscapeEnabled", true);
             Scribe_Values.Look(ref chewAnchorsBehaviorEnabled, "chewAnchorsBehaviorEnabled", true);
@@ -532,6 +536,11 @@ namespace RimMandrake.CreatureBehaviors
               + "(frozen wherever it currently sits).");
             list.Label("Sun-scald rate: " + sunScaldSeverityMultiplier.ToString("0.00") + "x");
             sunScaldSeverityMultiplier = list.Slider(sunScaldSeverityMultiplier, 0.25f, 3f);
+            list.CheckboxLabeled("Sun-scald reads tree shade", ref sunScaldReadsShade,
+                "On a sun-heat map, trees, parasols and cast shade protect from sun-scald as well as roofs "
+              + "(off: only a roof does, as in vanilla's own light-sensitivity).");
+            list.Label("Sun-scald shade threshold: " + sunScaldShadeThreshold.ToString("0.00"));
+            sunScaldShadeThreshold = list.Slider(sunScaldShadeThreshold, 0.1f, 1f);
             list.GapLine();
 
             list.CheckboxLabeled("Web-sense network", ref senseWebEnabled,

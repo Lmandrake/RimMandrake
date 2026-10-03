@@ -68,6 +68,10 @@ def _biome():
 
 def static_checks():
     bad = []
+    # WEBWORK_HEAT_SHADE_BUILD_1: the biome declares an overhead sun-heat kind (state read lives in the live chain)
+    biome_txt = _read(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Webwork_Biome.xml"))
+    if 'Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension"' not in biome_txt or "<heatKind>overhead</heatKind>" not in biome_txt:
+        bad.append("RM_Webwork lacks an overhead RM_SunHeatExtension")
     if len(SHIPPED) < 30:
         return ["only %d defs parsed from Defs/ (sanity probe failed)" % len(SHIPPED)]
     fields = settings_fields()

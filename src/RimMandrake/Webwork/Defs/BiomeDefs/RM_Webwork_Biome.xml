@@ -31,6 +31,23 @@
     <label>the Webwork</label>
     <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
     <workerClass>RimMandrake.Webwork.RM_BiomeWorker_Webwork</workerClass>
+    <modExtensions>
+      <!-- WEBWORK_HEAT_SHADE_BUILD_1 (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead" - one kind of heat planet-wide.
+           The sun's elevation comes from the map tile's latitude (never a region name); below 55 deg the cover that
+           counts is lowSun's (lee/rock), above it roofs, parasols and canopy shade count. The sunlit clearing that
+           keeps the owners out is where colonists overheat; the canopy is cool but never safe. heatOffsetC is the
+           offset at the substellar point, scaled by sin(elevation); modest because the biome is already hot
+           (38.6 / 49.2 / 58.2 C p10/median/p90). Invented first value, tuned in live play. Vanilla heatstroke
+           does the work: no heat hediff. Kollavane, Dulloth, Vessark, Tavrosk and Brimlock (visualSizeRange max
+           >= 1.5) are vertical shade casters for the grid. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension">
+        <heatKind>overhead</heatKind>
+        <heatOffsetC>10</heatOffsetC>
+        <heatScalesWithElevation>true</heatScalesWithElevation>
+        <minScaledHeatOffsetC>4</minScaledHeatOffsetC>
+        <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
+      </li>
+    </modExtensions>
     <texture>World/Biomes/TropicalRainforest</texture>
     <foragedFood>RawBerries</foragedFood>
     <allowRoads>true</allowRoads>
