@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_BreachCrack.xml        NightsideIce · NIGHTSIDEICE_BREACH_CRACKS_1
+  The staging crack where the shivven come up (RM_BreachLoop opens it, Source/RM_BreachCracks.cs).
+  An ordinary attackable building with no faction: draft and attack it (or shoot it) before it breaks
+  open. Not deconstructible, not claimable. PLACEHOLDER ART: the shivven tell (a seam of fresh cracks),
+  drawn larger; its own art is owed.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_BreachCrack</defName>
+    <label>crack in the ice</label>
+    <description>A seam of fresh cracks in the open ice, lifting and settling as something works at it from below. Shivven are coming up here. Break it apart before it opens and they cannot.</description>
+    <thingClass>RimMandrake.NightsideIce.RM_Building_BreachCrack</thingClass>
+    <graphicData>
+      <texPath>RM_NightsideIce/Effects/RM_ShivvenTell</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.2,2.2)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <statBases>
+      <MaxHitPoints>220</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <isTargetable>true</isTargetable>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <selectable>true</selectable>
+  </ThingDef>
+</Defs>

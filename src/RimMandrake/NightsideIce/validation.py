@@ -18,6 +18,9 @@ CHAINS
   shivven         NIGHTSIDEICE_SHIVVEN_BUILD_1: RM_ShivvenProof.ProofSeek lays ice beside a working player heater, spawns a
                   shivven at the far end and reads it seeking under the ice; ProofState reads it again later (on ice,
                   never on a floor). Needs a powered heater on the map first.
+  breach_cracks   NIGHTSIDEICE_BREACH_CRACKS_1: RM_BreachProof.ProofOpen opens the first crack on open unroofed ice, never
+                  a floor, taught with a countdown; ProofRelease breaks it and shivven come up; ProofDestroyStops opens
+                  a second (untaught) crack, destroys it and no shivven come.
   map_mechanics   a generated nightside-ice map (all-Ice terrain, no ponds, margin events): UNMEASURED.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
@@ -134,6 +137,11 @@ def static_checks():
                     bad.append("RM_Shivven %s is not true" % k)
             if (e.findtext("rumbleSound") or "").startswith("RM_SandSwim"):
                 bad.append("the shivven borrow the Stillsand's rumble: own sounds")
+    if ("ThingDef", "RM_BreachCrack") not in SHIPPED:
+        bad.append("ThingDef RM_BreachCrack not shipped")
+    cs = open(os.path.join(HERE, "Source", "RM_BreachCracks.cs"), encoding="utf-8").read()
+    if "TerrainDefOf.Ice" not in cs or "Roofed(map)" not in cs or "GetEdifice(map) != null" not in cs:
+        bad.append("crack cell rule lost one of its gates (Ice terrain, unroofed, no edifice)")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "NightsideIce.md")):
         bad.append("walk missing")
     return bad
@@ -346,6 +354,28 @@ def _build_suite():
             txt = _shiv(t, "ProofState")
             if _live(t) and (txt == "NONE" or any("terrain=Ice" not in part for part in txt.split(" | "))):
                 raise ExpectationFailed("a shivven left the ice or is gone: %s" % txt)
+
+    def _breach(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.NightsideIce.RM_BreachProof", method=method, args="current")
+        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+    @suite.chain("breach_cracks")
+    def breach_cracks(t):
+        """NIGHTSIDEICE_BREACH_CRACKS_1. Run on a map with a player building; the proofs lay ice if none is open.
+        The first crack per map is the taught one, so run this on a fresh map."""
+        with t.component("first_crack_on_open_ice_taught", toggle="breachEnabled"):
+            txt = _breach(t, "ProofOpen")
+            if _live(t) and not (txt.startswith("OPEN") and "terrain=Ice" in txt and "roofed=False" in txt
+                                 and "floor=False" in txt and "taught=True" in txt):
+                raise ExpectationFailed("first crack not on open ice or not taught: %s" % txt)
+        with t.component("crack_releases_shivven", toggle="breachEnabled"):
+            txt = _breach(t, "ProofRelease")
+            if _live(t) and not (txt.startswith("RELEASED") and "crackGone=True" in txt and not txt.startswith("RELEASED 0")):
+                raise ExpectationFailed("the crack did not let shivven up: %s" % txt)
+        with t.component("destroyed_crack_stops_breach", toggle="breachEnabled"):
+            txt = _breach(t, "ProofDestroyStops")
+            if _live(t) and not (txt.startswith("STOPPED") and "secondTaught=False" in txt):
+                raise ExpectationFailed("destroying the crack did not stop it, or a later crack was taught: %s" % txt)
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):

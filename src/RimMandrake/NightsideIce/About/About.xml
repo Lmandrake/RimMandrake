@@ -40,7 +40,8 @@ Ships the BiomeDef and the heat dial (NIGHTSIDEICE_HEAT_DIAL_1): one continuous
 reading of how warm the colony is against the ice, shown as a thermal-signature
 alert, and the shivven (NIGHTSIDEICE_SHIVVEN_BUILD_1) that read it: blind tunnelers that travel
 inside the ice on the Creature Behaviors sand-swim kit, head for the hottest heater and never leave
-the ice. The breach cracks that let them up beside a base are filed, unbuilt.
+the ice; and the breach cracks (NIGHTSIDEICE_BREACH_CRACKS_1) that open in open ice at the base's
+edge when the dial is up and let them through unless destroyed in time.
 
 ⛔ Star Wars canon fauna does NOT ship here — Q11a (owner ruling, 2026-09-22):
 a genuinely canon name is IP and must route through the Utinni campaign patch

@@ -45,6 +45,7 @@
     <!-- NIGHTSIDEICE_SHIVVEN_BUILD_1: uses the sand-swim kit in RimMandrake.CreatureBehaviors
          (a declared hard dependency); build that first. -->
     <Compile Include="RM_Shivven.cs" />
+    <Compile Include="RM_BreachCracks.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
