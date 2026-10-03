@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MIASMA_ROUND2_IMPORTS_1 - Blarth creature port. Ported from mlie.starwarsanimalcollection's
+  `Blarth` ThingDef/PawnKindDef pair, renamed under the RSW_ tier prefix (canon Star Wars creature,
+  Q11/Q11a tier law). Art extracted from the donor's AssetBundle to Textures/swanimals/Blarth/
+  (texPaths unchanged). Meat/leather/sounds repoint to the RSW_ ports; any item still
+  bare is vanilla Core (Leather_Lizard).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Blarth</defName>
+    <label>blarth</label>
+    <description>Blarths were medium-sized predators native to the planet Naboo named for the low burping sound that it made. Amiable and easily tamed, they were kept as a household pet and watch animal by Gungans since prehistoric times. More recently the animals had made their way to off-world pet shops on worlds such as Coruscant.</description>
+    <statBases>
+      <MoveSpeed>3.1</MoveSpeed>
+      <MarketValue>150</MarketValue>
+      <ComfyTemperatureMin>-8</ComfyTemperatureMin>
+      <FilthRate>1</FilthRate>
+      <Wildness>0.30</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3.6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3.6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>cute teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>5.8</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Blarth</body>
+      <predator>true</predator>
+      <baseBodySize>0.32</baseBodySize>
+      <baseHungerRate>0.15</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <foodType>OmnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <specificMeatDef>RSW_Gorg_Meat</specificMeatDef>
+      <trainability>Intermediate</trainability>
+      <petness>1.0</petness>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>21</lifeExpectancy>
+      <nuzzleMtbHours>24</nuzzleMtbHours>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <litterSizeCurve>
+        <points>
+          <li>(1, 0)</li>
+          <li>(2, 1)</li>
+          <li>(3, 1.7)</li>
+          <li>(4, 0.7)</li>
+          <li>(5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <wildBiomes>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <TemperateSwamp>0.08</TemperateSwamp>
+        <ColdBog>0.01</ColdBog>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Blarth_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Blarth_Death</soundDeath>
+          <soundCall>RSW_Pawn_Blarth_Call</soundCall>
+          <soundAngry>RSW_Pawn_Blarth_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>PredatorSmall_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalPet</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Blarth</defName>
+    <label>blarth</label>
+    <labelPlural>blarths</labelPlural>
+    <race>RSW_Blarth</race>
+    <combatPower>30</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>blarth puppy</label>
+        <labelPlural>blarth puppies</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth</texPath>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
+          <drawSize>0.75</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.20, 0.3, 0.20)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blarth/Blarth_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

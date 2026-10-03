@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MIASMA_ROUND2_IMPORTS_1 - RSW_SW_ForceScream AbilityDef + TrainableDef (marsh haunt), ported from the donor SW_ForceScream.
+  Icon Ability_AnimalForceScream extracted from the donor bundle; sound RSW_Ability_ForceScream already ported.
+-->
+<Defs>
+  <AbilityDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForceScream</defName>
+    <label>force scream</label>
+    <description>Release a powerful force amplified scream which has a chance to cause hostile humans and animals to tremble in fear, reducing their movement speed and manipulation.</description>
+    <iconPath>UI/Abilities/Ability_AnimalForceScream</iconPath>
+    <cooldownTicksRange>7500</cooldownTicksRange>
+    <!-- 3 hours -->
+    <stunTargetWhileCasting>True</stunTargetWhileCasting>
+    <targetRequired>false</targetRequired>
+    <displayOrder>300</displayOrder>
+    <displayGizmoWhileUndrafted>true</displayGizmoWhileUndrafted>
+    <disableGizmoWhileUndrafted>false</disableGizmoWhileUndrafted>
+    <statBases>
+      <Ability_EffectRadius>19.9</Ability_EffectRadius>
+    </statBases>
+    <verbProperties>
+      <verbClass>Verb_CastAbility</verbClass>
+      <range>8.9</range>
+      <warmupTime>0.5</warmupTime>
+      <requireLineOfSight>false</requireLineOfSight>
+      <soundCast>RSW_Ability_ForceScream</soundCast>
+      <targetParams>
+        <canTargetSelf>true</canTargetSelf>
+        <canTargetPawns>true</canTargetPawns>
+        <canTargetAnimals>true</canTargetAnimals>
+        <canTargetHumans>true</canTargetHumans>
+        <canTargetEntities>False</canTargetEntities>
+        <canTargetSubhumans>False</canTargetSubhumans>
+        <canTargetMechs>false</canTargetMechs>
+        <canTargetBuildings>false</canTargetBuildings>
+      </targetParams>
+    </verbProperties>
+    <comps>
+      <li Class="CompProperties_AbilityEffect">
+        <compClass>CompAbilityEffect_OnlyTargetHostiles</compClass>
+      </li>
+      <li Class="CompProperties_AbilityGiveMentalState">
+        <compClass>CompAbilityEffect_GiveMentalState</compClass>
+        <stateDef>Terror</stateDef>
+      </li>
+      <li Class="CompProperties_AbilityAnimalRoar">
+        <chanceFromHearingCurve>
+          <points>
+            <li>(0.0, 0.0)</li>
+            <li>(0.8, 1.0)</li>
+          </points>
+        </chanceFromHearingCurve>
+      </li>
+      <li Class="CompProperties_AbilityEffecterOnCaster">
+        <effecterDef>WarTrumpet</effecterDef>
+        <maintainTicks>20</maintainTicks>
+        <!-- Long enough for the "2nd wave" to spawn -->
+      </li>
+      <li Class="CompProperties_AbilityRequiresTrainable">
+        <trainableDef>RSW_SW_ForceScream</trainableDef>
+        <aiCanCastWithoutTrainable>true</aiCanCastWithoutTrainable>
+      </li>
+    </comps>
+  </AbilityDef>
+  <TrainableDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_SW_ForceScream</defName>
+    <label>force scream</label>
+    <description>Command the creature to emit a force amplified scream to create a sense of fear in nearby enemies.</description>
+    <listPriority>0</listPriority>
+    <difficulty>200</difficulty>
+    <steps>2</steps>
+    <specialTrainable>true</specialTrainable>
+    <enablesAbility>RSW_SW_ForceScream</enablesAbility>
+  </TrainableDef>
+</Defs>

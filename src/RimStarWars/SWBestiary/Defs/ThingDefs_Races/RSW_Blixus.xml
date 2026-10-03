@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MIASMA_ROUND2_IMPORTS_1 - Blixus creature port. Ported from mlie.starwarsanimalcollection's
+  `Blixus` ThingDef/PawnKindDef pair, renamed under the RSW_ tier prefix (canon Star Wars creature,
+  Q11/Q11a tier law). Art extracted from the donor's AssetBundle to Textures/swanimals/Blixus/
+  (texPaths unchanged). Meat/leather/sounds repoint to the RSW_ ports; any item still
+  bare is vanilla Core (Leather_Lizard).
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Blixus</defName>
+    <label>blixus</label>
+    <description>Blixus were rare, half-shelled crustapod creatures native to the planet Sljee. These semi-aquatic predators were known to be deadly in the swamps and lagoons they inhabit. They were known to periodically shed their exoskeleton if broken or damaged which could be harvested for useful chitin. It is believed many were accidently transplanted to various worlds as exotic display animals or pets that grew too large to contain.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>1500</MarketValue>
+      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.40</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.40</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.40</ArmorRating_Heat>
+      <FilthRate>24</FilthRate>
+      <ToxicResistance>1</ToxicResistance>
+      <ToxicEnvironmentResistance MayRequire="Ludeon.RimWorld.Biotech">1.0</ToxicEnvironmentResistance>
+      <HypoxiaResistance MayRequire="kentington.saveourship2">1</HypoxiaResistance>
+      <DecompressionResistance MayRequire="kentington.saveourship2">1</DecompressionResistance>
+      <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+      <Wildness>0.97</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left tentacle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>central tentacle</label>
+        <capacities>
+          <li>Poke</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right tentacle</label>
+        <capacities>
+          <li>Poke</li>
+        </capacities>
+        <power>18</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>SWTentacleAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>24</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggBlixusUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggBlixusFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>20</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>2~4</eggCountRange>
+      </li>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_Leather_Crustapod</woolDef>
+        <shearIntervalDays>15</shearIntervalDays>
+        <woolAmount>120</woolAmount>
+      </li>
+    </comps>
+    <modExtensions>
+      <li MayRequire="pathfinding.framework" Class="PathfindingFramework.MovementExtension">
+        <movementDef>PF_Movement_Amphibious</movementDef>
+      </li>
+    </modExtensions>
+    <race>
+      <body>RSW_Blixus</body>
+      <predator>true</predator>
+      <maxPreyBodySize>4.0</maxPreyBodySize>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseHealthScale>4.0</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Crustapod</leatherDef>
+      <specificMeatDef>RSW_Crustapod_Meat</specificMeatDef>
+      <bloodDef>Filth_Slime</bloodDef>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>20</lifeExpectancy>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>1.00</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
+      <canFishForFood>true</canFishForFood>
+      <wildBiomes>
+        <AridShrubland>0.0</AridShrubland>
+        <Desert>0.0</Desert>
+        <ExtremeDesert>0.0</ExtremeDesert>
+        <TropicalRainforest>0.01</TropicalRainforest>
+        <TropicalSwamp>0.8</TropicalSwamp>
+        <TemperateSwamp>0.4</TemperateSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <BorealForest>0.0</BorealForest>
+        <Tundra>0.0</Tundra>
+        <ColdBog>0.4</ColdBog>
+        <IceSheet>0.0</IceSheet>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Blixus_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Blixus_Death</soundDeath>
+          <soundCall>RSW_Pawn_Blixus_Call</soundCall>
+          <soundAngry>RSW_Pawn_Blixus_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+      <li>AnimalFighter</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Blixus</defName>
+    <label>blixus</label>
+    <race>RSW_Blixus</race>
+    <combatPower>300</combatPower>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+    <lifeStages>
+      <li>
+        <label>blixus zoea</label>
+        <labelPlural>blixus zoeas</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Blixus/Blixus</texPath>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blixus/Blixus_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blixus/Blixus_Dessicated</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Blixus/Blixus</texPath>
+          <drawSize>4.0</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blixus/Blixus_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blixus/Blixus_Dessicated</texPath>
+          <drawSize>4.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Blixus/Blixus</texPath>
+          <drawSize>6.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>swanimals/Blixus/Blixus_Swimming</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6.0</drawSize>
+        </swimmingGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Blixus/Blixus_Dessicated</texPath>
+          <drawSize>6.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

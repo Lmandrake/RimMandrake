@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MIASMA_ROUND2_IMPORTS_1 - Bogwing creature port. Ported from mlie.starwarsanimalcollection's
+  `Bogwing` ThingDef/PawnKindDef pair, renamed under the RSW_ tier prefix (canon Star Wars creature,
+  Q11/Q11a tier law). Art extracted from the donor's AssetBundle to Textures/swanimals/Bogwing/
+  (texPaths unchanged). Meat/leather/sounds repoint to the RSW_ ports; any item still
+  bare is vanilla Core (Leather_Lizard).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase" ADogSaidBody="LegsTail">
+    <defName>RSW_Bogwing</defName>
+    <label>bogwing</label>
+    <description>The bogwing is a fast flying reptavian native to Dagobah. They could be found on a number of worlds located across the galaxy. They mostly fed on small creatures dwelling in the lower levels of tree canopies (including rodents like leaftails) to avoid larger predators.</description>
+    <statBases>
+      <MoveSpeed>3.0</MoveSpeed>
+      <MarketValue>100</MarketValue>
+      <ComfyTemperatureMin>-4</ComfyTemperatureMin>
+      <Wildness>0.60</Wildness>
+      <MaxFlightTime>30</MaxFlightTime>
+      <FlightCooldown>10</FlightCooldown>
+    </statBases>
+    <tools>
+      <li>
+        <label>left clawed paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right clawed paw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggUnfertilizedDef>RSW_EggBogwingUnFertilized</eggUnfertilizedDef>
+        <eggFertilizedDef>RSW_EggBogwingFertilized</eggFertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>4</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1~3</eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>RSW_Bogwing</body>
+      <predator>true</predator>
+      <maxPreyBodySize>0.60</maxPreyBodySize>
+      <baseHungerRate>0.30</baseHungerRate>
+      <baseBodySize>0.70</baseBodySize>
+      <baseHealthScale>0.50</baseHealthScale>
+      <foodType>CarnivoreAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <leatherDef>RSW_Leather_Reptavian</leatherDef>
+      <specificMeatDef>RSW_Reptavian_Meat</specificMeatDef>
+      <petness>0.60</petness>
+      <trainability>Intermediate</trainability>
+      <manhunterOnTameFailChance>0.30</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.50</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <nameOnTameChance>1</nameOnTameChance>
+      <lifeExpectancy>16</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.05</flightStartChanceOnJobStart>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <leaveMapOnFleeChance>0.8</leaveMapOnFleeChance>
+      <wildBiomes>
+        <TropicalSwamp>0.04</TropicalSwamp>
+        <TemperateForest>0.01</TemperateForest>
+        <TropicalRainforest>0.03</TropicalRainforest>
+        <TemperateSwamp>0.08</TemperateSwamp>
+        <ColdBog>0.01</ColdBog>
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.3</minAge>
+          <soundWounded>RSW_Pawn_Bogwing_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Bogwing_Death</soundDeath>
+          <soundCall>RSW_Pawn_Bogwing_Call</soundCall>
+          <soundAngry>RSW_Pawn_Bogwing_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Bird_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalCommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Bogwing</defName>
+    <label>bogwing</label>
+    <labelPlural>bogwings</labelPlural>
+    <race>RSW_Bogwing</race>
+    <combatPower>40</combatPower>
+    <ecoSystemWeight>0.30</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>swanimals/Bogwing/Bogwing_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>4</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>10</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.0</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>false</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>false</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <label>bogwing chick</label>
+        <labelPlural>bogwing chicks</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Bogwing/Bogwing</texPath>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bogwing/Bogwing_Dessicated</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Bogwing/Bogwing</texPath>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bogwing/Bogwing_Dessicated</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Bogwing/Bogwing</texPath>
+          <drawSize>1.4</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.4)</volume>
+            <offset>(0,0,0.0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bogwing/Bogwing_Dessicated</texPath>
+          <drawSize>1.4</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
