@@ -1244,7 +1244,14 @@ def _handler(t):
 @suite.chain("job_net")
 def job_net(t):
     """NET: a handler nets a wild stockable pawn and it becomes its carryable breeding-stock item
-    (RM_JobDriver_NetPoolBreeder). Wild pawn gone, exactly one RM_SkarrinBreedingStock appears."""
+    (RM_JobDriver_NetPoolBreeder). Wild pawn gone, exactly one RM_SkarrinBreedingStock appears.
+
+    LIVE POKE 2026-10-03 (why this component is RED, a real mechanic finding not a script bug): the wild skarrin FLEES
+    the handler at flight speed (~13 cells per 100 ticks against the colonist's ~5) and leaves the map before the
+    200-tick net completes, so no stock item is ever made ("0 wild left, 0 stock": the pawn is gone because it flew
+    off, not because it was netted). FALSE THEORY ruled out: RM_SkarrinBreedingStock resolves live and the finish
+    toil's def lookup is fine. Fix belongs in the mechanic (hold/stun the target, or net from range), an owner-visible
+    design call; do not pad the test to pass."""
     _enter(t)
     box = {}
     try:
