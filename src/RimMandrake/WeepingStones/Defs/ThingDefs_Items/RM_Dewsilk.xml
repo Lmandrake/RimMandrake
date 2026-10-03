@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEEPINGSTONES_DEWSILK_COCOON_1 - the biome's signature trade good.
+  Stat blocks are INVENTED (no canon). Placeholder art: vanilla Wool/Cloth textures tinted, same convention as
+  the other weepingstones items (no artpipe job; artpipe find dewsilk: nothing).
+  Every field below was checked against Core defs (WoolBase/Cloth/ResourceBase).
+-->
+<Defs>
+
+  <!-- the raw drop of a tamed mirrik swarm -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DewsilkCocoon</defName>
+    <label>dewsilk cocoon</label>
+    <description>A damp, pearl-grey cocoon the size of a thumbnail, combed from the mesh wings of a tamed mirrik swarm. Spun at a tailor bench it becomes dewsilk.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Wool</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(205, 215, 220)</color>
+    </graphicData>
+    <stackLimit>100</stackLimit>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>2.5</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.8</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- the cloth: light, cool, sheds water -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Dewsilk</defName>
+    <label>dewsilk</label>
+    <description>A pale, weightless fabric spun from mirrik cocoons. It sheds water, stays cool against the skin and insulates well against heat; the Weeping Stones' one export that caravans ask for by name.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Cloth</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(205, 220, 228)</color>
+    </graphicData>
+    <stackLimit>100</stackLimit>
+    <statBases>
+      <MaxHitPoints>70</MaxHitPoints>
+      <MarketValue>9</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>1.5</DeteriorationRate>
+      <StuffPower_Armor_Sharp>0.3</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>0</StuffPower_Armor_Blunt>
+      <StuffPower_Armor_Heat>0.3</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>14</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+    </statBases>
+    <burnableByRecipe>true</burnableByRecipe>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <minRewardCount>30</minRewardCount>
+    <stuffProps>
+      <categories>
+        <li>Fabric</li>
+      </categories>
+      <commonality>0.1</commonality>
+      <color>(205, 220, 228)</color>
+      <statFactors>
+        <Flammability>0.5</Flammability>
+        <Beauty>2</Beauty>
+      </statFactors>
+      <canSuggestUseDefaultStuff>true</canSuggestUseDefaultStuff>
+    </stuffProps>
+    <thingCategories>
+      <li>Textiles</li>
+    </thingCategories>
+    <comps>
+      <li>
+        <compClass>CompColorable</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

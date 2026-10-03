@@ -50,7 +50,7 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("WeepingStones")
-suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays", "waterTruceSuppressionEnabled"]
+suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays", "waterTruceSuppressionEnabled", "dewsilkEnabled"]
 SLIDERS = {"vhorrinOddsMultiplier": (1.0, 0.0, 3.0), "vizhikEscapeChance": (0.05, 0.0, 0.25),
            "condenserSeasonDays": (15.0, 3.0, 30.0)}   # WEEPINGSTONES_WALKING_CONDENSER_1
 
@@ -903,6 +903,95 @@ def walking_condenser(t):
         rows, missing = _get_defs(t, ["ThingDef/RM_GorraskCondenser", "ThingDef/RM_AncientCondenserPlant"])
         if _live(t) and missing:
             _fail("walking-condenser defs not loaded: %s" % missing)
+
+
+# components that are UNMEASURED by design on a healthy run (a live mechanic this suite cannot drive)
+LIVE_ONLY_UNMEASURED = {"dewsilk.tamed_mirrik_yield_cocoons"}
+
+
+def _dewsilk_source_problems():
+    """Offline structure of WEEPINGSTONES_DEWSILK_COCOON_1, read from the mod's own XML (never a hand list)."""
+    probs = []
+    items = dict((n, el) for _, n, el in _BY_DIR["ThingDefs_Items"])
+    race = next((el for _, n, el in _BY_DIR["ThingDefs_Races"] if n == "RM_Mirrik" and _ == "ThingDef"), None)
+    shear = [li for li in (race.findall("comps/li") if race is not None else []) if li.get("Class") == "CompProperties_Shearable"]
+    if len(shear) != 1:
+        probs.append("RM_Mirrik carries %d CompProperties_Shearable comps, expected 1" % len(shear))
+    elif (shear[0].findtext("woolDef") or "").strip() != "RM_DewsilkCocoon":
+        probs.append("RM_Mirrik's shearable woolDef is not RM_DewsilkCocoon")
+    for need in ("RM_DewsilkCocoon", "RM_Dewsilk"):
+        if need not in items:
+            probs.append("%s is not defined" % need)
+    cloth = items.get("RM_Dewsilk")
+    if cloth is not None:
+        cats = [c.text for c in cloth.findall("stuffProps/categories/li")]
+        if "Fabric" not in cats:
+            probs.append("RM_Dewsilk is not a Fabric stuff")
+        if cloth.find("statBases/StuffPower_Insulation_Heat") is None:
+            probs.append("RM_Dewsilk lacks its heat-insulation stat")
+    rec = next((el for t_, n, el in _BY_DIR["RecipeDefs"] if n == "RM_SpinDewsilk"), None)
+    if rec is None:
+        probs.append("RM_SpinDewsilk is missing")
+    else:
+        if (rec.findtext("ingredients/li/filter/thingDefs/li") or "").strip() != "RM_DewsilkCocoon" or rec.find("products/RM_Dewsilk") is None:
+            probs.append("RM_SpinDewsilk does not turn RM_DewsilkCocoon into RM_Dewsilk")
+        users = [u.text for u in rec.findall("recipeUsers/li")]
+        if "HandTailoringBench" not in users or "ElectricTailoringBench" not in users:
+            probs.append("RM_SpinDewsilk is not on both tailor benches")
+    # fields the engine does not have (today's load-log lessons)
+    for tag in ("canBeDoneByNonColonists", "minifiable"):
+        for _t, n, el in _BY_DIR["ThingDefs_Items"] + _BY_DIR["RecipeDefs"]:
+            if n.startswith("RM_Dewsilk") or n == "RM_SpinDewsilk":
+                if el.find(tag) is not None:
+                    probs.append("%s carries the invalid field <%s>" % (n, tag))
+    src = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source")
+    try:
+        with open(os.path.join(src, "RM_WeepingStones.csproj"), encoding="utf-8") as fh:
+            if "RM_DewsilkSwitch.cs" not in fh.read():
+                probs.append("RM_DewsilkSwitch.cs is not in RM_WeepingStones.csproj (compiles into nothing)")
+        with open(os.path.join(src, "RM_WeepingStonesSettings.cs"), encoding="utf-8") as fh:
+            st = fh.read()
+        if "dewsilkEnabled = true" not in st or '"dewsilkEnabled"' not in st or "ref dewsilkEnabled," not in st:
+            probs.append("dewsilkEnabled is not declared default-true, scribed and shown in the settings window")
+    except OSError as ex:
+        probs.append("cannot read Source: %s" % ex)
+    return probs
+
+
+@suite.chain("dewsilk")
+def dewsilk(t):
+    """WEEPINGSTONES_DEWSILK_COCOON_1: cocoon item, fabric, spinning recipe and mirrik harvest are wired (source +
+    defs load), and the switch ships on. The harvest itself (a TAMED mirrik gathered after the interval) needs a
+    tamed swarm on a live quicktest map and is reported UNMEASURED here, never claimed."""
+    with _comp(t, "dewsilk_defs_wired", independent=True):
+        if _live(t):
+            _need_parse(t)
+            probs = _dewsilk_source_problems()
+            if probs:
+                _fail("; ".join(probs))
+        rows, missing = _get_defs(t, ["ThingDef/RM_DewsilkCocoon", "ThingDef/RM_Dewsilk", "RecipeDef/RM_SpinDewsilk"])
+        if _live(t) and missing:
+            _fail("dewsilk defs not loaded: %s" % missing)
+
+    with _comp(t, "dewsilk_toggle_default_and_roundtrip", independent=True, toggle="dewsilkEnabled"):
+        try:
+            r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="dewsilkEnabled")
+            if _live(t):
+                _ok(r, "mod_settings_field(get)")
+                if str(r.get("value")) != "True":
+                    _fail("dewsilkEnabled reads %r; the shipped default is true" % r.get("value"))
+            t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="dewsilkEnabled", value="False")
+            back = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="dewsilkEnabled")
+            if _live(t) and str(back.get("value")) != "False":
+                _fail("dewsilkEnabled wrote False but reads back %r" % back.get("value"))
+        finally:
+            if t.session is not None:
+                t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="dewsilkEnabled", value="True")
+
+    with _comp(t, "tamed_mirrik_yield_cocoons", independent=True):
+        if _live(t):
+            _unmeasured(t, "needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map "
+                           "(tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired")
 
 
 @suite.chain("pen_zone")

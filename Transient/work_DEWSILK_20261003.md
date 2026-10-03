@@ -1,0 +1,9 @@
+# WEEPINGSTONES_DEWSILK_COCOON_1 - choices (2026-10-03)
+Exists today: RM_Mirrik (flier, RM_CompVerminBreeder swarm, description sells dewsilk), wild 0.6 in the biome; no RM_Dewsilk* def anywhere in src/ (grep: only Mirrik prose + design docs). Artpipe find dewsilk/cocoon: 0 relevant hits.
+- Harvest route: vanilla CompProperties_Shearable on RM_Mirrik (woolDef RM_DewsilkCocoon). Core shape (SheepGroup). Colonists gather it from TAMED mirrik via the vanilla animal-resource work. woolAmount 2 / shearIntervalDays 6 are INVENTED (a swarm member is body size 0.05).
+- RM_DewsilkCocoon: ResourceBase raw item, thingCategories ResourcesRaw, no stuffProps. Art: vanilla Wool texture tinted pale (convention of the weepingstones siblings), no artpipe job.
+- RM_Dewsilk: ResourceBase + stuffProps Fabric, thingCategories Textiles (so vanilla outlander/neolithic caravan Textiles stock generators may carry it; no trader patch needed). INVENTED stats: insulation cold 22 / heat 30 (cool, water-shedding), armor heat 0.3, flammability 0.5, MarketValue 9 (signature trade good; Cloth 1.5, devilstrand 5.5), Beauty factor 2.
+- Recipe RM_SpinDewsilk: 4 cocoons -> 6 dewsilk, recipeUsers HandTailoringBench + ElectricTailoringBench (RecipeDef.recipeUsers, no patch), workSpeedStat GeneralLaborSpeed, workSkill Crafting, effecter Tailor, sound Recipe_Tailor (all verified in Core).
+- Mod Settings: dewsilkEnabled (default true). A StaticConstructorOnStartup removes the shearable comp from RM_Mirrik when off (takes effect at next launch; label says so). Items/recipe stay as inert defs. New .cs + csproj Compile line.
+- Avoided today's load-log traps: no canBeDoneByNonColonists, no <minifiable>, no building thingCategories, no new sound/letter/trainability names beyond verified Core ones, no PatchOperationAddOrReplace, no patches at all.
+- Name collision: RM_Dewsilk/RM_DewsilkCocoon/RM_SpinDewsilk grep'd in src/ and design/: no def uses them.

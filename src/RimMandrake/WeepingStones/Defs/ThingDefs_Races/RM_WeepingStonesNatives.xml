@@ -190,6 +190,15 @@
       <FlightCooldown>4</FlightCooldown>
     </statBases>
     <uiIconScale>0.35</uiIconScale>
+    <!-- WEEPINGSTONES_DEWSILK_COCOON_1: tamed mirrik leave cocoons, gathered like wool (Core Shearable shape).
+         INVENTED amounts. Removed at startup by RM_DewsilkSwitch when Mod Settings dewsilkEnabled is off. -->
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RM_DewsilkCocoon</woolDef>
+        <shearIntervalDays>6</shearIntervalDays>
+        <woolAmount>2</woolAmount>
+      </li>
+    </comps>
     <tools>
       <li>
         <label>sting</label>

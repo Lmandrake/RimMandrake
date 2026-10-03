@@ -28,6 +28,9 @@ namespace RimMandrake.WeepingStones
         public static bool condenserEnabled = true;
         public static float condenserSeasonDays = 15f;
 
+        // WEEPINGSTONES_DEWSILK_COCOON_1: tamed mirrik leave dewsilk cocoons. Read once at startup.
+        public static bool dewsilkEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -36,6 +39,7 @@ namespace RimMandrake.WeepingStones
             Scribe_Values.Look(ref vizhikEscapeChance, "vizhikEscapeChance", 0.05f);
             Scribe_Values.Look(ref condenserEnabled, "condenserEnabled", true);
             Scribe_Values.Look(ref condenserSeasonDays, "condenserSeasonDays", 15f);
+            Scribe_Values.Look(ref dewsilkEnabled, "dewsilkEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -73,6 +77,11 @@ namespace RimMandrake.WeepingStones
                 -1f, (TipSignal?)("How long the gorrask stays settled before it moves on. 15 is one vanilla quadrum."));
             condenserSeasonDays = Mathf.Round(list.Slider(condenserSeasonDays, 3f, 30f));
 
+            list.Gap();
+            list.CheckboxLabeled("Dewsilk cocoons enabled (applies next launch)", ref dewsilkEnabled,
+                "Tamed mirrik leave dewsilk cocoons that colonists gather like wool and spin into dewsilk cloth at a tailor bench. "
+              + "Off: mirrik yield nothing. Read once when the game starts, so a change needs a restart.");
+
             if (list.ButtonText("Reset to defaults"))
             {
                 stockedPoolsEnabled = true;
@@ -80,6 +89,7 @@ namespace RimMandrake.WeepingStones
                 vizhikEscapeChance = 0.05f;
                 condenserEnabled = true;
                 condenserSeasonDays = 15f;
+                dewsilkEnabled = true;
             }
 
             list.End();
