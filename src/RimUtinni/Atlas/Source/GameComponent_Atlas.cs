@@ -119,6 +119,7 @@ namespace RimMandrake.Utinni.Atlas
         public int PollAll(bool includeExpensive, bool backfill)
         {
             int n = 0;
+            if (!AtlasSettings.detectionEnabled) return 0;
             foreach (AtlasEntryDef def in DefDatabase<AtlasEntryDef>.AllDefsListForReading)
             {
                 if (IsDiscovered(def)) continue;

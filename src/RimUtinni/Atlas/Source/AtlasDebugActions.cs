@@ -17,7 +17,7 @@ namespace RimMandrake.Utinni.Atlas
             GameComponent_Atlas c = GameComponent_Atlas.Instance;
             if (c == null) { Log.Error("[Atlas] no GameComponent_Atlas on the current game."); return; }
             int n = c.PollAll(includeExpensive: true, backfill: false);
-            Log.Message("[Atlas] poll lit " + n + " new entr" + (n == 1 ? "y" : "ies") + ".");
+            Log.Message("[Atlas] POLL lit=" + n + " detection=" + AtlasSettings.detectionEnabled);
         }
 
         [DebugAction(Cat, "Light one entry", allowedGameStates = AllowedGameStates.Playing)]
@@ -44,6 +44,7 @@ namespace RimMandrake.Utinni.Atlas
         private static void ForgetAll()
         {
             GameComponent_Atlas.Instance?.ForgetAll();
+            Log.Message("[Atlas] FORGOT all");
         }
 
         [DebugAction(Cat, "Report entry availability", allowedGameStates = AllowedGameStates.Playing)]
@@ -51,7 +52,7 @@ namespace RimMandrake.Utinni.Atlas
         {
             GameComponent_Atlas c = GameComponent_Atlas.Instance;
             foreach (AtlasEntryDef d in DefDatabase<AtlasEntryDef>.AllDefsListForReading)
-                Log.Message("[Atlas] " + d.defName + " available=" + d.Available + " lit=" + (c != null && c.IsDiscovered(d))
+                Log.Message("[Atlas] REPORT entry=" + d.defName + " available=" + d.Available + " lit=" + (c != null && c.IsDiscovered(d))
                     + " triggers=" + string.Join(",", d.triggers.Select(t => t.GetType().Name + (t.Available ? "" : "(absent)"))));
             if (c != null) Log.Message("[Atlas] archived records (def gone): " + c.ArchivedCount);
         }
