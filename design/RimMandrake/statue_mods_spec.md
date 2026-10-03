@@ -3,8 +3,8 @@
 Item: `STATUE_ART_EXPANSION_1`. Owner ruling 2026-09-25 (typed): *"Let's focus on the two new
 things: Utinni-related statues, and then the Flame statues. Just two mods for now."*
 Decorative art for vanilla sculpture folders is DEFERRED and not designed here. All seven
-rulings on the item, with provenance, are tabled in §4; the 13-subject art queue is §5; what is
-still undecided is §6.
+rulings and card decisions on the item, with provenance, are tabled in §4; the 16-brief art queue
+is §5; what is not yet ruled is §6; the FOUNDRY handoff is the last section.
 Research basis: `design/RimMandrake/statue_expansion_assessment.md` (donor mods, vanilla style
 route, placeholder `RM_FlameStatuary`, fuel routes). Engine facts below are marked MEASURED
 (read from the decompiled engine via RimSage this pass, 2026-09-25) or UNMEASURED.
@@ -16,8 +16,8 @@ route, placeholder `RM_FlameStatuary`, fuel routes). Engine facts below are mark
   `mandrake.rm.flamestatues` (folder `src/RimMandrake/FlameStatues/`). Neither depends on the
   other. Mod 1 patches onto Mod 2 only behind `PatchOperationFindMod` (Q11/Q11a additive-layer
   shape, as `SUMP_UTINNI_LAYER_1`).
-- The player always chooses which god a statue honours (R2) — every Utinni subject is its own
-  buildable (§1.3).
+- The player always chooses which god a statue honours (R2) — Mod 1 is ONE Statue buildable with
+  a picker button that selects the carving (R8, §1.3).
 - Not here: new decorative variants for vanilla `SculptureSmall/Large/Grand` folders (deferred);
   the "holy act to the sun god" ritual/precept (`SUMP_UTINNI_LAYER_1` §2 owns it; §2.5 below
   only leaves it a hook); forking either Workshop statue mod.
@@ -68,47 +68,42 @@ the small tier is votive objects rather than figures.
 
 Thirteen subjects — **all of them in wave one** (R3: all nine gods AND the four votives) —
 sixteen textures (9 large + 4 grand + 3 small). Every subject is a distinct carving, never a
-resized copy across tiers.
+resized copy across tiers. Ohm's and Rekko's grands are in wave one (R9).
 
-### 1.3 Attachment — one buildable per subject; the player chooses who they honour
+### 1.3 Attachment — one Statue buildable with a picker button
 
 Owner ruling R2 (typed, 2026-09-25): *"Either player picks or they are all separate objects, but
 it's important the player be able to choose who they are honoring."* A random god rolled from a
-style pool is therefore NOT the mechanism. Of the two shapes he allowed, this spec takes
-**separate objects** — it is all XML, deterministic, and it is already the shape §2.5 needs for
-the flaming idol.
+style pool is NOT the mechanism. Decision R8 (question card, 2026-09-25): the shape is a **picker
+button on one Statue buildable**, not a 16-entry build-menu dropdown. It needs C#.
 
-- **Thirteen ThingDefs**, one per subject in §1.2: `RUT_Idol_Ishko` … `RUT_Idol_Ozzik` (the
-  nine gods), `RUT_Votive_Bandolier`, `RUT_Votive_Droplet`, `RUT_Votive_Tally`,
-  `RUT_Relief_Crawler`. Each is `thingClass Building_Art` with the sculpture comp/recipe block
-  copied explicitly from `SculptureBase` (never inherited — the `<comps>` replacement trap, same
-  as §2.1), `Graphic_Single` on its own PNG, footprint/drawSize from its tier in §1.2,
-  `rotatable false`. The three "front" gods (Ohm, Rekko, Sh'kaar) each get a second, grand-size
-  def (`RUT_Idol_Ohm_Grand` …) — so 16 defs over 13 subjects.
-- **Where they sit in the build menu**: their own `DesignationCategoryDef`-free route — a
-  `designatorDropdown` group `RUT_UtinniIdols` inside vanilla `Misc` (where sculptures live), so
-  the player opens one dropdown and picks the god by name and icon. Label form: *"idol of
-  Sh'kaar"*, *"votive: the Droplet"*. Beauty, work, cost copy the matching vanilla tier; the
-  subject is the differentiator, not the stat.
-- **Ideoligion gating, none.** Any colony that has the mod can build them; the Utinni culture
-  is the fiction, not a lock (a non-Utinni player honouring Rekko is a feature). The old
-  `StyleCategoryDef` + `CultureDef` patch route is dropped: it can only roll a random subject
-  from a folder, which is exactly what R2 rejects, and `ThingStyleDef` cannot carry a picker
-  (it holds only `graphicData`, `uiIconPath/Scale`, `overrideLabel`, `color` — MEASURED,
+- **One ThingDef**, `RUT_Statue` (label "statue"), `thingClass Building_Art` (or a subclass),
+  with the sculpture comp/recipe block copied explicitly from `SculptureBase` (never inherited —
+  the `<comps>` replacement trap, same as §2.1), `rotatable false`. Beauty, work and cost copy
+  the matching vanilla tier; the subject is the differentiator, not the stat.
+- **The picker**: a new comp (`RUT_CompStatuePicker`, in Mod 1's own assembly
+  `RUT_UtinniStatues.dll`) adds a gizmo to the blueprint/frame and to the built statue. The
+  gizmo opens a float menu of the 16 carvings of §1.2 by name and icon — *"idol of Sh'kaar"*,
+  *"votive: the Droplet"*, grands marked as such. The chosen carving is a Scribed field, swaps
+  the `Graphic` at draw time, and sets the statue's label and honoured god. The comp is the same
+  idea as `lc.tammybee.selectablesculpturegraphic` does for vanilla sculptures (its DLL is
+  unreadable, behaviour UNMEASURED — FOUNDRY writes ours from the vanilla `Graphic` API, not from
+  that mod).
+- **Build menu**: one entry in vanilla `Misc` (where sculptures live), the single `RUT_Statue`.
+- **Buildable by any colony** (R10). Any colony that has the mod can build it; the Utinni culture
+  is the fiction, not a lock (a non-Utinni player honouring Rekko is a feature). The
+  `StyleCategoryDef` + `CultureDef` patch route is not used: it can only roll a random subject
+  from a folder, which R2 rejects, and `ThingStyleDef` cannot carry a picker (it holds only
+  `graphicData`, `uiIconPath/Scale`, `overrideLabel`, `color` — MEASURED,
   `Verse/ThingStyleDef.cs`).
 - **Art description**: vanilla `CompProperties_Art` names the piece and writes its "depicts"
   text from a random tale via `nameMaker`/`descriptionMaker` (`NamerArtSculpture`,
-  `ArtDescription_Sculpture` in `Buildings_Art.xml`). A fixed-subject idol should instead carry
-  a per-god `RulePackDef` pair (name = the god's, description = one line of his tenet). Whether
-  a custom `descriptionMaker` can bypass the tale entirely is UNMEASURED — FOUNDRY reads
+  `ArtDescription_Sculpture` in `Buildings_Art.xml`). A statue with a chosen subject should instead
+  carry a per-god `RulePackDef` pair (name = the god's, description = one line of his tenet).
+  Whether a custom `descriptionMaker` can bypass the tale entirely is UNMEASURED — FOUNDRY reads
   `CompArt.InitializeArt` before wiring; the fallback is the vanilla tale (a statue of Sh'kaar
   "depicting" a colonist's wedding is a tolerable v1 defect, not a blocker).
-- Save/back-compat: adds defs only; nothing renamed, nothing removed.
-- The picker-gizmo alternative (one `RUT_Idol` def, a gizmo cycling 13 graphics) is the other
-  shape R2 permits. It costs a comp and a `Graphic` swap at draw time, and it is what the
-  `lc.tammybee.selectablesculpturegraphic` mod does for vanilla sculptures (its DLL is
-  unreadable, behaviour UNMEASURED). Not chosen; revisit only if 16 build-menu entries prove
-  unwieldy in his hands (open question O1).
+- Save/back-compat: adds a def and a comp only; nothing renamed, nothing removed.
 
 ### 1.4 Art brief per subject
 
@@ -124,8 +119,8 @@ the flaming idol.
   the 256 ceiling)**: small 256 → ships 128; large 768 → ships 384; grand 1024 → ships 512.
   Grand is a 2×2 footprint so the figure must sit inside the central ~75% (vanilla grand art
   overhangs the footprint slightly, ours may too but never past the drawSize box).
-- **Folder layout**: `Textures/Things/Building/Art/RUT_UtinniIdols/<defName>.png`, one PNG per
-  def, `Graphic_Single` (no pools — R2).
+- **Folder layout**: `Textures/Things/Building/Art/RUT_UtinniIdols/<carving id>.png`, one PNG per
+  carving (the job ids of §5 name them), each loaded as a `Graphic_Single` by the picker comp.
 - **Per-subject briefs** are §5 below; the render spec's motif column is the authority when a
   brief and the §1.2 one-liner disagree. Sh'kaar's grand IS the flame idol's art (§2.5, R5), so
   its silhouette leaves a clear sun-disc crown and two open palms as flame points.
@@ -134,11 +129,11 @@ the flaming idol.
 
 ### 1.5 Mod Settings
 
-Mod 1 is XML except for a minimal settings class (the every-mod rule): **(a)** "Utinni idols in
-the build menu" on/off — when off, a `StaticConstructorOnStartup` clears `designationCategory`
-on the 16 defs so nothing new can be placed (already-placed idols stay; not worldgen-affecting);
+Mod 1 is XML plus the picker comp (§1.3) and a settings class (the every-mod rule): **(a)**
+"Utinni statues in the build menu" on/off — when off, a `StaticConstructorOnStartup` clears
+`designationCategory` on `RUT_Statue` so nothing new can be placed (already-placed idols stay; not worldgen-affecting);
 **(b)** "Sumpgas fuels flame statues" on/off (only shown when Mod 2 is loaded; see §2.3);
-**(c)** "Sh'kaar's idol burns" on/off (only shown once §2.5 ships). Defaults on. All-off = a mod
+**(c)** "Sh'kaar's idol burns" on/off (§2.5, part of the first release). Defaults on. All-off = a mod
 that does nothing, and nothing breaks.
 
 ## 2. Mod 2 — Flame statues (`mandrake.rm.flamestatues`)
@@ -253,17 +248,18 @@ errors. Every gate is read live by the comp each tick/draw, no restart.
 
 ### 2.5 Utinni flame variants later, without a hard dependency
 
-**Sh'kaar is the first flaming idol** — ruling R5 (question card, 2026-09-25); Ohm's and
-Rekko's grands stay cold until he says otherwise. Mod 1's idols are already separate defs
-(§1.3), so the flaming one is just `RUT_Idol_Shkaar_Grand` gaining comps — no Mod 2 dependency:
+**Sh'kaar is the first flaming idol** — ruling R5 (question card, 2026-09-25) — and his statue
+burns in Mod 1's first release (R11); Ohm's and Rekko's grands stay cold until he says otherwise.
+The flame is part of Mod 1, with no Mod 2 dependency: when the picker (§1.3) selects Sh'kaar's
+grand carving, `RUT_Statue` carries the flame comps:
 `CompProperties_Refuelable` on Sumpgas, `CompProperties_Glower`, and **vanilla
 `CompProperties_FireOverlay` for ONE flame point** (the sun-disc crown) — all vanilla, no C#.
 When Mod 2 is present, a `PatchOperationFindMod mandrake.rm.flamestatues` patch swaps that single
 overlay for `RM_CompProperties_FlamePoints` with the full palms+crown set. So: one flame without
 Mod 2, the whole show with it, and the holy-act precept (`SUMP_UTINNI_LAYER_1` §2) targets
-`RUT_Idol_Shkaar_Grand`, never a Mod 2 def. The art is one texture: the cold grand and the
-burning grand are the same PNG (§2.6's "no fire in the sprite" law), so the idol is buildable
-unfuelled in the base Mod 1 and simply burns once fuelled.
+`RUT_Statue` honouring Sh'kaar, never a Mod 2 def. The art is one texture: the cold grand and the
+burning grand are the same PNG (§2.6's "no fire in the sprite" law), so the idol stands cold
+until fuelled and burns once fuelled.
 
 ### 2.6 Art brief
 
@@ -286,15 +282,17 @@ unfuelled in the base Mod 1 and simply burns once fuelled.
 
 Order follows R1: **Mod 1 (Utinni statues) ships first, Mod 2 (flame statues) second.**
 
-1. **Mod 1 skeleton** — folder, About.xml, 16 idol/votive defs (§1.3) over placeholder art (a
-   grey silhouette per tier is enough), the `RUT_UtinniIdols` dropdown, settings §1.5(a).
-   Ships: the player picks and builds any of the thirteen subjects. Deploy, quicktest list + all
-   DLC.
-2. **Mod 1 art** — the 13 subjects of §5 queued as one artpipe wave (R3: all nine gods AND the
-   four votives), wired into `Textures/…/RUT_UtinniIdols/` as each lands; the three grands are
-   a second short wave. Every landed PNG replaces its placeholder in the same commit.
-3. **Sh'kaar flame idol** (§2.5, R5) — `RUT_Idol_Shkaar_Grand` gains Sumpgas refuel + glower +
-   one vanilla fire overlay; settings §1.5(c). Opens the holy-act work in `SUMP_UTINNI_LAYER_1`.
+1. **Mod 1 skeleton** — folder, About.xml, `RUT_Statue` + `RUT_CompStatuePicker` (§1.3) over
+   placeholder art (a grey silhouette per tier is enough), settings §1.5(a). Ships: the player
+   builds a statue and picks any of the 16 carvings. Build via `winbuild.py`, deploy, quicktest
+   list + all DLC.
+2. **Mod 1 art** — the 16 briefs of §5 queued as one artpipe wave (R3: all nine gods AND the
+   four votives; R9: Ohm's and Rekko's grands included), wired into
+   `Textures/…/RUT_UtinniIdols/` as each lands. Every landed PNG replaces its placeholder in the
+   same commit.
+3. **Sh'kaar flame idol** (§2.5, R5, R11) — Sh'kaar's grand carving gains Sumpgas refuel + glower
+   + one vanilla fire overlay; settings §1.5(c). In Mod 1's first release. Opens the holy-act
+   work in `SUMP_UTINNI_LAYER_1`.
 4. **Mod 2 skeleton** — folder, About.xml, three defs with `CompProperties_Refuelable`
    (Chemfuel only, R4) + `CompProperties_Glower` + ONE vanilla `CompProperties_FireOverlay` each,
    placeholder art; delete `RM_FlameStatuary` from EnvironmentalHazards after the keeper-save
@@ -307,7 +305,7 @@ Order follows R1: **Mod 1 (Utinni statues) ships first, Mod 2 (flame statues) se
 
 ## 4. Owner rulings (ledger, `STATUE_ART_EXPANSION_1`)
 
-Every ruling below is already folded into §§0–3; this list is the provenance.
+Every ruling below is folded into §§0–3; this list is the provenance. R8–R11 are the card decisions O1–O4 of 2026-09-25 20:33.
 
 | # | Ruling | Source |
 |---|---|---|
@@ -318,10 +316,14 @@ Every ruling below is already folded into §§0–3; this list is the provenance
 | R5 | **Sh'kaar is the first flaming idol.** Ohm's and Rekko's grands are not flame-variant candidates until he says so. | Decision taken by question card, 2026-09-25 (old Q4). |
 | R6 | The fuel routes, in preference order: Sump gas, Helixien gas (if present instead or in addition), manual refuel otherwise. | Typed in the filing, 2026-09-25: *"Then we'd tie that in to the Sump mod, the Helixian gas mod (if that's present instead or in addition), or manual refueling if not."* |
 | R7 | The Steel Flame statuary art is a placeholder to replace. | Filing title, 2026-09-25. |
+| R8 | **Mod 1 is one Statue buildable with a picker button**, not a 16-entry dropdown of separate buildables. Needs C#. | Decision taken by question card, 2026-09-25 (O1). |
+| R9 | **Ohm's and Rekko's grands are in art wave one.** | Decision taken by question card, 2026-09-25 (O2). |
+| R10 | **Buildable by any colony** that has Mod 1. | Decision taken by question card, 2026-09-25 (O3). |
+| R11 | **Sh'kaar's statue must burn in Mod 1's first release.** | Decision taken by question card, 2026-09-25 (O4). |
 
-## 5. Art queue — the 13 subjects
+## 5. Art queue — 16 briefs over 13 subjects
 
-Thirteen artpipe jobs, **not yet queued** (this is the brief, `fill_queue.py` files them at
+Sixteen artpipe jobs, **not yet queued** (this is the brief, `fill_queue.py` files them at
 build step 2). Common job shape, per `infrastructure/artpipe/README.md`: `rimflow_item_id`
 `STATUE_ART_EXPANSION_1`; `reference` **null** (new art — a `reference` would trigger
 reskin-validate and always fail); `facing` `south` only (statues are `rotatable false`, one
@@ -352,7 +354,7 @@ busts for all nine in `busts/`, full-figure for Ishko/Mob'Unloo/Ohm/Oomo only in
 Armoury's `CrustySandcrawlerHull.png` / `Sandcrawler1x1DoorA.png` wall and door tiles as hull
 texture reference.
 
-| # | Job id | Def | Canvas | Visual brief (the `[MOTIF]` / `[ACCENT]` slots) | Existing art |
+| # | Job id | Carving (picker entry) | Canvas | Visual brief (the `[MOTIF]` / `[ACCENT]` slots) | Existing art |
 |---|---|---|---|---|---|
 | 1 | `rut_idol_ishko_v1` | `RUT_Idol_Ishko` (large, 512) | 512 | The watcher half-sunk: the figure emerges only from the chest up out of the plinth, as if rising through a hatch; the robe's lower folds dissolve into the plinth's own stone so no hemline exists. Hood pulled low, the two eyes set LOW and small, the dimmest of the nine — barely-lit amber, watching. Hands flat on the hatch rim either side, fingers splayed. Accent near-black: a vein of obsidian running down the hood. The whole read is patience and ambush. | none; `god1_ishko.png`, `ishko_bust.png`, `ishko_fullfigure.png` as pose refs |
 | 2 | `rut_idol_ohm_v1` | `RUT_Idol_Ohm` (large, 512) | 512 | Both arms raised high, too-long gnarled hands open and reaching upward as if toward hands he lost; the sleeves fall back to the elbow. At the plinth base a dormant droid head lies on its side, carved in the same stone, one eye-socket empty. Eyes warm and confident, wide. Accent arc-blue: a thin inlaid copper-blue line arcing from fingertip to fingertip across the hood. Also the base for #2g. | none; `god2_ohm.png`, `ohm_bust_A/B.png`, `ohm_fullfigure.png` |
@@ -374,13 +376,27 @@ texture reference.
 Sixteen jobs (13 subjects + 3 grands). The three Mod 2 flame statues (§2.6) are a separate,
 later wave and are not briefed here.
 
-## 6. Open questions (yes/no, for the owner)
+## 6. Not yet ruled
 
-- **O1.** Sixteen separate idols in one build-menu dropdown — is that acceptable, or do you want
-  the single picker-gizmo object instead (§1.3's alternative)?
-- **O2.** Should Ohm and Rekko also get grand-size (cold, non-flaming) idols in wave one, or do
-  only Sh'kaar's grand and the Crawler ship at grand size?
-- **O3.** Should the idols be buildable by ANY colony that has Mod 1, or only by colonies whose
-  ideoligion carries the Utinni culture?
-- **O4.** Does the Sh'kaar flame idol need to burn (Sumpgas refuel + flame) in Mod 1's first
-  release, or is a cold Sh'kaar acceptable until Mod 2's flame comp exists?
+All of O1–O4 are decided (R8–R11). Left for FOUNDRY to raise with the owner if it bites:
+
+- One `RUT_Statue` def has one footprint, but the carvings span 1×1 (small, large) and 2×2
+  (grand). How the single buildable carries both footprints is not ruled.
+- Sh'kaar's flame comps (§2.5) attach when his grand carving is picked; the exact comp mechanics
+  on a shared def are not ruled.
+
+## 7. Build handoff (FOUNDRY)
+
+**Mods in scope** (owner scope note, 2026-09-25 — two mods only, vanilla-folder decorative art
+deferred):
+
+1. **Mod 1** `mandrake.rut.utinnistatues`, `src/RimUtinni/UtinniStatues/` — built first.
+2. **Mod 2** `mandrake.rm.flamestatues`, `src/RimMandrake/FlameStatues/` — built second.
+
+**Build steps**: §3 steps 1–7 in order. Each C# assembly (Mod 1 picker comp, Mod 2
+`RM_FlameStatues.dll`) needs a `<Compile Include>` per file and is built with `winbuild.py`;
+deploy with `deploy_custom_mods.py`; settings screens per §1.5 and §2.4; quicktest list with all
+five DLC.
+
+**Art queue**: the 16 briefs of §5 are the wave-one queue for Mod 1 (`fill_queue.py` files them
+at step 2). Mod 2's three sprites (§2.6) are a later wave.
