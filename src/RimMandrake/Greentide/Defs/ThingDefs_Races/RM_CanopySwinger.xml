@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_FREE_ROSTER_OWNED_1. WORKING NAME: the shipping name is GREENTIDE_SHIPPING_NAMES_1's call.
+     Re-authored from the Star Wars bestiary swinger: the creature is invented, only the old texPath borrowed canon art.
+     Own art now. Body is vanilla Monkey, so the hands are the old fists. -->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_CanopySwinger</defName>
+    <label>canopy swinger</label>
+    <description>A lean, long-limbed climber that never touches the ground if it can help it, crossing the gaps between the Greentide's giants hand over hand along vine and branch. When the canopy runs out, or something faster is behind it, it simply lets go, trusting the river below to break the fall better than whatever is chasing it.</description>
+    <statBases>
+      <MoveSpeed>5.5</MoveSpeed>
+      <MarketValue>90</MarketValue>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left fist</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>LeftHand</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right fist</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>4</power>
+        <cooldownTime>1.5</cooldownTime>
+        <linkedBodyPartsGroup>RightHand</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities><li>Bite</li></capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>Monkey</body>
+      <predator>false</predator>
+      <petness>0.15</petness>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHungerRate>0.14</baseHungerRate>
+      <baseHealthScale>0.5</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal, OvivoreAnimal, AnimalProduct</foodType>
+      <trainability>Intermediate</trainability>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <lifeExpectancy>14</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.15</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.3</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_CanopySwinger</defName>
+    <label>canopy swinger</label>
+    <race>RM_CanopySwinger</race>
+    <combatPower>25</combatPower>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <wildGroupSize>2~5</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_CanopySwinger/RM_CanopySwinger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

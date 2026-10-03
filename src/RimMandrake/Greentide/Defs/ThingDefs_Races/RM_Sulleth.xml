@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_FREE_ROSTER_OWNED_1. The Brake: the free Greentide's big grazer. Invented, franchise-free (Q11a);
+     name collision-checked in design/Jawa/worldbuilding/biomes/greentide_bedazzle_review_2026-10-02.md section 3.
+     Carries the seek-shade demonstration that used to be patched onto vanilla Muffalo. Thresholds are the old
+     patch's values. Encroachment suppression waits on EXPLOSIVE_PLANT_GROWTH_1 and is not built here. -->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sulleth</defName>
+    <label>sulleth</label>
+    <description>A long, low grazer on quick slender legs, hide a dusky violet barred along the flanks with lime green, neck held forward and nose down to the next mouthful. It is always eating and always leaving the evidence: a herd mows a swath through the understory and trails filth and new sprouts behind it, which is less waste than strategy. Docile enough to be kept as livestock.</description>
+    <statBases>
+      <MoveSpeed>5.4</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+      <LeatherAmount>45</LeatherAmount>
+      <MeatAmount>160</MeatAmount>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities><li>Blunt</li></capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+        <surpriseAttack><extraMeleeDamages><li><def>Stun</def><amount>8</amount></li></extraMeleeDamages></surpriseAttack>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities><li>Blunt</li></capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+        <surpriseAttack><extraMeleeDamages><li><def>Stun</def><amount>8</amount></li></extraMeleeDamages></surpriseAttack>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>2.0</baseBodySize>
+      <baseHealthScale>1.4</baseHealthScale>
+      <baseHungerRate>1.1</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <petness>0.1</petness>
+      <lifeExpectancy>22</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.15</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.3</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SeekShadeExtension">
+        <tempThreshold>38</tempThreshold>
+        <searchRadius>30</searchRadius>
+        <seekChancePerCheck>0.3</seekChancePerCheck>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalCommon</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sulleth</defName>
+    <label>sulleth</label>
+    <race>RM_Sulleth</race>
+    <combatPower>110</combatPower>
+    <ecoSystemWeight>0.45</ecoSystemWeight>
+    <wildGroupSize>3~7</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sulleth/RM_Sulleth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sulleth/RM_Sulleth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Sulleth/RM_Sulleth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

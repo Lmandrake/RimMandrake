@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_YearningFruit.xml                  UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+  RM_YearningFruit.xml                  GREENTIDE_FREE_ROSTER_OWNED_1 (moved from the campaign tier; COMMISSION_LEDGER_CLEANUP_1)
 
   Resolves ledger slug
   `the_greentide:digestive-accelerant-fruit-the-fruit-that-yearns`
@@ -31,8 +31,8 @@
   DESERT_STAGGERSEED_BUILD_1) but for filth-and-seedling rather than
   shade-and-germinate, firing on the hediff's own natural end rather than
   the carrier's death. Built as `GREENTIDE_YEARNING_FRUIT_FILTH_1`:
-  RM_HediffComp_SeedPassage, wired onto RUT_DigestiveAccelerant in
-  RUT_YearningFruit_Hediffs.xml.
+  RM_HediffComp_SeedPassage, wired onto RM_DigestiveAccelerant in
+  RM_YearningFruit_Hediffs.xml.
 
   Checked cast_assignment.csv first (per this item's own "watch out"): no
   existing greentide fruit row carries any ingestible mechanic at all, so
@@ -48,7 +48,7 @@
 
   <!-- ============== The plant (eaten wild, off the bush) ============== -->
   <ThingDef ParentName="PlantBase">
-    <defName>RUT_YearningFruit</defName>
+    <defName>RM_YearningFruit</defName>
     <label>yearning fruit</label>
     <description>A heavy-fruiting bush, absurdly generous with itself — huge, glossy, sickly-sweet fruit hangs everywhere on it, all season. The sweetness is real, but so is the trick: every fruit is loaded with digestive accelerants, so whatever eats it digests fast, is hungry again within hours, and leaves the seed behind in a fresh patch of its own fertilizer a short walk from where it ate. The ground under a healthy stand is carpeted in filth and new sprouts in equal measure, which is not neglect. It is the plan working.</description>
     <statBases>
@@ -59,7 +59,7 @@
     </statBases>
     <graphicData>
       <!-- Job rutyearningfruit_v1, filed this pass. Pending until the daemon lands it. -->
-      <texPath>Things/Plant/RUT_YearningFruit</texPath>
+      <texPath>Things/Plant/RM_YearningFruit</texPath>
       <graphicClass>Graphic_Random</graphicClass>
       <shadowData>
         <volume>(0.5, 0.3, 0.2)</volume>
@@ -74,7 +74,7 @@
       <preferability>RawTasty</preferability>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_DigestiveAccelerant</hediffDef>
+          <hediffDef>RM_DigestiveAccelerant</hediffDef>
           <severity>1.0</severity>
         </li>
       </outcomeDoers>
@@ -88,7 +88,7 @@
       <visualSizeRange>0.6~1.0</visualSizeRange>
       <topWindExposure>0.3</topWindExposure>
       <harvestTag>Standard</harvestTag>
-      <harvestedThingDef>RUT_YearningFruitHarvested</harvestedThingDef>
+      <harvestedThingDef>RM_YearningFruitHarvested</harvestedThingDef>
       <harvestYield>10</harvestYield>
       <harvestWork>200</harvestWork>
       <harvestAfterGrowth>0.3</harvestAfterGrowth>
@@ -102,12 +102,12 @@
 
   <!-- ============== Harvested fruit (same mechanism, bagged) ============== -->
   <ThingDef ParentName="PlantFoodRawBase">
-    <defName>RUT_YearningFruitHarvested</defName>
+    <defName>RM_YearningFruitHarvested</defName>
     <label>yearning fruit</label>
     <description>Picked off the bush before it could give itself away to something else. Just as sweet, just as loaded with digestive accelerant as the one still hanging — eating it is still free calories with the same tax: fast digestion, a quick return of hunger, and a body that will want to sit down for a minute afterward.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
-      <texPath>Things/Item/Plant/RUT_YearningFruitHarvested</texPath>
+      <texPath>Things/Item/Plant/RM_YearningFruitHarvested</texPath>
     </graphicData>
     <statBases>
       <MarketValue>1.6</MarketValue>
@@ -120,7 +120,7 @@
       <tasteThought>AteRawFood</tasteThought>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_DigestiveAccelerant</hediffDef>
+          <hediffDef>RM_DigestiveAccelerant</hediffDef>
           <severity>1.0</severity>
         </li>
       </outcomeDoers>

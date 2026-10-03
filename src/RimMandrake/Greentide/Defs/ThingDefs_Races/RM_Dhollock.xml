@@ -1,37 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-  RUT_Placeholder_GreentideLungerRace.xml   UtinniPatches — GREENTIDE_MECHANICS_2 M7
+<!-- GREENTIDE_FREE_ROSTER_OWNED_1. The Lunger: replaces the alligator placeholder. Invented, franchise-free (Q11a).
+     RM_CompAquaticAmbusher is CompProperties_AquaticAmbusher (Mod Settings toggle 11 governs it); the silence aura
+     moved here from the vanilla Warg and fires on its hunt job. -->
 
-  PLACEHOLDER Lunger race — NOT the real Greentide Lunger the roster pass
-  eventually authors (this task's own brief explicitly forbids authoring
-  that here). Spec check before build: greentide_kit_spec.md M7 never
-  states outright whether the Lunger PawnKindDef is roster content (unlike
-  some other kit pieces, which say so explicitly) — treated the same as
-  every other kit's creature-content boundary this session per the build
-  brief's own instruction: an EXISTING shipped aquatic/ambush-shaped
-  PawnKindDef, clearly commented PLACEHOLDER.
-
-  vanilla Core Alligator (predator=true, waterSeeker=true, swims faster on
-  Water-tagged terrain, real swimmingGraphicData — confirmed via RimSage
-  this pass) is the right creature for this. ParentName="AnimalThingBase",
-  NOT ParentName="Alligator" — validate_patch.py caught this live: Alligator
-  carries no Name="..." attribute (same trap RUT_Placeholder_
-  GreentideGnawerRace's own header already recorded for Squirrel), so every
-  field below is copied down directly from the real Alligator ThingDef
-  (RimSage get_def_details, raw) rather than inherited. A fresh ThingDef
-  (not a patch onto the live Alligator def) so vanilla Alligators
-  everywhere else in the game are completely untouched by this comp.
-
-  comps: CompProperties_AquaticAmbusher (RimMandrake.CreatureBehaviors, new
-  this pass) — see that class's own header. CompProperties_EggLayer is
-  copied down too (harmless on a placeholder; costs nothing to leave in).
--->
 <Defs>
 
-  <ThingDef ParentName="AnimalThingBase" MayRequire="mandrake.rm.biomes">
-    <defName>RUT_Placeholder_GreentideLungerRace</defName>
-    <label>lunger (placeholder)</label>
-    <description>PLACEHOLDER — a vanilla alligator standing in for the real Greentide Lunger (roster pass owed). Submerges and waits, invisible, until something wanders into range.</description>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dhollock</defName>
+    <label>dhollock</label>
+    <description>A long, flat river ambusher, back mottled slate-blue and the eye-ridges ochre, mouth running nearly the width of its head. It sits inside deep water where nothing shows but the stillness, and the first anyone knows of it is the lunge. It takes what wades or drinks; it does not chase far, and the whole bank goes quiet when one is hunting.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>350</MarketValue>
@@ -101,15 +78,15 @@
       <li Class="RimMandrake.CreatureBehaviors.CompProperties_AquaticAmbusher">
         <invisibilityHediff>RM_AquaticAmbushInvisibility</invisibilityHediff>
         <lungeSpeedHediff>RM_LungeSpeedBurst</lungeSpeedHediff>
-        <lungeRangeCells>5</lungeRangeCells> <!-- spec's own explicit figure -->
-        <firstStrikeDamageMultiplier>1.5</firstStrikeDamageMultiplier> <!-- spec's own explicit figure -->
-        <baseLungeDamageRange>12~20</baseLungeDamageRange> <!-- INVENTED -->
-        <checkIntervalTicks>30</checkIntervalTicks> <!-- INVENTED -->
+        <lungeRangeCells>5</lungeRangeCells> 
+        <firstStrikeDamageMultiplier>1.5</firstStrikeDamageMultiplier> 
+        <baseLungeDamageRange>12~20</baseLungeDamageRange> 
+        <checkIntervalTicks>30</checkIntervalTicks> 
       </li>
     </comps>
     <race>
       <body>QuadrupedAnimalWithClawsTailAndJowl</body>
-      <baseBodySize>1.5</baseBodySize>
+      <baseBodySize>2.5</baseBodySize>
       <baseHealthScale>1.2</baseHealthScale>
       <baseHungerRate>0.3</baseHungerRate>
       <foodType>CarnivoreAnimal</foodType>
@@ -151,9 +128,51 @@
         <li>(-0.35, 0, 0.05)</li>
       </headPosPerRotation>
     </race>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SilenceAuraExtension">
+        <triggerRadius>20</triggerRadius>
+        <hushDurationTicks>900</hushDurationTicks>
+      </li>
+    </modExtensions>
     <tradeTags>
       <li>AnimalUncommon</li>
     </tradeTags>
   </ThingDef>
-
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dhollock</defName>
+    <label>dhollock</label>
+    <race>RM_Dhollock</race>
+    <combatPower>120</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.75</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.5</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+    <moveSpeedFactorByTerrainTag>
+      <li>
+        <key>Water</key>
+        <value>1.25</value>
+      </li>
+    </moveSpeedFactorByTerrainTag>
+  </PawnKindDef>
 </Defs>

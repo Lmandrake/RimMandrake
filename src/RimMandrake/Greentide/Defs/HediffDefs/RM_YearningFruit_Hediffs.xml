@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_YearningFruit_Hediffs.xml          UtinniPatches - COMMISSION_LEDGER_CLEANUP_1
+  RM_YearningFruit_Hediffs.xml          GREENTIDE_FREE_ROSTER_OWNED_1 (moved from UtinniPatches from the campaign tier)
 
-  The digestive-accelerant hediff RUT_YearningFruit.xml applies. Ships the
+  The digestive-accelerant hediff RM_YearningFruit.xml applies. Ships the
   "digests fast / hunger returns / brief waddle" half of the_greentide.md
   §4's mechanic with real vanilla stats — hungerRateFactor (HediffStage field)
   and a short MoveSpeed penalty. hediffClass is HediffWithComps explicitly
@@ -15,7 +15,7 @@
   (mandrake.rm.creaturebehaviors, same shape as RM_HediffComp_ShadeStagger,
   DESERT_STAGGERSEED_BUILD_1, but firing on the hediff's own natural end
   rather than on the carrier's death) drops filth and rolls a chance to
-  germinate a fresh RUT_YearningFruit seedling wherever the eater happens to
+  germinate a fresh RM_YearningFruit seedling wherever the eater happens to
   be standing when the accelerant runs its course — colonist or wild grazer
   alike. Filth_AnimalFilth is vanilla (confirmed elsewhere in this repo,
   e.g. Ikee_Tuning.xml, RSW_BeastLairs_Buildings.xml) and reads as manure/
@@ -25,7 +25,7 @@
 <Defs>
 
   <HediffDef>
-    <defName>RUT_DigestiveAccelerant</defName>
+    <defName>RM_DigestiveAccelerant</defName>
     <label>digestive accelerant</label>
     <description>A gutful of accelerant compounds off a yearning fruit, pushing everything through fast. The calories land quickly and so does the appetite again after — and for a short while after eating, the body would rather sit still than move.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -44,10 +44,10 @@
       </li>
       <!-- GREENTIDE_YEARNING_FRUIT_FILTH_1: fires once, when severity decays
            to 0 and the hediff is naturally removed. -->
-      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_SeedPassage" MayRequire="mandrake.rm.biomes">
+      <li Class="RimMandrake.CreatureBehaviors.RM_HediffCompProperties_SeedPassage">
         <filthDef>Filth_AnimalFilth</filthDef>
         <filthCount>1</filthCount>
-        <germinateThingDef>RUT_YearningFruit</germinateThingDef>
+        <germinateThingDef>RM_YearningFruit</germinateThingDef>
         <germinateChance>0.5</germinateChance>
         <germinateCount>1~2</germinateCount>
         <germinateRadius>2.5</germinateRadius>

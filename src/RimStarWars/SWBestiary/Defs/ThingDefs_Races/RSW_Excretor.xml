@@ -29,8 +29,7 @@
   `FeralNerf`/arid_shrubland and `Nerf`/desert are cast, both DIFFERENT
   tracked entities from this RSW_ port), so reusing its body/art asset here
   does not double-book the species — same asset-reuse-without-species-reuse
-  pattern RSW_CanopySwinger (this same wave, reusing RSW_KowakianMonkeyLizard)
-  used.
+  pattern RSW_TunnelSnake used.
 
   Mechanism: shearable comp retargeted from wool to `RUT_MetalSaltBezoar`;
   milkable comp dropped (an excretor sheds pellets, it is not a dairy
@@ -43,7 +42,7 @@
   checked infrastructure/artpipe/{done,pending,registry.jsonl} for
   "excretor"/"bezoar" first — clean, confirming no prior job exists; none
   filed here either, since the asset-reuse posture ships with zero new art
-  by design (same as RSW_CanopySwinger/RSW_TunnelSnake/RSW_VentStalker).
+  by design (same as RSW_TunnelSnake/RSW_VentStalker).
 -->
 <Defs>
 
