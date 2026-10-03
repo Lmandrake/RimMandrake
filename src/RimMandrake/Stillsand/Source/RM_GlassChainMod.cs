@@ -33,6 +33,16 @@ namespace RimMandrake.Stillsand
         public static bool sunLanceEnabled = true;
         public static bool geophoneEnabled = true;
         public static float geophoneRadius = 20f;
+        public static bool kraytLensEnabled = true;
+        public static bool glassGogglesEnabled = true;
+
+        // Recipes the Mod Settings can hide. Read by the RecipeDef.AvailableNow postfix below.
+        public static bool RecipeHidden(string defName)
+        {
+            if (defName == "RSW_GrindKraytLens") return !kraytLensEnabled;
+            if (defName == "RM_SunGogglesGlass") return !glassGogglesEnabled;
+            return false;
+        }
 
         public static bool TableEnabled(RM_SunTableKind kind)
         {
@@ -61,6 +71,8 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref sunLanceEnabled, "sunLanceEnabled", true);
             Scribe_Values.Look(ref geophoneEnabled, "geophoneEnabled", true);
             Scribe_Values.Look(ref geophoneRadius, "geophoneRadius", 20f);
+            Scribe_Values.Look(ref kraytLensEnabled, "kraytLensEnabled", true);
+            Scribe_Values.Look(ref glassGogglesEnabled, "glassGogglesEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -99,6 +111,11 @@ namespace RimMandrake.Stillsand
             list.Label("Geophone radius: " + Mathf.RoundToInt(geophoneRadius) + " cells");
             geophoneRadius = Mathf.Round(list.Slider(geophoneRadius, 8f, 40f));
             list.GapLine();
+            list.CheckboxLabeled("Krayt lens recipe", ref kraytLensEnabled,
+                "The lens bench grinds a krayt pearl into a krayt lens (needs the Star Wars bestiary's pearl). Off: the recipe is hidden.");
+            list.CheckboxLabeled("Sun-glass goggles recipe", ref glassGogglesEnabled,
+                "Sun-glass goggles are a second way to make glare-proof eyewear, from sun glass and cloth. Off: the recipe is hidden.");
+            list.GapLine();
             list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\". Fulgurites on sand "
                        + "follow the Pyrelands' fulgurite toggle.");
             list.End();
@@ -124,14 +141,28 @@ namespace RimMandrake.Stillsand
                 if (target == null)
                 {
                     Log.Error(rule + "TARGET METHOD NOT FOUND, sun tables are NOT gated by the sun.");
-                    return;
                 }
-                new Harmony("mandrake.rm.stillsand.glasschain")
+                else new Harmony("mandrake.rm.stillsand.glasschain")
                     .Patch(target, postfix: new HarmonyMethod(typeof(Patch_WorkTable_SunGate), "Postfix"));
             }
             catch (Exception e)
             {
                 Log.Error(rule + "patch FAILED, sun tables are NOT gated by the sun: " + e.Message);
+            }
+            try
+            {
+                var avail = AccessTools.PropertyGetter(typeof(RecipeDef), "AvailableNow");
+                if (avail == null)
+                {
+                    Log.Error("[RimMandrake.Stillsand] RecipeDef.AvailableNow getter NOT FOUND, the krayt-lens and glass-goggles toggles do nothing.");
+                    return;
+                }
+                new Harmony("mandrake.rm.stillsand.glasschain.recipes")
+                    .Patch(avail, postfix: new HarmonyMethod(typeof(Patch_Recipe_Toggle), "Postfix"));
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Stillsand] recipe toggle patch FAILED: " + e.Message);
             }
         }
 
@@ -143,6 +174,15 @@ namespace RimMandrake.Stillsand
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+    }
+
+    // Hides the recipes the Mod Settings switch off. Hidden recipes drop out of the bill menu.
+    public static class Patch_Recipe_Toggle
+    {
+        public static void Postfix(RecipeDef __instance, ref bool __result)
+        {
+            if (__result && RM_GlassChainSettings.RecipeHidden(__instance.defName)) __result = false;
         }
     }
 }
