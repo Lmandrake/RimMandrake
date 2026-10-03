@@ -1,0 +1,38 @@
+[
+ {
+  "id": "RM_MessyConduit_Jawa_Decal_FrayedEndLive",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "priority": 60,
+  "prompt": "Live frayed cable end decal: a matte black cable coming in from the left edge at the vertical centre ending in a ragged cut with splayed bright copper wire strands, a scorched insulation lip, the wire tips glowing orange-hot, a faint soot smudge at the tip, transparent elsewhere.",
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, warm 70s-brown-dark palette, Jawa truck-driver-in-space jury-rigged scrap look, transparent background, black and soot grey cable, bright copper and hot orange only on the tips",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "reference": "",
+  "facings": "",
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Jawa_AerialLampMast",
+  "canvas_w": 128,
+  "canvas_h": 256,
+  "priority": 62,
+  "prompt": "Tall weathered wooden utility pole seen from the side, standing vertical and centred, base at the bottom edge with a small mound of packed earth, a wooden crossarm near the top with two grey porcelain insulators and short wire stubs, and below the crossarm a bent scrap-metal arm carrying a salvaged lamp head with a dented reflector and amber glass, iron bolts, tape lashings, slight lean, leaving transparent space at the sides.",
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, warm 70s-brown-dark palette, Jawa truck-driver-in-space jury-rigged scrap look, transparent background, dark weathered wood, rust, amber lamp glass, black wire",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "reference": "",
+  "facings": "",
+  "background": "transparent"
+ },
+ {
+  "id": "RM_MessyConduit_Jawa_TapClamp",
+  "canvas_w": 64,
+  "canvas_h": 64,
+  "priority": 62,
+  "prompt": "Top-down view of a heavy rusted crocodile clamp with copper jaws biting a grey conduit pipe, a black cable taped to the clamp handle and running off to the right edge at the vertical centre, transparent elsewhere.",
+  "style_notes": "top-down painterly RimWorld game sprite, matte low-shine surface, top-lit form with soft dark keyline, value over detail, warm 70s-brown-dark palette, Jawa truck-driver-in-space jury-rigged scrap look, transparent background, rust, dark steel, copper jaws, matte black cable",
+  "rimflow_item_id": "MESSY_CONDUIT_MOD_1",
+  "reference": "",
+  "facings": "",
+  "background": "transparent"
+ }
+]
