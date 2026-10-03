@@ -2,7 +2,7 @@
 <Defs>
 
   <!-- FUNGAL_SOIL_TRADE_1. GenStep_ScatterFungalGround self-gates to
-       AB_MycoticJungle (the Rot), so adding it to the shared base generator
+       RM_TheRot / RUT_TheRot (the Rot), so adding it to the shared base generator
        (see ../../Patches/RUT_FungalSoilScatter_MapGenPatch.xml) is safe: it
        no-ops on every other biome's maps, the same shape
        RUT_LanternDeepEmergence_Scatter uses.

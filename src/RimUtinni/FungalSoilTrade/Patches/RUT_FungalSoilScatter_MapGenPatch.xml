@@ -2,7 +2,7 @@
 <!--
   Adds the fungal-ground scatter step globally, same shape as
   src/RimUtinni/LanternDeeps/Patches/RUT_LanternDeepEmergence_MapGenPatch.xml:
-  GenStep_ScatterFungalGround self-gates to AB_MycoticJungle in its own
+  GenStep_ScatterFungalGround self-gates to RM_TheRot / RUT_TheRot in its own
   Generate() override, so adding it to the shared base generator is safe - it
   silently no-ops on every other biome's maps.
 -->
