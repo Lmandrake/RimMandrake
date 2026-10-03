@@ -46,3 +46,13 @@
 - 13:48:32 FOUND: restore_needs read Food level (max 0.9) vs 0.95 -> every later suite 'no bland map'; fixed to pct. LeaningScrub _wait uses budgeted wait under watch. rerun11 starting
 - 13:58:38 rerun11 running; to poke after: martyr tree harvest paid 351 steel/47 wood (expect ~6), set_plants rejects flora on Grasslands tile
 - 14:13:08 harness fixes: _wait under watch uses budgeted wait (BlueDesert/Cauldron/Contagion/LeaningScrub), runner clears roofs per chain (Roof collapse Crush hit colonists)
+- 14:18:05 pokes done on load6: set_plants rejects cells ('terrain or conditions cannot support'); martyr steel reads polluted by map loot stacks appearing in list_things (12 stacks ~53 each) so 351-steel 'finding' is unproven; restarting load7 for suush def fix
+- 14:21:05 load7 launched
+- 14:32:42 load7 loading; timeoutSeconds 25 fix for suites
+- 14:41:34 load7 UP; starting rerun12 (Cauldron..Bacta, BrainWorms)
+- 15:00:28 rerun12: Cauldron 42 PASS/12 UNMEASURED/0 FAIL (suush fixed live), Bacta refuel PASS, then game HUNG in QuestNode_TradeRequest test-run exception loop (log frozen 14:59); killed; load8 next with comp_read fuel read, gas/roof clearing
+- 15:17:35 load8 loading
+- 15:23:08 load8 UP; rerun13 (Bacta,BrainWorms,LeaningScrub,BlueDesert,WeepingStones,TheForge,Cauldron)
+- 15:28:17 rerun13 died at preflight: foreground 'Noah Floersch - Green Flash Sunset' stole focus. Fixed: Prefs.RunInBackground=true set live via static_call (get returns True), focus_game retries 4x. Relaunching rerun14
+- 15:32:14 rerun14 running
+- 15:40:29 rerun14 UNMEASURED: game main thread hung twice in Bacta chain tank_scar (log frozen 15:33:52; also 14:59:31 in rerun12) at/after execute_debug_action 'Make injuries permanent'. Suspect that call; load9 launched, first poke = search_debug_actions + replace with non-debug-action permanent injury
