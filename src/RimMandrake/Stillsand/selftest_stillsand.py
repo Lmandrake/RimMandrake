@@ -385,8 +385,8 @@ class Fake(object):
         if self.roofed(x, z) and "roof_no_cover" not in self.b:
             return 0.0
         e = 0.3 if "low_exposure" in self.b else 1.0
-        if self.cond and self.cur_weather() == "RM_DuneGale" and "gale_keeps_sun" not in self.b:
-            e *= 0.2
+        # the real shadegrid_read returns ExposureAt(cell), which has no weather factor (that is applied in
+        # ExposureFor(pawn) only), so the gale never changes a cell read here either
         return e
 
     def t_shadegrid_read(self, cells=None, **k):
@@ -698,7 +698,6 @@ BREAKS = {
     "gale_ignores_toggle": ["gale.gale_toggle_off_refuses"],
     "no_herald": ["gale.gale_phases_and_aftermath"],
     "dunes_still": ["gale.gale_phases_and_aftermath"],
-    "gale_keeps_sun": ["gale.gale_dims_sun_exposure"],
     "emergence_ignores_toggle": ["gale.gale_emergence_off_quiet"],
     "devil_still": ["devil.devil_moves_and_expires"],
     "devil_immortal": ["devil.devil_moves_and_expires"],
@@ -728,7 +727,11 @@ def main():
 
 def _main(bad):
     healthy = run()
-    notpass = dict((k, v) for k, v in healthy.items() if v[0] != "PASS")
+    # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
+    notpass = dict((k, v) for k, v in healthy.items()
+                   if v[0] != "PASS" and k != "gale.gale_dims_sun_exposure")
+    if healthy.get("gale.gale_dims_sun_exposure", ("",))[0] != "UNMEASURED":
+        bad.append("gale.gale_dims_sun_exposure should read UNMEASURED: %s" % (healthy.get("gale.gale_dims_sun_exposure"),))
     n_comp = len(healthy)
     if notpass:
         bad.append("healthy run: %d of %d components not PASS: %s" % (len(notpass), n_comp, notpass))
