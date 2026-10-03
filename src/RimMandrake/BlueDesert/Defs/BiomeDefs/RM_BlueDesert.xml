@@ -127,6 +127,12 @@
       <RM_Glassfern>0.5</RM_Glassfern>
       <RM_Virr>0.4</RM_Virr>
       <RM_Chimeglobe>0.25</RM_Chimeglobe>
+      <!-- BLUEDESERT_FLORA_EXPANSION_BUILD_1: gated by RM_BlueDesertSettings.floraExpansionEnabled
+           (RM_BlueDesertFloraGate removes these four rows at startup when off). Proposals; calibrate in play. -->
+      <RM_Qeshra>0.15</RM_Qeshra>
+      <RM_Kethevar>0.05</RM_Kethevar>
+      <RM_Lisqueth>0.1</RM_Lisqueth>
+      <RM_Vashpuk>0.05</RM_Vashpuk>
     </wildPlants>
     <hasVirtualPlants>false</hasVirtualPlants>
     <forageability>0</forageability>

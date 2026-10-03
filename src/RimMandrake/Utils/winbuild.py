@@ -92,6 +92,11 @@ def rel_values(csproj):
             cands += [el.get("Include"), el.get("Project"), el.get("Update")]
             if el.text and tag in ("HintPath", "OutputPath", "BaseOutputPath"):
                 cands.append(el.text)
+        # a PropertyGroup default like <XDll>$(MSBuildThisFileDirectory)..\\..\\Other\\Assemblies\\X.dll</XDll>
+        # is a path the build needs too (7 csprojs, e.g. BlueDesert's EnvironmentalHazards reference)
+        if el.text and "$(MSBuildThisFileDirectory)" in el.text and ".." in el.text:
+            cands.append(el.text.strip().replace("$(MSBuildThisFileDirectory)", ""))
+            tag = "Reference"
         for c in cands:
             if c and ".." in c and "$(" not in c.split("..")[0]:
                 vals.append((tag, el.get("Include") or "", c.strip()))

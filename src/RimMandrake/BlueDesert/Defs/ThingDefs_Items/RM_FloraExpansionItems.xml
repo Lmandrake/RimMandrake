@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BLUEDESERT_FLORA_EXPANSION_BUILD_1: the two new yield items. Roe is cold-wax family (warm storage detonates it);
+     char-lace is pure carbon, the biome's one warm-safe product, so it carries NO cold-wax comps. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_QeshraRoe</defName>
+    <label>qeshra roe</label>
+    <description>Scarlet glassy beads cut from a qeshra cushion: animal feed for the native grazers, and useless to anything warm-blooded. Inert in the cold; store it anywhere warm and it will not stay inert for long.</description>
+    <possessionCount>20</possessionCount>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_QeshraRoe/RM_QeshraRoe</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.05</Mass>
+      <Flammability>2</Flammability>
+      <DeteriorationRate>1</DeteriorationRate>
+    </statBases>
+    <ingestible>
+      <foodType>Plant</foodType>
+      <preferability>RawBad</preferability>
+      <nutrition>0.25</nutrition>
+      <optimalityOffsetHumanlikes>-100</optimalityOffsetHumanlikes>
+    </ingestible>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>1.1</explosiveRadius>
+        <explosiveDamageType>Flame</explosiveDamageType>
+        <explosiveExpandPerStackcount>0.037</explosiveExpandPerStackcount>
+        <startWickOnDamageTaken>
+          <li>Flame</li>
+        </startWickOnDamageTaken>
+        <startWickHitPointsPercent>0.333</startWickHitPointsPercent>
+        <preExplosionSpawnThingDef>Filth_Fuel</preExplosionSpawnThingDef>
+        <preExplosionSpawnChance>1</preExplosionSpawnChance>
+        <wickTicks>70~150</wickTicks>
+      </li>
+      <li Class="CompProperties_TemperatureRuinable">
+        <minSafeTemperature>-273</minSafeTemperature>
+        <maxSafeTemperature>-1</maxSafeTemperature>
+        <progressPerDegreePerTick>1E-05</progressPerDegreePerTick>
+      </li>
+      <li Class="Verse.CompProperties">
+        <compClass>RimMandrake.BlueDesert.RM_CompRuinedDetonator</compClass>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CharLace</defName>
+    <label>char-lace</label>
+    <description>A silver-black lattice of pure carbon, the fused skeleton of a kethevar coil. Light, strong and beautiful, and not a hydrocarbon: it is the one thing from the Blue Desert's flora that is safe to carry somewhere warm.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_CharLace/RM_CharLace</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <stuffProps>
+      <categories>
+        <li>Metallic</li>
+      </categories>
+      <color>(60,62,68)</color>
+      <commonality>0.1</commonality>
+      <constructEffect>ConstructMetal</constructEffect>
+      <stuffAdjective>carbon</stuffAdjective>
+      <statFactors>
+        <MaxHitPoints>1.4</MaxHitPoints>
+        <Beauty>1.5</Beauty>
+        <WorkToMake>1.2</WorkToMake>
+        <WorkToBuild>1.2</WorkToBuild>
+      </statFactors>
+    </stuffProps>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <MarketValue>4</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>StuffsMetallic</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

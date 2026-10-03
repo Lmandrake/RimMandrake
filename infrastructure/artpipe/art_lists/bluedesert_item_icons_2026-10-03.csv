@@ -1,0 +1,3 @@
+id,rimflow_item_id,prompt,canvas_w,canvas_h,reference,facings,style_notes,priority,background,channel
+RM_QeshraRoe,BLUEDESERT_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: qeshra roe, a small heap of glassy scarlet-to-tangerine translucent beads, frost-rimmed, like a pile of frozen fish roe made of coloured glass. Single heap, centered, no background.",128,128,,,,100,transparent,codex
+RM_CharLace,BLUEDESERT_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: char-lace, a small silver-black lattice of fused carbon, a charred pleated coil skeleton with a faint metallic graphite sheen. Single object, centered, no background.",128,128,,,,100,transparent,codex
