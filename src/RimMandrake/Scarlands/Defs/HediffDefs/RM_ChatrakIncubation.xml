@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_CHATRAK_SNAP_BUILD_1 (WARSCAR_SNAP_MARK_1 spec 1, 2). The franchise-free twin of
+     RUT_ScariaIncubation, with VISIBLE stages: the turn is something a player can watch coming.
+     Armed by RM_MapComponent_ChatrakSnap (RM_ChatrakSnap.cs) on wild scaria RM_Chatrak on a Warscar
+     map. Climb 0.07~0.14/day rolled per animal = 7-14 days from armed to snap ("about one snap per week
+     or two"); setting snapStageSpeed scales it at startup. Stage 1 draws the lifted plates
+     (RM_PawnRenderNode_ChatrakPlates); stage 3 walks a ring of radius 3 (RM_HediffComp_ChatrakTurning);
+     stage 4 is the snap. snapEnabled off: no arming, and the comp holds a turning animal under 0.95. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_ChatrakIncubation</defName>
+    <label>the turn</label>
+    <description>Scaria has stopped waiting. The plates lift first, standing up off the back like a hackle that will not lie down; then it stops eating; then it walks small circles, round and round the same few yards. After that it goes for anyone.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.6,0.15,0.1)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <forceRenderTreeRecache>true</forceRenderTreeRecache>
+    <stages>
+      <li>
+        <label>incubating</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>plates lifting</label>
+      </li>
+      <li>
+        <minSeverity>0.7</minSeverity>
+        <label>off its feed</label>
+        <hungerRateFactor>0</hungerRateFactor>
+      </li>
+      <li>
+        <minSeverity>0.9</minSeverity>
+        <label>circling</label>
+        <hungerRateFactor>0</hungerRateFactor>
+      </li>
+      <li>
+        <minSeverity>1.0</minSeverity>
+        <label>the snap</label>
+        <hungerRateFactor>0</hungerRateFactor>
+        <mentalStateGivers>
+          <li>
+            <mentalState>ManhunterPermanent</mentalState>
+            <mtbDays>0.5</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+    </stages>
+    <renderNodeProperties>
+      <li>
+        <debugLabel>Chatrak plates lifted</debugLabel>
+        <nodeClass>RimMandrake.Scarlands.RM_PawnRenderNode_ChatrakPlates</nodeClass>
+        <workerClass>RimMandrake.Scarlands.RM_PawnRenderNodeWorker_ChatrakPlates</workerClass>
+        <texPath>Things/Pawn/Animal/RM_Chatrak/RM_ChatrakPlatesLifted</texPath>
+        <baseLayer>20</baseLayer>
+        <pawnType>NonHumanlikeOnly</pawnType>
+      </li>
+    </renderNodeProperties>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>0</severityPerDay>
+        <severityPerDayRange>0.07~0.14</severityPerDayRange>
+      </li>
+      <li Class="RimMandrake.Scarlands.RM_HediffCompProperties_ChatrakTurning" />
+    </comps>
+  </HediffDef>
+</Defs>

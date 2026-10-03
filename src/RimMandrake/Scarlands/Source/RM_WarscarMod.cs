@@ -109,6 +109,11 @@ namespace RimMandrake.Scarlands
         public static bool markFloorEnabled = true;          // past 0.5 it never fades below 0.25
         public static bool markTradeBonusesEnabled = true;   // hacking / mech butchery / smelting offsets (restart)
 
+        // WARSCAR_CHATRAK_SNAP_BUILD_1 -- the chatrak's snap
+        public static bool snapEnabled = true;               // scaria chatrak are armed and eventually snap
+        public static float snapArmingHours = 24f;           // hours between arming sweeps on a Warscar map
+        public static float snapStageSpeed = 1f;             // scales the incubation climb (restart)
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -175,6 +180,9 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref markAccrualPerDay, "markAccrualPerDay", 0.3f);
             Scribe_Values.Look(ref markFloorEnabled, "markFloorEnabled", true);
             Scribe_Values.Look(ref markTradeBonusesEnabled, "markTradeBonusesEnabled", true);
+            Scribe_Values.Look(ref snapEnabled, "snapEnabled", true);
+            Scribe_Values.Look(ref snapArmingHours, "snapArmingHours", 24f);
+            Scribe_Values.Look(ref snapStageSpeed, "snapStageSpeed", 1f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -320,6 +328,20 @@ namespace RimMandrake.Scarlands
             list.CheckboxLabeled("The mark pays a trade (restart to apply)", ref markTradeBonusesEnabled,
                 "Marked people hack faster, butcher mechanoids faster and, from a deepening mark, smelt faster. "
               + "Off: the mark only costs.");
+            list.GapLine();
+
+            list.Label("The chatrak's snap");
+            list.CheckboxLabeled("Scaria chatrak snap in the end", ref snapEnabled,
+                "A wild chatrak carrying scaria on a Warscar map starts to turn: its plates lift, it stops eating, "
+              + "it circles, and then it goes for anyone. Off: no chatrak is armed, and one already turning never snaps.");
+            if (snapEnabled)
+            {
+                list.Label("Arming sweep every " + snapArmingHours.ToString("0") + " hours");
+                snapArmingHours = list.Slider(snapArmingHours, 1f, 120f);
+                list.Label("Turning speed (restart to apply): x" + snapStageSpeed.ToString("0.00")
+                    + " (default: about one to two weeks from armed to snap)");
+                snapStageSpeed = list.Slider(snapStageSpeed, 0.25f, 4f);
+            }
             list.GapLine();
 
             list.Label("Species (restart required; affects maps generated afterwards)");
