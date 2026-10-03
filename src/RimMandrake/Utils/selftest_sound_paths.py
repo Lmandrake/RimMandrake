@@ -67,6 +67,7 @@ VANILLA_PACKED = {
     "Ambience/JungleInsects_Day_1a": "vanilla Ambient_DayInsects_Jungle",
     "Ambience/Wind/Amb_Wind_Fog2_Loop": "vanilla Ambient_Wind_Fog",
     "UI/TickLow": "vanilla Tick_Low",
+    "UI/TickHigh": "vanilla Tick_High",
     "UI/TinyBell": "vanilla TinyBell",
     "Electricity/Watermill_Loop_01a": "vanilla WaterMill_Ambience",
     # TheForge RM_ForgeVoices / Wasteland RM_WastelandSounds placeholder grains;
