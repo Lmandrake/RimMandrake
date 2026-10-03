@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HOIST_FIXED_SITE_FRAMES_1 (design §2a, §2c). Neither def has a designationCategory, research or costList:
+     only RM_GenStep_HoistFrames (frame) and a site's own genstep (holder) place them. ART: placeholders. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_HoistFrame</defName>
+    <label>ruined head-frame</label>
+    <description>A fixed hoist head-frame left standing over a way down: a rusted winch, a cable still threaded through its sheave, a cradle on the end. It is nobody's now. Load it like any portal and the cradle carries cargo, captives and the brave down to where the cable hangs; raise the cradle to bring up what waits below.</description>
+    <thingClass>RimMandrake.KeelHoist.RM_HoistFrame</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/PodLauncher</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <color>(120,95,75)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.5</fillPercent>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal />
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+      <li>RimMandrake.KeelHoist.ITab_HoistManifest</li>
+    </inspectorTabs>
+  </ThingDef>
+
+  <!-- Target kind 3, generic RM form. The Hutt oubliette (HUTT_SLAVE_PIT_TEST_SITE_1) is a RUT_ child or reuse. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_SealedPit</defName>
+    <label>sealed pit</label>
+    <description>A shaft capped with a grate nobody opens, and voices under it. People are kept down there. Nobody goes in, and nobody comes out unless a hoist lifts them, and no hoist will while the keepers still hold this place.</description>
+    <thingClass>RimMandrake.KeelHoist.RM_SealedHolder</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+  </ThingDef>
+</Defs>

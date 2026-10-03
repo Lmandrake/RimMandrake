@@ -42,7 +42,7 @@ namespace RimMandrake.KeelHoist
                 return;
             }
 
-            if (!KeelHoistSettings.colonistsMayRide)
+            if (!KeelHoistSettings.colonistsMayRide || ((RM_KeelHoist)___portal).targetHolder != null)
             {
                 ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.Downed);
             }

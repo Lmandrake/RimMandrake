@@ -34,6 +34,7 @@ namespace RimMandrake.KeelHoist
         public const float CradleRadius = 1.5f;
 
         public MapPortal targetPortal;
+        public RM_SealedHolder targetHolder;   // HOIST_FIXED_SITE_FRAMES_1: target kind 3, a sealed holder feature
         public IntVec3 targetCell = IntVec3.Invalid;
 
         private readonly RM_HoistTransitHolder transitHolder;
@@ -62,7 +63,10 @@ namespace RimMandrake.KeelHoist
 
         public CompPowerTrader Power => GetComp<CompPowerTrader>();
         public bool Powered => Power == null || Power.PowerOn;
-        public bool CableDown => targetPortal != null || targetCell.IsValid;
+        public bool CableDown => targetPortal != null || targetHolder != null || targetCell.IsValid;
+
+        /// <summary>A site's fixed head-frame: its cable is set by the genstep and never moved or reeled.</summary>
+        public virtual bool FixedCable => false;
         public int InTransitCount => transit.Count;
         public IEnumerable<Thing> InTransit => transit;
 
@@ -73,6 +77,7 @@ namespace RimMandrake.KeelHoist
         {
             base.ExposeData();
             Scribe_References.Look(ref targetPortal, "targetPortal");
+            Scribe_References.Look(ref targetHolder, "targetHolder");
             Scribe_Values.Look(ref targetCell, "targetCell", IntVec3.Invalid);
             Scribe_Deep.Look(ref transit, "transit", transitHolder);
             Scribe_Collections.Look(ref arriveAt, "arriveAt", LookMode.Value);
@@ -96,10 +101,11 @@ namespace RimMandrake.KeelHoist
         {
             base.SpawnSetup(map, respawningAfterLoad);
             containerProxy = new RM_HoistContainerProxy { portal = this };
-            if (!respawningAfterLoad)
+            if (!respawningAfterLoad && !FixedCable)
             {
                 // Built, or carried here by the ship: a cable from another place cannot still be down.
                 targetPortal = null;
+                targetHolder = null;
                 targetCell = IntVec3.Invalid;
             }
         }
@@ -114,6 +120,10 @@ namespace RimMandrake.KeelHoist
             if (targetPortal != null && targetPortal.Spawned)
             {
                 return targetPortal.GetDestinationLocation();
+            }
+            if (targetHolder != null && targetHolder.Spawned)
+            {
+                return targetHolder.Position;
             }
             return targetCell.IsValid ? targetCell : Position;
         }
@@ -200,6 +210,10 @@ namespace RimMandrake.KeelHoist
             {
                 targetPortal = null;   // the mouth collapsed or the ship moved: the cable has nothing to hang on
             }
+            if (targetHolder != null && (!targetHolder.Spawned || targetHolder.Map != Map))
+            {
+                targetHolder = null;
+            }
 
             int now = Find.TickManager.TicksGame;
             for (int i = transit.Count - 1; i >= 0; i--)
@@ -234,7 +248,27 @@ namespace RimMandrake.KeelHoist
                 }
             }
 
-            transit.TryDrop(t, cell, map, ThingPlaceMode.Near, out Thing dropped);
+            Thing dropped = null;
+            bool intoHolder = !up && targetHolder != null && targetHolder.Spawned && t is Pawn sunk
+                              && !(sunk.IsColonist && !sunk.Downed);
+            if (intoHolder)
+            {
+                transit.Remove(t);
+                if (targetHolder.Accept((Pawn)t))
+                {
+                    dropped = t;
+                }
+                else
+                {
+                    GenSpawn.Spawn(t, CellFinder.StandableCellNear(cell, map, 5f), map);
+                    dropped = t;
+                    intoHolder = false;
+                }
+            }
+            else
+            {
+                transit.TryDrop(t, cell, map, ThingPlaceMode.Near, out dropped);
+            }
             arriveAt.RemoveAt(i);
             goingUp.RemoveAt(i);
             fromLabel.RemoveAt(i);
@@ -243,14 +277,14 @@ namespace RimMandrake.KeelHoist
                 return;
             }
 
-            bool captured = dropped is Pawn p && TryCapture(p);
+            bool captured = !intoHolder && dropped is Pawn p && TryCapture(p);
             manifest.Add(new RM_HoistManifestEntry
             {
                 tick = Find.TickManager.TicksGame,
                 label = dropped.LabelCap,
                 up = up,
                 from = from,
-                to = map.Parent?.LabelCap ?? map.ToString(),
+                to = intoHolder ? targetHolder.LabelCap.ToString() : (map.Parent?.LabelCap ?? map.ToString()),
                 captured = captured,
             });
             if (manifest.Count > 200)
@@ -306,6 +340,15 @@ namespace RimMandrake.KeelHoist
                 }
                 return true;
             }
+            if (target.Thing is RM_SealedHolder holder)
+            {
+                if (holder.Map != Map || holder.Position.DistanceTo(Position) > range + holder.def.size.x)
+                {
+                    reason = "Out of the cable's reach.";
+                    return false;
+                }
+                return true;   // lowering into it is allowed; lifting out waits for its gate (RaiseCradle)
+            }
             IntVec3 c = target.Cell;
             if (!c.IsValid || !c.InBounds(Map) || c.DistanceTo(Position) > range)
             {
@@ -328,26 +371,48 @@ namespace RimMandrake.KeelHoist
 
         public void LowerCableTo(LocalTargetInfo target)
         {
+            targetPortal = null;
+            targetHolder = null;
+            targetCell = IntVec3.Invalid;
             if (target.Thing is MapPortal portal)
             {
                 targetPortal = portal;
-                targetCell = IntVec3.Invalid;
+            }
+            else if (target.Thing is RM_SealedHolder holder)
+            {
+                targetHolder = holder;
             }
             else
             {
-                targetPortal = null;
                 targetCell = target.Cell;
             }
         }
 
         public void ReelIn()
         {
+            targetHolder = null;
             targetPortal = null;
             targetCell = IntVec3.Invalid;
         }
 
         public void RaiseCradle()
         {
+            if (targetHolder != null && targetHolder.Spawned)
+            {
+                if (!targetHolder.GateOpen(out string why))
+                {
+                    Messages.Message(why, targetHolder, MessageTypeDefOf.RejectInput, historical: false);
+                    return;
+                }
+                List<Pawn> held = targetHolder.TakeAll();
+                foreach (Pawn p in held)
+                {
+                    BeginTransit(p, up: true, from: targetHolder.LabelCap);
+                }
+                Messages.Message(held.Count == 0 ? targetHolder.LabelCap + " is empty." : "The cradle rises out of " + targetHolder.Label + " with " + held.Count + ".",
+                    this, MessageTypeDefOf.NeutralEvent, historical: false);
+                return;
+            }
             Map below = GetOtherMap();
             IntVec3 cradle = GetDestinationLocation();
             if (below == null || !cradle.IsValid)
@@ -392,7 +457,7 @@ namespace RimMandrake.KeelHoist
                 yield return g;
             }
 
-            if (!CableDown)
+            if (!CableDown && !FixedCable)
             {
                 var lower = new Command_Action
                 {
@@ -419,8 +484,10 @@ namespace RimMandrake.KeelHoist
                 }
                 yield return lower;
             }
-            else
+            if (CableDown)
             {
+                if (!FixedCable)
+                {
                 var reel = new Command_Action
                 {
                     defaultLabel = "Reel in cable",
@@ -437,6 +504,7 @@ namespace RimMandrake.KeelHoist
                     reel.Disable("Loading is in progress; cancel it first.");
                 }
                 yield return reel;
+                }
 
                 var raise = new Command_Action
                 {
@@ -464,6 +532,10 @@ namespace RimMandrake.KeelHoist
             {
                 GenDraw.DrawLineBetween(DrawPos, targetPortal.DrawPos, SimpleColor.White);
             }
+            else if (targetHolder != null && targetHolder.Spawned)
+            {
+                GenDraw.DrawLineBetween(DrawPos, targetHolder.DrawPos, SimpleColor.White);
+            }
             else if (targetCell.IsValid)
             {
                 GenDraw.DrawLineBetween(DrawPos, targetCell.ToVector3Shifted(), SimpleColor.White);
@@ -485,6 +557,10 @@ namespace RimMandrake.KeelHoist
             if (targetPortal != null)
             {
                 lines.Add("Cable down: " + targetPortal.LabelCap);
+            }
+            else if (targetHolder != null)
+            {
+                lines.Add("Cable down: " + targetHolder.LabelCap);
             }
             else if (targetCell.IsValid)
             {
