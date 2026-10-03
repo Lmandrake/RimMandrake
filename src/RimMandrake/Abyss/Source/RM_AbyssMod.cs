@@ -21,10 +21,15 @@ namespace RimMandrake.Abyss
         // planet. 1 = the shipped default.
         public static float biomeRarityFactor = 1f;
 
+        // ABYSS_GHARREK_BUILD_1: gharreks go dormant in the still and open at gusts. Off = they are
+        // ordinary always-active animals. Safe mid-game.
+        public static bool gustFeedersEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
+            Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -37,6 +42,9 @@ namespace RimMandrake.Abyss
                        + "The default places a handful of rare, hilly, night-dark patches. "
                        + "Affects planets generated afterwards, never one that already exists.");
             biomeRarityFactor = list.Slider(biomeRarityFactor, 0f, 8f);
+
+            list.CheckboxLabeled("Gharreks sleep in the still and feed at gusts", ref gustFeedersEnabled,
+                "On: gharreks lie dormant until a gust, then open and feed together. Off: they behave as ordinary animals.");
 
             list.End();
         }

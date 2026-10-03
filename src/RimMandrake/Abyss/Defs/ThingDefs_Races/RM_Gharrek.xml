@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_GHARREK_BUILD_1. The gust-feeder, base of the Abyss's food web (cast bible 2026-10-01 §4A,
+  design/Jawa/worldbuilding/biomes/abyss_cast_bible_2026-10-01.md). Invented name, free RM_ tier,
+  no donor. ONE HOME: RM_Abyss only (owner law: an animal belongs to one biome).
+
+  Behaviour: dormant (RM_GharrekDormant hediff, Moving capped to 0) in the still; every gust, read
+  from RM_MapComponent_GustController, every gharrek on the map opens at once and feeds; then shuts.
+  Not a flyer: there is no flight stat here on purpose.
+  Pen product: RM_GillAsh via CompProperties_Shearable. Penned gharreks only feed in gusts, so the
+  interval is long and the real rate is set by how often the map gusts (comp pauses growth in the still).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Gharrek</defName>
+    <label>gharrek</label>
+    <description>A flat, many-gilled crawler the size of a dinner plate that clings in the lee of the crags. In the still it lies shut, cold and nearly invisible on the obsidian, overlapping slate plates drawn tight over its gills. At every gust every gharrek on the map opens at once and feeds on the stirred air, a sudden carpet of fluttering verdigris gill-fans with a faint flameless glow; then they shut again. Harmless, and the meal that makes the crag hunters hunt in the gusts.</description>
+    <statBases>
+      <MoveSpeed>1.1</MoveSpeed>
+      <MarketValue>18</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.8</Wildness>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>plate edge</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <herdAnimal>false</herdAnimal>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.25</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="RimMandrake.Abyss.CompProperties_Gharrek">
+        <dormantHediff>RM_GharrekDormant</dormantHediff>
+        <nutritionPerGust>0.12</nutritionPerGust>
+      </li>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RM_GillAsh</woolDef>
+        <woolAmount>6</woolAmount>
+        <shearIntervalDays>6</shearIntervalDays>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Gharrek</defName>
+    <label>gharrek</label>
+    <race>RM_Gharrek</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.45</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Gharrek/RM_Gharrek</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <HediffDef>
+    <defName>RM_GharrekDormant</defName>
+    <label>dormant</label>
+    <description>Shut tight in the still, waiting for the next gust.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <initialSeverity>1</initialSeverity>
+    <stages>
+      <li>
+        <becomeVisible>false</becomeVisible>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
