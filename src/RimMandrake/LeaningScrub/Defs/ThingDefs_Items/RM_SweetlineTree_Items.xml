@@ -18,8 +18,8 @@
 
   <ThingDef ParentName="WoolBase">
     <defName>RM_SweetlineWool</defName>
-    <label>giant-wool</label>
-    <description>Long, silver-grey hanks of wool, snagged and shed where the biome's giants have rubbed their flanks raw against a sweetline tree for longer than any settlement nearby has stood. Thick and oily with the animal that grew it — warmer than any sheared fleece, and taken only by whoever is willing to work in the giants' shadow.</description>
+    <label>sweetline felt</label>
+    <description>The coats of every woolly beast that scratches against a sweetline tree, matted and cured in the bark's resin into a dense, soft, silver-grey felt. Warmer than fleece and softer against the skin than anything sheared. A grown tree lets a little go on its own; the rest comes out only when someone strips the bark, under the bark-wardens.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_SweetlineWool</texPath>
       <color>(196,193,186)</color>

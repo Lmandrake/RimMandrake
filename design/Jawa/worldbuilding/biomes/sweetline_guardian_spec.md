@@ -323,9 +323,9 @@ All under LeaningScrub's existing **"Named sweetline trees"** group (`RM_Leaning
 | `sweetlineHarvestDisturbance` | 0–3× | 1× | 0: harvest is never harm; wounds still are | built |
 | `sweetlineForgivenessDays` | 1–30 | 5 | drain rate of the meter | built |
 | `sweetlineProximityCharge` "also rouse at anyone who lingers" | bool | **off** | opt-in only (R5 rules walk-up harmless by default) | built |
-| `sweetlineScratchingEnabled` "Animals scratch their coats off on sweetline trees" | bool | on | no rubbing, and the wild-coat patch (§3) is inert | owed |
-| `sweetlineCoatReady` "Coat fullness before an animal goes to scratch" | 50–100% | 80% | | owed |
-| `sweetlineFeltShare` "Share of a rubbed coat that felts into the bark" | 0–50% | 20% | 0: rubs give only ground wool, the harvest is base yield only | owed |
+| `sweetlineScratchingEnabled` "Animals scratch their coats off on sweetline trees" | bool | on | no rubbing, and the wild-coat patch (§3) is inert | built |
+| `sweetlineCoatReady` "Coat fullness before an animal goes to scratch" | 50–100% | 80% | | built |
+| `sweetlineFeltShare` "Share of a rubbed coat that felts into the bark" | 0–50% | 20% | 0: rubs give only ground wool, the harvest is base yield only | built |
 | `sweetlineTreeMapChance` "Chance a new Leaning Scrub map has sweetline trees" | 0–100% | 25% | 0: no trees on new maps (labelled "affects newly generated maps; not worldgen") | owed |
 
 ## 10. Art
@@ -349,6 +349,12 @@ guardian settings, the shed continuing after a harvest. Live proof is owed.
 `SWEETLINE_SCRATCHING_TREE_BUILD_1` (rubbing) and the rest under it or as siblings.
 `RM_LeaningScrub.csproj` lists compile items explicitly, so every new `.cs` needs its
 `<Compile Include>` line.
+
+Pieces 1-5, 8 (the three scratching settings), 9 and 10 are **built** (`SWEETLINE_SCRATCHING_TREE_BUILD_1`,
+`Source/RM_SweetlineScratching.cs`, `Defs/JobDefs/RM_SweetlineScratching.xml`). Two deliberate
+departures: the felt store resets when it is paid out (in `GetAdditionalHarvestYield`), not in
+`PlantCollected`, so a failed harvest roll keeps it; and wild coats grow only while a sweetline tree
+stands somewhere in the running game. Pieces 6 (comfort) and 7 (map step) are their own items.
 
 | # | piece | where | size |
 |---|---|---|---|

@@ -72,6 +72,7 @@ DEFAULTS = {
     "visslerArmFoodEnabled": True,
     "sweetlineGuardiansEnabled": True, "sweetlineGuardianMaxPerTree": 3, "sweetlineHarvestDisturbance": 1.0,
     "sweetlineForgivenessDays": 5.0, "sweetlineProximityCharge": False,
+    "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1214,13 +1215,13 @@ def sweetline_chain(t):
                 suffix = " (%s)" % ids["label"]
                 if not (label and label.endswith(suffix) and len(label) > len(suffix)):
                     _fail("tree label %r carries no generated name before '(%s)'" % (label, ids["label"]))
-                if not re.search(r"Snagged .*(sheds in|ready to shed)", " ".join(lines)):
+                if not re.search(r"Loose .*(falls in|ready to fall)", " ".join(lines)):
                     _fail("no wool-timer line in the tree's inspect text: %s" % lines)
         with _comp(t, "station_toggle_off_plain", toggle="sweetlineStationsEnabled"):
             if _live(t):
                 with _setting(t, "sweetlineStationsEnabled", False):
                     label, lines = _inspect(t, ids["tree"])
-                if label != ids["label"] or re.search(r"Snagged", " ".join(lines)):
+                if label != ids["label"] or re.search(r"Loose ", " ".join(lines)):
                     _fail("sweetlineStationsEnabled OFF but the tree still shows its station: "
                           "label %r, inspect %s" % (label, lines))
         with _comp(t, "station_sheds_wool", toggle="sweetlineStationsEnabled"):
@@ -1232,8 +1233,40 @@ def sweetline_chain(t):
                 after = _stack_total(t, "RM_SweetlineWool", _rs(_rect(t)))
                 _note(t, "sweetline wool beside the tree before / after a 5.5-day jump", [before, after])
                 if after - before < 5:
-                    _fail("a mature sweetline tree shed %d giant-wool after its 5-day timer passed "
+                    _fail("a mature sweetline tree shed %d sweetline felt after its 5-day timer passed "
                           "(expect 5)" % (after - before))
+        # SWEETLINE_SCRATCHING_TREE_BUILD_1: a coated animal rubs its coat off at the trunk. The proof
+        # (RM_SweetlineScratching.ProofOrderScratch via jawa/static_call) sets the sheep's coat and asks the
+        # REAL job giver, so the giver's whole gate is exercised; the ~6 h MTB node above it is not.
+        # Not yet proven here: a wild muffalo's coat growing (wild-coat patch), a pen keeping a herd from
+        # an outside tree, the felt store paid out by a harvest.
+        def order_scratch(cell):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_SweetlineScratching",
+                              method="ProofOrderScratch", args="current|%d,%d|1" % cell)
+            return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        with _comp(t, "scratch_toggle_off_refused", toggle="sweetlineScratchingEnabled"):
+            if _live(t):
+                _spawn(t, "Sheep", x + 3, z + 3, faction="player")
+                with _setting(t, "sweetlineScratchingEnabled", False):
+                    text = order_scratch((x + 3, z + 3))
+                _note(t, "scratch proof with scratching OFF", text)
+                if not text.startswith("REFUSED"):
+                    _fail("sweetlineScratchingEnabled OFF but a full-coated sheep was sent to scratch: %s" % text)
+        with _comp(t, "scratch_drops_coat", toggle="sweetlineScratchingEnabled"):
+            if _live(t):
+                wool0 = _stack_total(t, "WoolSheep", _rs(_rect(t)))
+                text = order_scratch((x + 3, z + 3))
+                if not text.startswith("ORDERED"):
+                    _fail("a tame full-coated sheep 4 cells from a calm sweetline tree was not sent: %s" % text)
+                t.wait_ticks(1500)                                   # walk + 600 ticks of rubbing
+                wool1 = _stack_total(t, "WoolSheep", _rs(_rect(t)))
+                _, lines = _inspect(t, ids["tree"])
+                _note(t, "sheep wool at the trunk before / after one rub; tree inspect", [wool0, wool1, lines])
+                if wool1 - wool0 < 20:
+                    _fail("one full sheep coat rubbed off left %d wool at the trunk (expect ~36 of 45 at "
+                          "the 20%% felt share)" % (wool1 - wool0))
+                if not re.search(r"Felted into the bark: \d+", " ".join(lines)):
+                    _fail("no felt-store line on the tree after a rub: %s" % lines)
         with _comp(t, "visitors_toggle_off_quiet", toggle="sweetlineVisitorsEnabled"):
             if _live(t):
                 def seen():

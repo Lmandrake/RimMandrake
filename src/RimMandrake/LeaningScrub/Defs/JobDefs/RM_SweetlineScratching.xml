@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SWEETLINE_SCRATCHING_TREE_BUILD_1 (Source/RM_SweetlineScratching.cs; spec
+  design/Jawa/worldbuilding/biomes/sweetline_guardian_spec.md §3).
+
+  Any animal with a shearable coat, wild or tame, now and then walks to a calm
+  sweetline tree and rubs its coat off. Spliced at Core's Animal_PreWander hook
+  (after needs, mating and trained jobs, before idle wandering), which reaches
+  every animal; the job giver itself is the gate (CompShearable, coat ready,
+  a reachable calm tree within 60 cells, allowed area for player animals).
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_ScratchOnSweetline</defName>
+    <driverClass>RimMandrake.LeaningScrub.RM_JobDriver_ScratchOnSweetline</driverClass>
+    <reportString>scratching against TargetA.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+
+  <ThinkTreeDef>
+    <defName>RM_ScratchOnSweetline_Splice</defName>
+    <insertTag>Animal_PreWander</insertTag>
+    <insertPriority>40</insertPriority>
+    <thinkRoot Class="ThinkNode_ChancePerHour_Constant">
+      <mtbHours>6</mtbHours>
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.LeaningScrub.RM_JobGiver_ScratchOnSweetline" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>
