@@ -19,7 +19,7 @@ namespace RimMandrake.Pyrelands
     ///   - NEVER IGNITES. VERIFIED against the engine, not assumed:
     ///     FireUtility.CanEverAttachFire (RimWorld/FireUtility.cs:19) returns
     ///     false the moment !t.FlammableNow, and FlammableNow reads the
-    ///     Flammability stat, which RUT_FurnaceBeast sets to 0 in statBases.
+    ///     Flammability stat, which RM_FurnaceBeast sets to 0 in statBases.
     ///     Every ignition route in the game funnels through TryAttachFire ->
     ///     CanEverAttachFire (DamageWorker_Flame, FlameThrower, Verb_ShootBeam,
     ///     Fire.TrySpread, HediffGiver_Terrain). So the beast cannot catch fire
@@ -56,7 +56,7 @@ namespace RimMandrake.Pyrelands
         static Patch_FurnaceBeastHeatImmunity()
         {
             HeatCategory = DefDatabase<DamageArmorCategoryDef>.GetNamedSilentFail("Heat");
-            FurnaceBeastDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_FurnaceBeast");
+            FurnaceBeastDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FurnaceBeast");
 
             if (FurnaceBeastDef == null)
             {
@@ -78,7 +78,7 @@ namespace RimMandrake.Pyrelands
                     AccessTools.Method(typeof(Pawn), nameof(Pawn.PreApplyDamage)),
                     prefix: new HarmonyMethod(typeof(Patch_FurnaceBeastHeatImmunity), nameof(Prefix)));
                 Log.Message("[RimMandrake.Pyrelands] furnace-beast heat immunity: armed; "
-                          + "RUT_FurnaceBeast absorbs all Heat-category damage.");
+                          + "RM_FurnaceBeast absorbs all Heat-category damage.");
             }
             catch (Exception e)
             {

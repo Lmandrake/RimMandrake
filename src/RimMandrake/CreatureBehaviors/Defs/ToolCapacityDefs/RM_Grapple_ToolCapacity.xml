@@ -5,7 +5,7 @@
   ToolCapacityDef + ManeuverDef pair routing a race's own pincer tool to
   RM_PincerCrush (DamageDefs/RM_Grapple_DamageDefs.xml) instead of a generic
   Blunt/Crush capacity. Shape copied from UtinniPatches'
-  RUT_FlamefangBite.xml (its own header cites the vanilla ToxicBite trio
+  RM_FlamefangBite.xml (its own header cites the vanilla ToxicBite trio
   this pattern is built on).
 
   A content mod gives its grappler race a tool like:

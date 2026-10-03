@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_FurnaceHide.xml                    PYRELANDS_MECHANICS_1 · 2026-09-11
+  RM_FurnaceHide.xml                    PYRELANDS_MECHANICS_1 · 2026-09-11
   ============================================================================
   The furnace-beast's own leather, commissioned in full by the owner
   (RUT_ruled_commissions_wave2.md §11 q8: "COMMISSION NOW — owner overrode
   wait-for-sweep"; complete brief in §12). Replaces the Leather_Heavy
-  placeholder on RUT_FurnaceBeast — §8a's fifth ruled def change.
+  placeholder on RM_FurnaceBeast — §8a's fifth ruled def change.
 
   Lives here, beside the beast that drops it
-  (Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml), so RUT_FurnaceBeast's
+  (Defs/ThingDefs_Races/RM_PyrelandsFauna.xml), so RM_FurnaceBeast's
   leatherDef is an in-mod reference and not a cross-mod one.
 
   🔴 STATS ARE CALIBRATED AGAINST MEASURED VANILLA, NOT GUESSED. Read this
@@ -55,7 +55,7 @@
 <Defs>
 
   <ThingDef ParentName="LeatherBase">
-    <defName>RUT_FurnaceHide</defName>
+    <defName>RM_FurnaceHide</defName>
     <label>furnace hide</label>
     <description>The banded hide of a furnace-beast, mineral seams and all. It is what the animal used to store a week of deep-dayside sun in, and it has not entirely stopped: a coat of it is warm before you put it on, and stays warm in country that would kill you. In the heat it is exactly as good an idea as wearing a stove. It is also the one leather on this planet that does not particularly want to burn.</description>
     <graphicData>

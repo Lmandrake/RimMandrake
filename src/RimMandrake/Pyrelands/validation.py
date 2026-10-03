@@ -67,10 +67,10 @@ PLANT_MANIFEST = frozenset(["RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass",
                             "RM_FE_Plant_ScorchFruit"])
 WILD_PLANTS = frozenset(["RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass"])  # ScorchFruit is fire-born
 ANIMAL_MANIFEST = frozenset([
-    "RUT_FireHawk", "RUT_FurnaceBeast",
+    "RM_FireHawk", "RM_FurnaceBeast",
     "RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka",
-    "RUT_Emberscythe", "RUT_Sytheclaw", "RUT_Barbslinger", "RUT_FireWasp", "RUT_Flamefang",
-    "RUT_Ashwallow"])
+    "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
+    "RM_Ashwallow"])
 ASH_RUNGS = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep")
 STOCK_GROUND = ("Sand", "Soil", "Gravel", "SoilRich")
 ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
@@ -1012,7 +1012,7 @@ def firehawk(t):
             _soil(t, rect)
             _plants(t, "RM_FE_Plant_EmberGrass", rect)
             _fire(t, (x - 2, z - 2, 4, 4), size=0.5)
-            hawk = _spawn_wild(t, "RUT_FireHawk", x + 8, z)
+            hawk = _spawn_wild(t, "RM_FireHawk", x + 8, z)
             seen = []
             for _ in range(100):          # every 60 ticks: a sortie is short and was missable at 300
                 _wait(t, 60)
@@ -1046,7 +1046,7 @@ def furnace_warmth(t):
                             stuffDef="Steel")
         if _live(t):
             _ok(pen, "make_empty_room")
-        bid = _spawn_wild(t, "RUT_FurnaceBeast", x, z)
+        bid = _spawn_wild(t, "RM_FurnaceBeast", x, z)
         r = t.bridge_call("jawa/spawn_pawn", kindDef="Colonist", x=x + 1, z=z, faction="player",
                           count=1)
         col = (((r or {}).get("pawns") or [{}])[0]).get("id")
@@ -1097,7 +1097,7 @@ def furnace_room(t):
         _set(t, {"furnaceThermalEnabled": True})
         for r in (a, b):
             t.bridge_call("jawa/make_empty_room", rect=_rs(r))
-        bid = _spawn_wild(t, "RUT_FurnaceBeast", ca[0], ca[1])
+        bid = _spawn_wild(t, "RM_FurnaceBeast", ca[0], ca[1])
         _wait(t, 600)
 
         def tv(r):
@@ -1147,7 +1147,7 @@ def burrowers(t):
             _firebreak(t, rect)
             _soil(t, rect)
             _plants(t, "RM_FE_Plant_EmberGrass", rect)
-            g = _spawn_wild(t, "RUT_Ashwallow", x + 5, z)
+            g = _spawn_wild(t, "RM_Ashwallow", x + 5, z)
             _fire(t, (x - 3, z - 3, 6, 6))
             seen = False
             jobs = []

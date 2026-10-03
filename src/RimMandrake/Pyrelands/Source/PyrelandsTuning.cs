@@ -339,9 +339,9 @@ namespace RimMandrake.Pyrelands
         /// WorldComponent_RM_FurnaceHerdSeeder. [INVENTED]</summary>
         public const int WorldHerdDefaultCount = 2;
 
-        /// <summary>Matches RUT_FurnaceBeast's own PawnKindDef.wildGroupSize
+        /// <summary>Matches RM_FurnaceBeast's own PawnKindDef.wildGroupSize
         /// (3~7) — read from RimUtinni/UtinniPatches/Defs/ThingDefs_Races/
-        /// RUT_PyrelandsFauna.xml, not re-invented here.</summary>
+        /// RM_PyrelandsFauna.xml, not re-invented here.</summary>
         public const int WorldHerdMinSize = 3;
         public const int WorldHerdMaxSize = 7;
 
@@ -350,7 +350,7 @@ namespace RimMandrake.Pyrelands
         // (RM_JobGiver_BurrowOnFire, RM_JobDriver_Burrow). Generic and
         // opt-in via RM_BurrowOnFireExtension, so any race can adopt the
         // "detect the fire, go to ground, re-emerge" behaviour without new
-        // C#; RUT_Ashwallow is the first consumer.
+        // C#; RM_Ashwallow is the first consumer.
         // ---------------------------------------------------------------
         /// <summary>How close a free-standing fire has to be before an
         /// extension-carrying race goes to ground. Comfortably wider than a

@@ -10,7 +10,7 @@
   §3-§5. RM_ tier (mandrake.rm.bluedesert eventually — see BlueDesertLife.cs's
   header for why this file lives here for now instead).
 
-  Shape cloned from this mod's own RUT_Emberscythe.xml (ParentName
+  Shape cloned from this mod's own RM_Emberscythe.xml (ParentName
   AnimalThingBase + manual race block — ordinary wildlife via wildAnimals
   commonality, not a hive/BaseInsect spawn).
 
@@ -21,7 +21,7 @@
 
   Art: PLACEHOLDER texPaths reusing vanilla shipped art (Thrumbo/Warg/Squirrel)
   with a grey tint, same "recolored placeholder, no new art" idiom
-  RUT_Placeholder_SumpMouse/RUT_Emberscythe already use — bespoke sprites are
+  RUT_Placeholder_SumpMouse/RM_Emberscythe already use — bespoke sprites are
   QUEUED via fill_queue.py (art_lists/blue_desert_life.csv), not landed yet.
   Palette: biome_palette_anchors.json `the_blue_desert` family — dorrak
   darkest, vekkit one step lighter, krissek mid-grey at rest so its halo

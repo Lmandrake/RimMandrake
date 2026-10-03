@@ -34,27 +34,27 @@ P = "src/RimMandrake/Pyrelands/Textures/Things"
 ROWS: list[tuple] = [
     # ── invented / non-canon fauna: ours outright ───────────────────────────
     ("razorjack", "Invented fauna (ours)", "Sytheclaw", [
-        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png"),
-        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_north.png"),
-        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png"),
+        ("east", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_east.png"),
+        ("north", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_north.png"),
+        ("south", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Sytheclaw/Sytheclaw_south.png"),
     ], "keep", "Fire-follower recast. Full painterly set, deployed. No structural defect found."),
 
     ("barbslinger", "Invented fauna (ours)", "Barbslinger", [
-        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_east.png"),
-        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_north.png"),
-        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_south.png"),
+        ("east", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_east.png"),
+        ("north", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_north.png"),
+        ("south", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger_south.png"),
     ], "keep", "Ash-grazer. South landed in the 09-14 facing wave, completing the set."),
 
     ("firewasp", "Invented fauna (ours)", "FireWasp", [
-        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_east.png"),
-        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_north.png"),
-        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_south.png"),
+        ("east", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_east.png"),
+        ("north", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_north.png"),
+        ("south", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_south.png"),
     ], "keep", "Full painterly set. Smallest canvases in the roster — check it reads at play zoom."),
 
     ("boomsnake", "Invented fauna (ours)", "Flamefang", [
-        ("east", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_east.png"),
-        ("north", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_north.png"),
-        ("south", f"src/RimUtinni/UtinniPatches/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_south.png"),
+        ("east", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_east.png"),
+        ("north", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_north.png"),
+        ("south", f"src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Flamefang/Flamefang_south.png"),
     ], "keep", "N/S landed in the 09-14 facing wave. The item file still lists these as missing."),
 
     ("mantistanis", "Invented fauna (ours)", "Mantistanis", [

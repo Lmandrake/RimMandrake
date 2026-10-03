@@ -1,172 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ============================================================================
-  WildAnimals_Pyrelands.xml                 UtinniPatches — new file 2026-09-13
-  ============================================================================
+  WildAnimals_Pyrelands.xml                 UtinniPatches
 
-  Wires the RULED fauna roster for the Pyrelands into RM_Pyrelands'
-  wildAnimals, replacing the deliberate core-only vanilla placeholder that
-  src/RimMandrake/Pyrelands/Defs/BiomeDefs/Pyrelands.xml ships (Hare, Rat,
-  Gazelle, Ostrich, Emu, Dromedary, Muffalo, Iguana, Elephant, Rhinoceros,
-  Cougar, Fox_Fennec, Warg — kept there so the Pyrelands mod is self-contained
-  and works with nothing else loaded). The wiring lives HERE, in UtinniPatches,
-  never in the Pyrelands mod itself — that mod must stay standalone.
+  The Pyrelands' eight invented residents (fire-hawk, furnace-beast, emberscythe, sytheclaw,
+  barbslinger, fire-wasp, flamefang, ashwallow) are owned RM_ defs in src/RimMandrake/Pyrelands
+  and sit inline in RM_Pyrelands' <wildAnimals> (PYRELANDS_FAUNA_TIER_PORT_BUILD_1, Q11a/Q12).
+  This campaign file only ADDS the seven Star Wars canon rows from SWBestiary, at the weights the
+  owner ruled (design/Jawa/worldbuilding/biomes/rosters/the_pyrelands.json). It no longer replaces
+  anything; the free list is the free tier's own.
 
-  🔑 SOURCE OF TRUTH: every defName and every commonality number below is
-  copied verbatim from design/Jawa/worldbuilding/biomes/rosters/
-  the_pyrelands.json's "fauna" array (authored 2026-09-09, owner-ruled sitting
-  entries through 2026-09-10 — the GR_ correction pass, the
-  PYRELANDS_FIRE_WEB_COMMISSION_1 igniter builds, and the round-2 move-mapping
-  import of Dalgo) — NOT re-derived or rescaled here. That JSON
-  is the actual ruling; this file only wires it into the def the game reads.
-  The 14-animal sum is 4.91 (RE-VERIFIED 2026-09-20 against the weights actually
-  written below) — not the placeholder's ~5.8, a deliberate consequence of using
-  the owner's real per-species numbers rather than matching the placeholder's
-  total. (This comment previously said 4.21, stale from before Dalgo's round-2
-  import and the PYRELANDS_DONOR_PORT_4 rename pass; nothing below changed.)
+  Gate: PatchOperationFindMod on SWBestiary's NAME. A top-level <Operation MayRequire=...> is ignored
+  by the 1.6 engine (PATCH_MAYREQUIRE_GUARD_INERT_1), so it cannot be the gate.
 
-  ⚠️ The JSON records the owner's RULINGS, and several of its rows still name the
-  donor defName that carried the ruled creature at the time he ruled. Every one
-  of those has since been re-authored as our own def at the SAME commonality; the
-  operations below are the current mapping and are the authority on WHICH def is
-  cast. The weights are still the JSON's, unchanged.
+    RSW_Anooba 0.35 medium-predator    RSW_Iriaz 0.50 small-herd    RSW_Nuna 0.50 small
+    RSW_Orray  0.25 predator+burrower  RSW_Zeer  0.60 large-herd    RSW_Dalgo 0.18 brake
+    RSW_Gizka  1.00 quick grain-forager
 
-  🔴 2026-09-14 (BOOMALOPE_CUT_EVERYWHERE_1): vanilla Boomalope, originally
-  wired here 2026-09-13 under the 2026-09-09 KEEP-reskinned card, is cut —
-  owner ruling "Absolutely no boomalopes," reversing that card. Removed from
-  the unconditional block and the roster below; counts corrected to 14/4.21.
-
-  🔴 2026-09-16 (FLAMEFANG_SNAKE_REBIRTH_1): the venom-ambusher is the flamefang
-  — owner sheet note, verbatim: "rename this to Flamefang and make it venomous,"
-  which postdates and supersedes BOOMSNAKE_CUT_CONFLICT_1 (2026-09-14, which had
-  un-wired the creature after finding no ruling had ever restored it
-  post-BOOM_FAMILY_CUT_1). It is a distinct venom-ambush niche, not the
-  fire-follower niche — that is the sytheclaw's, per the 2026-09-14 recast.
-
-  🔴 2026-09-28 (PYRELANDS_DEDICATED_GRAZER_1): RUT_Ashwallow joins the roster,
-  0.18 — the "burrowers" family's own dedicated pure-grazer, distinct from
-  Orray (a predator hybrid; see Defs/ThingDefs_Races/RUT_Ashwallow.xml for the
-  full case). 0.18 sits between Orray's 0.25 (still the more commonly-seen
-  burrower, being also an opportunist predator) and Emberscythe's 0.05, and
-  is not equal to any other cast weight in this file — deliberate, so no two
-  species are silently mistaken for one another by weight alone. The 14-
-  animal, 4.91-weight sum in the header above is now 15 animals / 5.09;
-  not re-verified with biome_sheet_stats.py this pass (that tool audits the
-  live def dump's actual wired weights, a step owed alongside deploy/build
-  verification for this item, not a text change here).
-
-  🔴 2026-09-19 (PYRELANDS_DONOR_PORT_4): every creature this file casts is now
-  one of OUR defs. The four that still rode a donor defName — GR_Boomsnake,
-  AA_Razorjack, AA_Barbslinger, AA_FireWasp — were re-authored as RUT_Flamefang,
-  RUT_Sytheclaw, RUT_Barbslinger and RUT_FireWasp in
-  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml, carrying their own labels
-  and descriptions, so the two identity patches (FlamefangIdentity.xml,
-  RazorjackIdentity_Sytheclaw.xml), the venom-rewiring patch (FlamefangVenom.xml)
-  and the four ArtOverride mods are all deleted — git is the provenance. The
-  Cherry Picker ThingDef cut on GR_Boomsnake is now irrelevant rather than
-  reversed: nothing casts that def any more.
-
-  🔑 STRUCTURE: one PatchOperationConditional-guarded PatchOperationReplace
-  swaps the WHOLE node for the two commissioned igniters (both always
-  loaded — this mod's own defs). Two more PatchOperationConditional blocks then
-  splice the rest in via PatchOperationAdd on the now-existing node,
-  shorthand-dictionary form throughout — the whole biome's own wildAnimals list
-  already uses that form (`<Hare>1.2</Hare>` etc.), and it is the ONLY form
-  BiomeAnimalRecord.LoadDataFromXmlCustom reads (same mechanism as
-  WeatherCommonalityRecord — see this mod's AshStorms_Pyrelands.xml for the
-  measured citation). There is no PatchOperationFindMod left in this file: every
-  def cast here is ours, so the only gate that makes sense is the one on the
-  BIOME's own mod.
-
-  ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional returns
-  true on no match) — validated with
-  skills/rimworld-modding/scripts/validate_patch.py against the live def dump
-  and the full active mod set; see the file-level record for the verdict.
-
-  ============================================================================
-  ROSTER AND VERIFICATION
-  ============================================================================
-
-  UNCONDITIONAL (this mod's own defs — always loaded):
-    RUT_FireHawk       0.15  igniter-flier      — RUT_PyrelandsFauna.xml (this mod)
-    RUT_FurnaceBeast   0.08  igniter-megafauna  — RUT_PyrelandsFauna.xml (this mod)
-
-  OURS, re-authored off a donor defName (PYRELANDS_DONOR_PORT_4, 2026-09-19 —
-  Defs/ThingDefs_Races/RUT_PyrelandsPortedFauna.xml, always loaded with this mod):
-    RUT_Sytheclaw      0.20  fire-follower      — was AA_Razorjack   (Alpha Animals)
-    RUT_Barbslinger    0.15  ash-grazer         — was AA_Barbslinger (Alpha Animals)
-    RUT_FireWasp       0.40  small-predator     — was AA_FireWasp    (Alpha Animals)
-    RUT_Flamefang      0.50  venom-ambush       — was GR_Boomsnake   (Vanilla Genetics Expanded)
-
-  OURS, authored from scratch, no donor (PYRELANDS_DEDICATED_GRAZER_1,
-  2026-09-28 — Defs/ThingDefs_Races/RUT_Ashwallow.xml, always loaded with
-  this mod):
-    RUT_Ashwallow      0.18  burrower (pure grazer, distinct from Orray)
-
-  OURS, re-authored off a dead donor defName (EMBERSCYTHE_MANTIS_REAUTHOR_1,
-  rehomed into this mod by EMBERSCYTHE_PYRELANDS_REHOME_1 2026-09-19 —
-  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Emberscythe.xml):
-    RUT_Emberscythe    0.05  large-predator     — was GR_Mantistanis (Vanilla Genetics Expanded)
-
-  OURS, the SW-canon herd (SWBestiary, packageId mandrake.rsw.swbestiary), cast as
-  RSW_* defs; the donor's bare Anooba/Iriaz/... keys are no longer used anywhere here:
-    RSW_Anooba          0.35  medium-predator
-    RSW_Iriaz           0.50  small-herd
-    RSW_Nuna            0.50  small
-    RSW_Orray           0.25  medium (burrower + predator double role)
-    RSW_Zeer            0.60  large-herd
-    RSW_Dalgo           0.18  brake (round-2 import)
-    RSW_Gizka           1.00  quick grain-forager
-
-  Both top-level <Operation MayRequire=...> guards below (swbestiary, biomes) are IGNORED by
-  the 1.6 engine, so a test list must carry those mods itself
-  (PATCH_MAYREQUIRE_GUARD_INERT_1).
-    Gizka               1.00  grain (ECOSYSTEM_PYRAMID_LAW_1: the most-seen animal)
-
-  ============================================================================
-  LEFT OUT: vanilla Boomalope only (BOOMALOPE_CUT_EVERYWHERE_1, 2026-09-14).
-  Every other name in the item's checklist and in the_pyrelands.json's ruled
-  "fauna" array is cast above, as one of our own defs. Gizka is wired although
-  it is not in the item's own checklist, because the item's brief was to wire
-  "the ruled fauna roster" and the JSON is that roster; leaving it out would
-  silently under-wire a roster the owner already ruled complete.
-  ============================================================================
+  Shorthand dictionary form (<Def>weight</Def>) is the ONLY form BiomeAnimalRecord's custom loader reads.
 -->
 <Patch>
 
-  <!-- Always: replace the vanilla core-only placeholder with the two
-       commissioned igniters (vanilla Boomalope was cut, BOOMALOPE_CUT_EVERYWHERE_1,
-       2026-09-14 — not in the value below). Unconditional on any DONOR mod — both
-       defNames are this mod's own, always loaded whenever UtinniPatches is — but
-       still PatchOperationConditional-guarded on the target node itself, so this
-       becomes a silent no-op rather than a red launch error in the (currently
-       impossible, but not worth risking) case that the Pyrelands mod is ever
-       removed while UtinniPatches stays in. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
-      <value>
-        <wildAnimals>
-          <RUT_FireHawk>0.15</RUT_FireHawk>
-          <RUT_FurnaceBeast>0.08</RUT_FurnaceBeast>
-        </wildAnimals>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- The SW-canon herd, Anooba as a second flame-edge hunter, and Gizka as the
-       quick grain-forager — all SEVEN as OUR OWN defs.
-       Owner's ruling 2026-09-19, verbatim: "They should be using OUR creatures, not
-       the donor references. The donor references, if any, should never be used
-       again." This block previously cast the donor's bare <Anooba>/<Iriaz>/<Nuna>/
-       <Orray>/<Zeer>/<Dalgo>/<Gizka> behind a FindMod on the donor mod. All seven
-       exist as RSW_ ports in SWBestiary (MEASURED 2026-09-19), so the donor keys are
-       gone and the gate moved with them: a FindMod on the DONOR would have dropped
-       OUR creatures out of the Pyrelands if that mod were ever removed.
-       Weights are the ones authored for this biome and are unchanged. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: SW — Bestiary</li>
+    </mods>
     <match Class="PatchOperationAdd">
       <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
       <value>
@@ -177,38 +34,6 @@
         <RSW_Zeer>0.6</RSW_Zeer>
         <RSW_Dalgo>0.18</RSW_Dalgo>
         <RSW_Gizka>1.0</RSW_Gizka>
-      </value>
-    </match>
-  </Operation>
-
-  <!-- OUR OWN Pyrelands fauna, each at the exact weight the donor it replaced held.
-       RUT_Emberscythe re-authors GR_Mantistanis (0.05) — EMBERSCYTHE_MANTIS_REAUTHOR_1;
-       owner 2026-09-19: "YES for Pyrelands and no elsewhere." The other four are
-       PYRELANDS_DONOR_PORT_4, owner 2026-09-19, verbatim: "The flamefang should be
-       added to the biome and any donors cut, period. Let's be done with these
-       lingering traces," then "port all four":
-         RUT_Sytheclaw   0.2   was AA_Razorjack   (Alpha Animals)
-         RUT_Barbslinger 0.15  was AA_Barbslinger (Alpha Animals)
-         RUT_FireWasp    0.4   was AA_FireWasp    (Alpha Animals)
-         RUT_Flamefang   0.5   was GR_Boomsnake   (Vanilla Genetics Expanded)
-       All five are UtinniPatches' own defs (Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml,
-       RUT_PyrelandsPortedFauna.xml, RUT_Emberscythe.xml — the last rehomed off
-       RotSporeKit by EMBERSCYTHE_PYRELANDS_REHOME_1, 2026-09-19), so the gate is
-       the BIOME's mod and nothing else — the two donor FindMod blocks that used to sit
-       here are gone, and with them the last reason this file could lose a creature to a
-       donor mod being unsubscribed. Casting HERE, with the rest of the Pyrelands cast,
-       rather than in BiomeCast_Ashkarr.xml — one biome, one file. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rm.biomes">
-    <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>Defs/BiomeDef[defName="RM_Pyrelands"]/wildAnimals</xpath>
-      <value>
-        <RUT_Emberscythe>0.05</RUT_Emberscythe>
-        <RUT_Sytheclaw>0.2</RUT_Sytheclaw>
-        <RUT_Barbslinger>0.15</RUT_Barbslinger>
-        <RUT_FireWasp>0.4</RUT_FireWasp>
-        <RUT_Flamefang>0.5</RUT_Flamefang>
-        <RUT_Ashwallow>0.18</RUT_Ashwallow>
       </value>
     </match>
   </Operation>

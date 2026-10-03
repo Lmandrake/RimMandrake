@@ -6,11 +6,11 @@
   ============================================================================
   Attaches this mod's comps to the two igniter defs, which live in another mod
   (mandrake.rut.patches,
-  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_PyrelandsFauna.xml).
+  src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RM_PyrelandsFauna.xml).
 
   🔑 WHY A PATCH AND NOT A NODE IN THE DEF ITSELF. A <li Class="..."> in a def
   is resolved against the loaded assemblies at def-parse time; writing these
-  comps directly into RUT_PyrelandsFauna.xml would make that mod's defs depend
+  comps directly into RM_PyrelandsFauna.xml would make that mod's defs depend
   on THIS mod's DLL and would break the moment the two are loaded apart. A
   patch from the later-loading mod has no such coupling: with this mod absent
   the igniters are simply ordinary animals again, which is exactly what they
@@ -42,7 +42,7 @@
              NOT a chance to light one.
         ============================================================ -->
         <li Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName="RUT_FireHawk"]</xpath>
+          <xpath>Defs/ThingDef[defName="RM_FireHawk"]</xpath>
           <value>
             <comps>
               <li Class="RimMandrake.Pyrelands.CompProperties_FireHawkSpread">
@@ -81,7 +81,7 @@
                 thornvine diet along with the charge.
         ============================================================ -->
         <li Class="PatchOperationAdd">
-          <xpath>Defs/ThingDef[defName="RUT_FurnaceBeast"]</xpath>
+          <xpath>Defs/ThingDef[defName="RM_FurnaceBeast"]</xpath>
           <value>
             <comps>
               <li Class="CompProperties_HeatPusher">

@@ -65,7 +65,7 @@
        driver's AddFinishAction on every exit path (safe emergence, the
        safety-cap timeout, or the job being interrupted).
 
-       TWO STAT OFFSETS, same idiom RUT_FurnaceBeast's permanent statBases
+       TWO STAT OFFSETS, same idiom RM_FurnaceBeast's permanent statBases
        use for total fire immunity (ArmorRating_Heat, Flammability), applied
        here only WHILE burrowed rather than always:
          ArmorRating_Heat +4.0   comfortably past the point the vanilla armor

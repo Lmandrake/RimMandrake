@@ -91,10 +91,10 @@ Zero Star Wars content lives in this biome's roster at all — the twin's own
 `wildAnimals` carries no `RSW_`/`SW_`/`mlie.*` row, so no Utinni patch is needed
 for fauna (unlike most sibling RM_ biome mods, there is no `WildAnimals_Contagion.xml`).
 
-⚠️ One row is neither ours-standalone nor Star Wars: `RUT_Sytheclaw`, a
+⚠️ One row is neither ours-standalone nor Star Wars: `RM_Sytheclaw`, a
 RimMandrake-tier creature the frozen campaign shares inline across three biomes
 (Pyrelands, Greentide, here) whose ThingDef/PawnKindDef still live in the
-RimUtinni tier (`RUT_PyrelandsPortedFauna.xml`). Wiring it inline here would be
+RimUtinni tier (`RM_PyrelandsPortedFauna.xml`). Wiring it inline here would be
 a live cross-tier dependency (a franchise-free def needing a campaign-tier def
 to resolve), so it ships `MayRequire="mandrake.rut.patches"` — same caution
 `WildAnimals_Greentide.xml` already records for this same creature. It is one

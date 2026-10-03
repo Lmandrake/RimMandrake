@@ -15,7 +15,7 @@
      on frames.
 
      Placeholder texPath only, same posture as RM_RotSporeKit_GuardianGroves.xml's
-     own header note: reused from RUT_FireWasp's already-shipped art (closest
+     own header note: reused from RM_FireWasp's already-shipped art (closest
      existing insect silhouette in the mod set) rather than left pointing at
      nothing. Checked infrastructure/artpipe this pass — no RM_Skerrel job
      exists yet, queued or done; bespoke art is owed to the pipeline, not
