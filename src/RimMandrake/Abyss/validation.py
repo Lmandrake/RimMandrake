@@ -7,6 +7,7 @@ Mod Settings: the Abyss's only control is the worldgen-rarity slider; the etchca
 toggle (it is a def, and gating a def needs C# plus a DLL rebuild -- owed, see the item).
 """
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
@@ -165,6 +166,64 @@ def durrgak_check():
         bad.append("RM_GenStep_DurrgakSigns.cs not compiled")
     if "durrgakMapSignsEnabled" not in open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read():
         bad.append("Mod Settings toggle durrgakMapSignsEnabled missing")
+    return bad
+
+
+def freed_beasts_check():
+    """Offline (ABYSS_DONOR_BEASTS_FREED_1): summ + summing + drokattak defs, own art, zero donor names, rosters, comps, toggles."""
+    bad = []
+    summ = _defs("ThingDefs_Races/RM_Summ.xml")
+    drok = _defs("ThingDefs_Races/RM_Drokattak.xml")
+    kinds = {k.findtext("defName"): k for r in (summ, drok) for k in r.iter("PawnKindDef")}
+    things = {t.findtext("defName"): t for r in (summ, drok) for t in r.iter("ThingDef")}
+    for k in ("RM_Summ", "RM_Summing", "RM_Drokattak"):
+        if k not in kinds:
+            bad.append("missing PawnKindDef %s" % k)
+    for t in ("RM_Summ", "RM_Drokattak"):
+        if t not in things:
+            bad.append("missing ThingDef %s" % t)
+    if bad:
+        return bad
+    if kinds["RM_Summing"].findtext("race") != "RM_Summ":
+        bad.append("RM_Summing must be a kind on the RM_Summ race")
+    if int(kinds["RM_Summing"].findtext("maxGenerationAge") or 999) > 3:
+        bad.append("RM_Summing must generate young only")
+    n_stages = len(things["RM_Summ"].findall("race/lifeStageAges/li"))
+    for k in ("RM_Summ", "RM_Summing"):
+        if len(kinds[k].findall("lifeStages/li")) != n_stages:
+            bad.append("%s lifeStages count != race lifeStageAges (%d)" % (k, n_stages))
+    for k in kinds.values():
+        for tex in {l.findtext("bodyGraphicData/texPath") for l in k.findall("lifeStages/li")}:
+            for f in ("south", "east", "north"):
+                if not os.path.isfile(os.path.join(HERE, "Textures", "%s_%s.png" % (tex, f))):
+                    bad.append("missing facing %s_%s.png" % (tex, f))
+    raw = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Summ.xml")).read() + open(
+        os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Drokattak.xml")).read()
+    code = re.sub(r"<!--.*?-->", "", raw, flags=re.S)  # headers name the donors they replace; defs must not
+    for donor in ("AA_", "GR_", "MayRequire", "Behemoth", "Nighthrumbo"):
+        if donor in code:
+            bad.append("donor trace %r in the freed-beast defs" % donor)
+    body = code.lower()
+    if "dragon" in body:
+        bad.append("the word dragon reached a def (ruling 9)")
+    if things["RM_Summ"].find("comps/li[@Class='RimMandrake.Abyss.CompProperties_RM_SummHide']") is None:
+        bad.append("summ lacks RM_SummHide comp")
+    if things["RM_Drokattak"].find("comps/li[@Class='RimMandrake.Abyss.CompProperties_RM_QuillHackle']") is None:
+        bad.append("drokattak lacks RM_QuillHackle comp")
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    for k in ("RM_Summ", "RM_Drokattak"):
+        if biome.find(".//wildAnimals/%s" % k) is None:
+            bad.append("RM_Abyss <wildAnimals> lacks %s" % k)
+    proj = open(os.path.join(HERE, "Source", "RM_Abyss.csproj")).read()
+    for cs in ("RM_CompSummHide.cs", "RM_CompQuillHackle.cs"):
+        if 'Compile Include="%s"' % cs not in proj:
+            bad.append("%s not compiled" % cs)
+    mod = open(os.path.join(HERE, "Source", "RM_AbyssMod.cs")).read()
+    for tog in ("summRegenerates", "summUVSensitive", "drokattakHackleEnabled"):
+        if tog not in mod:
+            bad.append("Mod Settings toggle %s missing" % tog)
+    if '"RM_Summ"' not in open(os.path.join(HERE, "Source", "RM_MapComponentDark.cs")).read():
+        bad.append("storm call no longer looks up RM_Summ")
     return bad
 
 
@@ -439,6 +498,17 @@ try:
             if t._guard() and (not rows or rows[0].get("canEverFly") is not True):
                 raise ExpectationFailed("RM_Krizzak canEverFly not True: spawn=%r flight=%r" % (s, rows[:1]))
 
+    @suite.chain("freed_beasts")
+    def freed_beasts(t):
+        """Live: summ/summing/drokattak loaded; a spawned summing is young (generation age gate). The storm call's
+        spawn of RM_Summ, the daylight burn and the hackle need a joint session or a storm on the Abyss."""
+        with t.component("freed_beasts_defs_loaded", beyond_toggle=True):
+            for d in ("ThingDef/RM_Summ", "PawnKindDef/RM_Summ", "PawnKindDef/RM_Summing", "ThingDef/RM_Drokattak",
+                      "PawnKindDef/RM_Drokattak", "HediffDef/RM_SummSunburn", "LifeStageDef/RM_SummElder"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
     @suite.chain("predators_defs_resolve")
     def predators_defs_resolve(t):
         """Live: cindermare/skarnix defs and the cold-drain wound chain loaded."""
@@ -461,6 +531,8 @@ if __name__ == "__main__":
     e = etchfall_check()
     print("ETCHFALL static: %s" % ("PASS" if not e else "FAIL " + "; ".join(e)))
     k = krizzak_check()
+    fb = freed_beasts_check()
+    print("FREED BEASTS static: %s" % ("PASS" if not fb else "FAIL " + "; ".join(fb)))
     print("KRIZZAK static: %s" % ("PASS" if not k else "FAIL " + "; ".join(k)))
     r = dark_check()
     print("DARK static: %s" % ("PASS" if not r else "FAIL " + "; ".join(r)))

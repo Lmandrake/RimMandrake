@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_DONOR_BEASTS_FREED_1. The storm giant of the Summ family (cast bible 2026-10-01 §4C/§5; owner named
+  it: "Summ the All-Render, with the lesser forms of it other Summ creatures"). Replaces the donor-bodied
+  ghorrumak (AA_Behemoth): own race, own art, no donor ParentName, texPath or MayRequire. Free RM_ tier.
+  Alien megafauna in the krayt / zillo register, never a dragon: no wings, no fire.
+  - RM_Summ (adult kind) and RM_Summing (the young: a kind on the same race that only generates young;
+    baby/juvenile life stages draw the summing art). The race never stops growing: two late life stages
+    (RM_SummElder, RM_SummAncient) keep raising body size, hunger and health.
+  - Regenerates and burns in daylight (RM_CompSummHide.cs, two Abyss settings). Sees in the Dark: the murk
+    touches humanlikes only.
+  - The Witchfire storm call (ABYSS_DARK_BUILD_1, RM_MapComponentDark.TrySpawnSumm) looks up RM_Summ.
+  The brood-mother RUT_SummAllRender and the egg are campaign content (ABYSS_LIGHTFALL_BROOD_WRECK_1).
+-->
+<Defs>
+
+  <LifeStageDef>
+    <defName>RM_SummElder</defName>
+    <label>elder</label>
+    <visible>true</visible>
+    <reproductive>true</reproductive>
+    <bodySizeFactor>1.35</bodySizeFactor>
+    <healthScaleFactor>1.3</healthScaleFactor>
+    <hungerRateFactor>1.35</hungerRateFactor>
+    <foodMaxFactor>1.3</foodMaxFactor>
+    <meleeDamageFactor>1.2</meleeDamageFactor>
+    <marketValueFactor>1.2</marketValueFactor>
+  </LifeStageDef>
+
+  <LifeStageDef>
+    <defName>RM_SummAncient</defName>
+    <label>ancient</label>
+    <visible>true</visible>
+    <reproductive>true</reproductive>
+    <bodySizeFactor>1.8</bodySizeFactor>
+    <healthScaleFactor>1.7</healthScaleFactor>
+    <hungerRateFactor>1.8</hungerRateFactor>
+    <foodMaxFactor>1.7</foodMaxFactor>
+    <meleeDamageFactor>1.45</meleeDamageFactor>
+    <marketValueFactor>1.4</marketValueFactor>
+  </LifeStageDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Summ</defName>
+    <label>summ</label>
+    <description>A vast, low, many-legged grazer of the deep crags whose voice is the thunder. Its long armoured body is slung on six thick limbs; great resonating throat-sacs down its neck and chest glow a faint storm-violet when it is charged. It grazes on the Dark itself, gathering the charge the Dark carries until it must call it out, and in a Witchfire storm the roll heard a few seconds before a flash with no lightning is a summ calling. It regenerates its wounds, sees by the glow of its own throat, and burns in daylight. It never stops growing.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <MarketValue>2600</MarketValue>
+      <ComfyTemperatureMin>-50</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <Wildness>0.97</Wildness>
+      <ArmorRating_Sharp>0.6</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.4</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.3</ArmorRating_Heat>
+      <ToxicResistance>0.6</ToxicResistance>
+      <FilthRate>4</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>38</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left foreleg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foreleg</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>teeth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>34</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>8</baseBodySize>
+      <baseHealthScale>9</baseHealthScale>
+      <baseHungerRate>2.2</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <herdAnimal>false</herdAnimal>
+      <trainability>Advanced</trainability>
+      <petness>0</petness>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
+      <nameOnTameChance>1</nameOnTameChance>
+      <gestationPeriodDays>60</gestationPeriodDays>
+      <lifeExpectancy>220</lifeExpectancy>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>4</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundCall>Pawn_Thrumbo_Call</soundCall>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+        <li>
+          <def>RM_SummElder</def>
+          <minAge>40</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundCall>Pawn_Thrumbo_Call</soundCall>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+        <li>
+          <def>RM_SummAncient</def>
+          <minAge>120</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundCall>Pawn_Thrumbo_Call</soundCall>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <comps>
+      <li Class="RimMandrake.Abyss.CompProperties_RM_SummHide">
+        <healPerRareTick>1.5</healPerRareTick>
+        <sunGlowAtLeast>0.5</sunGlowAtLeast>
+        <burnPerRareTick>0.04</burnPerRareTick>
+        <coolPerRareTick>0.06</coolPerRareTick>
+        <sunburnHediff>RM_SummSunburn</sunburnHediff>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Summ</defName>
+    <label>summ</label>
+    <race>RM_Summ</race>
+    <combatPower>620</combatPower>
+    <ecoSystemWeight>2.5</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <minGenerationAge>4</minGenerationAge>
+    <lifeStages>
+      <li>
+        <label>summing</label>
+        <labelPlural>summings</labelPlural>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <label>summing</label>
+        <labelPlural>summings</labelPlural>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The young: the same race, generated young only (oversized head, throat-sac buds, soft pale hide).
+       Already hungry and hostile; it grows into a summ and then keeps growing. -->
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Summing</defName>
+    <label>summing</label>
+    <race>RM_Summ</race>
+    <combatPower>180</combatPower>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <maxGenerationAge>3</maxGenerationAge>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summing/RM_Summing</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Summ/RM_Summ</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>8.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <HediffDef>
+    <defName>RM_SummSunburn</defName>
+    <label>daylight burn</label>
+    <description>Its hide is made for perpetual night. Under an open daylit sky it blisters and smokes; in shade or darkness the burn fades.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.55, 0.3)</defaultLabelColor>
+    <isBad>true</isBad>
+    <maxSeverity>1</maxSeverity>
+    <stages>
+      <li>
+        <label>minor</label>
+        <painOffset>0.1</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.35</minSeverity>
+        <label>blistering</label>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.15</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.7</minSeverity>
+        <label>smoking</label>
+        <painOffset>0.45</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.1</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>
