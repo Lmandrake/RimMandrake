@@ -64,6 +64,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             UnrelatedEditCheck(scenes.First(x => x.GetProperty("scene").GetProperty("name").GetString() == "nodal").GetProperty("scene"));
             LaneAChecks.Run(scenes);       // phase 1b lane A (rope settle, graph, live ends): LaneAChecks.cs
             AerialSelfTest.Run(Check);     // lane B (L5 aerial lines): AerialSelfTest.cs + ../Aerial/AerialMath.cs
+            HoseSelfTest.Run(Check);       // lane D (L6 fire hoses): HoseSelfTest.cs + ../Hose/HoseMath.cs
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
         }

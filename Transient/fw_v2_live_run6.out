@@ -1,0 +1,15 @@
+L0_loaded_paused       PASS                programState Playing, ticksGame 1 -> 1 over 1 s
+L0_map_250             PASS                map 250x250 biome IceSheet
+L1_log_clean           PASS                no FlowWorks error in 14 warn+ entries (base seq 31)
+L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 571e6eb55f04 mvidMatchesFile True; repo sha 571e6eb55f04
+L3_defs_live           PASS                live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})
+L4_settings_default    PASS                43 settings read, all shipped defaults
+L5_site_pristine       PASS                excavated 0 bodies 0 superdeep 0 activeFluidRaw None
+E1a_cadence_shipped    PASS                pulseIntervalTicks 250, nextPulseTick 251 at tick 1
+L5_dry_weather         PASS                weather Clear rainRate 0.0
+SITE0_no_pawn_in_plots PASS                3 pawns, none in 36 plot rects
+SITE1_painted_readback FAIL       SITE     ["E2_east_A (18, 60) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}", "E2_east_A (19, 60) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}", "E2_east_B (19, 63) not fresh Soil: {'d': 0, 'f': 0, 'isSource': False, 'terrain': 'ThinIce'}"]
+ABORT                  FAIL       HARNESS  site readback
+Z_settings_restored    PASS                0 touched settings back to shipped defaults
+result -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2_result_20261002T075351.json
+LIVE: NOT GREEN  ticks 0  wall 28.4s  calls 139  {'PASS': 11, 'FAIL': 2, 'UNMEASURED': 0, 'UNCOVERED': 0, 'UNBUILT': 0, 'SKIP': 0}

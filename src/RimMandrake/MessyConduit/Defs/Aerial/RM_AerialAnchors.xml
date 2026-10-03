@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Messy Conduit aerial power lines (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 2).
-     Graphics are PROCEDURAL PLACEHOLDERS (src/RimMandrake/Utils/mockups/messy_conduit/export_aerial_textures.py)
-     until the artpipe jobs finish; the swap is a file drop over the same texPaths. -->
+     AerialMast / AerialMastTop / WallBracket are real artpipe art (wire_style_art.py, lane C 2026-10-02): the mast
+     is the unfaced side-view pole, its top graphic is the upper half of the same image (drawn above pawns at
+     topOffsetZ 1.0, so it covers rows 0-127 exactly), attachZ/insulatorSpread measured on that art (insulator
+     heads at row ~22 of 256 -> 1.5 - 22/128 = 1.33; outer insulators at x ~38 and ~90 of 128 -> +-0.2).
+     AerialLampMast, AerialLampMastTop and TapClamp are still procedural placeholders (export_aerial_textures.py). -->
 <Defs>
 
   <MapMeshFlagDef>
@@ -70,7 +73,8 @@
     <modExtensions>
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">
         <maxLinks>4</maxLinks>
-        <attachZ>1.15</attachZ>
+        <attachZ>1.33</attachZ>
+        <insulatorSpread>0.4</insulatorSpread>
         <topTexPath>RimMandrake/MessyConduit/Aerial/AerialMastTop</topTexPath>
         <topOffsetZ>1.0</topOffsetZ>
       </li>
@@ -110,7 +114,7 @@
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">
         <maxLinks>3</maxLinks>
         <attachZ>1.15</attachZ>
-        <topTexPath>RimMandrake/MessyConduit/Aerial/AerialMastTop</topTexPath>
+        <topTexPath>RimMandrake/MessyConduit/Aerial/AerialLampMastTop</topTexPath>
         <topOffsetZ>1.0</topOffsetZ>
       </li>
     </modExtensions>
@@ -148,7 +152,7 @@
     <modExtensions>
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">
         <maxLinks>2</maxLinks>
-        <attachZ>0.55</attachZ>
+        <attachZ>0.27</attachZ>
         <insulatorSpread>0</insulatorSpread>
       </li>
     </modExtensions>

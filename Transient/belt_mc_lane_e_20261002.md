@@ -1,0 +1,338 @@
+# BELT lane E — Messy Conduit live Northstar matrix runner (2026-10-02)
+
+## Steps
+- [ ] 0 read materials
+- [ ] 1 run_live.py written (offline, dry-run vs fakegame)
+- [ ] 2 live lock + tier + launch
+- [ ] 3 bland map + placement
+- [ ] 4 census vs oracle
+- [ ] 5 screenshots + contact sheets + review.html
+- [ ] 6 determinism
+- [ ] 7 record
+## Log
+- 17:45 step1: probe rect:x,z,w,h census appended to MessyConduitProbe.cs; built OK (not deployed yet)
+- 17:38 step1 done: run_live.py written; mock 82 PASS/18 SKIP(aerial)/9 UNBUILT(hose); flip_z fault -> 21 FAIL. Taking live lock.
+- 17:48 waiting for live lock: LANE C Fri Oct  2 17:38:37 PDT 2026
+- 18:01 LIVE LOCK acquired; cycling game (kill, build+deploy, tier messyconduit, Steam launch)
+- 18:20 game up on messyconduit tier (PID 37640), deployed DLL == repo DLL; starting live matrix run
+- 18:24 smoke (5 scenes) ran: fixed battery-position parse, noon pin, cell-rect rootSize framing; starting full pass 1
+  - 18:24:48 O0_board_pitch PASS HARNESS
+  - 18:24:55 L0_fresh_map PASS SITE
+  - 18:24:55 L1_map_250 PASS SITE
+  - 18:24:55 L2_tier_running PASS SITE
+  - 18:24:59 L3_probe_rect_channel PASS HARNESS
+  - 18:25:02 L4_aerial_autolink_off PASS HARNESS
+  - 18:25:02 L5_site_pinned PASS SITE
+  - 18:25:02 L6_no_pawn_in_region PASS SITE
+  - 18:25:05 board B00_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'False'} scenes 8 bbox 10,10,201,71
+  - 18:25:22 MX_D00_n1_S0 PASS MOD
+  - 18:25:25 MX_D04_n10_S0 PASS MOD
+  - 18:25:28 MX_D08_n100_S0 PASS MOD
+  - 18:25:30 MX_D12_n1000_S0 PASS MOD
+  - 18:25:33 MX_F00_T0_S0 PASS MOD
+  - 18:25:46 MX_F16_T4_S0 PASS MOD
+  - 18:25:57 MX_F32_T8_S0 PASS MOD
+  - 18:26:00 MX_F48_T12_S0 FAIL MOD
+  - 18:26:26 board B00_ground done: 2 ticks, 80.9s, det 8/8
+  - 18:26:28 board B01_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWars', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 18:26:57 MX_F01_T0_S1 PASS MOD
+  - 18:27:00 MX_F17_T4_S1 PASS MOD
+  - 18:27:13 MX_F33_T8_S1 PASS MOD
+  - 18:27:28 MX_F49_T12_S1 PASS MOD
+  - 18:27:42 board B01_ground done: 2 ticks, 74.3s, det 4/4
+  - 18:27:44 board B02_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.ExtensionCord', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 18:28:13 MX_F02_T0_S2 PASS MOD
+  - 18:28:24 MX_F18_T4_S2 PASS MOD
+  - 18:28:26 MX_F34_T8_S2 PASS MOD
+  - 18:28:39 MX_F50_T12_S2 PASS MOD
+  - 18:28:53 board B02_ground done: 2 ticks, 69.2s, det 4/4
+  - 18:28:55 board B03_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.Cybertek', 'tangleMin': '6', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 18:29:13 MX_F03_T0_S3 PASS MOD
+  - 18:29:26 MX_F19_T4_S3 PASS MOD
+  - 18:29:37 MX_F35_T8_S3 PASS MOD
+  - 18:29:40 MX_F51_T12_S3 PASS MOD
+  - 18:29:54 board B03_ground done: 2 ticks, 59.3s, det 4/4
+  - 18:29:55 board B04_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.StarWars', 'tangles': 'False'} scenes 4 bbox 10,10,160,30
+  - 18:30:20 MX_F04_T1_S0 PASS MOD
+  - 18:30:23 MX_F20_T5_S0 PASS MOD
+  - 18:30:36 MX_F36_T9_S0 PASS MOD
+  - 18:30:47 MX_F52_T13_S0 FAIL MOD
+  - 18:31:01 board B04_ground done: 2 ticks, 65.3s, det 4/4
+  - 18:31:02 board B05_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.ExtensionCord', 'tangles': 'True'} scenes 4 bbox 10,10,160,30
+  - 18:31:33 MX_F05_T1_S1 PASS MOD
+  - 18:31:44 MX_F21_T5_S1 PASS MOD
+  - 18:31:47 MX_F37_T9_S1 PASS MOD
+  - 18:32:04 MX_F53_T13_S1 PASS MOD
+  - 18:32:18 board B05_ground done: 2 ticks, 75.5s, det 4/4
+  - 18:32:19 board B06_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.Cybertek', 'tangles': 'True'} scenes 4 bbox 10,10,160,30
+  - 18:32:39 MX_F06_T1_S2 PASS MOD
+  - 18:32:51 MX_F22_T5_S2 PASS MOD
+  - 18:33:03 MX_F38_T9_S2 PASS MOD
+  - 18:33:10 MX_F54_T13_S2 PASS MOD
+  - 18:33:24 board B06_ground done: 2 ticks, 64.5s, det 4/4
+  - 18:33:25 board B07_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWarsJawa', 'tangleMin': '6', 'tangles': 'True'} scenes 8 bbox 10,10,200,72
+  - 18:33:45 MX_D03_n1_S3 PASS MOD
+  - 18:33:48 MX_D07_n10_S3 PASS MOD
+  - 18:33:51 MX_D11_n100_S3 PASS MOD
+  - 18:33:53 MX_D15_n1000_S3 PASS MOD
+  - 18:34:07 MX_F07_T1_S3 PASS MOD
+  - 18:34:14 MX_F23_T5_S3 PASS MOD
+  - 18:34:27 MX_F39_T9_S3 PASS MOD
+  - 18:34:38 MX_F55_T13_S3 PASS MOD
+  - 18:35:05 board B07_ground done: 2 ticks, 99.7s, det 8/8
+  - 18:35:07 board B08_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.ExtensionCord', 'tangles': 'False'} scenes 4 bbox 10,10,172,24
+  - 18:35:33 MX_F08_T2_S0 PASS MOD
+  - 18:35:44 MX_F24_T6_S0 PASS MOD
+  - 18:35:52 MX_F40_T10_S0 PASS MOD
+  - 18:36:04 MX_F56_T14_S0 PASS MOD
+  - 18:36:19 board B08_ground done: 2 ticks, 71.8s, det 4/4
+  - 18:36:20 board B09_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.Cybertek', 'tangles': 'True'} scenes 4 bbox 10,10,172,24
+  - 18:36:38 MX_F09_T2_S1 PASS MOD
+  - 18:36:50 MX_F25_T6_S1 PASS MOD
+  - 18:37:01 MX_F41_T10_S1 PASS MOD
+  - 18:37:09 MX_F57_T14_S1 PASS MOD
+  - 18:37:23 board B09_ground done: 2 ticks, 62.7s, det 4/4
+  - 18:37:24 board B10_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'True'} scenes 8 bbox 10,10,210,71
+  - 18:37:44 MX_D02_n1_S2 PASS MOD
+  - 18:37:51 MX_D06_n10_S2 PASS MOD
+  - 18:37:54 MX_D10_n100_S2 PASS MOD
+  - 18:37:57 MX_D14_n1000_S2 PASS MOD
+  - 18:38:08 MX_F10_T2_S2 PASS MOD
+  - 18:38:11 MX_F26_T6_S2 PASS MOD
+  - 18:38:24 MX_F42_T10_S2 PASS MOD
+  - 18:38:35 MX_F58_T14_S2 PASS MOD
+  - 18:39:02 board B10_ground done: 2 ticks, 97.4s, det 8/8
+  - 18:39:03 board B11_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWars', 'tangleMin': '6', 'tangles': 'True'} scenes 4 bbox 10,10,172,24
+  - 18:39:32 MX_F11_T2_S3 PASS MOD
+  - 18:39:43 MX_F27_T6_S3 PASS MOD
+  - 18:39:46 MX_F43_T10_S3 PASS MOD
+  - 18:39:59 MX_F59_T14_S3 PASS MOD
+  - 18:40:13 board B11_ground done: 2 ticks, 69.4s, det 4/4
+  - 18:40:14 board B12_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.Cybertek', 'tangles': 'False'} scenes 4 bbox 10,10,159,21
+  - 18:40:31 MX_F12_T3_S0 PASS MOD
+  - 18:40:43 MX_F28_T7_S0 PASS MOD
+  - 18:40:54 MX_F44_T11_S0 PASS MOD
+  - 18:40:57 MX_F60_T15_S0 PASS MOD
+  - 18:41:11 board B12_ground done: 2 ticks, 56.8s, det 4/4
+  - 18:41:13 board B13_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'True'} scenes 8 bbox 10,10,204,72
+  - 18:41:30 MX_D01_n1_S1 PASS MOD
+  - 18:41:33 MX_D05_n10_S1 PASS MOD
+  - 18:41:36 MX_D09_n100_S1 PASS MOD
+  - 18:41:39 MX_D13_n1000_S1 PASS MOD
+  - 18:41:50 MX_F13_T3_S1 PASS MOD
+  - 18:41:57 MX_F29_T7_S1 PASS MOD
+  - 18:42:09 MX_F45_T11_S1 PASS MOD
+  - 18:42:20 MX_F61_T15_S1 PASS MOD
+  - 18:42:47 board B13_ground done: 2 ticks, 94.3s, det 8/8
+  - 18:42:48 board B14_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.StarWars', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 18:43:18 MX_F14_T3_S2 PASS MOD
+  - 18:43:29 MX_F30_T7_S2 PASS MOD
+  - 18:43:31 MX_F46_T11_S2 PASS MOD
+  - 18:43:44 MX_F62_T15_S2 PASS MOD
+  - 18:43:58 board B14_ground done: 2 ticks, 69.8s, det 4/4
+  - 18:44:00 board B15_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.ExtensionCord', 'tangleMin': '6', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 18:44:19 MX_F15_T3_S3 PASS MOD
+  - 18:44:32 MX_F31_T7_S3 PASS MOD
+  - 18:44:43 MX_F47_T11_S3 PASS MOD
+  - 18:44:46 MX_F63_T15_S3 PASS MOD
+  - 18:45:00 board B15_ground done: 2 ticks, 59.8s, det 4/4
+  - 18:45:01 board B16_aerial {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'True'} scenes 18 bbox 10,10,205,97
+  - 18:46:54 MX_A00_N2_R6_up PASS MOD
+  - 18:47:03 MX_A01_N2_R12_cut FAIL MOD
+  - 18:47:12 MX_A02_N2_R19_fallen PASS MOD
+  - 18:47:21 MX_A03_N3_R6_cut FAIL MOD
+  - 18:47:30 MX_A04_N3_R12_fallen PASS MOD
+  - 18:47:40 MX_A05_N3_R19_up PASS MOD
+  - 18:47:49 MX_A06_N5_R6_fallen PASS MOD
+  - 18:47:58 MX_A07_N5_R12_up PASS MOD
+  - 18:48:07 MX_A08_N5_R19_cut FAIL MOD
+  - 18:48:17 MX_A09_N2_R6_cut FAIL MOD
+  - 18:48:26 MX_A10_N2_R12_fallen PASS MOD
+  - 18:48:35 MX_A11_N2_R19_up PASS MOD
+  - 18:48:44 MX_A12_N3_R6_fallen PASS MOD
+  - 18:48:53 MX_A13_N3_R12_up PASS MOD
+  - 18:49:03 MX_A14_N3_R19_cut FAIL MOD
+  - 18:49:12 MX_A15_N5_R6_up PASS MOD
+  - 18:49:21 MX_A16_N5_R12_cut FAIL MOD
+  - 18:49:30 MX_A17_N5_R19_fallen PASS MOD
+  - 18:50:28 board B16_aerial done: 35 ticks, 327.2s, det 18/18
+  - 18:50:30 board B17_controls {} scenes 1 bbox 10,10,16,14
+  - 18:50:38 MX_C00_empty PASS MOD
+  - 18:50:43 board B17_controls done: 2 ticks, 13.2s, det 1/1
+  - 18:50:45 board B18_controls {'enabled': 'False'} scenes 1 bbox 10,10,31,18
+  - 18:51:02 MX_C01_line_master_off PASS MOD
+  - 18:51:04 board B18_controls done: 2 ticks, 19.3s, det 0/0
+  - 18:51:07 MX_H00_Flat_straight_L6 UNBUILT SCOPE
+  - 18:51:07 MX_H01_Flat_corner_L14 UNBUILT SCOPE
+  - 18:51:07 MX_H02_Flat_water_L24 UNBUILT SCOPE
+  - 18:51:07 MX_H03_Plump_straight_L14 UNBUILT SCOPE
+  - 18:51:07 MX_H04_Plump_corner_L24 UNBUILT SCOPE
+  - 18:51:07 MX_H05_Plump_water_L6 UNBUILT SCOPE
+  - 18:51:07 MX_H06_Filling50_straight_L24 UNBUILT SCOPE
+  - 18:51:07 MX_H07_Filling50_corner_L6 UNBUILT SCOPE
+  - 18:51:07 MX_H08_Filling50_water_L14 UNBUILT SCOPE
+  - 18:51:07 D1_zero_tick_rereads_same PASS MOD
+  - 18:51:07 D2_fresh_builder_same FAIL MOD
+  - 18:51:07 Z_log_budget FAIL MOD
+- 18:56 pass 1 done (92 PASS/8 FAIL/9 UNBUILT, 1581 s, 71 ticks); 8 FAILs traced to oracle/comparator (wall tail strand; cut = 2 downed cords); D2 fresh!=incremental isolated to ring T3 (MOD). Starting pass 2 on a fresh map.
+  - 18:56:49 O0_board_pitch PASS HARNESS
+  - 18:56:57 L0_fresh_map PASS SITE
+  - 18:56:57 L1_map_250 PASS SITE
+  - 18:56:57 L2_tier_running PASS SITE
+  - 18:57:00 L3_probe_rect_channel PASS HARNESS
+  - 18:57:04 L4_aerial_autolink_off PASS HARNESS
+  - 18:57:04 L5_site_pinned PASS SITE
+  - 18:57:04 L6_no_pawn_in_region FAIL SITE
+  - 18:57:07 board B00_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'False'} scenes 8 bbox 10,10,201,71
+  - 18:57:24 MX_D00_n1_S0 PASS MOD
+  - 18:57:27 MX_D04_n10_S0 PASS MOD
+  - 18:57:29 MX_D08_n100_S0 PASS MOD
+  - 18:57:32 MX_D12_n1000_S0 PASS MOD
+  - 18:57:34 MX_F00_T0_S0 PASS MOD
+  - 18:57:47 MX_F16_T4_S0 PASS MOD
+  - 18:57:58 MX_F32_T8_S0 PASS MOD
+  - 18:58:00 MX_F48_T12_S0 PASS MOD
+  - 18:58:27 board B00_ground done: 2 ticks, 80.0s, det 8/8
+  - 18:58:29 board B01_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWars', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 18:58:58 MX_F01_T0_S1 PASS MOD
+  - 18:59:00 MX_F17_T4_S1 PASS MOD
+  - 18:59:13 MX_F33_T8_S1 PASS MOD
+  - 18:59:28 MX_F49_T12_S1 PASS MOD
+  - 18:59:42 board B01_ground done: 2 ticks, 73.4s, det 4/4
+  - 18:59:44 board B02_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.ExtensionCord', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 19:00:12 MX_F02_T0_S2 PASS MOD
+  - 19:00:23 MX_F18_T4_S2 PASS MOD
+  - 19:00:26 MX_F34_T8_S2 PASS MOD
+  - 19:00:38 MX_F50_T12_S2 PASS MOD
+  - 19:00:52 board B02_ground done: 2 ticks, 68.7s, det 4/4
+  - 19:00:54 board B03_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.Cybertek', 'tangleMin': '6', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 19:01:13 MX_F03_T0_S3 PASS MOD
+  - 19:01:25 MX_F19_T4_S3 PASS MOD
+  - 19:01:36 MX_F35_T8_S3 PASS MOD
+  - 19:01:39 MX_F51_T12_S3 PASS MOD
+  - 19:01:53 board B03_ground done: 2 ticks, 58.7s, det 4/4
+  - 19:01:54 board B04_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.StarWars', 'tangles': 'False'} scenes 4 bbox 10,10,160,30
+  - 19:02:19 MX_F04_T1_S0 PASS MOD
+  - 19:02:22 MX_F20_T5_S0 PASS MOD
+  - 19:02:34 MX_F36_T9_S0 PASS MOD
+  - 19:02:45 MX_F52_T13_S0 PASS MOD
+  - 19:02:59 board B04_ground done: 2 ticks, 65.0s, det 4/4
+  - 19:03:01 board B05_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.ExtensionCord', 'tangles': 'True'} scenes 4 bbox 10,10,160,30
+  - 19:03:32 MX_F05_T1_S1 PASS MOD
+  - 19:03:43 MX_F21_T5_S1 PASS MOD
+  - 19:03:45 MX_F37_T9_S1 PASS MOD
+  - 19:04:02 MX_F53_T13_S1 PASS MOD
+  - 19:04:16 board B05_ground done: 2 ticks, 74.7s, det 4/4
+  - 19:04:17 board B06_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.Cybertek', 'tangles': 'True'} scenes 4 bbox 10,10,160,30
+  - 19:04:37 MX_F06_T1_S2 PASS MOD
+  - 19:04:49 MX_F22_T5_S2 PASS MOD
+  - 19:05:00 MX_F38_T9_S2 PASS MOD
+  - 19:05:08 MX_F54_T13_S2 PASS MOD
+  - 19:05:22 board B06_ground done: 2 ticks, 64.5s, det 4/4
+  - 19:05:23 board B07_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWarsJawa', 'tangleMin': '6', 'tangles': 'True'} scenes 8 bbox 10,10,200,72
+  - 19:05:43 MX_D03_n1_S3 PASS MOD
+  - 19:05:45 MX_D07_n10_S3 PASS MOD
+  - 19:05:48 MX_D11_n100_S3 PASS MOD
+  - 19:05:51 MX_D15_n1000_S3 PASS MOD
+  - 19:06:02 MX_F07_T1_S3 PASS MOD
+  - 19:06:10 MX_F23_T5_S3 PASS MOD
+  - 19:06:22 MX_F39_T9_S3 PASS MOD
+  - 19:06:34 MX_F55_T13_S3 PASS MOD
+  - 19:07:01 board B07_ground done: 2 ticks, 97.7s, det 8/8
+  - 19:07:02 board B08_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.ExtensionCord', 'tangles': 'False'} scenes 4 bbox 10,10,172,24
+  - 19:07:29 MX_F08_T2_S0 PASS MOD
+  - 19:07:40 MX_F24_T6_S0 PASS MOD
+  - 19:07:48 MX_F40_T10_S0 PASS MOD
+  - 19:08:00 MX_F56_T14_S0 PASS MOD
+  - 19:08:15 board B08_ground done: 2 ticks, 72.1s, det 4/4
+  - 19:08:16 board B09_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.Cybertek', 'tangles': 'True'} scenes 4 bbox 10,10,172,24
+  - 19:08:34 MX_F09_T2_S1 PASS MOD
+  - 19:08:47 MX_F25_T6_S1 PASS MOD
+  - 19:08:58 MX_F41_T10_S1 PASS MOD
+  - 19:09:05 MX_F57_T14_S1 PASS MOD
+  - 19:09:20 board B09_ground done: 2 ticks, 64.3s, det 4/4
+  - 19:09:22 board B10_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'True'} scenes 8 bbox 10,10,210,71
+  - 19:09:43 MX_D02_n1_S2 PASS MOD
+  - 19:09:50 MX_D06_n10_S2 PASS MOD
+  - 19:09:52 MX_D10_n100_S2 PASS MOD
+  - 19:09:55 MX_D14_n1000_S2 PASS MOD
+  - 19:10:06 MX_F10_T2_S2 PASS MOD
+  - 19:10:09 MX_F26_T6_S2 PASS MOD
+  - 19:10:22 MX_F42_T10_S2 PASS MOD
+  - 19:10:33 MX_F58_T14_S2 PASS MOD
+  - 19:11:01 board B10_ground done: 2 ticks, 98.7s, det 8/8
+  - 19:11:02 board B11_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWars', 'tangleMin': '6', 'tangles': 'True'} scenes 4 bbox 10,10,172,24
+  - 19:11:31 MX_F11_T2_S3 PASS MOD
+  - 19:11:42 MX_F27_T6_S3 PASS MOD
+  - 19:11:45 MX_F43_T10_S3 PASS MOD
+  - 19:11:57 MX_F59_T14_S3 PASS MOD
+  - 19:12:11 board B11_ground done: 2 ticks, 69.0s, det 4/4
+  - 19:12:13 board B12_ground {'cordsPerConnection': '1', 'slack': '0', 'style': 'CordStyle.Cybertek', 'tangles': 'False'} scenes 4 bbox 10,10,159,21
+  - 19:12:29 MX_F12_T3_S0 PASS MOD
+  - 19:12:42 MX_F28_T7_S0 PASS MOD
+  - 19:12:53 MX_F44_T11_S0 PASS MOD
+  - 19:12:55 MX_F60_T15_S0 PASS MOD
+  - 19:13:09 board B12_ground done: 2 ticks, 56.4s, det 4/4
+  - 19:13:11 board B13_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'True'} scenes 8 bbox 10,10,204,72
+  - 19:13:29 MX_D01_n1_S1 PASS MOD
+  - 19:13:31 MX_D05_n10_S1 PASS MOD
+  - 19:13:34 MX_D09_n100_S1 PASS MOD
+  - 19:13:36 MX_D13_n1000_S1 PASS MOD
+  - 19:13:47 MX_F13_T3_S1 PASS MOD
+  - 19:13:54 MX_F29_T7_S1 PASS MOD
+  - 19:14:07 MX_F45_T11_S1 PASS MOD
+  - 19:14:18 MX_F61_T15_S1 PASS MOD
+  - 19:14:45 board B13_ground done: 2 ticks, 94.0s, det 8/8
+  - 19:14:46 board B14_ground {'cordsPerConnection': '3', 'slack': '1.8', 'sprawlCap': '40', 'style': 'CordStyle.StarWars', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 19:15:16 MX_F14_T3_S2 PASS MOD
+  - 19:15:27 MX_F30_T7_S2 PASS MOD
+  - 19:15:29 MX_F46_T11_S2 PASS MOD
+  - 19:15:42 MX_F62_T15_S2 PASS MOD
+  - 19:15:56 board B14_ground done: 2 ticks, 69.6s, det 4/4
+  - 19:15:58 board B15_ground {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.ExtensionCord', 'tangleMin': '6', 'tangles': 'True'} scenes 4 bbox 10,10,159,21
+  - 19:16:17 MX_F15_T3_S3 PASS MOD
+  - 19:16:29 MX_F31_T7_S3 PASS MOD
+  - 19:16:40 MX_F47_T11_S3 PASS MOD
+  - 19:16:43 MX_F63_T15_S3 PASS MOD
+  - 19:16:57 board B15_ground done: 2 ticks, 59.3s, det 4/4
+  - 19:16:58 board B16_aerial {'cordsPerConnection': '3', 'slack': '1', 'style': 'CordStyle.StarWarsJawa', 'tangles': 'True'} scenes 18 bbox 10,10,205,97
+  - 19:18:52 MX_A00_N2_R6_up PASS MOD
+  - 19:19:01 MX_A01_N2_R12_cut PASS MOD
+  - 19:19:10 MX_A02_N2_R19_fallen PASS MOD
+  - 19:19:19 MX_A03_N3_R6_cut PASS MOD
+  - 19:19:28 MX_A04_N3_R12_fallen PASS MOD
+  - 19:19:37 MX_A05_N3_R19_up PASS MOD
+  - 19:19:46 MX_A06_N5_R6_fallen PASS MOD
+  - 19:19:55 MX_A07_N5_R12_up PASS MOD
+  - 19:20:04 MX_A08_N5_R19_cut PASS MOD
+  - 19:20:13 MX_A09_N2_R6_cut PASS MOD
+  - 19:20:22 MX_A10_N2_R12_fallen PASS MOD
+  - 19:20:31 MX_A11_N2_R19_up PASS MOD
+  - 19:20:40 MX_A12_N3_R6_fallen PASS MOD
+  - 19:20:49 MX_A13_N3_R12_up PASS MOD
+  - 19:20:59 MX_A14_N3_R19_cut PASS MOD
+  - 19:21:08 MX_A15_N5_R6_up PASS MOD
+  - 19:21:17 MX_A16_N5_R12_cut PASS MOD
+  - 19:21:26 MX_A17_N5_R19_fallen PASS MOD
+  - 19:22:24 board B16_aerial done: 35 ticks, 326.0s, det 18/18
+  - 19:22:26 board B17_controls {} scenes 1 bbox 10,10,16,14
+  - 19:22:35 MX_C00_empty PASS MOD
+  - 19:22:39 board B17_controls done: 2 ticks, 13.4s, det 1/1
+  - 19:22:41 board B18_controls {'enabled': 'False'} scenes 1 bbox 10,10,31,18
+  - 19:22:59 MX_C01_line_master_off PASS MOD
+  - 19:23:01 board B18_controls done: 2 ticks, 19.6s, det 0/0
+  - 19:23:04 MX_H00_Flat_straight_L6 UNBUILT SCOPE
+  - 19:23:04 MX_H01_Flat_corner_L14 UNBUILT SCOPE
+  - 19:23:04 MX_H02_Flat_water_L24 UNBUILT SCOPE
+  - 19:23:04 MX_H03_Plump_straight_L14 UNBUILT SCOPE
+  - 19:23:04 MX_H04_Plump_corner_L24 UNBUILT SCOPE
+  - 19:23:04 MX_H05_Plump_water_L6 UNBUILT SCOPE
+  - 19:23:04 MX_H06_Filling50_straight_L24 UNBUILT SCOPE
+  - 19:23:04 MX_H07_Filling50_corner_L6 UNBUILT SCOPE
+  - 19:23:04 MX_H08_Filling50_water_L14 UNBUILT SCOPE
+  - 19:23:04 D1_zero_tick_rereads_same PASS MOD
+  - 19:23:04 D2_fresh_builder_same FAIL MOD
+  - 19:23:04 Z_log_budget PASS MOD
+- 19:23 pass 2: 100 PASS/9 UNBUILT; --compare pass1 vs pass2 SAME 99/99; recorded RED (D2 + L6). Cycling to flowworks tier.
+- 19:24 game up on flowworks tier; LIVE LOCK released
+- 19:24 DONE: post written (review.html, 8 contact sheets, image_sanity.json); docstring LEARNED filled

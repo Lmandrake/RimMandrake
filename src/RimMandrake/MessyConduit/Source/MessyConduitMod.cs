@@ -10,6 +10,9 @@ namespace RimMandrake.MessyConduit
     /// selectable; the rest show as "art not installed yet" (phase 1a ships the Jawa set only).</summary>
     public enum CordStyle { StarWarsJawa, ExtensionCord, Cybertek, StarWars }
 
+    /// <summary>Extension-cord colours: a different colour per power net (seeded per net), or one colour everywhere.</summary>
+    public enum ExtCordColorMode { Mixed, Single }
+
     // ════════════════════════════════════════════════════════════════════
     // Mod Settings (owner, 2026-09-12: every mod ships a real settings screen; defaults = shipped
     // behaviour; all-off degrades to vanilla). Static fields so jawa/mod_settings_field can read and
@@ -58,6 +61,11 @@ namespace RimMandrake.MessyConduit
         public static float swayAmplitude = 1f;
         /// <summary>Far-zoom simplification: one thin strand per cord, no decals.</summary>
         public static bool lod = true;
+        // ---- art styles (lane C, 2026-10-02)
+        /// <summary>Extension-cord style only: one colour per net (Mixed) or one colour everywhere (Single).</summary>
+        public static ExtCordColorMode extCordColorMode = ExtCordColorMode.Mixed;
+        /// <summary>The single colour, an index into CordMaterials.ExtCordColors (0 Orange .. 4 Blue).</summary>
+        public static int extCordColor = 0;
 
         public override void ExposeData()
         {
@@ -82,6 +90,8 @@ namespace RimMandrake.MessyConduit
             Scribe_Values.Look(ref sway, "sway", true);
             Scribe_Values.Look(ref swayAmplitude, "swayAmplitude", 1f);
             Scribe_Values.Look(ref lod, "lod", true);
+            Scribe_Values.Look(ref extCordColorMode, "extCordColorMode", ExtCordColorMode.Mixed);
+            Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
         }
 
         public static void ResetToDefaults()
@@ -106,6 +116,8 @@ namespace RimMandrake.MessyConduit
             sway = true;
             swayAmplitude = 1f;
             lod = true;
+            extCordColorMode = ExtCordColorMode.Mixed;
+            extCordColor = 0;
         }
 
         public static BuildOptions BuildOptions()
@@ -123,6 +135,10 @@ namespace RimMandrake.MessyConduit
         public static void Apply()
         {
             ConduitVisuals.Apply(enabled);
+            // a style / colour-mode change rebuilds the materials in place (no restart); the regenerate below
+            // reprints every cord mesh with them
+            CordMaterials.EnsureCurrent();
+            Aerial.AerialMaterials.EnsureCurrent();
             if (Current.ProgramState != ProgramState.Playing || Find.Maps == null) return;
             foreach (Map map in Find.Maps)
             {
@@ -163,21 +179,35 @@ namespace RimMandrake.MessyConduit
                 "Conduit becomes invisible and is drawn as loose, too-long cords between what it connects. " +
                 "Off: vanilla conduit art and hookup wires come back as soon as you close this window.");
             l.GapLine();
-            l.Label("Art style");
+            l.Label("Art style (changes take effect when this window closes, no restart)");
             foreach (CordStyle s in Enum.GetValues(typeof(CordStyle)))
             {
                 bool installed = CordMaterials.StyleInstalled(s);
                 string label = StyleLabel(s) + (installed ? "" : "  (art not installed yet)");
+                Rect r = l.GetRect(30f);
+                Rect swatchRect = new Rect(r.xMax - 210f, r.y + 7f, 200f, 16f);
+                Rect radio = new Rect(r.x, r.y, r.width - 220f, r.height);
                 if (installed)
                 {
-                    if (l.RadioButton(label, MessyConduitSettings.style == s)) MessyConduitSettings.style = s;
+                    if (Widgets.RadioButtonLabeled(radio, label, MessyConduitSettings.style == s)) MessyConduitSettings.style = s;
+                    DrawSwatch(swatchRect, s);
                 }
                 else
                 {
                     GUI.color = Color.gray;
-                    l.Label("   " + label);
+                    Widgets.Label(radio, "   " + label);
                     GUI.color = Color.white;
                 }
+            }
+            if (MessyConduitSettings.style == CordStyle.ExtensionCord)
+            {
+                if (l.RadioButton("   Extension cords: a different colour per power net", MessyConduitSettings.extCordColorMode == ExtCordColorMode.Mixed))
+                    MessyConduitSettings.extCordColorMode = ExtCordColorMode.Mixed;
+                if (l.RadioButton("   Extension cords: one colour everywhere (" + CordMaterials.ExtCordColors[Mathf.Clamp(MessyConduitSettings.extCordColor, 0, 4)] + ")",
+                                  MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single))
+                    MessyConduitSettings.extCordColorMode = ExtCordColorMode.Single;
+                if (MessyConduitSettings.extCordColorMode == ExtCordColorMode.Single)
+                    MessyConduitSettings.extCordColor = Mathf.RoundToInt(l.Slider(MessyConduitSettings.extCordColor, 0f, CordMaterials.ExtCordColors.Length - 1));
             }
             l.GapLine();
             l.Label("Slack: " + (MessyConduitSettings.slack <= 0.01f ? "off (path-tight)" : MessyConduitSettings.slack.ToString("0.00") + "x the owner level"),
@@ -219,10 +249,28 @@ namespace RimMandrake.MessyConduit
         {
             switch (s)
             {
-                case CordStyle.StarWarsJawa: return "Star Wars: Jawa (matte black, taped)";
-                case CordStyle.ExtensionCord: return "Extension cord";
-                case CordStyle.Cybertek: return "Cybertek";
-                default: return "Star Wars";
+                case CordStyle.StarWarsJawa: return "Jawa: matte black scrap cable, taped (default)";
+                case CordStyle.ExtensionCord: return "Extension cords: orange, green, brown, yellow, blue, power strips";
+                case CordStyle.Cybertek: return "Cybertek: sleek grey metallic, teal accents";
+                default: return "Star Wars: thick black cable, corrugated steel, coiled";
+            }
+        }
+
+        /// <summary>The style's strand art tiled across the row (every colour / cable kind it uses).</summary>
+        private static void DrawSwatch(Rect r, CordStyle s)
+        {
+            string[] paths;
+            if (s == CordStyle.ExtensionCord)
+            {
+                paths = new string[CordMaterials.ExtCordColors.Length];
+                for (int i = 0; i < paths.Length; i++) paths[i] = CordMaterials.StyleDir + "ExtCord/Strand_" + CordMaterials.ExtCordColors[i];
+            }
+            else paths = CordMaterials.StrandPathsFor(s);
+            float w = r.width / paths.Length;
+            for (int i = 0; i < paths.Length; i++)
+            {
+                Texture2D t = ContentFinder<Texture2D>.Get(paths[i], reportFailure: false);
+                if (t != null) GUI.DrawTexture(new Rect(r.x + i * w, r.y, w - 2f, r.height), t, ScaleMode.StretchToFill);
             }
         }
     }

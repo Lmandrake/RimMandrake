@@ -1,0 +1,395 @@
+{
+ "posture": "whitelist",
+ "decisions": {
+  "F00_T0_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F01_T0_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F02_T0_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F03_T0_S3": {
+   "decision": "flag",
+   "note": ""
+  },
+  "F04_T1_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F05_T1_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F06_T1_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F07_T1_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F08_T2_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F09_T2_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F10_T2_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F11_T2_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F12_T3_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F13_T3_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F14_T3_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F15_T3_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F16_T4_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F17_T4_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F18_T4_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F19_T4_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F20_T5_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F21_T5_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F22_T5_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F24_T6_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F25_T6_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F26_T6_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F27_T6_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F28_T7_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F29_T7_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F30_T7_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F31_T7_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F32_T8_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F33_T8_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F34_T8_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F35_T8_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F36_T9_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F37_T9_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F38_T9_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F39_T9_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F41_T10_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F42_T10_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F43_T10_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F44_T11_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F45_T11_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F46_T11_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F47_T11_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F48_T12_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F49_T12_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F50_T12_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F51_T12_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F52_T13_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F53_T13_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F55_T13_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F56_T14_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F58_T14_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F59_T14_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F60_T15_S0": {
+   "decision": "flag",
+   "note": ""
+  },
+  "F61_T15_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F62_T15_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "F63_T15_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D00_n1_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D01_n1_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D02_n1_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D03_n1_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D04_n10_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D05_n10_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D06_n10_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D07_n10_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D08_n100_S0": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D09_n100_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D10_n100_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D11_n100_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D12_n1000_S0": {
+   "decision": "flag",
+   "note": ""
+  },
+  "D13_n1000_S1": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D14_n1000_S2": {
+   "decision": "keep",
+   "note": ""
+  },
+  "D15_n1000_S3": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A00_N2_R6_up": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A01_N2_R12_cut": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A02_N2_R19_fallen": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A03_N3_R6_cut": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A04_N3_R12_fallen": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A05_N3_R19_up": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A06_N5_R6_fallen": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A07_N5_R12_up": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A08_N5_R19_cut": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A09_N2_R6_cut": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A10_N2_R12_fallen": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A11_N2_R19_up": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A12_N3_R6_fallen": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A13_N3_R12_up": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A14_N3_R19_cut": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A15_N5_R6_up": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A16_N5_R12_cut": {
+   "decision": "keep",
+   "note": ""
+  },
+  "A17_N5_R19_fallen": {
+   "decision": "keep",
+   "note": ""
+  },
+  "C00_empty": {
+   "decision": "keep",
+   "note": ""
+  },
+  "C01_line_master_off": {
+   "decision": "keep",
+   "note": ""
+  }
+ },
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "generated by run_live.py --post; nobody has reviewed it"
+ }
+}

@@ -1,0 +1,715 @@
+{
+ "mode": "style-shots",
+ "rows": [
+  {
+   "id": "ST1_StarWarsJawa_textures_load",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "strandTex": [
+     "Strand_Jawa"
+    ],
+    "fallbacks": [],
+    "nulls": [],
+    "bad": [],
+    "missing": [],
+    "layerVerts": 31030
+   }
+  },
+  {
+   "id": "ST1_StarWars_textures_load",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "strandTex": [
+     "Strand_BlackRubber",
+     "Strand_CorrugatedSteel",
+     "Strand_CoiledBlack"
+    ],
+    "fallbacks": [
+     "EndFrayed_Live",
+     "PowerStrip",
+     "PowerStripDark"
+    ],
+    "nulls": [],
+    "bad": [],
+    "missing": [],
+    "layerVerts": 31030
+   }
+  },
+  {
+   "id": "ST1_ExtensionCord_textures_load",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "strandTex": [
+     "Strand_Orange",
+     "Strand_Green",
+     "Strand_Brown",
+     "Strand_Yellow",
+     "Strand_Blue"
+    ],
+    "fallbacks": [
+     "EndFrayed_Live",
+     "PowerStrip",
+     "PowerStripDark"
+    ],
+    "nulls": [],
+    "bad": [],
+    "missing": [],
+    "layerVerts": 31030
+   }
+  },
+  {
+   "id": "ST1_Cybertek_textures_load",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "strandTex": [
+     "Strand"
+    ],
+    "fallbacks": [
+     "EndFrayed_Live",
+     "PowerStrip",
+     "PowerStripDark"
+    ],
+    "nulls": [],
+    "bad": [],
+    "missing": [],
+    "layerVerts": 31030
+   }
+  },
+  {
+   "id": "ST2_switch_changes_textures",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "strandTex": {
+     "StarWarsJawa": [
+      "Strand_Jawa"
+     ],
+     "StarWars": [
+      "Strand_BlackRubber",
+      "Strand_CorrugatedSteel",
+      "Strand_CoiledBlack"
+     ],
+     "ExtensionCord": [
+      "Strand_Orange",
+      "Strand_Green",
+      "Strand_Brown",
+      "Strand_Yellow",
+      "Strand_Blue"
+     ],
+     "Cybertek": [
+      "Strand"
+     ]
+    },
+    "printedOnlyOwnStrand": {
+     "StarWarsJawa": true,
+     "StarWars": true,
+     "ExtensionCord": true,
+     "Cybertek": true
+    },
+    "plugTexIds": {
+     "StarWarsJawa": -2584,
+     "StarWars": -2674,
+     "ExtensionCord": -2652,
+     "Cybertek": -2638
+    },
+    "aerialSpanFollows": {
+     "StarWarsJawa": true,
+     "StarWars": true,
+     "ExtensionCord": true,
+     "Cybertek": true
+    },
+    "rebuilds": [
+     10,
+     11,
+     12,
+     13
+    ]
+   }
+  },
+  {
+   "id": "ST3_extcord_colour_modes",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "mixed": {
+     "variantCount": 5,
+     "piecesPerVariant": {
+      "0": 4,
+      "1": 2,
+      "2": 4
+     },
+     "netsPerVariant": {
+      "0": 2,
+      "1": 2,
+      "2": 2
+     },
+     "cordNets": 6
+    },
+    "single": {
+     "strandTex": [
+      "Strand_Brown"
+     ],
+     "printed": {
+      "EndFrayed_Dead": 40,
+      "EndFrayed_Live": 4,
+      "Junction_T": 4,
+      "Plug": 24,
+      "PowerStrip": 8,
+      "Strand_Brown": 14796,
+      "Strand_Brown(lod)": 1382,
+      "StrandShadow": 14764,
+      "StubWall": 8
+     }
+    }
+   }
+  },
+  {
+   "id": "ST4_settings_roundtrip",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "success": true,
+    "cmd": "settingsroundtrip",
+    "file": "C:/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios\\Config\\Mod_MessyConduit_MessyConduitMod.xml",
+    "written": "Cybertek/Single/3",
+    "afterReset": "StarWarsJawa/Mixed/0",
+    "readBack": "Cybertek/Single/3",
+    "fileHadStyle": true,
+    "fileHadMode": true,
+    "restoredTo": "ExtensionCord/Mixed/0",
+    "restoredFileHasCybertek": false
+   }
+  },
+  {
+   "id": "ST5_restore_default_and_master",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "strandTex": [
+     "Strand_Jawa"
+    ],
+    "offVisible": false,
+    "onVerts": 31030,
+    "printed": {
+     "EndFrayed_Dead": 40,
+     "EndFrayed_Live": 4,
+     "Junction_Tape": 4,
+     "Plug": 24,
+     "PowerStrip": 8,
+     "Strand_Jawa": 14796,
+     "Strand_Jawa(lod)": 1382,
+     "StrandShadow": 14764,
+     "StubWall": 8
+    }
+   }
+  }
+ ],
+ "log": [
+  {
+   "style": "StarWarsJawa",
+   "styles": {
+    "success": true,
+    "cmd": "styles",
+    "style": "StarWarsJawa",
+    "extCordColorMode": "Mixed",
+    "extCordColor": 0,
+    "builtKey": "StarWarsJawa/Mixed/0",
+    "currentKey": "StarWarsJawa/Mixed/0",
+    "rebuilds": 10,
+    "variantCount": 1,
+    "strandPaths": [
+     "RimMandrake/MessyConduit/Strand_Jawa"
+    ],
+    "strandTex": [
+     "Strand_Jawa"
+    ],
+    "slots": {
+     "Plug": {
+      "tex": "Plug",
+      "id": -2584
+     },
+     "JunctionTape": {
+      "tex": "Junction_Tape",
+      "id": -2580
+     },
+     "JunctionTin": {
+      "tex": "Junction_Tin",
+      "id": -2582
+     },
+     "StubWall": {
+      "tex": "StubWall",
+      "id": -2596
+     },
+     "StubRock": {
+      "tex": "StubRock",
+      "id": -2594
+     },
+     "PowerStrip": {
+      "tex": "PowerStrip",
+      "id": -2586
+     },
+     "FrayDead": {
+      "tex": "EndFrayed_Dead",
+      "id": -2576
+     },
+     "FrayLive": {
+      "tex": "EndFrayed_Live",
+      "id": -2578
+     },
+     "PowerStripDark": {
+      "tex": "PowerStrip",
+      "id": -2586
+     }
+    },
+    "slotPaths": {
+     "StrandShadow": "RimMandrake/MessyConduit/StrandShadow",
+     "SparkGlow": "RimMandrake/MessyConduit/SparkGlow",
+     "Plug": "RimMandrake/MessyConduit/Plug",
+     "Junction_T": "RimMandrake/MessyConduit/Junction_Tape",
+     "Junction_X": "RimMandrake/MessyConduit/Junction_Tin",
+     "StubWall": "RimMandrake/MessyConduit/StubWall",
+     "StubRock": "RimMandrake/MessyConduit/StubRock",
+     "PowerStrip": "RimMandrake/MessyConduit/PowerStrip",
+     "EndFrayed_Dead": "RimMandrake/MessyConduit/EndFrayed_Dead",
+     "EndFrayed_Live": "RimMandrake/MessyConduit/EndFrayed_Live",
+     "PowerStripDark": "RimMandrake/MessyConduit/PowerStrip"
+    },
+    "fallbacks": [],
+    "missing": [],
+    "nulls": [],
+    "bad": [],
+    "aerialSpanPath": "RimMandrake/MessyConduit/Strand_Jawa",
+    "aerialSpanTex": "Strand_Jawa",
+    "aerialShadowTex": "SpanShadow",
+    "aerialBuiltKey": "StarWarsJawa/Mixed/0",
+    "piecesPerVariant": {
+     "0": 10
+    },
+    "netsPerVariant": {
+     "0": 6
+    },
+    "cordNets": 6,
+    "printedTex": {
+     "EndFrayed_Dead": 40,
+     "EndFrayed_Live": 4,
+     "Junction_Tape": 4,
+     "Plug": 24,
+     "PowerStrip": 8,
+     "Strand_Jawa": 14796,
+     "Strand_Jawa(lod)": 1382,
+     "StrandShadow": 14764,
+     "StubWall": 8
+    },
+    "installed": {
+     "StarWarsJawa": true,
+     "ExtensionCord": true,
+     "Cybertek": true,
+     "StarWars": true
+    }
+   }
+  },
+  {
+   "shot": "style_jawa",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_jawa__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_jawa.png",
+   "ok": true
+  },
+  {
+   "shot": "style_jawa_aerial",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_jawa_aerial__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_jawa_aerial.png",
+   "ok": true
+  },
+  {
+   "style": "StarWars",
+   "styles": {
+    "success": true,
+    "cmd": "styles",
+    "style": "StarWars",
+    "extCordColorMode": "Mixed",
+    "extCordColor": 0,
+    "builtKey": "StarWars/Mixed/0",
+    "currentKey": "StarWars/Mixed/0",
+    "rebuilds": 11,
+    "variantCount": 3,
+    "strandPaths": [
+     "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+     "RimMandrake/MessyConduit/Styles/StarWars/Strand_CorrugatedSteel",
+     "RimMandrake/MessyConduit/Styles/StarWars/Strand_CoiledBlack"
+    ],
+    "strandTex": [
+     "Strand_BlackRubber",
+     "Strand_CorrugatedSteel",
+     "Strand_CoiledBlack"
+    ],
+    "slots": {
+     "Plug": {
+      "tex": "Plug",
+      "id": -2674
+     },
+     "JunctionTape": {
+      "tex": "Junction_T",
+      "id": -2670
+     },
+     "JunctionTin": {
+      "tex": "Junction_X",
+      "id": -2672
+     },
+     "StubWall": {
+      "tex": "StubWall",
+      "id": -2684
+     },
+     "StubRock": {
+      "tex": "StubRock",
+      "id": -2682
+     },
+     "PowerStrip": {
+      "tex": "PowerStrip",
+      "id": -2586
+     },
+     "FrayDead": {
+      "tex": "EndFrayed_Dead",
+      "id": -2668
+     },
+     "FrayLive": {
+      "tex": "EndFrayed_Live",
+      "id": -2578
+     },
+     "PowerStripDark": {
+      "tex": "PowerStrip",
+      "id": -2586
+     }
+    },
+    "slotPaths": {
+     "StrandShadow": "RimMandrake/MessyConduit/StrandShadow",
+     "SparkGlow": "RimMandrake/MessyConduit/SparkGlow",
+     "Plug": "RimMandrake/MessyConduit/Styles/StarWars/Plug",
+     "Junction_T": "RimMandrake/MessyConduit/Styles/StarWars/Junction_T",
+     "Junction_X": "RimMandrake/MessyConduit/Styles/StarWars/Junction_X",
+     "StubWall": "RimMandrake/MessyConduit/Styles/StarWars/StubWall",
+     "StubRock": "RimMandrake/MessyConduit/Styles/StarWars/StubRock",
+     "PowerStrip": "RimMandrake/MessyConduit/PowerStrip",
+     "EndFrayed_Dead": "RimMandrake/MessyConduit/Styles/StarWars/EndFrayed_Dead",
+     "EndFrayed_Live": "RimMandrake/MessyConduit/EndFrayed_Live",
+     "PowerStripDark": "RimMandrake/MessyConduit/PowerStrip"
+    },
+    "fallbacks": [
+     "PowerStrip",
+     "EndFrayed_Live",
+     "PowerStripDark"
+    ],
+    "missing": [],
+    "nulls": [],
+    "bad": [],
+    "aerialSpanPath": "RimMandrake/MessyConduit/Styles/StarWars/Strand_BlackRubber",
+    "aerialSpanTex": "Strand_BlackRubber",
+    "aerialShadowTex": "SpanShadow",
+    "aerialBuiltKey": "StarWars/Mixed/0",
+    "piecesPerVariant": {
+     "0": 7,
+     "1": 3
+    },
+    "netsPerVariant": {
+     "0": 3,
+     "1": 3
+    },
+    "cordNets": 6,
+    "printedTex": {
+     "EndFrayed_Dead": 40,
+     "EndFrayed_Live": 4,
+     "Junction_T": 4,
+     "Plug": 24,
+     "PowerStrip": 8,
+     "Strand_BlackRubber": 11858,
+     "Strand_BlackRubber(lod)": 994,
+     "Strand_CorrugatedSteel": 2938,
+     "Strand_CorrugatedSteel(lod)": 388,
+     "StrandShadow": 14764,
+     "StubWall": 8
+    },
+    "installed": {
+     "StarWarsJawa": true,
+     "ExtensionCord": true,
+     "Cybertek": true,
+     "StarWars": true
+    }
+   }
+  },
+  {
+   "shot": "style_starwars",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_starwars__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_starwars.png",
+   "ok": true
+  },
+  {
+   "shot": "style_starwars_aerial",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_starwars_aerial__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_starwars_aerial.png",
+   "ok": true
+  },
+  {
+   "style": "ExtensionCord",
+   "styles": {
+    "success": true,
+    "cmd": "styles",
+    "style": "ExtensionCord",
+    "extCordColorMode": "Mixed",
+    "extCordColor": 0,
+    "builtKey": "ExtensionCord/Mixed/0",
+    "currentKey": "ExtensionCord/Mixed/0",
+    "rebuilds": 12,
+    "variantCount": 5,
+    "strandPaths": [
+     "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Orange",
+     "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Green",
+     "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Brown",
+     "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Yellow",
+     "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Blue"
+    ],
+    "strandTex": [
+     "Strand_Orange",
+     "Strand_Green",
+     "Strand_Brown",
+     "Strand_Yellow",
+     "Strand_Blue"
+    ],
+    "slots": {
+     "Plug": {
+      "tex": "Plug",
+      "id": -2652
+     },
+     "JunctionTape": {
+      "tex": "Junction_T",
+      "id": -2648
+     },
+     "JunctionTin": {
+      "tex": "Junction_X",
+      "id": -2650
+     },
+     "StubWall": {
+      "tex": "StubWall",
+      "id": -2666
+     },
+     "StubRock": {
+      "tex": "StubRock",
+      "id": -2664
+     },
+     "PowerStrip": {
+      "tex": "PowerStrip",
+      "id": -2586
+     },
+     "FrayDead": {
+      "tex": "EndFrayed_Dead",
+      "id": -2646
+     },
+     "FrayLive": {
+      "tex": "EndFrayed_Live",
+      "id": -2578
+     },
+     "PowerStripDark": {
+      "tex": "PowerStrip",
+      "id": -2586
+     }
+    },
+    "slotPaths": {
+     "StrandShadow": "RimMandrake/MessyConduit/StrandShadow",
+     "SparkGlow": "RimMandrake/MessyConduit/SparkGlow",
+     "Plug": "RimMandrake/MessyConduit/Styles/ExtCord/Plug",
+     "Junction_T": "RimMandrake/MessyConduit/Styles/ExtCord/Junction_T",
+     "Junction_X": "RimMandrake/MessyConduit/Styles/ExtCord/Junction_X",
+     "StubWall": "RimMandrake/MessyConduit/Styles/ExtCord/StubWall",
+     "StubRock": "RimMandrake/MessyConduit/Styles/ExtCord/StubRock",
+     "PowerStrip": "RimMandrake/MessyConduit/PowerStrip",
+     "EndFrayed_Dead": "RimMandrake/MessyConduit/Styles/ExtCord/EndFrayed_Dead",
+     "EndFrayed_Live": "RimMandrake/MessyConduit/EndFrayed_Live",
+     "PowerStripDark": "RimMandrake/MessyConduit/PowerStrip"
+    },
+    "fallbacks": [
+     "PowerStrip",
+     "EndFrayed_Live",
+     "PowerStripDark"
+    ],
+    "missing": [],
+    "nulls": [],
+    "bad": [],
+    "aerialSpanPath": "RimMandrake/MessyConduit/Styles/ExtCord/Strand_Orange",
+    "aerialSpanTex": "Strand_Orange",
+    "aerialShadowTex": "SpanShadow",
+    "aerialBuiltKey": "ExtensionCord/Mixed/0",
+    "piecesPerVariant": {
+     "0": 4,
+     "1": 2,
+     "2": 4
+    },
+    "netsPerVariant": {
+     "0": 2,
+     "1": 2,
+     "2": 2
+    },
+    "cordNets": 6,
+    "printedTex": {
+     "EndFrayed_Dead": 40,
+     "EndFrayed_Live": 4,
+     "Junction_T": 4,
+     "Plug": 24,
+     "PowerStrip": 8,
+     "Strand_Brown": 4104,
+     "Strand_Brown(lod)": 518,
+     "Strand_Green": 2644,
+     "Strand_Green(lod)": 350,
+     "Strand_Orange": 8048,
+     "Strand_Orange(lod)": 514,
+     "StrandShadow": 14764,
+     "StubWall": 8
+    },
+    "installed": {
+     "StarWarsJawa": true,
+     "ExtensionCord": true,
+     "Cybertek": true,
+     "StarWars": true
+    }
+   }
+  },
+  {
+   "shot": "style_extcord",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_extcord__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_extcord.png",
+   "ok": true
+  },
+  {
+   "shot": "style_extcord_aerial",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_extcord_aerial__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_extcord_aerial.png",
+   "ok": true
+  },
+  {
+   "style": "Cybertek",
+   "styles": {
+    "success": true,
+    "cmd": "styles",
+    "style": "Cybertek",
+    "extCordColorMode": "Mixed",
+    "extCordColor": 0,
+    "builtKey": "Cybertek/Mixed/0",
+    "currentKey": "Cybertek/Mixed/0",
+    "rebuilds": 13,
+    "variantCount": 1,
+    "strandPaths": [
+     "RimMandrake/MessyConduit/Styles/Cybertek/Strand"
+    ],
+    "strandTex": [
+     "Strand"
+    ],
+    "slots": {
+     "Plug": {
+      "tex": "Plug",
+      "id": -2638
+     },
+     "JunctionTape": {
+      "tex": "Junction_T",
+      "id": -2634
+     },
+     "JunctionTin": {
+      "tex": "Junction_X",
+      "id": -2636
+     },
+     "StubWall": {
+      "tex": "StubWall",
+      "id": -2644
+     },
+     "StubRock": {
+      "tex": "StubRock",
+      "id": -2642
+     },
+     "PowerStrip": {
+      "tex": "PowerStrip",
+      "id": -2586
+     },
+     "FrayDead": {
+      "tex": "EndFrayed_Dead",
+      "id": -2632
+     },
+     "FrayLive": {
+      "tex": "EndFrayed_Live",
+      "id": -2578
+     },
+     "PowerStripDark": {
+      "tex": "PowerStrip",
+      "id": -2586
+     }
+    },
+    "slotPaths": {
+     "StrandShadow": "RimMandrake/MessyConduit/StrandShadow",
+     "SparkGlow": "RimMandrake/MessyConduit/SparkGlow",
+     "Plug": "RimMandrake/MessyConduit/Styles/Cybertek/Plug",
+     "Junction_T": "RimMandrake/MessyConduit/Styles/Cybertek/Junction_T",
+     "Junction_X": "RimMandrake/MessyConduit/Styles/Cybertek/Junction_X",
+     "StubWall": "RimMandrake/MessyConduit/Styles/Cybertek/StubWall",
+     "StubRock": "RimMandrake/MessyConduit/Styles/Cybertek/StubRock",
+     "PowerStrip": "RimMandrake/MessyConduit/PowerStrip",
+     "EndFrayed_Dead": "RimMandrake/MessyConduit/Styles/Cybertek/EndFrayed_Dead",
+     "EndFrayed_Live": "RimMandrake/MessyConduit/EndFrayed_Live",
+     "PowerStripDark": "RimMandrake/MessyConduit/PowerStrip"
+    },
+    "fallbacks": [
+     "PowerStrip",
+     "EndFrayed_Live",
+     "PowerStripDark"
+    ],
+    "missing": [],
+    "nulls": [],
+    "bad": [],
+    "aerialSpanPath": "RimMandrake/MessyConduit/Styles/Cybertek/Strand",
+    "aerialSpanTex": "Strand",
+    "aerialShadowTex": "SpanShadow",
+    "aerialBuiltKey": "Cybertek/Mixed/0",
+    "piecesPerVariant": {
+     "0": 10
+    },
+    "netsPerVariant": {
+     "0": 6
+    },
+    "cordNets": 6,
+    "printedTex": {
+     "EndFrayed_Dead": 40,
+     "EndFrayed_Live": 4,
+     "Junction_T": 4,
+     "Plug": 24,
+     "PowerStrip": 8,
+     "Strand": 14796,
+     "Strand(lod)": 1382,
+     "StrandShadow": 14764,
+     "StubWall": 8
+    },
+    "installed": {
+     "StarWarsJawa": true,
+     "ExtensionCord": true,
+     "Cybertek": true,
+     "StarWars": true
+    }
+   }
+  },
+  {
+   "shot": "style_cybertek",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_cybertek__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_cybertek.png",
+   "ok": true
+  },
+  {
+   "shot": "style_cybertek_aerial",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_cybertek_aerial__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_cybertek_aerial.png",
+   "ok": true
+  },
+  {
+   "shot": "style_extcord_single_brown",
+   "src": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\style_extcord_single_brown__cell_rect.png",
+   "dst": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\style_extcord_single_brown.png",
+   "ok": true
+  }
+ ]
+}

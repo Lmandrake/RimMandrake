@@ -81,7 +81,120 @@ namespace RimMandrake.MessyConduit
                 MessyConduitSettings.Apply();
                 return "{\"success\":true,\"cmd\":" + J.S(cmd) + ",\"value\":" + J.S(Convert.ToString(fi.GetValue(null), CultureInfo.InvariantCulture)) + "}";
             }
+            if (cmd.StartsWith("rect:")) return RectCensus(map, comp, cmd.Substring(5));   // lane E matrix runner
+            if (cmd == "styles") return StyleProbe.Report(map, comp);                       // lane C art styles
+            if (cmd == "settingsroundtrip") return StyleProbe.SettingsRoundTrip();         // lane C
             return "{\"success\":false,\"error\":\"unknown command " + J.S(cmd).Trim('"') + "\"}";
+        }
+
+        /// <summary>Lane E (Northstar matrix runner, 2026-10-02): the census restricted to one scene's rect
+        /// "x,z,w,h[,maxPts]" -- every graph node inside it (type, cell, live, wall terminal), the cord edges with an
+        /// end inside it, its laid pieces (strands, decals, unwalkable vertices, per-edge hashes, a scene geometry
+        /// hash), the strand bounding box (sprawl), the distinct power nets of the transmitters inside it, and the
+        /// laid vertices themselves (decimated to maxPts) for the screenshot wire mask. Read-only.</summary>
+        private static string RectCensus(Map map, RM_MapComponent_CordGraph comp, string args)
+        {
+            int[] a = args.Split(',').Select(s => int.Parse(s.Trim(), CultureInfo.InvariantCulture)).ToArray();
+            int x0 = a[0], z0 = a[1], x1 = a[0] + a[2] - 1, z1 = a[1] + a[3] - 1, maxPts = a.Length > 4 ? a[4] : 4000;
+            bool In(int x, int z) => x >= x0 && x <= x1 && z >= z0 && z <= z1;
+            var sb = new StringBuilder("{\"success\":true,\"cmd\":\"rect\"");
+            void F(string k, string v) => sb.Append(",\"").Append(k).Append("\":").Append(v);
+            F("ticksGame", Find.TickManager.TicksGame.ToString());
+            F("enabled", J.B(MessyConduitSettings.enabled));
+            F("rect", "[" + x0 + "," + z0 + "," + a[2] + "," + a[3] + "]");
+            var nets = new HashSet<PowerNet>();
+            foreach (PowerNet n in map.powerNetManager.AllNetsListForReading)
+                if (n.transmitters.Any(t => t?.parent != null && In(t.parent.Position.x, t.parent.Position.z))) nets.Add(n);
+            F("nets", nets.Count.ToString());
+            F("netsLive", nets.Count(n => n.HasActivePowerSource).ToString());
+            CordGraph gr = comp.Graph;
+            if (gr == null || !MessyConduitSettings.enabled) { sb.Append(",\"graph\":false}"); return sb.ToString(); }
+            F("graph", "true");
+            F("conduitCells", gr.Cells.Count(c => In(c.X, c.Z)).ToString());
+            var nodes = new List<string>();
+            foreach (CordNode nd in gr.Nodes.Values.Where(n => In(n.Cell.X, n.Cell.Z)))
+            {
+                PowerNet net = map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(nd.Cell));
+                bool? reg = comp.EndLive(nd.Cell);
+                nodes.Add("{\"t\":" + J.S(nd.OracleName) + ",\"c\":[" + nd.Cell.X + "," + nd.Cell.Z + "],\"netLive\":" +
+                          J.B(net != null && net.HasActivePowerSource) + ",\"reg\":" + (reg.HasValue ? J.B(reg.Value) : "null") +
+                          ",\"wt\":" + J.B(nd.WallTerminal) + "}");
+            }
+            F("nodes", J.Arr(nodes));
+            int edges = 0, across = 0, unnetted = 0;
+            foreach (CordEdge e in gr.CordEdges())
+            {
+                Cell ca = gr.CellOf(e.A), cb = gr.CellOf(e.B);
+                if (!In(ca.X, ca.Z) && !In(cb.X, cb.Z)) continue;
+                edges++;
+                PowerNet na = map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(ca));
+                PowerNet nb = map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(cb));
+                if (na == null || nb == null) unnetted++; else if (na != nb) across++;
+            }
+            F("cordEdges", edges.ToString());
+            F("cordsAcrossNets", across.ToString());
+            F("cordEndsWithoutNet", unnetted.ToString());
+            CordWorld w = comp.LastWorld;
+            var mine = comp.Pieces.Where(p => In(p.Owner.X, p.Owner.Z)).OrderBy(p => p.Key, StringComparer.Ordinal).ToList();
+            int strands = 0, bad = 0, fell = 0, unroutable = 0, total = 0;
+            double bx0 = double.MaxValue, bz0 = double.MaxValue, bx1 = double.MinValue, bz1 = double.MinValue;
+            foreach (LaidPiece p in mine)
+            {
+                if (p.Unroutable) unroutable++;
+                foreach (CordStrand s in p.Strands)
+                {
+                    strands++;
+                    if (s.FellBack) fell++;
+                    total += s.Pts.Count;
+                    foreach (V2 q in s.Pts) { bx0 = Math.Min(bx0, q.X); bz0 = Math.Min(bz0, q.Z); bx1 = Math.Max(bx1, q.X); bz1 = Math.Max(bz1, q.Z); }
+                    if (s.OverFace || w == null) continue;
+                    for (int i = 1; i < s.Pts.Count - 1; i++) if (!w.IsWalkable(s.Pts[i].Floor)) bad++;
+                }
+            }
+            F("pieces", mine.Count.ToString());
+            F("strands", strands.ToString());
+            F("verticesInUnwalkable", bad.ToString());
+            F("fellBack", fell.ToString());
+            F("unroutable", unroutable.ToString());
+            F("laidPoints", total.ToString());
+            F("strandBBox", strands == 0 ? "null" : "[" + J.D(bx0) + "," + J.D(bz0) + "," + J.D(bx1) + "," + J.D(bz1) + "]");
+            F("decals", "{" + string.Join(",", mine.SelectMany(p => p.Decals).GroupBy(d => d.Kind.ToString()).OrderBy(x => x.Key)
+                .Select(x => J.S(x.Key) + ":" + x.Count())) + "}");
+            var ends = new List<string>();
+            foreach (LaidPiece p in mine)
+                foreach (CordEnd e in p.Ends)
+                {
+                    PowerNet net = map.powerNetGrid.TransmittedPowerNetAt(CordWorldAdapter.I(e.NetCell));
+                    bool? reg = comp.EndLive(e.NetCell);
+                    ends.Add("{\"cell\":[" + e.NetCell.X + "," + e.NetCell.Z + "],\"wall\":" + J.B(e.Wall) + ",\"registryLive\":" +
+                             (reg.HasValue ? J.B(reg.Value) : "null") + ",\"netLive\":" + J.B(net != null && net.HasActivePowerSource) + "}");
+                }
+            F("ends", J.Arr(ends));
+            ulong hsh = 1469598103934665603UL;
+            var per = new List<string>();
+            foreach (LaidPiece p in mine.Where(x => x.EndA != null))
+            {
+                ulong h = p.GeometryHash();
+                hsh = (hsh ^ h) * 1099511628211UL;
+                per.Add(J.S(EdgeName(p)) + ":" + J.S(h.ToString("x16")));
+            }
+            F("edgeHashes", "{" + string.Join(",", per) + "}");
+            F("geometryHash", J.S(hsh.ToString("x16")));
+            int stride = Math.Max(1, (total + maxPts - 1) / Math.Max(1, maxPts));
+            var lines = new List<string>();
+            foreach (LaidPiece p in mine)
+                foreach (CordStrand s in p.Strands)
+                {
+                    var pts = new List<string>();
+                    for (int i = 0; i < s.Pts.Count; i += stride) pts.Add("[" + J.D(s.Pts[i].X) + "," + J.D(s.Pts[i].Z) + "]");
+                    V2 last = s.Pts[s.Pts.Count - 1];
+                    if ((s.Pts.Count - 1) % stride != 0) pts.Add("[" + J.D(last.X) + "," + J.D(last.Z) + "]");
+                    if (pts.Count >= 2) lines.Add("[" + string.Join(",", pts) + "]");
+                }
+            F("polyStride", stride.ToString());
+            F("polylines", J.Arr(lines));
+            sb.Append("}");
+            return sb.ToString();
         }
 
         private static string EdgeName(LaidPiece p) => p.EndA + "|" + p.EndB;

@@ -47,6 +47,8 @@ namespace RimMandrake.MessyConduit
                                      Find.CameraDriver.CurrentZoom >= CameraZoomRange.Far;
         public static bool LastDrawFar;
         public static int LastLodSubMeshes, LastFullSubMeshes, CutsceneSkips;
+        /// <summary>Lane C state read: pieces printed per strand variant since the last StyleProbe reset.</summary>
+        public static readonly Dictionary<int, int> PrintedVariants = new Dictionary<int, int>();
 
         public override void DrawLayer()
         {
@@ -84,6 +86,11 @@ namespace RimMandrake.MessyConduit
                 foreach (LaidPiece p in owned)
                 {
                     bool lodDone = false;
+                    // lane C: the piece's strand variant (extension-cord colour / Star Wars cable kind), per net
+                    int variant = comp.VariantOf(p);
+                    Material strand = CordMaterials.StrandFor(variant), strandFace = CordMaterials.StrandFaceFor(variant),
+                             strandLod = CordMaterials.StrandLodFor(variant);
+                    if (strand != null) PrintedVariants[variant] = PrintedVariants.TryGetValue(variant, out int pv) ? pv + 1 : 1;
                     foreach (CordStrand s in p.Strands)
                     {
                         float y = s.OverFace ? faceY : baseY + 0.0006f * (k % 12);
@@ -97,15 +104,15 @@ namespace RimMandrake.MessyConduit
                         }
                         if (!s.OverFace && CordMaterials.Shadow != null)
                             verts += Ribbon(CordMaterials.Shadow, pts, ShadowWidth, y - 0.0003f, s.S0, new Vector2(0.03f, -0.045f));
-                        verts += Ribbon(s.OverFace && CordMaterials.StrandFace != null ? CordMaterials.StrandFace : CordMaterials.Strand,
+                        verts += Ribbon(s.OverFace && strandFace != null ? strandFace : strand,
                                         pts, StrandWidth, y, s.S0, Vector2.zero);
-                        if (MessyConduitSettings.lod && !lodDone && !s.OverFace && CordMaterials.StrandLod != null && s.Pts.Count >= 2)
+                        if (MessyConduitSettings.lod && !lodDone && !s.OverFace && strandLod != null && s.Pts.Count >= 2)
                         {
                             // B8: one strand per piece, every 3rd point, a little thinner, no decals
                             var dec = new List<V2>(s.Pts.Count / 3 + 2);
                             for (int i = 0; i < s.Pts.Count; i += 3) dec.Add(s.Pts[i]);
                             if ((s.Pts.Count - 1) % 3 != 0) dec.Add(s.Pts[s.Pts.Count - 1]);
-                            verts += Ribbon(CordMaterials.StrandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
+                            verts += Ribbon(strandLod, dec, StrandWidth * 0.9f, baseY, s.S0, Vector2.zero);
                             lodDone = true;
                         }
                         k++;

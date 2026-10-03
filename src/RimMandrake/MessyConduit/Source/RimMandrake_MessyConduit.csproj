@@ -50,6 +50,7 @@
     <Compile Include="MessyConduitMod.cs" />
     <Compile Include="ConduitVisuals.cs" />
     <Compile Include="CordMaterials.cs" />
+    <Compile Include="StyleProbe.cs" />
     <Compile Include="CordWorldAdapter.cs" />
     <Compile Include="RM_MapComponent_CordGraph.cs" />
     <Compile Include="SectionLayer_RM_MessyCords.cs" />
@@ -69,6 +70,16 @@
     <Compile Include="Aerial\RM_MapComponent_Aerial.cs" />
     <Compile Include="Aerial\SectionLayer_RM_AerialGround.cs" />
     <Compile Include="Aerial\AerialProbe.cs" />
+  </ItemGroup>
+
+  <!-- fire hoses, lane D / L6 (design phase2 section 3): Hose\HoseMath.cs is Verse-free and ALSO compiled by SelfTest -->
+  <ItemGroup>
+    <Compile Include="Hose\HoseMath.cs" />
+    <Compile Include="Hose\HoseSettings.cs" />
+    <Compile Include="Hose\CompHoseReel.cs" />
+    <Compile Include="Hose\HoseFlow.cs" />
+    <Compile Include="Hose\RM_MapComponent_Hoses.cs" />
+    <Compile Include="Hose\HoseProbe.cs" />
   </ItemGroup>
 
   <ItemGroup>
