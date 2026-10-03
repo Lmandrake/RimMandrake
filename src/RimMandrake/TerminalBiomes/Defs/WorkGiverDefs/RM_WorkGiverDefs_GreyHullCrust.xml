@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- RM_WorkGiverDefs_GreyHullCrust.xml  TerminalBiomes · GREYSEA_HULL_CRUST_BUILD_1
+     Crust patches are Mining work (the statuary's chisel idiom). A salted door is
+     BasicWorker so any colonist inside can always force it open (danger pass §1.5:
+     "doors always yield from the inside ... a short job, no tools"). Both are
+     right-clickable through vanilla's work-giver float menu. -->
+<Defs>
+  <WorkGiverDef>
+    <defName>RM_ChipHullSaltCrust</defName>
+    <label>chip salt crust off the hull</label>
+    <giverClass>RimMandrake.TerminalBiomes.RM_WorkGiver_ChipHullSalt</giverClass>
+    <workType>Mining</workType>
+    <priorityInType>40</priorityInType>
+    <verb>chip</verb>
+    <gerund>chipping salt off</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+  <WorkGiverDef>
+    <defName>RM_ChipSaltedDoor</defName>
+    <label>chip a salted door free</label>
+    <giverClass>RimMandrake.TerminalBiomes.RM_WorkGiver_ChipSaltedDoor</giverClass>
+    <workType>BasicWorker</workType>
+    <priorityInType>90</priorityInType>
+    <verb>chip free</verb>
+    <gerund>chipping free</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+</Defs>

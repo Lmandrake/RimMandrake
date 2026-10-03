@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- RM_JobDefs_GreyHullCrust.xml  TerminalBiomes · GREYSEA_HULL_CRUST_BUILD_1
+     One job for a crust patch on the hull and a salted-shut door (RM_JobDriver_ChipHullSalt). -->
+<Defs>
+  <JobDef>
+    <defName>RM_ChipHullSalt</defName>
+    <driverClass>RimMandrake.TerminalBiomes.RM_JobDriver_ChipHullSalt</driverClass>
+    <reportString>chipping salt off TargetA.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+</Defs>

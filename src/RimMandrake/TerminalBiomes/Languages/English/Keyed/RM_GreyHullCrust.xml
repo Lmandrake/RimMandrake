@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_GreyHullCrust.xml  TerminalBiomes · GREYSEA_HULL_CRUST_BUILD_1 (RM_GreyHullCrust.cs) -->
+<LanguageData>
+
+  <RM_GreyCrustDoorLabel>The sea has salted a door</RM_GreyCrustDoorLabel>
+  <RM_GreyCrustDoorText>Salt has grown into the seams of one of the ship's outer doors and frozen it shut. The Grey builds on anything that holds still long enough, and a parked ship is the stillest thing it has ever held.\n\nA salted door will not open from either side until someone chips it free — a short job that needs no tools, and the salt you knock out is yours. Left parked, the ship will rime white, then its doors will salt one by one, and after long neglect crust will jacket the whole hull and must be chipped off before the ship can launch. Salt snow and a berth beside brine channels or chimney fields speed it all up. Leaving stops the clock.</RM_GreyCrustDoorText>
+  <RM_GreyCrustDoorInspect>Salted shut — chip it free to open</RM_GreyCrustDoorInspect>
+  <RM_GravEngineCannotLaunchGreyCrust>Salt crust jackets the hull — {0} patches must be chipped off before launching</RM_GravEngineCannotLaunchGreyCrust>
+
+</LanguageData>

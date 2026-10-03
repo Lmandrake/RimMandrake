@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_GreyHullCrust.xml                 TerminalBiomes · GREYSEA_HULL_CRUST_BUILD_1
+  The Grey files a parked ship (danger pass §1, rulings Q10/Q11). Spawned only by
+  RM_MapComponent_GreyHullCrust on a parked gravship's own hull cells; both travel
+  with the ship because they are things on its deck.
+
+  RM_Filth_HullRime  — stage 1, cosmetic bloom, no function lost.
+  RM_HullSaltCrust   — stage 3 jacketing. Passable, not an edifice (it grows on the
+                       plating, it never walls a corridor). Chipped by
+                       RM_WorkGiver_ChipHullSalt (Mining) for RM_RawSalt — "the sea pays
+                       you for evicting it". Counted by the launch gate.
+  PLACEHOLDER ART: vanilla stone chunk and ash cluster tinted salt-white, until
+  crust art lands (white, cauliflower-textured, marred — never perfect).
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_HullSaltCrust</defName>
+    <label>hull salt crust</label>
+    <description>White salt grown onto the ship's plating in a cauliflower bloom, the same mineral the Grey jackets its statuary in. The sea builds on anything that holds still long enough. It must be chipped off before the ship can launch, and the salt is worth keeping.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>30</pathCost>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <rotatable>false</rotatable>
+    <drawerType>MapMeshOnly</drawerType>
+    <tickerType>Never</tickerType>
+    <graphicData>
+      <texPath>Things/Item/Chunk/ChunkStone</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(232,236,234)</color>
+      <drawSize>(1.1,1.1)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <repairable>false</repairable>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="CompProperties_InspectString">
+        <inspectString>Chip it off (mining work) for salt. Blocks launch while on the hull.</inspectString>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RM_Filth_HullRime</defName>
+    <label>salt rime</label>
+    <description>A fine white bloom of salt on the plating — the first sign the Grey has started filing the ship. Harmless, and beautiful, and a warning.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>3~6</disappearsInDays>
+      <cleaningWorkToReduceThickness>40</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/Ash</texPath>
+      <color>(240,244,242,230)</color>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>
