@@ -76,6 +76,8 @@
       <RM_Oovu>0.4</RM_Oovu>
       <RM_Iliss>0.3</RM_Iliss>
       <RM_Tarnn>0.2</RM_Tarnn>
+      <!-- CHILL_WAX_PROCESSION_GIANT_1: the floor's giant (Q4b), a slow file. -->
+      <RM_Hesuun>0.12</RM_Hesuun>
     </wildAnimals>
     <!-- PROPANELAKE_ANIMALDENSITY_ZERO_1, 2026-09-26 — animalDensity was UNSET (engine
          default 0f), so WildAnimalSpawner.DesiredTotalAnimalWeight was 0 and the six

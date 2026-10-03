@@ -72,6 +72,7 @@
     <Compile Include="RM_JobDriver_FeedOnGlow.cs" />
     <Compile Include="RM_Comp_VaeuliskLure.cs" />
     <Compile Include="RM_Comp_DropLureOrganOnDeath.cs" />
+    <Compile Include="RM_Comp_WaxProcession.cs" />
     <Compile Include="RM_GenStep_ScatterVauliskLure.cs" />
     <Compile Include="RM_IncidentWorker_SuulkArrival.cs" />
     <!-- TWILIGHT_PANE_STRIKE_1 -->

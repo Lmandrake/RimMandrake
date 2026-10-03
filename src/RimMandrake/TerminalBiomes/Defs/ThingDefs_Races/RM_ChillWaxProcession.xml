@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CHILL_WAX_PROCESSION_GIANT_1: the Wax Procession, the Chill floor's giant (sitting 2026-10-02 Q4b).
+  RM_ tier, invented name (hesuun). Mechanic: RM_Comp_WaxProcession (Source/). A colony walks, pauses,
+  and sheds a dead filter sheet to haul back; killing one spoils its sheets into hydrocarbon flesh.
+  Untameable (trainability None), not fishable, not a predator, does not fly. Placeholder art.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Hesuun</defName>
+    <label>hesuun</label>
+    <description>An articulated colony of wax the size of a wagon, one of a slow file that crosses the Chill floor eating the fuel snow into comb-like plates beneath its belly. Now and then the file stops, and each colony sheds an exhausted filter sheet, dead and clean, that a crew can carry home before the file walks on. It does not fight and cannot be tamed. Kill one and its sheets spoil into ordinary hydrocarbon flesh.</description>
+    <statBases>
+      <MoveSpeed>0.9</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
+      <ComfyTemperatureMax>-30</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.4</ArmorRating_Sharp>
+    </statBases>
+    <tools>
+      <li>
+        <label>shoulder</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>9</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.TerminalBiomes.RM_CompProperties_WaxProcession" />
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>3.5</baseBodySize>
+      <baseHealthScale>4</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.5</minAge></li>
+        <li><def>AnimalAdult</def><minAge>1.5</minAge></li>
+      </lifeStageAges>
+      <meatDef>RM_HydrocarbonFlesh</meatDef>
+    </race>
+    <tradeTags><li>AnimalExotic</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Hesuun</defName>
+    <label>hesuun</label>
+    <race>RM_Hesuun</race>
+    <combatPower>90</combatPower>
+    <wildGroupSize>3~5</wildGroupSize>
+    <ecoSystemWeight>1.0</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hesuun/RM_Hesuun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>1.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hesuun/RM_Hesuun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>2.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hesuun/RM_Hesuun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>3.2</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DeadFilterSheet</defName>
+    <label>dead filter sheet</label>
+    <description>A pale wax plate shed by a hesuun colony once it has strained all it can from the fuel snow. Inert and clean, it is a refinery input that crews haul back from the file's pauses. Left on the floor it crazes and flakes away.</description>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pitchpearl/RM_Pitchpearl</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>3</Mass>
+      <Flammability>1.2</Flammability>
+      <MarketValue>40</MarketValue>
+      <DeteriorationRate>12</DeteriorationRate>
+    </statBases>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <alwaysHaulable>true</alwaysHaulable>
+    <stackLimit>10</stackLimit>
+  </ThingDef>
+</Defs>
