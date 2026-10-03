@@ -8,8 +8,9 @@
   terrain adds its OWN extension with its own biomes; the grid takes the first that matches the map.
 
   Invisible walkers (a submerged sand swimmer: RM_SandSubmerged is HediffComp_Invisibility) are
-  recorded and flagged, and draw a wake trough instead of feet. The trough sprite is the shared drag
-  placeholder until wake art exists (STILLSAND_SAND_SWIM_REMAINDER_1 wake records).
+  recorded and flagged, and draw a wake trough instead of feet (RM_SandWake art, wired 2026-10-03).
+  The oommok leaves its own giant print (RM_OommokPrint). The sandcrawler tread art
+  (RSW_Filth_CrawlerTread) has no walking race to hang on: the crawler is not a pawn.
 
   The eraser (a cell whose sand depth changes by 0.08 or more clears) is Source/RM_DuneTrackEraser.cs,
   a postfix on SandGrid.SetDepth, which the dunes engine writes through (setting duneErasesTracks).
@@ -27,7 +28,10 @@
           <value>
             <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
               <biomes><li>RM_Stillsand</li></biomes>
-              <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+              <invisibleTexPath>Things/Tracks/RM_SandWake</invisibleTexPath>
+              <raceOverrides>
+                <li><race>RM_Oommok</race><texPath>Things/Tracks/RM_OommokPrint</texPath></li>
+              </raceOverrides>
             </li>
           </value>
         </match>
@@ -37,7 +41,10 @@
             <modExtensions>
               <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
                 <biomes><li>RM_Stillsand</li></biomes>
-                <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+                <invisibleTexPath>Things/Tracks/RM_SandWake</invisibleTexPath>
+                <raceOverrides>
+                  <li><race>RM_Oommok</race><texPath>Things/Tracks/RM_OommokPrint</texPath></li>
+                </raceOverrides>
               </li>
             </modExtensions>
           </value>
@@ -50,7 +57,10 @@
           <value>
             <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
               <biomes><li>RM_Stillsand</li></biomes>
-              <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+              <invisibleTexPath>Things/Tracks/RM_SandWake</invisibleTexPath>
+              <raceOverrides>
+                <li><race>RM_Oommok</race><texPath>Things/Tracks/RM_OommokPrint</texPath></li>
+              </raceOverrides>
             </li>
           </value>
         </match>
@@ -62,7 +72,10 @@
               <modExtensions>
                 <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
                   <biomes><li>RM_Stillsand</li></biomes>
-                  <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+                  <invisibleTexPath>Things/Tracks/RM_SandWake</invisibleTexPath>
+                  <raceOverrides>
+                    <li><race>RM_Oommok</race><texPath>Things/Tracks/RM_OommokPrint</texPath></li>
+                  </raceOverrides>
                 </li>
               </modExtensions>
             </value>
