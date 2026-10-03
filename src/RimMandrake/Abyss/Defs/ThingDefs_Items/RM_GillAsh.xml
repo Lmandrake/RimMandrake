@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ABYSS_GHARREK_BUILD_1. Shorn from a penned gharrek (see RM_Gharrek.xml). Chemfuel feedstock
+       beside tholin (ABYSS_ETCHFALL_BUILD_1); the recipe that uses it is owed to that item. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GillAsh</defName>
+    <label>gill-ash</label>
+    <description>A pinch of pale grey-green ash, a few flecks of it still glowing faintly. It sheds from the gill-fans of a gharrek that has fed well on the gusts, and it burns hot and flameless when it is pressed and refined.</description>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Item/GillAsh</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>1.5</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+</Defs>

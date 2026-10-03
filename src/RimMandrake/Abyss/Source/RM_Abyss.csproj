@@ -42,6 +42,8 @@
   <ItemGroup>
     <Compile Include="RM_AbyssMod.cs" />
     <Compile Include="RM_AbyssBiome.cs" />
+    <Compile Include="RM_GustController.cs" />
+    <Compile Include="RM_CompGharrek.cs" />
   </ItemGroup>
 
   <ItemGroup>
