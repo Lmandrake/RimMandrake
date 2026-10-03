@@ -250,7 +250,6 @@ SWBestiary/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the gam
 # THESUMP_RM_MOD_BUILD_1 (2026-09-25): file physically moved from UtinniPatches
 # into TheSump/ (Phase A split), defName unchanged — path updated below, hold
 # unchanged otherwise.
-TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art yet, 2026-09-13
 
 # --- SCALD S6 hold ENDED 2026-09-25: files moved out of UtinniPatches ---------
 # RUT_ScaldWrecks/RUT_ScaldWreckScatter(+Register) now ship from TerminalBiomes
@@ -275,9 +274,6 @@ TheSump/Defs/ThingDefs_Buildings/RUT_MoatFusePost.xml   # BENCH: no art yet, 202
 # UtinniPatches into TheSump/ (Phase A split), defNames unchanged — paths
 # updated below, holds unchanged otherwise. The art still needs to land under
 # TheSump/Textures/, not UtinniPatches/Textures/, now that the def lives here.
-TheSump/Defs/ThingDefs_Buildings/RUT_BeastBulge.xml            # BENCH: no art yet, 2026-09-13
-TheSump/Defs/MapGeneration/RUT_SumpTarBeastGenStep.xml         # BENCH: held with the ThingDef it scatters, 2026-09-13
-TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml           # BENCH: held with the ThingDef it scatters, 2026-09-13
 
 # SUMP_MECHANICS_1 S4 (2026-09-14): a 4th file added to the same hold group
 # above — patches RM_CompDreadSource onto RUT_BeastBulge's own comps list,
@@ -285,7 +281,6 @@ TheSump/Patches/RUT_SumpTarBeastGenStep_Register.xml           # BENCH: held wit
 # three files above.
 # THESUMP_RM_MOD_BUILD_1 (2026-09-25): moved from UtinniPatches into TheSump/
 # with the rest of the group, defName unchanged.
-TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: held with RUT_BeastBulge.xml, 2026-09-14
 
 # SUMP_MECHANICS_1 S4 (2026-09-14): RUT_Filth_MouseTrack.xml repointed to
 # Things/Filth/RUT_MouseTrack after validate_patch.py refused a reuse of
@@ -297,7 +292,6 @@ TheSump/Patches/RUT_BeastBulge_DreadRegistration.xml           # BENCH: held wit
 #    TheSump/Textures/Things/Filth/RUT_MouseTrack.png.
 # THESUMP_RM_MOD_BUILD_1 (2026-09-25): file physically moved from UtinniPatches
 # into TheSump/ (Phase A split), defName unchanged — path updated below.
-TheSump/Defs/ThingDefs_Misc/RUT_Filth_MouseTrack.xml           # BENCH: no art yet, 2026-09-14
 
 # SUMP_WALKWAYS_1 (2026-09-24): RM_Filth_Tar.xml (FlowWorks) was repointed to
 # Things/Filth/RM_FilthTar after validate_patch.py refused a reuse of
@@ -428,8 +422,6 @@ Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   # BENCH: 
 # => LIFT per-file as each plant's art lands under TheSump/Textures/Things/
 #    Plant/RM_<Name>/RM_<Name>_a.png — def and art deploy together, same
 #    pattern as every other DEPLOY_HOLD entry above.
-TheSump/Defs/ThingDefs_Plants/RM_SumpFlora.xml   # FOUNDRY: no art yet, 2026-09-25
-TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml   # FOUNDRY: no art yet, 2026-09-25
 
 # --- SUMP_FAUNA_ROSTER_1 (2026-09-26): 9 new invented fauna defs, no art yet ---
 # Nine new races+PawnKindDefs (RM_SumpFauna.xml) reference bespoke texPaths
@@ -443,7 +435,6 @@ TheSump/Defs/ThingDefs_Items/RM_SumpFloraItems.xml   # FOUNDRY: no art yet, 2026
 # WoolBase parent's own default, zero new art.
 # => LIFT per-facing as each animal's art lands under TheSump/Textures/
 #    Things/Pawn/Animal/RM_<Name>/RM_<Name>_{south,east,north}.png.
-TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml   # FOUNDRY: no art yet, 2026-09-26
 
 # --- LOAD_ERRORS_DEF_FIELDS_1 (2026-09-30): RM_TheSump_Biome.xml outran its own held cast ---
 # RM_TheSump_Biome.xml's <wildAnimals>/<wildPlants> wire in all 5 SUMP_FAUNA_ROSTER_1 rows
@@ -458,10 +449,12 @@ TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml   # FOUNDRY: no art yet, 2026-09-2
 # reachable in play either way yet.
 # => LIFT together with RM_SumpFlora.xml and RM_SumpFauna.xml above once their art lands (or once
 #    the wildAnimals/wildPlants rows are trimmed to only already-deployed defs).
-TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml   # LOAD_ERRORS_DEF_FIELDS_1: held with RM_SumpFlora.xml/RM_SumpFauna.xml, 2026-09-30
 
 # --- BELT 2026-10-03 live load: referrers of already-held defs dangled (20 -> 7 xrefs after prune; these are the last) ---
 # Held defs are removed from the game copy only by hand (a hold never deletes), and their REFERRERS must be held with them.
 UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml            # genSteps names held RUT_FoundryFloor_SalvageCache; the pocket map is entered only via held RUT_FoundryTowerEntrance
 UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml       # adds held RUT_FoundryTowerScatter onto Base_Player genSteps (MayRequire mandrake.rm.biomes is satisfied, so it dangled)
-TheSump/Defs/IncidentDefs/RUT_TarPitBelch.xml                    # allowedBiomes names held biome RM_TheSump
+
+
+# --- TheSump hold LIFTED 2026-10-03 (FOUNDRY belt): every TheSump art file now exists under TheSump/Textures/ (flora x8, Dredgel stand-in facings,
+# BeastBulge, MouseTrack, MoatFusePost); the 11 TheSump holds above were only "no art yet" and the biome hold was only "held with the flora/fauna".
