@@ -6,7 +6,15 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.environmentalhazards</packageId>
+      <displayName>RimMandrake: Environmental Hazards Kit</displayName>
+      <steamWorkshopUrl />
+    </li>
+  </modDependencies>
   <loadAfter>
+    <li>mandrake.rm.environmentalhazards</li>
     <li>sarg.alphaanimals</li>
     <li>sarg.alphamemes</li>
     <li>vanillaexpanded.vgeneticse</li>

@@ -1,0 +1,4 @@
+id,rimflow_item_id,prompt,canvas_w,canvas_h,reference,facings,style_notes,priority,background,channel
+RM_TsevrixPulp,CAULDRON_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: tsevrix pulp, a small heap of raw sulfur-yellow waxy starchy pulp chunks with thin cinnabar-red veining, beaded with condensate. Single heap, centered, no background.",128,128,,,,100,transparent,codex
+RM_TsevrixRoasted,CAULDRON_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: roasted tsevrix, a small heap of browned golden-ochre roasted starchy chunks with scorched edges and a faint yellow tint. Single heap, centered, no background.",128,128,,,,100,transparent,codex
+RM_FexxilShard,CAULDRON_FLORA_EXPANSION_BUILD_1,"RimWorld inventory item icon: fexxil glass, a few sharp cobalt-blue glass slivers with pale ice-blue tips, one with a tiny hooked tip. Single small pile, centered, no background.",128,128,,,,100,transparent,codex

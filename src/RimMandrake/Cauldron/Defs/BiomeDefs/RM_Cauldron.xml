@@ -175,7 +175,15 @@
       <RM_KeeningCordax>0.2</RM_KeeningCordax>  <!-- keening cordax - tree -->
       <RM_GiantToxicFlower>0.08</RM_GiantToxicFlower>  <!-- giant toxic flower -->
       <RM_Xithess>0.35</RM_Xithess>  <!-- xithess - filter-frond, vent-chemistry yield -->
-      <RM_DarkCrust>0.25</RM_DarkCrust>  <!-- vein moss - phototroph film -->
+      <RM_DarkCrust>0.25</RM_DarkCrust>
+      <!-- CAULDRON_FLORA_EXPANSION_BUILD_1: removed at startup by RM_CauldronFloraGate when floraExpansionEnabled is off.
+           First values, calibrate in play. -->
+      <RM_Tsevrix>0.3</RM_Tsevrix>
+      <RM_Ixalith>0.12</RM_Ixalith>
+      <RM_Fexxil>0.25</RM_Fexxil>
+      <RM_Sessarix>0.15</RM_Sessarix>
+      <RM_Kissaveth>0.2</RM_Kissaveth>
+      <RM_Selvix>0.2</RM_Selvix>  <!-- vein moss - phototroph film -->
     </wildPlants>
     <wildPlantRegrowDays>15</wildPlantRegrowDays>
   </BiomeDef>

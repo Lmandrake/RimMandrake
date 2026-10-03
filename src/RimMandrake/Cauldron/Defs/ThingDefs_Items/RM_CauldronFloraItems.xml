@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CAULDRON_FLORA_EXPANSION_BUILD_1. Icons are retinted vanilla placeholders; item art is owed. -->
+<Defs>
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_TsevrixPulp</defName>
+    <label>tsevrix pulp</label>
+    <description>Starchy, filling pulp from a tsevrix bladder, sulfur-yellow and sweating condensate. The bladder holds dissolved vent volatiles, so eaten raw it poisons. Roast it at a stove or campfire and the volatiles drive off.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
+      <color>(222, 196, 58)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.1</Mass>
+      <Nutrition>0.15</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawBad</preferability>
+      <outcomeDoers>
+        <li Class="IngestionOutcomeDoer_GiveHediff">
+          <hediffDef>ToxicBuildup</hediffDef>
+          <severity>0.12</severity>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_TsevrixRoasted</defName>
+    <label>roasted tsevrix</label>
+    <description>Tsevrix pulp roasted until the volatiles are gone. Plain, dense and safe: the only plant food in a forest whose meat is all poison.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
+      <color>(196, 150, 60)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.2</MarketValue>
+      <Mass>0.1</Mass>
+      <Nutrition>0.2</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>MealSimple</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>8</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_FexxilShard</defName>
+    <label>fexxil glass</label>
+    <description>A sliver of cobalt glass broken off a fexxil burr. Sharp enough to be dangerous in a pocket, and worth carrying anyway.</description>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(40, 80, 190)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <MarketValue>6</MarketValue>
+      <Mass>0.1</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <stackLimit>75</stackLimit>
+  </ThingDef>
+</Defs>

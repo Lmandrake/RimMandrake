@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RecipeDef>
+    <defName>RM_RoastTsevrix</defName>
+    <label>roast tsevrix pulp</label>
+    <description>Roast tsevrix pulp until the vent volatiles are driven off.</description>
+    <jobString>Roasting tsevrix.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <workAmount>250</workAmount>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_TsevrixPulp</li></thingDefs></filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>RM_TsevrixPulp</li></thingDefs>
+    </fixedIngredientFilter>
+    <products><RM_TsevrixRoasted>5</RM_TsevrixRoasted></products>
+    <recipeUsers>
+      <li>FueledStove</li>
+      <li>ElectricStove</li>
+    </recipeUsers>
+  </RecipeDef>
+</Defs>

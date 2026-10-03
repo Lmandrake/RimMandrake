@@ -51,6 +51,9 @@ namespace RimMandrake.Cauldron
         public static bool vexxissDrinksVentsEnabled = true;
         public static bool ventGardensEnabled = true;
         public static float ventSilenceDays = 4f;
+        // CAULDRON_FLORA_EXPANSION_BUILD_1: the six admitted flora in the wild roster (applies on restart) and fexxil's venom.
+        public static bool floraExpansionEnabled = true;
+        public static bool fexxilVenomEnabled = true;
 
         public override void ExposeData()
         {
@@ -73,6 +76,8 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref vexxissDrinksVentsEnabled, "vexxissDrinksVentsEnabled", true, true);
             Scribe_Values.Look(ref ventGardensEnabled, "ventGardensEnabled", true, true);
             Scribe_Values.Look(ref ventSilenceDays, "ventSilenceDays", 4f, true);
+            Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true, true);
+            Scribe_Values.Look(ref fexxilVenomEnabled, "fexxilVenomEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -170,6 +175,13 @@ namespace RimMandrake.Cauldron
                 ref ventGardensEnabled,
                 "Crystal flowers ring stable vents, blood bouquets mark chronic leaks, giant toxic flowers "
                 + "favour vents that blew out recently. Needs nettle gardens above to be on.");
+            list.CheckboxLabeled("Flora expansion (restart to apply)",
+                ref floraExpansionEnabled,
+                "Tsevrix, ixalith, fexxil, sessarix, kissaveth and selvix in the wild roster. Off: only the original "
+                + "eleven plants grow. The roster change applies on the next launch.");
+            list.CheckboxLabeled("Fexxil burrs carry venom (restart to apply)",
+                ref fexxilVenomEnabled,
+                "Walking through fexxil gives a toxic scratch. Off: the thicket only slows you down.");
 
             list.End();
         }
