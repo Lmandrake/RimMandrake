@@ -77,8 +77,9 @@ namespace RimMandrake.FlowWorks
 			{
 				return true;
 			}
-			bool shooterDeep = engine.IsSuperdeepExcavation(shooter);
-			bool targetDeep = engine.IsSuperdeepExcavation(target);
+			// PIT_COVER_FALL_REWIRE_1: a covered superdeep cell is ground until the cover gives way.
+			bool shooterDeep = engine.IsSuperdeepExcavation(shooter) && !Pits.RM_PitCoverUtility.IsCovered(map, shooter);
+			bool targetDeep = engine.IsSuperdeepExcavation(target) && !Pits.RM_PitCoverUtility.IsCovered(map, target);
 			if (!shooterDeep && !targetDeep)
 			{
 				return true;
