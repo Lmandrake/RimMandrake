@@ -9,8 +9,8 @@
       <li Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]</xpath>
         <match Class="PatchOperationSequence"><operations>
-          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
-          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath><match Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]</xpath><value><tickerType>Normal</tickerType></value></nomatch></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath><match Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></nomatch></li>
           <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/comps</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]</xpath><value><comps/></value></nomatch></li>
           <li Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientAutocannonTurret"]/comps</xpath><value><li Class="RimMandrake.Scarlands.CompProperties_TurretAim"/></value></li>
         </operations></match>
@@ -18,8 +18,8 @@
       <li Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]</xpath>
         <match Class="PatchOperationSequence"><operations>
-          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
-          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath><match Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]</xpath><value><tickerType>Normal</tickerType></value></nomatch></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath><match Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></nomatch></li>
           <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/comps</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]</xpath><value><comps/></value></nomatch></li>
           <li Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="AncientUraniumSlugTurret"]/comps</xpath><value><li Class="RimMandrake.Scarlands.CompProperties_TurretAim"/></value></li>
         </operations></match>
@@ -27,8 +27,8 @@
       <li Class="PatchOperationConditional">
         <xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]</xpath>
         <match Class="PatchOperationSequence"><operations>
-          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></li>
-          <li Class="PatchOperationAddOrReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath><match Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/tickerType</xpath><value><tickerType>Normal</tickerType></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]</xpath><value><tickerType>Normal</tickerType></value></nomatch></li>
+          <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath><match Class="PatchOperationReplace"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/drawerType</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></match><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]</xpath><value><drawerType>MapMeshAndRealTime</drawerType></value></nomatch></li>
           <li Class="PatchOperationConditional"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/comps</xpath><nomatch Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]</xpath><value><comps/></value></nomatch></li>
           <li Class="PatchOperationAdd"><xpath>/Defs/ThingDef[defName="RUT_BustedShieldedTurret"]/comps</xpath><value><li Class="RimMandrake.Scarlands.CompProperties_TurretAim"/></value></li>
         </operations></match>

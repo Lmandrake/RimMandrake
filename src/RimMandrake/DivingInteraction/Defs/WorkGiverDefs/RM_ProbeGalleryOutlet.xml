@@ -10,6 +10,5 @@
     <verb>probe</verb>
     <gerund>probing a coolant outlet</gerund>
     <scanThings>true</scanThings>
-    <canBeDoneByNonColonists>false</canBeDoneByNonColonists>
   </WorkGiverDef>
 </Defs>

@@ -11,7 +11,6 @@
     <verb>gather</verb>
     <gerund>gathering grazed mat</gerund>
     <scanThings>true</scanThings>
-    <canBeDoneByNonColonists>false</canBeDoneByNonColonists>
   </WorkGiverDef>
 
 </Defs>

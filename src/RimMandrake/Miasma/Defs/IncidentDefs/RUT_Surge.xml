@@ -69,7 +69,7 @@
     <gameCondition>RUT_GradientSurge</gameCondition>
     <durationDays>0.1667~0.3333</durationDays>
     <allowedBiomes>
-      <li>RUT_Miasma</li>
+      <li MayRequire="mandrake.rut.patches">RUT_Miasma</li>
       <!-- MIASMA_RM_MOD_BUILD_1: second op alongside the frozen twin above -
            the live campaign world still carries RUT_Miasma-painted tiles
            until the terminal paint, and this def now physically lives in
