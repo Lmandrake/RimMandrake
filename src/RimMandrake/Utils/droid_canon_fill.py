@@ -24,7 +24,7 @@ def curl(url):
             time.sleep(wait)
         _last[0] = time.time()
         r = subprocess.run(["curl", "-s", "--max-time", "30", "-w", "\n%{http_code}", url],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
         body, _, code = r.stdout.rpartition("\n")
         if code == "429" or code == "000" or not code.startswith("2"):
             time.sleep(min(60, 5 * 2 ** attempt))
@@ -39,7 +39,13 @@ def cached(kind, key, url):
     if os.path.exists(p):
         return json.load(open(p))
     d = json.loads(curl(url))
-    json.dump(d, open(p, "w"))
+    # a transient API error (ratelimited, internal_api_error) must never be cached as an answer;
+    # only a genuine missing page is a stable result
+    if "error" in d and d["error"].get("code") != "missingtitle":
+        raise RuntimeError("API error %s for %s" % (d["error"], url))
+    with open(p + ".tmp", "w", encoding="utf-8") as fh:
+        json.dump(d, fh)
+    os.replace(p + ".tmp", p)  # atomic: a kill mid-write cannot leave a corrupt cache file
     return d
 
 
@@ -147,7 +153,7 @@ def main():
     os.makedirs(CACHE, exist_ok=True)
     dp = os.path.join(CACHE, "done.json")
     done = set(json.load(open(dp))) if os.path.exists(dp) else set()
-    lines = open(INDEX, encoding="utf-8").read().split("\n")
+    lines = open(INDEX, encoding="utf-8", newline="").read().split("\n")
     rows = {}
     for n, l in enumerate(lines):
         if l.startswith("| ") and l.count("|") == 9 and not l.startswith("| name |"):
@@ -157,8 +163,12 @@ def main():
     print("rows needing work (not yet processed):", len(todo))
     filled = {k: 0 for k in COLS}; q = {k: 0 for k in COLS}
     def save():
-        open(INDEX, "w", encoding="utf-8").write("\n".join(lines))
-        json.dump(sorted(done), open(dp, "w"))
+        with open(INDEX + ".tmp", "w", encoding="utf-8", newline="") as fh:
+            fh.write("\n".join(lines))
+        os.replace(INDEX + ".tmp", INDEX)
+        with open(dp + ".tmp", "w", encoding="utf-8") as fh:
+            json.dump(sorted(done), fh)
+        os.replace(dp + ".tmp", dp)
     cnt = 0
     for n in todo[:a.limit]:
         c = rows[n]
@@ -184,4 +194,5 @@ def main():
     print("DONE chunk", cnt, "filled", filled, "marked?", q, "remaining", len(todo) - cnt)
 
 
-main()
+if __name__ == "__main__":
+    main()
