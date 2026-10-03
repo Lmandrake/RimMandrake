@@ -78,3 +78,7 @@ Deterministic, in `THE_ROT_FIRST_SCRIPT_1`'s `validation.py`, through `jawa/get_
 </invoke>
 <invoke name="Bash">
 <parameter name="command">head -1 /home/mandrake/rm/bench/infrastructure/state/items/ROT_HWELGRUE_GIANT_BUILD_1.md
+## built (2026-10-03, FOUNDRY offline builder r14)
+- `Source/RM_Hwelgrue.cs` + `Defs/Fauna/RM_Hwelgrue.xml`: race on `RM_RotLarvaLike` (no new BodyDef), body 8, health ×10, move 1.2, sharp/blunt armour 0.5, heat 0; graze via an `Animal_PreWander` splice (`RM_JobGiver_GutGraze` -> `RM_GutGraze`), `RM_CompGutDigest` (metal whole into a ThingOwner, rest destroyed, corpses' gear sorted), `RM_SheenCasting` (CompUsable "Crack open", contents to full HP; a smashed casting still drops its metal), rest rot ×setting within 6, retaliation melee on whoever hurt it, map cap, first-sighting letter per map. Inline roster row 0.02. Art wired from `_artsrc` (east/south; south stands in for north, north requeued). Giant section in Mod Settings (on/off with roster removal at startup, casting days, rot multiplier, map cap); settings screen now scrolls.
+- Deviations: contents drop as a casting at DEATH, not at butchering; warm-ground marking not built (`RM_MapComponent_WarmGround` is terrain+room scoped with no cell API); the wild-spawn guarantee on a navigator-flagged tile belongs to `ROT_SWALLOWED_NAVIGATOR_1`.
+- validation.py chain `hwelgrue` (map cap, digest, casting via `RM_HwelgrueProof`); live proof owed — first poke: `jawa/static_call RimMandrake.TheRot.RM_HwelgrueProof ProofSpawn 3` on any map.

@@ -23,8 +23,9 @@
         two RotPaleTree_WildSpawn.xml / RotGuardianGroves_WildSpawn.xml
         patches (those patch files existed only to avoid two agents editing
         this def at once — no longer needed once the content lives here);
-      - wildAnimals holds ONLY the 8 Alpha Animals donor rows (Q9 stays
-        inline, MayRequire sarg.alphaanimals). The 11 RSW_ rows + Snoruuk the
+      - wildAnimals holds the 8 Alpha Animals donor rows (Q9 stays
+        inline, MayRequire sarg.alphaanimals), the ten RM_ residents of
+        ROT_RM_CAST_MIGRATION_1 and the RM_Hwelgrue giant. The 11 RSW_ rows + Snoruuk the
         twin also carries are Q12/Q11a Star Wars content and ride the
         campaign Utinni patch instead — see
         src/RimUtinni/UtinniPatches/Patches/WildAnimals_TheRot.xml — never
@@ -120,6 +121,7 @@
       <li>RM_SheenExposureLock</li>
     </biomeMapConditions>
     <wildAnimals>
+      <RM_Hwelgrue>0.02</RM_Hwelgrue>  <!-- hwelgrue - our own giant (ROT_HWELGRUE_GIANT_BUILD_1); at most 1 per map by RM_CompGutDigest's cap -->
       <AA_Swarmling MayRequire="sarg.alphaanimals">0.3</AA_Swarmling>  <!-- swarmling - hybrid-vermin -->
       <AA_Agaripod MayRequire="sarg.alphaanimals">0.25</AA_Agaripod>  <!-- agaripod - hybrid-native -->
       <AA_MycoidColossus MayRequire="sarg.alphaanimals">0.25</AA_MycoidColossus>  <!-- mycoid colossus - hybrid-giant -->

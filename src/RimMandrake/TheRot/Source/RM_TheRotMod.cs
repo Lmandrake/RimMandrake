@@ -49,12 +49,20 @@ namespace RimMandrake.TheRot
         public static bool sporeAllergy = true;
         public static float sporeAllergyIncidence = 1f;
 
+        // ROT_HWELGRUE_GIANT_BUILD_1 — the Giant section.
+        public static bool hwelgrue = true;
+        public static float hwelgrueCastingDays = 2f;
+        public static float hwelgrueRotMultiplier = 3f;
+        public static int hwelgrueMapCap = 1;
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
         public static float crossBiomeCoverage = 1f;
 
         private string biomeListBuffer;
+        private Vector2 scrollPos;
+        private float scrollHeight = 1400f;
 
         public override void ExposeData()
         {
@@ -75,6 +83,10 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref sporeCloudIncidentWeight, "sporeCloudIncidentWeight", 1f);
             Scribe_Values.Look(ref sporeAllergy, "sporeAllergy", true);
             Scribe_Values.Look(ref sporeAllergyIncidence, "sporeAllergyIncidence", 1f);
+            Scribe_Values.Look(ref hwelgrue, "hwelgrue", true);
+            Scribe_Values.Look(ref hwelgrueCastingDays, "hwelgrueCastingDays", 2f);
+            Scribe_Values.Look(ref hwelgrueRotMultiplier, "hwelgrueRotMultiplier", 3f);
+            Scribe_Values.Look(ref hwelgrueMapCap, "hwelgrueMapCap", 1);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -121,8 +133,10 @@ namespace RimMandrake.TheRot
                 biomeListBuffer = crossBiomeBiomeList;
             }
 
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, scrollHeight);
+            Widgets.BeginScrollView(inRect, ref scrollPos, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.CheckboxLabeled("The Rot enabled", ref theRotEnabled,
                 "Master switch. Off: the biome and its defs still load (nothing here is worldgen-affecting "
@@ -164,6 +178,19 @@ namespace RimMandrake.TheRot
             sporeAllergyIncidence = list.Slider(sporeAllergyIncidence, 0.25f, 3f);
             list.GapLine();
 
+            list.Label("Giant: the hwelgrue");
+            list.CheckboxLabeled("Hwelgrue (wild spawn: new maps, restart to apply)", ref hwelgrue,
+                "The gut that walks: a huge slow maggot that eats whatever lies on open ground and passes the metal in Sheen "
+              + "castings. Off: it stops grazing and digesting, it leaves the Rot's wild roster on the next launch "
+              + "(WORLDGEN-AFFECTING), and any wild one that appears is removed.");
+            list.Label("  Days between castings: " + hwelgrueCastingDays.ToString("0.0"));
+            hwelgrueCastingDays = list.Slider(hwelgrueCastingDays, 0.5f, 10f);
+            list.Label("  Rot speed-up where it rests: " + hwelgrueRotMultiplier.ToString("0.0") + "x");
+            hwelgrueRotMultiplier = list.Slider(hwelgrueRotMultiplier, 1f, 10f);
+            list.Label("  Most on one map: " + hwelgrueMapCap);
+            hwelgrueMapCap = Mathf.RoundToInt(list.Slider(hwelgrueMapCap, 1f, 5f));
+            list.GapLine();
+
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
             list.Label("Lets Rot mechanics generate on a NON-Rot biome's map, without adding the whole "
               + "biome. Applies once, right after a map generates; an existing map is never retroactively "
@@ -185,6 +212,8 @@ namespace RimMandrake.TheRot
             }
 
             list.End();
+            scrollHeight = Mathf.Max(inRect.height, list.CurHeight + 24f);
+            Widgets.EndScrollView();
         }
     }
 
@@ -277,6 +306,12 @@ namespace RimMandrake.TheRot
             if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.guardianGroves)
             {
                 rot.wildPlants.RemoveAll(r => r.plant != null && System.Array.IndexOf(GuardianGroveRows, r.plant.defName) >= 0);
+            }
+            if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.hwelgrue)
+            {
+                // BiomeDef.wildAnimals is private; its commonality cache is built lazily on first read (after startup).
+                var field = typeof(BiomeDef).GetField("wildAnimals", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                (field?.GetValue(rot) as List<BiomeAnimalRecord>)?.RemoveAll(r => r.animal != null && r.animal.defName == "RM_Hwelgrue");
             }
         }
 

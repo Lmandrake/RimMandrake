@@ -11,7 +11,11 @@ Sources: `src/RimMandrake/TheRot/About/About.xml`, `Defs/**`, `Source/RM_TheRotM
 - `RM_TheRot` has animalDensity > 0 and plantDensity > 0 and its worker class is `RM_BiomeWorker_TheRot`. → biome_wiring.animal_and_plant_density_positive, biome_wiring.biome_worker_class_loaded
 - Every Mod Settings field of `RM_TheRotSettings` round-trips. → settings_roundtrip.*
 - Sheen exposure, accelerated rot, warm ground, live preparations, guardian groves, health sharing, pale tree, spore cloud, cross-biome mode. → map_mechanics.* (UNMEASURED: need a generated map and ticks)
-- The settings screen does not yet gate the shared environmentalhazards mechanics. → UNCOVERED: stated in the settings class header (owed consolidation)
+- At most one wild hwelgrue lives on a map (setting): three spawn attempts leave one. → hwelgrue.map_cap_holds
+- A hwelgrue keeps metal whole and destroys the rest: a steel knife goes into its gut, a wood stack is gone. → hwelgrue.digest_keeps_metal_only
+- Its gut passes one Sheen casting; cracking it drops the metal at full hit points and empties the gut. → hwelgrue.casting_polishes_contents
+- Where it rests, rottables within 6 cells rot faster than ones 20 cells away. → hwelgrue.rest_accelerates_rot
+- An idle hwelgrue crawls to and eats the nearest corpse or item on open ground, never one in a stockpile zone or under a roof, and never starts a fight. → UNCOVERED: needs ticks; first poke: RM_HwelgrueProof.ProofGrazeTarget with a knife on open ground and one in a stockpile.
 
 ## the walk
 1. [D] `jawa/get_defs` over every def derived from `Defs/**/*.xml`   # defs_resolve

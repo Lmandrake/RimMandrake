@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_TheRot.cs" />
     <Compile Include="RM_TheRotMod.cs" />
+    <Compile Include="RM_Hwelgrue.cs" />
   </ItemGroup>
 
   <ItemGroup>
