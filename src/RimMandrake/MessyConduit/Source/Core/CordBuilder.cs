@@ -132,6 +132,8 @@ namespace RimMandrake.MessyConduit.Core
                 var full = new StringBuilder(ekey).Append('#');
                 foreach (VId v in e.Chain()) full.Append(v.ToString()).Append(';');
                 foreach (VId v in new[] { e.A, e.B })
+                    full.Append(g.Nodes[v].Type).Append(',');
+                foreach (VId v in new[] { e.A, e.B })
                     if (g.Nodes[v].Type == NodeType.Terminal || g.Nodes[v].WallTerminal || g.Nodes[v].Type == NodeType.StubDevice) full.Append(isLive(g.Nodes[v].Cell) ? 'L' : 'D');
                 full.Append('#').Append(opt.Lay.Fingerprint());
                 string fk = full.ToString();
