@@ -324,7 +324,7 @@ def main():
         ("no_recipe_patch", {"cuisine_wiring.recipes_on_both_stoves"}),
         ("ticker_never", {"cuisine_wiring.rottable_items_tick"}),
         ("no_designator", {"settings_and_designator.designator_listed_when_on"}),   # pen chains go UNMEASURED
-        ("toggle_ignored", {"settings_and_designator.designator_hidden_when_off"}),
+        ("toggle_ignored", set()),   # a still-listed row is UNMEASURED (stale DLL vs cached listing), asserted below
         ("pen_on_dry", {"pen_zone.pen_refuses_dry_floor"}),
         ("net_noop", {"job_net.net_turns_wild_pawn_into_breeding_stock"}),
         ("stock_noop", {"job_stock.stock_releases_species_pawn_into_pen"}),
@@ -333,6 +333,8 @@ def main():
         ("harvest_noop", {"job_harvest.harvest_yields_species_meat", "job_cull.cull_yields_enormous_harvest"}),
         ("flora_noop", {"flora_%s.harvest_yields_%s" % (p, q) for p, q in V.FLORA_PRODUCTS}),
     ]
+    um = run(("toggle_ignored",)).get("settings_and_designator.designator_hidden_when_off")
+    check("break toggle_ignored goes UNMEASURED, not PASS", um is not None and um[0] == "UNMEASURED", "got %s" % (um,))
     for brk, want in cases:
         got = reds(run((brk,)))
         check("break %-24s reddens exactly %s" % (brk, sorted(want)), set(got) == want, "got %s" % got)
