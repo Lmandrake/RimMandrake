@@ -65,6 +65,9 @@ VANILLA_PACKED = {
     # (LongShade/Defs/SoundDefs/RM_LongShade_HeatSounds.xml); each verbatim from
     # the named Core SoundDef's own grain, verified via RimSage 2026-10-01.
     "Ambience/JungleInsects_Day_1a": "vanilla Ambient_DayInsects_Jungle",
+    # FEVERWOOD_CROWN_SOUND_HEAT_1 canopy layer (FeverWood/Defs/SoundDefs/RM_FeverWoodSoundscape.xml);
+    # verbatim from Core Ambient_NightInsects_Jungle's grain, read from the installed World_Sustainers_Ambiences.xml 2026-10-03.
+    "Ambience/Jungle Ambience Night B": "vanilla Ambient_NightInsects_Jungle",
     "Ambience/Wind/Amb_Wind_Fog2_Loop": "vanilla Ambient_Wind_Fog",
     "UI/TickLow": "vanilla Tick_Low",
     "UI/TickHigh": "vanilla Tick_High",
