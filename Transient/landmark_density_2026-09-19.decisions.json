@@ -134,11 +134,7 @@
   },
   "frozen": false,
   "posture": "whitelist",
-  "reviewStatus": {
-    "at": null,
-    "by": null,
-    "evidence": "decidedCount=0, frozen=false, no savedBy/reviewed_by/approvedBy — one of the item's three named 100%-prefill-identical sheets",
-    "state": "prefill"
-  },
-  "sheetId": "landmark_density_2026-09-19"
+  "reviewStatus": "retired",
+  "sheetId": "landmark_density_2026-09-19",
+  "retiredBy": "owner, typed in BENCH chat 2026-10-02: \"yes treat them as retired\" (no live item references this sheet)"
 }

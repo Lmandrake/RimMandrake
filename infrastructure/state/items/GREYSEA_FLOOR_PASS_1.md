@@ -19,6 +19,12 @@ ledger notes on this item are the primary record; nothing here supersedes them.
   plantDensity 0.14–0.22 proposed) — awaiting its sitting.
 - **Danger/floor draft** → `the_grey_deep_danger_floor_pass_2026-09-27.md`.
 
+## State 2026-10-02
+
+All nine build children are done; `GREYSEA_FLORA_PASS_1` (doing) and `GREYSEA_RULED_CONTENT_1`
+(blocked) remain. Nothing reaches a player until `SEABED_PER_SEA_FLOORS_1` gives the layer a real
+per-sea floor; the live walk waits on that.
+
 ## spec — what closes this item
 
 The build rides the filed children; this item closes when the Grey Sea floor map is
@@ -46,6 +52,7 @@ a PLACE, not just a cast list, and the owner has walked it in a live review sitt
 ## verify
 
 - Every child item above closed, or explicitly re-scoped with a note here.
-- A generated Grey Sea dive map (RM_SeaDiveGenerator_GreySea) carries pillars,
-  ruled flora, own terrain/weather where ruled — not the generic shared floor.
+- A ship flown to the Grey Sea floor (the `RM_SeabedLayer` planet layer; the dive hatch is retired)
+  lands on the Grey's own floor map with pillars, ruled flora, own terrain/weather where ruled — not
+  the generic placeholder floor. Gated on `SEABED_PER_SEA_FLOORS_1`.
 - Live review sitting held: the owner walks the floor map and rules it done.
