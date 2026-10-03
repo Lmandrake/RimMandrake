@@ -258,8 +258,7 @@ def _get_defs(t, defs, fields, deep=False):
     # LIVE 2026-10-03: WITHOUT deep=True get_defs answers a list field as class NAMES ("WeatherCommonalityRecord"), so
     # reading baseWeatherCommonalities/wildPlants as dict rows raised AttributeError ('str' has no .get). WITH deep=True
     # a modExtensions entry flattens to its FIELDS ([{}] for the empty marker RM_LeanExtension): read that one shallow.
-    kw = {"deep": True} if deep else {}
-    r = t.bridge_call("jawa/get_defs", defs=defs, fields=fields, limit=200, **kw)
+    r = t.bridge_call("jawa/get_defs", defs=defs, fields=fields, limit=200, deep=bool(deep))
     if not _live(t):
         return {}, None
     _ok(r, "get_defs(%s)" % defs[:80])
