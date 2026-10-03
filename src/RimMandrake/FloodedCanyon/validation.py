@@ -73,6 +73,43 @@ def shipped_defs():
     return out
 
 
+def _flora_shape_findings():
+    """Offline structural check of the six Cracked Lands expansion plants. Returns failure strings."""
+    def text(rel):
+        with open(os.path.join(HERE, "Defs", rel), encoding="utf-8") as fh:
+            return re.sub(r"<!--.*?-->", "", fh.read(), flags=re.S)
+
+    def body(rel, name):
+        m = re.search(r"<defName>%s</defName>(.*?)</ThingDef>" % name, text(rel), flags=re.S)
+        return m.group(1) if m else None
+    plants = "ThingDefs_Plants/RM_CrackedLandsFlora.xml"
+    items = "ThingDefs_Items/RM_CrackedLandsFloraItems.xml"
+    bad = []
+    biome = text("BiomeDefs/RM_FloodedCanyon_Biome.xml")
+    if "<RM_Veqma>" not in biome:
+        bad.append("control: the original roster row RM_Veqma is missing, parser broke")
+    want = {"RM_Nabbuq": "RM_NabbuqBladder", "RM_Ruqqal": "RM_RuqqalFibre", "RM_Sevvuq": "Dye",
+            "RM_Zennaq": "RM_ZennaqFilament", "RM_Harrovaq": "WoodLog"}
+    for n in ("RM_Nabbuq", "RM_Ruqqal", "RM_Sevvuq", "RM_Zennaq", "RM_Luqqim", "RM_Harrovaq"):
+        b = body(plants, n)
+        if b is None:
+            bad.append("%s missing" % n)
+            continue
+        if not re.search(r"<%s>[\d.]+</%s>" % (n, n), biome):
+            bad.append("%s not in RM_FloodedCanyon wildPlants (XML element form)" % n)
+        if "CompTick" in b:
+            bad.append("%s overrides CompTick" % n)
+        if n in want and "<harvestedThingDef>%s</harvestedThingDef>" % want[n] not in b:
+            bad.append("%s must harvest %s" % (n, want[n]))
+    lq = body(plants, "RM_Luqqim") or ""
+    if "CompProperties_Glower" not in lq or not re.search(r"<Beauty>[1-9]", lq):
+        bad.append("luqqim needs a glower and Beauty > 0")
+    for n in ("RM_NabbuqBladder", "RM_RuqqalFibre", "RM_ZennaqFilament"):
+        if body(items, n) is None:
+            bad.append("%s missing" % n)
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
 except ImportError:                       # offline static run outside the modcheck path
@@ -275,6 +312,16 @@ if Suite is not None:
                     _unmeasured(t, "control ask failed: %s" % str(r)[:140])
                 if r.get("foundCount") != 0 or not r.get("notFound"):
                     _fail("the probe cannot say absent: control returned %r" % r)
+
+    # ----------------------------------------------------------------------- 1b. flora expansion shape
+
+    @suite.chain("flora_expansion")
+    def flora_expansion(t):
+        """CRACKEDLANDS_FLORA_EXPANSION_BUILD_1, parsed from the mod's own XML (no live game needed)."""
+        with _comp(t, "flora_expansion_shape", toggle="floraExpansionEnabled"):
+            bad = _flora_shape_findings()
+            if bad:
+                _fail("; ".join(bad))
 
     # ----------------------------------------------------------------------- 2. settings round trips
 
@@ -506,6 +553,11 @@ if Suite is not None:
         fn.__doc__ = "UNMEASURED: " + why
         suite.chain(chain)(fn)
 
+    _um("zennaq_draws_lightning", "zennaq_hit_rate_beats_control",
+        "needs a [Tool] that calls RM_ZennaqLightning.Redirect on a spawned zennaq and a control plant (the strike chooser is a "
+        "public static; no bridge tool wraps it yet). Offline the shape is checked by flora_expansion_shape",
+        "zennaqLightningPullEnabled")
+
     _um("flood_damage_light_and_nonfatal", "pawn_in_footprint_takes_light_blunt",
         "the footprint is a map-wide BFS from a random seed (not placeable), so a pawn cannot be put under the wall on demand; "
         "needs a debug seed or a bridge tool placing the seed", "floodDamageEnabled")
@@ -570,6 +622,7 @@ def static_checks():
     for p in (P_ARM, P_START, P_REPORT, P_RECEDE, P_AFTER, P_SEAMS):
         if p.split("\\")[1] not in dbg:
             bad.append("debug action label for path %r not in RM_FloodedCanyonDebugActions.cs" % p)
+    bad.extend(_flora_shape_findings())
     if not any(f.endswith(".dll") for f in os.listdir(os.path.join(HERE, "Assemblies"))):
         bad.append("no DLL in Assemblies")
     return bad

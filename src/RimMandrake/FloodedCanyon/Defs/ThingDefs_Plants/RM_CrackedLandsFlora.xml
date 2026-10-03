@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CRACKEDLANDS_FLORA_EXPANSION_BUILD_1: six admitted Cracked Lands flora. No green anywhere (only Veqma shows green, on the shade line).
+     Roster commonalities are first values to calibrate in play. Gated by RM_FloodedCanyonSettings.floraExpansionEnabled. -->
+<Defs>
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Nabbuq</defName>
+    <label>nabbuq</label>
+    <description>Fist-sized indigo-violet bladders crowded under lavender bracts, half sunk in the cool soil of the shade line. They swell after a flood and keep their water for weeks. Cut, they are a sweet, filling vegetable.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <Nutrition>0.2</Nutrition>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Nabbuq/RM_Nabbuq</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <fertilityMin>0.2</fertilityMin>
+      <fertilitySensitivity>0.5</fertilitySensitivity>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>9</growDays>
+      <harvestWork>110</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_NabbuqBladder</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Ruqqal</defName>
+    <label>ruqqal</label>
+    <description>Dense tufts of twisted coral-salmon stalks, wrung like wet rope and striped with dried flood mud. The stalks cure in the channel silt; cut and combed they spin into a coarse, warm cloth.</description>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Ruqqal/RM_Ruqqal</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.3</fertilitySensitivity>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0.1</topWindExposure>
+      <growDays>12</growDays>
+      <harvestWork>150</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_RuqqalFibre</harvestedThingDef>
+      <harvestYield>6</harvestYield>
+      <sowTags>
+        <li>Ground</li>
+      </sowTags>
+      <visualSizeRange>0.6~1.1</visualSizeRange>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>6</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Sevvuq</defName>
+    <label>sevvuq</label>
+    <description>Skull-sized, brain-folded globes in saffron going to sulfur, studded along the flood high-water line like a row of lamps. The folds weep a yellow pigment that stains whatever it touches.</description>
+    <statBases>
+      <MaxHitPoints>45</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Sevvuq/RM_Sevvuq</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <fertilityMin>0.1</fertilityMin>
+      <fertilitySensitivity>0.2</fertilitySensitivity>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0.05</topWindExposure>
+      <growDays>14</growDays>
+      <harvestWork>120</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Dye</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>5</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Zennaq</defName>
+    <label>zennaq</label>
+    <description>A waist-high burst of stiff wire-thin filaments splayed like a frayed broom, verdigris-copper at the base and silver at the tips. It is dry as tinder, and in a storm it stands up to the sky: lightning on the mesa tops prefers it to the ground.</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>2</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Zennaq/RM_Zennaq</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0.15</topWindExposure>
+      <growDays>16</growDays>
+      <harvestWork>100</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_ZennaqFilament</harvestedThingDef>
+      <harvestYield>3</harvestYield>
+      <visualSizeRange>0.6~1.1</visualSizeRange>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBaseNonEdible">
+    <defName>RM_Luqqim</defName>
+    <label>luqqim</label>
+    <description>Clusters of translucent tulip cups, magenta shading to amethyst with a cyan rim, growing only in the deepest slot-canyon dark. Each cup holds a faint cold glow, enough to find the way by and not enough to read.</description>
+    <statBases>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0</Nutrition>
+      <Beauty>8</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Luqqim/RM_Luqqim</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <maxMeshCount>1</maxMeshCount>
+      <topWindExposure>0.02</topWindExposure>
+      <growDays>12</growDays>
+      <harvestWork>40</harvestWork>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Hay</harvestedThingDef>
+      <harvestYield>2</harvestYield>
+      <visualSizeRange>0.4~0.8</visualSizeRange>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>4</wildClusterWeight>
+      <wildOrder>3</wildOrder>
+      <purpose>Beauty</purpose>
+    </plant>
+    <comps>
+      <li Class="CompProperties_Glower">
+        <glowRadius>3.5</glowRadius>
+        <glowColor>(150,40,140,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Harrovaq</defName>
+    <label>harrovaq</label>
+    <description>The canyon's own tree: a low, wide, twisted trunk of slate-blue bark leaning hard toward the wall, bone-white corkscrew branches without a leaf, and burgundy tassels that hang in place of fruit. It roots in the floor soil beside the cliff, never in the rock.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>180</MaxHitPoints>
+      <Nutrition>0</Nutrition>
+      <Mass>90</Mass>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Harrovaq/RM_Harrovaq</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.3, 0.15)</volume>
+        <offset>(0,0,-0.38)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>20</growDays>
+      <harvestWork>400</harvestWork>
+      <harvestYield>14</harvestYield>
+      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestMinGrowth>0.3</harvestMinGrowth>
+      <topWindExposure>0.08</topWindExposure>
+      <visualSizeRange>1.4~2.4</visualSizeRange>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+</Defs>
