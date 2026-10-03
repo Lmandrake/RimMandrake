@@ -41,13 +41,16 @@ namespace RimMandrake.ShipVermin
         // defName, enabled-flag pairs. VFEI2_Fuelmite is the one entry whose
         // owning mod (VFE Insectoids 2) is not a hard dependency of this mod,
         // so GetNamedSilentFail below is load-bearing, not defensive filler.
-        private static readonly (string defName, Func<bool> enabled)[] NestSpeciesRoster =
+        private static readonly (string defName, string ported, Func<bool> enabled)[] NestSpeciesRoster =
         {
-            ("Mynock", () => spawnMynock),
-            ("Scavrat", () => spawnScavrat),
-            ("WompRat", () => spawnWompRat),
-            ("VFEI2_Fuelmite", () => spawnFuelmite),
-            ("Rat", () => spawnRat),
+            // SHIPVERMIN_MYNOCK_KIND_NAME_1: `ported` is our own RSW_ kind (tried first); `defName` is the
+            // donor kind, kept as the fallback so a donor-only install still nests. With the donor mod
+            // absent the bare name never resolves, which left wreck nests unable to make a mynock.
+            ("Mynock", "RSW_Mynock", () => spawnMynock),
+            ("Scavrat", "RSW_Scavrat", () => spawnScavrat),
+            ("WompRat", "RSW_WompRat", () => spawnWompRat),
+            ("VFEI2_Fuelmite", null, () => spawnFuelmite),
+            ("Rat", null, () => spawnRat),
         };
 
         public override void ExposeData()
@@ -73,13 +76,14 @@ namespace RimMandrake.ShipVermin
         public static PawnKindDef PickEnabledNestSpecies()
         {
             List<PawnKindDef> candidates = null;
-            foreach ((string defName, Func<bool> enabled) entry in NestSpeciesRoster)
+            foreach ((string defName, string ported, Func<bool> enabled) entry in NestSpeciesRoster)
             {
                 if (!entry.enabled())
                 {
                     continue;
                 }
-                PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(entry.defName);
+                PawnKindDef kind = (entry.ported != null ? DefDatabase<PawnKindDef>.GetNamedSilentFail(entry.ported) : null)
+                    ?? DefDatabase<PawnKindDef>.GetNamedSilentFail(entry.defName);
                 if (kind == null)
                 {
                     continue;
