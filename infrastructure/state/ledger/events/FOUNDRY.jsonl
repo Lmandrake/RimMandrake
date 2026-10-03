@@ -2326,3 +2326,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROT_SPORE_ALLERGY_PORT_1","ts":"2026-10-03T16:39:35Z","tsn":1791045575797289730}
 {"seat":"FOUNDRY","event":"start","id":"ROT_SPORE_ALLERGY_PORT_1","ts":"2026-10-03T16:39:36Z","tsn":1791045576329418047}
 {"seat":"FOUNDRY","event":"close","id":"ROT_SPORE_ALLERGY_PORT_1","sha":"891c1d14a069","ts":"2026-10-03T16:42:06Z","tsn":1791045726517436019}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_WOUND_SHARING_WIRING_1","ts":"2026-10-03T16:42:51Z","tsn":1791045771796503625}
+{"seat":"FOUNDRY","event":"start","id":"ROT_WOUND_SHARING_WIRING_1","ts":"2026-10-03T16:42:52Z","tsn":1791045772336371647}
+{"seat":"FOUNDRY","event":"file","id":"BIOME_VISUAL_BEDAZZLE_PASS_1","title":"Visual bedazzle pass on every biome (ground, colour, density), AFTER all biomes are green-code, art-complete, in the single biome mod, with basic Northstar coverage","kind":"design","target":"v1","needs":"owner","for":"BENCH","ts":"2026-10-03T16:43:41Z","tsn":1791045821804667244}
