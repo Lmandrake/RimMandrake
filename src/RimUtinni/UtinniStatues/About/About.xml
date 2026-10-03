@@ -15,8 +15,12 @@ Mob'Unloo, Rekko, Ta'Baa, Zizzik, Sh'kaar, Ozzik), grand idols of Ohm, Rekko and
 sand-crawler relief, or the three votives (the Bandolier, the Droplet, the Tally). The carving, the
 name and the "Honours" line follow the choice. Any colony can carve them.
 
-Not here yet (filed): the carved art itself (each choice shows a vanilla sculpture until its picture
-lands), and Sh'kaar's grand idol burning (SHKAAR_FLAME_IDOL_BUILD_1).
+Sh'kaar's grand idol burns: dedicating a stone or metal grand statue to him rebuilds it as a fuelled
+idol (chemfuel; Sumpgas in the Utinni campaign) whose sun-disc crown carries a flame and lights the
+room. Rededicate it and it goes cold again.
 
-Mod Settings ("Utinni Statues"): carving on/off.</description>
+Not here yet (filed): the carved art itself (each choice shows a vanilla sculpture until its picture
+lands), and the full set of flames on Sh'kaar's palms (comes with the Flame Statues mod).
+
+Mod Settings ("Utinni Statues"): carving on/off, Sh'kaar's idol burns, Sumpgas fuels the idol.</description>
 </ModMetaData>

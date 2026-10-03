@@ -123,11 +123,102 @@
     <comps>
       <li Class="RimMandrake.Utinni.UtinniStatues.CompProperties_StatuePicker">
         <carvings>
-          <li><id>RUT_Idol_Ohm_Grand</id><label>grand idol of Ohm</label><honours>Ohm the All-Current</honours><depicts>Ohm, arms raised, above a heap of three dormant droids leaning on the plinth like pilgrims.</depicts></li>
-          <li><id>RUT_Idol_Rekko_Grand</id><label>grand idol of Rekko</label><honours>Rekko of the Second Hand</honours><depicts>Rekko at a workbench-slab strewn with parts, a mended droid standing at his shoulder.</depicts></li>
-          <li><id>RUT_Idol_Shkaar_Grand</id><label>grand idol of Sh'kaar</label><honours>Sh'kaar the All-Searing</honours><depicts>Sh'kaar with palms cupped upward and a bowl-crowned sun-disc, on a ring of fire-pit stones.</depicts></li>
-          <li><id>RUT_Relief_Crawler</id><label>relief of the Crawler</label><honours>the clan's ark</honours><depicts>A sand crawler carved in high relief: wedge hull, rusted plates, great treads, ramp lowered. The clan's ark before the ship.</depicts></li>
+          <li><id>RUT_Idol_Ohm_Grand</id><label>grand idol of Ohm</label><honours>Ohm the All-Current</honours><depicts>Ohm, arms raised, above a heap of three dormant droids leaning on the plinth like pilgrims.</depicts><def>RUT_StatueGrand</def></li>
+          <li><id>RUT_Idol_Rekko_Grand</id><label>grand idol of Rekko</label><honours>Rekko of the Second Hand</honours><depicts>Rekko at a workbench-slab strewn with parts, a mended droid standing at his shoulder.</depicts><def>RUT_StatueGrand</def></li>
+          <li><id>RUT_Idol_Shkaar_Grand</id><label>grand idol of Sh'kaar</label><honours>Sh'kaar the All-Searing</honours><depicts>Sh'kaar with palms cupped upward and a bowl-crowned sun-disc, on a ring of fire-pit stones.</depicts><def>RUT_StatueGrand_Shkaar</def><flame>true</flame></li>
+          <li><id>RUT_Relief_Crawler</id><label>relief of the Crawler</label><honours>the clan's ark</honours><depicts>A sand crawler carved in high relief: wedge hull, rusted plates, great treads, ramp lowered. The clan's ark before the ship.</depicts><def>RUT_StatueGrand</def></li>
         </carvings>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- SHKAAR_FLAME_IDOL_BUILD_1 (statue spec §2.5, rulings R5/R11): the grand statue rebuilt when it is dedicated to
+       Sh'kaar's grand carving. Not carved directly (no recipeMaker: ArtBuildingBase, not SculptureBase); minifies and
+       reinstalls. Vanilla only: Refuelable (chemfuel per R4; Sumpgas in the campaign, switched at startup by
+       UtinniStatuesStartup.ApplyIdolFuel), Glower (dark without fuel via the refuelable's IThingGlower), ONE vanilla
+       FireOverlay at the sun-disc crown. Offset/size are first values for the placeholder art; re-measure from
+       rut_idol_shkaar_grand_v1 when it lands. The palms join with Mod 2's RM_CompFlamePoints (FLAME_STATUES_MOD_BUILD_1). -->
+  <ThingDef ParentName="ArtBuildingBase">
+    <defName>RUT_StatueGrand_Shkaar</defName>
+    <label>burning idol of Sh'kaar</label>
+    <description>A grand idol of Sh'kaar the All-Searing, palms cupped upward under a bowl-crowned sun-disc. Fed fuel, the crown burns.</description>
+    <thingClass>RimMandrake.Utinni.UtinniStatues.RUT_Building_Statue</thingClass>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsArt</li>
+    </thingCategories>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <tickerType>Normal</tickerType>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Building/Art/SculptureGrand</texPath>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <castEdgeShadows>true</castEdgeShadows>
+    <uiIconScale>0.6666</uiIconScale>
+    <fillPercent>0.5</fillPercent>
+    <size>(2,2)</size>
+    <canOverlapZones>false</canOverlapZones>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Beauty>400</Beauty>
+      <Mass>28</Mass>
+      <WorkToMake>105000</WorkToMake>
+      <SellPriceFactor>1.10</SellPriceFactor>
+      <StyleDominance MayRequire="Ludeon.RimWorld.Ideology">40</StyleDominance>
+    </statBases>
+    <stuffCategories>
+      <li>Metallic</li>
+      <li>Stony</li>
+    </stuffCategories>
+    <costStuffCount>400</costStuffCount>
+    <placeWorkers>
+      <li>PlaceWorker_MeditationOffsetBuildingsNear</li>
+    </placeWorkers>
+    <tradeTags>
+      <li>Art</li>
+    </tradeTags>
+    <comps>
+      <li Class="CompProperties_Art">
+        <nameMaker>NamerArtSculpture</nameMaker>
+        <descriptionMaker>ArtDescription_Sculpture</descriptionMaker>
+        <canBeEnjoyedAsArt>true</canBeEnjoyedAsArt>
+      </li>
+      <li Class="RimMandrake.Utinni.UtinniStatues.CompProperties_StatuePicker">
+        <carvings>
+          <li><id>RUT_Idol_Ohm_Grand</id><label>grand idol of Ohm</label><honours>Ohm the All-Current</honours><depicts>Ohm, arms raised, above a heap of three dormant droids leaning on the plinth like pilgrims.</depicts><def>RUT_StatueGrand</def></li>
+          <li><id>RUT_Idol_Rekko_Grand</id><label>grand idol of Rekko</label><honours>Rekko of the Second Hand</honours><depicts>Rekko at a workbench-slab strewn with parts, a mended droid standing at his shoulder.</depicts><def>RUT_StatueGrand</def></li>
+          <li><id>RUT_Idol_Shkaar_Grand</id><label>grand idol of Sh'kaar</label><honours>Sh'kaar the All-Searing</honours><depicts>Sh'kaar with palms cupped upward and a bowl-crowned sun-disc, on a ring of fire-pit stones.</depicts><def>RUT_StatueGrand_Shkaar</def><flame>true</flame></li>
+          <li><id>RUT_Relief_Crawler</id><label>relief of the Crawler</label><honours>the clan's ark</honours><depicts>A sand crawler carved in high relief: wedge hull, rusted plates, great treads, ramp lowered. The clan's ark before the ship.</depicts><def>RUT_StatueGrand</def></li>
+        </carvings>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0.5</fuelConsumptionRate>
+        <fuelCapacity>10</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>10</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.35</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <fuelLabel>chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <outOfFuelMessage>Idol of Sh'kaar out of fuel</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(255,140,60,0)</glowColor>
+        <colorPickerEnabled>false</colorPickerEnabled>
+      </li>
+      <li Class="CompProperties_FireOverlay">
+        <fireSize>0.8</fireSize>
+        <offset>(0,0,1.25)</offset>
       </li>
     </comps>
   </ThingDef>
