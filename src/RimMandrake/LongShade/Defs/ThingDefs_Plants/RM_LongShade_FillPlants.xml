@@ -150,6 +150,9 @@
       <wildClusterWeight>1</wildClusterWeight>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
     </plant>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
   </ThingDef>
 
 </Defs>

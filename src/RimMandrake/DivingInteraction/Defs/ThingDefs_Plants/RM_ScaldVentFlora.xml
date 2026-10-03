@@ -30,6 +30,9 @@
       <wildOrder>2</wildOrder>
       <allowAutoCut>false</allowAutoCut>
     </plant>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -52,6 +55,9 @@
       <wildOrder>2</wildOrder>
       <allowAutoCut>false</allowAutoCut>
     </plant>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
   </ThingDef>
 
 </Defs>
