@@ -1,0 +1,1 @@
+pkill -f / pgrep -f <pattern> match the agent's own shell (exit 144) and self-matching wait loops never end; use ps -eo pid,args | grep '[p]attern' and wait on a PID. Also: /tmp is tmpfs, a full clone of the repo fills it (8 GB).
