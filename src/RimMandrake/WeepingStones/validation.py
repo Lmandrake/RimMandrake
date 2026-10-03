@@ -707,6 +707,41 @@ def biome_roster(t):
             _note(t, "modExtensions", blob[:12])
 
 
+    with _comp(t, "sun_heat_extension_present", independent=True):
+        # WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1: the biome declares its heat kind (one planet-wide kind of
+        # heat). get_defs flattens a modExtension to its FIELDS (class name absent, see above), so
+        # recognise RM_SunHeatExtension by its name OR by its distinctive field `heatKind`.
+        rows, missing = _get_defs(t, ["BiomeDef/%s" % BIOME], fields="modExtensions", deep=True)
+        if _live(t):
+            if missing or not rows:
+                _fail("BiomeDef %s not resolvable: %r" % (BIOME, missing))
+            ext = (rows[0].get("fields") or {}).get("modExtensions")
+            if ext in (None, "(no such field)"):
+                _unmeasured(t, "get_defs cannot read modExtensions (got %r)" % (ext,))
+            blob = list(_flat(ext))
+            if not any("SunHeat" in s or s == "heatKind" for s in blob):
+                _fail("RM_SunHeatExtension is not among the biome's modExtensions: %s" % blob[:10])
+
+    with _comp(t, "no_dead_windhour_text", independent=True):
+        # Wind-hour was ruled DEAD (owner, 2026-09-24, "nah"); twelve def sentences and one C# comment
+        # still named it until WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1. Source read, not live: text that
+        # ships in a def description cannot be un-said by the running game.
+        hits, seen = [], 0
+        modroot = os.path.dirname(_DIR)
+        for root, _d, files in os.walk(modroot):
+            for fn in files:
+                if fn.endswith((".xml", ".cs")):
+                    seen += 1
+                    fp = os.path.join(root, fn)
+                    with open(fp, encoding="utf-8", errors="replace") as fh:
+                        if re.search(r"wind[- ]hour", fh.read(), re.I):
+                            hits.append(os.path.relpath(fp, modroot))
+        if seen < 20:          # sanity probe: a scan that read almost nothing proves nothing
+            _fail("the wind-hour scan read only %d files -- wrong root, not a clean bill" % seen)
+        if hits:
+            _fail("the dead wind-hour wording is back in: %s" % hits[:6])
+
+
 @suite.chain("cuisine_wiring")
 def cuisine_wiring(t):
     """The cuisine layer: the five recipes reach both stoves (a patch that matches nothing logs nothing),

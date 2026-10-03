@@ -221,6 +221,21 @@
       <li Class="RimMandrake.EnvironmentalHazards.RM_WaterTruceExtension">
         <radius>10</radius>
       </li>
+      <!-- WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1: the one planet-wide kind of heat (SOLAR_HEAT_EXPOSURE_1).
+           Sun angle comes from the tile's latitude (the extension reads it; never a region name):
+           overhead above 55 degrees elevation, low sun below. Open ground at noon heats a colonist
+           through vanilla temperature and heatstroke; overhangs and roofs are shade
+           (RM_MapComponent_ShadeGrid.ShadeAt), which is what saves you at noon. The vent-fed seep
+           oases are not split out. heatOffsetC 14 / min 7 are INVENTED first values for owner-watched
+           tuning (the biome is already ~35 C median, 57 C p90, so kept modest). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
+        <heatKind>lowSun</heatKind>
+        <heatOffsetC>14</heatOffsetC>
+        <heatScalesWithElevation>true</heatScalesWithElevation>
+        <minScaledHeatOffsetC>7</minScaledHeatOffsetC>
+        <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
+        <maxElevationDegrees>85</maxElevationDegrees>
+      </li>
       <!-- WEEPINGSTONES_OASIS_MUTATOR_FLORA_1: Oasis mutator's bonus flora on our tiles (see RM_TileMutatorWorker_Oasis.cs).
            Weights mirror vanilla's 5/4/6/5 scale; INVENTED. Plant_Reeds is a ruled keep and is not stripped. -->
       <li Class="RimMandrake.WeepingStones.RM_OasisFloraExtension">

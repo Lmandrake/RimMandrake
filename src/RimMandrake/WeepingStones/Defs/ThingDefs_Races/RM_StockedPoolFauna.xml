@@ -35,7 +35,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Murrin</defName>
     <label>murrin</label>
-    <description>A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings at wind-hour. The pools' rings-within-rings, alive. A silent pool with no murrin rings is the first sign an oasis is dying. The gentle baseline every stocked pool is measured against.</description>
+    <description>A hand-length pool fish, deep-keeled, with one tall dorsal comb-fin that cuts the surface in rings whenever the pool is fed. The pools' rings-within-rings, alive. A silent pool with no murrin rings is the first sign an oasis is dying. The gentle baseline every stocked pool is measured against.</description>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
       <MarketValue>12</MarketValue>
@@ -141,7 +141,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Skarrin</defName>
     <label>skarrin</label>
-    <description>A forearm-long pool fish that spends as much time above the water as in it. At wind-hour a stocked pool boils with them, silver arcs snapping at the falling dew-smoke. It jumps, and it bites what it lands on — clears a pen wall from standing water; a handler leaning over the pool takes a face-strike.</description>
+    <description>A forearm-long pool fish that spends as much time above the water as in it. When the pool is fed a stocked pool boils with them, silver arcs snapping at the falling dew-smoke. It jumps, and it bites what it lands on — clears a pen wall from standing water; a handler leaning over the pool takes a face-strike.</description>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <MarketValue>22</MarketValue>
@@ -376,7 +376,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vizhik</defName>
     <label>vizhik</label>
-    <description>A wrist-thin eel, comb-gills fanned along the whole neck like a ruff, cold, quick, and never where you left it. At wind-hour, when every stone face runs wet, a vizhik pours itself out of the pen and crosses open rock on its gill-comb — into the next pool, the cistern, the water barrel, the kitchen stock-pot. Its bite is small and goes septic more often than it should.</description>
+    <description>A wrist-thin eel, comb-gills fanned along the whole neck like a ruff, cold, quick, and never where you left it. When a pen is overfull, a vizhik pours itself out of the pen and crosses open rock on its gill-comb — into the next pool, the cistern, the water barrel, the kitchen stock-pot. Its bite is small and goes septic more often than it should.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>16</MarketValue>
