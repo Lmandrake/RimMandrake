@@ -2243,3 +2243,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"JAWA_NAMEMAKER_NEVER_FIRES_1","ts":"2026-10-03T15:14:10Z","tsn":1791040450767551159}
 {"seat":"FOUNDRY","event":"start","id":"JAWA_NAMEMAKER_NEVER_FIRES_1","ts":"2026-10-03T15:14:11Z","tsn":1791040451271657610}
 {"seat":"FOUNDRY","event":"close","id":"JAWA_NAMEMAKER_NEVER_FIRES_1","sha":"685b0d6ab","reason":"chanceToUseNameMaker 999 added; live proof via modcheck run StarWarsRaces owed","ts":"2026-10-03T15:14:17Z","tsn":1791040457563173007}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-03T15:14:37Z","tsn":1791040477572080008}
+{"seat":"FOUNDRY","event":"claim","id":"FLAWED_MASTERWORK_ENGINE_CHECK_1","ts":"2026-10-03T15:15:06Z","tsn":1791040506519441702}
+{"seat":"FOUNDRY","event":"start","id":"FLAWED_MASTERWORK_ENGINE_CHECK_1","ts":"2026-10-03T15:15:07Z","tsn":1791040507018817244}
+{"seat":"FOUNDRY","event":"close","id":"FLAWED_MASTERWORK_ENGINE_CHECK_1","sha":"4b3d663bf","reason":"answered by source read: no cross-god amplifier exists; fallback chosen","ts":"2026-10-03T15:15:10Z","tsn":1791040510110769992}
