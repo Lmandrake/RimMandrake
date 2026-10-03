@@ -17,6 +17,12 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static int daysBetweenBeatsMax = 10;
         public static int failuresAllowedPerBeat = 2;
         public static bool brokeredTruceEnabled = true;
+        public static int ruinWildDroidsMax = 6;
+        public static int freedWildDroidGoodwill = 4;
+        public static bool coreBrokerEnabled = true;
+        public static int coreBrokerWaitDays = 3;
+        public static int coreSaleSilver = 2500;
+        public static int coreSaleEmpireGoodwill = 15;
 
         public override void ExposeData()
         {
@@ -28,6 +34,12 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref daysBetweenBeatsMax, "daysBetweenBeatsMax", 10);
             Scribe_Values.Look(ref failuresAllowedPerBeat, "failuresAllowedPerBeat", 2);
             Scribe_Values.Look(ref brokeredTruceEnabled, "brokeredTruceEnabled", true);
+            Scribe_Values.Look(ref ruinWildDroidsMax, "ruinWildDroidsMax", 6);
+            Scribe_Values.Look(ref freedWildDroidGoodwill, "freedWildDroidGoodwill", 4);
+            Scribe_Values.Look(ref coreBrokerEnabled, "coreBrokerEnabled", true);
+            Scribe_Values.Look(ref coreBrokerWaitDays, "coreBrokerWaitDays", 3);
+            Scribe_Values.Look(ref coreSaleSilver, "coreSaleSilver", 2500);
+            Scribe_Values.Look(ref coreSaleEmpireGoodwill, "coreSaleEmpireGoodwill", 15);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -60,6 +72,23 @@ namespace RimMandrake.Utinni.UnfinishedLine
               + "Hive is held at least neutral to you, so it does not raid while the chain runs. Harming the "
               + "envoy breaks the truce and the chain. Off: the Hive stays as it is, and only the goodwill "
               + "each beat earns moves it.");
+            list.GapLine();
+
+            list.Label("The Pattern Cores (beat 3)");
+            list.Label("Most wild droids in the foundry ruin: " + ruinWildDroidsMax + " (fewer at low threat points; at least 2)");
+            ruinWildDroidsMax = Mathf.RoundToInt(list.Slider(ruinWildDroidsMax, 1f, 12f));
+            list.Label("Enclave goodwill per wild droid released unbolted: " + freedWildDroidGoodwill);
+            freedWildDroidGoodwill = Mathf.RoundToInt(list.Slider(freedWildDroidGoodwill, 0f, 15f));
+            list.CheckboxLabeled("A broker offers to buy the cores (the sell-out)", ref coreBrokerEnabled,
+                "On: once all three cores are at your colony, an Imperial salvage broker offers to buy them. Selling "
+              + "ends the whole chain and turns the Hive and the Enclaves hostile. Off: the cores go straight to the "
+              + "Enclaves and there is no betrayal path.");
+            list.Label("Days the broker waits for an answer: " + coreBrokerWaitDays);
+            coreBrokerWaitDays = Mathf.RoundToInt(list.Slider(coreBrokerWaitDays, 1f, 10f));
+            list.Label("Silver the broker pays: " + coreSaleSilver);
+            coreSaleSilver = Mathf.RoundToInt(list.Slider(coreSaleSilver, 0f, 10000f) / 100f) * 100;
+            list.Label("Empire goodwill for the sale: " + coreSaleEmpireGoodwill);
+            coreSaleEmpireGoodwill = Mathf.RoundToInt(list.Slider(coreSaleEmpireGoodwill, 0f, 50f));
 
             list.End();
         }

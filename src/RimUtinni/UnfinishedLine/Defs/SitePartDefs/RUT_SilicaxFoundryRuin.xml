@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  UNFINISHED_LINE_CORES_BEAT_1 — the old silicax foundry ruin (design §2.3), beat 3's site.
+  Shape: vanilla ItemStash (Core Defs/Sites/Parts/ItemStash.xml): the worker makes the quest's things at
+  generation time and the linked GenStep places them. RUT_FoundrySalvageCache / RUT_FoundryTowerEntrance
+  (UtinniPatches) were considered and NOT reused: the cache is an inert DEPLOY_HOLD'd marker with no art,
+  and the tower entrance is a MapPortal to a pocket map, neither of which is a collapsed fabrication hall.
+  The wild-droid pool is the Droidworks wild-droid incident's own (IncidentDefs_Droidworks.xml), minus the
+  one-off oddities; the pack's mental state (RUT_WildDroidPack) keeps them from fighting each other.
+-->
+<Defs>
+
+  <SitePartDef>
+    <defName>RUT_SilicaxFoundryRuin</defName>
+    <label>silicax foundry ruin</label>
+    <description>The collapsed fabrication hall of the company's silicax foundry, the place the Hive and the Enclaves both fled. Droids left behind when the company walked away still wander it.</description>
+    <workerClass>RimMandrake.Utinni.UnfinishedLine.SitePartWorker_RUT_FoundryRuin</workerClass>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/ItemStash</expandingIconTexture>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <arrivedLetter>Wild droids still walk the foundry ruin. They do not fight each other; they remember being one crew.</arrivedLetter>
+    <arrivedLetterDef>ThreatSmall</arrivedLetterDef>
+    <tags>
+      <li>RUT_SilicaxFoundryRuin</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_SilicaxFoundryRuin</defName>
+    <linkWithSite>RUT_SilicaxFoundryRuin</linkWithSite>
+    <order>400</order>
+    <genStep Class="RimMandrake.Utinni.UnfinishedLine.GenStep_RUT_FoundryRuin">
+      <hallSize>(15,11)</hallSize>
+      <wallCollapseChance>0.3</wallCollapseChance>
+      <slagChunks>8</slagChunks>
+      <wildDroids>
+        <li><kind>RSW_DW_OuterRim_ImperialLaborDroid</kind><weight>10</weight></li>
+        <li><kind>RSW_DW_OuterRim_SalvageAssistDroid</kind><weight>8</weight></li>
+        <li><kind>RSW_DW_OuterRim_DUMDroid</kind><weight>6</weight></li>
+        <li><kind>RSW_DW_OuterRim_RSeriesDroid</kind><weight>6</weight></li>
+        <li><kind>RSW_DW_OuterRim_MuckrakerDroid</kind><weight>4</weight></li>
+        <li><kind>RSW_DW_OuterRim_BattleDroid</kind><weight>6</weight></li>
+        <li><kind>RSW_DW_JDSCIS_B1_Battle_Droid</kind><weight>6</weight></li>
+        <li><kind>RSW_DW_KotORDroidBad_KM1MD</kind><weight>3</weight></li>
+      </wildDroids>
+    </genStep>
+  </GenStepDef>
+
+</Defs>

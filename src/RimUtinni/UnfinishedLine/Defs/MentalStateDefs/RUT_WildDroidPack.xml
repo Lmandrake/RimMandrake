@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UNFINISHED_LINE_CORES_BEAT_1. ManhunterPermanent's fields (Core MentalStates_Special.xml) with the pack
+     class: wild droids in this state are not hostile to each other (MentalState_RUT_WildDroidPack). -->
+<Defs>
+  <MentalStateDef ParentName="Manhunter">
+    <defName>RUT_WildDroidPack</defName>
+    <stateClass>RimMandrake.Utinni.UnfinishedLine.MentalState_RUT_WildDroidPack</stateClass>
+    <label>wild droid</label>
+    <baseInspectLine>Wild droid: left behind</baseInspectLine>
+    <minTicksBeforeRecovery>99999999</minTicksBeforeRecovery>
+    <inCaravanCanDo>true</inCaravanCanDo>
+    <recoverFromSleep>false</recoverFromSleep>
+    <recoverFromDowned>false</recoverFromDowned>
+    <recoverFromCollapsingExhausted>false</recoverFromCollapsingExhausted>
+  </MentalStateDef>
+</Defs>

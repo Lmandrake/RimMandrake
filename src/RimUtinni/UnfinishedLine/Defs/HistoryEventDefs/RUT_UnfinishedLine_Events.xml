@@ -39,4 +39,21 @@
     <defName>RUT_LineEnvoyHarmed</defName>
     <label>harmed the envoy under a brokered truce</label>
   </HistoryEventDef>
+  <!-- UNFINISHED_LINE_CORES_BEAT_1 -->
+  <HistoryEventDef>
+    <defName>RUT_LineCoresDelivered</defName>
+    <label>brought the pattern cores out of the foundry ruin</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineWildDroidFreed</defName>
+    <label>released a wild droid from the foundry ruin unbolted</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCoresSoldToEmpire</defName>
+    <label>sold the Hive's pattern cores to the Empire</label>
+  </HistoryEventDef>
+  <HistoryEventDef>
+    <defName>RUT_LineCoresBetrayed</defName>
+    <label>sold the line's pattern cores to the Empire</label>
+  </HistoryEventDef>
 </Defs>

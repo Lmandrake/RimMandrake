@@ -40,6 +40,7 @@
     <Compile Include="UnfinishedLineSpine.cs" />
     <Compile Include="UnfinishedLineOffer.cs" />
     <Compile Include="UnfinishedLineTruce.cs" />
+    <Compile Include="UnfinishedLineCores.cs" />
   </ItemGroup>
 
 
