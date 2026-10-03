@@ -157,6 +157,11 @@
           <li MayRequire="mandrake.rsw.swbestiary">RSW_MeeJuv</li>
           <li MayRequire="mandrake.rsw.swbestiary">RSW_YobshrimpJuv</li>
           <li>RM_SiltLampreyJuv</li>
+          <!-- MIASMA_FREE_NURSERY_YOUNG_1 -->
+          <li>RM_CrimsonOpeeJuv</li>
+          <li>RM_ThornbackColoJuv</li>
+          <li>RM_ShaleGorgerJuv</li>
+          <li>RM_ReefbackJuv</li>
         </strandedSpawnList>
         <emptyWeight>40</emptyWeight>
         <smallWeight>50</smallWeight>
@@ -243,6 +248,11 @@
            mandrake.rm.terminalbiomes (RM_SeaBeasts_Invented.xml). -->
       <RM_RustNipperJuv>0.25</RM_RustNipperJuv>
       <RM_SiltLampreyJuv>0.25</RM_SiltLampreyJuv>
+      <!-- MIASMA_FREE_NURSERY_YOUNG_1: weights INVENTED, near the existing 0.25; the reefback young is rarer (the adult is a colossus) -->
+      <RM_CrimsonOpeeJuv>0.25</RM_CrimsonOpeeJuv>
+      <RM_ThornbackColoJuv>0.25</RM_ThornbackColoJuv>
+      <RM_ShaleGorgerJuv>0.25</RM_ShaleGorgerJuv>
+      <RM_ReefbackJuv>0.15</RM_ReefbackJuv>
       <!-- MIASMA_FAUNA_FLOOR_ROSTER_1 - the other three arthropod-floor scuttlers, native RM_ tier -->
       <RM_Karravel>3.5</RM_Karravel>  <!-- karravel - the carpet; the bulk of the floor, cheap protein for everything -->
       <RM_Karrimeth>0.8</RM_Karrimeth>  <!-- karrimeth - the mass; an event, not background, wildGroupSize carries the "carpet crossing" read -->

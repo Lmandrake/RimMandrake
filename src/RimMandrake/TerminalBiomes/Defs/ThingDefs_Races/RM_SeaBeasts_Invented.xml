@@ -56,7 +56,7 @@
 
   <!-- ===================== silt ambushers — the opee family's originals ===================== -->
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RM_CrimsonOpee">
     <defName>RM_CrimsonOpee</defName>
     <label>crimson opee</label>
     <description>A warm-shallows morph of the opee, barnacled and rust-red, that hunts with its tongue already out. Where the brown opee waits, the crimson one provokes — it will strike at a lamp, a splash, a shadow. The reef-cut shallows belong to it.</description>
@@ -154,7 +154,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_CrimsonOpee_Kind">
     <defName>RM_CrimsonOpee</defName>
     <label>crimson opee</label>
     <race>RM_CrimsonOpee</race>
@@ -208,7 +208,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RM_ShaleGorger">
     <defName>RM_ShaleGorger</defName>
     <label>shale gorger</label>
     <description>The heavy benthic cousin: slate plates instead of shell, eyes long since gone pale in the dark below the silt line. It sits in scree and swallows what settles onto it. The slowest thing in the trench, and the hardest to kill.</description>
@@ -297,7 +297,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_ShaleGorger_Kind">
     <defName>RM_ShaleGorger</defName>
     <label>shale gorger</label>
     <race>RM_ShaleGorger</race>
@@ -493,7 +493,7 @@
   </PawnKindDef>
 
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RM_ThornbackColo">
     <defName>RM_ThornbackColo</defName>
     <label>thornback colo</label>
     <description>A spined, purple-dark shallows morph, shorter and faster than its pale cousin. It ambushes from wreck hulls and reef cuts and rakes with the dorsal thorns as it passes. The one you meet on the way down.</description>
@@ -579,7 +579,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_ThornbackColo_Kind">
     <defName>RM_ThornbackColo</defName>
     <label>thornback colo</label>
     <race>RM_ThornbackColo</race>
@@ -1297,7 +1297,7 @@
 
   <!-- ===================== colossal neutrals — all-original family ===================== -->
 
-  <ThingDef ParentName="AnimalThingBase">
+  <ThingDef ParentName="AnimalThingBase" Name="RM_Reefback">
     <defName>RM_Reefback</defName>
     <label>reefback</label>
     <description>So old the reef grows on it: coral, kelp, a hundred hangers-on that never leave. A moving ecosystem, and the one place in the deep where a crew can rest in the light of something else's garden — as long as nobody puts a harpoon in the garden.</description>
@@ -1363,7 +1363,7 @@
     </race>
   </ThingDef>
 
-  <PawnKindDef ParentName="AnimalKindBase">
+  <PawnKindDef ParentName="AnimalKindBase" Name="RM_Reefback_Kind">
     <defName>RM_Reefback</defName>
     <label>reefback</label>
     <race>RM_Reefback</race>
@@ -1654,6 +1654,214 @@
           <texPath>Things/Pawn/Animal/SeaBeasts/Lanternwhale/Lanternwhale</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>12.0</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- MIASMA_FREE_NURSERY_YOUNG_1: Miasma-nursery juvenile of an invented parent (same pattern as
+       RM_SiltLampreyJuv); the adult's art, drawSize scaled 0.5x / 0.75x of the adult's first stage. -->
+  <ThingDef ParentName="RM_CrimsonOpee">
+    <defName>RM_CrimsonOpeeJuv</defName>
+    <label>young crimson opee</label>
+    <description>A crimson opee too young to have its adult bulk or temper, still keeping to the shallows where the older ones will not follow.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_CrimsonOpee_Kind">
+    <defName>RM_CrimsonOpeeJuv</defName>
+    <label>young crimson opee</label>
+    <race>RM_CrimsonOpeeJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.68</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.68</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.02</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/CrimsonOpee/CrimsonOpee</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.02</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- MIASMA_FREE_NURSERY_YOUNG_1: Miasma-nursery juvenile of an invented parent (same pattern as
+       RM_SiltLampreyJuv); the adult's art, drawSize scaled 0.5x / 0.75x of the adult's first stage. -->
+  <ThingDef ParentName="RM_ShaleGorger">
+    <defName>RM_ShaleGorgerJuv</defName>
+    <label>young shale gorger</label>
+    <description>A shale gorger whose plates have not yet thickened, grazing the same grit as its elders but easy prey for anything with patience.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_ShaleGorger_Kind">
+    <defName>RM_ShaleGorgerJuv</defName>
+    <label>young shale gorger</label>
+    <race>RM_ShaleGorgerJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.74</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.74</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.11</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ShaleGorger/ShaleGorger</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.11</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- MIASMA_FREE_NURSERY_YOUNG_1: Miasma-nursery juvenile of an invented parent (same pattern as
+       RM_SiltLampreyJuv); the adult's art, drawSize scaled 0.5x / 0.75x of the adult's first stage. -->
+  <ThingDef ParentName="RM_ThornbackColo">
+    <defName>RM_ThornbackColoJuv</defName>
+    <label>young thornback colo</label>
+    <description>A thornback colo with its spines still soft and short, more nervous than dangerous.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_ThornbackColo_Kind">
+    <defName>RM_ThornbackColoJuv</defName>
+    <label>young thornback colo</label>
+    <race>RM_ThornbackColoJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.84</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.84</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.26</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/ThornbackColo/ThornbackColo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.26</drawSize>
+        </swimmingGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- MIASMA_FREE_NURSERY_YOUNG_1: Miasma-nursery juvenile of an invented parent (same pattern as
+       RM_SiltLampreyJuv); the adult's art, drawSize scaled 0.5x / 0.75x of the adult's first stage. -->
+  <ThingDef ParentName="RM_Reefback">
+    <defName>RM_ReefbackJuv</defName>
+    <label>young reefback</label>
+    <description>A reefback hatchling-sized by comparison only: the reef has barely begun to grow on it, and it drifts close to wherever the adults went.</description>
+    <race>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="RM_Reefback_Kind">
+    <defName>RM_ReefbackJuv</defName>
+    <label>young reefback</label>
+    <race>RM_ReefbackJuv</race>
+    <lifeStages Inherit="False">
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.94</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.94</drawSize>
+        </swimmingGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.42</drawSize>
+        </bodyGraphicData>
+        <swimmingGraphicData>
+          <texPath>Things/Pawn/Animal/SeaBeasts/Reefback/Reefback</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>4.42</drawSize>
         </swimmingGraphicData>
       </li>
     </lifeStages>
