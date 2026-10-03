@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SILTTRAP_TERRAINS_UNBUILT_1 (2026-10-03). The two terrains RM_Building_SiltTrap converts between, named only in
+  C# GetNamedSilentFail lookups until now, so the trap stood, wore and clogged and silently did nothing.
+  RM_BankSilt is the plain silted bank; RM_BankSilt_Rich is what a working silt-trap leaves within its radius
+  (the shipped terrain-swap idiom). They reuse the vanilla soil sprites tinted by `color`: placeholder art, a
+  bespoke bank-silt texture is owed. Still unbuilt and read only through GetNamedSilentFail: RM_ChannelBed,
+  RM_FordStones.
+-->
+<Defs>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_BankSilt</defName>
+    <label>silted bank</label>
+    <description>Fine grey silt laid down along a channel's margin: soft, damp and half-decent for planting.</description>
+    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/SoilPolluted</pollutedTexturePath>
+    <color>(0.62, 0.6, 0.55)</color>
+    <edgeType>FadeRough</edgeType>
+    <categoryType>Soil</categoryType>
+    <renderPrecedence>338</renderPrecedence>
+    <pathCost>3</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>0.9</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tags>
+      <li>RM_BankSilt</li>
+    </tags>
+  </TerrainDef>
+
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_BankSilt_Rich</defName>
+    <label>worked silt</label>
+    <description>Silt a working silt-trap has combed and settled into dark, rich growing ground. It reverts to plain silt if the works fail.</description>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/SoilRichPolluted</pollutedTexturePath>
+    <color>(0.78, 0.76, 0.7)</color>
+    <edgeType>FadeRough</edgeType>
+    <categoryType>Soil</categoryType>
+    <renderPrecedence>337</renderPrecedence>
+    <pathCost>3</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>GrowSoil</li>
+      <li>Diggable</li>
+    </affordances>
+    <generatedFilth>Filth_Dirt</generatedFilth>
+    <fertility>1.4</fertility>
+    <takeFootprints>True</takeFootprints>
+    <tags>
+      <li>RM_BankSilt</li>
+    </tags>
+  </TerrainDef>
+
+</Defs>

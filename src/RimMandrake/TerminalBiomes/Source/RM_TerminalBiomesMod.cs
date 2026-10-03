@@ -152,6 +152,9 @@ namespace RimMandrake.TerminalBiomes
         // gracefully: the bed becomes ordinary slow terrain... nothing
         // errors" — everything in RM_MapComponent_ChannelCurrent reads this,
         // never the raw field.
+        // SILTTRAP_TERRAINS_UNBUILT_1: the bank works (weir, stake, silt-trap) are buildings, not the sea-floor
+        // carry. They answer to the master switch only, so turning the Twilight Sea off no longer kills them.
+        public static bool BankWorksActive => masterEnabled;
         public static bool ChannelCurrentActive => masterEnabled && twilightSeaEnabled && channelCurrentEnabled;
         public static RM_SinkOutcome SinkOutcome => channelSinkOutcome;
 

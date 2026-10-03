@@ -30,7 +30,7 @@ namespace RimMandrake.TerminalBiomes
         protected override void Tick()
         {
             base.Tick();
-            if (!RM_TerminalBiomesSettings.ChannelCurrentActive)
+            if (!RM_TerminalBiomesSettings.BankWorksActive)
             {
                 return;
             }
