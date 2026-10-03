@@ -4,13 +4,13 @@
   <!--
     GELATINOUSSLIME_GAPPO_FAMILY_1: the filter-feeder line of the Slime ("a whole family of
     scooping-mouthed animals grazing the Slime itself", owner). One stem, three sizes (the oomb
-    precedent): lesser gappo (skimming swarm), gappo (the middle size, the old RUT_SlimeGrazer
-    moved here with its v2 art), greater gappo (slow bulk feeder; its scoop leaves a clean channel,
+    precedent): lesser gappo (skimming swarm), gappo (the middle size, the old campaign slime grazer
+    moved here with its v2 art; the campaign def is deleted), greater gappo (slow bulk feeder; its scoop leaves a clean channel,
     RM_CompGappoChannel, gated by SlimeSettings.gappoChannels).
     Resistant by identity (filter-feeders on the body): RM_SlimeResistant extension. Never hostile.
     One home: the Slime only (wired inline on RM_GelatinousSlime/wildAnimals). No member flies.
-    All numbers are // INVENTED. Art: gappo = artpipe rutslimegrazer_v2; lesser and greater are
-    queued from art_lists/gelatinousslime_turn1_2026-10-02.csv and render magenta until they land.
+    All numbers are // INVENTED. Art: gappo = artpipe rutslimegrazer_v2; lesser and greater from
+    art_lists/gelatinousslime_turn1_2026-10-02.csv, all three facings wired.
   -->
 
   <ThingDef ParentName="AnimalThingBase">

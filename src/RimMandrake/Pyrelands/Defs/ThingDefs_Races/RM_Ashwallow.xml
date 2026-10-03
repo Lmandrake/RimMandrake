@@ -10,7 +10,7 @@
   row already carries a biome ("ash-grazer" rows Zeer/Iriaz/AA_Barbslinger are
   a DIFFERENT family; every other small grazer in the two CSVs is already
   homed elsewhere) — so this is authored from scratch, same posture
-  RUT_SlimeGrazer/RUT_EmperorVulture used when no live donor passed.
+  the slime grazer and RUT_EmperorVulture used when no live donor passed.
 
   DISTINCT FROM ORRAY, on every axis the item asks for:
     - Orray: <predator>true</predator>, foodType includes CarnivoreAnimal/
