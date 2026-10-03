@@ -205,16 +205,14 @@
       <RM_HollowVenomvine>0.04</RM_HollowVenomvine>
       <RM_CrownVenomvine>0.002</RM_CrownVenomvine>
     </wildPlants>
-    <!-- RM_SweetlineTree (renamed from RUT_SweetlineTree, §7 Q8) ships as its own
-         def in this mod (Defs/ThingDefs_Plants/RM_SweetlineTree.xml) but is
-         deliberately NOT added to wildPlants above: the frozen twin never wired
-         it into spawning either (0 references to it anywhere besides its own
-         file, MEASURED) and TREE_GRAPHICS_OWNERSHIP_1 is still open on how the
-         landmark tree should actually place (a hand-placed one-per-sweetline
-         "living surveyor's mark", not a random wildPlants scatter, per its own
-         design sheet). Inventing a commonality number here would be exactly the
-         kind of data decision that item, not this one, owns. -->
+    <!-- RM_SweetlineTree is a landmark, not scatter: it is NOT in wildPlants. It reaches maps
+         only through the RM_SweetlineTrees map step below (owner ruling R13, 2026-10-03: a rare
+         map step plants one or two per Leaning Scrub map) or a dev spawn. -->
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
+    <!-- SWEETLINE_TREE_MAP_STEP_1: 1-2 sweetline trees on a share of new maps (Mod Setting). -->
+    <extraGenSteps>
+      <li>RM_SweetlineTrees</li>
+    </extraGenSteps>
     <modExtensions>
       <!-- LEANINGSCRUB_MECHANICS_BUILD_1 part 2: the Lean - each map locks one wind
            heading (Source/RM_TheLean.cs). -->

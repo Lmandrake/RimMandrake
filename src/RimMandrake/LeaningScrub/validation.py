@@ -73,6 +73,7 @@ DEFAULTS = {
     "sweetlineGuardiansEnabled": True, "sweetlineGuardianMaxPerTree": 3, "sweetlineHarvestDisturbance": 1.0,
     "sweetlineForgivenessDays": 5.0, "sweetlineProximityCharge": False,
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
+    "sweetlineTreeMapChance": 0.25,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1295,6 +1296,27 @@ def sweetline_chain(t):
                           "a mature tree and sweetlineStationsEnabled)")
                 if tok1 > tok0 + 3:
                     _fail("a single visit left %d tokens (cap is 3 near the tree)" % (tok1 - tok0))
+        # SWEETLINE_TREE_MAP_STEP_1: the real map step, run on the current map with its chance forced
+        # (RM_GenStep_SweetlineTrees.ProofMapStep). Trees land >= 40 cells from any standing one, so off
+        # this chain's pad. Not proven here: a freshly GENERATED Leaning Scrub map carrying them (the
+        # extraGenSteps wiring) -- first poke: generate a Leaning Scrub quicktest with the chance at 100%.
+        def map_step(chance):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_GenStep_SweetlineTrees",
+                              method="ProofMapStep", args="current|%s" % chance)
+            return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        with _comp(t, "map_step_chance_zero_plants_none", toggle="sweetlineStationsEnabled"):
+            if _live(t):
+                text = map_step(0)
+                _note(t, "map step at chance 0", text)
+                if text != "PLANTED 0":
+                    _fail("the sweetline map step at chance 0 still planted: %s" % text)
+        with _comp(t, "map_step_plants_one_or_two", toggle="sweetlineStationsEnabled"):
+            if _live(t):
+                text = map_step(1)
+                _note(t, "map step at chance 1", text)
+                m = re.match(r"PLANTED (\d+)$", text)
+                if not m or not 1 <= int(m.group(1)) <= 2:
+                    _fail("the sweetline map step at chance 1 planted %s (expect 1-2 trees)" % text)
     _stable(t, body)
 
 
