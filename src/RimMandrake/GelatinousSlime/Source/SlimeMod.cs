@@ -108,9 +108,14 @@ namespace RimMandrake.GelatinousSlime
         // applied by DwommoFlight.
         public static bool dwommoFlies = true;
 
+        // GELATINOUSSLIME_GLURRO_SALVE_1: the glurro salve slows slimification while applied.
+        // Off: salved pawns get no slowing (read by GlurroSalveUtility.GrowthFactor).
+        public static bool glurroSalve = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref glurroSalve, "glurroSalve", true, true);
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
             Scribe_Values.Look(ref dwommoFlies, "dwommoFlies", true, true);
@@ -188,6 +193,9 @@ namespace RimMandrake.GelatinousSlime
             list.CheckboxLabeled("Dwommo flies", ref dwommoFlies,
                 "On (default): the dwommo, the Slime's gas-float aristocracy, drifts over the body in "
                 + "real flight. Off: it stays on the map but never leaves the ground.");
+            list.CheckboxLabeled("Glurro salve slows slimification", ref glurroSalve,
+                "On (default): salve and concentrate from the glurro slow the reading while they last. It "
+                + "never stops it; the antidote stays the only cure. Off: the items do nothing for slimification.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");

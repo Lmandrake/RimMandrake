@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- GELATINOUSSLIME_GLURRO_SALVE_1. Severity IS the slowing strength (growth x (1 - severity),
+       capped at 0.8 in GlurroSalveUtility); it decays 0.25/day so a salve (0.5) lasts ~2 days and a
+       concentrate (0.75) ~3. // INVENTED. -->
+  <HediffDef>
+    <defName>RM_GlurroSalved</defName>
+    <label>glurro salve</label>
+    <description>A rust-amber salve is on the skin. The slime film reads this creature more slowly while it lasts.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.55, 0.25)</defaultLabelColor>
+    <initialSeverity>0.5</initialSeverity>
+    <maxSeverity>1.0</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.25</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>applied</label>
+        <becomeVisible>true</becomeVisible>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

@@ -162,10 +162,12 @@ namespace RimMandrake.GelatinousSlime
             float clock = 7f / Mathf.Max(0.5f, SlimeSettings.slimificationClockDays);
 
             // On the body: it is reading you.
+            // GELATINOUSSLIME_GLURRO_SALVE_1: a salve slows GROWTH only (never reverses, never stops).
+            float salve = GlurroSalveUtility.GrowthFactor(pawn);
             if (SlimeUtility.IsBeingRead(pawn))
             {
                 if (!grows) return -SelfRevertPerDay;
-                return (fastClock ? GrowthPerDayFastClock : GrowthPerDayOnSlime) * clock;
+                return (fastClock ? GrowthPerDayFastClock : GrowthPerDayOnSlime) * clock * salve;
             }
 
             // The injected clock runs anywhere — the concentrated dose is
@@ -174,7 +176,7 @@ namespace RimMandrake.GelatinousSlime
             // to your people does not buy the patient time, only witnesses.
             if (fastClock)
             {
-                return grows ? GrowthPerDayFastClock * clock : -SelfRevertPerDay;
+                return grows ? GrowthPerDayFastClock * clock * salve : -SelfRevertPerDay;
             }
 
             // Ordinary country, no dose: stage 1 wipes off, stages 2-3 hold.
