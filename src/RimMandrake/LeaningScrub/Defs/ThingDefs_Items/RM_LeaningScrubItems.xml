@@ -38,6 +38,7 @@
     <ingestible>
       <foodType>Meat</foodType>
       <preferability>RawTasty</preferability>
+      <socialPropernessMatters>true</socialPropernessMatters>
       <tasteThought>AteRawFood</tasteThought>
       <optimalityOffsetHumanlikes>-30</optimalityOffsetHumanlikes>
     </ingestible>
