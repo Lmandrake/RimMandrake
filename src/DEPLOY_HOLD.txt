@@ -459,3 +459,9 @@ TheSump/Defs/ThingDefs_Races/RM_SumpFauna.xml   # FOUNDRY: no art yet, 2026-09-2
 # => LIFT together with RM_SumpFlora.xml and RM_SumpFauna.xml above once their art lands (or once
 #    the wildAnimals/wildPlants rows are trimmed to only already-deployed defs).
 TheSump/Defs/BiomeDefs/RM_TheSump_Biome.xml   # LOAD_ERRORS_DEF_FIELDS_1: held with RM_SumpFlora.xml/RM_SumpFauna.xml, 2026-09-30
+
+# --- BELT 2026-10-03 live load: referrers of already-held defs dangled (20 -> 7 xrefs after prune; these are the last) ---
+# Held defs are removed from the game copy only by hand (a hold never deletes), and their REFERRERS must be held with them.
+UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml            # genSteps names held RUT_FoundryFloor_SalvageCache; the pocket map is entered only via held RUT_FoundryTowerEntrance
+UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml       # adds held RUT_FoundryTowerScatter onto Base_Player genSteps (MayRequire mandrake.rm.biomes is satisfied, so it dangled)
+TheSump/Defs/IncidentDefs/RUT_TarPitBelch.xml                    # allowedBiomes names held biome RM_TheSump
