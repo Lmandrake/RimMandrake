@@ -58,6 +58,18 @@ def static_checks():
     tdef = os.path.join(HERE, "Defs", "TerrainDefs", "RM_MiasmaSaltCrust.xml")
     if not os.path.exists(tdef) or "<defName>RM_MiasmaSaltCrust</defName>" not in open(tdef).read():
         bad.append("RM_MiasmaSaltCrust TerrainDef missing")
+    young = ["RM_CrimsonOpeeJuv", "RM_ThornbackColoJuv", "RM_ShaleGorgerJuv", "RM_ReefbackJuv"]
+    races = open(os.path.join(HERE, "..", "TerminalBiomes", "Defs", "ThingDefs_Races", "RM_SeaBeasts_Invented.xml")).read()
+    creche = open(os.path.join(HERE, "Defs", "MapGeneration", "RUT_Miasma_CrecheScatterer.xml")).read()
+    for y in young:  # MIASMA_FREE_NURSERY_YOUNG_1
+        if races.count("<defName>%s</defName>" % y) != 2:
+            bad.append("%s needs exactly a ThingDef and a PawnKindDef in RM_SeaBeasts_Invented.xml" % y)
+        if not re.search(r"<%s>[\d.]+</%s>" % (y, y), biome):
+            bad.append("%s not in RM_Miasma wildAnimals" % y)
+        if "<li>%s</li>" % y not in biome:
+            bad.append("%s not in the stranding-pool strandedSpawnList" % y)
+        if "<li>%s</li>" % y not in creche:
+            bad.append("%s not in the creche youngKinds" % y)
     return bad
 
 
@@ -109,6 +121,15 @@ def _build_suite():
             raise ExpectationFailed("UNMEASURED: no 'Could not resolve' for a salt crust and a surge recede "
                                     "repainting land to RM_MiasmaSaltCrust need a tier without mandrake.rut.patches "
                                     "and a live Miasma map (also a bar for MIASMA_FIRST_SCRIPT_1)")
+
+    @suite.chain("nursery_young_free_tier")
+    def nursery_young_free_tier(t):
+        with t.component("four_young_def_and_strand", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
+                                    "recede on a free-only tier stranding at least one of them (spawn many), need "
+                                    "a live Miasma map with the bridge")
 
     return suite
 
