@@ -2071,3 +2071,32 @@
 {"seat":"FOUNDRY","event":"claim","id":"MIASMA_WARDEN_MOTHER_ART_1","ts":"2026-10-03T08:45:23Z","tsn":1791017123636219117}
 {"seat":"FOUNDRY","event":"start","id":"MIASMA_WARDEN_MOTHER_ART_1","ts":"2026-10-03T08:45:24Z","tsn":1791017124121966940}
 {"seat":"FOUNDRY","event":"block","id":"GELATINOUSSLIME_PIT_SOLVENT_1","reason":"Free slice built (3 pit recipes, toggle, validation) uncommitted; remaining: spec 3 Rot's finest input patch in src/RimUtinni (campaign tier, outside GelatinousSlime) and live bill proof (needs bridge).","ts":"2026-10-03T08:46:13Z","tsn":1791017173009751035}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_FLOTSAM_YARD_1","ts":"2026-10-03T08:46:40Z","tsn":1791017200768973383}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_FLOTSAM_YARD_1","ts":"2026-10-03T08:46:41Z","tsn":1791017201280382896}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_ATTAR_STILL_1","ts":"2026-10-03T08:47:04Z","tsn":1791017224621344026}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_ATTAR_STILL_1","ts":"2026-10-03T08:47:05Z","tsn":1791017225123196339}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_SWARM_COMPOSTER_PORT_1","ts":"2026-10-03T08:49:21Z","tsn":1791017361525896436}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_SWARM_COMPOSTER_PORT_1","ts":"2026-10-03T08:49:22Z","tsn":1791017362033441003}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_SAAL_ONE_NAME_1","ts":"2026-10-03T08:49:22Z","tsn":1791017362934902819}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_SAAL_ONE_NAME_1","ts":"2026-10-03T08:49:23Z","tsn":1791017363459472840}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_WAX_PROCESSION_GIANT_1","ts":"2026-10-03T08:50:41Z","tsn":1791017441185125215}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_WAX_PROCESSION_GIANT_1","ts":"2026-10-03T08:50:41Z","tsn":1791017441677920410}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_YOUNG_CALL_1","ts":"2026-10-03T08:52:39Z","tsn":1791017559353378719}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_YOUNG_CALL_1","ts":"2026-10-03T08:52:39Z","tsn":1791017559894887746}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_ZHIIL_FLOOR_BODY_1","ts":"2026-10-03T08:53:24Z","tsn":1791017604164400960}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_ZHIIL_FLOOR_BODY_1","ts":"2026-10-03T08:53:24Z","tsn":1791017604658518340}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_ROUND2_IMPORTS_1","ts":"2026-10-03T08:54:15Z","tsn":1791017655044371686}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_ROUND2_IMPORTS_1","ts":"2026-10-03T08:54:15Z","tsn":1791017655571229173}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_RETURN_COMB_LANDMARK_1","ts":"2026-10-03T08:54:46Z","tsn":1791017686830996373}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_RETURN_COMB_LANDMARK_1","ts":"2026-10-03T08:54:47Z","tsn":1791017687411602944}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_DIVE_DENSITY_SAMPLER_1","ts":"2026-10-03T08:56:24Z","tsn":1791017784965546852}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_DIVE_DENSITY_SAMPLER_1","ts":"2026-10-03T08:56:25Z","tsn":1791017785739986092}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_BATHING_RITE_1","ts":"2026-10-03T08:58:27Z","tsn":1791017907912772953}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_BATHING_RITE_1","ts":"2026-10-03T08:58:28Z","tsn":1791017908423431236}
+{"seat":"FOUNDRY","event":"claim","id":"NABOO_FISH_TO_TWILIGHT_1","ts":"2026-10-03T08:59:29Z","tsn":1791017969108342866}
+{"seat":"FOUNDRY","event":"start","id":"NABOO_FISH_TO_TWILIGHT_1","ts":"2026-10-03T08:59:29Z","tsn":1791017969598763168}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_WALKING_CONDENSER_1","ts":"2026-10-03T09:02:00Z","tsn":1791018120558057832}
+{"seat":"FOUNDRY","event":"start","id":"WEEPINGSTONES_WALKING_CONDENSER_1","ts":"2026-10-03T09:02:01Z","tsn":1791018121051902076}
+{"seat":"FOUNDRY","event":"claim","id":"FEVERWOOD_TIER_LEAKS_FIX_1","ts":"2026-10-03T09:02:05Z","tsn":1791018125940168461}
+{"seat":"FOUNDRY","event":"start","id":"FEVERWOOD_TIER_LEAKS_FIX_1","ts":"2026-10-03T09:02:06Z","tsn":1791018126448968791}
+{"seat":"FOUNDRY","event":"file","id":"FINDMOD_ROT_SPORE_KIT_GUARD_1","title":"RotDecayHarvest_LivingProduce.xml guards on FindMod 'RimUtinni: Rot Spore Kit', which matches no mod (inert); which mod's name should it guard on, or should it be unguarded? Also Medieval Overhaul guard in Pyrinth looks intentional-optional","kind":"decision","target":"v1","needs":"owner","for":"OWNER","ts":"2026-10-03T09:06:19Z","tsn":1791018379569874597}
