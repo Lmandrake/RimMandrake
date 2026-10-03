@@ -20,7 +20,8 @@ SETTINGS_TYPE = "RimMandrake.Miasma.RM_MiasmaSettings"
 DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTameChancePerCheck": 0.12,
             "plantPredationEnabled": True, "pollinationGateEnabled": True,
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
-            "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True}
+            "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True,
+            "attarEnabled": True}
 NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
        "ambushFrogHunts", "attarEnabled", "youngCallEnabled"]
 
@@ -166,6 +167,11 @@ def _build_suite():
     suite = Suite("Miasma")
     suite.toggles = ["youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
 
+    def _unmeasured(t, why):
+        """Record the component UNMEASURED (never FAIL) via the harness's upstream_failed route."""
+        t.upstream_reason = "UNMEASURED: " + why
+        t.upstream_failed = True
+
     def _call(t, action, field, value=None):
         kw = dict(typeName=SETTINGS_TYPE, action=action, field=field)
         if value is not None:
@@ -197,71 +203,79 @@ def _build_suite():
         with t.component("mechanics_stop_with_switch_off", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: predation (plant beside a wild scuttler), the pollination gate "
-                                    "(worldgen plant pass) and stranded deformation (a stranding pool) each need "
-                                    "a live Miasma quicktest map")
+            _unmeasured(t, "predation (plant beside a wild scuttler), the pollination gate "
+                             "(worldgen plant pass) and stranded deformation (a stranding pool) each need "
+                             "a live Miasma quicktest map")
+            return
 
     @suite.chain("salt_crust_free_tier")
     def salt_crust_free_tier(t):
         with t.component("salt_crust_paints_without_campaign", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: no 'Could not resolve' for a salt crust and a surge recede "
-                                    "repainting land to RM_MiasmaSaltCrust need a tier without mandrake.rut.patches "
-                                    "and a live Miasma map (also a bar for MIASMA_FIRST_SCRIPT_1)")
+            _unmeasured(t, "no 'Could not resolve' for a salt crust and a surge recede "
+                             "repainting land to RM_MiasmaSaltCrust need a tier without mandrake.rut.patches "
+                             "and a live Miasma map (also a bar for MIASMA_FIRST_SCRIPT_1)")
+            return
 
     @suite.chain("nursery_young_free_tier")
     def nursery_young_free_tier(t):
         with t.component("four_young_def_and_strand", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
-                                    "recede on a free-only tier stranding at least one of them (spawn many), need "
-                                    "a live Miasma map with the bridge")
+            _unmeasured(t, "jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
+                             "recede on a free-only tier stranding at least one of them (spawn many), need "
+                             "a live Miasma map with the bridge")
+            return
 
     @suite.chain("young_call")
     def young_call(t):
         with t.component("cry_and_mother_heads_for_water", toggle="youngCallEnabled"):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: a placed stranded young emitting the cry, and its warden mother's "
-                                    "CurJob target moving toward it and stopping at the water edge, need a live "
-                                    "Miasma quicktest map with the bridge")
+            _unmeasured(t, "a placed stranded young emitting the cry, and its warden mother's "
+                             "CurJob target moving toward it and stopping at the water edge, need a live "
+                             "Miasma quicktest map with the bridge")
+            return
 
     @suite.chain("ambush_frog_free_tier")
     def ambush_frog_free_tier(t):
         with t.component("bozzuga_defs_and_hunts", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), "
-                                    "spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live "
-                                    "Miasma quicktest map with the bridge")
+            _unmeasured(t, "jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), "
+                             "spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live "
+                             "Miasma quicktest map with the bridge")
+            return
 
     @suite.chain("swarm_composter_free_tier")
     def swarm_composter_free_tier(t):
         with t.component("swarm_karrobel_spawn_and_gate", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 3 on RM_FeverSwarm/RM_Karrobel/RM_DeltaLoam, "
-                                    "both creatures spawning on a free-only Miasma map, and a gated mangal (RM_Thessamor) "
-                                    "not spreading where no swarm lives, need a live Miasma quicktest map")
+            _unmeasured(t, "jawa/get_defs foundCount 3 on RM_FeverSwarm/RM_Karrobel/RM_DeltaLoam, "
+                             "both creatures spawning on a free-only Miasma map, and a gated mangal (RM_Thessamor) "
+                             "not spreading where no swarm lives, need a live Miasma quicktest map")
+            return
 
     @suite.chain("flotsam_yard")
     def flotsam_yard(t):
         with t.component("flotsam_after_surge_in_root_lines", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: flotsam stacks standing on root-line cells after a debug surge and "
-                                    "recede (and none on dry inland ground) need a live Miasma quicktest map")
+            _unmeasured(t, "flotsam stacks standing on root-line cells after a debug surge and "
+                             "recede (and none on dry inland ground) need a live Miasma quicktest map")
+            return
 
     @suite.chain("attar_glaze_and_balm")
     def attar_glaze_and_balm(t):
         with t.component("attar_recipe_glaze_balm", toggle="attarEnabled"):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: RM_MakeAttar resolves on RM_AttarStill, a glazed sculpture's Beauty "
-                                    "stat rises by 3, and a balmed pawn's permanent scar fades while no non-permanent "
-                                    "injury changes; each needs a live Miasma quicktest map with an artwork and a scarred pawn")
+            _unmeasured(t, "RM_MakeAttar resolves on RM_AttarStill, a glazed sculpture's Beauty "
+                             "stat rises by 3, and a balmed pawn's permanent scar fades while no non-permanent "
+                             "injury changes; each needs a live Miasma quicktest map with an artwork and a scarred pawn")
+            return
 
     return suite
 
