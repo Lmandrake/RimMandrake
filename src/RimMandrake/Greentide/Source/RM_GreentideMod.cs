@@ -107,7 +107,18 @@ namespace RimMandrake.Greentide
         // MOD_OPTIONS_RETROFIT_1 onto it once placement lands.
         public static bool canopySwarmEnabled = true;
 
+        // GREENTIDE_VURRAK_BUILD_1 — the false bank (RM_CompBankAmbusher). Off: a vurrak never lies
+        // hidden and never bites on contact; it is a slow, ordinary riverbank animal.
+        public static bool vurrakAmbushEnabled = true;
+        // Weight threshold, as body size. A person is 1.0; the default lets a teenager or a dog set it off
+        // and a hare only reveal it.
+        public static float vurrakTriggerBodySize = 0.6f;
+        // Owner ruling 2026-10-03: the first-ever reveal pauses the game and explains itself.
+        public static bool vurrakFirstRevealPause = true;
+
         private string biomeListBuffer;
+        private static Vector2 scrollPosition;
+        private static float lastContentHeight = 1200f;
 
         public override void ExposeData()
         {
@@ -128,6 +139,9 @@ namespace RimMandrake.Greentide
             Scribe_Values.Look(ref stenchGrenadeEnabled, "stenchGrenadeEnabled", true);
             Scribe_Values.Look(ref stenchGrenadeRadiusMultiplier, "stenchGrenadeRadiusMultiplier", 1f);
             Scribe_Values.Look(ref canopySwarmEnabled, "canopySwarmEnabled", true);
+            Scribe_Values.Look(ref vurrakAmbushEnabled, "vurrakAmbushEnabled", true);
+            Scribe_Values.Look(ref vurrakTriggerBodySize, "vurrakTriggerBodySize", 0.6f);
+            Scribe_Values.Look(ref vurrakFirstRevealPause, "vurrakFirstRevealPause", true);
         }
 
         /// <summary>True if the cross-biome opt-in currently applies to this biome (never to Greentide's own — that is native, not "cross").</summary>
@@ -170,8 +184,11 @@ namespace RimMandrake.Greentide
                 biomeListBuffer = crossBiomeBiomeList;
             }
 
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls: the screen outgrew one window height when the vurrak joined.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 20f, Mathf.Max(lastContentHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref scrollPosition, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            list.Begin(viewRect);
 
             list.Label("Churnmud / mire hazard");
             list.CheckboxLabeled("Mire hazard enabled", ref mireEnabled,
@@ -264,8 +281,26 @@ namespace RimMandrake.Greentide
               + "wild-animal roster by a future sitting — currently has no visible effect, since "
               + "this creature is not yet wired into any roster. Its tree-gnawing AI is already "
               + "covered by the Environmental Hazards Kit's own \"Tree fall\" toggle, not this one.");
+            list.GapLine();
 
+            list.Label("The false bank (the vurrak)");
+            list.CheckboxLabeled("Vurrak ambush", ref vurrakAmbushEnabled,
+                "On: a vurrak lies flat along the water's edge, invisible as silted bank, and bites whatever heavy "
+              + "enough steps on it. Lighter animals only make it flinch and show itself. Off: it never hides and "
+              + "never bites on contact; it is an ordinary slow riverbank animal.");
+            if (vurrakAmbushEnabled)
+            {
+                list.Label("  Weight that sets it off (body size): " + vurrakTriggerBodySize.ToString("0.00")
+                         + " (a person is 1.00)");
+                vurrakTriggerBodySize = list.Slider(vurrakTriggerBodySize, 0.2f, 2f);
+                list.CheckboxLabeled("  Pause the first time one is revealed", ref vurrakFirstRevealPause,
+                    "On: the very first time your people see a vurrak reveal itself, the game pauses and a letter "
+                  + "explains what happened. Once per game.");
+            }
+
+            lastContentHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

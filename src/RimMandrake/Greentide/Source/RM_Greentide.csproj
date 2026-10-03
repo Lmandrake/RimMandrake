@@ -56,6 +56,7 @@
     <Compile Include="RM_IngestionOutcomeDoer_FrenzyDose.cs" />
     <Compile Include="RM_HediffComp_MarksFeverSurvivor.cs" />
     <Compile Include="RM_Proj_GrenadeStenchSmoke.cs" />
+    <Compile Include="RM_CompBankAmbusher.cs" />
   </ItemGroup>
 
   <ItemGroup>
