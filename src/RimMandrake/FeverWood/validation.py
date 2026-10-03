@@ -1191,7 +1191,7 @@ def foul_pool(t):
                     stack, [(r.get("id"), _stack(r)) for r in stacks]))
             item = stacks[0].get("id")
         r = t.bridge_call("jawa/ordered_job", pawnId=box["handler"], jobDef="RM_FoulPool", targetAId=item,
-                          targetBX=x + 4, targetBZ=z + 4, waitTicks=60, timeoutSeconds=60)
+                          targetBX=x + 4, targetBZ=z + 4, waitTicks=60, timeoutSeconds=25)
         if _live(t) and not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
             _fail("jawa/ordered_job RM_FoulPool was not accepted and running: %r" % r)
         seen = {"msg": False}
@@ -1342,7 +1342,7 @@ def lure_stake(t):
             if _live(t) and not _ok(r, "pawn_force_incapacitate").get("downedAfter"):
                 _unmeasured(t, "could not down the bait pawn: %s" % str(r)[:200])
             r = t.bridge_call("jawa/ordered_job", pawnId=box["handler"], jobDef="RM_HaulToStake",
-                              targetAId=box["bait"], targetBId=box["stake"], waitTicks=60, timeoutSeconds=60)
+                              targetAId=box["bait"], targetBId=box["stake"], waitTicks=60, timeoutSeconds=25)
             if _live(t) and not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
                 _fail("jawa/ordered_job RM_HaulToStake was not accepted and running: %r" % r)
 
@@ -1447,7 +1447,7 @@ def lure_raid(t):
         t.bridge_call("jawa/pawn_need", pawn=handler, action="need", need="Rest", level=1.0)
         t.bridge_call("jawa/pawn_force_incapacitate", pawn=bait, action="downed", allowBleedingWounds=False)
         t.bridge_call("jawa/ordered_job", pawnId=handler, jobDef="RM_HaulToStake", targetAId=bait,
-                      targetBId=stake, waitTicks=60, timeoutSeconds=60)
+                      targetBId=stake, waitTicks=60, timeoutSeconds=25)
 
         def staked():
             blob = _blob(t, bait, _pad_rect(t))

@@ -245,7 +245,7 @@ def _refuel(t, S, n):
     if not stack:
         _unmeasured(t, "spawned bacta stack not found on the map (harness: spawn_thing)")
     r = t.bridge_call("jawa/ordered_job", pawnId=S["pawn"], jobDef="Refuel", targetAId=S["tank"], targetBId=stack,
-              count=n, waitTicks=60, timeoutSeconds=60)
+              count=n, waitTicks=60, timeoutSeconds=25)
     t.wait_ticks(700)
     fuel = _fuel(t, S["tank"])
     if fuel is None:
@@ -259,7 +259,7 @@ def _refuel(t, S, n):
 
 def _enter(t, S):
     r = t.bridge_call("jawa/ordered_job", pawnId=S["pawn"], jobDef="EnterBuilding", targetAId=S["tank"],
-              waitTicks=60, timeoutSeconds=60)
+              waitTicks=60, timeoutSeconds=25)
     t.wait_ticks(700)
     p = _pawn(t, S["pawn"])
     if not _contained(p):
@@ -667,7 +667,7 @@ def field_patch(t):
 
     def use(why):
         r = t.bridge_call("jawa/ordered_job", pawnId=S["pawn"], jobDef="UseItem", targetAId=S["patch"],
-                  waitTicks=60, timeoutSeconds=60)
+                  waitTicks=60, timeoutSeconds=25)
         t.wait_ticks(900)
         return r
 
@@ -725,7 +725,7 @@ def revival(t):
 
     def carry():
         r = t.bridge_call("jawa/ordered_job", pawnId=S["pawn"], jobDef="RSW_CarryCorpseToBactaTank",
-                  targetAId=S["corpse"], targetBId=S["tank"], waitTicks=60, timeoutSeconds=60)
+                  targetAId=S["corpse"], targetBId=S["tank"], waitTicks=60, timeoutSeconds=25)
         t.wait_ticks(1500)
         return r
 
