@@ -149,6 +149,14 @@ DEPARTURE_LABEL = _departure_label()
 
 # --------------------------------------------------------------------------- helpers
 
+def _roofed(r):
+    """True when a jawa/get_roof_batch answer shows a real roof. LIVE 2026-10-03: the tool answers
+    {cellsRead, roofs: [distinct roof names, "None" = open sky]} and has NO `roofedCells` key, so every
+    `r.get("roofedCells")` test read an open or a sealed room alike as 0 and left the chain UNMEASURED."""
+    r = r or {}
+    return bool(r.get("roofedCells")) or any(x not in (None, "None") for x in (r.get("roofs") or []))
+
+
 def _live(t):
     """True only for a real run against a real session and an unfailed chain; False for the offline
     declaration probe, so a component body never trips on its no-op (None) results."""
@@ -1064,7 +1072,7 @@ def haze_chain(t):
                 for p in (ids["out"], ids["in"]):
                     t.bridge_call("jawa/set_draft", pawnId=p, drafted=True)
                 roof = t.bridge_call("jawa/get_roof_batch", rects="%d,%d,5,5" % (x - 10, z - 2))
-                if not (roof or {}).get("roofedCells"):
+                if not _roofed(roof):
                     _unmeasured(t, "the sealed room is not roofed (get_roof_batch %r): cannot tell outdoors "
                                    "from indoors" % (roof,))
                 r = t.bridge_call("jawa/game_condition", action="start", condition=HAZE_CARRIER,
