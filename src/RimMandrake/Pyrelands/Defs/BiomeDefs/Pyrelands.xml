@@ -88,6 +88,18 @@
         <degreeWeight>2.6</degreeWeight>
         <rainfallDivisor>120</rainfallDivisor>
       </li>
+      <!-- PYRELANDS_HEAT_KIND_BUILD_1 (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead" - one kind of heat planet-wide.
+           The sun's elevation comes from the map tile's latitude (the extension reads it; never a region name);
+           below 55 deg the cover that counts is lowSun's (lee/rock), above it roofs and parasols count.
+           heatOffsetC is the offset at the substellar point, scaled by sin(elevation). Modest on purpose: the
+           biome is already ~54 C median. Invented first value, tuned in live play. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.creaturebehaviors">
+        <heatKind>overhead</heatKind>
+        <heatOffsetC>10</heatOffsetC>
+        <heatScalesWithElevation>true</heatScalesWithElevation>
+        <minScaledHeatOffsetC>4</minScaledHeatOffsetC>
+        <overheadAboveElevationDegrees>55</overheadAboveElevationDegrees>
+      </li>
     </modExtensions>
 
     <animalDensity>2.1</animalDensity>
