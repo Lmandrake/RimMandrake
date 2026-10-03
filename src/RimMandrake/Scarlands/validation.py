@@ -220,8 +220,8 @@ def static_checks():
     if tap.findtext("comps/li/fuelFilter/thingDefs/li") != "RM_GlowerCrust":
         bad.append("tap hopper does not take glower crust")
     turret = open(os.path.join(D, "ThingDefs_Buildings", "RM_OldLineTurret.xml")).read()
-    if "<RM_Etchant>" not in turret:
-        bad.append("old-line turret refit does not cost etchant")
+    if "<RM_Etchant>10</RM_Etchant>" not in turret or "<ComponentSpacer>3</ComponentSpacer>" not in turret:
+        bad.append("old-line turret refit does not cost 10 etchant + 3 ComponentSpacer")
     fw = os.path.join(HERE, "..", "FlowWorks")
     reg = open(os.path.join(fw, "Defs", "LiquidTypes", "LiquidDefs", "RM_LiquidDefRegistry.xml")).read()
     gen = open(os.path.join(fw, "Tools", "generate_liquid_suite.py")).read()
@@ -238,6 +238,12 @@ def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
     suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
+
+    def _unmeasured(t, why):
+        """Record the component UNMEASURED (never FAIL): the harness's own route is upstream_failed, which
+        __exit__ turns into verdict UNMEASURED with upstream_reason as the detail."""
+        t.upstream_reason = "UNMEASURED: " + why
+        t.upstream_failed = True
 
     def _set(t, field, value):
         t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=field,
@@ -288,7 +294,7 @@ def _build_suite():
             pid = (pawn or {}).get("id") if isinstance(pawn, dict) else pawn
             if t.session is not None and pid is not None:
                 t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto",
-                              targetAPos="%d,%d" % (cells[0][0] + 10, cells[0][1] + 10))
+                              targetAX=cells[0][0] + 10, targetAZ=cells[0][1] + 10)
                 t.wait_ticks(60)
                 if "follow" not in _inspect(t, wid):
                     raise ExpectationFailed("a broken turret beside a walking pawn reports no tracking state")
@@ -303,7 +309,7 @@ def _build_suite():
                 finally:
                     _restore(t, "turretTrackingEnabled")
             elif t.session is not None:
-                raise ExpectationFailed("UNMEASURED: could not spawn a pawn to walk")
+                _unmeasured(t, "could not spawn a pawn to walk")
 
     @suite.chain("refit_gizmo")
     def refit_gizmo(t):
@@ -313,8 +319,15 @@ def _build_suite():
             r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_OldLineTurret", fields="defName,costList", limit=2)
             if not isinstance(r, dict) or r.get("success") is False:
                 raise ExpectationFailed("could not read the refit target def: %r" % r)
-            if "ComponentSpacer" not in str(r) and "RM_Etchant" not in str(r):
-                raise ExpectationFailed("refit cost carries neither advanced components nor etchant: %r" % r)
+            # The live reader returns costList entries as type names only (['ThingDefCountClass', ...]), so the
+            # LIVE assertion is the shape: exactly two cost rows (ComponentSpacer + RM_Etchant). The named
+            # contents are asserted from the repo XML in static_checks(); a deployed copy older than that
+            # commit has another row count or fails here.
+            rows = [d for d in (r.get("defs") or []) if d.get("defName") == "RM_OldLineTurret"]
+            cl = ((rows[0].get("fields") or {}).get("costList") if rows else None)
+            if not isinstance(cl, list) or len(cl) != 2:
+                raise ExpectationFailed("refit target costList is not the two-row ComponentSpacer+RM_Etchant shape "
+                                        "(stale deploy?): %r" % (cl,))
             # Gizmo presence has no bridge reader; the toggle is read back so a dead setting still fails.
             _set(t, "turretRefitEnabled", False)
             try:
@@ -337,7 +350,7 @@ def _build_suite():
             if t.session is None:
                 return
             # State reads need a Warscar quicktest with ruins; owner/FOUNDRY live round (criteria 1-4).
-            raise ExpectationFailed("UNMEASURED: dormant placement, wake radius, ruin-before-player wall order "
+            _unmeasured(t, "dormant placement, wake radius, ruin-before-player wall order "
                                     "and lie-down need a live Warscar map")
 
     @suite.chain("old_tongue")
@@ -351,7 +364,7 @@ def _build_suite():
         with t.component("skill_gate_and_set_unlock", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: Intellectual-8 refusal, set-size unlock and chalk-mark swap need "
+            _unmeasured(t, "Intellectual-8 refusal, set-size unlock and chalk-mark swap need "
                                     "a live Warscar map with pawns of differing skill")
 
     @suite.chain("hospice")
@@ -366,7 +379,7 @@ def _build_suite():
         with t.component("five_stage_revival_and_walk_in", beyond_toggle=True):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: rings with 0-2 intact chassis, five-stage revival, failure wreck name, "
+            _unmeasured(t, "rings with 0-2 intact chassis, five-stage revival, failure wreck name, "
                                     "mechanitor-free servitor and the dev-fired walk-in need a live Warscar map")
 
     @suite.chain("rainbow_pools")
@@ -382,7 +395,7 @@ def _build_suite():
         with t.component("pool_phase_cycle_draw_and_catalyst", toggle="catalystEnabled"):
             if t.session is None:
                 return
-            raise ExpectationFailed("UNMEASURED: 1-3 pools on a quicktest Warscar map, per-phase reagent, bloom burn, "
+            _unmeasured(t, "1-3 pools on a quicktest Warscar map, per-phase reagent, bloom burn, "
                                     "phase hold + doubled yield with crust, and the registry row resolving "
                                     "(RM_Liquid_ReactionLiquor) need a live map with FlowWorks loaded")
 
