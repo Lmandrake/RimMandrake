@@ -24,3 +24,9 @@ questions."*
 
 *"Add to the design pass that achievements can be rewarded with Jawa lore or world lore should the
 player seek that."* An unlocked achievement may reveal Jawa or world lore, opt-in for players who want it.
+
+## Ruled 2026-10-02 21:50 PDT
+
+Design at `design/RimMandrake/utinni_discovery_achievements_design_2026-10-02.md` (rulings table at
+its end). Utinni-tier only, Utinni-ship-shaped riddle display with flip-over hints, click-through
+optional lore, optional rewards off by default. Design closed; build waits on the build pause.

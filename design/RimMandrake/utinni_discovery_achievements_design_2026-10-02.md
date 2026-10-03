@@ -305,3 +305,14 @@ presets. Its correction that VAE ships 1.6 was checked and holds (§5.6).
   successfully (not just built), technology and rites when studied. Means what it says; more to build.
 - One rule for all (first encounter): simple, but "you built a canal" would count without water ever
   moving through it.
+
+## Rulings — 2026-10-02 sitting (21:50 PDT; typed answers quoted, clicks recorded as "decision taken by question card")
+
+| Q | Ruling |
+|---|---|
+| 1 Before discovery | Owner, typed: *"Cryptic riddles that you can click on for flip over hints. And they are arranged in a beautiful graphical display that looks like the utinni vessel."* Riddles first, a click flips each to its hint; the Atlas is a graphical layout shaped like the Utinni herself (the ship), not a list. |
+| 2 Placement | Owner, typed: *"Utinni scenario only. But content is added from free tier mods too. Anything required by the scenario."* One Utinni-tier mod; its entries cover free-tier mods the scenario requires. No free-tier engine. |
+| 3 Coverage | All our content (card), within the scenario's required mods. |
+| 4 Lore | Owner, typed: *"It's all optional lore, no spoilers, and you can "click" through to it once you unlock it. Nothing gets in your way, ignorable if undesired."* No prompt, no setting needed: an unlocked entry offers a click-through to its lore, never pushed. |
+| 5 Rewards | Optional small material rewards, off by default, in Mod Settings (card). |
+| 6 Done rule | Depends on the thing: seen, used or performed per entry (card). |
