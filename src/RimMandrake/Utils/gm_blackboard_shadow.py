@@ -147,9 +147,9 @@ DARK_BIOMES = {
 # CATHEDRAL_REGARD_BLACKBOARD_1 -- the "anomaly" sold by volume, not buyer
 # (cathedral spec §2 card A5): bolt-shed curiosities + eel-catch, both
 # "salable, both watched" (kit spec, the_rust_cathedral.md §"watched"; the
-# eel ThingDef confirmed at rust_cathedral_kit_spec.md §RUT_CoolantEel /
-# RUT_BoltShedCuriosity).
-ANOMALY_DEFNAMES = ["RUT_BoltShedCuriosity", "RUT_CoolantEel"]
+# eel ThingDef confirmed at rust_cathedral_kit_spec.md §RM_CoolantEelCatch /
+# RM_BoltShedCuriosity).
+ANOMALY_DEFNAMES = ["RM_BoltShedCuriosity", "RM_CoolantEelCatch"]
 
 # GM tuning constants -- placeholders for shadow-mode observation only.
 # Exact constants are explicitly "M4 GM-layer tuning" per kyber spec §3;

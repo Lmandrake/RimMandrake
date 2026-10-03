@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
-using RimMandrake.Utinni.RustCathedralHum;
-using RimMandrake.Utinni.RustCathedralWalls;
+using RimMandrake.RustCathedral.Hum;
+using RimMandrake.RustCathedral.Walls;
 
 namespace RimMandrake.RustCathedral
 {

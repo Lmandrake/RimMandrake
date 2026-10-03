@@ -6,7 +6,7 @@ using UnityEngine;
 using Verse;
 using Verse.AI.Group;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §5 -- the deep-drill response event.
 	//
@@ -61,11 +61,11 @@ namespace RimMandrake.Utinni.RustCathedralHum
 	//    ScarlandsLadder ships About/ and Defs/ only, no Source/ and no
 	//    assembly. LordJob_AssaultThings is the vanilla equivalent of what that
 	//    line asked for, and is used instead of stubbing a placeholder.
-	public class RUT_IncidentWorker_CathedralResponse : IncidentWorker
+	public class RM_IncidentWorker_CathedralResponse : IncidentWorker
 	{
 		public const string TargetBiomeDefName = "RM_RustCathedral";
 
-		public const string LivePatternMetalDefName = "RUT_LivePatternMetal";
+		public const string LivePatternMetalDefName = "RM_LivePatternMetal";
 
 		// INVENTED parameters (kit spec §5's own "INVENTED parameters" line,
 		// with the deviations named above):
@@ -116,7 +116,7 @@ namespace RimMandrake.Utinni.RustCathedralHum
 				IntVec3 cell;
 				// Vanilla's own resolver, the same one CompDeepDrill uses to
 				// decide what the next portion yields. Cross-mod by defName on
-				// purpose: RUT_LivePatternMetal lives in
+				// purpose: RM_LivePatternMetal lives in
 				// mandrake.rut.rustcathedralwalls, which this mod does not and
 				// should not reference.
 				if (!DeepDrillUtility.GetNextResource(drill.Position, map, out resDef, out countPresent, out cell))
@@ -252,7 +252,7 @@ namespace RimMandrake.Utinni.RustCathedralHum
 			{
 				return;
 			}
-			if (RUT_IncidentWorker_CathedralResponse.IsCathedralMap(parms?.target as Map))
+			if (RM_IncidentWorker_CathedralResponse.IsCathedralMap(parms?.target as Map))
 			{
 				__result = false;
 			}

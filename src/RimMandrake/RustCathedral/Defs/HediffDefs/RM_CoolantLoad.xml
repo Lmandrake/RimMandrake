@@ -2,7 +2,7 @@
 <!--
   FISH_BESTIARY_BUILD_1, wave 1 (2026-09-18) — the coolant eel's optional
   "coolant load" hediff, owed by fish_bestiary_commission_2026-09-10.md §4.2
-  and owner ruling 4 ("ship both optional hediffs in v1"). RUT_CoolantEel
+  and owner ruling 4 ("ship both optional hediffs in v1"). RM_CoolantEelCatch
   itself already exists (RUST_CATHEDRAL_MECHANICS_1, built before the fish
   commission ran) and already ships under the nickname "coolant eel" as its
   actual label — which already satisfies owner ruling 5 (nicknames are the
@@ -11,14 +11,14 @@
   rebuild of the eel.
 
   Toxic-buildup-like, decaying, per the doc's own "severity 0.08/serving,
-  decays" line. Register law (RUT_CoolantEel.xml's own header, §P/ban 1/ban
+  decays" line. Register law (RM_CoolantEelCatch.xml's own header, §P/ban 1/ban
   2) carries over: the description says only what a Jawa with the eel in
   hand can feel, nothing about what is watched or why.
 -->
 <Defs>
 
   <HediffDef>
-    <defName>RUT_CoolantLoad</defName>
+    <defName>RM_CoolantLoad</defName>
     <label>coolant load</label>
     <description>A cold, heavy residue building in small doses — the eel's own chemistry, working through you slowly. It clears on its own if nothing tops it up.</description>
     <hediffClass>HediffWithComps</hediffClass>

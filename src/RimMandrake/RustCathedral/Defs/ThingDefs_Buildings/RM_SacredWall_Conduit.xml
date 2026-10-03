@@ -41,7 +41,7 @@
        than raw wall. Real bespoke sacred-wall art is owed (art pipe). -->
 
   <ThingDef ParentName="BuildingBase">
-    <defName>RUT_SacredWall_Conduit</defName>
+    <defName>RM_SacredWall_Conduit</defName>
     <thingClass>Building</thingClass>
     <label>sacred conduit wall</label>
     <description>A run of wall unlike the plate around it — patterned, deliberate, untouched by the drift that banks against everything else here. Nothing about it explains itself. Only that it is watched, and that touching it is a choice.</description>

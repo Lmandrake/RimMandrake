@@ -35,9 +35,9 @@
   -->
 
   <IncidentDef>
-    <defName>RUT_DeepDrillCathedralResponse</defName>
+    <defName>RM_DeepDrillCathedralResponse</defName>
     <label>deep signal</label>
-    <workerClass>RimMandrake.Utinni.RustCathedralHum.RUT_IncidentWorker_CathedralResponse</workerClass>
+    <workerClass>RimMandrake.RustCathedral.Hum.RM_IncidentWorker_CathedralResponse</workerClass>
     <category>DeepDrillInfestation</category>
     <targetTags>
       <li>Map_PlayerHome</li>

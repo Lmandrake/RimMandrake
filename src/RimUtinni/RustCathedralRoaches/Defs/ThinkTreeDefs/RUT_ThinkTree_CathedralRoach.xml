@@ -10,8 +10,8 @@
   RM_ThinkNode_EatCleanable (wired via the ThingDef's own
   RM_EatCleanableExtension modExtension) was never reachable: the roach
   spawned, wandered, and never cleaned anything. Same root cause, same fix
-  shape as RUT_LivingBolt (RustCathedralHum/Defs/ThinkTreeDefs/
-  RUT_ThinkTree_LivingBolt.xml) - a dedicated tree scoped to exactly one race,
+  shape as RM_LivingBolt (RustCathedralHum/Defs/ThinkTreeDefs/
+  RM_ThinkTree_LivingBolt.xml) - a dedicated tree scoped to exactly one race,
   built for what this creature actually needs rather than a lord/overseer
   combat tree it has no use for.
 
@@ -23,7 +23,7 @@
   NO HUM WIRING (kit spec, rust_cathedral_kit_spec.md §6, owner ruling
   2026-09-07, verbatim on the item): "no attitude input, no freeze/scatter
   tell... roach think trees never reference RM_MapComponent_BiomeAttitude."
-  Unlike RUT_ThinkTree_LivingBolt, this tree has no
+  Unlike RM_ThinkTree_LivingBolt, this tree has no
   RM_ThinkNode_ConditionalAttitudeBand freeze and no RM_JobGiver_ResonantDance
   - the roaches are fauna, not instrumentation.
 

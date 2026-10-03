@@ -40,8 +40,8 @@
   kit owns the def shape." Nothing in this file wires the bolt into any
   biome's wildAnimals roster, and this pass did not touch a roster file.
 
-  THINK TREE: race.thinkTreeMain points at RUT_ThinkTree_LivingBolt
-  (ThinkTreeDefs/RUT_ThinkTree_LivingBolt.xml) rather than inheriting
+  THINK TREE: race.thinkTreeMain points at RM_ThinkTree_LivingBolt
+  (ThinkTreeDefs/RM_ThinkTree_LivingBolt.xml) rather than inheriting
   BaseMechanoidWalker's "Mechanoid" tree. 🔴 That tree is a combat/overseer
   tree with NO insertTag anywhere in it (read whole this pass:
   Defs/Core/ThinkTreeDefs/Mechanoid.xml) — the global Animal_PreMain
@@ -84,7 +84,7 @@
     is not sensing YOU.
   -->
   <BodyDef>
-    <defName>RUT_BoltFrame</defName>
+    <defName>RM_BoltFrame</defName>
     <label>bolt frame</label>
     <corePart>
       <def>MechanicalThoraxCanManipulate</def>
@@ -216,7 +216,7 @@
   </BodyDef>
 
   <ThingDef ParentName="BaseMechanoidWalker">
-    <defName>RUT_LivingBolt</defName>
+    <defName>RM_LivingBolt</defName>
     <label>living bolt</label>
     <description>A bolt with legs, or a gear with opinions - the salvage guides genuinely disagree about which. They gather in the open and move: slow figures, repeated, precise, and to no purpose anyone has ever demonstrated. They do not eat, flee, or die of anything obvious. The droids call them the dancers and will stand a long time watching, and if you ask what the dance is for, the polite ones change the subject. One thing every hand learns fast: when the dancers stop, stop.</description>
     <statBases>
@@ -247,13 +247,13 @@
       </li>
     </tools>
     <race>
-      <body>RUT_BoltFrame</body>
+      <body>RM_BoltFrame</body>
       <baseBodySize>0.15</baseBodySize>
       <baseHealthScale>0.30</baseHealthScale>
       <!-- See the file header: the vanilla Mechanoid tree has no insertTag
            and is built for lords and overseers, neither of which a wild
            bolt has. -->
-      <thinkTreeMain>RUT_ThinkTree_LivingBolt</thinkTreeMain>
+      <thinkTreeMain>RM_ThinkTree_LivingBolt</thinkTreeMain>
       <lifeStageAges Inherit="False">
         <li>
           <def>MechanoidFullyFormed</def>
@@ -276,7 +276,7 @@
            in-game days, the spec's own invented interval. spawnMaxAdjacent
            stops a long-undisturbed bolt from carpeting its own cell. -->
       <li Class="CompProperties_Spawner">
-        <thingToSpawn>RUT_BoltShedCuriosity</thingToSpawn>
+        <thingToSpawn>RM_BoltShedCuriosity</thingToSpawn>
         <spawnCount>1</spawnCount>
         <spawnIntervalRange>240000~480000</spawnIntervalRange>
         <spawnMaxAdjacent>3</spawnMaxAdjacent>
@@ -287,22 +287,22 @@
   </ThingDef>
 
   <PawnKindDef ParentName="BaseMechanoidKind">
-    <defName>RUT_LivingBolt</defName>
+    <defName>RM_LivingBolt</defName>
     <label>living bolt</label>
     <labelPlural>living bolts</labelPlural>
-    <race>RUT_LivingBolt</race>
+    <race>RM_LivingBolt</race>
     <combatPower>10</combatPower>
     <lifeStages>
       <li>
         <bodyGraphicData>
           <!-- placeholder: not yet generated, see file header -->
-          <texPath>Things/Pawn/Animal/RUT_LivingBolt/RUT_LivingBolt</texPath>
+          <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBolt</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
         <corpseGraphicData>
-          <texPath>Things/Pawn/Animal/RUT_LivingBolt/RUT_LivingBoltCorpse</texPath>
+          <texPath>Things/Pawn/Animal/RM_LivingBolt/RM_LivingBoltCorpse</texPath>
           <shaderType>CutoutWithOverlay</shaderType>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>

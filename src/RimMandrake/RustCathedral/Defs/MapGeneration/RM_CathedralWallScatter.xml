@@ -16,21 +16,21 @@
        carry. -->
 
   <GenStepDef>
-    <defName>RUT_CathedralWallScatter</defName>
+    <defName>RM_CathedralWallScatter</defName>
     <order>321</order>
-    <genStep Class="RimMandrake.Utinni.RustCathedralWalls.GenStep_ScatterCathedralWallTiers">
+    <genStep Class="RimMandrake.RustCathedral.Walls.GenStep_ScatterCathedralWallTiers">
       <minSpacing>10</minSpacing>
       <groups>
         <li>
           <things>
-            <RUT_CathedralDeckPlate>1</RUT_CathedralDeckPlate>
+            <RM_CathedralDeckPlate>1</RM_CathedralDeckPlate>
           </things>
           <coveredCellsPer10Cells>0.3~0.6</coveredCellsPer10Cells>
           <clusterRectRadius>2~4</clusterRectRadius>
         </li>
         <li>
           <things>
-            <RUT_MineableDeadSmartsteel>1</RUT_MineableDeadSmartsteel>
+            <RM_MineableDeadSmartsteel>1</RM_MineableDeadSmartsteel>
           </things>
           <coveredCellsPer10Cells>0.02~0.05</coveredCellsPer10Cells>
           <clusterRectRadius>1~2</clusterRectRadius>

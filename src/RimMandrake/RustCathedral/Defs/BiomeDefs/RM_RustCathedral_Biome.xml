@@ -19,7 +19,7 @@
       RM_RustCathedral_Terrain.xml for why these are OWN defs that still
       borrow the donor's pixels (disclosed, hard modDependency).
     - <fishTypes>/<maxFishPopulation> are NATIVE here (150, freshwater_Common
-      = RUT_CoolantEel only) rather than arriving by patch — the absorbed
+      = RM_CoolantEelCatch only) rather than arriving by patch — the absorbed
       RustCathedralHum kit's own RUT_RustCathedral_Fishing.xml patch
       DISSOLVED into this field per the item's step 2 ("a self-patch is
       pointless once the def is ours"). See that item's §11 step 2 and the
@@ -27,12 +27,8 @@
       reasoning (Odyssey FishBase gate, LoadDataFromXmlCustom <li> trap,
       canal-size curve) — none of it changes by moving from patch to field.
     - <forceRockTypes> is likewise NATIVE (RM_CathedralDeckPlate,
-      RM_MineableDeadSmartsteel do not exist as separate RM_-prefixed defs —
-      the absorbed Walls kit's own RUT_CathedralDeckPlate/
-      RUT_MineableDeadSmartsteel keep their RUT_ defNames per the item's
-      step 2, since neither is referenced by the frozen twin and both were
-      pre-existing content being relocated, not freshly authored under the
-      naming-scheme migration), dissolved from
+      RM_MineableDeadSmartsteel: the absorbed Walls kit's defs, renamed from
+      RUT_ to RM_ by RUSTCATHEDRAL_FREE_NAMES_TIDY_1), dissolved from
       RUT_RustCathedral_ForceRockTypes.xml the same way.
     - <wildAnimals>: Ling_Cockroach DROPPED (superseded reading —
       rosters/the_rust_cathedral.json's 2026-09-07 owner addendum explicitly
@@ -42,7 +38,7 @@
       is a DUPLICATE, not a rename: the frozen twin's line 103 still needs
       the RUT_ original to keep working until Phase B); GR_Mecharat
       unchanged (donor, stays per §3b: only Star Wars fauna route through a
-      Utinni patch, and this is not Star Wars); RUT_LivingBolt/RM_LivingBolt
+      Utinni patch, and this is not Star Wars); RM_LivingBolt/RM_LivingBolt
       ADDED so §3 of the absorbed kit (the living bolts) can spawn at all —
       the frozen twin's own copy never wired one (item §5: "wired to
       NOTHING").
@@ -113,17 +109,17 @@
     <maxFishPopulation>150</maxFishPopulation>
     <fishTypes>
       <freshwater_Common>
-        <RUT_CoolantEel>1</RUT_CoolantEel>
+        <RM_CoolantEelCatch>1</RM_CoolantEelCatch>
       </freshwater_Common>
     </fishTypes>
     <forceRockTypes>
-      <li>RUT_CathedralDeckPlate</li>
-      <li>RUT_MineableDeadSmartsteel</li>
+      <li>RM_CathedralDeckPlate</li>
+      <li>RM_MineableDeadSmartsteel</li>
     </forceRockTypes>
     <wildAnimals>
       <RM_CathedralRoach>0.12</RM_CathedralRoach>
       <GR_Mecharat MayRequire="vanillaexpanded.vgeneticse">0.5</GR_Mecharat>
-      <RUT_LivingBolt>0.06</RUT_LivingBolt>
+      <RM_LivingBolt>0.06</RM_LivingBolt>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

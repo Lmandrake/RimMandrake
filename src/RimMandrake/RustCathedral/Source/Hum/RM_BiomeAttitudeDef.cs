@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §1. RM_ tier on purpose (kit spec's own naming
 	// note: "nothing below is Star-Wars- or Utinni-specific as a mechanism") --
 	// this Def type is a generic banded-biome-attitude description any biome
-	// could reuse; only the CONTENT instance (RUT_RustCathedralAttitude) and
+	// could reuse; only the CONTENT instance (RM_RustCathedralAttitude) and
 	// its sound/text content are campaign-specific.
 	//
 	// One instance targets one biome via `targetBiome`. RM_MapComponent_

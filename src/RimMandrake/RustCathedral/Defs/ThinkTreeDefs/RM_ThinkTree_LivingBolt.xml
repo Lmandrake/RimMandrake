@@ -2,7 +2,7 @@
 <!--
   RUST_CATHEDRAL_MECHANICS_1 §3 — the living bolt's own main think tree.
 
-  WHY A WHOLE TREE AND NOT AN insertTag SUBTREE: RUT_LivingBolt is
+  WHY A WHOLE TREE AND NOT AN insertTag SUBTREE: RM_LivingBolt is
   mechanoid-fleshed, so its inherited tree is vanilla "Mechanoid"
   (Defs/Core/ThinkTreeDefs/Mechanoid.xml, read whole this pass). That tree
   contains NO insertTag of any kind - the Animal_PreMain hook that
@@ -41,7 +41,7 @@
 
   The kit spec §3 says "a higher-priority conditional freezes the pawn at
   band 0". That sentence predates §1's build. §1 shipped (and documented in
-  RUT_RustCathedralAttitude.xml and RM_BiomeAttitudeDef.cs) the opposite
+  RM_RustCathedralAttitude.xml and RM_BiomeAttitudeDef.cs) the opposite
   direction: band 0 is the CALMEST state - one warm drone layer - and band 4
   is the WORST, where the hum goes completely silent. Freezing the bolts at
   band 0 under those semantics would make them freeze when everything is
@@ -59,7 +59,7 @@
 <Defs>
 
   <ThinkTreeDef>
-    <defName>RUT_ThinkTree_LivingBolt</defName>
+    <defName>RM_ThinkTree_LivingBolt</defName>
     <thinkRoot Class="ThinkNode_Priority">
       <subNodes>
 
@@ -72,7 +72,7 @@
         </li>
 
         <!-- The freeze. See the band-direction note in the file header. -->
-        <li Class="RimMandrake.Utinni.RustCathedralHum.RM_ThinkNode_ConditionalAttitudeBand">
+        <li Class="RimMandrake.RustCathedral.Hum.RM_ThinkNode_ConditionalAttitudeBand">
           <freezeAtBandAtLeast>4</freezeAtBandAtLeast>
           <subNodes>
             <li Class="JobGiver_Idle">
@@ -83,7 +83,7 @@
 
         <li Class="ThinkNode_QueuedJob" />
 
-        <li Class="RimMandrake.Utinni.RustCathedralHum.RM_JobGiver_ResonantDance">
+        <li Class="RimMandrake.RustCathedral.Hum.RM_JobGiver_ResonantDance">
           <worstBand>4</worstBand>
         </li>
 

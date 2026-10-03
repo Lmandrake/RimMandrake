@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RUST_CATHEDRAL_MECHANICS_1 §3 — the bolt-shed curiosity. Dropped by
-  RUT_LivingBolt's vanilla CompSpawner every 4-8 days (see that def).
+  RM_LivingBolt's vanilla CompSpawner every 4-8 days (see that def).
 
   ParentName="ResourceBase" follows the same precedent RUT_CathedralRoachShell
   and RUT_FungalSoil use in this repo.
@@ -27,7 +27,7 @@
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_BoltShedCuriosity</defName>
+    <defName>RM_BoltShedCuriosity</defName>
     <label>shed curiosity</label>
     <description>A small bright object left behind on ground where the bolts have been dancing. It is machined - too well machined - and it is not a part of anything anyone can name. Turn it over and the facets do not quite line up the way facets should. Off-world buyers pay well for one and ask no questions, which is its own kind of answer.</description>
     <thingCategories>

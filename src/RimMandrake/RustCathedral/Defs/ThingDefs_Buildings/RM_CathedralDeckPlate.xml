@@ -14,7 +14,7 @@
        measured proof of that leak), so a def meant to be one biome's
        signature wall must opt out of it and rely on a dedicated,
        biome-gated placement step instead:
-       Defs/MapGeneration/RUT_CathedralWallScatter.xml +
+       Defs/MapGeneration/RM_CathedralWallScatter.xml +
        Source/GenStep_ScatterCathedralWallTiers.cs.
 
        isNaturalRock stays true and this def is also added to
@@ -38,7 +38,7 @@
        atlases"). -->
 
   <ThingDef ParentName="RockBase">
-    <defName>RUT_CathedralDeckPlate</defName>
+    <defName>RM_CathedralDeckPlate</defName>
     <label>cathedral deck plate</label>
     <description>A slab of the plateau's own understructure, cut loose from the maze around it. The plate goes on for as far as anyone has ever dug — there is always more of it, and nothing here minds you taking it.</description>
     <graphicData>

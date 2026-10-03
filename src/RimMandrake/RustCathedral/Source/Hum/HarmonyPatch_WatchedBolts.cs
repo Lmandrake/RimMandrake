@@ -3,7 +3,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralHum
+namespace RimMandrake.RustCathedral.Hum
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §3 -- "watched" pricing, plus the mod-option
 	// gate on the shed spawner.
@@ -29,9 +29,9 @@ namespace RimMandrake.Utinni.RustCathedralHum
 
 	public static class RM_WatchedBolts
 	{
-		public const string LivingBoltDefName = "RUT_LivingBolt";
+		public const string LivingBoltDefName = "RM_LivingBolt";
 
-		public const string CuriosityDefName = "RUT_BoltShedCuriosity";
+		public const string CuriosityDefName = "RM_BoltShedCuriosity";
 
 		// INVENTED parameters, from the kit spec §3's own "INVENTED
 		// parameters" line: irritation +3 pickup / +15 kill.

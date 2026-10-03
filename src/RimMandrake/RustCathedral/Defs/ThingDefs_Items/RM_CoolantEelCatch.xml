@@ -26,14 +26,14 @@
 
     FISH_BESTIARY_BUILD_1, wave 1 (2026-09-18): added the optional "coolant
     load" hediff owed by fish_bestiary_commission_2026-09-10.md §4.2 and
-    owner ruling 4 (RUT_CoolantLoad.xml, this mod's own HediffDefs/) — the
+    owner ruling 4 (RM_CoolantLoad.xml, this mod's own HediffDefs/) — the
     only change; the def itself, its label/nickname and its fishing-mechanic
     wiring (RUT_RustCathedral_Fishing.xml, RUT_NegativeFishingOutcomes.xml,
     RM_CathedralFishing.cs) are untouched.
   -->
 
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_CoolantEel</defName>
+    <defName>RM_CoolantEelCatch</defName>
     <label>coolant eel</label>
     <description>A pale, eyeless eel as long as a forearm, cold to the touch long after it leaves the water. Its skin is smooth and faintly metallic, and it goes on twitching for a while after it stops living. Buyers off-plateau pay well for one.</description>
     <graphicData>
@@ -45,7 +45,7 @@
     <ingestible>
       <outcomeDoers>
         <li Class="IngestionOutcomeDoer_GiveHediff">
-          <hediffDef>RUT_CoolantLoad</hediffDef>
+          <hediffDef>RM_CoolantLoad</hediffDef>
           <severity>0.08</severity>
         </li>
       </outcomeDoers>

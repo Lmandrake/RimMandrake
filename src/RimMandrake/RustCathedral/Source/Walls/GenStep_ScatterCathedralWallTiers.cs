@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.RustCathedralWalls
+namespace RimMandrake.RustCathedral.Walls
 {
 	// RUST_CATHEDRAL_MECHANICS_1 §2, Tiers 1-2. Pattern copied from
 	// src/RimUtinni/FungalSoilTrade/Source/GenStep_ScatterFungalGround.cs /

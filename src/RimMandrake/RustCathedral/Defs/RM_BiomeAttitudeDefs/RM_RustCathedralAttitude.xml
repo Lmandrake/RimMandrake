@@ -19,8 +19,8 @@
     commentary cooldown 12h.
   -->
 
-  <RimMandrake.Utinni.RustCathedralHum.RM_BiomeAttitudeDef>
-    <defName>RUT_RustCathedralAttitude</defName>
+  <RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef>
+    <defName>RM_RustCathedralAttitude</defName>
     <targetBiome>RM_RustCathedral</targetBiome>
 
     <bandThresholds>
@@ -68,9 +68,9 @@
     </stageParams>
 
     <humLayers>
-      <li>RUT_HumLayerDrone</li>
-      <li>RUT_HumLayerTense</li>
-      <li>RUT_HumLayerAlarm</li>
+      <li>RM_HumLayerDrone</li>
+      <li>RM_HumLayerTense</li>
+      <li>RM_HumLayerAlarm</li>
     </humLayers>
 
     <!--
@@ -116,6 +116,6 @@
         </lines>
       </li>
     </commentary>
-  </RimMandrake.Utinni.RustCathedralHum.RM_BiomeAttitudeDef>
+  </RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef>
 
 </Defs>

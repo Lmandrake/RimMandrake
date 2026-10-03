@@ -3,7 +3,7 @@
 
   <!--
     RUST_CATHEDRAL_MECHANICS_1 §4 — "the sharp end". One vanilla
-    NegativeFishingOutcomeDef keyed to RUT_CoolantEel.
+    NegativeFishingOutcomeDef keyed to RM_CoolantEelCatch.
 
     VANILLA GATE, re-read from source at build (not trusted from the spec):
     FishingUtility.GetNegativeFishingOutcomes rolls Rand.Chance(0.02f) — 2% per
@@ -33,8 +33,8 @@
   -->
 
   <NegativeFishingOutcomeDef MayRequire="Ludeon.RimWorld.Odyssey">
-    <defName>RUT_NegativeFishingOutcome_CoolantEel</defName>
-    <fishType>RUT_CoolantEel</fishType>
+    <defName>RM_NegativeFishingOutcome_CoolantEel</defName>
+    <fishType>RM_CoolantEelCatch</fishType>
     <letterLabel>Something in the canal</letterLabel>
     <letterText>{PAWN_nameDef} had a line in the canal when the water went hard and bright, all at once, from one end of the channel to the other.\n\nThe burns run up one arm. Nothing was landed, and the surface is flat again.</letterText>
     <letterDef>NegativeEvent</letterDef>

@@ -33,8 +33,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 BIOME = "RM_RustCathedral"
 CONTROL_ABSENT = "ThingDef/RM_RustCathedralNoSuchDef_ZZ"
 OWN_SETTINGS = "RimMandrake.RustCathedral.RM_RustCathedralSettings"
-HUM_SETTINGS = "RimMandrake.Utinni.RustCathedralHum.RustCathedralHumSettings"
-WALLS_SETTINGS = "RimMandrake.Utinni.RustCathedralWalls.RustCathedralWallsSettings"
+HUM_SETTINGS = "RimMandrake.RustCathedral.Hum.RustCathedralHumSettings"
+WALLS_SETTINGS = "RimMandrake.RustCathedral.Walls.RustCathedralWallsSettings"
 SETTINGS_SOURCES = (
     (OWN_SETTINGS, os.path.join("Source", "RustCathedral", "RM_RustCathedralMod.cs"), "RM_RustCathedralSettings"),
     (HUM_SETTINGS, os.path.join("Source", "Hum", "RustCathedralHumSettings.cs"), "RustCathedralHumSettings"),
@@ -324,7 +324,7 @@ def _build_suite():
     @suite.chain("hum_attitude")
     def hum_attitude(t):
         with t.component("attitude_def_targets_this_biome", beyond_toggle=True):
-            r = t.bridge_call("jawa/get_defs", defs="RM_BiomeAttitudeDef/RUT_RustCathedralAttitude", fields="targetBiome,bandThresholds", deep=True, limit=2)
+            r = t.bridge_call("jawa/get_defs", defs="RM_BiomeAttitudeDef/RM_RustCathedralAttitude", fields="targetBiome,bandThresholds", deep=True, limit=2)
             if _live(t):
                 rows = (r or {}).get("defs") or []
                 if not isinstance(r, dict) or r.get("success") is False or not rows:

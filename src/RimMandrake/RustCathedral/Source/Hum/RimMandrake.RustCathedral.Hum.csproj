@@ -3,17 +3,17 @@
   <!--
     RimWorld 1.6 runs Unity/Mono against a .NET Framework 4.7.2 profile, so
     the mod DLL must target net472. Same shape as
-    src/RimUtinni/RustCathedralWalls/Source/RimMandrake.Utinni.RustCathedralWalls.csproj:
+    src/RimMandrake/RustCathedral/Source/Walls/RimMandrake.RustCathedral.Walls.csproj:
     Def types, a MapComponent, two think-tree nodes, and (since §3, the
     living bolts) one small Harmony patch file for watched pricing.
 
     RUSTCATHEDRAL_RM_MOD_BUILD_1: this assembly moved from the standalone
     mandrake.rut.rustcathedralhum satellite mod into mandrake.rm.rustcathedral
     (option (b) of that item's assembly-merge trade — two DLLs kept under one
-    mod folder, zero namespace churn). Namespace/AssemblyName UNCHANGED.
+    mod folder). Renamed from RimMandrake.Utinni.* to RimMandrake.RustCathedral.* by RUSTCATHEDRAL_FREE_NAMES_TIDY_1.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.Utinni.RustCathedralHum.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RustCathedral\Source\Hum\RimMandrake.RustCathedral.Hum.csproj -c Release
 
     Output lands in ../../Assemblies/, which is where RimWorld looks.
   -->
@@ -21,8 +21,8 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimMandrake.Utinni.RustCathedralHum</AssemblyName>
-    <RootNamespace>RimMandrake.Utinni.RustCathedralHum</RootNamespace>
+    <AssemblyName>RimMandrake.RustCathedral.Hum</AssemblyName>
+    <RootNamespace>RimMandrake.RustCathedral.Hum</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\..\Assemblies\</OutputPath>
@@ -44,7 +44,7 @@
   <!-- §3 (living bolts) added one small Harmony patch file for watched
        pricing and the shed's mod-option gate, so this mod now needs 0Harmony
        too. Same HintPath convention as
-       src/RimUtinni/RustCathedralWalls/Source/RimMandrake.Utinni.RustCathedralWalls.csproj. -->
+       src/RimMandrake/RustCathedral/Source/Walls/RimMandrake.RustCathedral.Walls.csproj. -->
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
@@ -56,7 +56,7 @@
     <Compile Include="RM_ThinkNode_ConditionalAttitudeBand.cs" />
     <Compile Include="HarmonyPatch_WatchedBolts.cs" />
     <Compile Include="RM_CathedralFishing.cs" />
-    <Compile Include="RUT_IncidentWorker_CathedralResponse.cs" />
+    <Compile Include="RM_IncidentWorker_CathedralResponse.cs" />
     <Compile Include="RustCathedralHumSettings.cs" />
   </ItemGroup>
 

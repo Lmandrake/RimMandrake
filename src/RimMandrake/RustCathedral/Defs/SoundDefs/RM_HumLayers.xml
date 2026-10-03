@@ -11,15 +11,15 @@
     reuse an existing vanilla clip as a structural placeholder rather than
     inventing new audio content. Clip paths below are copied verbatim from
     vanilla mechanoid-ambient SoundDefs (read whole via RimSage, not guessed):
-      RUT_HumLayerDrone  <- MechanoidRelay_Ambient's clip
-      RUT_HumLayerTense  <- MechanoidStabilizer_Ambient's clip
-      RUT_HumLayerAlarm  <- AncientVent_Ambient's clip
+      RM_HumLayerDrone  <- MechanoidRelay_Ambient's clip
+      RM_HumLayerTense  <- MechanoidStabilizer_Ambient's clip
+      RM_HumLayerAlarm  <- AncientVent_Ambient's clip
     A real hum audio pass rides the (currently nonexistent) audio pipe;
     swapping these three clipPaths is the entire migration.
   -->
 
   <SoundDef>
-    <defName>RUT_HumLayerDrone</defName>
+    <defName>RM_HumLayerDrone</defName>
     <context>MapOnly</context>
     <priorityMode>PrioritizeNearest</priorityMode>
     <sustain>true</sustain>
@@ -37,7 +37,7 @@
   </SoundDef>
 
   <SoundDef>
-    <defName>RUT_HumLayerTense</defName>
+    <defName>RM_HumLayerTense</defName>
     <context>MapOnly</context>
     <priorityMode>PrioritizeNearest</priorityMode>
     <sustain>true</sustain>
@@ -55,7 +55,7 @@
   </SoundDef>
 
   <SoundDef>
-    <defName>RUT_HumLayerAlarm</defName>
+    <defName>RM_HumLayerAlarm</defName>
     <context>MapOnly</context>
     <priorityMode>PrioritizeNearest</priorityMode>
     <sustain>true</sustain>

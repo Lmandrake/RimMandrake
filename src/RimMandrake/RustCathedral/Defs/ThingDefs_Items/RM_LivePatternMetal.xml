@@ -50,7 +50,7 @@
        actually appear once a Cathedral scan/drill occurs. -->
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_LivePatternMetal</defName>
+    <defName>RM_LivePatternMetal</defName>
     <label>live pattern metal</label>
     <description>Deep under the deck plate, past everything already dug, this metal is not dead. Nothing about the readout explains what it is doing, only that it is still doing it. Whoever pulls it out should be ready for what pulling it out means.</description>
     <thingCategories>
