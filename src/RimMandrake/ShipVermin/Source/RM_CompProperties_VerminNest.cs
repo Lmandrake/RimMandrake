@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Verse;
 
 namespace RimMandrake.ShipVermin
@@ -27,9 +28,34 @@ namespace RimMandrake.ShipVermin
 
 		public int populationHardCap = 12;
 
+		// FALL_LINE_ARRIVAL_MECHANISM_1 (design/RimUtinni/fall_line_arrival_mechanism_spec.md §4.1):
+		// optional per-nest species weighting (empty = the settings roster, uniform, as before),
+		// and an optional initial burst a few hundred ticks after the nest first spawns, with an
+		// optional letter sent on that burst (the wreck's "things have already moved in" beat).
+		public List<RM_VerminWeight> speciesWeights;
+
+		public IntRange initialBurst = IntRange.Zero;
+
+		public IntRange initialBurstDelayTicks = new IntRange(600, 2400);
+
+		[MustTranslate]
+		public string burstLetterLabel;
+
+		[MustTranslate]
+		public string burstLetterText;
+
 		public RM_CompProperties_VerminNest()
 		{
 			compClass = typeof(RM_CompVerminNest);
 		}
+	}
+
+	/// <summary>One weighted nest species: a PawnKindDef name (resolved silently, so a not-yet-ported
+	/// name costs nothing) and its relative weight.</summary>
+	public class RM_VerminWeight
+	{
+		public string kind;
+
+		public float weight = 1f;
 	}
 }

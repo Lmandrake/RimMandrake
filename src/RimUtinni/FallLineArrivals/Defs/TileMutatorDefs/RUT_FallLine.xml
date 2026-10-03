@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_ARRIVAL_MECHANISM_1 spec §3.3 / §9 item 1: the "is this map ON the Fall Line?"
+     flag. chanceOnNonLandmarkTile stays 0 (the default), so nothing ever rolls it: it is placed
+     by hand on THE world's Fall Line tiles (a separate, filed world-authoring pass). No
+     gensteps in v1. animalDensityFactor 0.5 so the belt reads emptier than its biome. -->
+<Defs>
+  <TileMutatorDef>
+    <defName>RUT_FallLine</defName>
+    <label>the Fall Line</label>
+    <description>A belt of desert under an old orbital debris lane. Wreckage still comes down here, and the things that live in wreckage come with it.</description>
+    <animalDensityFactor>0.5</animalDensityFactor>
+    <displayPriority>200</displayPriority>
+  </TileMutatorDef>
+</Defs>

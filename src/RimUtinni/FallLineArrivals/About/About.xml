@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.falllinearrivals</packageId>
+  <name>Jawa Fall Line Arrivals</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.shipvermin</packageId>
+      <displayName>RimMandrake: Ship Vermin</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.biomes</li>
+    <li>mandrake.rm.shipvermin</li>
+    <li>mandrake.rsw.swbestiary</li>
+  </loadAfter>
+  <description>FALL_LINE_ARRIVAL_MECHANISM_1 (design/RimUtinni/fall_line_arrival_mechanism_spec.md).
+The Fall Line's own creatures are ARRIVALS, never ambient biome fauna (owner,
+2026-09-20, fall_line.md §8a): nothing here adds a wildAnimals row.
+
+Ships, in this first pass:
+  - Wreck falls (Band A): a ship wreck — hull rib, cargo section or fuel tank —
+    comes down near the colony as a skyfaller. It is salvage, and it is a vermin
+    nest: a few minutes after impact the first ship-vermin crawl out of it
+    (mynocks cling to hull ribs, scavrats and womp rats nest in cargo, zhakkas
+    feed at tanks), then it keeps producing slowly under Ship Vermin's shared
+    cap of 12 per map. Strip it to end it.
+  - The specimen (Band C): very rarely, one escape pod lands holding a single
+    white lab rat — the one Earth animal on the belt, by the owner's ruling.
+
+Where: only on Fall Line maps by default — a map whose tile carries the
+RUT_FallLine tile mutator, or whose world feature is named one of the Fall
+Line region names. A Mod Setting lets the events fire on any map instead.
+
+Not here yet (filed): the feral survivor droids that flee (Band B), placing
+the RUT_FallLine mutator on the region's tiles of the frozen world, and the
+two wreckage creatures that are not yet ported.
+
+Every switch is in Mod Settings ("Fall Line Arrivals").</description>
+</ModMetaData>
