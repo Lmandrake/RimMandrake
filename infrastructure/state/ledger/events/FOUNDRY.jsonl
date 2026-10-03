@@ -2251,3 +2251,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"ABYSS_INVENTED_CREATURES_TO_RM_1","ts":"2026-10-03T15:19:27Z","tsn":1791040767133134074}
 {"seat":"FOUNDRY","event":"start","id":"ABYSS_INVENTED_CREATURES_TO_RM_1","ts":"2026-10-03T15:19:27Z","tsn":1791040767650381407}
 {"seat":"FOUNDRY","event":"close","id":"ABYSS_INVENTED_CREATURES_TO_RM_1","sha":"f75f996c6","reason":"defs/comp/settings ported, DLLs rebuilt, Abyss static check PASS; live load proof owed","ts":"2026-10-03T15:19:28Z","tsn":1791040768172617510}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_LANTERN_LIGHT_BUILD_1","ts":"2026-10-03T15:21:30Z","tsn":1791040890286090519}
+{"seat":"FOUNDRY","event":"start","id":"LANTERNDEEPS_LANTERN_LIGHT_BUILD_1","ts":"2026-10-03T15:21:30Z","tsn":1791040890782409224}
+{"seat":"FOUNDRY","event":"close","id":"LANTERNDEEPS_LANTERN_LIGHT_BUILD_1","sha":"f54cd3d8e","reason":"built; offline proven (build, lint); live proof owed","ts":"2026-10-03T15:21:31Z","tsn":1791040891285273328}
