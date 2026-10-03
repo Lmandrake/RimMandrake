@@ -555,6 +555,12 @@ def V_rect(s):
 def run(broken=()):
     game = Fake(broken)
     results = {}
+    V._OVERRIDE.clear()
+    if "flora_row_missing" in broken:
+        V._OVERRIDE["BiomeDefs/RM_Cauldron.xml"] = V._def_text("BiomeDefs/RM_Cauldron.xml").replace("<RM_Selvix>", "<RM_SelvixGone>")
+    if "fexxil_no_venom" in broken:
+        V._OVERRIDE["ThingDefs_Plants/RM_CauldronFloraExpansion.xml"] = V._def_text(
+            "ThingDefs_Plants/RM_CauldronFloraExpansion.xml").replace("CompProperties_ContactVenom", "CompProperties_Gone")
     real_err = sys.stderr
     sys.stderr = open(os.devnull, "w")             # the suite's per-component progress lines
     try:
@@ -624,6 +630,8 @@ BREAKS = {
     "never_silences": "vents.vent_silences_and_recovers",
     "no_recovery": "vents.vent_silences_and_recovers",
     "log_error": "log.log_clean",
+    "flora_row_missing": "load.flora_expansion_shape",
+    "fexxil_no_venom": "load.fexxil_venom_shape",
 }
 
 # A few breaks cascade by design: the component named is the FIRST red, later ones are UNMEASURED
@@ -643,14 +651,14 @@ def source_checks():
         short = typ.rsplit(".", 1)[1]
         if not re.search(r"\bclass\s+%s\b" % short, blob):
             bad.append("TYPES names %s but Source/ declares no such class" % short)
-    if len(V.DEFAULTS) != 18 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 14:
-        bad.append("parsed %d defaults / %d bools, expected 18 / 14" %
+    if len(V.DEFAULTS) != 20 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 16:
+        bad.append("parsed %d defaults / %d bools, expected 20 / 16" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
-    if len(V.SHIPPED) != 31 or len(V.FLORA) != 11 or len(V.KINDS) != 4:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 31 / 11 / 4); update "
+    if len(V.SHIPPED) != 42 or len(V.FLORA) != 17 or len(V.KINDS) != 4:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 42 / 17 / 4); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

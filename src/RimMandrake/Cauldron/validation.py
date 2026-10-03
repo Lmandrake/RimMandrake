@@ -118,10 +118,20 @@ _STATE = {}    # readings shared between components of ONE run
 
 # --------------------------------------------------------------------------- shipped defs
 
+_OVERRIDE = {}      # selftest hook: relative Defs path -> replacement text (never set in a live run)
+
+
+def _def_text(rel):
+    if rel in _OVERRIDE:
+        return _OVERRIDE[rel]
+    with open(os.path.join(HERE, "Defs", rel), encoding="utf-8") as fh:
+        return fh.read()
+
+
 def _read_defs():
     """({defType: [defName]}, {defName: source folder}) for every concrete def in this mod's Defs/,
     parsed per top-level element (never a fixed line number). Comments are stripped first."""
-    wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "TerrainDef", "BiomeDef", "JobDef")
+    wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "TerrainDef", "BiomeDef", "JobDef", "RecipeDef", "DamageDef")
     by_type, where = {}, {}
     for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
         with open(path, encoding="utf-8") as fh:
@@ -549,6 +559,50 @@ def load_chain(t):
             if "RM_Cauldron_NoSuchDef_Probe" not in json.dumps((probe or {}).get("notFound")):
                 _fail("sanity probe: an absent def was not reported in notFound: %r" % probe)
             _note(t, "shipped defs resolved", len(SHIPPED))
+
+    with _comp(t, "flora_expansion_shape", toggle="floraExpansionEnabled"):
+        # CAULDRON_FLORA_EXPANSION_BUILD_1: parsed from the mod's own XML, so it needs no live game.
+        def _body(rel, name, tag="ThingDef"):
+            x = re.sub(r"<!--.*?-->", "", _def_text(rel), flags=re.S)
+            m = re.search(r"<defName>%s</defName>(.*?)</%s>" % (name, tag), x, flags=re.S)
+            return m.group(1) if m else None
+        bad = []
+        biome = re.sub(r"<!--.*?-->", "", _def_text("BiomeDefs/RM_Cauldron.xml"), flags=re.S)
+        if "<RM_Xithess>" not in biome:
+            bad.append("control: an original roster row (RM_Xithess) is missing, parser broke")
+        for n in ("RM_Tsevrix", "RM_Ixalith", "RM_Fexxil", "RM_Sessarix", "RM_Kissaveth", "RM_Selvix"):
+            b = _body("ThingDefs_Plants/RM_CauldronFloraExpansion.xml", n)
+            if b is None:
+                bad.append("%s missing" % n)
+                continue
+            if not re.search(r"<%s>[\d.]+</%s>" % (n, n), biome):
+                bad.append("%s not in RM_Cauldron wildPlants (XML element form)" % n)
+            if "CompTick" in b:
+                bad.append("%s overrides CompTick" % n)
+        ix = _body("ThingDefs_Plants/RM_CauldronFloraExpansion.xml", "RM_Ixalith") or ""
+        if "<harvestYield>0</harvestYield>" not in ix:
+            bad.append("ixalith must have harvestYield 0")
+        se = _body("ThingDefs_Plants/RM_CauldronFloraExpansion.xml", "RM_Sessarix") or ""
+        if "<harvestedThingDef>Chemfuel</harvestedThingDef>" not in se or "RM_CauldronSoil" not in se or "<li>Soil</li>" not in se:
+            bad.append("sessarix must yield Chemfuel and blacklist soil terrains")
+        sv = _body("ThingDefs_Plants/RM_CauldronFloraExpansion.xml", "RM_Selvix") or ""
+        if "<harvestedThingDef>MedicineHerbal</harvestedThingDef>" not in sv:
+            bad.append("selvix must yield MedicineHerbal")
+        pulp = _body("ThingDefs_Items/RM_CauldronFloraItems.xml", "RM_TsevrixPulp") or ""
+        roast = _body("ThingDefs_Items/RM_CauldronFloraItems.xml", "RM_TsevrixRoasted") or ""
+        if "ToxicBuildup" not in pulp or "ToxicBuildup" in roast or not roast:
+            bad.append("pulp must carry ToxicBuildup and the roasted product must not (both arms)")
+        kv = _body("ThingDefs_Plants/RM_CauldronFloraExpansion.xml", "RM_Kissaveth") or ""
+        if "CompProperties_GasOnDamage" not in kv or "RM_CompProperties_GasOnCut" not in kv or "xplo" in kv:
+            bad.append("kissaveth needs gas-on-damage and gas-on-cut, and no explosion")
+        if bad:
+            _fail("; ".join(bad))
+
+    with _comp(t, "fexxil_venom_shape", toggle="fexxilVenomEnabled"):
+        fxt = _def_text("ThingDefs_Plants/RM_CauldronFloraExpansion.xml")
+        dmg = _def_text("DamageDefs/RM_FexxilScratch.xml")
+        if "CompProperties_ContactVenom" not in fxt or "RM_FexxilScratch" not in fxt or "<hediff>ToxicBuildup</hediff>" not in dmg:
+            _fail("fexxil must carry ContactVenom with a damage def whose additionalHediffs gives ToxicBuildup")
 
     with _comp(t, "types_resolve"):
         if _live(t):
