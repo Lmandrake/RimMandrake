@@ -56,6 +56,22 @@ CLASS_OF = {"Wall": ("wallsPaintable", "Construction"), "Stool": ("furniturePain
             "Apparel_Parka": ("apparelPaintable", "Crafting"), "MeleeWeapon_Knife": ("weaponsPaintable", "Crafting")}
 
 
+def _mock_default(field):
+    """The C# literal default for a scalar field (bool -> 'True'/'False'; numeric literal -> that number); '5' when the
+    initialiser is a named constant; 'True' for anything not scalar (the old fake's behaviour)."""
+    src = open(os.path.join(HERE, "Source", "LuminousPigmentMod.cs"), encoding="utf-8").read().split("class LuminousPigmentSettings", 1)[1]
+    m = re.search(r"public\s+static\s+(bool|int|float)\s+%s\s*=\s*([^;]+);" % re.escape(field), src)
+    if not m:
+        return "True"
+    lit = m.group(2).strip().rstrip("fF")
+    if m.group(1) == "bool":
+        return "True" if lit == "true" else "False"
+    try:
+        return str(float(lit))
+    except ValueError:
+        return "5"
+
+
 class FakeGame(MockGame):
     """Behaves the way the spec says unless `bugs` names a behaviour to break."""
 
@@ -299,7 +315,7 @@ class FakeGame(MockGame):
     def t_jawa_mod_settings_field(self, p):
         if p.get("action") == "set":
             self.settings[p["field"]] = str(p["value"])
-        return {"success": True, "value": self.settings.get(p["field"], "True")}
+        return {"success": True, "value": self.settings.get(p["field"], _mock_default(p["field"]))}
 
     def t_rimworld_open_mod_settings(self, p):
         self.window_open = True

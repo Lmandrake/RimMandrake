@@ -42,6 +42,9 @@ import sys
 import time
 import xml.etree.ElementTree as ET
 
+_UTILS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils")
+if os.path.isdir(_UTILS) and _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)          # `python3 validation.py` (static checks) runs with no modcheck path set
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("LuminousPigment")
@@ -1539,6 +1542,68 @@ def toggle_flips(t):
     _flip(t, "rankless_setting_flips", "ranklessColoniesEnjoyIt")
 
 
+# ====================================================================== settings round trip (every scalar field)
+
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_SCALAR = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
+
+
+def _settings_fields():
+    """(type, name) for every scalar `public static` field of LuminousPigmentSettings, read from the C# source.
+    Arrays (coatRadius, coatIntensity, familyEnabled) and the PressGate enum are not scalar and are checked
+    statically only (round-tripping them needs a typed value the raw writer does not take as one string)."""
+    src = open(os.path.join(_HERE, "Source", "LuminousPigmentMod.cs"), encoding="utf-8").read()
+    body = src.split("class LuminousPigmentSettings", 1)[1]
+    body = body.split("ExposeData", 1)[0]
+    return [(m.group(1), m.group(2)) for m in _SCALAR.finditer(re.sub(r"//[^\n]*", "", body))]
+
+
+def _alt(ty, cur):
+    if ty == "bool":
+        return "False" if str(cur).lower() == "true" else "True"
+    if ty == "int":
+        return str(int(float(cur)) + 1)
+    return str(float(cur) + 1.0)
+
+
+def _same(ty, a, b):
+    if ty == "bool":
+        return str(a).lower() == str(b).lower()
+    return a is not None and b is not None and abs(float(a) - float(b)) <= 1e-4 * max(1.0, abs(float(b)))
+
+
+@suite.chain("settings_roundtrip")
+def settings_roundtrip(t):
+    """Every scalar Mod Settings field: read the default, write a different value, read it back (numerics compared
+    numerically), restore, read the default back. Raw static write only (no dialog), so this proves the field is
+    exposed to the settings tool and writable, not that anything consumes it (settings_apply and the behaviour chains
+    do that). Restores in a finally."""
+    fields = _settings_fields()
+    with _comp(t, "settings_fields_found"):
+        if not fields:
+            _fail("settings probe found no scalar field in LuminousPigmentSettings (the regex is blind)")
+    with _comp(t, "every_scalar_field_round_trips", beyond_toggle=True):
+        if _live(t):
+            bad = []
+            for ty, name in fields:
+                old = _raw_get(t, name)
+                if old is None:
+                    bad.append("%s: get returned no value" % name)
+                    continue
+                try:
+                    new = _alt(ty, old)
+                    r = _raw_set(t, name, new)
+                    if not r.get("success"):
+                        bad.append("%s: set failed %s" % (name, json.dumps(r, default=str)[:120]))
+                    elif not _same(ty, _raw_get(t, name), new):
+                        bad.append("%s: wrote %s, read %r" % (name, new, _raw_get(t, name)))
+                finally:
+                    _raw_set(t, name, old)
+                if not _same(ty, _raw_get(t, name), old):
+                    bad.append("%s: did not restore to %r" % (name, old))
+            _chk(t, not bad, "%d of %d fields failed: %s" % (len(bad), len(fields), bad[:5]))
+
+
 @suite.chain("no_new_errors")
 def no_new_errors(t):
     """Debugging check for every past live failure in DEEPFIRE_LIVE_FAILURES_1: the run must leave no NEW
@@ -1554,3 +1619,39 @@ def no_new_errors(t):
                 _unmeasured(t, "no start-of-run log baseline was recorded (the defs_load chain records it)")
             new = [k[:240] for k, n in now.items() if n > first.get(k, 0)]
             _chk(t, not new, "%d new Error-type line(s) naming this mod during the run: %s" % (len(new), new[:3]))
+
+
+# ------------------------------------------------------------------------------------------- static checks
+
+def static_checks():
+    """Failure strings; empty means pass. Needs no game."""
+    bad = []
+    fields = _settings_fields()
+    if not fields:
+        return ["settings probe found no scalar field (sanity probe failed)"]
+    mod = open(os.path.join(_HERE, "Source", "LuminousPigmentMod.cs"), encoding="utf-8").read()
+    scribed = mod.split("ExposeData", 1)[1] if "ExposeData" in mod else ""
+    for _ty, name in fields:
+        if '"%s"' % name not in scribed:
+            bad.append("settings field %s is not Scribed" % name)
+    names = set(n for _t, n in fields)
+    for tg in suite.toggles:
+        if tg not in names and not re.search(r"public static \w+(\[\])? %s\b" % tg, mod):
+            bad.append("suite.toggles names %s, which is not a settings field" % tg)
+    proj = open(os.path.join(_HERE, "Source", "RM_LuminousPigment.csproj"), encoding="utf-8").read()
+    for fn in sorted(os.listdir(os.path.join(_HERE, "Source"))):
+        if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj and "Compile Include=\"Source" not in proj:
+            bad.append("%s is not in the csproj (compiles into nothing)" % fn)
+    if not SHIPPED:
+        bad.append("no shipped defs parsed")
+    if not os.path.isfile(os.path.join(_HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LuminousPigment.md")):
+        bad.append("walk missing")
+    return bad
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p_ in problems:
+        print("  - " + p_)
+    sys.exit(1 if problems else 0)

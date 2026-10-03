@@ -79,6 +79,7 @@ Sources for every line below: the mod's `About/About.xml` description, `design/R
 - `hediffGlowEnabled` round-trips (behaviour is the cooking line above). → toggle_flips.hediff_glow_setting_flips
 - `ranklessColoniesEnjoyIt` round-trips; its effect (no Royalty and no Ideology) is not a supported configuration, every DLC being a hard prerequisite. → toggle_flips.rankless_setting_flips
 - The run raises no new Error-type log line naming this mod (the proxy double-destroy, the visitor NRE and the stale social cache each surfaced as one). → no_new_errors.no_error_lines_from_this_mod (its baseline is 00_log_baseline.log_baseline_recorded)
+- Every scalar Mod Settings field the C# declares is exposed to the settings tool and round-trips default/write/restore. → settings_roundtrip.every_scalar_field_round_trips (arrays and the PressGate enum: static check only)
 
 ## the walk
 1. [L] Player.log after load: no "Config error in mandrake.rm.luminouspigment", no cross-reference error naming a `RM_` def of this mod, no patch error from `Patches/*.xml`; the soft hooks (Ninefold, FlowWorks) are reflection-only and absent-safe   # defs_load
