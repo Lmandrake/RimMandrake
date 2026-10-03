@@ -1,0 +1,26 @@
+# WEEPINGSTONES_NET_TARGET_FLEES_1 — a wild skarrin outruns the netting handler and leaves the map; how should capture work?
+
+Found by the Weeping Stones first script (`src/RimMandrake/WeepingStones/validation.py`, chain `job_net`), live poke 2026-10-03. Left RED on purpose; the test is not padded.
+
+## What exists
+
+`RM_NetPoolBreeder` (`Defs/JobDefs/RM_StockedPoolJobs.xml`, driver `RM_JobDriver_NetPoolBreeder`) takes 200 ticks of netting. The wild skarrin flees the handler at flight speed (about 13 cells per 100 ticks against the colonist's 5) and leaves the map before the net completes, so no `RM_SkarrinBreedingStock` item is ever made. The same shape probably holds for the other stockable natives. `leaveMapOnFleeChance` is 0.6 on the skarrin.
+
+## spec
+
+DECISION NEEDED (design call, not a bug fix). Options:
+
+1. Hold the target for the net duration (stun or entangle it on job start), so a handler always succeeds if it reaches the animal.
+2. Net from range: a throw or shot with a short windup instead of a 200-tick channel.
+3. Leave it hard: capture needs a trap, a tame animal lure or a tranquilizer first, and the net job only works on a downed or held animal.
+
+Also the same chain family has cull (`job_cull`: 0 vhorrin left, 0 meat) and stock (`job_stock`) reds from the same session; they may be unrelated script or load-state faults and are being re-run on the fresh load first.
+
+## criteria
+
+- A handler ordered to net a wild stockable pawn on a quicktest map ends with the pawn gone and exactly one breeding-stock item, in at least 5 of 5 tries.
+- The `job_net` chain goes green without any change to the test.
+
+## Watch out
+
+The decision changes feel (how hard it is to farm the pools), so it is BENCH and the owner's, not FOUNDRY's.
