@@ -28,12 +28,16 @@ namespace RimMandrake.Abyss
         // ABYSS_DURRGAK_BUILD_1: wild durrgaks place obsidian-shard rings. Off = none are placed (existing rings stay).
         public static bool durrgakRingsEnabled = true;
 
+        // ABYSS_ETCHFALL_BUILD_1: grain erosion strength on unroofed rock and steel. 0 = off, 1 = shipped.
+        public static float etchfallStrength = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref gustFeedersEnabled, "gustFeedersEnabled", true, true);
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
+            Scribe_Values.Look(ref etchfallStrength, "etchfallStrength", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -52,6 +56,10 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Wild durrgaks set rings of shards", ref durrgakRingsEnabled,
                 "On: wild durrgaks slowly arrange obsidian-shard rings on the ground they roam. Off: none are placed; rings already standing stay. Safe mid-game.");
+
+            list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
+            etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);
+            list.Label("How fast falling grain erodes unroofed rock and steel into tholin dust. 0 = off; roofed cells are never touched. Safe mid-game; hollows already made stay.");
 
             list.End();
         }
