@@ -273,6 +273,28 @@ def dark_check():
     return bad
 
 
+def cover_check():
+    """Offline: ship cover component, probe extension on the biome, settings, csproj."""
+    bad = []
+    src = os.path.join(HERE, "Source")
+    f = os.path.join(src, "RM_MapComponentShipCover.cs")
+    cs = open(f).read() if os.path.isfile(f) else ""
+    for needle in ("GravEngine", "IsCovered", "MaxCoveredTicks", "RM_AbyssProbeExtension", "Faction.OfMechanoids",
+                   "ReportTicks", "Collapse(", "shipCoverEnabled", "probesEnabled", "pather.Moving"):
+        if needle not in cs:
+            bad.append("cover source lacks " + needle)
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    for needle in ("shipCoverEnabled", "probesEnabled"):
+        if mod.count(needle) < 3:
+            bad.append("Mod Settings lacks " + needle)
+    if 'Compile Include="RM_MapComponentShipCover.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_MapComponentShipCover.cs not in csproj")
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    if biome.find(".//modExtensions/li[@Class='RimMandrake.Abyss.RM_AbyssProbeExtension']") is None:
+        bad.append("biome lacks RM_AbyssProbeExtension")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -347,4 +369,6 @@ if __name__ == "__main__":
     print("KRIZZAK static: %s" % ("PASS" if not k else "FAIL " + "; ".join(k)))
     r = dark_check()
     print("DARK static: %s" % ("PASS" if not r else "FAIL " + "; ".join(r)))
-    sys.exit(1 if (f or g or d or e or k or r) else 0)
+    v = cover_check()
+    print("SHIP COVER static: %s" % ("PASS" if not v else "FAIL " + "; ".join(v)))
+    sys.exit(1 if (f or g or d or e or k or r or v) else 0)

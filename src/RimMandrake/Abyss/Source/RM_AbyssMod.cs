@@ -40,6 +40,10 @@ namespace RimMandrake.Abyss
         public static bool unveilingEnabled = true;
         public static bool stormCallEnabled = true;
 
+        // ABYSS_HIDDEN_SHIP_PROBES_1: a landed gravship slowly hides; probes still come. Safe mid-game.
+        public static bool shipCoverEnabled = true;
+        public static bool probesEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -52,6 +56,8 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref darkStrength, "darkStrength", 1f, true);
             Scribe_Values.Look(ref unveilingEnabled, "unveilingEnabled", true, true);
             Scribe_Values.Look(ref stormCallEnabled, "stormCallEnabled", true, true);
+            Scribe_Values.Look(ref shipCoverEnabled, "shipCoverEnabled", true, true);
+            Scribe_Values.Look(ref probesEnabled, "probesEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -89,6 +95,11 @@ namespace RimMandrake.Abyss
 
             list.CheckboxLabeled("Storm giant calls in Witchfire storms", ref stormCallEnabled,
                 "On: some thunder in Witchfire storms is a summ calling, a flash with no lightning, and one may come down and cross the map. Off: ordinary storms.");
+
+            list.CheckboxLabeled("A landed gravship slowly hides", ref shipCoverEnabled,
+                "On: a gravship kept quiet (few lit lamps) in the Abyss slowly drops out of sight; the cover lapses after a while, resets when the engine leaves, and collapses if a probe reports. Off: no cover. Safe mid-game.");
+            list.CheckboxLabeled("Probes hunt the hidden ship", ref probesEnabled,
+                "On: while the ship is hidden, probes come now and then. A probe that keeps a moving colonist or lit lamp in sight reports and the cover collapses. Off: the cover is never tested.");
 
             list.End();
         }
