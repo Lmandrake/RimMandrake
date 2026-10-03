@@ -27,11 +27,26 @@
       <MarketValue>4</MarketValue>
       <Mass>0.05</Mass>
       <Flammability>0.3</Flammability>
+      <Nutrition>0.05</Nutrition>
     </statBases>
     <stackLimit>75</stackLimit>
+    <tickerType>Rare</tickerType>
     <thingCategories>
       <li>AnimalProductRaw</li>
     </thingCategories>
+    <!-- LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1: raw meat to the engine's hunger AI; see Transient/work_VISSLER_20261003.md -->
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>RawTasty</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+      <optimalityOffsetHumanlikes>-30</optimalityOffsetHumanlikes>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>6</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef ParentName="ResourceBase">

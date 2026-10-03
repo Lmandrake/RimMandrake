@@ -267,6 +267,10 @@ class Fake(object):
         return {"success": True, "notFound": missing, "foundCount": len(want) - len(missing)}
 
     def t_get_def(self, defName=None, **k):
+        if defName == "RM_VisslerArm":
+            return {"success": True, "comps": ([] if "arm_not_rotting" in self.broken
+                                               else [{"class": "RimWorld.CompProperties_Rottable"}])
+                    or [{"class": "RimWorld.CompProperties_Forbiddable"}]}
         comps = [{"class": "RimMandrake.EnvironmentalHazards.RM_CompProperties_BodySizeBarrier"}]
         if "thicket_unpatched" not in self.broken:
             comps.append({"class": "RimMandrake.LeaningScrub.RM_CompProperties_Smotherable"})
@@ -443,6 +447,7 @@ BREAKS = {
     "no_lean_ext": "defs.biome_lean_extension",
     "rule_unarmed": "patches.rules_armed",
     "thicket_unpatched": "patches.thicket_smotherable",
+    "arm_not_rotting": "patches.vissler_arm_is_rotting_meat",
     "fuel_unpatched": "patches.dead_venomvine_fuels_fire",
     "setting_missing": "settings.defaults",
     "set_plants_drops": "flora.flora_spawns",

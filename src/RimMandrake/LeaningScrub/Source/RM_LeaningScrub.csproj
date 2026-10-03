@@ -59,6 +59,7 @@
     <Compile Include="RM_VenomvineRooms.cs" />
     <Compile Include="RM_RunwayBloom.cs" />
     <Compile Include="RM_SweetlineStation.cs" />
+    <Compile Include="RM_VisslerArm.cs" />
   </ItemGroup>
 
   <ItemGroup>

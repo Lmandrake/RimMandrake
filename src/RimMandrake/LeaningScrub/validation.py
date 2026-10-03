@@ -65,6 +65,7 @@ DEFAULTS = {
     "leanFireBias": 0.5,
     "drippingRegrowEnabled": True, "crownMobEnabled": True, "runwayBloomEnabled": True,
     "sweetlineStationsEnabled": True, "sweetlineVisitorsEnabled": True, "sweetlineVisitIntervalDays": 8.0,
+    "visslerArmFoodEnabled": True,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -82,6 +83,7 @@ RULES = (
     ("IncidentWorker", "ChanceFactorNow", "postfixes", "RM_WindCalendarPatches.ChanceFactorNow_Postfix"),
     ("JobGiver_AnimalFlee", "TryGiveJob", "postfixes", "RM_TheLeanPatches.AnimalFlee_Postfix"),
     ("Fire", "TrySpread", "prefixes", "RM_TheLeanPatches.TrySpread_Prefix"),
+    ("Thing", "get_IngestibleNow", "postfixes", "RM_VisslerArmPatches.IngestibleNow_Postfix"),
 )
 HARMONY_OWNER = "mandrake.rm.leaningscrub"
 
@@ -552,6 +554,21 @@ def patches_chain(t):
                        str(n).endswith("RM_CompSmotherable") for n in names):
                 _fail("the shared thicket carries no smotherable comp -- the patch matched "
                       "nothing (and logs nothing): %r" % names)
+
+    with _comp(t, "vissler_arm_is_rotting_meat", toggle="visslerArmFoodEnabled"):
+        # LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1: the arm is a vanilla ingestible that rots, so hungry
+        # predators/scavengers/omnivores find it with the engine's own AI. Whether a given hungry animal
+        # walks to it is NOT asserted here (needs a hungry wild animal; unmeasured live by design).
+        if _live(t):
+            r = t.bridge_call("jawa/get_def", defName="RM_VisslerArm", defType="ThingDef")
+            _ok(r, "get_def(RM_VisslerArm)")
+            comps = r.get("comps")
+            if not isinstance(comps, list) or not comps:
+                _unmeasured(t, "get_def returned no readable comps list: %r" % (comps,))
+            names = [c if isinstance(c, str) else (c.get("class") or c.get("compClass") or "")
+                     for c in comps]
+            if not any(str(n).endswith("CompProperties_Rottable") for n in names):
+                _fail("RM_VisslerArm carries no rottable comp: %r" % names)
 
     with _comp(t, "dead_venomvine_fuels_fire"):
         if _live(t):
