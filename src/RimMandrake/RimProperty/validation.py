@@ -288,3 +288,20 @@ def animal_theft_take(t):
         t.expect_not_in_cell_of(sentinel, STEAL_ITEM_DEF)   # left its origin
         t.expect_in_cell_of(thief, STEAL_ITEM_DEF)          # dropped where the thief ended up
         t.screenshot()
+
+
+@suite.chain("claim_erase_api")
+def claim_erase_api(t):
+    """PROPERTY_CLAIM_ERASE_API_1. No site needed: the proof builds its own unspawned items.
+
+    `RM_ClaimEraseProof.Run` records Stolen(X) + BattleLootOrigin(Y) + Purchased(colony) on one item, calls
+    ClearForeignClaims (must return 2 and leave exactly the colony's record), then runs ClearForeignClaimsWhere over a
+    mixed pair (must wipe 2, keep the colony's Inherited) and checks a FactionRecord suspicion entry reads unchanged.
+    Needs the GM-gated `jawa/static_call` tool (JawaBench companion built 52c7de5ba; deploys at the next game DOWN).
+    NOT proven here: save then reload keeping the wipe (UNMEASURED, needs a save round trip).
+    """
+    with t.component("erase_foreign_claims", beyond_toggle=True):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Property.RM_ClaimEraseProof", method="Run", args="")
+        text = str((r or {}).get("result", ""))
+        if not text.startswith("PASS"):
+            raise ExpectationFailed("claim erase proof: %s (raw: %s)" % (text or "no result", r))

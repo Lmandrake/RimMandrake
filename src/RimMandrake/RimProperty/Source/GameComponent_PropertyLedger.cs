@@ -88,6 +88,59 @@ namespace RimMandrake.Property
             list.Records.Add(record);
         }
 
+        // PROPERTY_CLAIM_ERASE_API_1: wipe other parties' stored claims. Generic, no rite knowledge: callers decide when.
+        // Removes every stored record on `thing` whose claimant is not `keep` (the colony); returns how many went.
+        // A Thing whose list empties drops its entry. FactionRecord suspicion is deliberately untouched.
+        public int ClearForeignClaims(Thing thing, ClaimantRef keep)
+        {
+            if (thing == null || !claimRecords.TryGetValue(thing, out ClaimRecordList list))
+            {
+                return 0;
+            }
+            int removed = ClaimWipe.RemoveForeign(list.Records, keep, null);
+            if (list.Records.Count == 0)
+            {
+                claimRecords.Remove(thing);
+            }
+            return removed;
+        }
+
+        // The same over every Thing the ledger holds records for that passes `filter` (null = all). Returns what was
+        // wiped, one entry per removed record, so a caller can write the letter naming each item and whose claim went.
+        public List<WipedClaim> ClearForeignClaimsWhere(System.Func<Thing, bool> filter, ClaimantRef keep)
+        {
+            var wiped = new List<WipedClaim>();
+            var keys = new List<Thing>(claimRecords.Keys);
+            for (int k = 0; k < keys.Count; k++)
+            {
+                Thing thing = keys[k];
+                if (thing == null || (filter != null && !filter(thing)))
+                {
+                    continue;
+                }
+                var gone = new List<ClaimRecord>();
+                ClearForeignClaimsInto(thing, keep, gone);
+                for (int i = 0; i < gone.Count; i++)
+                {
+                    wiped.Add(new WipedClaim { Thing = thing, Claimant = gone[i].Claimant, Basis = gone[i].Basis });
+                }
+            }
+            return wiped;
+        }
+
+        private void ClearForeignClaimsInto(Thing thing, ClaimantRef keep, List<ClaimRecord> removed)
+        {
+            if (!claimRecords.TryGetValue(thing, out ClaimRecordList list))
+            {
+                return;
+            }
+            ClaimWipe.RemoveForeign(list.Records, keep, removed);
+            if (list.Records.Count == 0)
+            {
+                claimRecords.Remove(thing);
+            }
+        }
+
         // --- Faction records -----------------------------------------------
 
         public FactionRecord GetOrCreateFactionRecord(Faction faction)
