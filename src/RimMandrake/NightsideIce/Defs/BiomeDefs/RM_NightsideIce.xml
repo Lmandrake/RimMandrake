@@ -9,8 +9,8 @@
     row dropped: `RSW_CaveLemming` is Star Wars canon (Q11a, owner ruling 2026-09-22) and
     may not ship in the franchise-free RimMandrake tier, so it rides
     src/RimUtinni/UtinniPatches/Patches/WildAnimals_NightsideIce.xml onto this def instead,
-    MayRequire="mandrake.rsw.swbestiary". Everything else below — all 7 `AA_*` rows,
-    every field — is unchanged from the twin. `workerClass` stays the vanilla Core
+    MayRequire="mandrake.rsw.swbestiary". Everything else below — the `AA_*` rows,
+    every field — was unchanged from the twin until the 2026-10-01 eviction (see the wildAnimals note). `workerClass` stays the vanilla Core
     `BiomeWorker_IceSheet`: the twin never named a donor type, so this mod owes no
     `RM_BiomeWorker_NightsideIce` of its own.
 
@@ -168,12 +168,10 @@
          commonality. CLOSED 2026-09-09: set to 0.2 above as a DESIGNED interim, sized
          to vanilla IceSheet, with a quicktest tune owed. -->
     <wildAnimals>
-      <AA_BoulderMit MayRequire="sarg.alphaanimals">0.004</AA_BoulderMit>       <!-- boulder mit - giant, import -->
-      <AA_SummitCrab MayRequire="sarg.alphaanimals">0.004</AA_SummitCrab>       <!-- summit crab - landform-giant, import -->
-      <AA_RedGoo MayRequire="sarg.alphaanimals">0.003</AA_RedGoo>               <!-- red goo - small, import -->
-      <RM_Khorrak MayRequire="mandrake.rm.biomes">0.003</RM_Khorrak>       <!-- terramorph - medium, import -->
-      <AA_Slurrypede MayRequire="sarg.alphaanimals">0.002</AA_Slurrypede>       <!-- slurrypede - medium, import -->
-      <RM_Vozzik MayRequire="mandrake.rm.biomes">0.002</RM_Vozzik>         <!-- tetra slug - giant, import -->
+      <!-- NIGHTSIDEICE_HEAT_DIAL_BUILD_1 row 0 (owner card 2026-10-01, nightsideice_bedazzle_review section 8):
+           the six evicted imports are out (boulder mit, summit crab, red goo, slurrypede, and the terramorph and
+           tetra slug, which had since been ported as RM_Khorrak and RM_Vozzik and stay at their own homes).
+           Tauntaun and wampa ride WildAnimals_NightsideIce.xml (canon, campaign tier) at 0.03. -->
       <!-- ECOSYSTEM_PYRAMID_LAW_1 (owner, 2026-09-20: "50% small"): this roster read
            16.7% small against five giant/medium imports. This addition is already an
            OWNER-RULED "native visitor" in this exact biome's fauna list
