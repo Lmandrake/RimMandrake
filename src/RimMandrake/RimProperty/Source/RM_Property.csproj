@@ -43,6 +43,8 @@
     <Compile Include="ClaimBasis.cs" />
     <Compile Include="ClaimRecord.cs" />
     <Compile Include="ClaimRecordList.cs" />
+    <Compile Include="ClaimWipe.cs" />
+    <Compile Include="RM_ClaimEraseProof.cs" />
     <Compile Include="ClaimResolution.cs" />
     <Compile Include="ClaimDecay.cs" />
     <Compile Include="ClaimEngine.cs" />

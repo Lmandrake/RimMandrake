@@ -211,6 +211,41 @@ namespace RimMandrake.Property.SelfTest
                     "at equal strength and specificity, the MORE RECENT timestamp must win");
             });
 
+            // --------------------------------------------------- ClaimWipe (PROPERTY_CLAIM_ERASE_API_1) ------
+            // Distinct claimants need distinct Faction/Pawn instances; plain `new` works offline (no live Game touched).
+            Case("ClaimWipe_removes_every_foreign_stored_basis_and_keeps_the_colony", () =>
+            {
+                var colony = ClaimantRef.OfCommons(new RimWorld.Faction());
+                var x = ClaimantRef.OfCommons(new RimWorld.Faction());
+                var y = ClaimantRef.OfCommons(new RimWorld.Faction());
+                var list = new List<ClaimRecord>
+                {
+                    new ClaimRecord(x, 1f, ClaimBasis.Stolen, 10),
+                    new ClaimRecord(y, 1f, ClaimBasis.BattleLootOrigin, 20),
+                    new ClaimRecord(colony, 1f, ClaimBasis.Purchased, 30),
+                };
+                var removed = new List<ClaimRecord>();
+                int n = ClaimWipe.RemoveForeign(list, colony, removed);
+                Assert(n == 2, "returned " + n + ", want 2");
+                Assert(list.Count == 1 && list[0].Basis == ClaimBasis.Purchased && list[0].Claimant.Equals(colony), "only the colony's Purchased record survives");
+                Assert(removed.Count == 2, "removed list carries the two wiped records");
+            });
+            Case("ClaimWipe_control_a_list_of_only_the_colony_loses_nothing", () =>
+            {
+                var colony = ClaimantRef.OfCommons(new RimWorld.Faction());
+                var list = new List<ClaimRecord> { new ClaimRecord(colony, 1f, ClaimBasis.Gifted, 1) };
+                Assert(ClaimWipe.RemoveForeign(list, colony, null) == 0 && list.Count == 1, "colony-only list must be untouched");
+                Assert(ClaimWipe.RemoveForeign(null, colony, null) == 0, "null list is a zero, not a throw");
+            });
+            Case("ClaimWipe_empty_after_wipe_means_the_ledger_can_drop_the_entry", () =>
+            {
+                var colony = ClaimantRef.OfCommons(new RimWorld.Faction());
+                var x = ClaimantRef.OfCommons(new RimWorld.Faction());
+                var list = new List<ClaimRecord> { new ClaimRecord(x, 1f, ClaimBasis.Looted, 1) };
+                ClaimWipe.RemoveForeign(list, colony, null);
+                Assert(list.Count == 0, "all foreign: list ends empty");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }
