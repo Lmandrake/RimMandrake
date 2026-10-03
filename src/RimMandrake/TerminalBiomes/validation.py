@@ -697,6 +697,25 @@ if Suite is not None:
                     if int(m.get("rime", 0)) < 1 or int(m.get("crust", 0)) < 1 or m.get("gate") == "accepted":
                         _fail("16 effective days did not rime + crust + gate the hull: %r" % res)
 
+    @suite.chain("grey_lamp_response")
+    def grey_lamp_response(t):
+        """GREYSEA_LAMP_RESPONSE_BUILD_1: on a Grey map with a lit powered lamp >= the radius, burning the lamp past
+        the giant's hours brings the watcher, lays scrape-sign and sets a reefback breaking it; a dark lamp has no clock."""
+        with _comp(t, "burn_brings_watcher_scrape_and_giant", toggle="greyLampGiantEnabled"):
+            if _live(t):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyLampProof",
+                                  method="ProofBurn", args="0")
+                res = str((r or {}).get("result", ""))
+                if not res.startswith("lamps=") or res.startswith("lamps=0"):
+                    _unmeasured(t, "needs an RM_GreySea floor map with a lit powered lamp of glow radius >= 12; proof said %r" % res[:120])
+                else:
+                    r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyLampProof",
+                                      method="ProofBurn", args="9")
+                    res = str((r or {}).get("result", ""))
+                    m = dict(kv.split("=", 1) for kv in res.split(" ") if "=" in kv)
+                    if int(m.get("fessk", 0)) < 1 or int(m.get("scrape", 0)) < 1 or int(m.get("reefback", 0)) < 1:
+                        _fail("9 hours of burn did not bring watcher + scrape + giant: %r" % res)
+
     @suite.chain("settings_restored")
     def settings_restored(t):
         """LAST: every field is back at its shipped (parsed) default; a leaked arm would corrupt the next run."""

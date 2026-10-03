@@ -109,6 +109,16 @@
       </lifeStageAges>
     </race>
     <tradeTags><li>AnimalCommon</li></tradeTags>
+    <modExtensions>
+      <!-- GREYSEA_LAMP_RESPONSE_BUILD_1 layer 1: drawn to a player light on the Grey (RM_BaskInGlow) -->
+      <li Class="RimMandrake.TerminalBiomes.RM_SeekGlowExtension">
+        <mode>drawn</mode>
+        <gate>greyDrawn</gate>
+        <onlyBiome>RM_GreySea</onlyBiome>
+        <seekChancePerCheck>0.12</seekChancePerCheck>
+        <minGlowRadiusToTarget>1.5</minGlowRadiusToTarget>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -415,6 +425,16 @@
       </lifeStageAges>
     </race>
     <tradeTags><li>AnimalUncommon</li></tradeTags>
+    <modExtensions>
+      <!-- GREYSEA_LAMP_RESPONSE_BUILD_1 layer 1: drawn to a player light on the Grey (RM_BaskInGlow) -->
+      <li Class="RimMandrake.TerminalBiomes.RM_SeekGlowExtension">
+        <mode>drawn</mode>
+        <gate>greyDrawn</gate>
+        <onlyBiome>RM_GreySea</onlyBiome>
+        <seekChancePerCheck>0.10</seekChancePerCheck>
+        <minGlowRadiusToTarget>1.5</minGlowRadiusToTarget>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">

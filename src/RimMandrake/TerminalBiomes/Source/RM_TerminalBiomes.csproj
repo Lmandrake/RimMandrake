@@ -99,6 +99,8 @@
     <Compile Include="RM_GenStep_TwilightChannels.cs" />
     <!-- GREYSEA_HULL_CRUST_BUILD_1 -->
     <Compile Include="RM_GreyHullCrust.cs" />
+    <!-- GREYSEA_LAMP_RESPONSE_BUILD_1 -->
+    <Compile Include="RM_GreyLampResponse.cs" />
   </ItemGroup>
 
   <ItemGroup>

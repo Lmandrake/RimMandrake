@@ -34,5 +34,15 @@ namespace RimMandrake.TerminalBiomes
         // Below this radius the target is destroyed outright — design D2b,
         // "destroys it if left."
         public float destroyBelowRadius = 0.3f;
+
+        // GREYSEA_LAMP_RESPONSE_BUILD_1 (danger pass §2.1 deltas 1-2):
+        // "feed" = the suulk's RM_FeedOnGlow; "drawn" = RM_BaskInGlow (go
+        // near, linger, wander off — the lamp is bait, not food).
+        public string mode = "feed";
+        // Which Mod Settings switch gates this race's light-brain:
+        // "suulk" (Twilight, the original) or "greyDrawn" (the Grey's layer 1).
+        public string gate = "suulk";
+        // When set, the brain only acts on a map of this biome.
+        public string onlyBiome;
     }
 }

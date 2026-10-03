@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_Filth_ScrapeLine.xml  TerminalBiomes · GREYSEA_LAMP_RESPONSE_BUILD_1
+     The giant's tell made literal (danger pass §2.2 / §3.2): a scrape-line in the silt.
+     Laid by RM_MapComponent_GreyLampWatch at three quarters of a lamp's burn clock.
+     Shared-by-design with the haarn's smaller trail when that is built (read scrape WIDTH).
+     PLACEHOLDER ART: vanilla dirt cluster, grey. -->
+<Defs>
+  <ThingDef>
+    <defName>RM_Filth_ScrapeLine</defName>
+    <label>scrape-line in the silt</label>
+    <description>A long fresh furrow ploughed through the silt by something enormous, dragged along the edge of the light. Wide. Recent. Something has been reading this lamp.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>2~3</disappearsInDays>
+      <cleaningWorkToReduceThickness>60</cleaningWorkToReduceThickness>
+      <canFilthAttach>false</canFilthAttach>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/LooseGround</texPath>
+      <color>(120,124,126,220)</color>
+      <drawSize>2</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-1</Beauty>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+</Defs>
