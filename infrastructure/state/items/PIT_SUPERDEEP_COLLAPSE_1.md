@@ -545,6 +545,14 @@ retire. Independent now: `DEPTH_FILL_COST_MATRIX_1`, `EXCAVATION_WALL_ART_1`. Wa
 `FLOWWORKS_CHANNEL_OSCILLATION_1`: `LIQUID_BODY_FLUID_IDENTITY_1` → `PIT_FILL_EFFECTS_1`, and the
 liquid half of `FLOWWORKS_DOOR_FAMILY_1`.
 
+## criteria
+
+Written by FOUNDRY's builder 2026-10-03 (the item had none): this is an UMBRELLA and builds nothing
+itself. It closes when every item in `## children` is done or dropped and the `## verify` lines below
+hold. Children done as of 2026-10-03: SUPERDEEP_SEAM_MEASURE_1, SUPERDEEP_HOLDER_RETIRE_1,
+PIT_LEGACY_CODE_RETIRE_1, LADDER_PRISON_DOOR_1 (cf789dc80), PIT_COVER_FALL_REWIRE_1 (9d6cefabd).
+Do not claim this item to build; claim a child.
+
 ## verify
 
 - No `.cs` file under `Source/Pits/` carries a depth concept of its own; depth is
