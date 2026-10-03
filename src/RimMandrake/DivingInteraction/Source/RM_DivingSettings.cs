@@ -180,6 +180,11 @@ namespace RimMandrake.DivingInteraction
         public static bool scaldReturnGalleryEnabled = true;
         // CHILL_RETURN_COMB_LANDMARK_1. WORLDGEN-AFFECTING: new Chill floors may lay the Return Comb (scenery and lore only).
         public static bool chillReturnCombEnabled = true;
+        // CHILL_DIVE_DENSITY_SAMPLER_1. WORLDGEN-AFFECTING: the Chill floor seeds a fixed number of animals drawn by
+        // commonality weight (repeats allowed) instead of one of nearly every species. The number is owed to a live
+        // walk with the owner (leaning 2-4); 3 is a provisional default.
+        public static bool chillDensityDrawEnabled = true;
+        public static int chillDiveAnimalCount = 3;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -216,6 +221,8 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref walkerGrazingEnabled, "walkerGrazingEnabled", true);
             Scribe_Values.Look(ref scaldReturnGalleryEnabled, "scaldReturnGalleryEnabled", true);
             Scribe_Values.Look(ref chillReturnCombEnabled, "chillReturnCombEnabled", true);
+            Scribe_Values.Look(ref chillDensityDrawEnabled, "chillDensityDrawEnabled", true);
+            Scribe_Values.Look(ref chillDiveAnimalCount, "chillDiveAnimalCount", 3);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -289,6 +296,18 @@ namespace RimMandrake.DivingInteraction
                   + "horseshoe of ice-rock cut by black busbars, the return junction of the unfinished planetary "
                   + "dynamo. Scenery and lore only, no puzzle. Floors already generated keep what they have. "
                   + "Off: new floors have none.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Chill: dive meets a few animals by weight (affects floor generation)", ref chillDensityDrawEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor seeds the number of animals "
+                  + "set below, each drawn by its commonality (so common species may repeat and rare ones are "
+                  + "usually absent), instead of one of nearly every species. Floors already generated keep what "
+                  + "they have. Off: the old one-of-each sampler.");
+                if (chillDensityDrawEnabled)
+                {
+                    list.Label("Animals met on a Chill dive: " + chillDiveAnimalCount);
+                    chillDiveAnimalCount = Mathf.RoundToInt(list.Slider(chillDiveAnimalCount, 1f, 8f));
+                }
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,
