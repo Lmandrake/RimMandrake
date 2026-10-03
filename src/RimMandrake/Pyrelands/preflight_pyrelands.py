@@ -57,7 +57,7 @@ PLANTS = ("RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass", "RM_FE_Plant_Scorc
 ANIMALS = ("RM_FireHawk", "RM_FurnaceBeast",
            "RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka",
            "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
-           "RM_Ashwallow")
+           "RM_Ashwallow", "RM_Ullai")
 WEATHERS = ("RM_FE_Weather_AshFall", "RM_FE_Weather_Cinderfall", "RM_FE_BlackRain")
 GROUND = ("RM_FE_Ground_Sand", "RM_FE_Ground_Gravel", "RM_FE_Ground_Soil", "RM_FE_Ground_SoilRich")
 ASH = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep")
@@ -77,6 +77,7 @@ DEFAULTS = {
     "burnLineEnabled": True, "fireHawkSpreadEnabled": True, "furnaceThermalEnabled": True, "furnaceWarmthStrength": 1.0,
     "fireClockEnabled": True, "furnaceWorldMigrationEnabled": True, "furnaceHerdCount": 2,
     "burrowOnFireEnabled": True,
+    "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
     "crossBiomeCoverage": 1.0,
 }

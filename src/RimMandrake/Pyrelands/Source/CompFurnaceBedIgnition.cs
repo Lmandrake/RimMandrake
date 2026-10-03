@@ -90,16 +90,19 @@ namespace RimMandrake.Pyrelands
                 return;
             }
 
+            // PYRELANDS_ULLAI_GIANT_BUILD_1: a bigger beast lies on more ground (classic ratio 1 = 1..2 cells).
+            float ratio = PyrelandsTuning.FurnaceSizeRatio(beast);
             int cells = Rand.RangeInclusive(
-                PyrelandsTuning.FurnaceBedIgnitionMinCells,
-                PyrelandsTuning.FurnaceBedIgnitionMaxCells);
+                UnityEngine.Mathf.RoundToInt(PyrelandsTuning.FurnaceBedIgnitionMinCells * ratio),
+                UnityEngine.Mathf.RoundToInt(PyrelandsTuning.FurnaceBedIgnitionMaxCells * ratio));
+            float spread = UnityEngine.Mathf.Max(1.5f, 1.5f * ratio);
 
             for (int i = 0; i < cells; i++)
             {
                 // i == 0 is the cell it actually slept on; any extra is adjacent.
                 IntVec3 cell = i == 0
                     ? beast.Position
-                    : beast.Position + GenAdj.AdjacentCells[Rand.Range(0, GenAdj.AdjacentCells.Length)];
+                    : beast.Position + GenRadial.RadialPattern[Rand.Range(1, GenRadial.NumCellsInRadius(spread))];
 
                 if (!cell.InBounds(map))
                 {

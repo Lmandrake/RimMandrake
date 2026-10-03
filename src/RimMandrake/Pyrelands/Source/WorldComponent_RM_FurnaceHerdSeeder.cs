@@ -109,7 +109,11 @@ namespace RimMandrake.Pyrelands
             herd.Tile = tile;
             herd.leg = FurnaceHerdLeg.DeepDesert;
 
-            int size = Rand.RangeInclusive(PyrelandsTuning.WorldHerdMinSize, PyrelandsTuning.WorldHerdMaxSize);
+            // PYRELANDS_ULLAI_GIANT_BUILD_1: the kind's own wildGroupSize (1~3 giant, 3~7 classic), so the
+            // world herd matches whichever furnace-beast the settings made.
+            int size = kind.wildGroupSize.max > 0
+                ? kind.wildGroupSize.RandomInRange
+                : Rand.RangeInclusive(PyrelandsTuning.WorldHerdMinSize, PyrelandsTuning.WorldHerdMaxSize);
             int made = 0;
             for (int i = 0; i < size; i++)
             {

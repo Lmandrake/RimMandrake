@@ -51,6 +51,14 @@ namespace RimMandrake.Pyrelands
         private IntVec3 burnCenter = IntVec3.Invalid;
         private bool? isPyrelandsCached;
 
+        // PYRELANDS_ULLAI_GIANT_BUILD_1: where the burn WAS. One burn-centre sample per hour while anything burns,
+        // ten days kept. Ash terrain never reverts (AshLadder.xml), so terrain alone cannot say which black is
+        // fresh; this record can. The ullai graze where it burned about two days ago.
+        private List<int> burnHistTicks = new List<int>();
+        private List<IntVec3> burnHistCells = new List<IntVec3>();
+        public const int BurnHistoryIntervalTicks = 2500;
+        public const int BurnHistoryKeepTicks = 600000;
+
         /// <summary>PYRELANDS_FIRE_CADENCE_1 — the biome's fire clock. Owned here
         /// rather than being its own MapComponent so the biome check, the tick
         /// gate and the save block are paid for once. See PyrelandsFireFront for
@@ -104,6 +112,41 @@ namespace RimMandrake.Pyrelands
 
         public bool AnyBurn => fireCount > 0 && burnCenter.IsValid;
 
+        private void RecordHistory()
+        {
+            if (!burnCenter.IsValid)
+            {
+                return;
+            }
+            int now = Find.TickManager.TicksGame;
+            if (burnHistTicks.Count > 0 && now - burnHistTicks[burnHistTicks.Count - 1] < BurnHistoryIntervalTicks)
+            {
+                return;
+            }
+            burnHistTicks.Add(now);
+            burnHistCells.Add(burnCenter);
+            while (burnHistTicks.Count > 0 && now - burnHistTicks[0] > BurnHistoryKeepTicks)
+            {
+                burnHistTicks.RemoveAt(0);
+                burnHistCells.RemoveAt(0);
+            }
+        }
+
+        /// <summary>Where the burn was about <paramref name="ticksAgo"/> ago: the newest sample at least that
+        /// old, else the oldest sample kept (the freshest black we know of), else Invalid.</summary>
+        public IntVec3 BurnCenterAgo(int ticksAgo)
+        {
+            int cutoff = Find.TickManager.TicksGame - ticksAgo;
+            for (int i = burnHistTicks.Count - 1; i >= 0; i--)
+            {
+                if (burnHistTicks[i] <= cutoff)
+                {
+                    return burnHistCells[i];
+                }
+            }
+            return burnHistCells.Count > 0 ? burnHistCells[0] : IntVec3.Invalid;
+        }
+
         /// <summary>Accumulated player-attributed burning. The fire-raid incident's
         /// gate; reset by the raid it causes.</summary>
         public float ArsonDebt => arsonDebt;
@@ -125,6 +168,14 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref arsonDebt, "arsonDebt", 0f);
             Scribe_Values.Look(ref ticksSinceAnyFire, "ticksSinceAnyFire", 0);
             Scribe_Values.Look(ref lastReseedAttemptTick, "lastReseedAttemptTick", -99999);
+            Scribe_Collections.Look(ref burnHistTicks, "burnHistTicks", LookMode.Value);
+            Scribe_Collections.Look(ref burnHistCells, "burnHistCells", LookMode.Value);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && (burnHistTicks == null || burnHistCells == null
+                || burnHistTicks.Count != burnHistCells.Count))
+            {
+                burnHistTicks = new List<int>();
+                burnHistCells = new List<IntVec3>();
+            }
             fireFront.ExposeData();
         }
 
@@ -186,6 +237,7 @@ namespace RimMandrake.Pyrelands
             burnCenter = count > 0
                 ? new IntVec3(sumX / count, 0, sumZ / count)
                 : IntVec3.Invalid;
+            RecordHistory();
         }
 
         private void AccrueArsonDebt()

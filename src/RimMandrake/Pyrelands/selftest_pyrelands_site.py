@@ -482,7 +482,7 @@ def test_manifests_match_suite():
     v = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(v)
     check("PLANTS == validation.PLANT_MANIFEST", set(P.PLANTS) == set(v.PLANT_MANIFEST))
-    check("ANIMALS == validation.ANIMAL_MANIFEST (15)", set(P.ANIMALS) == set(v.ANIMAL_MANIFEST) and len(P.ANIMALS) == 15)
+    check("ANIMALS == validation.ANIMAL_MANIFEST (16)", set(P.ANIMALS) == set(v.ANIMAL_MANIFEST) and len(P.ANIMALS) == 16)
     check("site isolation == validation ISOLATION_OFF", set(v.ISOLATION_OFF) <= set(S.ISOLATION_OFF),
           (sorted(v.ISOLATION_OFF), sorted(S.ISOLATION_OFF)))
     check("SETTINGS type == validation SETTINGS", P.SETTINGS == v.SETTINGS)
