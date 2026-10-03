@@ -11,7 +11,7 @@
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rm.acousticscanner</li>
+      <li>RimMandrake: Acoustic Scanner</li>
     </mods>
     <match Class="PatchOperationAddModExtension">
       <xpath>/Defs/BiomeDef[defName="RUT_CrackedLands"]</xpath>

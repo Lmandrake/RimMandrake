@@ -5,7 +5,7 @@
 -->
 <Patch>
   <Operation Class="PatchOperationFindMod">
-    <mods><li>mandrake.rut.longhunger</li></mods>
+    <mods><li>RimUtinni: The Long Hunger</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
         <li Class="PatchOperationReplace">
