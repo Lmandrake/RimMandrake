@@ -107,7 +107,7 @@ namespace RimMandrake.DivingInteraction
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            if (map?.Biome == null || map.Biome.defName != "RM_GreySea")
+            if (!RM_SeaFloorIdentity.IsFloorOf(map, "RM_GreySea"))
             {
                 return;
             }

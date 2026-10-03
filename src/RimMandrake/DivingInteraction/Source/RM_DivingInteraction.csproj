@@ -63,6 +63,7 @@
     <Compile Include="BrineEncasementUtility.cs" />
     <Compile Include="MapComponent_BrineCrystallisation.cs" />
     <Compile Include="RM_SeabedLayer.cs" />
+    <Compile Include="RM_SeabedSiteParent.cs" />
     <Compile Include="Patch_SeabedPlantGrowthGuard.cs" />
     <Compile Include="RM_Building_BrineElder.cs" />
     <Compile Include="RM_GameComponent_BrineElders.cs" />

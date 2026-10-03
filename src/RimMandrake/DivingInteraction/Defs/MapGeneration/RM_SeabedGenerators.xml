@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SEABED_FLOOR_GENERATORS_1. The four sea floors as RM_SeabedLayer map generators, chosen per tile
+  by RM_SeabedSiteParent from the floor biome's RM_SeabedFloorExtension.generator.
+
+  Each is its RM_SeaDiveGenerator_* twin (RM_SeaDiveGenerators.xml, the hatch's pocket maps) with
+  three differences: no pocketMapProperties (a layer map takes biome, temperature and mutators from
+  its tile), no RM_PlaceSeaDiveExit (the ship is the only way off), and isUnderground false
+  (MapGenerator roofs every cell with thick rock otherwise, and a gravship cannot land under it).
+  Content gensteps are unchanged; they identify their sea through RM_SeaFloorIdentity, which reads
+  the surface biome above a layer map. The twins go when SEA_DIVE_HATCH_REMOVE_1 lands; until then
+  a content change belongs in BOTH files.
+
+  Not yet carried over (follow-on): the Chill's -110 C ambient (a layer map's temperature is the
+  tile's, mirrored from the surface), and floor plants from the vanilla Plants step (the floor
+  biomes keep plantDensity 0 until the growth-rate guard is proven live), and the hatch maps'
+  RM_SeaFloorHabitat mutator (animalDensityFactor 30, ongoing respawn), which a layer tile lacks.
+-->
+<Defs>
+
+  <MapGeneratorDef>
+    <defName>RM_SeabedGenerator_TheScald</defName>
+    <label>the Scald floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>false</isUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeaFloorBandsExtension">
+        <baseTerrain>RM_SeaFloorGround</baseTerrain>
+        <noiseFrequency>0.08</noiseFrequency>
+        <bands>
+          <li><terrain>RUT_ScaldWaterOceanShallow</terrain><share>0.05</share></li>
+          <li><terrain>RUT_ScaldMargin</terrain><share>0.12</share></li>
+        </bands>
+      </li>
+    </modExtensions>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_ScaldVentField</li>
+      <li>RM_ScaldReturnGallery</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>Plants</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <MapGeneratorDef>
+    <defName>RM_SeabedGenerator_GreySea</defName>
+    <label>the Grey Sea floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>false</isUnderground>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_GreySeaScatterPillars</li>
+      <li>RM_GreySeaScatterDomes</li>
+      <li>RM_GreySeaScatterChimneys</li>
+      <li>RM_GreySeaScatterStatuary</li>
+      <li>RM_GreySeaScatterCrystalWhite</li>
+      <li>RM_GreySeaScatterCrystalPink</li>
+      <li>RM_GreySeaScatterCrystalAmber</li>
+      <li>RM_GreySeaScatterCrystalViolet</li>
+      <li>RM_GreySeaFloorDressing</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>Plants</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <MapGeneratorDef>
+    <defName>RM_SeabedGenerator_TwilightSea</defName>
+    <label>the Twilight Sea floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>false</isUnderground>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>Animals</li>
+      <li>Plants</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <MapGeneratorDef>
+    <defName>RM_SeabedGenerator_TheChill</defName>
+    <label>the Chill floor</label>
+    <disableCallAid>true</disableCallAid>
+    <isUnderground>false</isUnderground>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeaFloorBandsExtension">
+        <baseTerrain>RM_ChillIceBedrock</baseTerrain>
+        <noiseFrequency>0.08</noiseFrequency>
+        <bands>
+          <li><terrain>RM_TheChillDeep</terrain><share>0.05</share></li>
+          <li><terrain>RM_SolidPropane</terrain><share>0.15</share></li>
+        </bands>
+      </li>
+    </modExtensions>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>RM_SeaFloorTerrain</li>
+      <li>RM_SeaFloorFauna</li>
+      <li>RM_ChillReturnComb</li>
+      <li>RM_ChillRimeTerraces</li>
+      <li>Animals</li>
+      <li>Plants</li>
+      <li>RockChunks</li>
+      <li>Fog</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>

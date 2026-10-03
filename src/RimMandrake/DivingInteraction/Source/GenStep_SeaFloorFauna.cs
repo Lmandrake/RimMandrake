@@ -30,7 +30,9 @@ namespace RimMandrake.DivingInteraction
 
         public override void Generate(Map map, GenStepParams parms)
         {
-            BiomeDef biome = map.Biome;
+            // SEABED_FLOOR_GENERATORS_1: on the seabed layer map.Biome is the floor biome (no cast);
+            // the cast lives on the sea above, which SeaBiomeOf returns for both paths.
+            BiomeDef biome = RM_SeaFloorIdentity.SeaBiomeOf(map) ?? map.Biome;
             if (biome == null)
             {
                 return;

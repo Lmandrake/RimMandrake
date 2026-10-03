@@ -46,16 +46,14 @@ namespace RimMandrake.DivingInteraction
         public const string ChillBiomeDefName = "RM_TheChill";
 
         /// <summary>
-        /// True only for the Chill's own seabed POCKET map — never the
+        /// True only for a Chill floor map (the hatch's pocket map or a seabed-layer map) — never the
         /// surface/shore map, even though both carry biome RM_TheChill.
         /// </summary>
         public static bool IsChillSeabedMap(Map map)
         {
-            if (map?.Biome == null || map.Biome.defName != ChillBiomeDefName)
-            {
-                return false;
-            }
-            return map.IsPocketMap;
+            // SEABED_FLOOR_GENERATORS_1: the hatch's pocket map (biome RM_TheChill) or a
+            // seabed-layer map under the Chill (RM_SeaFloorIdentity reads the surface above).
+            return RM_SeaFloorIdentity.IsFloorOf(map, ChillBiomeDefName);
         }
 
         /// <summary>

@@ -185,6 +185,10 @@ namespace RimMandrake.DivingInteraction
         // walk with the owner (leaning 2-4); 3 is a provisional default.
         public static bool chillDensityDrawEnabled = true;
         public static int chillDiveAnimalCount = 3;
+        // SEABED_FLOOR_GENERATORS_1. WORLDGEN-AFFECTING: a ship landing on the sea-floor layer under one of
+        // the four seas generates that sea's floor (terrain, vents, galleries, scatters, fauna). Off: a
+        // generic encounter map, as before.
+        public static bool seabedFloorContentEnabled = true;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -223,6 +227,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillReturnCombEnabled, "chillReturnCombEnabled", true);
             Scribe_Values.Look(ref chillDensityDrawEnabled, "chillDensityDrawEnabled", true);
             Scribe_Values.Look(ref chillDiveAnimalCount, "chillDiveAnimalCount", 3);
+            Scribe_Values.Look(ref seabedFloorContentEnabled, "seabedFloorContentEnabled", true);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -296,6 +301,13 @@ namespace RimMandrake.DivingInteraction
                   + "horseshoe of ice-rock cut by black busbars, the return junction of the unfinished planetary "
                   + "dynamo. Scenery and lore only, no puzzle. Floors already generated keep what they have. "
                   + "Off: new floors have none.");
+
+                list.Gap();
+                list.CheckboxLabeled("Sea-floor layer: each sea generates its own floor (affects floor generation)", ref seabedFloorContentEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A ship landing on the sea floor under the "
+                  + "Scald, the Grey Sea, the Twilight Sea or the Chill finds that sea's own floor: its terrain, "
+                  + "vents, ruins, formations and animals. Floors already generated keep what they have. Off: a "
+                  + "plain encounter map.");
 
                 list.Gap();
                 list.CheckboxLabeled("The Chill: dive meets a few animals by weight (affects floor generation)", ref chillDensityDrawEnabled,
