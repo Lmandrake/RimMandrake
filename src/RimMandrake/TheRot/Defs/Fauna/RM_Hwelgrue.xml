@@ -83,6 +83,9 @@
         <grazeRadius>30</grazeRadius>
         <restRadius>6</restRadius>
       </li>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_GutSwallow">
+        <minHoursToDigest>3</minHoursToDigest>
+      </li>
     </comps>
   </ThingDef>
 
@@ -157,6 +160,81 @@
     <reportString>dredging up TargetA.</reportString>
     <casualInterruptible>true</casualInterruptible>
   </JobDef>
+
+  <JobDef>
+    <defName>RM_GutSwallow</defName>
+    <driverClass>RimMandrake.TheRot.RM_JobDriver_GutSwallow</driverClass>
+    <reportString>swallowing TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <!-- ROT_STILL_ALIVE_SWALLOW_1: knocking from inside, played as one-shots by RM_CompGutSwallow (louder and faster
+       early). PLACEHOLDER AUDIO: vanilla clip folders pitched down (wood punch = knocking, small scratch =
+       an animal scrabbling) until authored knocking/voice audio lands. -->
+  <SoundDef>
+    <defName>RM_GutKnocking</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Impact/PunchHitBuilding/Wood</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>22~30</volumeRange>
+        <pitchRange>0.55~0.7</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_GutKnocking_Weak</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Impact/PunchHitBuilding/Wood</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~20</volumeRange>
+        <pitchRange>0.5~0.6</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_GutKnocking_Failing</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Impact/PunchHitBuilding/Wood</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>8~12</volumeRange>
+        <pitchRange>0.45~0.5</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_GutScrabbling</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>1</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>Pawn/Animal/Melee_Small/Hit_Pawn</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>14~22</volumeRange>
+        <pitchRange>0.5~0.65</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
 
   <!-- The graze branch: spliced into the vanilla animal think tree before wander (RM_ScratchOnSweetline idiom).
        The giver returns null at once for anything that is not a hwelgrue. -->
