@@ -4,3 +4,12 @@
 - FLAWED_MASTERWORK_ENGINE_CHECK_1 closed 4b3d663bf (answered; fallback)
 - ABYSS_INVENTED_CREATURES_TO_RM_1 closed f75f996c6 (live load proof owed; selftest_one_path_seam fails independent of this)
 - LANTERNDEEPS_LANTERN_LIGHT_BUILD_1 closed f54cd3d8e (live proof owed)
+- selftest_one_path_seam fixed: narrative_dictionary_pilot/build.py literal -> game_paths.DUMP_ROOT (real defect from commit 2e036b8c7)
+- LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1: reclaimed unbuilt (closure ~75 defs, too big for pass)
+- SUMP_HUNGRY_GOD_TEXT_1 closed 4022bff00; SUMP_FAUNA_WIRING_BUILD_1 stale-dropped (also fixed broodmother 0.5->0.05 etc weights)
+- ROT_TIER_LEAKS_FIX_1 closed 6ab632b63 (DLL rebuilt; live proof owed)
+- CRACKEDLANDS_PLANT_LIST_OWNED_1 closed 7e3a11674 (FloodedCanyon+Cauldron validations pass; live proof owed; two-home thornwood duplicated not evicted)
+- WEEPINGSTONES_HEAT_WINDHOUR_TEXT_1 closed bb10600cf (live heat proof owed)
+- FEVERWOOD_CROWN_SOUND_HEAT_1 closed 8d477f2e8 (live proof owed)
+- selftest fallout from my items fixed (weepingstones fake world, sound_paths allowlist); run_selftests was 120/122 before this
+- LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1: built 62bd455b2 (66-def closure via port_fauna.py, RM_ in LanternDeeps/Defs/Fauna, art+sounds copied, CreatureBehaviors hard dep, DLL rebuilt, Utinni patch deleted; live load proof owed)
