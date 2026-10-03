@@ -1002,7 +1002,7 @@ that fixed this exact row in the 2026-09-15 QA pass above.
 | IT-series utility droid | Maintenance droid | Duwani Mechanical Products |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/IT-series_utility_droid) |
 | IW-37 pincer loader droid | Labor droid / Class 5 | Cybot Galactica |  | Galactic Republic; Morgan Elsbeth's forces | canon |  | [wiki](https://starwars.fandom.com/wiki/IW-37_pincer_loader_droid) |
 | IX-6 heavy combat droid | Battle droid / Class four droid | Roche Hive Mechanical Apparatus Design and Construction Activity for Those Who Need the Hive's Machines |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/IX-6_heavy_combat_droid) |
-| J-1 proton cannon | Droid artillery |  | c. 21 BBY | Techno Union; Confederacy of Independent Systems | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/J-1_proton_cannon) |
+| J-1 proton cannon | Droid artillery | Techno Union | c. 21 BBY | Techno Union; Confederacy of Independent Systems | canon (+Legends) |  | [wiki](https://starwars.fandom.com/wiki/J-1_proton_cannon) |
 | J4-SN Chef Droid | Cooking droid |  |  | Hutt Cartel | Legends |  | [wiki](https://starwars.fandom.com/wiki/J4-SN_Chef_Droid) |
 | J4X droid | J4X droid |  |  |  | canon |  | [wiki](https://starwars.fandom.com/wiki/J4X_droid) |
 | J8O soldier droid | Battle droid |  |  |  | Legends |  | [wiki](https://starwars.fandom.com/wiki/J8O_soldier_droid) |
