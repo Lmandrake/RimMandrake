@@ -33,7 +33,7 @@
     iconPath is the same placeholder as the A-list — art bill OWED.
   -->
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B1_VividSkin</defName>
     <label>vivid skin</label>
     <labelShortAdj>vivid-skinned</labelShortAdj>
@@ -51,7 +51,7 @@
   <!-- [SIMPLIFIED] Actual lekku geometry needs new body-part art (owed,
        same standing as this repo's other "art bill OWED" genes); the
        mechanical bite here is the lost head coverage. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B2_VestigialLekku</defName>
     <label>vestigial lekku</label>
     <labelShortAdj>lekku-tailed</labelShortAdj>
@@ -65,7 +65,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B3_NictitatingMembrane</defName>
     <label>nictitating membrane</label>
     <labelShortAdj>membrane-eyed</labelShortAdj>
@@ -83,7 +83,7 @@
   <!-- [SIMPLIFIED] The barracks-wide rest penalty needs a room-radius
        broadcaster (new C#, out of scope for one rider); the always-on bite
        kept here is the carrier's own broken concealment. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B4_BanthaSnore</defName>
     <label>bantha snore</label>
     <labelShortAdj>thunder-snoring</labelShortAdj>
@@ -97,7 +97,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B5_GlowFreckles</defName>
     <label>glow freckles</label>
     <labelShortAdj>freckle-glowing</labelShortAdj>
@@ -116,7 +116,7 @@
 
   <!-- [SIMPLIFIED] The real-forecast/hour-long distraction window is
        inherently event-based; kept here as a small permanent trade. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B6_PetrichorGland</defName>
     <label>petrichor gland</label>
     <labelShortAdj>petrichor-glanded</labelShortAdj>
@@ -136,7 +136,7 @@
     </capMods>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B7_PhoticSneeze</defName>
     <label>photic sneeze</label>
     <labelShortAdj>photic-sneezing</labelShortAdj>
@@ -155,7 +155,7 @@
        directly rather than reinvented, matching this build's precedent on
        A3. No forced-condition detour needed here (nothing hunger/rest/
        mood-shaped in this rider's cost). -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B8_SeasonalMolt</defName>
     <label>seasonal molt</label>
     <labelShortAdj>molting</labelShortAdj>
@@ -173,7 +173,7 @@
     </capMods>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B9_ContentedPurr</defName>
     <label>contented purr</label>
     <labelShortAdj>purring</labelShortAdj>
@@ -191,7 +191,7 @@
        (RimWorld colours skin/hair uniformly; there is no per-eye colour
        field on GeneDef) — mechanical bite kept honest, visual is
        description-only until real art exists. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B10_MismatchedEyes</defName>
     <label>mismatched eyes</label>
     <labelShortAdj>mismatched-eyed</labelShortAdj>
@@ -208,7 +208,7 @@
 
   <!-- [SIMPLIFIED] The monthly binge/denial event needs a scheduled job
        interrupt (new C#); kept here as a standing, always-on work cost. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B11_SlimeCraving</defName>
     <label>slime craving</label>
     <labelShortAdj>slime-craving</labelShortAdj>
@@ -222,7 +222,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B12_StartleJawaese</defName>
     <label>startle-Jawaese</label>
     <labelShortAdj>startle-shouting</labelShortAdj>
@@ -236,7 +236,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B13_WebbedToes</defName>
     <label>webbed toes</label>
     <labelShortAdj>web-toed</labelShortAdj>
@@ -253,7 +253,7 @@
 
   <!-- [SIMPLIFIED] True blood-colour rendering (trails, wound VFX) is not
        a GeneDef field; kept as description-only until a real hook exists. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B14_GreenBlood</defName>
     <label>green blood</label>
     <labelShortAdj>green-blooded</labelShortAdj>
@@ -270,7 +270,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B15_EarTufts</defName>
     <label>ear tufts</label>
     <labelShortAdj>tufted-eared</labelShortAdj>
@@ -285,7 +285,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B16_AudibleDigestion</defName>
     <label>audible digestion</label>
     <labelShortAdj>loud-gutted</labelShortAdj>
@@ -299,7 +299,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B17_ColdNose</defName>
     <label>cold nose</label>
     <labelShortAdj>cold-nosed</labelShortAdj>
@@ -314,7 +314,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B18_DullMusk</defName>
     <label>dull musk</label>
     <labelShortAdj>dull-musked</labelShortAdj>
@@ -328,7 +328,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B19_VestigialGills</defName>
     <label>vestigial gills</label>
     <labelShortAdj>gilled</labelShortAdj>
@@ -348,7 +348,7 @@
   <!-- [SIMPLIFIED] The biome-triggered colour flip and its terminator-
        crossing mood spike need a live-tile hook (new C#); kept here as a
        standing beauty cost, honest about the part that stays unmodeled. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B20_SunShyPigment</defName>
     <label>sun-shy pigment</label>
     <labelShortAdj>sun-shy</labelShortAdj>
@@ -365,7 +365,7 @@
   <!-- [SIMPLIFIED] The weekly item-pocketing/discovery beat needs a
        standalone job-interrupt system (new C#, out of scope for one
        rider); kept as the reputational cost alone. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B21_PocketInstinct</defName>
     <label>pocket instinct</label>
     <labelShortAdj>pocketing</labelShortAdj>
@@ -379,7 +379,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B22_ScentMemory</defName>
     <label>scent memory</label>
     <labelShortAdj>scent-keen</labelShortAdj>
@@ -400,7 +400,7 @@
     </capMods>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B23_SomnambulantHoming</defName>
     <label>somnambulant homing</label>
     <labelShortAdj>sleepwalking</labelShortAdj>
@@ -417,7 +417,7 @@
     </modExtensions>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B24_HiccupBubbles</defName>
     <label>hiccup bubbles</label>
     <labelShortAdj>bubble-hiccuping</labelShortAdj>
@@ -438,7 +438,7 @@
        gene's exception: it doubles the Slime-marked penalty rather than
        adding the usual one point (CompTargetEffect_InjectSlimeGenes,
        Source/GeneArchive.cs). -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_B25_TheReek</defName>
     <label>the Reek</label>
     <labelShortAdj>reeking</labelShortAdj>
