@@ -1,0 +1,111 @@
+#!/usr/bin/env python3
+"""LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1 generator (Q12): copies the eight invented
+Lantern Deeps residents and their full def closure out of RimStarWars/SWBestiary
+(BiomesTeamPort) into this free-tier mod, renaming RSW_ -> RM_ and repointing
+texture / sound paths at this mod. Re-runnable: it rewrites Defs/Fauna/*.xml,
+Textures/RM_LanternDeeps/Fauna and Sounds/RM_LanternDeeps/Fauna from the SWBestiary source.
+Run from anywhere:  python3 port_fauna.py
+"""
+import xml.etree.ElementTree as ET, glob, re, os, shutil
+from collections import defaultdict
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SW = os.path.join(HERE, '..', '..', 'RimStarWars', 'SWBestiary')
+SRC = os.path.join(SW, 'Defs', 'BiomesTeamPort')
+SEEDS = ['RSW_BloodropMoth', 'RSW_GlowSlug', 'RSW_BovineBeetle', 'RSW_FacetMothLarvae',
+         'RSW_Gembug', 'RSW_Megapleura', 'RSW_MossBeetleLarvae', 'RSW_ShatterjawBeetle']
+# name that already exists in TheRot as a different def of the same concept: rename, do not reuse
+SPECIAL = {'RSW_ChitinStuff': 'RM_DeepChitinStuff'}
+TEX_OLD, TEX_NEW = 'swanimals/BiomesTeam/', 'RM_LanternDeeps/Fauna/'
+SND_OLD, SND_NEW = 'BiomesTeam/BMT_Caverns/Animals/', 'RM_LanternDeeps/Fauna/'
+
+defs = defaultdict(list)
+for f in sorted(glob.glob(os.path.join(SRC, '*', '*.xml'))):
+    grp = os.path.basename(os.path.dirname(f))
+    for d in ET.parse(f).getroot():
+        n = d.findtext('defName')
+        if n: defs[n].append((grp, d))
+        if d.get('Name'): defs['@' + d.get('Name')].append((grp, d))
+
+seen, stack = set(), list(SEEDS)
+while stack:
+    n = stack.pop()
+    if n in seen or n not in defs: continue
+    seen.add(n)
+    for grp, d in defs[n]:
+        if d.get('ParentName'): stack.append('@' + d.get('ParentName'))
+        for t in set(re.findall(r'[A-Za-z_][A-Za-z0-9_]*', ET.tostring(d, encoding='unicode'))):
+            if t in defs and t not in seen: stack.append(t)
+
+names = sorted({n.lstrip('@') for n in seen}, key=len, reverse=True)
+def newname(n): return SPECIAL.get(n, 'RM_' + n[4:])
+rx = re.compile(r'\b(' + '|'.join(re.escape(n) for n in names) + r')\b')
+unres = {t for n in seen for _, d in defs[n]
+         for t in re.findall(r'RSW_[A-Za-z0-9_]+', ET.tostring(d, encoding='unicode')) if t not in names}
+assert not unres, unres
+
+tex_src = os.path.join(SW, 'Textures')
+snd_src = os.path.join(SW, 'Sounds')
+out_defs = os.path.join(HERE, 'Defs', 'Fauna')
+out_tex = os.path.join(HERE, 'Textures', 'RM_LanternDeeps', 'Fauna')
+out_snd = os.path.join(HERE, 'Sounds', 'RM_LanternDeeps', 'Fauna')
+for p in (out_defs, out_tex, out_snd):
+    shutil.rmtree(p, ignore_errors=True); os.makedirs(p)
+
+copied = {'tex': 0, 'snd': 0}
+def copy_tex(path):
+    base = os.path.join(tex_src, path)
+    dst = os.path.join(tex_src, path)
+    if os.path.isdir(base):
+        files = [(os.path.join(base, f), f) for f in os.listdir(base)]
+        rel = path[len(TEX_OLD):]
+        for s, f in files:
+            os.makedirs(os.path.join(out_tex, rel), exist_ok=True)
+            shutil.copy2(s, os.path.join(out_tex, rel, f)); copied['tex'] += 1
+        return
+    d, b = os.path.split(base)
+    hits = [f for f in os.listdir(d) if f == b + '.png' or f.startswith(b + '_')]
+    assert hits, 'no texture for ' + path
+    rel = os.path.dirname(path[len(TEX_OLD):])
+    os.makedirs(os.path.join(out_tex, rel), exist_ok=True)
+    for f in hits:
+        shutil.copy2(os.path.join(d, f), os.path.join(out_tex, rel, f)); copied['tex'] += 1
+def copy_snd(path):
+    base = os.path.join(snd_src, path)
+    assert os.path.isdir(base), base
+    rel = path[len(SND_OLD):]
+    os.makedirs(os.path.join(out_snd, rel), exist_ok=True)
+    for f in os.listdir(base):
+        shutil.copy2(os.path.join(base, f), os.path.join(out_snd, rel, f)); copied['snd'] += 1
+
+groups = defaultdict(list)
+order = [n for n in seen]
+emitted = set()
+for grp_file in sorted(glob.glob(os.path.join(SRC, '*', '*.xml'))):
+    grp = os.path.basename(os.path.dirname(grp_file))
+    for d in ET.parse(grp_file).getroot():
+        n = d.findtext('defName'); a = d.get('Name')
+        if not ((n and n in seen) or (a and '@' + a in seen)): continue
+        for e in d.iter():
+            t = (e.text or '').strip()
+            if e.tag == 'texPath' and t.startswith(TEX_OLD):
+                copy_tex(t); e.text = TEX_NEW + t[len(TEX_OLD):]
+            elif e.tag == 'clipFolderPath' and t.startswith(SND_OLD):
+                copy_snd(t); e.text = SND_NEW + t[len(SND_OLD):]
+            elif e.text and 'RSW_' in e.text:
+                e.text = rx.sub(lambda m: newname(m.group(1)), e.text)
+            if e.tag in names: e.tag = newname(e.tag)
+            for k, v in list(e.attrib.items()):
+                if 'RSW_' in v: e.set(k, rx.sub(lambda m: newname(m.group(1)), v))
+        groups[grp].append(d)
+        # tail text removed on re-indent
+for grp, ds in groups.items():
+    root = ET.Element('Defs')
+    root.append(ET.Comment(' Generated by port_fauna.py (LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1) from SWBestiary '
+                           'BiomesTeamPort/%s: RSW prefix to RM prefix. Edit the generator or hand-own this file; do not mix. ' % grp))
+    for d in ds: root.append(d)
+    ET.indent(root, space='  ')
+    ET.ElementTree(root).write(os.path.join(out_defs, 'RM_LanternDeeps_Fauna_%s.xml' % grp),
+                               encoding='utf-8', xml_declaration=True)
+bad = [p for p in glob.glob(out_defs + '/*.xml') if 'RSW_' in open(p, encoding='utf8').read()]
+print('defs', len(seen), 'groups', {g: len(v) for g, v in groups.items()}, 'copied', copied, 'RSW left in', bad)

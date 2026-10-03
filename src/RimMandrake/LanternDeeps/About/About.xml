@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>Ships the persistent underground "Lantern Deeps" cave-map dungeon layer (LANTERN_DEEPS_INJECTION_1, design/Jawa/worldbuilding/biomes/the_lantern_deeps.md): two entrance buildings - a natural lanternstone emergence and a ruined mineshaft - that appear on qualifying nightside/cold-biome maps and, when entered, generate a permanent pocket map.
 
-As of CAVERNS_PARITY_BUILD_1 the pocket map is entirely OURS: the RM_LanternDeeps biome, the RM_DeepCalm weather, the lanternstone floor and walls, the four lanternstone formation sizes with their own scatter GenStep, the sowable lanternstone line and eleven cave plants all ship here. Nothing is borrowed from Biomes! Caverns any more. Resident fauna points at the RSW_* ports in RimStarWars: Bestiary, which is a soft dependency - a Deep with Bestiary absent is empty of animals but otherwise whole.
+As of CAVERNS_PARITY_BUILD_1 the pocket map is entirely OURS: the RM_LanternDeeps biome, the RM_DeepCalm weather, the lanternstone floor and walls, the four lanternstone formation sizes with their own scatter GenStep, the sowable lanternstone line and eleven cave plants all ship here. Nothing is borrowed from Biomes! Caverns any more. The eight invented residents (drinker, glowbulb, grabber, soulchime, gembug, megapleura, moss grub, shatterjaw) are owned RM_ defs in Defs/Fauna, so the free Deep is populated and the darkness mechanic draws predators with no Star Wars mod present.
 
 Also ships the darkness mechanic (carried light draws what lives down there) and a full Mod Settings screen: per-entrance toggles and rates, the darkness mechanic and its sensitivity, lanternstone formation density, and cave flora on/off.</description>
 
@@ -19,10 +19,16 @@ Also ships the darkness mechanic (carried light draws what lives down there) and
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
     </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+      <steamWorkshopUrl />
+    </li>
   </modDependencies>
 
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>mandrake.rm.creaturebehaviors</li>
     <li>m00nl1ght.GeologicalLandforms</li>
     <li>det.epochspyrinth</li>
     <!-- LANTERNDEEPS_RM_MOD_BUILD_1 (2026-09-25): guy762.mm.kotorcore and
