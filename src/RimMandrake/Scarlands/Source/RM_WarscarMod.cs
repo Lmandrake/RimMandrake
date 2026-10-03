@@ -34,6 +34,13 @@ namespace RimMandrake.Scarlands
         public static float oldLineDamageFactor = 1f;      // applied at game start
         public static float oldLineCooldownFactor = 1f;    // applied at game start
 
+        // WARSCAR_TOTCHAK_WAKES_1 toggles.
+        public static bool totchakEnabled = true;           // totchak spawns dormant in walls and wakes
+        public static bool totchakEatsPlayerWalls = true;   // ruled default on
+        public static float totchakWakeRadius = 12f;        // demolition wake radius (cells)
+        public static float totchakBiteScale = 1f;          // wall-eating damage scale
+        public static float totchakGrazeDays = 8f;          // awake days before it lies down again
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -47,6 +54,11 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref turretRefitEnabled, "turretRefitEnabled", true);
             Scribe_Values.Look(ref oldLineDamageFactor, "oldLineDamageFactor", 1f);
             Scribe_Values.Look(ref oldLineCooldownFactor, "oldLineCooldownFactor", 1f);
+            Scribe_Values.Look(ref totchakEnabled, "totchakEnabled", true);
+            Scribe_Values.Look(ref totchakEatsPlayerWalls, "totchakEatsPlayerWalls", true);
+            Scribe_Values.Look(ref totchakWakeRadius, "totchakWakeRadius", 12f);
+            Scribe_Values.Look(ref totchakBiteScale, "totchakBiteScale", 1f);
+            Scribe_Values.Look(ref totchakGrazeDays, "totchakGrazeDays", 8f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -72,6 +84,18 @@ namespace RimMandrake.Scarlands
             oldLineDamageFactor = list.Slider(oldLineDamageFactor, 0.25f, 3f);
             list.Label("Old-line turret cooldown: x" + oldLineCooldownFactor.ToString("0.00") + " (applies after restart)");
             oldLineCooldownFactor = list.Slider(oldLineCooldownFactor, 0.25f, 3f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Totchak (wall colossus)", ref totchakEnabled,
+                "A totchak sleeps in a run of ruin wall, wakes to demolition, eats walls, and lies down again. Affects new maps.");
+            list.CheckboxLabeled("Totchak eats player walls", ref totchakEatsPlayerWalls,
+                "When no ruin wall is in reach, a woken totchak eats your walls.");
+            list.Label("Totchak wake radius: " + totchakWakeRadius.ToString("0") + " cells");
+            totchakWakeRadius = list.Slider(totchakWakeRadius, 4f, 30f);
+            list.Label("Totchak wall-eating damage: x" + totchakBiteScale.ToString("0.00"));
+            totchakBiteScale = list.Slider(totchakBiteScale, 0.25f, 4f);
+            list.Label("Totchak grazing days before it lies down: " + totchakGrazeDays.ToString("0.0"));
+            totchakGrazeDays = list.Slider(totchakGrazeDays, 1f, 30f);
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");

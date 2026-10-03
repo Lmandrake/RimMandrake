@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Sleep-while-dormant / lie-down, then wall-eating, then the stock Animal tree (graze, wander). -->
+  <ThinkTreeDef>
+    <defName>RM_Totchak</defName>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.Scarlands.JobGiver_TotchakLieDown" />
+        <li Class="RimMandrake.Scarlands.JobGiver_TotchakGnaw" />
+        <li Class="ThinkNode_Subtree"><treeDef>Animal</treeDef></li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+</Defs>

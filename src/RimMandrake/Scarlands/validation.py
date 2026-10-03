@@ -25,7 +25,8 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 NS = "RimMandrake.Scarlands."
 SETTINGS_TYPE = NS + "RM_WarscarSettings"
-DEFAULTS = {"turretTrackingEnabled": True, "turretRefitEnabled": True,
+DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWakeRadius": 12.0,
+            "totchakBiteScale": 1.0, "totchakGrazeDays": 8.0, "turretTrackingEnabled": True, "turretRefitEnabled": True,
             "oldLineDamageFactor": 1.0, "oldLineCooldownFactor": 1.0}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
@@ -55,6 +56,34 @@ def static_checks():
         bad.append("old-line turret is not long range")
     if float(turret.findtext("building/turretBurstCooldownTime")) < 10:
         bad.append("old-line turret cooldown is not long")
+    # WARSCAR_TOTCHAK_WAKES_1
+    csproj = open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read()
+    if 'Compile Include="RM_Totchak.cs"' not in csproj:
+        bad.append("RM_Totchak.cs missing from RM_Warscar.csproj")
+    if "0Harmony" not in csproj:
+        bad.append("csproj has no Harmony reference (demolition postfixes need it)")
+    tc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Totchak.cs")).read())
+    for needle in ("Mineable", "GenExplosion", "DestroyMode.Deconstruct", "All.Count == 0", "totchakEatsPlayerWalls",
+                   "FindWall(pawn, false)", "ToSleep"):
+        if needle not in tc:
+            bad.append("RM_Totchak.cs lacks %s" % needle)
+    if tc.index("FindWall(pawn, false)") > tc.index("FindWall(pawn, true)"):
+        bad.append("player walls are searched before ruin walls")
+    race = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Totchak.xml")).getroot()
+    rn = [e.findtext("defName") + ":" + e.tag for e in race]
+    for n in ("RM_Totchak:ThingDef", "RM_Totchak:PawnKindDef"):
+        if n not in rn:
+            bad.append("def %s missing" % n)
+    thing = [e for e in race if e.tag == "ThingDef"][0]
+    if thing.findtext("comps/li[@Class='CompProperties_CanBeDormant']/startsDormant") != "true":
+        bad.append("totchak does not start dormant")
+    if thing.findtext("race/thinkTreeMain") != "RM_Totchak":
+        bad.append("totchak does not use its think tree")
+    for f, root in (("ThinkTreeDefs/RM_ThinkTree_Totchak.xml", "ThinkTreeDef"), ("JobDefs/RM_TotchakJobs.xml", "JobDef"),
+                    ("GenStepDefs/RM_TotchakInWall.xml", "GenStepDef")):
+        ET.parse(os.path.join(HERE, "Defs", *f.split("/")))
+    if "RM_TotchakInWall" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("biome does not run the RM_TotchakInWall genstep")
     p = ET.parse(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml")).getroot()
     txt = open(os.path.join(HERE, "Patches", "Patches_BrokenTurretAim.xml")).read()
     for b in BROKEN:
@@ -72,7 +101,7 @@ def static_checks():
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["turretTrackingEnabled", "turretRefitEnabled"]
+    suite.toggles = ["turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
 
     def _set(t, field, value):
         t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=field,
@@ -159,6 +188,21 @@ def _build_suite():
                     raise ExpectationFailed("turretRefitEnabled did not take: %r" % got)
             finally:
                 _restore(t, "turretRefitEnabled")
+
+    @suite.chain("totchak_wakes")
+    def totchak_wakes(t):
+        with t.component("totchak_defs_resolve", toggle="totchakEnabled"):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Totchak", fields="defName", limit=2)
+            if t.session is None:
+                return
+            if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                raise ExpectationFailed("RM_Totchak did not resolve live: %r" % r)
+        with t.component("demolition_wake_and_wall_eating_order", toggle="totchakEatsPlayerWalls"):
+            if t.session is None:
+                return
+            # State reads need a Warscar quicktest with ruins; owner/FOUNDRY live round (criteria 1-4).
+            raise ExpectationFailed("UNMEASURED: dormant placement, wake radius, ruin-before-player wall order "
+                                    "and lie-down need a live Warscar map")
 
     return suite
 
