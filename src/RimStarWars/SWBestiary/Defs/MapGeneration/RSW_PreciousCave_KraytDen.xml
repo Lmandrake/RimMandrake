@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_CAVE_TIER_ROWS_1: the krayt den row of the Stillsand precious-cave table (RSW tier:
+     krayt is canon IP). Class and table are RM_Stillsand's (mandrake.rm.biomes); absent => def dropped.
+     A greater krayt itself (rare, the quest set piece of STILLSAND_EVENT_CREATURES_1 section 5), or its
+     old den with the skull and the pearl. -->
+<Defs>
+  <RimMandrake.Stillsand.RM_PreciousCaveDef MayRequire="mandrake.rm.biomes">
+    <defName>RSW_PreciousCave_KraytDen</defName>
+    <label>krayt den</label>
+    <description>A greater krayt dragon's den: the dragon itself, or its old den with a skull and a pearl.</description>
+    <tier>RSW</tier>
+    <weight>0.6</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Either">
+        <chanceA>0.25</chanceA>
+        <a>
+          <li Class="RimMandrake.Stillsand.RM_CaveElement_Pawns">
+            <kind>RSW_GreaterKraytDragon</kind>
+            <count>1</count>
+            <place>back</place>
+          </li>
+        </a>
+        <b>
+          <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+            <thing>RSW_KraytDragonSkull</thing>
+            <place>back</place>
+          </li>
+          <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+            <thing>RSW_KraytPearl</thing>
+            <place>back</place>
+          </li>
+        </b>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+</Defs>

@@ -750,6 +750,43 @@ def defs_chain(t):
             if not _same(_get_setting(t, "geophoneRadius"), 20.0):
                 _fail("geophoneRadius is not at its shipped default 20")
 
+    with _comp(t, "cave_tier_rows"):
+        # STILLSAND_CAVE_TIER_ROWS_1: the krayt den, sarlacc seep and debt cave rows live in their own
+        # tier mods; with all tiers loaded the Mod Settings list eight rows. Offline: each file must
+        # name its row, its things must be defined where they live, and the table must total eight.
+        import re as _re3
+        src = os.path.abspath(os.path.join(HERE, "..", ".."))
+        rows = {
+            "RSW_PreciousCave_KraytDen": os.path.join(src, "RimStarWars", "SWBestiary", "Defs", "MapGeneration", "RSW_PreciousCave_KraytDen.xml"),
+            "RSW_PreciousCave_SarlaccSeep": os.path.join(src, "RimStarWars", "Sarlacc", "Defs", "MapGeneration", "RSW_PreciousCave_SarlaccSeep.xml"),
+            "RUT_PreciousCave_DebtCave": os.path.join(src, "RimUtinni", "UtinniPatches", "Defs", "MapGeneration", "RUT_PreciousCave_DebtCave.xml"),
+        }
+        total = len(_re3.findall(r"<RimMandrake\.Stillsand\.RM_PreciousCaveDef[ >]",
+                                 open(os.path.join(HERE, "Defs", "MapGeneration", "RM_PreciousCaves.xml"), encoding="utf-8").read()))
+        for name, path in rows.items():
+            if not os.path.isfile(path):
+                _fail("%s: row file missing at %s" % (name, path))
+                continue
+            x = open(path, encoding="utf-8").read()
+            if "<defName>%s</defName>" % name not in x or 'MayRequire="mandrake.rm.biomes"' not in x:
+                _fail("%s: row def or its mandrake.rm.biomes gate is missing" % name)
+            total += 1
+        if total != 8:
+            _fail("precious table has %d rows, expected 8" % total)
+        tree = os.path.join(src, "RimStarWars")
+        for d, where in (("RSW_KraytDragonSkull", "SWBestiary"), ("RSW_KraytPearl", "SWBestiary"),
+                         ("RSW_GreaterKraytDragon", "SWBestiary"), ("RSW_DeepDesertSeep", "Sarlacc")):
+            hit = False
+            for root, _, files in os.walk(os.path.join(tree, where, "Defs")):
+                for f in files:
+                    if f.endswith(".xml") and "<defName>%s</defName>" % d in open(os.path.join(root, f), encoding="utf-8").read():
+                        hit = True
+            if not hit:
+                _fail("%s is not defined in %s" % (d, where))
+        csp = open(os.path.join(HERE, "Source", "RM_Stillsand.csproj"), encoding="utf-8").read()
+        if "RM_CaveTierElements.cs" not in csp:
+            _fail("RM_CaveTierElements.cs is not in the csproj Compile list")
+
     with _comp(t, "cave_place_defs"):
         # STILLSAND_CAVE_AS_PLACE_1: wall, drip source, tribal mark, drip sound must resolve; the drip
         # clip must exist on disk; the grotto must use the wall ring (no floor biosilica stacks) and
