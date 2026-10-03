@@ -10,8 +10,8 @@
 
   `RM_Murrin` (roster row 2g, the pool fish) is NOT authored here — it
   already exists as STOCKED_POOL_BUILD_1's own def
-  (RM_StockedPoolFauna.xml, this same mod) and the fauna roster explicitly
-  carries it to FISH_BY_BIOME_1 rather than casting it in this sitting.
+  (RM_StockedPoolFauna.xml, this same mod) and is wired into the biome's
+  wildAnimals and fishTypes by WEEPINGSTONES_MURRIN_CATCH_WIRING_1.
 
   Placeholder art only (marked, not a considered choice — same precedent as
   RM_StockedPoolFauna.xml): every row below reuses a vanilla Core body

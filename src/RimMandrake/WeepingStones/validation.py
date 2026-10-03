@@ -612,11 +612,13 @@ def biome_roster(t):
         # in wildAnimals, so what is fished is also alive in the pool.
         if _live(t):
             _need_parse(t)
-            if len(CATCH_KINDS) < 6:
-                _fail("source parse found %d stocked catch items, expected 6" % len(CATCH_KINDS))
+            if len(CATCH_KINDS) < 7:
+                _fail("source parse found %d stocked catch items, expected 7 (murrin included)" % len(CATCH_KINDS))
             dead = [k for k in CATCH_KINDS if box["animals"].get(k) is None]
             if dead:
                 _fail("catch items with no living pawn on the biome roster: %s" % dead)
+            if "RM_Murrin" not in CATCH_KINDS:
+                _fail("RM_MurrinCatch missing from the source parse (WEEPINGSTONES_MURRIN_CATCH_WIRING_1)")
 
     with _comp(t, "fish_types_wired", independent=True):
         rows, missing = _get_defs(t, ["BiomeDef/%s" % BIOME], fields="fishTypes,maxFishPopulation", deep=True)

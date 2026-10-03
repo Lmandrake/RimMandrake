@@ -33,6 +33,27 @@
 <Defs>
 
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RM_MurrinCatch</defName>
+    <label>murrin</label>
+    <description>A hand-length pool fish, deep-keeled, one tall dorsal comb-fin still folding. Gentle in the net and gentle on the plate.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Small</texPath>
+      <color>(150, 140, 110)</color>
+    </graphicData>
+    <statBases>
+      <Nutrition>0.10</Nutrition>
+      <MarketValue>3</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_SkarrinCatch</defName>
     <label>skarrin</label>
     <description>A silver arc netted mid-air at wind-hour — the one catch you make above the water. A missed net is a bite.</description>
