@@ -2479,3 +2479,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROT_GUT_MOTHER_VAT_1","ts":"2026-10-03T20:07:29Z","tsn":1791058049654909378}
 {"seat":"FOUNDRY","event":"start","id":"ROT_GUT_MOTHER_VAT_1","ts":"2026-10-03T20:07:30Z","tsn":1791058050236527720}
 {"seat":"FOUNDRY","event":"close","id":"ROT_GUT_MOTHER_VAT_1","sha":"3a36b9d9b114","ts":"2026-10-03T20:13:12Z","tsn":1791058392949020311}
+{"seat":"FOUNDRY","event":"file","id":"ROT_NAVIGATOR_CAMPAIGN_TILES_1","title":"Swallowed Navigator campaign tiles: name the carrier's Rot tile and the log's salvage-site tiles, then patch","kind":"decision","target":"v1","needs":"owner","spec":"infrastructure/state/items/ROT_NAVIGATOR_CAMPAIGN_TILES_1.md","caused_by":"ROT_NAVIGATOR_LOG_SITES_1","for":"BENCH","ts":"2026-10-03T20:15:52Z","tsn":1791058552861643462}
+{"seat":"FOUNDRY","event":"claim","id":"ROT_NAVIGATOR_LOG_SITES_1","ts":"2026-10-03T20:15:56Z","tsn":1791058556328568308}
+{"seat":"FOUNDRY","event":"start","id":"ROT_NAVIGATOR_LOG_SITES_1","ts":"2026-10-03T20:15:56Z","tsn":1791058556836594595}
+{"seat":"FOUNDRY","event":"close","id":"ROT_NAVIGATOR_LOG_SITES_1","sha":"1e940911ea6a","ts":"2026-10-03T20:17:25Z","tsn":1791058645733887482}
