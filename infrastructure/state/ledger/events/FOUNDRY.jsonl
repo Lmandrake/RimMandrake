@@ -2329,3 +2329,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"ROT_WOUND_SHARING_WIRING_1","ts":"2026-10-03T16:42:51Z","tsn":1791045771796503625}
 {"seat":"FOUNDRY","event":"start","id":"ROT_WOUND_SHARING_WIRING_1","ts":"2026-10-03T16:42:52Z","tsn":1791045772336371647}
 {"seat":"FOUNDRY","event":"file","id":"BIOME_VISUAL_BEDAZZLE_PASS_1","title":"Visual bedazzle pass on every biome (ground, colour, density), AFTER all biomes are green-code, art-complete, in the single biome mod, with basic Northstar coverage","kind":"design","target":"v1","needs":"owner","for":"BENCH","ts":"2026-10-03T16:43:41Z","tsn":1791045821804667244}
+{"seat":"FOUNDRY","event":"close","id":"ROT_WOUND_SHARING_WIRING_1","sha":"8d2f36142f29","ts":"2026-10-03T16:44:41Z","tsn":1791045881092409549}
