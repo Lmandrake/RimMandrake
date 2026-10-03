@@ -145,6 +145,57 @@ def durrgak_check():
     return bad
 
 
+def krizzak_check():
+    """Offline: krizzak flight state (MaxFlightTime>0 + flags), flip-book frames, comp, toggle, roster row, csproj."""
+    bad = []
+    root = _defs("ThingDefs_Races/RM_Krizzak.xml")
+    thing = next((d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_Krizzak"), None)
+    kind = next((d for d in root.iter("PawnKindDef") if d.findtext("defName") == "RM_Krizzak"), None)
+    if thing is None or kind is None:
+        return ["missing def: thing=%s kind=%s" % (thing is not None, kind is not None)]
+    if kind.findtext("race") != "RM_Krizzak":
+        bad.append("PawnKind race != RM_Krizzak")
+    # flight is a STAT (Pawn_FlightTracker.CanEverFly = MaxFlightTime > 0), never a bool or a render node
+    try:
+        mft = float(thing.findtext("statBases/MaxFlightTime"))
+    except (TypeError, ValueError):
+        mft = 0.0
+    if not mft > 0:
+        bad.append("MaxFlightTime must be > 0 (CanEverFly reads the stat)")
+    if thing.find("statBases/FlightCooldown") is None:
+        bad.append("FlightCooldown missing")
+    if not float(thing.findtext("race/flightSpeedFactor") or 0) > 0:
+        bad.append("race flightSpeedFactor missing")
+    if "Spastic" in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Krizzak.xml")).read().replace("NEVER a Spastic", ""):
+        bad.append("Spastic wing render node is forbidden")
+    # flip-book: <prefix><N>_<dir> for N=1..count, dirs south/east/north
+    prefix = kind.findtext("flyingAnimationFramePathPrefix")
+    count = int(kind.findtext("flyingAnimationFrameCount") or 0)
+    if not prefix or count < 1:
+        bad.append("flip-book prefix/count missing")
+    else:
+        for n in range(1, count + 1):
+            for f in ("south", "east", "north"):
+                if not os.path.isfile(os.path.join(HERE, "Textures", "%s%d_%s.png" % (prefix, n, f))):
+                    bad.append("missing flight frame %s%d_%s.png" % (prefix, n, f))
+    for tex in {l.findtext("bodyGraphicData/texPath") for l in kind.iter("li") if l.find("bodyGraphicData") is not None}:
+        for f in ("south", "east", "north"):
+            if not os.path.isfile(os.path.join(HERE, "Textures", "%s_%s.png" % (tex, f))):
+                bad.append("missing facing %s_%s.png" % (tex, f))
+    if thing.find("comps/li[@Class='RimMandrake.Abyss.CompProperties_Krizzak']") is None:
+        bad.append("krizzak comp missing")
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    wa = biome.find(".//wildAnimals/RM_Krizzak")
+    if wa is None or not float(wa.text) > 0:
+        bad.append("RM_Abyss <wildAnimals> lacks <RM_Krizzak>commonality</RM_Krizzak>")
+    src = os.path.join(HERE, "Source")
+    if 'Compile Include="RM_CompKrizzak.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read() or not os.path.isfile(os.path.join(src, "RM_CompKrizzak.cs")):
+        bad.append("RM_CompKrizzak.cs not compiled or missing")
+    if "krizzakLightEatingEnabled" not in open(os.path.join(src, "RM_AbyssMod.cs")).read():
+        bad.append("Mod Settings toggle krizzakLightEatingEnabled missing")
+    return bad
+
+
 def etchfall_check():
     """Offline: tholin, both chemfuel recipes (tholin + gill-ash), erosion comp, slider, csproj."""
     bad = []
@@ -219,6 +270,15 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
+    @suite.chain("krizzak_defs_resolve")
+    def krizzak_defs_resolve(t):
+        """Live: the krizzak defs loaded. Flight itself is proved by a Pawn_FlightTracker state read with the owner present, never a visual hunt."""
+        with t.component("krizzak_defs_loaded", beyond_toggle=True):
+            for d in ("ThingDef/RM_Krizzak", "PawnKindDef/RM_Krizzak"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
 except ImportError:
     suite = None
 
@@ -231,4 +291,6 @@ if __name__ == "__main__":
     print("DURRGAK static: %s" % ("PASS" if not d else "FAIL " + "; ".join(d)))
     e = etchfall_check()
     print("ETCHFALL static: %s" % ("PASS" if not e else "FAIL " + "; ".join(e)))
-    sys.exit(1 if (f or g or d or e) else 0)
+    k = krizzak_check()
+    print("KRIZZAK static: %s" % ("PASS" if not k else "FAIL " + "; ".join(k)))
+    sys.exit(1 if (f or g or d or e or k) else 0)

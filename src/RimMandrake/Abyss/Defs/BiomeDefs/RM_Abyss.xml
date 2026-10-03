@@ -99,6 +99,7 @@
     <wildAnimals>
       <RM_Durrgak>0.4</RM_Durrgak>  <!-- ABYSS_DURRGAK_BUILD_1: the placer; this biome only -->
       <RM_Gharrek>0.6</RM_Gharrek>  <!-- ABYSS_GHARREK_BUILD_1: gust-feeder, base of the web; this biome only -->
+      <RM_Krizzak>0.3</RM_Krizzak>  <!-- ABYSS_KRIZZAK_BUILD_1: light-thief flier; this biome only -->
       <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_KRIZZAK_BUILD_1. The light-thief (cast bible 2026-10-01 §4A). Invented name, free RM_ tier,
+  no donor. ONE HOME: RM_Abyss only.
+  FLIGHT: real flight via the core stat MaxFlightTime (CanEverFly = stat > 0) plus race flags, and the
+  whole-body flip-book on the PawnKindDef. NOT a wing render node. Never live-test flight unattended.
+  Behaviour (RimMandrake.Abyss.CompKrizzak): settles on glowing things (glow plants, powered lamps) and
+  shrinks their glow radius; it takes no power and does no damage. Glow recovers once it leaves.
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Krizzak</defName>
+    <label>krizzak</label>
+    <description>A soft, dark moth-thing the size of a hand, wings the deep plum of a bruise and a pale glassy mouth like a lamp-glass that holds a faint stolen glow. It eats light. Swarms settle on glow plants and dim them, and cluster on lit lamps until the lit radius shrinks to a smear; a perimeter going dark one lamp at a time is the warning. It takes no power and does no harm to hull or hand, and it scatters from heat.</description>
+    <statBases>
+      <MoveSpeed>3.5</MoveSpeed>
+      <MarketValue>25</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <Wildness>0.9</Wildness>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>3</FlightCooldown>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>proboscis</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <baseBodySize>0.3</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <herdAnimal>true</herdAnimal>
+      <lifeExpectancy>3</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.3</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>false</canLeaveMapFlying>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.2</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="RimMandrake.Abyss.CompProperties_Krizzak">
+        <searchRadius>12</searchRadius>
+        <settleDistance>2.5</settleDistance>
+        <dimFraction>0.12</dimFraction>
+        <minRadiusFraction>0.25</minRadiusFraction>
+        <maxFeedTemperature>35</maxFeedTemperature>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Krizzak</defName>
+    <label>krizzak</label>
+    <race>RM_Krizzak</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>3~6</wildGroupSize>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <flyingAnimationFramePathPrefix>RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak_Flying_</flyingAnimationFramePathPrefix>
+    <flyingAnimationFrameCount>5</flyingAnimationFrameCount>
+    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
+    <flyingAnimationDrawSize>1.6</flyingAnimationDrawSize>
+    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
+    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
