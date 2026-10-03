@@ -1978,3 +1978,10 @@
 {"seat":"FOUNDRY","event":"start","id":"CONTAGION_GROWN_LIMBS_ART_1","ts":"2026-10-03T05:30:16Z","tsn":1791005416615380136}
 {"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SAND_SIEVE_CHORE_1","ts":"2026-10-03T05:30:25Z","tsn":1791005425964107184}
 {"seat":"FOUNDRY","event":"start","id":"STILLSAND_SAND_SIEVE_CHORE_1","ts":"2026-10-03T05:30:26Z","tsn":1791005426541596603}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_ETCHCAP_BUILD_1","ts":"2026-10-03T05:32:25Z","tsn":1791005545423564113}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_ETCHCAP_BUILD_1","ts":"2026-10-03T05:32:25Z","tsn":1791005545971824798}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_GHARREK_BUILD_1","ts":"2026-10-03T05:45:43Z","tsn":1791006343134162591}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_GHARREK_BUILD_1","ts":"2026-10-03T05:45:43Z","tsn":1791006343711155119}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_TURRETS_TRACK_1","ts":"2026-10-03T05:45:51Z","tsn":1791006351636102267}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_TURRETS_TRACK_1","ts":"2026-10-03T05:45:52Z","tsn":1791006352188948903}
+{"seat":"FOUNDRY","event":"note","id":"WARSCAR_TURRETS_TRACK_1","text":"Built offline in Scarlands (Warscar): CompTurretAim (verbless), RM_OldLineTurret + refit gizmo/blueprint, 4 Mod Settings, patch onto 3 broken turrets, validation.py. Owed: live round (aim state + firing), RM_Etchant in costList after WARSCAR_RAINBOW_POOLS_1, own art (vanilla TurretMini placeholder). Uncommitted.","ts":"2026-10-03T05:48:46Z","tsn":1791006526953355384}

@@ -1,4 +1,4 @@
-"""J2 ABORT-PATH PROOF: deliberate hazards must trip their detector and abort with evidence; controls must not.
+"""abort_proof ABORT-PATH PROOF: deliberate hazards must trip their detector and abort with evidence; controls must not.
 
 No real hazard occurred in the 2026-10-01 live pass, so the abort path has never fired live. Each hazard case
 opens its own Watch (bland prep, baseline), applies ONE hazard after the baseline, then sweeps (check() or a
@@ -133,7 +133,7 @@ def hz_predator(s, ctx):
 
 def hz_berserk(s, ctx):
     c = colonists(s)[-1]
-    r = call(s, "jawa/pawn_force_mental_break", pawn=c["id"], breakDef="Berserk", reason="live queue J2")
+    r = call(s, "jawa/pawn_force_mental_break", pawn=c["id"], breakDef="Berserk", reason="live queue abort_proof")
     if not r.get("success") or r.get("started") is False:
         raise RuntimeError("Berserk did not start: %s" % r)
 
@@ -200,4 +200,4 @@ def body(s, job):
 
 
 if __name__ == "__main__":
-    sys.exit(main("J2_abort_proof", body))
+    sys.exit(main("abort_proof", body))

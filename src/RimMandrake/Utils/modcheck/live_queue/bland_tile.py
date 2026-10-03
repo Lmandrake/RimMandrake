@@ -1,4 +1,4 @@
-"""J3 NORTHSTAR_BLAND_TILE_1: a genuinely bland test map instead of the random quicktest forest.
+"""bland_tile NORTHSTAR_BLAND_TILE_1: a genuinely bland test map instead of the random quicktest forest.
 
 The quicktest WORLD is regenerated every launch, so tile 4375 (bland on 2026-10-01) is only a hint: the tile is
 re-chosen from a fresh world_tile_export every run and re-verified with world_tile_get.
@@ -8,7 +8,7 @@ world_tile_get (mutatorCount/roadCount/riverCount all 0) -> colony_found(tile) -
 -> set_current_map(mapIndex) -> destroy_bulk factionlessAnimals (the map arrived with 47 wildlife on 10-01) ->
 spawn 3 player colonists -> prove: census shows >=3 colonists on the map, no wildlife, no non-player artificial
 buildings (ruins), helpers.assert_bland passes, and a 2000-tick Watch on it sees no SURPRISE/FATAL.
-Leaves the bland map CURRENT, so J4/J5 run on it.
+Leaves the bland map CURRENT, so companion_live/motion_frames run on it.
 """
 import csv
 import os
@@ -47,7 +47,7 @@ def fake_world():
 def body(s, job):
     import helpers as H
     from watch import Watch
-    if not job.dry_run:        # a freshly launched game sits at the main menu: world_tile_export needs a world (J6, 2026-10-01)
+    if not job.dry_run:        # a freshly launched game sits at the main menu: world_tile_export needs a world (bland_base, 2026-10-01)
         import runner
         job.note("map", runner.ensure_playing_map())
     tmpdir = os.environ.get("TEMP") or tempfile.gettempdir()     # python.exe: the Windows %TEMP% the game can write
@@ -145,4 +145,4 @@ def body(s, job):
 
 
 if __name__ == "__main__":
-    sys.exit(main("J3_bland_tile", body, fake_builder=fake_world))
+    sys.exit(main("bland_tile", body, fake_builder=fake_world))

@@ -5,7 +5,7 @@
     rep  = bland_world.reset(session)                 # between suites/chains: re-establish and PROVE blandness
     probs = bland_world.assert_world(session)         # verification only; [] == bland
 
-The recipe is the measured J3 one (NORTHSTAR_BLAND_TILE_1, 2026-10-01): export tiles -> Flat dry 15-30 C tiles with
+The recipe is the measured bland_tile one (NORTHSTAR_BLAND_TILE_1, 2026-10-01): export tiles -> Flat dry 15-30 C tiles with
 no mutators/roads/rivers -> colony_found (skipping tiles an earlier call in this game already settled) ->
 world_tile_map_generate -> set_current_map -> destroy_bulk factionlessAnimals -> destroy the map-gen ruins
 (destroy_batch) -> spawn colonists -> close the naming dialog. `reset` is what a suite runner calls between suites

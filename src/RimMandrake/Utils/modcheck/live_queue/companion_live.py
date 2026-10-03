@@ -1,4 +1,4 @@
-"""J4: the companion-backed detectors, live. J2 proves a hazard ABORTS; this proves the abort is a DIRECT READ.
+"""companion_live: the companion-backed detectors, live. abort_proof proves a hazard ABORTS; this proves the abort is a DIRECT READ.
 
 Offline counterpart: modcheck/selftest_companion_detectors.py (FakeWorld). Each case checks the hit's evidence,
 not just its name: `via` names the companion tool, and the read fields carry the game's own values.
@@ -75,7 +75,7 @@ def body(s, job):
 
     def sad(s, ctx):
         c = colonist(s, last=True)
-        r = call(s, "jawa/pawn_force_mental_break", pawn=c["id"], breakDef="Wander_Sad", reason="live queue J4")
+        r = call(s, "jawa/pawn_force_mental_break", pawn=c["id"], breakDef="Wander_Sad", reason="live queue companion_live")
         if not r.get("success"):
             raise RuntimeError("Wander_Sad refused: %s" % r)
     ab, w, why = run_case(s, job, "mental_wander_sad", sad)
@@ -121,4 +121,4 @@ def body(s, job):
 
 
 if __name__ == "__main__":
-    sys.exit(main("J4_companion_live", body))
+    sys.exit(main("companion_live", body))
