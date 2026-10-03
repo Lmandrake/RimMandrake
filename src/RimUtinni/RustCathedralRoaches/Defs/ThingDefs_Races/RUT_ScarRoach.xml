@@ -34,6 +34,11 @@
   512x512 RGBA, matching this repo's animal-sprite convention. Graphic_Multi
   mirrors east for west, so three files serve four facings. No donor art is
   used: the donor mod's textures are donor-licensed.
+
+  HIDDEN ALIAS (WARSCAR_FREE_TIER_BODY_1): the live scar roach is RM_ScarRoach in
+  mandrake.rm.warscar. This def is no longer cast in any biome and is kept for one
+  release only so the canonical save's 3 list references (a thing filter list, a
+  records list, an animal list) keep resolving. Delete it after that release.
 -->
 <Defs>
 
@@ -91,9 +96,6 @@
       <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
       <soundEating>Insectoid_Eat</soundEating>
-      <wildBiomes>
-        <RUT_Scarlands>0.08</RUT_Scarlands>
-      </wildBiomes>
       <litterSizeCurve>
         <points>
           <li>(0.5, 0)</li>

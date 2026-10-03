@@ -46,6 +46,8 @@
     <Compile Include="RM_Hospice.cs" />
     <Compile Include="RM_ReactionPools.cs" />
     <Compile Include="RM_Chotrix.cs" />
+    <Compile Include="RM_WarscarPatches.cs" />
+    <Compile Include="MapComponent_WreckLichen.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_Totchak: MINIMAL BODY built by WARSCAR_TOTCHAK_WAKES_1 because WARSCAR_FREE_TIER_BODY_1 (its named
-  prerequisite) had not built it. Race + kind only; behaviour is RM_Totchak.cs. ART IS OWED: the kind points
-  at Things/Pawn/Animal/RM_Totchak/RM_Totchak (artpipe search: 0 existing, queued by the body item), so it
-  renders magenta until that lands. The dormant wall-pose graphic and breathing bob are NOT built (need
+  prerequisite) had not built it. Race + kind only; behaviour is RM_Totchak.cs. Art wired by WARSCAR_FREE_TIER_BODY_1 (artpipe
+  RM_Totchak_{south,east,north}, Things/Pawn/Animal/RM_Totchak/). The dormant wall-pose graphic and breathing bob are NOT built (need
   art); the readable dormant sign today is the inspect line plus the wall gap. Not placed in any
   wildAnimals roster: it exists only through the RM_TotchakInWall genstep.
 -->

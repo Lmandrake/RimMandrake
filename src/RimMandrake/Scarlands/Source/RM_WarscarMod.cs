@@ -1,3 +1,7 @@
+using System.Collections.Generic;
+using System.Reflection;
+using HarmonyLib;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -70,6 +74,14 @@ namespace RimMandrake.Scarlands
         public static bool lacquerCloakEnabled = true;       // lacquered cloaks grant still-and-unseen invisibility
         public static float lacquerSeenRadius = 15f;         // a hostile with sight within this many cells "sees" the wearer
 
+        // WARSCAR_FREE_TIER_BODY_1 toggles. Species rows apply at startup (restart needed).
+        public static bool enableChatrak = true;
+        public static bool enableTetchik = true;
+        public static bool enablePallbearer = true;
+        public static bool enableScarRoach = true;
+        public static bool enableWreckLichenSeeder = true;
+        public static bool enableInterimDonors = true;
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -109,6 +121,12 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref chotrixRevealSeconds, "chotrixRevealSeconds", 4f);
             Scribe_Values.Look(ref lacquerCloakEnabled, "lacquerCloakEnabled", true);
             Scribe_Values.Look(ref lacquerSeenRadius, "lacquerSeenRadius", 15f);
+            Scribe_Values.Look(ref enableChatrak, "enableChatrak", true);
+            Scribe_Values.Look(ref enableTetchik, "enableTetchik", true);
+            Scribe_Values.Look(ref enablePallbearer, "enablePallbearer", true);
+            Scribe_Values.Look(ref enableScarRoach, "enableScarRoach", true);
+            Scribe_Values.Look(ref enableWreckLichenSeeder, "enableWreckLichenSeeder", true);
+            Scribe_Values.Look(ref enableInterimDonors, "enableInterimDonors", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -198,6 +216,16 @@ namespace RimMandrake.Scarlands
             lacquerSeenRadius = list.Slider(lacquerSeenRadius, 3f, 40f);
             list.GapLine();
 
+            list.Label("Species (restart required; affects maps generated afterwards)");
+            list.CheckboxLabeled("Chatrak (plated grazer)", ref enableChatrak);
+            list.CheckboxLabeled("Tetchik (glower beetle)", ref enableTetchik);
+            list.CheckboxLabeled("Pallbearer (carrion eater)", ref enablePallbearer);
+            list.CheckboxLabeled("Scar roach (cleaner)", ref enableScarRoach);
+            list.CheckboxLabeled("Interim donor animals (spined gow, rimclaw, helixien)", ref enableInterimDonors);
+            list.CheckboxLabeled("Wreck-lichen grows beside ruins and wreck", ref enableWreckLichenSeeder,
+                "Places wreck-lichen on open cells next to ruins and wreck. Worldgen-affecting.");
+            list.GapLine();
+
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");
             bool crossBiomeEnabledLocal = crossBiomeEnabled;
             list.CheckboxLabeled("Allow this mod's mechanics on other biomes", ref crossBiomeEnabledLocal,
@@ -234,6 +262,46 @@ namespace RimMandrake.Scarlands
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+    }
+}
+
+namespace RimMandrake.Scarlands
+{
+    // Removes the wildAnimals rows of species the player switched off.
+    // BiomeDef.wildAnimals is private and its commonality cache is lazy, so
+    // this runs once at startup, before any map asks for a commonality.
+    [StaticConstructorOnStartup]
+    public static class RM_WarscarStartup
+    {
+        static RM_WarscarStartup()
+        {
+            BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_Warscar");
+            if (biome == null) return;
+
+            HashSet<string> off = new HashSet<string>();
+            if (!RM_WarscarSettings.enableChatrak) off.Add("RM_Chatrak");
+            if (!RM_WarscarSettings.enableTetchik) off.Add("RM_Tetchik");
+            if (!RM_WarscarSettings.enablePallbearer) off.Add("RM_Pallbearer");
+            if (!RM_WarscarSettings.enableScarRoach) off.Add("RM_ScarRoach");
+            if (!RM_WarscarSettings.enableInterimDonors)
+            {
+                off.Add("AA_SpinedGow");
+                off.Add("RG_Rimclaw");
+                off.Add("AA_Helixien");
+            }
+            if (off.Count == 0) return;
+
+            FieldInfo wild = AccessTools.Field(typeof(BiomeDef), "wildAnimals");
+            FieldInfo cache = AccessTools.Field(typeof(BiomeDef), "cachedAnimalCommonalities");
+            if (wild == null || cache == null)
+            {
+                Log.Warning("[RM_Warscar] BiomeDef.wildAnimals/cachedAnimalCommonalities not found; species toggles not applied.");
+                return;
+            }
+            List<BiomeAnimalRecord> rows = (List<BiomeAnimalRecord>)wild.GetValue(biome);
+            rows.RemoveAll(r => r.animal != null && off.Contains(r.animal.defName));
+            cache.SetValue(biome, null);
         }
     }
 }

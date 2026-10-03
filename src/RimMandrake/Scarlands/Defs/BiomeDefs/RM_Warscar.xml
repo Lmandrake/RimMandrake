@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
+  WARSCAR_FREE_TIER_BODY_1: RM_Chatrak, RM_Tetchik, RM_Pallbearer (was RUT_MortuaryCrawler)
+  and RM_ScarRoach (was RUT_ScarRoach) are listed inline below; the Soil band is dropped.
   SCARLANDS_STANDALONE_MOD_1. mandrake.rm.warscar's own copy of the Scarlands
   biome, generalized (franchise-free, campaign-free) per
   biome_mod_architecture.md Section 5 Phase A, row 20. Source: the FROZEN
@@ -36,7 +38,7 @@
       its own MayRequire. The other ten rows of the frozen twin's live roster
       (Mynock, RSW_CrystalFairyMole, RSW_MegaphoridLarva, SW_Electrictick,
       RSW_FoundryBeetle, RSW_Korrum, SW_Electricgryllotalpa,
-      SW_Juggernautbeetles, RUT_ScarRoach, RUT_MortuaryCrawler) are wired via
+      SW_Juggernautbeetles) are wired via
       mandrake.rut.patches' own WildAnimals_Warscar.xml PatchOperationAdd —
       an RM-tier def may not name RimStarWars- or RimUtinni-tier content
       directly (Q11a). See that patch file for the full row-by-row reasoning.
@@ -55,7 +57,7 @@
 
   <BiomeDef MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_Warscar</defName>
-    <label>the Warscar</label>
+    <label>Warscar</label>
     <description>Crater fields and slag hills on shattered megastructure floors; bunkers, embankments, ruined turret rings and burnt shield emplacements that all tell the same story, still perfectly legible -- a defense, layered and desperate, facing outward. The ground is poisoned in a way that does not fade and never will, the wildlife is mad, and machines defend the place for reasons they do not give. Everyone who lives near it calls it cursed.</description>
     <workerClass>RimWorld.BiomeWorker_Scarlands</workerClass>
     <settleWarning>The Warscar is inhabited by dangerous insects and rogue mechanoids. Water is toxic and scaria runs rampant among the animals. The Forgotten Sentinels defend the ground; they do not pursue past their lines, and they do not explain.</settleWarning>
@@ -132,11 +134,6 @@
       <li>
         <terrain>AncientMegastructure</terrain>
         <min>-999</min>
-        <max>0.5</max>
-      </li>
-      <li>
-        <terrain>Soil</terrain>
-        <min>0.5</min>
         <max>999</max>
       </li>
     </terrainsByFertility>
@@ -157,6 +154,11 @@
       <AA_SpinedGow MayRequire="sarg.alphaanimals">0.15</AA_SpinedGow>
       <RG_Rimclaw MayRequire="regrowth.botr.core">0.1</RG_Rimclaw>
       <AA_Helixien MayRequire="sarg.alphaanimals">0.08</AA_Helixien>
+      <!-- RM_Totchak is deliberately NOT a roster row: it exists only through the RM_TotchakInWall genstep (WARSCAR_TOTCHAK_WAKES_1). -->
+      <RM_Chatrak>0.25</RM_Chatrak>
+      <RM_Tetchik>0.5</RM_Tetchik>
+      <RM_Pallbearer>0.06</RM_Pallbearer>
+      <RM_ScarRoach>0.08</RM_ScarRoach>
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>
