@@ -115,5 +115,24 @@ namespace RimMandrake.FlowWorks
 		{
 			return Math.Max(1f, massKg * FallDamagePerMassKg * multiplier);
 		}
+
+		/// <summary>CANAL_BOTTOM_SPIKES_1 — PROPOSED numbers, owner's word owed (the item says
+		/// "propose the number with the reasoning shown"). A spiked floor is several points, not
+		/// one, so the descent lands SpikeHits Sharp (Stab) hits, each through the normal armour
+		/// pipeline. The total scales with body size (owner [G]): 40 per unit of BodySize. A human
+		/// (1.0) takes 3 stabs of ~13: several real wounds and bleeding, not an instant kill
+		/// (torso 40 HP, armour applies). A muffalo (2.4) takes ~96 across 3 hits, a thrumbo (4)
+		/// ~160. Reference point: the retired building pit's spikeDamage 25 Stab, one hit, flat.</summary>
+		public const int SpikeHits = 3;
+
+		public const float SpikeDamagePerBodySize = 40f;
+
+		/// <summary>Damage of ONE spike hit: max(1, bodySize x 40 x multiplier / 3).</summary>
+		public static float SpikeDamagePerHit(float bodySize, float multiplier)
+		{
+			float b = bodySize > 0f ? bodySize : 0f;
+			float m = multiplier > 0f ? multiplier : 0f;
+			return Math.Max(1f, b * SpikeDamagePerBodySize * m / SpikeHits);
+		}
 	}
 }

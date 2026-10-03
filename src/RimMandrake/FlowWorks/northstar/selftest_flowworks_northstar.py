@@ -78,7 +78,7 @@ def test_settings_match_source():
         check("settings %s: defaults equal the C#" % t.rsplit(".", 1)[1], not bad, bad)
     # 27 until PIT_LEGACY_CODE_RETIRE_1 (2026-10-02): escapeEnabled and pitCellExposureEnabled died with
     # the building pit; trapTriggerEnabled and fallDamageEnabled moved into RimMandrakeFlowWorksSettings.
-    check("26 toggles (plan 2.5, after the pit retirement; +ladderPrisonDoorEnabled, LADDER_PRISON_DOOR_1)", len(S.toggles()) == 26, len(S.toggles()))
+    check("27 toggles (plan 2.5, after the pit retirement; +ladderPrisonDoorEnabled, LADDER_PRISON_DOOR_1; +spikesEnabled, CANAL_BOTTOM_SPIKES_1)", len(S.toggles()) == 27, len(S.toggles()))
 
 
 # ---------------------------------------------------------------- layout

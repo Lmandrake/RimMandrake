@@ -58,7 +58,7 @@ FW_TOGGLES = [
     "stickyLimitlessEnabled", "recessionEnabled", "refillEnabled",
     "rainFillsExcavationsEnabled", "edgeSinksEnabled",
     "superdeepCaptureEnabled", "superdeepCapturesOwnFaction",
-    "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "superdeepShootingRuleEnabled",
+    "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "spikesEnabled", "superdeepShootingRuleEnabled",
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
 ]
@@ -77,6 +77,7 @@ SETTINGS_OF.update({k: S_RIVER for k in RIVER_TOGGLES})
 PULSE = 250
 TAR, SLIME = "RM_Fluid_Tar", "RM_Fluid_SlimeGreen"
 LADDER = "RM_Ladder"
+SPIKES = "RM_Spikes"
 
 # Plot grid: each plot is a PW x PH rect, PITCH apart, offset from the anchor.
 PW, PH, PITCH = 24, 14, 36
@@ -1035,6 +1036,44 @@ def pit_cover_fall(t):
             r = t.bridge_call("jawa/list_things", defName="RM_PitCover_ReinforcedFrame", rect=_rect(twin[0][0] - 1, twin[0][1] - 1, 5, 5))
             _expect((r or {}).get("countMatched") == 9, "reinforced cover sprang under one ~70 kg pawn (220 kg tier): %r" % r)
             _expect(_pit_held(t, lid, twin) is False, "pawn on an intact cover reads as held")
+
+
+def _spike_proof(t, method, x, z):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_SpikeUtility", method=method,
+                      args="current|%d,%d" % (x, z))
+    return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+
+@suite.chain("canal_spikes")
+def canal_spikes(t):
+    """CANAL_BOTTOM_SPIKES_1 (owner Q2 2026-10-02: spikes only in the deepest pits). Placement census by
+    depth through the placeworker's own rule, then the descent hook on a hostile standing on a spiked D=4 cell.
+    Not proven here: the live descent detector firing the hook on a real fall (first poke: push a hostile in
+    and read its Stab injuries), the body-size comparison in game (the selftest proves the math), the art."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    shallow = [(x0 + 1, z0 + 1), (x0 + 3, z0 + 1), (x0 + 1, z0 + 3)]
+    for i, (x, z) in enumerate(shallow):
+        _dig(t, x, z, i + 1)
+    with t.component("spikes_only_on_superdeep", toggle="spikesEnabled"):
+        deep = _spike_proof(t, "ProofPlacement", pit[4][0], pit[4][1])
+        shal = [_spike_proof(t, "ProofPlacement", x, z) for x, z in shallow]
+        if t._guard():
+            _expect(deep.startswith("ACCEPT depth 4"), "spikes refused on a D=4 cell: %s" % deep)
+            for i, txt in enumerate(shal):
+                _expect(txt.startswith("REFUSE depth %d" % (i + 1)), "spikes not refused on depth %d: %s" % (i + 1, txt))
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
+    hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
+    with t.component("descent_onto_spikes_stabs", toggle="spikesEnabled"):
+        txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
+        if t._guard():
+            _expect(txt.startswith("HITS 3") and "INJURIES Stab 0" not in txt, "no spike stabs on descent: %s" % txt)
+    with t.component("spikes_off_harmless", toggle="spikesEnabled"):
+        with _setting(t, "spikesEnabled", False):
+            txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
+            if t._guard():
+                _expect(txt.startswith("HITS 0"), "spikesEnabled OFF but spikes still hit: %s" % txt)
 
 
 @suite.chain("toggle_superdeep_shooting")

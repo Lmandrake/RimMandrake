@@ -86,7 +86,7 @@ BOOL_DEFAULTS = {
                fillInDisplacementEnabled=True, sourceBudgetEnabled=True, stickyLimitlessEnabled=True,
                recessionEnabled=True, refillEnabled=True, rainFillsExcavationsEnabled=True,
                edgeSinksEnabled=True, superdeepCaptureEnabled=True, superdeepCapturesOwnFaction=False,
-               ladderRequiredToExitEnabled=True, ladderPrisonDoorEnabled=True,
+               ladderRequiredToExitEnabled=True, ladderPrisonDoorEnabled=True, spikesEnabled=True,
                superdeepShootingRuleEnabled=True,
                bottleLoopEnabled=True, bottleDirtyStageEnabled=True, tankLoopEnabled=True,
                liquidDrillingEnabled=True, typedLiquidShoresEnabled=True,
@@ -95,7 +95,8 @@ BOOL_DEFAULTS = {
 }
 FLOAT_DEFAULTS = {"pulseIntervalTicks": 250.0, "flowPerPulse": 1.0, "rainFillPerPulse": 0.1,
                   "minLimitlessBodyCells": 50.0, "pitWidthBodySizeMultiplier": 1.0,
-                  "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0}
+                  "trapSensitivityMultiplier": 1.0, "fallDamageMultiplier": 1.0,
+                  "spikeDamageMultiplier": 1.0}
 # PIT_LEGACY_CODE_RETIRE_1: every def the building-pit model shipped (26). O1 asserts each is ABSENT.
 RETIRED_PIT_DEFS = (["RM_OpenPit_" + n for n in ("Bare", "Spiked", "Oiled", "Poison", "Water", "Oubliette")]
                     + ["RM_PitDigSite_Shallow_" + n for n in ("Bare", "Spiked", "Oiled", "Poison", "Water", "Oubliette")]

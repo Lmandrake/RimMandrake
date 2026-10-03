@@ -767,6 +767,16 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitTrapMath.FallDamage(60f, 0f), 1f, "multiplier 0 still floors at 1");
             });
 
+            Case("PitTrap_spike_damage_scales_with_body_size", () =>
+            {
+                Assert(RM_PitTrapMath.SpikeHits == 3, "three spike hits per descent");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(1f, 1f), 40f / 3f, "human: 3 x 13.3 = 40 Sharp");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(4f, 1f) * 3, 160f, "thrumbo-size: 160 total");
+                Assert(RM_PitTrapMath.SpikeDamagePerHit(2f, 1f) > RM_PitTrapMath.SpikeDamagePerHit(1f, 1f), "bigger body, bigger hits");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(1f, 2f), 80f / 3f, "multiplier scales linearly");
+                AssertClose(RM_PitTrapMath.SpikeDamagePerHit(0.1f, 0f), 1f, "floor 1 per hit");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }
