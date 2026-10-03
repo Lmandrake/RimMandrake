@@ -18,3 +18,6 @@
 - 10:16:36 closing game for load #4: deploy prune x2, held-copy purge, compose all script mods into ModsConfig (rerun4 showed AcousticScanner/BrainWorms/AssailantSalvage defs 0-resolve: their mods are not in the FULL active list)
 - 10:20:14 launched load 4 (634 active = FULL 610 + 24 non-folded script mods)
 - 10:41:24 load4 up; harvest4 saved. offline fixes pending-deploy (need DLL rebuild + restart): TheSump BeastWakeRelay CompProperties wrapper (EH C#), BrainWorms stat li shape, BlueDesert StuffsMetallic->ResourcesRaw, TheSump MediumBash->BigBash sounds. rerun5 started (7 mods)
+- 11:00:05 runner now closes naming+ModSettings dialogs before each chain; closed live; rerun5 results for Cauldron/LeaningScrub/BlueDesert are modal-tainted -> rerun after batch
+- 11:14:38 rerun6 started (Cauldron,BlueDesert,Bacta,LeaningScrub) with dialog fix
+- 11:50:35 END of my pass. rerun6 recorded RED: Cauldron, LeaningScrub, BlueDesert (Bacta crashed on a bridge timeout; no summary). Game UP (load 4, stale vs newest sibling content), bridge still held by FOUNDRY.
