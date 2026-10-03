@@ -78,8 +78,8 @@ style pool is NOT the mechanism. Decision R8 (question card, 2026-09-25): the sh
 button on one Statue buildable**, not a 16-entry build-menu dropdown. It needs C#.
 
 - **One ThingDef**, `RUT_Statue` (label "statue"), `thingClass Building_Art` (or a subclass),
-  with the sculpture comp/recipe block copied explicitly from `SculptureBase` (never inherited —
-  the `<comps>` replacement trap, same as §2.1), `rotatable false`. Beauty, work and cost copy
+  `ParentName="SculptureBase"` (a child's `<comps>` list appends to the parent's; XmlInheritance
+  appends list elements unless `Inherit="False"`), `rotatable false`. Beauty, work and cost copy
   the matching vanilla tier; the subject is the differentiator, not the stat.
 - **The picker**: a new comp (`RUT_CompStatuePicker`, in Mod 1's own assembly
   `RUT_UtinniStatues.dll`) adds a gizmo to the blueprint/frame and to the built statue. The
@@ -143,7 +143,7 @@ that does nothing, and nothing breaks.
 `RM_FlameStatuary` (EnvironmentalHazards, placeholder art, one warbling glow, no fuel) is
 **deleted from EnvironmentalHazards** and replaced by three defs in Mod 2, all
 `thingClass Building_Art` with the full sculpture comp/recipe block copied explicitly from
-`SculptureBase` (not inherited — the def's own header explains the `<comps>` replacement trap):
+`SculptureBase` (or `ParentName="SculptureBase"`: a child's `<comps>` list appends to the parent's):
 
 | defName | label | footprint / drawSize | flame points | stuff |
 |---|---|---|---|---|

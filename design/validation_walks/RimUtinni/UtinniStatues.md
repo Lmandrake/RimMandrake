@@ -1,0 +1,19 @@
+# UtinniStatues — validation walk
+subject: src/RimUtinni/UtinniStatues  (packageId `mandrake.rut.utinnistatues`)
+deps: none (Ideology optional, loadAfter only)
+list: minimal + all DLC + this mod
+status-hint: Utinni statues, step 1 of design/RimMandrake/statue_mods_spec.md — three carved statue tiers whose placed statue is dedicated to one of the Nine (or a votive / the crawler relief) by a picker button. Placeholder art until the 16 carvings land.
+
+## must be true
+- Loads with no error naming this mod's defs or classes. → load_clean.no_errors_naming_this_mod
+- The three statue tiers and their sculptor's-table recipes resolve. → defs.all_defs_resolve
+- A placed statue dedicated to Sh'kaar is named "idol of Sh'kaar" and honours Sh'kaar the All-Searing. → dedicate.statue_takes_the_chosen_god
+- Dedicating it again to another god changes it. → dedicate.rededicate_changes_it
+- A tier offers only the carvings of its own size (no 2x2 relief on a 1x1 statue). → dedicate.tier_offers_only_its_own_size
+- The grand statue takes the crawler relief. → dedicate.grand_takes_the_crawler
+- The chosen carving's art draws once its PNG exists. → UNCOVERED: no carving PNG has landed yet (UTINNI_STATUES_ART_WIRING_1); needs a screenshot then.
+- "Utinni statues can be carved" OFF withdraws the three recipes from the sculptor's table. → UNCOVERED: takes effect at startup only; needs a restart with the toggle off, then a get_defs of TableSculpting's recipes.
+- Only the player's own statue shows the Dedicate button. → UNCOVERED: no bridge reader for gizmos.
+
+## anti-guessing notes
+- RULED OUT: "a child def's <comps> replaces SculptureBase's comps" — Verse.XmlInheritance.RecursiveNodeCopyOverwriteElements appends list elements unless Inherit="False" (RimSage, 2026-10-03).

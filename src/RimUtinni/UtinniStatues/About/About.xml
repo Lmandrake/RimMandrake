@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.utinnistatues</packageId>
+  <name>Jawa Utinni Statues</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld.Ideology</li>
+  </loadAfter>
+  <description>Statues of the Utinni faith (STATUE_ART_EXPANSION_1, design/RimMandrake/statue_mods_spec.md, Mod 1).
+
+The sculptor's table can carve an Utinni votive (small), statue (person-sized) or grand statue (2x2).
+Once one is placed, its "Dedicate" button chooses who it honours: any of the Nine (Ishko, Ohm, Oomo,
+Mob'Unloo, Rekko, Ta'Baa, Zizzik, Sh'kaar, Ozzik), grand idols of Ohm, Rekko and Sh'kaar, the
+sand-crawler relief, or the three votives (the Bandolier, the Droplet, the Tally). The carving, the
+name and the "Honours" line follow the choice. Any colony can carve them.
+
+Not here yet (filed): the carved art itself (each choice shows a vanilla sculpture until its picture
+lands), and Sh'kaar's grand idol burning (SHKAAR_FLAME_IDOL_BUILD_1).
+
+Mod Settings ("Utinni Statues"): carving on/off.</description>
+</ModMetaData>
