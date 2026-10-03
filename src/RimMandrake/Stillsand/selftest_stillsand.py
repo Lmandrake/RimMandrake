@@ -436,7 +436,8 @@ class Fake(object):
 
     def t_fire_incident(self, incidentDef=None, dryRun=False, points=None, **k):
         if dryRun:
-            return {"success": True, "canFireNow": self.can_fire(incidentDef)}
+            cf = self.can_fire(incidentDef)   # the live tool answers success=False when it cannot fire
+            return {"success": bool(cf), "canFireNow": cf, "ticksGame": 134661}
         if incidentDef == "RM_MuurrokEmergence":
             self.letter("A line of glare")
             if "no_muurrok" not in self.b:

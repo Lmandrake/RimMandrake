@@ -1614,9 +1614,17 @@ def cooling_chain(t):
 
 # ----------------------------------------------------------------------------- chain: the dune gale
 
+def _dry_fire(t, incident, **kw):
+    """fire_incident dryRun. The live tool answers success=False WITH canFireNow=False when the incident
+    cannot fire (a valid answer, not a tool failure); only a reply with no canFireNow is a failure."""
+    r = t.bridge_call("jawa/fire_incident", incidentDef=incident, dryRun=True, **kw)
+    if isinstance(r, dict) and "canFireNow" in r:
+        return r
+    return _ok(r, "fire_incident dryRun")
+
+
 def _gale_incident_ok(t):
-    r = t.bridge_call("jawa/fire_incident", incidentDef="RM_DuneGale", dryRun=True)
-    return _ok(r, "fire_incident dryRun").get("canFireNow")
+    return _dry_fire(t, "RM_DuneGale").get("canFireNow")
 
 
 def _end_gale(t):
@@ -1762,8 +1770,7 @@ def devil_chain(t):
     with _comp(t, "devil_toggle_off_refuses", toggle="dustDevilsEnabled"):
         if _live(t):
             def can():
-                return _ok(t.bridge_call("jawa/fire_incident", incidentDef="RM_DustDevil", dryRun=True),
-                           "fire_incident dryRun").get("canFireNow")
+                return _dry_fire(t, "RM_DustDevil").get("canFireNow")
             if can() is not True:
                 _unmeasured(t, "the dust devil incident cannot fire with its toggle on (weather, or no "
                                "free cell): the off arm proves nothing")
@@ -1846,8 +1853,7 @@ def eruption_chain(t):
             # IncidentWorker.CanFireNow refuses every ThreatBig while TicksGame < newWanderersCreatedTick +
             # 300000 (RimSage-read), and fire_incident passes unforced parms. A young test game is therefore a
             # precondition failure of the harness, not an eruption defect: say so instead of failing.
-            dry = _ok(t.bridge_call("jawa/fire_incident", incidentDef="RM_SandBusterEruption", points=800,
-                                    dryRun=True), "fire_incident dryRun")
+            dry = _dry_fire(t, "RM_SandBusterEruption", points=800)
             if dry.get("canFireNow") is not True and (dry.get("ticksGame") or 0) < 300000:
                 _unmeasured(t, "the engine refuses ThreatBig incidents before game tick 300000 and this game is at "
                                "tick %s; fire_incident cannot force it" % dry.get("ticksGame"))
