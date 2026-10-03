@@ -33,7 +33,14 @@ DOOR (room_heat is re-set every 500 ticks for that reason); `jawa/ordered_job` a
 as targetA; Soil being pollutable (the site component checks `cellsEverPollutable`).
 """
 import json
+import os
+import re
 import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+_UTILS = os.path.join(HERE, "..", "Utils")
+if os.path.isdir(_UTILS) and _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
 
 from modcheck import Suite, ExpectationFailed
 
@@ -709,3 +716,120 @@ def core_and_cask_bay(t):
                 t.set_setting(SETTINGS, {"masterEnabled": True})
     finally:
         _restore(t)
+
+
+# ------------------------------------------------------------------------------- chain 7: settings round trip
+
+_FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
+
+
+def settings_fields():
+    """{name: type} for every scalar `public static` field of RM_WarcasketSettings, read from the C#."""
+    src = open(os.path.join(HERE, "Source", "RM_WarcasketSettings.cs"), encoding="utf-8").read()
+    body = src.split("class RM_WarcasketSettings", 1)[1].split("ExposeData", 1)[0]
+    return dict((m.group(2), m.group(1)) for m in _FIELD.finditer(re.sub(r"//[^\n]*", "", body)))
+
+
+def _sraw(t, action, field, value=None):
+    kw = dict(typeName=SETTINGS, action=action, field=field)
+    if value is not None:
+        kw["value"] = str(value)
+    r = t.session.call("jawa/mod_settings_field", **kw)
+    return r if isinstance(r, dict) else {}
+
+
+def _same(ty, a, b):
+    if ty == "bool":
+        return str(a).lower() == str(b).lower()
+    return a is not None and b is not None and abs(float(a) - float(b)) <= 1e-4 * max(1.0, abs(float(b)))
+
+
+@suite.chain("settings_roundtrip")
+def settings_roundtrip(t):
+    """Every `public static` field of the settings class (found by regex, sanity probe >= 1): write the
+    opposite, read it back independently, restore, read the restore back."""
+    with t.component("settings_probe_finds_fields", beyond_toggle=True):
+        if len(settings_fields()) < 1:
+            _fail("settings probe found no field (blind regex)")
+        if sorted(settings_fields()) != sorted(suite.toggles):
+            _fail("suite.toggles %s differs from the C# fields %s" % (sorted(suite.toggles), sorted(settings_fields())))
+    for field, ty in sorted(settings_fields().items()):
+        with t.component("%s_round_trips" % field, toggle=field):
+            if not _live(t):
+                continue
+            old = _sraw(t, "get", field).get("value")
+            if old is None:
+                _fail("%s: get returned no value" % field)
+            new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else str(float(old) + 1.0)
+            try:
+                if not _sraw(t, "set", field, new).get("success"):
+                    _fail("%s: set failed" % field)
+                back = _sraw(t, "get", field).get("value")
+                if not _same(ty, back, new):
+                    _fail("%s: wrote %s, read %r" % (field, new, back))
+            finally:
+                _sraw(t, "set", field, old)
+            if not _same(ty, _sraw(t, "get", field).get("value"), old):
+                _fail("%s did not restore to %r" % (field, old))
+
+
+# ------------------------------------------------------------------------------- static (no game)
+
+def static_checks():
+    """Offline: Source files are in the csproj, every settings field is Scribed and has a control, the def
+    XML parses and names every shipped def the live chains expect, and the walk exists."""
+    import xml.etree.ElementTree as ET
+    bad = []
+    srcdir = os.path.join(HERE, "Source")
+    fields = settings_fields()
+    if len(fields) < 1:
+        return ["settings probe found no scalar field (sanity probe failed)"]
+    if sorted(fields) != sorted(suite.toggles):
+        bad.append("suite.toggles differs from the C# settings fields")
+    sset = open(os.path.join(srcdir, "RM_WarcasketSettings.cs"), encoding="utf-8").read()
+    scribed = sset.split("ExposeData", 1)[1]
+    ui = scribed.split("DoWindowContents", 1)[1] if "DoWindowContents" in scribed else ""
+    scribed = scribed.split("DoWindowContents", 1)[0]
+    for n in fields:
+        if '"%s"' % n not in scribed:
+            bad.append("settings field %s is not Scribed" % n)
+        if ui and not re.search(r"\b%s\b" % n, ui):
+            bad.append("settings field %s has no control in DoWindowContents" % n)
+    proj = open(os.path.join(srcdir, "RM_Warcasket.csproj"), encoding="utf-8").read()
+    for fn in sorted(os.listdir(srcdir)):
+        if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj and "EnableDefaultCompileItems" in proj \
+                and 'Compile Include="*.cs"' not in proj:
+            bad.append("%s is not in the csproj (compiles into nothing)" % fn)
+    names = set()
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
+        for fn in files:
+            if fn.endswith(".xml"):
+                for el in ET.parse(os.path.join(dp, fn)).getroot():
+                    if isinstance(el.tag, str) and el.findtext("defName"):
+                        names.add(el.findtext("defName").strip())
+    if len(names) < 5:
+        bad.append("only %d defs parsed from Defs/ (sanity probe failed)" % len(names))
+    for d in (SUIT, JUNKER, BAY, CORE, BREACH, IMMERSION, "RM_HazardousTerrainProtection", "RM_CrackSarcophagus", "RM_HazardCasks"):
+        if d not in names:
+            bad.append("def %s named by defs_and_load is not in Defs/" % d)
+    suit_xml = ""
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs", "ThingDefs_Apparel")):
+        for fn in files:
+            txt = open(os.path.join(dp, fn), encoding="utf-8").read()
+            if "<defName>%s</defName>" % SUIT in txt:
+                suit_xml = txt
+    if not suit_xml:
+        bad.append("could not find the %s def file (tickerType guard blind)" % SUIT)
+    if suit_xml and "<tickerType>Rare</tickerType>" not in suit_xml:
+        bad.append("RM_Warcasket lost its <tickerType>Rare</tickerType>: compound failure can never fire (guard of compound_failure_fires)")
+    if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "Warcasket.md")):
+        bad.append("walk missing")
+    return bad
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)
