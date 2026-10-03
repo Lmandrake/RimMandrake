@@ -130,6 +130,45 @@ def saal_name_checks():
     return bad
 
 
+def wax_checks():
+    """CHILL_WAX_PROCESSION_GIANT_1 (def/source level): race, kind, sheet, roster row, comp class, csproj, toggle."""
+    bad = []
+    races = os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_ChillWaxProcession.xml")
+    root = ET.parse(races).getroot()
+    td = {d.findtext("defName"): d for d in root.findall("ThingDef")}
+    for n in ("RM_Hesuun", "RM_DeadFilterSheet"):
+        if n not in td:
+            bad.append("ThingDef %s missing" % n)
+    if not [k for k in root.findall("PawnKindDef") if k.findtext("race") == "RM_Hesuun"]:
+        bad.append("PawnKindDef for RM_Hesuun missing")
+    h = td.get("RM_Hesuun")
+    if h is not None:
+        mn = h.findtext("statBases/ComfyTemperatureMin")
+        if mn is None or float(mn) > NATIVE_MIN_C:
+            bad.append("RM_Hesuun ComfyTemperatureMin %s needs <= %g" % (mn, NATIVE_MIN_C))
+        if h.findtext("race/trainability") != "None":
+            bad.append("RM_Hesuun must be untameable")
+        if h.find("comps/li[@Class='RimMandrake.TerminalBiomes.RM_CompProperties_WaxProcession']") is None:
+            bad.append("RM_Hesuun lacks the procession comp")
+    meat = h.findtext("race/meatDef") if h is not None else None
+    items = os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_TheChillFloraProducts.xml")
+    if meat and meat not in [d.findtext("defName") for d in ET.parse(items).getroot().findall("ThingDef")]:
+        bad.append("meatDef %s not defined" % meat)
+    bd = [b for b in ET.parse(BIOME).getroot().findall("BiomeDef") if b.findtext("defName") == "RM_TheChill"][0]
+    if "RM_Hesuun" not in {c.tag for c in bd.find("wildAnimals")}:
+        bad.append("RM_Hesuun missing from RM_TheChill wildAnimals")
+    if "RM_Hesuun" + "Catch" in {c.tag for g in (list(bd.find("fishTypes")) if bd.find("fishTypes") is not None else []) for c in g}:
+        bad.append("RM_Hesuun must not be fishable")
+    src = os.path.join(HERE, "Source")
+    if "RM_Comp_WaxProcession.cs" not in open(os.path.join(src, "RM_TerminalBiomes.csproj"), encoding="utf-8").read():
+        bad.append("RM_Comp_WaxProcession.cs missing from csproj Compile list")
+    if "ChillWaxProcessionActive" not in open(os.path.join(src, "RM_TerminalBiomesMod.cs"), encoding="utf-8").read():
+        bad.append("Mod Settings toggle ChillWaxProcessionActive missing")
+    if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_Hesuun", "RM_Hesuun.png")):
+        bad.append("RM_Hesuun texture missing")
+    return bad
+
+
 try:
     from modcheck import Suite
     suite = Suite("TerminalBiomes")
@@ -161,11 +200,19 @@ try:
         if bad:
             from modcheck import ExpectationFailed
             raise ExpectationFailed("; ".join(bad))
+
+    @suite.chain("wax_procession_built")
+    def wax_procession_built(t):
+        bad = wax_checks()
+        if bad:
+            from modcheck import ExpectationFailed
+            raise ExpectationFailed("; ".join(bad))
+        # Live pause/extrude/kill-spoil behaviour needs a floor map and a game: UNMEASURED here.
 except ImportError:
     suite = None
 
 if __name__ == "__main__":
-    problems = static_checks() + roster_checks() + catch_checks() + saal_name_checks()
+    problems = static_checks() + roster_checks() + catch_checks() + saal_name_checks() + wax_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

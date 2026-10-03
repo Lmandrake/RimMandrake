@@ -74,6 +74,8 @@ namespace RimMandrake.TerminalBiomes
         // refuses NEW placement (anything already built stays and keeps working).
         public static bool chillCryoponicsEnabled = true;
         public static bool chillFloorBedEnabled = true;
+        public static bool chillWaxProcessionEnabled = true;
+        public static bool ChillWaxProcessionActive => masterEnabled && chillEnabled && chillWaxProcessionEnabled;
         public static bool ChillCryoponicsActive => masterEnabled && chillEnabled && chillCryoponicsEnabled;
         public static bool ChillFloorBedActive => masterEnabled && chillEnabled && chillFloorBedEnabled;
 
@@ -188,6 +190,7 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref chillEnabled, "chillEnabled", true);
             Scribe_Values.Look(ref chillCryoponicsEnabled, "chillCryoponicsEnabled", true);
             Scribe_Values.Look(ref chillFloorBedEnabled, "chillFloorBedEnabled", true);
+            Scribe_Values.Look(ref chillWaxProcessionEnabled, "chillWaxProcessionEnabled", true);
             Scribe_Values.Look(ref twilightSeaEnabled, "twilightSeaEnabled", true);
             Scribe_Values.Look(ref greySeaEnabled, "greySeaEnabled", true);
             Scribe_Values.Look(ref scaldS1SteamSkyEnabled, "scaldS1SteamSkyEnabled", true);
@@ -252,6 +255,9 @@ namespace RimMandrake.TerminalBiomes
             list.CheckboxLabeled("  Chill floor growing bed", ref chillFloorBedEnabled,
                 "The plain growing bed that can only be built on the Chill's seabed. Off: no "
               + "new beds can be placed; existing ones keep working.");
+            list.CheckboxLabeled("  Chill wax procession", ref chillWaxProcessionEnabled,
+                "The floor's giant: slow wax colonies that pause to shed dead filter sheets for "
+              + "the crew to haul back. Off: colonies still walk the floor but shed no new sheets.");
             list.CheckboxLabeled("The Twilight Sea", ref twilightSeaEnabled,
                 "A hypersaline terminal sea, moldy shore to shore, with its own fishing "
               + "table.");
