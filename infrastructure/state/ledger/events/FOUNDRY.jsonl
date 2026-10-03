@@ -2346,3 +2346,9 @@
 {"seat":"FOUNDRY","event":"close","id":"ABYSS_ETCHCAP_BUILD_1","sha":"e44b4d2e6","ts":"2026-10-03T17:04:33Z","tsn":1791047073772707084}
 {"seat":"FOUNDRY","event":"close","id":"MIASMA_SWARM_COMPOSTER_PORT_1","sha":"9c2d28f08","ts":"2026-10-03T17:04:34Z","tsn":1791047074294534215}
 {"seat":"FOUNDRY","event":"close","id":"GELATINOUSSLIME_GENE_TEXT_TIER_1","sha":"444a7aaa4","ts":"2026-10-03T17:04:34Z","tsn":1791047074825566270}
+{"seat":"FOUNDRY","event":"file","id":"WEEPINGSTONES_NET_FLEEING_FLIER_1","title":"NET job cannot catch a wild skarrin: it flies off-map before the handler arrives","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-10-03T17:05:15Z","tsn":1791047115131553048}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_TAR_BEAST_BUILD_1","ts":"2026-10-03T17:11:33Z","tsn":1791047493730127992}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_TAR_BEAST_BUILD_1","ts":"2026-10-03T17:11:34Z","tsn":1791047494257551957}
+{"seat":"FOUNDRY","event":"close","id":"SUMP_TAR_BEAST_BUILD_1","sha":"0e0d94f34afd","ts":"2026-10-03T17:17:03Z","tsn":1791047823017485003}
+{"seat":"FOUNDRY","event":"close","id":"STILLSAND_CAVE_TIER_ROWS_1","sha":"8986b740f","ts":"2026-10-03T17:17:25Z","tsn":1791047845672272451}
+{"seat":"FOUNDRY","event":"close","id":"CHILL_FREE_TIER_CATCH_1","sha":"a8a4998ec","ts":"2026-10-03T17:17:36Z","tsn":1791047856643984690}
