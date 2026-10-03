@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_MARK_TRADE_BUILD_1 (WARSCAR_SNAP_MARK_1 spec 3 + 5 + 7). Copied from the frozen twin
+     RUT_ScarlandsMark, label franchise-free. Accrual is RM_MapComponent_WarscarMark (hourly, setting
+     markAccrualPerDay, default 0.3 gross = +0.2/day net against the -0.1/day fade below); the floor is
+     RM_HediffComp_WarscarMarkFloor (once past 0.5 it never fades under 0.25; setting markFloorEnabled).
+     The pay is per-stage statOffsets (setting markTradeBonusesEnabled strips them at startup).
+     Tag RM_WarscarMarkFamily: no stacking with another mark of the family. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_WarscarMark</defName>
+    <label>the Warscar mark</label>
+    <description>Something about the Warscar gets under the skin and stays there: bad dreams, a shadow on the mood, a weight that never quite lifts. It teaches, too. Those who carry it read old machines the way the ground taught them to: they open locked systems faster, take dead machines apart cleaner, and know what a heap of scrap will smelt down to.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55,0.2,0.25)</defaultLabelColor>
+    <minSeverity>0.0001</minSeverity>
+    <initialSeverity>0.0001</initialSeverity>
+    <makesSickThought>false</makesSickThought>
+    <tendable>false</tendable>
+    <maxSeverity>1.0</maxSeverity>
+    <tags>
+      <li>RM_WarscarMarkFamily</li>
+    </tags>
+    <stages>
+      <li>
+        <label>onset</label>
+        <becomeVisible>false</becomeVisible>
+      </li>
+      <li>
+        <minSeverity>0.25</minSeverity>
+        <label>mild mark</label>
+        <statOffsets>
+          <HackingSpeed>0.15</HackingSpeed>
+          <ButcheryMechanoidSpeed>0.10</ButcheryMechanoidSpeed>
+        </statOffsets>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>deepening mark</label>
+        <statOffsets>
+          <HackingSpeed>0.25</HackingSpeed>
+          <ButcheryMechanoidSpeed>0.20</ButcheryMechanoidSpeed>
+          <SmeltingSpeed>0.10</SmeltingSpeed>
+        </statOffsets>
+        <mentalStateGivers>
+          <li>
+            <mentalState>Wander_Sad</mentalState>
+            <mtbDays>6</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+      <li>
+        <minSeverity>0.75</minSeverity>
+        <label>heavy mark</label>
+        <statOffsets>
+          <HackingSpeed>0.35</HackingSpeed>
+          <ButcheryMechanoidSpeed>0.30</ButcheryMechanoidSpeed>
+          <SmeltingSpeed>0.10</SmeltingSpeed>
+        </statOffsets>
+        <mentalStateGivers>
+          <li>
+            <mentalState>Wander_Sad</mentalState>
+            <mtbDays>3</mtbDays>
+          </li>
+        </mentalStateGivers>
+      </li>
+    </stages>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-0.1</severityPerDay>
+      </li>
+      <li Class="RimMandrake.Scarlands.RM_HediffCompProperties_WarscarMarkFloor">
+        <floorTriggerThreshold>0.5</floorTriggerThreshold>
+        <floorValue>0.25</floorValue>
+      </li>
+    </comps>
+  </HediffDef>
+</Defs>

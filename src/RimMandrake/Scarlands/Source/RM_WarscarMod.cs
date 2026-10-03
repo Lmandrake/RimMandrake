@@ -103,6 +103,12 @@ namespace RimMandrake.Scarlands
         public static bool choirReducedRepetition = false;   // fewer, jittered clicks
         public static bool choirJarWarnings = true;          // caravan message before a polluted tile
 
+        // WARSCAR_MARK_TRADE_BUILD_1 -- the mark made a trade
+        public static bool markEnabled = true;               // hourly accrual on a Warscar map
+        public static float markAccrualPerDay = 0.3f;        // gross per day on the map (fade is -0.1/day)
+        public static bool markFloorEnabled = true;          // past 0.5 it never fades below 0.25
+        public static bool markTradeBonusesEnabled = true;   // hacking / mech butchery / smelting offsets (restart)
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -165,16 +171,25 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref choirWindEnabled, "choirWindEnabled", true);
             Scribe_Values.Look(ref choirReducedRepetition, "choirReducedRepetition", false);
             Scribe_Values.Look(ref choirJarWarnings, "choirJarWarnings", true);
+            Scribe_Values.Look(ref markEnabled, "markEnabled", true);
+            Scribe_Values.Look(ref markAccrualPerDay, "markAccrualPerDay", 0.3f);
+            Scribe_Values.Look(ref markFloorEnabled, "markFloorEnabled", true);
+            Scribe_Values.Look(ref markTradeBonusesEnabled, "markTradeBonusesEnabled", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
         }
 
+        private static Vector2 scroll;
+        private static float viewHeight = 2400f;
+
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.Label("Biome rarity: " + RarityLabel());
             list.Label("At 0 Warscar never generates on a new planet. Affects planets "
@@ -291,6 +306,22 @@ namespace RimMandrake.Scarlands
                 "A caravan carrying a tetchik jar gets a message before it enters a polluted tile.");
             list.GapLine();
 
+            list.Label("The Warscar mark");
+            list.CheckboxLabeled("Walking the Warscar marks people", ref markEnabled,
+                "Every hour on a Warscar map, roofed or not, deepens a mark on each person there: a mood hit, "
+              + "sad wandering at the deeper stages, and a trade in return. Off: no new mark accrues.");
+            if (markEnabled)
+            {
+                list.Label("Mark accrual: " + markAccrualPerDay.ToString("0.00") + " per day on the map (it fades 0.10 per day)");
+                markAccrualPerDay = list.Slider(markAccrualPerDay, 0f, 1f);
+            }
+            list.CheckboxLabeled("A deep mark never fully fades", ref markFloorEnabled,
+                "Once a mark has passed halfway it never fades below a mild mark, on or off the Warscar.");
+            list.CheckboxLabeled("The mark pays a trade (restart to apply)", ref markTradeBonusesEnabled,
+                "Marked people hack faster, butcher mechanoids faster and, from a deepening mark, smelt faster. "
+              + "Off: the mark only costs.");
+            list.GapLine();
+
             list.Label("Species (restart required; affects maps generated afterwards)");
             list.CheckboxLabeled("Chatrak (plated grazer)", ref enableChatrak);
             list.CheckboxLabeled("Tetchik (glower beetle)", ref enableTetchik);
@@ -307,7 +338,9 @@ namespace RimMandrake.Scarlands
                 "Reserved for a future pass. No mechanic in this mod currently reads this switch.");
             crossBiomeEnabled = crossBiomeEnabledLocal;
 
+            viewHeight = list.CurHeight + 24f;
             list.End();
+            Widgets.EndScrollView();
         }
 
         private static string RarityLabel()
