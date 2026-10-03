@@ -2279,3 +2279,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:33:29Z","tsn":1791041609461893528}
 {"seat":"FOUNDRY","event":"start","id":"LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:33:29Z","tsn":1791041609961190482}
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-03T15:36:07Z","tsn":1791041767464632954}
+{"seat":"FOUNDRY","event":"close","id":"LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1","sha":"aeaa3caf0442409c6bcad03cd79653bda7adcd39","ts":"2026-10-03T15:37:46Z","tsn":1791041866823488708}
