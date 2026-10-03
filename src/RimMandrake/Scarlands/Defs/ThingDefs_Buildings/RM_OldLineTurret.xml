@@ -21,6 +21,7 @@
     <rotatable>false</rotatable>
     <size>(2,2)</size>
     <thingCategories><li>BuildingsSecurity</li></thingCategories>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <statBases>
       <MaxHitPoints>260</MaxHitPoints>
       <Flammability>0.4</Flammability>
