@@ -422,6 +422,95 @@ def cover_check():
     return bad
 
 
+def light_check():
+    """Offline (ABYSS_LAMP_CROPS_BUILD_1 + ABYSS_FOLD_LAMP_BUILD_1): wickwood, fold-lamp, research gate, lane, settings, art."""
+    bad = []
+    wick = next((d for d in _defs("ThingDefs_Plants/RM_Wickwood.xml").iter("ThingDef") if d.findtext("defName") == "RM_Wickwood"), None)
+    if wick is None:
+        return ["RM_Wickwood missing"]
+    if wick.get("ParentName") != "TreeBase":
+        bad.append("wickwood must be a TreeBase tree (minifiable -> extract and replant)")
+    gl = wick.find("comps/li[@Class='CompProperties_Glower']")
+    if gl is None or not float(gl.findtext("overlightRadius") or 0) > 0:
+        bad.append("wickwood has no overlightRadius (crops need GroundGlowAt 1.0; plain glow caps at 0.5)")
+    if float(wick.findtext("plant/growMinGlow") or 1) != 0:
+        bad.append("wickwood must grow in the dark (growMinGlow 0)")
+    wp = _defs("BiomeDefs/RM_Abyss.xml").find(".//wildPlants/RM_Wickwood")
+    if wp is None or not float(wp.text) > 0:
+        bad.append("RM_Abyss <wildPlants> lacks RM_Wickwood")
+    root = _defs("ThingDefs_Buildings/RM_FoldLamp.xml")
+    lamp = next((d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_FoldLamp"), None)
+    rp = {d.findtext("defName"): d for d in root.iter("ResearchProjectDef")}
+    eth = next((d for d in root.iter("ThingDef") if d.findtext("defName") == "RM_TheDarkItself"), None)
+    if lamp is None or eth is None or "RM_HeatFolding" not in rp or "RM_DarkFoldsFromWarmth" not in rp:
+        return bad + ["fold-lamp defs missing"]
+    for c in ("CompProperties_Refuelable", "CompProperties_Glower", "CompProperties_HeatPusher"):
+        if lamp.find("comps/li[@Class='%s']" % c) is None:
+            bad.append("fold-lamp lacks " + c)
+    if lamp.findtext("rotatable") != "true" or lamp.findtext("graphicData/graphicClass") != "Graphic_Multi":
+        bad.append("fold-lamp must be rotatable Graphic_Multi (the throat points the facing)")
+    if [li.text for li in lamp.findall("researchPrerequisites/li")] != ["RM_HeatFolding"]:
+        bad.append("fold-lamp not gated by RM_HeatFolding")
+    if [li.text for li in rp["RM_HeatFolding"].findall("prerequisites/li")] != ["RM_DarkFoldsFromWarmth"]:
+        bad.append("heat-folding not gated by the observation")
+    if rp["RM_DarkFoldsFromWarmth"].findtext("requiredResearchBuilding") != "RM_TheDarkItself" or eth.findtext("category") != "Ethereal":
+        bad.append("observation must require the unbuildable Ethereal RM_TheDarkItself (never a bench)")
+    tp = lamp.findtext("graphicData/texPath")
+    for f in ("south", "east", "north"):
+        if not os.path.isfile(os.path.join(HERE, "Textures", "%s_%s.png" % (tp, f))):
+            bad.append("fold-lamp art missing: " + f)
+    src = os.path.join(HERE, "Source")
+    cs = open(os.path.join(src, "RM_AbyssLight.cs")).read()
+    for needle in ("FinishProject", "RM_DarkFoldsFromWarmth", "c.Filled(map)", "Rot4", "overlightRadius = 0f",
+                   "cachedPlantCommonalities", "foldLaneEnabled", "foldDiscoveryByWatching", "lampCropsEnabled", "GenSight.LineOfSight"):
+        if needle not in cs:
+            bad.append("light source lacks " + needle)
+    dark = open(os.path.join(src, "RM_MapComponentDark.cs")).read()
+    if "RM_MapComponent_FoldLanes.ClearanceAt" not in dark or "RM_HeatFoldingDiscovery.Check" not in dark:
+        bad.append("the Dark does not read the lane / run the discovery")
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    for needle in ("lampCropsEnabled", "foldLaneEnabled", "foldDiscoveryByWatching"):
+        if mod.count(needle) < 3:
+            bad.append("Mod Settings lacks " + needle)
+    if 'Compile Include="RM_AbyssLight.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_AbyssLight.cs not in csproj")
+    return bad
+
+
+def soundscape_check():
+    """Offline (ABYSS_SOUNDSCAPE_BUILD_1): four sound defs each with the Dark low-pass mapping, silent Dark bed, component, settings."""
+    bad = []
+    sd = {d.findtext("defName"): d for d in _defs("SoundDefs/RM_AbyssSoundscape.xml").iter("SoundDef")}
+    for n in ("RM_AbyssGustImpact", "RM_AbyssGillRustle", "RM_AbyssGrainTick", "RM_AbyssLampClatter"):
+        d = sd.get(n)
+        if d is None:
+            bad.append("sound missing: " + n)
+            continue
+        if d.find(".//inParam[@Class='RimMandrake.Abyss.SoundParamSource_RM_DarkMuffle']") is None \
+                or d.find(".//filters/li[@Class='SoundFilterLowPass']") is None:
+            bad.append(n + " lacks the Dark low-pass mapping")
+    dark = next((d for d in _defs("WeatherDefs/RM_Weathers_Abyss.xml").iter("WeatherDef") if d.findtext("defName") == "RM_AbyssDark"), None)
+    if dark is not None and dark.find("ambientSounds") is not None:
+        bad.append("RM_AbyssDark still has an ambient bed (ruling: silence by default)")
+    src = os.path.join(HERE, "Source")
+    cs = open(os.path.join(src, "RM_AbyssSoundscape.cs")).read()
+    for needle in ("GustCount", "RM_AbyssGustImpact", "RM_AbyssGillRustle", "RM_AbyssGrainTick", "RM_AbyssLampClatter",
+                   "GrainMultiplier", "SoundParamSource", "darkMuffleEnabled", "gustSoundscapeEnabled"):
+        if needle not in cs:
+            bad.append("soundscape source lacks " + needle)
+    if "LampClatter" not in open(os.path.join(src, "RM_CompKrizzak.cs")).read():
+        bad.append("krizzak feed does not clatter")
+    if "Ambient_Wind_Fog" not in open(os.path.join(src, "RM_AbyssLight.cs")).read():
+        bad.append("soundscape-off does not restore the wind bed")
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    for needle in ("gustSoundscapeEnabled", "darkMuffleEnabled"):
+        if mod.count(needle) < 3:
+            bad.append("Mod Settings lacks " + needle)
+    if 'Compile Include="RM_AbyssSoundscape.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_AbyssSoundscape.cs not in csproj")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -518,6 +607,30 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    @suite.chain("lamp_crops_fold_lamp")
+    def lamp_crops_fold_lamp(t):
+        """Live: wickwood/fold-lamp/research defs load; state reads of the wickwood setting, and (with a lit fold-lamp on the
+        current map) the lane clearance near/far/behind. Expected: overlight=4.5 wildInAbyss=True; near=1.00 far>0 behind=0.00."""
+        with t.component("light_defs_loaded", beyond_toggle=True):
+            for d in ("ThingDef/RM_Wickwood", "ThingDef/RM_FoldLamp", "ThingDef/RM_TheDarkItself",
+                      "ResearchProjectDef/RM_HeatFolding", "ResearchProjectDef/RM_DarkFoldsFromWarmth"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+        with t.component("wickwood_state", beyond_toggle=True):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Abyss.RM_AbyssLightProof", method="ProofWickwood")
+            if t._guard() and "overlight=4.5" not in str(r):
+                raise ExpectationFailed("wickwood overlight not in force: %r" % (r,))
+
+    @suite.chain("gust_soundscape")
+    def gust_soundscape(t):
+        """Live: the four sound defs load. On an Abyss map, ProofGust forces a gust; a second read a few seconds later should
+        show impacts+1. Whether it SOUNDS right is judged with the owner present."""
+        with t.component("sound_defs_loaded", beyond_toggle=True):
+            for d in ("SoundDef/RM_AbyssGustImpact", "SoundDef/RM_AbyssGillRustle", "SoundDef/RM_AbyssGrainTick", "SoundDef/RM_AbyssLampClatter"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
 except ImportError:
     suite = None
 
@@ -540,4 +653,8 @@ if __name__ == "__main__":
     print("SHIP COVER static: %s" % ("PASS" if not v else "FAIL " + "; ".join(v)))
     pr = predators_check()
     print("PREDATORS static: %s" % ("PASS" if not pr else "FAIL " + "; ".join(pr)))
-    sys.exit(1 if (f or g or d or e or k or r or v or pr) else 0)
+    lc = light_check()
+    print("LAMP CROPS + FOLD LAMP static: %s" % ("PASS" if not lc else "FAIL " + "; ".join(lc)))
+    ss = soundscape_check()
+    print("SOUNDSCAPE static: %s" % ("PASS" if not ss else "FAIL " + "; ".join(ss)))
+    sys.exit(1 if (f or g or d or e or k or r or v or pr or lc or ss) else 0)

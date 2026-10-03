@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    ABYSS_SOUNDSCAPE_BUILD_1 half 1: the gust soundscape. Vanilla clips only (no new audio files), retuned by
+    pitch and volume; RM_MapComponent_AbyssSoundscape plays them. Each carries the half-2 low-pass mapping:
+    RimMandrake.Abyss.SoundParamSource_RM_DarkMuffle (0 clear .. 1 full Dark at the camera) -> cutoff
+    22 kHz .. 700 Hz, so they come through muffled in the Dark and sharp in a warm pocket. Sound is judged
+    with the owner present; these clip choices are a first pass for that sitting.
+  -->
+  <SoundDef>
+    <defName>RM_AbyssGustImpact</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder"><clipFolderPath>Interact/Haul/Drop/ChunkRock</clipFolderPath></li>
+        </grains>
+        <volumeRange>42~48</volumeRange>
+        <pitchRange>0.40~0.50</pitchRange>
+        <paramMappings>
+          <li>
+            <inParam Class="RimMandrake.Abyss.SoundParamSource_RM_DarkMuffle" />
+            <outParam Class="SoundParamTarget_PropertyLowPass">
+              <filterProperty>Cutoff</filterProperty>
+            </outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li><loc><x>0</x><y>22000</y></loc></li>
+                <li><loc><x>0.5</x><y>3500</y></loc></li>
+                <li><loc><x>1</x><y>700</y></loc></li>
+              </points>
+            </curve>
+          </li>
+        </paramMappings>
+        <filters>
+          <li Class="SoundFilterLowPass">
+            <cutoffFrequency>22000</cutoffFrequency>
+            <lowpassResonaceQ>1</lowpassResonaceQ>
+          </li>
+        </filters>
+      </li>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder"><clipFolderPath>Misc/Swish1</clipFolderPath></li>
+        </grains>
+        <volumeRange>28~34</volumeRange>
+        <pitchRange>0.35~0.45</pitchRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_AbyssGillRustle</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder"><clipFolderPath>Interact/Work/Grow</clipFolderPath></li>
+        </grains>
+        <volumeRange>18~24</volumeRange>
+        <pitchRange>0.70~0.85</pitchRange>
+        <paramMappings>
+          <li>
+            <inParam Class="RimMandrake.Abyss.SoundParamSource_RM_DarkMuffle" />
+            <outParam Class="SoundParamTarget_PropertyLowPass">
+              <filterProperty>Cutoff</filterProperty>
+            </outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li><loc><x>0</x><y>22000</y></loc></li>
+                <li><loc><x>0.5</x><y>3500</y></loc></li>
+                <li><loc><x>1</x><y>700</y></loc></li>
+              </points>
+            </curve>
+          </li>
+        </paramMappings>
+        <filters>
+          <li Class="SoundFilterLowPass">
+            <cutoffFrequency>22000</cutoffFrequency>
+            <lowpassResonaceQ>1</lowpassResonaceQ>
+          </li>
+        </filters>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_AbyssGrainTick</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>3</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Folder"><clipFolderPath>Interact/Work/Construct/Stone/Stone_Chunk_Light</clipFolderPath></li>
+        </grains>
+        <volumeRange>6~9</volumeRange>
+        <pitchRange>1.9~2.4</pitchRange>
+        <paramMappings>
+          <li>
+            <inParam Class="RimMandrake.Abyss.SoundParamSource_RM_DarkMuffle" />
+            <outParam Class="SoundParamTarget_PropertyLowPass">
+              <filterProperty>Cutoff</filterProperty>
+            </outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li><loc><x>0</x><y>22000</y></loc></li>
+                <li><loc><x>0.5</x><y>3500</y></loc></li>
+                <li><loc><x>1</x><y>700</y></loc></li>
+              </points>
+            </curve>
+          </li>
+        </paramMappings>
+        <filters>
+          <li Class="SoundFilterLowPass">
+            <cutoffFrequency>22000</cutoffFrequency>
+            <lowpassResonaceQ>1</lowpassResonaceQ>
+          </li>
+        </filters>
+      </li>
+    </subSounds>
+  </SoundDef>
+  <SoundDef>
+    <defName>RM_AbyssLampClatter</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip"><clipPath>Interact/Haul/Drop/MetalDrop</clipPath></li>
+        </grains>
+        <volumeRange>10~14</volumeRange>
+        <pitchRange>1.6~1.9</pitchRange>
+        <paramMappings>
+          <li>
+            <inParam Class="RimMandrake.Abyss.SoundParamSource_RM_DarkMuffle" />
+            <outParam Class="SoundParamTarget_PropertyLowPass">
+              <filterProperty>Cutoff</filterProperty>
+            </outParam>
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li><loc><x>0</x><y>22000</y></loc></li>
+                <li><loc><x>0.5</x><y>3500</y></loc></li>
+                <li><loc><x>1</x><y>700</y></loc></li>
+              </points>
+            </curve>
+          </li>
+        </paramMappings>
+        <filters>
+          <li Class="SoundFilterLowPass">
+            <cutoffFrequency>22000</cutoffFrequency>
+            <lowpassResonaceQ>1</lowpassResonaceQ>
+          </li>
+        </filters>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

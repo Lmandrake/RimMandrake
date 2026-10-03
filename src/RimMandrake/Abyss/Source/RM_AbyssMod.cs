@@ -55,6 +55,17 @@ namespace RimMandrake.Abyss
         public static bool lightAversionEnabled = true;
         public static float fleeRadiusMultiplier = 1f;
 
+        // ABYSS_LAMP_CROPS_BUILD_1: the wickwood lights crops (overlight) and grows wild in the Abyss. Off = a plain glowing tree, struck from the wild. Restart.
+        public static bool lampCropsEnabled = true;
+
+        // ABYSS_FOLD_LAMP_BUILD_1: a lit fold-lamp holds a lane of clear air open; heat-folding is learned by watching. Off = plain heater-lamp / plain bench research.
+        public static bool foldLaneEnabled = true;
+        public static bool foldDiscoveryByWatching = true;
+
+        // ABYSS_SOUNDSCAPE_BUILD_1: silence by default, sound comes in gusts; the Dark muffles those sounds. Soundscape off = the vanilla fog wind (restart).
+        public static bool gustSoundscapeEnabled = true;
+        public static bool darkMuffleEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -75,6 +86,11 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref stormCallEnabled, "stormCallEnabled", true, true);
             Scribe_Values.Look(ref shipCoverEnabled, "shipCoverEnabled", true, true);
             Scribe_Values.Look(ref probesEnabled, "probesEnabled", true, true);
+            Scribe_Values.Look(ref lampCropsEnabled, "lampCropsEnabled", true, true);
+            Scribe_Values.Look(ref foldLaneEnabled, "foldLaneEnabled", true, true);
+            Scribe_Values.Look(ref foldDiscoveryByWatching, "foldDiscoveryByWatching", true, true);
+            Scribe_Values.Look(ref gustSoundscapeEnabled, "gustSoundscapeEnabled", true, true);
+            Scribe_Values.Look(ref darkMuffleEnabled, "darkMuffleEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -137,6 +153,19 @@ namespace RimMandrake.Abyss
                 "On: a gravship kept quiet (few lit lamps) in the Abyss slowly drops out of sight; the cover lapses after a while, resets when the engine leaves, and collapses if a probe reports. Off: no cover. Safe mid-game.");
             list.CheckboxLabeled("Probes hunt the hidden ship", ref probesEnabled,
                 "On: while the ship is hidden, probes come now and then. A probe that keeps a moving colonist or lit lamp in sight reports and the cover collapses. Off: the cover is never tested.");
+
+            list.CheckboxLabeled("Wickwoods are lamp crops", ref lampCropsEnabled,
+                "On: the wickwood, the Abyss's glowing tree, grows wild there and lights the ground beneath it brightly enough to grow crops; extract and replant it to light a farm. The Dark never swallows its light. Off: it is a plain glowing tree that does not farm and no longer grows wild. Takes effect after a restart.");
+
+            list.CheckboxLabeled("Fold-lamps hold a lane of clear air", ref foldLaneEnabled,
+                "On: a lit fold-lamp clears the Dark in a lane ahead of its throat, toward the way it faces. Off: it is a plain fuelled heater-lamp. Safe mid-game.");
+            list.CheckboxLabeled("Heat-folding is learned by watching the Dark", ref foldDiscoveryByWatching,
+                "On: heat-folding opens only after a colonist has stood in a warm clear pocket beside a fire or heater while the Dark lies all around (a letter says so). Off: it is an ordinary research project from the start.");
+
+            list.CheckboxLabeled("Sound comes in gusts", ref gustSoundscapeEnabled,
+                "On: the Dark is silent; each gust lands as an impact, gharrek gill-fans rustle after it, falling grain ticks on stone, and a lamp a krizzak is eating clatters. Off: the ordinary fog wind (after a restart) and none of these.");
+            list.CheckboxLabeled("The Dark swallows those sounds", ref darkMuffleEnabled,
+                "On: the gust sounds come through muffled while the camera looks into the Dark and sharp over a warm clear pocket. Off: always sharp. Safe mid-game.");
 
             lastHeight = list.CurHeight + 12f;
             list.End();

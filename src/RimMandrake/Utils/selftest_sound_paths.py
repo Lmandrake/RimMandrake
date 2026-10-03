@@ -30,6 +30,8 @@ CLIP_RE = re.compile(r"<clipPath>\s*([^<\s][^<]*?)\s*</clipPath>")
 # with that SoundDef named as the reason -- an entry without a donor SoundDef
 # is a typo waiting to pass.
 VANILLA_PACKED = {
+    # ABYSS_SOUNDSCAPE_BUILD_1 lamp clatter, verbatim from Core Metal_Drop (Interact_Oneshots_PickupDrop.xml; RimSage 2026-10-03).
+    "Interact/Haul/Drop/MetalDrop": "vanilla Metal_Drop",
     # WARSCAR_GEIGER_CHOIR_1 placeholders, verbatim from Core SoundDefs (checked in the install's Data/Core/Defs/SoundDefs).
     "UI/TickTiny": "vanilla Tick_Tiny",
     "Electricity/ChemfuelFiredGenerator_Ambience": "vanilla ChemfuelFiredGenerator_Ambience",
