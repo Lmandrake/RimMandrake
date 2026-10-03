@@ -159,6 +159,12 @@ namespace RimMandrake.DivingInteraction
         // grow. Floors already generated keep their terrain either way.
         public static bool seaFloorBandsEnabled = true;
 
+        // SCALD_IMMERSION_BERTH_1, 2026-10-03. A ship parked on the Scald's floor slowly heats
+        // its rooms (load scales with hull border; vanilla coolers answer it). Never seals doors,
+        // never blocks launch. Off: no heat is added; a ship already warm cools by vanilla rules.
+        public static bool scaldBerthEnabled = true;
+        public static float scaldBerthIntensity = 1f;
+
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
         // its hearing pass from reading pawns left behind on the previous map
@@ -186,6 +192,8 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref chillDrownedAuroraEnabled, "chillDrownedAuroraEnabled", true);
             Scribe_Values.Look(ref chillAuroraSurgeEnabled, "chillAuroraSurgeEnabled", true);
             Scribe_Values.Look(ref seaFloorBandsEnabled, "seaFloorBandsEnabled", true);
+            Scribe_Values.Look(ref scaldBerthEnabled, "scaldBerthEnabled", true);
+            Scribe_Values.Look(ref scaldBerthIntensity, "scaldBerthIntensity", 1f);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -213,6 +221,18 @@ namespace RimMandrake.DivingInteraction
                   + "the Chill's propane crust and liquid pools) so its floor flora can grow. Off: "
                   + "the floor is one plain terrain and that flora never appears. Floors already "
                   + "generated are unchanged either way.");
+
+                list.Gap();
+                list.CheckboxLabeled("The Scald: immersion berth (ship rooms heat)", ref scaldBerthEnabled,
+                    "Shipped default: ON. A ship parked on the Scald's floor slowly heats its rooms; "
+                  + "the load grows with each room's hull border, so a compact ship is cheap to cool "
+                  + "and a sprawling one is not. Coolers and power are vanilla. It never seals doors "
+                  + "or blocks launch. Off: no heat is added.");
+                if (scaldBerthEnabled)
+                {
+                    list.Label("Immersion heat intensity: " + scaldBerthIntensity.ToString("0.00") + "x");
+                    scaldBerthIntensity = list.Slider(scaldBerthIntensity, 0.25f, 3f);
+                }
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,

@@ -85,6 +85,7 @@
     <Compile Include="RM_MapComponent_ChillAuroraSurge.cs" />
     <Compile Include="RM_CompPowerPlantAuroraSurge.cs" />
     <Compile Include="Patch_RealFoWStaleHearing.cs" />
+    <Compile Include="RM_MapComponent_ScaldImmersionBerth.cs" />
   </ItemGroup>
 
   <ItemGroup>
