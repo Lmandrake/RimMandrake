@@ -9,8 +9,8 @@ namespace RimMandrake.NightsideIce
     //
     // Precedent: src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs.
     //
-    // Master switch plus the heat dial (NIGHTSIDEICE_HEAT_DIAL_1, RM_HeatDial.cs). The breach
-    // cracks and the shivven that read the dial are filed, unbuilt, and get settings when they land.
+    // Master switch, the heat dial (NIGHTSIDEICE_HEAT_DIAL_1, RM_HeatDial.cs) and the shivven
+    // (NIGHTSIDEICE_SHIVVEN_BUILD_1, RM_Shivven.cs). The breach cracks are filed, unbuilt.
     // ════════════════════════════════════════════════════════════════════
     public class RM_NightsideIceSettings : ModSettings
     {
@@ -23,6 +23,12 @@ namespace RimMandrake.NightsideIce
         public static bool heatDialAlert = true;              // show the thermal-signature alert
         public static float heatDialAlertThreshold = 0.2f;    // dial at which the alert appears
 
+        // NIGHTSIDEICE_SHIVVEN_BUILD_1 -- the shivven (RM_Shivven.cs; movement is CreatureBehaviors' sand-swim kit)
+        public static bool shivvenHeatSeek = true;            // they head for the hottest working heater
+        public static float shivvenSenseRange = 60f;          // how far off (cells) they feel a heater
+        public static bool shivvenIceOnly = true;             // they never step off the ice (floors are not ice)
+        public static bool shivvenStrikeHeaters = true;       // they surface and claw a heater they reach
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -31,6 +37,10 @@ namespace RimMandrake.NightsideIce
             Scribe_Values.Look(ref heatDialScale, "heatDialScale", 150f);
             Scribe_Values.Look(ref heatDialAlert, "heatDialAlert", true);
             Scribe_Values.Look(ref heatDialAlertThreshold, "heatDialAlertThreshold", 0.2f);
+            Scribe_Values.Look(ref shivvenHeatSeek, "shivvenHeatSeek", true);
+            Scribe_Values.Look(ref shivvenSenseRange, "shivvenSenseRange", 60f);
+            Scribe_Values.Look(ref shivvenIceOnly, "shivvenIceOnly", true);
+            Scribe_Values.Look(ref shivvenStrikeHeaters, "shivvenStrikeHeaters", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -60,7 +70,22 @@ namespace RimMandrake.NightsideIce
                 }
             }
             list.GapLine();
-            list.Label("Not built yet, so no settings: the breach cracks and the shivven that answer the dial.");
+            list.Label("The shivven");
+            list.CheckboxLabeled("Shivven hunt heat", ref shivvenHeatSeek,
+                "Blind tunnelers in the ice head for the hottest working heater, not for people walking about. "
+              + "They travel under the ice with a rumble you can hear. Off: they wander like any animal.");
+            if (shivvenHeatSeek)
+            {
+                list.Label("They feel a heater from " + Mathf.RoundToInt(shivvenSenseRange) + " cells");
+                shivvenSenseRange = list.Slider(shivvenSenseRange, 10f, 150f);
+                list.CheckboxLabeled("They surface and claw a heater they reach", ref shivvenStrikeHeaters,
+                    "Off: they come as close as the ice allows and wait there.");
+            }
+            list.CheckboxLabeled("They never leave the ice", ref shivvenIceOnly,
+                "A floor or any ground that is not ice stops them: they strike from the edge or wait. Off: once "
+              + "surfaced they walk anywhere, like any animal.");
+            list.GapLine();
+            list.Label("Not built yet, so no settings: the breach cracks that answer the dial.");
 
             list.End();
         }

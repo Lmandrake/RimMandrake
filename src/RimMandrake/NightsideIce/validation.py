@@ -15,6 +15,9 @@ CHAINS
                   control name reads absent. Rows whose donor mod is not loaded on the tier are noted, never asserted.
   heat_dial       NIGHTSIDEICE_HEAT_DIAL_1: RM_HeatDial.ProofDial reads the parts; ProofFireRaisesDial lights a fire and
                   the raw heat rises.
+  shivven         NIGHTSIDEICE_SHIVVEN_BUILD_1: RM_ShivvenProof.ProofSeek lays ice beside a working player heater, spawns a
+                  shivven at the far end and reads it seeking under the ice; ProofState reads it again later (on ice,
+                  never on a floor). Needs a powered heater on the map first.
   map_mechanics   a generated nightside-ice map (all-Ice terrain, no ponds, margin events): UNMEASURED.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
@@ -115,6 +118,22 @@ def static_checks():
         bad.append("weather table is not Clear-only: %r" % w)
     if b_has(biome_node(), "terrainPatchMakers") or b_has(biome_node(), "fishTypes"):
         bad.append("terrainPatchMakers/fishTypes present: the sheet bans liquid water")
+    shiv = os.path.join(HERE, "Defs", "Fauna", "RM_Shivven.xml")
+    if ("ThingDef", "RM_Shivven") not in SHIPPED:
+        bad.append("ThingDef RM_Shivven not shipped")
+    else:
+        ext = [e for e in ET.parse(shiv).getroot().iter("li") if (e.get("Class") or "").endswith("RM_SandSwimExtension")]
+        if not ext:
+            bad.append("RM_Shivven has no RM_SandSwimExtension")
+        else:
+            e = ext[0]
+            if [li.text for li in e.findall("swimTerrains/li")] != ["Ice"]:
+                bad.append("the shivven must swim Ice only")
+            for k in ("confinedToSwimTerrain", "breachForAnyTarget"):
+                if (e.findtext(k) or "").strip() != "true":
+                    bad.append("RM_Shivven %s is not true" % k)
+            if (e.findtext("rumbleSound") or "").startswith("RM_SandSwim"):
+                bad.append("the shivven borrow the Stillsand's rumble: own sounds")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "NightsideIce.md")):
         bad.append("walk missing")
     return bad
@@ -309,6 +328,24 @@ def _build_suite():
             txt = _dial(t, "ProofFireRaisesDial")
             if _live(t) and "rose=True" not in txt:
                 raise ExpectationFailed("a size-1 fire did not raise the raw heat: %s" % txt)
+
+    def _shiv(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.NightsideIce.RM_ShivvenProof", method=method, args="current")
+        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+    @suite.chain("shivven")
+    def shivven(t):
+        """NIGHTSIDEICE_SHIVVEN_BUILD_1: a shivven seeks the heater under the ice and never stands on a floor.
+        Needs a working player heater on the current map (ProofSeek refuses otherwise)."""
+        with t.component("seeks_heater_under_ice", toggle="shivvenHeatSeek"):
+            txt = _shiv(t, "ProofSeek")
+            if _live(t) and ("state=seeking" not in txt and "state=striking" not in txt or "terrain=Ice" not in txt):
+                raise ExpectationFailed("the shivven did not take up the heater's heat from the ice: %s" % txt)
+        with t.component("stays_on_ice", toggle="shivvenIceOnly"):
+            t.bridge_call("rimworld/step_game_ticks", ticks=1200, pauseFirst=True, timeoutMs=120000)
+            txt = _shiv(t, "ProofState")
+            if _live(t) and (txt == "NONE" or any("terrain=Ice" not in part for part in txt.split(" | "))):
+                raise ExpectationFailed("a shivven left the ice or is gone: %s" % txt)
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):

@@ -42,7 +42,14 @@
   <ItemGroup>
     <Compile Include="RM_NightsideIceMod.cs" />
     <Compile Include="RM_HeatDial.cs" />
+    <!-- NIGHTSIDEICE_SHIVVEN_BUILD_1: uses the sand-swim kit in RimMandrake.CreatureBehaviors
+         (a declared hard dependency); build that first. -->
+    <Compile Include="RM_Shivven.cs" />
   </ItemGroup>
+
+  <PropertyGroup Condition="'$(CreatureBehaviorsDll)' == ''">
+    <CreatureBehaviorsDll>$(MSBuildThisFileDirectory)..\..\CreatureBehaviors\Assemblies\RimMandrake.CreatureBehaviors.dll</CreatureBehaviorsDll>
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
@@ -59,6 +66,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrake.CreatureBehaviors">
+      <HintPath>$(CreatureBehaviorsDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

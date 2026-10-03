@@ -88,6 +88,11 @@ namespace RimMandrake.CreatureBehaviors
                 Evaluate(pawn);
             }
 
+            if (Ext.confinedToSwimTerrain)
+            {
+                KeepToSwimTerrain(pawn);
+            }
+
             if (Submerged)
             {
                 TickSubmerged(pawn);
@@ -109,9 +114,9 @@ namespace RimMandrake.CreatureBehaviors
                 return;
             }
 
-            Pawn target = CurrentAttackTarget(pawn);
-            if (submerged && target != null && RM_CreatureBehaviorsSettings.sandSwimDroidImmunity
-                && !RM_SandSwimUtility.HasWaterInIt(target))
+            Thing target = CurrentAttackTarget(pawn, Ext.breachForAnyTarget);
+            if (submerged && target is Pawn targetPawn && RM_CreatureBehaviorsSettings.sandSwimDroidImmunity
+                && !RM_SandSwimUtility.HasWaterInIt(targetPawn))
             {
                 // §4: nothing under the sand senses a pawn with no water in it. Drop the attack
                 // rather than surface for it; a surfaced (hit) swimmer can still fight back.
@@ -155,6 +160,25 @@ namespace RimMandrake.CreatureBehaviors
             Submerge(pawn);
         }
 
+        /// <summary>NIGHTSIDEICE_SHIVVEN_BUILD_1: a confined swimmer about to step from swim terrain onto
+        /// anything else stops and drops the job. Off swim terrain already (spawned or knocked there), it
+        /// may walk back.</summary>
+        private void KeepToSwimTerrain(Pawn pawn)
+        {
+            Pawn_PathFollower pather = pawn.pather;
+            if (pather == null || !pather.Moving || !RM_SandSwimUtility.IsSwimTerrain(pawn.Position, pawn.Map, Ext))
+            {
+                return;
+            }
+            IntVec3 next = pather.nextCell;
+            if (!next.IsValid || next == pawn.Position || RM_SandSwimUtility.IsSwimTerrain(next, pawn.Map, Ext))
+            {
+                return;
+            }
+            pather.StopDead();
+            pawn.jobs?.EndCurrentJob(JobCondition.Incompletable);
+        }
+
         private void TickSubmerged(Pawn pawn)
         {
             // Wake puffs: a low dust line where it moves. Drawn for the player only (the pawn
@@ -162,8 +186,14 @@ namespace RimMandrake.CreatureBehaviors
             // exists to hold the trough record.
             if (pawn.IsHashIntervalTick(Math.Max(1, Ext.wakeIntervalTicks)) && pawn.pather != null && pawn.pather.Moving)
             {
-                FleckMaker.ThrowDustPuffThick(pawn.DrawPos, pawn.Map, 0.6f + 0.25f * pawn.BodySize,
-                    new Color(0.78f, 0.69f, 0.52f, 0.7f));
+                FleckMaker.ThrowDustPuffThick(pawn.DrawPos, pawn.Map, 0.6f + 0.25f * pawn.BodySize, Ext.wakeColor);
+                if (Ext.wakeFleck != null)
+                {
+                    FleckCreationData tell = FleckMaker.GetDataStatic(pawn.DrawPos, pawn.Map, Ext.wakeFleck, Ext.wakeFleckScale);
+                    IntVec3 dir = pawn.pather.nextCell - pawn.Position;
+                    tell.rotation = (dir == IntVec3.Zero ? 0f : dir.AngleFlat) + Ext.wakeFleckAngleOffset;
+                    pawn.Map.flecks.CreateFleck(tell);
+                }
             }
 
             // A drag: a submerged swimmer hauling a corpse scores the sand cell by cell.
@@ -177,7 +207,7 @@ namespace RimMandrake.CreatureBehaviors
             MaintainRumble(pawn);
         }
 
-        private static Pawn CurrentAttackTarget(Pawn pawn)
+        private static Thing CurrentAttackTarget(Pawn pawn, bool anyThing)
         {
             Job job = pawn.CurJob;
             if (job == null)
@@ -188,7 +218,8 @@ namespace RimMandrake.CreatureBehaviors
             {
                 return null;
             }
-            return job.targetA.Thing as Pawn;
+            Thing t = job.targetA.Thing;
+            return t is Pawn || (anyThing && t != null) ? t : null;
         }
 
         private void Submerge(Pawn pawn)
@@ -231,7 +262,7 @@ namespace RimMandrake.CreatureBehaviors
             for (int i = 0; i < 3; i++)
             {
                 FleckMaker.ThrowDustPuffThick(loc + new Vector3(Rand.Range(-0.4f, 0.4f), 0f, Rand.Range(-0.4f, 0.4f)),
-                    pawn.Map, 1.2f + 0.3f * pawn.BodySize, new Color(0.78f, 0.69f, 0.52f, 0.9f));
+                    pawn.Map, 1.2f + 0.3f * pawn.BodySize, new Color(Ext.wakeColor.r, Ext.wakeColor.g, Ext.wakeColor.b, 0.9f));
             }
             Ext.breachSound?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
             if (Ext.breachStaggerTicks > 0)
@@ -312,8 +343,9 @@ namespace RimMandrake.CreatureBehaviors
             // eats it in place, submerged and unseen), and removing it would break the food chain and
             // send the swimmer out to kill again. So the text says struck down, never "pulled down"
             // (SANDSWIM_TAKE_FUNNEL_NEVER_PLACED_1).
-            string text = "Something under the sand came up beneath " + victim.LabelShort
-                + " and struck it down. A collapsed funnel of sand marks the place. It was a "
+            string medium = Ext.mediumLabel ?? "sand";
+            string text = "Something under the " + medium + " came up beneath " + victim.LabelShort
+                + " and struck it down. A collapsed funnel of " + medium + " marks the place. It was a "
                 + pawn.KindLabel + ".";
             bool playerConcern = victim.Faction == Faction.OfPlayer || victim.HostFaction == Faction.OfPlayer;
             if (playerConcern)
@@ -331,7 +363,7 @@ namespace RimMandrake.CreatureBehaviors
 
         public override string CompInspectStringExtra()
         {
-            return Submerged ? "Under the sand." : null;
+            return Submerged ? "Under the " + (Ext?.mediumLabel ?? "sand") + "." : null;
         }
 
         public override void PostExposeData()

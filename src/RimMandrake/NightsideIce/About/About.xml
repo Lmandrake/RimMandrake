@@ -6,10 +6,17 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
+  </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
+    <li>mandrake.rm.creaturebehaviors</li>
   </loadAfter>
   <description>NIGHTSIDEICE_RM_MOD_BUILD_1 (Phase A row 5 of
 design/RimMandrake/biome_mod_architecture.md; parent
@@ -31,7 +38,9 @@ the twin never used a donor type, so this mod owes no
 
 Ships the BiomeDef and the heat dial (NIGHTSIDEICE_HEAT_DIAL_1): one continuous
 reading of how warm the colony is against the ice, shown as a thermal-signature
-alert, which the ruled breach loop and shivven (filed, unbuilt) will read.
+alert, and the shivven (NIGHTSIDEICE_SHIVVEN_BUILD_1) that read it: blind tunnelers that travel
+inside the ice on the Creature Behaviors sand-swim kit, head for the hottest heater and never leave
+the ice. The breach cracks that let them up beside a base are filed, unbuilt.
 
 ⛔ Star Wars canon fauna does NOT ship here — Q11a (owner ruling, 2026-09-22):
 a genuinely canon name is IP and must route through the Utinni campaign patch
