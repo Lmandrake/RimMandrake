@@ -30,6 +30,7 @@ namespace RimMandrake.Stillsand
         public static bool solarStillEnabled = true;
         public static float stillRateMultiplier = 1f;
         public static bool wringingStillEnabled = true;
+        public static bool sunLanceEnabled = true;
 
         public static bool TableEnabled(RM_SunTableKind kind)
         {
@@ -55,6 +56,7 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref solarStillEnabled, "solarStillEnabled", true);
             Scribe_Values.Look(ref stillRateMultiplier, "stillRateMultiplier", 1f);
             Scribe_Values.Look(ref wringingStillEnabled, "wringingStillEnabled", true);
+            Scribe_Values.Look(ref sunLanceEnabled, "sunLanceEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -84,6 +86,9 @@ namespace RimMandrake.Stillsand
                 "The wringing still also distils corpses, and onlookers dislike it. Off: it stands idle.");
             list.Label("Still rate: x" + stillRateMultiplier.ToString("0.00"));
             stillRateMultiplier = list.Slider(stillRateMultiplier, 0.25f, 3f);
+            list.GapLine();
+            list.CheckboxLabeled("Sun lance", ref sunLanceEnabled,
+                "The heliostat turret focuses the fixed sun on one target. It heats and never ignites, scales with the sun's elevation, and does nothing in shade, under a roof or in a sand gale. Off: it stands idle.");
             list.GapLine();
             list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\". Fulgurites on sand "
                        + "follow the Pyrelands' fulgurite toggle.");
