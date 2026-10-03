@@ -11,3 +11,10 @@
 - 09:10:04 2nd load: SWBestiary stale ThingDefs_Abyss.xml (source moved to Abyss, deploy w/o --prune leaves old) discarded def -> raceless pawnkind cascade (AlphaMemes/GeneticRim static ctor dead), launch gate refuses. Fix: deploy --prune, relaunch
 - 09:13:52 pruned both deploys; removed 4 deployed copies of HELD files (hold never deletes -> dangling xrefs: TheSump biome, FoundryScatter x2, TibannaTap patch). relaunch 3
 - 09:14:30 lesson committed; relaunch 3 loading
+- 09:37:01 load 3 clean-ish (dead ctor 1 donor, xref 7); rerun3 started
+- 10:02:09 rerun3 done (4 mods). Script fixes published: WS recipes/Oasis, Forge letters/settings id/cycle events, BlueDesert letters, LeaningScrub deep=True, watch time_set_ticks. Cauldron ran on STALE deploy (sibling added FloraExpansion 09:31). Next: redeploy+relaunch
+- 10:06:16 recorded 4 RED runs via new record_summaries.py. NEXT: redeploy composed+plain --prune, delete held copies, relaunch #4, run broad rerun
+- 10:08:34 my open_mod_settings pokes left Dialog_ModSettings open, contaminating Cauldron/LeaningScrub modal_open surprises in rerun3 (those two RED records are tainted); closed. python.exe cannot kill-by-name from WSL pkill; use Get-CimInstance.
+- 10:16:36 closing game for load #4: deploy prune x2, held-copy purge, compose all script mods into ModsConfig (rerun4 showed AcousticScanner/BrainWorms/AssailantSalvage defs 0-resolve: their mods are not in the FULL active list)
+- 10:20:14 launched load 4 (634 active = FULL 610 + 24 non-folded script mods)
+- 10:41:24 load4 up; harvest4 saved. offline fixes pending-deploy (need DLL rebuild + restart): TheSump BeastWakeRelay CompProperties wrapper (EH C#), BrainWorms stat li shape, BlueDesert StuffsMetallic->ResourcesRaw, TheSump MediumBash->BigBash sounds. rerun5 started (7 mods)

@@ -285,9 +285,9 @@
         </li>
       </lifeStageAges>
       <leatherDef>RM_Leather_TarCured</leatherDef>
-      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
     </race>
     <tradeTags>
       <li>AnimalUncommon</li>
@@ -562,9 +562,9 @@
           <minAge>0.8</minAge>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
     </race>
     <butcherProducts>
       <RM_ThrummelChitin>10</RM_ThrummelChitin>
@@ -872,9 +872,9 @@
         </li>
       </lifeStageAges>
       <leatherDef>RM_SkarridHide</leatherDef>
-      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
     </race>
     <tradeTags>
       <li>AnimalFighter</li>

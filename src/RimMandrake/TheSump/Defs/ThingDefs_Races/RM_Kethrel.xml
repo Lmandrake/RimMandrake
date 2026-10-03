@@ -169,9 +169,9 @@
           <minAge>0.6</minAge>
         </li>
       </lifeStageAges>
-      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
-      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
-      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
     </race>
     <inspectorTabs>
       <li>RimMandrake.TheSump.RM_ITab_KethrelShell</li>

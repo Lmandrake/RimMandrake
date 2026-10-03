@@ -237,7 +237,7 @@ def _build_suite():
         x, z = t.anchor
         t.clear_area(size=30)
         rect = "%d,%d,%d,%d" % (x - 12, z - 12, 24, 24)
-        sub = t.bridge_call("jawa/set_substructure_batch", action="add",
+        sub = t.bridge_call("jawa/set_substructure_batch", action="set",
                             rect="%d,%d,7,7" % (x - 3, z - 3), doLeavings=False, readBack=0)
         if isinstance(sub, dict) and sub.get("success") is False:
             _unmeasured(t, "set_substructure_batch refused the add: %r" % (sub,))
