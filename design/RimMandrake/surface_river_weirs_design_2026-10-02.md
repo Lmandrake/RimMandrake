@@ -143,8 +143,8 @@ run by repairing it), the flood pours through every gap onto the fields, and the
 soil reverts to plain soil. Walls and other buildings are untouched — **a catastrophe of harvest and
 safety, never a base-delete**, exactly the sea version's ruled shape. A tended weir never breaches.
 
-What is NOT in it: nothing carries pawns or items along a surface river (the owner's ruling: the
-carry stays sea-floor); no new flood system (the floods are vanilla's).
+What is NOT in it: no new flood system (the floods are vanilla's). Surface rivers DO carry pawns
+(owner, 2026-10-03): the whole mod is defined in `river_works_mod_design_2026-10-03.md`.
 
 ## 5. Mod Settings (River Works)
 
