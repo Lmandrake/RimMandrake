@@ -118,7 +118,8 @@
     <defName>RM_SeabedSite</defName>
     <label>sea floor</label>
     <description>A place on the floor of a sea. What is built here stands apart from the water above it.</description>
-    <worldObjectClass>RimWorld.Planet.MapParent</worldObjectClass>
+    <!-- SEABED_FLOOR_GENERATORS_1: a MapParent that picks the floor biome's generator. -->
+    <worldObjectClass>RimMandrake.DivingInteraction.RM_SeabedSiteParent</worldObjectClass>
     <texture>World/WorldObjects/Sites/GenericSite</texture>
     <expandingIcon>true</expandingIcon>
     <expandingIconPriority>70</expandingIconPriority>

@@ -15,7 +15,8 @@ namespace RimMandrake.TerminalBiomes
         public static bool IsChillFloor(Map map)
         {
             return map != null && map.Biome != null
-                && map.Biome.defName == ChillBiomeDefName && map.IsPocketMap;
+                && ((map.Biome.defName == ChillBiomeDefName && map.IsPocketMap)
+                    || map.Biome.defName == "RM_SeabedFloor_TheChill");
         }
 
         public override AcceptanceReport AllowsPlacing(BuildableDef checkingDef, IntVec3 loc,

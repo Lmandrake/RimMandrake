@@ -222,3 +222,46 @@ def chill_dive_density_sampler(t):
         # UNMEASURED offline: the number of animals on a freshly generated Chill floor needs a live dive; the
         # owner sets the final count (leaning 2-4) on a walk. Run density_sampler.py for the offline expectation.
         t.screenshot()
+
+
+@suite.chain("seabed_floor_generators")
+def seabed_floor_generators(t):
+    """SEABED_FLOOR_GENERATORS_1: each floor biome names a layer generator carrying its hatch twin's content, with no exit."""
+    import os, xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+
+    def gens(name):
+        root = ET.parse(os.path.join(here, "Defs", "MapGeneration", name)).getroot()
+        return {d.findtext("defName"): d for d in root.findall("MapGeneratorDef")}
+
+    with t.component("floor_biomes_name_layer_generators", beyond_toggle=True):
+        root = ET.parse(os.path.join(here, "Defs", "PlanetLayerDefs", "RM_SeabedFloorBiomes.xml")).getroot()
+        named = {b.findtext("defName"): b.findtext("modExtensions/li/generator") for b in root.findall("BiomeDef")}
+        layer = gens("RM_SeabedGenerators.xml")
+        bad = [f for f in SEAS.values() if named.get(f) not in layer]
+        if bad:
+            raise ExpectationFailed("floor biomes without a layer generator: %s" % bad)
+        t.screenshot()
+    with t.component("layer_generators_match_hatch_content", beyond_toggle=True):
+        hatch, layer = gens("RM_SeaDiveGenerators.xml"), gens("RM_SeabedGenerators.xml")
+        if len(hatch) != 4:  # sanity probe: the instrument must see the four hatch twins
+            raise ExpectationFailed("expected 4 hatch generators, read %d" % len(hatch))
+        for name, g in layer.items():
+            steps = [li.text for li in g.findall("genSteps/li")]
+            twin = [li.text for li in hatch[name.replace("RM_SeabedGenerator_", "RM_SeaDiveGenerator_")].findall("genSteps/li")]
+            if g.find("pocketMapProperties") is not None or "RM_PlaceSeaDiveExit" in steps:
+                raise ExpectationFailed("%s still carries the pocket map or the exit" % name)
+            if g.findtext("isUnderground") != "false":
+                raise ExpectationFailed("%s would roof the floor in thick rock" % name)
+            if steps != [s for s in twin if s != "RM_PlaceSeaDiveExit"]:
+                raise ExpectationFailed("%s content drifted from its hatch twin: %s vs %s" % (name, steps, twin))
+        t.screenshot()
+    with t.component("live_floor_generates_sea_content", beyond_toggle=True):
+        # UNMEASURED offline: land a ship on the layer under each sea (needs SEABED_DESCENT_ASCENT_1 or a
+        # debug map on a floor tile) and read the generator, vents/gallery/scatters and the sea's cast.
+        r = t.bridge_call("jawa/get_defs", defs=";".join(
+            "MapGeneratorDef/RM_SeabedGenerator_%s" % s for s in ("TheScald", "GreySea", "TwilightSea", "TheChill")))
+        if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
+            raise ExpectationFailed("layer generators missing live: %r" % r)
+        t.screenshot()

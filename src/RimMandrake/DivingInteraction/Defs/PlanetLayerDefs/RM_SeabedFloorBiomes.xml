@@ -3,7 +3,9 @@
   SEABED_PER_SEA_FLOORS_1. One floor BiomeDef per sea, replacing the generic RM_SeabedFloor for
   tiles under that sea. Mapping is data: the surface biome carries RM_SeabedAccessExtension
   floorBiome (Patches/RM_SeabedFloorBiomeWiring.xml). Densities stay 0 until Phase 3 content
-  (plants/fauna on the floor map) is built and the plant guard is proven live. Propane Lake is
+  (plants/fauna on the floor map) is built and the plant guard is proven live. Fauna does not wait:
+  RM_SeaFloorFauna reads the cast off the sea above (SEABED_FLOOR_GENERATORS_1); each floor names its
+  generator (RM_SeabedGenerators.xml) through RM_SeabedFloorExtension. Propane Lake is
   a RUT_ Utinni biome and is not wired here (blocked, see item).
 -->
 <Defs>
@@ -16,6 +18,11 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
+        <generator>RM_SeabedGenerator_TheScald</generator>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
   <BiomeDef ParentName="RM_SeabedBiomeBase">
@@ -26,6 +33,11 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
+        <generator>RM_SeabedGenerator_GreySea</generator>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
   <BiomeDef ParentName="RM_SeabedBiomeBase">
@@ -36,6 +48,11 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
+        <generator>RM_SeabedGenerator_TwilightSea</generator>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
   <BiomeDef ParentName="RM_SeabedBiomeBase">
@@ -46,6 +63,11 @@
     <animalDensity>0</animalDensity>
     <plantDensity>0</plantDensity>
     <maxFishPopulation>0</maxFishPopulation>
+    <modExtensions>
+      <li Class="RimMandrake.DivingInteraction.RM_SeabedFloorExtension">
+        <generator>RM_SeabedGenerator_TheChill</generator>
+      </li>
+    </modExtensions>
   </BiomeDef>
 
 </Defs>
