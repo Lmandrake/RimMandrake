@@ -96,9 +96,14 @@ namespace RimMandrake.GelatinousSlime
         // Multiplier on the arrival chance. 0.25-4.
         public static float visitorArrivalRate = 1f;
 
+        // GELATINOUSSLIME_GAPPO_FAMILY_1: the greater gappo hardens the slime it grazes into a
+        // clean channel. Off: it still grazes, the ground is left as it was.
+        public static bool gappoChannels = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref preferHigherPriorityArchive, "preferHigherPriorityArchive", true, true);
             Scribe_Values.Look(ref rarityFactor, "rarityFactor", 1f, true);
             Scribe_Values.Look(ref flavorEntryRecorded, "flavorEntryRecorded", true, true);
@@ -163,6 +168,10 @@ namespace RimMandrake.GelatinousSlime
                 + "Off: none arrive and the map opens without them.");
             list.Label("Arrival rate: " + visitorArrivalRate.ToString("0.00") + "x");
             visitorArrivalRate = list.Slider(visitorArrivalRate, 0.25f, 4f);
+            list.CheckboxLabeled("Greater gappo clears channels", ref gappoChannels,
+                "On (default): the greater gappo's scoop hardens the soft slime under it and wipes "
+                + "the smear, leaving a clean channel behind it. Off: it grazes and the ground is "
+                + "left as it was.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");

@@ -175,16 +175,19 @@
     </wildPlants>
 
     <!--
-      🔑 THE ROSTER IS DELIBERATELY THIN, AND THAT IS SPIKE C.
-      RM_Gelatid is the body's own always-visible native. Everything else you
-      meet here WANDERED IN — SlimeVisitorSpawner (Source/SlimeVisitors.cs)
-      pulls arrivals from the NEIGHBOURING world tiles' own biomes, already
-      part-slimified, so the cast is whatever lives next door on this planet
-      with this mod set. A hand-written animal list would be a lie about a
-      biome whose whole fiction is "everything that ever touched it".
+      The cast. RM_Gelatid is the body's own always-visible native; the gappo family (lesser, gappo,
+      greater: the filter-feeders that graze the body itself) and the titanoslime are its other
+      residents. Q14 overruled the old "deliberately thin, Spike C" roster; the wandering visitors
+      (SlimeVisitorSpawner, Source/SlimeVisitors.cs, pulled from neighbouring tiles' biomes,
+      already part-slimified) stay as the trace tail, "recombinations walking around in small
+      numbers", not as the whole cast.
     -->
     <wildAnimals>
       <RM_Gelatid>3.0</RM_Gelatid>
+      <!-- GELATINOUSSLIME_GAPPO_FAMILY_1, // INVENTED commonalities: swarm, middle, bulk -->
+      <RM_GappoLesser>1.5</RM_GappoLesser>
+      <RM_Gappo>1.0</RM_Gappo>
+      <RM_GappoGreater>0.3</RM_GappoGreater>
       <!-- TITANOSLIME_SLIME_BIOME_1. Rare on purpose: the kind's
            ecoSystemWeight of 6 means one titanoslime costs the map's animal
            budget what six gelatids would, so the spawner stops adding animals

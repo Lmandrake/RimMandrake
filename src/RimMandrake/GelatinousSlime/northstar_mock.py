@@ -21,7 +21,7 @@ DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
             "titanoslimeMaxStage": "5", "titanoslimeSheds": "True",
             "slimificationEnabled": "True", "slimificationClockDays": "7", "fieldConversionEnabled": "True",
-            "fieldConversionRate": "1", "visitorsEnabled": "True", "visitorArrivalRate": "1"}
+            "fieldConversionRate": "1", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True"}
 TITAN_STAGES = [0, 0, 1, 2, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0, 2]
 
 
