@@ -24,6 +24,7 @@ namespace RimMandrake.TheForge
 
         // §7 the dhuvvox clock
         public static SoundDef RM_DhuvvoxNoduleClick;
+        public static SoundDef RM_DhuvvoxScuttle;
         public static HediffDef RM_DhuvvoxRunSlowing;
 
         static RM_TheForgeDefOf()

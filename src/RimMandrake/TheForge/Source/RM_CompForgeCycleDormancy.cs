@@ -49,6 +49,11 @@ namespace RimMandrake.TheForge
         public float slowFinalHours = 0.25f;
         public HediffDef slowHediff;
         public SoundDef wakeSound;
+        // Scuttle tick while awake: every runSoundIntervalTicks, stretched up to
+        // runSoundSlowFactor times across the slowing window.
+        public SoundDef runSound;
+        public int runSoundIntervalTicks = 70;
+        public float runSoundSlowFactor = 4f;
 
         public CompProperties_ForgeCycleDormancy()
         {
@@ -59,6 +64,8 @@ namespace RimMandrake.TheForge
     public class RM_CompForgeCycleDormancy : ThingComp
     {
         private int awakeSinceTick = -1;
+        private int nextScuttleTick;
+        private static readonly Dictionary<int, int> lastSwarmLogTick = new Dictionary<int, int>();
         private bool initialCheckDone;
 
         public CompProperties_ForgeCycleDormancy Props => (CompProperties_ForgeCycleDormancy)props;
@@ -90,11 +97,59 @@ namespace RimMandrake.TheForge
         public override void CompTick()
         {
             base.CompTick();
+            if (Props.runSound != null && ClockOn && parent.Spawned)
+            {
+                Scuttle();
+            }
             if (!parent.Spawned || !parent.IsHashIntervalTick(Props.checkIntervalTicks))
             {
                 return;
             }
             Check();
+        }
+
+        private void Scuttle()
+        {
+            if (!RM_TheForgeSettings.Active(RM_TheForgeSettings.dhuvvoxRunSoundEnabled) || IsSealed)
+            {
+                return;
+            }
+            int now = Find.TickManager.TicksGame;
+            if (now < nextScuttleTick)
+            {
+                return;
+            }
+            int gap = Mathf.Max(10, Props.runSoundIntervalTicks);
+            int end = RunEndTick();
+            int left = end - now;
+            float window = Props.slowFinalHours * 2500f;
+            float f = 1f;
+            if (end > 0 && left > 0 && left <= window)
+            {
+                f = Mathf.Lerp(Props.runSoundSlowFactor, 1f, left / window);
+            }
+            nextScuttleTick = now + Mathf.RoundToInt(gap * f * Rand.Range(0.7f, 1.3f));
+            if (!parent.Position.Fogged(parent.Map))
+            {
+                Props.runSound.PlayOneShot(SoundInfo.InMap(new TargetInfo(parent.Position, parent.Map)));
+            }
+        }
+
+        // Debug-log data for the swarm-aggregation question: how many awake per map.
+        private void LogSwarm(Map map)
+        {
+            int now = Find.TickManager.TicksGame;
+            if (lastSwarmLogTick.TryGetValue(map.uniqueID, out int last) && now - last < 2500)
+            {
+                return;
+            }
+            lastSwarmLogTick[map.uniqueID] = now;
+            int n = 0;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (p.def == parent.def && p.TryGetComp<CompCanBeDormant>() is CompCanBeDormant c && c.Awake) n++;
+            }
+            Log.Message("[TheForge] dhuvvox awake on map " + map.uniqueID + ": " + n);
         }
 
         public bool ShouldBeAwakeNow()
@@ -138,6 +193,7 @@ namespace RimMandrake.TheForge
                     {
                         Props.wakeSound?.PlayOneShot(SoundInfo.InMap(new TargetInfo(pawn.Position, pawn.Map)));
                         FleckMaker.ThrowMicroSparks(pawn.DrawPos, pawn.Map);
+                        LogSwarm(pawn.Map);
                     }
                     if (enabled && !Props.wakeMessage.NullOrEmpty() && !pawn.Position.Fogged(pawn.Map))
                     {

@@ -143,7 +143,7 @@ GROUPS = [
     ("conditions", "GameConditionDef", _names("GameConditionDefs", "GameConditionDef"), 1),
     ("hediffs", "HediffDef", _names("HediffDefs", "HediffDef"), 1),
     ("research", "ResearchProjectDef", _names("ResearchProjectDefs", "ResearchProjectDef"), 1),
-    ("sounds", "SoundDef", _names("SoundDefs", "SoundDef"), 9),
+    ("sounds", "SoundDef", _names("SoundDefs", "SoundDef"), 10),
     ("render_trees", "PawnRenderTreeDef", _names("PawnRenderTreeDefs", "PawnRenderTreeDef"), 1),
     ("biome", "BiomeDef", _names("BiomeDefs", "BiomeDef"), 1),
 ]
@@ -205,7 +205,7 @@ SETTINGS_DEFAULTS = _settings_defaults()
 WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabled", "cycleFloodingEnabled",
          "lavaFreezeEnabled", "meltBackDestroys", "floatstoneBloomEnabled", "cycleDormancyEnabled",
          "cycleTelegraphLetters", "keelworkEnabled", "keelRingEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
-         "forgeVoicesVisualCues", "dhuvvoxClockEnabled",
+         "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength"]
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED)
@@ -1745,6 +1745,15 @@ def keelwork(t):
                 _fail("RM_ForgeKeelwork.cs lacks %r: the launch ring is not wired" % n)
         if "RM_ForgeVoice_KeelRing" not in ALL_DEFNAMES:
             _fail("the RM_ForgeVoice_KeelRing SoundDef is not shipped in Defs/SoundDefs")
+
+    with _comp(t, "dhuvvox_scuttle_wired", independent=True, toggle="dhuvvoxRunSoundEnabled"):
+        # FORGE_DHUVVOX_SWARM_REMAINDER_1: source-level proof; the audio itself is UNMEASURED (no bridge tool hears).
+        src = _read_cs("RM_CompForgeCycleDormancy.cs")
+        for n in ("dhuvvoxRunSoundEnabled", "runSoundSlowFactor", "Props.runSound"):
+            if n not in src:
+                _fail("RM_CompForgeCycleDormancy.cs lacks %r: the scuttle is not wired" % n)
+        if "RM_DhuvvoxScuttle" not in ALL_DEFNAMES:
+            _fail("the RM_DhuvvoxScuttle SoundDef is not shipped in Defs/SoundDefs")
 
 
 @suite.chain("plume_fronts")
