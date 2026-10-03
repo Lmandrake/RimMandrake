@@ -6,12 +6,13 @@
 > sea floor and to leave again. You can't 'dive' as an individual pawn nor return as one.
 > It's ship or nothing."*
 
-**The gravship is the sole way down and the sole way back.** The live mechanism is
-**`RM_SeaDiveHatch`**, a `MapPortal` subclass that picks its pocket-map generator from the
-parent map's sea biome and is buildable only on a map carrying a real `GravEngine`
-(`PlaceWorker_NeedsGravEngine`) — i.e. aboard a gravship. The hatch resolves the sea from the
-map's biome by itself, so no per-sea terrain tagging or wiring exists. What a sea owes is floor
-CONTENT.
+**The gravship is the sole way down and the sole way back, and it flies there** (owner,
+2026-10-01: *"Now the ship just flies to a new planetary layer called sea floor."*). The floor is a
+tile of the `RM_SeabedLayer` planet layer (built, `SEABED_PLANET_LAYER_1`). The flight down and up
+is `SEABED_DESCENT_ASCENT_1` and the per-sea floor generators on the layer are
+`SEABED_FLOOR_GENERATORS_1`, both unbuilt; the four generators' content exists today and is
+reached only through `RM_SeaDiveHatch`, a leftover pocket-map entry that `SEA_DIVE_HATCH_REMOVE_1`
+deletes once those land. What a sea owes is floor CONTENT.
 
 🔑 **Second ruling the same day:** *"All the fishables should also be alive and moving around
 in the depths (this is true for ALL seas)."* ⇒ every catch entry in every sea owes a LIVING
@@ -19,9 +20,8 @@ counterpart on the floor map. A catch item with no creature swimming down there 
 not a finished species. That is a bigger job than a two-defs-per-species line and should be
 sized honestly.
 
-⚠️ **UNMEASURED, and nobody may assume it:** the seas are `impassable=true`, so whether a
-gravship can travel to and hold station over a sea tile is an open ENGINE question. The hatch
-enforces ship-only at construction time precisely so that this was not guessed.
+⚠️ **UNMEASURED, and nobody may assume it:** the seas are `impassable=true`, so how the gravship
+lands on, and lifts off from, a sea's floor tile is `SEABED_DESCENT_ASCENT_1`'s engine question.
 
 ---
 
@@ -276,7 +276,7 @@ Work per sea, in this order — cheapest and most decisive first.
 
 ## verify
 
-Each of the four seas: a stated shore verdict; a floor the gravship's `RM_SeaDiveHatch` opens
+Each of the four seas: a stated shore verdict; a floor the gravship flies down to
 and that is populated; and for every species in its catch table, either a floor animal or a
 recorded reason it is catch-only. `validate_patch.py` clean on every touched file. ⛔ **No
 live-verified claim** while `QUICKTEST_RIVER_WATER_MISSING_1` stands — say "authored, not
@@ -284,7 +284,7 @@ live-proven" and mean it.
 
 ## criteria
 
-Descending to a sea by gravship hatch shows you the animals its fish descriptions promised, and
+Flying the gravship down to a sea's floor shows you the animals its fish descriptions promised, and
 fishing its shore pulls out the same creatures you swam past.
 
 ## Watch out

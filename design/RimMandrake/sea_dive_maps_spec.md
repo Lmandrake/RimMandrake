@@ -14,23 +14,26 @@ Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7
 > sea floor and to leave again. You can't 'dive' as an individual pawn nor return as one.
 > It's ship or nothing."*
 >
-> **The gravship is the sole way down and the sole way back.** The mechanism is
-> **`RM_SeaDiveHatch`** — a `MapPortal` subclass in `mandrake.rm.divinginteraction` that
-> picks its pocket-map generator from the parent map's sea biome, buildable only on a map
-> carrying a real `GravEngine` (`PlaceWorker_NeedsGravEngine`), i.e. inside a gravship. The
-> hatch, the four generators, the floor terrain and the exit (`RM_SeaDiveExit`, placed by
-> `GenStep_PlaceSeaDiveExit`) ship today.
+> **The gravship is the sole way down and the sole way back, and it FLIES there** (owner,
+> 2026-10-01: *"the sea hatch might have been something from a previous build. Now the ship just
+> flies to a new planetary layer called sea floor."*). The floor is a tile of the
+> **`RM_SeabedLayer`** planet layer (`SEABED_PLANET_LAYER_1`, built: the layer, its mirroring and
+> its connections), the geometric twin of the surface. The ship's flight down and up is
+> `SEABED_DESCENT_ASCENT_1` (unbuilt); the floor content moving onto the layer is
+> `SEABED_FLOOR_GENERATORS_1` (unbuilt); `RM_SeaDiveHatch`/`RM_SeaDiveExit` are a leftover pocket-map
+> entry, removed by `SEA_DIVE_HATCH_REMOVE_1` once those two land.
 >
-> 🔑 **Open:** the seas are `impassable=true`, so whether and how a gravship can travel to and
-> hold station over a sea tile is an **engine question this spec does not answer**. The hatch
-> enforces ship-only at CONSTRUCTION time precisely because that travel rule was not assumed.
+> ⇒ In this spec, the **floor content** (generators' terrain and gensteps, cast, per-sea designs,
+> §3.2 onward and §8) stands. The **pocket-map entry and anchoring** (the `MapPortal` engine notes
+> in §2, §3.1's anchoring, the dive-map settings in §5) describe the retired route; read them as
+> engine facts, not as the design.
 
 ## 0. Read first — what already exists (do not re-invent)
 
 | already built | where | what it gives this spec |
 |---|---|---|
 | **A pocket map, in this repo, live-tested** | `src/RimUtinni/LanternDeeps/` — `RUT_LanternDeepGenerator.xml` (MapGeneratorDef with `pocketMapProperties`), `RUT_LanternDeepMineshaft.xml` (a `thingClass MapPortal` building), `Patch_PocketMapGrowthRate.cs`, `DeepFloraPlanter.cs` | the whole entry/exit/generator shape, plus two MEASURED pocket-map crashes and their fixes (§2.4) |
-| The hatch and exit | `src/RimMandrake/DivingInteraction/` (`RM_SeaDiveHatch`, `RM_SeaDiveExit`, `GenStep_PlaceSeaDiveExit`, `PlaceWorker_NeedsGravEngine`, `RM_DivingSettings`) | **the entry**: the gravship hatch owns the descent, the pocket map and the way back |
+| The sea-floor planet layer | `src/RimMandrake/DivingInteraction/` (`RM_SeabedLayer.cs`, `Defs/PlanetLayerDefs/RM_SeabedLayer.xml`) | **the place**: every floor is a layer tile under its sea; the ship flies there (`SEABED_DESCENT_ASCENT_1`, unbuilt) |
 | Settings gate seam | `RM_MechanicGates` / `RM_MechanicGateExtension` (`EnvironmentalHazards`) — TerminalBiomes already registers `Scald.S1…S6` in `RM_TerminalBiomesMod.cs:192-196` | per-sea and per-mechanic toggles with zero new plumbing |
 | Generic floor painters | `RM_GenStep_TerrainChannels` (random-walk channels of any TerrainDef), `RM_GenStep_ScatterPools` (3–6 spaced pools), `RM_GenStep_PlacedSetPieces` + `RM_SetPieceElement_AnchoredPawn`, `RM_ScattererValidator_NearThingDef` | Twilight's underwater rivers, Grey's brine pools, Scald's vents + sail clusters, statuary set-pieces |
 | Weather forcing | `RM_GameCondition_WeatherPulse` / `GameCondition_EnvironmentalWeather` (override `GameCondition.ForcedWeather()`) | one held "murk" weather per floor |
@@ -42,10 +45,9 @@ Status: RULED design, 2026-09-25 (§7), with the Scald floor worked in full (§7
 
 **Shared shape (all four seas).**
 
-**Entry and exit are the ship.** The gravship brings the colony to the sea and an
-**`RM_SeaDiveHatch`** — buildable only aboard a ship with a real `GravEngine` — opens onto that
-sea's floor. The
-first passage generates that sea's floor map (100×100) and it **persists**: animals live on,
+**Entry and exit are the ship.** The gravship flies from the sea down to that sea's floor, a
+tile of the `RM_SeabedLayer` planet layer, and back up. The
+first landing generates that sea's floor map (100×100) and it **persists**: animals live on,
 harvest regrows, wrecks stay chiselled. Leaving is the ship's business too, by the same
 route; there is no personal ascent.
 
@@ -201,7 +203,7 @@ from the floor spawn (§3.3).
 
 ## 3. Map generation
 
-### 3.1 One generator per sea, one floor per hatch
+### 3.1 One generator per sea, one floor per sea tile
 
 Four `MapGeneratorDef`s (`RM_ScaldFloorGenerator`, `RM_GreySeaFloorGenerator`,
 `RM_TwilightSeaFloorGenerator`, `RM_PropaneLakeFloorGenerator`), each: `isUnderground true`
@@ -210,12 +212,10 @@ nobody "mines" the ceiling), `pocketMapProperties { biome = that sea; temperatur
 tileMutators = [RM_SeaFloorHabitat] }`, `disableCallAid true`, `ignoreAreaRevealedLetter true`,
 `customMapComponents = [RM_MapComponent_SeaFloor, RM_MapComponent_DeepFloraRegrowth]`.
 
-**Anchoring.** The hatch resolves its sea from the parent map's biome, and the sea BiomeDef's
-`RM_DiveMapExtension` supplies the `generator`. The floor is the hatch's own pocket map
-(`MapPortal.pocketMap`, Scribed by `MapPortal.ExposeData`), so each hatch has exactly **one**
-floor and re-entering it returns to the same persistent map. The floor's
-`PocketMapParent.sourceMap` is the map the hatch stands on (vanilla abandonment cleanup
-applies). The exit returns to the hatch. Size: `100×100` (vanilla's
+**Anchoring.** The floor is the `RM_SeabedLayer` tile under the sea tile (translation is
+arithmetic, `new PlanetTile(tileId, layer)`, never a ledger; see `SEABED_PLANET_LAYER_1`), so every
+sea tile has exactly one floor with a real world address. Which generator a floor tile uses is
+`SEABED_FLOOR_GENERATORS_1`. Size: `100×100` (vanilla's
 `pocketMapSize` default; 10,000 cells) — each persistent floor ticks like an
 extra small map (each runs `WildAnimalSpawner`/plants/weather every tick); the persist-off
 setting (§5) is the relief valve, and per-floor `animalDensity` stays bounded by the ecosystem
@@ -312,13 +312,13 @@ than N days into an `RM_Statuary` building (Grey only; sheet §5 "the statuary o
 
 All gates go through `RM_MechanicGates` (unregistered = enabled; a `RM_MechanicGateExtension` on
 each gated def). Registered by the **DivingInteraction** mod constructor next to its existing
-settings (`RM_DivingSettings`), because the hatch is its job; TerminalBiomes' existing
+settings (`RM_DivingSettings`); TerminalBiomes' existing
 per-sea toggles (`scaldEnabled` … `greySeaEnabled`) are honoured by ANDing, same as `Scald.S*`.
 
 | setting | default | gate key / effect |
 |---|---|---|
-| Dive maps enabled (master) | on | `Dive.Maps` — off: no `RM_SeaDiveHatch` can be entered; existing floors persist and can still be surfaced from |
-| Per sea: Scald / Grey / Twilight / Propane floor | on | `Dive.Floor.<Sea>` — off stops the hatch opening that sea's floor |
+| Sea floors enabled (master) | on | `Dive.Maps` — off: the ship cannot fly down; existing floors persist and can still be left |
+| Per sea: Scald / Grey / Twilight / Propane floor | on | `Dive.Floor.<Sea>` — off stops the ship descending to that sea's floor |
 | Floor map size | 100 | side length passed to `GeneratePocketMap` for floors generated after the change (60–150) |
 | Deep exposure rate | 1.0× | multiplies `exposureDays` (0 = clock off — labelled "makes diving free; not the shipped game") |
 | Floor animal density | 1.0× | multiplies `RM_SeaFloorHabitat.animalDensityFactor` (0 = empty floors) |
@@ -326,14 +326,15 @@ per-sea toggles (`scaldEnabled` … `greySeaEnabled`) are honoured by ANDing, sa
 | Statuary from corpses (Grey) | on | `Dive.GreyStatuary` |
 | Floors persist between dives | on | off = `DestroyPocketMap` when the last colonist surfaces (cheap saves; loses harvest state) — labelled |
 
-All-off leaves the hatch inert. No worldgen-affecting toggle exists here
+All-off leaves the floors unreachable. No worldgen-affecting toggle exists here
 (nothing touches the planet).
 
 ## 6. Build order — small, each step shippable
 
-1. **The hatch (XML + C#, DivingInteraction).** `RM_SeaDiveHatch`, `RM_SeaDiveExit`,
-   `PlaceWorker_NeedsGravEngine`, the four generators and their floor terrain — shipped. Verify
-   with `validate_patch.py --live --defs`.
+1. **The place (DivingInteraction).** The `RM_SeabedLayer` planet layer — shipped
+   (`SEABED_PLANET_LAYER_1`); the four floor generators and their terrain — shipped, today reached
+   only by the leftover hatch; the ship's flight down and up (`SEABED_DESCENT_ASCENT_1`) and the
+   generators on the layer (`SEABED_FLOOR_GENERATORS_1`) — owed.
 2. **The Scald floor, bare (falsification test).** `RM_DiveMapExtension`, `RM_ScaldFloorGenerator` with only
    `RM_SeaFloorBase → GenStep_PlaceSeaDiveExit → Animals → Fog`, `RM_SeaFloorHabitat` mutator, the lifted
    growth-rate patch, the comfy-temperature pass on the 14 race defs. **Quicktest on the minimal
@@ -361,8 +362,8 @@ looking at the floor before the next. Art owed per step is filed as it appears �
 ## 7. Rulings — owner, 2026-09-25 (decisions taken by question card)
 
 1. **Persistence:** a sea floor stays generated between dives.
-2. **Entry:** by gravship only (owner 2026-09-26): the `RM_SeaDiveHatch`, built aboard a ship
-   with a `GravEngine`.
+2. **Entry:** by gravship only (owner 2026-09-26); the ship flies to the `RM_SeabedLayer` floor
+   (owner 2026-10-01).
 3. **Propane ignition:** contained to the dive map; the surface lake never burns from a dive.
 4. **Floor size:** 100×100.
 5. **Twilight Compact huts in v1** — not asked; the spec **assumes** empty lit dwellings as
@@ -554,7 +555,7 @@ end) — so this spec's deliverable is a **paint-list entry** (`BIOME_PAINT_ONCE
 map already names as a pilgrim shore"* — never a worldgen step, never a seed sweep.
 
 **Hidden until the first dive, then a named landmark (§7b-20).** The mutator has no label, no
-icon and no world-map tell. When the hatch first generates the floor of a tile
+icon and no world-map tell. When the floor of a tile is first generated
 carrying it, the floor's map component spawns a `WorldObjectDef RUT_RakatanWreckSite` on that
 tile — a map-less world object (the `WorldObject` shape with no `MapParent`, vanilla
 `WorldObjectMaker.MakeWorldObject` + `Find.WorldObjects.Add`) with a label, an icon and the
