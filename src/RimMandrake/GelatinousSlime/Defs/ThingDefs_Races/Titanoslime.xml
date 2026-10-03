@@ -98,9 +98,6 @@
            hand-authored def, so this route is verified vanilla shape. -->
       <specificMeatDef>RM_RawSlime</specificMeatDef>
       <meatLabel>raw slime</meatLabel>
-      <butcherProducts>
-        <RM_TitanoslimeChunk>1</RM_TitanoslimeChunk>
-      </butcherProducts>
       <lifeExpectancy>1000</lifeExpectancy>
       <lifeStageAges>
         <li>
@@ -139,6 +136,9 @@
       <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
       <soundEating>Reptile_Eat</soundEating>
     </race>
+    <butcherProducts>
+      <RM_TitanoslimeChunk>1</RM_TitanoslimeChunk>
+    </butcherProducts>
     <tools>
       <li>
         <label>engulfing mass</label>
