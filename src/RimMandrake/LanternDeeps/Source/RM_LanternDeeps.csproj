@@ -51,6 +51,7 @@
     <Compile Include="GenStep_ScatterLanternstone.cs" />
     <Compile Include="GenStep_LanternstoneRock.cs" />
     <Compile Include="Patch_PocketMapGrowthRate.cs" />
+    <Compile Include="Patch_GateLanternstoneDeep.cs" />
     <Compile Include="GenStep_DeepFloraGate.cs" />
     <Compile Include="MapComponent_LanternDeepDarkness.cs" />
     <Compile Include="MapComponent_DeepFloraRegrowth.cs" />

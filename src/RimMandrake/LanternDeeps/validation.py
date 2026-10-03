@@ -396,3 +396,12 @@ def fauna_residents_loaded(t):
         miss = [k for k in kinds if "RM_" + k not in blob]
         if t._guard() and miss:
             raise ExpectationFailed("RM_LanternDeeps.wildAnimals missing %r: %r" % (miss, r))
+
+
+@suite.chain("lanternstone_deep_gate_toggle")
+def lanternstone_deep_gate_toggle(t):
+    """MINERAL_BIOME_LEAKS_1: set+readback only for the gate. Proving the gate needs a deep-scanner pick on a
+    non-Deeps map, which is a random weighted draw and not drivable offline (UNMEASURED live)."""
+    with t.component("lanternstone_deep_gate_setting_flips", toggle="lanternstoneDeepGateEnabled"):
+        t.set_setting(SETTINGS_TYPE, {"lanternstoneDeepGateEnabled": False})
+        t.set_setting(SETTINGS_TYPE, {"lanternstoneDeepGateEnabled": True})

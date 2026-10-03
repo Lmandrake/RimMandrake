@@ -67,7 +67,9 @@
       <mineableThing>Hyperweave</mineableThing>
       <!-- INVENTED: midpoint of the spec's own "~2-5 per line-segment" range. -->
       <mineableYield>4</mineableYield>
-      <mineableScatterCommonality>0.6</mineableScatterCommonality>
+      <!-- MINERAL_BIOME_LEAKS_1: 0, not 0.6. Vanilla RocksFromGrid scatters every def with a nonzero value on EVERY rocky map;
+           the silk now appears only through RUT_WebworkSilkScatter (forced def, self-gated to the Webwork biome). -->
+      <mineableScatterCommonality>0</mineableScatterCommonality>
       <mineableScatterLumpSizeRange>4~8</mineableScatterLumpSizeRange>
       <veinMineable>true</veinMineable>
     </building>
