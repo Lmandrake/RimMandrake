@@ -233,7 +233,7 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast</texPath>
-          <color>(178, 148, 104)</color> <!-- pale sun-baked ochre/tan, reskin palette carried over from the Horax-shared art, desert.md §9 -->
+          <!-- GLOOMCAST OWN ART 2026-10-02: own 3-facing render (artpipe RM_Gloomcast_{north,east,south}, downscaled 1024->512); the old ochre body tint is dropped because the colour is baked in. Dessicated sprite is still the Horax-derived copy. -->
           <drawSize>2.2</drawSize>
           <shadowData>
             <volume>(0.4, 0.3, 0.3)</volume>
@@ -248,7 +248,6 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast</texPath>
-          <color>(178, 148, 104)</color>
           <drawSize>6.4</drawSize>
           <shadowData>
             <volume>(0.6, 0.45, 0.45)</volume>
@@ -263,7 +262,6 @@
       <li>
         <bodyGraphicData>
           <texPath>swanimals/Gloomcast/Gloomcast</texPath>
-          <color>(178, 148, 104)</color>
           <drawSize>8.8</drawSize>
           <shadowData>
             <volume>(0.8, 0.6, 0.6)</volume>
