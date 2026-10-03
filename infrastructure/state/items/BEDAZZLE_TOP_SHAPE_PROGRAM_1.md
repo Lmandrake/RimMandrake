@@ -68,3 +68,8 @@ Owner, typed: *"Let's do sea floor. Accept all rites for now."* Every pitched ri
 `design/Jawa/salvation_rites_2026-10-01.md` (B4 feast, B6 Rite of Tipping, all of B7) is recorded
 ruled-kept. Track (a) is done (all 12 sittings closed). Track (b), the Scald and Propane Lake floor
 passes, is BENCH's active track.
+
+Track (b) sat 2026-10-02: the Chill (Propane Lake) and the Scald floor sittings are ruled
+(`the_propane_lake_floor_sitting_agenda_2026-10-02.md`, `the_scald_floor_sitting_agenda_2026-10-02.md`)
+and their CHILL_*/SCALD_* items filed to FOUNDRY. Nothing reaches a player until
+`SEABED_PER_SEA_FLOORS_1` gives the sea-floor layer a real floor per sea.
