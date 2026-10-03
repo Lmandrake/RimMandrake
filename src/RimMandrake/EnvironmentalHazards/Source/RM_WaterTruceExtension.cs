@@ -31,5 +31,16 @@ namespace RimMandrake.EnvironmentalHazards
         // from any standing-water cell (TerrainDef.IsWater) that count as
         // "at the water" for truce purposes.
         public float radius = 10f;
+
+        // The one radius every truce reader uses: the Mod Settings slider overrides the
+        // authored value unless it sits at its default (10), which defers to the XML.
+        public float EffectiveRadius
+        {
+            get
+            {
+                float s = RM_EnvironmentalHazardsSettings.waterTruceRadius;
+                return System.Math.Abs(s - RM_EnvironmentalHazardsSettings.WaterTruceRadiusDefault) < 0.01f ? radius : System.Math.Max(1f, s);
+            }
+        }
     }
 }
