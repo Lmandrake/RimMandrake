@@ -61,3 +61,10 @@ asking for **FIVE** ideas. The five must differ from each other AND from every o
 other biomes' mechanics so it can check). GPT must do deep research on other games like RimWorld and on other mods'
 content. Goal: unique contributions, never pattern replication across biomes. The consult output is cited in the sitting.
 Cleanup fallout of the scores is filed as `BIOME_TIER_CLEANUP_1` (FOUNDRY).
+
+## Ruling 2026-10-02 (owner, typed): track (d) and next track
+
+Owner, typed: *"Let's do sea floor. Accept all rites for now."* Every pitched rite in
+`design/Jawa/salvation_rites_2026-10-01.md` (B4 feast, B6 Rite of Tipping, all of B7) is recorded
+ruled-kept. Track (a) is done (all 12 sittings closed). Track (b), the Scald and Propane Lake floor
+passes, is BENCH's active track.
