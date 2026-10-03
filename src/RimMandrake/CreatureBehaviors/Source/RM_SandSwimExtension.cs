@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.CreatureBehaviors
@@ -51,6 +52,28 @@ namespace RimMandrake.CreatureBehaviors
 
         /// <summary>How often (ticks) a submerged swimmer throws a wake puff.</summary>
         public int wakeIntervalTicks = 20;
+
+        // NIGHTSIDEICE_SHIVVEN_BUILD_1: the retune knobs. Every default reproduces the sand swimmers exactly.
+
+        /// <summary>What the swimmer moves through, for its inspect line and its kill letter.</summary>
+        public string mediumLabel = "sand";
+
+        /// <summary>Colour of the wake and breach puffs (alpha used for the wake; the breach is denser).</summary>
+        public Color wakeColor = new Color(0.78f, 0.69f, 0.52f, 0.7f);
+
+        /// <summary>True: the swimmer never steps from swim terrain onto anything else (built floors
+        /// included, since a floor replaces the terrain). It strikes from the edge or waits there.</summary>
+        public bool confinedToSwimTerrain;
+
+        /// <summary>Optional tell drawn on the wake beside the dust: a fleck laid along the direction of
+        /// travel (rotation = movement angle + wakeFleckAngleOffset, clockwise degrees).</summary>
+        public FleckDef wakeFleck;
+        public float wakeFleckScale = 1f;
+        public float wakeFleckAngleOffset;
+
+        /// <summary>True: a melee job on ANY thing (a heater, a door) breaches for the strike, not only
+        /// a melee job on a pawn.</summary>
+        public bool breachForAnyTarget;
 
         public override IEnumerable<string> ConfigErrors()
         {

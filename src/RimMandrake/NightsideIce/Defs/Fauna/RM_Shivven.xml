@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Shivven.xml        NightsideIce · NIGHTSIDEICE_SHIVVEN_BUILD_1
+  The shivven: blind, thermal, colonial tunnelers that travel inside the ice (design
+  nightsideice_bedazzle_review_2026-10-01.md section 1, ruled natives; section 4 row 1).
+
+  Movement: CreatureBehaviors' sand-swim kit (RM_SandSwimExtension, injected comp), retuned by data:
+  swims Ice only, never steps off it (confinedToSwimTerrain; a built floor is not Ice, which is the
+  hull rule), breaches to strike a heater (breachForAnyTarget), its own rumble and crack, a white
+  wake. Heat seeking: RM_CompShivvenHeatSeek (Source/RM_Shivven.cs) reads RM_HeatDial's hottest
+  working heater. They eat nothing: they feed on heat (foodType None, no rest), so they never hunt
+  a walking pawn, though a struck one fights back.
+
+  Not rostered: the breach cracks (NIGHTSIDEICE_BREACH_CRACKS_1) are how they reach a base.
+  ART: artpipe RM_Shivven_south/east/north (NIGHTSIDEICE_BEDAZZLE_SITTING_1 commission, drawSize 1.1
+  adult) and the tell RM_ShivvenTell (a travelling seam of cracks, laid on the wake as a fleck, since
+  the tell graphic matters more than the body). Body and stats were a design call at build: a
+  dog-sized blind digger, cut-resistant hide, fast under the ice.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_ShivvenUnderIce</defName>
+    <label>in the ice</label>
+    <description>Travelling inside the ice, out of sight. It surfaces to strike, at the ice's edge, or when struck.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>30</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Shivven</defName>
+    <label>shivven</label>
+    <description>A blind tunneler the size of a dog: hairless pink-grey hide hanging in deep folds, white rime caught in every wrinkle and crusted along the spine, a row of dead eye-pits, long ivory-yellow incisors and broad digging claws. Shivven feel heat from a long way off and travel toward it inside the ice in colonies, with a groan you can hear through the floor of the world. They eat nothing you can see. They come for the warmth, and they claw at whatever is making it.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_SandSwimExtension">
+        <swimTerrains>
+          <li>Ice</li>
+        </swimTerrains>
+        <submergedHediff>RM_ShivvenUnderIce</submergedHediff>
+        <swimmerMarkerHediff>RM_SandSwimmer</swimmerMarkerHediff>
+        <rumbleSound>RM_ShivvenRumble</rumbleSound>
+        <breachSound>RM_ShivvenBreach</breachSound>
+        <takeFilth>Filth_RubbleRock</takeFilth>
+        <mediumLabel>ice</mediumLabel>
+        <wakeColor>(0.86, 0.92, 0.97, 0.7)</wakeColor>
+        <wakeFleck>RM_ShivvenTell</wakeFleck>
+        <wakeFleckScale>1.5</wakeFleckScale>
+        <wakeFleckAngleOffset>-65</wakeFleckAngleOffset>
+        <confinedToSwimTerrain>true</confinedToSwimTerrain>
+        <breachForAnyTarget>true</breachForAnyTarget>
+        <strikeRangeCells>1.9</strikeRangeCells>
+        <surfacedTicks>240</surfacedTicks>
+      </li>
+    </modExtensions>
+    <statBases>
+      <MoveSpeed>4.2</MoveSpeed>
+      <Wildness>1</Wildness>
+      <MarketValue>120</MarketValue>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+      <ArmorRating_Sharp>0.5</ArmorRating_Sharp>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-120</ComfyTemperatureMin>
+      <ComfyTemperatureMax>10</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>left digging claw</label>
+        <capacities><li>Scratch</li></capacities>
+        <power>7</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right digging claw</label>
+        <capacities><li>Scratch</li></capacities>
+        <power>7</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>incisors</label>
+        <capacities><li>Bite</li></capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>0.8</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <foodType>None</foodType>
+      <needsRest>false</needsRest>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>1</manhunterOnDamageChance>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.3</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <comps>
+      <li Class="RimMandrake.NightsideIce.RM_CompProperties_ShivvenHeatSeek" />
+    </comps>
+  </ThingDef>
+
+  <!-- The tell: a short seam of fresh cracks over a travelling shivven (RM_SandSwimExtension.wakeFleck). -->
+  <FleckDef>
+    <defName>RM_ShivvenTell</defName>
+    <altitudeLayer>MoteLow</altitudeLayer>
+    <fleckSystemClass>FleckSystemStatic</fleckSystemClass>
+    <fadeInTime>0.1</fadeInTime>
+    <solidTime>0.6</solidTime>
+    <fadeOutTime>1.4</fadeOutTime>
+    <graphicData>
+      <graphicClass>Graphic_Fleck</graphicClass>
+      <shaderType>Mote</shaderType>
+      <texPath>RM_NightsideIce/Effects/RM_ShivvenTell</texPath>
+      <drawSize>1</drawSize>
+    </graphicData>
+  </FleckDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Shivven</defName>
+    <label>shivven</label>
+    <race>RM_Shivven</race>
+    <combatPower>55</combatPower>
+    <ecoSystemWeight>0.3</ecoSystemWeight>
+    <wildGroupSize>3~6</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_NightsideIce/Fauna/Shivven/RM_Shivven</texPath>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_NightsideIce/Fauna/Shivven/RM_Shivven</texPath>
+          <drawSize>0.85</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_NightsideIce/Fauna/Shivven/RM_Shivven</texPath>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

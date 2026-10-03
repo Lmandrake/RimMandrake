@@ -118,6 +118,47 @@ namespace RimMandrake.NightsideIce
             return 1f - Mathf.Exp(-lastRaw / scale);
         }
 
+        // NIGHTSIDEICE_SHIVVEN_BUILD_1: the source the shivven track. The hottest player-owned building
+        // pushing heat now (the same test Measure counts), cached for SourceCacheTicks. Fires add to the
+        // dial but are never the target: nothing strikes a fire in melee.
+        public const int SourceCacheTicks = 250;
+        private Thing hottestCached;
+        private int hottestReadTick = -99999;
+
+        public Thing HottestSource()
+        {
+            int now = Find.TickManager.TicksGame;
+            if (now - hottestReadTick < SourceCacheTicks && (hottestCached == null || IsWorkingHeater(hottestCached)))
+            {
+                return hottestCached;
+            }
+            hottestReadTick = now;
+            hottestCached = null;
+            float best = 0f;
+            List<Building> colony = map.listerBuildings.allBuildingsColonist;
+            for (int i = 0; i < colony.Count; i++)
+            {
+                Building b = colony[i];
+                CompHeatPusher hp = b.TryGetComp<CompHeatPusher>();
+                if (hp != null && b.Faction == Faction.OfPlayer && hp.ShouldPushHeatNow && hp.Props.heatPerSecond > best)
+                {
+                    best = hp.Props.heatPerSecond;
+                    hottestCached = b;
+                }
+            }
+            return hottestCached;
+        }
+
+        public static bool IsWorkingHeater(Thing t)
+        {
+            if (t == null || !t.Spawned || t.Destroyed)
+            {
+                return false;
+            }
+            CompHeatPusher hp = t.TryGetComp<CompHeatPusher>();
+            return hp != null && hp.ShouldPushHeatNow && hp.Props.heatPerSecond > 0f;
+        }
+
         public string Readout()
         {
             StringBuilder sb = new StringBuilder();
