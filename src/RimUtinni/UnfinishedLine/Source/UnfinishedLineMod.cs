@@ -23,6 +23,10 @@ namespace RimMandrake.Utinni.UnfinishedLine
         public static int coreBrokerWaitDays = 3;
         public static int coreSaleSilver = 2500;
         public static int coreSaleEmpireGoodwill = 15;
+        // UNFINISHED_LINE_FIRSTLIGHT_BEAT_1
+        public static float firstLightRunDays = 2f;
+        public static float firstLightStrikeDelayHours = 6f;
+        public static float firstLightHoldDays = 3f;
 
         public override void ExposeData()
         {
@@ -40,12 +44,21 @@ namespace RimMandrake.Utinni.UnfinishedLine
             Scribe_Values.Look(ref coreBrokerWaitDays, "coreBrokerWaitDays", 3);
             Scribe_Values.Look(ref coreSaleSilver, "coreSaleSilver", 2500);
             Scribe_Values.Look(ref coreSaleEmpireGoodwill, "coreSaleEmpireGoodwill", 15);
+            Scribe_Values.Look(ref firstLightRunDays, "firstLightRunDays", 2f);
+            Scribe_Values.Look(ref firstLightStrikeDelayHours, "firstLightStrikeDelayHours", 6f);
+            Scribe_Values.Look(ref firstLightHoldDays, "firstLightHoldDays", 3f);
         }
+
+        private static Vector2 scroll = Vector2.zero;
+        private static float viewHeight = 900f;
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // the page outgrew one screen with beat 5: the whole of it scrolls
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(inRect.height, viewHeight));
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.CheckboxLabeled("Enable The Unfinished Line quest chain", ref chainEnabled,
                 "Off: the chain is never offered. A chain already running carries on. Nothing else changes.");
@@ -89,8 +102,19 @@ namespace RimMandrake.Utinni.UnfinishedLine
             coreSaleSilver = Mathf.RoundToInt(list.Slider(coreSaleSilver, 0f, 10000f) / 100f) * 100;
             list.Label("Empire goodwill for the sale: " + coreSaleEmpireGoodwill);
             coreSaleEmpireGoodwill = Mathf.RoundToInt(list.Slider(coreSaleEmpireGoodwill, 0f, 50f));
+            list.GapLine();
 
+            list.Label("First Light (beat 5)");
+            list.Label("Length of the line's first run: " + firstLightRunDays.ToString("0.0") + " days");
+            firstLightRunDays = Mathf.Round(list.Slider(firstLightRunDays, 0.5f, 6f) * 2f) / 2f;
+            list.Label("Hours before the strike arrives: " + firstLightStrikeDelayHours.ToString("0"));
+            firstLightStrikeDelayHours = Mathf.Round(list.Slider(firstLightStrikeDelayHours, 0f, 24f));
+            list.Label("Days the strike may hold your colony after the run before the beat fails: " + firstLightHoldDays.ToString("0.0"));
+            firstLightHoldDays = Mathf.Round(list.Slider(firstLightHoldDays, 1f, 10f) * 2f) / 2f;
+
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 

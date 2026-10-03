@@ -22,6 +22,22 @@ namespace RimMandrake.Utinni.UnfinishedLine
     {
         public bool truceActive;
 
+        // UNFINISHED_LINE_FIRSTLIGHT_BEAT_1: chain facts later systems read (QuestNode_RUT_LineFlag writes them).
+        public bool constructionBranchOpen;   // TECHPRINT_FACTION_GATING_1: the Enclave droid-construction branch
+        public bool empireNoticedHive;        // Q4=A: the Geonosian Alliance arc's "the Empire has caught wind"
+        public bool lineCompleted;
+
+        public void SetFlag(string flag)
+        {
+            switch (flag)
+            {
+                case "constructionBranchOpen": constructionBranchOpen = true; break;
+                case "empireNoticedHive": empireNoticedHive = true; break;
+                case "lineCompleted": lineCompleted = true; break;
+                default: Log.Warning("[UnfinishedLine] unknown line flag " + flag); break;
+            }
+        }
+
         public GameComponent_RUT_UnfinishedLine(Game game)
         {
         }
@@ -70,6 +86,9 @@ namespace RimMandrake.Utinni.UnfinishedLine
         {
             base.ExposeData();
             Scribe_Values.Look(ref truceActive, "truceActive", false);
+            Scribe_Values.Look(ref constructionBranchOpen, "constructionBranchOpen", false);
+            Scribe_Values.Look(ref empireNoticedHive, "empireNoticedHive", false);
+            Scribe_Values.Look(ref lineCompleted, "lineCompleted", false);
         }
     }
 

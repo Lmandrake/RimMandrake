@@ -68,18 +68,54 @@
             <li>RUT_UnfinishedLine_1_Count</li>
             <li>RUT_UnfinishedLine_2_Envoy</li>
             <li>RUT_UnfinishedLine_3_Cores</li>
+            <!-- beat 4 (UNFINISHED_LINE_TITHE_BEAT_1) is not built yet; it goes between 3 and 5 when it is -->
+            <li>RUT_UnfinishedLine_5_FirstLight</li>
           </beats>
           <totalBeats>5</totalBeats>
           <outSignalComplete>ChainComplete</outSignalComplete>
           <outSignalBroken>ChainBroken</outSignalBroken>
         </li>
 
-        <!-- The line is finished. The epilogue (UNFINISHED_LINE_FIRSTLIGHT_BEAT_1) replaces this
-             plain ending with the Unbolting letter and the reputation payoff. -->
+        <!-- EPILOGUE, "The Unbolting of the Line" (design §2.6, UNFINISHED_LINE_FIRSTLIGHT_BEAT_1): the last built beat
+             succeeded. The rite letter, +40 Enclaves (the faction tab shows RUT_UnfinishedLineCompleted), +20 Hive, and
+             the chain facts later systems read: the construction branch (TECHPRINT_FACTION_GATING_1 wires what it
+             opens) and the Empire's notice of the Hive (the Geonosian Alliance arc, Q4=A: separate but linked).
+             The gods' hooks (Ohm, Rekko, Ozzik) wait on NINEFOLD_MISSING_EVENT_HOOKS_1. -->
+        <li Class="QuestNode_Letter">
+          <inSignal>ChainComplete</inSignal>
+          <label TKey="LetterLabelLineUnbolted">The Unbolting of the Line</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineUnbolted">The first frame off the line was carried to the Rust Cathedral by six droids who would not let anyone else touch it. There [enclaveFaction_name] fitted it with a salvaged head, as they fit every one of their own, and took the bolt off before it ever woke.
+
+Forty-one fell. Today one stood up.
+
+[hiveFaction_name] sent no one to the rite. Their queen sent one sentence instead: the work is being finished. For the Hive there is no higher praise.
+
+The Enclaves have opened their droid-construction teaching to the Jawa. What you build with it is born free.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>ChainComplete</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>40</change>
+          <reason>RUT_UnfinishedLineCompleted</reason>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>ChainComplete</inSignal>
+          <faction>$hiveFaction</faction>
+          <change>20</change>
+          <reason>RUT_UnfinishedLineCompleted</reason>
+        </li>
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <inSignal>ChainComplete</inSignal>
+          <flag>lineCompleted</flag>
+        </li>
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <inSignal>ChainComplete</inSignal>
+          <flag>constructionBranchOpen</flag>
+        </li>
         <li Class="QuestNode_End">
           <inSignal>ChainComplete</inSignal>
           <outcome>Success</outcome>
-          <sendStandardLetter>true</sendStandardLetter>
         </li>
 
         <!-- One beat failed more times than the setting allows. Nobody betrayed anybody: the work
@@ -835,6 +871,131 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
         </li>
         <li Class="QuestNode_End">
           <inSignal>CoresSold</inSignal>
+          <outcome>Success</outcome>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>enclaveFaction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!--
+    BEAT 5 — "First Light" (design §2.5), UNFINISHED_LINE_FIRSTLIGHT_BEAT_1.
+
+    SPEC: ask - hold through the line's first run while an Imperial strike comes for the Jawa who built it.
+          reason - the run lights the sky; the Empire, which enslaved Geonosians to build the Death Star, notices
+                   (Q4=A: the Geonosian Alliance arc's "until the Empire catches wind", early and small, separate
+                   from that arc but linked by the empireNoticedHive fact).
+          choice - none new: how you hold.
+          failure - the strike still holds your colony holdDays after the run ends: Fail; the goodwill so far
+                    stands and the spine offers the beat again.
+          reward - the epic parent completes: the epilogue on RUT_UnfinishedLine.
+          deadline - the run's length (Mod Setting, 2 days), then the hold window.
+    WHERE: the site choice is UNFINISHED_LINE_SITE_CHOICE_1 (blocked), so until it lands the strike comes to your
+    colony (the design's site B shape) and the line core (P6, not ordered under Q1=A) is not what can be lost.
+    Ends on BOTH the run finishing AND the strike broken (QuestNode_RUT_PassAll): a lord whose pawns are all
+    dead, downed-and-taken or fled sends strike.AllEnemiesDefeated (Lord.Destroy, decompiled 1.6).
+  -->
+  <QuestScriptDef>
+    <defName>RUT_UnfinishedLine_5_FirstLight</defName>
+    <epicParent>RUT_UnfinishedLine</epicParent>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>5~8</expireDaysRange>
+    <defaultChallengeRating>3</defaultChallengeRating>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->First Light</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The line is ready. [enclaveFaction_name] and [hiveFaction_name] mean to run it for the first time, and the first run will light the sky over the foundry for [runTicks_duration].\n\nEveryone knows what that means. A light like that is seen from orbit, and [enemyFaction_name] has not forgotten the Geonosians who built its battle station. It will want to know who built this. The answer is the Jawa.\n\nAccept, and the run begins. Hold your colony until the run is done and the strike is broken. If the strike still holds your colony [holdTicks_duration] after the run ends, the first run counts for nothing.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>settlement</storeSettlementAs>
+        </li>
+
+        <!-- enemyFaction (the Empire when hostile to you), runTicks, strikeDelayTicks, holdTicks: Mod Settings -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_FirstLightSetup" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_LineFlag">
+          <flag>empireNoticedHive</flag>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$strikeDelayTicks</delayTicks>
+          <outSignalComplete>StrikeArrives</outSignalComplete>
+        </li>
+        <li Class="QuestNode_Raid">
+          <inSignal>StrikeArrives</inSignal>
+          <tag>strike</tag>
+          <customLetterLabel TKey="LetterLabelLineFirstLightStrike">First Light: the strike</customLetterLabel>
+          <customLetterText TKey="LetterTextLineFirstLightStrike">[enemyFaction_name] saw the light. A strike force is coming for the Jawa who built the line.\n\nHold until the run is done and the strike is broken.</customLetterText>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$runTicks</delayTicks>
+          <outSignalComplete>RunDone</outSignalComplete>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>RunDone</inSignal>
+          <label TKey="LetterLabelLineFirstLightRunDone">First Light: the run is done</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineFirstLightRunDone">The foundry has gone dark again. The first run is finished: frames on the floor that no hand on this world has made in a generation. [enclaveFaction_name] are counting them twice.</text>
+        </li>
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_PassAll">
+          <inSignals>
+            <li>RunDone</li>
+            <li>strike.AllEnemiesDefeated</li>
+          </inSignals>
+          <outSignal>FirstLightHeld</outSignal>
+        </li>
+
+        <!-- the hold window starts when the run ends; breaking the strike first disables it -->
+        <li Class="QuestNode_Delay">
+          <delayTicks>$holdTicks</delayTicks>
+          <inSignalEnable>RunDone</inSignalEnable>
+          <inSignalDisable>FirstLightHeld</inSignalDisable>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringLineFirstLightHold">The strike must be broken within: {0}</inspectString>
+          <outSignalComplete>StrikeHeld</outSignalComplete>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>StrikeHeld</inSignal>
+          <label TKey="LetterLabelLineFirstLightLost">First Light: the run counts for nothing</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextLineFirstLightLost">[enemyFaction_name] still holds your colony. The frames from the first run were scattered to hiding before anyone could fit a head to one. [enclaveFaction_name] will try again, when they can.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>StrikeHeld</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>FirstLightHeld</inSignal>
+          <label TKey="LetterLabelLineFirstLightHeld">First Light: held</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineFirstLightHeld">The strike is broken and the run is done. [enclaveFaction_name] are already carrying the first frame away.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>FirstLightHeld</inSignal>
           <outcome>Success</outcome>
         </li>
 

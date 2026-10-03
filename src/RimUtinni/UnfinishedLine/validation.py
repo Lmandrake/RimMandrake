@@ -56,7 +56,8 @@ def load_clean(t):
 @suite.chain("defs")
 def defs(t):
     with t.component("all_defs_resolve", beyond_toggle=True):
-        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "QuestScriptDef/%s" % BEAT3,
+        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "QuestScriptDef/%s" % BEAT3, "QuestScriptDef/RUT_UnfinishedLine_5_FirstLight",
+                "HistoryEventDef/RUT_UnfinishedLineCompleted",
                 "IncidentDef/RUT_UnfinishedLine_Offer", "SitePartDef/RUT_SilicaxFoundryRuin", "ThingDef/RUT_FoundryPatternCore",
                 "MentalStateDef/RUT_WildDroidPack", "LetterDef/RUT_CoreBrokerOffer",
                 "FactionDef/RUT_Jawa_FreeDroidEnclaves", "FactionDef/RUT_Jawa_GeonosianFoundryHive"]
@@ -245,3 +246,17 @@ if __name__ == "__main__":
     for p in problems:
         print("  - " + p)
     sys.exit(1 if problems else 0)
+
+
+@suite.chain("first_light")
+def first_light(t):
+    """UNFINISHED_LINE_FIRSTLIGHT_BEAT_1: beat 5 can find a hostile strike faction (the Empire on the campaign). Not
+    proven here: the strike landing, the run/strike PassAll, the hold-window failure and the epilogue's goodwill --
+    first poke: offer the chain, force beats to 5 with ProofEndBeat true + ProofNextBeat, accept, and read ProofChain
+    after the strike is broken and the run ends."""
+    with t.component("strike_faction_found", beyond_toggle=True):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.UnfinishedLine.UnfinishedLineFirstLightProof",
+                          method="ProofFirstLightSetup")
+        text = str((r or {}).get("result", ""))
+        if t._guard() and (not text.startswith("STRIKE ") or "STRIKE none" in text or "hostile=True" not in text):
+            raise ExpectationFailed("no hostile strike faction for First Light: %s" % text)

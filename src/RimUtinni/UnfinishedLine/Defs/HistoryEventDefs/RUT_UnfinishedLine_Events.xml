@@ -56,4 +56,9 @@
     <defName>RUT_LineCoresBetrayed</defName>
     <label>sold the line's pattern cores to the Empire</label>
   </HistoryEventDef>
+  <!-- UNFINISHED_LINE_FIRSTLIGHT_BEAT_1 -->
+  <HistoryEventDef>
+    <defName>RUT_UnfinishedLineCompleted</defName>
+    <label>finished the line neither people could build alone</label>
+  </HistoryEventDef>
 </Defs>
