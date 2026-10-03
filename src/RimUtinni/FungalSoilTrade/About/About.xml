@@ -7,7 +7,7 @@
     <li>1.6</li>
   </supportedVersions>
   <description>FUNGAL_SOIL_TRADE_1 (infrastructure/state/items/FUNGAL_SOIL_TRADE_1.md, owner
-2026-09-06 Badlands sitting). The Rot's (AB_MycoticJungle) mycelial mat can be dug for
+2026-09-06 Badlands sitting). The Rot's (RM_TheRot) mycelial mat can be dug for
 "fungal soil" (RUT_FungalSoil), a haulable, sellable resource - an early-game income
 route for a Jawa clan with a gravship to cover the long haul to the Moisture Farmers
 (the_cracked_lands.md section 8, OutlanderCivil). Digging is capped per map (discrete
@@ -15,14 +15,14 @@ mineable knots scattered only on Rot maps, no regrowth, no craft recipe - a fixe
 ceiling, never an infinite loop) and it is not free: the Rot's connected fungal network
 (the_rot.md section 4, health-sharing) feels the tear and sends its own hybrid fauna
 (Alpha Animals' AA_Agaripawn/AA_Agaripod/AA_Wildpawn/AA_Wildpod/AA_Swarmling/
-AA_MycoidColossus, all confirmed live on AB_MycoticJungle via
+AA_MycoidColossus, all confirmed live on the Rot via
 src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml and
 design/Jawa/fauna/animal_census.csv - never invented) at the dig site as a manhunter
 response, scaling with how much has been torn out and decaying if the diggers stop.
 
 Ships: RUT_MineableFungalGround (a mineable rock knot, mined with the vanilla Mine job -
 no new job system), RUT_FungalSoil (the resource it yields), a biome-gated GenStep that
-scatters knots only on AB_MycoticJungle maps, a MapComponent + one Harmony patch on
+scatters knots only on RM_TheRot / RUT_TheRot maps, a MapComponent + one Harmony patch on
 Mineable.DestroyMined that tracks dig distress and calls in the response, and
 RUT_FungalSoilTradeRequest (a QuestScriptDef built on vanilla's own
 QuestNode_TradeRequest_Initiate/TradeRequestComp - the same system Core's own
@@ -55,7 +55,6 @@ whichever item eventually places Moisture Farmer settlements on the world.</desc
          PawnKindDefs are resolved by defName string in C#, and the biome check is a
          defName string too), so a missing one just means the GenStep/distress response
          no-ops on that particular map/roster entry rather than failing to load. -->
-    <li>sarg.alphabiomes</li>        <!-- AB_MycoticJungle, the Rot -->
     <li>sarg.alphaanimals</li>       <!-- AA_Agaripawn/Agaripod/Wildpawn/Wildpod/Swarmling/MycoidColossus -->
     <li>mandrake.rut.patches</li>    <!-- BiomeCast_Ashkarr.xml, the source for the roster's live commonalities -->
   </loadAfter>

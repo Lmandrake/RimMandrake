@@ -37,7 +37,7 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 	//
 	// RESPONSE ROSTER: the six PawnKindDefs are AA_Agaripawn, AA_Agaripod,
 	// AA_Wildpawn, AA_Wildpod, AA_Swarmling and AA_MycoidColossus - every one
-	// confirmed LIVE on AB_MycoticJungle (the Rot) by two independent sources
+	// confirmed LIVE on the Rot by two independent sources
 	// already in this repo: src/RimUtinni/UtinniPatches/Patches/
 	// BiomeCast_Ashkarr.xml's own animalCommonalities block for the biome, and
 	// design/Jawa/fauna/animal_census.csv. None of the six is guessed. Relative
@@ -97,7 +97,26 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 	public static class FungalSoilDefOf
 	{
 		public const string MineableFungalGroundDefName = "RUT_MineableFungalGround";
-		public const string RotBiomeDefName = "AB_MycoticJungle";
+		// The Rot's biome defNames: the free-tier RM_TheRot and its frozen twin
+		// RUT_TheRot (a save on the twin keeps working). One shared set, used by
+		// the scatter GenStep and the distress component.
+		public static readonly string[] RotBiomeDefNames = { "RM_TheRot", "RUT_TheRot" };
+
+		public static bool IsRotBiome(RimWorld.BiomeDef biome)
+		{
+			if (biome == null)
+			{
+				return false;
+			}
+			for (int i = 0; i < RotBiomeDefNames.Length; i++)
+			{
+				if (biome.defName == RotBiomeDefNames[i])
+				{
+					return true;
+				}
+			}
+			return false;
+		}
 
 		public const string AgaripawnDefName = "AA_Agaripawn";
 		public const string AgaripodDefName = "AA_Agaripod";
@@ -167,7 +186,7 @@ namespace RimMandrake.Utinni.FungalSoilTrade
 			{
 				return;
 			}
-			if (map?.Biome == null || map.Biome.defName != FungalSoilDefOf.RotBiomeDefName)
+			if (map == null || !FungalSoilDefOf.IsRotBiome(map.Biome))
 			{
 				return;
 			}

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_TIER_LEAKS_FIX_1: the free RM_PaleTree description is franchise-free
+  ("a faint pull toward something living and far larger than you"). The campaign
+  tier restores the Force wording here (Q11a: the franchise is campaign-tier IP).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_PaleTree"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ThingDef[defName="RM_PaleTree"]/description</xpath>
+      <value>
+        <description>A bone-white tower of fungus grown in the shape of a tree, humming faintly at dusk, sacred to a wandering creed of the wild. Meditate long enough in its shade and you leave with a faint, tugging sense of the Force — and the unshakable feeling that you should find someone who actually knows what this is.</description>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
