@@ -265,3 +265,43 @@ def seabed_floor_generators(t):
         if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
             raise ExpectationFailed("layer generators missing live: %r" % r)
         t.screenshot()
+
+
+@suite.chain("seabed_floor_ambient_carryover")
+def seabed_floor_ambient_carryover(t):
+    """SEABED_FLOOR_AMBIENT_CARRYOVER_1: layer floors carry the hatch's temperature, flora and refilling cast.
+
+    Learned offline 2026-10-03 (decompile): MapTemperature.OutdoorTemp/SeasonalTemp return
+    BiomeDef.constantOutdoorTemperature for any map on that biome, so the floor biome carries the
+    temperature. Flora and cast are copied at startup by RM_SeabedFloorLife (the floor XML says 0;
+    only a live read of the floor biome shows the copy)."""
+    import os, xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    with t.component("floor_temperature_matches_hatch", beyond_toggle=True):
+        hatch = ET.parse(os.path.join(here, "Defs", "MapGeneration", "RM_SeaDiveGenerators.xml")).getroot()
+        pocket = {g.findtext("pocketMapProperties/biome"): g.findtext("pocketMapProperties/temperature")
+                  for g in hatch.findall("MapGeneratorDef")}
+        floors = ET.parse(os.path.join(here, "Defs", "PlanetLayerDefs", "RM_SeabedFloorBiomes.xml")).getroot()
+        const = {b.findtext("defName"): b.findtext("constantOutdoorTemperature") for b in floors.findall("BiomeDef")}
+        if len(pocket) != 4 or None in pocket.values():  # sanity probe: the instrument sees four hatch temperatures
+            raise ExpectationFailed("expected 4 hatch temperatures, read %r" % pocket)
+        bad = {s: (pocket.get(s), const.get(f)) for s, f in SEAS.items()
+               if const.get(f) is None or float(const[f]) != float(pocket.get(s))}
+        if bad:
+            raise ExpectationFailed("floor temperature differs from the hatch's: %r" % bad)
+        t.screenshot()
+    with t.component("floor_biomes_carry_sea_life", beyond_toggle=False):
+        r = t.bridge_call("jawa/get_defs", defs=";".join("BiomeDef/%s" % f for f in SEAS.values()),
+                          fields="plantDensity;animalDensity")
+        if _live(t):
+            if (r or {}).get("success") is False or (r or {}).get("notFound"):
+                raise ExpectationFailed("floor biome query failed: %r" % r)
+            text = str(r)
+            if "'plantDensity': 0.0" in text or "'animalDensity': 0.0" in text:
+                raise ExpectationFailed("a floor biome still has zero density live (startup copy off or failed): %s" % text[:400])
+        t.screenshot()
+    with t.component("live_floor_reads_cold_and_grows", beyond_toggle=False):
+        # UNMEASURED offline: generate a Chill layer floor (needs SEABED_DESCENT_ASCENT_1 or a debug map on a
+        # floor tile), read OutdoorTemp ~ -110, count Twilight floor plants > 0, clear animals and step ticks.
+        t.screenshot()

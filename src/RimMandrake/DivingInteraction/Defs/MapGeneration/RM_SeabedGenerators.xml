@@ -11,10 +11,10 @@
   the surface biome above a layer map. The twins go when SEA_DIVE_HATCH_REMOVE_1 lands; until then
   a content change belongs in BOTH files.
 
-  Not yet carried over (follow-on): the Chill's -110 C ambient (a layer map's temperature is the
-  tile's, mirrored from the surface), and floor plants from the vanilla Plants step (the floor
-  biomes keep plantDensity 0 until the growth-rate guard is proven live), and the hatch maps'
-  RM_SeaFloorHabitat mutator (animalDensityFactor 30, ongoing respawn), which a layer tile lacks.
+  Carried over by SEABED_FLOOR_AMBIENT_CARRYOVER_1: each floor biome holds its sea's hatch temperature
+  as constantOutdoorTemperature, and RM_SeabedFloorLife copies the sea's flora and cast onto the floor
+  biome at startup (animals x30, the hatch's RM_SeaFloorHabitat factor), so Plants grows and wild
+  animals refill.
 -->
 <Defs>
 
