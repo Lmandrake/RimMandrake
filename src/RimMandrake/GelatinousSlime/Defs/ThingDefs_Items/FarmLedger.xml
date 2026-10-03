@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- GELATINOUSSLIME_FARM_RUINS_1 spec 1: the "last ledger" story object left in each ruined farm's shed
+       (FarmRuins.cs). Vanilla-tier loot: worth almost nothing, readable only as its description.
+       Vanilla novel texture as a stand-in; numbers INVENTED. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SlimeFarmLedger</defName>
+    <label>drowned ledger</label>
+    <description>A farm's account book, swollen and stuck together, the ink run to grey. The first pages are seed counts and harvest weights. Then the entries get shorter: "south field soft again." "Moved the fence back." "Corn tastes of it now." "Moved the fence back." The last page is a single line, written hard enough to tear the paper: "It is not mud."</description>
+    <graphicData>
+      <texPath>Things/Item/Book/Novel/Novel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.8</drawSize>
+      <color>(150,160,130)</color>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <MarketValue>3</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>None</tradeability>
+  </ThingDef>
+</Defs>
