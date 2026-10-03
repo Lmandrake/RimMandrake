@@ -2448,3 +2448,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"UNFINISHED_LINE_SPINE_COUNT_1","ts":"2026-10-03T19:10:30Z","tsn":1791054630750717894}
 {"seat":"FOUNDRY","event":"start","id":"UNFINISHED_LINE_SPINE_COUNT_1","ts":"2026-10-03T19:10:31Z","tsn":1791054631353033407}
 {"seat":"FOUNDRY","event":"file","id":"WEEPINGSTONES_NET_TARGET_FLEES_1","title":"Weeping Stones NET: wild skarrin outruns the handler and leaves the map before the 200-tick net finishes - how should capture work?","kind":"decision","target":"v1","needs":"owner","for":"BENCH","ts":"2026-10-03T19:14:08Z","tsn":1791054848849147034}
+{"seat":"FOUNDRY","event":"close","id":"UNFINISHED_LINE_SPINE_COUNT_1","sha":"63d5ed55728d","ts":"2026-10-03T19:17:28Z","tsn":1791055048264984437}
+{"seat":"FOUNDRY","event":"close","id":"DROID_MASS_PRODUCTION_QUEST_CHAIN_1","sha":"63d5ed55728d","ts":"2026-10-03T19:17:39Z","tsn":1791055059198949263}
+{"seat":"FOUNDRY","event":"note","id":"DROID_MASS_PRODUCTION_QUEST_CHAIN_1","text":"Split per beat at 63d5ed557: UNFINISHED_LINE_SPINE_COUNT_1 (built+closed), UNFINISHED_LINE_ENVOY_BEAT_1, _CORES_BEAT_1, _TITHE_BEAT_1, _FIRSTLIGHT_BEAT_1, UNFINISHED_LINE_WORLD_FOUNDRY_1 (open, FOUNDRY). Envoy item carries an open question on site B vs Q1=A.","ts":"2026-10-03T19:17:39Z","tsn":1791055059760058624}
