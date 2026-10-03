@@ -56,6 +56,7 @@ SETTINGS = {
         "trapTriggerEnabled": True, "trapSensitivityMultiplier": 1.0,
         "fallDamageEnabled": True, "fallDamageMultiplier": 1.0,
         "spikesEnabled": True, "spikeDamageMultiplier": 1.0,     # CANAL_BOTTOM_SPIKES_1
+        "flowDoorsSealedFromPitEnabled": True, "sluiceLetsBigThroughEnabled": True,   # FLOWWORKS_DOOR_FAMILY_1
         "bottleLoopEnabled": True, "bottleDirtyStageEnabled": True,
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,

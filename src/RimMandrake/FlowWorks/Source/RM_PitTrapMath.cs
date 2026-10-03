@@ -134,5 +134,24 @@ namespace RimMandrake.FlowWorks
 			float m = multiplier > 0f ? multiplier : 0f;
 			return Math.Max(1f, b * SpikeDamagePerBodySize * m / SpikeHits);
 		}
+
+		/// <summary>FLOWWORKS_DOOR_FAMILY_1 — does a sluice / security grate open for this pawn?
+		/// A pawn held in a superdeep pit never opens one (the pit spec's door rule) while that
+		/// setting is on; otherwise vanilla decides, except that a SLUICE (holds small creatures only)
+		/// also gives way to any non-player humanlike or anything wider than a one-wide pit holds
+		/// (requiredWidth &gt; 1, the owner's Q4 "small").</summary>
+		public static bool FlowDoorOpens(bool vanillaOpens, bool heldInPit, bool sealedFromPitRule,
+			bool isSluice, bool sluiceRule, bool playerFaction, bool humanlike, int requiredWidth)
+		{
+			if (sealedFromPitRule && heldInPit)
+			{
+				return false;
+			}
+			if (vanillaOpens)
+			{
+				return true;
+			}
+			return isSluice && sluiceRule && !playerFaction && (humanlike || requiredWidth > 1);
+		}
 	}
 }

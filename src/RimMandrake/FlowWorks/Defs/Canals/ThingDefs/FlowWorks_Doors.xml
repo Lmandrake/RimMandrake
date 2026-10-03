@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- FLOWWORKS_DOOR_FAMILY_1 — the owner's two stuffable canal doors (2026-09-17, he took the
+       simpler shape: two defs, stuff decides armour, HP and burning; "the player can just learn
+       what happens if you're made of wood"). Both pass liquid while closed and neither opens for a
+       pawn held in a superdeep pit; the sluice gives way to people and big creatures
+       (Building_RM_FlowDoor / RM_PitTrapMath.FlowDoorOpens). Light affordance and NOT the stuff's,
+       so a stone or steel gate still stands in a dug channel (channels offer Light only).
+       Graphics are PLACEHOLDERS (the vanilla simple-door mover) until the gate art lands. -->
+  <ThingDef ParentName="DoorBase">
+    <defName>RM_Sluice</defName>
+    <label>sluice</label>
+    <description>A cheap slatted gate for the mouth of a canal. Liquid flows through it while it is shut, and it keeps small animals in or out, but it is no prison: people, and anything too big for a one-wide pit, force their way through. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.</description>
+    <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
+    <statBases>
+      <WorkToBuild>500</WorkToBuild>
+      <MaxHitPoints>100</MaxHitPoints>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <costStuffCount>15</costStuffCount>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <blockWind>false</blockWind>
+    <blockLight>false</blockLight>
+    <uiOrder>2060</uiOrder>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_FlowDoorExtension">
+        <holdsSmallCreaturesOnly>true</holdsSmallCreaturesOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="DoorBase">
+    <defName>RM_SecurityGrateDoor</defName>
+    <label>security grate</label>
+    <description>A barred prisoner door for the end of a canal. Liquid flows through the bars while it is shut, and it holds a prisoner as well as any door. Nobody stuck down in a superdeep pit can open it. What it is made of decides how tough it is and whether it burns.</description>
+    <thingClass>RimMandrake.FlowWorks.Building_RM_FlowDoor</thingClass>
+    <statBases>
+      <WorkToBuild>1400</WorkToBuild>
+      <MaxHitPoints>240</MaxHitPoints>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Door/DoorSimple_Mover</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <damageData>
+        <enabled>false</enabled>
+      </damageData>
+    </graphicData>
+    <uiIconPath>Things/Building/Door/DoorSimple_MenuIcon</uiIconPath>
+    <costStuffCount>40</costStuffCount>
+    <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+    <useStuffTerrainAffordance>false</useStuffTerrainAffordance>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <blockWind>false</blockWind>
+    <blockLight>false</blockLight>
+    <uiOrder>2061</uiOrder>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.RM_FlowDoorExtension">
+        <holdsSmallCreaturesOnly>false</holdsSmallCreaturesOnly>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

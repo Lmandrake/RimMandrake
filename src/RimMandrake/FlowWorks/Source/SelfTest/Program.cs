@@ -777,6 +777,21 @@ namespace RimMandrake.FlowWorks.SelfTest
                 AssertClose(RM_PitTrapMath.SpikeDamagePerHit(0.1f, 0f), 1f, "floor 1 per hit");
             });
 
+            Case("FlowDoor_sluice_holds_small_grate_holds_prisoners", () =>
+            {
+                // (vanillaOpens, heldInPit, sealedRule, isSluice, sluiceRule, playerFaction, humanlike, width)
+                Assert(!RM_PitTrapMath.FlowDoorOpens(true, true, true, false, true, true, true, 1), "held in a pit: grate shut even for a colonist");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, true, true, true, true, false, true, 2), "held in a pit: sluice shut even for a big humanlike");
+                Assert(RM_PitTrapMath.FlowDoorOpens(true, true, false, false, true, true, true, 1), "sealed rule off: vanilla decides");
+                Assert(RM_PitTrapMath.FlowDoorOpens(true, false, true, false, true, true, true, 1), "colonist outside a pit: opens");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, false, true, false, true, 1), "grate holds a human prisoner");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, false, true, false, false, 3), "grate holds a big beast");
+                Assert(RM_PitTrapMath.FlowDoorOpens(false, false, true, true, true, false, true, 1), "sluice gives way to a human prisoner");
+                Assert(RM_PitTrapMath.FlowDoorOpens(false, false, true, true, true, false, false, 2), "sluice gives way to a W=2 beast");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true, true, false, false, 1), "sluice holds a small creature");
+                Assert(!RM_PitTrapMath.FlowDoorOpens(false, false, true, true, false, false, true, 2), "sluice rule off: holds like a door");
+            });
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

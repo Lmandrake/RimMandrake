@@ -59,6 +59,7 @@ FW_TOGGLES = [
     "rainFillsExcavationsEnabled", "edgeSinksEnabled",
     "superdeepCaptureEnabled", "superdeepCapturesOwnFaction",
     "ladderRequiredToExitEnabled", "ladderPrisonDoorEnabled", "spikesEnabled", "superdeepShootingRuleEnabled",
+    "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled",
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
 ]
@@ -78,6 +79,7 @@ PULSE = 250
 TAR, SLIME = "RM_Fluid_Tar", "RM_Fluid_SlimeGreen"
 LADDER = "RM_Ladder"
 SPIKES = "RM_Spikes"
+SLUICE, GRATE = "RM_Sluice", "RM_SecurityGrateDoor"
 
 # Plot grid: each plot is a PW x PH rect, PITCH apart, offset from the anchor.
 PW, PH, PITCH = 24, 14, 36
@@ -675,14 +677,21 @@ def plot_G_pit(t):
             _expect(((r or {}).get("things") or []), "RM_Ladder did not place beside the pit")
         _frame(t, *shot)
     with t.component("sluice_state_look", shows=["sluice_gate_state_legible"]):
-        # BLOCKED: FLOWWORKS_DOOR_FAMILY_1 unbuilt (no Sluice / SecurityGrate defs)
+        # FLOWWORKS_DOOR_FAMILY_1: a wooden sluice and a steel grate on the pit's west lip, framed.
+        # Placeholder art (vanilla door mover) until the gate art lands; the frame is the bar.
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, pit[0][0] - 1, pit[0][1] + 1), stuff="WoodLog")
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, pit[0][0] - 1, pit[0][1] + 2), stuff="Steel")
         if t._guard():
-            raise ExpectationFailed("BLOCKED: sluice / security-grate door family unbuilt")
+            for d in (SLUICE, GRATE):
+                r = t.bridge_call("jawa/list_things", defName=d, rect=_rect(pit[0][0] - 2, pit[0][1] - 1, 3, 5))
+                _expect(((r or {}).get("things") or []), "%s did not place on the pit lip" % d)
         _frame(t, *shot)
     with t.component("spikes_look", shows=["spikes_read_distinct"]):
-        # BLOCKED: per-cell spikes unbuilt (building-pit fitting only)
+        # CANAL_BOTTOM_SPIKES_1 built RM_Spikes (placeholder skullspike graphic until EXCAVATION_WALL_ART_1).
+        t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SPIKES, pit[4][0], pit[4][1]))
         if t._guard():
-            raise ExpectationFailed("BLOCKED: per-cell spikes unbuilt")
+            r = t.bridge_call("jawa/list_things", defName=SPIKES, rect=_rect(pit[4][0], pit[4][1], 1, 1))
+            _expect(((r or {}).get("things") or []), "RM_Spikes did not place on the D=4 floor")
         _frame(t, *shot)
 
 
@@ -1074,6 +1083,83 @@ def canal_spikes(t):
             txt = _spike_proof(t, "ProofDescent", pit[4][0], pit[4][1])
             if t._guard():
                 _expect(txt.startswith("HITS 0"), "spikesEnabled OFF but spikes still hit: %s" % txt)
+
+
+def _door_proof(t, method, x, z):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_FlowDoorRules", method=method,
+                      args="current|%d,%d" % (x, z))
+    return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+
+def _verdict(txt, pid):
+    """OPEN / SHUT for pawn ThingID `pid` in a ProofOpen line, else None."""
+    for part in txt.split(" | ")[1:]:
+        bits = part.split(" ")
+        if pid and bits[0] == str(pid):
+            return bits[1] if len(bits) > 1 else None
+    return None
+
+
+@suite.chain("flow_doors")
+def flow_doors(t):
+    """FLOWWORKS_DOOR_FAMILY_1 (owner 2026-09-17: two stuffable doors, Sluice + SecurityGrateDoor).
+    Plot H: a D=2 channel off a limitless source runs through a closed wooden sluice and a closed steel
+    grate; the level must reach the far end. Plot G: who each door opens for -- a hostile human and a
+    wild muffalo (W=2 at the default multiplier) force the sluice, a hare does not; the grate holds the
+    human; a hostile held in the superdeep pit cannot open a sluice beside it.
+    Not proven here: a wooden one burning (stuff flammability is vanilla), real pathing through a
+    forced sluice (first poke: march a hostile at a closed sluice and watch it pass), the art."""
+    x0, z0 = _prep_plot(t, "H")
+    _limitless_source(t, "H")
+    run = _channel_from(x0 + 10, z0 + 6, 8)
+    _dig_run(t, run, 2)
+    sl, gr = run[2], run[5]
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (SLUICE, sl[0], sl[1]), stuff="WoodLog")
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel")
+    with t.component("doors_pass_liquid_closed"):
+        _wait(t, 10 * PULSE)
+        far = _rep(t, *run[-1])
+        if t._guard():
+            for c in (sl, gr):
+                txt = _door_proof(t, "ProofLiquid", c[0], c[1])
+                _expect("open=False" in txt and " fill 0" not in txt, "door cell dry or open: %s" % txt)
+            _expect((far.get("fill") or 0) >= 1, "liquid did not pass the closed doors: far fill %r" % far.get("fill"))
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    _dig_run(t, pit, 4)
+    sl, gr, lip = (x0 + 2, z0 + 3), (x0 + 4, z0 + 3), (pit[1][0] - 1, pit[1][1])
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d;%s:%d,%d" % (SLUICE, sl[0], sl[1], SLUICE, lip[0], lip[1]),
+                  stuff="WoodLog")
+    t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (GRATE, gr[0], gr[1]), stuff="Steel")
+    hum = _spawn_pawn_at(t, "Pirate", x0 + 3, z0 + 2, faction="hostile")
+    muf = _spawn_pawn_at(t, "Muffalo", x0 + 1, z0 + 4, faction="none")
+    hare = _spawn_pawn_at(t, "Hare", x0 + 1, z0 + 2, faction="none")
+    with t.component("sluice_holds_small_only", toggle="sluiceLetsBigThroughEnabled"):
+        txt = _door_proof(t, "ProofOpen", sl[0], sl[1])
+        if t._guard():
+            _expect(_verdict(txt, hum) == "OPEN", "sluice held a hostile human: %s" % txt)
+            _expect(_verdict(txt, muf) == "OPEN", "sluice held a muffalo: %s" % txt)
+            _expect(_verdict(txt, hare) == "SHUT", "sluice let a hare through: %s" % txt)
+    with t.component("sluice_rule_off_holds", toggle="sluiceLetsBigThroughEnabled"):
+        with _setting(t, "sluiceLetsBigThroughEnabled", False):
+            txt = _door_proof(t, "ProofOpen", sl[0], sl[1])
+            if t._guard():
+                _expect(_verdict(txt, hum) == "SHUT", "rule off but the sluice still gives way: %s" % txt)
+    with t.component("grate_holds_prisoner"):
+        txt = _door_proof(t, "ProofOpen", gr[0], gr[1])
+        if t._guard():
+            _expect(_verdict(txt, hum) == "SHUT", "grate opened for a hostile human: %s" % txt)
+    held = _spawn_pawn_at(t, "Pirate", pit[1][0], pit[1][1], faction="hostile")
+    with t.component("sealed_from_pit", toggle="flowDoorsSealedFromPitEnabled"):
+        txt = _door_proof(t, "ProofOpen", lip[0], lip[1])
+        if t._guard():
+            _expect(_pit_held(t, held, pit) is True, "pirate in the pit is not held")
+            _expect(_verdict(txt, held) == "SHUT", "a held pawn can open the sluice: %s" % txt)
+    with t.component("sealed_rule_off", toggle="flowDoorsSealedFromPitEnabled"):
+        with _setting(t, "flowDoorsSealedFromPitEnabled", False):
+            txt = _door_proof(t, "ProofOpen", lip[0], lip[1])
+            if t._guard():
+                _expect(_verdict(txt, held) == "OPEN", "sealed rule off but the held human still cannot force the sluice: %s" % txt)
 
 
 @suite.chain("toggle_superdeep_shooting")

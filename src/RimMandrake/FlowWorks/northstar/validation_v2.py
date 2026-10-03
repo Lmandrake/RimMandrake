@@ -87,6 +87,7 @@ BOOL_DEFAULTS = {
                recessionEnabled=True, refillEnabled=True, rainFillsExcavationsEnabled=True,
                edgeSinksEnabled=True, superdeepCaptureEnabled=True, superdeepCapturesOwnFaction=False,
                ladderRequiredToExitEnabled=True, ladderPrisonDoorEnabled=True, spikesEnabled=True,
+               flowDoorsSealedFromPitEnabled=True, sluiceLetsBigThroughEnabled=True,
                superdeepShootingRuleEnabled=True,
                bottleLoopEnabled=True, bottleDirtyStageEnabled=True, tankLoopEnabled=True,
                liquidDrillingEnabled=True, typedLiquidShoresEnabled=True,
