@@ -23,7 +23,7 @@ namespace RimMandrake.FeverWood
     // whole thing reads as a dug-out enclosure — then populates every
     // non-entrance room with workers and the last (deepest) room with one
     // queen. See RM_AntHiveBiomeExtension's own header for what is
-    // deliberately NOT built here (the three symbiotic chambers) and why.
+    // deliberately NOT built here (the parasite and guard chambers) and why.
     public class RM_GenStep_AntHiveDungeon : GenStep
     {
         private static readonly IntVec3[] EightDirs =
@@ -88,6 +88,7 @@ namespace RimMandrake.FeverWood
             map.GetComponent<RM_MapComponent_AntHive>()?.roomCenters.AddRange(rooms);
 
             Populate(map, ext, rooms);
+            PlaceFarm(map, ext, rooms);
 
             Log.Message("[RM FeverWood] RM_GenStep_AntHiveDungeon: placed a " + rooms.Count
                 + "-room ant hive on " + map.Biome.defName + " at " + start + ".");
@@ -229,6 +230,45 @@ namespace RimMandrake.FeverWood
                         map.terrainGrid.SetTerrain(c, floor);
                     }
                 }
+            }
+        }
+
+        // Chamber 1 of 3, the farm: the shallowest worker room keeps a calm,
+        // wild herd of `farmKind` (thornbugs) that the hive's map component
+        // herds back whenever one strays. Needs at least entrance + farm +
+        // queen rooms, so a 2-room hive carries no farm.
+        private static void PlaceFarm(Map map, RM_AntHiveBiomeExtension ext, List<IntVec3> rooms)
+        {
+            if (ext.farmKind == null || !RM_FeverWoodSettings.antHiveFarmChamberEnabled || rooms.Count < 3)
+            {
+                return;
+            }
+
+            RM_MapComponent_AntHive hive = map.GetComponent<RM_MapComponent_AntHive>();
+            if (hive == null)
+            {
+                return;
+            }
+
+            IntVec3 farm = rooms[1];
+            hive.farmRoom = farm;
+            hive.farmHerdRadius = ext.farmHerdRadius;
+            int count = ext.farmStockRange.RandomInRange;
+            for (int j = 0; j < count; j++)
+            {
+                if (!CellFinder.TryFindRandomCellNear(farm, map, 3, c => c.Standable(map), out IntVec3 cell))
+                {
+                    continue;
+                }
+
+                Pawn stock = PawnGenerator.GeneratePawn(ext.farmKind, null);
+                if (stock == null)
+                {
+                    continue;
+                }
+
+                GenSpawn.Spawn(stock, cell, map);
+                hive.farmStock.Add(stock);
             }
         }
 

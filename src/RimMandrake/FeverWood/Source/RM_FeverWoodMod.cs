@@ -119,11 +119,14 @@ namespace RimMandrake.FeverWood
         /// procedural ant hive never generates on any Fever Wood map — a
         /// WORLDGEN-AFFECTING switch, since it changes what a freshly
         /// generated map can contain. Default ON — matches shipped
-        /// behavior. Only the v1 hive (layout + plain hostile workers/queen)
-        /// is gated here; the reactive alarm/rally mechanism and the three
-        /// symbiotic chambers are follow-on work, not yet built (see
-        /// RM_AntHiveBiomeExtension's header).</summary>
+        /// behavior. The hive's reaction (notice/alarm/rally) is
+        /// CreatureBehaviors' own reaction switches, not this one.</summary>
         public static bool antHiveDungeonEnabled = true;
+
+        /// <summary>Chamber 1 of 3, the farm. Off: a new hive carries no
+        /// thornbug herd (WORLDGEN-AFFECTING), and an existing herd stops
+        /// being herded back to its room. Default ON.</summary>
+        public static bool antHiveFarmChamberEnabled = true;
 
         /// <summary>Multiplies RM_AntHiveBiomeExtension.hiveChance. INVENTED
         /// default 1.0 (matches shipped behavior); exposed because the base
@@ -208,6 +211,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref sekkulaathEscapeRiskMultiplier, "sekkulaathEscapeRiskMultiplier", 1f);
             Scribe_Values.Look(ref antHiveDungeonEnabled, "antHiveDungeonEnabled", true);
             Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
+            Scribe_Values.Look(ref antHiveFarmChamberEnabled, "antHiveFarmChamberEnabled", true);
             Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
             Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
@@ -280,12 +284,15 @@ namespace RimMandrake.FeverWood
             list.GapLine();
             list.CheckboxLabeled("Ant hive dungeons", ref antHiveDungeonEnabled,
                 "A rare, procedurally-laid-out chain of dug tunnels and rooms, populated with kurreth "
-              + "workers and a queen in the deepest room. Off: no hive ever generates on a new map; an "
-              + "already-generated one is unaffected. The reactive alarm/rally behaviour and the farm/"
-              + "parasite/guard chambers are not built yet — this toggle only covers the v1 layout and "
-              + "its plain hostile defenders.");
+              + "workers and a queen in the deepest room. The hive notices you, raises the alarm and "
+              + "rallies after you (Creature Behaviors' reaction settings govern that). Off: no hive ever "
+              + "generates on a new map; an already-generated one is unaffected.");
             list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
             antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
+            list.CheckboxLabeled("Ant hive farm chamber (worldgen)", ref antHiveFarmChamberEnabled,
+                "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
+              + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
+              + "longer herded.");
             list.GapLine();
             list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
                 "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "

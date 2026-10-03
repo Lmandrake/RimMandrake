@@ -169,13 +169,14 @@
           <li>SoilRich</li>
         </convertFromTerrains>
       </li>
-      <!-- FEVERWOOD_ANT_HIVE_DUNGEON_1. v1 only: procedural layout + plain
-           hostile workers/queen. The reactive alarm/rally mechanism and the
-           farm/parasite/guard chambers are follow-on work — see
-           RM_AntHiveBiomeExtension's own header. -->
+      <!-- FEVERWOOD_ANT_HIVE_DUNGEON_1: procedural layout, kurreth workers +
+           queen that react (the race's own reaction source), and chamber 1 of
+           3, the thornbug farm. Parasite and guard chambers are
+           FEVERWOOD_HIVE_PARASITE_CHAMBER_1 / FEVERWOOD_HIVE_GUARD_CHAMBER_1. -->
       <li Class="RimMandrake.FeverWood.RM_AntHiveBiomeExtension">
         <workerKind>RM_Kurreth</workerKind>
         <queenKind>RM_KurrethQueen</queenKind>
+        <farmKind>RM_Thornbug</farmKind>
       </li>
       <!-- FEVERWOOD_CROWN_SOUND_HEAT_1 / SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - still, shadeless
            heat under the crown: shade does nothing, only insulation or leaving helps. Vanilla temperature

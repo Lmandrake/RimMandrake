@@ -17,14 +17,10 @@ namespace RimMandrake.FeverWood
     // tethered to its room, and falls back to spawned-Manhunter only for a
     // race without the comp.
     //
-    // Also NOT here: the three symbiotic chambers (farm/parasite/guard) the
-    // owner ruled for. The farm chamber's livestock is RM_Thornbug
-    // (FEVERWOOD_SAP_SUCKER_GUILD_1's roster row), which has no ThingDef yet
-    // — nothing to place. The parasite and guard chambers each need a new
-    // creature this pass did not invent. `RM_MapComponent_AntHive` below
-    // records each generated hive's room centers precisely so that follow-on
-    // work can place chamber-specific content into an already-generated
-    // layout without re-deriving it.
+    // Chambers: the farm (chamber 1 of 3) is farmKind below. The parasite
+    // and guard chambers need creatures not yet invented
+    // (FEVERWOOD_HIVE_PARASITE_CHAMBER_1, FEVERWOOD_HIVE_GUARD_CHAMBER_1);
+    // RM_MapComponent_AntHive records every room center for them.
     public class RM_AntHiveBiomeExtension : DefModExtension
     {
         // Required. The ordinary ant caste that fills every non-entrance room.
@@ -66,6 +62,18 @@ namespace RimMandrake.FeverWood
         // null by default so the hive reads as a roofed pocket of the
         // existing ground rather than inventing a new terrain look this pass.
         public TerrainDef hiveFloorTerrain;
+
+        // FEVERWOOD_ANT_HIVE_DUNGEON_1 chamber 1 of 3, the FARM (owner ruling
+        // 2026-09-22; "ant raids haul thornbugs away ALIVE" made the hive a
+        // farm before anyone drew it). Optional: null = no farm chamber.
+        // The shallowest worker room (the room after the entrance) holds the
+        // herd; RM_MapComponent_AntHive herds strays back to it while the
+        // hive stands. INVENTED counts.
+        public PawnKindDef farmKind;
+
+        public IntRange farmStockRange = new IntRange(3, 5);
+
+        public float farmHerdRadius = 5f;
 
         public int edgeMargin = 10;
 
