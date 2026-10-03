@@ -25,7 +25,7 @@
     <stealable>false</stealable>
     <rotatable>false</rotatable>
     <size>(1,1)</size>
-    <minifiable>true</minifiable>
+    <minifiedDef>MinifiedThing</minifiedDef>
     <thingCategories><li>BuildingsSecurity</li></thingCategories>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>
