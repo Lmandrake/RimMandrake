@@ -660,6 +660,7 @@ namespace RimMandrake.TheForge
                 map.terrainGrid.SetTempTerrain(c, crust);
                 frozenCells.Add(c);
                 StatCellsFrozen++;
+                RM_MapComponent_PlumeFronts.Of(map)?.NoteCrusted(c);   // FORGE_WHITE_PLUME_FRONTS_1
                 if (Rand.Chance(0.08f))
                 {
                     FleckMaker.ThrowSmoke(c.ToVector3Shifted(), map, Rand.Range(1.5f, 3.5f));

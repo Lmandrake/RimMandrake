@@ -86,6 +86,9 @@ class FGame(MockGame):
         self.n_id = 100
         self.flash = (-1, -1)
         self.last_phase_voice = None
+        self.plume_spawns = []     # tick each live front was spawned
+        self.plume_total = 0
+        self.plume_puddles = 0
 
     # ----------------------------------------------------------------- settings
     def S(self, field):
@@ -125,8 +128,18 @@ class FGame(MockGame):
         self.ticks = int(p["ticks"])
         return {"success": True}
 
+    def plume_tick(self, prev, now):
+        fronts_on = self.active("plumeFrontsEnabled") or "plume_off_ignored" in self.brk
+        if not fronts_on:
+            self.plume_spawns = []
+            return
+        self.plume_spawns = [s0 for s0 in self.plume_spawns if now - s0 < 1800]
+        if self.plume_spawns and "no_soak" not in self.brk and (self.active("plumeSoakEnabled") or "soak_off_ignored" in self.brk):
+            self.plume_puddles += 4 * len(self.plume_spawns) * ((now - prev) // 15 + 1)
+
     def world_tick(self, prev):
         now = self.ticks
+        self.plume_tick(prev, now)
         if self.cond and self.cyc is not None:
             self.cycle_tick(now, now // 60 != prev // 60)
         if now // 250 != prev // 250:
@@ -403,6 +416,8 @@ class FGame(MockGame):
         return {"success": True, "children": [
             {"label": "Forge cycle: report state (current map)", "path": "Actions\\RMTheForge\\report"},
             {"label": "Forge cycle: advance one phase (current map)", "path": "Actions\\RMTheForge\\advance"},
+            {"label": "Forge plumes: report (current map)", "path": "Actions\\RMTheForge\\plume_report"},
+            {"label": "Forge plumes: spawn a front on a crust cell (mouse cell if none)", "path": "Actions\\RMTheForge\\plume_spawn"},
             {"label": "Spunstone: report knowledge", "path": "Actions\\RMTheForge\\spun_report"},
             {"label": "Spunstone: reveal now", "path": "Actions\\RMTheForge\\spun_reveal"}]}
 
@@ -418,6 +433,12 @@ class FGame(MockGame):
 
     def t_rimworld_execute_debug_action(self, p):
         path = p.get("path", "")
+        if path.endswith("plume_report") or path.endswith("plume_spawn"):
+            if path.endswith("plume_spawn"):
+                self.plume_spawns.append(self.ticks)
+                self.plume_total += 1
+            return self.log("[RMTheForgeDebug] plumeLive=%d plumeSpawned=%d plumePuddles=%d plumeCells=%d" % (
+                len(self.plume_spawns), self.plume_total, self.plume_puddles, 29 * len(self.plume_spawns)))
         if path.endswith("\\report") or path.endswith("\\advance"):
             if not self.cond or self.cyc is None:
                 return self.log("[RMTheForgeDebug] no RM_GameCondition_ForgeCycle active on this map.")
@@ -727,7 +748,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("20 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 20, sorted(V.SETTINGS_DEFAULTS))
+    check("26 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 26, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -740,7 +761,7 @@ def main():
           'private const string CAT = "RMTheForge"' in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"),
                                                               encoding="utf-8").read())
     for lab in ("Forge cycle: report state", "Forge cycle: advance one phase", "Spunstone: report knowledge",
-                "Spunstone: reveal now"):
+                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front"):
         check("debug action label exists in the C#: %s" % lab,
               lab in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"), encoding="utf-8").read())
     check("the letter labels are in the C#", all(
@@ -786,7 +807,7 @@ def main():
         ("no_gardens", {W + "growth_blooms_floatstone"}),
         ("garden_vanish", {W + "cracks_drift_gardens_and_glow"}),
         # a leaked crust also reddens every later chain's site setup: the precondition names the cause
-        ("melt_keeps_crust", {W + "melt_restores_lava_and_counts_losses", A + "site_ready_arms",
+        ("melt_keeps_crust", {W + "melt_restores_lava_and_counts_losses", A + "site_ready_arms", "plume_fronts.site_ready_plume",
                               "still_heat_hiss.site_ready_hiss", "voices.site_ready_voices",
                               "dormancy.site_ready_dormancy", "floatstone_harvest.site_ready_harvest"}),
         ("melt_silent", {W + "melt_restores_lava_and_counts_losses"}),
@@ -813,12 +834,28 @@ def main():
         ("project_visible", {"spunstone.project_hidden_until_studied"}),
         ("reveal_noop", {"spunstone.reveal_opens_project"}),
         ("harvest_noop", {"floatstone_harvest.floatstone_garden_yields_floatstone"}),
+        ("plume_off_ignored", {"plume_fronts.fronts_off_clears_fronts"}),
+        ("soak_off_ignored", {"plume_fronts.soak_off_adds_no_puddles"}),
+        ("no_soak", {"plume_fronts.plume_soaks_ground"}),
         ("keel_wrong", {"keelwork.keel_default_saving"}),
         ("keel_apply_garbled", {"keelwork.keel_off_zeroes_saving"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))
         check("break %-26s reddens exactly %s" % (brk, sorted(want)), set(got) == want, "got %s" % got)
+
+    # source-claim components must be able to fail: strip the wiring from the text they read and each must go red
+    real = V._read_cs
+    try:
+        V._read_cs = lambda n: real(n).replace("GasType.BlindSmoke", "X").replace("RM_CompVaporDrifter", "X") \
+            .replace("NoteCrusted(c)", "X") if n != "RM_TheForgeMod.cs" else real(n)
+        bad = reds(run())
+    finally:
+        V._read_cs = real
+    check("stripped plume source reddens the three source components",
+          set(bad) == {"plume_fronts.plume_source_launches_from_new_crust",
+                       "plume_fronts.plume_source_obscures_with_blind_smoke",
+                       "plume_fronts.plume_source_exempts_vapour_adapted"}, bad)
 
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
     un = unmeasured(run(("log_cap",)))

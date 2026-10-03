@@ -16,7 +16,7 @@ GameCondition, `RM_ForgePulse` = `RM_GameCondition_ForgeCycle`, the six-phase fi
 temp-terrain layer) -> growth (floatstone gardens bloom on the crust) -> glowing cracks -> melt-back that burns what
 stands on the crust). Around it: four dormancy natives that keep the mountain's clock (dhokkur, julmox, dhuvvox
 seal and wake with the cycle; the dhuvvox also run a visible countdown), the floatstone economy (harvest, spunstone
-bonding research hidden until studied, gravship keel braces), the four phase voices, and 20 Mod Settings.
+bonding research hidden until studied, gravship keel braces), the four phase voices, and 26 Mod Settings (six are the white-plume fronts).
 
 HOW THE CYCLE IS DRIVEN AND READ. A real cycle is ~5 in-game days, so this suite steps it with the mod's OWN
 `RMTheForge` debug actions (`Forge cycle: advance one phase`, `Forge cycle: report state`, the `Spunstone:`
@@ -205,7 +205,9 @@ SETTINGS_DEFAULTS = _settings_defaults()
 WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabled", "cycleFloodingEnabled",
          "lavaFreezeEnabled", "meltBackDestroys", "floatstoneBloomEnabled", "cycleDormancyEnabled",
          "cycleTelegraphLetters", "keelworkEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
-         "forgeVoicesVisualCues", "dhuvvoxClockEnabled"]
+         "forgeVoicesVisualCues", "dhuvvoxClockEnabled",
+         "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
+         "plumeStrength"]
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED)
 suite.toggles = list(WIRED)
 
@@ -535,7 +537,7 @@ def _apply_safely(t):
 # ------------------------------------------------------------------------------ the mod's debug actions
 
 _ACTIONS = {}
-_PREFIXES = ("Forge cycle:", "Spunstone:")
+_PREFIXES = ("Forge cycle:", "Spunstone:", "Forge plumes:")
 
 
 def _find_actions(t):
@@ -1038,7 +1040,7 @@ def biome_wiring(t):
 
 @suite.chain("settings")
 def settings(t):
-    """The Mod Settings screen: 20 fields, each at its shipped default (read from the C# source), the assembly loaded,
+    """The Mod Settings screen: 26 fields, each at its shipped default (read from the C# source), the assembly loaded,
     and the five FORGE_MECHANICS_1 scaffolding fields present but inert."""
     with _comp(t, "settings_at_shipped_defaults", independent=True, toggle="modEnabled"):
         if _live(t):
@@ -1733,8 +1735,99 @@ def keelwork(t):
             _fail("after restoring keelworkEnabled and a dialog close the brace saving is %r, not 0.05" % v)
 
 
+@suite.chain("plume_fronts")
+def plume_fronts(t):
+    """FORGE_WHITE_PLUME_FRONTS_1: moving quench-steam fronts off the new crust. LIVE here: a front forms and moves
+    (debug report), soaks the ground (Filth_Water puddle counter), and the two off-switches hold. NOT readable through
+    any bridge tool, so named and never faked: the BlindSmoke gas density and its effect on a shot, a pawn's
+    AmbientTemperature rise and the resulting heatstroke rate, and the adapted exemption in play. Those components
+    check only that the SOURCE carries the wiring (a source claim, labelled as such); behaviour is UNMEASURED live."""
+    _enter(t)
+    box = {}
+
+    def plumes(t):
+        return _act(t, "Forge plumes: report")
+
+    try:
+        with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False):
+            with _comp(t, "site_ready_plume"):
+                _reset_pad(t)
+                _start_cycle(t)
+                t.wait_ticks(130)
+                _to_phase(t, "Freeze")
+                t.wait_ticks(300)
+                rep = _report(t)
+                if _live(t) and not rep["frozen"] > 0:
+                    _unmeasured(t, "no crust to launch a front from (frozen=0): %s" % rep["_line"])
+
+            with _comp(t, "plume_front_spawns_and_lives", toggle="plumeFrontsEnabled"):
+                _act(t, "Forge plumes: spawn a front")
+                t.wait_ticks(120)
+                d = plumes(t)
+                if _live(t):
+                    box["after_spawn"] = d
+                    if d.get("plumeSpawned", 0) < 1 or d.get("plumeLive", 0) < 1:
+                        _fail("a spawned front is not live two seconds later: %s" % d["_line"])
+                    if not d.get("plumeCells", 0) > 0:
+                        _fail("a live front covers no cells: %s" % d["_line"])
+
+            with _comp(t, "plume_soaks_ground", toggle="plumeSoakEnabled"):
+                t.wait_ticks(300)
+                d = plumes(t)
+                if _live(t):
+                    box["soaked"] = d.get("plumePuddles", 0)
+                    if box["soaked"] <= 0:
+                        _fail("a front crossed crust for 7 s and left no Filth_Water puddle: %s" % d["_line"])
+
+            with _comp(t, "soak_off_adds_no_puddles", toggle="plumeSoakEnabled"):
+                with _settings(t, plumeSoakEnabled=False):
+                    before = plumes(t)
+                    t.wait_ticks(300)
+                    after = plumes(t)
+                    if _live(t) and after.get("plumePuddles", 0) != before.get("plumePuddles", 0):
+                        _fail("plumeSoakEnabled=false but puddles grew %s -> %s" % (
+                            before.get("plumePuddles"), after.get("plumePuddles")))
+
+            with _comp(t, "fronts_off_clears_fronts", toggle="plumeFrontsEnabled"):
+                with _settings(t, plumeFrontsEnabled=False):
+                    _act(t, "Forge plumes: spawn a front")
+                    t.wait_ticks(60)
+                    d = plumes(t)
+                    if _live(t) and d.get("plumeLive", 0) != 0:
+                        _fail("plumeFrontsEnabled=false but fronts are still live: %s" % d["_line"])
+    finally:
+        _wind_down(t)
+        _teardown(t)
+
+    src = _read_cs("RM_ForgePlumeFronts.cs")
+    prj = _read_cs("RM_TheForge.csproj")
+    cyc = _read_cs("RM_GameCondition_ForgeCycle.cs")
+
+    def need(cond, msg):
+        if _live(t) or t.session is None:
+            if not cond:
+                _fail(msg)
+
+    with _comp(t, "plume_source_launches_from_new_crust", independent=True, toggle="plumeFrontsEnabled"):
+        need("NoteCrusted(c)" in cyc, "FreezeBatch does not call NoteCrusted: no front can ever form")
+        need('Compile Include="RM_ForgePlumeFronts.cs"' in prj, "the csproj does not compile RM_ForgePlumeFronts.cs (a silent no-op)")
+    with _comp(t, "plume_source_obscures_with_blind_smoke", independent=True, toggle="plumeObscureEnabled"):
+        need("GasType.BlindSmoke" in src and "plumeObscureEnabled" in src, "no BlindSmoke gas laid under plumeObscureEnabled")
+    with _comp(t, "plume_source_heat_is_ambient_temperature", independent=True, toggle="plumeHeatEnabled"):
+        need("Thing.AmbientTemperature" in src or "nameof(Thing.AmbientTemperature)" in src, "no AmbientTemperature postfix")
+        need("plumeHeatEnabled" in src, "the heat postfix is not gated on plumeHeatEnabled")
+        need("AddHediff" not in src and "HediffDef" not in src, "a plume must feed vanilla heat, not add or write a hediff")
+    with _comp(t, "plume_source_exempts_vapour_adapted", independent=True, toggle="plumeAdaptedExempt"):
+        need("RM_CompVaporDrifter" in src and "plumeAdaptedExempt" in src, "the vapour-adapted exemption is not wired")
+    with _comp(t, "plume_source_strength_scales", independent=True, toggle="plumeStrength"):
+        need(src.count("plumeStrength") >= 2, "plumeStrength is not read by both the gas and the heat offset")
+    if _live(t):
+        _note(t, "plume UNMEASURED", "BlindSmoke density/accuracy, AmbientTemperature offset and heatstroke rate, adapted "
+              "exemption in play: no bridge tool reads them")
+
+
 # Chain order = registration order, kept explicit: the dormancy chain runs after every chain that steps a cycle, because
 # it must move the clock past the stale flash window / burst those leave behind (see its site_ready).
 _ORDER = ["log_clean", "defs_resolve", "def_wiring", "biome_wiring", "settings", "spunstone", "keelwork",
-          "cycle_walk", "cycle_arms", "still_heat_hiss", "voices", "dormancy", "floatstone_harvest"]
+          "cycle_walk", "cycle_arms", "still_heat_hiss", "voices", "dormancy", "floatstone_harvest", "plume_fronts"]
 suite.chains.sort(key=lambda c: _ORDER.index(c[0]))

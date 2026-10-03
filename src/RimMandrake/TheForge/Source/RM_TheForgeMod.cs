@@ -53,6 +53,14 @@ namespace RimMandrake.TheForge
         public static bool forgeVoicesVisualCues = false;
         public static bool dhuvvoxClockEnabled = true;
 
+        // FORGE_WHITE_PLUME_FRONTS_1 — quench-steam fronts off the new crust, each half separately switchable.
+        public static bool plumeFrontsEnabled = true;
+        public static bool plumeObscureEnabled = true;
+        public static bool plumeSoakEnabled = true;
+        public static bool plumeHeatEnabled = true;
+        public static bool plumeAdaptedExempt = true;
+        public static float plumeStrength = 1f;
+
         // Master switch folded in: a feature is on only while the mod is.
         private static Vector2 scrollPos;
         private static float viewHeight = 900f;
@@ -85,6 +93,12 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref forgeVoicesEnabled, "forgeVoicesEnabled", true);
             Scribe_Values.Look(ref forgeVoicesVisualCues, "forgeVoicesVisualCues", false);
             Scribe_Values.Look(ref dhuvvoxClockEnabled, "dhuvvoxClockEnabled", true);
+            Scribe_Values.Look(ref plumeFrontsEnabled, "plumeFrontsEnabled", true);
+            Scribe_Values.Look(ref plumeObscureEnabled, "plumeObscureEnabled", true);
+            Scribe_Values.Look(ref plumeSoakEnabled, "plumeSoakEnabled", true);
+            Scribe_Values.Look(ref plumeHeatEnabled, "plumeHeatEnabled", true);
+            Scribe_Values.Look(ref plumeAdaptedExempt, "plumeAdaptedExempt", true);
+            Scribe_Values.Look(ref plumeStrength, "plumeStrength", 1f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -151,6 +165,21 @@ namespace RimMandrake.TheForge
                 "Awake dhuvvox show how long their run has left, slow in its final "
               + "quarter-hour, and visibly curl back into their nodules when it ends. "
               + "Off: they still seal on the cycle, without the clock.");
+            list.GapLine();
+
+            list.CheckboxLabeled("White plume fronts", ref plumeFrontsEnabled,
+                "During the freeze, quench steam rolls off newly crusted ground in moving white fronts. "
+              + "Off: no fronts form (the freeze itself is unchanged).");
+            list.CheckboxLabeled("  Plumes blind shooters", ref plumeObscureEnabled,
+                "Fronts lay vanilla blind smoke, which cuts ranged accuracy and stops targets being picked through it.");
+            list.CheckboxLabeled("  Plumes soak the ground", ref plumeSoakEnabled,
+                "Fronts leave water puddles, which evaporate within hours and do not burn.");
+            list.CheckboxLabeled("  Plumes raise heat", ref plumeHeatEnabled,
+                "Pawns inside a front feel hotter air, so vanilla heatstroke sets in faster. No new condition is added.");
+            list.CheckboxLabeled("  Vapour-adapted creatures are exempt", ref plumeAdaptedExempt,
+                "Creatures that live in the vapour columns take no extra heat from a front.");
+            list.Label("Plume strength: " + plumeStrength.ToString("0.00") + "x");
+            plumeStrength = list.Slider(plumeStrength, 0.25f, 2f);
             list.GapLine();
             list.Label("Tibanna-tap rate: " + tibannaTapRate.ToString("0.00") + "x");
             tibannaTapRate = list.Slider(tibannaTapRate, 0.25f, 3f);

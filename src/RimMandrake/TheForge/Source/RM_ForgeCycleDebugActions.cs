@@ -40,6 +40,29 @@ namespace RimMandrake.TheForge
             Log.Message("[RMTheForgeDebug] advanced. " + cycle.DebugStateReport());
         }
 
+        // FORGE_WHITE_PLUME_FRONTS_1 quicktest surface.
+        [DebugAction(CAT, "Forge plumes: report (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void PlumeReport()
+        {
+            RM_MapComponent_PlumeFronts c = RM_MapComponent_PlumeFronts.Of(Find.CurrentMap);
+            Log.Message("[RMTheForgeDebug] " + (c == null ? "no plume component" : c.DebugReport()));
+        }
+
+        [DebugAction(CAT, "Forge plumes: spawn a front on a crust cell (mouse cell if none) (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void PlumeSpawn()
+        {
+            RM_MapComponent_PlumeFronts c = RM_MapComponent_PlumeFronts.Of(Find.CurrentMap);
+            if (c != null)
+            {
+                RM_GameCondition_ForgeCycle cycle = RM_ForgeCycleUtility.CycleOn(Find.CurrentMap);
+                IntVec3 at = cycle != null && cycle.FrozenCellCount > 0 ? cycle.RandomFrozenCell() : UI.MouseCell();
+                c.DebugSpawn(at);
+            }
+            PlumeReport();
+        }
+
         // FORGE_GPT_ENRICHMENT_1 quicktest surface.
         [DebugAction(CAT, "Spunstone: report knowledge",
             allowedGameStates = AllowedGameStates.Playing)]
