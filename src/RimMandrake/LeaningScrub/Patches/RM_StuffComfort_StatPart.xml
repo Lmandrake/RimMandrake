@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- SWEETLINE_FELT_COMFORT_BUILD_1 (Source/RM_SweetlineFelt.cs): vanilla Comfort reads nothing
+       from the stuff (engine E8), so this appends a stat part that adds a stuff's
+       RM_StuffComfortExtension.comfortOffset. Inert for every stuff without the extension. -->
+  <Operation Class="PatchOperationAdd">
+    <xpath>/Defs/StatDef[defName="Comfort"]/parts</xpath>
+    <value>
+      <li Class="RimMandrake.LeaningScrub.StatPart_RM_StuffComfort" />
+    </value>
+  </Operation>
+</Patch>

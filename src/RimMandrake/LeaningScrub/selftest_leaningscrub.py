@@ -334,6 +334,10 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_static_call(self, type=None, method=None, args="", **k):
+        if method == "ProofComfortDelta":
+            on = self.on("sweetlineFeltComfortEnabled") or "comfort_ignores_toggle" in self.broken
+            d = 0.10 if on and "no_comfort" not in self.broken else 0.0
+            return {"success": True, "result": "DELTA %.2f" % d}
         if method == "ProofMapStep":
             chance = float(args.split("|")[1])
             n = 0
@@ -511,6 +515,8 @@ BREAKS = {
     "no_scratch": "sweetline.scratch_drops_coat",
     "scratch_ignores_toggle": "sweetline.scratch_toggle_off_refused",
     "no_map_step": "sweetline.map_step_plants_one_or_two",
+    "no_comfort": "sweetline.felt_furniture_comfort",
+    "comfort_ignores_toggle": "sweetline.felt_comfort_toggle_off_plain",
     "map_step_ignores_chance": "sweetline.map_step_chance_zero_plants_none",
     "visitors_ignore_toggle": "sweetline.visitors_toggle_off_quiet",
     "no_visits": "sweetline.visitors_come_and_leave_marks",

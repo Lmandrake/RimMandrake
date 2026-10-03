@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SWEETLINE_FELT_COMFORT_BUILD_1: "+2 mood while wearing at least one piece made of it, not
+     stacked per piece" (spec §5). Fires for any stuff carrying RM_StuffComfortExtension. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RM_SweetlineFeltApparel</defName>
+    <workerClass>RimMandrake.LeaningScrub.ThoughtWorker_RM_StuffComfortApparel</workerClass>
+    <validWhileDespawned>true</validWhileDespawned>
+    <developmentalStageFilter>Child, Adult</developmentalStageFilter>
+    <stages>
+      <li>
+        <label>{0} against the skin</label>
+        <description>Soft, warm and dense. I could live in this.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

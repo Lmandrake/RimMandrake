@@ -70,6 +70,7 @@
     <Compile Include="RM_SweetlineGuardians.cs" />
     <Compile Include="RM_SweetlineScratching.cs" />
     <Compile Include="RM_GenStep_SweetlineTrees.cs" />
+    <Compile Include="RM_SweetlineFelt.cs" />
   </ItemGroup>
 
   <ItemGroup>

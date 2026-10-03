@@ -73,7 +73,7 @@ DEFAULTS = {
     "sweetlineGuardiansEnabled": True, "sweetlineGuardianMaxPerTree": 3, "sweetlineHarvestDisturbance": 1.0,
     "sweetlineForgivenessDays": 5.0, "sweetlineProximityCharge": False,
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
-    "sweetlineTreeMapChance": 0.25,
+    "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1304,6 +1304,25 @@ def sweetline_chain(t):
             r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_GenStep_SweetlineTrees",
                               method="ProofMapStep", args="current|%s" % chance)
             return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        # SWEETLINE_FELT_COMFORT_BUILD_1: the Comfort stat part, read through the real stat pipeline on an
+        # armchair made of felt vs cloth. Not proven here: the +2 apparel thought (needs a dressed colonist).
+        def comfort_delta():
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_SweetlineFeltProof",
+                              method="ProofComfortDelta", args="Armchair")
+            return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+        with _comp(t, "felt_comfort_toggle_off_plain", toggle="sweetlineFeltComfortEnabled"):
+            if _live(t):
+                with _setting(t, "sweetlineFeltComfortEnabled", False):
+                    text = comfort_delta()
+                _note(t, "felt armchair comfort delta, setting OFF", text)
+                if text != "DELTA 0.00":
+                    _fail("sweetlineFeltComfortEnabled OFF but a felt armchair still differs from cloth: %s" % text)
+        with _comp(t, "felt_furniture_comfort", toggle="sweetlineFeltComfortEnabled"):
+            if _live(t):
+                text = comfort_delta()
+                _note(t, "felt armchair comfort delta", text)
+                if text != "DELTA 0.10":
+                    _fail("a felt armchair's comfort is not cloth +0.10: %s" % text)
         with _comp(t, "map_step_chance_zero_plants_none", toggle="sweetlineStationsEnabled"):
             if _live(t):
                 text = map_step(0)
