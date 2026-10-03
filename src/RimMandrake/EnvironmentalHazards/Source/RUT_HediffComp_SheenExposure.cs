@@ -39,7 +39,8 @@ namespace RimMandrake.EnvironmentalHazards
     {
         public override float SeverityChangePerDay()
         {
-            if (!RM_EnvironmentalHazardsSettings.sheenExposureEnabled)
+            if (!RM_EnvironmentalHazardsSettings.sheenExposureEnabled
+                || !RM_KitFronts.Enabled("sheenExposure", parent.pawn?.MapHeld?.Biome))
             {
                 return 0f; // mod option: Sheen exposure disabled — the reskin itself stays either way
             }

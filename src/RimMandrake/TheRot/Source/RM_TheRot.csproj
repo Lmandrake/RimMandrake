@@ -59,6 +59,10 @@
       <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
       <Private>false</Private>
     </Reference>
+    <Reference Include="RimMandrake.EnvironmentalHazards">
+      <HintPath>..\..\EnvironmentalHazards\Assemblies\RimMandrake.EnvironmentalHazards.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
       <Private>false</Private>

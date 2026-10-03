@@ -84,8 +84,8 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            RM_WarmGroundExtension ext = map.Biome?.GetModExtension<RM_WarmGroundExtension>();
-            if (ext == null)
+            RM_WarmGroundExtension ext = RM_KitFronts.Extension<RM_WarmGroundExtension>(map.Biome);
+            if (ext == null || !RM_KitFronts.Enabled("warmGround", map.Biome))
             {
                 return;
             }
@@ -95,7 +95,7 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
-            float offset = RM_EnvironmentalHazardsSettings.warmGroundOffsetCelsius;
+            float offset = RM_EnvironmentalHazardsSettings.warmGroundOffsetCelsius * RM_KitFronts.Factor("warmGround", map.Biome);
             if (offset <= 0f)
             {
                 return;

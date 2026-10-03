@@ -64,7 +64,8 @@ namespace RimMandrake.EnvironmentalHazards
         // false = skip vanilla's temperature-ruin tick for this thing.
         public static bool CompTick_Prefix(CompTemperatureRuinable __instance)
         {
-            if (RM_EnvironmentalHazardsSettings.livePrepStrictViability)
+            if (RM_EnvironmentalHazardsSettings.livePrepStrictViability
+                && RM_KitFronts.Enabled("livePrepStrict", __instance?.parent?.MapHeld?.Biome))
             {
                 return true; // shipped default: vanilla behaviour, ban 4 at full strength
             }
