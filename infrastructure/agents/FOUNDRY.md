@@ -112,3 +112,24 @@ step is the fix.
 `Agent_Policy.md` is the ladder and the only place it is written — your model,
 per-item escalation, and every subagent tier; read it rather than a summary of it.
 Design work is never done in-window.
+
+## Full belt — owner, 2026-10-03 (replaces the 2026-09-11 "3 queue agents + 1 art" floor)
+
+*"wake foundry and full belt."* **Full belt means exactly three things, at all times:**
+
+1. **One subagent engaged with the Bridge whenever it is available** (`rimflow bridge who`),
+   advancing game testing / Northstar (deploy a clean tree, `situational_rerun`, first scripts,
+   Player.log error classes). If the game is DOWN and the bridge is free, that agent reboots it
+   (a reboot is ours to call). Bridge held by someone else: it does offline prep for the next run.
+2. **The art pipeline is up** — `artpiped.py` running (`pgrep -af artpiped`) with work in
+   `pending/`; an empty queue is a gap to fill with already-approved jobs (search first:
+   `artpipe_state.py find`).
+3. **One subagent building new content offline** from the queue (`rimflow next --seat FOUNDRY`).
+
+A floor, not a ceiling; no busywork padding. Hard-consult GPT (`gpt_consult.py`, high effort) on
+a genuinely hard problem.
+
+🔴 **Never go idle waiting for no one.** After finishing a live run (or any step) the seat must
+always be waiting on something that WILL wake it: a running subagent's completion notice, a
+`Monitor` on a file/condition, or a `ScheduleWakeup`. Before ending any turn, name what wakes you.
+If nothing would, you are not finished — start the next belt task or hand off.
