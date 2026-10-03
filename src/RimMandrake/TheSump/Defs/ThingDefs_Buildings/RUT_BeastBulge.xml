@@ -94,7 +94,7 @@
         <aggressive>false</aggressive>
         <destroyAfterSpawn>true</destroyAfterSpawn>
       </li>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_CompBeastWakeRelay" />
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_BeastWakeRelay" />
       <!-- SUMP_TAR_BEAST_BUILD_1: a running deep drill (or a listed pump) within range wakes it. -->
       <li Class="RimMandrake.EnvironmentalHazards.CompProperties_BulgePumpWake">
         <radius>30</radius>

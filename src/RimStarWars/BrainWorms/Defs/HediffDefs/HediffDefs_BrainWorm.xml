@@ -100,12 +100,14 @@
         </capMods>
         <statFactors>
           <li>
-            <WorkSpeedGlobal>0.8</WorkSpeedGlobal>
+            <stat>WorkSpeedGlobal</stat>
+            <value>0.8</value>
           </li>
         </statFactors>
         <statOffsets>
           <li>
-            <SocialImpact>-0.35</SocialImpact>
+            <stat>SocialImpact</stat>
+            <value>-0.35</value>
           </li>
         </statOffsets>
       </li>

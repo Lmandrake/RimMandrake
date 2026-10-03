@@ -31,6 +31,16 @@ namespace RimMandrake.EnvironmentalHazards
     // duplicating anything vanilla already does well. Not Sump-specific —
     // any dormant Thing wanting to listen for a worked-lottery-driven
     // disturbance reuses this comp unchanged.
+    // The XML <li Class=...> of a comps entry must name a CompProperties, not the ThingComp (LIVE 2026-10-03:
+    // `RM_CompBeastWakeRelay(parent=..) is not of type Verse.CompProperties` discarded RUT_BeastBulge's whole def).
+    public class CompProperties_BeastWakeRelay : CompProperties
+    {
+        public CompProperties_BeastWakeRelay()
+        {
+            compClass = typeof(RM_CompBeastWakeRelay);
+        }
+    }
+
     public class RM_CompBeastWakeRelay : ThingComp
     {
         public override void PostSpawnSetup(bool respawningAfterLoad)
