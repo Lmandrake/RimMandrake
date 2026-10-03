@@ -37,11 +37,19 @@ namespace RimMandrake.Cauldron
         public float spawnGrowthMin = 0.05f;
         public float spawnGrowthMax = 0.3f;
 
+        // CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat. A plant with ventHabitat != None grows in a ring
+        // ventMinRadius..ventRadius cells from every vent whose state matches (see RM_Building_CauldronVent.Matches).
+        public RM_VentHabitat ventHabitat = RM_VentHabitat.None;
+        public float ventMinRadius = 2.5f;
+        public float ventRadius = 8f;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors()) yield return e;
-            if (shoreOf == null || shoreOf.Count == 0)
-                yield return "RM_CondensateHabitatExtension has no shoreOf terrains";
+            if ((shoreOf == null || shoreOf.Count == 0) && ventHabitat == RM_VentHabitat.None)
+                yield return "RM_CondensateHabitatExtension has neither shoreOf terrains nor a ventHabitat";
+            if (ventHabitat != RM_VentHabitat.None && ventRadius <= ventMinRadius)
+                yield return "RM_CondensateHabitatExtension ventRadius must exceed ventMinRadius";
         }
     }
 
@@ -52,6 +60,7 @@ namespace RimMandrake.Cauldron
         // ~65 days, so a fresh poisoned shoreline greens over weeks, not hours.
         private const int IntervalTicks = 2500;
         private const int SamplesPerInterval = 40;
+        private const int VentSamplesPerInterval = 12;
 
         private List<(ThingDef plant, RM_CondensateHabitatExtension ext)> cached;
         private BiomeDef cachedFor;
@@ -83,6 +92,28 @@ namespace RimMandrake.Cauldron
             foreach (IntVec3 c in map.AllCells)
                 foreach (var (plant, ext) in parts)
                     if (TryColonize(c, plant, ext, ext.mapgenChance)) break;
+
+            // Vents come first (one idempotent call: MapComponent order is not guaranteed), then their flowers.
+            var ventComp = map.GetComponent<RM_MapComponent_CauldronVents>();
+            if (ventComp == null || !RM_CauldronSettings.ventGardensEnabled) return;
+            ventComp.EnsureGenerated();
+            foreach (Thing t in ventComp.Vents())
+            {
+                var vent = t as RM_Building_CauldronVent;
+                if (vent == null) continue;
+                foreach (var (plant, ext) in parts)
+                {
+                    if (ext.ventHabitat == RM_VentHabitat.None || !vent.Matches(ext.ventHabitat)) continue;
+                    foreach (IntVec3 c in GenRadial.RadialCellsAround(vent.Position, ext.ventRadius, false))
+                        if (InVentRing(vent, c, ext)) TryPlant(c, plant, ext, ext.mapgenChance);
+                }
+            }
+        }
+
+        private static bool InVentRing(RM_Building_CauldronVent vent, IntVec3 c, RM_CondensateHabitatExtension ext)
+        {
+            float d = (c - vent.Position).LengthHorizontal;
+            return d >= ext.ventMinRadius && d <= ext.ventRadius;
         }
 
         public override void MapComponentTick()
@@ -97,11 +128,34 @@ namespace RimMandrake.Cauldron
                 var (plant, ext) = parts.RandomElement();
                 TryColonize(c, plant, ext, ext.colonizeChance);
             }
+
+            // Vent flowers: a few samples per interval around a random vent, so a vent that has just blown
+            // out (or a new leak) fills in over days.
+            if (!RM_CauldronSettings.ventGardensEnabled) return;
+            var ventComp = map.GetComponent<RM_MapComponent_CauldronVents>();
+            if (ventComp == null) return;
+            List<Thing> vents = ventComp.Vents();
+            if (vents.Count == 0) return;
+            for (int i = 0; i < VentSamplesPerInterval; i++)
+            {
+                var vent = vents.RandomElement() as RM_Building_CauldronVent;
+                var (vplant, vext) = parts.RandomElement();
+                if (vent == null || vext.ventHabitat == RM_VentHabitat.None || !vent.Matches(vext.ventHabitat)) continue;
+                Vector2 off = Rand.InsideUnitCircle * vext.ventRadius;
+                IntVec3 c = vent.Position + new IntVec3(Mathf.RoundToInt(off.x), 0, Mathf.RoundToInt(off.y));
+                if (!c.InBounds(map) || !InVentRing(vent, c, vext)) continue;
+                TryPlant(c, vplant, vext, vext.colonizeChance);
+            }
         }
 
         private bool TryColonize(IntVec3 c, ThingDef plant, RM_CondensateHabitatExtension ext, float chance)
         {
             if (!IsShoreOf(c, ext)) return false;
+            return TryPlant(c, plant, ext, chance);
+        }
+
+        private bool TryPlant(IntVec3 c, ThingDef plant, RM_CondensateHabitatExtension ext, float chance)
+        {
             if (c.GetPlant(map) != null) return false;
             if (map.zoneManager.ZoneAt(c) != null) return false;
             if (!plant.CanEverPlantAt(c, map)) return false;

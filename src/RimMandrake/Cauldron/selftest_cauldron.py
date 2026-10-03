@@ -86,6 +86,8 @@ class Fake(object):
         tid = "T%d" % self.n
         row = dict(id=tid, **dict(kw, x=x, z=z))
         row["def"] = d
+        if d == V.VENT:
+            row.update(supp=0.0, sil=-1)
         self.things[tid] = row
         return tid
 
@@ -109,6 +111,70 @@ class Fake(object):
                 h["severity"] += sev
                 return
         p["hediffs"].append({"def": d, "severity": sev})
+
+    # ------------------------------------------------------------ the vent (CAULDRON_VENT_ENRICHMENT_HOOKS_1)
+    FALTER, WMULT = 0.1, {"RM_ScatterDusk": 1.0, "RM_VentBloom": 2.5, "RM_VapourBank": 0.8, "RM_Dewfall": 0.6}
+
+    def vent_mult(self):
+        b = self.broken
+        if "weather_mult_flat" in b:
+            return 1.0
+        if not self.on("ventWeatherEnabled", "weather_ignores_toggle"):
+            return 1.0
+        if self.weather == V.BLOOM and self.wage < 4000 and "no_falter" not in b:
+            return self.FALTER
+        return self.WMULT.get(self.weather, 1.0)
+
+    def vent_recovery(self, v):
+        if v["sil"] < 0:
+            return 1.0
+        if self.ticks < v["sil"] or "no_recovery" in self.broken:
+            return 0.0
+        return min(1.0, (self.ticks - v["sil"]) / 60000.0)
+
+    def vent_silenced(self, v):
+        return v["sil"] >= 0 and (self.ticks < v["sil"] or "no_recovery" in self.broken)
+
+    def vent_output(self, v):
+        return self.vent_mult() * self.vent_recovery(v)
+
+    def exposure_weight(self, p):
+        vents = self.of(V.VENT)
+        if not vents or not self.on("ventLocalExposureEnabled", "local_ignores_toggle") \
+                or "exposure_not_local" in self.broken:
+            return 1.0
+        best = 0.0
+        for v in vents:
+            d = ((v["x"] - p["x"]) ** 2 + (v["z"] - p["z"]) ** 2) ** 0.5
+            prox = 1.0 if d <= 8 else 0.0 if d >= 45 else 1.0 - (d - 8) / 37.0
+            best = max(best, prox * self.vent_recovery(v))
+        return 0.1 + 0.9 * best
+
+    def drink_vents(self, d):
+        for v in self.of(V.VENT):
+            v["supp"] = max(0.0, v["supp"] - d * 0.5 / 60000.0)
+        if "no_drink" in self.broken:
+            return
+        for p in self.pawns.values():
+            if p["kind"] != V.VEXXISS or p["dead"] or p["faction"] != "none":
+                continue
+            if not self.on("vexxissDrinksVentsEnabled", "drink_ignores_toggle") or self.ticks < p.get("nd", 0):
+                continue
+            for v in self.of(V.VENT):
+                if abs(v["x"] - p["x"]) > 40 or abs(v["z"] - p["z"]) > 40:
+                    continue
+                if self.vent_silenced(v) or self.vent_output(v) <= 0.05:
+                    continue
+                self.jobs[p["id"]] = (V.DRINK_JOB, self.ticks + 900)
+                p["nd"] = self.ticks + 2750
+                v["supp"] += 900 / 6000.0
+                if "never_silences" in self.broken:
+                    v["supp"] = min(v["supp"], 0.9)
+                else:
+                    if v["supp"] >= 1.0:
+                        v["supp"] = 0.0
+                        v["sil"] = self.ticks + int(self.factor("ventSilenceDays") * 60000)
+                break
 
     # ------------------------------------------------------------ simulation
     def advance(self, n):
@@ -134,7 +200,7 @@ class Fake(object):
                 if p["kind"] == NATIVE_KIND and "exposure_hits_natives" not in b:
                     continue
                 f = 1.0 if "factor_ignored_bloom" in b else self.factor("ventBloomExposureFactor")
-                self.add_hediff(p, V.HEDIFF, 0.012 * f)
+                self.add_hediff(p, V.HEDIFF, 0.012 * f * self.exposure_weight(p))
                 if "double_tax" in b:
                     self.add_hediff(p, "ToxicBuildup", 0.01)
         # --- the vexxiss: poisons the water it stands in, warns, wards fire
@@ -158,6 +224,7 @@ class Fake(object):
             if self.fires and "no_warden" not in b and self.on("vexxissFireWardenEnabled", "warden_ignores_toggle"):
                 if any(abs(f[0] - p["x"]) <= 14 and abs(f[1] - p["z"]) <= 14 for f in self.fires):
                     self.jobs[p["id"]] = ("BeatFire", self.ticks + 300)
+        self.drink_vents(d)
         # --- the suush's wick
         for pid, p in list(self.pawns.items()):
             if p.get("wick") and self.ticks >= p["wick"]:
@@ -264,6 +331,12 @@ class Fake(object):
         if defName == V.NETTLE:
             ext = [] if "nettle_ext_missing" in self.broken else ["RM_CondensateHabitatExtension"]
             return {"success": True, "extra": {"modExtensions": ext}, "comps": []}
+        if defName in V.VENT_PLANTS:
+            ext = [] if ("vent_ext_missing" in self.broken and defName == "RM_BloodBouquet") \
+                else ["RM_CondensateHabitatExtension"]
+            return {"success": True, "extra": {"modExtensions": ext}, "comps": []}
+        if defName == V.VENT:
+            return {"success": True, "extra": {"modExtensions": ["RM_VentExtension"]}, "comps": []}
         classes = list(COMP_ROWS.get(defName, []))
         if defName == V.VEXXISS and "vexxiss_explosive" in self.broken:
             classes.append("CompProperties_Explosive")
@@ -457,6 +530,19 @@ class Fake(object):
                     if "assay_wrong_grade" in self.broken:
                         grade = "lode"
                     lines = ["Assay grade: %s (~%s steel if cut now)" % (grade, ("%.1f" % expected).rstrip("0").rstrip("."))]
+        if t["def"] == V.VENT:
+            out = self.vent_output(t)
+            if self.vent_silenced(t):
+                st = "silenced"
+            elif self.vent_recovery(t) < 1.0:
+                st = "recovering"
+            elif self.vent_mult() == self.FALTER:
+                st = "faltering"
+            else:
+                st = "breathing"
+            lines = ["Vent: stable", "Vent state: %s" % st, "Vent output: %.2fx" % out]
+            if t["supp"] > 0.01 and st != "silenced":
+                lines[-1] += "  (drunk %d%% of the way quiet)" % int(t["supp"] * 100)
         return {"success": True, "things": [{"id": t["id"], "label": t["def"], "inspect": lines}]}
 
 
@@ -527,6 +613,16 @@ BREAKS = {
     "poison_ignores_toggle": "water.water_poison_toggle_off",
     "no_warden": "fire.fire_warden_beats_fire",
     "warden_ignores_toggle": "fire.fire_warden_toggle_off",
+    "vent_ext_missing": "load.vent_habitat_wired",
+    "weather_mult_flat": "vents.vent_weather_multiplier",
+    "weather_ignores_toggle": "vents.vent_weather_multiplier",
+    "no_falter": "vents.vent_falter_precedes_bloom",
+    "exposure_not_local": "vents.vent_exposure_is_local",
+    "local_ignores_toggle": "vents.vent_exposure_is_local",
+    "no_drink": "vents.vexxiss_drinks_vent",
+    "drink_ignores_toggle": "vents.vexxiss_drinks_vent",
+    "never_silences": "vents.vent_silences_and_recovers",
+    "no_recovery": "vents.vent_silences_and_recovers",
     "log_error": "log.log_clean",
 }
 
@@ -547,14 +643,14 @@ def source_checks():
         short = typ.rsplit(".", 1)[1]
         if not re.search(r"\bclass\s+%s\b" % short, blob):
             bad.append("TYPES names %s but Source/ declares no such class" % short)
-    if len(V.DEFAULTS) != 11 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 8:
-        bad.append("parsed %d defaults / %d bools, expected 11 / 8" %
+    if len(V.DEFAULTS) != 18 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 14:
+        bad.append("parsed %d defaults / %d bools, expected 18 / 14" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for f in V.DEFAULTS:
         if not re.search(r'Scribe_Values\.Look\(ref %s, "%s"' % (f, f), blob):
             bad.append("Mod Settings field %s is not scribed in ExposeData" % f)
-    if len(V.SHIPPED) != 29 or len(V.FLORA) != 11 or len(V.KINDS) != 4:
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 29 / 11 / 4); update "
+    if len(V.SHIPPED) != 31 or len(V.FLORA) != 11 or len(V.KINDS) != 4:
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 31 / 11 / 4); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

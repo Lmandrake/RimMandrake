@@ -34,6 +34,12 @@ NOT DRIVEN HERE (walk lines say UNCOVERED, with the reason):
     (CAULDRON_FIRE_INSTIGATOR_TOOL_1).
   * Wild-vexxiss shearing (60 in-game days, tame-only), toxic-gear resistance to the vent bloom, a
     butchered zisska's real yield (needs a built bench + bill): only the defs are read.
+  * Vent flowers (crystal / blood / giant toxic rings, CAULDRON_VENT_ENRICHMENT_HOOKS_1): the spread only runs on
+    a map whose biome roster names the plants, and takes days of ticks. Only the wiring is read
+    (load.vent_habitat_wired). `ventsEnabled` (worldgen), `ventFalterMessage` (a Messages.Message the bridge
+    cannot list) and `ventGardensEnabled` are write/read-back roundtrips only.
+  * Vents are spawned by the driver here (jawa/spawn_batch). That mapgen places 4-5 on a new Cauldron map, with
+    both temperaments and a recent blowout, is NOT read: it needs a freshly generated Cauldron map.
   * Appearance (dusk light, the vent-bloom overlay, art): visual, left to the judge pass.
 
 Settings fields are `public static` (RimMandrake.Cauldron.RM_CauldronSettings). Every arm that
@@ -80,7 +86,9 @@ suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 NS = "RimMandrake.Cauldron."
 TYPES = tuple(NS + n for n in (
     "RM_CauldronSettings", "RM_BiomeWorker_Cauldron", "RM_MapComponent_VentBloomExposure",
-    "RM_MapComponent_CondensateGardens", "RM_CompVexxissBehaviour", "RM_CompMetalYield"))
+    "RM_MapComponent_CondensateGardens", "RM_CompVexxissBehaviour", "RM_CompMetalYield",
+    "RM_Building_CauldronVent", "RM_MapComponent_CauldronVents", "RM_JobDriver_VexxissDrinkVent",
+    "RM_VentExtension"))
 
 BIOME = "RM_Cauldron"
 WEATHERS = ("RM_ScatterDusk", "RM_VentBloom", "RM_VapourBank", "RM_Dewfall")
@@ -97,7 +105,10 @@ HERBIVORES = ("Deer", "Muffalo", "Elk", "Alpaca", "Hare", "Chicken", "Squirrel",
               "Goat", "Sheep", "Yak", "Camel")
 
 # Pad offsets from the map centre (the driver's anchor); each chain clears its own pad first.
-PADS = {"fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
+VENT, DRINK_JOB = "RM_CauldronVent", "RM_VexxissDrinkVent"
+VENT_PLANTS = {"RM_CrystalFlower": "StableRing", "RM_BloodBouquet": "ChronicLeak",
+               "RM_GiantToxicFlower": "RecentBlowout"}
+PADS = {"vent": (0, -85), "fauna": (-45, -45), "suush": (45, -45), "flora": (-45, 0), "yield": (45, 0),
         "bloom": (-45, 45), "water": (0, 45), "fire": (45, 45), "spawn": (0, -45)}
 PAD_SIZE = 24
 SOIL = "Soil"
@@ -110,7 +121,7 @@ _STATE = {}    # readings shared between components of ONE run
 def _read_defs():
     """({defType: [defName]}, {defName: source folder}) for every concrete def in this mod's Defs/,
     parsed per top-level element (never a fixed line number). Comments are stripped first."""
-    wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "TerrainDef", "BiomeDef")
+    wanted = ("ThingDef", "PawnKindDef", "WeatherDef", "HediffDef", "TerrainDef", "BiomeDef", "JobDef")
     by_type, where = {}, {}
     for path in sorted(glob.glob(os.path.join(HERE, "Defs", "*", "*.xml"))):
         with open(path, encoding="utf-8") as fh:
@@ -647,6 +658,23 @@ def load_chain(t):
                       "sees it): %r" % (NETTLE, ext))
 
 
+    with _comp(t, "vent_habitat_wired"):
+        if _live(t):
+            for plant, hab in sorted(VENT_PLANTS.items()):
+                r = t.bridge_call("jawa/get_def", defName=plant, defType="ThingDef")
+                _ok(r, "get_def(%s)" % plant)
+                ext = (r.get("extra") or {}).get("modExtensions")
+                if not isinstance(ext, list):
+                    _unmeasured(t, "get_def extra.modExtensions unreadable for %s: %r" % (plant, ext))
+                if "RM_CondensateHabitatExtension" not in ext:
+                    _fail("%s (vent habitat %s) carries no RM_CondensateHabitatExtension: %r" % (plant, hab, ext))
+            r = t.bridge_call("jawa/get_def", defName=VENT, defType="ThingDef")
+            _ok(r, "get_def(%s)" % VENT)
+            ext = (r.get("extra") or {}).get("modExtensions")
+            if not isinstance(ext, list) or "RM_VentExtension" not in ext:
+                _fail("%s carries no RM_VentExtension (no weather table, no falter): %r" % (VENT, ext))
+
+
 # --------------------------------------------------------------------------- chain: weather
 
 @suite.chain("weather")
@@ -718,7 +746,11 @@ def settings_chain(t):
 
     # Settings whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
-    for field in ("vexxissAttacksIgniter", "condensateGardensEnabled"):
+    # CAULDRON_VENT_ENRICHMENT_HOOKS_1: ventsEnabled is worldgen (a new Cauldron map is needed to see it),
+    # ventFalterMessage is a Messages.Message the bridge cannot list, ventGardensEnabled only acts on a map whose
+    # biome roster names the flowers (a Cauldron-biome map) and takes days of ticks.
+    for field in ("vexxissAttacksIgniter", "condensateGardensEnabled", "ventsEnabled", "ventFalterMessage",
+                  "ventGardensEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
@@ -1302,6 +1334,185 @@ def fire_chain(t):
                     _unmeasured(t, "no Fire thing was standing during the OFF window")
                 if seen:
                     _fail("vexxissFireWardenEnabled OFF but the vexxiss still took a BeatFire job")
+    _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: vents
+
+def _vent_read(t, vid):
+    """(output multiplier, state word) from the vent's own inspect lines ('Vent output: 0.80x',
+    'Vent state: recovering, 12%'). Unreadable lines are UNMEASURED, never a number."""
+    _label, lines = _inspect(t, vid)
+    if not _live(t):
+        return None, None
+    txt = " | ".join(str(l) for l in lines)
+    m = re.search(r"Vent output:\s*([0-9.]+)x", txt)
+    s = re.search(r"Vent state:\s*([a-z]+)", txt)
+    if not m or not s:
+        _unmeasured(t, "the vent's inspect lines carry no 'Vent output' / 'Vent state': %r" % lines)
+    _STATE["vent_text"] = txt
+    return float(m.group(1)), s.group(1)
+
+
+def _transition_done(t):
+    r = t.bridge_call("jawa/site_state")
+    tr = (((r or {}).get("weather") or {}).get("transition"))
+    if tr is None or float(tr) < 0.999:
+        tr = _weather_transition_done(t)
+    return tr
+
+
+@suite.chain("vents")
+def vents_chain(t):
+    """CAULDRON_VENT_ENRICHMENT_HOOKS_1: the vent and what hangs on it. State reads only (inspect lines,
+    hediff severities, the vexxiss's job); the falter's hush is a number, never a sound or a screenshot."""
+    _prep(t, "vent")
+    x, z = t.anchor
+    ids = {}
+
+    def kill_pawns():
+        t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="Pawn")
+
+    def vent():
+        return _vent_read(t, ids["vent"])
+
+    def exposure_reading():
+        near = _spawn(t, "Colonist", x + 4, z, faction="player")
+        far = _spawn(t, "Colonist", x + 15, z + 15, faction="player")
+        for p in (near, far):
+            t.bridge_call("jawa/set_draft", pawnId=p, drafted=True)
+        _next_interval_jump(t)
+        t.wait_ticks(40)
+        rows = _rows(t, health=True)
+        sev = []
+        for p in (near, far):
+            h = _hediff(rows.get(p), HEDIFF)
+            sev.append(float((h or {}).get("severity") or 0))
+        kill_pawns()
+        return sev
+
+    def took_job(pid, polls=12):
+        for _ in range(polls):
+            t.wait_ticks(150)
+            if _jobs(t).get(pid) == DRINK_JOB:
+                return True
+        return False
+
+    def body():
+        with _comp(t, "vents_site_ready", poison=True):
+            if _live(t):
+                _lock_weather(t, "RM_ScatterDusk")
+                _ok(t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d,1" % (VENT, x, z)), "spawn_batch(vent)")
+                rows = _things(t, VENT, _rs(_rect(t)))
+                if not rows:
+                    _unmeasured(t, "the spawned %s is not on the map (spawn_batch refused a 2x2 natural building?)" % VENT)
+                ids["vent"] = rows[0]["id"]
+                out, st = vent()
+                _note(t, "fresh vent output / state", [out, st])
+        with _comp(t, "vent_weather_multiplier", toggle="ventWeatherEnabled"):
+            if _live(t):
+                o0, _s = vent()
+                if not 0.95 <= o0 <= 1.05:
+                    _fail("a vent under scatter-dusk reads output %.2fx, expected 1.00x" % o0)
+                _lock_weather(t, "RM_VapourBank")
+                t.wait_ticks(60)
+                o1, _s = vent()
+                _note(t, "vent output scatter-dusk / vapour bank", [o0, o1])
+                if not 0.7 <= o1 <= 0.9:
+                    _fail("a vent under vapour bank reads output %.2fx, expected 0.80x" % o1)
+                with _setting(t, "ventWeatherEnabled", False):
+                    o2, _s = vent()
+                if abs(o2 - 1.0) > 0.05:
+                    _fail("ventWeatherEnabled OFF but the vent still follows the weather (%.2fx under vapour bank)" % o2)
+        with _comp(t, "vent_falter_precedes_bloom"):
+            if _live(t):
+                _lock_weather(t, BLOOM)
+                t.wait_ticks(120)
+                o1, s1 = vent()
+                _note(t, "vent output / state just after the bloom is chosen", [o1, s1])
+                if s1 != "faltering" or o1 > 0.2:
+                    _fail("the weather turned to %s but the vent is not hushed (state %r, output %.2fx)" % (BLOOM, s1, o1))
+                tr = _transition_done(t)
+                if tr is None or float(tr) < 0.999:
+                    _unmeasured(t, "the bloom transition did not finish (factor %r)" % tr)
+                o2, s2 = vent()
+                _note(t, "vent output / state once the bloom has arrived", [o2, s2])
+                if s2 == "faltering" or not 2.2 <= o2 <= 2.8:
+                    _fail("the bloom has arrived but the vent reads %r at %.2fx (expected raised output, ~2.5x)" % (s2, o2))
+        with _comp(t, "vent_exposure_is_local", toggle="ventLocalExposureEnabled"):
+            if _live(t):
+                _lock_weather(t, BLOOM)
+                tr = _transition_done(t)
+                if tr is None or float(tr) < 0.999:
+                    _unmeasured(t, "the bloom is not at full strength (factor %r): no exposure tick will run" % tr)
+                near, far = exposure_reading()
+                _note(t, "metal load next to the vent / 21 cells away", [near, far])
+                if near <= 0 or far <= 0:
+                    _unmeasured(t, "an exposed colonist took no load at all (near %r, far %r): the tick may not have run" % (near, far))
+                if near < far * 1.2:
+                    _fail("metal load %.4f beside the vent vs %.4f far from it: the bloom is not strongest near vents" % (near, far))
+                with _setting(t, "ventLocalExposureEnabled", False):
+                    near2, far2 = exposure_reading()
+                _note(t, "OFF arm: near / far", [near2, far2])
+                if near2 <= 0 or far2 <= 0:
+                    _unmeasured(t, "OFF arm: an exposed colonist took no load (%r, %r)" % (near2, far2))
+                if abs(near2 - far2) > 0.1 * max(near2, far2):
+                    _fail("ventLocalExposureEnabled OFF but near %.4f vs far %.4f still differ" % (near2, far2))
+        with _comp(t, "vexxiss_drinks_vent", toggle="vexxissDrinksVentsEnabled"):
+            if _live(t):
+                _lock_weather(t, "RM_ScatterDusk")
+                t.wait_ticks(60)
+                ids["v1"] = _spawn(t, VEXXISS, x + 9, z)
+                _full(t, ids["v1"])
+                seen = took_job(ids["v1"])
+                _note(t, "wild vexxiss took %s" % DRINK_JOB, seen)
+                if not seen:
+                    _fail("a wild vexxiss 9 cells from a breathing vent never took %s in 1800 ticks (toggle ON)" % DRINK_JOB)
+                t.wait_ticks(300)
+                _o, st = vent()
+                if "drunk" not in _STATE.get("vent_text", "") and st != "silenced":
+                    _fail("the vexxiss drank but the vent shows no suppression: %r" % _STATE.get("vent_text"))
+                kill_pawns()
+                with _setting(t, "vexxissDrinksVentsEnabled", False):
+                    ids["v2"] = _spawn(t, VEXXISS, x + 9, z)
+                    _full(t, ids["v2"])
+                    seen_off = took_job(ids["v2"])
+                    kill_pawns()
+                _note(t, "OFF arm: took the drink job", seen_off)
+                if seen_off:
+                    _fail("vexxissDrinksVentsEnabled OFF but a vexxiss still took %s" % DRINK_JOB)
+        with _comp(t, "vent_silences_and_recovers"):
+            if _live(t):
+                with _setting(t, "ventSilenceDays", 0.05):          # 3000 ticks of silence
+                    pid = _spawn(t, VEXXISS, x + 9, z)
+                    silenced = False
+                    for _ in range(45):
+                        _wait(t, 1000)
+                        _full(t, pid)
+                        o, st = vent()
+                        if st == "silenced":
+                            silenced = True
+                            break
+                    _note(t, "vent silenced by a drinking vexxiss", [silenced, o, st])
+                    if not silenced:
+                        _fail("a wild vexxiss drank for 45000 ticks and the vent never fell silent")
+                    if o > 0.01:
+                        _fail("a silenced vent still reads output %.2fx" % o)
+                    kill_pawns()                                    # stop it drinking the recovery back down
+                recovering = None
+                for _ in range(10):
+                    _wait(t, 1000)
+                    o, st = vent()
+                    if st == "recovering":
+                        recovering = o
+                        break
+                if recovering is None:
+                    _fail("the silenced vent never began to recover within 10000 ticks (last %r at %.2fx)" % (st, o))
+                _wait(t, 3000)
+                o_b, st_b = vent()
+                _note(t, "recovery output first / 3000 ticks later", [recovering, o_b])
+                if not (0 < o_b < 0.9) or o_b <= recovering:
+                    _fail("the vent is not visibly recovering: %.3fx then %.3fx" % (recovering, o_b))
     _stable(t, body)
 
 

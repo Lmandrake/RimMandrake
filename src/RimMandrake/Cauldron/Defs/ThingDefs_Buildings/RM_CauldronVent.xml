@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CauldronVent     CAULDRON_VENT_ENRICHMENT_HOOKS_1
+
+  The Cauldron's ground vent: the thing the weather multipliers, the vent-local bloom exposure, the vexxiss's
+  vent-drinking and the vent-keyed flower rings all hang on. Shaped like vanilla SteamGeyser (a natural 2x2
+  non-edifice building) so plants cannot grow on it and pawns are not walled off. It holds STATE, not gas:
+  CAULDRON_MECHANICS_BUILD_1 part 3 still owns the flammable gas and the gas-tap scaffold. No heat, no hediff here.
+
+  Art: Textures/Things/Building/RM_CauldronVent.png is the artpipe job RM_CauldronVent (CAULDRON_BEDAZZLE_SITTING_1,
+  facts PASS). No owner ruling on it is recorded, so it is wired as-is and stays open to his review.
+
+  Numbers are INVENTED tuning: bloom 2.5x, vapour bank 0.8x, dewfall 0.6x, hush 0.1x.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_CauldronVent</defName>
+    <label>vent</label>
+    <description>A fissured throat in the ground ringed with bone-white mineral terracing laid down one exhale at a time. It breathes the forest's metal-laden gas in a slow, heavy rhythm. The breath thickens in a vent bloom, thins in vapour and dew, and goes silent just before a bloom arrives. A vexxiss will brace over one and drink until it falls quiet for days. Flowers ring a vent according to its temper.</description>
+    <thingClass>RimMandrake.Cauldron.RM_Building_CauldronVent</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_CauldronVent</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <uiIconScale>0.5</uiIconScale>
+    <altitudeLayer>Floor</altitudeLayer>
+    <rotatable>false</rotatable>
+    <destroyable>false</destroyable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <selectable>true</selectable>
+    <size>(2,2)</size>
+    <neverOverlapFloors>true</neverOverlapFloors>
+    <blockPlants>true</blockPlants>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_VentExtension">
+        <bloomWeather>RM_VentBloom</bloomWeather>
+        <weatherOutput>
+          <li><weather>RM_ScatterDusk</weather><output>1.0</output></li>
+          <li><weather>RM_VentBloom</weather><output>2.5</output></li>
+          <li><weather>RM_VapourBank</weather><output>0.8</output></li>
+          <li><weather>RM_Dewfall</weather><output>0.6</output></li>
+        </weatherOutput>
+        <defaultOutput>1.0</defaultOutput>
+        <falterOutput>0.1</falterOutput>
+        <recoverTicks>60000</recoverTicks>
+        <recentBlowoutTicks>600000</recentBlowoutTicks>
+        <suppressionNeeded>6000</suppressionNeeded>
+        <suppressionDecayPerDay>0.5</suppressionDecayPerDay>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

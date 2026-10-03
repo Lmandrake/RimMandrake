@@ -9,6 +9,8 @@ namespace RimMandrake.Cauldron
     {
         public static WeatherDef RM_VentBloom;
         public static HediffDef RM_VentMetalLoad;
+        public static ThingDef RM_CauldronVent;
+        public static JobDef RM_VexxissDrinkVent;
 
         static RM_CauldronDefOf()
         {
@@ -61,6 +63,8 @@ namespace RimMandrake.Cauldron
                 float amount = BaseSeverityPerInterval * RM_CauldronSettings.ventBloomExposureFactor;
                 amount *= Mathf.Max(1f - p.GetStatValue(StatDefOf.ToxicResistance), 0f);
                 amount *= Mathf.Max(1f - p.GetStatValue(StatDefOf.ToxicEnvironmentResistance), 0f);
+                // CAULDRON_VENT_ENRICHMENT_HOOKS_1: strongest beside a live vent; 1.0 on a map with no vents.
+                amount *= RM_MapComponent_CauldronVents.ExposureWeight(map, p.Position);
                 if (amount <= 0f) continue;
                 HealthUtility.AdjustSeverity(p, RM_CauldronDefOf.RM_VentMetalLoad, amount);
             }
