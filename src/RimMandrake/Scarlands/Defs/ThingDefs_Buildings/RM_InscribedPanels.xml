@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_OLD_TONGUE_1. One def per SET: analysisRequiredRange = set size, project requiredAnalyzed lists the def once. Art: artpipe done/RM_InscribedPanel_*. -->
+  <ThingDef Name="RM_InscribedPanelBase" Abstract="True">
+    <thingClass>RimMandrake.Scarlands.Building_InscribedPanel</thingClass>
+    <category>Building</category>
+    <selectable>true</selectable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <rotatable>false</rotatable>
+    <statBases><Flammability>0</Flammability></statBases>
+    <size>(1,1)</size>
+    <drawerType>MapMeshOnly</drawerType>
+    <building><claimable>false</claimable><deconstructible>false</deconstructible><isInert>true</isInert></building>
+    <tickerType>Never</tickerType>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_InscribedPanelBase">
+    <defName>RM_InscribedPanel_Hospice</defName>
+    <label>inscribed panel (hospice protocol)</label>
+    <description>A slate plate of dense angular script set against an old wall. Someone who reads the old tongue well enough can transcribe it; 2 panels of this kind make a set.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_InscribedPanel_Hospice</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Scarlands.CompProperties_InscribedPanel">
+        <analysisID>740100001</analysisID>
+        <analysisRequiredRange>2~2</analysisRequiredRange>
+        <canStudyInPlace>true</canStudyInPlace>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <showProgress>true</showProgress>
+        <analysisDurationHours>1.5</analysisDurationHours>
+        <chalkTexPath>Things/Building/RM_InscribedPanel_ChalkMark</chalkTexPath>
+        <progressedLetterLabel>Panel transcribed</progressedLetterLabel>
+        <progressedLetters><li>{PAWN_labelShort} has copied one panel of the hospice protocol set. More remain.</li></progressedLetters>
+        <progressedLetterDef>PositiveEvent</progressedLetterDef>
+        <completedLetterLabel>Old tongue: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} has transcribed the last panel of the hospice protocol set. Your researchers can now study {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Transcribe...</activateLabelString>
+        <activateDescString>Transcribe the inscribed panel. Needs Intellectual skill.</activateDescString>
+        <jobString>Transcribe inscribed panel</jobString>
+        <guiLabelString>Choose who should transcribe this</guiLabelString>
+        <inspectString>Can be transcribed by a skilled colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_InscribedPanelBase">
+    <defName>RM_InscribedPanel_Projector</defName>
+    <label>inscribed panel (projector calibration)</label>
+    <description>A slate plate of dense angular script set against an old wall. Someone who reads the old tongue well enough can transcribe it; 3 panels of this kind make a set.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_InscribedPanel_Projector</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Scarlands.CompProperties_InscribedPanel">
+        <analysisID>740100002</analysisID>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <canStudyInPlace>true</canStudyInPlace>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <showProgress>true</showProgress>
+        <analysisDurationHours>1.5</analysisDurationHours>
+        <chalkTexPath>Things/Building/RM_InscribedPanel_ChalkMark</chalkTexPath>
+        <progressedLetterLabel>Panel transcribed</progressedLetterLabel>
+        <progressedLetters><li>{PAWN_labelShort} has copied one panel of the projector calibration set. More remain.</li></progressedLetters>
+        <progressedLetterDef>PositiveEvent</progressedLetterDef>
+        <completedLetterLabel>Old tongue: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} has transcribed the last panel of the projector calibration set. Your researchers can now study {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Transcribe...</activateLabelString>
+        <activateDescString>Transcribe the inscribed panel. Needs Intellectual skill.</activateDescString>
+        <jobString>Transcribe inscribed panel</jobString>
+        <guiLabelString>Choose who should transcribe this</guiLabelString>
+        <inspectString>Can be transcribed by a skilled colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_InscribedPanelBase">
+    <defName>RM_InscribedPanel_Pool</defName>
+    <label>inscribed panel (pool phase)</label>
+    <description>A slate plate of dense angular script set against an old wall. Someone who reads the old tongue well enough can transcribe it; 3 panels of this kind make a set.</description>
+    <graphicData>
+      <texPath>Things/Building/RM_InscribedPanel_Pool</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Scarlands.CompProperties_InscribedPanel">
+        <analysisID>740100003</analysisID>
+        <analysisRequiredRange>3~3</analysisRequiredRange>
+        <canStudyInPlace>true</canStudyInPlace>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <showProgress>true</showProgress>
+        <analysisDurationHours>1.5</analysisDurationHours>
+        <chalkTexPath>Things/Building/RM_InscribedPanel_ChalkMark</chalkTexPath>
+        <progressedLetterLabel>Panel transcribed</progressedLetterLabel>
+        <progressedLetters><li>{PAWN_labelShort} has copied one panel of the pool phase set. More remain.</li></progressedLetters>
+        <progressedLetterDef>PositiveEvent</progressedLetterDef>
+        <completedLetterLabel>Old tongue: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>{PAWN_labelShort} has transcribed the last panel of the pool phase set. Your researchers can now study {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Transcribe...</activateLabelString>
+        <activateDescString>Transcribe the inscribed panel. Needs Intellectual skill.</activateDescString>
+        <jobString>Transcribe inscribed panel</jobString>
+        <guiLabelString>Choose who should transcribe this</guiLabelString>
+        <inspectString>Can be transcribed by a skilled colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

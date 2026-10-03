@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_OLD_TONGUE_1: the unlock flags. RM_OldTongue.* reads IsFinished. Consumers (hospice, projector screen, phase reader) are unbuilt and will set researchPrerequisite to these. -->
+  <ResearchProjectDef>
+    <defName>RM_OldTongue_Hospice</defName>
+    <label>hospice protocols</label>
+    <description>Old cradle-ward procedures read from wall panels: fewer cradle failures, oddities noted at diagnosis.\n\nTranscribe every panel of the set first.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <researchViewX>0</researchViewX>
+    <researchViewY>0</researchViewY>
+    <requiredAnalyzed><li>RM_InscribedPanel_Hospice</li></requiredAnalyzed>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_OldTongue_Projector</defName>
+    <label>projector calibration</label>
+    <description>The calibration tables for the old projector screen, read from its panels.\n\nTranscribe every panel of the set first.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <researchViewX>0</researchViewX>
+    <researchViewY>0</researchViewY>
+    <requiredAnalyzed><li>RM_InscribedPanel_Projector</li></requiredAnalyzed>
+  </ResearchProjectDef>
+  <ResearchProjectDef>
+    <defName>RM_OldTongue_Pool</defName>
+    <label>pool phase reading</label>
+    <description>The phase tables behind the pool phase reader, read from wall panels.\n\nTranscribe every panel of the set first.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <researchViewX>0</researchViewX>
+    <researchViewY>0</researchViewY>
+    <requiredAnalyzed><li>RM_InscribedPanel_Pool</li></requiredAnalyzed>
+  </ResearchProjectDef>
+</Defs>

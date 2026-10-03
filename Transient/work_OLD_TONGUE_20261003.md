@@ -1,0 +1,11 @@
+# WARSCAR_OLD_TONGUE_1 2026-10-03
+- started; claimed. Plan: panel defs (hospice x2, projector x3, pool x3, rest) + research projects + analysis comp; skill gate via Intellectual 8.
+- Built: panel defs (RM_InscribedPanel_Hospice 2 / Projector 3 / Pool 3), one def per SET (analysisRequiredRange = set size; project requiredAnalyzed lists the def once -> a set of 3 does NOT need 3 distinct defs, from reading AnalyzedThingsCompleted; live unverified). Verify-live: whether analysis consumes a panel (set destroyedOnAnalyzed=false; per-panel `read` flag blocks re-reading instead).
+- Skill gate: CompInscribedPanel.CanInteract override (Intellectual >= setting, default 8; 0 = off). Panels are Building, standable, placed on floor cells adjacent to AncientFortifiedWall by GenStep_InscribedPanels (order 530 guess), skipping kinds whose set is complete. Rings genstep / projector bases do not exist yet.
+- Chalk mark: overlay printed over base graphic (art RM_InscribedPanel_ChalkMark, copied from artpipe _artsrc with the 3 glyph pngs; art was already generated for this item, no new queue). Spec said "swap"; overlay chosen, mark art looked like a mark not a full panel (not eyeballed).
+- Unlock flags: ResearchProjectDefs RM_OldTongue_Hospice/Projector/Pool; C# RM_OldTongue.HospiceUnlocked / ProjectorCalibrated / PoolPhaseReaderUnlocked (IsFinished), Read(name) (panels done).
+- Sibling-location line is in the panel inspect string, not the research tooltip (tooltip is engine UI, skipped).
+- Settings: oldTongueEnabled, panels per map (3), reveal chance (0.8; = chance each placement attempt succeeds), skill gate (8).
+- NOT built: rest panels + cache/chassis reveal (need cache items; research-points API unchecked); Antiquities artifact / trade (RUT_Antiquities is campaign layer, not this mod); hospice/projector/pool effects (consumers unbuilt).
+- Research projects have researchViewX/Y 0,0 (tree layout placeholder).
+- Built OK via winbuild; validation.py static PASS; live criteria UNMEASURED.
