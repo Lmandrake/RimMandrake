@@ -81,20 +81,16 @@
     </elements>
   </RimMandrake.Stillsand.RM_PreciousCaveDef>
 
-  <!-- the lens grotto: the richest biosilica on the map. The grown-biosilica WALL
-       (a mineable) is owed art and is filed as a follow-up; until then the riches
-       lie as harvested biosilica on the grotto floor. -->
+  <!-- the lens grotto: the richest biosilica on the map, grown into the chamber wall itself
+       (STILLSAND_CAVE_AS_PLACE_1): a ring of mineable RM_GrownBiosilicaWall around the floor. -->
   <RimMandrake.Stillsand.RM_PreciousCaveDef>
     <defName>RM_PreciousCave_LensGrotto</defName>
     <label>lens grotto</label>
     <description>A geode of light-pipe glass: the richest biosilica on the map.</description>
     <weight>1.5</weight>
     <elements>
-      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
-        <thing>RM_Biosilica</thing>
-        <stackCount>12~25</stackCount>
-        <stacks>3~5</stacks>
-        <place>any</place>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_WallRing">
+        <wall>RM_GrownBiosilicaWall</wall>
       </li>
     </elements>
   </RimMandrake.Stillsand.RM_PreciousCaveDef>
@@ -130,8 +126,7 @@
   </RimMandrake.Stillsand.RM_PreciousCaveDef>
 
   <!-- nothing, taken: emptied. A mark and a cold hearth say by whom. The mark is
-       the Graffiti mod's scrawl when that mod is loaded (soft reference, no
-       cross-reference error without it); a proper tribal glyph is a follow-up. -->
+       the mod's own tribal glyph, RM_StillsandTribalMark, on the back wall. -->
   <RimMandrake.Stillsand.RM_PreciousCaveDef>
     <defName>RM_PreciousCave_Taken</defName>
     <label>nothing, taken</label>
@@ -149,10 +144,8 @@
         <stacks>4~6</stacks>
         <place>centre</place>
       </li>
-      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
-        <softThingDefs>
-          <li>RM_Graffiti_Vandal</li>
-        </softThingDefs>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_WallMark">
+        <mark>RM_StillsandTribalMark</mark>
         <place>back</place>
       </li>
     </elements>

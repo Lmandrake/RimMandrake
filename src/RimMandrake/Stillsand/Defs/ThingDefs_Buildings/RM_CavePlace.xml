@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_CavePlace.xml                    RimMandrake — STILLSAND_CAVE_AS_PLACE_1
+  The cave as a place: the grown-biosilica wall (lens grotto), the drip source, the tribal mark
+  (taken cave). Mechanism: Source/RM_CavePlace.cs.
+
+  PLACEHOLDER ART: the wall atlas and the glyph are procedurally drawn stand-ins; real jobs
+  (RM_GrownBiosilicaWall, RM_StillsandTribalMark) are queued in the artpipe.
+-->
+<Defs>
+
+  <ThingDef ParentName="RockBase">
+    <defName>RM_GrownBiosilicaWall</defName>
+    <label>grown biosilica</label>
+    <description>Light-pipe glass grown into the rock itself, a wall of clear lenses fused in stone. Mine it for biosilica.</description>
+    <graphicData>
+      <texPath>Things/Building/Natural/RM_GrownBiosilicaWall</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Custom2</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>700</MaxHitPoints>
+    </statBases>
+    <mineable>true</mineable>
+    <building>
+      <isResourceRock>true</isResourceRock>
+      <mineableThing>RM_Biosilica</mineableThing>
+      <mineableYield>10</mineableYield>
+      <mineableDropChance>1</mineableDropChance>
+      <veinMineable>false</veinMineable>
+      <mineableScatterCommonality>0</mineableScatterCommonality>
+    </building>
+  </ThingDef>
+
+  <!-- the one water sound: an invisible, unselectable source carrying vanilla's ambient sound comp -->
+  <ThingDef>
+    <defName>RM_CaveDripSource</defName>
+    <label>drip</label>
+    <description>Somewhere in the dark, water.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Ethereal</category>
+    <drawerType>None</drawerType>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Never</tickerType>
+    <altitudeLayer>Item</altitudeLayer>
+    <comps>
+      <li Class="CompProperties_AmbientSound">
+        <sound>RM_CaveDrip</sound>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- the taken cave's own tribal glyph: plain Filth, wall-attached. No Graffiti-mod dependency. -->
+  <ThingDef>
+    <defName>RM_StillsandTribalMark</defName>
+    <label>tribal glyph</label>
+    <description>A spiral and three dots, rubbed into the wall in ochre. Whoever emptied this cave signed it.</description>
+    <thingClass>Filth</thingClass>
+    <category>Filth</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>MapMeshOnly</drawerType>
+    <graphicData>
+      <texPath>Things/Filth/RM_StillsandTribalMark</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Transparent</shaderType>
+    </graphicData>
+    <filth>
+      <placementMask>
+        <li>Unnatural</li>
+      </placementMask>
+      <rainWashes>false</rainWashes>
+      <cleaningWorkToReduceThickness>1200</cleaningWorkToReduceThickness>
+      <canFilthAttach>false</canFilthAttach>
+    </filth>
+    <building>
+      <isEdifice>false</isEdifice>
+      <canPlaceOverWall>true</canPlaceOverWall>
+    </building>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <castEdgeShadows>false</castEdgeShadows>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+  </ThingDef>
+
+</Defs>

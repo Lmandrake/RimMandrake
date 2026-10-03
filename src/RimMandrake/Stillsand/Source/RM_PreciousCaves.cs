@@ -318,6 +318,11 @@ namespace RimMandrake.Stillsand
         public string rowDefName;
         public IntVec3 lookCell = IntVec3.Invalid;
 
+        // STILLSAND_CAVE_AS_PLACE_1: the cave floor, kept (it used to be mapgen-only) so the
+        // preservation register can tell a cave cell later; and the things it has frozen.
+        public List<IntVec3> caveCells = new List<IntVec3>();
+        public List<Thing> frozenThings = new List<Thing>();
+
         // Mapgen-only hand-off from the carve step to the contents step.
         [Unsaved] public List<IntVec3> chamberFloor = new List<IntVec3>();
         [Unsaved] public IntVec3 chamberCentre = IntVec3.Invalid;
@@ -344,10 +349,22 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref compassWord, "compassWord");
             Scribe_Values.Look(ref rowDefName, "rowDefName");
             Scribe_Values.Look(ref lookCell, "lookCell", IntVec3.Invalid);
+            Scribe_Collections.Look(ref caveCells, "caveCells", LookMode.Value);
+            Scribe_Collections.Look(ref frozenThings, "frozenThings", LookMode.Reference);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                caveCells = caveCells ?? new List<IntVec3>();
+                frozenThings = frozenThings ?? new List<Thing>();
+                frozenThings.RemoveAll(t => t == null);
+            }
         }
 
         public override void MapComponentTick()
         {
+            if (hasCave && Find.TickManager.TicksGame % RM_CavePreservation.ScanInterval == 0)
+            {
+                RM_CavePreservation.Scan(this);
+            }
             if (letterSent || !hasOutcrop || Find.TickManager.TicksGame % 120 != 0 || !map.IsPlayerHome)
             {
                 return;
@@ -826,6 +843,7 @@ namespace RimMandrake.Stillsand
             {
                 return;
             }
+            comp.caveCells = new List<IntVec3>(comp.chamberFloor);
             List<RM_PreciousCaveDef> rows = DefDatabase<RM_PreciousCaveDef>.AllDefsListForReading
                 .Where(RM_PreciousCaveSettings.RowEnabled).ToList();
             List<double> weights = rows.Select(d => (double)Math.Max(0f, RM_PreciousCaveSettings.RowWeight(d))).ToList();
@@ -834,6 +852,7 @@ namespace RimMandrake.Stillsand
             if (pick < 0)
             {
                 Log.Message("[Stillsand] precious cave roll: no row enabled with weight > 0 [" + table + "]; the cave stays bare.");
+                RM_CavePlaceUtil.PlaceDrip(map, comp);
                 return;
             }
             RM_PreciousCaveDef row = rows[pick];
@@ -867,6 +886,7 @@ namespace RimMandrake.Stillsand
             {
                 RM_PreciousCaveContext.Current = null;
             }
+            RM_CavePlaceUtil.PlaceDrip(map, comp);
         }
     }
 }

@@ -73,7 +73,9 @@ SITE_TEMP = 15.0               # tile temperature: cool enough that the home col
 SETTINGS = {
     NS + "RM_StillsandSettings": {"zuurrikEnabled": True, "zuurrikBloodThreshold": 8},
     NS + "RM_PreciousCaveSettings": {"genStepEnabled": True, "yardangShapingEnabled": True,
-                                     "torEnabled": True, "torChance": 0.25},
+                                     "torEnabled": True, "torChance": 0.25,
+                                     "preservationEnabled": True, "dripEnabled": True,
+                                     "wallRingEnabled": True, "tribalMarkEnabled": True},
     NS + "RM_SkeletonSettings": {"skeletonPlacementEnabled": True, "maxSkeletonsPerMap": 2,
                                  "corpseToSkeletonEnabled": True, "corpseToSkeletonDays": 15.0,
                                  "boneHarpEnabled": True, "horizonWarningsEnabled": True,
@@ -728,6 +730,43 @@ def defs_chain(t):
                 _fail("sun lance def(s) did not resolve live: %s" % r.get("notFound"))
             if not _same(_get_setting(t, "sunLanceEnabled"), True):
                 _fail("sunLanceEnabled is not at its shipped default True")
+
+    with _comp(t, "cave_place_defs"):
+        # STILLSAND_CAVE_AS_PLACE_1: wall, drip source, tribal mark, drip sound must resolve; the drip
+        # clip must exist on disk; the grotto must use the wall ring (no floor biosilica stacks) and
+        # the taken row must carry its own mark, not the Graffiti soft reference.
+        need = ["ThingDef/RM_GrownBiosilicaWall", "ThingDef/RM_CaveDripSource",
+                "ThingDef/RM_StillsandTribalMark", "SoundDef/RM_CaveDrip"]
+        for d in need:
+            if d not in SHIPPED:
+                _fail("%s is not parsed from this mod's Defs/ (parser or def missing)" % d)
+        if not os.path.isfile(os.path.join(HERE, "Sounds", "RM", "CaveDrip.wav")):
+            _fail("Sounds/RM/CaveDrip.wav (the drip clip) is missing")
+        for tex in ("Textures/Things/Building/Natural/RM_GrownBiosilicaWall.png",
+                    "Textures/Things/Filth/RM_StillsandTribalMark.png"):
+            if not os.path.isfile(os.path.join(HERE, *tex.split("/"))):
+                _fail("%s is missing" % tex)
+        import re as _re2
+        cx = open(os.path.join(HERE, "Defs", "MapGeneration", "RM_PreciousCaves.xml"), encoding="utf-8").read()
+        grotto = cx.split("RM_PreciousCave_LensGrotto</defName>")[1].split("</RimMandrake.Stillsand.RM_PreciousCaveDef>")[0]
+        if "RM_CaveElement_WallRing" not in grotto or "<thing>RM_Biosilica</thing>" in grotto:
+            _fail("lens grotto must be a wall ring with no loose biosilica floor stacks")
+        taken = cx.split("RM_PreciousCave_Taken</defName>")[1].split("</RimMandrake.Stillsand.RM_PreciousCaveDef>")[0]
+        if "RM_StillsandTribalMark" not in taken or "RM_Graffiti_Vandal" in taken:
+            _fail("taken cave must carry RM_StillsandTribalMark and no Graffiti soft reference")
+        wall = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_CavePlace.xml"), encoding="utf-8").read()
+        if "<mineableThing>RM_Biosilica</mineableThing>" not in wall:
+            _fail("RM_GrownBiosilicaWall does not yield RM_Biosilica")
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(need), fields="defName", limit=20)
+            _ok(r, "get_defs(cave place)")
+            if r.get("notFound"):
+                _fail("cave place def(s) did not resolve live: %s" % r.get("notFound"))
+            for f in ("preservationEnabled", "dripEnabled", "wallRingEnabled", "tribalMarkEnabled"):
+                if not _same(_get_setting(t, f), True):
+                    _fail("%s is not at its shipped default True" % f)
+            # Offline-proven only: a corpse on a roofed cave cell not rotting needs a generated cave
+            # (site_chain regenerates one) and is NOT exercised here; criteria 1-2 await a live pass.
 
     with _comp(t, "custom_defs_resolve"):
         if _live(t):
