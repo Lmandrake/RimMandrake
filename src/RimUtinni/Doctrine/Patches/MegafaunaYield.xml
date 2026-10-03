@@ -4399,7 +4399,7 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>RimMandrake - SW Sea Beasts</li></mods>
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- RSW_ColoClawFish MeatAmount: bodySize 3.00, base 420, yields 1260 -->

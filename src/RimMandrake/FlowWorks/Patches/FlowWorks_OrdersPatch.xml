@@ -3,7 +3,7 @@
 
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>Ludeon.RimWorld</li>
+      <li>Core</li>
     </mods>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
