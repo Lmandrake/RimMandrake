@@ -749,6 +749,29 @@ def biome_roster(t):
                 _fail("the biome lacks modExtensions %s (have %s)" % (absent, blob[:8]))
 
 
+    with _comp(t, "crown_sound_and_heat_kind", independent=True):
+        # FEVERWOOD_CROWN_SOUND_HEAT_1: the crown has an ambient bed for the sentinel's silence to cut, and the
+        # biome declares heat kind `ambient`. Source half first (never live-dependent): the SoundDef is declared
+        # in the biome's soundsAmbient and its clips are named. get_defs flattens a modExtension to its FIELDS
+        # (class name absent), so the extension is recognised by `heatKind` / its value `ambient`.
+        ambient = [li.text for li in (_BIOME_EL.findall("soundsAmbient/li") if _BIOME_EL is not None else [])]
+        if ambient != ["RM_FeverWood_CrownHum"]:
+            _fail("RM_FeverWood soundsAmbient in source is %r, expected ['RM_FeverWood_CrownHum']" % (ambient,))
+        if "RM_SunHeatExtension" not in EXT_CLASSES:
+            _fail("RM_FeverWood source carries no RM_SunHeatExtension: %s" % EXT_CLASSES)
+        rows, missing = _get_defs(t, ["SoundDef/RM_FeverWood_CrownHum"])
+        if _live(t) and (missing or not rows):
+            _fail("SoundDef RM_FeverWood_CrownHum not loaded: %r" % (missing,))
+        brows, bmissing = _get_defs(t, ["BiomeDef/%s" % BIOME], fields="modExtensions", deep=True)
+        if _live(t):
+            ext = _fields_of(brows, BIOME).get("modExtensions")
+            if ext in (None, "(no such field)"):
+                _unmeasured(t, "get_defs cannot read modExtensions (got %r)" % (ext,))
+            blob = list(_flat(ext))
+            if not any("SunHeat" in x or x == "heatKind" for x in blob) or "ambient" not in [str(x).lower() for x in blob]:
+                _fail("no RM_SunHeatExtension with heatKind ambient among the biome's modExtensions: %s" % blob[:12])
+
+
 @suite.chain("registrations")
 def registrations(t):
     """Everything this mod hooks into somebody else's def by PATCH. A patch that matches nothing logs nothing,

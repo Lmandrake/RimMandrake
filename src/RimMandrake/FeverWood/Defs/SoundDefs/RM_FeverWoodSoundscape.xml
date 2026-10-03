@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FEVERWOOD_CROWN_SOUND_HEAT_1 — "the crown hums with work".
+
+  RM_FeverWood_CrownHum is the biome's ambient bed (wired through BiomeDef.soundsAmbient ->
+  AmbientSoundManager, vanilla mechanism, no C#). Sheet the_fever_wood.md section 9: the crown is
+  busy (taps, herds, boardwalk steps, steam, birds) and the ground is the quietest wet place on
+  the planet. RM_MapComponent_SilenceCue ends every sustainer whose def is in the biome's
+  soundsAmbient while a sentinel is up (section 6k: "that silence is the loudest warning"), so this
+  bed is the thing the silence cuts.
+
+  NO new audio asset: both layers reuse clips Core already ships (Ambient_DayInsects_Jungle's
+  `Ambience/JungleInsects_Day_1a` as the working hum, Ambient_NightInsects_Jungle's
+  `Ambience/Jungle Ambience Night B` pitched up and quiet as the high birds-and-steam layer).
+  A later audio pass swaps clipPaths here without touching anything else.
+  The volumeRange values are INVENTED first values for owner-watched tuning.
+-->
+<Defs>
+
+  <SoundDef>
+    <defName>RM_FeverWood_CrownHum</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <name>Work</name>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/JungleInsects_Day_1a</clipPath>
+          </li>
+        </grains>
+        <volumeRange>7~7</volumeRange>
+        <pitchRange>0.9~1.0</pitchRange>
+        <sustainAttack>4</sustainAttack>
+        <sustainRelease>4</sustainRelease>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_AmbientVolume" />
+            <outParam Class="SoundParamTarget_Volume" />
+          </li>
+        </paramMappings>
+        <randomStartPoint>true</randomStartPoint>
+      </li>
+      <li>
+        <name>Canopy</name>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/Jungle Ambience Night B</clipPath>
+          </li>
+        </grains>
+        <volumeRange>25~25</volumeRange>
+        <pitchRange>1.15~1.25</pitchRange>
+        <sustainAttack>4</sustainAttack>
+        <sustainRelease>4</sustainRelease>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_AmbientVolume" />
+            <outParam Class="SoundParamTarget_Volume" />
+          </li>
+        </paramMappings>
+        <randomStartPoint>true</randomStartPoint>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>
