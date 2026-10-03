@@ -50,7 +50,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
 
-PLAYER_LOG = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Player.log"
+from game_paths import PLAYER_LOG  # noqa: E402
 TRANSIENT = os.path.join(ROOT, "Transient")
 RESULTS = os.path.join(TRANSIENT, "modcheck", "live_queue_results.jsonl")
 
