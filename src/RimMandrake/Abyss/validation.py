@@ -430,6 +430,14 @@ try:
                 r = t.bridge_call("jawa/get_defs", defs=d)
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+        # Flight by STATE READ (jawa/pawn_flight report), never a screenshot: a spawned krizzak can ever fly.
+        with t.component("krizzak_can_fly", beyond_toggle=True):
+            s = t.bridge_call("jawa/spawn_pawn", kindDef="RM_Krizzak", x=15, z=15, faction="none", count=1)
+            pid = (((s or {}).get("pawns") or [{}])[0]).get("id")
+            r = t.bridge_call("jawa/pawn_flight", action="report", pawn=pid) if pid else None
+            rows = (r or {}).get("pawns") or []
+            if t._guard() and (not rows or rows[0].get("canEverFly") is not True):
+                raise ExpectationFailed("RM_Krizzak canEverFly not True: spawn=%r flight=%r" % (s, rows[:1]))
 
     @suite.chain("predators_defs_resolve")
     def predators_defs_resolve(t):
