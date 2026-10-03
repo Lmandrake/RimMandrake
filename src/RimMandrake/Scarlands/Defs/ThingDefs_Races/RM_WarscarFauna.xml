@@ -95,7 +95,7 @@
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
       <lifeExpectancy>28</lifeExpectancy>
-      <trainability>Simple</trainability>
+      <trainability>None</trainability>
       <roamMtbDays>4</roamMtbDays>
       <litterSizeCurve>
         <points>
@@ -355,7 +355,7 @@
       <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
-      <soundEating>Warg_Eat</soundEating>
+      <soundEating>PredatorLarge_Eat</soundEating>
     </race>
     <tradeTags>
       <li>AnimalExotic</li>

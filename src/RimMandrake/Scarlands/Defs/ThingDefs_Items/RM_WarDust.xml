@@ -21,7 +21,7 @@
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
-    <soundInteract>Chemfuel_Drop</soundInteract>
-    <soundDrop>Chemfuel_Drop</soundDrop>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
   </ThingDef>
 </Defs>
