@@ -282,6 +282,9 @@ def _fail(msg):
     raise ExpectationFailed(msg)
 
 
+_UTINNI_FW_PATCH = None     # the selftest points this at a synthetic campaign patch file
+
+
 def _unmeasured(t, why):
     """Stop this component and record UNMEASURED with `why` (never a pass)."""
     t._why = why
@@ -610,7 +613,9 @@ def source_guards(t):
     with _comp(t, "campaign_patches_and_free_def_tier_leaks_closed", independent=True):
         # FEVERWOOD_TIER_LEAKS_FIX_1. UNMEASURED live: offline source read only.
         if t.session is not None:
-            utp = os.path.join(_HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "WildAnimals_FeverWood.xml")
+            utp = _UTINNI_FW_PATCH or os.path.join(_HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "WildAnimals_FeverWood.xml")
+            if not os.path.isfile(utp):     # the selftest runs on a temp copy of the mod folder with no repo beside it
+                _unmeasured(t, "the campaign patch file is not beside this mod folder (%s)" % utp)
             txt = open(utp, encoding="utf-8").read()
             if "RM_FeverWood" not in txt:
                 _fail("sanity probe: campaign roster patch does not mention RM_FeverWood: parse failure")

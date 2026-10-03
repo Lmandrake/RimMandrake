@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FOOTPRINT_TRACK_GRID_1: the Stillsand's sand takes prints on the shared track grid
+  (CreatureBehaviors' RM_MapComponent_TrackGrid). XML only; the grid does the rest.
+
+  Sand is vanilla and RM_DeepSand is FlowWorks' (also used by the Long Shade), so the extension
+  carries a biome filter: only RM_Stillsand maps record. Another biome that wants prints on the same
+  terrain adds its OWN extension with its own biomes; the grid takes the first that matches the map.
+
+  Invisible walkers (a submerged sand swimmer: RM_SandSubmerged is HediffComp_Invisibility) are
+  recorded and flagged, and draw a wake trough instead of feet. The trough sprite is the shared drag
+  placeholder until wake art exists (STILLSAND_SAND_SWIM_REMAINDER_1 wake records).
+
+  The eraser (a cell whose drift depth changes past a threshold clears) belongs to the dunes engine
+  and is not wired here: no prints are erased on the Stillsand until it is.
+
+  Each target is guarded with a Conditional on its own existence, then on whether it already has a
+  modExtensions list (an Add of a second <modExtensions> node would be silently lost).
+-->
+<Patch>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/TerrainDef[defName="Sand"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/TerrainDef[defName="Sand"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
+              <biomes><li>RM_Stillsand</li></biomes>
+              <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/TerrainDef[defName="Sand"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
+                <biomes><li>RM_Stillsand</li></biomes>
+                <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/TerrainDef[defName="RM_DeepSand"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/TerrainDef[defName="RM_DeepSand"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
+              <biomes><li>RM_Stillsand</li></biomes>
+              <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationConditional">
+          <xpath>Defs/TerrainDef[defName="RM_DeepSand"]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>Defs/TerrainDef[defName="RM_DeepSand"]</xpath>
+            <value>
+              <modExtensions>
+                <li Class="RimMandrake.CreatureBehaviors.RM_TrackSurfaceExtension">
+                  <biomes><li>RM_Stillsand</li></biomes>
+                  <invisibleTexPath>Things/Tracks/RM_TrackDrag</invisibleTexPath>
+                </li>
+              </modExtensions>
+            </value>
+          </match>
+        </nomatch>
+      </li>
+    </operations>
+  </Operation>
+</Patch>

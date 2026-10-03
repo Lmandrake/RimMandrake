@@ -84,6 +84,36 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                     "Classify grew a visibility parameter: " + string.Join(",", names));
             });
 
+            Case("invisible flag: carried, counted, does not change tier, survives save/load", () =>
+            {
+                var p = new RM_TrackPool(50, 50, 100);
+                ushort hidden = RM_TrackPool.PackStyle(3, true);
+                ushort seen = RM_TrackPool.PackStyle(3, false);
+                p.Write(10, 1, SmallAnimal, hidden);
+                p.Write(11, 2, Human, hidden);
+                p.Write(12, 3, Human, seen);
+                Check(p.TryGet(10, out RM_TrackRecord r) && r.Invisible && r.StyleIndex == 3, "flag/index not unpacked");
+                Check(p.TryGet(12, out r) && !r.Invisible && r.StyleIndex == 3, "seen print flagged");
+                Check(p.InvisibleCount == 2 && p.CountInvisible() == 2, "invisible count " + p.InvisibleCount + "/" + p.CountInvisible());
+                Check(RM_TrackPool.TierOf(SmallAnimal) == 0, "flag must not touch tier bits");
+                p.Write(11, 4, Human, seen);       // overwrite a flagged record with a seen one
+                Check(p.InvisibleCount == 1 && p.CountInvisible() == 1, "overwrite did not unflag");
+                p.Clear(10);
+                Check(p.InvisibleCount == 0 && p.CountInvisible() == 0, "clear did not unflag");
+                p.Write(13, 5, Human, hidden);
+                byte[] a = p.ToBytes();
+                RM_TrackPool q = RM_TrackPool.FromBytes(a, 50, 50, 0, out string err);
+                Check(q != null && q.InvisibleCount == 1 && q.TryGet(13, out r) && r.Invisible, "flag lost on load: " + err);
+                // Fill past the cap with flagged small animals: the incremental count must track evictions.
+                var e = new RM_TrackPool(100, 100, 50);
+                for (int i = 0; i < 500; i++) e.Write(i, i, SmallAnimal, RM_TrackPool.PackStyle(0, i % 2 == 0));
+                Check(e.InvisibleCount == e.CountInvisible(), "count drifted under eviction: " + e.InvisibleCount + " vs " + e.CountInvisible());
+                e.Resize(20);
+                Check(e.InvisibleCount == e.CountInvisible(), "count drifted on resize");
+                e.ClearAll();
+                Check(e.InvisibleCount == 0, "ClearAll left a count");
+            });
+
             Case("criterion 1: 7,000 steps on distinct cells leave exactly the cap (6,000)", () =>
             {
                 var pool = new RM_TrackPool(200, 200, RM_TrackPool.DefaultCapacity);

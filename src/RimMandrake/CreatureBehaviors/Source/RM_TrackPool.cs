@@ -44,12 +44,25 @@ namespace RimMandrake.CreatureBehaviors
         public bool Drag => (bits & 0x80) != 0;
         /// <summary>Compass degrees the walker was heading (0 = north, 90 = east).</summary>
         public float Angle => Direction * 45f;
+        /// <summary>The walker was invisible (HediffComp_Invisibility) when it laid this print.
+        /// Carried in the style's top bit, so the save format is unchanged.</summary>
+        public bool Invisible => (style & RM_TrackPool.InvisibleFlag) != 0;
+        /// <summary>The style table index with the invisible flag masked off.</summary>
+        public int StyleIndex => style & RM_TrackPool.StyleMask;
     }
 
     public sealed class RM_TrackPool
     {
         public const int DefaultCapacity = 6000;
         public const float LargeBodySize = 1.5f;
+        /// <summary>Top bit of a record's style: laid by an invisible walker. Never affects eviction.</summary>
+        public const ushort InvisibleFlag = 0x8000;
+        public const ushort StyleMask = 0x7FFF;
+
+        public static ushort PackStyle(int styleIndex, bool invisible)
+        {
+            return (ushort)((styleIndex & StyleMask) | (invisible ? InvisibleFlag : 0));
+        }
         private const int FormatVersion = 1;
         private const int TierCount = 3;
 
@@ -67,6 +80,7 @@ namespace RimMandrake.CreatureBehaviors
         private int[] freeSlots;
         private int freeCount;
         private int count;
+        private int invisibleCount;
         private long nextSeq;
 
         // Per tier, (slot, gen) packed into a long, oldest first. Overwrites and
@@ -89,6 +103,8 @@ namespace RimMandrake.CreatureBehaviors
         public int Height => height;
         public int Capacity => capacity;
         public int Count => count;
+        /// <summary>Live records flagged invisible, kept incrementally (CountInvisible is the scan that checks it).</summary>
+        public int InvisibleCount => invisibleCount;
 
         /// <summary>Total queued eviction entries, stale ones included. Bounded; the selftest reads it.</summary>
         public int QueuedEntries
@@ -178,6 +194,17 @@ namespace RimMandrake.CreatureBehaviors
             return n;
         }
 
+        public int CountInvisible()
+        {
+            int n = 0;
+            for (int i = 0; i < cellToSlot.Length; i++)
+            {
+                int s = cellToSlot[i];
+                if (s >= 0 && (slotStyle[s] & InvisibleFlag) != 0) n++;
+            }
+            return n;
+        }
+
         // ── writes ───────────────────────────────────────────────────────
 
         /// <summary>Lay a print. Returns the cell index whose print was evicted to make room, or -1.</summary>
@@ -193,10 +220,15 @@ namespace RimMandrake.CreatureBehaviors
                 slotCell[s] = cellIndex;
                 count++;
             }
+            else if ((slotStyle[s] & InvisibleFlag) != 0)
+            {
+                invisibleCount--;   // overwriting a flagged record
+            }
             slotGen[s]++;
             slotTick[s] = tick;
             slotBits[s] = bits;
             slotStyle[s] = style;
+            if ((style & InvisibleFlag) != 0) invisibleCount++;
             slotSeq[s] = nextSeq++;
             tiers[TierOf(bits)].Enqueue(Pack(s, slotGen[s]));
             CompactIfBloated();
@@ -387,6 +419,7 @@ namespace RimMandrake.CreatureBehaviors
             slotGen = new int[cap];
             freeSlots = new int[cap];
             freeCount = cap;
+            invisibleCount = 0;
             // Hand out low slots first.
             for (int i = 0; i < cap; i++) freeSlots[i] = cap - 1 - i;
             count = 0;
@@ -397,6 +430,8 @@ namespace RimMandrake.CreatureBehaviors
 
         private void Free(int s)
         {
+            if ((slotStyle[s] & InvisibleFlag) != 0) invisibleCount--;
+            slotStyle[s] = 0;
             cellToSlot[slotCell[s]] = -1;
             slotGen[s]++;
             freeSlots[freeCount++] = s;

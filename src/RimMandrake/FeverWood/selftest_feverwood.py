@@ -477,6 +477,13 @@ def guards_with(extra_files):
         for fn, txt in extra_files.items():
             with open(os.path.join(mod, "Patches", fn), "w") as fh:
                 fh.write(txt)
+        os.makedirs(os.path.join(mod, "Defs", "BiomeDefs"))
+        with open(os.path.join(mod, "Defs", "BiomeDefs", "RM_FeverWood.xml"), "w") as fh:
+            fh.write("<Defs><BiomeDef><defName>RM_FeverWood</defName><preventGenSteps><li>ScatterShrines</li></preventGenSteps></BiomeDef></Defs>")
+        utp = os.path.join(tmp, "WildAnimals_FeverWood.xml")
+        with open(utp, "w") as fh:
+            fh.write("<Patch><!-- RM_FeverWood roster --></Patch>")
+        V._UTINNI_FW_PATCH = utp
         V._HERE, V._PATCH_DIR = mod, os.path.join(mod, "Patches")
         game = FWGame()
         s = FastSession(transport=MockTransport(game), strict=False)
@@ -487,6 +494,7 @@ def guards_with(extra_files):
         return dict(("%s.%s" % (ch["name"], c["name"]), c["verdict"]) for ch in res["chains"] for c in ch["components"])
     finally:
         V._HERE, V._PATCH_DIR = saved
+        V._UTINNI_FW_PATCH = None
         shutil.rmtree(tmp, ignore_errors=True)
 
 
