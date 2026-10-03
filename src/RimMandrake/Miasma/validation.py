@@ -120,7 +120,7 @@ def static_checks():
     for root, _d, fs in os.walk(os.path.join(HERE, "Defs")):
         for f in fs:
             t = open(os.path.join(root, f), encoding="utf-8").read()
-            for old in ("RUT_FeverSwarm", "RUT_Karrobel", "RUT_DeltaLoam"):
+            for old in ("RUT_" + n for n in ("FeverSwarm", "Karrobel", "DeltaLoam")):
                 if old in t:
                     bad.append("%s still names %s" % (f, old))
     if 'MayRequire="mandrake.rut.patches"' in biome:
