@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_PILGRIM_CAMPS_1: the pilgrim's journal. Reading it once moves the Scarlands lore ladder one
+     rung (RUT_PilgrimJournals.Read); the letter quotes pages[n - 1] for the rung it reached. Pages are
+     warscar_bedazzle_cast_2026-09-30.md section 6B, verbatim (ruled final by card 2026-09-30).
+     Graphic is a PLACEHOLDER (vanilla novel). -->
+<Defs>
+  <ThingDef>
+    <defName>RUT_PilgrimJournal</defName>
+    <label>pilgrim's journal</label>
+    <description>A small hand-bound notebook, sand in the spine, written in by someone who walked out across the Scarlands and did not walk back. Most of it is water-stained past reading. The last legible page is not.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <useHitPoints>true</useHitPoints>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <stackLimit>1</stackLimit>
+    <tradeability>None</tradeability>
+    <graphicData>
+      <texPath>Things/Item/Book/Novel/Novel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.7</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.3</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <MarketValue>10</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_Forbiddable" />
+      <li Class="RimMandrake.Utinni.ScarlandsLadder.CompProperties_RUT_PilgrimJournal" />
+      <li Class="CompProperties_Usable">
+        <useJob>UseItem</useJob>
+        <useLabel>Read {0_label}</useLabel>
+        <useDuration>600</useDuration>
+      </li>
+      <li Class="CompProperties_UseEffect">
+        <compClass>RimMandrake.Utinni.ScarlandsLadder.CompUseEffect_RUT_ReadPilgrimJournal</compClass>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.ScarlandsLadder.RUT_PilgrimJournalExtension">
+        <pages>
+          <li>Day six. The line faces away from us. We came in from behind it, the way its builders must have. It is like walking into someone's back.</li>
+          <li>The tall machines crossed our fire at dusk and did not look at us. They looked at the ground. I have started looking at it too.</li>
+          <li>Every kneeling thing out here faces the same way. I turned my bedroll to match. I don't know why. It was easier to sleep.</li>
+          <li>The bands in the cut are too even. Grey, black, grey, ochre, grey. Somebody measured this. I wonder if they knew it would still be here.</li>
+          <li>I can see the spires from here. I thought I would want to go closer. I want to sit down. I am going to sit down and face them.</li>
+        </pages>
+      </li>
+    </modExtensions>
+  </ThingDef>
+</Defs>

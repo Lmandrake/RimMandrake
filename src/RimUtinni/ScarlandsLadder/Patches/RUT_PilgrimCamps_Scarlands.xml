@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_PILGRIM_CAMPS_1: hang the camp genstep on RUT_Scarlands (UtinniPatches). Conditional so this
+     mod loads clean without UtinniPatches (a plain Add on a missing node logs a patch failure). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RUT_Scarlands"]/extraGenSteps</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/BiomeDef[defName="RUT_Scarlands"]/extraGenSteps</xpath>
+      <value>
+        <li>RUT_PilgrimCamps</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>

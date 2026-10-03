@@ -28,3 +28,18 @@ as written by card 2026-09-30; build the texts from that section, never from an 
 
 ## ruling (card 2026-09-30)
 Cast bible section 6B text is ruled final (accepted as written, decision taken by question card 2026-09-30) and is the build source; ship verbatim, not as placeholders. Source: design/Jawa/worldbuilding/biomes/warscar_bedazzle_cast_2026-09-30.md.
+
+## built (belt r21, 2026-10-03)
+
+- Lives in `src/RimUtinni/ScarlandsLadder` (it already owns the ladder; now has an assembly,
+  `Source/PilgrimCamps.cs`, referencing LoreStages). Spec 2: `RUT_PilgrimJournal` (CompUsable read,
+  600 ticks, once per journal) calls `AdvanceStage("Scarlands")`; the letter quotes the 6B journal page
+  for the rung reached; past rung 5 a read says nothing new. Spec 3: the five description rungs ship the
+  6B text verbatim (static check compares them to the bible). The two settleWarning rungs remain
+  PLACEHOLDER — no authored text exists for them. Spec 1 (map half): `GenStep_RUT_PilgrimCamps` patched
+  into `RUT_Scarlands` extraGenSteps: cold campfire, bedroll, the pilgrim's dessicated body (stays), the
+  journal. Spec 5 holds. Spec 6: settings `campsEnabled`, `campsPerMap` (0-3), `journalsAdvanceLadder`.
+- First script `validation.py` (chains pilgrim_journals, pilgrim_camps via `RUT_PilgrimJournals`
+  proofs). Placeholder vanilla novel graphic.
+- Split out: `WARSCAR_PILGRIM_CAMP_SITES_1` (world sites at authored locations, needs the tiles) and
+  `WARSCAR_PILGRIM_JOURNAL_ANTIQUITY_1` (spec 4, Reading Station route).
