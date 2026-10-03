@@ -55,7 +55,7 @@
     <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/label</xpath>
     <match Class="PatchOperationReplace">
       <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/label</xpath>
-      <value><label>the Propane Lakes</label></value>
+      <value><label>the Rimefall</label></value>
     </match>
   </Operation>   <!-- was "propane lakes" -->
 
