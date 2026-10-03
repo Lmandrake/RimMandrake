@@ -1620,7 +1620,7 @@ def vhaulk_departs(t):
                         gone = True
                         break
             letters = (t.bridge_call("jawa/letter_list") or {}).get("letters") or []
-            labels = [l.get("label") for l in letters]
+            labels = [(l.get("label") or {}).get("RawText") if isinstance(l.get("label"), dict) else l.get("label") for l in letters]
             _note(t, "after the wait", {"gone": gone, "letters_before": before, "labels": labels[-6:]})
             if not gone:
                 _fail("the vhaulk was still on the map after 42000 ticks with the stay factor at its floor "
