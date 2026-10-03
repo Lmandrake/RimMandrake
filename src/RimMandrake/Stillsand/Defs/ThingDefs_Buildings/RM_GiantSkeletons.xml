@@ -7,9 +7,9 @@
   Each skeleton is TWO buildings: the ribcage (this file's RM_*Skeleton) and the skull
   (RM_GiantSkull), laid beside it by RM_SkeletonPlacer.
   - Ribs: partial cover 0.5 (fillPercent) and a 0.5 lee stripe through CreatureBehaviors'
-    shipped shade-gear comp (lee mode). The ribs carry NO staticSunShadowHeight on purpose:
-    the shade grid turns any static shadow into FULL cast shade, which would erase the
-    stripe-not-pocket distinction the design asks for.
+    shipped shade-gear comp (lee mode), plus a rendered shadow (staticSunShadowHeight 0.5).
+    The shade grid's CasterHeight skips any building carrying the shade-gear comp, so that
+    rendered shadow never becomes full cast shade and the stripe stays a 0.5 stripe.
   - Skull: a full cast-shade pocket over its footprint (shade-gear footprint mode, depth 1,
     both sun kinds), standable, with a rendered shadow (staticSunShadowHeight).
   - Bone harp: RM_CompBoneHarp + RM_BoneHarp sound, louder in wind.
@@ -18,7 +18,7 @@
     bone material (no bone family is added here).
 
   ART: the four skeleton sprites from the artpipe (wired 2026-10-03, STILLSAND_SKELETONS_REMAINDER_1);
-  the base keeps vanilla RubblePile only as a fallback. RM_GiantSkull is still RubblePile: no skull job yet.
+  the base keeps vanilla RubblePile only as a fallback. RM_GiantSkull is still RubblePile: its artpipe job failed validation 2026-10-03.
 -->
 <Defs>
 
@@ -35,6 +35,7 @@
     <passability>PassThroughOnly</passability>
     <pathCost>60</pathCost>
     <fillPercent>0.5</fillPercent>
+    <staticSunShadowHeight>0.5</staticSunShadowHeight>
     <rotatable>false</rotatable>
     <selectable>true</selectable>
     <canOverlapZones>false</canOverlapZones>

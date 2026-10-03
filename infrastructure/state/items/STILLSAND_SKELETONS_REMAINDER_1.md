@@ -17,13 +17,12 @@ dust warning, and their Mod Settings ("Stillsand: skeletons and horizon"). Code:
 2. **Dune burial (parent §4)** — the dunes engine should bury a ribcage to its top arcs and later
    strip it. Needs a hook in `MapComponent_DuneField`; not started.
 3. **Art** — the seven skeleton sprites are wired (2655f315f). `RM_GiantSkull` still renders vanilla
-   `RubblePile`; its artpipe job `RM_GiantSkull` was queued 2026-10-03: wire it when it lands.
+   `RubblePile`; its artpipe job `RM_GiantSkull` FAILED validation 2026-10-03 (`failed/RM_GiantSkull.json`): requeue, then wire.
 4. **Giant bone** — add the one bone material to each skeleton's `leavings`
    (`RM_GiantSkeletonExtension`) once `DESIGN_MATERIALS_REVIEW_1` names it.
-5. **Ribs' rendered shadow** — the ribs carry no `staticSunShadowHeight` because
-   `RM_MapComponent_ShadeGrid.CasterHeight` turns any static shadow into full cast shade, which
-   would erase the 0.5 lee stripe. A per-def cast-depth cap in the shade grid would let the ribs
-   draw a shadow and still shade at 0.5.
+5. **Ribs' rendered shadow** — DONE: `staticSunShadowHeight 0.5` on `RM_GiantSkeletonBase`. No shade-grid
+   change was needed: `RM_MapComponent_ShadeGrid.CasterHeight` already skips any building carrying the
+   shade-gear comp (since 2026-09-29), so the rendered shadow never turns into full cast shade.
 6. **Wandering giants on the horizon** — herd migrations and thrumbo-style passes choose their own
    cells and ignore `parms.spawnCenter`, so the horizon warning covers raids and neutral groups
    only. Giants need their own hook.
