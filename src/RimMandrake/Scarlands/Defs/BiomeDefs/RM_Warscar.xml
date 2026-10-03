@@ -82,6 +82,7 @@
       <li>RM_TotchakInWall</li>
       <li>RM_InscribedPanels</li>
       <li>RM_KneelingRings</li>
+      <li>RM_ReactionPools</li>
     </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

@@ -922,6 +922,22 @@ LIQUID_DEF_ROWS = {
         "bottled": {"bottle": "RM_Bottle_AcidWater", "unitsPerBottle": 1,
                     "bucket": "RM_Bucket_AcidWater", "barrel": "RM_Barrel_AcidWater"},
     },
+    # WARSCAR_RAINBOW_POOLS_1: the Warscar reaction-liquor pool. Adopts the
+    # existing RM_ReactionLiquor terrain suite (no terrain authored). No
+    # bottled slot: the pool's product is the four reagent items drawn at the
+    # tap, never the liquid itself. pH 2 per the item spec (the terrain's own
+    # extension says 1; the row is the registry value the item ruled).
+    "reactionliquor": {
+        "defName": "RM_Liquid_ReactionLiquor",
+        "label": "reaction liquor",
+        "description": "Crystal clear and every color at once when the light catches it wrong. The color isn't life, it's reaction.",
+        "viscosityClass": "Water",
+        "pH": 2,
+        "damageOnContact": {"damageDef": "AcidBurn", "amount": 2},
+        "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 5},
+        "corrodesApparel": True,
+        "terrainSuite": {"shallow": "RM_ReactionLiquorShallow", "deep": "RM_ReactionLiquorDeep"},
+    },
     "tar": {
         "defName": "RM_Liquid_Tar",
         "label": "tar",

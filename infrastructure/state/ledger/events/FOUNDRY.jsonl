@@ -1996,3 +1996,30 @@
 {"seat":"FOUNDRY","event":"claim","id":"FLIGHT_STATE_READ_TOOL_1","ts":"2026-10-03T07:03:34Z","tsn":1791011014033692838}
 {"seat":"FOUNDRY","event":"start","id":"FLIGHT_STATE_READ_TOOL_1","ts":"2026-10-03T07:03:34Z","tsn":1791011014543190258}
 {"seat":"FOUNDRY","event":"drop","id":"FLIGHT_STATE_READ_TOOL_1","reason":"duplicate: jawa/pawn_flight already exists (f707e69f1); filed without searching src/. Flyer verification reads it directly","ts":"2026-10-03T07:03:44Z","tsn":1791011024736209295}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_DARK_BUILD_1","ts":"2026-10-03T07:43:59Z","tsn":1791013439164064248}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_DARK_BUILD_1","ts":"2026-10-03T07:43:59Z","tsn":1791013439670343451}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SOLAR_STILL_1","ts":"2026-10-03T07:44:07Z","tsn":1791013447697463818}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_SOLAR_STILL_1","ts":"2026-10-03T07:44:08Z","tsn":1791013448195879222}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_TOTCHAK_WAKES_1","ts":"2026-10-03T07:48:20Z","tsn":1791013700420466219}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_TOTCHAK_WAKES_1","ts":"2026-10-03T07:48:20Z","tsn":1791013700921636107}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SUN_LANCE_1","ts":"2026-10-03T07:48:26Z","tsn":1791013706767311286}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_SUN_LANCE_1","ts":"2026-10-03T07:48:27Z","tsn":1791013707311307334}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_OLD_TONGUE_1","ts":"2026-10-03T07:58:00Z","tsn":1791014280573493966}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_OLD_TONGUE_1","ts":"2026-10-03T07:58:01Z","tsn":1791014281073755135}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_HIDDEN_SHIP_PROBES_1","ts":"2026-10-03T07:58:02Z","tsn":1791014282144586853}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_HIDDEN_SHIP_PROBES_1","ts":"2026-10-03T07:58:02Z","tsn":1791014282650588256}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_CAVE_AS_PLACE_1","ts":"2026-10-03T07:58:23Z","tsn":1791014303488885972}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_CAVE_AS_PLACE_1","ts":"2026-10-03T07:58:24Z","tsn":1791014304009423891}
+{"seat":"FOUNDRY","event":"note","id":"WARSCAR_OLD_TONGUE_1","text":"Slice built (panels, skill gate, unlock flags, genstep, settings). Owed: rest panels/caches, Antiquities trade, hospice/projector/pool consumers (unbuilt items). See Transient/work_OLD_TONGUE_20261003.md","ts":"2026-10-03T08:00:26Z","tsn":1791014426130123532}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_HOSPICE_DESERTERS_1","ts":"2026-10-03T08:00:58Z","tsn":1791014458405920703}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_HOSPICE_DESERTERS_1","ts":"2026-10-03T08:00:58Z","tsn":1791014458905605537}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_GEOPHONE_1","ts":"2026-10-03T08:02:34Z","tsn":1791014554377952701}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_GEOPHONE_1","ts":"2026-10-03T08:02:34Z","tsn":1791014554980730605}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_CAVE_TIER_ROWS_1","ts":"2026-10-03T08:05:59Z","tsn":1791014759021535646}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_CAVE_TIER_ROWS_1","ts":"2026-10-03T08:05:59Z","tsn":1791014759535712147}
+{"seat":"FOUNDRY","event":"note","id":"WARSCAR_HOSPICE_DESERTERS_1","text":"Standalone slice built offline (RM_Hospice.cs + defs; build OK, static validation PASS, live UNMEASURED). Not built: Droidworks campaign swap (RUT layer), pursuer + refuse branch, carrier cache, counter mood buff, gardener lichen seeding, listener raid warning, wreck research study, cradle lights, etchant (needs RAINBOW_POOLS). Detail: Transient/work_HOSPICE_20261003.md","ts":"2026-10-03T08:07:19Z","tsn":1791014839858711801}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SAND_SWIM_REMAINDER_1","ts":"2026-10-03T08:11:28Z","tsn":1791015088139218538}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_SAND_SWIM_REMAINDER_1","ts":"2026-10-03T08:11:28Z","tsn":1791015088623313019}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_RAINBOW_POOLS_1","ts":"2026-10-03T08:15:21Z","tsn":1791015321792037100}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_RAINBOW_POOLS_1","ts":"2026-10-03T08:15:22Z","tsn":1791015322283470374}
+{"seat":"FOUNDRY","event":"block","id":"WARSCAR_RAINBOW_POOLS_1","reason":"Standalone slice built offline (registry row, pools, cycle+icons, tap, 4 reagents, journal, reader, catalyst, settings, validation). Owed: live verify on a Warscar quicktest map; RM_AerosolScreen does not exist (gel has no consumer); crater-bowl siting, choir slow-boil, coagulant bleed effect not built. Details Transient/work_RAINBOW_POOLS_20261003.md","ts":"2026-10-03T08:15:33Z","tsn":1791015333352109688}

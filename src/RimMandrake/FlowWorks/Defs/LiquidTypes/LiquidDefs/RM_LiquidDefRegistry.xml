@@ -171,6 +171,27 @@
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
 
   <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+    <defName>RM_Liquid_ReactionLiquor</defName>
+    <label>reaction liquor</label>
+    <description>Crystal clear and every color at once when the light catches it wrong. The color isn't life, it's reaction.</description>
+    <viscosityClass>Water</viscosityClass>
+    <pH>2</pH>
+    <damageOnContact>
+      <damageDef>AcidBurn</damageDef>
+      <amount>2</amount>
+    </damageOnContact>
+    <damageOnImmersion>
+      <damageDef>AcidBurn</damageDef>
+      <amount>5</amount>
+    </damageOnImmersion>
+    <corrodesApparel>true</corrodesApparel>
+    <terrainSuite>
+      <shallow>RM_ReactionLiquorShallow</shallow>
+      <deep>RM_ReactionLiquorDeep</deep>
+    </terrainSuite>
+  </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
+
+  <RimMandrake.FlowWorks.LiquidTypes.LiquidDef>
     <defName>RM_Liquid_Tar</defName>
     <label>tar</label>
     <description>Black and patient. It does not drown you so much as keep you.</description>

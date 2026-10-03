@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <JobDef>
+    <defName>RM_DrawReagent</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_DrawReagent</driverClass>
+    <reportString>drawing reagent from the pool.</reportString>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RM_DrawReagent</defName>
+    <label>draw pool reagent</label>
+    <giverClass>RimMandrake.Scarlands.WorkGiver_DrawReagent</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>55</priorityInType>
+    <verb>draw from</verb>
+    <gerund>drawing from</gerund>
+    <scanThings>true</scanThings>
+    <prioritizeSustains>false</prioritizeSustains>
+  </WorkGiverDef>
+</Defs>

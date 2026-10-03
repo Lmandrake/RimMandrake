@@ -30,7 +30,8 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "oldLineDamageFactor": 1.0, "oldLineCooldownFactor": 1.0,
             "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8,
             "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
-            "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0}
+            "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
+            "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True}
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
@@ -186,13 +187,57 @@ def static_checks():
                    "It looked at the Cathedral first.", "RM_FailedChassis", "MakeMinified", "stage++"):
         if needle not in hs:
             bad.append("RM_Hospice.cs lacks %s" % needle)
+    # WARSCAR_RAINBOW_POOLS_1 (static: files, wiring and names; behaviour is the live chain below)
+    if 'Compile Include="RM_ReactionPools.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+        bad.append("RM_ReactionPools.cs missing from RM_Warscar.csproj")
+    for f in ("ThingDefs_Buildings/RM_ReactionPools.xml", "ThingDefs_Items/RM_PoolReagents.xml", "GenStepDefs/RM_ReactionPools.xml",
+              "JobDefs/RM_ReactionPoolJobs.xml", "DamageDefs/RM_BloomAcid.xml"):
+        ET.parse(os.path.join(D, *f.split("/")))
+    reag = ET.parse(os.path.join(D, "ThingDefs_Items", "RM_PoolReagents.xml")).getroot()
+    names = [e.findtext("defName") for e in reag]
+    for need in ("RM_DielectricGel", "RM_Etchant", "RM_MedicalCoagulant", "RM_BloomLiquor", "RM_FilthBone"):
+        if need not in names:
+            bad.append("reagent def %s missing" % need)
+    pc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_ReactionPools.cs")).read())
+    for r in ("RM_DielectricGel", "RM_Etchant", "RM_MedicalCoagulant", "RM_BloomLiquor"):
+        if '"%s"' % r not in pc:
+            bad.append("phase table does not name %s" % r)
+    for needle in ("PoolPhaseReaderUnlocked", "bloomDanger", "catalystEnabled", "poolsPerMap", "poolCycleHours", "poolsEnabled",
+                   "ExtendHold", "GameComponent_PoolJournal", "FilthMaker.TryMakeFilth", "IconPaths", "ToxicBuildup"):
+        if needle not in pc:
+            bad.append("RM_ReactionPools.cs lacks %s" % needle)
+    if len(re.findall(r"IconPaths\s*=\s*\{(.*?)\};", pc, flags=re.S)[0].split(",")) != 4:
+        bad.append("phase icon table is not four entries")
+    for ph in ("Amber", "Violet", "Green", "Bloom"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Effect", "RM_PoolPhaseIcon_%s.png" % ph)):
+            bad.append("phase icon %s missing" % ph)
+    for tex in ("Building/RM_ReactionTap", "Item/RM_DielectricGel", "Item/RM_Etchant", "Item/RM_MedicalCoagulant", "Item/RM_BloomLiquor"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
+            bad.append("pool texture %s missing" % tex)
+    if "RM_ReactionPools" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("biome does not run the RM_ReactionPools genstep")
+    tap = [e for e in ET.parse(os.path.join(D, "ThingDefs_Buildings", "RM_ReactionPools.xml")).getroot() if e.findtext("defName") == "RM_ReactionTap"][0]
+    if tap.findtext("comps/li/fuelFilter/thingDefs/li") != "RM_GlowerCrust":
+        bad.append("tap hopper does not take glower crust")
+    turret = open(os.path.join(D, "ThingDefs_Buildings", "RM_OldLineTurret.xml")).read()
+    if "<RM_Etchant>" not in turret:
+        bad.append("old-line turret refit does not cost etchant")
+    fw = os.path.join(HERE, "..", "FlowWorks")
+    reg = open(os.path.join(fw, "Defs", "LiquidTypes", "LiquidDefs", "RM_LiquidDefRegistry.xml")).read()
+    gen = open(os.path.join(fw, "Tools", "generate_liquid_suite.py")).read()
+    if "RM_Liquid_ReactionLiquor" not in reg or "RM_Liquid_ReactionLiquor" not in gen:
+        bad.append("RM_Liquid_ReactionLiquor registry row missing from generator table or generated registry")
+    terr = open(os.path.join(fw, "Defs", "LiquidTypes", "TerrainDefs", "RM_ReactionLiquor.xml")).read()
+    for t in ("RM_ReactionLiquorShallow", "RM_ReactionLiquorDeep"):
+        if "<defName>%s</defName>" % t not in terr:
+            bad.append("terrain %s missing from FlowWorks" % t)
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
+    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls"]
 
     def _set(t, field, value):
         t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set", field=field,
@@ -323,6 +368,23 @@ def _build_suite():
                 return
             raise ExpectationFailed("UNMEASURED: rings with 0-2 intact chassis, five-stage revival, failure wreck name, "
                                     "mechanitor-free servitor and the dev-fired walk-in need a live Warscar map")
+
+    @suite.chain("rainbow_pools")
+    def rainbow_pools(t):
+        with t.component("pool_defs_resolve", toggle="poolsEnabled"):
+            for d in ("ThingDef/RM_ReactionPool", "ThingDef/RM_ReactionTap", "ThingDef/RM_Etchant", "ThingDef/RM_DielectricGel",
+                      "ThingDef/RM_MedicalCoagulant", "ThingDef/RM_BloomLiquor", "DamageDef/RM_BloomAcid"):
+                r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
+                if t.session is None:
+                    return
+                if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                    raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
+        with t.component("pool_phase_cycle_draw_and_catalyst", toggle="catalystEnabled"):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: 1-3 pools on a quicktest Warscar map, per-phase reagent, bloom burn, "
+                                    "phase hold + doubled yield with crust, and the registry row resolving "
+                                    "(RM_Liquid_ReactionLiquor) need a live map with FlowWorks loaded")
 
     return suite
 

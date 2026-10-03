@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_RAINBOW_POOLS_1. The pool marker is an invisible-by-itself Ethereal thing that draws the phase tint and icon;
+     the terrain under it is FlowWorks' RM_ReactionLiquorShallow/Deep. Tap art: artpipe RM_ReactionTap. -->
+<Defs>
+  <ThingDef>
+    <defName>RM_ReactionPool</defName>
+    <label>reaction pool</label>
+    <description>The phase clock of a reaction-liquor pool. Not an object.</description>
+    <thingClass>RimMandrake.Scarlands.Thing_ReactionPool</thingClass>
+    <category>Ethereal</category>
+    <drawerType>RealtimeOnly</drawerType>
+    <drawOffscreen>true</drawOffscreen>
+    <altitudeLayer>MetaOverlays</altitudeLayer>
+    <selectable>false</selectable>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Never</tickerType>
+    <graphicData><texPath>Things/Effect/RM_PoolPhaseIcon_Amber</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ReactionTap</defName>
+    <label>reaction tap</label>
+    <description>An acid-proof standpipe at the rim of a reaction-liquor pool. Colonists draw the reagent of the pool's current phase; a hopper on the side takes glower crust, which holds the phase and doubles the draw.</description>
+    <thingClass>RimMandrake.Scarlands.Building_ReactionTap</thingClass>
+    <graphicData><texPath>Things/Building/RM_ReactionTap</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>(1.3,1.3)</drawSize></graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <tickerType>Rare</tickerType>
+    <designationCategory>Misc</designationCategory>
+    <costList><Steel>40</Steel><ComponentIndustrial>1</ComponentIndustrial></costList>
+    <statBases><MaxHitPoints>150</MaxHitPoints><WorkToBuild>1500</WorkToBuild><Flammability>0.2</Flammability><Mass>12</Mass></statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <placeWorkers><li>RimMandrake.Scarlands.PlaceWorker_NearReactionPool</li></placeWorkers>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Glower crust</fuelLabel>
+        <fuelGizmoLabel>Crust</fuelGizmoLabel>
+        <fuelCapacity>10</fuelCapacity>
+        <fuelFilter><thingDefs><li>RM_GlowerCrust</li></thingDefs></fuelFilter>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <initialAllowAutoRefuel>true</initialAllowAutoRefuel>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>4</initialConfigurableTargetFuelLevel>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
