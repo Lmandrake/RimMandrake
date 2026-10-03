@@ -2036,3 +2036,19 @@
 {"seat":"FOUNDRY","event":"claim","id":"SEABED_PER_SEA_FLOORS_1","ts":"2026-10-03T08:19:36Z","tsn":1791015576318474290}
 {"seat":"FOUNDRY","event":"start","id":"SEABED_PER_SEA_FLOORS_1","ts":"2026-10-03T08:19:36Z","tsn":1791015576843463570}
 {"seat":"FOUNDRY","event":"block","id":"SEABED_PER_SEA_FLOORS_1","reason":"Built: per-sea floor biomes+mapping+plant guard (4 RM_ seas). Remaining: Propane Lake floor (biome is RUT_PropaneLake in UtinniPatches, no RM_ twin, outside DivingInteraction); floor plants/fauna densities need live proof of the plant guard (needs bridge/deploy); real floor content per sea needs the Phase 2 floor map generator.","ts":"2026-10-03T08:20:54Z","tsn":1791015654518195521}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_GAPPO_FAMILY_1","ts":"2026-10-03T08:21:45Z","tsn":1791015705050902715}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_GAPPO_FAMILY_1","ts":"2026-10-03T08:21:45Z","tsn":1791015705540934203}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_IMMERSION_BERTH_1","ts":"2026-10-03T08:21:52Z","tsn":1791015712729909795}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_IMMERSION_BERTH_1","ts":"2026-10-03T08:21:53Z","tsn":1791015713211795750}
+{"seat":"FOUNDRY","event":"note","id":"SCALD_IMMERSION_BERTH_1","text":"Built in DivingInteraction: RM_MapComponent_ScaldImmersionBerth + settings (toggle, intensity) + validation chain; build ok; heat constants unproven live. Log Transient/work_BERTH_20261003.md","ts":"2026-10-03T08:22:48Z","tsn":1791015768693744503}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_WALKING_PASTURE_1","ts":"2026-10-03T08:23:19Z","tsn":1791015799880504857}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_WALKING_PASTURE_1","ts":"2026-10-03T08:23:20Z","tsn":1791015800402015400}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_FLOOR_VENT_FIELDS_1","ts":"2026-10-03T08:23:50Z","tsn":1791015830194607887}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_FLOOR_VENT_FIELDS_1","ts":"2026-10-03T08:23:50Z","tsn":1791015830721353939}
+{"seat":"FOUNDRY","event":"block","id":"SCALD_WALKING_PASTURE_1","reason":"Herd, grazing exposure and crew follow/stop/back-off are built (DivingInteraction+TerminalBiomes, unproven live). Not built: shove-aside and two-lane collision back-off from the ruling; needs owner call on shove harm (displace only vs damage/stun) and walker pathing around colonists. See Transient/work_PASTURE_20261003.md","ts":"2026-10-03T08:26:00Z","tsn":1791015960482707692}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_FREE_TIER_CATCH_1","ts":"2026-10-03T08:27:08Z","tsn":1791016028269980341}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_FREE_TIER_CATCH_1","ts":"2026-10-03T08:27:08Z","tsn":1791016028795795886}
+{"seat":"FOUNDRY","event":"claim","id":"SCALD_RETURN_GALLERY_1","ts":"2026-10-03T08:27:48Z","tsn":1791016068585599665}
+{"seat":"FOUNDRY","event":"start","id":"SCALD_RETURN_GALLERY_1","ts":"2026-10-03T08:27:49Z","tsn":1791016069092922946}
+{"seat":"FOUNDRY","event":"file","id":"SCALD_GALLERY_SCHEMATIC_UNLOCK_1","title":"Return Gallery: what the immersion-engineering schematic unlocks (RM_ImmersionSchematic is an inert item today)","kind":"task","target":"v1","needs":"owner","caused_by":"SCALD_RETURN_GALLERY_1","for":"FOUNDRY","ts":"2026-10-03T08:31:36Z","tsn":1791016296953942611}
+{"seat":"FOUNDRY","event":"block","id":"SCALD_GALLERY_SCHEMATIC_UNLOCK_1","reason":"Owner decision: the schematic must unlock something (e.g. immersion cooler recipe or Berth heat reduction) and the sitting names none; a research/techprint choice is design, not assumed.","ts":"2026-10-03T08:31:37Z","tsn":1791016297505393217}

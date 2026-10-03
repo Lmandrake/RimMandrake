@@ -150,23 +150,24 @@
 
     <!-- SEA_FLOOR_AND_CATCH_PASS_1 — the Chill's catch table.
          terminal_seas_cast_proposal_2026-09-25.md verdict 3: heemin/oovanam
-         ADDED here (see RM_TheChillCatch.xml's own header). -->
+         ADDED here (see RM_TheChillCatch.xml's own header). CHILL_FREE_TIER_CATCH_1
+         (2026-10-03): all nine rows are free-tier RM_*Catch, no MayRequire. -->
     <maxFishPopulation>60</maxFishPopulation>
     <fishTypes MayRequire="Ludeon.RimWorld.Odyssey">
       <saltwater_Common>
-        <RUT_Fessu MayRequire="mandrake.rut.patches">1.2</RUT_Fessu>
-        <RUT_Krellik MayRequire="mandrake.rut.patches">1</RUT_Krellik>
-        <RUT_Oddu MayRequire="mandrake.rut.patches">0.8</RUT_Oddu>
-        <RUT_Oovu MayRequire="mandrake.rut.patches">0.6</RUT_Oovu>
+        <RM_FessuCatch>1.2</RM_FessuCatch>
+        <RM_KrellikCatch>1</RM_KrellikCatch>
+        <RM_OdduCatch>0.8</RM_OdduCatch>
+        <RM_OovuCatch>0.6</RM_OovuCatch>
         <RM_HeeminCatch>0.9</RM_HeeminCatch>
       </saltwater_Common>
       <saltwater_Uncommon>
-        <RUT_Iliss MayRequire="mandrake.rut.patches">1</RUT_Iliss>
-        <RUT_Tarnn MayRequire="mandrake.rut.patches">0.6</RUT_Tarnn>
-        <RUT_Zhiil MayRequire="mandrake.rut.patches">0.4</RUT_Zhiil>
+        <RM_IlissCatch>1</RM_IlissCatch>
+        <RM_TarnnCatch>0.6</RM_TarnnCatch>
+        <RM_ZhiilCatch>0.4</RM_ZhiilCatch>
         <RM_OovanamCatch>0.4</RM_OovanamCatch>
       </saltwater_Uncommon>
-      <rareCatchesSetMaker>RUT_RarePropaneCatches</rareCatchesSetMaker>
+      <rareCatchesSetMaker>RM_RareChillCatches</rareCatchesSetMaker>
     </fishTypes>
   </BiomeDef>
 

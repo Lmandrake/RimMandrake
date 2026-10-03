@@ -123,3 +123,34 @@ def scald_vent_fields(t):
             if banned in code:
                 raise ExpectationFailed("forecast touches %s" % banned)
         t.screenshot()
+
+
+@suite.chain("scald_return_gallery")
+def scald_return_gallery(t):
+    """SCALD_RETURN_GALLERY_1: gallery defs exist; the Scald generator lists the step; a wrong mark never touches anything but the latch."""
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    with t.component("gallery_defs", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_ReturnGalleryHub;ThingDef/RM_GalleryOutlet;ThingDef/RM_GalleryPipe;ThingDef/RM_GalleryBreak;ThingDef/RM_ReturnGalleryLocker;ThingDef/RM_ImmersionSchematic;ThingDef/RM_CathedralHeatLog;JobDef/RM_ProbeGalleryOutlet")
+        if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
+            raise ExpectationFailed("gallery defs missing: %r" % r)
+        t.screenshot()
+    with t.component("scald_generator_lists_gallery_only", beyond_toggle=True):
+        text = open(os.path.join(here, "Defs", "MapGeneration", "RM_SeaDiveGenerators.xml"), encoding="utf-8").read()
+        for b in text.split("<MapGeneratorDef>")[1:]:
+            name = b.split("<defName>")[1].split("</defName>")[0]
+            if (name == "RM_SeaDiveGenerator_TheScald") != ("RM_ScaldReturnGallery" in b):
+                raise ExpectationFailed("%s gallery listing wrong" % name)
+        t.screenshot()
+    with t.component("gallery_cannot_reach_live_systems", beyond_toggle=True):
+        src = open(os.path.join(here, "Source", "RM_ReturnGallery.cs"), encoding="utf-8").read()
+        code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("//"))
+        for banned in ["Gravship", "Launch", "Building_Door", "GameCondition", "Hediff", "TakeDamage", "IncidentWorker"]:
+            if banned in code:
+                raise ExpectationFailed("gallery logic touches %s" % banned)
+        # exactly one true return per circuit
+        gen = open(os.path.join(here, "Source", "GenStep_ScaldReturnGallery.cs"), encoding="utf-8").read()
+        if gen.count("GalleryRole.Return,") != 1:
+            raise ExpectationFailed("role set must hold exactly one Return")
+        t.screenshot()
