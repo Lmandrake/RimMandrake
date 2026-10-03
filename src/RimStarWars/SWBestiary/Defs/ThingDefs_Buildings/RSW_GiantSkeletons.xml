@@ -8,8 +8,7 @@
   A krayt skeleton yields the skull (RSW_KraytDragonSkull, which the existing
   ProcessKraytDragonSkull recipe takes) and sometimes the gizzard pearl (RSW_KraytPearl).
   genstepWeight 1 each: on a Stillsand map an RSW skeleton is as likely as a guzzka's.
-  PLACEHOLDER ART (vanilla RubblePile via the base); the artpipe jobs RSW_KraytSkeleton,
-  RSW_GreaterKraytSkeleton and RSW_WarWyrmSkeleton are queued; wiring them is a follow-up.
+  ART: RSW_KraytSkeleton, RSW_GreaterKraytSkeleton and RSW_WarWyrmSkeleton from the artpipe (wired 2026-10-03).
 -->
 <Defs>
 
@@ -19,6 +18,8 @@
     <description>The sun-bleached skeleton of a krayt dragon, a long arc of vertebrae and ribs like the frame of a beached ship, the sand drifted up one flank. Fresh krayt bones mean krayts come here. The skull lies beside it, and a careful crew can take it whole; now and then the gizzard stones still hold a pearl.</description>
     <size>(7,3)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RSW_KraytSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
     <modExtensions>
@@ -46,6 +47,8 @@
     <description>The old-ivory skeleton of a greater krayt dragon, longer than anything still walking. The bones are the one vertical for kilometres. Its gizzard stones are more likely than not to hold a pearl.</description>
     <size>(9,4)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RSW_GreaterKraytSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(10,5)</drawSize>
     </graphicData>
     <modExtensions>
@@ -73,6 +76,8 @@
     <description>The grey bones of a war wyrm, coiled where it died, the ribs sprung outward like a broken cage.</description>
     <size>(7,3)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RSW_WarWyrmSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
     <modExtensions>

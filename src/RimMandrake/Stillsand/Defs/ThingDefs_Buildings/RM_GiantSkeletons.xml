@@ -17,9 +17,8 @@
     Giant bone is NOT yet among them: it waits on DESIGN_MATERIALS_REVIEW_1 naming the one
     bone material (no bone family is added here).
 
-  PLACEHOLDER ART: vanilla RubblePile (as RM_TitanicCorpseSite). The skeleton sprites are
-  queued in the artpipe (RM_OommokSkeleton, RM_MuurrokSkeleton, RM_GuzzkaSkeleton,
-  RM_VozzikSkeleton, 1024x512 / 512, pending); wiring them is a follow-up.
+  ART: the four skeleton sprites from the artpipe (wired 2026-10-03, STILLSAND_SKELETONS_REMAINDER_1);
+  the base keeps vanilla RubblePile only as a fallback. RM_GiantSkull is still RubblePile: no skull job yet.
 -->
 <Defs>
 
@@ -75,6 +74,8 @@
     <description>The ribcage of an oommok, the mirror giant, standing out of the sand like the frame of a hall. Flakes of its shed mirror-plate still cling to the ribs and flash in the sun. Wind across the ribs makes a low moan. The arcs throw striped shade, and the skull lies close by, big enough to walk into.</description>
     <size>(7,3)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RM_OommokSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
     <modExtensions>
@@ -91,6 +92,8 @@
     <description>The bones of a muurrok, the crest-spine still fused into one long blade of chalk-white bone with a dark stain along it. Something took this one from below; the sand around the ribs was churned once. The crest still carries a few plates worth cutting free.</description>
     <size>(7,3)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RM_MuurrokSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(8,4)</drawSize>
     </graphicData>
     <modExtensions>
@@ -113,6 +116,8 @@
     <description>The salt-crusted bones of a guzzka, the shaggy cave beast, dragged or wandered far from any cavern before it died. Smaller than the true giants, but still a landmark on open sand.</description>
     <size>(3,3)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RM_GuzzkaSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(4,4)</drawSize>
     </graphicData>
     <modExtensions>
@@ -128,6 +133,8 @@
     <description>The plated skeleton of a vozzik, its chalky armour still lying in overlapping rows where the hide used to be.</description>
     <size>(3,3)</size>
     <graphicData>
+      <texPath>Things/Building/GiantSkeleton/RM_VozzikSkeleton</texPath>
+      <color>(255,255,255)</color>
       <drawSize>(4,4)</drawSize>
     </graphicData>
     <modExtensions>
