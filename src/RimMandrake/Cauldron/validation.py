@@ -55,7 +55,11 @@ import time
 
 from modcheck import Suite, ExpectationFailed
 
+# The situational runner picks the anchor FARTHEST from colonists (0.2..0.8 of the map), which on a 250 map can be
+# (50, 50); the pads below reach 85 cells from it, so spawns landed "Cell is outside the map" (LIVE 2026-10-03). The
+# margin makes the runner choose an anchor with that much room on every side.
 suite = Suite("Cauldron")
+suite.anchor_margin = 100
 
 SETTINGS = "RimMandrake.Cauldron.RM_CauldronSettings"
 HERE = os.path.dirname(os.path.abspath(__file__))

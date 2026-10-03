@@ -423,7 +423,7 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         # two starting colonists. Pick the point farthest from every colonist instead.
         try:
             import helpers as _H  # noqa: E402
-            ax, az, dist = _H.safe_anchor(session)
+            ax, az, dist = _H.safe_anchor(session, margin=int(getattr(suite, "anchor_margin", 20)))
             if dist >= 0:
                 anchor = (ax, az)
         except Exception:     # noqa: BLE001 - keep the centre rather than fail the run over a heuristic

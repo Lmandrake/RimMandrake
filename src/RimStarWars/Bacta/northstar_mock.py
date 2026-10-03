@@ -324,7 +324,18 @@ def _get_defs(p, brk):
         ty, dn = r.split("/")
         fields = {}
         if ty == "TraderKindDef":
-            items = [{"thingDef": "Silver"}] + ([] if "trader_missing" in brk else [{"thingDef": "RSW_Bacta"}])
+            # the REAL deep shape (LIVE 2026-10-03): rows carry countRange but NO thingDef; the patch's rows are the tail
+            import os, re
+            import xml.etree.ElementTree as ET
+            tail = []
+            for op in ET.parse(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Patches",
+                                            "RSW_Bacta_TraderStock.xml")).getroot().iter("Operation"):
+                m = re.search(r'defName="([^"]+)"', op.findtext("xpath") or "")
+                if m and m.group(1) == dn:
+                    for li in op.iter("li"):
+                        lo, hi = (li.findtext("countRange") or "0~0").split("~")
+                        tail.append({"countRange": {"min": int(lo), "max": int(hi)}})
+            items = [{"trader": dn, "countRange": {"min": 5, "max": 9}}] + ([] if "trader_missing" in brk else tail)
             fields = {"stockGenerators": items}
         elif dn == "Human" or dn == "Muffalo":
             rec = ["AdministerMechSerumHealer"] + ([] if "recipes_missing" in brk else

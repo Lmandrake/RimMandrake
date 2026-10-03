@@ -323,12 +323,29 @@ def content(t):
             _ok(r, "get_defs traders")
             if r.get("notFound"):
                 _fail("trader kinds not found: %r" % r.get("notFound"))
+            # LIVE 2026-10-03: deep get_defs serialises a StockGenerator WITHOUT its thingDef (a row reads as
+            # {trader, countRange, ...}), so the old `"RSW_Bacta" in json` test failed on every run for an instrument
+            # reason. The patch's rows are identified by the tail of the list instead: every <countRange> the patch file
+            # declares for that trader must appear among its rows (the vanilla rows alone almost never repeat them).
+            import xml.etree.ElementTree as ET
+            want = {}
+            for op in ET.parse(os.path.join(HERE, "Patches", "RSW_Bacta_TraderStock.xml")).getroot().iter("Operation"):
+                xp = (op.findtext("xpath") or "")
+                m = re.search(r'defName="([^"]+)"', xp)
+                if m:
+                    want[m.group(1)] = [tuple(int(v) for v in (li.findtext("countRange") or "0~0").split("~"))
+                                        for li in op.iter("li")]
+            if sorted(want) != sorted(kinds):
+                _fail("patch file declares traders %s, the script checks %s" % (sorted(want), sorted(kinds)))
             for row in r.get("defs") or []:
                 sg = (row.get("fields") or {}).get("stockGenerators")
-                if not isinstance(sg, list) or all(isinstance(i, str) for i in sg):
+                if not isinstance(sg, list) or not sg or not all(isinstance(i, dict) for i in sg):
                     _unmeasured(t, "get_defs cannot show stockGenerators contents for %s: %r" % (row.get("defName"), str(sg)[:120]))
-                if '"%s"' % FLUID not in json.dumps(sg):
-                    _fail("%s stockGenerators carry no %s row: the patch matched nothing" % (row.get("defName"), FLUID))
+                have = [(int((g.get("countRange") or {}).get("min", 10 ** 6)), int((g.get("countRange") or {}).get("max", 10 ** 6))) for g in sg]
+                tail = have[-len(want[row.get("defName")]):]
+                if tail != want[row.get("defName")]:
+                    _fail("%s stockGenerators tail %s is not the patch's rows %s: the patch matched nothing, or another mod "
+                          "rewrote the list" % (row.get("defName"), tail, want[row.get("defName")]))
 
     with _comp(t, "doctor_recipes_patch_landed"):
         if _live(t):
