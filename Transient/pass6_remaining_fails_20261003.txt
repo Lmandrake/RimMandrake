@@ -1,0 +1,15 @@
+== WeepingStones
+   cuisine_wiring / recipes_on_both_stoves : ExpectationFailed: ElectricStove lacks recipes ['RM_SpinDewsilk'] (RM_StockedPoolRecipeWiring.xml matched nothing?)
+   oasis_flora / oasis_def_accepts_our_biome : ExpectationFailed: Oasis.workerClass is not RimMandrake.WeepingStones.RM_TileMutatorWorker_Oasis: ['biomeWhitelist', 'Desert', 'ExtremeDesert', 'AB_GallatrossGraveyard', 'AB_TarPits', 'RM_WeepingStones', 'workerClass', "(non-public field 'workerClass' on TileMutatorDef; type RuntimeType not serialis
+== TheForge
+   spunstone / reveal_opens_project : TypeError: unhashable type: 'dict'
+== Cauldron
+   fauna / fauna_spawns : ExpectationFailed: spawn_pawn(RM_Suush, none) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_d7e11c6fbe59459e9e9f1ee320d3403b', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/sp
+   flora / flora_spawns : ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_BloodBouquet', 'RM_CrystalFlower', 'RM_GiantToxicFlower', 'RM_KeeningCordax', 'RM_TreeMartyr', 'RM_TwistingThornwood']
+   bloom / bloom_site_ready : ExpectationFailed: spawn_pawn(Colonist, player) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_da6b7eed325a4d0b9c0bd4816cc4a95c', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/
+   water / water_site_ready : ExpectationFailed: spawn_pawn(Colonist, player) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_694b260d3e0e4feba16a606be77717dd', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/
+   log / log_clean : ExpectationFailed: log carries errors: ['Tried to destroy non-destroyable thing RM_CauldronVent104642']
+== LeaningScrub
+   defs / biome_weather_table : AttributeError: 'str' object has no attribute 'get'
+   flora / flora_spawns : ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+   bloom / bloom_toggle_off_quiet : ExpectationFailed: spawn_pawn(RM_Vissler, none) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_51919be2c4a3475da031adf30b3756ef', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/
