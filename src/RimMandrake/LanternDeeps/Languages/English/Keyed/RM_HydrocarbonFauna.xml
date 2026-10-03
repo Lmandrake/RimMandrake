@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LanternDeeps · LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1 (RM_HydrocarbonFauna.cs) -->
+<LanguageData>
+  <RM_HotKillIgnition>The {0} was killed hot: its methane bladder has ignited.</RM_HotKillIgnition>
+  <RM_GaluushIgnition>The galuush was killed hot. Its bladder is coming down burning, and the whole chamber goes with it.</RM_GaluushIgnition>
+</LanguageData>

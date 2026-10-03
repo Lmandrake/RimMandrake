@@ -63,6 +63,7 @@
       <!-- LANTERNDEEPS_WORKING_DEAD_BUILD_1: the well-provisioned dead and the Shard-minds (order 955). -->
       <li>RM_DeepWellProvisionedDead</li>
       <li>RM_DeepOrunGhal</li>
+      <li>RM_DeepGaluush</li>
       <li>MutatorFinal</li>
       <li>Fog</li>
     </genSteps>
