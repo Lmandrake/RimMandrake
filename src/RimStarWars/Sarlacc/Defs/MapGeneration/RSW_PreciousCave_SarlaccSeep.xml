@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_CAVE_TIER_ROWS_1: the sarlacc seep row. A brine pool plus the RSW_DeepDesertSeep marker,
+     so this is where a swimmer comes to root (STILLSAND_EVENT_CREATURES_1 #4). Class is RM_Stillsand's
+     (mandrake.rm.biomes); absent => def dropped. -->
+<Defs>
+  <RimMandrake.Stillsand.RM_PreciousCaveDef MayRequire="mandrake.rm.biomes">
+    <defName>RSW_PreciousCave_SarlaccSeep</defName>
+    <label>sarlacc seep</label>
+    <description>A deep brine seep a sarlacc swimmer will one day come to root at.</description>
+    <tier>RSW</tier>
+    <weight>1.5</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Terrain">
+        <terrain>RM_WaterBrineShallow</terrain>
+        <cells>4~7</cells>
+        <place>back</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>RSW_DeepDesertSeep</thing>
+        <place>back</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+</Defs>

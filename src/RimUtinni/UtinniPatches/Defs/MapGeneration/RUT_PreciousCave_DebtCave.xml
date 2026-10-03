@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_CAVE_TIER_ROWS_1: the debt cave, an old Sun-Debt shrine in the Stillsand precious-cave table.
+     A worn debt stone (Return lines cut into it), a mummified priest, sealed water jars. The jars carry the
+     Return's pourable water comp, so they are the cave's water for the Debt. PLACEHOLDER ART: the worn stone
+     reuses RUT_DebtStone's texture; the jar reuses RM_EggScaled. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
+    <defName>RUT_DebtStoneWorn</defName>
+    <label>worn debt stone</label>
+    <description>An old standing stone, its grooves worn nearly smooth by the water of a hundred Returns. Whoever kept this shrine is long gone.</description>
+    <graphicData>
+      <texPath>Things/Building/RUT_DebtStone/RUT_DebtStone</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.4,1.4)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>42</pathCost>
+    <fillPercent>0.35</fillPercent>
+    <castEdgeShadows>false</castEdgeShadows>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>2</Beauty>
+    </statBases>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+  </ThingDef>
+
+  <ThingDef MayRequire="mandrake.rm.biomes">
+    <defName>RUT_SealedWaterJar</defName>
+    <label>sealed water jar</label>
+    <description>A clay jar, waxed shut, still full. Water kept for the Return and never poured. Pour it into the sand to pay the Debt.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <thingCategories>
+      <li>Items</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <stackLimit>1</stackLimit>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>8</Mass>
+      <MarketValue>30</MarketValue>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tickerType>Never</tickerType>
+    <alwaysHaulable>true</alwaysHaulable>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_WaterVolume">
+        <litres>8</litres>
+        <drawnAs>sealed water jar</drawnAs>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <RimMandrake.Stillsand.RM_PreciousCaveDef MayRequire="mandrake.rm.biomes">
+    <defName>RUT_PreciousCave_DebtCave</defName>
+    <label>debt cave</label>
+    <description>An old Sun-Debt shrine: a worn debt stone, a mummified priest, and sealed water jars.</description>
+    <tier>RUT</tier>
+    <weight>0.8</weight>
+    <elements>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>RUT_DebtStoneWorn</thing>
+        <place>centre</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Mummy">
+        <kind>Villager</kind>
+        <place>centre</place>
+      </li>
+      <li Class="RimMandrake.Stillsand.RM_CaveElement_Things">
+        <thing>RUT_SealedWaterJar</thing>
+        <stacks>2~3</stacks>
+        <place>back</place>
+      </li>
+    </elements>
+  </RimMandrake.Stillsand.RM_PreciousCaveDef>
+</Defs>

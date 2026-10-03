@@ -86,6 +86,8 @@ def body(s, job):
     if "--mods" in argv:
         mods = [m for m in argv[argv.index("--mods") + 1].split(",") if m]
     digests, crashed = [], []
+    if not job.dry_run:        # a freshly launched game sits at the main menu: every suite would die with ClockLost (2026-10-03)
+        job.note("map", runner.ensure_playing_map())
     if job.dry_run:
         from suite import Suite
         dry = Suite("DryRun")
