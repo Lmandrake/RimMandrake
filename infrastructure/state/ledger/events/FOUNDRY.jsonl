@@ -2387,3 +2387,6 @@
 {"seat":"FOUNDRY","event":"start","id":"LADDER_PRISON_DOOR_1","ts":"2026-10-03T17:59:12Z","tsn":1791050352801114667}
 {"seat":"FOUNDRY","event":"close","id":"LADDER_PRISON_DOOR_1","sha":"cf789dc80207","ts":"2026-10-03T17:59:36Z","tsn":1791050376933192789}
 {"seat":"FOUNDRY","event":"note","id":"EXCAVATION_WALL_ART_1","text":"The owner-accepted phone-review ladder (ruling 32: 'Ladder accepted', A vs B not recorded) and sluice gate A/B renders were only in Transient/flowworks_art_2026-09-16 (past shelf life); copied to src/RimMandrake/FlowWorks/art_source/phone_review_2026-09-16/ at cf789dc80. They are top-down; ruling 33 wants Quarry perspective, so check them before generating. NEXT: decide reuse vs regen for RM_Ladder art.","ts":"2026-10-03T17:59:37Z","tsn":1791050377475735238}
+{"seat":"FOUNDRY","event":"claim","id":"PIT_COVER_FALL_REWIRE_1","ts":"2026-10-03T18:03:34Z","tsn":1791050614619627580}
+{"seat":"FOUNDRY","event":"start","id":"PIT_COVER_FALL_REWIRE_1","ts":"2026-10-03T18:03:35Z","tsn":1791050615154205545}
+{"seat":"FOUNDRY","event":"close","id":"PIT_COVER_FALL_REWIRE_1","sha":"9d6cefabd3c9","ts":"2026-10-03T18:03:50Z","tsn":1791050630481813519}
