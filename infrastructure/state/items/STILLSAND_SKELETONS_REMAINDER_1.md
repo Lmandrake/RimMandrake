@@ -10,19 +10,14 @@ dust warning, and their Mod Settings ("Stillsand: skeletons and horizon"). Code:
 
 ## spec
 
-1. **Tracks (parent §7)** — blocked on `FOOTPRINT_TRACK_GRID_1` (proposed, unbuilt when the
-   parent closed). Once the grid ships: give the Stillsand sand `RM_TrackSurfaceExtension`, make
-   the queued `RM_Filth_OommokPrint`, `RSW_Filth_CrawlerTread` and `RM_Filth_SandWake` the grid's
-   per-race print sprites, and add the dunes-engine eraser (a cell whose sand depth changes past a
-   threshold calls `ClearCell` and clears its scar filth; hook in the deposit step, shared with the
-   gale). Track persistence toggle lives on the grid's settings.
+1. **Tracks (parent §7)** — DONE. Sand + RM_DeepSand carry `RM_TrackSurfaceExtension` for RM_Stillsand
+   (`Patches/RM_TrackSurface_Stillsand.xml`), the dunes eraser is `Source/RM_DuneTrackEraser.cs`, and
+   the wake (`RM_SandWake`) and oommok print (`RM_OommokPrint`) sprites are wired
+   (`STILLSAND_SKELETON_ART_TRACKS_WIRING_1`, 2655f315f). The sandcrawler tread art has no walking race.
 2. **Dune burial (parent §4)** — the dunes engine should bury a ribcage to its top arcs and later
    strip it. Needs a hook in `MapComponent_DuneField`; not started.
-3. **Art** — all seven skeleton defs and `RM_GiantSkull` render vanilla `RubblePile` as a
-   placeholder. Wire the pending artpipe jobs (`RM_OommokSkeleton`, `RM_MuurrokSkeleton`,
-   `RM_GuzzkaSkeleton`, `RM_VozzikSkeleton`, `RSW_KraytSkeleton`, `RSW_GreaterKraytSkeleton`,
-   `RSW_WarWyrmSkeleton`) when they land. No skull art job exists yet: check artpipe first, then
-   queue one for `RM_GiantSkull`.
+3. **Art** — the seven skeleton sprites are wired (2655f315f). `RM_GiantSkull` still renders vanilla
+   `RubblePile`; its artpipe job `RM_GiantSkull` was queued 2026-10-03: wire it when it lands.
 4. **Giant bone** — add the one bone material to each skeleton's `leavings`
    (`RM_GiantSkeletonExtension`) once `DESIGN_MATERIALS_REVIEW_1` names it.
 5. **Ribs' rendered shadow** — the ribs carry no `staticSunShadowHeight` because
