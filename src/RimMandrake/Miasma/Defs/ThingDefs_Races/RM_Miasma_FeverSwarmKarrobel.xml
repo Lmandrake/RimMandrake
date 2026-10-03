@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Miasma_FeverSwarmKarrobel.xml   Miasma - MIASMA_SWARM_COMPOSTER_PORT_1
+  RM_FeverSwarm (vector and the mangals' only pollinator) and RM_Karrobel (delta-loam composter), ported from the RUT_ originals. Invented, franchise-free, RM tier (Q11a). Names are working names (MIASMA_SHIPPING_NAMES_1).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_FeverSwarm</defName>
+    <label>fever swarm</label>
+    <description>Individually a fingernail-length, wet-winged thing, gold-dusted and easy to miss. The fever swarm is never seen alone — only as a slow-drifting haze of them, thickest over flowering mangals at the heat of the day. That haze is the green-gold breath the Miasma is named for, seen up close: the same swarm that carries the biome's fevers from pawn to pawn is the only thing that carries pollen between its flowers. You cannot have the trees without the fever.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Mass>0.02</Mass>
+      <MarketValue>8</MarketValue>
+      <Wildness>0.15</Wildness>
+      <ComfyTemperatureMin>20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>60</ComfyTemperatureMax>
+      <MaxFlightTime>10</MaxFlightTime>
+      <FlightCooldown>5</FlightCooldown>
+    </statBases>
+    <uiIconScale>0.8</uiIconScale>
+    <tools>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <predator>false</predator>
+      <baseBodySize>0.05</baseBodySize>
+      <baseHealthScale>0.2</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal, AnimalProduct</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(160,168,139)</meatColor>
+      <meatMarketValue>0.1</meatMarketValue>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>2</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <lifeExpectancy>2</lifeExpectancy>
+      <gestationPeriodDays>2</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(3, 1.8)</li>
+          <li>(3.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>EusocialInsectLarva</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectJuvenile</def>
+          <minAge>0.02</minAge>
+        </li>
+        <li>
+          <def>EusocialInsectAdult</def>
+          <minAge>0.15</minAge>
+        </li>
+      </lifeStageAges>
+      <flightStartChanceOnJobStart>0.3</flightStartChanceOnJobStart>
+      <flightSpeedFactor>2.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>true</canLeaveMapFlying>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_FeverSwarm</defName>
+    <label>fever swarm</label>
+    <race>RM_FeverSwarm</race>
+    <combatPower>2</combatPower>
+    <wildGroupSize>12~30</wildGroupSize>
+    <ecoSystemWeight>0.15</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.35</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Karrobel</defName>
+    <label>karrobel</label>
+    <description>A thick, wedge-bodied scuttler, tapering to a hardened blade of a head it drives into the muck. Rarely seen whole — mostly it is a churned ring of castings and a pair of banded, mud-caked plates breaking the surface. Where it has worked, the ground turns rich: clean delta loam, cast up from whatever the Miasma's sin-soup was before.</description>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Mass>6</Mass>
+      <MarketValue>45</MarketValue>
+      <Wildness>0.25</Wildness>
+      <ComfyTemperatureMin>15</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>wedge head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+        <chanceFactor>0.6</chanceFactor>
+      </li>
+      <li>
+        <label>mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <predator>false</predator>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <meatColor>(150,140,120)</meatColor>
+      <meatMarketValue>0.3</meatMarketValue>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>4</roamMtbDays>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.02</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>8</lifeExpectancy>
+      <gestationPeriodDays>6</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1.2)</li>
+          <li>(2.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.15</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas" MayRequire="mandrake.rm.environmentalhazards">
+        <gatherIntervalDays>3</gatherIntervalDays>
+        <gatherAmount>8</gatherAmount>
+        <gatherDef>RM_DeltaLoam</gatherDef>
+        <fullnessLabelKey>RM_DeltaLoamCastings</fullnessLabelKey>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
+        <pawnSpawnIntervalDays>1.5~3</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
+        <populationSoftCap>40</populationSoftCap>
+        <populationHardCap>100</populationHardCap>
+        <populationGroupTag>RM_MiasmaScuttlers</populationGroupTag>
+      </li>
+    </modExtensions>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Karrobel</defName>
+    <label>karrobel</label>
+    <race>RM_Karrobel</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrobel/RM_Karrobel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.7</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrobel/RM_Karrobel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Karrobel/RM_Karrobel</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

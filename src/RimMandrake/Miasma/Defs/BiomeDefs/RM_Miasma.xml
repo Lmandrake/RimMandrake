@@ -26,20 +26,14 @@
     wildAnimals: 14 rows ship inline -
       - 9 non-Star-Wars donor rows (Alpha Animals / VFE Insectoids 2), each already
         MayRequire-gated on its own donor mod, unchanged from the twin (Q9).
-      - RUT_Karrobel / RUT_Karrathil, this campaign's own invented (non-canon,
-        franchise-free) delta-loam composter and fever-swarm vector - these two
-        ThingDefs still physically live in mandrake.rut.patches (not moved this
-        pass, out of MIASMA_RM_MOD_BUILD_1 SS6's scope), so they carry a fresh
-        MayRequire="mandrake.rut.patches" here that the twin's own copy never
-        needed (same-mod, no gate required there). A future pass can port them
-        into this mod outright (they are invented names, RM tier per Q11a) and
-        drop the gate.
+      - RM_Karrobel / RM_FeverSwarm: invented delta-loam composter and fever-swarm vector, native to this mod
+        (ported from RUT_ by MIASMA_SWARM_COMPOSTER_PORT_1; no MayRequire).
       - RM_Karravel / RM_Karrimeth / RM_Karrolun (MIASMA_FAUNA_FLOOR_ROSTER_1):
         the arthropod floor's other three scuttlers, native to this mod from the
         start since it already exists (unlike when Karrobel/Karrathil shipped).
         All four scuttlers share one population pool via
         RM_VerminPressureExtension's "RM_MiasmaScuttlers" group tag - see
-        RM_Miasma_ArthropodFloor.xml and the retrofit on RUT_Karrobel.xml.
+        RM_Miasma_ArthropodFloor.xml and RM_Miasma_FeverSwarmKarrobel.xml.
     The 15 genuine Star Wars rows the twin also carries do NOT ship here - they
     ride Utinni's WildAnimals_Miasma.xml as a PatchOperationAdd onto this def,
     MayRequire-gated per row's real source mod, per the Q11a naming-tier ruling.
@@ -237,8 +231,8 @@
       <SnowHard>0</SnowHard>
     </baseWeatherCommonalities>
     <wildAnimals>
-      <RUT_Karrobel MayRequire="mandrake.rut.patches">0.6</RUT_Karrobel>  <!-- karrobel - delta-loam composter, this campaign's own invented species, still authored in mandrake.rut.patches -->
-      <RUT_FeverSwarm MayRequire="mandrake.rut.patches">0.9</RUT_FeverSwarm>  <!-- fever swarm (renamed from karrathil, MIASMA_SHIPPING_NAMES_1) - vector/pollinator, same as above -->
+      <RM_Karrobel>0.6</RM_Karrobel>  <!-- karrobel - delta-loam composter, invented, ported from RUT_ by MIASMA_SWARM_COMPOSTER_PORT_1 -->
+      <RM_FeverSwarm>0.9</RM_FeverSwarm>  <!-- fever swarm - disease vector and the mangals' only pollinator -->
       <!-- SEA_BEASTS_TIER_RULING_1 (2026-09-25): two of the Miasma nursery's seven
            juveniles whose parents are INVENTED sea beasts, not genuine Star Wars IP
            (verified via Wookieepedia's search API: no canon hit for either name) —

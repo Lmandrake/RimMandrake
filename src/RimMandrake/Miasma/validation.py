@@ -116,6 +116,31 @@ def static_checks():
             bad.append("missing texture " + t)
     if "StatPart_Glazed" not in open(os.path.join(HERE, "Patches", "RM_Attar_BeautyPart.xml")).read():
         bad.append("Beauty StatPart patch missing")
+    # MIASMA_SWARM_COMPOSTER_PORT_1
+    for root, _d, fs in os.walk(os.path.join(HERE, "Defs")):
+        for f in fs:
+            t = open(os.path.join(root, f), encoding="utf-8").read()
+            for old in ("RUT_FeverSwarm", "RUT_Karrobel", "RUT_DeltaLoam"):
+                if old in t:
+                    bad.append("%s still names %s" % (f, old))
+    if 'MayRequire="mandrake.rut.patches"' in biome:
+        bad.append("RM_Miasma.xml still gates a row on mandrake.rut.patches")
+    sw = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Miasma_FeverSwarmKarrobel.xml"), encoding="utf-8").read()
+    for d in ("RM_FeverSwarm", "RM_Karrobel"):
+        if sw.count("<defName>%s</defName>" % d) != 2:
+            bad.append("%s needs exactly a ThingDef and a PawnKindDef" % d)
+    if "<gatherDef>RM_DeltaLoam</gatherDef>" not in sw or "<defName>RM_DeltaLoam</defName>" not in open(os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_DeltaLoam.xml"), encoding="utf-8").read():
+        bad.append("RM_DeltaLoam item or the karrobel's gatherDef missing")
+    for r in ("RM_FeverSwarm", "RM_Karrobel"):
+        if not re.search(r"<%s>[\d.]+</%s>" % (r, r), biome):
+            bad.append("%s not in RM_Miasma wildAnimals" % r)
+    mg = open(os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_Miasma_Mangals.xml"), encoding="utf-8").read()
+    if mg.count("<pollinatorRace>RM_FeverSwarm</pollinatorRace>") != 2:
+        bad.append("RM_Thessamor and RM_Quennath must each carry the pollination gate naming RM_FeverSwarm")
+    for t in ("Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm_south.png", "Pawn/Animal/RM_Karrobel/RM_Karrobel_south.png",
+              "Item/Resource/RM_DeltaLoam/RM_DeltaLoam_a.png"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", *t.split("/"))):
+            bad.append("missing texture " + t)
     return bad
 
 
@@ -185,6 +210,15 @@ def _build_suite():
             raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), "
                                     "spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live "
                                     "Miasma quicktest map with the bridge")
+
+    @suite.chain("swarm_composter_free_tier")
+    def swarm_composter_free_tier(t):
+        with t.component("swarm_karrobel_spawn_and_gate", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 3 on RM_FeverSwarm/RM_Karrobel/RM_DeltaLoam, "
+                                    "both creatures spawning on a free-only Miasma map, and a gated mangal (RM_Thessamor) "
+                                    "not spreading where no swarm lives, need a live Miasma quicktest map")
 
     @suite.chain("flotsam_yard")
     def flotsam_yard(t):
