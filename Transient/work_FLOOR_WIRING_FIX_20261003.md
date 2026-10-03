@@ -1,0 +1,4 @@
+# Floor wiring fix 2026-10-03
+Finding: case (a) variant. The live get_defs read shows the four biomes carry only RM_SeaShoreExtension/RM_SunHeatExtension (class names ARE printed, so the check is sound). Root cause: RM_SeabedFloorBiomeWiring.xml was wrapped in PatchOperationFindMod "RimMandrake: Terminal Biomes", but the composed deploy reports modName "RimMandrake: Baroque Biomes" (mandrake.rm.biomes), so the whole patch silently matched nothing. xpaths/defNames were right; every biome already has <modExtensions>. RM_SeabedAccessExtension has public BiomeDef floorBiome (RM_SeabedLayer.cs:58).
+Fix: dropped FindMod; each sea is a guarded PatchOperationConditional (biome exists -> modExtensions exists ? Add li : add whole modExtensions). XML parses. validation.py untouched (check was correct). Not run offline against engine; needs redeploy + live rerun.
+Modified: src/RimMandrake/DivingInteraction/Patches/RM_SeabedFloorBiomeWiring.xml

@@ -1,44 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SEABED_PER_SEA_FLOORS_1: tell each terminal sea which floor biome lies beneath it.
-     RM_SeaShoreExtension-bearing biomes already have <modExtensions>, so a plain Add is safe. -->
+     No PatchOperationFindMod: the composed deploy ships these biomes inside "RimMandrake: Baroque Biomes"
+     (mandrake.rm.biomes), so a FindMod on the "Terminal Biomes" name matched nothing and the patch never ran.
+     Each op is guarded by the BiomeDef existing, and adds <modExtensions> if the biome lacks one. -->
 <Patch>
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>RimMandrake: Terminal Biomes</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationAdd">
+  <Operation Class="PatchOperationSequence">
+    <operations>
+    <li Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_TheScald"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/modExtensions</xpath>
           <value>
-            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
-              <floorBiome>RM_SeabedFloor_TheScald</floorBiome>
-            </li>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_TheScald</floorBiome>
+              </li>
           </value>
-        </li>
-        <li Class="PatchOperationAdd">
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_TheScald"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_TheScald</floorBiome>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </li>
+    <li Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_GreySea"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/BiomeDef[defName="RM_GreySea"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="RM_GreySea"]/modExtensions</xpath>
           <value>
-            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
-              <floorBiome>RM_SeabedFloor_GreySea</floorBiome>
-            </li>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_GreySea</floorBiome>
+              </li>
           </value>
-        </li>
-        <li Class="PatchOperationAdd">
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_GreySea"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_GreySea</floorBiome>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </li>
+    <li Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/modExtensions</xpath>
           <value>
-            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
-              <floorBiome>RM_SeabedFloor_TwilightSea</floorBiome>
-            </li>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_TwilightSea</floorBiome>
+              </li>
           </value>
-        </li>
-        <li Class="PatchOperationAdd">
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_TwilightSea</floorBiome>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </li>
+    <li Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_TheChill"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/BiomeDef[defName="RM_TheChill"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
           <xpath>/Defs/BiomeDef[defName="RM_TheChill"]/modExtensions</xpath>
           <value>
-            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
-              <floorBiome>RM_SeabedFloor_TheChill</floorBiome>
-            </li>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_TheChill</floorBiome>
+              </li>
           </value>
-        </li>
-      </operations>
-    </match>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_TheChill"]</xpath>
+          <value>
+            <modExtensions>
+              <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+                <floorBiome>RM_SeabedFloor_TheChill</floorBiome>
+              </li>
+            </modExtensions>
+          </value>
+        </nomatch>
+      </match>
+    </li>
+    </operations>
   </Operation>
 </Patch>
