@@ -2434,3 +2434,6 @@
 {"seat":"FOUNDRY","event":"start","id":"UTINNI_STATUES_SKELETON_BUILD_1","ts":"2026-10-03T18:55:57Z","tsn":1791053757643267889}
 {"seat":"FOUNDRY","event":"close","id":"UTINNI_STATUES_SKELETON_BUILD_1","sha":"fc40549e5b85","ts":"2026-10-03T19:00:18Z","tsn":1791054018167427271}
 {"seat":"FOUNDRY","event":"note","id":"STATUE_ART_EXPANSION_1","text":"Split into UTINNI_STATUES_SKELETON_BUILD_1 (closed fc40549e5: mod + picker on three tiers, 16 art jobs queued), UTINNI_STATUES_ART_WIRING_1, SHKAAR_FLAME_IDOL_BUILD_1, FLAME_STATUES_MOD_BUILD_1. Spec §6 footprint call: three tiers each with the picker (item file). Close this umbrella when the children are done.","ts":"2026-10-03T19:00:18Z","tsn":1791054018716063679}
+{"seat":"FOUNDRY","event":"claim","id":"SHKAAR_FLAME_IDOL_BUILD_1","ts":"2026-10-03T19:03:04Z","tsn":1791054184681302849}
+{"seat":"FOUNDRY","event":"start","id":"SHKAAR_FLAME_IDOL_BUILD_1","ts":"2026-10-03T19:03:05Z","tsn":1791054185285236757}
+{"seat":"FOUNDRY","event":"close","id":"SHKAAR_FLAME_IDOL_BUILD_1","sha":"4a7fcdbeda76","ts":"2026-10-03T19:04:19Z","tsn":1791054259032676204}
