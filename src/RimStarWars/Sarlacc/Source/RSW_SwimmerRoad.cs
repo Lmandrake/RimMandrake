@@ -49,6 +49,16 @@ namespace RimMandrake.StarWars.Sarlacc
         public float rootWithinCells = 2.9f;
 
         public IntRange rimPauseTicks = new IntRange(90, 240);
+
+        /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: the seep incident's marker thing
+        /// (RSW_DeepDesertSeep). Empty on the Long Shade road.</summary>
+        public string seepMarker;
+
+        /// <summary>Seep incident: terrain defName counted around each marker to find the
+        /// largest seep (a brine pool); its cells within seepScoreRadius are the score.</summary>
+        public string seepTerrain;
+
+        public float seepScoreRadius = 6.9f;
     }
 
     public class RSW_MapComponent_SwimmerRoad : MapComponent
@@ -61,6 +71,9 @@ namespace RimMandrake.StarWars.Sarlacc
         public Thing anchored;
         public IntVec3 targetCell = IntVec3.Invalid;
         public string incidentDefName;
+
+        /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: this swimmer is walking to a buried seep, not a dew ring.</summary>
+        public bool seepMode;
 
         public RSW_MapComponent_SwimmerRoad(Map map)
             : base(map)
@@ -96,6 +109,7 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_References.Look(ref anchored, "rswRoadAnchored");
             Scribe_Values.Look(ref targetCell, "rswRoadTarget", IntVec3.Invalid);
             Scribe_Values.Look(ref incidentDefName, "rswRoadIncident");
+            Scribe_Values.Look(ref seepMode, "rswRoadSeepMode", false);
         }
 
         public override void MapComponentTick()
@@ -110,6 +124,14 @@ namespace RimMandrake.StarWars.Sarlacc
                 if (swimmer.Dead || swimmer.Destroyed)
                 {
                     swimmer = null; // killed, or rooted by its own reserve: the road is over
+                }
+                return;
+            }
+            if (seepMode)
+            {
+                if (RSW_SarlaccSettings.swimmerSeepEnabled)
+                {
+                    RSW_SwimmerSeepLogic.CheckArrival(this);
                 }
                 return;
             }
@@ -184,7 +206,17 @@ namespace RimMandrake.StarWars.Sarlacc
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RSW_SarlaccSettings.swimmerRoadEnabled || pawn?.Map == null)
+            if (pawn?.Map == null)
+            {
+                return null;
+            }
+            RSW_MapComponent_SwimmerRoad seepRoad = RSW_MapComponent_SwimmerRoad.For(pawn.Map);
+            if (seepRoad != null && seepRoad.seepMode && seepRoad.IsRoadSwimmer(pawn))
+            {
+                // Seep incident: needs no shade graph and no Creature Behaviors.
+                return RSW_SarlaccSettings.swimmerSeepEnabled ? RSW_SwimmerSeepLogic.NextJob(pawn, seepRoad) : null;
+            }
+            if (!RSW_SarlaccSettings.swimmerRoadEnabled)
             {
                 return null;
             }
@@ -620,6 +652,182 @@ namespace RimMandrake.StarWars.Sarlacc
                 }
             }
             return fled;
+        }
+    }
+
+    // ════════════════════════════════════════════════════════════════════
+    // STILLSAND_EVENT_CREATURES_REMAINDER_1 §1 — the swimmer comes to root.
+    // A Stillsand incident: one sarlacc swimmer, once per map, comes up at the map edge
+    // and swims for the LARGEST buried seep (the sarlacc seep precious cave's brine pool,
+    // marked by RSW_DeepDesertSeep) and roots there. It reuses the road's map component,
+    // job giver and the swimmer comp's rooting; what it adds is the target finder (seeps,
+    // not dew rings) and the worker. Needs no shade graph and no Creature Behaviors.
+    // Sign (owner: nothing vanishes unseen): the arrival letter names the seep, the take
+    // signs are the comp's, and the rooting is a letter naming where.
+    // Gate: biomes by defName on the IncidentDef extension (the Long Shade pattern).
+    // ════════════════════════════════════════════════════════════════════
+
+    public class RSW_IncidentWorker_SwimmerSeep : IncidentWorker
+    {
+        protected override bool CanFireNowSub(IncidentParms parms)
+        {
+            if (!RSW_SarlaccSettings.swimmerSeepEnabled)
+            {
+                return false;
+            }
+            Map map = parms.target as Map;
+            RSW_SwimmerRoadExtension ext = def.GetModExtension<RSW_SwimmerRoadExtension>();
+            if (map == null || ext == null || map.Biome == null || !ext.biomes.Contains(map.Biome.defName))
+            {
+                return false;
+            }
+            RSW_MapComponent_SwimmerRoad road = RSW_MapComponent_SwimmerRoad.For(map);
+            if (road == null || road.fired || DefDatabase<PawnKindDef>.GetNamedSilentFail(ext.pawnKind) == null)
+            {
+                return false;
+            }
+            return RSW_SwimmerSeepLogic.TryPickSeep(map, ext, out _);
+        }
+
+        protected override bool TryExecuteWorker(IncidentParms parms)
+        {
+            Map map = (Map)parms.target;
+            RSW_SwimmerRoadExtension ext = def.GetModExtension<RSW_SwimmerRoadExtension>();
+            RSW_MapComponent_SwimmerRoad road = RSW_MapComponent_SwimmerRoad.For(map);
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(ext.pawnKind);
+            if (road == null || road.fired || kind == null || !RSW_SwimmerSeepLogic.TryPickSeep(map, ext, out IntVec3 seep)
+                || !RSW_SwimmerSeepLogic.TryFindEntry(map, seep, out IntVec3 entry))
+            {
+                return false;
+            }
+            Pawn pawn = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null));
+            if (GenSpawn.Spawn(pawn, entry, map) == null)
+            {
+                return false;
+            }
+            road.fired = true;
+            road.seepMode = true;
+            road.swimmer = pawn;
+            road.targetCell = seep;
+            road.incidentDefName = def.defName;
+            SendStandardLetter(def.letterLabel, def.letterText, def.letterDef, parms,
+                new LookTargets(new TargetInfo(seep, map)));
+            return true;
+        }
+    }
+
+    public static class RSW_SwimmerSeepLogic
+    {
+        /// <summary>The largest seep: the RSW_DeepDesertSeep marker with the most
+        /// seepTerrain cells around it (ties: first found). A marker with no terrain
+        /// scores 0 and still qualifies, so a map seeded by hand is not refused.</summary>
+        public static bool TryPickSeep(Map map, RSW_SwimmerRoadExtension ext, out IntVec3 seep)
+        {
+            seep = IntVec3.Invalid;
+            ThingDef marker = ext.seepMarker.NullOrEmpty() ? null : DefDatabase<ThingDef>.GetNamedSilentFail(ext.seepMarker);
+            if (marker == null)
+            {
+                return false;
+            }
+            TerrainDef pool = ext.seepTerrain.NullOrEmpty() ? null : DefDatabase<TerrainDef>.GetNamedSilentFail(ext.seepTerrain);
+            int best = -1;
+            List<Thing> markers = map.listerThings.ThingsOfDef(marker);
+            for (int i = 0; i < markers.Count; i++)
+            {
+                Thing m = markers[i];
+                if (!m.Spawned)
+                {
+                    continue;
+                }
+                int score = 0;
+                if (pool != null)
+                {
+                    foreach (IntVec3 c in GenRadial.RadialCellsAround(m.Position, ext.seepScoreRadius, true))
+                    {
+                        if (c.InBounds(map) && c.GetTerrain(map) == pool)
+                        {
+                            score++;
+                        }
+                    }
+                }
+                if (score > best)
+                {
+                    best = score;
+                    seep = m.Position;
+                }
+            }
+            return seep.IsValid;
+        }
+
+        /// <summary>A walkable edge cell that can reach the seep, as far from it as a few tries find.</summary>
+        public static bool TryFindEntry(Map map, IntVec3 seep, out IntVec3 entry)
+        {
+            entry = IntVec3.Invalid;
+            float bestD = -1f;
+            for (int i = 0; i < 12; i++)
+            {
+                if (!CellFinder.TryFindRandomEdgeCellWith(
+                        c => c.Standable(map) && !c.Fogged(map)
+                             && map.reachability.CanReach(c, seep, PathEndMode.OnCell, TraverseMode.PassDoors, Danger.Deadly),
+                        map, 0f, out IntVec3 c2))
+                {
+                    continue;
+                }
+                float d = (c2 - seep).LengthHorizontalSquared;
+                if (d > bestD)
+                {
+                    bestD = d;
+                    entry = c2;
+                }
+            }
+            return entry.IsValid;
+        }
+
+        public static Job NextJob(Pawn pawn, RSW_MapComponent_SwimmerRoad road)
+        {
+            CompDevourer devourer = pawn.TryGetComp<CompDevourer>();
+            if (devourer != null && devourer.Digesting)
+            {
+                return null;
+            }
+            if (!road.targetCell.IsValid || (pawn.Position - road.targetCell).LengthHorizontal <= road.Extension.rootWithinCells)
+            {
+                return null; // arrived: CheckArrival roots it on the next slow tick
+            }
+            Job job = JobMaker.MakeJob(JobDefOf.Goto, road.targetCell);
+            job.locomotionUrgency = LocomotionUrgency.Walk;
+            job.expiryInterval = 600;
+            job.checkOverrideOnExpire = true;
+            return job;
+        }
+
+        /// <summary>From the map component's slow tick: roots the swimmer once it is at the seep.</summary>
+        public static void CheckArrival(RSW_MapComponent_SwimmerRoad road)
+        {
+            Pawn s = road.swimmer;
+            if (s == null || !s.Spawned || !road.targetCell.IsValid
+                || (s.Position - road.targetCell).LengthHorizontal > road.Extension.rootWithinCells)
+            {
+                return;
+            }
+            CompDevourer devourer = s.TryGetComp<CompDevourer>();
+            CompSarlaccSwimmer comp = s.TryGetComp<CompSarlaccSwimmer>();
+            if (comp == null || (devourer != null && devourer.Digesting))
+            {
+                return;
+            }
+            string label = s.LabelShort;
+            Thing mouth = comp.RootAtSeep();
+            if (mouth == null)
+            {
+                return;
+            }
+            road.anchored = mouth;
+            road.swimmer = null;
+            Find.LetterStack.ReceiveLetter("Sarlacc rooted: " + label,
+                "The sarlacc swimmer has reached the seep it swam for and rooted over the water. It is an anchored sarlacc now, "
+                + "a permanent well with a mouth, and it will not move again.",
+                LetterDefOf.NeutralEvent, mouth);
         }
     }
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_EVENT_CREATURES_REMAINDER_1 section 4: a landing or landed shuttle is a draw for the
+  sand leviathans, after a charged thumper and before a fresh pour (RM_SandLeviathanUtility.LoudestCell).
+  Vanilla defs patched by PatchOperationAddModExtension on the def's own xpath; a def absent from the
+  load matches nothing and is skipped (no MayRequire on the Operation: it is ignored there).
+  Grav ships are NOT scored: their landing leaves no spawned marker this mod can test.
+-->
+<Patch>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/ThingDef[defName="Shuttle"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_LoudDrawExtension">
+        <label>a landed shuttle</label>
+      </li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAddModExtension">
+    <xpath>/Defs/ThingDef[defName="ShuttleIncoming"]</xpath>
+    <value>
+      <li Class="RimMandrake.Stillsand.RM_LoudDrawExtension">
+        <label>a shuttle coming down</label>
+      </li>
+    </value>
+  </Operation>
+</Patch>

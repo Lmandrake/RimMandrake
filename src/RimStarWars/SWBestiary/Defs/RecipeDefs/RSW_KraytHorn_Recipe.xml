@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- STILLSAND_EVENT_CREATURES_REMAINDER_1 section 3: the krayt horn is cut from a krayt dragon skull
+     (RSW_KraytDragonSkull) and bound in krayt hide (RSW_Leather_KraytDragon), at a machining table.
+     MayRequire on the RecipeDef: its product is a mandrake.rm.biomes-gated def. -->
+<Defs>
+  <RecipeDef MayRequire="mandrake.rm.biomes">
+    <defName>RSW_Make_KraytHorn</defName>
+    <label>make krayt horn</label>
+    <description>Cut and bind a krayt horn from a krayt dragon skull and its hide.</description>
+    <jobString>Making krayt horn.</jobString>
+    <workAmount>4800</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <skillRequirements>
+      <Crafting>6</Crafting>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_KraytDragonSkull</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_Leather_KraytDragon</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RSW_KraytDragonSkull</li>
+        <li>RSW_Leather_KraytDragon</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_KraytHorn>1</RSW_KraytHorn>
+    </products>
+    <recipeUsers>
+      <li>TableMachining</li>
+    </recipeUsers>
+  </RecipeDef>
+</Defs>

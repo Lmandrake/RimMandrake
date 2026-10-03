@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_EVENT_CREATURES_REMAINDER_1 section 3: the krayt horn's answer incident is the Utinni
+  layer's krayt attack. The RSW horn (SWBestiary) names no RUT def, so this patch ADDS
+  RM_HornExtension.answerIncident to the extension already on the horn def. Guarded by PatchOperationConditional on the horn def and on the extension's own xpath:
+  MayRequire on an <Operation> is ignored by the 1.6 engine. If either is absent the patch matches
+  nothing and the horn simply has no answer (the roll logs "no answer incident is loaded").
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_KraytHorn"]/modExtensions/li[@Class="RimMandrake.Stillsand.RM_HornExtension"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="RSW_KraytHorn"]/modExtensions/li[@Class="RimMandrake.Stillsand.RM_HornExtension"]</xpath>
+      <value>
+        <answerIncident>RUT_KraytAttack</answerIncident>
+      </value>
+    </match>
+  </Operation>
+</Patch>

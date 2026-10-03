@@ -22,6 +22,11 @@ namespace RimMandrake.Stillsand
     {
         public static bool mirrorBeamEnabled = true;
 
+        // STILLSAND_EVENT_CREATURES_REMAINDER_1: the horn, its answer chance, and the den quest.
+        public static bool hornEnabled = true;
+        public static float hornAnswerChance = 0.15f;
+        public static bool denQuestEnabled = true;
+
         private static Dictionary<string, bool> disabled = new Dictionary<string, bool>();
         private static Dictionary<string, float> odds = new Dictionary<string, float>();
 
@@ -39,6 +44,9 @@ namespace RimMandrake.Stillsand
         {
             base.ExposeData();
             Scribe_Values.Look(ref mirrorBeamEnabled, "mirrorBeamEnabled", true);
+            Scribe_Values.Look(ref hornEnabled, "hornEnabled", true);
+            Scribe_Values.Look(ref hornAnswerChance, "hornAnswerChance", 0.15f);
+            Scribe_Values.Look(ref denQuestEnabled, "denQuestEnabled", true);
             Scribe_Collections.Look(ref disabled, "leviathanDisabled", LookMode.Value, LookMode.Value);
             Scribe_Collections.Look(ref odds, "leviathanOdds", LookMode.Value, LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
@@ -81,6 +89,15 @@ namespace RimMandrake.Stillsand
             list.CheckboxLabeled("Muurrok mirror beam", ref mirrorBeamEnabled,
                 "The muurrok reflects the sun off its crest as a sweeping heat beam (never fire). "
                 + "It needs sun: none at night, under a roof, or in a sand gale. Off: it only strikes from under.");
+            list.GapLine();
+            list.CheckboxLabeled("Krayt horn", ref hornEnabled,
+                "A horn that can be blown to rout smaller predators and tribal raiders nearby. Off: it cannot be used.");
+            hornAnswerChance = list.SliderLabeled("Chance the call is answered: " + (hornAnswerChance * 100f).ToString("0") + "%",
+                hornAnswerChance, 0f, 1f,
+                tooltip: "Every blow rolls this; on a hit the krayt attack is queued a few hours out. 0 means never.");
+            hornAnswerChance = Mathf.Round(hornAnswerChance * 100f) / 100f;
+            list.CheckboxLabeled("Krayt den quest", ref denQuestEnabled,
+                "Tribes and a Jawa crew ask you to clear a greater krayt's den, when your map has one with the dragon still inside. Off: the quest is never offered.");
             list.End();
         }
     }

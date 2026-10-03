@@ -80,7 +80,8 @@ SETTINGS = {
                                  "corpseToSkeletonEnabled": True, "corpseToSkeletonDays": 15.0,
                                  "boneHarpEnabled": True, "horizonWarningsEnabled": True,
                                  "horizonWarningHours": 3.0},
-    NS + "RM_StillsandEventsSettings": {"mirrorBeamEnabled": True},
+    NS + "RM_StillsandEventsSettings": {"mirrorBeamEnabled": True, "hornEnabled": True,
+                                        "hornAnswerChance": 0.15, "denQuestEnabled": True},
     NS + "RM_StillsandWaterSettings": {"bloomOnPour": True, "ledgerEnabled": True,
                                        "ledgerIncidentWeighting": True},
     NS + "RM_GlassChainSettings": {"sunFurnaceEnabled": True, "lensBenchEnabled": True,
@@ -975,7 +976,7 @@ def settings_chain(t):
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
                   "ledgerIncidentWeighting", "sieveEnabled", "solarStillEnabled", "wringingStillEnabled", "sunLanceEnabled", "geophoneEnabled", "thumperEnabled", "sandFishingWakeEnabled", "driftSwimEnabled",
                   "listeningHissEnabled", "listeningSingingEnabled", "listeningWarningEnabled", "listeningRumbleEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
-                  "seedingEnabled"):
+                  "seedingEnabled", "hornEnabled", "denQuestEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
@@ -2057,6 +2058,148 @@ def caves_chain(t):
             if seen["skel"]:
                 _fail("skeletonPlacementEnabled is off and the regenerated map carries %d giant skeletons"
                       % seen["skel"])
+
+
+# ----------------------------------------------------------------------------- chain: the event remainder
+
+# STILLSAND_EVENT_CREATURES_REMAINDER_1. The horn, the den quest and the seep-rooting incident are RSW / RUT
+# content (mandrake.rsw.swbestiary, mandrake.rsw.sarlacc, mandrake.rut.patches), none of which is loaded on the
+# baroque_wave0 tier this suite drives, so their LIVE arms read UNMEASURED with that reason and never PASS.
+# What this chain CAN prove offline is shape: every name the three features cross-reference resolves in
+# the repo, and the new files obey the load-log lessons (no invalid fields, real vanilla sound names, ...).
+
+REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+RSW = os.path.join(REPO, "src", "RimStarWars")
+RUT = os.path.join(REPO, "src", "RimUtinni")
+REMAINDER_FILES = (
+    os.path.join(RSW, "SWBestiary", "Defs", "ThingDefs_Items", "RSW_KraytHorn.xml"),
+    os.path.join(RSW, "SWBestiary", "Defs", "RecipeDefs", "RSW_KraytHorn_Recipe.xml"),
+    os.path.join(RSW, "Sarlacc", "Defs", "IncidentDefs_SwimmerSeep.xml"),
+    os.path.join(RUT, "UtinniPatches", "Defs", "QuestScriptDefs", "RUT_KraytDenQuest.xml"),
+    os.path.join(RUT, "UtinniPatches", "Patches", "RUT_KraytHorn_Answer.xml"),
+    os.path.join(HERE, "Patches", "RM_LoudDraws.xml"),
+)
+LOAD_LOG_BANNED = ("canBeDoneByNonColonists", "<minifiable>", "PatchOperationAddOrReplace", "<haulable>")
+REAL_VANILLA_SOUNDS = ("Metal_Drop", "Standard_Drop")
+
+
+def _text(path):
+    with open(path, encoding="utf-8") as f:
+        return f.read()
+
+
+def _defnames(path_glob):
+    out = set()
+    for p in glob.glob(path_glob, recursive=True):
+        for m in re.finditer(r"<defName>([^<]+)</defName>", _text(p)):
+            out.add(m.group(1).strip())
+    return out
+
+
+@_chain("remainder")
+def remainder_chain(t):
+    cs = _text(os.path.join(HERE, "Source", "RM_EventRemainder.cs"))
+    with _comp(t, "remainder_files_obey_load_log_lessons"):
+        for p in REMAINDER_FILES:
+            if not os.path.exists(p):
+                _fail("%s is missing" % p)
+            body = _text(p)
+            ET.fromstring(body.encode("utf-8"))                      # well-formed
+            for bad in LOAD_LOG_BANNED:
+                if bad in body:
+                    _fail("%s contains %s (a load-log lesson: invalid field / banned patch op)" % (os.path.basename(p), bad))
+        # a sanity probe: the banned-token check must be able to hit
+        if not any(b in "<a><minifiable>true</minifiable></a>" for b in LOAD_LOG_BANNED):
+            _fail("sanity probe: the banned-token list cannot see <minifiable>")
+
+    with _comp(t, "remainder_horn_cross_references"):
+        horn = _text(REMAINDER_FILES[0])
+        sounds = _defnames(os.path.join(RSW, "SWBestiary", "Defs", "SoundDefs", "*.xml"))
+        for s in re.findall(r"<soundOnUsed>([^<]+)</soundOnUsed>", horn):
+            if s not in sounds:
+                _fail("horn soundOnUsed %s is not a SoundDef shipped by SWBestiary" % s)
+        for s in re.findall(r"<sound(?:Interact|Drop)>([^<]+)</sound(?:Interact|Drop)>", horn):
+            if s not in REAL_VANILLA_SOUNDS:
+                _fail("horn names sound %s, not one checked against Core (%s)" % (s, REAL_VANILLA_SOUNDS))
+        for cls in ("RM_CompUseEffect_Horn", "RM_HornExtension"):
+            if "class %s" % cls not in cs or cls not in horn:
+                _fail("%s is not both defined in RM_EventRemainder.cs and used by the horn def" % cls)
+        items = _defnames(os.path.join(RSW, "SWBestiary", "Defs", "ThingDefs_Items", "*.xml"))
+        recipe = _text(REMAINDER_FILES[1])
+        for d in re.findall(r"<li>(RSW_[A-Za-z_]+)</li>", recipe):
+            if d not in items:
+                _fail("recipe ingredient %s is not a ThingDef in SWBestiary" % d)
+        if "RSW_KraytHorn" not in items:
+            _fail("RSW_KraytHorn is not parsed from SWBestiary's items")
+        ans = _text(REMAINDER_FILES[4])
+        if "RM_HornExtension" not in ans or "RUT_KraytAttack" not in ans or "RUT_KraytAttack" in horn:
+            _fail("the answer incident must be named by the Utinni patch only, on RM_HornExtension")
+        if "RUT_KraytAttack" not in _defnames(os.path.join(RUT, "UtinniPatches", "Defs", "IncidentDefs", "*.xml")):
+            _fail("RUT_KraytAttack (the horn's answer) is not shipped by UtinniPatches")
+
+    with _comp(t, "remainder_seep_incident_stillsand_only"):
+        inc = _text(REMAINDER_FILES[2])
+        biomes = re.findall(r"<biomes>(.*?)</biomes>", inc, re.S)
+        got = re.findall(r"<li>([^<]+)</li>", biomes[0]) if biomes else []
+        if got != [BIOME]:
+            _fail("the seep-rooting incident's biome gate is %s, expected exactly [%s]" % (got, BIOME))
+        road = _text(os.path.join(RSW, "Sarlacc", "Source", "RSW_SwimmerRoad.cs"))
+        for needle in ("class RSW_IncidentWorker_SwimmerSeep", "biomes.Contains(map.Biome.defName)", "seepMode"):
+            if needle not in road:
+                _fail("RSW_SwimmerRoad.cs lacks %s" % needle)
+        marker = re.search(r"<seepMarker>([^<]+)</seepMarker>", inc).group(1)
+        if marker not in _defnames(os.path.join(RSW, "Sarlacc", "Defs", "*.xml")):
+            _fail("seep marker %s is not a def shipped by the Sarlacc mod" % marker)
+        pool = re.search(r"<seepTerrain>([^<]+)</seepTerrain>", inc).group(1)
+        if pool not in _defnames(os.path.join(REPO, "src", "RimMandrake", "FlowWorks", "Defs", "**", "*.xml")):
+            _fail("seep terrain %s is not a TerrainDef shipped by FlowWorks" % pool)
+
+    with _comp(t, "remainder_den_quest_cross_references"):
+        q = _text(REMAINDER_FILES[3])
+        for cls in re.findall(r'Class="RimMandrake\.Stillsand\.([A-Za-z_]+)"', q):
+            if "class %s" % cls not in cs:
+                _fail("quest names node %s, not defined in RM_EventRemainder.cs" % cls)
+        row = re.search(r"<caveRow>([^<]+)</caveRow>", q).group(1)
+        if row not in _defnames(os.path.join(RSW, "SWBestiary", "Defs", "MapGeneration", "*.xml")):
+            _fail("quest caveRow %s is not a precious-cave row shipped by SWBestiary" % row)
+        kind = re.search(r"<pawnKind>([^<]+)</pawnKind>", q).group(1)
+        if kind not in _defnames(os.path.join(RSW, "SWBestiary", "Defs", "ThingDefs_Races", "*.xml")):
+            _fail("quest pawnKind %s is not shipped by SWBestiary" % kind)
+        den = _text(os.path.join(RSW, "SWBestiary", "Defs", "MapGeneration", "RSW_PreciousCave_KraytDen.xml"))
+        if kind not in den:
+            _fail("the den row never spawns %s, so the quest could never be offered" % kind)
+        sig = re.findall(r"<inSignal>(krayt\.[A-Za-z]+)</inSignal>", q)
+        if not sig or set(sig) != {"krayt.Destroyed"}:
+            _fail("the den quest's success signal must be krayt.Destroyed alone (a double listener pays twice): %s" % sig)
+
+    with _comp(t, "remainder_loud_draws_wired"):
+        sl = _text(os.path.join(HERE, "Source", "RM_SandLeviathan.cs"))
+        if "ChargedThumper(map)" not in sl or "RM_LoudDraws.First(map)" not in sl:
+            _fail("LoudestCell does not consult a charged thumper and the loud-draw list")
+        if sl.index("PoweredDrills(map).FirstOrDefault()") > sl.index("ChargedThumper(map)"):
+            _fail("a working drill must still outrank a charged thumper")
+        patch = _text(REMAINDER_FILES[5])
+        if 'defName="Shuttle"' not in patch:
+            _fail("the loud-draw patch does not target the vanilla Shuttle def")
+
+    # Live arms: UNMEASURED by the suite's own mechanism, with the reason.
+    LIVE_OWED = {
+        "remainder_horn_routs_and_logs_roll": "the krayt horn is RSW content (mandrake.rsw.swbestiary) and its "
+            "answer incident is RUT: neither is on the baroque_wave0 tier; needs a campaign-tier session, with a "
+            "predator beside the user and the log's '[Stillsand] krayt horn answer roll' line read back",
+        "remainder_seep_incident_refuses_other_maps_roots_at_seep": "RSW_SwimmerSeepRoot is Sarlacc (mandrake.rsw.sarlacc, "
+            "Anomaly-gated), not loaded on this tier; needs a Stillsand map with the sarlacc seep row and a "
+            "second non-Stillsand map to refuse",
+        "remainder_den_quest_generates": "RUT_KraytDenQuest needs mandrake.rut.patches + SWBestiary and a map whose "
+            "cave rolled RSW_PreciousCave_KraytDen with the dragon alive (a 25% branch of a weighted row); generate "
+            "through dev mode Quests > Generate quest",
+        "remainder_charged_thumper_is_loudest": "LoudestCell is private to a leviathan incident in flight and no "
+            "tool reads where the dragon headed; needs a thumper charged on a live Stillsand map",
+    }
+    for name, why in sorted(LIVE_OWED.items()):
+        with _comp(t, name):
+            if _live(t):
+                _unmeasured(t, why)
 
 
 # ----------------------------------------------------------------------------- chain: the log (last)

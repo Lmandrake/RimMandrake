@@ -230,6 +230,13 @@ namespace RimMandrake.StarWars.Sarlacc
             return RootHere(foundSeep: true, dewRing: true);
         }
 
+        /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: root where it stands because it has
+        /// reached the buried seep it swam for. Returns the anchored sarlacc, or null.</summary>
+        public Thing RootAtSeep()
+        {
+            return RootHere(foundSeep: true);
+        }
+
         private Thing RootHere(bool foundSeep, bool dewRing = false)
         {
             if (Props.anchoredDef == null || !parent.Spawned)
