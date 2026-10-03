@@ -2108,3 +2108,51 @@
 {"seat":"FOUNDRY","event":"block","id":"WARSCAR_CHOTRIX_SIGNS_1","reason":"Prints and drag marks record through the track grid, which is mid-build in CreatureBehaviors (RM_TrackGridPatches/TrackPool/TrackSurfaceExtension); the grid records invisible pawns itself, so wiring is a print class on RM_Chotrix plus a drag-mark hook, to be read from the finished extension. Silence ring waits WARSCAR_GEIGER_CHOIR_1 (reads CompChotrix.All/SilenceRadius).","on":"FOOTPRINT_TRACK_GRID_1","ts":"2026-10-03T09:16:09Z","tsn":1791018969585136735}
 {"seat":"FOUNDRY","event":"claim","id":"FOOTPRINT_TRACK_GRID_1","ts":"2026-10-03T09:16:19Z","tsn":1791018979535656672}
 {"seat":"FOUNDRY","event":"start","id":"FOOTPRINT_TRACK_GRID_1","ts":"2026-10-03T09:16:20Z","tsn":1791018980065634586}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_FREE_TIER_BODY_1","ts":"2026-10-03T09:16:35Z","tsn":1791018995468278272}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_FREE_TIER_BODY_1","ts":"2026-10-03T09:16:35Z","tsn":1791018995972419235}
+{"seat":"FOUNDRY","event":"note","id":"STILLSAND_SAND_SWIM_REMAINDER_1","text":"FOOTPRINT_TRACK_GRID_1 (uncommitted, FOUNDRY 2026-10-03): Stillsand Sand+RM_DeepSand now carry RM_TrackSurfaceExtension (biomes=RM_Stillsand, invisibleTexPath=drag placeholder) via Stillsand/Patches/RM_TrackSurface_Stillsand.xml, so a submerged swimmer's path steps already lay flagged wake records through the cell-entry postfix; a TickSubmerged writer is only needed for off-path wake cells (use RM_MapComponent_TrackGrid.RecordPrint). Dune eraser still unwired.","ts":"2026-10-03T09:16:54Z","tsn":1791019014122396117}
+{"seat":"FOUNDRY","event":"note","id":"FOOTPRINT_TRACK_GRID_1","text":"Gap pass 2026-10-03: invisible flag, biome filter + multi-consumer, RecordPrint API, load-safe Dirty, RM_TrackGridDiag, Stillsand XML wiring, CreatureBehaviors/validation.py track_grid chain; build 0/0, selftest 15/15. NEXT: deploy + run validation.py track_grid on an RM_Stillsand map; Warscar wiring waits on RM_Filth_SettledFilm (WARSCAR_SETTLING_WEATHER_1).","ts":"2026-10-03T09:16:54Z","tsn":1791019014643307740}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_FARM_RUINS_1","ts":"2026-10-03T09:19:02Z","tsn":1791019142855882952}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_FARM_RUINS_1","ts":"2026-10-03T09:19:03Z","tsn":1791019143355442081}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_SETTLING_WEATHER_1","ts":"2026-10-03T09:20:30Z","tsn":1791019230642985625}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_SETTLING_WEATHER_1","ts":"2026-10-03T09:20:31Z","tsn":1791019231137389116}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_VAULT_SEAL_BREACH_1","ts":"2026-10-03T09:21:28Z","tsn":1791019288423224609}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_VAULT_SEAL_BREACH_1","ts":"2026-10-03T09:21:28Z","tsn":1791019288935020384}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_ARCHIVE_RESURRECTION_1","ts":"2026-10-03T09:23:41Z","tsn":1791019421788447181}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_ARCHIVE_RESURRECTION_1","ts":"2026-10-03T09:23:42Z","tsn":1791019422323554549}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_RAIN_STRIP_1","ts":"2026-10-03T09:27:16Z","tsn":1791019636164135985}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1","ts":"2026-10-03T09:27:16Z","tsn":1791019636506963549}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_RAIN_STRIP_1","ts":"2026-10-03T09:27:16Z","tsn":1791019636714393597}
+{"seat":"FOUNDRY","event":"start","id":"WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1","ts":"2026-10-03T09:27:17Z","tsn":1791019637101269510}
+{"seat":"FOUNDRY","event":"claim","id":"WARSCAR_GEIGER_CHOIR_1","ts":"2026-10-03T09:28:19Z","tsn":1791019699380673971}
+{"seat":"FOUNDRY","event":"start","id":"WARSCAR_GEIGER_CHOIR_1","ts":"2026-10-03T09:28:19Z","tsn":1791019699890745382}
+{"seat":"FOUNDRY","event":"note","id":"GELATINOUSSLIME_RAIN_STRIP_1","text":"built offline: SlimeRainStrip_Campaign.xml + campaign_rain_strip_patch chain; live criterion + --defs/--live validate_patch not run (no bridge/deploy)","ts":"2026-10-03T09:28:37Z","tsn":1791019717033876733}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_GENE_TEXT_TIER_1","ts":"2026-10-03T09:28:57Z","tsn":1791019737729624832}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_GENE_TEXT_TIER_1","ts":"2026-10-03T09:28:58Z","tsn":1791019738537474057}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_TITAN_CHUNK_BOMB_1","ts":"2026-10-03T09:31:32Z","tsn":1791019892397694070}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_TITAN_CHUNK_BOMB_1","ts":"2026-10-03T09:31:32Z","tsn":1791019892908020980}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_TITAN_CHUNK_BOMB_1","ts":"2026-10-03T09:31:33Z","tsn":1791019893417134396}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_GLASS_CHAIN_REMAINDER_1","ts":"2026-10-03T09:43:17Z","tsn":1791020597583383942}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_GLASS_CHAIN_REMAINDER_1","ts":"2026-10-03T09:43:18Z","tsn":1791020598104829821}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_DEWSILK_COCOON_1","ts":"2026-10-03T09:43:24Z","tsn":1791020604389883135}
+{"seat":"FOUNDRY","event":"start","id":"WEEPINGSTONES_DEWSILK_COCOON_1","ts":"2026-10-03T09:43:24Z","tsn":1791020604911256311}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_EVENT_CREATURES_REMAINDER_1","ts":"2026-10-03T09:47:14Z","tsn":1791020834260692583}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_EVENT_CREATURES_REMAINDER_1","ts":"2026-10-03T09:47:14Z","tsn":1791020834891475842}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_OASIS_MUTATOR_FLORA_1","ts":"2026-10-03T09:48:08Z","tsn":1791020888516626520}
+{"seat":"FOUNDRY","event":"start","id":"WEEPINGSTONES_OASIS_MUTATOR_FLORA_1","ts":"2026-10-03T09:48:09Z","tsn":1791020889034309325}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_WHITE_PLUME_FRONTS_1","ts":"2026-10-03T09:51:04Z","tsn":1791021064407668836}
+{"seat":"FOUNDRY","event":"start","id":"FORGE_WHITE_PLUME_FRONTS_1","ts":"2026-10-03T09:51:08Z","tsn":1791021068322739346}
+{"seat":"FOUNDRY","event":"claim","id":"JAWA_SWIM_HOOD_KEEP_1","ts":"2026-10-03T09:54:03Z","tsn":1791021243421883544}
+{"seat":"FOUNDRY","event":"start","id":"JAWA_SWIM_HOOD_KEEP_1","ts":"2026-10-03T09:54:03Z","tsn":1791021243925150144}
+{"seat":"FOUNDRY","event":"note","id":"JAWA_SWIM_HOOD_KEEP_1","text":"BUILT 2026-10-03 (FOUNDRY), not deployed: engine MEASURED: swim clears Clothes|Headgear in PawnRenderer.ParallelGetPreRenderResults and PawnRenderNodeWorker_Apparel_Head.CanDrawNow then refuses; head is NOT culled (PawnRenderNodeWorker_Head only offsets z-0.5), so the 09-26 head-culls theory is false. Fix: JawaRules postfix on Apparel_Head.CanDrawNow for apparel with RSW_KeepHoodWhileSwimming (patched onto guy762_JawaHood), toggle swimHoodEnabled. The 09-26 pale-blue blob was the untinted gene fallback hood (greyscale mask, no colour); tint is an owner call. Log: Transient/work_SWIM_HOOD_20261003.md. NEXT: at game-down deploy JawaRules and state-read the hood node CanDrawNow on a swimming Jawa.","ts":"2026-10-03T09:56:13Z","tsn":1791021373963855693}
+{"seat":"FOUNDRY","event":"claim","id":"CAULDRON_VENT_ENRICHMENT_HOOKS_1","ts":"2026-10-03T09:57:30Z","tsn":1791021450489645696}
+{"seat":"FOUNDRY","event":"start","id":"CAULDRON_VENT_ENRICHMENT_HOOKS_1","ts":"2026-10-03T09:57:30Z","tsn":1791021450977799181}
+{"seat":"FOUNDRY","event":"note","id":"CAULDRON_VENT_ENRICHMENT_HOOKS_1","text":"Built offline in Cauldron: RM_CauldronVent (state-only vent, no gas), weather multipliers+falter (transition-lerp hush, no foreknowledge needed), vent-local exposure, vexxiss vent-drinking+silence/recovery, vent flower rings, 7 toggles, vents chain in validation.py (selftest 52/52). Live quicktest UNMEASURED; walk doc lines owed. Log: Transient/work_CAULDRON_VENTS_20261003.md","ts":"2026-10-03T10:03:21Z","tsn":1791021801809121900}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_KEELWORK_REMAINDER_1","ts":"2026-10-03T10:03:59Z","tsn":1791021839391678418}
+{"seat":"FOUNDRY","event":"start","id":"FORGE_KEELWORK_REMAINDER_1","ts":"2026-10-03T10:03:59Z","tsn":1791021839897456354}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_DHUVVOX_SWARM_REMAINDER_1","ts":"2026-10-03T10:06:25Z","tsn":1791021985772323279}
+{"seat":"FOUNDRY","event":"start","id":"FORGE_DHUVVOX_SWARM_REMAINDER_1","ts":"2026-10-03T10:06:26Z","tsn":1791021986288308101}
+{"seat":"FOUNDRY","event":"claim","id":"LEANINGSCRUB_SWEETLINE_VISITORS_1","ts":"2026-10-03T10:06:56Z","tsn":1791022016063576782}
+{"seat":"FOUNDRY","event":"start","id":"LEANINGSCRUB_SWEETLINE_VISITORS_1","ts":"2026-10-03T10:06:56Z","tsn":1791022016546336954}
+{"seat":"FOUNDRY","event":"claim","id":"FORGE_VOICES_AUDIO_1","ts":"2026-10-03T10:07:25Z","tsn":1791022045606344624}
+{"seat":"FOUNDRY","event":"block","id":"FORGE_VOICES_AUDIO_1","reason":"placeholder retints already in place; bespoke clips need owner audio source","ts":"2026-10-03T10:07:28Z","tsn":1791022048871444321}
