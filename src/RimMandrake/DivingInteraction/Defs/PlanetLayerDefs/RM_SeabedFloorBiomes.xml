@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  SEABED_PER_SEA_FLOORS_1. One floor BiomeDef per sea, replacing the generic RM_SeabedFloor for
+  tiles under that sea. Mapping is data: the surface biome carries RM_SeabedAccessExtension
+  floorBiome (Patches/RM_SeabedFloorBiomeWiring.xml). Densities stay 0 until Phase 3 content
+  (plants/fauna on the floor map) is built and the plant guard is proven live. Propane Lake is
+  a RUT_ Utinni biome and is not wired here (blocked, see item).
+-->
+<Defs>
+
+  <BiomeDef ParentName="RM_SeabedBiomeBase">
+    <defName>RM_SeabedFloor_TheScald</defName>
+    <label>the Scald floor</label>
+    <description>The floor beneath the Scald: scalding vents and boiling mats under the water. Not yet surveyed in detail.</description>
+    <texture>World/Biomes/Ocean</texture>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <maxFishPopulation>0</maxFishPopulation>
+  </BiomeDef>
+
+  <BiomeDef ParentName="RM_SeabedBiomeBase">
+    <defName>RM_SeabedFloor_GreySea</defName>
+    <label>Grey Sea floor</label>
+    <description>The floor beneath Grey Sea: a salt-white floor of pillars and brine pools. Not yet surveyed in detail.</description>
+    <texture>World/Biomes/Ocean</texture>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <maxFishPopulation>0</maxFishPopulation>
+  </BiomeDef>
+
+  <BiomeDef ParentName="RM_SeabedBiomeBase">
+    <defName>RM_SeabedFloor_TwilightSea</defName>
+    <label>Twilight Sea floor</label>
+    <description>The floor beneath Twilight Sea: a dim floor lit by what lives on it. Not yet surveyed in detail.</description>
+    <texture>World/Biomes/Ocean</texture>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <maxFishPopulation>0</maxFishPopulation>
+  </BiomeDef>
+
+  <BiomeDef ParentName="RM_SeabedBiomeBase">
+    <defName>RM_SeabedFloor_TheChill</defName>
+    <label>Chill floor</label>
+    <description>The floor beneath Chill: the cold garden at the bottom of the crater lake. Not yet surveyed in detail.</description>
+    <texture>World/Biomes/Ocean</texture>
+    <animalDensity>0</animalDensity>
+    <plantDensity>0</plantDensity>
+    <maxFishPopulation>0</maxFishPopulation>
+  </BiomeDef>
+
+</Defs>

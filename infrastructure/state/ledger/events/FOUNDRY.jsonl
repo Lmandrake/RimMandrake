@@ -2023,3 +2023,16 @@
 {"seat":"FOUNDRY","event":"claim","id":"WARSCAR_RAINBOW_POOLS_1","ts":"2026-10-03T08:15:21Z","tsn":1791015321792037100}
 {"seat":"FOUNDRY","event":"start","id":"WARSCAR_RAINBOW_POOLS_1","ts":"2026-10-03T08:15:22Z","tsn":1791015322283470374}
 {"seat":"FOUNDRY","event":"block","id":"WARSCAR_RAINBOW_POOLS_1","reason":"Standalone slice built offline (registry row, pools, cycle+icons, tap, 4 reagents, journal, reader, catalyst, settings, validation). Owed: live verify on a Warscar quicktest map; RM_AerosolScreen does not exist (gel has no consumer); crater-bowl siting, choir slow-boil, coagulant bleed effect not built. Details Transient/work_RAINBOW_POOLS_20261003.md","ts":"2026-10-03T08:15:33Z","tsn":1791015333352109688}
+{"seat":"FOUNDRY","event":"claim","id":"MIASMA_SETTINGS_SWITCHES_1","ts":"2026-10-03T08:16:09Z","tsn":1791015369818277687}
+{"seat":"FOUNDRY","event":"start","id":"MIASMA_SETTINGS_SWITCHES_1","ts":"2026-10-03T08:16:10Z","tsn":1791015370336942830}
+{"seat":"FOUNDRY","event":"claim","id":"GELATINOUSSLIME_SETTINGS_SWITCHES_1","ts":"2026-10-03T08:16:15Z","tsn":1791015375181378347}
+{"seat":"FOUNDRY","event":"start","id":"GELATINOUSSLIME_SETTINGS_SWITCHES_1","ts":"2026-10-03T08:16:15Z","tsn":1791015375672338189}
+{"seat":"FOUNDRY","event":"claim","id":"WEEPINGSTONES_SETTINGS_SLIDERS_1","ts":"2026-10-03T08:17:12Z","tsn":1791015432596946430}
+{"seat":"FOUNDRY","event":"start","id":"WEEPINGSTONES_SETTINGS_SLIDERS_1","ts":"2026-10-03T08:17:13Z","tsn":1791015433088363701}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_NATIVE_COLD_TOLERANCE_1","ts":"2026-10-03T08:17:54Z","tsn":1791015474502087924}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_NATIVE_COLD_TOLERANCE_1","ts":"2026-10-03T08:17:54Z","tsn":1791015474995561660}
+{"seat":"FOUNDRY","event":"claim","id":"CHILL_FLOOR_CAST_TRIM_1","ts":"2026-10-03T08:18:53Z","tsn":1791015533586787177}
+{"seat":"FOUNDRY","event":"start","id":"CHILL_FLOOR_CAST_TRIM_1","ts":"2026-10-03T08:18:54Z","tsn":1791015534071221389}
+{"seat":"FOUNDRY","event":"claim","id":"SEABED_PER_SEA_FLOORS_1","ts":"2026-10-03T08:19:36Z","tsn":1791015576318474290}
+{"seat":"FOUNDRY","event":"start","id":"SEABED_PER_SEA_FLOORS_1","ts":"2026-10-03T08:19:36Z","tsn":1791015576843463570}
+{"seat":"FOUNDRY","event":"block","id":"SEABED_PER_SEA_FLOORS_1","reason":"Built: per-sea floor biomes+mapping+plant guard (4 RM_ seas). Remaining: Propane Lake floor (biome is RUT_PropaneLake in UtinniPatches, no RM_ twin, outside DivingInteraction); floor plants/fauna densities need live proof of the plant guard (needs bridge/deploy); real floor content per sea needs the Phase 2 floor map generator.","ts":"2026-10-03T08:20:54Z","tsn":1791015654518195521}

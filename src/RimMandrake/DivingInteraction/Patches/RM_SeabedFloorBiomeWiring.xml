@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SEABED_PER_SEA_FLOORS_1: tell each terminal sea which floor biome lies beneath it.
+     RM_SeaShoreExtension-bearing biomes already have <modExtensions>, so a plain Add is safe. -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: Terminal Biomes</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+              <floorBiome>RM_SeabedFloor_TheScald</floorBiome>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_GreySea"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+              <floorBiome>RM_SeabedFloor_GreySea</floorBiome>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+              <floorBiome>RM_SeabedFloor_TwilightSea</floorBiome>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>/Defs/BiomeDef[defName="RM_TheChill"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.DivingInteraction.RM_SeabedAccessExtension">
+              <floorBiome>RM_SeabedFloor_TheChill</floorBiome>
+            </li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
