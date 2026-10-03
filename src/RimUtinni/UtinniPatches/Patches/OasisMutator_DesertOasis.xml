@@ -78,17 +78,57 @@
     </match>
   </Operation>
 
-  <!-- ========== 3. Oasis mutator's bonus flora, our roster ========== -->
-  <!-- additionalWildPlants is dictionary-keyed like wildPlants/baseWeatherCommonalities
-       (element name = plant defName, text = commonality) — NOT an <li> list. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/TileMutatorDef[defName="Oasis"]/additionalWildPlants[not(TreePalma)]</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/TileMutatorDef[defName="Oasis"]/additionalWildPlants</xpath>
-      <value>
-        <TreePalma MayRequire="GRimTerra.Biomesmod">3</TreePalma> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
-        <VEE_Plant_DatePalm MayRequire="VanillaExpanded.VExplorationE">2</VEE_Plant_DatePalm> <!-- Ash'karr oasis roster, BiomeFlora_Ashkarr.xml -->
-      </value>
+  <!-- ========== 3. Oasis bonus flora: NO Earth palms for our roster ========== -->
+  <!-- WEEPINGSTONES_OASIS_MUTATOR_FLORA_1: the 2026-09-08 op that ADDED TreePalma 3 / VEE_Plant_DatePalm 2 to
+       Oasis.additionalWildPlants is removed (it put date palms in every oasis, our Weeping Stones included).
+       Weeping Stones tiles instead get native blade flora via RM_OasisFloraExtension (RM worker swap). -->
+
+  <!-- ========== 4. Weeping Stones campaign twin ========== -->
+  <!-- FindMod matches the exact About <name>; Weeping Stones ships folded inside the composed mod 'RimMandrake: Baroque Biomes', so that is the name that is active. RUT_WeepingStones is FROZEN (def file says do not edit), so its
+       whitelist entry and the flora extension are patched in from here. The extension class lives in
+       mandrake.rm.weepingstones: without that mod the class is unknown and would discard the def, hence the guard.
+       The worker swap itself (Oasis.workerClass) is the RM mod's patch RM_OasisMutatorFlora.xml. Weights copied
+       from RM_WeepingStones (INVENTED, mirror vanilla 5/4/6/5). -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Baroque Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist[not(li="RUT_WeepingStones")]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist</xpath>
+            <value>
+              <li>RUT_WeepingStones</li>
+            </value>
+          </match>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/BiomeDef[defName="RUT_WeepingStones"]/modExtensions[not(li[@Class="RimMandrake.WeepingStones.RM_OasisFloraExtension"])]</xpath>
+          <match Class="PatchOperationAdd">
+            <xpath>/Defs/BiomeDef[defName="RUT_WeepingStones"]/modExtensions</xpath>
+            <value>
+              <li Class="RimMandrake.WeepingStones.RM_OasisFloraExtension">
+                <stripDefNames>
+                  <li>Plant_TreePalm</li>
+                  <li>Plant_RatPalm</li>
+                  <li>Plant_Grass</li>
+                  <li>Plant_GrayGrass</li>
+                  <li>TreePalma</li>
+                  <li>VEE_Plant_DatePalm</li>
+                </stripDefNames>
+                <plants>
+                  <RM_Dewblade>6</RM_Dewblade>
+                  <RM_Bladderquill>4</RM_Bladderquill>
+                  <RM_Steamfrond>3</RM_Steamfrond>
+                  <RM_Dripfringe>1</RM_Dripfringe>
+                </plants>
+              </li>
+            </value>
+          </match>
+        </li>
+      </operations>
     </match>
   </Operation>
 

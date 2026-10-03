@@ -999,11 +999,46 @@ OASIS_STRIPPED = ("Plant_TreePalm", "Plant_RatPalm", "Plant_Grass", "Plant_GrayG
 OASIS_WORKER = "RimMandrake.WeepingStones.RM_TileMutatorWorker_Oasis"
 
 
+_UTINNI_OASIS_PATCH = None   # selftests may point this at a synthetic campaign patch; an absent file is skipped
+
+
+def _utinni_oasis_problems():
+    """Campaign twin half: the RimUtinni oasis patch whitelists RUT_WeepingStones, carries the same extension with
+    every stripped def, and no longer adds TreePalma / VEE_Plant_DatePalm to the mutator's bonus flora."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    path = _UTINNI_OASIS_PATCH or os.path.join(here, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "OasisMutator_DesertOasis.xml")
+    if not os.path.isfile(path):
+        return []
+    try:
+        root = ET.parse(path).getroot()
+    except Exception as ex:
+        return ["campaign oasis patch unreadable: %s" % ex]
+    probs = []
+    lis = " ".join((x.text or "") for x in root.iter("li"))
+    if "RUT_WeepingStones" not in lis:
+        probs.append("campaign patch does not whitelist RUT_WeepingStones into Oasis")
+    ext = [x for x in root.iter("li") if (x.get("Class") or "").endswith("RM_OasisFloraExtension")]
+    if not ext:
+        probs.append("campaign patch adds no RM_OasisFloraExtension to RUT_WeepingStones")
+    else:
+        stripped = [x.text for x in ext[0].findall("stripDefNames/li")]
+        for need in OASIS_STRIPPED:
+            if need not in stripped:
+                probs.append("campaign extension does not strip %s" % need)
+    for op in root.iter("xpath"):
+        if "additionalWildPlants" in (op.text or ""):
+            probs.append("campaign patch still edits Oasis.additionalWildPlants (palms must not be added)")
+    for tag in ("TreePalma", "VEE_Plant_DatePalm"):
+        if any(e.tag == tag for e in root.iter()):
+            probs.append("campaign patch still adds %s to the Oasis bonus flora" % tag)
+    return probs
+
+
 def _oasis_source_problems():
     """Offline structure of the Oasis swap, read from the mod's own files: the patch whitelists our biome and swaps
     the worker, the biome carries the extension (every Earth plant stripped, only our own plants added, Reeds kept),
     the worker is in the csproj, and the setting ships default-true, scribed and shown."""
-    probs = []
+    probs = _utinni_oasis_problems()
     here = os.path.dirname(os.path.abspath(__file__))
     try:
         pr = ET.parse(os.path.join(here, "Patches", "RM_OasisMutatorFlora.xml")).getroot()
