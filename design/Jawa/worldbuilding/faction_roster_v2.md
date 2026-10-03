@@ -331,7 +331,7 @@ now **five**; the remaining five are unchanged and nothing is added in Miraluka'
 Naming is kept strictly separate so the two hostile spacer factions read differently on the field:
 
 - **Imperial:** dark trooper, purge sentry, probe droid, KX security. Never "battle droid" — the Empire was droid-averse and High Human prejudice extended to droids.
-- **Geonosian:** line droid, melee droid, heavy droid, command droid — mass-produced Foundry product.
+- **Geonosian:** line droid, melee droid, heavy droid, command droid — company-era Foundry leftovers kept running by repair; nobody on the planet currently manufactures them.
 
 ## Global system 7 — Settlement-count control
 
@@ -356,7 +356,7 @@ Separate equipment tags or pawn-kind restrictions per faction:
 - **Droids:** integrated chassis-specific weapons
 - **Wookiee:** strong melee, bowcasters, limited armour
 - **Deepwater Compact:** disciplined industrial rifles, EMP, Gungan shield belts
-- **Geonosian:** sonic weapons plus mass-produced droids
+- **Geonosian:** sonic weapons plus repaired company-era droids (no current production)
 - **Helix:** expensive security equipment, few combatants
 - **Blackstar Company:** high quality, small numbers, mixed specialist weapons
 
@@ -1610,13 +1610,13 @@ Modelled on the Selkath doctrine of brutally enforced neutrality backed by a mon
 
 ## Mechanical identity
 
-An industrial hive faction: cheap biological drones and mass-produced battle droids, ruled by winged aristocrats under a single immobile queen. Hostile at −100 but not permanently, so a mid-game player retains a wedge.
+An industrial hive faction: cheap biological drones and repaired company-era battle droids (leftovers; the factory tech is latent in the Hive's databases and unusable at its capacity), ruled by winged aristocrats under a single immobile queen. Hostile at −100 but not permanently, so a mid-game player retains a wedge.
 
 ## Water doctrine — **Forbid (arid-adapted)**
 
 Geonosis is arid rock and hives are subterranean. Drones take moisture from food and deep-rock condensate; battle droids need none at all.
 
-- Geonosians carry a very low thirst rate, and battle droids carry none. Combined with a 35–55% droid share, this makes the Foundry **the only faction that can sustain a siege in deep desert.** This is its strategic identity.
+- Geonosians carry a very low thirst rate, and battle droids carry none. Combined with a repaired-leftover droid contingent (share of combat points unset; it cannot grow while no one manufactures droids), this makes the Foundry **the only faction that can sustain a siege in deep desert.** This is its strategic identity.
 - Hives are sited in mountains, caves, ore fields, and ancient factories — never on surface water.
 - Kaminoan bio-production specialists are gated to wet-adjacent hives only and never appear in deep-desert groups.
 
@@ -1635,7 +1635,7 @@ Geonosis is arid rock and hives are subterranean. Drones take moisture from food
 | Caravan frequency | None |
 | Base wealth | High |
 | Typical settlement defenders | 30–60 biological pawns plus droids |
-| Combat-droid share | 35–55% of combat points |
+| Combat-droid share | unset (repaired company-era leftovers only; no production) |
 | Drop-pod use | Occasional |
 | Siege use | Common, including deep-desert sieges |
 | Hardcoded hostility | the Galactic Empire |

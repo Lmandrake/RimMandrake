@@ -139,7 +139,7 @@ Foundry Hive). Boundary → destination.
    agrihand and a cleansweeper — mouse droids. Alternative: lock it and accept the recharge
    defect. I did not.
 2. **`OuterRim_BattleDroids` → The Unbolting, out of The Foundry Hive.** v3 gave it to the
-   Geonosians on exact lore (*"sonic weapons plus mass-produced droids"*). Ruling 1 read
+   Geonosians on exact lore (*"sonic weapons plus repaired company-era droids"*). Ruling 1 read
    strictly — *the* droid faction, singular — takes it back. Cost: The Foundry Hive falls to
    four rows (§9). Alternative, one card: leave it with the Hive as the one non-Enclave droid
    builder, since Enclave chassis are *"escaped Geonosian Foundry product"*. I read the

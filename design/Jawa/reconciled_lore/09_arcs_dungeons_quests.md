@@ -45,10 +45,14 @@
    covenant, tested on the pawn the player likes most.
 5. **The love-gate** — Yeku's future arc, Wim's settled past: membership by
    romance, the tribe deciding its own membership.
-6. **The droid-theft heist** [greenlit 2026-08-06]: the clan cannot BUILD
-   droids at start — the secret of manufacture is a prize to steal from the
-   territorial droid enclaves, a one-time unlock, Griz's arc. (Post-Droidworks
-   this gates the reassembly harness rather than a pack's auto-factory.)
+6. **The droid-theft heist** [greenlit 2026-08-06; retargeted 2026-10-03]: the clan
+   cannot BUILD droids at start — the secret of manufacture is latent in the
+   Geonosian Hive's databases (the Enclaves do not hold it), and the likely way in
+   is to STEAL it from the Hive, a one-time unlock, Griz's arc; bartering it from
+   the Hive is a possible but unlikely alternative. The chain's ruled sell-out
+   path (sell the pattern cores in beat 3) is this heist's moral fork. Chain:
+   `design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md`.
+   (Post-Droidworks this gates the reassembly harness rather than a pack's auto-factory.)
 7. **The win paths**, god-mapped: droid-army-by-force (Ohm+Sh'kaar) ·
    grand-coalition statecraft (Mob'Unloo+Ozzik) · the Hutt-ledger dominion road
    (the path Ozzik covets and always fails). No ambitious victory avoids the
