@@ -128,6 +128,10 @@ namespace RimMandrake.FeverWood
         /// being herded back to its room. Default ON.</summary>
         public static bool antHiveFarmChamberEnabled = true;
 
+        /// <summary>FEVERWOOD_HIVE_SEALED_PASSAGES_1. Off: a hive alarm never
+        /// plugs the corridor behind the intruder. Default ON.</summary>
+        public static bool antHiveSealingEnabled = true;
+
         /// <summary>Multiplies RM_AntHiveBiomeExtension.hiveChance. INVENTED
         /// default 1.0 (matches shipped behavior); exposed because the base
         /// chance itself is an invented placeholder a play-test should be
@@ -212,6 +216,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref antHiveDungeonEnabled, "antHiveDungeonEnabled", true);
             Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
             Scribe_Values.Look(ref antHiveFarmChamberEnabled, "antHiveFarmChamberEnabled", true);
+            Scribe_Values.Look(ref antHiveSealingEnabled, "antHiveSealingEnabled", true);
             Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
             Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
             Scribe_Values.Look(ref twoFrontLureSecondWaveChance, "twoFrontLureSecondWaveChance", 0.5f);
@@ -293,6 +298,10 @@ namespace RimMandrake.FeverWood
                 "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
               + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
               + "longer herded.");
+            list.CheckboxLabeled("Ant hive seals passages", ref antHiveSealingEnabled,
+                "When the hive raises its alarm it plugs the tunnel behind the intruder with resin "
+              + "(one tunnel per alarm; the plugs crumble after a few hours or can be broken). Off: "
+              + "the way out stays open.");
             list.GapLine();
             list.CheckboxLabeled("Two-front lure raids", ref twoFrontLureEnabled,
                 "A buildable stake for staking a tamed animal or prisoner as living bait. While bait is "
@@ -337,6 +346,8 @@ namespace RimMandrake.FeverWood
             // FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 — this mod's only Harmony
             // patch so far (RM_Patch_SapSuckerMishandle).
             new HarmonyLib.Harmony("mandrake.rm.feverwood").PatchAll(typeof(RM_FeverWoodMod).Assembly);
+            // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the hive answers its own alarms.
+            RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_HiveSealing.OnAlarm;
         }
 
         public override string SettingsCategory()

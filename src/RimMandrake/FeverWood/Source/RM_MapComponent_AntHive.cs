@@ -31,6 +31,10 @@ namespace RimMandrake.FeverWood
 
         public float farmHerdRadius = 5f;
 
+        // The defenders' reaction tag (RM_AntHiveBiomeExtension.alarmTag);
+        // RM_HiveSealing answers only an alarm carrying it.
+        public string alarmTag;
+
         public List<Pawn> farmStock = new List<Pawn>();
 
         private const int HerdIntervalTicks = 500;
@@ -92,6 +96,7 @@ namespace RimMandrake.FeverWood
             Scribe_Collections.Look(ref roomCenters, "roomCenters", LookMode.Value);
             Scribe_Values.Look(ref farmRoom, "farmRoom", IntVec3.Invalid);
             Scribe_Values.Look(ref farmHerdRadius, "farmHerdRadius", 5f);
+            Scribe_Values.Look(ref alarmTag, "alarmTag");
             Scribe_Collections.Look(ref farmStock, "farmStock", LookMode.Reference);
             if (roomCenters == null)
             {
@@ -104,6 +109,10 @@ namespace RimMandrake.FeverWood
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 farmStock.RemoveAll(p => p == null);
+                if (alarmTag == null && HasHive)
+                {
+                    alarmTag = new RM_AntHiveBiomeExtension().alarmTag; // a hive generated before sealing existed
+                }
             }
         }
     }

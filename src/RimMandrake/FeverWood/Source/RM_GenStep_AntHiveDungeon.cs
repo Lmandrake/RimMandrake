@@ -85,7 +85,12 @@ namespace RimMandrake.FeverWood
                 }
             }
 
-            map.GetComponent<RM_MapComponent_AntHive>()?.roomCenters.AddRange(rooms);
+            RM_MapComponent_AntHive hiveComp = map.GetComponent<RM_MapComponent_AntHive>();
+            if (hiveComp != null)
+            {
+                hiveComp.roomCenters.AddRange(rooms);
+                hiveComp.alarmTag = ext.alarmTag;
+            }
 
             Populate(map, ext, rooms);
             PlaceFarm(map, ext, rooms);

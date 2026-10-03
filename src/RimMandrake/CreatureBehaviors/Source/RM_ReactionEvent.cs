@@ -102,4 +102,36 @@ namespace RimMandrake.CreatureBehaviors
             return _activatedSources.Add(source);
         }
     }
+
+    // FEVERWOOD_HIVE_SEALED_PASSAGES_1. A content mod reacts to an alarm
+    // without this assembly knowing it exists: RM_ReactionResponseRule_Rally
+    // raises AlarmAnnounced once per event, at the moment it telegraphs (the
+    // same once-per-event gate as the sound/message). The FeverWood hive
+    // subscribes to seal the corridor behind the intruder. A subscriber that
+    // throws is logged once and never breaks the rally.
+    public static class RM_ReactionEvents
+    {
+        public static event System.Action<RM_ReactionEvent> AlarmAnnounced;
+
+        public static void RaiseAlarmAnnounced(RM_ReactionEvent evt)
+        {
+            System.Action<RM_ReactionEvent> handlers = AlarmAnnounced;
+            if (handlers == null)
+            {
+                return;
+            }
+
+            foreach (System.Delegate d in handlers.GetInvocationList())
+            {
+                try
+                {
+                    ((System.Action<RM_ReactionEvent>)d)(evt);
+                }
+                catch (System.Exception ex)
+                {
+                    Log.ErrorOnce("[RM CreatureBehaviors] AlarmAnnounced subscriber threw: " + ex, d.Method.GetHashCode() ^ 0x51A1);
+                }
+            }
+        }
+    }
 }

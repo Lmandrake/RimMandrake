@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="RM_BiomeWorker_FeverWood.cs" />
     <Compile Include="RM_FeverWoodMod.cs" />
+    <Compile Include="RM_HiveSealing.cs" />
     <Compile Include="RM_TentacleRole.cs" />
     <Compile Include="RM_CompProperties_TentacleLimb.cs" />
     <Compile Include="RM_CompTentacleLimb.cs" />
