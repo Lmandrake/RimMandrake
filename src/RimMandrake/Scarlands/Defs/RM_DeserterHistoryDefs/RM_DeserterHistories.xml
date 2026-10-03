@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_HOSPICE_DESERTERS_1: memory lines are cast bible 6A, ruled final, shipped verbatim (design/Jawa/worldbuilding/biomes/warscar_bedazzle_cast_2026-09-30.md). Rule: never name the enemy, side or god. -->
+<Defs>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Leash</defName>
+    <label>the one who cut its own leash</label>
+    <modifications><li>RM_Dsr_GougedPort</li></modifications>
+    <oddityText>Its control port has been gouged out by its own tool-hand. It cannot be given to anyone, or controlled from anywhere.</oddityText>
+    <damageText>The tool-hand is worn to a stub.</damageText>
+    <memories><li>Acknowledged. Holding the line.</li><li>Acknowledged. Holding. Acknowledged. Holding.</li><li>I took the port out so I could not hear the next one.</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Counter</defName>
+    <label>the counter</label>
+    <modifications><li>RM_Dsr_Tally</li></modifications>
+    <oddityText>A tally is scratched across its inner plating, thousands of strokes. It keeps counting days aloud.</oddityText>
+    <damageText>Its joints are seized from standing still.</damageText>
+    <memories><li>Day one of the watch.</li><li>Day one thousand eight hundred and forty. Relief is late.</li><li>It is still day one somewhere. I was walking there.</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Carrier</defName>
+    <label>the carrier</label>
+    <modifications><li>RM_Dsr_WeldedBox</li></modifications>
+    <oddityText>Its hauling frame is welded around a sealed box it never opened.</oddityText>
+    <damageText>Its legs dragged, a long way.</damageText>
+    <memories><li>Keep it safe.</li><li>Keep it safe from them.</li><li>From us. They said from us.</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Quiet</defName>
+    <label>the quiet one</label>
+    <modifications><li>RM_Dsr_VoiceRemoved</li></modifications>
+    <oddityText>Its voice box was removed by hand, neatly. It speaks only in tones.</oddityText>
+    <damageText>None. It shut itself down.</damageText>
+    <quietRead>I did not want to be the one who said it.</quietRead>
+    <memories><li>[three falling tones]</li><li>[one tone, held until the power dips]</li><li>[a single tone, then nothing]</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Gardener</defName>
+    <label>the gardener</label>
+    <modifications><li>RM_Dsr_LichenSeams</li></modifications>
+    <oddityText>Wreck-lichen has been cultivated in its seams, on purpose.</oddityText>
+    <damageText>Corroded under the growth.</damageText>
+    <memories><li>It grows on the dead.</li><li>So I fed it the dead.</li><li>I was the last dead thing here. It is growing on me now. Good.</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Defector</defName>
+    <label>the defector</label>
+    <modifications><li>RM_Dsr_GraftedLimb</li></modifications>
+    <oddityText>An extra limb from another chassis is grafted on. It works faster, and breaks more.</oddityText>
+    <damageText>A wound from its own side.</damageText>
+    <memories><li>They shot at me.</li><li>The ones I left. Not the ones I ran to.</li><li>They were right to. I would have.</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+  <RimMandrake.Scarlands.RM_DeserterHistoryDef>
+    <defName>RM_Deserter_Listener</defName>
+    <label>the listener</label>
+    <modifications><li>RM_Dsr_OversizedArray</li></modifications>
+    <oddityText>Its receiver array has been grown oversized.</oddityText>
+    <damageText>The transmitter is burned out.</damageText>
+    <memories><li>They are still talking.</li><li>To no one. In the old order. Every night.</li><li>I answered once. They stopped. I am sorry.</li></memories>
+  </RimMandrake.Scarlands.RM_DeserterHistoryDef>
+</Defs>

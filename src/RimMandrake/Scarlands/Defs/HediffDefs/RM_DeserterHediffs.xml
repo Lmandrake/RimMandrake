@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_HOSPICE_DESERTERS_1: the seven kept modifications. Effects are minimal where the mechanic is unbuilt (counter mood buff, carrier sealed box, gardener lichen seeding, listener raid warning: NOT built; see Transient/work_HOSPICE_20261003.md). -->
+<Defs>
+  <HediffDef>
+    <defName>RM_Dsr_GougedPort</defName>
+    <label>gouged control port</label>
+    <description>Its control port has been gouged out by its own tool-hand. It cannot be given to anyone, or controlled from anywhere.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+  </HediffDef>
+  <HediffDef>
+    <defName>RM_Dsr_Tally</defName>
+    <label>tally scratches</label>
+    <description>A tally is scratched across its inner plating, thousands of strokes. It keeps counting days aloud.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+    <stages><li><capMods><li><capacity>Moving</capacity><offset>-0.1</offset></li></capMods></li></stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RM_Dsr_WeldedBox</defName>
+    <label>welded sealed box</label>
+    <description>Its hauling frame is welded around a sealed box it never opened.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+    <stages><li><statFactors><CarryingCapacity>0.5</CarryingCapacity></statFactors></li></stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RM_Dsr_VoiceRemoved</defName>
+    <label>voice box removed</label>
+    <description>Its voice box was removed by hand, neatly. It speaks only in tones.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+  </HediffDef>
+  <HediffDef>
+    <defName>RM_Dsr_LichenSeams</defName>
+    <label>lichen seams</label>
+    <description>Wreck-lichen has been cultivated in its seams, on purpose.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+  </HediffDef>
+  <HediffDef>
+    <defName>RM_Dsr_GraftedLimb</defName>
+    <label>grafted limb</label>
+    <description>An extra limb from another chassis is grafted on. It works faster, and breaks more.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+    <stages><li><statFactors><WorkSpeedGlobal>1.15</WorkSpeedGlobal></statFactors></li></stages>
+  </HediffDef>
+  <HediffDef>
+    <defName>RM_Dsr_OversizedArray</defName>
+    <label>oversized array</label>
+    <description>Its receiver array has been grown oversized.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75,0.7,0.6)</defaultLabelColor>
+    <isBad>false</isBad>
+  </HediffDef>
+</Defs>

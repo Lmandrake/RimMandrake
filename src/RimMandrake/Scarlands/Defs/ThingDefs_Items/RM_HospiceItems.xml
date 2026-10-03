@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_HOSPICE_DESERTERS_1. Art: artpipe done/RM_ChassisCore, RM_FailedChassis. -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_ChassisCore</defName>
+    <label>chassis core</label>
+    <description>The small sealed heart of an old machine, what makes a chassis a someone. A hospice cradle needs one to give a woken machine its voice.</description>
+    <graphicData><texPath>Things/Item/RM_ChassisCore</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <stackLimit>5</stackLimit>
+    <statBases><MarketValue>120</MarketValue><Mass>1.5</Mass><Flammability>0</Flammability></statBases>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RM_FailedChassis</defName>
+    <label>failed chassis</label>
+    <description>What is left when a repair did not take. It keeps the machine's name and what was wrong with it; it is not a blank chunk of scrap. It can be shredded for parts.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <graphicData><texPath>Things/Item/RM_FailedChassis</texPath><graphicClass>Graphic_Single</graphicClass></graphicData>
+    <altitudeLayer>Item</altitudeLayer>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <alwaysHaulable>true</alwaysHaulable>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <tickerType>Never</tickerType>
+    <tradeability>None</tradeability>
+    <smeltable>true</smeltable>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <costList><Steel>30</Steel><ComponentIndustrial>1</ComponentIndustrial></costList>
+    <statBases><MaxHitPoints>100</MaxHitPoints><Mass>30</Mass><Flammability>0</Flammability><MarketValue>0</MarketValue></statBases>
+    <comps><li Class="RimMandrake.Scarlands.CompProperties_DeserterHistory"><describeOddities>true</describeOddities></li></comps>
+  </ThingDef>
+</Defs>

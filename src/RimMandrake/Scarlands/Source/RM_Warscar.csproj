@@ -43,6 +43,7 @@
     <Compile Include="RM_CompTurretAim.cs" />
     <Compile Include="RM_Totchak.cs" />
     <Compile Include="RM_OldTongue.cs" />
+    <Compile Include="RM_Hospice.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

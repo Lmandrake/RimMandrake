@@ -47,6 +47,15 @@ namespace RimMandrake.Scarlands
         public static float oldTongueRevealChance = 0.8f;    // chance each attempt actually places a panel
         public static int oldTongueSkillGate = 8;            // Intellectual needed to transcribe (0 = none)
 
+        // WARSCAR_HOSPICE_DESERTERS_1 toggles.
+        public static bool hospiceEnabled = true;            // rings, cradle jobs and walk-ins
+        public static int hospiceIntactPerMap = 2;           // max intact chassis rolled per map (0-3)
+        public static float hospiceStageDays = 1.5f;         // days per cradle stage (five stages)
+        public static float hospiceFailureChance = 0.08f;    // per risky stage
+        public static bool hospiceLashOut = true;            // limbs stage may hit an adjacent pawn once
+        public static bool hospiceWalkInEnabled = true;      // deserter walk-in incident
+        public static float hospiceWalkInFrequency = 1f;     // chance the incident proceeds when it rolls
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -69,6 +78,13 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref oldTonguePanelsPerMap, "oldTonguePanelsPerMap", 3f);
             Scribe_Values.Look(ref oldTongueRevealChance, "oldTongueRevealChance", 0.8f);
             Scribe_Values.Look(ref oldTongueSkillGate, "oldTongueSkillGate", 8);
+            Scribe_Values.Look(ref hospiceEnabled, "hospiceEnabled", true);
+            Scribe_Values.Look(ref hospiceIntactPerMap, "hospiceIntactPerMap", 2);
+            Scribe_Values.Look(ref hospiceStageDays, "hospiceStageDays", 1.5f);
+            Scribe_Values.Look(ref hospiceFailureChance, "hospiceFailureChance", 0.08f);
+            Scribe_Values.Look(ref hospiceLashOut, "hospiceLashOut", true);
+            Scribe_Values.Look(ref hospiceWalkInEnabled, "hospiceWalkInEnabled", true);
+            Scribe_Values.Look(ref hospiceWalkInFrequency, "hospiceWalkInFrequency", 1f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -116,6 +132,22 @@ namespace RimMandrake.Scarlands
             oldTongueRevealChance = list.Slider(oldTongueRevealChance, 0.1f, 1f);
             list.Label("Intellectual needed to read a panel: " + oldTongueSkillGate + (oldTongueSkillGate == 0 ? " (no gate)" : ""));
             oldTongueSkillGate = Mathf.RoundToInt(list.Slider(oldTongueSkillGate, 0f, 20f));
+            list.GapLine();
+
+            list.CheckboxLabeled("Hospice (kneeling chassis and cradle)", ref hospiceEnabled,
+                "Rings of kneeling chassis in ruins; an intact one can be hauled to a hospice cradle and woken over days. Ring placement affects new maps.");
+            list.Label("Intact chassis per map: up to " + hospiceIntactPerMap + " (new maps)");
+            hospiceIntactPerMap = Mathf.RoundToInt(list.Slider(hospiceIntactPerMap, 0f, 3f));
+            list.Label("Cradle stage length: " + hospiceStageDays.ToString("0.0") + " days (five stages)");
+            hospiceStageDays = list.Slider(hospiceStageDays, 0.1f, 5f);
+            list.Label("Cradle failure chance per risky stage: " + hospiceFailureChance.ToString("0%"));
+            hospiceFailureChance = list.Slider(hospiceFailureChance, 0f, 0.6f);
+            list.CheckboxLabeled("Limbs stage may lash out", ref hospiceLashOut,
+                "At the twitching-limbs stage the machine may hit one adjacent pawn, once.");
+            list.CheckboxLabeled("Deserter walks in", ref hospiceWalkInEnabled,
+                "Rarely, a damaged machine walks onto the map toward your cradle. Only while a cradle stands.");
+            list.Label("Walk-in frequency: " + hospiceWalkInFrequency.ToString("0%") + " of rolls proceed");
+            hospiceWalkInFrequency = list.Slider(hospiceWalkInFrequency, 0f, 1f);
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");

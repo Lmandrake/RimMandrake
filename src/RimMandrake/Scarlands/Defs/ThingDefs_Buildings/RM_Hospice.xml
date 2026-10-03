@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_HOSPICE_DESERTERS_1. Art: artpipe done/RM_KneelingChassis_*, RM_HospiceCradle (already generated, copied from _artsrc). The intact chassis is never spawned unminified: genstep and walk-in place it as a MinifiedThing (haulable by anyone). -->
+<Defs>
+  <ThingDef Name="RM_KneelingChassisBase" ParentName="BuildingBase" Abstract="True">
+    <thingClass>RimMandrake.Scarlands.Building_KneelingChassis</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <rotatable>true</rotatable>
+    <size>(1,1)</size>
+    <statBases><MaxHitPoints>120</MaxHitPoints><Flammability>0</Flammability><Mass>60</Mass></statBases>
+    <tickerType>Never</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <building><claimable>true</claimable><deconstructible>true</deconstructible></building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_KneelingChassisBase">
+    <defName>RM_KneelingChassis_Slagged</defName>
+    <label>slagged kneeling chassis</label>
+    <description>A machine that knelt and was fused where it knelt. Claim it and deconstruct it for steel and parts; now and then a chassis core survives inside.</description>
+    <graphicData><texPath>Things/Building/RM_KneelingChassis_Slagged</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>(1.2,1.2)</drawSize></graphicData>
+    <costList><Steel>25</Steel><ComponentIndustrial>1</ComponentIndustrial></costList>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_KneelingChassisBase">
+    <defName>RM_KneelingChassis_Posed</defName>
+    <label>posed kneeling chassis</label>
+    <description>A machine that chose to stop, knelt in order, hands open. Nothing is wrong with the pose. Claim it and deconstruct it for steel and parts; a chassis core is often intact inside.</description>
+    <graphicData><texPath>Things/Building/RM_KneelingChassis_Posed</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>(1.2,1.2)</drawSize></graphicData>
+    <costList><Steel>30</Steel><ComponentIndustrial>2</ComponentIndustrial></costList>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_KneelingChassisBase">
+    <defName>RM_KneelingChassis_Intact</defName>
+    <label>intact kneeling chassis</label>
+    <description>A kneeling machine with nothing visibly wrong with it, a long way from where it was made. Every one is a deserter with a history. Carry it to a hospice cradle. It cannot be fabricated.</description>
+    <graphicData><texPath>Things/Building/RM_KneelingChassis_Intact</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>(1.2,1.2)</drawSize></graphicData>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories><li>BuildingsMisc</li></thingCategories>
+    <comps><li Class="RimMandrake.Scarlands.CompProperties_DeserterHistory" /></comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_HospiceCradle</defName>
+    <label>hospice cradle</label>
+    <description>A cradle for repairing a deserter over days, in five stages: diagnosis, lights, twitching limbs, voice fragments, waking. Haulers bring the chassis and each stage's parts (components for the lights, etchant for the limbs, a chassis core for the voice). A failed repair leaves a wreck that keeps the machine's name.</description>
+    <thingClass>RimMandrake.Scarlands.Building_HospiceCradle</thingClass>
+    <graphicData><texPath>Things/Building/RM_HospiceCradle</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>(2,1)</drawSize></graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <rotatable>true</rotatable>
+    <size>(2,1)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,1)</interactionCellOffset>
+    <tickerType>Rare</tickerType>
+    <designationCategory>Misc</designationCategory>
+    <researchPrerequisites><li>RM_OldTongue_Hospice</li></researchPrerequisites>
+    <costList><Steel>80</Steel><ComponentIndustrial>4</ComponentIndustrial></costList>
+    <statBases><MaxHitPoints>200</MaxHitPoints><WorkToBuild>3000</WorkToBuild><Flammability>0.4</Flammability><Mass>40</Mass></statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+  </ThingDef>
+</Defs>
