@@ -565,6 +565,10 @@ def t_dependency_closure_and_composed_folders():
     check("composed: Pyrelands ships inside mandrake.rm.biomes",
          c == ("biomes", "mandrake.rm.biomes"), c)
     check("composed: an ordinary mod is not folded", runner.composed_into("Droidworks") is None)
+    t = runner.tier_package_ids("Pyrelands")
+    check("composed: Pyrelands tier closure names biomes, patches and bestiary",
+         all(x in t for x in ("mandrake.rm.biomes", "mandrake.rut.patches", "mandrake.rsw.swbestiary")), t)
+    check("composed: a mod with no tier has no closure", runner.tier_package_ids("NoSuchTierMod") == [])
 
 
 TESTS = [
