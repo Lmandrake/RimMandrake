@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_DURRGAK_BUILD_1. The placer (cast bible 2026-10-01 §4, design/Jawa/worldbuilding/biomes/
+  abyss_cast_bible_2026-10-01.md). Invented name, free RM_ tier, no donor. ONE HOME: RM_Abyss only.
+  Wild: shy, arranges obsidian-shard rings (RM_DurrgakCairn) on the ground it wanders; nothing in any
+  description says who made them. Tamed: tidies, via vanilla Haul training (Advanced trainability);
+  tamed durrgaks stop building rings. Not a flyer: no flight stat on purpose.
+  OWED: stocked-den / salvage-cache placement (art exists, defs not built).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Durrgak</defName>
+    <label>durrgak</label>
+    <description>A slow, stoop-backed digger the colour of dusty umber, with very long, pale, many-jointed fingers that it never seems to stop using. It works the black glass of the crags with a patient, shy care, turning over shards and stones and setting them down again somewhere else. Wherever one has been, things are a little too neat.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>140</MarketValue>
+      <ComfyTemperatureMin>-40</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.75</Wildness>
+      <ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+    </statBases>
+    <tools>
+      <li>
+        <label>left fingers</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right fingers</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>1.2</baseBodySize>
+      <baseHealthScale>1.0</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>Advanced</trainability>
+      <herdAnimal>false</herdAnimal>
+      <lifeExpectancy>25</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <comps>
+      <li Class="RimMandrake.Abyss.CompProperties_Durrgak">
+        <cairnDef>RM_DurrgakCairn</cairnDef>
+        <radius>7</radius>
+        <chancePerRareTick>0.08</chancePerRareTick>
+        <maxCairnsOnMap>10</maxCairnsOnMap>
+      </li>
+    </comps>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Durrgak</defName>
+    <label>durrgak</label>
+    <race>RM_Durrgak</race>
+    <combatPower>60</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Durrgak/RM_Durrgak</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- The ring itself. Not buildable by players; only a wild durrgak places it. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_DurrgakCairn</defName>
+    <label>ring of shards</label>
+    <description>A low ring of obsidian shards stood upright in the dust, each one set a hand's width from the next. It was made with great care, and not recently.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Building/DurrgakCairn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Rare</tickerType>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Abyss.CompProperties_DurrgakCairn">
+        <memory>RM_SawDurrgakRing</memory>
+        <radius>5</radius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RM_SawDurrgakRing</defName>
+    <durationDays>1.5</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>someone was here</label>
+        <description>A ring of shards, set down with such care. Someone was here, and left no other trace.</description>
+        <baseMoodEffect>-1</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>
