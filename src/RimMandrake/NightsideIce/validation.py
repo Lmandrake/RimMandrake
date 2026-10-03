@@ -2,17 +2,19 @@
 
 First north-star script (NIGHTSIDE_ICE_FIRST_SCRIPT_1). Walk: design/validation_walks/RimMandrake/NightsideIce.md.
 The mod ships exactly one def: BiomeDef RM_NightsideIce, a deliberately near-empty dirty-ice biome (no plants, no liquid water,
-Clear weather only, six imported landform animals at tiny commonality) plus a master-switch settings class that gates nothing yet.
+Clear weather only, a few landform animals at tiny commonality) plus a settings class (master switch + the heat dial's four fields) and the heat dial (RM_HeatDial.cs).
 Fold-aware: folded into mandrake.rm.biomes it is active under 'RimMandrake: Baroque Biomes'; every read is by def name.
 
 CHAINS
   defs_resolve    BiomeDef/RM_NightsideIce (parsed from the XML) resolves live; a control name reads notFound.
-  settings_roundtrip  the one `public static` field (masterEnabled) of RM_NightsideIceSettings: default / write / restore.
+  settings_roundtrip  every `public static` field of RM_NightsideIceSettings: default / write / restore.
   biome_doctrine  the sheet's hard bans read back from the running biome: animalDensity > 0 (0 makes the roster dead content),
                   plantDensity 0, no rivers, roads allowed, no farming camps, extreme biome, worker BiomeWorker_IceSheet,
                   and Clear as the only weather with weight.
   biome_roster    jawa/biome_probe: no wild plants at all; every animal row present live carries the XML commonality; a
                   control name reads absent. Rows whose donor mod is not loaded on the tier are noted, never asserted.
+  heat_dial       NIGHTSIDEICE_HEAT_DIAL_1: RM_HeatDial.ProofDial reads the parts; ProofFireRaisesDial lights a fire and
+                  the raw heat rises.
   map_mechanics   a generated nightside-ice map (all-Ice terrain, no ponds, margin events): UNMEASURED.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
@@ -289,6 +291,24 @@ def _build_suite():
                 if not live and not gated_missing:
                     raise ExpectationFailed("no animal rows live and none gated: the roster is empty")
                 # rows from patches (Utinni layer) may be extra; they are not this mod's to fail
+
+    def _dial(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.NightsideIce.RM_HeatDial", method=method, args="current")
+        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+    @suite.chain("heat_dial")
+    def heat_dial(t):
+        """NIGHTSIDEICE_HEAT_DIAL_1: the dial measures and a fire raises it. The proofs measure on the current map
+        whatever its biome (the raw sum does not gate on biome); the dial's Nightside-Ice-only cadence and the alert
+        are the live first poke on a generated RM_NightsideIce map."""
+        with t.component("dial_reads", toggle="heatDialEnabled"):
+            txt = _dial(t, "ProofDial")
+            if _live(t) and (not txt.startswith("DIAL ") or " heaters " not in txt):
+                raise ExpectationFailed("ProofDial did not read the dial: %s" % txt)
+        with t.component("fire_raises_the_dial", toggle="heatDialEnabled"):
+            txt = _dial(t, "ProofFireRaisesDial")
+            if _live(t) and "rose=True" not in txt:
+                raise ExpectationFailed("a size-1 fire did not raise the raw heat: %s" % txt)
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
