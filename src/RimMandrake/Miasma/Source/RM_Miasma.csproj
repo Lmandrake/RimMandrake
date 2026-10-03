@@ -50,6 +50,7 @@
     <Compile Include="RM_Patch_WardenYoungTrainableGate.cs" />
     <Compile Include="RM_CompProperties_PlantPredator.cs" />
     <Compile Include="RM_CompPlantPredator.cs" />
+    <Compile Include="RM_AmbushFrogHunting.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

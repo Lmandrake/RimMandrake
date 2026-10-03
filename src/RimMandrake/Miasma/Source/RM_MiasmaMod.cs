@@ -60,6 +60,8 @@ namespace RimMandrake.Miasma
         // set to 0 when off, else to the slider (shipped 0.25).
         public static bool strandedDeformationEnabled = true;
         public static float strandedDeformationChance = 0.25f;
+        // MIASMA_AMBUSH_FROG_REMAKE_1: the bozzuga hunts scuttlers and stranded young (race.predator).
+        public static bool ambushFrogHunts = true;
 
         public override void ExposeData()
         {
@@ -71,6 +73,7 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true, true);
             Scribe_Values.Look(ref strandedDeformationEnabled, "strandedDeformationEnabled", true, true);
             Scribe_Values.Look(ref strandedDeformationChance, "strandedDeformationChance", 0.25f, true);
+            Scribe_Values.Look(ref ambushFrogHunts, "ambushFrogHunts", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -127,6 +130,12 @@ namespace RimMandrake.Miasma
                 list.Label("  Chance per stranded creature: " + (strandedDeformationChance * 100f).ToString("0") + "%");
                 strandedDeformationChance = list.Slider(strandedDeformationChance, 0.01f, 1f);
             }
+
+            list.GapLine();
+            list.CheckboxLabeled("Bozzuga hunts",
+                ref ambushFrogHunts,
+                "The bozzuga, the root-maze's ambush frog, lies in wait and eats scuttlers and stranded young. "
+                + "Off: it is a placid animal that hunts nothing.");
 
             list.End();
         }
@@ -223,6 +232,7 @@ namespace RimMandrake.Miasma
         {
             base.WriteSettings();
             RM_MiasmaSettingsApplier.Apply();
+            RM_AmbushFrogHunting.Apply();
         }
 
         public override string SettingsCategory()
