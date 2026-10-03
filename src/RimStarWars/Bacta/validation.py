@@ -183,6 +183,15 @@ def _inspect(t, tid):
 
 
 def _fuel(t, tank):
+    # LIVE 2026-10-03: the inspect line rounds the fuel to a whole number ("Bacta: 25 / 25"), so a 0.2-bacta drain read as 0.000.
+    # jawa/comp_read (JawaBench companion) reads CompRefuelable.fuel exactly; the inspect line stays as the fallback.
+    r = t.bridge_call("jawa/comp_read", thing=tank, comp="Refuelable", members="fuel")
+    if isinstance(r, dict) and r.get("success"):
+        v = (r.get("values") or {}).get("fuel")
+        try:
+            return float(str(v).replace(",", "."))
+        except (TypeError, ValueError):
+            pass
     m = re.search(r"Bacta:\s*([\d.]+)\s*/\s*([\d.]+)", _inspect(t, tank))
     return float(m.group(1)) if m else None
 
