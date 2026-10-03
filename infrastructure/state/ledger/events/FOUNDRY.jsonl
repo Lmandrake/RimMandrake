@@ -2458,3 +2458,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"TOLLUK_CAP_ART_REGEN_1","ts":"2026-10-03T19:25:11Z","tsn":1791055511957499296}
 {"seat":"FOUNDRY","event":"start","id":"TOLLUK_CAP_ART_REGEN_1","ts":"2026-10-03T19:25:12Z","tsn":1791055512462246867}
 {"seat":"FOUNDRY","event":"close","id":"TOLLUK_CAP_ART_REGEN_1","sha":"ea39b4ad6edf","ts":"2026-10-03T19:25:24Z","tsn":1791055524969467207}
+{"seat":"FOUNDRY","event":"file","id":"UNFINISHED_LINE_SITE_CHOICE_1","title":"Unfinished Line site choice (where the line stands, A-D) offered at the end of beat 2 and carried to beats 3-5; BLOCKED on BENCH/owner: Q1=A ruled no player-owned line, so does site B 'your colony' stay or go","kind":"build","target":"v1","needs":"owner","spec":"design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md","caused_by":"UNFINISHED_LINE_ENVOY_BEAT_1","for":"FOUNDRY","ts":"2026-10-03T19:26:50Z","tsn":1791055610364658623}
+{"seat":"FOUNDRY","event":"claim","id":"UNFINISHED_LINE_ENVOY_BEAT_1","ts":"2026-10-03T19:26:50Z","tsn":1791055610967804918}
+{"seat":"FOUNDRY","event":"start","id":"UNFINISHED_LINE_ENVOY_BEAT_1","ts":"2026-10-03T19:26:51Z","tsn":1791055611612956363}
+{"seat":"FOUNDRY","event":"close","id":"UNFINISHED_LINE_ENVOY_BEAT_1","sha":"a1b5b72616aa","ts":"2026-10-03T19:30:20Z","tsn":1791055820758785393}
+{"seat":"FOUNDRY","event":"block","id":"UNFINISHED_LINE_SITE_CHOICE_1","reason":"Q1=A (no player-owned line) vs design site B 'your colony gets the building': BENCH/owner must say whether site B stays or is cut before the choice is built","ts":"2026-10-03T19:30:21Z","tsn":1791055821327941999}
