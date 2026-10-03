@@ -226,7 +226,7 @@
   <ThingDef ParentName="FishBase" MayRequire="Ludeon.RimWorld.Odyssey">
     <defName>RM_EkkelCatch</defName>
     <label>ekkel</label>
-    <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff, heat-mirror filaments — the eesh's skin grown into a tangle — that lives on the vent walls beside the karrash and rolls: it lets go, tumbles down the chimney in the boil-current flashing like a dropped handful of needles, catches, climbs, and lets go again. It is feeding, somehow, on the mat. Netted it is a ball of hot wire with a soft thing at the centre that is already cooked and tastes of the vents, which is to say of metal and something older. Rim-pilgrims keep the filament-knots; they stay bright for years.</description>
+    <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff, heat-mirror filaments — the eesh's skin grown into a tangle — that lives on the vent walls beside the karrash and rolls: it lets go, tumbles down the chimney in the boil-current flashing like a dropped handful of needles, catches, climbs, and lets go again. It is feeding, somehow, on the mat. Netted it is a ball of hot wire with a soft thing at the centre that is already cooked and tastes of the vents, which is to say of metal and something older. Rim-pilgrims keep the filament-knots; they stay bright for years. Fishermen on the rim say every ekkel began as a knot of shed simmerlace that learned to roll.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_EkkelCatch</texPath>
     </graphicData>

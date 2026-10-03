@@ -621,7 +621,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Ekkel</defName>
     <label>ekkel</label>
-    <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff heat-mirror filaments — the eesh's skin grown into a tangle — living on the vent walls beside the karrash, and it travels by letting go: it drops, tumbles down the chimney in the boil-current flashing like a spilled handful of needles, catches somewhere lower, climbs, and lets go again. It is feeding the whole time, on the mat, somehow.</description>
+    <description>Nobody knows which way up an ekkel goes. A fist-sized knot of stiff heat-mirror filaments — the eesh's skin grown into a tangle — living on the vent walls beside the karrash, and it travels by letting go: it drops, tumbles down the chimney in the boil-current flashing like a spilled handful of needles, catches somewhere lower, climbs, and lets go again. It is feeding the whole time, on the mat, somehow. Fishermen on the rim say every ekkel began as a knot of shed simmerlace that learned to roll.</description>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>20</MarketValue>
