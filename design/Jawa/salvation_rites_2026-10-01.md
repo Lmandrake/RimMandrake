@@ -279,9 +279,17 @@ Rekko carries five found rites (the Unfinished Laid Down, the Inherited Wreck, t
 the Recall of the Written-Off, B17): **at the cap**. (The Seating, B4, is a pantheon-design rite, not a found one, and is not counted,
 as at every earlier count.)
 
-**Count (by hand from the tables above, not an instrument): 113 rows.** B1 5 + B2 5 + B3 23 +
-B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1 + B16 1 + B17 1. **104 are the Salvation's** (B1 to B5, B7 to B17;
-the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 102 distinct). Sh'kaar
+### B18. Found rites of the Scald (PITCHED)
+
+Sitting Q4 (b), 2026-10-02 (decision taken by question card): a bathing rite for the water pilgrims.
+
+| Rite | God | Kind | Condition | Found | Status | Source |
+|---|---|---|---|---|---|---|
+| The Margin Bath | Ta'Baa (Oomo is at the cap) | consolation | three or more unarmored participants in the Scald's cool margin cove; arrivals by recent launch raise the outcome | the Scald, a pilgrim's bathing-stone at the cove edge | PITCHED (god choice owner's to rule); build waits on the margin cove and the found-rite machinery; item `SCALD_BATHING_RITE_1` | `design/Jawa/worldbuilding/biomes/the_scald_margin_bath_rite_2026-10-03.md` |
+
+**Count (by hand from the tables above, not an instrument): 114 rows.** B1 5 + B2 5 + B3 23 +
+B4 7 + B5 28 + B6 8 + B7 23 + B8 2 + B9 1 + B10 1 + B11 2 + B12 2 + B13 1 + B14 2 + B15 1 + B16 1 + B17 1 + B18 1. **105 are the Salvation's** (B1 to B5, B7 to B18;
+the Unburdening appears in both B4 and B5, and Nine Faults in both B5 and B8, so 103 distinct). Sh'kaar
 now carries four found rites (the Snuffing, the Anvil Gift, the Shade Tithe, the Felled Noon): one under the cap.
 
 **Per-god cap: five found rites** (decision taken by question card 2026-10-02 09:23 PDT, raising it from
