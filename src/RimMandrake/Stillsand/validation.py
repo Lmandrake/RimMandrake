@@ -82,7 +82,8 @@ SETTINGS = {
     NS + "RM_StillsandWaterSettings": {"bloomOnPour": True, "ledgerEnabled": True,
                                        "ledgerIncidentWeighting": True},
     NS + "RM_GlassChainSettings": {"sunFurnaceEnabled": True, "lensBenchEnabled": True,
-                                   "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0},
+                                   "solarOvenEnabled": True, "sunWorkSpeedMultiplier": 1.0,
+                                   "sieveEnabled": True, "sieveYieldMultiplier": 1.0},
     NS + "RM_DuneGaleSettings": {"galeEnabled": True, "galeFrequency": 1.0, "abrasionEnabled": True,
                                  "carryEnabled": True, "staticEnabled": True, "emergenceEnabled": True,
                                  "seedingEnabled": True, "dustDevilsEnabled": True,
@@ -108,7 +109,7 @@ _STATE = {}                    # readings shared between components of ONE run
 
 # ----------------------------------------------------------------------------- shipped defs
 
-STD_TYPES = ("ThingDef", "PawnKindDef", "HediffDef", "WeatherDef", "IncidentDef", "JobDef", "RecipeDef",
+STD_TYPES = ("ThingDef", "WorkGiverDef", "PawnKindDef", "HediffDef", "WeatherDef", "IncidentDef", "JobDef", "RecipeDef",
              "BiomeDef", "GameConditionDef", "GenStepDef", "SoundDef", "BodyDef", "BodyPartDef",
              "BodyPartGroupDef", "DamageDef")
 
@@ -668,6 +669,23 @@ def defs_chain(t):
                 _fail("sanity probe: an absent def was not reported in notFound: %r" % probe)
             _note(t, "shipped defs resolved", len(SHIPPED))
 
+    with _comp(t, "sand_sieve_defs"):
+        # STILLSAND_SAND_SIEVE_CHORE_1: the carried-tool chore needs its item, job and both work givers
+        # to resolve live (a giverClass naming a missing type discards the WorkGiverDef silently).
+        need = ["ThingDef/RM_SandSieve", "JobDef/RM_SiftGlassSand", "WorkGiverDef/RM_SiftGlassSand",
+                "WorkGiverDef/RM_TakeSandSieve"]
+        for d in need:
+            if d not in SHIPPED:
+                _fail("%s is not parsed from this mod's Defs/ (parser or def missing)" % d)
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(need), fields="defName", limit=20)
+            _ok(r, "get_defs(sand sieve)")
+            if r.get("notFound"):
+                _fail("sand sieve def(s) did not resolve live: %s" % r.get("notFound"))
+            # The sieve yield must be a live, writable field; a 0 multiplier would make the chore a no-op.
+            if not _same(_get_setting(t, "sieveYieldMultiplier"), 1.0):
+                _fail("sieveYieldMultiplier is not at its shipped default 1.0")
+
     with _comp(t, "custom_defs_resolve"):
         if _live(t):
             if len(CUSTOM_SHIPPED) < 5:
@@ -776,7 +794,7 @@ def settings_chain(t):
     # Toggles whose EFFECT this suite cannot drive (see the module docstring): the field must exist,
     # read its shipped default and be writable, restored afterwards.
     for field in ("yardangShapingEnabled", "torEnabled", "boneHarpEnabled", "ledgerEnabled",
-                  "ledgerIncidentWeighting", "abrasionEnabled", "carryEnabled", "staticEnabled",
+                  "ledgerIncidentWeighting", "sieveEnabled", "abrasionEnabled", "carryEnabled", "staticEnabled",
                   "seedingEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):

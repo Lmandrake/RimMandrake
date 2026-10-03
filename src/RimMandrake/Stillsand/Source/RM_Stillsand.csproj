@@ -72,6 +72,8 @@
     <!-- STILLSAND_GLASS_LENS_CHAIN_1: sun-fed work tables (Harmony, see below) -->
     <Compile Include="RM_SunPowered.cs" />
     <Compile Include="RM_GlassChainMod.cs" />
+    <!-- STILLSAND_SAND_SIEVE_CHORE_1: the sand sieve pawn chore -->
+    <Compile Include="RM_SandSieve.cs" />
   </ItemGroup>
 
   <!-- STILLSAND_GLASS_LENS_CHAIN_1: Harmony IS referenced (one postfix on
