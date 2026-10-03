@@ -2340,3 +2340,9 @@
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_KETHREL_BUILD_1","ts":"2026-10-03T16:57:23Z","tsn":1791046643353833969}
 {"seat":"FOUNDRY","event":"start","id":"SUMP_KETHREL_BUILD_1","ts":"2026-10-03T16:57:23Z","tsn":1791046643876952891}
 {"seat":"FOUNDRY","event":"close","id":"SUMP_KETHREL_BUILD_1","sha":"b09fcd2d9","ts":"2026-10-03T17:02:06Z","tsn":1791046926856248109}
+{"seat":"FOUNDRY","event":"close","id":"FEVERWOOD_TIER_LEAKS_FIX_1","sha":"16765aa02","ts":"2026-10-03T17:03:33Z","tsn":1791047013332459131}
+{"seat":"FOUNDRY","event":"close","id":"WEEPINGSTONES_MURRIN_CATCH_WIRING_1","sha":"9aa2aa9f3","ts":"2026-10-03T17:04:32Z","tsn":1791047072721039483}
+{"seat":"FOUNDRY","event":"close","id":"WEEPINGSTONES_OASIS_MUTATOR_FLORA_1","sha":"7cfdfd2f8","ts":"2026-10-03T17:04:33Z","tsn":1791047073249373812}
+{"seat":"FOUNDRY","event":"close","id":"ABYSS_ETCHCAP_BUILD_1","sha":"e44b4d2e6","ts":"2026-10-03T17:04:33Z","tsn":1791047073772707084}
+{"seat":"FOUNDRY","event":"close","id":"MIASMA_SWARM_COMPOSTER_PORT_1","sha":"9c2d28f08","ts":"2026-10-03T17:04:34Z","tsn":1791047074294534215}
+{"seat":"FOUNDRY","event":"close","id":"GELATINOUSSLIME_GENE_TEXT_TIER_1","sha":"444a7aaa4","ts":"2026-10-03T17:04:34Z","tsn":1791047074825566270}

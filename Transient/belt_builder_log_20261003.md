@@ -33,3 +33,4 @@
 - WEBWORK_BASE_PORT_BUILD_1 built (RM_ anchor/web/gutter/slick + creep ext + thrixweave rename/strip/butcher/killedLeavings, 3 settings, validation chain; silk-knot/nest scatter stay campaign-side; sha pending)
 - ART WIRED: Rot thozzik/illoth south frames from _artsrc (ART_OWED emptied); Yammeth_south, Selvix, item icons, Qeshra roe/char-lace still pending/failed in artpipe
 - SUMP_KETHREL_BUILD_1 built (RM_Kethrel race+kind, shell comp/hediff/render tree/ITab, 12 sprites wired from _artsrc, 6 settings, roster row in held biome; no Harmony; live proof owed)
+- QUEUE HYGIENE: closed 6 built-but-unclosed doing items at their real shas (FEVERWOOD_TIER_LEAKS_FIX_1 16765aa02, WEEPINGSTONES_MURRIN_CATCH_WIRING_1 9aa2aa9f3, WEEPINGSTONES_OASIS_MUTATOR_FLORA_1 7cfdfd2f8, ABYSS_ETCHCAP_BUILD_1 e44b4d2e6, MIASMA_SWARM_COMPOSTER_PORT_1 9c2d28f08, GELATINOUSSLIME_GENE_TEXT_TIER_1 444a7aaa4); STILLSAND_CAVE_TIER_ROWS_1 and CHILL_FREE_TIER_CATCH_1 left doing (unverified)
