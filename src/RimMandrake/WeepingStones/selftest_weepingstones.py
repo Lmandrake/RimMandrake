@@ -308,8 +308,9 @@ def main():
     # -- healthy world: every component passes --------------------------------------------------
     healthy = run()
     check("healthy: %d components all PASS" % len(healthy),
-          healthy and all(v == "PASS" for v, _ in healthy.values()),
-          {k: v for k, v in healthy.items() if v[0] != "PASS"})
+          healthy and all(v[0] == "PASS" or (k in V.LIVE_ONLY_UNMEASURED and v[0] == "UNMEASURED")
+                          for k, v in healthy.items()),
+          {k: v for k, v in healthy.items() if v[0] != "PASS" and k not in V.LIVE_ONLY_UNMEASURED})
 
     # -- each break turns its own component red -------------------------------------------------
     cases = [

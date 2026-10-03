@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEEPINGSTONES_DEWSILK_COCOON_1: cocoon -> dewsilk at the vanilla tailor benches (RecipeDef.recipeUsers, no patch). INVENTED yield. -->
+<Defs>
+  <RecipeDef>
+    <defName>RM_SpinDewsilk</defName>
+    <label>spin dewsilk</label>
+    <description>Spin mirrik cocoons into dewsilk fabric.</description>
+    <jobString>Spinning dewsilk.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <requiredGiverWorkType>Tailoring</requiredGiverWorkType>
+    <effectWorking>Tailor</effectWorking>
+    <soundWorking>Recipe_Tailor</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_DewsilkCocoon</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_DewsilkCocoon</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_Dewsilk>6</RM_Dewsilk>
+    </products>
+    <recipeUsers>
+      <li>HandTailoringBench</li>
+      <li>ElectricTailoringBench</li>
+    </recipeUsers>
+  </RecipeDef>
+</Defs>
