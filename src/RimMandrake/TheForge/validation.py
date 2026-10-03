@@ -186,6 +186,16 @@ def _read_cs(name):
         return ""
 
 
+def _read_text(rel):
+    """A file under the mod folder (Defs/...), read as text; a failure is recorded like a source-parse error."""
+    try:
+        with open(os.path.join(_HERE, rel), encoding="utf-8") as fh:
+            return fh.read()
+    except Exception as ex:
+        _ERRORS.append("%s: %s" % (rel, ex))
+        return ""
+
+
 def _settings_defaults():
     """{field: default} for every `public static` field of RM_TheForgeSettings, read from the C# source."""
     text = _read_cs("RM_TheForgeMod.cs")
@@ -207,7 +217,8 @@ WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabl
          "cycleTelegraphLetters", "keelworkEnabled", "keelRingEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
          "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
-         "plumeStrength"]
+         "plumeStrength",
+         "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled"]
 SCAFFOLDING = sorted(k for k in SETTINGS_DEFAULTS if k not in WIRED)
 suite.toggles = list(WIRED)
 
@@ -1847,8 +1858,57 @@ def plume_fronts(t):
               "exemption in play: no bridge tool reads them")
 
 
+@suite.chain("sky_pastures")
+def sky_pastures(t):
+    """FORGE_SKY_PASTURES_1: the vapour-column grid haze, ash spirals, column-aware hunting, the jossur stoop and the
+    flier-selected highlight. NOTHING here is readable through a bridge tool (a section mesh, a fleck, a prey score, a
+    flight state and a per-frame outline are all engine-internal and the flyer rule forbids a live flight hunt), so each
+    component is a SOURCE claim, labelled as such, and the behaviour is recorded UNMEASURED live. Component names say
+    what the source must carry; none claims the game was observed."""
+    _enter(t)
+    src = _read_cs("RM_ForgeSkyPastures.cs")
+    prj = _read_cs("RM_TheForge.csproj")
+    mod = _read_cs("RM_TheForgeMod.cs")
+    dbg = _read_cs("RM_ForgeCycleDebugActions.cs")
+    defs = _read_text(os.path.join("Defs", "ThingDefs_Races", "RM_TheForgeNatives.xml"))
+    flag = _read_text(os.path.join("Defs", "MapMeshFlagDefs", "RM_SkyColumns.xml"))
+
+    def need(cond, msg):
+        if _live(t) or t.session is None:
+            if not cond:
+                _fail(msg)
+
+    with _comp(t, "sky_source_grid_is_a_dirty_safe_section_layer", independent=True, toggle="skyColumnGridEnabled"):
+        need("class SectionLayer_RM_SkyColumns : SectionLayer" in src, "no SectionLayer for the grid")
+        need("relevantChangeTypes = (ulong)RM_TheForgeDefOf.RM_SkyColumns" in src, "the layer does not listen to its own flag")
+        need("<defName>RM_SkyColumns</defName>" in flag and "RM_SkyColumns" in _read_cs("RM_TheForgeDefOf.cs"),
+             "the MapMeshFlagDef or its DefOf is missing")
+        need("catch (System.NullReferenceException)" in src and "SectionAt(loc) == null" in src,
+             "dirtying does not guard the not-yet-built section slots (the MessyConduit first-load trap)")
+        need("skyColumnGridEnabled" in src, "the grid is not gated on skyColumnGridEnabled")
+        need('Compile Include="RM_ForgeSkyPastures.cs"' in prj, "the csproj does not compile RM_ForgeSkyPastures.cs (a silent no-op)")
+    with _comp(t, "sky_source_spirals_are_cosmetic_flecks", independent=True, toggle="skyAshSpiralsEnabled"):
+        need("FleckMaker.ThrowDustPuffThick" in src and "skyAshSpiralsEnabled" in src, "no ash flecks under skyAshSpiralsEnabled")
+        need("CurrentViewRect" in src, "spirals are not limited to the camera view")
+    with _comp(t, "sky_source_hunt_scores_columns", independent=True, toggle="skyColumnHuntEnabled"):
+        need("nameof(FoodUtility.GetPreyScoreFor)" in src and "skyColumnHuntEnabled" in src, "no gated prey-score postfix")
+        need("InColumn(prey.Position)" in src, "the prey score does not read the column field")
+    with _comp(t, "sky_source_jossur_stoop_uses_flight_stats", independent=True, toggle="jossurStoopEnabled"):
+        need("flight.StartFlying()" in src and "CanFlyNow" in src and "jossurStoopEnabled" in src, "the stoop is not a gated stock StartFlying")
+        need("RimMandrake.TheForge.CompProperties_JossurStoop" in defs, "the jossur def does not carry the stoop comp")
+        need("<MaxFlightTime>20</MaxFlightTime>" in defs, "the jossur lost its MaxFlightTime stat")
+    with _comp(t, "sky_source_highlight_is_selection_only", independent=True, toggle="skyColumnHighlightEnabled"):
+        need("GenDraw.DrawFieldEdges" in src and "skyColumnHighlightEnabled" in src, "no gated field-edge outline")
+        need("SingleSelectedThing" in src and "MapComponentUpdate" in src, "the outline is not tied to the current selection")
+    with _comp(t, "sky_source_debug_report_exists", independent=True):
+        need("Forge sky: report" in dbg, "no sky report debug action")
+    if _live(t):
+        _note(t, "sky UNMEASURED", "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge "
+              "tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters")
+
+
 # Chain order = registration order, kept explicit: the dormancy chain runs after every chain that steps a cycle, because
 # it must move the clock past the stale flash window / burst those leave behind (see its site_ready).
 _ORDER = ["log_clean", "defs_resolve", "def_wiring", "biome_wiring", "settings", "spunstone", "keelwork",
-          "cycle_walk", "cycle_arms", "still_heat_hiss", "voices", "dormancy", "floatstone_harvest", "plume_fronts"]
+          "cycle_walk", "cycle_arms", "still_heat_hiss", "voices", "dormancy", "floatstone_harvest", "plume_fronts", "sky_pastures"]
 suite.chains.sort(key=lambda c: _ORDER.index(c[0]))

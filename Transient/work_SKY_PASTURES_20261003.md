@@ -1,0 +1,16 @@
+# FORGE_SKY_PASTURES_1 work log (2026-10-03)
+Scope: src/RimMandrake/TheForge only (EnvironmentalHazards untouched; the column field is only READ through the public RM_MapComponent_VaporColumns.InColumn/NearestColumnCell).
+## Already existed (checked)
+RM_MapComponent_VaporColumns, RM_CompVaporDrifter, RM_JobGiver_ColumnWander (EnvironmentalHazards); drifter comp on RM_FleetFlier and RM_Jossur; jossur MaxFlightTime 20. No artpipe art needed (no textures: solid-colour haze + vanilla flecks).
+## Built (all compile via winbuild; Source/RM_ForgeSkyPastures.cs, csproj Compile line added)
+1. Grid: SectionLayer_RM_SkyColumns prints a faint haze (rim cells brighter) per section; mesh only regenerates when the new MapMeshFlagDef RM_SkyColumns dirties it. RM_MapComponent_SkyPastures re-reads the field hourly (and on debug action), dirties all sections only if the cell-set signature changed; null-slot guard copied from MessyConduit. Choice: the haze is always on (toggle skyColumnGridEnabled), very low alpha, because item #1 says "render the grid"; the highlight (#3) is the no-permanent-overlay half.
+2. Ash spirals: up to 36 motes at on-screen column cells, 4-tick steps, vanilla ThrowDustPuffThick along a shrinking rising ellipse (cosmetic; view-limited). Toggle skyAshSpiralsEnabled.
+3. Hunting: Harmony postfix on public FoodUtility.GetPreyScoreFor for predators carrying RM_CompVaporDrifter: +30 prey inside a column, -60 prey outside every column and beyond forageRadiusBeyondColumns (jossur 20). Vanilla BestPawnToHuntForPredator still picks. Toggle skyColumnHuntEnabled. Stoop: RM_CompJossurStoop (new comp on RM_Jossur, 8..32 cells from its PredatorHunt prey) calls stock Pawn_FlightTracker.StartFlying (gated by MaxFlightTime stat + cooldown) and sets job.flying; vanilla lands it at next job. PredatorHunt has no tryStartFlying so it needed the comp. Toggle jossurStoopEnabled.
+4. Highlight: MapComponentUpdate; while a single selected pawn carries the drifter comp, GenDraw.DrawFieldEdges over column cells within its columnSearchRadius (<=60, cap 2500 cells, refreshed twice a second). Nothing drawn otherwise. Toggle skyColumnHighlightEnabled.
+Settings: 5 new bools (total 33 fields). Debug actions: "Forge sky: report", "Forge sky: re-read the column field now".
+## Open question (owner, from the item) - NOT answered by me
+Which defs are "aerofleets"/"admitted giants"? RM-tier pastures carry only RM_FleetFlier and RM_Jossur (both have the drifter comp); beldons are campaign tier (patch in UtinniPatches, RUT_VaporDrifter_AerofleetWiring.xml already wires drifters there). The code is generic over the comp, so any such def that gets the comp is covered.
+## UNPROVEN live (named, not faked)
+Haze alpha/readability on Transparent shader (solid-colour material, no vertex colour reliance), highlight outline cost at 2500 cells, whether the prey-score bias visibly changes jossur target choice, stoop in play (flyer rule: no unattended flight hunting; read `Forge sky: report` skyStoops counter instead).
+## Validation
+validation.py chain sky_pastures (6 source components, labelled source claims), WIRED +5; selftest_theforge.py 33 settings, exit 0. validate_patch OK on the two XML files. No new SoundDefs, no new fields beyond the comp's own; jossur comp XML fields are the comp's declared ones.

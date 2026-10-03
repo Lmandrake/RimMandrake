@@ -56,6 +56,8 @@
     <Compile Include="RM_ForgeSpunstone.cs" />
     <!-- FORGE_WHITE_PLUME_FRONTS_1 -->
     <Compile Include="RM_ForgePlumeFronts.cs" />
+    <!-- FORGE_SKY_PASTURES_1 -->
+    <Compile Include="RM_ForgeSkyPastures.cs" />
   </ItemGroup>
 
   <!-- FORGE_CYCLE_MECHANICS_1: the cycle subclasses the F1 pulse

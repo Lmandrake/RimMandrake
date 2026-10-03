@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- FORGE_SKY_PASTURES_1: dirties the map sections when the vapour-column field changes (the field is rebuilt hourly by
+       EnvironmentalHazards). Read by SectionLayer_RM_SkyColumns.relevantChangeTypes. -->
+  <MapMeshFlagDef>
+    <defName>RM_SkyColumns</defName>
+  </MapMeshFlagDef>
+</Defs>
