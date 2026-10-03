@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ROT_WOUND_SHARING_WIRING_1: real wound-sharing (chittik, gromma, rennok) and kin-mending (mullgoth, durrok) on the five
+     Alpha Animals bodies whose Rot descriptions promise it. One shared tag, RotNetwork, so they share across species.
+     Gated by PatchOperationFindMod (a top-level MayRequire is ignored by 1.6). The Rot screen's Health sharing toggle removes
+     the comps again at startup (restart to apply). Wild and tamed alike: the comps filter on no faction. -->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>sarg.alphaanimals</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="AA_Swarmling"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Swarmling"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              
+              <inspectLine>Shares wounds with its grove.</inspectLine>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Swarmling"]</xpath>
+          <value>
+            <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              
+              <inspectLine>Shares wounds with its grove.</inspectLine>
+            </li>
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationAddModExtension">
+        <xpath>Defs/ThingDef[defName="AA_Swarmling"]</xpath>
+        <value>
+          <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+            <tag>RotNetwork</tag>
+          </li>
+        </value>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="AA_Agaripod"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Agaripod"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              
+              <inspectLine>Shares wounds with its grove.</inspectLine>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Agaripod"]</xpath>
+          <value>
+            <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              
+              <inspectLine>Shares wounds with its grove.</inspectLine>
+            </li>
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationAddModExtension">
+        <xpath>Defs/ThingDef[defName="AA_Agaripod"]</xpath>
+        <value>
+          <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+            <tag>RotNetwork</tag>
+          </li>
+        </value>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="AA_Agaripawn"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Agaripawn"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              
+              <inspectLine>Shares wounds with its grove.</inspectLine>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Agaripawn"]</xpath>
+          <value>
+            <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              
+              <inspectLine>Shares wounds with its grove.</inspectLine>
+            </li>
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationAddModExtension">
+        <xpath>Defs/ThingDef[defName="AA_Agaripawn"]</xpath>
+        <value>
+          <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+            <tag>RotNetwork</tag>
+          </li>
+        </value>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="AA_Wildpod"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Wildpod"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Wildpod"]</xpath>
+          <value>
+            <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationAddModExtension">
+        <xpath>Defs/ThingDef[defName="AA_Wildpod"]</xpath>
+        <value>
+          <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+            <tag>RotNetwork</tag>
+          </li>
+        </value>
+      </li>
+      <li Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="AA_Wildpawn"]/comps</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Wildpawn"]/comps</xpath>
+          <value>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+          </value>
+        </match>
+        <nomatch Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="AA_Wildpawn"]</xpath>
+          <value>
+            <comps>
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_WoundLink" />
+            <li Class="RimMandrake.CreatureBehaviors.CompProperties_GrantHediff">
+              <hediff>RM_KinMendingNetwork</hediff>
+              <inspectLine>Heals faster among its kin.</inspectLine>
+            </li>
+            </comps>
+          </value>
+        </nomatch>
+      </li>
+      <li Class="PatchOperationAddModExtension">
+        <xpath>Defs/ThingDef[defName="AA_Wildpawn"]</xpath>
+        <value>
+          <li Class="RimMandrake.CreatureBehaviors.RM_WoundLinkExtension">
+            <tag>RotNetwork</tag>
+          </li>
+        </value>
+      </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
