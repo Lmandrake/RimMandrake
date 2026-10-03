@@ -37,4 +37,22 @@
     </stuffProps>
   </ThingDef>
 
+  <!-- LEANINGSCRUB_SWEETLINE_VISITORS_1: what pilgrims leave at a sweetline tree.
+       Art: none exists (artpipe searched 2026-10-03); placeholder until generated. -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SweetlineToken</defName>
+    <label>pilgrim's token</label>
+    <description>A knot of braided silver-grey wool with a bead or a pebble tied in, left at the foot of a sweetline tree by someone walking the tree-roads. It means nothing to the tree. It means a good deal to whoever left it, and a little to whoever finds it.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SweetlineToken</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>3</MarketValue>
+      <Mass>0.02</Mass>
+      <Flammability>1.0</Flammability>
+    </statBases>
+    <stackLimit>20</stackLimit>
+  </ThingDef>
+
 </Defs>

@@ -64,7 +64,7 @@ DEFAULTS = {
     "leanEnabled": True, "leanScentEnabled": True, "leanScentRange": 16.0, "leanFireEnabled": True,
     "leanFireBias": 0.5,
     "drippingRegrowEnabled": True, "crownMobEnabled": True, "runwayBloomEnabled": True,
-    "sweetlineStationsEnabled": True,
+    "sweetlineStationsEnabled": True, "sweetlineVisitorsEnabled": True, "sweetlineVisitIntervalDays": 8.0,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1174,6 +1174,35 @@ def sweetline_chain(t):
                 if after - before < 5:
                     _fail("a mature sweetline tree shed %d giant-wool after its 5-day timer passed "
                           "(expect 5)" % (after - before))
+        with _comp(t, "visitors_toggle_off_quiet", toggle="sweetlineVisitorsEnabled"):
+            if _live(t):
+                def seen():
+                    _, lines = _inspect(t, ids["tree"])
+                    m = re.search(r"Visitors remembered: (\d+) camps, (\d+) pilgrims", " ".join(lines))
+                    return (int(m.group(1)) + int(m.group(2))) if m else 0
+                before_v = seen()
+                with _setting(t, "sweetlineVisitorsEnabled", False):
+                    t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000))
+                    t.wait_ticks(2100)
+                off_v = seen()     # toggle restored, no tick has passed: the line is visible again
+                _note(t, "sweetline visits before / after a 13-day jump, visitors OFF", [before_v, off_v])
+                if off_v != before_v:
+                    _fail("sweetlineVisitorsEnabled OFF but %d visit(s) were recorded" % (off_v - before_v))
+                ids["visits_seen"] = seen
+                ids["visits_base"] = off_v
+        with _comp(t, "visitors_come_and_leave_marks", toggle="sweetlineVisitorsEnabled"):
+            if _live(t):
+                tok0 = _stack_total(t, "RM_SweetlineToken", _rs(_rect(t)))
+                t.bridge_call("jawa/time_set_ticks", ticks=int(t.session._ticks() + 13 * 60000))
+                t.wait_ticks(2100)
+                got = ids["visits_seen"]() - ids["visits_base"]
+                tok1 = _stack_total(t, "RM_SweetlineToken", _rs(_rect(t)))
+                _note(t, "sweetline visits recorded / tokens before-after, visitors ON", [got, tok0, tok1])
+                if got < 1:
+                    _fail("no visit recorded after a 13-day jump with visitors ON (needs a home map, "
+                          "a mature tree and sweetlineStationsEnabled)")
+                if tok1 > tok0 + 3:
+                    _fail("a single visit left %d tokens (cap is 3 near the tree)" % (tok1 - tok0))
     _stable(t, body)
 
 

@@ -73,6 +73,8 @@ namespace RimMandrake.LeaningScrub
         public static bool crownMobEnabled = true;
         public static bool runwayBloomEnabled = true;
         public static bool sweetlineStationsEnabled = true;
+        public static bool sweetlineVisitorsEnabled = true;
+        public static float sweetlineVisitIntervalDays = 8f;
 
         private static Vector2 scroll;
         private static float viewHeight = 900f;
@@ -105,6 +107,8 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref crownMobEnabled, "crownMobEnabled", true, true);
             Scribe_Values.Look(ref runwayBloomEnabled, "runwayBloomEnabled", true, true);
             Scribe_Values.Look(ref sweetlineStationsEnabled, "sweetlineStationsEnabled", true, true);
+            Scribe_Values.Look(ref sweetlineVisitorsEnabled, "sweetlineVisitorsEnabled", true, true);
+            Scribe_Values.Look(ref sweetlineVisitIntervalDays, "sweetlineVisitIntervalDays", 8f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -200,6 +204,15 @@ namespace RimMandrake.LeaningScrub
             list.CheckboxLabeled("Named sweetline trees", ref sweetlineStationsEnabled,
                 "Every sweetline tree carries a name and a short remembered history, and sheds "
                 + "snagged giant-wool beside its trunk every few days once grown.");
+            list.CheckboxLabeled("Sweetline visitors", ref sweetlineVisitorsEnabled,
+                "Road-folk now and then camp a night under a grown sweetline tree, and pilgrims "
+                + "leave small tokens at its trunk. Each visit is remembered in the tree's history. "
+                + "Needs named sweetline trees on. Home maps only.");
+            if (sweetlineVisitorsEnabled)
+            {
+                list.Label("Days between visits (average): " + sweetlineVisitIntervalDays.ToString("F0"));
+                sweetlineVisitIntervalDays = Mathf.Round(list.Slider(sweetlineVisitIntervalDays, 2f, 30f));
+            }
 
             viewHeight = list.CurHeight + 20f;
             list.End();

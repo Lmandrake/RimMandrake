@@ -70,6 +70,10 @@
         <woolCount>5</woolCount>
         <woolIntervalDays>5</woolIntervalDays>
         <maxHistory>12</maxHistory>
+        <!-- LEANINGSCRUB_SWEETLINE_VISITORS_1: abstract road-folk visits; pilgrims leave this. -->
+        <tokenThing>RM_SweetlineToken</tokenThing>
+        <pilgrimChance>0.6</pilgrimChance>
+        <maxTokensNear>3</maxTokensNear>
       </li>
     </comps>
   </ThingDef>
