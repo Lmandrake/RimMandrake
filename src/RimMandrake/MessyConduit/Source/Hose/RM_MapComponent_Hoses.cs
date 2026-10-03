@@ -167,11 +167,12 @@ namespace RimMandrake.MessyConduit.Hose
         public override void MapComponentUpdate()
         {
             HoseProbe.Service(map, this);
-            if (!HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) return;
+            if (!HoseSettings.enabled || Find.CurrentMap != map || reels.Count == 0) { FlushFrameMeshes(); return; }
             try { DrawAll(); }
             catch (Exception ex)
             {
                 if (!drawErrorLogged) { drawErrorLogged = true; Log.Error("[MessyConduit] hose drawing failed, skipping it: " + ex); }
+                FlushFrameMeshes();
             }
         }
 
@@ -237,6 +238,15 @@ namespace RimMandrake.MessyConduit.Hose
             oldFrame.Clear();
             oldFrame.AddRange(frameMeshes);
             frameMeshes.Clear();
+        }
+
+        // early exits and exceptions skip DrawAll's tail: destroy whatever transitioning meshes are pending
+        private void FlushFrameMeshes()
+        {
+            if (frameMeshes.Count == 0 && oldFrame.Count == 0) return;
+            for (int k = 0; k < oldFrame.Count; k++) if (oldFrame[k] != null) UnityEngine.Object.Destroy(oldFrame[k]);
+            for (int k = 0; k < frameMeshes.Count; k++) if (frameMeshes[k] != null) UnityEngine.Object.Destroy(frameMeshes[k]);
+            oldFrame.Clear(); frameMeshes.Clear();
         }
 
         private readonly List<Mesh> frameMeshes = new List<Mesh>(), oldFrame = new List<Mesh>();
