@@ -1,0 +1,1 @@
+gpt_consult.py: two consults run at the same moment can cross answers (the Scald run got back a Chill answer, 2026-10-02). Run consults one at a time, or put a subject guard in the prompt and check the answer is about the right subject.

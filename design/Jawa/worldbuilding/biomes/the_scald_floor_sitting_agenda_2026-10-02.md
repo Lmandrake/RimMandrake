@@ -204,3 +204,18 @@ Ranked by how much each one changes what a player meets. The first three matter 
 layer gets real per-sea floors (its Phase 4; Phase 3 adds plants and must guard a known crash
 first). Today a ship landing under the Scald finds an empty generic floor. Whether that work
 starts with the Scald or the Grey is a scheduling call for FOUNDRY's queue, not a design question.
+
+## Rulings — 2026-10-02 sitting (19:39–19:50 PDT; clicks recorded as "decision taken by question card", typed text quoted)
+
+| Q | Ruling | Item (FOUNDRY) |
+|---|---|---|
+| 1 | The Walking Pasture: a plain grazing bottom-walker herd first, then the crew follows it to harvest what its grazing exposes (card) | `SCALD_WALKING_PASTURE_1` |
+| 2 | The Immersion Berth: a parked ship's rooms slowly heat; doors never seal, launch never blocked (card) | `SCALD_IMMERSION_BERTH_1` |
+| 3 | Both at once: vent fields generated on the floor map (sailors, vent flora, Sail Forecast) AND the Return Gallery ruin (card) | `SCALD_FLOOR_VENT_FIELDS_1`, `SCALD_RETURN_GALLERY_1` |
+| 4 | A bathing rite for the water pilgrims at the cool margins (card); waits on the margin cove | `SCALD_BATHING_RITE_1` |
+| 5 | Owner, typed: *"Saal"*. Creature and catch share the name saal; "noohm" retires | `SCALD_SAAL_ONE_NAME_1` |
+| 6 | Owner, typed: *"Put them in the twilight sea instead."* Mee and faa leave the Scald floor and go to the Twilight Sea, floor resident + catch | `NABOO_FISH_TO_TWILIGHT_1` |
+| 7 | Flora density 0.30 ratified (card). Simmerlace knots are "ekkel" in fishermen's lore (card). Kettlewick collar and seepcandle wax yields stay open for the flora build | `SCALD_SIMMERLACE_EKKEL_LORE_1` |
+
+Every ruling above reaches a player only once the sea-floor planet layer has real per-sea floors:
+`SEABED_PER_SEA_FLOORS_1`.
