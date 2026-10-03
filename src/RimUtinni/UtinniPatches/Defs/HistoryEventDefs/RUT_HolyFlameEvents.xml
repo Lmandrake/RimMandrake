@@ -2,11 +2,11 @@
 <!--
   RUT_HolyFlameEvents.xml            UtinniPatches — SUMP_UTINNI_LAYER_1 §2
 
-  "The holy act" — owner: "That could be a holy act to the evil sun god."
+  "The holy act" — owner (2026-09-24, since ruled: no god is evil, the hungry gods): "That could be a holy act to the evil sun god."
   Split ruled by card: flame statuary ships RM-tier secular
   (RM_FlameStatuary, SUMP_GASLIGHT_1); the worship meaning is this Utinni
   layer. The deity is Sh'kaar the All-Searing (design/Jawa/
-  divine_satiation_engine.md §8, "the evil sun; the Unbeatable One" — the
+  divine_satiation_engine.md §8, "the hungry sun; the Unbeatable One" — the
   Pantheon of record, names LOCKED).
 
   A dedicated HistoryEventDef, not a reuse of any existing vanilla event:

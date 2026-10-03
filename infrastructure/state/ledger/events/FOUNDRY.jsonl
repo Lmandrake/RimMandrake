@@ -2254,3 +2254,12 @@
 {"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_LANTERN_LIGHT_BUILD_1","ts":"2026-10-03T15:21:30Z","tsn":1791040890286090519}
 {"seat":"FOUNDRY","event":"start","id":"LANTERNDEEPS_LANTERN_LIGHT_BUILD_1","ts":"2026-10-03T15:21:30Z","tsn":1791040890782409224}
 {"seat":"FOUNDRY","event":"close","id":"LANTERNDEEPS_LANTERN_LIGHT_BUILD_1","sha":"f54cd3d8e","reason":"built; offline proven (build, lint); live proof owed","ts":"2026-10-03T15:21:31Z","tsn":1791040891285273328}
+{"seat":"FOUNDRY","event":"claim","id":"LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:22:37Z","tsn":1791040957809062606}
+{"seat":"FOUNDRY","event":"start","id":"LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:22:38Z","tsn":1791040958345116024}
+{"seat":"FOUNDRY","event":"reclaim","id":"LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1","ts":"2026-10-03T15:23:17Z","tsn":1791040997232405516}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_FAUNA_WIRING_BUILD_1","ts":"2026-10-03T15:23:26Z","tsn":1791041006997426959}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_FAUNA_WIRING_BUILD_1","ts":"2026-10-03T15:23:27Z","tsn":1791041007521363154}
+{"seat":"FOUNDRY","event":"claim","id":"SUMP_HUNGRY_GOD_TEXT_1","ts":"2026-10-03T15:23:28Z","tsn":1791041008039641910}
+{"seat":"FOUNDRY","event":"start","id":"SUMP_HUNGRY_GOD_TEXT_1","ts":"2026-10-03T15:23:28Z","tsn":1791041008573215958}
+{"seat":"FOUNDRY","event":"drop","id":"SUMP_FAUNA_WIRING_BUILD_1","reason":"stale-drop: all four RM_ rows already inline in RM_TheSump wildAnimals (replaced donors 1:1, 2026-10-02, per owner-ruled replacement)","ts":"2026-10-03T15:23:47Z","tsn":1791041027990960289}
+{"seat":"FOUNDRY","event":"close","id":"SUMP_HUNGRY_GOD_TEXT_1","sha":"HEAD","ts":"2026-10-03T15:23:54Z","tsn":1791041034495825155}

@@ -147,10 +147,10 @@
       <li>RUT_SumpDuskLock</li>
     </biomeMapConditions>
     <wildAnimals>
-      <RM_Gulveth>0.5</RM_Gulveth>  <!-- tar guzzler - tar-eater, adjust-keep -->
+      <RM_Gulveth>0.45</RM_Gulveth>  <!-- tar guzzler - tar-eater, adjust-keep -->
       <RM_Thrummel>0.35</RM_Thrummel>  <!-- bumbledrone - under-layer, keep -->
-      <RM_ThrummelWarden>0.2</RM_ThrummelWarden>  <!-- bumbledrone hierophant - under-layer, keep -->
-      <RM_ThrummelBroodmother>0.5</RM_ThrummelBroodmother>  <!-- bumbledrone queen - rides the hive verdict, roster round-2 move mapping -->
+      <RM_ThrummelWarden>0.15</RM_ThrummelWarden>  <!-- bumbledrone hierophant - under-layer, keep -->
+      <RM_ThrummelBroodmother>0.05</RM_ThrummelBroodmother>  <!-- bumbledrone queen - rides the hive verdict, roster round-2 move mapping -->
       <!-- SUMP_FAUNA_ROSTER_1: the four rows above are our replacements of the former donor
            rows; the five below are wholly new, no donor slot evicted (see header). -->
       <RM_SumpMouse>0.8</RM_SumpMouse>  <!-- sump-mouse - the instrument, the prey base -->
