@@ -229,6 +229,9 @@
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
     </race>
+    <butcherProducts>
+      <RM_CapturedTetchik>1</RM_CapturedTetchik>
+    </butcherProducts>
     <tradeTags>
       <li>AnimalInsect</li>
     </tradeTags>

@@ -49,6 +49,7 @@
     <Compile Include="RM_WarscarPatches.cs" />
     <Compile Include="MapComponent_WreckLichen.cs" />
     <Compile Include="RM_Settling.cs" />
+    <Compile Include="RM_GeigerChoir.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

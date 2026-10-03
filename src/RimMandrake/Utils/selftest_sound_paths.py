@@ -30,6 +30,9 @@ CLIP_RE = re.compile(r"<clipPath>\s*([^<\s][^<]*?)\s*</clipPath>")
 # with that SoundDef named as the reason -- an entry without a donor SoundDef
 # is a typo waiting to pass.
 VANILLA_PACKED = {
+    # WARSCAR_GEIGER_CHOIR_1 placeholders, verbatim from Core SoundDefs (checked in the install's Data/Core/Defs/SoundDefs).
+    "UI/TickTiny": "vanilla Tick_Tiny",
+    "Electricity/ChemfuelFiredGenerator_Ambience": "vanilla ChemfuelFiredGenerator_Ambience",
     # RustCathedralHum placeholder hums (RUST_CATHEDRAL_MECHANICS_1 §1),
     # copied verbatim from vanilla mechanoid-ambient SoundDefs; verified via
     # RimSage 2026-09-12. The Building/Buildings inconsistency is vanilla's own.
