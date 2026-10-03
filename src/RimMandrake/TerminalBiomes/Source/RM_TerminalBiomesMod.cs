@@ -183,7 +183,22 @@ namespace RimMandrake.TerminalBiomes
         // degrade it like everything else in this layer (RM_Building_SunSphere).
         public static bool SunSphereActive => masterEnabled && twilightSeaEnabled;
 
+        // ── GREYSEA_HULL_CRUST_BUILD_1: the Grey files a parked ship (Q10/Q11) ─
+        // Rate scales the whole ladder; the two multipliers are the ruled
+        // environment (salt snow "roughly doubles", a brine berth is "faster").
+        // Nothing purchasable modifies the pace — there is deliberately no
+        // heat or fuel knob here. Off: no new rime, salt or crust, and the
+        // launch gate and the salted-door lock both stop applying (off can
+        // only remove a constraint).
+        public static bool greyHullCrustEnabled = true;
+        public static float greyHullCrustRate = 1f;
+        public static float greyHullCrustSaltSnowMultiplier = 2f;
+        public static float greyHullCrustBerthMultiplier = 1.5f;
+        public static bool GreyHullCrustActive => masterEnabled && greySeaEnabled && greyHullCrustEnabled;
+
         private string biomeListBuffer;
+        private Vector2 settingsScroll;
+        private float lastListHeight = 1600f;
 
         public override void ExposeData()
         {
@@ -226,6 +241,10 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref twilightCagesPassableBeneath, "twilightCagesPassableBeneath", true);
             Scribe_Values.Look(ref twilightSunSphereGraceDays, "twilightSunSphereGraceDays", 3f);
             Scribe_Values.Look(ref twilightChartsAgeEnabled, "twilightChartsAgeEnabled", true);
+            Scribe_Values.Look(ref greyHullCrustEnabled, "greyHullCrustEnabled", true);
+            Scribe_Values.Look(ref greyHullCrustRate, "greyHullCrustRate", 1f);
+            Scribe_Values.Look(ref greyHullCrustSaltSnowMultiplier, "greyHullCrustSaltSnowMultiplier", 2f);
+            Scribe_Values.Look(ref greyHullCrustBerthMultiplier, "greyHullCrustBerthMultiplier", 1.5f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -235,8 +254,11 @@ namespace RimMandrake.TerminalBiomes
                 biomeListBuffer = crossBiomeBiomeList;
             }
 
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            // Scrolls: the list outgrew the window once the Grey's section landed.
+            Rect viewRect = new Rect(0f, 0f, inRect.width - 16f, Mathf.Max(lastListHeight, inRect.height));
+            Widgets.BeginScrollView(inRect, ref settingsScroll, viewRect);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = viewRect.width };
+            list.Begin(viewRect);
 
             list.CheckboxLabeled("Mod enabled", ref masterEnabled,
                 "Off: this mod's defs still load (nothing on a saved game silently "
@@ -429,8 +451,31 @@ namespace RimMandrake.TerminalBiomes
                 list.Label("  Coverage: " + (crossBiomeCoverage * 100f).ToString("0") + "%");
                 crossBiomeCoverage = list.Slider(crossBiomeCoverage, 0f, 1f);
             }
+            list.GapLine();
+
+            list.Label("THE GREY SEA FILES YOUR SHIP (GREYSEA_HULL_CRUST_BUILD_1)");
+            list.CheckboxLabeled("Hull crystallisation", ref greyHullCrustEnabled,
+                "While a gravship sits parked on the Grey Sea floor, salt rimes its plating (about "
+              + "a day), salts its outer doors shut one by one (from about two and a half days), and "
+              + "after long neglect jackets the hull in crust that must be chipped off before "
+              + "launch (ramping in from day five, whole hull by about a quadrum). Chipping pays "
+              + "salt and sets the clock back. A salted door always yields to a short no-tool job "
+              + "from either side, and crust only ever delays a launch. Off: nothing new grows, "
+              + "salted doors open normally and crust no longer blocks launch.");
+            if (greyHullCrustEnabled)
+            {
+                list.Label("  Pace: " + greyHullCrustRate.ToString("0.00") + "x");
+                greyHullCrustRate = list.Slider(greyHullCrustRate, 0.25f, 3f);
+                list.Label("  Salt-snow speed-up: " + greyHullCrustSaltSnowMultiplier.ToString("0.0") + "x");
+                greyHullCrustSaltSnowMultiplier = list.Slider(greyHullCrustSaltSnowMultiplier, 1f, 4f);
+                list.Label("  Brine-berth speed-up (brine channel or chimney field within 5 cells): "
+                    + greyHullCrustBerthMultiplier.ToString("0.0") + "x");
+                greyHullCrustBerthMultiplier = list.Slider(greyHullCrustBerthMultiplier, 1f, 3f);
+            }
 
             list.End();
+            lastListHeight = list.CurHeight + 24f;
+            Widgets.EndScrollView();
         }
     }
 

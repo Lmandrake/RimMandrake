@@ -97,6 +97,8 @@
     <Compile Include="RM_Building_SiltTrap.cs" />
     <Compile Include="RM_Thing_CargoFloat.cs" />
     <Compile Include="RM_GenStep_TwilightChannels.cs" />
+    <!-- GREYSEA_HULL_CRUST_BUILD_1 -->
+    <Compile Include="RM_GreyHullCrust.cs" />
   </ItemGroup>
 
   <ItemGroup>

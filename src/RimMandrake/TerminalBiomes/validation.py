@@ -678,6 +678,25 @@ if Suite is not None:
     _um("cross_biome", "scald_mechanics_outside_the_scald", "WORLDGEN-AFFECTING and inert: crossBiomeEnabled is reserved for a future pass (mod "
         "header), so there is nothing to read", "crossBiomeEnabled")
 
+    @suite.chain("grey_hull_crust")
+    def grey_hull_crust(t):
+        """GREYSEA_HULL_CRUST_BUILD_1: on a Grey map with a parked gravship, advancing the clock past the ruled
+        ladder rimes the hull, salts an exterior door and grows crust that the launch-gate postfix counts."""
+        with _comp(t, "ladder_rime_door_crust_gate", toggle="greyHullCrustEnabled"):
+            if _live(t):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyHullCrustProof",
+                                  method="ProofState", args="")
+                res = str((r or {}).get("result", ""))
+                if not res.startswith("crustDays="):
+                    _unmeasured(t, "needs a parked gravship on an RM_GreySea floor map (seabed layer); proof said %r" % res[:120])
+                else:
+                    r = t.bridge_call("jawa/static_call", type="RimMandrake.TerminalBiomes.RM_GreyHullCrustProof",
+                                      method="ProofAdvance", args="16")
+                    res = str((r or {}).get("result", ""))
+                    m = dict(kv.split("=", 1) for kv in res.split(" ") if "=" in kv)
+                    if int(m.get("rime", 0)) < 1 or int(m.get("crust", 0)) < 1 or m.get("gate") == "accepted":
+                        _fail("16 effective days did not rime + crust + gate the hull: %r" % res)
+
     @suite.chain("settings_restored")
     def settings_restored(t):
         """LAST: every field is back at its shipped (parsed) default; a leaked arm would corrupt the next run."""
