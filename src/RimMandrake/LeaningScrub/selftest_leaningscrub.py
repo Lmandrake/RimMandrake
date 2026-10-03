@@ -338,6 +338,9 @@ class Fake(object):
             on = self.on("sweetlineFeltComfortEnabled") or "comfort_ignores_toggle" in self.broken
             d = 0.10 if on and "no_comfort" not in self.broken else 0.0
             return {"success": True, "result": "DELTA %.2f" % d}
+        if method == "ProofVisuals":
+            on = self.on("runwayBloomEnabled")
+            return {"success": True, "result": "SWAYING %d HOLES +%d ANSWERED %d" % ((1, 1, 2) if on else (0, 0, 0))}
         if method == "ProofMapStep":
             chance = float(args.split("|")[1])
             n = 0

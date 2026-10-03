@@ -1169,6 +1169,18 @@ def bloom_chain(t):
                           "(responding species must flee)" % silent)
                 if arms < 1:
                     _fail("no RM_VisslerArm shed by 8 visslers (shedChance 0.5 each)")
+        # LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1: ribbonwhips sway in place, the surrik leaves an exit hole.
+        with _comp(t, "bloom_sway_and_exit_hole", toggle="runwayBloomEnabled"):
+            if _live(t):
+                _spawn(t, "RM_Ribbonwhip", x - 4, z - 2)
+                _spawn(t, "RM_Surrik", x - 3, z + 2)
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_MapComponent_RunwayBloom",
+                                  method="ProofVisuals", args="current")
+                txt = str((r or {}).get("result", ""))
+                _note(t, "bloom visuals (SWAYING n HOLES +n ANSWERED n)", txt)
+                if not txt.startswith("SWAYING") or txt.startswith("SWAYING 0") or "HOLES +0" in txt:
+                    _fail("no ribbonwhip swaying or no surrik exit hole after a bloom: %s" % txt)
+                t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="All")
     _stable(t, body)
 
 

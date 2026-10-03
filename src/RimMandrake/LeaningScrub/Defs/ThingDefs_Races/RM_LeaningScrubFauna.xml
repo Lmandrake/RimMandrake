@@ -476,6 +476,16 @@
     <defName>RM_Surrik</defName>
     <label>surrik</label>
     <description>Below the runs there is one more floor. The surrik swims the root-bound crust itself, shouldering through the mat like water, and takes what it takes from underneath.</description>
+    <!-- LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1: the bloom's burrower. It breaks up out of the crust and leaves
+         an exit hole where it surfaced (the only crust-swimmer in the cast; the crustweevil grazes ON it). -->
+    <modExtensions>
+      <li Class="RimMandrake.LeaningScrub.RM_RunwayBloomExtension">
+        <response>Surface</response>
+        <delayTicks>45</delayTicks>
+        <fleeDistance>14</fleeDistance>
+        <exitFilth>RM_Filth_SurrikExitHole</exitFilth>
+      </li>
+    </modExtensions>
     <statBases>
       <MoveSpeed>3.2</MoveSpeed>
       <Mass>8</Mass>
@@ -563,6 +573,14 @@
     <defName>RM_Ribbonwhip</defName>
     <label>ribbonwhip</label>
     <description>The thinnest predator on the plain never touches the ground: a ribbon the width of a stem, riding the top of the canopy, moving when the wind moves so nothing reads it.</description>
+    <!-- LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1: on a bloom it does not run; it sways where it is. -->
+    <modExtensions>
+      <li Class="RimMandrake.LeaningScrub.RM_RunwayBloomExtension">
+        <response>Sway</response>
+        <delayTicks>20</delayTicks>
+        <swayTicks>180</swayTicks>
+      </li>
+    </modExtensions>
     <statBases>
       <MoveSpeed>3.8</MoveSpeed>
       <Mass>0.8</Mass>
