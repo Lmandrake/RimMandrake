@@ -152,7 +152,7 @@ def forced_paint_job(t):
         r = t.bridge_call("jawa/ordered_job", pawnId=walker,
                           jobDef="RM_PaintGraffitiJob",
                           targetAX=mark_x, targetAZ=mark_z,
-                          waitTicks=600, timeoutSeconds=60)
+                          waitTicks=600, timeoutSeconds=25)
         if t._guard():
             if not (bool((r or {}).get("accepted")) and bool((r or {}).get("nowRunningRequested"))):
                 raise ExpectationFailed(

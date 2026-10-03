@@ -1158,7 +1158,7 @@ def butane_chain(t):
             _unmeasured(t, "no palefloss stands at (%d,%d) for the %s to eat" % (x + dx, z, kind))
         t.bridge_call("jawa/pawn_need", pawn=a, action="need", need="Food", level=0.2)
         r = t.bridge_call("jawa/ordered_job", pawnId=a, jobDef="Ingest", targetAId=plant[0]["id"] if plant else None,
-                          waitTicks=60, timeoutSeconds=30)
+                          waitTicks=60, timeoutSeconds=25)
         if _live(t) and not (isinstance(r, dict) and r.get("accepted")):
             _unmeasured(t, "the bridge could not order the %s to Ingest the plant: %r" % (kind, r))
         t.wait_ticks(900)
@@ -1301,7 +1301,7 @@ def cold_rack(t):
                 if not (a_rect[0] < (row.get("x") or -1) < a_rect[0] + 6 and a_rect[1] < (row.get("z") or -1) < a_rect[1] + 6):
                     _unmeasured(t, "the colonist was scattered out of room A: %r" % ((row.get("x"), row.get("z")),))
                 r = t.bridge_call("jawa/ordered_job", pawnId=ids["col"], jobDef="Refuel", targetAId=ids["a"],
-                                  targetBId=ids["ice"], count=30, waitTicks=60, timeoutSeconds=30)
+                                  targetBId=ids["ice"], count=30, waitTicks=60, timeoutSeconds=25)
                 if not (isinstance(r, dict) and r.get("accepted")):
                     _unmeasured(t, "the Refuel order was not accepted: %r" % (r,))
                 t.wait_ticks(900)
@@ -1458,7 +1458,7 @@ def vhaulk_road(t):
         if _live(t) and (len(on_path) != 2 or len(control) != 1):
             _unmeasured(t, "%s: path plants %d/2, control plants %d/1 stand" % (label, len(on_path), len(control)))
         r = t.bridge_call("jawa/ordered_job", pawnId=v, jobDef="Goto", targetAX=x + 10, targetAZ=row_z,
-                          waitTicks=60, timeoutSeconds=30)
+                          waitTicks=60, timeoutSeconds=25)
         if _live(t) and not (isinstance(r, dict) and r.get("accepted")):
             _unmeasured(t, "%s: the bridge could not order the wild vhaulk to walk: %r" % (label, r))
         t.wait_ticks(1500)
