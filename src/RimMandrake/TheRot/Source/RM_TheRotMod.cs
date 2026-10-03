@@ -66,6 +66,11 @@ namespace RimMandrake.TheRot
         public static float navigatorRangeBonus = 0.25f;
         public static float navigatorShipDamageFactor = 0.5f;
         public static float navigatorRuinThreshold = 25f;
+        // ROT_GUT_MOTHER_VAT_1 (Technology section)
+        public static bool gutMother = true;
+        public static float gutMotherDigestHours = 24f;
+        public static float gutMotherRecoveryChance = 1f;
+        public static float gutMotherStarterValue = 900f;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -109,6 +114,10 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref navigatorRangeBonus, "navigatorRangeBonus", 0.25f);
             Scribe_Values.Look(ref navigatorShipDamageFactor, "navigatorShipDamageFactor", 0.5f);
             Scribe_Values.Look(ref navigatorRuinThreshold, "navigatorRuinThreshold", 25f);
+            Scribe_Values.Look(ref gutMother, "gutMother", true);
+            Scribe_Values.Look(ref gutMotherDigestHours, "gutMotherDigestHours", 24f);
+            Scribe_Values.Look(ref gutMotherRecoveryChance, "gutMotherRecoveryChance", 1f);
+            Scribe_Values.Look(ref gutMotherStarterValue, "gutMotherStarterValue", 900f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -236,6 +245,18 @@ namespace RimMandrake.TheRot
             navigatorShipDamageFactor = list.Slider(navigatorShipDamageFactor, 0f, 2f);
             list.Label("  Integrity below which the core comes out ruined: " + navigatorRuinThreshold.ToString("0"));
             navigatorRuinThreshold = list.Slider(navigatorRuinThreshold, 0f, 90f);
+            list.GapLine();
+
+            list.Label("Technology: the gut-mother");
+            list.CheckboxLabeled("Gut-mother vat", ref gutMother,
+                "A dead hwelgrue leaves its digesting sac; studied and researched, it grows a vat anywhere that digests "
+              + "corpses and gives back their implants and gear. Off: no sac drops, vats take no bodies and digest nothing.");
+            list.Label("  Hours to digest a body: " + gutMotherDigestHours.ToString("0"));
+            gutMotherDigestHours = list.Slider(gutMotherDigestHours, 1f, 96f);
+            list.Label("  Chance each implant comes back: " + (gutMotherRecoveryChance * 100f).ToString("0") + "%");
+            gutMotherRecoveryChance = list.Slider(gutMotherRecoveryChance, 0f, 1f);
+            list.Label("  Starter culture market value: " + gutMotherStarterValue.ToString("0"));
+            gutMotherStarterValue = list.Slider(gutMotherStarterValue, 50f, 3000f);
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
@@ -383,6 +404,12 @@ namespace RimMandrake.TheRot
         public override void DoSettingsWindowContents(Rect inRect)
         {
             settings.DoWindowContents(inRect);
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            RM_GutMother.ApplyStarterValue();
         }
     }
 }

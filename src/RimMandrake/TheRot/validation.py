@@ -10,6 +10,8 @@ CHAINS
                      notFound; no file of this mod is named in DEPLOY_HOLD.txt.
   settings_roundtrip every `public static` bool/float/string of RM_TheRotSettings: default / write / restore (numerics compared numerically).
   biome_wiring       RM_TheRot's animalDensity and plantDensity are > 0 and its workerClass names RM_BiomeWorker_TheRot.
+  gut_mother         ROT_GUT_MOTHER_VAT_1: studied sac unlocks the research; a fed vat returns a bionic arm, rifle and parka
+                     and consumes the body; an unfed vat does not progress; the starter keeps, trades, and a split makes one.
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
@@ -154,6 +156,16 @@ def static_checks():
         bad.append("the gravship patch must link the core to GravEngine and add the range stat part")
     if "CompProperties_RM_SwallowedCore" not in hw:
         bad.append("RM_Hwelgrue must carry RM_CompSwallowedCore (ROT_SWALLOWED_NAVIGATOR_1)")
+    gm = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_GutMother.xml"), encoding="utf-8").read()
+    for need in ("RM_GutMotherSac", "RM_GutMotherVat", "RM_GutMotherStarter", "RM_GutMotherCulture", "RM_SplitGutMother",
+                 "<requiredAnalyzed>", "CompProperties_CompAnalyzableUnlockResearch", "RM_DoBillsGutMother"):
+        if need not in gm:
+            bad.append("RM_GutMother.xml lacks %s (ROT_GUT_MOTHER_VAT_1)" % need)
+    starter = gm.split("<defName>RM_GutMotherStarter</defName>", 1)[1].split("</ThingDef>", 1)[0]
+    if "CompProperties_Rottable" in starter or "RM_LivePrepExtension" in starter:
+        bad.append("RM_GutMotherStarter must never rot or lose viability (ROT_GUT_MOTHER_VAT_1 ruled exception)")
+    if "RM_GutMother.DropSac" not in open(os.path.join(HERE, "Source", "RM_Hwelgrue.cs"), encoding="utf-8").read():
+        bad.append("a dead hwelgrue must drop the gut-mother sac (RM_CompGutDigest.Notify_Killed)")
     bad += cast_checks()
     return bad
 
@@ -449,6 +461,34 @@ def _build_suite():
         with t.component("rest_accelerates_rot", toggle="hwelgrueRotMultiplier"):
             if _live(t):
                 _unmeasured(t, "needs an idle hwelgrue, two meat stacks at 3 and 20 cells, and ticks; RotProgress read per stack")
+
+    GM = "RimMandrake.TheRot.RM_GutMotherProof"
+
+    def _gm(t, method):
+        r = t.bridge_call("jawa/static_call", type=GM, method=method)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    @suite.chain("gut_mother")
+    def gut_mother(t):
+        """ROT_GUT_MOTHER_VAT_1. Runs on the CURRENT map, which should NOT be a Rot map (the vat grows anywhere).
+        Not proven here: the feed bill's hauling path, the sac dropping from a killed hwelgrue, a 30-day carry of a
+        starter beside a tea -- first poke: kill a hwelgrue (ProofSpawn 1 then dev kill) and look for the sac."""
+        with t.component("research_needs_studied_sac", toggle="gutMother"):
+            text = _gm(t, "ProofResearch")
+            if _live(t) and "after studied True" not in text:
+                raise ExpectationFailed("forcing the sac's analysis did not satisfy RM_GutMotherCulture: %s" % text)
+        with t.component("digest_returns_implants_and_gear", toggle="gutMotherRecoveryChance"):
+            text = _gm(t, "ProofDigest")
+            if _live(t) and not ("BionicArm True" in text and "rifle True" in text and "parka True" in text and "corpse gone True" in text):
+                raise ExpectationFailed("the vat did not return arm, rifle and parka and consume the body: %s" % text)
+        with t.component("hungry_vat_is_dormant", toggle="gutMotherDigestHours"):
+            text = _gm(t, "ProofDormant")
+            if _live(t) and not (text.startswith("DORMANT progress 0 -> 0") and "dormant True" in text):
+                raise ExpectationFailed("an unfed vat progressed its body: %s" % text)
+        with t.component("starter_keeps_and_trades", toggle="gutMotherStarterValue"):
+            text = _gm(t, "ProofStarter")
+            if _live(t) and not ("rottable False" in text and "viability False" in text and "tradeable True" in text and "split makes 1" in text):
+                raise ExpectationFailed("the starter rots, cannot trade, or the split is not exactly one: %s" % text)
 
     return suite
 
