@@ -67,8 +67,9 @@ namespace RimMandrake.CreatureBehaviors
         {
             texPath = null;
             drawSize = 0f;
-            if (style >= styleKeys.Count) return false;
-            string key = styleKeys[style];
+            int idx = style & RM_TrackPool.StyleMask;   // the invisible flag is not part of the index
+            if (idx >= styleKeys.Count) return false;
+            string key = styleKeys[idx];
             int bar = key.LastIndexOf('|');
             if (bar <= 0) return false;
             texPath = key.Substring(0, bar);
@@ -80,19 +81,34 @@ namespace RimMandrake.CreatureBehaviors
 
         public void RecordStep(Pawn pawn, RM_TrackSurfaceExtension surface)
         {
+            RecordPrint(pawn.Position, pawn, surface);
+        }
+
+        /// <summary>
+        /// Lay <paramref name="pawn"/>'s print on cell <paramref name="c"/> using
+        /// <paramref name="surface"/>'s sprites. The cell-entry postfix calls this for the pawn's
+        /// own cell; a comp may call it for another cell (a swimmer's wake). Returns false if the
+        /// walker is under the surface's minBodySize or the cell is off the map. Invisible walkers
+        /// are recorded and flagged (RM_TrackRecord.Invisible), never skipped.
+        /// </summary>
+        public bool RecordPrint(IntVec3 c, Pawn pawn, RM_TrackSurfaceExtension surface)
+        {
+            if (pawn == null || surface == null || !c.InBounds(map)) return false;
             float bs = pawn.BodySize;
-            if (bs < surface.minBodySize) return;
+            if (bs < surface.minBodySize) return false;
             RaceProperties race = pawn.RaceProps;
             byte bits = RM_TrackPool.Classify(race.Humanlike, race.IsMechanoid, race.Animal, bs, pawn.Crawling,
                 pawn.pather?.lastMoveDirection ?? pawn.Rotation.AsAngle);
+            bool invisible = pawn.IsPsychologicallyInvisible();
             var rec = new RM_TrackRecord { bits = bits };
-            string tex = surface.TexPathFor(pawn.def, rec.Size, rec.Source, rec.Drag);
-            ushort style = StyleFor(tex, surface.DrawSizeFor(rec.Size));
+            string tex = surface.TexPathFor(pawn.def, rec.Size, rec.Source, rec.Drag, invisible);
+            ushort style = RM_TrackPool.PackStyle(StyleFor(tex, surface.DrawSizeFor(rec.Size)), invisible);
             EnsurePool();
-            IntVec3 c = pawn.Position;
             int evicted = pool.Write(map.cellIndices.CellToIndex(c), Find.TickManager.TicksGame, bits, style);
             Dirty(c);
             if (evicted >= 0) Dirty(map.cellIndices.IndexToCell(evicted));
+            RM_TrackGridDiag.Noted(this, pawn, c, invisible, tex);
+            return true;
         }
 
         // ── erase API ────────────────────────────────────────────────────
@@ -102,14 +118,17 @@ namespace RimMandrake.CreatureBehaviors
             if (pool == null || !c.InBounds(map)) return false;
             if (!pool.Clear(map.cellIndices.CellToIndex(c))) return false;
             Dirty(c);
+            RM_TrackGridDiag.cleared++;
             return true;
         }
 
         public int ClearRect(CellRect rect)
         {
             if (pool == null) return 0;
-            return pool.ClearRect(rect.minX, rect.minZ, rect.maxX, rect.maxZ,
+            int n = pool.ClearRect(rect.minX, rect.minZ, rect.maxX, rect.maxZ,
                 idx => Dirty(map.cellIndices.IndexToCell(idx)));
+            RM_TrackGridDiag.cleared += n;
+            return n;
         }
 
         public void ClearAll()
@@ -223,16 +242,29 @@ namespace RimMandrake.CreatureBehaviors
         {
             string key = texPath + "|" + drawSize.ToString("0.###", System.Globalization.CultureInfo.InvariantCulture);
             if (styleIndex.TryGetValue(key, out ushort idx)) return idx;
-            if (styleKeys.Count >= ushort.MaxValue) return 0;
+            if (styleKeys.Count > RM_TrackPool.StyleMask) return 0;   // the top bit is the invisible flag
             idx = (ushort)styleKeys.Count;
             styleKeys.Add(key);
             styleIndex[key] = idx;
             return idx;
         }
 
+        /// <summary>
+        /// MapMeshDirty returns early only when the whole section array is null; while
+        /// MapDrawer.RegenerateEverythingNow is still creating sections (map load / FinalizeInit) a
+        /// slot can be null and SectionAt(..).dirtyFlags throws (MessyConduit, measured live
+        /// 2026-10-02). An eraser called during load hits exactly that window, so skip a section that
+        /// does not exist yet: it regenerates in that same loop anyway.
+        /// </summary>
         private void Dirty(IntVec3 c)
         {
-            map.mapDrawer.MapMeshDirty(c, RM_TrackDefOf.RM_TrackPrints);
+            MapDrawer drawer = map.mapDrawer;
+            if (drawer == null) return;
+            Section sec;
+            try { sec = drawer.SectionAt(c); }
+            catch (NullReferenceException) { return; }
+            if (sec == null) return;
+            drawer.MapMeshDirty(c, RM_TrackDefOf.RM_TrackPrints);
         }
     }
 }
