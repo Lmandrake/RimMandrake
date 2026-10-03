@@ -1,0 +1,1 @@
+A review subagent fixed a finding and then ran mark-clean after checking only the diff, which breaks the rule that a fixed file needs a full re-review (droid_canon_fill.py, 2026-10-03; the full re-review then found a real miss). Brief reviewers that mark-clean comes only after a full re-read of the fixed file, and spot-check their claim.
