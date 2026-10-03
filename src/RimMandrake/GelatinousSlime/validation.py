@@ -517,8 +517,9 @@ def defs_static(t):
             _fail("RM_Proj_TitanoslimeChunk must exist with thingClass Projectile_SlimeChunk")
         if chunk.findtext("verbs/li/defaultProjectile") != "RM_Proj_TitanoslimeChunk":
             _fail("chunk must throw RM_Proj_TitanoslimeChunk")
-        if chunk.find("comps/li[@Class='CompProperties_Equippable']") is None:
-            _fail("chunk needs CompProperties_Equippable to be thrown")
+        # 1.6 declares it as <li><compClass>CompEquippable</compClass></li> (there is no CompProperties_Equippable type)
+        if not any((li.findtext("compClass") or "").strip() == "CompEquippable" for li in chunk.findall("comps/li")):
+            _fail("chunk needs a CompEquippable comp to be thrown")
         if not any("CompProperties_ChunkShelf" in e.get("Class", "") for e in chunk.findall("comps/li")):
             _fail("chunk needs the CompProperties_ChunkShelf shrink clock")
         if chunk.findtext("stackLimit") != "1":
