@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_MARK_TRADE_BUILD_1: ported from RUT_ScarlandsMarkThoughts, franchise-free. ThoughtWorker_Hediff
+     index-aligns these stages to RM_WarscarMark's four stages: keep the counts moving together. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RM_WarscarMarkThought</defName>
+    <workerClass>ThoughtWorker_Hediff</workerClass>
+    <hediff>RM_WarscarMark</hediff>
+    <stages>
+      <li>
+        <visible>false</visible>
+      </li>
+      <li>
+        <label>marked by the Warscar</label>
+        <description>Something followed me out of the Warscar. It doesn't say anything. It doesn't have to.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+      <li>
+        <label>marked by the Warscar</label>
+        <description>The mark is getting heavier. I dream about the place even when I'm nowhere near it.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+      <li>
+        <label>marked by the Warscar</label>
+        <description>I can't tell anymore where the Warscar ends and I begin.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

@@ -40,7 +40,8 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "warDustBlightCureEnabled": True,
             "ordnancePerMap": 3.0,
             "choirEnabled": True, "choirVolume": 1.0, "choirTickVolumeCeiling": 1.0, "choirTickDensity": 1.0,
-            "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True}
+            "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True,
+            "markEnabled": True, "markAccrualPerDay": 0.3, "markFloorEnabled": True, "markTradeBonusesEnabled": True}
 CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil",
               "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
@@ -48,6 +49,7 @@ SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm"
                  "JobDef/RM_TriggerOrdnance", "JobDef/RM_DustBlight", "RecipeDef/RM_StretchDyeWithWarDust"]
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
+MARK_DEFS = ["HediffDef/RM_WarscarMark", "ThoughtDef/RM_WarscarMarkThought"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
 
 
@@ -388,7 +390,7 @@ def static_checks():
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled", "warDustBlightCureEnabled"]
+    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled", "warDustBlightCureEnabled", "markEnabled", "markFloorEnabled", "markTradeBonusesEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL): the harness's own route is upstream_failed, which
@@ -642,6 +644,45 @@ def _build_suite():
                 return
             _unmeasured(t, "every buried-shell cell being film-free and inspectable after a Settling, and defusing yielding a shell, "
                            "need a live map generated with the RM_BuriedOrdnance genstep")
+
+    def _mark_proof(t, hours):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Scarlands.RM_WarscarMark", method="ProofAccrue",
+                          args="current|%d" % hours)
+        return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+    @suite.chain("warscar_mark")
+    def warscar_mark(t):
+        """WARSCAR_MARK_TRADE_BUILD_1: the mark accrues hourly on a Warscar map and pays a trade. The proof
+        accrues N hours on the first free colonist of the current map (no fade between), so it holds on any
+        map; the map-biome gate itself is the live first poke (eight days on a Warscar quicktest)."""
+        with t.component("mark_defs_resolve", toggle="markEnabled"):
+            r = t.bridge_call("jawa/get_defs", defs=";".join(MARK_DEFS), fields="defName", limit=10)
+            if t.session is None:
+                return
+            if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                raise ExpectationFailed("mark defs did not resolve live: %r" % r)
+        with t.component("mark_accrues_and_pays", toggle="markTradeBonusesEnabled"):
+            txt = _mark_proof(t, 24)       # 24 x 0.0125 = 0.30 -> mild mark, +15% hacking
+            if t.session is None:
+                return
+            if "stage mild mark" not in txt or "HackingSpeed" not in txt:
+                raise ExpectationFailed("24 hours did not reach a paying mild mark: %s" % txt)
+        with t.component("mark_floor_arms", toggle="markFloorEnabled"):
+            txt = _mark_proof(t, 24)       # +0.30 more -> 0.60, deepening, floor armed
+            if t.session is None:
+                return
+            if "floor armed=True" not in txt or "stage deepening mark" not in txt:
+                raise ExpectationFailed("a 0.6 mark did not arm the floor: %s" % txt)
+        with t.component("mark_off_accrues_nothing", toggle="markEnabled"):
+            _set(t, "markEnabled", False)
+            try:
+                txt = _mark_proof(t, 4)
+            finally:
+                _restore(t, "markEnabled")
+            if t.session is None:
+                return
+            if " marked 0" not in txt:
+                raise ExpectationFailed("markEnabled OFF but the mark still accrued: %s" % txt)
 
     @suite.chain("geiger_choir")
     def geiger_choir(t):
