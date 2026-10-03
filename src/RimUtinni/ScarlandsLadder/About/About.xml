@@ -10,8 +10,7 @@
 
 Five rungs, matching design/Jawa/worldbuilding/biomes/the_scarlands.md §GM 1-5: the last stand, the Sentinels, the Cathedral, the Rakata, the pilgrims. Each rung rewrites RUT_Scarlands' description and settleWarning so the biome reads as an inexplicable wasteland until the player has earned the truth.
 
-🔴 THE STAGE TEXT IN THIS MOD IS PLACEHOLDER, and is marked as such in every string. The owner ruled the mechanism and the authoring apart: "stage TEXTS come later at an authoring sitting." Nothing here is shippable prose. What it does establish is the wiring — which def, which field, which rung — so the authoring sitting fills cells rather than designing a schema.
-
+The five description rungs are the ruled text (cast bible section 6B, card 2026-09-30); the two settleWarning rungs are still placeholder and marked as such. The gate is the pilgrim camps: a cold fire, a bedroll, the pilgrim who never left and a journal, placed on RUT_Scarlands maps; reading a journal moves the ladder one rung (setting: Scarlands Ladder).
 R25 (freeze ruling): even the top rung never names the Assailants, the Rakata, scaria's authorship or the Cathedral's nature in a def description. Staged text advances from absence to geometry the player reads, never to a name they are handed. That ban is a property of THIS table, not of the engine, and applies to the real text when it lands.
 
 The engine and the split: the mechanism is mandrake.rm.lorestages (RimMandrake tier — it names no campaign); this mod is the RimUtinni half, per the engine/content rule in design/NAMING_SCHEME_PLAN.md §2.</description>

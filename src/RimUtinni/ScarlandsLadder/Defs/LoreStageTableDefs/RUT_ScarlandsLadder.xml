@@ -6,13 +6,10 @@
     The first consumer of mandrake.rm.lorestages, and the proof that the
     mechanism swaps a real def's real fields.
 
-    🔴 EVERY <text> BELOW IS PLACEHOLDER and says so in the string itself.
-    The owner ruled the mechanism and the prose apart: "stage TEXTS come later
-    at an authoring sitting." These strings exist to make the swap VISIBLE in
-    game (you cannot mistake stage 3 for stage 4) and to fix the schema the
-    authoring sitting will fill: which def, which field, which rung. Do not ship
-    them. Do not let them survive the authoring pass.
-
+    The five DESCRIPTION rungs are the ruled text: warscar_bedazzle_cast_2026-09-30.md
+    section 6B, accepted as written by card 2026-09-30, shipped verbatim
+    (WARSCAR_PILGRIM_CAMPS_1). The two settleWarning rungs below are still
+    PLACEHOLDER and say so in the string: no authored text exists for them yet.
     THE RUNGS are design/Jawa/worldbuilding/biomes/the_scarlands.md SSGM 1-5,
     verbatim in structure:
       1  the last stand      gate: earned lore via the neutral droids / the Cathedral
@@ -35,11 +32,9 @@
     That constraint binds the real text; the placeholders below name the RUNG,
     not the truth, precisely so nobody mistakes a fixture for authored prose.
 
-    NOT wired yet, and owed: the reveal GATES. Nothing calls
-    GameComponent_LoreStage.AdvanceStage("Scarlands") - the gates are quest and
-    dialogue surfaces that do not exist. Until they do, the ladder moves only
-    from the dev-mode "Lore stages" debug menu, which is also how the live proof
-    is taken.
+    THE GATE: reading a RUT_PilgrimJournal (camps on RUT_Scarlands maps, this
+    mod's GenStep_RUT_PilgrimCamps) calls AdvanceStage("Scarlands") once per
+    journal; the dev-mode "Lore stages" menu still moves it too.
   -->
 
   <RimMandrake.LoreStages.RM_LoreStageTableDef>
@@ -58,23 +53,23 @@
         <stages>
           <li>
             <stage>1</stage>
-            <text>[[PLACEHOLDER stage 1 - the last stand]] Crater fields and slag hills on shattered megastructure floors. The emplacement rings all face one quarter of the sky, and the craters walk inward from it. Placeholder text; the authoring sitting owns the real words.</text>
+            <text>Crater fields and slag hills on shattered megastructure floors. The old line's emplacements all face one quarter of the sky, and the craters walk in from that quarter and stop at the line. Whatever came, came from out there, and the line held until there was nothing left to hold it with.</text>
           </li>
           <li>
             <stage>2</stage>
-            <text>[[PLACEHOLDER stage 2 - the Sentinels]] Crater fields and slag hills on shattered megastructure floors. The machines that still patrol here cross the same ground in the same order, and none of their lines lead outward. Placeholder text; the authoring sitting owns the real words.</text>
+            <text>Crater fields and slag hills on shattered megastructure floors. The machines that still walk these terraces keep the line's own paths, in the line's own order, at the line's own hours. None of their patrols turns outward. They are not watching for anything. They are keeping something.</text>
           </li>
           <li>
             <stage>3</stage>
-            <text>[[PLACEHOLDER stage 3 - the Cathedral]] Crater fields and slag hills on shattered megastructure floors. Every patrol line, every grave-ward and every dead projector ring is oriented on the same thing beyond the horizon. Placeholder text; the authoring sitting owns the real words.</text>
+            <text>Crater fields and slag hills on shattered megastructure floors. Every patrol line, every grave-ward, every dead projector ring and every kneeling chassis is set on one bearing, toward the rust spires past the horizon. The line did not only face out. It stood between.</text>
           </li>
           <li>
             <stage>4</stage>
-            <text>[[PLACEHOLDER stage 4 - the deep record]] Crater fields and slag hills on shattered megastructure floors. The poisons here were not spilled; they were issued, in quantities and in a sequence, and the ground still holds the order. Placeholder text; the authoring sitting owns the real words.</text>
+            <text>Crater fields and slag hills on shattered megastructure floors. The poisons in this ground were not spilled. They lie in bands, in sequence, in measured quantities, as if laid down by someone keeping count, and the count was kept by someone who expected to be here afterwards.</text>
           </li>
           <li>
             <stage>5</stage>
-            <text>[[PLACEHOLDER stage 5 - the pilgrims]] Crater fields and slag hills on shattered megastructure floors. The camps along the Ashfall Road all end facing the same direction, and nobody who made one walked back out. Placeholder text; the authoring sitting owns the real words.</text>
+            <text>Crater fields and slag hills on shattered megastructure floors. Along the Ashfall Road the camps lie closer together the nearer they come to the rust spires. Each was made by someone who knew what they were walking toward. None walked back, and none of them seem to have tried.</text>
           </li>
         </stages>
       </li>

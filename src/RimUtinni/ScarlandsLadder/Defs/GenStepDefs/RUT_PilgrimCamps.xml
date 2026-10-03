@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_PILGRIM_CAMPS_1: camps on RUT_Scarlands maps (patched into that biome's extraGenSteps by
+     Patches/RUT_PilgrimCamps_Scarlands.xml). Count is the campsPerMap setting. -->
+<Defs>
+  <GenStepDef>
+    <defName>RUT_PilgrimCamps</defName>
+    <order>760</order>
+    <genStep Class="RimMandrake.Utinni.ScarlandsLadder.GenStep_RUT_PilgrimCamps" />
+  </GenStepDef>
+</Defs>
