@@ -124,6 +124,31 @@ def static_checks():
     bx = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RUT_BeastBulge.xml"), encoding="utf-8").read()
     if "<li>RM_TarBeast</li>" not in bx or "Thrumbo</li>" in bx:
         bad.append("RUT_BeastBulge does not emerge RM_TarBeast (placeholder Thrumbo still wired?)")
+    # SUMP_SOLVENT_WAKE_BUILD_1: the pour order's seams (the C# lives in EnvironmentalHazards)
+    pour_src = os.path.join(HERE, "..", "EnvironmentalHazards", "Source", "RM_TarSolventPour.cs")
+    if os.path.isfile(pour_src):
+        ps = open(pour_src, encoding="utf-8").read()
+        for cls in ("RM_CompBulgeSolventPour", "RM_MapComponent_TarSolventWake", "FloatMenuOptionProvider_PourSolvent", "JobDriver_RM_PourSolvent"):
+            if "class %s" % cls not in ps:
+                bad.append("class %s not found in RM_TarSolventPour.cs" % cls)
+        if '"Shkaar"' not in ps or '"Zizzik"' not in ps:
+            bad.append("solvent pour no longer applies both god deltas (Shkaar + Zizzik)")
+    else:
+        bad.append("EnvironmentalHazards/Source/RM_TarSolventPour.cs missing")
+    if "CompProperties_BulgeSolventPour" not in bx:
+        bad.append("RUT_BeastBulge carries no CompProperties_BulgeSolventPour")
+    else:
+        for sd in re.findall(r"<li>(RUT_\w*TarSolvent)</li>", bx):
+            found = False
+            for dp, _dn, fs in os.walk(os.path.join(HERE, "..", "..")):
+                if any(f.endswith(".xml") and "<defName>%s</defName>" % sd in open(os.path.join(dp, f), encoding="utf-8", errors="ignore").read() for f in fs):
+                    found = True
+                    break
+            if not found:
+                bad.append("solvent %s named on the bulge is defined nowhere in src/" % sd)
+    jd = os.path.join(HERE, "..", "EnvironmentalHazards", "Defs", "JobDefs", "RM_JobDefs_StationEater.xml")
+    if "<defName>RM_PourSolvent</defName>" not in open(jd, encoding="utf-8").read():
+        bad.append("JobDef RM_PourSolvent missing")
     # SUMP_KETHREL_BUILD_1: defs, art, code seams (parsed from the source; no game needed)
     names = set(n for _t, n in SHIPPED) | set(h[1] for h in HELD_DEFS)
     for need in ("RM_Kethrel", "RM_KethrelShell", "RM_KethrelTree"):
@@ -282,6 +307,9 @@ def _build_suite():
         with t.component("tar_beast_bulge_set_piece", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'bulge -> wake (damage, construction, dig shaft, running deep drill) -> RM_TarBeast crawls to the densest building cluster, swallows one (mound + letter), lays tar, sinks into a new bulge: needs a Sump map and a wake; FIRST LIVE POKE: hit the bulge, step ticks, read RM_CompTarBeast/RM_CompStationEater via jawa/comp_read')
+        with t.component("tar_solvent_pour_wakes_beast", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, 'pour order on a dormant bulge: carry RUT_WeakTarSolvent (min count in settings) to the edge, pour -> bulge gone, one RM_TarBeast spawned in ManhunterPermanent, solvent consumed, Shkaar+Zizzik delta tagged "the tar woken by solvent"; control: no order offered without solvent; manhunter setting off -> ordinary eating beast. FIRST LIVE POKE: spawn bulge + solvent on a Sump map, issue the pour job, step ticks, read mental state (jawa/comp_read RM_CompTarBeast) and Ninefold satiation'.replace(chr(39), chr(34)))
         with t.component("sump_mouse_filth_trail", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_Filth_MouseTrack needs a sump mouse walking on tar (not yet measured live)')

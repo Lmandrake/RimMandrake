@@ -15,4 +15,11 @@
     <reportString>eating TargetA.</reportString>
   </JobDef>
 
+  <!-- SUMP_SOLVENT_WAKE_BUILD_1: pour solvent into a tar bulge (RM_TarSolventPour.cs). -->
+  <JobDef>
+    <defName>RM_PourSolvent</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.JobDriver_RM_PourSolvent</driverClass>
+    <reportString>pouring solvent into the tar.</reportString>
+  </JobDef>
+
 </Defs>

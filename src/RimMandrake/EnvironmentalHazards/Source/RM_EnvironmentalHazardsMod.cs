@@ -409,6 +409,13 @@ namespace RimMandrake.EnvironmentalHazards
         public static float tarBeastPace = 1f;
         public static float tarBeastMaxBuildings = 8f;
         public static float tarBeastPumpWakeFactor = 1f;
+        // SUMP_SOLVENT_WAKE_BUILD_1
+        public static bool tarSolventPourEnabled = true;
+        public static bool tarSolventManhunter = true;
+        public static bool tarSolventStrongRequired = false;
+        public static float tarSolventMinCount = 5f;
+        public static float tarSolventGodDeltaShkaar = 8f;
+        public static float tarSolventGodDeltaZizzik = 8f;
         public static bool contactVenomLethal = true;
         public static bool bodySizeBarrierEnabled = true;
         public static float bodySizeBarrierThreadCostMultiplier = 1f;
@@ -485,6 +492,12 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref tarBeastPace, "tarBeastPace", 1f);
             Scribe_Values.Look(ref tarBeastMaxBuildings, "tarBeastMaxBuildings", 8f);
             Scribe_Values.Look(ref tarBeastPumpWakeFactor, "tarBeastPumpWakeFactor", 1f);
+            Scribe_Values.Look(ref tarSolventPourEnabled, "tarSolventPourEnabled", true);
+            Scribe_Values.Look(ref tarSolventManhunter, "tarSolventManhunter", true);
+            Scribe_Values.Look(ref tarSolventStrongRequired, "tarSolventStrongRequired", false);
+            Scribe_Values.Look(ref tarSolventMinCount, "tarSolventMinCount", 5f);
+            Scribe_Values.Look(ref tarSolventGodDeltaShkaar, "tarSolventGodDeltaShkaar", 8f);
+            Scribe_Values.Look(ref tarSolventGodDeltaZizzik, "tarSolventGodDeltaZizzik", 8f);
             Scribe_Values.Look(ref contactVenomLethal, "contactVenomLethal", true);
             Scribe_Values.Look(ref bodySizeBarrierEnabled, "bodySizeBarrierEnabled", true);
             Scribe_Values.Look(ref bodySizeBarrierThreadCostMultiplier, "bodySizeBarrierThreadCostMultiplier", 1f);
@@ -645,6 +658,15 @@ namespace RimMandrake.EnvironmentalHazards
                 "A woken tar beast crawls to the densest cluster of your buildings, swallows them, lays tar "
               + "and finally sinks back into the deep tar. Off: a woken beast just stands inert where it "
               + "emerged and never eats, coats or sinks.");
+            list.CheckboxLabeled("Pour solvent into a tar bulge", ref tarSolventPourEnabled,
+                "A right-click order on a sleeping tar bulge: carry tar solvent to the tar's edge and pour it in. "
+              + "The beast wakes at once. Off: the order is never offered (digging, pumping, fire and building "
+              + "near the bulge still wake it).");
+            list.CheckboxLabeled("A solvent-woken tar beast hunts everyone", ref tarSolventManhunter,
+                "On: the beast woken by solvent goes manhunter for good and hunts every pawn on the map. "
+              + "Off: it wakes into its ordinary building-eating behaviour.");
+            list.CheckboxLabeled("Pouring needs strong tar solvent", ref tarSolventStrongRequired,
+                "On: only the strong solvent works; the weak one is not accepted.");
             list.CheckboxLabeled("Contact venom (thorn plants)", ref contactVenomEnabled,
                 "A plant built to scratch whoever stands in it goes inert — it still grows, still "
               + "slows movement and can still be cut, it just never scratches. Clocks already "
@@ -743,6 +765,12 @@ namespace RimMandrake.EnvironmentalHazards
             tarBeastMaxBuildings = list.Slider(tarBeastMaxBuildings, 1f, 30f);
             list.Label("Tar bulge wake range for pumping and deep drills: " + tarBeastPumpWakeFactor.ToString("0.0") + "x (0 = never)");
             tarBeastPumpWakeFactor = list.Slider(tarBeastPumpWakeFactor, 0f, 3f);
+            list.Label("Solvent poured to wake a tar bulge: " + tarSolventMinCount.ToString("0"));
+            tarSolventMinCount = Mathf.Round(list.Slider(tarSolventMinCount, 1f, 20f));
+            list.Label("Sh'kaar's share of a solvent-woken tar: " + tarSolventGodDeltaShkaar.ToString("0.0"));
+            tarSolventGodDeltaShkaar = list.Slider(tarSolventGodDeltaShkaar, 0f, 30f);
+            list.Label("Zizzik's share of a solvent-woken tar: " + tarSolventGodDeltaZizzik.ToString("0.0"));
+            tarSolventGodDeltaZizzik = list.Slider(tarSolventGodDeltaZizzik, 0f, 30f);
             list.Label("Contact venom scratch: " + contactVenomScratchMultiplier.ToString("0.00") + "x");
             list.Label("How hard a thorn plant scratches, on top of the overall hazard damage dial. "
                      + "The venom dose follows the damage, so this moves the poison too. At 0 the "

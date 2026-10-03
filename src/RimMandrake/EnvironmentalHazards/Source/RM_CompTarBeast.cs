@@ -49,6 +49,12 @@ namespace RimMandrake.EnvironmentalHazards
                 ApplyPace(pawn);
                 // The bulge's PawnSpawnOnWakeup put it in a defend-point Lord whose duty would override the think tree.
                 pawn.GetLord()?.Notify_PawnLost(pawn, PawnLostCondition.ForcedToJoinOtherLord);
+                // SUMP_SOLVENT_WAKE_BUILD_1: woken by a solvent pour -> hunts every pawn on the map, for good.
+                if (RM_MapComponent_TarSolventWake.TryConsume(pawn.Map, pawn.Position, out bool hunt) && hunt && pawn.mindState != null)
+                {
+                    pawn.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.ManhunterPermanent,
+                        reason: "tar woken by solvent", forceWake: true, transitionSilently: true);
+                }
             }
 
             IntVec3 pos = pawn.Position;
@@ -110,7 +116,12 @@ namespace RimMandrake.EnvironmentalHazards
             {
                 return false;
             }
-            return eater.Satiated || eater.StructuresEaten >= RM_EnvironmentalHazardsSettings.tarBeastMaxBuildings;
+            if (eater.Satiated || eater.StructuresEaten >= RM_EnvironmentalHazardsSettings.tarBeastMaxBuildings)
+            {
+                return true;
+            }
+            // A solvent-woken beast that has nobody left to hunt sinks back down.
+            return pawn.MentalStateDef == MentalStateDefOf.ManhunterPermanent && pawn.Map.mapPawns.FreeColonistsSpawnedCount == 0;
         }
 
         // Back into the deepest tar as a dormant bulge, far from the colony; says so.
