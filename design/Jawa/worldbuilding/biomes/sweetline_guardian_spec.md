@@ -7,20 +7,21 @@ generic `PawnKindDef` that spawns near any sweetline tree and guards it.
 ## 0. Summary
 
 - **What:** a medium-band arboreal climber that roosts in the crown of a sweetline tree
-  (`RUT_SweetlineTree`), lines its bower with the giant-wool snagged on the bark, and drops on
-  any tool-user that comes within ~9 cells of the trunk. Two or three per tree. Wild
+  (`RM_SweetlineTree`), lines its bower with the giant-wool snagged on the bark, and defends the
+  tree against whoever harms it (whether a lone visitor near the trunk is charged is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md). Two or three per tree. Wild
   (faction-null), huntable, tameable but wild (0.95). It does not fly.
 - **Mechanism:** the `SHRUBLAND_GIANT_ENRAGE_1` shape, generalised from "guard a calf" to
-  "guard a Thing" — a comp on the guardian scans a radius around its HOME TREE and pushes a
-  scoped `MentalState_Manhunter` subclass that is hostile to ONE intruder and ends when that
-  intruder is beyond twice the radius from the tree. Two more small pieces: a roost comp on the
+  "guard a Thing" — a comp on the guardian is anchored on its HOME TREE and is pushed into
+  the existing scoped `MentalState_Manhunter` subclass `RM_MentalState_ScopedAggression`
+  (hostile to ONE pawn, ends when that pawn is beyond `disengageRadius` of the anchor cell);
+  what pushes it, a proximity scan or a harm trigger, is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md. Two more small pieces: a roost comp on the
   tree that spawns and re-spawns its guardians, and an `Animal_PreMain` think-tree insert that
   walks a strayed guardian home. **Needs C#** — three small classes in
   `mandrake.rm.creaturebehaviors`, each a generalisation of code already in that assembly. No
   Harmony, no patch of any vanilla def (§2).
 - **Tier (RULED, card 2026-09-25 + Q11a):** species def `RM_Barkwarden` in the Arid
   Shrubland's own `RM_` biome mod; mechanism `RM_` in the kit; the binding (the roost comp on
-  the tree and the biome wiring) `RUT_` in AshkarrFlora / UtinniPatches (§7).
+  the tree and the biome wiring) `RM_`, in `mandrake.rm.leaningscrub`'s own XML (§7).
 - **Names (RULED, card 2026-09-25):** defName `RM_Barkwarden`; player label **"bark-warden"** (§7).
 - **Owner questions:** §11 — the wool-harvest pace reconciliation and the tunnel-snake
   body-size flag; tier and name are ruled.
@@ -36,17 +37,18 @@ what the tree brings it (bark-lickers, the runway animals that come to the trunk
 foot of the tree when nothing else comes) and never goes far, because the tree is the whole
 of its territory: a bark-warden more than a dozen cells from its trunk is a bark-warden walking back.
 
-What it does to you: nothing, until you come within nine cells of the trunk. Then one drops
-from the crown onto you with no warning, and the others follow. Back off past eighteen cells
-and it stops — it wants you gone, not dead — and climbs back up. Cut or harvest the tree and
-every bark-warden in it comes down at once on whoever is holding the tool. That is the whole
+What it does to you: whether it charges a lone visitor near the trunk, and whether any tell
+precedes a charge, is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md. Harm to the tree brings the bark-wardens down on
+the harmer; whether harvesting the wool counts as harm is open in the same document. Cutting
+and harvesting do not kill this tree (`harvestAfterGrowth 0.05` makes `HarvestDestroys` false,
+so `PlantCollected` only resets growth); only damage kills it. That is the whole
 creature: **a valuable hanging harvest, in a dangerous place**, where the danger is
 proportional, local, and readable — you can see the tree from a day's walk, and every Jawa
 knows what lives in it.
 
 Register notes, for the description text: the wild here is quiet and "danger announces itself
-by posture, never by voice" (§5 of the biome sheet) — the bark-warden gives no call before the
-drop, and its `soundAngry` should be breath and claws, not a roar. Slots in the size ladder:
+by posture, never by voice" (§5 of the biome sheet) — whether the bark-warden gives a tell
+before a charge is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md, and its `soundAngry` should be breath and claws, not a roar. Slots in the size ladder:
 medium, the interface-killer band, alongside Anooba and Massiff; it is the one medium
 predator that hunts DOWN from above rather than across the interface, which is the niche the
 ladder leaves open ("come from the sky and dive" is the fliers' route; this is the canopy's).
@@ -113,14 +115,15 @@ human-sized things" is what the engine gives, not something to build.
 
 **A. `RM_TreeGuardianExtension` (DefModExtension on the race) + `RM_CompTreeGuardian`
 (ThingComp on the race).** The comp holds `homeTree` (a `Thing`, `Scribe_References`). At
-`CompTickRare` (250 ticks), if the home tree is spawned and the pawn is wild and not already
-in a mental state: a bounded `GenRadial.RadialDistinctThingsAround` scan of `triggerRadius`
-cells around the TREE (not the pawn — the pawn may be up the trunk or twelve cells off
+`CompTickRare` (250 ticks; a pawn comp, which does Rare-tick), if the home tree is spawned and
+the pawn is wild and not already in a mental state: a bounded `GenRadial.RadialDistinctThingsAround`
+scan of `triggerRadius` cells around the TREE (whether a proximity scan exists at all is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md; this
+describes it if it is chosen) (not the pawn — the pawn may be up the trunk or twelve cells off
 grazing; the territory is the tree's). Same intruder filter as `RM_CompParentalEnrage.
 FindIntruder`: ToolUser+ only, exempt same race, exempt the guardian's own faction (a tamed
 one never rages at its handlers), skip psychologically-invisible, LOS optional and off. The
 nearest qualifying pawn becomes `otherPawn` of a forced, force-wake `TryStartMentalState` of
-`RM_TerritorialRage`. Cooldown per guardian `600` ticks — short on purpose: a loiterer inside
+`RM_MentalState_ScopedAggression`. Cooldown per guardian `600` ticks — short on purpose: a loiterer inside
 the radius gets charged again every ~15 in-game minutes, which is the pressure the loop needs.
 
 Fields, with the shipped defaults for the bark-warden: `rageState` (null = inert, as
@@ -130,18 +133,16 @@ race can be given a tight trigger and a long grudge), `rageDurationTicks 2500`,
 `onlyToolUserOrHumanlikeTriggers true`, `exemptSameRace true`, `exemptSameFaction true`,
 `requireLineOfSight false`.
 
-**`RM_TerritorialRage`** (MentalStateDef) with stateClass `RM_MentalState_TerritorialRage`.
-It is `RM_MentalState_ParentalEnrage` with the anchor typed `Thing` instead of `Pawn`:
-`ForceHostileTo(Thing t) => t == causedByPawn`, `ForceHostileTo(Faction) => false`,
-`MentalStateTick` recovers the moment the target is dead, downed, despawned, or farther than
-`disengageRadius` from the ANCHOR (the tree — measured from the tree, not the guardian,
-because the guardian is the one doing the chasing). 🔑 Builder's call whether to hoist a
-shared `RM_MentalState_GuardRage` base with `Thing anchor` and re-derive ParentalEnrage from
-it, or write the sibling — but do not fork the disengage logic silently: one of the two must
-call the other. Def block copies `RM_ParentalEnrage`: `category Aggro`, no `beginLetter` (no
-warning is the ruling, same as the giant), `minTicksBeforeRecovery 600`, `recoveryMtbDays
-0.05`, `stopsJobs true`, `recoverFromDowned true`, `recoverFromSleep false`, and no
-ParentName.
+**The mental state already exists:** `RM_MentalState_ScopedAggression`
+(`src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ScopedAggression.cs`), a
+`MentalState_Manhunter` subclass with `ForceHostileTo(Thing t) => t == causedByPawn`,
+`ForceHostileTo(Faction) => false`, and a disengage check every 30 ticks that recovers once the
+target is dead, downed, despawned, off-map, or farther than `disengageRadius` from `anchorCell`.
+The anchor is a cell, so the tree's own cell serves; the state is measured from the anchor, not
+the guardian, because the guardian is the one doing the chasing. Use it, or a new MentalStateDef
+with that `stateClass` (the shipped `RM_SwarmAggression` is one; its timing is the wasp's, so a
+guardian wants its own def). No new state class is owed. Whether a charge carries a `beginLetter`
+or other tell is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md.
 
 **B. `RM_CompProperties_GuardianRoost` (ThingComp on the TREE, attached by the RUT flora
 XML with `MayRequire="mandrake.rm.creaturebehaviors"`).** Fields: `guardianKind`
@@ -151,7 +152,8 @@ XML with `MayRequire="mandrake.rm.creaturebehaviors"`).** Fields: `guardianKind`
   map generation and on wild regrowth alike (both reach `GenSpawn.Spawn`); on a save that
   already has trees it does NOT fire, and the top-up below fills them within one respawn
   interval instead, so existing maps get guardians without a special case.
-- `CompTickRare` → prune the `guardians` list of dead/despawned; if fewer than `count` are
+- `CompTickLong` (a Plant never Rare-ticks; `Plant` overrides only `TickLong`, so a comp on the
+  tree must override `CompTickLong`, and the engine's Long cadence is the throttle) → prune the `guardians` list of dead/despawned; if fewer than `count` are
   alive and bound to me and the respawn timer has elapsed, spawn ONE and reset the timer.
 - Spawn is `PawnGenerator.GeneratePawn(new PawnGenerationRequest(guardianKind, faction: null,
   fixedBiologicalAge: adult))` at `CellFinder.RandomClosewalkCellNear(parent.Position,
@@ -177,13 +179,11 @@ with the same tag. One small change to `RM_CompPlantAlarm` is owed: an optional
 with `otherPawn = dinfo.Instigator` (damage) or the harvester (`Plant.PlantCollected(Pawn by,
 …)`, RimWorld/Plant.cs l.621 — the only harvest seam; the tree's `thingClass` becomes a tiny
 `RM_Plant_Alarming : Plant` whose override calls `TriggerAlarm(by)`), instead of vanilla
-`Manhunter`. Default null keeps the rot grove exactly as it behaves today. Cutting the tree
-(harvestWork 4200) is therefore a fight the whole way down, and a harvest job interrupted by
-a rage simply resumes — until the player either clears the crown or gives up. That is the
-loop.
+`Manhunter`. Default null keeps the rot grove exactly as it behaves today. Cutting and harvesting leave the tree standing (see §1); whether a harvest
+wakes the guardians at all is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md.
 
 **Cost.** One radial scan of radius 9 (≈250 cells) per guardian per 250 ticks, one list
-prune per tree per 250 ticks. Trees are `wildClusterWeight 0.05`; a 250×250 shrubland map
+prune per tree per Long tick. Trees are `wildClusterWeight 0.05`; a 250×250 shrubland map
 carries a handful. Negligible.
 
 ## 3. Finding its tree at spawn; tree death
@@ -196,14 +196,14 @@ carries a handful. Negligible.
   it — the roost's list gains the pawn, so the roost stops re-spawning for that slot. If none:
   it is an ordinary wild animal — no rage, no leash, wanders, leaves the map when vanilla says
   so. The search is repeated at most once a day, never every rare tick.
-- **The tree dies or is cut:** `homeTree` despawns → the same re-home rule, once. Guardians
+- **The tree dies** (only damage kills it; cutting and harvesting do not): `homeTree` despawns → the same re-home rule, once. Guardians
   that find no vacant tree are simply free animals from then on. Nothing kills them, nothing
   makes them manhunt, nothing spawns a replacement (the roost comp died with the tree). The
-  rage started by the cutting ends on its own rules (target gone or `rageDurationTicks`).
-- **The tree burns** (`Flammability 0.1`): same as cut; the arsonist is `dinfo.Instigator`
+  rage started by the killing ends on its own rules (target gone or `rageDurationTicks`).
+- **The tree burns** (`Flammability 0.1`): same as dying; the arsonist is `dinfo.Instigator`
   on the fire damage and gets the scoped rage via the harvest hook while it burns.
 - **Tamed:** faction non-null → the comp goes inert (no scan, no leash), the roost prunes it
-  on the next rare tick (it checks faction as well as death), and the slot re-spawns on the
+  on its next long tick (it checks faction as well as death), and the slot re-spawns on the
   timer. A tamed bark-warden is a normal Advanced-trainable animal from then on. Going feral
   again re-enters the "spawned any other way" rule.
 - **Save/load:** both references are `Scribe_References`; a `homeTree` that fails to
@@ -322,7 +322,7 @@ mod may not straddle." So this is three tiers, one each, and none of them stradd
 |---|---|---|---|
 | mechanism (extension, comps, rage state, roost, leash JobGiver) | **RM_** | `mandrake.rm.creaturebehaviors` | names no species, no tree, no biome — "guard a Thing" would serve a medieval-tribe player's own mod unchanged (the RM test). Same call the enrage kit made. |
 | the species (ThingDef + PawnKindDef + art) | **RM_** | the Arid Shrubland's own `RM_` biome mod (staged with the biome kit until that mod exists at its sitting) | **Q11a** (`design/RimMandrake/biome_mod_architecture.md` §7, owner 2026-09-22): an invented name is not Star Wars IP, so it does not route through the franchise layer — and the free `RM_` biome mod must carry its full cast, never a thinned fallback. The def names no tree and no campaign lore: it guards whatever roost spawned it, so nothing about it is Utinni-specific either. Ruled by card 2026-09-25 (name = Bark-warden; tier by the Q11a test). |
-| the binding (roost comp + PlantAlarm on `RUT_SweetlineTree`; anything in the campaign's shrubland wiring) | **RUT_** | `mandrake.rut.ashkarrflora` / `mandrake.rut.utinnipatches` | this is where the campaign says WHICH tree carries WHICH guardian. `RUT` depends on `RM` — downward only, which is the grammar. |
+| the binding (roost comp + PlantAlarm on `RM_SweetlineTree`) | **RM_** | `mandrake.rm.leaningscrub`, in `RM_SweetlineTree`'s own XML (`Defs/ThingDefs_Plants/RM_SweetlineTree.xml`) | the tree is `RM_SweetlineTree` in that mod (§7 Q8 of `design/RimMandrake/biome_mod_architecture.md`), so the binding sits on it and names no campaign lore. |
 
 (`RSW_ShrublandGiant` / `RSW_TunnelSnake` were this spec's original tier precedent; they predate
 Q11a and are themselves due `RSW_`→`RM_` at the shrubland's biome sitting per the split rulings of
@@ -380,10 +380,7 @@ Honest list. Each has a mitigation in the design or a stated acceptance.
    `pawnsInAggroMentalState`, so for up to 2500 ticks the map has an active threat (danger
    music, some jobs refused). Bounded by the time-box and the disengage rule; the giant
    already does this and the owner has tested it live without complaint.
-7. **No warning.** No letter, no sound before the drop. This is the ruling for the giant and
-   is kept here for consistency; the player learns the rule from the tree's description and
-   the first drop. If the owner wants a tell, it is a `soundCall` on the crown, never a
-   letter.
+7. **Warning.** Whether a charge is announced by a readable sign is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md.
 8. **The bark-warden that lost its tree.** A free ex-guardian is a 1.2-body wild animal that
    wanders like any other. Fine. What it must not do is manhunt or vanish; both are covered
    in §3.
@@ -424,7 +421,7 @@ and the reskin is the reference image.
 
 1. ✅ **RULED (card 2026-09-25 + Q11a test): species def is `RM_Barkwarden`, `RM_` tier**, in
    the shrubland's own biome mod — invented name, no IP, nothing campaign-specific in the def
-   (§7). Mechanism RM, binding RUT, unchanged.
+   (§7). Mechanism RM, binding RM (on `RM_SweetlineTree` in `mandrake.rm.leaningscrub`).
 2. ✅ **RULED (card 2026-09-25): the label is "bark-warden".**
 3. ✅ **BUILT, `SWEETLINE_WOOL_HARVEST_1` (2026-09-21).** `RUT_SweetlineTree` now ships
    `harvestedThingDef` RUT_SweetlineWool (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase)
@@ -448,8 +445,8 @@ Files the build touches, so the estimate is honest: kit — three new `.cs` (ext
 roost comp+props, leash JobGiver), one new MentalStateDef XML, one ThinkTreeDef insert XML,
 one small change to `RM_CompPlantAlarm` (optional scoped state + a pawn-carrying
 `TriggerAlarm(Pawn)`), one `RM_Plant_Alarming : Plant`, four settings entries; the shrubland's `RM_` biome mod —
-one race XML (`RM_Barkwarden` ThingDef + PawnKindDef, reskin); AshkarrFlora — three lines on
-`RUT_SweetlineTree` (thingClass, roost comp, plant alarm) under `MayRequire`. Nothing in
+one race XML (`RM_Barkwarden` ThingDef + PawnKindDef, reskin); LeaningScrub — three lines on
+`RM_SweetlineTree` (thingClass, roost comp, plant alarm) under `MayRequire`. Nothing in
 the shrubland biome def — the Bark-warden is not a `wildAnimals` entry and must never become one.
 Quicktest, minimal list + the three mods: spawn a tree, confirm 2–3 guardians within 4 cells,
 walk a colonist to 8 cells (rage), to 19 cells (recovery), cut the tree (rage at the cutter),
