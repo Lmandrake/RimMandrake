@@ -748,7 +748,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("26 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 26, sorted(V.SETTINGS_DEFAULTS))
+    check("27 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 27, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -856,6 +856,14 @@ def main():
           set(bad) == {"plume_fronts.plume_source_launches_from_new_crust",
                        "plume_fronts.plume_source_obscures_with_blind_smoke",
                        "plume_fronts.plume_source_exempts_vapour_adapted"}, bad)
+
+    real = V._read_cs
+    try:
+        V._read_cs = lambda n: real(n).replace("keelRingEnabled", "X") if n == "RM_ForgeKeelwork.cs" else real(n)
+        bad = reds(run())
+    finally:
+        V._read_cs = real
+    check("stripped keel ring source reddens keel_ring_wired", set(bad) == {"keelwork.keel_ring_wired"}, bad)
 
     # breaks whose effect is a broken instrument or a harness limit read UNMEASURED, never a pass and never a red
     un = unmeasured(run(("log_cap",)))

@@ -20,6 +20,7 @@ namespace RimMandrake.TheForge
         public static SoundDef RM_ForgeVoice_GlassSing;
         public static SoundDef RM_ForgeVoice_CrackPulse;
         public static SoundDef RM_ForgeVoice_PhaseStinger;
+        public static SoundDef RM_ForgeVoice_KeelRing;
 
         // §7 the dhuvvox clock
         public static SoundDef RM_DhuvvoxNoduleClick;

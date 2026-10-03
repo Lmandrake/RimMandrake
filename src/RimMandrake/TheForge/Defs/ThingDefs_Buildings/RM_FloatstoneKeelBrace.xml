@@ -13,8 +13,13 @@
   one vanilla optimizer's 30%, because a brace costs no gravtech); 30 floatstone per
   brace (just under one garden's 35-block harvest); mass 3 (30 blocks at 0.1).
 
+  PAYLOAD (FOUNDRY ruling 2026-10-03, owner may veto): the spec says braces "reduce launch cost OR raise effective
+  payload". Vanilla has no payload, and "or" is satisfied by the fuel saving, so a brace adds NO SubstructureSupport.
+  Adding it would stack with grav field extenders (+250 each) and change how big a ship may be, a balance lever
+  nobody asked for. Each linked brace rings once at launch (RM_Patch_KeelRing, toggle keelRingEnabled).
+
   PLACEHOLDER ART: the floatstone block's own item texture. Bespoke brace art is owed
-  (FORGE_KEELWORK_REMAINDER_1).
+  (FORGE_KEELWORK_REMAINDER_1: job RM_FloatstoneKeelBrace filed in artpipe pending, not yet rendered).
 -->
 <Defs>
   <ThingDef ParentName="GravshipComponentBase">

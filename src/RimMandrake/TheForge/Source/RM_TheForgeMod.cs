@@ -48,6 +48,7 @@ namespace RimMandrake.TheForge
         // FORGE_GPT_ENRICHMENT_1 — the owner-picked enrichments. Each is read
         // live, so flipping one takes effect at once.
         public static bool keelworkEnabled = true;
+        public static bool keelRingEnabled = true;
         public static bool spunstoneStudyEnabled = true;
         public static bool forgeVoicesEnabled = true;
         public static bool forgeVoicesVisualCues = false;
@@ -89,6 +90,7 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref cycleDormancyEnabled, "cycleDormancyEnabled", true);
             Scribe_Values.Look(ref cycleTelegraphLetters, "cycleTelegraphLetters", true);
             Scribe_Values.Look(ref keelworkEnabled, "keelworkEnabled", true);
+            Scribe_Values.Look(ref keelRingEnabled, "keelRingEnabled", true);
             Scribe_Values.Look(ref spunstoneStudyEnabled, "spunstoneStudyEnabled", true);
             Scribe_Values.Look(ref forgeVoicesEnabled, "forgeVoicesEnabled", true);
             Scribe_Values.Look(ref forgeVoicesVisualCues, "forgeVoicesVisualCues", false);
@@ -150,6 +152,9 @@ namespace RimMandrake.TheForge
             list.CheckboxLabeled("Floatstone keelwork", ref keelworkEnabled,
                 "Floatstone keel braces linked to a grav engine cut the gravship's fuel use. "
               + "Off: braces still build and stand, but save no fuel.");
+            list.CheckboxLabeled("  Keel braces ring at launch", ref keelRingEnabled,
+                "Each keel brace linked to the grav engine rings once, glassily, as the gravship "
+              + "launches. Off: the braces launch silently.");
             list.CheckboxLabeled("Spunstone bonding is learned in the Forge", ref spunstoneStudyEnabled,
                 "The spunstone bonding research stays hidden until colonists have studied "
               + "enough mature floatstone gardens. Off: the project is visible and "
