@@ -92,6 +92,11 @@ namespace RimMandrake.LanternDeeps
 			{
 				Pawn pawn = colonists[i];
 				float glow = map.glowGrid.GroundGlowAt(pawn.Position);
+				// LANTERNDEEPS_LANTERN_LIGHT_BUILD_1: light that comes only from Lanterns is the one safe light.
+				if (glow > 0f && LanternDeepsSettings.safeLanternEnabled && LitOnlyByLanterns(pawn.Position))
+				{
+					glow = 0f;
+				}
 				if (glow > brightest)
 				{
 					brightest = glow;
@@ -133,6 +138,42 @@ namespace RimMandrake.LanternDeeps
 			lightExposure = 0f;
 			lastAmbushTick = Find.TickManager.TicksGame;
 		}
+
+		// True when at least one lit Lantern reaches the cell and no other lit glower does. A cell reached by
+		// both a Lantern and any other light counts its full glow (the other light draws the Deep).
+		// Terrain and sky glow are not examined: the Deep is roofed, and terrain glow is not a Thing.
+		private bool LitOnlyByLanterns(IntVec3 cell)
+		{
+			bool lantern = false;
+			foreach (Thing t in GenRadial.RadialDistinctThingsAround(cell, map, GlowGrid.MaxLightRadius, true))
+			{
+				ThingWithComps twc = t as ThingWithComps;
+				if (twc == null)
+				{
+					continue;
+				}
+				CompGlower g = twc.GetComp<CompGlower>();
+				if (g == null || !g.Glows)
+				{
+					continue;
+				}
+				if (cell.DistanceTo(t.Position) > g.GlowRadius)
+				{
+					continue;
+				}
+				if (t.def.defName == LanternDefName)
+				{
+					lantern = true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			return lantern;
+		}
+
+		private const string LanternDefName = "RM_Lantern";
 
 		private static void DrawSomethingToTheLight(Pawn targetPawn)
 		{

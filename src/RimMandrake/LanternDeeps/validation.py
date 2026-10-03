@@ -79,7 +79,7 @@ suite = Suite("LanternDeeps")
 suite.toggles = ["lanternDeepsEnabled",
                  "emergenceEnabled", "mineshaftEnabled", "darknessMechanicEnabled",
                  "emergenceChanceMultiplier", "mineshaftChanceMultiplier",
-                 "darknessThresholdMultiplier"]
+                 "darknessThresholdMultiplier", "safeLanternEnabled"]
 
 SETTINGS_TYPE = "RimMandrake.LanternDeeps.LanternDeepsSettings"
 # FIX 2026-09-25 (TERMINALBIOMES_RM_MOD_BUILD_1): RUT_NightsideIce/RUT_PropaneLake
@@ -346,6 +346,20 @@ def darkness_toggle_flips(t):
     with t.component("darkness_setting_flips", toggle="darknessMechanicEnabled"):
         t.set_setting(SETTINGS_TYPE, {"darknessMechanicEnabled": False})
         t.set_setting(SETTINGS_TYPE, {"darknessMechanicEnabled": True})
+
+
+@suite.chain("lantern_defs_and_toggle")
+def lantern_defs_and_toggle(t):
+    """LANTERNDEEPS_LANTERN_LIGHT_BUILD_1: the Lantern plant loaded (a def with an unresolvable field is silently
+    discarded) and its safe-light toggle flips. The exclusion itself needs a live Deep with a colonist standing
+    in Lantern-only light (exposure is a private field): joint session, UNMEASURED here."""
+    with t.component("lantern_def_loaded", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Lantern")
+        if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+            raise ExpectationFailed("RM_Lantern did not load: %r" % (r,))
+    with t.component("safe_lantern_setting_flips", toggle="safeLanternEnabled"):
+        t.set_setting(SETTINGS_TYPE, {"safeLanternEnabled": False})
+        t.set_setting(SETTINGS_TYPE, {"safeLanternEnabled": True})
 
 
 @suite.chain("chance_multiplier_sliders_flip")
