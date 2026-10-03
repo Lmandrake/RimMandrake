@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_AbyssCryptid.xml        Abyss · ABYSS_FREE_CRYPTID_1
+  Spec design/Jawa/worldbuilding/biomes/abyss_free_cryptid_2026-10-01.md. Signs, never sightings (ban 7).
+  The cryptid's NAME appears in this mod in exactly one place: RulePackDef RM_AbyssCryptid below. Every
+  consumer includes it (interaction, tale) or resolves it in C# (letters). defNames stay neutral. The
+  campaign layer only ADDS a whisper line to the pack (UtinniPatches Abyss_CryptidSithWhisper.xml).
+  Mechanics: Source/RM_AbyssCryptid.cs. Setting: cryptidSignsEnabled.
+-->
+<Defs>
+
+  <RulePackDef>
+    <defName>RM_AbyssCryptid</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>cryptid_name->the Nhaleth</li>
+        <li>cryptid_whisper->that [cryptid_name] are not visitors at all, but whoever stays</li>
+        <li>cryptid_whisper->that whoever lives in the Dark long enough stops needing the light, and comes back only to tend what they left</li>
+        <li>cryptid_whisper->that some of the animals here were put here, by someone, for this one place</li>
+        <li>cryptid_whisper->that [cryptid_name] come for the Dark, and that the Dark is rare</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- Rumor-sites: 0-2 more runs of the durrgak's own placement (RM_GenStep_DurrgakSigns), so a cryptid sign and a
+       durrgak's work cannot be told apart. Order 916, just after the durrgak's own signs. -->
+  <GenStepDef>
+    <defName>RM_AbyssRumorSites</defName>
+    <order>916</order>
+    <genStep Class="RimMandrake.Abyss.RM_GenStep_AbyssRumorSites">
+      <sites>0~2</sites>
+      <denDef>RM_DurrgakDen</denDef>
+      <cacheDef>RM_DurrgakSalvageCache</cacheDef>
+      <cairnDef>RM_DurrgakCairn</cairnDef>
+      <cairnCount>2~4</cairnCount>
+      <cacheChance>0.7</cacheChance>
+      <denSteel>10~30</denSteel>
+      <denComponents>0~1</denComponents>
+      <cacheSteel>10~25</cacheSteel>
+      <cacheComponents>1~2</cacheComponents>
+    </genStep>
+  </GenStepDef>
+
+  <InteractionDef>
+    <defName>RM_AbyssWhisper</defName>
+    <label>whisper of the Dark</label>
+    <workerClass>RimMandrake.Abyss.RM_InteractionWorker_AbyssWhisper</workerClass>
+    <symbol>Things/Mote/SpeechSymbols/DeepTalk</symbol>
+    <logRulesInitiator>
+      <rulesStrings>
+        <li>r_logentry->[INITIATOR_nameDef] whispered to [RECIPIENT_nameDef] of [cryptid_name].</li>
+        <li>r_logentry->[INITIATOR_nameDef] told [RECIPIENT_nameDef], very quietly, [cryptid_whisper].</li>
+        <li>r_logentry->[INITIATOR_nameDef] and [RECIPIENT_nameDef] did not quite talk about [cryptid_name].</li>
+      </rulesStrings>
+      <include>
+        <li>RM_AbyssCryptid</li>
+      </include>
+    </logRulesInitiator>
+  </InteractionDef>
+
+  <TaleDef>
+    <defName>RM_WhisperedInTheDark</defName>
+    <label>whispered in the Dark</label>
+    <taleClass>Tale_SinglePawn</taleClass>
+    <type>Volatile</type>
+    <baseInterest>0.8</baseInterest>
+    <rulePack>
+      <rulesStrings>
+        <li>tale_noun->[PAWN_nameDef] whispering of [cryptid_name]</li>
+        <li>image->[PAWN_nameFull] at the edge of a lamp's glow, looking out into the Dark [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] kneeling beside an empty ring of shards [circumstance_group]</li>
+        <li>image->[PAWN_nameFull] whispering to a friend with a hand cupped to the mouth [circumstance_group]</li>
+        <li>circumstance_phrase->as if afraid to be overheard</li>
+        <li>circumstance_phrase->while the Dark presses in on every side</li>
+        <li>circumstance_phrase->with no light behind [PAWN_objective]</li>
+        <li>desc_sentence->At the very edge of the work there may be a figure, or only a shadow.</li>
+        <li>desc_sentence->The ring of shards is drawn with great care, and empty.</li>
+        <li>desc_sentence->Nothing in the image is [cryptid_name]. Everything in it is waiting for them.</li>
+        <li>desc_sentence->The lamp is drawn very small, and the dark around it very large.</li>
+      </rulesStrings>
+      <include>
+        <li>RM_AbyssCryptid</li>
+      </include>
+    </rulePack>
+  </TaleDef>
+
+  <ThoughtDef>
+    <defName>RM_DreamtNoLight</defName>
+    <durationDays>2</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>dreamt I didn't need the light</label>
+        <description>I dreamt I was walking in the Dark and didn't need the light any more. It didn't feel like a nightmare. That's what bothers me.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

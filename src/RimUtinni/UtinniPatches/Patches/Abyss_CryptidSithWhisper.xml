@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Abyss_CryptidSithWhisper.xml        UtinniPatches · ABYSS_FREE_CRYPTID_1
+  The campaign layer only ADDS a whisper to the Abyss cryptid's one rule pack (RM_AbyssCryptid, mandrake.rm
+  Abyss): the visitors may be the Sith (owner, typed 2026-10-01: "the Star Wars versions will whsisper of the
+  sith"). It renames nothing (the cryptid keeps its name in every tier, owner 2026-10-01) and carries no
+  wording about any ancient or terraforming people. Gated on the pack existing.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/RulePackDef[defName="RM_AbyssCryptid"]/rulePack/rulesStrings</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/RulePackDef[defName="RM_AbyssCryptid"]/rulePack/rulesStrings</xpath>
+      <value>
+        <li>cryptid_whisper->that [cryptid_name] are the Nightbrothers, come from somewhere with the Sith in their blood</li>
+        <li>cryptid_whisper->that the Dark draws [cryptid_name] the way it drew the Sith, and for the same reason</li>
+      </value>
+    </match>
+  </Operation>
+</Patch>
