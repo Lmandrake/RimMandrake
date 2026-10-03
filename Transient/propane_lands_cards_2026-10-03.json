@@ -1,0 +1,27 @@
+{
+ "questions": [
+  {
+   "header": "Land name",
+   "question": "What should the frozen nightside land (the old Propane Lakes, about 2,500 tiles) be called now that the lake itself is the Chill?",
+   "multiSelect": false,
+   "options": [
+    {
+     "label": "the Rimefall",
+     "description": "Buys: names what falls and grows here (fuel snow, crystal rime); nothing spoiled; no clash with any label. Costs: reads a little like weather, and sits near the Fuel Snows. (Recommended: best fit for the ground itself.)"
+    },
+    {
+     "label": "the Curtains",
+     "description": "Buys: short, strange, beautiful; the aurora is the planet's best sky. Costs: names the sky rather than the ground."
+    },
+    {
+     "label": "the Dew Point",
+     "description": "Buys: the physics that defines the place (colder than fuel liquefies). Costs: technical sounding; less like the other biome names."
+    },
+    {
+     "label": "the Running Flame",
+     "description": "Buys: the blue-burning creatures are the most memorable thing here. Costs: players may expect a hot, fiery biome in the coldest land on the planet."
+    }
+   ]
+  }
+ ]
+}
