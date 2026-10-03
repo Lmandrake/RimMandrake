@@ -52,6 +52,10 @@ namespace RimMandrake.DivingInteraction
     public class RM_SeabedAccessExtension : DefModExtension
     {
         public bool hasSeabed = true;
+
+        // SEABED_PER_SEA_FLOORS_1: the real floor biome beneath this sea. Null falls back to the
+        // generic RM_SeabedFloor placeholder, so a surface biome with no mapping still works.
+        public BiomeDef floorBiome;
     }
 
     /// <summary>Registers the seabed layer on a fresh world, before any layer is generated.</summary>
@@ -330,6 +334,16 @@ namespace RimMandrake.DivingInteraction
         }
 
         /// <summary>
+        /// The floor biome under a surface tile: the surface biome's declared floorBiome, else the
+        /// generic placeholder. Data-driven; no per-sea code.
+        /// </summary>
+        public static BiomeDef FloorBiomeFor(Tile surfaceTile)
+        {
+            BiomeDef declared = surfaceTile?.PrimaryBiome?.GetModExtension<RM_SeabedAccessExtension>()?.floorBiome;
+            return declared ?? RM_SeabedDefOf.RM_SeabedFloor;
+        }
+
+        /// <summary>
         /// Derives one seabed tile from the surface tile above it. Deliberately minimal in
         /// Phase 1: mirror what the surface already decided, choose between the two placeholder
         /// biomes, and invent nothing.
@@ -358,7 +372,7 @@ namespace RimMandrake.DivingInteraction
 
             bool hasFloor = SurfaceHasFloor(above);
             floor.PrimaryBiome = hasFloor
-                ? RM_SeabedDefOf.RM_SeabedFloor
+                ? FloorBiomeFor(above)
                 : RM_SeabedDefOf.RM_SeabedUnavailable;
 
             // PHASE 3/5 SEAM: real seabed relief arrives with terrain and geology. Flat under
