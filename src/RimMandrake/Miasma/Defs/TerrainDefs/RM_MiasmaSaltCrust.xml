@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_MiasmaSaltCrust: the free-tier salt line terrain (MIASMA_FREE_SALT_CRUST_1).
+  RM_Miasma's gradient landTerrain and stranding dryTerrain name this, so the biome's signature mechanic
+  (brine receding and leaving crust) paints without the campaign. Authored here rather than reusing
+  RM_SaltCrustShore: that def lives in mandrake.rm.terminalbiomes (Miasma does not depend on it) and its
+  description is the Grey Sea's. The campaign twin RUT_Miasma keeps RUT_Jawa_SaltCrust.
+  Cosmetic only: fertility 0, no yield. Fields mirror RUT_Jawa_SaltCrust; texture is Odyssey's DryLakeBed.
+-->
+<Defs>
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_MiasmaSaltCrust</defName>
+    <label>salt crust</label>
+    <description>A hard white pan of salt left behind where the brine drew back. It is flat, blinding in the light, and takes a footprint like chalk. Nothing will grow in it until the water comes again.</description>
+    <texturePath>Terrain/Surfaces/DryLakeBed</texturePath>
+    <color>(232, 230, 218)</color>
+    <edgeType>FadeRough</edgeType>
+    <categoryType>Sand</categoryType>
+    <renderPrecedence>351</renderPrecedence>
+    <pathCost>0</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <BeautyOutdoors>0</BeautyOutdoors>
+      <Cleanliness>-1</Cleanliness>
+    </statBases>
+    <scatterType>SoftDry</scatterType>
+    <affordances>
+      <li>Light</li>
+      <li>Medium</li>
+      <li>Heavy</li>
+      <li>Diggable</li>
+    </affordances>
+    <fertility>0</fertility>
+    <takeFootprints>true</takeFootprints>
+  </TerrainDef>
+</Defs>

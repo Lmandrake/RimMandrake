@@ -50,6 +50,14 @@ def static_checks():
     biome = open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Miasma.xml")).read()
     if "<strandedDeformationChance>0.25<" not in biome:
         bad.append("biome's shipped strandedDeformationChance is no longer 0.25 (default drift)")
+    if "RM_MiasmaSaltCrust" not in biome:
+        bad.append("RM_Miasma does not name RM_MiasmaSaltCrust (MIASMA_FREE_SALT_CRUST_1)")
+    for m in re.finditer(r"<(landTerrain|dryTerrain)>([^<]*)<", biome):
+        if m.group(2).startswith("RUT_"):
+            bad.append("%s names campaign def %s" % (m.group(1), m.group(2)))
+    tdef = os.path.join(HERE, "Defs", "TerrainDefs", "RM_MiasmaSaltCrust.xml")
+    if not os.path.exists(tdef) or "<defName>RM_MiasmaSaltCrust</defName>" not in open(tdef).read():
+        bad.append("RM_MiasmaSaltCrust TerrainDef missing")
     return bad
 
 
@@ -92,6 +100,15 @@ def _build_suite():
             raise ExpectationFailed("UNMEASURED: predation (plant beside a wild scuttler), the pollination gate "
                                     "(worldgen plant pass) and stranded deformation (a stranding pool) each need "
                                     "a live Miasma quicktest map")
+
+    @suite.chain("salt_crust_free_tier")
+    def salt_crust_free_tier(t):
+        with t.component("salt_crust_paints_without_campaign", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: no 'Could not resolve' for a salt crust and a surge recede "
+                                    "repainting land to RM_MiasmaSaltCrust need a tier without mandrake.rut.patches "
+                                    "and a live Miasma map (also a bar for MIASMA_FIRST_SCRIPT_1)")
 
     return suite
 
