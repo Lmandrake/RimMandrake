@@ -54,6 +54,7 @@
     <Compile Include="Titanoslime.cs" />
     <Compile Include="TitanoslimeVerb.cs" />
     <Compile Include="GappoChannel.cs" />
+    <Compile Include="FubbumHunting.cs" />
   </ItemGroup>
 
   <ItemGroup>

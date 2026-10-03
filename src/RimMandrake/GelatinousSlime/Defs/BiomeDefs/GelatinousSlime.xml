@@ -188,6 +188,8 @@
       <RM_GappoLesser>1.5</RM_GappoLesser>
       <RM_Gappo>1.0</RM_Gappo>
       <RM_GappoGreater>0.3</RM_GappoGreater>
+      <!-- GELATINOUSSLIME_FUBBUM_HUNTER_1, // INVENTED: the one hunter of the gelatid herds -->
+      <RM_Fubbum>0.15</RM_Fubbum>
       <!-- TITANOSLIME_SLIME_BIOME_1. Rare on purpose: the kind's
            ecoSystemWeight of 6 means one titanoslime costs the map's animal
            budget what six gelatids would, so the spawner stops adding animals

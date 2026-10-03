@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    GELATINOUSSLIME_FUBBUM_HUNTER_1: the fubbum, the Slime's one hunter. A low, leathery,
+    wide-footed stalker that preys on the gelatid herds. All numbers // INVENTED.
+    Resistant by its hide: RM_SlimeResistant extension. Does not fly: no flight stats.
+    Prey rule is vanilla: race.predator + maxPreyBodySize 0.6 (the gelatid is 0.55, an adult
+    colonist 1.0), so colonists are not its prey; manhunter chances 0, so it never turns on a
+    pawn. The item asked to reuse an existing night-pooling behaviour: none exists in the
+    mod (RM_Gelatid is plain herdAnimal), so the hunt is vanilla AI and "night pooling" stays
+    flavour text. Mod Settings switch SlimeSettings.fubbumHunts (FubbumHunting.cs) turns
+    race.predator off. One home: wired inline on RM_GelatinousSlime/wildAnimals.
+    Art: queued from art_lists/gelatinousslime_turn1_2026-10-02.csv; magenta until it lands.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Fubbum</defName>
+    <label>fubbum</label>
+    <description>A low, leathery stalker, mottled grey-green, with broad flat feet that spread its weight across the Slime like a snowshoe. The fubbum is the body's one hunter: it drifts out at the herds' night pooling and takes a gelatid from the edge of the huddle, patient and unhurried. Its hide sheds the Slime as oilcloth sheds rain. It has no interest in anything that stands taller than the herds it hunts.</description>
+    <statBases>
+      <MoveSpeed>3.6</MoveSpeed>
+      <Mass>35</Mass>
+      <MarketValue>180</MarketValue>
+      <Wildness>0.75</Wildness>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <tools>
+      <li>
+        <label>blunt snout</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <predator>true</predator>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <maxPreyBodySize>0.6</maxPreyBodySize>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Fubbum</defName>
+    <label>fubbum</label>
+    <race>RM_Fubbum</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>0.8</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Fubbum/RM_Fubbum</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Fubbum/RM_Fubbum</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Fubbum/RM_Fubbum</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
