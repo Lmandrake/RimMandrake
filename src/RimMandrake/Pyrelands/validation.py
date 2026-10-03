@@ -17,7 +17,7 @@ and whose `shows=` claims that bar. The `pyre_cannot_ordinary_rain` cannot-show 
 by the `cannot_ordinary_rain` component. Components that read independent state each get their
 OWN chain, because a FAIL inside a chain turns every later component in it UNMEASURED.
 
-Predicates read IMMUTABLE manifests (plan 1.3 / 2.3a): 3 plants and 15 animal kinds. A live
+Predicates read IMMUTABLE manifests (plan 1.3 / 2.3a): 3 plants and 16 animal kinds. A live
 def that differs from the manifest is its own failure, so a patch cannot make an intruder
 "allowed". Thresholds marked CALIBRATING (the plan's scale mark) are recorded as evidence and
 never gate until the owner rules them.
@@ -55,14 +55,16 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("Pyrelands")
 suite.toggles = ["fulguriteEnabled", "ashDustingEnabled", "scorchFruitEnabled",
-                 "ashfallAccumulationEnabled", "biomeGenerationEnabled"]
+                 "ashfallAccumulationEnabled", "biomeGenerationEnabled",
+                 "ullaiEnabled", "ullaiHerdSizeMultiplier", "furnaceBeastGiant"]
 
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 SOIL = "RM_FE_Ground_Soil"
 FIREBREAK = "RM_FE_FirebreakLine"
 TEST_SIZE = 24
 
-# Immutable manifests (plan 1.3). 3 plants; 15 animal kinds.
+# Immutable manifests (plan 1.3). 3 plants; 16 animal kinds (RM_Ullai added by PYRELANDS_ULLAI_GIANT_BUILD_1;
+# PYRELANDS_NORTHSTAR_TRIAL_1 re-measures against it).
 PLANT_MANIFEST = frozenset(["RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass",
                             "RM_FE_Plant_ScorchFruit"])
 WILD_PLANTS = frozenset(["RM_FE_Plant_EmberGrass", "RM_FE_Plant_Quickgrass"])  # ScorchFruit is fire-born
@@ -70,7 +72,7 @@ ANIMAL_MANIFEST = frozenset([
     "RM_FireHawk", "RM_FurnaceBeast",
     "RSW_Anooba", "RSW_Iriaz", "RSW_Nuna", "RSW_Orray", "RSW_Zeer", "RSW_Dalgo", "RSW_Gizka",
     "RM_Emberscythe", "RM_Sytheclaw", "RM_Barbslinger", "RM_FireWasp", "RM_Flamefang",
-    "RM_Ashwallow"])
+    "RM_Ashwallow", "RM_Ullai"])
 ASH_RUNGS = ("RM_FE_Ash_Trace", "RM_FE_Ash_Light", "RM_FE_Ash_Heavy", "RM_FE_Ash_Deep")
 STOCK_GROUND = ("Sand", "Soil", "Gravel", "SoilRich")
 ORDINARY_RAIN = ("Rain", "RainyThunderstorm", "FoggyRain")
@@ -548,7 +550,7 @@ def animal_census(t):
                             % (len(wild), len(counts), wa))
             keys = set(x.get("animal") for x in wa)
             if keys != set(ANIMAL_MANIFEST):
-                _fail("live wildAnimals %r differs from the 15-kind manifest" % sorted(keys))
+                _fail("live wildAnimals %r differs from the %d-kind manifest" % (sorted(keys), len(ANIMAL_MANIFEST)))
         t.screenshot()
 
 
@@ -1038,7 +1040,7 @@ def furnace_warmth(t):
     x, z = t.anchor
     with _comp(t, "furnacebeast_warmth", shows=["pyre_furnacebeast_warmth"]):
         _set(t, {"furnaceThermalEnabled": True})
-        # CompFurnaceWarmthAura: radius = 4.9 x Lerp(0.35, 1, charge); a fresh beast's charge is
+        # CompFurnaceWarmthAura: radius = 4.9 x sqrt(baseBodySize / 3.2) x Lerp(0.35, 1, charge) (giant: x1.37); a fresh beast's charge is
         # 0, so its aura reaches 1.7 cells, and a wild beast wanders off a colonist walking after
         # it (run 7: 6-10 cells apart in 7 of 8 samples). Both stand in a 2x1 pen (a 4x3
         # make_empty_room), so they are never more than 1 cell apart.
@@ -1255,3 +1257,50 @@ def fulgurite(t):
     finally:
         t.bridge_call("jawa/weather_set", unlock=True)
         _extinguish(t)
+
+
+@suite.chain("ullai_and_giant")
+def ullai_and_giant(t):
+    """PYRELANDS_ULLAI_GIANT_BUILD_1: the ullai herd follows the burn; the furnace-beast is a giant (offline reads +
+    live def resolution). Learned 2026-10-03: ash terrain never reverts (AshLadder.xml), so a terrain target alone
+    reads every burn ever; the herd reads MapComponent_BurnLine's hourly burn-centre history instead."""
+    import os
+    import xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    _pad(t, PAD_PROBE)
+    with _comp(t, "ullai_wired", toggle="ullaiEnabled"):
+        root = ET.parse(os.path.join(here, "Defs", "ThingDefs_Races", "RM_Ullai.xml")).getroot()
+        thing = [d for d in root.findall("ThingDef") if d.findtext("defName") == "RM_Ullai"]
+        kind = [d for d in root.findall("PawnKindDef") if d.findtext("defName") == "RM_Ullai"]
+        if not thing or not kind:   # sanity probe: the instrument reads both defs
+            _fail("RM_Ullai ThingDef/PawnKindDef not read")
+        terr = [li.text for li in thing[0].iter("li") if li.text in ASH_RUNGS]
+        if sorted(terr) != sorted(ASH_RUNGS):
+            _fail("follow-burn terrains %r are not the four ash rungs" % terr)
+        if kind[0].findtext("wildGroupSize") != "8~20" or thing[0].findtext("race/baseBodySize") != "1.8":
+            _fail("ullai herd size / body size drifted from the ruling (8~20, bs 1.8)")
+        biome = ET.parse(os.path.join(here, "Defs", "BiomeDefs", "Pyrelands.xml")).getroot()
+        wa = [b.find("wildAnimals") for b in biome.findall("BiomeDef") if b.findtext("defName") == "RM_Pyrelands"]
+        if not wa or wa[0].find("RM_Ullai") is None or wa[0].findtext("RM_FurnaceBeast") != "0.04":
+            _fail("RM_Pyrelands roster lacks RM_Ullai or the furnace-beast is not at 0.04")
+        tex = os.path.join(here, "Textures", "Things", "Pawn", "Animal", "Pyrelands")
+        missing = [f for f in ("Ullai/Ullai_%s.png", "FurnaceBeast/FurnaceBeast_Giant_%s.png")
+                   for d in ("south", "east", "north") if not os.path.isfile(os.path.join(tex, f % d))]
+        if missing:
+            _fail("art facings missing: %r" % missing)
+        t.screenshot()
+    with _comp(t, "giant_furnace_beast", toggle="furnaceBeastGiant"):
+        root = ET.parse(os.path.join(here, "Defs", "ThingDefs_Races", "RM_PyrelandsFauna.xml")).getroot()
+        fb = [d for d in root.findall("ThingDef") if d.findtext("defName") == "RM_FurnaceBeast"]
+        if not fb or fb[0].findtext("race/baseBodySize") != "6":
+            _fail("RM_FurnaceBeast is not bs 6 in XML")
+        live = _get_defs(t, "ThingDef/RM_Ullai;PawnKindDef/RM_Ullai;ThingDef/RM_FurnaceBeast", "race")
+        if _live(t) and len(live) < 2:
+            _fail("ullai / furnace-beast defs missing live: %r" % sorted(live))
+        t.screenshot()
+    with _comp(t, "herd_follows_two_day_old_burn"):
+        if _live(t):
+            _unmeasured(t, "needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; "
+                           "no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)")
+        t.screenshot()
+

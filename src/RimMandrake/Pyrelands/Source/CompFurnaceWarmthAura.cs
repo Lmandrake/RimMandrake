@@ -54,7 +54,9 @@ namespace RimMandrake.Pyrelands
                 return 0f;
             }
             CompFurnaceThermalCharge charge = beast.TryGetComp<CompFurnaceThermalCharge>();
-            return FurnaceWarmthMath.Radius(PyrelandsTuning.FurnaceAuraRadius, MinAuraFraction,
+            float fullRadius = PyrelandsTuning.FurnaceAuraRadius
+                * UnityEngine.Mathf.Sqrt(PyrelandsTuning.FurnaceSizeRatio(beast));   // giant: wider warmth
+            return FurnaceWarmthMath.Radius(fullRadius, MinAuraFraction,
                 charge != null, charge != null ? charge.Charge : 0f);
         }
     }

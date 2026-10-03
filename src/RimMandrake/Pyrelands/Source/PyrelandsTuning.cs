@@ -108,6 +108,17 @@ namespace RimMandrake.Pyrelands
         /// <summary>Aura radius — "pawns within a few cells" (§8b). [INVENTED]</summary>
         public const float FurnaceAuraRadius = 4.9f;
 
+        /// <summary>PYRELANDS_ULLAI_GIANT_BUILD_1: the classic adult body size the radius and bed numbers were tuned
+        /// at. A bigger race scales them: warmth radius by sqrt(size ratio) (heat spreads over an area), bed-down
+        /// smoulder cells by the ratio itself. The classic beast reads 1.</summary>
+        public const float FurnaceClassicBodySize = 3.2f;
+
+        public static float FurnaceSizeRatio(Verse.Pawn beast)
+        {
+            float baseSize = beast?.RaceProps?.baseBodySize ?? FurnaceClassicBodySize;
+            return UnityEngine.Mathf.Max(0.25f, baseSize / FurnaceClassicBodySize);
+        }
+
         /// <summary>Felt-temperature offset at the beast itself, degrees C, before the Mod Settings strength dial.
         /// Falls to 0 at the aura radius. Replaces the old RM_FurnaceWarmth comfort-range hediff (-14 cold / -6 heat
         /// tolerance) with one local heat source: it relieves cold and worsens heat through vanilla's own systems.

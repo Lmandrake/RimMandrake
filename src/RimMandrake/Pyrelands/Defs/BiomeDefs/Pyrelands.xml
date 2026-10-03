@@ -312,7 +312,8 @@
     -->
     <wildAnimals>
       <RM_FireHawk>0.15</RM_FireHawk>
-      <RM_FurnaceBeast>0.08</RM_FurnaceBeast>
+      <RM_FurnaceBeast>0.04</RM_FurnaceBeast>
+      <RM_Ullai>0.35</RM_Ullai>
       <RM_Emberscythe>0.05</RM_Emberscythe>
       <RM_Sytheclaw>0.2</RM_Sytheclaw>
       <RM_Barbslinger>0.15</RM_Barbslinger>

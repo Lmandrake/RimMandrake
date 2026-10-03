@@ -101,6 +101,10 @@ namespace RimMandrake.Pyrelands
         // and takes ordinary fire damage — the mechanic simply stops firing,
         // nothing about the def breaks.
         public static bool burrowOnFireEnabled = true;
+        // PYRELANDS_ULLAI_GIANT_BUILD_1. RESTART-REQUIRED (RM_PyrelandsGiants applies them at startup).
+        public static bool ullaiEnabled = true;
+        public static float ullaiHerdSizeMultiplier = 1f;
+        public static bool furnaceBeastGiant = true;
 
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
@@ -147,6 +151,9 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
             Scribe_Values.Look(ref crossBiomeCoverage, "crossBiomeCoverage", 1f);
             Scribe_Values.Look(ref burrowOnFireEnabled, "burrowOnFireEnabled", true);
+            Scribe_Values.Look(ref ullaiEnabled, "ullaiEnabled", true);
+            Scribe_Values.Look(ref ullaiHerdSizeMultiplier, "ullaiHerdSizeMultiplier", 1f);
+            Scribe_Values.Look(ref furnaceBeastGiant, "furnaceBeastGiant", true);
         }
 
         /// <summary>True if the cross-biome ash-accumulation opt-in currently
@@ -306,6 +313,18 @@ namespace RimMandrake.Pyrelands
                 list.Label("Herds seeded at world start: " + furnaceHerdCount);
                 furnaceHerdCount = (int)list.Slider(furnaceHerdCount, 0f, 8f);
             }
+            list.CheckboxLabeled("Giant furnace-beast (restart)", ref furnaceBeastGiant,
+                "Shipped default: ON. The furnace-beast is a giant (body size 6, a few per map, rarer), drawn huge, "
+              + "with a wider warmth and a bigger smouldering bed. Off after a restart: the classic beast (body size "
+              + "3.2, herds of 3 to 7, its original sprite). Animals already spawned keep their size until regenerated.");
+            list.GapLine();
+
+            list.Label("The ullai");
+            list.CheckboxLabeled("Ullai herds (restart)", ref ullaiEnabled,
+                "Shipped default: ON. Long-legged ash-grazers in herds of 8 to 20 that drift to where it burned about two "
+              + "days ago. Off: none spawn wild (after a restart) and the herds stop following the burn at once.");
+            list.Label("Ullai herd size (restart): " + ullaiHerdSizeMultiplier.ToStringPercent());
+            ullaiHerdSizeMultiplier = list.Slider(ullaiHerdSizeMultiplier, 0.25f, 2f);
             list.GapLine();
 
             list.Label("Burrowers");

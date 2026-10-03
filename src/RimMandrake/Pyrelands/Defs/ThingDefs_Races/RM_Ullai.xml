@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PYRELANDS_ULLAI_GIANT_BUILD_1 (design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md §3,
+     ruled by card): the ullai, the free tier's herd. Invented name (Pyrelands accent), free RM_ tier, one home
+     (RM_Pyrelands, inline in its wildAnimals). bs 1.8, herds of 8 to 20, meat and hide, tameable. It follows the
+     burn: RM_FollowBurnExtension + RM_JobGiver_FollowBurn (Source/RM_PyrelandsGiants.cs). Art: artpipe RM_Ullai
+     (pyrelands_bedazzle_cast.csv), three facings, static. -->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Ullai</defName>
+    <label>ullai</label>
+    <description>A tall, light-boned grazer of the burning savanna, all leg and neck, ash-grey above and soot-cream below, with black stockings as if it had waded through burnt ground. Ullai herds follow the burn and crop the regrowth sprint close to the ash, so where they graze is where the grass burned two days ago: a moving map of the fire's last address. They are the wealth of the Pyrelands, meat and hide, and a herd can be tamed by anyone patient enough to walk the black with them.</description>
+    <statBases>
+      <MoveSpeed>5.4</MoveSpeed>
+      <MarketValue>240</MarketValue>
+      <ComfyTemperatureMin>0</ComfyTemperatureMin>
+      <ComfyTemperatureMax>65</ComfyTemperatureMax>
+      <Wildness>0.55</Wildness>
+      <FilthRate>4</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>left hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>1.8</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <herdAnimal>true</herdAnimal>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <baseBodySize>1.8</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.85</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <gestationPeriodDays>9</gestationPeriodDays>
+      <manhunterOnDamageChance>0.08</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.02</manhunterOnTameFailChance>
+      <lifeExpectancy>16</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+    <modExtensions>
+      <li Class="RimMandrake.Pyrelands.RM_FollowBurnExtension">
+        <lagDays>2</lagDays>
+        <radius>10</radius>
+        <chancePerCheck>0.04</chancePerCheck>
+        <terrains>
+          <li>RM_FE_Ash_Trace</li>
+          <li>RM_FE_Ash_Light</li>
+          <li>RM_FE_Ash_Heavy</li>
+          <li>RM_FE_Ash_Deep</li>
+        </terrains>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Ullai</defName>
+    <label>ullai</label>
+    <race>RM_Ullai</race>
+    <combatPower>55</combatPower>
+    <wildGroupSize>8~20</wildGroupSize>
+    <ecoSystemWeight>0.9</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/Ullai</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/Ullai</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Pyrelands/Ullai/Ullai</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>
