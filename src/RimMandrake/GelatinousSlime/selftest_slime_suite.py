@@ -75,6 +75,13 @@ def main():
     got = run({"NS_SLIME_MOCK_BREAK": "", "NS_SLIME_RAIN_PATCH": bp})
     if got.get("campaign_rain_strip_patch", "MISSING").startswith("PASS"):
         bad.append("broken rain-strip patch did not turn campaign_rain_strip_patch red")
+    leak = os.path.join(tempfile.mkdtemp(prefix="gs_"), "Defs")
+    os.makedirs(leak)
+    with open(os.path.join(leak, "x.xml"), "w") as f:
+        f.write("<Defs><GeneDef><label>wookiee hide</label></GeneDef></Defs>")
+    got = run({"NS_SLIME_MOCK_BREAK": "", "NS_SLIME_LEAK_DIR": os.path.dirname(leak)})
+    if got.get("free_tier_text_leak", "MISSING").startswith("PASS"):
+        bad.append("canon term in a scanned dir did not turn free_tier_text_leak red")
     for fault, comps in CASES.items():
         got = run({"NS_SLIME_MOCK_BREAK": fault})
         for c in comps:

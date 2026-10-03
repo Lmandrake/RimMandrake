@@ -72,6 +72,31 @@ _ST = {}         # shared between chains of one run
 
 # --------------------------------------------------------------------------- source-derived manifests
 
+CANON_RE = re.compile(r"\b(selkath|trandoshan|wookiee|rodian|hutt|twi'?lek|lekku|bantha|kolto|jawa|jawaese)\b", re.I)
+
+
+def _canon_hits_dir(d):
+    out = []
+    for dp, _, fns in os.walk(d):
+        for fn in sorted(fns):
+            if fn.endswith(".xml"):
+                p = os.path.join(dp, fn)
+                with open(p, encoding="utf-8", errors="replace") as fh:
+                    found = sorted({m.group(1).lower() for m in CANON_RE.finditer(fh.read())})
+                if found:
+                    out.append("%s: %s" % (os.path.relpath(p, d), ",".join(found)))
+    return out
+
+
+def _canon_hits(root):
+    """['relpath: term', ...] for canon words in .xml files under root's Defs/, Patches/, Languages/, About/."""
+    out = []
+    for sub in ("Defs", "Patches", "Languages", "About"):
+        out += ["%s/%s" % (sub, h) for h in _canon_hits_dir(os.path.join(root, sub))]
+    return out
+
+
+
 def _our_defs():
     """[(DefType, defName)] for every non-abstract top-level def in this mod's Defs/ (read at import)."""
     out = []
@@ -317,8 +342,8 @@ def defs_static(t):
 
     with _comp(t, "all_defs_resolve"):
         if t._guard():
-            if len(OUR_DEFS) < 100:
-                _unmeasured(t, "manifest read only %d defs from Defs/ (expected >100)" % len(OUR_DEFS))
+            if len(OUR_DEFS) < 60:
+                _unmeasured(t, "manifest read only %d defs from Defs/ (expected >60; 72 after the A/B gene lists moved to UtinniPatches)" % len(OUR_DEFS))
             specs = ["%s/%s" % d for d in OUR_DEFS]
             rows, nf = _defs(t, specs)
             miss = sorted(set(nf))
@@ -578,6 +603,18 @@ def defs_static(t):
             _fail("campaign patch touches RM_Weather_SlimeRain; slime rain stays")
         if 'defName="RM_GelatinousSlime"]/preventGenSteps' not in ET.tostring(root_el, encoding="unicode").replace(" ", ""):
             _fail("shrine denial (ScatterShrines) not retargeted onto RM_GelatinousSlime")
+
+    with _comp(t, "free_tier_text_leak"):
+        # GELATINOUSSLIME_GENE_TEXT_TIER_1: the free RM_ mod ships no canon term in any def/patch/About text; the
+        # Star Wars A/B gene lists live in UtinniPatches (RUT_). Offline file scan -- UNMEASURED live (nothing in
+        # the running game is read). Sanity probe: the same scan must find terms in the moved campaign files.
+        scan = os.environ.get("NS_SLIME_LEAK_DIR") or HERE
+        leaks = _canon_hits(scan)
+        if leaks:
+            _fail("canon term(s) in the franchise-free mod (move to UtinniPatches or rewrite): %s" % leaks[:8])
+        camp = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Defs", "GeneDefs")
+        if not _canon_hits_dir(camp):
+            _unmeasured(t, "sanity probe found no canon term in %s; the scan cannot be trusted" % camp)
 
     with _comp(t, "visitor_genstep_registered"):
         if t._guard():

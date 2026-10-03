@@ -23,8 +23,8 @@
     genuinely absent below — not an oversight) and all 25 riders (B1-B25,
     including the owner-commissioned B25 "The Reek"). Every GeneDef named
     below (bar A34) is authored in
-    src/RimMandrake/GelatinousSlime/Defs/GeneDefs/SlimeGenes_AList.xml and
-    SlimeGenes_BList.xml — read those files' headers for how each gift/cost
+    src/RimUtinni/UtinniPatches/Defs/GeneDefs/RUT_SlimeGenes_AList.xml and
+    RUT_SlimeGenes_BList.xml — read those files' headers for how each gift/cost
     is priced and where a sheet entry was narrowed to the nearest real
     field. A34 reuses the mod's own pre-existing RM_Gene_SlimeResistance
     (SlimeGenes.xml) rather than a duplicate, per the sheet's own framing
@@ -83,7 +83,7 @@
     </targetGenes>
 
     <!-- B1-B25: the hidden rider list. Never surfaced to the player — see
-         SlimeGenes_BList.xml's header for exactly how each stays hidden. -->
+         RUT_SlimeGenes_BList.xml's header for exactly how each stays hidden. -->
     <riderGenes>
       <li>RM_Gene_B1_VividSkin</li>
       <li>RM_Gene_B2_VestigialLekku</li>

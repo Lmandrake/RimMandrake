@@ -3,14 +3,14 @@
 
   <!--
     SLIME_GENE_ARCHIVE_BUILD_1 — mood side of the forced conditions in
-    Defs/HediffDefs/SlimeGeneConditions.xml. workerClass ThoughtWorker_Hediff
+    Defs/HediffDefs/RUT_SlimeGeneConditions.xml. workerClass ThoughtWorker_Hediff
     is the vanilla mechanism for "a permanent condition carries a permanent
     mood offset" (Source/RimWorld/ThoughtWorker_Hediff.cs: reads
     def.hediff, stages index off the hediff's CurStageIndex). Every hediff
     below is a single stage, so every thought below is too.
   -->
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A1_MoistSkin</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -24,7 +24,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A9_CleanAirCraving</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -38,7 +38,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A14_OpenSkyAche</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -52,7 +52,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A17_RisingExpectations</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -66,7 +66,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A20_MachineryAche</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -80,7 +80,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A24_SleeplessMind</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -94,7 +94,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A26_ScourCraving</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>
@@ -108,7 +108,7 @@
     </stages>
   </ThoughtDef>
 
-  <ThoughtDef>
+  <ThoughtDef MayRequire="mandrake.rm.biomes">
     <defName>RM_Thought_A32_RadCraving</defName>
     <thoughtClass>Thought_Situational</thoughtClass>
     <workerClass>ThoughtWorker_Hediff</workerClass>

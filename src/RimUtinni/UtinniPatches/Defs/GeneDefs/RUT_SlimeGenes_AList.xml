@@ -17,7 +17,7 @@
     text alone. Where the sheet's described cost is hunger/rest-rate/social-
     opinion, there is no such field on GeneDef itself (only on HediffStage),
     so the cost rides Gene_ForcesHediff + a small permanent condition in
-    Defs/HediffDefs/SlimeGeneConditions.xml (see that file's header) —
+    Defs/HediffDefs/RUT_SlimeGeneConditions.xml (see that file's header) —
     everything else uses GeneDef's own native fields directly (statOffsets/
     statFactors/capMods/aptitudes/disabledWorkTags/the *ChanceFactor
     fields), confirmed against the decompiled 1.6 source (RimSage) rather
@@ -36,7 +36,7 @@
     same as that def's own comment already states.
   -->
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A1_AmphibiousLungs</defName>
     <label>amphibious lungs</label>
     <labelShortAdj>amphibious</labelShortAdj>
@@ -56,7 +56,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A2_KoltoGlands</defName>
     <label>kolto glands</label>
     <labelShortAdj>kolto-glanded</labelShortAdj>
@@ -85,7 +85,7 @@
        alsoHealsPermanentWounds since geneClass is exclusive) — real
        periodic healing, scoped down from "grows back a whole arm" to
        "heals old wounds and scars" over the same ~1-season cadence. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A3_LimbRegrowth</defName>
     <label>limb regrowth</label>
     <labelShortAdj>regrowing</labelShortAdj>
@@ -106,7 +106,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A4_GreatFrame</defName>
     <label>great frame</label>
     <labelShortAdj>heavy-framed</labelShortAdj>
@@ -130,7 +130,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A5_LowLightEyes</defName>
     <label>low-light eyes</label>
     <labelShortAdj>low-light-eyed</labelShortAdj>
@@ -149,7 +149,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A6_HeatPitSenses</defName>
     <label>heat-pit senses</label>
     <labelShortAdj>heat-sensing</labelShortAdj>
@@ -167,7 +167,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A7_ToxinProofGut</defName>
     <label>toxin-proof gut</label>
     <labelShortAdj>iron-gutted</labelShortAdj>
@@ -181,7 +181,7 @@
     <overdoseChanceFactor>0.5</overdoseChanceFactor>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A8_LeatherHide</defName>
     <label>leather hide</label>
     <labelShortAdj>leather-hided</labelShortAdj>
@@ -199,7 +199,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A9_AmmoniaLungs</defName>
     <label>ammonia lungs</label>
     <labelShortAdj>ammonia-lunged</labelShortAdj>
@@ -217,7 +217,7 @@
     </modExtensions>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A10_ThickBlubber</defName>
     <label>thick blubber</label>
     <labelShortAdj>blubbery</labelShortAdj>
@@ -233,7 +233,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A11_SpringLegs</defName>
     <label>spring legs</label>
     <labelShortAdj>spring-legged</labelShortAdj>
@@ -256,7 +256,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A12_NaturalClaws</defName>
     <label>natural claws</label>
     <labelShortAdj>clawed</labelShortAdj>
@@ -277,7 +277,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A13_MirrorReflexes</defName>
     <label>mirror reflexes</label>
     <labelShortAdj>reflexive</labelShortAdj>
@@ -298,7 +298,7 @@
     </capMods>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A14_TunnelSense</defName>
     <label>tunnel sense</label>
     <labelShortAdj>tunnel-sensed</labelShortAdj>
@@ -318,7 +318,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A15_ForgeHands</defName>
     <label>forge hands</label>
     <labelShortAdj>forge-handed</labelShortAdj>
@@ -336,7 +336,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A16_PheromoneCharm</defName>
     <label>pheromone charm</label>
     <labelShortAdj>pheromone-charmed</labelShortAdj>
@@ -358,7 +358,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A17_TradersHead</defName>
     <label>trader's head</label>
     <labelShortAdj>sharp-headed</labelShortAdj>
@@ -381,7 +381,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A18_PrehensileTail</defName>
     <label>prehensile tail</label>
     <labelShortAdj>tailed</labelShortAdj>
@@ -397,7 +397,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A19_SonicBellow</defName>
     <label>sonic bellow</label>
     <labelShortAdj>bellowing</labelShortAdj>
@@ -414,7 +414,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A20_AcuteEars</defName>
     <label>acute ears</label>
     <labelShortAdj>keen-eared</labelShortAdj>
@@ -434,7 +434,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A21_WaterDiscipline</defName>
     <label>water discipline</label>
     <labelShortAdj>water-disciplined</labelShortAdj>
@@ -454,7 +454,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A22_ScavengerNose</defName>
     <label>scavenger's nose</label>
     <labelShortAdj>keen-nosed</labelShortAdj>
@@ -479,7 +479,7 @@
 
   <!-- ── From the local denizens (A24-A34; A34 reuses RM_Gene_SlimeResistance) ── -->
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A24_Sleepless</defName>
     <label>sleepless</label>
     <labelShortAdj>sleepless</labelShortAdj>
@@ -500,7 +500,7 @@
        territory (a vanilla Gene subclass built for exactly this), reused
        directly rather than reinvented; there is no generic pawn-wide bleed
        stat exposed for a from-scratch statFactor. -->
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A25_ClottingFlesh</defName>
     <label>clotting flesh</label>
     <labelShortAdj>quick-clotting</labelShortAdj>
@@ -518,7 +518,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A26_SandSwimmer</defName>
     <label>sand-swimmer</label>
     <labelShortAdj>sand-swimming</labelShortAdj>
@@ -538,7 +538,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A27_AntifreezeBlood</defName>
     <label>antifreeze blood</label>
     <labelShortAdj>antifreeze-blooded</labelShortAdj>
@@ -556,7 +556,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A28_Thermogene</defName>
     <label>thermogene</label>
     <labelShortAdj>warm-blooded</labelShortAdj>
@@ -576,7 +576,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A29_SheenAdaptedLungs</defName>
     <label>Sheen-adapted lungs</label>
     <labelShortAdj>Sheen-adapted</labelShortAdj>
@@ -593,7 +593,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A30_IronStomach</defName>
     <label>iron stomach</label>
     <labelShortAdj>iron-stomached</labelShortAdj>
@@ -609,7 +609,7 @@
     </aptitudes>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A31_CamelFlesh</defName>
     <label>camel flesh</label>
     <labelShortAdj>camel-fleshed</labelShortAdj>
@@ -630,7 +630,7 @@
     </statOffsets>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A32_RadEater</defName>
     <label>rad-eater</label>
     <labelShortAdj>rad-tolerant</labelShortAdj>
@@ -650,7 +650,7 @@
     </statFactors>
   </GeneDef>
 
-  <GeneDef MayRequire="Ludeon.RimWorld.Biotech">
+  <GeneDef MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech">
     <defName>RM_Gene_A33_BuoyantStep</defName>
     <label>buoyant step</label>
     <labelShortAdj>light-stepped</labelShortAdj>

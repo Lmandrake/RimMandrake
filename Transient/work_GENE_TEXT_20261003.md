@@ -1,0 +1,11 @@
+# GELATINOUSSLIME_GENE_TEXT_TIER_1 work log (2026-10-03)
+- Not previously done: the A/B lists, 17 condition hediffs, 8 thoughts all sat in the free mod.
+- Moved (plain mv, content unchanged except header path refs and MayRequire): `GelatinousSlime/Defs/{GeneDefs/SlimeGenes_AList,SlimeGenes_BList,HediffDefs/SlimeGeneConditions,ThoughtDefs/SlimeGeneConditionThoughts}.xml`
+  -> `src/RimUtinni/UtinniPatches/Defs/{GeneDefs,HediffDefs,ThoughtDefs}/RUT_<same name>.xml`. defNames and texts unchanged (82 defs).
+- Choice: moved defs use classes from the free mod (Gene_ForcesHediff, RM_ForcedConditionExtension), so GeneDefs now carry MayRequire="mandrake.rm.biomes,Ludeon.RimWorld.Biotech" (same guard as RUT_SlimeGeneArchive), hediffs/thoughts MayRequire="mandrake.rm.biomes". Top-level def MayRequire is honoured (unlike on Operation).
+- C# check: only SlimeMod.cs names 2 of them (RM_Gene_B25_TheReek, RM_Gene_A16_PheromoneCharm), both already GetNamedSilentFail (soft). No change needed.
+- Free archive and SlimeGenes.xml untouched; SlimeGenes.xml has no canon string (scanned).
+- Inbound refs fixed: RUT_SlimeGeneArchive.xml header paths, moved files' header paths.
+- validation.py: new component `free_tier_text_leak` (offline file scan of Defs/Patches/Languages/About, with sanity probe on the campaign GeneDefs; UNMEASURED live); all_defs_resolve floor 100 -> 60 (manifest 154 -> 72). selftest adds an injected-leak case (NS_SLIME_LEAK_DIR). selftest_slime_suite.py exits 0 (63 components, 29 faults).
+- Not done: live resolve of RUT_SlimeGeneArchive's 33 targets/25 riders (needs game; criterion 2 UNMEASURED).
+- Residual: northstar_mock.py/validation.py (python tooling, not shipped) still mention canon words in comments.
