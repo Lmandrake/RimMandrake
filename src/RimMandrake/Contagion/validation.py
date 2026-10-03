@@ -1217,9 +1217,10 @@ def genome(t):
                 if _live(t):
                     if not beds:
                         _unmeasured(t, "fixture: the Bed did not spawn for the surgery")
-                    t.bridge_call("jawa/ordered_job", pawnId=g["patient"], jobDef="LayDown",
-                                  targetAId=beds[0]["id"], waitTicks=300, timeoutSeconds=60)
-                    _wait(t, 300)
+                    with _patient(t):    # the LayDown order waits 300 ticks server-side: it timed out at 30 s (live 2026-10-03 rerun)
+                        t.bridge_call("jawa/ordered_job", pawnId=g["patient"], jobDef="LayDown",
+                                      targetAId=beds[0]["id"], waitTicks=300, timeoutSeconds=60)
+                        _wait(t, 300)
                 for attempt in range(3):     # surgery can fail on skill; three completed tries
                     t.bridge_call("jawa/bill_add", giverId=g["patient"], recipe="RM_ExtractGenomeSample",
                                   repeatMode="repeatcount", repeatCount=1)

@@ -252,6 +252,19 @@ def _rows(t, corpses=False):
     return {p.get("id"): p for p in (r.get("pawns") or [])}
 
 
+def _require_alive(t, P, keys, rows=None):
+    """A seeded pawn that is absent from list_pawns is DEAD or gone (the shared map loses colonists between
+    and inside chains: the harness's own restore_colonists notes say so), not a hediff that vanished.
+    That is a lost precondition: UNMEASURED, with what the corpse-inclusive read says."""
+    rows = rows if rows is not None else _rows(t)
+    gone = [k for k in keys if P.get(k) not in rows]
+    if gone:
+        full = _rows(t, corpses=True)
+        why = {k: ("dead" if (full.get(P[k]) or {}).get("dead") else "absent") for k in gone}
+        _unmeasured(t, "seeded pawn(s) lost before the read (%s): not a statement about the hediff" % why)
+    return rows
+
+
 def _hed(row):
     """{hediff def: severity} off a list_pawns row (health block is NESTED), or None if no pawn."""
     if row is None:
@@ -740,7 +753,7 @@ def exposure_and_ladder(t):
             t.wait_ticks(2000)
     with _comp(t, "growth_rate_on_slime"):
         if t._guard():
-            rows = _rows(t)
+            rows = _require_alive(t, P, ("exposed", "grow"))
             now = _clock(t)
             ticks = now - _ST["tick0"]
             _ST["ticks"], _ST["rows"] = ticks, rows
@@ -776,6 +789,7 @@ def exposure_and_ladder(t):
         if t._guard():
             rows, ticks = _ST["rows"], _ST["ticks"]
             dec = _ST["decay"]
+            _require_alive(t, P, ("revert", "hold2", "hold3"), rows)
             for key, sev in (("revert", 0.15), ("hold2", 0.35), ("hold3", 0.60)):
                 now = (_hed(rows.get(P[key])) or {}).get(HEDIFF)
                 rate = _rate(False, sev, False, dec)
@@ -803,6 +817,7 @@ def exposure_and_ladder(t):
     with _comp(t, "standing_alert_lists_pawn"):
         if t._guard():
             t.wait_ticks(120)
+            _require_alive(t, P, ("hold3",))
             r = _ok(t, t.bridge_call("jawa/alerts_list"), "alerts_list")
             al = [a for a in (r.get("alerts") or []) if "Alert_Slimification" in str(a.get("type"))]
             if _ST["decay"] is not None:
@@ -841,6 +856,12 @@ def dissolution(t):
         if t._guard():
             t.wait_ticks(700)
             rows = _rows(t, corpses=True)
+            x, z = P["pos"]
+            if P["pawn"] not in rows and not _things(t, RAW, _rect(x, z, 4)) and not _things(t, SMEAR, _rect(x, z, 4)):
+                # no body, no corpse, no products: Dissolve() (unchanged; it always places smear + raw slime) never ran,
+                # so the pawn left by another route. Cannot be attributed to the mod.
+                _unmeasured(t, "colonist vanished with no corpse and none of Dissolve's products: it was removed by "
+                               "something other than dissolution (shared-map colonist loss), cannot be attributed")
             if P["pawn"] in rows:
                 _fail("severity-1.0 colonist still present after 700 ticks (dead=%s): no dissolution / corpse left"
                       % rows[P["pawn"]].get("dead"))
@@ -996,12 +1017,17 @@ def slime_marked_opinion(t):
                 if v is None:
                     _unmeasured(t, "read_opinion carries no opinionOfPawn")
                 return float(v)
+            # SituationalThoughtHandler caches each social pair for ~100 ticks: a same-tick re-read returns the
+            # pre-change value (live 2026-10-03: 0.0 'one entry cost'). Let the cache lapse before every read.
+            t.wait_ticks(150)
             base = op()
             _add_hediff(t, P["a"], "RM_SlimeMarked", 1.0)
+            t.wait_ticks(150)
             one = op()
             r = t.bridge_call("jawa/pawn_severity_adjust", pawn=P["a"], hediff="RM_SlimeMarked", offset=3.0)
             if not (r or {}).get("success"):
                 _unmeasured(t, "severity_adjust on RM_SlimeMarked failed: %s" % str(r)[:140])
+            t.wait_ticks(150)
             four = op()
             if base - one < 8:
                 _fail("one entry cost %.1f opinion (shipped stage 1: -12)" % (base - one))
