@@ -205,6 +205,14 @@ class Fake(object):
                     and self.ticks >= tr["wool"]:
                 tr["wool"] = self.ticks + 5 * 60000
                 self.new("RM_SweetlineWool", tr["x"], tr["z"], stackCount=5)
+            tr.setdefault("visit", self.ticks + 8 * 60000)
+            tr.setdefault("visits", 0)
+            if self.on("sweetlineStationsEnabled") and long_tick and "no_visits" not in b \
+                    and (self.on("sweetlineVisitorsEnabled") or "visitors_ignore_toggle" in b) \
+                    and self.ticks >= tr["visit"]:
+                tr["visit"] = self.ticks + 8 * 60000
+                tr["visits"] += 1
+                self.new("RM_SweetlineToken", tr["x"], tr["z"], stackCount=1)
 
     # ------------------------------------------------------------ tools
     def t_step_game_ticks(self, ticks=0, **k):
@@ -400,6 +408,8 @@ class Fake(object):
             if "no_name" not in self.broken:
                 label = "Ashveil (sweetline tree)"
             lines = ["Snagged giant-wool sheds in 4 days."]
+            if t.get("visits") and (self.on("sweetlineVisitorsEnabled") or "visitors_ignore_toggle" in self.broken):
+                lines.insert(0, "Visitors remembered: %d camps, 0 pilgrims." % t["visits"])
         elif d == V.TREE:
             label = "sweetline tree"
         return {"success": True, "things": [{"id": t["id"], "label": label, "inspect": lines}]}
@@ -459,6 +469,8 @@ BREAKS = {
     "station_ignores_toggle": "sweetline.station_toggle_off_plain",
     "no_name": "sweetline.station_named_and_timed",
     "no_wool": "sweetline.station_sheds_wool",
+    "visitors_ignore_toggle": "sweetline.visitors_toggle_off_quiet",
+    "no_visits": "sweetline.visitors_come_and_leave_marks",
     "log_error": "log.log_clean",
 }
 

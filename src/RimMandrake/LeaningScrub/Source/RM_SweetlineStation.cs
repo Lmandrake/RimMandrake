@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace RimMandrake.LeaningScrub
@@ -20,8 +21,8 @@ namespace RimMandrake.LeaningScrub
     // Plants only TickLong, so the timer rides CompTickLong (never CompTick)
     // and the engine's own Long cadence is the only throttle.
     //
-    // NOT here, each a filed follow-up: travellers camping under it, pilgrims
-    // leaving tokens, and the resident guardian that harm wakes (the guardian
+    // part 4 (LEANINGSCRUB_SWEETLINE_VISITORS_1): abstract live visits, see TryVisit.
+    // NOT here, each a filed follow-up: the resident guardian that harm wakes (the guardian
     // creature is not designed yet).
     // ════════════════════════════════════════════════════════════════════
     public class RM_CompProperties_SweetlineStation : CompProperties
@@ -31,6 +32,10 @@ namespace RimMandrake.LeaningScrub
         public int woolCount = 5;
         public float woolIntervalDays = 5f;
         public int maxHistory = 12;
+        // LEANINGSCRUB_SWEETLINE_VISITORS_1: road-folk who camp under the tree and pilgrims who leave tokens.
+        public ThingDef tokenThing;
+        public float pilgrimChance = 0.6f;
+        public int maxTokensNear = 3;
 
         public RM_CompProperties_SweetlineStation()
         {
@@ -60,12 +65,20 @@ namespace RimMandrake.LeaningScrub
         private int nextWoolTick = -1;
         private int lastStruckTick = -999999;
         private List<string> history = new List<string>();
+        private int nextVisitTick = -1;
+        private int campCount;
+        private int pilgrimCount;
 
         public RM_CompProperties_SweetlineStation Props => (RM_CompProperties_SweetlineStation)props;
 
         public string TreeName => treeName;
 
         private static bool Enabled => RM_WindCalendar.On(RM_LeaningScrubSettings.sweetlineStationsEnabled);
+
+        private static bool VisitorsOn => Enabled && RM_LeaningScrubSettings.sweetlineVisitorsEnabled;
+
+        private static int VisitIntervalTicks =>
+            (int)(Mathf.Max(1f, RM_LeaningScrubSettings.sweetlineVisitIntervalDays) * GenDate.TicksPerDay);
 
         private bool Mature => parent is Plant plant && plant.LifeStage == PlantLifeStage.Mature;
 
@@ -105,6 +118,7 @@ namespace RimMandrake.LeaningScrub
         public override void CompTickLong()
         {
             base.CompTickLong();
+            TryVisit();
             if (!Enabled || !parent.Spawned || Props.woolThing == null)
             {
                 return;
@@ -124,6 +138,64 @@ namespace RimMandrake.LeaningScrub
             if (GenPlace.TryPlaceThing(wool, parent.Position, parent.Map, ThingPlaceMode.Near))
             {
                 AddHistory("shed " + Props.woolCount + " " + Props.woolThing.label + " snagged from passing giants.");
+            }
+        }
+
+        // A visit is abstract: no pawns walk in. Road-folk (generic, unnamed) camp a night under the
+        // tree (cold ash left beside the trunk) or pilgrims leave a token. Either lands in History.
+        private void TryVisit()
+        {
+            if (!VisitorsOn || !parent.Spawned || !Mature || !parent.Map.IsPlayerHome)
+            {
+                return;
+            }
+            int now = Find.TickManager.TicksGame;
+            if (nextVisitTick < 0)
+            {
+                nextVisitTick = now + (int)(VisitIntervalTicks * Rand.Range(0.5f, 1.5f));
+                return;
+            }
+            if (now < nextVisitTick)
+            {
+                return;
+            }
+            nextVisitTick = now + (int)(VisitIntervalTicks * Rand.Range(0.5f, 1.5f));
+            Map map = parent.Map;
+            if (Rand.Chance(Props.pilgrimChance))
+            {
+                pilgrimCount++;
+                int near = 0;
+                if (Props.tokenThing != null)
+                {
+                    foreach (Thing t in GenRadial.RadialDistinctThingsAround(parent.Position, map, 5f, true))
+                    {
+                        if (t.def == Props.tokenThing)
+                        {
+                            near += t.stackCount;
+                        }
+                    }
+                }
+                if (Props.tokenThing != null && near < Props.maxTokensNear)
+                {
+                    Thing token = ThingMaker.MakeThing(Props.tokenThing);
+                    token.stackCount = 1;
+                    GenPlace.TryPlaceThing(token, parent.Position, map, ThingPlaceMode.Near);
+                    AddHistory("a pilgrim stopped here and left a token at the trunk.");
+                }
+                else
+                {
+                    AddHistory("a pilgrim stopped here; the trunk already holds all the tokens it can.");
+                }
+            }
+            else
+            {
+                campCount++;
+                ThingDef ash = DefDatabase<ThingDef>.GetNamedSilentFail("Filth_Ash");
+                if (ash != null)
+                {
+                    FilthMaker.TryMakeFilth(parent.Position + GenRadial.RadialPattern[Rand.Range(1, 9)], map, ash);
+                }
+                AddHistory("a road-party camped a night under it.");
             }
         }
 
@@ -172,12 +244,15 @@ namespace RimMandrake.LeaningScrub
             {
                 return null;
             }
+            string visits = VisitorsOn && (campCount + pilgrimCount) > 0
+                ? "Visitors remembered: " + campCount + " camps, " + pilgrimCount + " pilgrims.\n"
+                : "";
             int left = nextWoolTick - Find.TickManager.TicksGame;
             if (left <= 0)
             {
-                return "Snagged " + Props.woolThing.label + " ready to shed.";
+                return visits + "Snagged " + Props.woolThing.label + " ready to shed.";
             }
-            return "Snagged " + Props.woolThing.label + " sheds in " + left.ToStringTicksToPeriod() + ".";
+            return visits + "Snagged " + Props.woolThing.label + " sheds in " + left.ToStringTicksToPeriod() + ".";
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -218,6 +293,9 @@ namespace RimMandrake.LeaningScrub
             base.PostExposeData();
             Scribe_Values.Look(ref treeName, "rmSweetlineName");
             Scribe_Values.Look(ref nextWoolTick, "rmSweetlineNextWool", -1);
+            Scribe_Values.Look(ref nextVisitTick, "rmSweetlineNextVisit", -1);
+            Scribe_Values.Look(ref campCount, "rmSweetlineCamps", 0);
+            Scribe_Values.Look(ref pilgrimCount, "rmSweetlinePilgrims", 0);
             Scribe_Values.Look(ref lastStruckTick, "rmSweetlineLastStruck", -999999);
             Scribe_Collections.Look(ref history, "rmSweetlineHistory", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && history == null)
