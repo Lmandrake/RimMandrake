@@ -27,6 +27,9 @@ namespace RimMandrake.TheForge
         public static SoundDef RM_DhuvvoxScuttle;
         public static HediffDef RM_DhuvvoxRunSlowing;
 
+        // FORGE_SKY_PASTURES_1
+        public static MapMeshFlagDef RM_SkyColumns;
+
         static RM_TheForgeDefOf()
         {
             DefOfHelper.EnsureInitializedInCtor(typeof(RM_TheForgeDefOf));

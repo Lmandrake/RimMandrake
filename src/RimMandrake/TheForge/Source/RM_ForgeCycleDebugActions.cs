@@ -63,6 +63,27 @@ namespace RimMandrake.TheForge
             PlumeReport();
         }
 
+        // FORGE_SKY_PASTURES_1 quicktest surface (state reads only, no flight hunting).
+        [DebugAction(CAT, "Forge sky: report (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SkyReport()
+        {
+            RM_MapComponent_SkyPastures c = RM_MapComponent_SkyPastures.Of(Find.CurrentMap);
+            Log.Message("[RMTheForgeDebug] " + (c == null ? "no sky component" : c.DebugReport()));
+        }
+
+        [DebugAction(CAT, "Forge sky: re-read the column field now (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void SkyPoll()
+        {
+            RM_MapComponent_SkyPastures c = RM_MapComponent_SkyPastures.Of(Find.CurrentMap);
+            if (c != null)
+            {
+                c.PollNow();
+            }
+            SkyReport();
+        }
+
         // FORGE_GPT_ENRICHMENT_1 quicktest surface.
         [DebugAction(CAT, "Spunstone: report knowledge",
             allowedGameStates = AllowedGameStates.Playing)]

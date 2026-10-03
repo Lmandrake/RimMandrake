@@ -364,6 +364,10 @@
         <forageRadiusBeyondColumns>20</forageRadiusBeyondColumns>
         <groundHazardImmune>true</groundHazardImmune>
       </li>
+      <li Class="RimMandrake.TheForge.CompProperties_JossurStoop">
+        <stoopMinDistance>8</stoopMinDistance>
+        <stoopMaxDistance>32</stoopMaxDistance>
+      </li>
     </comps>
     <race>
       <body>Bird</body>

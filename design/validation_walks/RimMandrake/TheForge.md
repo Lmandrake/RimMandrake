@@ -58,6 +58,7 @@ Every line is sourced from the mod's About.xml description, its defs, or its C# 
 - The sealed creatures are drawn as their stationary art (the dormant render node), the crust and floatstone look right. → UNCOVERED: `visual`, the judge pass's.
 - `RM_BiomeWorker_TheForge.GetScore` scores a hot high-elevation tile. → UNCOVERED: inert on the hand-painted world; no map can exercise it.
 - Dhokkur path memory, white plume fronts, dhuvvox swarm aggregation, tibanna tap, foundry towers, the Contagion ring and the vent-industry buildings. → UNCOVERED: not built (FORGE_DHOKKUR_WAYS_1, FORGE_WHITE_PLUME_FRONTS_1, FORGE_DHUVVOX_SWARM_REMAINDER_1; the rest are campaign items outside this mod per About.xml).
+- The vapour columns show as a faint haze, ash winds up inside them, column-bound predators prefer prey in them, the jossur takes wing to stoop, and selecting a column-bound flier outlines its columns. → `sky_pastures` (source claims only: no bridge tool reads a mesh, a fleck, a prey score or a flight state, and flyer flight is never live-hunted; behaviour is UNMEASURED live).
 - The campaign's Star Wars fauna rows (Beldon, lava flea and others) on this biome. → UNCOVERED: patch-added by `UtinniPatches/Patches/WildAnimals_TheForge.xml`, which belongs to the Utinni patch script, not this mod's.
 
 ## the walk

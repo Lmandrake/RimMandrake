@@ -418,6 +418,7 @@ class FGame(MockGame):
             {"label": "Forge cycle: advance one phase (current map)", "path": "Actions\\RMTheForge\\advance"},
             {"label": "Forge plumes: report (current map)", "path": "Actions\\RMTheForge\\plume_report"},
             {"label": "Forge plumes: spawn a front on a crust cell (mouse cell if none)", "path": "Actions\\RMTheForge\\plume_spawn"},
+            {"label": "Forge sky: report (current map)", "path": "Actions\\RMTheForge\\sky_report"},
             {"label": "Spunstone: report knowledge", "path": "Actions\\RMTheForge\\spun_report"},
             {"label": "Spunstone: reveal now", "path": "Actions\\RMTheForge\\spun_reveal"}]}
 
@@ -748,7 +749,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("28 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 28, sorted(V.SETTINGS_DEFAULTS))
+    check("33 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 33, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -761,7 +762,7 @@ def main():
           'private const string CAT = "RMTheForge"' in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"),
                                                               encoding="utf-8").read())
     for lab in ("Forge cycle: report state", "Forge cycle: advance one phase", "Spunstone: report knowledge",
-                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front"):
+                "Spunstone: reveal now", "Forge plumes: report", "Forge plumes: spawn a front", "Forge sky: report"):
         check("debug action label exists in the C#: %s" % lab,
               lab in open(os.path.join(HERE, "Source", "RM_ForgeCycleDebugActions.cs"), encoding="utf-8").read())
     check("the letter labels are in the C#", all(

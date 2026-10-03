@@ -63,6 +63,13 @@ namespace RimMandrake.TheForge
         public static bool plumeAdaptedExempt = true;
         public static float plumeStrength = 1f;
 
+        // FORGE_SKY_PASTURES_1 — the vapour-column pastures. Each is read live.
+        public static bool skyColumnGridEnabled = true;
+        public static bool skyAshSpiralsEnabled = true;
+        public static bool skyColumnHuntEnabled = true;
+        public static bool jossurStoopEnabled = true;
+        public static bool skyColumnHighlightEnabled = true;
+
         // Master switch folded in: a feature is on only while the mod is.
         private static Vector2 scrollPos;
         private static float viewHeight = 900f;
@@ -103,6 +110,11 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref plumeHeatEnabled, "plumeHeatEnabled", true);
             Scribe_Values.Look(ref plumeAdaptedExempt, "plumeAdaptedExempt", true);
             Scribe_Values.Look(ref plumeStrength, "plumeStrength", 1f);
+            Scribe_Values.Look(ref skyColumnGridEnabled, "skyColumnGridEnabled", true);
+            Scribe_Values.Look(ref skyAshSpiralsEnabled, "skyAshSpiralsEnabled", true);
+            Scribe_Values.Look(ref skyColumnHuntEnabled, "skyColumnHuntEnabled", true);
+            Scribe_Values.Look(ref jossurStoopEnabled, "jossurStoopEnabled", true);
+            Scribe_Values.Look(ref skyColumnHighlightEnabled, "skyColumnHighlightEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -190,6 +202,18 @@ namespace RimMandrake.TheForge
                 "Creatures that live in the vapour columns take no extra heat from a front.");
             list.Label("Plume strength: " + plumeStrength.ToString("0.00") + "x");
             plumeStrength = list.Slider(plumeStrength, 0.25f, 2f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Vapour-column haze", ref skyColumnGridEnabled,
+                "A faint haze, brighter at the rim, marks the ground under each vapour column where the sky creatures graze.");
+            list.CheckboxLabeled("  Ash spirals in the columns", ref skyAshSpiralsEnabled,
+                "Ash flecks wind upward inside the vapour columns near the camera. Cosmetic only.");
+            list.CheckboxLabeled("  Column-aware hunting", ref skyColumnHuntEnabled,
+                "Predators that live in the columns prefer prey inside them and ignore prey far out on the open ash.");
+            list.CheckboxLabeled("  Jossur stoops", ref jossurStoopEnabled,
+                "A hunting jossur takes to the air when its prey is a way off and closes in on the wing.");
+            list.CheckboxLabeled("  Selecting a sky creature lights up its columns", ref skyColumnHighlightEnabled,
+                "While a column-bound flier is selected, the columns it can reach are outlined. Nothing is shown otherwise.");
             list.GapLine();
             list.Label("Tibanna-tap rate: " + tibannaTapRate.ToString("0.00") + "x");
             tibannaTapRate = list.Slider(tibannaTapRate, 0.25f, 3f);
