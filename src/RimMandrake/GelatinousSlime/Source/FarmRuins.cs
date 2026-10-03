@@ -178,6 +178,8 @@ namespace RimMandrake.GelatinousSlime
             DropLoot(map, loot, "Silver", Rand.RangeInclusive(18, 60));
             DropLoot(map, loot, "Steel", Rand.RangeInclusive(10, 30));
             DropLoot(map, loot, "WoodLog", Rand.RangeInclusive(15, 40));
+            // The last ledger (story object, RM_SlimeFarmLedger).
+            DropLoot(map, loot, "RM_SlimeFarmLedger", 1);
             // The lost tool.
             DropLoot(map, new IntVec3(o.x + 2, 0, o.z + 2), "MeleeWeapon_Knife", 1);
         }
