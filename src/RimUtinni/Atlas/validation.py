@@ -221,12 +221,17 @@ def research_lights(t):
 
 @suite.chain("detection_off")
 def detection_off(t):
-    """detectionEnabled off: a poll lights nothing even with the evidence present."""
+    """detectionEnabled off: a poll lights nothing even with the evidence present.
+    The evidence is laid here, not borrowed from research_lights, so this check cannot
+    pass vacuously when chains run alone or in another order."""
     _debug(t, A_FORGET)
     with t.component("poll_lights_nothing_when_off", toggle="detectionEnabled"):
         if _live(t):
             try:
                 _set(t, "detectionEnabled", False)
+                r = t.bridge_call("jawa/research_finish_project", project="RUT_Rites_ScrapShrine")
+                if not (r or {}).get("success", False):
+                    _fail("research_finish_project(RUT_Rites_ScrapShrine) failed: %r" % r)
                 line = _poll(t) or ""
                 if "lit=0" not in line or "detection=False" not in line:
                     _fail("poll with detection off reported %r" % line)

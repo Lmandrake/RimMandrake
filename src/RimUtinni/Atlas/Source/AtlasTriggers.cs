@@ -253,10 +253,14 @@ namespace RimMandrake.Utinni.Atlas
         }
     }
 
-    // A pawn of the player's faction carries one of these hediffs.
+    // SEEN: a spawned pawn on an unfogged cell of a player map carries one of
+    // these hediffs (any faction: a wild gizka counts). playerFactionOnly narrows
+    // to the player's own pawns and animals. Fogged pawns never count, the same
+    // rule as AtlasTrigger_ThingSeen: a lamp must not light for something unseen.
     public class AtlasTrigger_Hediff : AtlasTrigger
     {
         public List<string> hediffs = new List<string>();
+        public bool playerFactionOnly;
 
         private List<HediffDef> resolved;
         private List<HediffDef> Resolved => resolved ?? (resolved = Resolve<HediffDef>(hediffs));
@@ -273,6 +277,8 @@ namespace RimMandrake.Utinni.Atlas
                 {
                     Pawn p = pawns[i];
                     if (p.health?.hediffSet == null) continue;
+                    if (playerFactionOnly && p.Faction != Faction.OfPlayer) continue;
+                    if (map.fogGrid.IsFogged(p.Position)) continue;
                     for (int h = 0; h < hs.Count; h++)
                         if (p.health.hediffSet.HasHediff(hs[h])) return true;
                 }
