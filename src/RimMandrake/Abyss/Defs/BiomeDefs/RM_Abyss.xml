@@ -129,6 +129,7 @@
       <AG_Septimum MayRequire="sarg.alphagenes">0.25</AG_Septimum>  <!-- septimum -->
       <AB_GiantSeptimum MayRequire="sarg.alphabiomes">0.2</AB_GiantSeptimum>  <!-- giant septimum - tree -->
       <RM_Etchcap>0.15</RM_Etchcap>  <!-- ABYSS_ETCHCAP_BUILD_1: grows only on RM_EtchHollow -->
+      <RM_Wickwood>0.2</RM_Wickwood>  <!-- ABYSS_LAMP_CROPS_BUILD_1: the lamp-crop tree; struck at startup when lampCropsEnabled is off -->
     </wildPlants>
     <wildPlantRegrowDays>27</wildPlantRegrowDays>
     <!-- ABYSS_DURRGAK_BUILD_1: the durrgak's den, shard rings and salvage cache on each new map (Mod Setting). -->

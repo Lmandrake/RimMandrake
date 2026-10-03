@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    ABYSS_FOLD_LAMP_BUILD_1 (owner card, turn 3, Q1). Heat-folding is learned by WATCHING the Dark fold back
+    from warmth, then researched; it gives the fold-lamp.
+
+    RM_DarkFoldsFromWarmth is the observation. Its requiredResearchBuilding is RM_TheDarkItself, an Ethereal
+    def nothing can build, so no bench can ever research it (ResearchProjectDef.CanBeResearchedAt compares
+    bench.def). RM_MapComponent_Dark finishes it with ResearchManager.FinishProject the first time a colonist
+    stands in a warm clear pocket near a lit heat source while the open air around is dark, and sends the
+    letter. Mod Setting foldDiscoveryByWatching off = RM_AbyssGameComponent finishes it silently on load, so
+    heat-folding is an ordinary bench project.
+
+    RM_FoldLamp: a fuelled heater-lamp (vanilla CompRefuelable + CompHeatPusherPowered + CompGlower). While
+    lit, RM_MapComponent_FoldLanes lays a lane of clear air out of its throat in the facing direction, and
+    RM_MapComponent_Dark.DarknessAt reads it. Off the Abyss there is no Dark, so it is a plain heater-lamp.
+  -->
+  <ThingDef>
+    <defName>RM_TheDarkItself</defName>
+    <label>the Dark itself (watched, never studied at a bench)</label>
+    <description>Not a building. Some things are learned only by standing in the Dark and watching what warmth does to it.</description>
+    <thingClass>Thing</thingClass>
+    <category>Ethereal</category>
+    <drawerType>None</drawerType>
+    <useHitPoints>false</useHitPoints>
+    <tickerType>Never</tickerType>
+    <destroyable>false</destroyable>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>RM_DarkFoldsFromWarmth</defName>
+    <label>the Dark folds from warmth</label>
+    <description>An observation, not a study. In the Abyss the Dark is a substance in the air, and it thins where it is warm. Someone has to stand in a clear pocket beside a fire and see it happen before anyone can reason about it.\n\nThis is learned by watching, never at a research bench.</description>
+    <baseCost>1</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <requiredResearchBuilding>RM_TheDarkItself</requiredResearchBuilding>
+    <researchViewX>19.37</researchViewX>
+    <researchViewY>13.61</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RM_HeatFolding</defName>
+    <label>heat-folding</label>
+    <description>Warmth pushes the Dark back. Shape the warmth, and you shape where the air stays clear: a firebox with a narrow brass throat throws a lane of warm, clear air ahead of it.\n\nUnlocks the fold-lamp.</description>
+    <baseCost>600</baseCost>
+    <techLevel>Medieval</techLevel>
+    <prerequisites>
+      <li>RM_DarkFoldsFromWarmth</li>
+    </prerequisites>
+    <researchViewX>20.37</researchViewX>
+    <researchViewY>13.61</researchViewY>
+  </ResearchProjectDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FoldLamp</defName>
+    <label>fold-lamp</label>
+    <description>An iron firebox with a narrow brass throat. It burns wood or chemfuel, gives off heat and a warm light, and throws a lane of warm air ahead of it.\n\nIn the Abyss, that lane holds the Dark open: a clear corridor of air toward wherever the throat points, for watching a path. Anywhere else it is simply a good cold-night heater-lamp.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Building/FoldLamp</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData>
+        <rect>(0.2,0.1,0.6,0.8)</rect>
+      </damageData>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <passability>PassThroughOnly</passability>
+    <pathCost>30</pathCost>
+    <fillPercent>0.2</fillPercent>
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <drawPlaceWorkersWhileSelected>true</drawPlaceWorkersWhileSelected>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories>
+      <li>BuildingsTemperature</li>
+    </thingCategories>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Mass>8</Mass>
+      <Flammability>0</Flammability>
+      <Beauty>1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>45</Steel>
+    </costList>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <designationCategory>Temperature</designationCategory>
+    <researchPrerequisites>
+      <li>RM_HeatFolding</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>PlaceWorker_Heater</li>
+      <li>PlaceWorker_GlowRadius</li>
+    </placeWorkers>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>4</fuelConsumptionRate>
+        <fuelCapacity>30</fuelCapacity>
+        <fuelFilter>
+          <thingDefs>
+            <li>WoodLog</li>
+            <li>Chemfuel</li>
+          </thingDefs>
+        </fuelFilter>
+        <initialFuelPercent>0</initialFuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(252,170,90,0)</glowColor>
+      </li>
+      <li Class="CompProperties_HeatPusher">
+        <compClass>CompHeatPusherPowered</compClass>
+        <heatPerSecond>12</heatPerSecond>
+        <heatPushMaxTemperature>26</heatPushMaxTemperature>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

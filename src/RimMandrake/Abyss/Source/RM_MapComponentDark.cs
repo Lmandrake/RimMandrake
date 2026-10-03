@@ -91,6 +91,13 @@ namespace RimMandrake.Abyss
                                             c.z * PocketScale + Find.TickManager.TicksGame * PocketDrift);
                 t += (n - 0.5f) * 2f * PocketAmplitude;
             }
+            // ABYSS_FOLD_LAMP_BUILD_1: a lit fold-lamp's lane of warm air holds the Dark open toward its throat.
+            return DarknessForTemperature(t) * (1f - RM_MapComponent_FoldLanes.ClearanceAt(map, c));
+        }
+
+        /// <summary>0..1 darkness of air at an effective temperature (no lane, no slider).</summary>
+        public static float DarknessForTemperature(float t)
+        {
             return 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(ClearStart, ClearFull, t));
         }
 
@@ -105,7 +112,12 @@ namespace RimMandrake.Abyss
             int now = Find.TickManager.TicksGame;
 
             if (now % 60 == 0) WatchWeather();
-            if (now % PawnInterval == 0) MurkPass();
+            if (now % PawnInterval == 0)
+            {
+                MurkPass();
+                // ABYSS_FOLD_LAMP_BUILD_1: the first colonist to stand in a warm clear pocket beside a lit heat source.
+                if (Active && DarkPresent(map)) RM_HeatFoldingDiscovery.Check(map);
+            }
             if (now % LampInterval == 0) LampPass();
             StormCallTick(now);
         }

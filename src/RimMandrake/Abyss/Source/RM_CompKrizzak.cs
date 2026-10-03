@@ -106,6 +106,7 @@ namespace RimMandrake.Abyss
             {
                 g.GlowRadius = next;
                 g.ForceRegister(map);
+                RM_MapComponent_AbyssSoundscape.LampClatter(map, g.parent);   // ABYSS_SOUNDSCAPE_BUILD_1
             }
         }
 
