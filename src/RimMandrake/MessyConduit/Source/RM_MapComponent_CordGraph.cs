@@ -52,6 +52,13 @@ namespace RimMandrake.MessyConduit
 
         public void Notify_SettingsChanged() => builtFrame = -1;
 
+        /// <summary>Lane F 2026-10-02: a change dirtied a section that is OFF SCREEN. Vanilla only regenerates
+        /// sections overlapping the view (Section.TryUpdate), so the rebuild that our layer's regenerate triggers
+        /// never ran and the pieces lagged the map until the camera looked (live: the 18-scene aerial board's
+        /// fresh probe found one edge the component had not laid). MapComponentUpdate rebuilds once instead.</summary>
+        public bool StaleOffscreen;
+        public int OffscreenRebuilds;
+
         // ---- lane C (2026-10-02): per-net strand variant (extension-cord colour, Star Wars cable kind)
         private Dictionary<LaidPiece, int> netSeeds = new Dictionary<LaidPiece, int>();
 
@@ -496,6 +503,11 @@ namespace RimMandrake.MessyConduit
 
         public override void MapComponentUpdate()
         {
+            if (StaleOffscreen)
+            {
+                StaleOffscreen = false;
+                if (builtFrame != Time.frameCount && MessyConduitSettings.enabled) { Rebuild(); OffscreenRebuilds++; }
+            }
             MessyConduitProbe.Service(map, this);
             DrawLiveGlow();
             try { DrawMotion(); }
@@ -519,6 +531,25 @@ namespace RimMandrake.MessyConduit
                                   nd.IsStub ? SimpleColor.Cyan : nd.Type == NodeType.Junction ? SimpleColor.Blue : SimpleColor.Green;
                 GenDraw.DrawCircleOutline(new Vector3((float)nd.Pos.X, y, (float)nd.Pos.Z), 0.22f, col);
             }
+        }
+    }
+
+    /// <summary>Marks the map's cord graph stale when a section carrying one of our layer's change flags is
+    /// left dirty off screen (TryUpdate regenerates only sections overlapping the view; see StaleOffscreen).</summary>
+    [HarmonyLib.HarmonyPatch(typeof(Section), nameof(Section.TryUpdate))]
+    internal static class Patch_Section_TryUpdate_MarkStale
+    {
+        private static ulong mask;
+
+        private static void Prefix(Section __instance, CellRect view)
+        {
+            if (__instance.dirtyFlags == 0UL || !MessyConduitSettings.enabled) return;
+            if (mask == 0UL)
+                mask = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.PowerGrid | (ulong)MapMeshFlagDefOf.Terrain |
+                       (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MessyConduitDefOf.RM_MessyCords;
+            if ((__instance.dirtyFlags & mask) == 0UL || __instance.CellRect.Overlaps(view)) return;
+            RM_MapComponent_CordGraph comp = __instance.map?.GetComponent<RM_MapComponent_CordGraph>();
+            if (comp != null) comp.StaleOffscreen = true;
         }
     }
 

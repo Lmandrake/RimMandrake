@@ -1,0 +1,23 @@
+{
+ "mod": "MessyConduit",
+ "mode": "removal-check",
+ "script": "validation_hose.py",
+ "started": "2026-10-02T20:26:32",
+ "rows": [
+  {
+   "id": "H11_remove_mod_with_hose",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "loadSeconds": 4,
+    "errorsNamingOurClasses": [],
+    "errorsNamingOurDefs(expected)": 4,
+    "firstDefErrors": [
+     "SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 29C3653] Duplicate stacktrace, see ref for original\nSubnode:\n<thing Class=\"Buildin",
+     "Could not load reference to Verse.ThingDef named RM_HoseReel ",
+     "SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 29C3653]\n  at Verse.Thing.ExposeData () [0x00028] in <61e4173561894da49d210260257b"
+    ]
+   }
+  }
+ ]
+}

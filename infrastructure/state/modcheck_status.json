@@ -78,14 +78,10 @@
   "MessyConduit": {
     "components": {
       "counts": {
-        "FAIL": 2,
-        "PASS": 109,
+        "PASS": 111,
         "UNBUILT": 9
       },
-      "not_ok": [
-        "L6_no_pawn_in_region",
-        "D2_fresh_builder_same"
-      ],
+      "not_ok": [],
       "unbuilt": [
         "MX_H00_Flat_straight_L6",
         "MX_H01_Flat_corner_L14",
@@ -99,23 +95,23 @@
       ],
       "uncovered": []
     },
-    "hash": "b51e7a6bff98ae0ada40fbf3bd5002656d174bbd39d02f6236a08f448675a038",
+    "hash": "de203d7634bae8c457072a1811d198a6eed46bb443d95ee2a21baf7b88484256",
     "minor": null,
     "owner_review": null,
-    "refused": null,
-    "run_id": "MessyConduit/northstar_matrix/run_live.py@matrix_live_20261002T192306.json",
+    "refused": "111 live rows PASS but 9 bars UNBUILT, 0 UNCOVERED: MX_H00_Flat_straight_L6, MX_H01_Flat_corner_L14, MX_H02_Flat_water_L24, MX_H03_Plump_straight_L14, MX_H04_Plump_corner_L24, MX_H05_Plump_water_L6, MX_H06_Filling50_straight_L24, MX_H07_Filling50_corner_L6, MX_H08_Filling50_water_L14",
+    "run_id": "MessyConduit/northstar_matrix/run_live.py@matrix_live_20261002T202406.json",
     "source": {
-      "assembly_sha256": "be3f7950637437bb1d4403e6f0cdfe60da56df802ff9f4e87778d8d65f7fdd6d",
+      "assembly_sha256": "2e4f0ca892cc854cefcb9c478fce7e1e1e315931ce10342d48c903369b7a7117",
       "env_running_count": 9,
       "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "src/RimMandrake/MessyConduit/northstar/matrix_live_20261002T192306.json",
-      "started": "2026-10-02T18:56:49",
+      "result": "src/RimMandrake/MessyConduit/northstar/matrix_live_20261002T202406.json",
+      "started": "2026-10-02T19:57:37",
       "ticks_spent": 71,
       "tier": "messyconduit",
       "verb": "modcheck record"
     },
-    "status": "RED",
-    "ts": 1790994201.8773503
+    "status": "REFUSED",
+    "ts": 1790998016.6434824
   },
   "Ninefold": {
     "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",

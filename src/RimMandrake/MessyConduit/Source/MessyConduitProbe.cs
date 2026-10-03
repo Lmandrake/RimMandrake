@@ -213,7 +213,7 @@ namespace RimMandrake.MessyConduit
                 else diff++;
             }
             return "{\"success\":true,\"cmd\":\"fresh\",\"edges\":" + fresh.Count(p => p.EndA != null) + ",\"same\":" + same +
-                   ",\"different\":" + diff + ",\"missing\":" + missing + "}";
+                   ",\"different\":" + diff + ",\"missing\":" + missing + ",\"offscreenRebuilds\":" + comp.OffscreenRebuilds + "}";
         }
 
         /// <summary>Polish pass 2026-10-02: the art-fit audit on the LIVE laid pieces (the same

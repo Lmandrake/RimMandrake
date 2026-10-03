@@ -1,0 +1,48 @@
+{
+ "hose_A_h1plump_h2flat": {
+  "state": {
+   "hose1": {
+    "state": "Plump",
+    "blend": 1,
+    "widthOverWire": 5.4109
+   },
+   "hose2": {
+    "state": "Flat",
+    "blend": 0,
+    "widthOverWire": 4.4218
+   }
+  },
+  "window": [
+   1912,
+   73,
+   3748,
+   1327
+  ],
+  "bmp": "D:\\Luke\\dev\\_rmscratch\\laneF\\hose_A_h1plump_h2flat.bmp",
+  "vleft": 0,
+  "vtop": 0
+ },
+ "hose_B_h1flat_h2plump": {
+  "state": {
+   "hose1": {
+    "state": "Flat",
+    "blend": 0,
+    "widthOverWire": 4.4218
+   },
+   "hose2": {
+    "state": "Plump",
+    "blend": 1,
+    "widthOverWire": 5.4109
+   }
+  },
+  "window": [
+   1912,
+   73,
+   3748,
+   1327
+  ],
+  "bmp": "D:\\Luke\\dev\\_rmscratch\\laneF\\hose_B_h1flat_h2plump.bmp",
+  "vleft": 0,
+  "vtop": 0
+ }
+}

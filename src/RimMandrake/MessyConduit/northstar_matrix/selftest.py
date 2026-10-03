@@ -272,6 +272,21 @@ def main(argv=None):
           {"fallen": fa["fallen_ends"], "cut": cu["downed_ends"]})
     del by
 
+    # ---------------------------------------------------------------- 8b. fresh-vs-incremental fixture (lane F)
+    import det_export as DE
+    fx = DE.export()
+    on_disk = json.load(open(DE.OUT, encoding="utf-8")) if os.path.exists(DE.OUT) else None
+    check("DS6 SelfTest determinism fixture is current (det_export.py == matrix_det_scenes.json)",
+          on_disk == json.loads(json.dumps(fx, sort_keys=True)), DE.OUT)
+    rs = DE.ring_split_scenes(fx)
+    check("DS6 every ring scene replays the heater-then-lamp split (the D2 ring defect)",
+          rs == ["F12_T3_S0", "F13_T3_S1", "F14_T3_S2", "F15_T3_S3"], rs)
+    collapsed = copy.deepcopy(fx)
+    for sc in collapsed["scenes"]:
+        sc["stages"] = sc["stages"][-1:]
+    check("DS6n stages collapsed to the finished world are caught (no split replayed)",
+          DE.ring_split_scenes(collapsed) == [], DE.ring_split_scenes(collapsed))
+
     # ---------------------------------------------------------------- 9. design 4.6 #2 census-mask wire check
     import numpy as np
     from PIL import ImageDraw

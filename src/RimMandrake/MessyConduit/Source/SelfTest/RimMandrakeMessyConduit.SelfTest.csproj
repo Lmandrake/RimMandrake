@@ -40,10 +40,12 @@
     <Compile Include="AerialSelfTest.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="HoseSelfTest.cs" />
+    <Compile Include="DeterminismChecks.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="oracle_scenes.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="matrix_det_scenes.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

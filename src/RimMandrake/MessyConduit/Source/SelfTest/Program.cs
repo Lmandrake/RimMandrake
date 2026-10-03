@@ -65,6 +65,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             LaneAChecks.Run(scenes);       // phase 1b lane A (rope settle, graph, live ends): LaneAChecks.cs
             AerialSelfTest.Run(Check);     // lane B (L5 aerial lines): AerialSelfTest.cs + ../Aerial/AerialMath.cs
             HoseSelfTest.Run(Check);       // lane D (L6 fire hoses): HoseSelfTest.cs + ../Hose/HoseMath.cs
+            DeterminismChecks.Run(Check, Path.Combine(AppContext.BaseDirectory, "matrix_det_scenes.json"));   // lane F: fresh == incremental
             Console.WriteLine($"{checks - fails}/{checks} checks passed");
             return fails == 0 ? 0 : 1;
         }
