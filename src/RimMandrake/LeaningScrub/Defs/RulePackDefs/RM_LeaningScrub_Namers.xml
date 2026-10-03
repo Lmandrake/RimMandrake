@@ -2,13 +2,18 @@
 <!--
   RM_LeaningScrub_Namers.xml                 LEANINGSCRUB_GPT_ENRICHMENT_1
 
-  Names for the named sweetline trees (Source/RM_SweetlineStation.cs).
+  Names for the named sweetline trees (Source/RM_SweetlineStation.cs, which calls
+  NameGenerator.GenerateName(namer, validator); the root is this pack's first rule
+  keyword, r_name, and the engine title-cases the result, leaving "the", "of" and
+  similar small words lower case mid-name).
 
-  PLACEHOLDER VOCABULARY. No ruling sets the naming register for these trees;
-  every word below is lifted from the shipped def descriptions and
-  arid_shrubland.md §4 (silver wool, giants, roads, the lean, the line) so
-  nothing new is invented, but the register itself is owed to the owner:
-  LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1. Replace the lists, keep the defName.
+  DRAFT REGISTER, not yet ruled: LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1.
+  Source of the vocabulary and its rules:
+  design/Jawa/worldbuilding/biomes/leaningscrub_sweetline_name_register_2026-10-03.md
+  Three patterns, the road-folk's register: a coined tree-name alone, a coined
+  name with a plain-speech epithet, and an event name. Every coined word passed
+  check_pseudo_sw_name.py and a Wookieepedia search sweep (2026-10-03). The RM
+  tier carries no canon name; keep it so. Replace the lists, keep the defName.
 -->
 <Defs>
 
@@ -16,28 +21,81 @@
     <defName>RM_NamerSweetlineTree</defName>
     <rulePack>
       <rulesStrings>
-        <li>r_name(p=3)->the [adj] [noun]</li>
-        <li>r_name(p=2)->[noun] of the [thing]</li>
-        <li>r_name->the [adj] [noun] of the [thing]</li>
+        <li>r_name(p=4)->[coined]</li>
+        <li>r_name(p=2)->[coined] the [epithet]</li>
+        <li>r_name->Old [coined]</li>
+        <li>r_name(p=2)->Where the [walker] [deed]</li>
 
-        <li>adj->silver</li>
-        <li>adj->grey</li>
-        <li>adj->old</li>
-        <li>adj->lone</li>
-        <li>adj->leaning</li>
-        <li>adj->scarred</li>
-        <li>adj->woolhung</li>
-        <li>adj->rubbed</li>
+        <li>coined->Barraun</li>
+        <li>coined->Barrumo</li>
+        <li>coined->Dolmara</li>
+        <li>coined->Dolmaun</li>
+        <li>coined->Dolmumo</li>
+        <li>coined->Dolmond</li>
+        <li>coined->Gomara</li>
+        <li>coined->Gomol</li>
+        <li>coined->Gomaun</li>
+        <li>coined->Gomumo</li>
+        <li>coined->Gomond</li>
+        <li>coined->Hulol</li>
+        <li>coined->Hulaun</li>
+        <li>coined->Hulumo</li>
+        <li>coined->Hulond</li>
+        <li>coined->Lomara</li>
+        <li>coined->Lomol</li>
+        <li>coined->Lomaun</li>
+        <li>coined->Lomumo</li>
+        <li>coined->Morrara</li>
+        <li>coined->Morrol</li>
+        <li>coined->Morraun</li>
+        <li>coined->Morrumo</li>
+        <li>coined->Morrond</li>
+        <li>coined->Ombrara</li>
+        <li>coined->Ombrol</li>
+        <li>coined->Ombraun</li>
+        <li>coined->Ombrumo</li>
+        <li>coined->Ombrond</li>
+        <li>coined->Rhunara</li>
+        <li>coined->Rhunol</li>
+        <li>coined->Rhunaun</li>
+        <li>coined->Rhunumo</li>
+        <li>coined->Rhunond</li>
+        <li>coined->Ulbara</li>
+        <li>coined->Ulbol</li>
+        <li>coined->Ulbaun</li>
+        <li>coined->Ulbumo</li>
+        <li>coined->Ulbond</li>
+        <li>coined->Audara</li>
+        <li>coined->Audol</li>
+        <li>coined->Audumo</li>
+        <li>coined->Audond</li>
+        <li>coined->Belara</li>
+        <li>coined->Belol</li>
+        <li>coined->Belaun</li>
+        <li>coined->Belumo</li>
+        <li>coined->Gaurol</li>
+        <li>coined->Gaurumo</li>
+        <li>coined->Gaurond</li>
 
-        <li>noun->tree</li>
-        <li>noun->sweetline</li>
-        <li>noun->mark</li>
+        <li>epithet->Leaner</li>
+        <li>epithet->Patient</li>
+        <li>epithet->Unburnt</li>
+        <li>epithet->Far-Seen</li>
+        <li>epithet->Woolgiver</li>
+        <li>epithet->Rubbed</li>
+        <li>epithet->Grey</li>
+        <li>epithet->Waymark</li>
 
-        <li>thing->giants</li>
-        <li>thing->road</li>
-        <li>thing->line</li>
-        <li>thing->wool</li>
-        <li>thing->wind</li>
+        <li>walker->Giant</li>
+        <li>walker->Giants</li>
+        <li>walker->Wind</li>
+
+        <li>deed->Knelt</li>
+        <li>deed->Slept</li>
+        <li>deed->Turned</li>
+        <li>deed->Waited</li>
+        <li>deed->Lay Down</li>
+        <li>deed->Stood Still</li>
       </rulesStrings>
     </rulePack>
   </RulePackDef>
