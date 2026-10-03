@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- WARSCAR_TURRETS_TRACK_1. The refit result of a broken ancient turret: slow, long-ranged, heavy,
      player-owned, powered. Shape re-authored from RUT_AncientShieldedTurret (AssailantSalvage), on RM.
-     Cost is advanced components until WARSCAR_RAINBOW_POOLS_1 ships RM_Etchant (then add it to costList
-     and drop one component). The long WorkToBuild is the "slower" half of that fallback.
+     Cost is steel, three advanced components and etchant (drawn from a reaction pool, WARSCAR_RAINBOW_POOLS_1). The long WorkToBuild is the "slower" half of that fallback.
      Art owed: reuses a vanilla turret base until a Warscar sprite exists. -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
@@ -49,7 +48,8 @@
     <hasTooltip>true</hasTooltip>
     <costList>
       <Steel>200</Steel>
-      <ComponentSpacer>4</ComponentSpacer>
+      <ComponentSpacer>3</ComponentSpacer>
+      <RM_Etchant>10</RM_Etchant>
     </costList>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <researchPrerequisites><li>PrecisionRifling</li></researchPrerequisites>

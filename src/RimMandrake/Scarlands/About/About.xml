@@ -26,6 +26,7 @@
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
     <li>Ludeon.RimWorld.Biotech</li>
+    <li>mandrake.rm.flowworks</li>
     <li>sarg.alphaanimals</li>
     <li>regrowth.botr.core</li>
   </loadAfter>

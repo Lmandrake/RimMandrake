@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_RAINBOW_POOLS_1: after the ruin gensteps and the kneeling rings. -->
+  <GenStepDef>
+    <defName>RM_ReactionPools</defName>
+    <order>545</order>
+    <genStep Class="RimMandrake.Scarlands.GenStep_ReactionPools" />
+  </GenStepDef>
+</Defs>

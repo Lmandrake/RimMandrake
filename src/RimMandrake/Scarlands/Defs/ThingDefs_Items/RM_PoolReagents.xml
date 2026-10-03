@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_RAINBOW_POOLS_1: the four reagents (amber gel, violet etchant, pale-green coagulant, the bloom) and bone filth.
+     Art: artpipe _artsrc/RM_<name> (already generated, copied; nothing queued). -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DielectricGel</defName>
+    <label>dielectric gel</label>
+    <description>An amber gel drawn from the pool's first phase. It does not conduct. Refuels an aerosol screen.</description>
+    <graphicData><texPath>Things/Item/RM_DielectricGel</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <stackLimit>25</stackLimit>
+    <statBases><MarketValue>14</MarketValue><Mass>0.4</Mass><Flammability>0</Flammability></statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Etchant</defName>
+    <label>etchant</label>
+    <description>A violet liquor that eats the old alloy and leaves a surface that takes new metal. Cradle limbs are etched with it; a refitted turret is built with it.</description>
+    <graphicData><texPath>Things/Item/RM_Etchant</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <stackLimit>25</stackLimit>
+    <statBases><MarketValue>18</MarketValue><Mass>0.4</Mass><Flammability>0</Flammability></statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="MedicineBase">
+    <defName>RM_MedicalCoagulant</defName>
+    <label>medical coagulant</label>
+    <description>A pale green dressing drawn from the pool's third phase. A herbal-tier bandage that seals a wound fast.</description>
+    <graphicData><texPath>Things/Item/RM_MedicalCoagulant</texPath><graphicClass>Graphic_StackCount</graphicClass><drawSize>0.85</drawSize></graphicData>
+    <statBases>
+      <MarketValue>12</MarketValue>
+      <Mass>0.35</Mass>
+      <Flammability>0.3</Flammability>
+      <MedicalPotency>0.60</MedicalPotency>
+      <MedicalQualityMax>0.70</MedicalQualityMax>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_BloomLiquor</defName>
+    <label>bloom liquor</label>
+    <description>What the pool gives at its worst hour: a pink-white liquor that sells for a great deal and burns whoever draws it.</description>
+    <graphicData><texPath>Things/Item/RM_BloomLiquor</texPath><graphicClass>Graphic_StackCount</graphicClass></graphicData>
+    <thingCategories><li>Manufactured</li></thingCategories>
+    <stackLimit>10</stackLimit>
+    <statBases><MarketValue>260</MarketValue><Mass>0.5</Mass><Flammability>0</Flammability></statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_FilthBone</defName>
+    <label>bone filth</label>
+    <statBases><Beauty>-10</Beauty><Cleanliness>-10</Cleanliness></statBases>
+    <graphicData>
+      <texPath>Things/Filth/Ash</texPath>
+      <color>(222, 214, 190, 235)</color>
+      <drawSize>2.2</drawSize>
+    </graphicData>
+    <filth>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>30~40</disappearsInDays>
+      <cleaningWorkToReduceThickness>70</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+  </ThingDef>
+</Defs>

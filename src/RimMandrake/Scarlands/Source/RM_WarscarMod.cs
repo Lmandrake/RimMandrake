@@ -56,6 +56,13 @@ namespace RimMandrake.Scarlands
         public static bool hospiceWalkInEnabled = true;      // deserter walk-in incident
         public static float hospiceWalkInFrequency = 1f;     // chance the incident proceeds when it rolls
 
+        // WARSCAR_RAINBOW_POOLS_1 toggles.
+        public static bool poolsEnabled = true;              // pools generate on new maps; taps work
+        public static float poolsPerMap = 3f;                // up to this many pools (1-3), new maps
+        public static float poolCycleHours = 24f;            // one full four-phase cycle
+        public static float bloomDanger = 1f;                // scales the burn and toxic buildup of drawing the bloom
+        public static bool catalystEnabled = true;           // glower crust holds a phase
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -85,6 +92,11 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref hospiceLashOut, "hospiceLashOut", true);
             Scribe_Values.Look(ref hospiceWalkInEnabled, "hospiceWalkInEnabled", true);
             Scribe_Values.Look(ref hospiceWalkInFrequency, "hospiceWalkInFrequency", 1f);
+            Scribe_Values.Look(ref poolsEnabled, "poolsEnabled", true);
+            Scribe_Values.Look(ref poolsPerMap, "poolsPerMap", 3f);
+            Scribe_Values.Look(ref poolCycleHours, "poolCycleHours", 24f);
+            Scribe_Values.Look(ref bloomDanger, "bloomDanger", 1f);
+            Scribe_Values.Look(ref catalystEnabled, "catalystEnabled", true);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -148,6 +160,18 @@ namespace RimMandrake.Scarlands
                 "Rarely, a damaged machine walks onto the map toward your cradle. Only while a cradle stands.");
             list.Label("Walk-in frequency: " + hospiceWalkInFrequency.ToString("0%") + " of rolls proceed");
             hospiceWalkInFrequency = list.Slider(hospiceWalkInFrequency, 0f, 1f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Rainbow pools", ref poolsEnabled,
+                "Reaction-liquor pools cycle through four phases a day; a tap at the rim draws each phase's reagent. Pool placement affects new maps and needs FlowWorks.");
+            list.Label("Pools per map: up to " + Mathf.RoundToInt(poolsPerMap) + " (new maps)");
+            poolsPerMap = Mathf.Round(list.Slider(poolsPerMap, 1f, 3f));
+            list.Label("Cycle length: " + poolCycleHours.ToString("0") + " hours (four phases)");
+            poolCycleHours = list.Slider(poolCycleHours, 4f, 96f);
+            list.Label("Bloom danger: x" + bloomDanger.ToString("0.00") + (bloomDanger <= 0f ? " (drawing the bloom is harmless)" : ""));
+            bloomDanger = list.Slider(bloomDanger, 0f, 3f);
+            list.CheckboxLabeled("Glower crust catalyst", ref catalystEnabled,
+                "Glower crust loaded into a tap holds the pool's phase (6 hours per crust) and doubles each draw.");
             list.GapLine();
 
             list.Label("Cross-biome (reserved — not yet wired to any mechanic in this build)");

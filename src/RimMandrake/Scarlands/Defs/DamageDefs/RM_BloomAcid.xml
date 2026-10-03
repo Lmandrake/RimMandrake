@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WARSCAR_RAINBOW_POOLS_1: the injury of drawing the bloom phase, named for the phase. -->
+<Defs>
+  <DamageDef ParentName="Flame">
+    <defName>RM_BloomAcid</defName>
+    <label>bloom acid</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <armorCategory>Sharp</armorCategory>
+    <hediff>RM_BloomBurn</hediff>
+    <scaleDamageToBuildingsBasedOnFlammability>false</scaleDamageToBuildingsBasedOnFlammability>
+  </DamageDef>
+  <HediffDef ParentName="BurnBase">
+    <defName>RM_BloomBurn</defName>
+    <label>bloom burn</label>
+    <labelNoun>a bloom burn</labelNoun>
+    <description>The pool's bloom phase, still working on the skin: an acid burn that keeps reacting.</description>
+    <comps>
+      <li Class="HediffCompProperties_GetsPermanent">
+        <permanentLabel>bloom scar</permanentLabel>
+      </li>
+    </comps>
+    <injuryProps>
+      <destroyedLabel>Dissolved off</destroyedLabel>
+      <destroyedOutLabel>Dissolved</destroyedOutLabel>
+    </injuryProps>
+  </HediffDef>
+</Defs>
