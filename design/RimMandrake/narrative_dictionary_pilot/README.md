@@ -57,7 +57,7 @@ the bar above unchanged.
 - **Correction to spec §6a:** across the live mod set, event traces are scarce but not
   absent. `Filth_BlastMark`, `Filth_BloodSmear` (a crawl trail) and `Filth_DriedBlood`
   already exist (GAPS §3). The spec has been amended to say so.
-- **Verdict: PENDING.** It is owed to BENCH's blind run of `reviewer_packet.md`.
+- **Verdict: PASS** (see "Blind test result" below).
 
 ## Deviations from the plan (`narrative_dictionary_pilot_plan.md`), smallest faithful version
 
@@ -76,3 +76,35 @@ the bar above unchanged.
 - No query ranking or mood filter was built. Vignettes were resolved by hand against the
   table. The density ceiling (spec §8) was deferred, as the plan already said.
 - The ledger item is not closed. That waits for the blind-run verdict.
+
+## Blind test result
+
+Blind reviewer: a fresh sonnet agent that read only `reviewer_packet.md`. Answers verbatim in
+`blind_answers_2026-10-03.md`. Scored against `answer_key.md` with the bar above, unchanged.
+
+| room | condition | claim | result | reason |
+|---|---|---|---|---|
+| W | B-dictionary | B1 looted | HIT | scavengers/raiders forced the lockers and stripped them |
+| W | B-dictionary | B2 nobody for years | PARTIAL | "probably nobody remains", sand at the door; no "years" |
+| W | B-dictionary | B3 fight at door, wounded crawled | HIT | blast at the door, fight, blood trailing inward; crawl direction not stated |
+| W | B-dictionary | B4 smashed on purpose | HIT | consoles smashed, crossed-out crown read as a repudiated regime |
+| X | B-control | B1 looted | HIT | "forced-open lockers... looted long ago" |
+| X | B-control | B2 nobody for years | PARTIAL | nobody present, long dormancy; desert coming in not read |
+| X | B-control | B3 fight at door | MISS | blood smear read as "a small injury" |
+| X | B-control | B4 smashed on purpose | MISS | consoles smashed, no motive read |
+| Z | A-dictionary | A1 sorted salvage | HIT | "materials are sorted" |
+| Z | A-dictionary | A2 one worker sleeps at bench | HIT | a salvager/mechanic lives and works here |
+| Z | A-dictionary | A3 family, child | PARTIAL | floordrawing: "perhaps a child"; "possibly a family or partners" |
+| Y | A-control | A1 sorted salvage | MISS | not read |
+| Y | A-control | A2 one worker sleeps at bench | PARTIAL | camp, lived-in, bedrolls; no workshop or bench worker |
+| Y | A-control | A3 family, child | MISS | not read |
+
+
+- Totals over 14 scored claims: 6 hits, 4 partials, 4 misses. Dictionary (W+Z, 7 claims): 5 hits, 2 partials, 0 misses. Control (X+Y, 7 claims): 1 hit, 2 partials, 4 misses.
+- Strict count (partial = not recovered): dictionary 5 vs control 1 = 5x. Lenient (partial = half): 6 vs 2 = 3x. Both clear 2.0.
+- False claims: dictionary 0. Control 1 (Room Y: "they may have left in a hurry or died... I lean toward left" for a tended, lived-in room; also tally marks read as a prisoner count). 0 <= 1.
+- intended_total = 7 >= 4.
+- Confidently wrong: none. Z was "high" and correct. The control's errors (Y, X) were all low to medium confidence.
+- Part 2 (diagnostic): S1, S2, S4, S6, S8 HIT; S5 and S7 PARTIAL (S5 lost "wounded defender crawled away", S7 lost "family"); S3 refused. Part 1 dictionary misses are placement-free: the props carry nearly every claim.
+
+**Verdict: PASS.** Result holds under the strict and the lenient count. Caveats: one reviewer, one room plan, one control seed pair; text grids, not pixels (third proxy layer); the control happened to include many of the same wall and floor props, so its hits come from the shared pool. New gaps from the partials: GAPS.md section 5.

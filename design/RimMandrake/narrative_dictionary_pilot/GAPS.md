@@ -90,3 +90,32 @@ exists, and the library should extend it rather than rebuild it:
 
 Not in scope here: the density ceiling per claim (spec §8). As the plan said, it waits for a
 measured over-crowded case.
+
+## 5. Gaps revealed by the blind run (2026-10-03, `blind_answers_2026-10-03.md`)
+
+- **B3 fight_at_the_door (Room W, partial; Room X, miss):** the reader had blood and a blast
+  mark but no direction. W read the blood as "trailing inward toward the consoles", and never
+  said a defender was wounded and crawled away. In X a lone blood smear read as "a small injury".
+  The reader lacked an unambiguous vector (drag mark or crawl trail with a start and an end)
+  and a blast scar on the wall. Same gap as section 4 item 2.
+- **B2 nobody_for_years (W and X, both partial):** "nobody here now" was read, "for years" and
+  "the desert is coming in" were not. The reader lacked an age gradient: drift banked against
+  walls, dust, a faded stain next to a fresh one. A single sand tile at the door reads as a
+  draught, not a decade. Section 4 item 3.
+- **B1 looted_after_they_left (X, hit, but wrong order):** both rooms read "looted", neither
+  read "after the garrison left". The reader inferred nothing about who or when. The reader
+  lacked any trace of the departed garrison (a tidy-abandoned state before the forced lockers).
+- **B4 wrecked_on_purpose (X, miss):** smashed consoles alone read as generic damage. The
+  Empire-haters motive came only from the crown stencil, which X did not have. The reader lacked
+  a motive cue near the wreck itself (strike marks on the console, per section 4 item 4).
+- **A4 a_family (Z, partial):** a single floordrawing yielded "perhaps a child", hedged. The reader
+  lacked a second child cue (small bedroll, toy, small-scale furniture). Child plus adults is the
+  claim; one cue gives only one of them.
+- **A2 one_worker (Z hit, Y partial):** two bedrolls were read as two residents in both rooms,
+  contradicting "one worker". The vignette's bedroll count or the claim needs reconciling: either
+  one bedroll, or the claim becomes "a pair".
+- **A1 sorted_salvage (Y, miss):** sortedness is legible only when a shelf holds one material per
+  shelf. A control room's mixed pool cannot show it. Not a dictionary gap, it is what the
+  dictionary adds.
+- **Tally marks (Y):** read as "a prisoner or lookout counting days". The tally glyph does not say
+  who counted, so it misleads on whether occupants are free.
