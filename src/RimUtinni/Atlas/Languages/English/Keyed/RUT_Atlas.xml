@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <RUT_Atlas_Title>The Utinni · Scavenger's Atlas</RUT_Atlas_Title>
+  <RUT_Atlas_Counter>{0} of {1} lights lit</RUT_Atlas_Counter>
+  <RUT_Atlas_NoGame>The Atlas fills in once a game is running.</RUT_Atlas_NoGame>
+  <RUT_Atlas_PickALight>Click a light on the hull.\n\nDark lights are things not yet found. Their cards hold riddles.</RUT_Atlas_PickALight>
+  <RUT_Atlas_ClickToFlip>Click the card to turn it over.</RUT_Atlas_ClickToFlip>
+
+  <RUT_Atlas_RiddleHeading>A riddle</RUT_Atlas_RiddleHeading>
+  <RUT_Atlas_HintHeading>A hint</RUT_Atlas_HintHeading>
+  <RUT_Atlas_ItIsCalled>It is called {0}.</RUT_Atlas_ItIsCalled>
+  <RUT_Atlas_WhatTheRiddleMeant>What the riddle meant</RUT_Atlas_WhatTheRiddleMeant>
+  <RUT_Atlas_FoundAgo>Found {0} ago.</RUT_Atlas_FoundAgo>
+  <RUT_Atlas_FoundBefore>Found before the Atlas was opened.</RUT_Atlas_FoundBefore>
+  <RUT_Atlas_AbsentHeading>Absent from this world</RUT_Atlas_AbsentHeading>
+  <RUT_Atlas_Absent>Whatever this light marks does not exist in this world: the mod that carries it is not loaded. It is not a task left undone.</RUT_Atlas_Absent>
+
+  <RUT_Atlas_LoreOpen>Read the memory</RUT_Atlas_LoreOpen>
+  <RUT_Atlas_LoreAgain>Read the memory again</RUT_Atlas_LoreAgain>
+
+  <RUT_Atlas_DiscoveredToast>A light comes on in the Atlas: {0}.</RUT_Atlas_DiscoveredToast>
+  <RUT_Atlas_LoreKeptToast>A memory was kept.</RUT_Atlas_LoreKeptToast>
+  <RUT_Atlas_RewardToast>For finding {0}, the clan's luck turns: {1} {2} arrive by pod.</RUT_Atlas_RewardToast>
+
+  <RUT_Atlas_Completion_Seen>Lit when seen</RUT_Atlas_Completion_Seen>
+  <RUT_Atlas_Completion_Used>Lit when used</RUT_Atlas_Completion_Used>
+  <RUT_Atlas_Completion_Performed>Lit when performed</RUT_Atlas_Completion_Performed>
+
+  <RUT_Atlas_Category_Creatures>Creatures</RUT_Atlas_Category_Creatures>
+  <RUT_Atlas_Category_Giants>Giants</RUT_Atlas_Category_Giants>
+  <RUT_Atlas_Category_Places>Places</RUT_Atlas_Category_Places>
+  <RUT_Atlas_Category_Weather>Weather</RUT_Atlas_Category_Weather>
+  <RUT_Atlas_Category_Resources>Resources</RUT_Atlas_Category_Resources>
+  <RUT_Atlas_Category_Crafts>Crafts</RUT_Atlas_Category_Crafts>
+  <RUT_Atlas_Category_Gods>Gods and rites</RUT_Atlas_Category_Gods>
+  <RUT_Atlas_Category_Ship>The ship</RUT_Atlas_Category_Ship>
+
+  <RUT_Atlas_Region_Creatures>the reaching arm</RUT_Atlas_Region_Creatures>
+  <RUT_Atlas_Region_Giants>the dead prong</RUT_Atlas_Region_Giants>
+  <RUT_Atlas_Region_Places>the flight deck</RUT_Atlas_Region_Places>
+  <RUT_Atlas_Region_Weather>the vanes</RUT_Atlas_Region_Weather>
+  <RUT_Atlas_Region_Resources>the hold</RUT_Atlas_Region_Resources>
+  <RUT_Atlas_Region_Crafts>the factory pods</RUT_Atlas_Region_Crafts>
+  <RUT_Atlas_Region_Gods>the shrine decks</RUT_Atlas_Region_Gods>
+  <RUT_Atlas_Region_Ship>the reliquary heart</RUT_Atlas_Region_Ship>
+
+</LanguageData>

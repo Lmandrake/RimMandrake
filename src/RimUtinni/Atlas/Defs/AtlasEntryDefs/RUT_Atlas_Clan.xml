@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- Scavenger's Atlas: crafts (the factory pods), gods and rites (the shrine
+       decks) and the ship herself (the reliquary heart). Subjects verified in
+       src/ 2026-10-02; see the header of RUT_Atlas_Wilds.xml for the rules. -->
+
+  <!-- RM_Fill_*: TerrainDefs, mandrake.rm.flowworks. Temporary fill terrain that
+       exists only while a dug channel holds liquid (FlowWorks_Terrain.xml), so a
+       canal lights this entry when fluid moves through it, not when it is dug
+       (owner ruling Q6: crafts count when USED). TerrainGrid.TerrainAt returns
+       the temp layer first (rimsage, Verse/TerrainGrid.cs). -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Canals</defName>
+    <label>canals</label>
+    <description>The clan can dig channels and send water, tar or slime along them where it wants them to go. The fluid flows, pools and brims; the channel survives when it drains.</description>
+    <riddle>The land says the water goes downhill. The clan says otherwise, with a shovel.</riddle>
+    <hint>Water goes where the clan tells it. Dig a channel and let a liquid run into it.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"Oomo keeps the waters of the body; the shovel keeps the waters of the ground." A people that drink less than anyone still spend half their labour moving liquid about. It is not thirst, the elders say. It is that nothing on this world should be allowed to lie where it fell, water least of all.</lore>
+    <category>Crafts</category>
+    <completion>Used</completion>
+    <order>10</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_TerrainPresent">
+        <terrains>
+          <li>RM_Fill_SlimeGreen_Brim</li>
+          <li>RM_Fill_SlimeGreen_Half</li>
+          <li>RM_Fill_SlimeGreen_Superdeep</li>
+          <li>RM_Fill_SlimeGreen_Trace</li>
+          <li>RM_Fill_SlimeRed_Brim</li>
+          <li>RM_Fill_SlimeRed_Half</li>
+          <li>RM_Fill_SlimeRed_Superdeep</li>
+          <li>RM_Fill_SlimeRed_Trace</li>
+          <li>RM_Fill_SlimeWhite_Brim</li>
+          <li>RM_Fill_SlimeWhite_Half</li>
+          <li>RM_Fill_SlimeWhite_Superdeep</li>
+          <li>RM_Fill_SlimeWhite_Trace</li>
+          <li>RM_Fill_SlimeYellow_Brim</li>
+          <li>RM_Fill_SlimeYellow_Half</li>
+          <li>RM_Fill_SlimeYellow_Superdeep</li>
+          <li>RM_Fill_SlimeYellow_Trace</li>
+          <li>RM_Fill_Tar_Brim</li>
+          <li>RM_Fill_Tar_Half</li>
+          <li>RM_Fill_Tar_Superdeep</li>
+          <li>RM_Fill_Tar_Trace</li>
+          <li>RM_Fill_Water_Brim</li>
+          <li>RM_Fill_Water_Half</li>
+          <li>RM_Fill_Water_Superdeep</li>
+          <li>RM_Fill_Water_Trace</li>
+        </terrains>
+      </li>
+    </triggers>
+    <rewardThing>Steel</rewardThing>
+    <rewardCount>30</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RM_Graffiti_*: Filth-category ThingDefs, mandrake.rm.graffiti
+       (ThingDefs_Graffiti.xml, ThingDefs_GraffitiMemeGlyphs.xml). Deliberate
+       marks only: Vandal, Scratches, CrossOut and TallyMarks are left out because
+       they appear without the clan choosing to make them. -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Graffiti</defName>
+    <label>marking the wall</label>
+    <description>The clan can leave its words on the world: tags, stencils, throw-ups and the glyphs of its faith, sprayed where others will read them.</description>
+    <riddle>The wall was silent until someone gave it the clan's name. Now it will not stop saying it.</riddle>
+    <hint>The clan can leave its words on the world. Have someone paint a deliberate mark on a wall.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"A wall without a mark belongs to no one yet." The Jawa sign what they have scavenged, and what they mean to come back for, and what they want the next clan to know. Mob'Unloo reads every mark as a contract. Ishko wishes they would stop.</lore>
+    <category>Crafts</category>
+    <completion>Used</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things>
+          <li>RM_Graffiti_Glyph_AnimalPersonhood</li>
+          <li>RM_Graffiti_Glyph_Blindsight</li>
+          <li>RM_Graffiti_Glyph_Bloodfeeding</li>
+          <li>RM_Graffiti_Glyph_Cannibal</li>
+          <li>RM_Graffiti_Glyph_Collectivist</li>
+          <li>RM_Graffiti_Glyph_Darkness</li>
+          <li>RM_Graffiti_Glyph_FemaleSupremacy</li>
+          <li>RM_Graffiti_Glyph_FleshPurity</li>
+          <li>RM_Graffiti_Glyph_Guilty</li>
+          <li>RM_Graffiti_Glyph_HighLife</li>
+          <li>RM_Graffiti_Glyph_HumanPrimacy</li>
+          <li>RM_Graffiti_Glyph_Individualist</li>
+          <li>RM_Graffiti_Glyph_Inhuman</li>
+          <li>RM_Graffiti_Glyph_Loyalist</li>
+          <li>RM_Graffiti_Glyph_MaleSupremacy</li>
+          <li>RM_Graffiti_Glyph_NaturePrimacy</li>
+          <li>RM_Graffiti_Glyph_Nudism</li>
+          <li>RM_Graffiti_Glyph_PainIsVirtue</li>
+          <li>RM_Graffiti_Glyph_Proselytizer</li>
+          <li>RM_Graffiti_Glyph_Raider</li>
+          <li>RM_Graffiti_Glyph_Rancher</li>
+          <li>RM_Graffiti_Glyph_Ritualist</li>
+          <li>RM_Graffiti_Glyph_Shipborn</li>
+          <li>RM_Graffiti_Glyph_Supremacist</li>
+          <li>RM_Graffiti_Glyph_Transhumanist</li>
+          <li>RM_Graffiti_Glyph_TreeConnection</li>
+          <li>RM_Graffiti_Glyph_Tunneler</li>
+          <li>RM_Graffiti_IdeoSigil</li>
+          <li>RM_Graffiti_Paste_Flyer</li>
+          <li>RM_Graffiti_Paste_Wanted</li>
+          <li>RM_Graffiti_Stencil_Crown</li>
+          <li>RM_Graffiti_Stencil_Fist</li>
+          <li>RM_Graffiti_Stencil_Gear</li>
+          <li>RM_Graffiti_Tag_A</li>
+          <li>RM_Graffiti_Tag_B</li>
+          <li>RM_Graffiti_Tag_C</li>
+          <li>RM_Graffiti_ThrowUp_A</li>
+          <li>RM_Graffiti_ThrowUp_B</li>
+          <li>RM_Graffiti_WarningGlyph</li>
+        </things>
+      </li>
+    </triggers>
+    <rewardThing>Silver</rewardThing>
+    <rewardCount>20</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_ToxinSealant: TerrainDef, mandrake.rut.patches, "Chamber floor painted
+       over with toxin sealant ... The living wood beneath cannot push through it,
+       or close the cut you made." Design §4 worked example 2. -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_ToxinSealant</defName>
+    <label>sealing the wound</label>
+    <description>Toxin sealant painted over a cut in living greatbole wood stops it healing. The chamber you carved stays carved.</description>
+    <riddle>A bitter oil, a careful brush, and the tree forgets how to forgive you.</riddle>
+    <hint>A bitter oil makes wood forget how to grow. Seal the floor of a chamber cut into a greatbole.</hint>
+    <loreVoice>a clan saying</loreVoice>
+    <lore>"Paint the wound and the house is yours." The clan learned it from the trees themselves, or says it did: a greatbole that drank from a poisoned seep stopped closing its cuts. Rekko approves. A thing taken should stay taken.</lore>
+    <category>Crafts</category>
+    <completion>Used</completion>
+    <order>30</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_TerrainPresent">
+        <terrains><li>RUT_ToxinSealant</li></terrains>
+      </li>
+    </triggers>
+    <rewardThing>WoodLog</rewardThing>
+    <rewardCount>40</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_ShieldGenerator: ThingDef (Building), mandrake.rut.shipshields, "A
+       building-scale plasma field projector. It holds one field configuration at
+       a time". Lit when the player owns one standing (built, not just
+       researched). -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_ShipShields</defName>
+    <label>modulated shields</label>
+    <description>A building-scale plasma field projector that holds one configuration at a time: kinetic against blaster fire, thermal against the heat, particulate against sand, cold against the night.</description>
+    <riddle>One skin, four weathers. Choose which one may not touch you, and wear the others.</riddle>
+    <hint>The ship can raise a field against one danger at a time. Build a shield generator.</hint>
+    <loreVoice>a hold-boy's boast</loreVoice>
+    <lore>"We did not invent the shield. We found it, which is better: inventing is for people who have time." The crew argue over which field to raise the way other crews argue over the weather, because here it is the same argument.</lore>
+    <category>Crafts</category>
+    <completion>Used</completion>
+    <order>40</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ThingSeen">
+        <things><li>RUT_ShieldGenerator</li></things>
+        <playerFactionOnly>true</playerFactionOnly>
+      </li>
+    </triggers>
+    <rewardThing>ComponentIndustrial</rewardThing>
+    <rewardCount>2</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- Ninefold (mandrake.rm.ninefold): GameComponent_Ninefold.IsUnveiled(God).
+       Observed by reflection only; the unveiling chain is its own authority. -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_OzzikUnveiled</defName>
+    <label>Ozzik the Shamed</label>
+    <description>The god of ambition, pride and grief has made himself known to the clan. To advance you must court him, and his pleasure is exposure.</description>
+    <riddle>He loves the clan best when it climbs. He remembers, better than anyone, how far a proud people can fall.</riddle>
+    <hint>One of the nine loves what you build and fears what it makes of you. Let ambition carry the clan until he speaks.</hint>
+    <loreVoice>a priest's warning</loreVoice>
+    <lore>"Court Ozzik and the forge sings. Court him long and the forge burns." His grief is the memory of a prouder Jawa age, the priests say, though none of them can say which age it was, or what became of it.</lore>
+    <category>Gods</category>
+    <completion>Performed</completion>
+    <order>10</order>
+    <subjectPackageId>mandrake.rm.ninefold</subjectPackageId>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_GodUnveiled">
+        <god>Ozzik</god>
+      </li>
+    </triggers>
+    <rewardThing>Silver</rewardThing>
+    <rewardCount>50</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_TaBaaUnveiled</defName>
+    <label>Ta'Baa the Unrooted</label>
+    <description>The god of flight and hope has made himself known to the clan. The launch is his holiest rite; despair is his one blasphemy.</description>
+    <riddle>He has no home, and he will not let you keep one. Every door he opens is behind you.</riddle>
+    <hint>One of the nine blesses the ship only when she leaves. Lift off and keep moving until he speaks.</hint>
+    <loreVoice>a launch-day blessing</loreVoice>
+    <lore>"Ta'Baa, who forbids the root, carry us." The clan says it at every launch, and again under its breath whenever a camp has begun to feel like home, which Ta'Baa, they say, can always tell.</lore>
+    <category>Gods</category>
+    <completion>Performed</completion>
+    <order>20</order>
+    <subjectPackageId>mandrake.rm.ninefold</subjectPackageId>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_GodUnveiled">
+        <god>TaBaa</god>
+      </li>
+    </triggers>
+    <rewardThing>Chemfuel</rewardThing>
+    <rewardCount>30</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_Rites_ScrapShrine: ResearchProjectDef, mandrake.rut.rites, "A place
+       where the salvage is laid out and spoken over. The first rite". -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_ScrapShrine</defName>
+    <label>the scrap shrine</label>
+    <description>The first rite: a place where the salvage is laid out and spoken over, so that nothing taken from the sand is junk until the clan says so.</description>
+    <riddle>Lay it down. Name it. Now it is not rubbish. Who decided?</riddle>
+    <hint>The clan's faith begins with a place to lay salvage out and speak over it. Learn the first rite.</hint>
+    <loreVoice>the first teaching</loreVoice>
+    <lore>"Nothing taken from the sand is junk until the clan says so." Every Jawa child can recite it. Few can say who first said it, and the Keeper of the Articles prefers it that way: a teaching with an author is only an opinion.</lore>
+    <category>Gods</category>
+    <completion>Performed</completion>
+    <order>30</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ResearchFinished">
+        <projects><li>RUT_Rites_ScrapShrine</li></projects>
+      </li>
+    </triggers>
+    <rewardThing>Steel</rewardThing>
+    <rewardCount>30</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_ShipMemory_Containment: ThingDef, mandrake.rut.shipmemory,
+       hiddenWhileUndiscovered. GameComponent_ShipMemory reveals it; the Atlas
+       only reads HiddenItemsManager.Hidden and never calls SetDiscovered
+       (design §6, taken from the consult). -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_SheRemembers</defName>
+    <label>she remembers the chains</label>
+    <description>Shown the right thing, the Utinni remembered how living beasts were once chained below her decks, and the holding platforms, inhibitors and harvesters can now be built.</description>
+    <riddle>She has carried this before. She will not say what, until you carry it again.</riddle>
+    <hint>The ship has held things before. Tie a living beast down aboard her, or bring her enough of its metal, and see what she recalls.</hint>
+    <loreVoice>a hold-boy's whisper</loreVoice>
+    <lore>"There are plates in the lower deck that do not match the rest. They are warm." Nobody had asked what the plates were for. Now nobody needs to, and the crew walk past them a little faster than before.</lore>
+    <category>Ship</category>
+    <completion>Performed</completion>
+    <order>10</order>
+    <subjectPackageId>mandrake.rut.shipmemory</subjectPackageId>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_HiddenItemDiscovered">
+        <thing>RUT_ShipMemory_Containment</thing>
+      </li>
+    </triggers>
+    <rewardThing>ComponentIndustrial</rewardThing>
+    <rewardCount>2</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+  <!-- RUT_Antiq_Cartography: ResearchProjectDef, mandrake.rut.antiquities, "The
+       secret geography. Vault sites and their access phrases". Antiquities
+       stages are research rows, so a finished row is the stage reached. -->
+  <RimMandrake.Utinni.Atlas.AtlasEntryDef>
+    <defName>RUT_Atlas_Cartography</defName>
+    <label>the secret geography</label>
+    <description>Read urn by urn into the ship, the old fragments have given back a map: vault sites, and the phrases that open their front doors.</description>
+    <riddle>The pots remember the roads. Feed them to her, one by one, until she remembers too.</riddle>
+    <hint>The urns remember the shape of the land. Read enough of them into the ship to recover the old geography.</hint>
+    <loreVoice>a scavenger's note</loreVoice>
+    <lore>"She did not know where she had been. Now she knows where she is going." The clan's chart-keepers swear the ship hums differently near the marked places, low and steady, like a sleeper who has stopped dreaming.</lore>
+    <category>Ship</category>
+    <completion>Performed</completion>
+    <order>20</order>
+    <triggers>
+      <li Class="RimMandrake.Utinni.Atlas.AtlasTrigger_ResearchFinished">
+        <projects><li>RUT_Antiq_Cartography</li></projects>
+      </li>
+    </triggers>
+    <rewardThing>Silver</rewardThing>
+    <rewardCount>60</rewardCount>
+  </RimMandrake.Utinni.Atlas.AtlasEntryDef>
+
+</Defs>
