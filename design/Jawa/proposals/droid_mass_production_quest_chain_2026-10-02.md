@@ -395,9 +395,8 @@ all-off degrades gracefully).
 
 ## 6. Build plan (FOUNDRY)
 
-Sized for one agent per packet. The `debug_process.md` build pause applies: **this is new
-content, so it cannot start until the pause lifts**, and it ships with a functional script from
-day one. It also depends on the Enclave kinds being re-pointed to Droidworks (C1/C2), on the wild
+Sized for one agent per packet. It ships with a functional script from day one
+(`debug_process.md` §2). It also depends on the Enclave kinds being re-pointed to Droidworks (C1/C2), on the wild
 droid kinds (E4), and on the Empire attack-droid loadouts. **Check those items' states before
 filing.**
 
