@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: started by RM_CompVexxissBehaviour on a wild vexxiss near a breathing vent. -->
+  <JobDef>
+    <defName>RM_VexxissDrinkVent</defName>
+    <driverClass>RimMandrake.Cauldron.RM_JobDriver_VexxissDrinkVent</driverClass>
+    <reportString>drinking from a vent.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+</Defs>

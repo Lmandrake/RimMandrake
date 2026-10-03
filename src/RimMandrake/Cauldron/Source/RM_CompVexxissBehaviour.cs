@@ -30,6 +30,13 @@ namespace RimMandrake.Cauldron
         // in-game day, so a wading giant does not spam the letter stack.
         public int waterLetterCooldownTicks = 60000;
 
+        // CAULDRON_VENT_ENRICHMENT_HOOKS_1 vent drinking. Radii/cooldown are INVENTED tuning.
+        public int ventScanIntervalTicks = 250;
+        public float ventScanRadius = 40f;
+        public float ventGroanRadius = 80f;      // while vents falter or a bloom blows: it follows the groans
+        public float ventDrinkChance = 0.6f;     // per scan outside a groan
+        public int ventDrinkCooldownTicks = 2500;
+
         public RM_CompProperties_VexxissBehaviour()
         {
             compClass = typeof(RM_CompVexxissBehaviour);
@@ -81,6 +88,45 @@ namespace RimMandrake.Cauldron
 
             if (RM_CauldronSettings.vexxissFireWardenEnabled && pawn.IsHashIntervalTick(Props.fireScanIntervalTicks))
                 TryWardFire(pawn);
+
+            if (RM_CauldronSettings.vexxissDrinksVentsEnabled && pawn.IsHashIntervalTick(Props.ventScanIntervalTicks))
+                TryDrinkVent(pawn);
+        }
+
+        // ── drinks a vent ───────────────────────────────────────────────
+        // Wild vexxiss only. Walks to the nearest breathing vent and inhales (RM_VexxissDrinkVent) until the
+        // vent falls silent for days; a silenced vent has Output 0 so it is skipped until it recovers.
+        private int nextDrinkTick;
+
+        private void TryDrinkVent(Pawn pawn)
+        {
+            if (pawn.Faction != null || pawn.Downed || !pawn.Awake() || pawn.InMentalState || pawn.jobs == null) return;
+            int now = Find.TickManager.TicksGame;
+            if (now < nextDrinkTick) return;
+            JobDef cur = pawn.CurJobDef;
+            if (cur == JobDefOf.BeatFire || cur == JobDefOf.AttackMelee || cur == RM_CauldronDefOf.RM_VexxissDrinkVent) return;
+
+            Map map = pawn.Map;
+            bool groan = RM_Building_CauldronVent.IsFaltering(map) || RM_Building_CauldronVent.IsBlooming(map);
+            if (!groan && !Rand.Chance(Props.ventDrinkChance)) return;
+            float radius = groan ? Props.ventGroanRadius : Props.ventScanRadius;
+
+            List<Thing> vents = map.listerThings.ThingsOfDef(RM_CauldronDefOf.RM_CauldronVent);
+            RM_Building_CauldronVent best = null;
+            float bestSq = radius * radius;
+            for (int i = 0; i < vents.Count; i++)
+            {
+                var v = vents[i] as RM_Building_CauldronVent;
+                if (v == null || v.IsSilenced || v.Output <= 0.05f) continue;
+                float d = (v.Position - pawn.Position).LengthHorizontalSquared;
+                if (d >= bestSq) continue;
+                if (!pawn.CanReach(v, PathEndMode.Touch, Danger.Deadly)) continue;
+                best = v;
+                bestSq = d;
+            }
+            if (best == null) return;
+            nextDrinkTick = now + Props.ventDrinkCooldownTicks;
+            pawn.jobs.StartJob(JobMaker.MakeJob(RM_CauldronDefOf.RM_VexxissDrinkVent, best), JobCondition.InterruptForced);
         }
 
         // ── poisons water on touch ──────────────────────────────────────
@@ -125,6 +171,7 @@ namespace RimMandrake.Cauldron
         {
             base.PostExposeData();
             Scribe_Values.Look(ref lastWaterLetterTick, "rmLastWaterLetterTick", -999999);
+            Scribe_Values.Look(ref nextDrinkTick, "rmNextVentDrinkTick", 0);
         }
 
         private TerrainDef SwapFor(TerrainDef t)

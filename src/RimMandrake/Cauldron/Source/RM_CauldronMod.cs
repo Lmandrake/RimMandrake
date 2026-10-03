@@ -42,6 +42,16 @@ namespace RimMandrake.Cauldron
         public static bool vexxissWaterLetter = true;
         public static bool condensateGardensEnabled = true;
 
+        // CAULDRON_VENT_ENRICHMENT_HOOKS_1: the vents and what hangs on them.
+        // ventsEnabled is WORLDGEN-affecting: it decides whether a newly made Cauldron map gets vents.
+        public static bool ventsEnabled = true;
+        public static bool ventWeatherEnabled = true;
+        public static bool ventFalterMessage = true;
+        public static bool ventLocalExposureEnabled = true;
+        public static bool vexxissDrinksVentsEnabled = true;
+        public static bool ventGardensEnabled = true;
+        public static float ventSilenceDays = 4f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -56,6 +66,13 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref assayGradeEnabled, "assayGradeEnabled", true, true);
             Scribe_Values.Look(ref vexxissWaterLetter, "vexxissWaterLetter", true, true);
             Scribe_Values.Look(ref condensateGardensEnabled, "condensateGardensEnabled", true, true);
+            Scribe_Values.Look(ref ventsEnabled, "ventsEnabled", true, true);
+            Scribe_Values.Look(ref ventWeatherEnabled, "ventWeatherEnabled", true, true);
+            Scribe_Values.Look(ref ventFalterMessage, "ventFalterMessage", true, true);
+            Scribe_Values.Look(ref ventLocalExposureEnabled, "ventLocalExposureEnabled", true, true);
+            Scribe_Values.Look(ref vexxissDrinksVentsEnabled, "vexxissDrinksVentsEnabled", true, true);
+            Scribe_Values.Look(ref ventGardensEnabled, "ventGardensEnabled", true, true);
+            Scribe_Values.Look(ref ventSilenceDays, "ventSilenceDays", 4f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -126,6 +143,33 @@ namespace RimMandrake.Cauldron
                 "Raven nettles grow up along the banks of toxic water: some when the map is made, more "
                 + "over the following weeks wherever a shore turns toxic. Off: nettles grow only as ordinary "
                 + "wild plants. Affects maps made afterwards for the first part; the spread applies at once.");
+
+            list.GapLine();
+            list.CheckboxLabeled("Ground vents (new maps only)",
+                ref ventsEnabled,
+                "WORLDGEN: a Cauldron map made from now on gets a handful of vents. Off: none, and every "
+                + "vent feature below does nothing on that map. Maps already made are unchanged.");
+            list.CheckboxLabeled("Vents follow the weather",
+                ref ventWeatherEnabled,
+                "A vent breathes harder in a vent bloom, softer in vapour bank and dewfall, and goes "
+                + "hushed while a bloom is arriving.");
+            list.CheckboxLabeled("  ...and warn me when the vents go quiet",
+                ref ventFalterMessage,
+                "A message when the vents hush ahead of a vent bloom.");
+            list.CheckboxLabeled("Bloom exposure is strongest near vents",
+                ref ventLocalExposureEnabled,
+                "The bloom's metal load is full strength beside a live vent and fades to a tenth far from "
+                + "every one. Off: it reaches everyone outdoors equally. Maps with no vents are unaffected.");
+            list.CheckboxLabeled("Vexxiss drink from vents",
+                ref vexxissDrinksVentsEnabled,
+                "A wild vexxiss braces over a vent and inhales until it falls silent for days, then the vent "
+                + "slowly recovers. Off: vexxiss ignore vents.");
+            list.Label("Silence lasts: " + ventSilenceDays.ToString("0.0") + " days (default 4.0)");
+            ventSilenceDays = list.Slider(ventSilenceDays, 1f, 10f);
+            list.CheckboxLabeled("Flowers grow around vents",
+                ref ventGardensEnabled,
+                "Crystal flowers ring stable vents, blood bouquets mark chronic leaks, giant toxic flowers "
+                + "favour vents that blew out recently. Needs nettle gardens above to be on.");
 
             list.End();
         }

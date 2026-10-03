@@ -203,6 +203,16 @@
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>3</wildOrder>
     </plant>
+    <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (StableRing). -->
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
+        <ventHabitat>StableRing</ventHabitat>
+        <ventMinRadius>2.5</ventMinRadius>
+        <ventRadius>7</ventRadius>
+        <mapgenChance>0.3</mapgenChance>
+        <colonizeChance>0.4</colonizeChance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -227,6 +237,16 @@
       <topWindExposure>0.1</topWindExposure>
       <wildOrder>3</wildOrder>
     </plant>
+    <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (ChronicLeak). -->
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
+        <ventHabitat>ChronicLeak</ventHabitat>
+        <ventMinRadius>2.5</ventMinRadius>
+        <ventRadius>6</ventRadius>
+        <mapgenChance>0.3</mapgenChance>
+        <colonizeChance>0.4</colonizeChance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
@@ -370,6 +390,16 @@
       <wildClusterRadius>-1</wildClusterRadius>
       <wildOrder>4</wildOrder>
     </plant>
+    <!-- CAULDRON_VENT_ENRICHMENT_HOOKS_1: vent-keyed habitat (RecentBlowout). -->
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_CondensateHabitatExtension">
+        <ventHabitat>RecentBlowout</ventHabitat>
+        <ventMinRadius>2.5</ventMinRadius>
+        <ventRadius>9</ventRadius>
+        <mapgenChance>0.06</mapgenChance>
+        <colonizeChance>0.15</colonizeChance>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <!--

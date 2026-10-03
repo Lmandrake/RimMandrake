@@ -46,6 +46,7 @@
     <Compile Include="RM_VentBloomExposure.cs" />
     <Compile Include="RM_CompVexxissBehaviour.cs" />
     <Compile Include="RM_CondensateGardens.cs" />
+    <Compile Include="RM_CauldronVents.cs" />
   </ItemGroup>
 
   <ItemGroup>
