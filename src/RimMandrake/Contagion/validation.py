@@ -369,6 +369,32 @@ def _weather_now(t):
     return cur
 
 
+class _patient(object):
+    """Raise the bridge client's per-reply socket timeout (the runner's 30 s) for a slow job order or tick
+    wait, then restore it. MEASURED live 2026-10-03: ordered_job took 17 s with waitTicks=60 and the NET /
+    STOCK / FEED / CULL waits then outran 30 s. A mock session without a real socket is left alone."""
+    def __init__(self, t, secs=240.0):
+        self.rb = getattr(getattr(t, "session", None), "_rb", None)
+        self.secs, self.old = secs, None
+
+    def __enter__(self):
+        if self.rb is not None and hasattr(self.rb, "timeout"):
+            self.old = self.rb.timeout
+            self.rb.timeout = self.secs
+            sock = getattr(self.rb, "sock", None)
+            if sock is not None:
+                sock.settimeout(self.secs)
+        return self
+
+    def __exit__(self, *a):
+        if self.old is not None:
+            self.rb.timeout = self.old
+            sock = getattr(self.rb, "sock", None)
+            if sock is not None:
+                sock.settimeout(self.old)
+        return False
+
+
 def _wait(t, n):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact); long waits run Ultrafast and
     poll the real clock, then pause; raises on a stall."""
@@ -536,7 +562,11 @@ def defs_chain(t):
             if not isinstance(dens, (int, float)) or dens <= 0:
                 _fail("animalDensity %r: <= 0 means the animal roster can never spawn" % (dens,))
             blob = json.dumps(row)
-            if "RM_ContagionSkyExtension" not in blob:
+            # get_defs flattens a modExtension to its FIELDS, class name absent (MEASURED live 2026-10-03:
+            # the dump printed only values); the source (Defs/BiomeDefs, Class="RimMandrake.Contagion.
+            # RM_ContagionSkyExtension") carries these three fields, so recognise it by them too.
+            if "RM_ContagionSkyExtension" not in blob and not all(
+                    k in blob for k in ("meanDaysBetweenBurns", "burnDurationTicks", "tellLeadTicks")):
                 _fail("the biome does not carry RM_ContagionSkyExtension (the gate for the Burn, "
                       "the Bloom clock and the Coalescence): %s" % blob[:300])
             if "RM_Rattlegrope" not in json.dumps(row.get("wildPlants")):
@@ -1193,13 +1223,15 @@ def genome(t):
                 for attempt in range(3):     # surgery can fail on skill; three completed tries
                     t.bridge_call("jawa/bill_add", giverId=g["patient"], recipe="RM_ExtractGenomeSample",
                                   repeatMode="repeatcount", repeatCount=1)
-                    r = t.bridge_call("jawa/do_bill_now", billGiverId=g["patient"], pawnId=g["doer"],
-                                      workGiverDef="DoBillsMedicalHumanOperation", waitTicks=2500, timeoutSeconds=90)
+                    with _patient(t):    # a 2500-tick surgery outruns the runner's 30 s reply timeout (MEASURED live 2026-10-03)
+                        r = t.bridge_call("jawa/do_bill_now", billGiverId=g["patient"], pawnId=g["doer"],
+                                          workGiverDef="DoBillsMedicalHumanOperation", waitTicks=2500, timeoutSeconds=90)
                     if (r or {}).get("jobOnThingReturnedNull") or (
                             _live(t) and isinstance(r, dict) and r.get("success") is False):
                         _unmeasured(t, "the surgery job could not start (patient not in a bed / giver "
                                        "unusable): %s" % json.dumps((r or {}).get("details"), default=str)[:300])
-                    _wait(t, 1500)
+                    with _patient(t):
+                        _wait(t, 1500)
                     got = _things(t, SAMPLE, g["rect"])
                     if got:
                         made = got[0]

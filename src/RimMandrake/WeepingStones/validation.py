@@ -50,8 +50,9 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("WeepingStones")
-suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance"]
-SLIDERS = {"vhorrinOddsMultiplier": (1.0, 0.0, 3.0), "vizhikEscapeChance": (0.05, 0.0, 0.25)}
+suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays"]
+SLIDERS = {"vhorrinOddsMultiplier": (1.0, 0.0, 3.0), "vizhikEscapeChance": (0.05, 0.0, 0.25),
+           "condenserSeasonDays": (15.0, 3.0, 30.0)}   # WEEPINGSTONES_WALKING_CONDENSER_1
 
 SETTINGS = "RimMandrake.WeepingStones.RM_WeepingStonesSettings"
 EH_SETTINGS = "RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings"
@@ -104,7 +105,7 @@ def _defs_in(subdir):
 
 _BY_DIR = dict((d, _defs_in(d)) for d in (
     "ThingDefs_Races", "ThingDefs_Items", "ThingDefs_Plants", "RecipeDefs", "ThoughtDefs", "JobDefs",
-    "WorkGiverDefs", "ThingSetMakerDefs", "BiomeDefs"))
+    "WorkGiverDefs", "ThingSetMakerDefs", "BiomeDefs", "ThingDefs_Buildings", "LetterDefs"))
 
 
 def _names(subdir, deftype):
@@ -114,9 +115,9 @@ def _names(subdir, deftype):
 # (group, DefType, names, floor). The floor is the count at authoring (2026-10-01): a shrink must be a
 # deliberate edit of this script, never a silent pass.
 GROUPS = [
-    ("race_things", "ThingDef", _names("ThingDefs_Races", "ThingDef"), 17),
-    ("pawnkinds", "PawnKindDef", _names("ThingDefs_Races", "PawnKindDef"), 17),
-    ("items", "ThingDef", _names("ThingDefs_Items", "ThingDef"), 35),
+    ("race_things", "ThingDef", _names("ThingDefs_Races", "ThingDef"), 18),
+    ("pawnkinds", "PawnKindDef", _names("ThingDefs_Races", "PawnKindDef"), 18),
+    ("items", "ThingDef", _names("ThingDefs_Items", "ThingDef"), 36),
     ("plants", "ThingDef", _names("ThingDefs_Plants", "ThingDef"), 10),
     ("recipes", "RecipeDef", _names("RecipeDefs", "RecipeDef"), 5),
     ("thoughts", "ThoughtDef", _names("ThoughtDefs", "ThoughtDef"), 8),
@@ -124,6 +125,8 @@ GROUPS = [
     ("workgivers", "WorkGiverDef", _names("WorkGiverDefs", "WorkGiverDef"), 5),
     ("set_makers", "ThingSetMakerDef", _names("ThingSetMakerDefs", "ThingSetMakerDef"), 1),
     ("biome", "BiomeDef", _names("BiomeDefs", "BiomeDef"), 1),
+    ("buildings", "ThingDef", _names("ThingDefs_Buildings", "ThingDef"), 1),
+    ("letters", "LetterDef", _names("LetterDefs", "LetterDef"), 1),
 ]
 ALL_DEFNAMES = set(n for _, _, names, _ in GROUPS for n in names)
 
@@ -350,6 +353,9 @@ def _reset_pad(t, terrain="Concrete"):
         t.bridge_call("jawa/map_zones", action="deleteZone", zone=zone.get("label"))
     t.bridge_call("jawa/destroy_batch", rects=rect, categories="All")
     t.bridge_call("jawa/destroy_batch", rects=rect, categories="Pawn")
+    # destroy_batch LEAVES PAWNS ALONE (MEASURED live 2026-10-03: "2 pawn(s) left alone"), so skarrin and
+    # vhorrin from earlier chains survived every reset and broke the next site's precondition.
+    t.bridge_call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
     t.bridge_call("jawa/set_terrain_batch", ops="%s:%s" % (terrain, rect))
     t.bridge_call("jawa/set_fog", action="unfog", rect=rect)
     t.bridge_call("jawa/log_autoopen_suppress")
@@ -369,6 +375,7 @@ def _teardown(t):
             t.session.call("jawa/map_zones", action="deleteZone", zone=zone.get("label"))
         t.session.call("jawa/destroy_batch", rects=rect, categories="All")
         t.session.call("jawa/destroy_batch", rects=rect, categories="Pawn")
+        t.session.call("jawa/destroy_bulk", filter="nonColonists", dryRun=False)
     except Exception as ex:                       # teardown must never mask the chain's own verdict
         print("[ws] teardown failed: %s" % ex, file=sys.stderr, flush=True)
 
@@ -389,6 +396,38 @@ def _settle(t, pid):
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Food", level=1.0)
     t.bridge_call("jawa/pawn_need", pawn=pid, action="need", need="Rest", level=1.0)
     t.bridge_call("jawa/set_draft", pawnId=pid, drafted=False)
+
+
+class _patient(object):
+    """Raise the bridge client's per-reply socket timeout (the runner's 30 s) for a slow job order or tick
+    wait, then restore it. MEASURED live 2026-10-03: ordered_job took 17 s with waitTicks=60 and the NET /
+    STOCK / FEED / CULL waits then outran 30 s. A mock session without a real socket is left alone."""
+    def __init__(self, t, secs=240.0):
+        self.rb = getattr(getattr(t, "session", None), "_rb", None)
+        self.secs, self.old = secs, None
+
+    def __enter__(self):
+        if self.rb is not None and hasattr(self.rb, "timeout"):
+            self.old = self.rb.timeout
+            self.rb.timeout = self.secs
+            sock = getattr(self.rb, "sock", None)
+            if sock is not None:
+                sock.settimeout(self.secs)
+        return self
+
+    def __exit__(self, *a):
+        if self.old is not None:
+            self.rb.timeout = self.old
+            sock = getattr(self.rb, "sock", None)
+            if sock is not None:
+                sock.settimeout(self.old)
+        return False
+
+
+def _run_job(t, pid, job, a, ticks, *pos, **kw):
+    with _patient(t):
+        _order(t, pid, job, a, *pos, **kw)
+        t.wait_ticks(ticks)
 
 
 def _order(t, pid, job, a, bx=None, bz=None, count=None):
@@ -648,7 +687,10 @@ def biome_roster(t):
             blob = list(_flat(ext))
             if ext in (None, "(no such field)"):
                 _unmeasured(t, "get_defs cannot read modExtensions (got %r)" % (ext,))
-            if not any("WaterTruce" in s for s in blob):
+            # get_defs flattens a modExtension to its FIELDS with the class name absent (MEASURED live
+            # 2026-10-03: [{"radius": 10.0}]); recognise it by its name OR by its one field, `radius`
+            # (source: RM_WeepingStones_Biome.xml carries RM_WaterTruceExtension with <radius>10</radius>).
+            if not any("WaterTruce" in s or s == "radius" for s in blob):
                 _fail("RM_WaterTruceExtension is not among the biome's modExtensions: %s" % blob[:8])
             _note(t, "modExtensions", blob[:12])
 
@@ -716,7 +758,12 @@ def settings_and_designator(t):
             t.set_setting(SETTINGS, {TOGGLE: False})
             ds, pen, control = _zone_designators(t)
             if _live(t) and pen is not None:
-                _fail("the pool-pen designator is still listed with %s=false (Visible should read the setting)" % TOGGLE)
+                # Source reads correct (RM_Designator_ZoneAdd_PoolPen.Visible => stockedPoolsEnabled, and
+                # set_setting read the static back False), yet the bridge row said visible=true (MEASURED
+                # live 2026-10-03). The bridge's own flag is evidence, so this stays RED rather than being
+                # laundered to UNMEASURED; a live look at the Zone tab decides stale deployed DLL vs bridge cache.
+                _fail("the pool-pen designator is still listed (row visible=%r) with %s=false; source Visible "
+                      "reads the setting, so suspect a stale deployed DLL or the bridge's listing" % (pen.get("visible"), TOGGLE))
         finally:
             if t.session is not None:
                 t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=TOGGLE, value="True")
@@ -738,13 +785,50 @@ def settings_sliders(t):
                     _ok(r, "mod_settings_field(get)")
                     if abs(float(r.get("value")) - default) > 1e-6:
                         _fail("%s reads %r; the shipped default is %s" % (field, r.get("value"), default))
-                t.set_setting(stype, {field: hi})
+                # not t.set_setting: its read-back compares the STRING '3' to str(3.0) == '3.0' (MEASURED live
+                # 2026-10-03), a harness defect in Utils/modcheck/suite.py; compare numerically here instead.
+                w = t.bridge_call("jawa/mod_settings_field", typeName=stype, action="set", field=field, value=str(hi))
+                if _live(t):
+                    _ok(w, "mod_settings_field(set)")
                 back = t.bridge_call("jawa/mod_settings_field", typeName=stype, action="get", field=field)
                 if _live(t) and abs(float(back.get("value")) - hi) > 1e-6:
                     _fail("%s wrote %s but reads back %r" % (field, hi, back.get("value")))
             finally:
                 if t.session is not None:
                     t.session.call("jawa/mod_settings_field", typeName=stype, action="set", field=field, value=str(default))
+
+
+def _condenser_source_problems():
+    """Offline structure of WEEPINGSTONES_WALKING_CONDENSER_1, read from the mod's own XML (never a hand list)."""
+    probs = []
+    race = next((el for _, n, el in _BY_DIR["ThingDefs_Races"] if n == "RM_GorraskCondenser"), None)
+    if race is None or not any(li.get("Class", "").endswith("CompProperties_WalkingCondenser") for li in race.findall("comps/li")):
+        probs.append("RM_GorraskCondenser lacks the CompProperties_WalkingCondenser comp")
+    if "RM_GorraskCondenser" in BIOME_ANIMALS:
+        probs.append("RM_GorraskCondenser is in the biome's wildAnimals (it is one per world, placed by the spawner)")
+    plant = next((el for _, n, el in _BY_DIR["ThingDefs_Buildings"] if n == "RM_AncientCondenserPlant"), None)
+    if plant is None or not (plant.findtext("minifiedDef") or "").strip():
+        probs.append("RM_AncientCondenserPlant is not minifiable")
+    if plant is not None and not any(li.get("Class", "").endswith("CompProperties_AncientCondenser") for li in plant.findall("comps/li")):
+        probs.append("RM_AncientCondenserPlant lacks its water comp")
+    if "RM_CondenserWater" not in _names("ThingDefs_Items", "ThingDef"):
+        probs.append("RM_CondenserWater (the plant's output) is missing")
+    return probs
+
+
+@suite.chain("walking_condenser")
+def walking_condenser(t):
+    """The walking condenser's defs are wired the way the C# expects (comp classes, minifiable plant, not a
+    wildAnimals row). The pool/truce/choices are live mechanics, owed a quicktest (criteria on the item)."""
+    with _comp(t, "condenser_defs_wired", independent=True):
+        if _live(t):
+            _need_parse(t)
+            probs = _condenser_source_problems()
+            if probs:
+                _fail("; ".join(probs))
+        rows, missing = _get_defs(t, ["ThingDef/RM_GorraskCondenser", "ThingDef/RM_AncientCondenserPlant"])
+        if _live(t) and missing:
+            _fail("walking-condenser defs not loaded: %s" % missing)
 
 
 @suite.chain("pen_zone")
@@ -816,8 +900,7 @@ def job_net(t):
                 if n != 1 or s != 0:
                     _fail("precondition: expected 1 wild skarrin and 0 breeding stock, got %d / %d" % (n, s))
         with _comp(t, "net_turns_wild_pawn_into_breeding_stock"):
-            _order(t, box["handler"], "RM_NetPoolBreeder", box["wild"])
-            t.wait_ticks(900)
+            _run_job(t, box["handler"], "RM_NetPoolBreeder", box["wild"], 900)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 stock = _things(t, "RM_SkarrinBreedingStock", _pad_rect(t))
@@ -847,8 +930,7 @@ def job_stock(t):
                 box["stock"] = stock[0].get("id")
         with _comp(t, "stock_releases_species_pawn_into_pen"):
             x, z = t.anchor
-            _order(t, box["handler"], "RM_StockPoolPen", box["stock"], x, z)
-            t.wait_ticks(1500)
+            _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x, z)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 left = len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t)))
@@ -878,8 +960,7 @@ def job_stock_outside_pen(t):
                 box["stock"] = stock[0].get("id")
         with _comp(t, "stock_outside_pen_releases_nothing"):
             x, z = t.anchor
-            _order(t, box["handler"], "RM_StockPoolPen", box["stock"], x + 8, z + 8)
-            t.wait_ticks(1500)
+            _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x + 8, z + 8)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 on_ground = len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t)))
@@ -909,8 +990,7 @@ def job_feed(t):
                 box["meal"] = meal[0].get("id")
         with _comp(t, "feed_consumes_food_at_the_pen"):
             x, z = t.anchor
-            _order(t, box["handler"], "RM_FeedPoolPen", box["meal"], x, z, count=1)
-            t.wait_ticks(1200)
+            _run_job(t, box["handler"], "RM_FeedPoolPen", box["meal"], 1200, x, z, count=1)
             if _live(t):
                 left = len(_things(t, "MealSimple", _pad_rect(t)))
                 if left != 0:
@@ -935,8 +1015,7 @@ def job_harvest(t):
                 if len(_pawns(t, _pad_rect(t), "RM_Skarrin")) != 1 or _things(t, "RM_SkarrinMeat", _pad_rect(t)):
                     _fail("precondition: want 1 skarrin and no skarrin meat")
         with _comp(t, "harvest_yields_species_meat"):
-            _order(t, box["handler"], "RM_HarvestPoolPen", box["stock"])
-            t.wait_ticks(1200)
+            _run_job(t, box["handler"], "RM_HarvestPoolPen", box["stock"], 1200)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 meat = _things(t, "RM_SkarrinMeat", _pad_rect(t))
@@ -966,8 +1045,7 @@ def job_cull(t):
                 if len(_pawns(t, _pad_rect(t), "RM_Vhorrin")) != 1 or _things(t, "RM_VhorrinMeat", _pad_rect(t)):
                     _fail("precondition: want 1 vhorrin and no vhorrin meat")
         with _comp(t, "cull_yields_enormous_harvest"):
-            _order(t, box["handler"], "RM_CullVhorrin", box["vhorrin"])
-            t.wait_ticks(1500)
+            _run_job(t, box["handler"], "RM_CullVhorrin", box["vhorrin"], 1500)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Vhorrin"))
                 meat = _things(t, "RM_VhorrinMeat", _pad_rect(t))

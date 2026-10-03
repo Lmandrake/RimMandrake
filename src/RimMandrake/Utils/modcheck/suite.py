@@ -321,7 +321,15 @@ class TestContext(object):
             got = self.session.call("jawa/mod_settings_field", typeName=type_name,
                                     action="get", field=field)
             settings[field] = (got or {}).get("value")
-        ok = all(settings.get(k) == str(v) for k, v in values.items())
+        def _same(got, want):
+            # a float field reads back as '3' where the script wrote 3.0 (2026-10-03): compare numbers as numbers
+            if got == str(want):
+                return True
+            try:
+                return abs(float(got) - float(want)) < 1e-6
+            except (TypeError, ValueError):
+                return False
+        ok = all(_same(settings.get(k), v) for k, v in values.items())
         self._record("set_setting(%s, %s)" % (type_name, values), ok)
         if not ok:
             raise ExpectationFailed(

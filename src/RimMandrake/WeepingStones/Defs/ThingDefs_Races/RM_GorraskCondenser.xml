@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEEPINGSTONES_WALKING_CONDENSER_1. Unique variant (one per world) of RM_Gorrask; NOT in any wildAnimals roster:
+     RM_MapComponent_CondenserSpawner places it once on a Weeping Stones map. Behaviour: RM_CompWalkingCondenser.
+     Art: reuses the gorrask's placeholder tortoise body, darker; real gorrask art (artpipe done/weepingstones2_gorrask_*)
+     is not wired to either def yet. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_GorraskCondenser</defName>
+    <label>old gorrask</label>
+    <description>The oldest gorrask there is, one to a world. A pump-and-lattice machine has grown into its shell over the ages and still runs, drawing water out of dry air. Wherever the crab settles for a season a pool wells up round it and the water truce holds; when it moves on the pool drains back. Cut the machine out and the crab dies, and so does the moving oasis.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <MarketValue>6000</MarketValue>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>52</ComfyTemperatureMax>
+      <ArmorRating_Blunt>1.5</ArmorRating_Blunt>
+      <ArmorRating_Sharp>1.5</ArmorRating_Sharp>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <uiIconScale>1.4</uiIconScale>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>45</power>
+        <cooldownTime>2.1</cooldownTime>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>shell-slam</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>40</power>
+        <cooldownTime>1.9</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>TurtleLike</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>15</baseBodySize>
+      <baseHungerRate>0.01</baseHungerRate>
+      <baseHealthScale>7</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Heavy</leatherDef>
+      <manhunterOnDamageChance>0.01</manhunterOnDamageChance>
+      <trainability>None</trainability>
+      <gestationPeriodDays>150</gestationPeriodDays>
+      <lifeExpectancy>400</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>12</minAge>
+          <soundWounded>Pawn_Tortoise_Wounded</soundWounded>
+          <soundDeath>Pawn_Tortoise_Death</soundDeath>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+          <soundAngry>Pawn_Tortoise_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <comps>
+      <li Class="RimMandrake.WeepingStones.CompProperties_WalkingCondenser">
+        <maxRadius>5</maxRadius>
+        <growDays>3</growDays>
+        <dryDays>4</dryDays>
+      </li>
+    </comps>
+    
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_GorraskCondenser</defName>
+    <label>old gorrask</label>
+    <race>RM_GorraskCondenser</race>
+    <combatPower>1200</combatPower>
+    <ecoSystemWeight>3.0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <label>old gorrask</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>3.8500000000000005</drawSize>
+          <color>(110, 105, 95)</color>
+          <shadowData>
+            <volume>(0.5, 0.35, 0.35)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>3.8500000000000005</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <label>old gorrask</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>4.675000000000001</drawSize>
+          <color>(110, 105, 95)</color>
+          <shadowData>
+            <volume>(0.7, 0.5, 0.5)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>4.675000000000001</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <label>old gorrask</label>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Tortoise</texPath>
+          <drawSize>5.5</drawSize>
+          <color>(110, 105, 95)</color>
+          <shadowData>
+            <volume>(0.7, 0.5, 0.5)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>5.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

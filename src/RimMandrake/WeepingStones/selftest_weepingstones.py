@@ -68,7 +68,7 @@ class WSGame(MockGame):
         for k in ("ElectricStove", "FueledStove"):
             self.known[("ThingDef", k)] = "Ludeon.RimWorld"
         if "missing_def" in self.brk:
-            plain = [n for n in V.GROUPS[2][2] if n not in V.PAIRED and n not in V.ROTTABLE_ITEMS][0]
+            plain = [n for n in V.GROUPS[2][2] if n not in V.PAIRED and n not in V.ROTTABLE_ITEMS][-1]
             del self.known[("ThingDef", plain)]
         if "donor_shadow" in self.brk:
             self.known[("ThingDef", V.GROUPS[3][2][0])] = "some.donor.mod"
@@ -81,6 +81,13 @@ class WSGame(MockGame):
             self._tick()
             return fn(p)
         return MockGame.handle(self, tool, p)
+
+    def t_jawa_destroy_bulk(self, p):
+        # the real tool removes every non-colonist pawn map-wide (what _reset_pad needs: destroy_batch leaves pawns)
+        before = len(self.pawns)
+        if p.get("filter") == "nonColonists" and not p.get("dryRun", True):
+            self.pawns = [q for q in self.pawns if q.get("kindDef") == "Colonist"]
+        return {"success": True, "matchedCount": before - len(self.pawns)}
 
     # ------------------------------------------------------------------ defs & biome
     def t_jawa_get_defs(self, p):
