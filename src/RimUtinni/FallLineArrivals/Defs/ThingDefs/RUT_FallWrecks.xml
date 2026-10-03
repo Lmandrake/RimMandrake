@@ -40,6 +40,8 @@
         <burstLetterLabel>Wreck: hull rib</burstLetterLabel>
         <burstLetterText>A rib of somebody else's ship has come down within sight of the colony. Something has already moved in under it: the mynocks that rode it down are crawling out.\n\nIt can be stripped for steel, if you want to be the one standing next to it. Left alone, more will come out of it.</burstLetterText>
       </li>
+      <!-- FALL_LINE_FERAL_SURVIVORS_BUILD_1: some wrecks hide a feral droid that bolts at 25 cells. -->
+      <li Class="RimMandrake.Utinni.FallLineArrivals.RUT_CompProperties_FeralLurker" />
     </comps>
   </ThingDef>
 
@@ -89,6 +91,8 @@
         <burstLetterLabel>Wreck: cargo section</burstLetterLabel>
         <burstLetterText>A cargo section of somebody else's ship has come down within sight of the colony, hatches burst. Scavrats are already nosing out of it.\n\nIt can be stripped for steel and components, if you want to be the one standing next to it. Left alone, more will come out of it.</burstLetterText>
       </li>
+      <!-- FALL_LINE_FERAL_SURVIVORS_BUILD_1: some wrecks hide a feral droid that bolts at 25 cells. -->
+      <li Class="RimMandrake.Utinni.FallLineArrivals.RUT_CompProperties_FeralLurker" />
     </comps>
   </ThingDef>
 
@@ -138,6 +142,8 @@
         <burstLetterLabel>Wreck: fuel tank</burstLetterLabel>
         <burstLetterText>A fuel tank from somebody else's ship has come down within sight of the colony, still sweating chemfuel. Zhakkas are already feeding at its seams.\n\nIt can be stripped for steel and the last of its fuel, if you want to be the one standing next to it. Left alone, more will come out of it.</burstLetterText>
       </li>
+      <!-- FALL_LINE_FERAL_SURVIVORS_BUILD_1: some wrecks hide a feral droid that bolts at 25 cells. -->
+      <li Class="RimMandrake.Utinni.FallLineArrivals.RUT_CompProperties_FeralLurker" />
     </comps>
   </ThingDef>
 

@@ -18,6 +18,36 @@
     <earliestDay>2</earliestDay>
   </IncidentDef>
 
+  <!-- FALL_LINE_FERAL_SURVIVORS_BUILD_1 Band B drift-in (spec §5, §8: "a droid every couple of
+       weeks"; at most maxFeralPerMap alive, default 3). The pool is spec §5.1's eight Droidworks
+       utility kinds; MayRequire keeps the def loadable without Droidworks (an empty pool refuses). -->
+  <IncidentDef>
+    <defName>RUT_FallSurvivor</defName>
+    <label>feral droid</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.FallLineArrivals.IncidentWorker_FallSurvivor</workerClass>
+    <baseChance>0.8</baseChance>
+    <minRefireDays>12</minRefireDays>
+    <earliestDay>5</earliestDay>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.FallLineArrivals.FeralPoolExtension">
+        <options>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_MSEDroid</kind><weight>10</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_SalvageAssistDroid</kind><weight>10</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_DUMDroid</kind><weight>8</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_GNKDroid</kind><weight>8</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_RSeriesDroid</kind><weight>8</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_FX7Droid</kind><weight>5</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_MuckrakerDroid</kind><weight>5</weight></li>
+          <li MayRequire="mandrake.rsw.droidworks"><kind>RSW_DW_OuterRim_DestroyerDroid</kind><weight>2</weight><dangerous>true</dangerous></li>
+        </options>
+      </li>
+    </modExtensions>
+  </IncidentDef>
+
   <IncidentDef>
     <defName>RUT_LabRatFalls</defName>
     <label>specimen</label>

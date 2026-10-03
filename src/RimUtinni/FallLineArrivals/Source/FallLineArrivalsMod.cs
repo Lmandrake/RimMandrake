@@ -19,6 +19,14 @@ namespace RimMandrake.Utinni.FallLineArrivals
         public static bool wreckCargo = true;
         public static bool wreckTank = true;
 
+        // FALL_LINE_FERAL_SURVIVORS_BUILD_1 (Band B, spec §10)
+        public static bool survivorsEnabled = true;
+        public static float survivorFrequency = 1f;
+        public static float wreckLurkerChance = 0.3f;
+        public static bool allowDestroyer = true;
+        public static int maxFeralPerMap = 3;
+        public static bool feralAttackInstead = false;
+
         public static bool labRatEnabled = true;
         public static float labRatFrequency = 1f;
 
@@ -31,6 +39,12 @@ namespace RimMandrake.Utinni.FallLineArrivals
             Scribe_Values.Look(ref wreckHull, "wreckHull", true);
             Scribe_Values.Look(ref wreckCargo, "wreckCargo", true);
             Scribe_Values.Look(ref wreckTank, "wreckTank", true);
+            Scribe_Values.Look(ref survivorsEnabled, "survivorsEnabled", true);
+            Scribe_Values.Look(ref survivorFrequency, "survivorFrequency", 1f);
+            Scribe_Values.Look(ref wreckLurkerChance, "wreckLurkerChance", 0.3f);
+            Scribe_Values.Look(ref allowDestroyer, "allowDestroyer", true);
+            Scribe_Values.Look(ref maxFeralPerMap, "maxFeralPerMap", 3);
+            Scribe_Values.Look(ref feralAttackInstead, "feralAttackInstead", false);
             Scribe_Values.Look(ref labRatEnabled, "labRatEnabled", true);
             Scribe_Values.Look(ref labRatFrequency, "labRatFrequency", 1f);
         }
@@ -55,6 +69,26 @@ namespace RimMandrake.Utinni.FallLineArrivals
                 list.CheckboxLabeled("  Hull ribs (mostly mynocks)", ref wreckHull);
                 list.CheckboxLabeled("  Cargo sections (mostly scavrats and womp rats)", ref wreckCargo);
                 list.CheckboxLabeled("  Fuel tanks (mostly zhakkas)", ref wreckTank);
+            }
+
+            list.GapLine();
+            list.CheckboxLabeled("Fall survivors (feral droids)", ref survivorsEnabled,
+                "Droids that survived a fall and have lived out on the flats ever since. They belong to no one, "
+              + "run from people, hide in wreckage and fight only when cornered. One drifts in now and then, and "
+              + "some fallen wrecks hide one that bolts when a colonist comes near. Down one, take it prisoner, and "
+              + "a wild-keyed data spike wipes it clean. Needs Droidworks for the droids themselves.");
+            if (survivorsEnabled)
+            {
+                list.Label("Drift-in frequency: x" + survivorFrequency.ToString("0.00"));
+                survivorFrequency = list.Slider(survivorFrequency, 0.25f, 4f);
+                list.Label("Chance a fallen wreck hides one: " + wreckLurkerChance.ToStringPercent());
+                wreckLurkerChance = Mathf.Round(list.Slider(wreckLurkerChance, 0f, 1f) * 20f) / 20f;
+                list.Label("Most feral droids on one map: " + maxFeralPerMap);
+                maxFeralPerMap = Mathf.RoundToInt(list.Slider(maxFeralPerMap, 1f, 10f));
+                list.CheckboxLabeled("  Allow the destroyer droid (the one dangerous survivor)", ref allowDestroyer);
+                list.CheckboxLabeled("  They attack instead of running (like a wild droid)", ref feralAttackInstead,
+                    "Off (the ruled behaviour): they flee and hide. On: they attack on sight, the way the desert's "
+                  + "wild droids do.");
             }
 
             list.GapLine();

@@ -14,6 +14,7 @@
     <li>mandrake.rm.biomes</li>
     <li>mandrake.rm.shipvermin</li>
     <li>mandrake.rsw.swbestiary</li>
+    <li>mandrake.rsw.droidworks</li>
   </loadAfter>
   <description>FALL_LINE_ARRIVAL_MECHANISM_1 (design/RimUtinni/fall_line_arrival_mechanism_spec.md).
 The Fall Line's own creatures are ARRIVALS, never ambient biome fauna (owner,
@@ -33,7 +34,13 @@ Where: only on Fall Line maps by default — a map whose tile carries the
 RUT_FallLine tile mutator, or whose world feature is named one of the Fall
 Line region names. A Mod Setting lets the events fire on any map instead.
 
-Not here yet (filed): the feral survivor droids that flee (Band B), placing
+  - Fall survivors (Band B): factionless feral droids (Droidworks' utility
+    kinds) that run from people, hide in wreckage and fight only when
+    cornered. One drifts in off the flats now and then; some fallen wrecks
+    hide one that bolts when a colonist comes within 25 cells. Capture it and
+    a wild-keyed data spike wipes it clean.
+
+Not here yet (filed): placing
 the RUT_FallLine mutator on the region's tiles of the frozen world, and the
 two wreckage creatures that are not yet ported.
 
