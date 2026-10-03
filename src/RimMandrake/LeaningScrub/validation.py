@@ -595,6 +595,11 @@ def patches_chain(t):
                 _fail("fixture missing: campfire %d, dead venomvine %d" % (len(camp), len(fuel)))
             cid, fid = camp[0]["id"], fuel[0]["id"]
             before = fuel[0].get("stackCount")
+            # LIVE 2026-10-03 (suspected cause of the red, not yet proven): a spawned Campfire is FULL (initialFuelPercent
+            # 1.0) and a Refuel job on a full refuelable is refused, so the stack never moved whatever the patch did.
+            # Let it burn ~1 fuel (10/day) first. FALSE THEORY kept for the record: the patch DID apply (no patchfail
+            # line in Player.log, Campfire's own comps li matches the xpath).
+            t.wait_ticks(3000)
             col = _spawn(t, "Colonist", x - 2, z + 2, faction="player")
             t.bridge_call("jawa/ordered_job", pawnId=col, jobDef="Refuel", targetAId=cid,
                           targetBId=fid, count=10, waitTicks=60)
