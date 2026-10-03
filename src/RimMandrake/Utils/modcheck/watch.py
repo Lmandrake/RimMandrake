@@ -194,6 +194,12 @@ class Watch(object):
             now = clockgate.read_ticks(self.session)
         except clockgate.ClockLost as e:
             raise SurpriseAbort("harness", "clock unreadable after %s: %s" % (label, e), [], [])
+        if label == "bridge_call:jawa/time_set_ticks":
+            # A DELIBERATE warp (the mod scripts for LeaningScrub/Stillsand/Contagion call it by name to pass a growth
+            # or shed timer), not an unplanned run: re-base the clock as an epoch change instead of charging it, which
+            # read every such jump as `clock_runaway` and aborted the chain (LIVE 2026-10-03, LeaningScrub 330000 ticks).
+            self.gate.observe(now, epoch_change=True, reason="verb:%s" % label)
+            return 0
         moved = self.gate.observe(now, reason="verb:%s" % label)
         if moved > UNPLANNED_TICK_CAP:
             self._pause_quietly()
