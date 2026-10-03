@@ -1,12 +1,15 @@
-# WORLDVIEW_MISLABEL_FALLOUT_1 — every Ash'karr render carried the wrong region names
+# WORLDVIEW_MISLABEL_FALLOUT_1 — `.rws`-sourced worldview renders carried the wrong region names
 
 ## what was wrong
 
 MEASURED 2026-09-21: the savegame's `tileFeature` grid stores each tile's feature
 **`uniqueID`** (21..92 on this planet), **not** its index into the features list.
-`worldview.py` / `worldmap.py` read it as an index. ⇒ **Every region label on every
-Ash'karr render pointed at the wrong region**, and the accompanying per-region tile counts
-were wrong with it.
+`worldview.py` / `worldmap.py` read it as an index. ⇒ **Every region label on a render
+made FROM A `.rws` SAVE whose uniqueIDs are offset from list position pointed at the wrong
+region**, and the per-region tile counts were wrong with it. Renders made from a bundle
+(`world/ASHKARR_WORLDMAP`, the normal authoring input) were never affected: `BundlePlanet`
+builds membership from the CSV `region` column and never reads `tileFeature`. Audit:
+`Transient/worldview_mislabel_fallout_2026-10-02.md`.
 
 **Fixed** at `1a96f1e2a` (`worldmap.features()` now returns `uid`; `PlanetView` remaps
 once). The fixed renderer independently reproduces the tile counts derived straight from
