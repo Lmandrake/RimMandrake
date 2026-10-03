@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_SurrikExitHole.xml        LeaningScrub · LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1
+  The hole a surrik leaves where it broke up out of the root-bound crust on a runway bloom
+  (RM_RunwayBloomExtension response Surface, Source/RM_RunwayBloom.cs). PLACEHOLDER ART: vanilla rock
+  rubble tinted to crust brown; artpipe job RM_SurrikExitHole is filed for the real mark.
+-->
+<Defs>
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_SurrikExitHole</defName>
+    <label>surrik exit hole</label>
+    <description>A ragged hole torn up through the root-bound crust, the mat folded back around it. Something came up from underneath here.</description>
+    <graphicData>
+      <texPath>Things/Filth/RubbleRock</texPath>
+      <color>(120, 96, 70, 230)</color>
+      <drawSize>1.2</drawSize>
+    </graphicData>
+    <filth>
+      <disappearsInDays>4~6</disappearsInDays>
+      <cleaningWorkToReduceThickness>30</cleaningWorkToReduceThickness>
+      <maxThickness>1</maxThickness>
+      <cleaningSound>Interact_CleanFilth_Dirt</cleaningSound>
+    </filth>
+    <statBases>
+      <BeautyOutdoors>-2</BeautyOutdoors>
+    </statBases>
+  </ThingDef>
+</Defs>

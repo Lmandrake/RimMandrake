@@ -28,9 +28,13 @@ namespace RimMandrake.LeaningScrub
     // by itself when MaxFlightTime runs out), shedders drop their shed thing
     // beside them and run.
     //
-    // NOT here, each a filed follow-up: ribbonwhip sway (an animation, art),
-    // burrower exit holes (filth/terrain art), and arms drawing scavengers
-    // (which species scavenge, and is an arm food?).
+    // LEANINGSCRUB_RUNWAY_BLOOM_VISUALS_1: ribbonwhips SWAY (no flee; held in
+    // place and rocked side to side through the vanilla JitterHandler (the
+    // same draw offset a hit uses), so no animation def or art is needed;
+    // the surrik, the cast's one crust-swimmer, SURFACES: it leaves an exit
+    // hole (RM_Filth_SurrikExitHole) where it broke out, then runs.
+    // NOT here, a filed follow-up: arms drawing scavengers (which species
+    // scavenge, and is an arm food?).
     // ════════════════════════════════════════════════════════════════════
 
     public enum RM_RunwayBloomResponse
@@ -39,6 +43,8 @@ namespace RimMandrake.LeaningScrub
         Bolt,
         Erupt,
         Shed,
+        Sway,
+        Surface,
     }
 
     public class RM_RunwayBloomExtension : DefModExtension
@@ -53,6 +59,10 @@ namespace RimMandrake.LeaningScrub
         public ThingDef shedThing;
         public int shedCount = 1;
         public float shedChance = 1f;
+        // Sway response only: how long it rocks (ticks).
+        public int swayTicks = 180;
+        // Surface response only: the mark left where it broke out.
+        public ThingDef exitFilth;
     }
 
     public class RM_MapComponent_RunwayBloom : MapComponent
@@ -87,6 +97,12 @@ namespace RimMandrake.LeaningScrub
         private readonly List<Pending> pending = new List<Pending>();
         private readonly List<Recent> recent = new List<Recent>();
         private readonly List<Pawn> tmpPawns = new List<Pawn>();
+        // Swayers: pawn -> tick the sway ends. Transient, like pending.
+        private readonly Dictionary<Pawn, int> swaying = new Dictionary<Pawn, int>();
+        private readonly List<Pawn> tmpSway = new List<Pawn>();
+        // TUNED: half a swing every 12 ticks; 0.2 cells decays to rest (0.018/tick) just before the next push.
+        private const int SwayHalfPeriod = 12;
+        private const float SwayDistance = 0.2f;
 
         public RM_MapComponent_RunwayBloom(Map map) : base(map)
         {
@@ -97,10 +113,12 @@ namespace RimMandrake.LeaningScrub
             if (!RM_WindCalendar.On(RM_LeaningScrubSettings.runwayBloomEnabled))
             {
                 pending.Clear();
+                swaying.Clear();
                 return;
             }
             int now = Find.TickManager.TicksGame;
             RunPending(now);
+            TickSway(now);
             if (now % SweepInterval != 0)
             {
                 return;
@@ -193,6 +211,15 @@ namespace RimMandrake.LeaningScrub
             {
                 return;
             }
+            if (ext.response == RM_RunwayBloomResponse.Sway)
+            {
+                StartSway(a, ext);
+                return;
+            }
+            if (ext.response == RM_RunwayBloomResponse.Surface && ext.exitFilth != null)
+            {
+                FilthMaker.TryMakeFilth(a.Position, map, ext.exitFilth, 1);
+            }
             if (ext.response == RM_RunwayBloomResponse.Shed && ext.shedThing != null && Rand.Chance(ext.shedChance))
             {
                 Thing shed = ThingMaker.MakeThing(ext.shedThing);
@@ -209,6 +236,78 @@ namespace RimMandrake.LeaningScrub
             {
                 RM_Flight.TryLaunch(a);
             }
+        }
+
+        // Pawn_DrawTracker.jitterer is private (RimSage 2026-10-03); read once by reflection, no Harmony needed.
+        private static readonly System.Reflection.FieldInfo JitterField = typeof(Pawn_DrawTracker).GetField("jitterer",
+            System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+
+        private static JitterHandler Jitterer(Pawn p)
+        {
+            return p?.Drawer == null || JitterField == null ? null : JitterField.GetValue(p.Drawer) as JitterHandler;
+        }
+
+        private void StartSway(Pawn a, RM_RunwayBloomExtension ext)
+        {
+            int ticks = Mathf.Max(SwayHalfPeriod * 2, ext.swayTicks);
+            swaying[a] = Find.TickManager.TicksGame + ticks;
+            Job hold = JobMaker.MakeJob(JobDefOf.Wait_MaintainPosture);
+            hold.expiryInterval = ticks;
+            a.jobs.StartJob(hold, JobCondition.InterruptForced);
+        }
+
+        private void TickSway(int now)
+        {
+            if (swaying.Count == 0 || now % SwayHalfPeriod != 0)
+            {
+                return;
+            }
+            tmpSway.Clear();
+            tmpSway.AddRange(swaying.Keys);
+            for (int i = 0; i < tmpSway.Count; i++)
+            {
+                Pawn p = tmpSway[i];
+                if (p == null || !p.Spawned || p.Map != map || p.Dead || now >= swaying[p])
+                {
+                    swaying.Remove(p);
+                    continue;
+                }
+                // Alternate east and west: the ribbon leans one way, then the other.
+                Jitterer(p)?.AddOffset(SwayDistance, (now / SwayHalfPeriod) % 2 == 0 ? 90f : 270f);
+            }
+            tmpSway.Clear();
+        }
+
+        /// <summary>Bridge proof (jawa/static_call "current"): fires a bloom at the first answering animal's cell and
+        /// reports what answered after delays run: "SWAYING 1 HOLES +1 ANSWERED 4". Needs bloom animals on the map.</summary>
+        public static string ProofVisuals(Map map)
+        {
+            var comp = map?.GetComponent<RM_MapComponent_RunwayBloom>();
+            if (comp == null)
+            {
+                return "REFUSED: no runway bloom component";
+            }
+            ThingDef hole = DefDatabase<ThingDef>.GetNamedSilentFail("RM_Filth_SurrikExitHole");
+            int holesBefore = hole == null ? 0 : map.listerThings.ThingsOfDef(hole).Count;
+            Pawn first = null;
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (p.def.HasModExtension<RM_RunwayBloomExtension>() && p.Faction == null)
+                {
+                    first = p;
+                    break;
+                }
+            }
+            if (first == null)
+            {
+                return "REFUSED: no wild bloom animal on the map (spawn a ribbonwhip and a surrik)";
+            }
+            int now = Find.TickManager.TicksGame;
+            comp.Bloom(first.Position, now);
+            int answered = comp.pending.Count;
+            comp.RunPending(now + 1000);
+            int holesAfter = hole == null ? 0 : map.listerThings.ThingsOfDef(hole).Count;
+            return "SWAYING " + comp.swaying.Count + " HOLES +" + (holesAfter - holesBefore) + " ANSWERED " + answered;
         }
 
         private Job FleeFrom(Pawn a, IntVec3 from, int distance)
