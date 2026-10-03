@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- GREENTIDE_VURRAK_BUILD_1 (child of GREENTIDE_TERROR_REPLACEMENT_1). The false bank. Invented, franchise-free (Q11a),
+     cast inline in RM_Greentide at 0.15 (owner card 2026-10-03). Body = the weighted crown (consult candidate 5):
+     three rigid lobes round a side mouth, 1.85. RM_CompBankAmbusher (this mod's DLL) lies it flat and invisible on
+     bank cells, bites anything of vurrakTriggerBodySize (0.6) or more that steps on it with no warning, and lets
+     smaller animals reveal it without a bite. First-ever reveal in front of the player pauses the game (setting).
+     Not a predator (it never hunts across the map); it eats what it bites, where it fell, and carrion.
+     Art: PLACEHOLDER, the dhollock retinted bruise-blue. Bespoke art queued:
+     infrastructure/artpipe/art_lists/greentide_vurrak_2026-10-03.csv. -->
+
+<Defs>
+
+  <HediffDef>
+    <defName>RM_BankDisguise</defName>
+    <label>lying as bank</label>
+    <description>Pressed flat and caked in silt, indistinguishable from the riverbank until weight lands on it.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>12</fadeDurationTicks>
+        <recoverFromDisruptedTicks>300</recoverFromDisruptedTicks>
+        <affectedByDisruptor>false</affectedByDisruptor>
+      </li>
+    </comps>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <tendable>false</tendable>
+  </HediffDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Vurrak</defName>
+    <label>vurrak</label>
+    <description>Three blunt, rigid lobes of bruise-blue hide meet around a mouth set low in one side, lined with acid-green ridges. At rest a vurrak spreads its lobes flat along the water's edge and lets the river silt over it until it is a stretch of bank like any other.\n\nIt is the weight that wakes it. Anything about a person's size or bigger that steps onto it is bitten at once; there is no warning. Smaller animals only make the lobes flex and crack, and the whole beast shows itself. Watch where the wildlife walks.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>320</MarketValue>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.2</ArmorRating_Sharp>
+      <Wildness>0.95</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>side mouth</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>20</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>left lobe</label>
+        <labelNoLocation>lobe</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right lobe</label>
+        <labelNoLocation>lobe</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightClaws</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.Greentide.CompProperties_BankAmbusher">
+        <disguiseHediff>RM_BankDisguise</disguiseHediff>
+        <checkIntervalTicks>6</checkIntervalTicks>
+        <triggerMinBodySize>0.6</triggerMinBodySize>
+        <strikeDamageRange>18~28</strikeDamageRange>
+        <revealHoldTicks>2500</revealHoldTicks>
+        <lieStillTicks>2500</lieStillTicks>
+        <revealSound>Pawn_Alligator_Angry</revealSound>
+        <strikeFilth>RM_Filth_DragMark</strikeFilth>
+        <strikeFilthCount>1</strikeFilthCount>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithClawsTailAndJowl</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>1.85</baseBodySize>
+      <baseHealthScale>1.4</baseHealthScale>
+      <baseHungerRate>0.25</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <trainability>None</trainability>
+      <lifeExpectancy>35</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <soundEating>Reptile_Eat</soundEating>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+          <soundWounded>Pawn_Alligator_Wounded</soundWounded>
+          <soundDeath>Pawn_Alligator_Death</soundDeath>
+          <soundCall>Pawn_Alligator_Call</soundCall>
+          <soundAngry>Pawn_Alligator_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Vurrak</defName>
+    <label>vurrak</label>
+    <race>RM_Vurrak</race>
+    <combatPower>140</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <color>(120,110,170)</color>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <color>(120,110,170)</color>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Dhollock/RM_Dhollock</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <color>(120,110,170)</color>
+          <drawSize>1.8</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

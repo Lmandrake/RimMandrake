@@ -469,6 +469,54 @@ if Suite is not None:
                     _fail("live BiomeDef density %r/%r differs from Mod Settings %r/%r (the applier did not run, or ran before "
                           "settings loaded)" % (f["plantDensity"], f["movementDifficulty"], _get(t, "plantDensity"), _get(t, "movementDifficulty")))
 
+    # ----------------------------------------------------------------------- 6b. the vurrak (GREENTIDE_VURRAK_BUILD_1)
+    # RM_VurrakProof.ProofStepOn lays the wild vurrak flat on a bank cell, spawns one stepper on that cell and
+    # runs the real contact check once. Owner rulings 2026-10-03: a person-sized stepper is bitten with no
+    # warning; a hare only reveals it. NOT proven here: the first-reveal pause letter, the think-tree cycle
+    # that lies it back down after revealHoldTicks, and that it eats what it bit.
+
+    @suite.chain("vurrak")
+    def vurrak(t):
+        """Bank cell: colonist on a flat vurrak -> STRUCK; hare -> REVEALED (no bite); toggle off -> refused."""
+        x, z = t.anchor
+        t.clear_area(size=SITE)
+        t.bridge_call("jawa/set_terrain_batch", ops="Soil:%d,%d,12,12;WaterShallow:%d,%d,12,2" % (x - 6, z - 6, x - 6, z + 2))
+        t.bridge_call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % (x - 6, z - 6, 12, 12))
+
+        def lay(cx, cz):
+            r = _ok(t.bridge_call("jawa/spawn_pawn", kindDef="RM_Vurrak", x=cx, z=cz, faction="none", count=1), "spawn vurrak")
+            return ((r.get("pawns") or [{}])[0]).get("id")
+
+        def step(cx, cz, kind):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Greentide.RM_VurrakProof",
+                              method="ProofStepOn", args="current|%d,%d|%s" % (cx, cz, kind))
+            return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+        with _comp(t, "vurrak_bites_a_person", toggle="vurrakAmbushEnabled"):
+            if _live(t):
+                lay(x - 3, z)
+                text = step(x - 3, z, "Colonist")
+                print("[gt] vurrak colonist: %s" % text, file=sys.stderr, flush=True)
+                if not text.startswith("DISGUISED=True -> STRUCK"):
+                    _fail("a colonist stepping on a flat vurrak on a bank cell was not bitten: %s" % text)
+        with _comp(t, "vurrak_hare_only_reveals", toggle="vurrakAmbushEnabled"):
+            if _live(t):
+                lay(x, z)
+                text = step(x, z, "Hare")
+                print("[gt] vurrak hare: %s" % text, file=sys.stderr, flush=True)
+                if not text.startswith("DISGUISED=True -> REVEALED"):
+                    _fail("a hare (body 0.2) on a flat vurrak should reveal it without a bite: %s" % text)
+        with _comp(t, "vurrak_toggle_off_refused", toggle="vurrakAmbushEnabled"):
+            if _live(t):
+                lay(x + 3, z)
+                _put(t, "vurrakAmbushEnabled", False)
+                try:
+                    text = step(x + 3, z, "Colonist")
+                finally:
+                    _put(t, "vurrakAmbushEnabled", True)
+                if not text.startswith("REFUSED"):
+                    _fail("vurrakAmbushEnabled OFF but the contact check still ran: %s" % text)
+
     # ----------------------------------------------------------------------- 7. honest UNMEASURED
 
     def _um(chain, comp, why, toggle=None):
@@ -551,7 +599,7 @@ def static_checks():
     for v in ("Warg", "Muffalo", "Elephant", "Cobra", "Megaspider", "Rat", "Hare"):
         if v in wa:
             bad.append("free roster still names vanilla %s" % v)
-    for n in ("RM_Krannock", "RM_Sulleth", "RM_Dhollock", "RM_Yammeth", "RM_CanopySwinger"):
+    for n in ("RM_Krannock", "RM_Sulleth", "RM_Dhollock", "RM_Yammeth", "RM_CanopySwinger", "RM_Vurrak"):
         if n not in wa:
             bad.append("free roster lacks %s" % n)
         if n not in names:
@@ -573,6 +621,10 @@ def static_checks():
         bad.append("RM_Dhollock lacks the aquatic ambusher comp")
     if not _has("RM_Dhollock", "RimMandrake.CreatureBehaviors.RM_SilenceAuraExtension"):
         bad.append("RM_Dhollock lacks the silence aura")
+    if not _has("RM_Vurrak", "RimMandrake.Greentide.CompProperties_BankAmbusher"):
+        bad.append("RM_Vurrak lacks the bank ambusher comp")
+    if races.get("RM_Vurrak") is not None and races["RM_Vurrak"].findtext("race/predator") != "false":
+        bad.append("RM_Vurrak must not be a predator (it ambushes on contact, never hunts across the map)")
     if not _has("RM_Sulleth", "RimMandrake.CreatureBehaviors.RM_SeekShadeExtension"):
         bad.append("RM_Sulleth lacks seek-shade")
     if races.get("RM_Yammeth") is None or float(races["RM_Yammeth"].findtext("statBases/MaxFlightTime") or 0) <= 0:
