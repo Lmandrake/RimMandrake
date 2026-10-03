@@ -869,7 +869,7 @@ namespace JawaBench.BridgeTools
             "jawa/pawn_health",
             Description =
                 "Add or remove a hediff, install a bionic, or restore a body part. " +
-                "action='add' | 'remove' | 'bionic' | 'restore'. " +
+                "action='add' | 'remove' | 'bionic' | 'restore' | 'permanent' (marks matching injuries permanent). " +
                 "⭐ 'bionic' needs NO RecipeDef and no surgeon: it does RestorePart(part) " +
                 "then AddHediff(def, part), which is exactly what " +
                 "Recipe_InstallArtificialBodyPart does with a null billDoer. " +
@@ -881,7 +881,7 @@ namespace JawaBench.BridgeTools
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
-            [ToolParameter(Description = "'add' | 'remove' | 'bionic' | 'restore'.")] string action = "add",
+            [ToolParameter(Description = "'add' | 'remove' | 'bionic' | 'restore' | 'permanent' (marks matching injuries permanent).")] string action = "add",
             [ToolParameter(Description = "HediffDef (add/remove) or the bionic's HediffDef.")] string hediff = null,
             [ToolParameter(Description = "BodyPartDef name, e.g. Leg, Eye, Hand. Empty = whole body.")] string bodyPart = null,
             [ToolParameter(Description = "Severity for 'add'. -1 uses the def default.")] float severity = -1f,
@@ -903,7 +903,25 @@ namespace JawaBench.BridgeTools
                 }
 
                 string didWhat;
-                if (A == "restore")
+                if (A == "permanent")
+                {
+                    // The in-game debug action 'Make injuries permanent' (DebugToolsPawns.MakeInjuryPermanent) is private, and
+                    // rimworld/search_debug_actions HANGS the main thread (it expands every debug node, which runs quest-gen
+                    // test loops: QuestNode_TradeRequest spam, 2026-10-03). Same effect here, optionally limited to one def/part.
+                    int made = 0;
+                    foreach (var hx in p.health.hediffSet.hediffs.ToList())
+                    {
+                        if (!string.IsNullOrEmpty(hediff) && hx.def.defName != hediff.Trim()) continue;
+                        if (part != null && hx.Part != part) continue;
+                        var gp = hx.TryGetComp<HediffComp_GetsPermanent>();
+                        if (gp == null) continue;
+                        gp.IsPermanent = true;
+                        if (gp.IsPermanent) made++;
+                    }
+                    if (made == 0) return Fail("No hediff with a GetsPermanent comp matched" + (string.IsNullOrEmpty(hediff) ? "" : " '" + hediff + "'") + ".");
+                    didWhat = "made " + made + " injur" + (made == 1 ? "y" : "ies") + " permanent";
+                }
+                else if (A == "restore")
                 {
                     if (!confirmDestructive)
                         return Fail("RestorePart is RECURSIVE into child parts, wipes their hediffs and does not drop what it removes. Pass confirmDestructive=true if that is what you want.");
