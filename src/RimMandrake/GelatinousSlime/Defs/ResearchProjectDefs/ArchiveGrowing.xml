@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- GELATINOUSSLIME_ARCHIVE_RESURRECTION_1. Free-mod gate (vanilla Archogenetics). In the campaign the project is re-parented onto the
+       Ascendant Ladder (Helix-bought) by the RimUtinni research layer, which is another item's. Cost [INVENTED]. -->
+  <ResearchProjectDef MayRequire="Ludeon.RimWorld.Biotech">
+    <defName>RM_ArchiveGrowing</defName>
+    <label>archive growing</label>
+    <description>The body files everyone it reads. Learn to read an entry back out and grow the person it describes, as they were the last time it touched them.</description>
+    <baseCost>3000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <prerequisites>
+      <li>Archogenetics</li>
+      <li>RM_SlimeChemistry</li>
+    </prerequisites>
+    <researchViewX>8.4</researchViewX>
+    <researchViewY>3.4</researchViewY>
+  </ResearchProjectDef>
+</Defs>

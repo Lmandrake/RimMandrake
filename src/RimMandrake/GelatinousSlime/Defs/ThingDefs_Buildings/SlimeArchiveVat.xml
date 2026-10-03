@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- GELATINOUSSLIME_ARCHIVE_RESURRECTION_1. ART: green-tinted vanilla sheet, placeholder (artpipe searched: none exists). Numbers [INVENTED]. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ArchiveVat</defName>
+    <label>archive vat</label>
+    <description>A glass-fronted tank fed by the flow. Choose a dead colonist the body has read and the vat grows them back from the last entry it filed: their genes, skills, traits and kin as they were then, and no memory of anything since. It costs raw slime, spacer components and three days of power. The old grave stays where it is.</description>
+    <thingClass>RimMandrake.GelatinousSlime.Building_SlimeArchiveVat</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/TableStonecutter</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(110, 190, 110)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>60</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <WorkToBuild>4000</WorkToBuild>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <size>(2,2)</size>
+    <designationCategory>Misc</designationCategory>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentSpacer>4</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>RM_ArchiveGrowing</li>
+    </researchPrerequisites>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>400</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+  </ThingDef>
+</Defs>

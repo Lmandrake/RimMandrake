@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- GELATINOUSSLIME_ARCHIVE_RESURRECTION_1. A visible, effect-free record that this person was grown back from the body's last entry. -->
+  <HediffDef>
+    <defName>RM_ArchiveReturned</defName>
+    <label>grown back</label>
+    <description>Grown in the archive vat from the last entry the body filed. They are as they were at that touch and remember nothing since.</description>
+    <hediffClass>Hediff</hediffClass>
+    <defaultLabelColor>(0.45, 0.75, 0.35)</defaultLabelColor>
+    <initialSeverity>1</initialSeverity>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+  </HediffDef>
+</Defs>

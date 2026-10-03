@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- GELATINOUSSLIME_ARCHIVE_RESURRECTION_1: kin who knew both selves. "Are they the same?" is the design. [INVENTED mood] -->
+  <ThoughtDef>
+    <defName>RM_KnewBothSelves</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>knew them, then and now</label>
+        <description>They have the face and the laugh and not the grief. I buried one of them. Is this the same person?</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

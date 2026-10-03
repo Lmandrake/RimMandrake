@@ -59,6 +59,8 @@ namespace RimMandrake.GelatinousSlime
                         continue;
                     }
 
+                    SlimeArchiveUtility.Touch(pawn);
+
                     if (!pawn.health.hediffSet.HasHediff(SlimeDefs.Slimification))
                     {
                         pawn.health.AddHediff(SlimeDefs.Slimification);
