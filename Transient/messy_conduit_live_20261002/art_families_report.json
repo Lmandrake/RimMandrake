@@ -1,0 +1,724 @@
+[
+ {
+  "job": "RM_MessyConduit_Cybertek_Strand",
+  "dest": "Styles/Cybertek/Strand.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.75,
+  "cord_rows": 10,
+  "seam": [
+   1.0,
+   0.59
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Cybertek_Node_T",
+  "dest": "Styles/Cybertek/Junction_T.png",
+  "kind": "tjunction",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.863,
+  "arm_z": 0.055,
+  "shift_up_px": 11,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Cybertek_Node_X",
+  "dest": "Styles/Cybertek/Junction_X.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.751,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Cybertek_Plug_Casing",
+  "dest": "Styles/Cybertek/Plug.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.84,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Cybertek_Stub_Wall",
+  "dest": "Styles/Cybertek/StubWall.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.787,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Cybertek_Stub_Rock",
+  "dest": "Styles/Cybertek/StubRock.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.791,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Cybertek_Decal_FrayedEndDead_v2",
+  "dest": "Styles/Cybertek/EndFrayed_Dead.png",
+  "kind": "decal",
+  "canvas": [
+   64,
+   64
+  ],
+  "src_size": [
+   64,
+   64
+  ],
+  "alpha_transparent_frac": 0.844,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Strand_Orange",
+  "dest": "Styles/ExtCord/Strand_Orange.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.719,
+  "cord_rows": 11,
+  "seam": [
+   51.08,
+   1.47
+  ],
+  "seam_after_crossfade": [
+   0.4,
+   0.94
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Strand_Green",
+  "dest": "Styles/ExtCord/Strand_Green.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.438,
+  "cord_rows": 20,
+  "seam": [
+   1.32,
+   1.95
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Strand_Brown",
+  "dest": "Styles/ExtCord/Strand_Brown.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.75,
+  "cord_rows": 10,
+  "seam": [
+   0.7,
+   0.77
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Strand_Yellow",
+  "dest": "Styles/ExtCord/Strand_Yellow.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.625,
+  "cord_rows": 14,
+  "seam": [
+   1.91,
+   1.11
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Strand_Blue",
+  "dest": "Styles/ExtCord/Strand_Blue.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.719,
+  "cord_rows": 11,
+  "seam": [
+   49.74,
+   1.61
+  ],
+  "seam_after_crossfade": [
+   0.5,
+   1.05
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Node_T_v2",
+  "dest": "Styles/ExtCord/Junction_T.png",
+  "kind": "tjunction",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.733,
+  "arm_z": 0.117,
+  "shift_up_px": 3,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Node_X",
+  "dest": "Styles/ExtCord/Junction_X.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.775,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Plug_Casing",
+  "dest": "Styles/ExtCord/Plug.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.848,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Stub_Wall",
+  "dest": "Styles/ExtCord/StubWall.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.733,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Stub_Rock",
+  "dest": "Styles/ExtCord/StubRock.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.759,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_ExtCord_Decal_FrayedEndDead",
+  "dest": "Styles/ExtCord/EndFrayed_Dead.png",
+  "kind": "decal",
+  "canvas": [
+   64,
+   64
+  ],
+  "src_size": [
+   64,
+   64
+  ],
+  "alpha_transparent_frac": 0.822,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Strand_BlackRubber",
+  "dest": "Styles/StarWars/Strand_BlackRubber.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.594,
+  "cord_rows": 15,
+  "seam": [
+   0.65,
+   1.25
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Strand_CorrugatedSteel",
+  "dest": "Styles/StarWars/Strand_CorrugatedSteel.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.535,
+  "cord_rows": 17,
+  "seam": [
+   2.2,
+   10.91
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Strand_CoiledBlack",
+  "dest": "Styles/StarWars/Strand_CoiledBlack.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.579,
+  "cord_rows": 16,
+  "seam": [
+   16.47,
+   11.13
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Node_T",
+  "dest": "Styles/StarWars/Junction_T.png",
+  "kind": "tjunction",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.737,
+  "arm_z": 0.125,
+  "shift_up_px": 2,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Node_X",
+  "dest": "Styles/StarWars/Junction_X.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.647,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Plug_Casing",
+  "dest": "Styles/StarWars/Plug.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.84,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Stub_Wall",
+  "dest": "Styles/StarWars/StubWall.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.639,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Stub_Rock",
+  "dest": "Styles/StarWars/StubRock.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.642,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_StarWars_Decal_FrayedEndDead",
+  "dest": "Styles/StarWars/EndFrayed_Dead.png",
+  "kind": "decal",
+  "canvas": [
+   64,
+   64
+  ],
+  "src_size": [
+   64,
+   64
+  ],
+  "alpha_transparent_frac": 0.829,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Shared_SparkGlow",
+  "dest": "SparkGlow.png",
+  "kind": "decal",
+  "canvas": [
+   64,
+   64
+  ],
+  "src_size": [
+   64,
+   64
+  ],
+  "alpha_transparent_frac": 0.829,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Pole_Side",
+  "dest": "Aerial/AerialMast.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   256
+  ],
+  "src_size": [
+   128,
+   256
+  ],
+  "alpha_transparent_frac": 0.807,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Pole_Side",
+  "dest": "Aerial/AerialMastTop.png",
+  "kind": "masttop",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   256
+  ],
+  "alpha_transparent_frac": 0.807,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Hanger_Bracket",
+  "dest": "Aerial/WallBracket.png",
+  "kind": "upscale",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   64,
+   64
+  ],
+  "alpha_transparent_frac": 0.678,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Strand_WireShadow",
+  "dest": "Aerial/SpanShadow.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.813,
+  "cord_rows": 7,
+  "seam": [
+   15.95,
+   0.78
+  ],
+  "seam_after_crossfade": [
+   0.71,
+   0.56
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Strand_Wire",
+  "dest": "Aerial/SpanWire.png",
+  "kind": "strip",
+  "canvas": [
+   128,
+   32
+  ],
+  "src_size": [
+   128,
+   32
+  ],
+  "alpha_transparent_frac": 0.906,
+  "cord_rows": 5,
+  "seam": [
+   21.07,
+   1.35
+  ],
+  "seam_after_crossfade": [
+   0.8,
+   1.02
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Insulator",
+  "dest": "Aerial/Insulator.png",
+  "kind": "decal",
+  "canvas": [
+   64,
+   64
+  ],
+  "src_size": [
+   64,
+   64
+  ],
+  "alpha_transparent_frac": 0.589,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Aerial_Pole_Top",
+  "dest": "Aerial/PoleTopDown.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.856,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_Strand_Flat_v2",
+  "dest": "Hose/Strand_Flat.png",
+  "kind": "strip",
+  "canvas": [
+   256,
+   64
+  ],
+  "src_size": [
+   256,
+   64
+  ],
+  "alpha_transparent_frac": 0.706,
+  "cord_rows": 22,
+  "seam": [
+   2.83,
+   3.77
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_Strand_Plump_v2",
+  "dest": "Hose/Strand_Plump.png",
+  "kind": "strip",
+  "canvas": [
+   256,
+   64
+  ],
+  "src_size": [
+   256,
+   64
+  ],
+  "alpha_transparent_frac": 0.353,
+  "cord_rows": 44,
+  "seam": [
+   8.23,
+   7.2
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_Strand_Shadow",
+  "dest": "Hose/Strand_Shadow.png",
+  "kind": "strip",
+  "canvas": [
+   256,
+   64
+  ],
+  "src_size": [
+   256,
+   64
+  ],
+  "alpha_transparent_frac": 0.577,
+  "cord_rows": 29,
+  "seam": [
+   1.42,
+   0.51
+  ],
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_Coupling_Brass_v2",
+  "dest": "Hose/Coupling_Brass.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.686,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_Nozzle_v2",
+  "dest": "Hose/Nozzle.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.83,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_Reel_PumpHookup_v2",
+  "dest": "Hose/Reel_PumpHookup.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.539,
+  "wired": true
+ },
+ {
+  "job": "RM_MessyConduit_Hose_EndCap_v2",
+  "dest": "Hose/EndCap.png",
+  "kind": "decal",
+  "canvas": [
+   128,
+   128
+  ],
+  "src_size": [
+   128,
+   128
+  ],
+  "alpha_transparent_frac": 0.777,
+  "wired": true
+ }
+]
