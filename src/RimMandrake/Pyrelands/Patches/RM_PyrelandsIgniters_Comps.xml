@@ -68,8 +68,9 @@
 
              2. CompFurnaceWarmthAura — OURS. The open-field half, where a heat
                 pusher does nothing a player can feel because outdoors the
-                "room" is the whole map. A hediff aura instead: see
-                Defs/HediffDefs/RUT_PyrelandsHediffs.xml.
+                "room" is the whole map. A local felt-temperature offset
+                around the beast instead (no hediff): see
+                Source/CompFurnaceWarmthAura.cs.
 
              3. CompFurnaceBedIgnition — OURS. The bed-down smoulder.
                 🔴 NO TAMED EXEMPTION, by ruling. Do not add one.

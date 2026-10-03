@@ -74,7 +74,7 @@ DEFAULTS = {
     "ashfallAccumulationEnabled": True, "ashfallRateMultiplier": 1.0,
     "biomeGenerationEnabled": True, "wildPlantAllowlistEnabled": True,
     "plantGrowthStagesEnabled": True, "scorchedRuinsEnabled": True,
-    "burnLineEnabled": True, "fireHawkSpreadEnabled": True, "furnaceThermalEnabled": True,
+    "burnLineEnabled": True, "fireHawkSpreadEnabled": True, "furnaceThermalEnabled": True, "furnaceWarmthStrength": 1.0,
     "fireClockEnabled": True, "furnaceWorldMigrationEnabled": True, "furnaceHerdCount": 2,
     "burrowOnFireEnabled": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",

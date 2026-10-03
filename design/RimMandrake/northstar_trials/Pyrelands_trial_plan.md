@@ -104,10 +104,8 @@ with the instrument named. **UNMEASURED** means nobody has looked yet.
   a defect.
 - **Heat**: the sheet records the Ash'karr Pyrelands at sun median **+56°**, median temperature
   **53.6 °C** (range 39–65) and elevation ~257 m (`the_pyrelands.md` §0). This is an extreme-heat,
-  **overhead-sun** biome under the one-heat ruling. `SOLAR_HEAT_EXPOSURE_1` (open) will give it a
-  heat-kind extension. Until then the test records the heat kind it *would* carry and never adds a
-  Pyrelands-specific heat effect. `RM_FurnaceWarmth` is the furnace-beast aura, a warmth buff,
-  which is not a heat kind.
+  **overhead-sun** biome under the one-heat ruling. `RM_Pyrelands` carries an `overhead` `RM_SunHeatExtension` (`PYRELANDS_HEAT_KIND_BUILD_1`). The furnace-beast's
+  warmth is a local felt-temperature offset (`PYRELANDS_FURNACE_WARMTH_AMBIENT_1`), not a hediff and not a heat kind.
 
 ---
 
@@ -237,7 +235,7 @@ the judge needs one.
 | `pyre_ruins_scorched` | [L+V] a fixture whose mapgen placed a ruin: the ruin footprint carries ash terrain / scorch; screenshot. UNMEASURED: how often a 250×250 site gets a ruin — force one if the genstep allows. |
 | `pyre_fulgurite_after_lightning` | [L] force dry-lightning strikes on sand cells (n large enough at 0.35/strike); ≥ 1 `RM_FE_Fulgurite` at an impact cell. |
 | `pyre_firehawk_carries_ember` | [L] job read: `RUT_FireHawkCarryEmber` observed, and a new Fire within N cells of the drop. **Never** a flight or screenshot hunt (flyer ruling). |
-| `pyre_furnacebeast_warmth` | [L] pawn within the aura radius gains `RM_FurnaceWarmth`; it is removed after the pawn walks out. |
+| `pyre_furnacebeast_warmth` | [L] pawn within the aura radius reads a higher `AmbientTemperature` (no hediff exists); it falls away after the pawn walks out. |
 | `pyre_furnacebeast_heats_room` | [L] two matched enclosed rooms at the same start temperature, one holding a furnace-beast; the room temperature delta after a settle. |
 | `pyre_burrowers_dive` | [L] fire reaches a burrow-on-fire grazer: `RM_Burrowed` hediff present while the fire passes, health intact afterwards. |
 | `pyre_cannot_ordinary_rain` (cannot show) | [O]/[D] the post-patch weather table holds no ordinary rain (sheet §6 ban 2); plus the weather never reads as vanilla `Rain` in a long weather run. |

@@ -1067,20 +1067,13 @@ def furnace_warmth(t):
         if _live(t):
             if not col:
                 _fail("could not spawn the test colonist: %r" % r)
-            if not any(sm["warm"] for sm in samples):
-                close = [sm for sm in samples if sm["dist"] is not None and sm["dist"] <= 1.7]
-                if len(close) < 2:
-                    _unmeasured(t, "the pen did not hold the colonist within the uncharged aura "
-                                   "(1.7 cells) for two samples: %r" % samples)
-                _fail("colonist held within %.1f cells of the furnace-beast for %d ticks never "
-                      "gained RM_FurnaceWarmth" % (max(sm["dist"] for sm in close), 90 * len(close)))
-        t.bridge_call("jawa/order_pawn", pawnId=col, x=x + 25, z=z, waitTicks=900)
-        _wait(t, 600)
-        away = _pawn_row(t, col, health=True)
-        if _live(t):
-            _note(t, "after walking away", {"x": (away or {}).get("x"), "z": (away or {}).get("z")})
-            if _has_hediff(away, "RM_FurnaceWarmth"):
-                _fail("RM_FurnaceWarmth still present after the colonist walked 25 cells away")
+            # PYRELANDS_FURNACE_WARMTH_AMBIENT_1: one kind of heat. The old comfort-range hediff is retired, so
+            # standing beside the beast must never grant it; the warmth is a felt-temperature offset
+            # (FurnaceWarmthField.OffsetFor), whose falloff maths the offline selftest proves.
+            if any(sm["warm"] for sm in samples):
+                _fail("colonist beside the furnace-beast gained RM_FurnaceWarmth: the hediff was retired")
+            _unmeasured(t, "the felt-temperature offset needs a debug [Tool] reading Thing.AmbientTemperature "
+                           "(FurnaceWarmthField.OffsetFor) on a pawn; none exists yet, and no hediff is the control")
         t.screenshot()
 
 

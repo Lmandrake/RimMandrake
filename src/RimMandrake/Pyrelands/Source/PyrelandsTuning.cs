@@ -107,14 +107,12 @@ namespace RimMandrake.Pyrelands
         // ---------------------------------------------------------------
         /// <summary>Aura radius — "pawns within a few cells" (§8b). [INVENTED]</summary>
         public const float FurnaceAuraRadius = 4.9f;
-        public const int FurnaceAuraIntervalTicks = 60;
 
-        // The warmth hediff's own disappearsAfterTicks (180 — re-stamped every aura
-        // interval, so walking away from the herd loses it within a few seconds
-        // rather than lingering) is hardcoded directly on RM_FurnaceWarmth's
-        // HediffCompProperties_Disappears in Defs/HediffDefs/RUT_PyrelandsHediffs.xml.
-        // A C# copy of that number here was never read by anything — removed rather
-        // than left as a second, driftable source of the same fact.
+        /// <summary>Felt-temperature offset at the beast itself, degrees C, before the Mod Settings strength dial.
+        /// Falls to 0 at the aura radius. Replaces the old RM_FurnaceWarmth comfort-range hediff (-14 cold / -6 heat
+        /// tolerance) with one local heat source: it relieves cold and worsens heat through vanilla's own systems.
+        /// [INVENTED, tuned in live play]</summary>
+        public const float FurnaceWarmthMaxC = 14f;
 
         /// <summary>A rest has to have been a real rest before the ground is hot
         /// enough to take. 1 in-game hour. [INVENTED]</summary>

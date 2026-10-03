@@ -10,3 +10,6 @@ Split from `PYRELANDS_HEAT_KIND_BUILD_1` (steps 2-3; step 1, the `RM_SunHeatExte
 
 ## verify
 - Selftest: a pawn beside a furnace-beast reads a higher `AmbientTemperature`; no comfort-range hediff exists.
+
+## done
+Built: `CompFurnaceWarmthAura` + `FurnaceWarmthField` (AmbientTemperature postfix, per-map registry, in the Pyrelands DLL), `FurnaceWarmthMath` + offline selftest (`selftest_furnace_warmth.py`), `furnaceWarmthStrength` slider, `RM_FurnaceWarmth` deleted. Live felt-temperature read is UNMEASURED: needs a debug [Tool] reading `Thing.AmbientTemperature` on a pawn.

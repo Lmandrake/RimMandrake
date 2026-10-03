@@ -1,32 +1,23 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
+using HarmonyLib;
 using Verse;
 
 namespace RimMandrake.Pyrelands
 {
     /// <summary>
-    /// PYRELANDS_MECHANICS_1, mechanism 4a — the open-field "walking hearth"
-    /// (RUT_ruled_commissions_wave2.md §8b).
+    /// PYRELANDS_MECHANICS_1 mechanism 4a, rebuilt by PYRELANDS_FURNACE_WARMTH_AMBIENT_1 - the open-field
+    /// "walking hearth". One kind of heat planet-wide (owner, 2026-09-29/30): there is no comfort-range
+    /// hediff any more. The beast adds a LOCAL FELT-TEMPERATURE OFFSET to every pawn near it (+C at the
+    /// beast, falling off linearly to 0 at the aura radius), through a postfix on Thing.AmbientTemperature,
+    /// so vanilla hypothermia relief and Heatstroke do the work: "welcome company in the cold and
+    /// terrible company in the dry" (the_pyrelands.md section 5) falls out of one number.
     ///
-    /// 🔑 WHY THIS IS NOT A HEAT PUSHER. The brief settles it and this comment
-    /// exists so nobody re-opens it: vanilla's temperature model spends pushed
-    /// heat on the containing ROOM, and outdoors the containing room is the
-    /// map-wide outdoor temperature — so CompHeatPusher on a beast walking open
-    /// grassland warms nothing a player can feel. The beast ships the vanilla heat
-    /// pusher too (one XML node, in RUT_FurnaceBeast_Mechanics.xml) and that node
-    /// is what genuinely heats a barn, a canyon room or a walled waystation. THIS
-    /// comp is the other half: a hediff aura, radius-limited, for the open field.
-    /// Fighting the outdoor model cell by cell was the expensive wrong route and
-    /// was rejected at design.
+    /// WHY NOT A HEAT PUSHER (unchanged): vanilla spends pushed heat on the containing ROOM, and outdoors
+    /// that is the whole map, so CompHeatPusher on a beast in open grass warms nothing. The beast still
+    /// ships the vanilla pusher for barns and rooms; this comp is the open-field half.
     ///
-    /// The hediff does two things, both of them the sheet's own words (§5): a
-    /// furnace-beast is "welcome company in the cold and terrible company in the
-    /// dry". So RM_FurnaceWarmth widens cold tolerance AND narrows heat
-    /// tolerance. Standing next to a stove in the Pyrelands sun is a mistake.
-    ///
-    /// Expiry is handled by the hediff's own HediffComp_Disappears, re-stamped
-    /// every interval while the pawn is in range: walk away from the herd and the
-    /// warmth is gone within a few seconds, with no bookkeeping here.
+    /// The aura radius is the thermal charge's output (FURNACEBEAST_THERMAL_CYCLE_1), exactly as before.
     /// </summary>
     public class CompProperties_FurnaceWarmthAura : CompProperties
     {
@@ -38,73 +29,113 @@ namespace RimMandrake.Pyrelands
 
     public class CompFurnaceWarmthAura : ThingComp
     {
-        /// <summary>Aura radius at zero charge, as a fraction of the full one.
-        /// Not zero: a cold furnace-beast is still a very large warm animal.
-        /// [INVENTED]</summary>
-        private const float MinAuraFraction = 0.35f;
+        /// <summary>Aura radius at zero charge, as a fraction of the full one. Not zero: a cold furnace-beast
+        /// is still a very large warm animal. [INVENTED]</summary>
+        internal const float MinAuraFraction = 0.35f;
 
-        public CompProperties_FurnaceWarmthAura Props => (CompProperties_FurnaceWarmthAura)props;
-
-        public override void CompTickInterval(int delta)
+        public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            base.CompTickInterval(delta);
+            base.PostSpawnSetup(respawningAfterLoad);
+            FurnaceWarmthField.Register(parent.Map, this);
+        }
 
-            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled)
-            {
-                return;
-            }
-            if (!parent.IsHashIntervalTick(PyrelandsTuning.FurnaceAuraIntervalTicks, delta))
-            {
-                return;
-            }
-            if (!(parent is Pawn beast) || !beast.Spawned || beast.Dead)
-            {
-                return;
-            }
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            FurnaceWarmthField.Unregister(map, this);
+        }
 
-            // FURNACEBEAST_THERMAL_CYCLE_1: the aura is the capacitor's output,
-            // not a constant. A run-down beast on the near-terminator leg is a
-            // cold animal; a beast fresh out of a burn is a walking hearth. The
-            // floor keeps a discharged beast faintly warm rather than making the
-            // mechanism vanish, and with the charge comp absent or switched off
-            // the radius is the full shipped value, unchanged.
+        /// <summary>This beast's aura radius now, in cells (0 when the mechanism is switched off).</summary>
+        internal float CurrentRadius()
+        {
+            if (!RM_PyrelandsSettings.pyrelandsEnabled || !RM_PyrelandsSettings.furnaceThermalEnabled
+                || !(parent is Pawn beast) || !beast.Spawned || beast.Dead)
+            {
+                return 0f;
+            }
             CompFurnaceThermalCharge charge = beast.TryGetComp<CompFurnaceThermalCharge>();
-            float scale = (charge != null && RM_PyrelandsSettings.furnaceThermalEnabled)
-                ? Mathf.Lerp(MinAuraFraction, 1f, charge.Charge)
-                : 1f;
+            return FurnaceWarmthMath.Radius(PyrelandsTuning.FurnaceAuraRadius, MinAuraFraction,
+                charge != null, charge != null ? charge.Charge : 0f);
+        }
+    }
 
-            float radius = PyrelandsTuning.FurnaceAuraRadius * scale;
-            float radiusSq = radius * radius;
-            IReadOnlyList<Pawn> pawns = beast.Map.mapPawns.AllPawnsSpawned;
-            for (int i = 0; i < pawns.Count; i++)
+    /// <summary>The registry of live furnace-beasts per map and the AmbientTemperature postfix that reads it.
+    /// Applied manually in the static ctor (same pattern as Patch_FurnaceBeastHeatImmunity).</summary>
+    [StaticConstructorOnStartup]
+    public static class FurnaceWarmthField
+    {
+        private static readonly Dictionary<Map, List<CompFurnaceWarmthAura>> byMap =
+            new Dictionary<Map, List<CompFurnaceWarmthAura>>();
+
+        static FurnaceWarmthField()
+        {
+            try
             {
-                Pawn p = pawns[i];
-                if (p == beast || p.Dead || p.health == null)
-                {
-                    continue;
-                }
-                if ((p.Position - beast.Position).LengthHorizontalSquared > radiusSq)
-                {
-                    continue;
-                }
-
-                ApplyOrRefreshWarmth(p);
+                new Harmony("mandrake.rm.pyrelands.furnacewarmth").Patch(
+                    AccessTools.PropertyGetter(typeof(Thing), nameof(Thing.AmbientTemperature)),
+                    postfix: new HarmonyMethod(typeof(FurnaceWarmthField), nameof(Postfix_AmbientTemperature)));
+            }
+            catch (Exception e)
+            {
+                Log.Error("[RimMandrake.Pyrelands] furnace warmth: AmbientTemperature patch FAILED, the open-field warmth is OFF: " + e.Message);
             }
         }
 
-        private static void ApplyOrRefreshWarmth(Pawn p)
+        internal static void Register(Map map, CompFurnaceWarmthAura comp)
         {
-            HediffDef def = PyrelandsMechanicsDefOf.RM_FurnaceWarmth;
-            Hediff hediff = p.health.hediffSet.GetFirstHediffOfDef(def);
-            if (hediff == null)
+            if (map == null) return;
+            if (!byMap.TryGetValue(map, out List<CompFurnaceWarmthAura> l))
             {
-                hediff = HediffMaker.MakeHediff(def, p);
-                p.health.AddHediff(hediff);
+                byMap[map] = l = new List<CompFurnaceWarmthAura>();
             }
+            if (!l.Contains(comp)) l.Add(comp);
+        }
 
-            // Re-stamp the countdown rather than stacking severity: two beasts are
-            // not twice as warm, they are warm for as long as either is close.
-            hediff.TryGetComp<HediffComp_Disappears>()?.ResetElapsedTicks();
+        internal static void Unregister(Map map, CompFurnaceWarmthAura comp)
+        {
+            if (map != null && byMap.TryGetValue(map, out List<CompFurnaceWarmthAura> l))
+            {
+                l.Remove(comp);
+                if (l.Count == 0) byMap.Remove(map);
+            }
+        }
+
+        /// <summary>Felt-temperature offset this pawn gets from furnace-beasts on its map, in degrees C.</summary>
+        public static float OffsetFor(Pawn pawn)
+        {
+            if (byMap.Count == 0 || pawn == null || !pawn.Spawned
+                || !byMap.TryGetValue(pawn.Map, out List<CompFurnaceWarmthAura> beasts))
+            {
+                return 0f;
+            }
+            float best = 0f;
+            for (int i = 0; i < beasts.Count; i++)
+            {
+                Pawn beast = beasts[i].parent as Pawn;
+                if (beast == null || beast == pawn) continue;
+                float radius = beasts[i].CurrentRadius();
+                if (radius <= 0f) continue;
+                float d2 = (pawn.Position - beast.Position).LengthHorizontalSquared;
+                best = FurnaceWarmthMath.Combine(best, FurnaceWarmthMath.Offset(d2, radius,
+                    PyrelandsTuning.FurnaceWarmthMaxC, RM_PyrelandsSettings.furnaceWarmthStrength));
+            }
+            return best;
+        }
+
+        public static void Postfix_AmbientTemperature(Thing __instance, ref float __result)
+        {
+            if (byMap.Count == 0 || !(__instance is Pawn pawn))
+            {
+                return;
+            }
+            try
+            {
+                __result += OffsetFor(pawn);
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce("[RimMandrake.Pyrelands] furnace warmth: " + e, 0x4E7F0A1);
+            }
         }
     }
 }
