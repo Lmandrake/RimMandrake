@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LanternDeeps · LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1 + LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1 -->
+<LanguageData>
+  <RM_CreepStalks>The Creep is growing toward {0}, who lies still nearby.</RM_CreepStalks>
+  <RM_CreepEngulfLabel>Grown over by the Creep</RM_CreepEngulfLabel>
+  <RM_CreepEngulfText>{0} lay still too near the Creep, and the crystal has precipitated over the body. Every hour on the crust it grows thicker. Wake or carry them off it, and break the crust back.</RM_CreepEngulfText>
+  <RM_CleaverSplits>A Cleaver has split: the shard is a new Cleaver.</RM_CleaverSplits>
+  <RM_DeepAuroraText>The aurora is storming overhead, and the Deep feels it through the rock. The lanternstone glows wider, the Chorus rises, and the Cleavers run. Down here it is a feast day.</RM_DeepAuroraText>
+  <RM_DeepCollapseWarning>The roof is groaning: dust is trailing down and sand piling below. Prop it, or get clear.</RM_DeepCollapseWarning>
+  <RM_DeepCollapseHeld>The groaning stops. The roof holds.</RM_DeepCollapseHeld>
+</LanguageData>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LanternDeeps_CrystalLife.xml   LanternDeeps · LANTERNDEEPS_CREEP_CLEAVERS_BUILD_1
+  The ruled crystal life as creatures, never crystal-studded animals (the_lantern_deeps.md §4):
+  the Creep (RM_CreepCrust + RM_MapComponent_Creep, seeded by RM_DeepCreep) and the Cleavers
+  (RM_Cleaver, RM_CompCleave). Mechanics: Source/RM_CreepCleavers.cs. Art: artpipe RM_CreepCrust,
+  RM_Cleaver_south/east/north, generated for this item.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RM_CreepCrust</defName>
+    <label>the Creep</label>
+    <description>A crust of tiny interlocking blue-grey crystal facets spread across the floor like frost on a window, thicker toward its centre, its leading edge a fringe of needle crystal. It is alive and it is hunting, slowly: it dissolves behind and re-precipitates ahead, and it grows toward anything that lies still near it. Whatever sleeps on it is grown over. Break it or mine it away.</description>
+    <thingClass>RimMandrake.LanternDeeps.RM_CreepCrust</thingClass>
+    <category>Building</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>25</pathCost>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <rotatable>false</rotatable>
+    <drawerType>MapMeshOnly</drawerType>
+    <tickerType>Never</tickerType>
+    <mineable>true</mineable>
+    <graphicData>
+      <texPath>RM_LanternDeeps/Things/Creep/CreepCrust</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-4</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <repairable>false</repairable>
+      <expandHomeArea>false</expandHomeArea>
+      <mineableThing>RM_Lanternstone</mineableThing>
+      <mineableYield>1</mineableYield>
+      <mineableDropChance>0.25</mineableDropChance>
+    </building>
+    <comps>
+      <li Class="CompProperties_InspectString">
+        <inspectString>Alive. Grows toward anything asleep or down nearby. Break it or mine it away.</inspectString>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <HediffDef>
+    <defName>RM_CreepEngulfed</defName>
+    <label>grown over by the Creep</label>
+    <description>Crystal has precipitated over this body while it lay still: a crust over the skin, then into the mouth and nose. It falls away slowly once the body is off the Creep.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.75, 0.95)</defaultLabelColor>
+    <lethalSeverity>1</lethalSeverity>
+    <isBad>true</isBad>
+    <makesSickThought>false</makesSickThought>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1.0</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>crusted</label>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>-0.2</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>engulfed</label>
+        <painOffset>0.25</painOffset>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>-0.5</offset></li>
+          <li><capacity>Breathing</capacity><offset>-0.25</offset></li>
+        </capMods>
+      </li>
+      <li>
+        <minSeverity>0.8</minSeverity>
+        <label>entombed</label>
+        <painOffset>0.4</painOffset>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>-0.8</offset></li>
+          <li><capacity>Breathing</capacity><offset>-0.5</offset></li>
+          <li><capacity>Consciousness</capacity><offset>-0.3</offset></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <GenStepDef>
+    <defName>RM_DeepCreep</defName>
+    <order>959</order>
+    <genStep Class="RimMandrake.LanternDeeps.RM_GenStep_Creep">
+      <chance>0.6</chance>
+      <seedCells>5~9</seedCells>
+    </genStep>
+  </GenStepDef>
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RM_Filth_CleaverShards</defName>
+    <label>cleaver shards</label>
+    <description>Sharp blue crystal fragments shed by a Cleaver as it fractures its way across the floor.</description>
+    <graphicData>
+      <texPath>Things/Filth/RubbleRock</texPath>
+      <color>(120,170,230)</color>
+    </graphicData>
+    <filth>
+      <disappearsInDays>8~12</disappearsInDays>
+      <cleaningWorkToReduceThickness>30</cleaningWorkToReduceThickness>
+    </filth>
+    <statBases>
+      <Beauty>-3</Beauty>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Cleaver</defName>
+    <label>cleaver</label>
+    <description>Five or six sharp angular shards of blue crystal held loosely together by stress-light along their fracture planes. A Cleaver has no head and no legs: it moves by fracturing, flinging a shard forward and re-forming around it, fast and violent, shedding fragments as it goes. Strike it hard and it splits, and the shard walks away as another Cleaver. Cleaving is birth. They are the caverns' true danger.</description>
+    <statBases>
+      <MoveSpeed>5.2</MoveSpeed>
+      <Wildness>1</Wildness>
+      <MarketValue>200</MarketValue>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-80</ComfyTemperatureMin>
+      <ComfyTemperatureMax>40</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+      <ArmorRating_Sharp>0.35</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>shard edge</label>
+        <capacities><li>Cut</li></capacities>
+        <power>11</power>
+        <cooldownTime>1.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>shard point</label>
+        <capacities><li>Stab</li></capacities>
+        <power>9</power>
+        <cooldownTime>1.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>1.5</maxPreyBodySize>
+      <bloodDef>RM_Filth_CleaverShards</bloodDef>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>1</manhunterOnTameFailChance>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <RM_Lanternstone>6</RM_Lanternstone>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.RM_CompProperties_Cleave">
+        <minDamage>5</minDamage>
+        <chance>0.5</chance>
+        <cooldownTicks>900</cooldownTicks>
+        <shardAge>0.3</shardAge>
+        <shardFilth>RM_Filth_CleaverShards</shardFilth>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Cleaver</defName>
+    <label>cleaver</label>
+    <race>RM_Cleaver</race>
+    <combatPower>70</combatPower>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Crystal/Cleaver/Cleaver</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Crystal/Cleaver/Cleaver</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.05</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Crystal/Cleaver/Cleaver</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

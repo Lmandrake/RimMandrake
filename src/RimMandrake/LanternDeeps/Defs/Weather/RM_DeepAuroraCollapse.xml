@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeepAuroraCollapse.xml   LanternDeeps · LANTERNDEEPS_AURORA_COLLAPSE_BUILD_1
+  The Deep's own aurora condition (a reconnection storm overhead is the caverns' feast day) and the
+  quicken it gives Cleavers. Mechanics and the collapse warnings: Source/RM_AuroraCollapse.cs.
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RM_DeepAurora</defName>
+    <conditionClass>RimMandrake.LanternDeeps.RM_GameCondition_DeepAurora</conditionClass>
+    <label>aurora through the rock</label>
+    <description>The aurora is storming overhead and the Deep feels it through the rock: the lanternstone glows wider, the Chorus rises, and the Cleavers run.</description>
+    <endMessage>The aurora overhead has passed. The lanternstone dims to its old glow.</endMessage>
+    <canBePermanent>false</canBePermanent>
+    <modExtensions>
+      <li Class="RimMandrake.LanternDeeps.RM_DeepAuroraExtension">
+        <brighten>
+          <li>RM_Lanternstone_Small</li>
+          <li>RM_Lanternstone_Medium</li>
+          <li>RM_Lanternstone_Large</li>
+          <li>RM_Lanternstone_Huge</li>
+        </brighten>
+        <glowMultiplier>1.75</glowMultiplier>
+        <chorus>RM_DeepChorusRising</chorus>
+        <quicken>RM_AuroraQuickened</quicken>
+        <quickenRace>RM_Cleaver</quickenRace>
+      </li>
+    </modExtensions>
+  </GameConditionDef>
+
+  <HediffDef>
+    <defName>RM_AuroraQuickened</defName>
+    <label>aurora-quickened</label>
+    <description>The storm overhead runs through this crystal body like current: it moves and strikes faster.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <defaultLabelColor>(0.6, 0.85, 1.0)</defaultLabelColor>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>600</disappearsAfterTicks>
+        <showRemainingTime>false</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <capMods>
+          <li><capacity>Moving</capacity><offset>0.3</offset></li>
+        </capMods>
+        <statFactors>
+          <MeleeCooldownFactor>0.8</MeleeCooldownFactor>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <SoundDef>
+    <defName>RM_DeepChorusRising</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Building/VoidNode/VoidNode_Ambience_Loop_A</clipPath>
+          </li>
+        </grains>
+        <volumeRange>9~12</volumeRange>
+        <pitchRange>1.05~1.15</pitchRange>
+        <sustainAttack>6</sustainAttack>
+        <sustainRelease>6</sustainRelease>
+        <randomStartPoint>true</randomStartPoint>
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>
