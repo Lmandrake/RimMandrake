@@ -414,6 +414,8 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool warblingGlowEnabled = true;
         public static float warblingGlowSpeedMultiplier = 1f;
         public static bool waterTruceRetributionEnabled = true;
+        // WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1: predators never hunt at truce water. Off = vanilla hunting.
+        public static bool waterTruceSuppressionEnabled = true;
         // WEEPINGSTONES_SETTINGS_SLIDERS_1 item 2: water-truce radius override in cells.
         // WaterTruceRadiusDefault (10) means "use the biome's own XML radius" so shipped
         // behavior is unchanged; any other value replaces the XML radius for every truce reader.
@@ -484,6 +486,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref warblingGlowEnabled, "warblingGlowEnabled", true);
             Scribe_Values.Look(ref warblingGlowSpeedMultiplier, "warblingGlowSpeedMultiplier", 1f);
             Scribe_Values.Look(ref waterTruceRetributionEnabled, "waterTruceRetributionEnabled", true);
+            Scribe_Values.Look(ref waterTruceSuppressionEnabled, "waterTruceSuppressionEnabled", true);
             Scribe_Values.Look(ref waterTruceRadius, "waterTruceRadius", WaterTruceRadiusDefault);
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
             Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
@@ -662,6 +665,10 @@ namespace RimMandrake.EnvironmentalHazards
                 "A biome built with a sacred water truce stops turning wildlife against whoever "
               + "lands the first guilty hit near the water. Defending yourself never counts as "
               + "guilty either way — this only gates the retaliation, never who started it.");
+            list.CheckboxLabeled("Water-truce hunt suppression", ref waterTruceSuppressionEnabled,
+                "In a biome built with a sacred water truce, predators (wild or tamed) never start a hunt "
+              + "at the water, and drop a chase that crosses into it. Hunting you order yourself is "
+              + "untouched. Off: predators hunt there like anywhere else.");
             list.Label("Water-truce radius: " + waterTruceRadius.ToString("0") + " cells");
             list.Label("How far from standing water the truce reaches in a biome built with one: "
                      + "inside it wildlife will not be hunted and the first guilty hit rouses them. "

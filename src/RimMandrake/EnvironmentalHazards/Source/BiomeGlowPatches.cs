@@ -90,6 +90,16 @@ namespace RimMandrake.EnvironmentalHazards
                   AccessTools.Method(typeof(Verse.Thing), nameof(Verse.Thing.PostApplyDamage)),
                   AccessTools.Method(typeof(RM_WaterTruceDamagePatches), nameof(RM_WaterTruceDamagePatches.PostApplyDamage_Postfix)),
                   "water-truce-retribution");
+
+            // WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1: see RM_WaterTruceHuntSuppression.
+            Apply(harmony,
+                  AccessTools.Method(typeof(RimWorld.FoodUtility), nameof(RimWorld.FoodUtility.IsAcceptablePreyFor)),
+                  AccessTools.Method(typeof(RM_WaterTruceHuntSuppression), nameof(RM_WaterTruceHuntSuppression.IsAcceptablePreyFor_Postfix)),
+                  "water-truce-hunt-start");
+            Apply(harmony,
+                  AccessTools.Method(typeof(RimWorld.JobDriver_PredatorHunt), "MakeNewToils"),
+                  AccessTools.Method(typeof(RM_WaterTruceHuntSuppression), nameof(RM_WaterTruceHuntSuppression.MakeNewToils_Postfix)),
+                  "water-truce-hunt-abandon");
         }
 
         private static void Apply(Harmony harmony, MethodBase target, MethodInfo patch, string rule, bool asPrefix = false)
