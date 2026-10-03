@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <LetterDef>
+    <defName>RM_CondenserChoiceLetter</defName>
+    <letterClass>RimMandrake.WeepingStones.RM_ChoiceLetter_Condenser</letterClass>
+    <color>(0.55, 0.75, 0.85)</color>
+    <flashColor>(0.55, 0.75, 0.85)</flashColor>
+    <flashInterval>90</flashInterval>
+    <bounce>false</bounce>
+    <arriveSound>LetterArrive_Neutral</arriveSound>
+  </LetterDef>
+</Defs>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEEPINGSTONES_WALKING_CONDENSER_1. Art: RM_CorrodedCondenserStack's texture is copied as a PLACEHOLDER (item says
+     reference only); a real art job is owed (see Transient/work_CONDENSER_20261003.md). -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_AncientCondenserPlant</defName>
+    <label>ancient condenser plant</label>
+    <description>A pump-and-lattice machine the size of a wardrobe, cut whole from the shell of the oldest gorrask. It still draws water out of dry air, slowly, without power or fuel. It is the last one that works. Carry it, install it on a ship, and it will keep on weeping into whatever you set under it.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/RM_AncientCondenserPlant</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+    </graphicData>
+    <size>(2,2)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <thingCategories><li>BuildingsProduction</li></thingCategories>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Mass>40</Mass>
+      <MarketValue>3000</MarketValue>
+    </statBases>
+    <tickerType>Rare</tickerType>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <comps>
+      <li Class="RimMandrake.WeepingStones.CompProperties_AncientCondenser">
+        <intervalTicks>2500</intervalTicks>
+        <litres>1</litres>
+        <cap>60</cap>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

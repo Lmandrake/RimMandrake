@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_CondenserStirsLabel>The old gorrask stirs</RM_CondenserStirsLabel>
+  <RM_CondenserStirsText>The season is turning and the great stone-crab is gathering itself to move. The pool around it has begun to drain. You have a day to decide what to do about it.</RM_CondenserStirsText>
+  <RM_CondenserOptGuide>Guide it onto your land for a season</RM_CondenserOptGuide>
+  <RM_CondenserOptSell>Sell where it will settle next</RM_CondenserOptSell>
+  <RM_CondenserOptCut>Cut the machine out (kills the gorrask)</RM_CondenserOptCut>
+  <RM_CondenserDryingLabel>The pool is drying</RM_CondenserDryingLabel>
+  <RM_CondenserDryingText>The gorrask is moving on and the pool it carried is draining back into the ground over the coming days.</RM_CondenserDryingText>
+  <RM_CondenserGuideLabel>The gorrask will come to you</RM_CondenserGuideLabel>
+  <RM_CondenserGuideText>The gorrask has been lured toward your land. When it settles, a pool and the water truce will form round it for a season.</RM_CondenserGuideText>
+  <RM_CondenserGuideNoSite>There is no reachable ground on your land for the gorrask to settle on.</RM_CondenserGuideNoSite>
+  <RM_CondenserSellNoBuyer>No faction friendly enough wants to buy the gorrask's next settling place.</RM_CondenserSellNoBuyer>
+  <RM_CondenserSellLabel>Settling place sold</RM_CondenserSellLabel>
+  <RM_CondenserSellText>{0} has paid {1} silver for the right to the gorrask's next season. Their settlement will have the pool for that season; you will not.</RM_CondenserSellText>
+  <RM_CondenserCutLabel>The machine is cut out</RM_CondenserCutLabel>
+  <RM_CondenserCutText>The gorrask is dead and its condenser lies free of the shell. The moving oasis is over for good, and this is the last working condenser anywhere.</RM_CondenserCutText>
+  <RM_CondenserInspectSettled>Settled. Pool cells: {0}</RM_CondenserInspectSettled>
+  <RM_CondenserInspectWaiting>Stirring: about to move on.</RM_CondenserInspectWaiting>
+  <RM_CondenserInspectWalking>Moving to a new settling place.</RM_CondenserInspectWalking>
+</LanguageData>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_CondenserWater</defName>
+    <label>condenser water</label>
+    <description>A litre of clean water drawn out of dry air by the ancient condenser, in a stoppered flask.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Chemfuel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(150, 200, 225)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+      <Mass>1</Mass>
+    </statBases>
+    <thingCategories><li>ResourcesRaw</li></thingCategories>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+</Defs>

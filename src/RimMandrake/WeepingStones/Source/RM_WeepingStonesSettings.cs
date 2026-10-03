@@ -24,12 +24,18 @@ namespace RimMandrake.WeepingStones
         // Per-pulse chance that a stocked vizhik escapes its pen. Shipped 0.05. 0-0.25.
         public static float vizhikEscapeChance = 0.05f;
 
+        // WEEPINGSTONES_WALKING_CONDENSER_1: master switch and season length (days) for the walking condenser.
+        public static bool condenserEnabled = true;
+        public static float condenserSeasonDays = 15f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref stockedPoolsEnabled, "stockedPoolsEnabled", true);
             Scribe_Values.Look(ref vhorrinOddsMultiplier, "vhorrinOddsMultiplier", 1f);
             Scribe_Values.Look(ref vizhikEscapeChance, "vizhikEscapeChance", 0.05f);
+            Scribe_Values.Look(ref condenserEnabled, "condenserEnabled", true);
+            Scribe_Values.Look(ref condenserSeasonDays, "condenserSeasonDays", 15f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -58,11 +64,22 @@ namespace RimMandrake.WeepingStones
                    + "At 0 nothing ever escapes; at 0.25 a pen leaks constantly."));
             vizhikEscapeChance = Mathf.Round(list.Slider(vizhikEscapeChance, 0f, 0.25f) * 200f) / 200f;
 
+            list.Gap();
+            list.CheckboxLabeled("Walking condenser enabled", ref condenserEnabled,
+                "The oldest gorrask, a unique stone-crab carrying a running condenser. While it is settled a "
+              + "pool and the water truce form round it; it moves on each season. Off: it spawns nowhere, and any "
+              + "pool it already made dries back.");
+            list.Label("Condenser season: " + condenserSeasonDays.ToString("0") + " days (shipped 15)",
+                -1f, (TipSignal?)("How long the gorrask stays settled before it moves on. 15 is one vanilla quadrum."));
+            condenserSeasonDays = Mathf.Round(list.Slider(condenserSeasonDays, 3f, 30f));
+
             if (list.ButtonText("Reset to defaults"))
             {
                 stockedPoolsEnabled = true;
                 vhorrinOddsMultiplier = 1f;
                 vizhikEscapeChance = 0.05f;
+                condenserEnabled = true;
+                condenserSeasonDays = 15f;
             }
 
             list.End();
