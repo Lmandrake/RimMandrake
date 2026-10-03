@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LongShade_FillPlants.xml               LONGSHADE_BEDAZZLE_CONTENT_1 spec point 8
+
+  The three owner-kept plant fills (review sheet, ruled 2026-10-02). Roles from
+  longshade_bedazzle_review_2026-09-29.md "Roster gaps". Art: maidenbloom its "_b" set,
+  pavecrust its single render, shadespire the "_b" render as a PLACEHOLDER until the
+  owner-ordered redo ("dull green, keep the husk-like fruits") lands at the same texPath.
+  Graphic_Random reads texPath as a FOLDER (RM_Dewfringe precedent).
+  Not built here (owed): maidenbloom's germinates-only-on-fertilised-ground gate, a unique
+  pale-wood material for shadespire (it yields vanilla WoodLog for now), pavecrust's
+  hardpan terrain gate and a dye/fuel item (it yields Chemfuel for now). Shadespire casts
+  shade on the existing grid with no extra comp: RM_MapComponent_ShadeGrid.CastsShade treats
+  any plant whose visualSizeRange max is >= 1.5 as a caster.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Maidenbloom</defName>
+    <label>maidenbloom</label>
+    <description>A fat, low rosette of thick olive leaves cupping a cluster of cream flowers streaked rust and gold. It grows where a giant has stopped and left its dung, and is the visible proof of it. The heart of the flower is rich eating.</description>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+      <Nutrition>0.3</Nutrition>
+      <Beauty>2</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Maidenbloom</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>10</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.4</fertilitySensitivity>
+      <growDays>7</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.5~0.9</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>RM_MaidenbloomHeart</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <harvestWork>200</harvestWork>
+      <harvestMinGrowth>0.6</harvestMinGrowth>
+      <wildClusterRadius>2</wildClusterRadius>
+      <wildClusterWeight>2</wildClusterWeight>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <humanFoodPlant>true</humanFoodPlant>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RM_MaidenbloomHeart</defName>
+    <label>maidenbloom heart</label>
+    <description>The cream-and-rust heart of a maidenbloom, cut free of its leaves. Rich plant food that keeps for a few weeks.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Plant/RM_MaidenbloomHeart</texPath>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.6</MarketValue>
+      <Nutrition>0.06</Nutrition>
+    </statBases>
+    <ingestible>
+      <foodType>VegetableOrFruit</foodType>
+      <preferability>RawTasty</preferability>
+      <tasteThought>AteRawFood</tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>20</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Pavecrust</defName>
+    <label>pavecrust</label>
+    <description>A thin crust of grey lichen edged in amber and rust, cracked like old paving. It spreads over bare hardpan, can be walked on without harm and does not burn. Scraped up in scraps, it burns slow and hot.</description>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Nutrition>0.02</Nutrition>
+      <Beauty>0</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/RM_Pavecrust</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+    </graphicData>
+    <selectable>true</selectable>
+    <pathCost>0</pathCost>
+    <ingestible />
+    <plant>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0.05</fertilitySensitivity>
+      <growDays>10</growDays>
+      <dieIfLeafless>false</dieIfLeafless>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.8~1.4</visualSizeRange>
+      <topWindExposure>0</topWindExposure>
+      <harvestTag>Standard</harvestTag>
+      <harvestedThingDef>Chemfuel</harvestedThingDef>
+      <harvestYield>1</harvestYield>
+      <harvestWork>150</harvestWork>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <wildClusterRadius>3</wildClusterRadius>
+      <wildClusterWeight>3</wildClusterWeight>
+      <wildOrder>1</wildOrder>
+      <purpose>Misc</purpose>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="TreeBase">
+    <defName>RM_Shadespire</defName>
+    <label>shadespire</label>
+    <description>The only vertical that grows here: a slow, hard, banded column three or four metres tall, hung with husk-like fruits on short arms. One stands every few hundred cells, and its shadow is a small patch of its own, with its own dew ring and its own tenants. Felling one yields dense pale wood, and erases a harbour.</description>
+    <minifiedDef IsNull="True" />
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <Nutrition>0</Nutrition>
+      <Mass>200</Mass>
+    </statBases>
+    <graphicData>
+      <!-- PLACEHOLDER: the "_b" render. The owner-ordered redo (dull green, same husk-like fruits) lands at this texPath. -->
+      <texPath>Things/Plant/RM_Shadespire</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.2, 0.4, 0.15)</volume>
+        <offset>(0,0,-0.4)</offset>
+      </shadowData>
+    </graphicData>
+    <fillPercent>0.3</fillPercent>
+    <plant>
+      <lifespanDaysPerGrowDays>60</lifespanDaysPerGrowDays>
+      <fertilityMin>0.05</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <growDays>40</growDays>
+      <harvestWork>900</harvestWork>
+      <harvestYield>40</harvestYield>
+      <harvestMinGrowth>0.5</harvestMinGrowth>
+      <visualSizeRange>2.0~3.0</visualSizeRange>
+      <topWindExposure>0.05</topWindExposure>
+      <wildClusterRadius>-1</wildClusterRadius>
+      <wildClusterWeight>1</wildClusterWeight>
+      <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+    </plant>
+  </ThingDef>
+
+</Defs>

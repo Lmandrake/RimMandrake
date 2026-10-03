@@ -212,6 +212,13 @@
            ambusher (RM_LongShade_Mirrak.xml), wired once its art landed. 0.05 is
            the dakkra's weight, the other rare ambusher; a first value. -->
       <RM_Mirrak>0.05</RM_Mirrak>
+      <!-- LONGSHADE_BEDAZZLE_CONTENT_1 point 8: the four owner-kept animal fills
+           (RM_LongShade_Fills.xml). Weights are first values: rare ambusher, common
+           small scavenger/rim-grazer, ash-answerer. -->
+      <RM_Skarrok>0.05</RM_Skarrok>
+      <RM_Vrekka>0.4</RM_Vrekka>
+      <RM_Sippra>0.5</RM_Sippra>
+      <RM_Tazzok>0.3</RM_Tazzok>
       <!-- The 36 remaining canon Star Wars rows (§7 Q11/Q12) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
@@ -223,6 +230,10 @@
       <RM_Venomvine>0.25</RM_Venomvine>  <!-- the vine that holds territory by injury, VENOMVINE_CONTACT_VENOM_BUILD_1. -->
       <RM_Ultracactus>0.8</RM_Ultracactus>  <!-- LONGSHADE_RULED_CONTENT_1 Q2: moved inline, weight carried over verbatim from the Utinni patch's Add block. "The ultracactus is not canon, I made it." -->
       <RM_Dewfringe>0.4</RM_Dewfringe>  <!-- LONGSHADE_RULED_CONTENT_1 Q6: new shade-boundary rim plant, growth gated to the rim by RM_Patch_DewfringeWildSpawnGate.cs — this weight only matters where the C# gate already says yes. -->
+      <!-- LONGSHADE_BEDAZZLE_CONTENT_1 point 8: the three owner-kept plant fills (RM_LongShade_FillPlants.xml). -->
+      <RM_Maidenbloom>0.15</RM_Maidenbloom>
+      <RM_Pavecrust>0.3</RM_Pavecrust>
+      <RM_Shadespire>0.05</RM_Shadespire>
       <!-- The 5 remaining RSW_-tier rows (SW_FAUNA_NEVER_IN_RM_TIER_1) ride
            WildAnimals_LongShade.xml as a PatchOperationAdd instead of living
            here — see this file's header. -->
