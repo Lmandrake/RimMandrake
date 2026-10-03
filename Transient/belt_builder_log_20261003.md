@@ -118,3 +118,8 @@
 - 15:34:27 HANG-WATCHDOG: B+C published 51388bd50; A belt_watchdog.py drafted, testing live
 - r21 NIGHTSIDEICE_EVICTION_HOUSEKEEPING_1 filed+closed b0d8a9f74 (split from NIGHTSIDEICE_HEAT_DIAL_BUILD_1 item 1: AA_BoulderMit/SummitCrab/RedGoo/Slurrypede + the since-ported RM_Khorrak/RM_Vozzik rows out of RM_NightsideIce (both keep homes: LongShade, Stillsand); RSW_Wampa (port) + Tauntaun (donor, FindMod guard) at 0.03 via WildAnimals_NightsideIce.xml; free cast is now AA_ShockGoat alone, as ruled; live def-dump check owed). Parent keeps item 2 (heat dial + shivven breach, C#).
 - r21 SEA_DIVE_HATCH_RETIRE_1 looked at, not built: the hatch is woven through 4 sea-floor MapGeneratorDefs (RM_PlaceSeaDiveExit), 3 floor gensteps that read RM_SeaDiveExit, DivingInteraction's master setting, TwilightChannels and a bridge proof; needs a split (generators vs exit vs docs) and a read of how RM_SeabedLayer maps generate before deleting anything.
+- 15:36:43 HANG-WATCHDOG: watchdog live-tested; rerun14 shows game Not Responding + main thread timeouts
+- 15:38:19 HANG-WATCHDOG: A published b68e03dfe (33/33 selftest); live: flagged load8 Not Responding at 1 core + main-thread timeouts ~2 min before game was killed. Now D doctrine + E runbook
+- 15:39:11 HANG-WATCHDOG: D+E published 3bf380b08; running run_selftests
+- 15:40:27 HANG-WATCHDOG DONE: 51388bd50 (heartbeat/budget/focus ladder), b68e03dfe (watchdog+selftest), 3bf380b08 (doctrine/runbook/lesson), cb1d399ae (seam fix). run_selftests 121/124, only the 3 known bridge-agent failures
+- r22 start: selftests 120/123 then 121/124 (BlueDesert, LeaningScrub, Bacta mock: bridge agent's lane, unchanged; one_path_seam was belt_watchdog.py, fixed by its builder cb1d399ae).
