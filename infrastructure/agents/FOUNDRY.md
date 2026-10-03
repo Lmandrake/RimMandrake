@@ -133,3 +133,23 @@ a genuinely hard problem.
 always be waiting on something that WILL wake it: a running subagent's completion notice, a
 `Monitor` on a file/condition, or a `ScheduleWakeup`. Before ending any turn, name what wakes you.
 If nothing would, you are not finished — start the next belt task or hand off.
+
+## Hangs and the watchdog — owner, 2026-10-03
+
+*"Please engineer a system that is a bit more resistant to these kinds of hangs. We need to get better at
+debugging."* One command answers "is the live run actually running?":
+
+```
+python3 src/RimMandrake/Utils/belt_watchdog.py          # one line per signal + HEALTHY|STALLED|WEDGED|DEAD and the remedy
+python3 src/RimMandrake/Utils/belt_watchdog.py --watch 300   # for a Monitor; full block only when the verdict changes
+```
+
+- **Run it every ~5 min during any live run, and before telling anyone a run is "running".** Exit code is the
+  verdict (0/1/2/3). Its remedy line says what to do; the table is `design/RimMandrake/live_test_hang_runbook.md`.
+- 🔴 **A poll loop must always include the watchdog verdict, never only "is the process alive".** rerun13 died
+  in under a second while a poll of the process said fine for 5+ minutes; a hung game is a live process too.
+- **Every full-belt bridge-agent brief says: "call belt_watchdog every 5 min; on STALLED/WEDGED/DEAD follow its
+  remedy line and log it."**
+- Runners write `.belt_state/heartbeat_<job>.json` every 30 s and kill themselves at a per-suite wall-clock budget
+  (`BELT_SUITE_BUDGET_S`, default 1500) — exit **4** = UNMEASURED(BUDGET), exit **3** = FOCUS_LOST after the
+  escalation ladder (`focus_heal.py`). Neither is an instant silent abort any more.
