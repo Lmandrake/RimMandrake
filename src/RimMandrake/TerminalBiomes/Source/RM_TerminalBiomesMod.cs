@@ -196,6 +196,20 @@ namespace RimMandrake.TerminalBiomes
         public static float greyHullCrustBerthMultiplier = 1.5f;
         public static bool GreyHullCrustActive => masterEnabled && greySeaEnabled && greyHullCrustEnabled;
 
+        // ── GREYSEA_LAMP_RESPONSE_BUILD_1: the Grey answers a player light (Q12) ─
+        // Deterministic and forgiving: only powered lamps at or above the
+        // radius, only after the hours of continuous burn, telegraphed by the
+        // watcher (50%) and scrape-sign (75%); a dark lamp loses its clock.
+        public static bool greyLampDrawnEnabled = true;
+        public static bool greyLampWatcherEnabled = true;
+        public static bool greyLampGiantEnabled = true;
+        public static float greyLampGiantBurnHours = 8f;
+        public static float greyLampGiantMinRadius = 12f;
+        private static bool GreyActive => masterEnabled && greySeaEnabled;
+        public static bool GreyLampDrawnActive => GreyActive && greyLampDrawnEnabled;
+        public static bool GreyLampWatcherActive => GreyActive && greyLampWatcherEnabled;
+        public static bool GreyLampGiantActive => GreyActive && greyLampGiantEnabled;
+
         private string biomeListBuffer;
         private Vector2 settingsScroll;
         private float lastListHeight = 1600f;
@@ -245,6 +259,11 @@ namespace RimMandrake.TerminalBiomes
             Scribe_Values.Look(ref greyHullCrustRate, "greyHullCrustRate", 1f);
             Scribe_Values.Look(ref greyHullCrustSaltSnowMultiplier, "greyHullCrustSaltSnowMultiplier", 2f);
             Scribe_Values.Look(ref greyHullCrustBerthMultiplier, "greyHullCrustBerthMultiplier", 1.5f);
+            Scribe_Values.Look(ref greyLampDrawnEnabled, "greyLampDrawnEnabled", true);
+            Scribe_Values.Look(ref greyLampWatcherEnabled, "greyLampWatcherEnabled", true);
+            Scribe_Values.Look(ref greyLampGiantEnabled, "greyLampGiantEnabled", true);
+            Scribe_Values.Look(ref greyLampGiantBurnHours, "greyLampGiantBurnHours", 8f);
+            Scribe_Values.Look(ref greyLampGiantMinRadius, "greyLampGiantMinRadius", 12f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -471,6 +490,31 @@ namespace RimMandrake.TerminalBiomes
                 list.Label("  Brine-berth speed-up (brine channel or chimney field within 5 cells): "
                     + greyHullCrustBerthMultiplier.ToString("0.0") + "x");
                 greyHullCrustBerthMultiplier = list.Slider(greyHullCrustBerthMultiplier, 1f, 3f);
+            }
+            list.GapLine();
+
+            list.Label("THE GREY SEA ANSWERS YOUR LIGHT (GREYSEA_LAMP_RESPONSE_BUILD_1)");
+            list.CheckboxLabeled("Small things drawn to the light", ref greyLampDrawnEnabled,
+                "Litter-pickers, salt crabs and the pink immu come and linger in a lit area. "
+              + "Harmless; the busiest ground on the map is around your lamps.");
+            list.CheckboxLabeled("The watcher and the scrape-sign", ref greyLampWatcherEnabled,
+                "Halfway to the giant's hours, a fessk comes to the edge of a bright lamp's light and "
+              + "watches (it never enters, never attacks, leaves when approached). Three quarters "
+              + "of the way, fresh scrape-sign appears in the silt at the light's edge. These are the "
+              + "warnings: switch the lamp off and its clock is gone.");
+            list.CheckboxLabeled("The giant breaks bright lamps", ref greyLampGiantEnabled,
+                "A powered lamp at least as bright as the radius below, left burning without a break "
+              + "for the hours below, reads to the reefback as a rival's mark. It comes and breaks that "
+              + "lamp — never the ship, never your people — then leaves. Torches and braziers never "
+              + "count, a lamp it cannot reach is never answered, and switching the lamp off at any "
+              + "point resets it completely.");
+            if (greyLampGiantEnabled)
+            {
+                list.Label("  Hours of steady burn before it comes: " + greyLampGiantBurnHours.ToString("0.0"));
+                greyLampGiantBurnHours = list.Slider(greyLampGiantBurnHours, 2f, 24f);
+                list.Label("  Brightest-lamp threshold (glow radius; standing lamp 12, sun lamp 14, floodlight 24): "
+                    + greyLampGiantMinRadius.ToString("0.0"));
+                greyLampGiantMinRadius = list.Slider(greyLampGiantMinRadius, 9f, 24f);
             }
 
             list.End();

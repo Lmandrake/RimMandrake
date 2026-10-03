@@ -21,12 +21,18 @@ namespace RimMandrake.TerminalBiomes
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RM_TerminalBiomesSettings.SuulkActive)
-            {
-                return null; // mod option: suulk grazing disabled
-            }
             RM_SeekGlowExtension ext = pawn.def?.GetModExtension<RM_SeekGlowExtension>();
             if (ext == null || pawn.Map == null)
+            {
+                return null;
+            }
+            // GREYSEA_LAMP_RESPONSE_BUILD_1 delta 1: the gate is per race now,
+            // not the suulk's toggle for everyone.
+            if (!GateOpen(ext.gate))
+            {
+                return null;
+            }
+            if (!ext.onlyBiome.NullOrEmpty() && pawn.Map.Biome?.defName != ext.onlyBiome)
             {
                 return null;
             }
@@ -40,7 +46,23 @@ namespace RimMandrake.TerminalBiomes
             {
                 return null;
             }
+            if (ext.mode == "drawn")
+            {
+                JobDef bask = DefDatabase<JobDef>.GetNamedSilentFail("RM_BaskInGlow");
+                return bask == null ? null : JobMaker.MakeJob(bask, best);
+            }
             return JobMaker.MakeJob(RM_TerminalBiomesJobDefOf.RM_FeedOnGlow, best);
+        }
+
+        private static bool GateOpen(string gate)
+        {
+            switch (gate)
+            {
+                case "greyDrawn":
+                    return RM_TerminalBiomesSettings.GreyLampDrawnActive;
+                default:
+                    return RM_TerminalBiomesSettings.SuulkActive;
+            }
         }
 
         // Map-wide scan: the population of things carrying a live CompGlower
@@ -61,7 +83,7 @@ namespace RimMandrake.TerminalBiomes
                     continue;
                 }
                 CompGlower glower = t.TryGetComp<CompGlower>();
-                if (glower == null || glower.GlowRadius <= bestRadius)
+                if (glower == null || glower.GlowRadius <= bestRadius || (ext.mode == "drawn" && !glower.Glows))
                 {
                     continue;
                 }

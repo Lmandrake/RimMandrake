@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RM_GreyLampResponse.xml  TerminalBiomes · GREYSEA_LAMP_RESPONSE_BUILD_1 -->
+<LanguageData>
+  <RM_GreyLampWatcherMsg>A fessk has come to the edge of the light around {0}, and is watching it from the dark.</RM_GreyLampWatcherMsg>
+  <RM_GreyLampScrapeMsg>Fresh scrape-sign in the silt at the edge of the light around {0}. Something big has been reading this lamp.</RM_GreyLampScrapeMsg>
+  <RM_GreyLampGiantLabel>The giant answers the light</RM_GreyLampGiantLabel>
+  <RM_GreyLampGiantText>A light burning this bright for this long reads, to the reefback, as a rival's mark standing on its ground. It is coming for {0}.\n\nIt wants the lamp, not the ship and not your people. Switch the lamp off and it will lose interest and go back into the murk.</RM_GreyLampGiantText>
+  <RM_GreyLampBrokenMsg>The reefback has broken {0}.</RM_GreyLampBrokenMsg>
+</LanguageData>

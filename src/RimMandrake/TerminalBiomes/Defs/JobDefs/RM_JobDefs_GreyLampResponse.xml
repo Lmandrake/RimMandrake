@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- RM_JobDefs_GreyLampResponse.xml  TerminalBiomes · GREYSEA_LAMP_RESPONSE_BUILD_1 (RM_GreyLampResponse.cs) -->
+<Defs>
+  <JobDef>
+    <defName>RM_BaskInGlow</defName>
+    <driverClass>RimMandrake.TerminalBiomes.RM_JobDriver_BaskInGlow</driverClass>
+    <reportString>drawn to TargetA's light.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RM_WatchGlow</defName>
+    <driverClass>RimMandrake.TerminalBiomes.RM_JobDriver_WatchGlow</driverClass>
+    <reportString>watching TargetA's light from the dark.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
+  <JobDef>
+    <defName>RM_BreakGlow</defName>
+    <driverClass>RimMandrake.TerminalBiomes.RM_JobDriver_BreakGlow</driverClass>
+    <reportString>breaking TargetA.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+</Defs>
