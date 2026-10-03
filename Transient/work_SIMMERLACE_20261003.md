@@ -1,0 +1,3 @@
+# SCALD_SIMMERLACE_EKKEL_LORE_1 work log
+- started; item has no prose, spec = the_scald_floor_sitting_agenda_2026-10-02.md
+- No RM_Simmerlace def exists yet (flora pass is design only); so the lore lives in the ekkel descriptions. Added one sentence ("Fishermen on the rim say every ekkel began as a knot of shed simmerlace that learned to roll.") to: TerminalBiomes RM_Ekkel creature, TerminalBiomes RM_EkkelCatch, UtinniPatches RUT_Ekkel catch (twin, same text), design sea_catch_rosters quote. Flora pass Q8 marked ruled. Simmerlace plant description gets its half when built. defNames untouched. Kettlewick/seepcandle yields left open.

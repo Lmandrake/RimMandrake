@@ -112,6 +112,26 @@ def catch_checks():
     return bad
 
 
+def ekkel_lore_checks():
+    """SCALD_SIMMERLACE_EKKEL_LORE_1: creature and catch descriptions carry the simmerlace origin lore."""
+    bad = []
+    seen = set()
+    for dp, _, fns in os.walk(os.path.join(HERE, "Defs")):
+        for fn in fns:
+            if not fn.endswith(".xml"):
+                continue
+            for d in ET.parse(os.path.join(dp, fn)).getroot():
+                n = d.findtext("defName")
+                if n in ("RM_Ekkel", "RM_EkkelCatch") and d.tag == "ThingDef":
+                    seen.add(n)
+                    if "simmerlace" not in (d.findtext("description") or "").lower():
+                        bad.append("ThingDef %s description lacks the simmerlace lore" % n)
+    for n in ("RM_Ekkel", "RM_EkkelCatch"):
+        if n not in seen:
+            bad.append("ThingDef %s not found" % n)
+    return bad
+
+
 def saal_name_checks():
     """SCALD_SAAL_ONE_NAME_1: creature and catch are both labelled saal; no label says noohm."""
     bad = []
@@ -211,7 +231,7 @@ except ImportError:
     suite = None
 
 if __name__ == "__main__":
-    problems = static_checks() + roster_checks() + catch_checks() + saal_name_checks() + wax_checks()
+    problems = static_checks() + roster_checks() + catch_checks() + saal_name_checks() + ekkel_lore_checks() + wax_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

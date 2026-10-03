@@ -360,6 +360,6 @@ against the water's own radius-2 cyan, not new light sources.
    mineral-salt item, an existing item, or nothing (pure dressing)? It must never be a
    drinkable (Ban 1).
 4. **Seepcandle's wax: harvest as plain Chemfuel, a small new wax item, or nothing?**
-8. **Simmerlace → ekkel as written origin lore** ("a knot that learns to roll is an
+8. **BUILT 2026-10-03 as fishermen's folklore (FOUNDRY, item `SCALD_SIMMERLACE_EKKEL_LORE_1`; no owner ruling is recorded; the owner may still overrule): the ekkel creature and catch descriptions carry the line.** Simmerlace → ekkel as written origin lore ("a knot that learns to roll is an
    ekkel"): keep as fishermen's folklore in both descriptions, or keep the plant and cut
    the cross-reference?
