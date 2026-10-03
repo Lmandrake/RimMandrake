@@ -35,8 +35,9 @@ mod: a pale fungal night-side biome, fully generalized so it names no campaign o
 and is playable on any generated RimWorld planet. The frozen campaign world's own RUT_TheRot
 instance is unaffected and unrelated; this is a new sibling biome for everyone else's worlds.
 
-RM tier: nothing here knows what campaign or planet uses it. All Star Wars fauna (the 11
-`RSW_` rows the twin's roster carries) ride a Utinni campaign patch
+RM tier: nothing here knows what campaign or planet uses it. The ten invented residents
+(thozzik, illoth, brullith, brogg, grellik, skerrith and their hive forms) are owned here as `RM_`
+defs; only the genuine Star Wars rows (Shiro, Snoruuk) ride a Utinni campaign patch
 (`WildAnimals_TheRot.xml`) instead of this def, per owner ruling Q12/Q11a
 (`design/RimMandrake/biome_mod_architecture.md` §7) — a `RM_` biome mod may never hard-name
 a Star Wars IP creature.

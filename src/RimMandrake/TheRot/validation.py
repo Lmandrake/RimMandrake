@@ -107,6 +107,76 @@ def static_checks():
         bad.append("biome worker class %s not found" % WORKER)
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", MOD + ".md")):
         bad.append("walk missing")
+    bad += cast_checks()
+    return bad
+
+
+# ROT_RM_CAST_MIGRATION_1: the ten ratified residents are owned RM_ defs, wired inline, hybrid, textured.
+CAST = ["Thozzik", "ThozzikColony", "ThozzikSpawned", "ThozzikQueen", "ThozzikColonyQueen",
+        "Illoth", "Brullith", "Brogg", "Grellik", "Skerrith"]
+_BANNED = re.compile(r"wasp|hornet|moth|camel|llama|genetics|experiment|Force", re.I)
+# art owed: both south frames failed twice in artpipe and were re-queued (rot_thozzik_b_south, rot_illoth_b_south);
+# remove an entry here the moment its PNG lands, the check then binds.
+ART_OWED = {"Thozzik/Thozzik_south", "Illoth/Illoth_south"}
+
+
+def cast_checks():
+    bad = []
+    fauna = os.path.join(HERE, "Defs", "Fauna")
+    if not os.path.isdir(fauna):
+        return ["Defs/Fauna missing: the ten RM_ residents are not shipped"]
+    races, kinds = {}, {}
+    for fn in os.listdir(fauna):
+        for el in ET.parse(os.path.join(fauna, fn)).getroot():
+            nm = el.findtext("defName") if isinstance(el.tag, str) else None
+            if el.tag == "ThingDef" and nm:
+                races[nm] = el
+            elif el.tag == "PawnKindDef" and nm:
+                kinds[nm] = el
+    if len(races) < 20:
+        bad.append("only %d fauna ThingDefs parsed (sanity probe failed)" % len(races))
+    biome = ET.parse(os.path.join(HERE, "Defs", "BiomeDefs", "RM_TheRot_Biome.xml")).getroot()
+    roster = set(e.tag for e in biome.find(".//wildAnimals"))
+    for c in CAST:
+        n = "RM_" + c
+        if n not in races or n not in kinds:
+            bad.append("%s: ThingDef/PawnKindDef missing" % n)
+            continue
+        if n not in roster:
+            bad.append("%s not in RM_TheRot wildAnimals" % n)
+        desc = (races[n].findtext("description") or "") + " " + (races[n].findtext("label") or "")
+        if _BANNED.search(desc):
+            bad.append("%s description names a banned franchise/lab word" % n)
+        if c in ("Thozzik", "Illoth", "Brogg") and not re.search(r"fung|mycel|spore", desc):
+            bad.append("%s description is not a fungus hybrid" % n)
+        for tp in set(e.text for e in kinds[n].iter("texPath") if e.text and e.text.startswith("RM_TheRot/")):
+            for fc in ("south", "east", "north"):
+                rel = "%s_%s" % (tp, fc)
+                tail = "/".join(rel.split("/")[-2:])
+                if tail in ART_OWED:
+                    continue
+                if not os.path.isfile(os.path.join(HERE, "Textures", rel + ".png")) and "essicated" not in tp:
+                    bad.append("%s: texture %s.png missing" % (n, rel))
+    il = races.get("RM_Illoth")
+    if il is not None:
+        if float(il.findtext("statBases/MaxFlightTime") or 0) <= 0:
+            bad.append("RM_Illoth cannot fly: MaxFlightTime is not > 0")
+        if il.findtext("race/canFlyIntoMap") != "true":
+            bad.append("RM_Illoth race lacks canFlyIntoMap")
+    for fn in os.listdir(fauna):
+        if "RSW_" in open(os.path.join(fauna, fn), encoding="utf-8").read():
+            bad.append("Defs/Fauna/%s still names an RSW_ def (free mod must stand alone)" % fn)
+    patch = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "WildAnimals_TheRot.xml")
+    if os.path.isfile(patch):
+        txt = open(patch, encoding="utf-8").read()
+        for retired in ("RSW_PustuleHornet", "RSW_SmogMoth", "RSW_Thrumbungus", "RSW_Yooka", "RSW_FungalWeevil", "RSW_FungalMantis"):
+            if retired in re.sub(r"<!--.*?-->", "", txt, flags=re.S):
+                bad.append("campaign patch still adds %s to RM_TheRot" % retired)
+        for op in ET.parse(patch).getroot().iter("Operation"):
+            if op.get("MayRequire"):
+                bad.append("campaign patch has a top-level <Operation MayRequire> (inert in 1.6)")
+        if "RSW_ShiroTrap" not in txt or "Snoruuk" not in txt:
+            bad.append("campaign patch lost RSW_ShiroTrap or Snoruuk")
     return bad
 
 
