@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ROT_SPORE_ALLERGY_PORT_1. Worker subclasses add the Rot screen's on/off and incidence factor via RM_KitFronts key "sporeAllergy". -->
+<Defs>
+  <IncidentDef ParentName="DiseaseIncident">
+    <defName>RM_Disease_SporeAllergy</defName>
+    <label>spore allergy</label>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_IncidentWorker_SporeAllergyHuman</workerClass>
+    <diseaseIncident>RM_SporeAllergy</diseaseIncident>
+    <letterLabel>Disease: Spore allergy</letterLabel>
+  </IncidentDef>
+
+  <IncidentDef ParentName="DiseaseAnimalIncident">
+    <defName>RM_Disease_AnimalSporeAllergy</defName>
+    <label>spore allergy (animals)</label>
+    <workerClass>RimMandrake.EnvironmentalHazards.RM_IncidentWorker_SporeAllergyAnimal</workerClass>
+    <diseaseIncident>RM_AnimalSporeAllergy</diseaseIncident>
+    <letterLabel>Animal disease: Spore allergy</letterLabel>
+  </IncidentDef>
+</Defs>

@@ -23,6 +23,7 @@ namespace RimMandrake.TheRot
     //   livingProduceHeat(+PerUnit) livingProduceHeat    warmMat(+Warmth)        warmGround
     //   livePreparations / ...StrictViability            livePrepStrict (both must be on for strict)
     //   sporeCloudIncidentWeight  sporeCloud: 0 = never fires, otherwise scales the incident's chance
+    //   sporeAllergy(+Incidence)  sporeAllergy: the RM_Disease_SporeAllergy pair, on/off and chance factor
     //   guardianGroves, paleTreeSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
     //   healthSharing: the field is kept and saved, but the checkbox is hidden until ROT_WOUND_SHARING_WIRING_1
@@ -45,6 +46,8 @@ namespace RimMandrake.TheRot
         public static bool healthSharing = true;
         public static bool paleTreeSpawn = true;
         public static float sporeCloudIncidentWeight = 1f;
+        public static bool sporeAllergy = true;
+        public static float sporeAllergyIncidence = 1f;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -70,6 +73,8 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref healthSharing, "healthSharing", true);
             Scribe_Values.Look(ref paleTreeSpawn, "paleTreeSpawn", true);
             Scribe_Values.Look(ref sporeCloudIncidentWeight, "sporeCloudIncidentWeight", 1f);
+            Scribe_Values.Look(ref sporeAllergy, "sporeAllergy", true);
+            Scribe_Values.Look(ref sporeAllergyIncidence, "sporeAllergyIncidence", 1f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -150,6 +155,10 @@ namespace RimMandrake.TheRot
               + "WORLDGEN-AFFECTING: applies to maps generated after the next launch.");
             list.Label("Spore cloud incident weight: " + sporeCloudIncidentWeight.ToString("0.00") + "x");
             sporeCloudIncidentWeight = list.Slider(sporeCloudIncidentWeight, 0f, 3f);
+            list.CheckboxLabeled("Spore allergy", ref sporeAllergy,
+                "The Sheen's spores cause the spore-allergy disease in people and animals (an incident). Off: never fires on this biome.");
+            list.Label("  Incidence: " + sporeAllergyIncidence.ToString("0.00") + "x");
+            sporeAllergyIncidence = list.Slider(sporeAllergyIncidence, 0.25f, 3f);
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
@@ -209,6 +218,7 @@ namespace RimMandrake.TheRot
                 case "warmGround": return RM_TheRotSettings.warmMat;
                 case "livePrepStrict": return RM_TheRotSettings.livePreparations && RM_TheRotSettings.livePreparationsStrictViability;
                 case "sporeCloud": return RM_TheRotSettings.sporeCloudIncidentWeight > 0f;
+                case "sporeAllergy": return RM_TheRotSettings.sporeAllergy;
                 default: return true;
             }
         }
@@ -226,6 +236,7 @@ namespace RimMandrake.TheRot
                 case "livingProduceHeat": f = RM_TheRotSettings.livingProduceHeatPerUnit; break;
                 case "warmGround": f = RM_TheRotSettings.warmMatWarmth; break;
                 case "sporeCloud": f = RM_TheRotSettings.sporeCloudIncidentWeight; break;
+                case "sporeAllergy": f = RM_TheRotSettings.sporeAllergyIncidence; break;
                 default: return 1f;
             }
             return IsRotBiome(biome) ? f : f * RM_TheRotSettings.crossBiomeCoverage;
