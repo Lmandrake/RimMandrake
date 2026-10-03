@@ -42,3 +42,5 @@
 - 13:20:34 load6 UP 13:20, harvest6 clean of BrainWorms discard; starting rerun9 --bland-world
 - 13:27:08 rerun9 running
 - 13:29:28 FOUND (poke): jawa/damage skips player pawns without allowColonists; Pawn HitPoints ~0 so any damage detonates+kills a CompExplosive pawn (suush Cut1/Stun1). Fixed def requiredDamageTypeToExplode=Bullet (needs restart), suush chain, detectors MCR hediff ignore
+- 13:42:33 rerun10 in progress (LeaningScrub)
+- 13:48:32 FOUND: restore_needs read Food level (max 0.9) vs 0.95 -> every later suite 'no bland map'; fixed to pct. LeaningScrub _wait uses budgeted wait under watch. rerun11 starting
