@@ -109,7 +109,7 @@ namespace RimMandrake.FlowWorks
 			int w = RequiredWidth(p);
 			bool wide = RM_PitTrapMath.PitWidthAt((x, z) => eng.IsSuperdeepExcavation(new IntVec3(x, 0, z)), c.x, c.z, w);
 			return RM_PitTrapMath.Held(true, true, Captures(p), p.Flying,
-				RM_LadderUtility.HasLadder(p.Map, c), wide);
+				RM_LadderRules.LadderLetsOut(p.Map, c, p), wide);
 		}
 
 		// ── the reachability region, cached per pawn per tick ──────────────
