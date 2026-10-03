@@ -122,6 +122,16 @@ namespace RimMandrake.CreatureBehaviors.SelfTest
                 Assert(indoors == 0f, "an enclosed room still gained Heatstroke on an ambient map");
             });
 
+            Case("sun-scald exposure: shade grid decides when usable, InSunlight when not (WEBWORK_HEAT_SHADE_BUILD_1)", () =>
+            {
+                Assert(RM_SunHeatMath.ScaldExposed(true, true, 0.0f, 0.5f, true), "open clearing (ShadeAt 0) was not exposed");
+                Assert(!RM_SunHeatMath.ScaldExposed(true, true, 0.9f, 0.5f, true), "under the canopy (ShadeAt 0.9) was exposed");
+                Assert(RM_SunHeatMath.ScaldExposed(true, false, 0.9f, 0.5f, true), "grid off did not fall back to InSunlight (exposed)");
+                Assert(!RM_SunHeatMath.ScaldExposed(true, false, 0.0f, 0.5f, false), "grid off, not in sunlight, still exposed");
+                Assert(RM_SunHeatMath.ScaldExposed(false, true, 0.9f, 0.5f, true), "setting off: the canopy case did not scald again");
+                Assert(!RM_SunHeatMath.ScaldExposed(true, true, 0.0f, 0.5f, false), "a roofed cell (InSunlight false) was exposed");
+            });
+
             Case("an enclosed room is never exposed, whatever the kind", () =>
             {
                 foreach (RM_HeatKind k in Enum.GetValues(typeof(RM_HeatKind)))
