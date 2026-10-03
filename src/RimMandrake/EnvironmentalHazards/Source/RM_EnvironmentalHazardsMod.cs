@@ -414,6 +414,11 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool warblingGlowEnabled = true;
         public static float warblingGlowSpeedMultiplier = 1f;
         public static bool waterTruceRetributionEnabled = true;
+        // WEEPINGSTONES_SETTINGS_SLIDERS_1 item 2: water-truce radius override in cells.
+        // WaterTruceRadiusDefault (10) means "use the biome's own XML radius" so shipped
+        // behavior is unchanged; any other value replaces the XML radius for every truce reader.
+        public const float WaterTruceRadiusDefault = 10f;
+        public static float waterTruceRadius = WaterTruceRadiusDefault;
         public static bool groundRefusalEnabled = true;
         public static bool pollinationGateEnabled = true;
         public static bool waterAgitationEnabled = true;
@@ -479,6 +484,7 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref warblingGlowEnabled, "warblingGlowEnabled", true);
             Scribe_Values.Look(ref warblingGlowSpeedMultiplier, "warblingGlowSpeedMultiplier", 1f);
             Scribe_Values.Look(ref waterTruceRetributionEnabled, "waterTruceRetributionEnabled", true);
+            Scribe_Values.Look(ref waterTruceRadius, "waterTruceRadius", WaterTruceRadiusDefault);
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
             Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
             Scribe_Values.Look(ref waterAgitationEnabled, "waterAgitationEnabled", true);
@@ -656,6 +662,16 @@ namespace RimMandrake.EnvironmentalHazards
                 "A biome built with a sacred water truce stops turning wildlife against whoever "
               + "lands the first guilty hit near the water. Defending yourself never counts as "
               + "guilty either way — this only gates the retaliation, never who started it.");
+            list.Label("Water-truce radius: " + waterTruceRadius.ToString("0") + " cells");
+            list.Label("How far from standing water the truce reaches in a biome built with one: "
+                     + "inside it wildlife will not be hunted and the first guilty hit rouses them. "
+                     + "Applies to every part of the truce at once and to maps already loaded. "
+                     + "10 keeps the biome's own authored radius.");
+            waterTruceRadius = Mathf.Round(list.Slider(waterTruceRadius, 3f, 25f));
+            if (list.ButtonText("Reset truce radius to default"))
+            {
+                waterTruceRadius = WaterTruceRadiusDefault;
+            }
             list.CheckboxLabeled("Ground building-refusal (WORLDGEN-AFFECTING)", ref groundRefusalEnabled,
                 "A biome built to refuse heavy structures at ground level stops converting its "
               + "remaining buildable ground to the refusal terrain on any map generated while this "

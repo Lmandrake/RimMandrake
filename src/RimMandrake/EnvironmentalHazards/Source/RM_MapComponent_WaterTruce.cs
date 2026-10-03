@@ -65,8 +65,15 @@ namespace RimMandrake.EnvironmentalHazards
             Rebuild();
         }
 
+        private float builtRadius = -1f;
+
         public bool IsTruceWater(IntVec3 cell)
         {
+            if (extension != null && System.Math.Abs(extension.EffectiveRadius - builtRadius) > 0.001f)
+            {
+                Rebuild();
+            }
+
             if (field == null || !cell.InBounds(map))
             {
                 return false;
@@ -83,6 +90,8 @@ namespace RimMandrake.EnvironmentalHazards
                 return;
             }
 
+            float radius = extension.EffectiveRadius;
+            builtRadius = radius;
             int n = map.cellIndices.NumGridCells;
             bool[] painted = new bool[n];
 
@@ -94,7 +103,7 @@ namespace RimMandrake.EnvironmentalHazards
                     continue;
                 }
 
-                foreach (IntVec3 cell in GenRadial.RadialCellsAround(waterCell, extension.radius, useCenter: true))
+                foreach (IntVec3 cell in GenRadial.RadialCellsAround(waterCell, radius, useCenter: true))
                 {
                     if (cell.InBounds(map))
                     {

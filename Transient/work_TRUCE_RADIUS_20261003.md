@@ -1,0 +1,2 @@
+# Truce radius slider 2026-10-03
+waterTruceRadius (3-25, default 10 = defer to XML radius) in RM_EnvironmentalHazardsSettings; RM_WaterTruceExtension.EffectiveRadius; WaterTruce map comp lazily rebuilds field on radius change. Reset button for this slider only (screen has no global reset). validation.py settings_sliders extended. Build OK; run_selftests 121/122, only selftest_one_path_seam fails (unrelated KEEP_MARKER seam).
