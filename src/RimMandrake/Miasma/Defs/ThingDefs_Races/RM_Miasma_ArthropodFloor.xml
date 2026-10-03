@@ -5,17 +5,14 @@
   The remaining three of the arthropod floor's four scuttlers
   (miasma_fauna_roster_2026-09-23.md §2): RM_Karravel (the carpet),
   RM_Karrimeth (the mass), RM_Karrolun (the harvest). The fourth,
-  the delta-loam composter, already ships as RUT_Karrobel
-  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_Karrobel.xml,
-  COMMISSION_LEDGER_CLEANUP_1) — built before this item claimed, from the
-  same roster document, and left in its existing RUT_ tier rather than
-  moved (renaming a def other art jobs already reference by name is out of
-  this item's scope). These three are new-this-pass and land directly in
-  RM_Miasma (this mod now exists, unlike when Karrobel/Karrathil shipped),
+  the delta-loam composter, already ships as RM_Karrobel
+  (RM_Miasma_FeverSwarmKarrobel.xml,
+  MIASMA_SWARM_COMPOSTER_PORT_1). These three land directly in
+  RM_Miasma,
   so they ship RM_-tier per Q11a from the start.
 
   🔑 One population, four draws on it (roster §2's own load-bearing note):
-  all four scuttlers — these three plus RUT_Karrobel — share
+  all four scuttlers — these three plus RM_Karrobel — share
   RM_VerminPressureExtension's populationGroupTag "RM_MiasmaScuttlers" and
   carry RM_CompProperties_VerminBreeder, so the shared
   RM_MapComponent_VerminPopulation/RM_CompVerminBreeder pairing
@@ -24,12 +21,11 @@
   RM_Miasma_Predators.xml plants, the nursery juveniles, refugee predators
   and the RM_Karrolun harvest — exactly the mechanism the roster names
   ("there is already a mechanism for exactly this") rather than inventing a
-  new one. RUT_Karrobel.xml is retrofitted with the same comp/extension in
-  this same pass so all four actually share one pool, not three sharing and
+  new one. RM_Karrobel carries the same comp/extension so all four actually share one pool, not three sharing and
   a fourth silently outside it.
 
   Bodies reuse the two shapes this campaign's karr- clade already
-  established (RUT_Karrobel.xml/RUT_FeverSwarm.xml): BeetleLike for a small
+  established (RM_Karrobel.xml/RM_FeverSwarm.xml): BeetleLike for a small
   ambient scuttler, BeetleLikeWithClaw where the roster calls for a bigger,
   gripping/blade-bearing animal. No new BodyDef — none of the three
   silhouettes (disc, mass-of-small, big-and-long-limbed) needs a bespoke
@@ -38,7 +34,7 @@
 
   🔑 Two of these three "must not be briefed as hero sprites" (roster §7):
   RM_Karravel has to read as a carpet and RM_Karrimeth only ever as a mass.
-  No new C# for that — same idiom already used for RUT_FeverSwarm's swarm
+  No new C# for that — same idiom already used for RM_FeverSwarm's swarm
   ("a HIGH wildGroupSize on an otherwise ordinary small-insect PawnKindDef...
   no new C# needed for reads as a haze in numbers"): both get deliberately
   high, INVENTED wildGroupSize instead of a bespoke rendering mechanism.
@@ -46,18 +42,18 @@
   Art: genuinely new, none exists — checked infrastructure/artpipe/
   {done,pending,active,failed}, _artsrc, registry.jsonl by all three names
   and by "scuttler"/"carpet"/"mass" first, clean. Flat-color placeholders
-  shipped this pass (south-facing only, matching the RUT_Karrobel/
-  RUT_FeverSwarm precedent of a single low ground pose for a "mostly seen as
+  shipped this pass (south-facing only, matching the RM_Karrobel/
+  RM_FeverSwarm precedent of a single low ground pose for a "mostly seen as
   a mass/carpet/half-buried" creature) so the mod loads clean; no fresh
   fill_queue.py job filed this pass — a hero-sprite brief would deliver the
   wrong thing for two of the three per the caution above, and the third
   (Karrolun) is ordinary but not urgent enough on its own to file solo. Real
-  art is follow-on work, same posture RUT_Karrobel/RUT_FeverSwarm are
+  art is follow-on work, same posture RM_Karrobel/RM_FeverSwarm are
   already sitting in (their own jobs FAILED and are unconsumed in
   infrastructure/artpipe/pending — a pre-existing gap this item does not
   own or attempt to fix).
 
-  Predation onto these three (and onto RUT_Karrobel) by the five
+  Predation onto these three (and onto RM_Karrobel) by the five
   RM_Miasma_Predators.xml plants shipped MIASMA_SCUTTLER_PREDATION_1
   (RM_CompPlantPredator, src/RimMandrake/Miasma/Source/) — see that plant
   file's own header for the mechanism.
@@ -283,7 +279,7 @@
     <label>karrimeth</label>
     <race>RM_Karrimeth</race>
     <combatPower>2</combatPower>
-    <!-- INVENTED, same idiom RUT_FeverSwarm's swarm already uses: "only ever
+    <!-- INVENTED, same idiom RM_FeverSwarm's swarm already uses: "only ever
          a moving mass" is delivered by a very high wildGroupSize on an
          ordinary PawnKindDef, not new C#. -->
     <wildGroupSize>40~90</wildGroupSize>

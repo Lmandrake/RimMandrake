@@ -11,7 +11,7 @@
   RM_CompPlantPredator/RM_CompProperties_PlantPredator
   (src/RimMandrake/Miasma/Source/), self-contained in this assembly — no
   compile-time reference to RimMandrake.CreatureBehaviors needed, since prey
-  is matched by a plain defName whitelist (RM_Karravel/RUT_Karrobel/
+  is matched by a plain defName whitelist (RM_Karravel/RM_Karrobel/
   RM_Karrimeth/RM_Karrolun), same idiom RM_CompVerminBreeder's
   breedFoodThingDefNames already uses. Desktop check (RimSage against
   decompiled 1.6 source) confirmed the engine question this file used to
@@ -54,7 +54,7 @@
       <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
         <preyDefNames>
           <li>RM_Karravel</li>
-          <li>RUT_Karrobel</li>
+          <li>RM_Karrobel</li>
           <li>RM_Karrimeth</li>
           <li>RM_Karrolun</li>
         </preyDefNames>
@@ -91,7 +91,7 @@
       <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
         <preyDefNames>
           <li>RM_Karravel</li>
-          <li>RUT_Karrobel</li>
+          <li>RM_Karrobel</li>
           <li>RM_Karrimeth</li>
           <li>RM_Karrolun</li>
         </preyDefNames>
@@ -128,7 +128,7 @@
       <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
         <preyDefNames>
           <li>RM_Karravel</li>
-          <li>RUT_Karrobel</li>
+          <li>RM_Karrobel</li>
           <li>RM_Karrimeth</li>
           <li>RM_Karrolun</li>
         </preyDefNames>
@@ -171,7 +171,7 @@
       <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
         <preyDefNames>
           <li>RM_Karravel</li>
-          <li>RUT_Karrobel</li>
+          <li>RM_Karrobel</li>
           <li>RM_Karrimeth</li>
           <li>RM_Karrolun</li>
         </preyDefNames>
@@ -212,7 +212,7 @@
       <li Class="RimMandrake.Miasma.RM_CompProperties_PlantPredator">
         <preyDefNames>
           <li>RM_Karravel</li>
-          <li>RUT_Karrobel</li>
+          <li>RM_Karrobel</li>
           <li>RM_Karrimeth</li>
           <li>RM_Karrolun</li>
         </preyDefNames>

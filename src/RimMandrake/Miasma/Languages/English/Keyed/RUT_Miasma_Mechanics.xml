@@ -23,6 +23,7 @@
        delta-loam-composter-castings-producer: RM_CompGatherableGas's
        inspect-string label, attached to RUT_Karrobel.xml this pass. -->
   <RUT_DeltaLoamCastings>castings</RUT_DeltaLoamCastings>
+  <RM_DeltaLoamCastings>castings</RM_DeltaLoamCastings>
 
   <!-- WARDEN_MOTHER_SUCCESSION_1: RM_HediffComp_SelfTameOnRecord and
        RM_CompCrecheYoungLedger's own messages/inspect string

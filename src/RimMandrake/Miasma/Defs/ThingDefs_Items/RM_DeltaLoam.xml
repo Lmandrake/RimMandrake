@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_DeltaLoam.xml   Miasma - MIASMA_SWARM_COMPOSTER_PORT_1
+  Karrobel castings, ported from the campaign original.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_DeltaLoam</defName>
+    <label>delta loam</label>
+    <description>Clean, fertile soil worked loose and cast up by karrobel burrowing through the Miasma's muck. Where the karrobel have been, the ground turns rich and dark — the one export from this biome that arrives already refined.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_DeltaLoam</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>0.6</Mass>
+      <Flammability>0</Flammability>
+      <DeteriorationRate>1.0</DeteriorationRate>
+    </statBases>
+    <stackLimit>75</stackLimit>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

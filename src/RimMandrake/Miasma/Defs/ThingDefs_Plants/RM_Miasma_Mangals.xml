@@ -53,6 +53,11 @@
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <pollinatorRace>RM_FeverSwarm</pollinatorRace>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="TreeBase">
@@ -124,6 +129,11 @@
       <topWindExposure>0.05</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
     </plant>
+    <modExtensions>
+      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.environmentalhazards">
+        <pollinatorRace>RM_FeverSwarm</pollinatorRace>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">
