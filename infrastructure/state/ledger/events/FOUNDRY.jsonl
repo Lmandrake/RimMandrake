@@ -2312,3 +2312,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"BLUEDESERT_FLORA_EXPANSION_BUILD_1","ts":"2026-10-03T16:14:39Z","tsn":1791044079941590925}
 {"seat":"FOUNDRY","event":"start","id":"BLUEDESERT_FLORA_EXPANSION_BUILD_1","ts":"2026-10-03T16:14:41Z","tsn":1791044081714373374}
 {"seat":"FOUNDRY","event":"close","id":"BLUEDESERT_FLORA_EXPANSION_BUILD_1","sha":"5da96df3e8c764704386900827144446ac12bb34","ts":"2026-10-03T16:21:03Z","tsn":1791044463575322329}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-10-03T16:21:24Z","tsn":1791044484257218811}
+{"seat":"FOUNDRY","event":"claim","id":"GREENTIDE_FREE_ROSTER_OWNED_1","ts":"2026-10-03T16:24:27Z","tsn":1791044667263171017}
+{"seat":"FOUNDRY","event":"start","id":"GREENTIDE_FREE_ROSTER_OWNED_1","ts":"2026-10-03T16:24:27Z","tsn":1791044667933170281}
+{"seat":"FOUNDRY","event":"close","id":"GREENTIDE_FREE_ROSTER_OWNED_1","sha":"af179341a","ts":"2026-10-03T16:29:05Z","tsn":1791044945520703615}
