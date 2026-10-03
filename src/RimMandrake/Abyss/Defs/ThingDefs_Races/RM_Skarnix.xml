@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ABYSS_INVENTED_CREATURES_TO_RM_1. Skarnix. Invented name (Wookieepedia search: 0 hits), so it lives in the
+  franchise-free RM_ tier (Q11a), not SWBestiary. ONE HOME: the Abyss (RM_Abyss inline, plus the RUT_Abyss twin).
+  Ported unchanged from the former Star Wars-tier def (FORSAKEN_CRAGS_PREDATORS_BUILD_1); wildness 1.0 makes it untameable.
+  Carries CompLightAversion (RM_CompLightAversion.cs): it will not cross firelight or a heated space.
+-->
+<Defs>
+  <ThingDef ParentName="ThingBaseWolf">
+    <defName>RM_Skarnix</defName>
+    <label>skarnix</label>
+    <description>A cat-large ambush stalker of the Abyss, its head crowded with a one-sided cluster of eyes. Skarnix will not cross firelight or a heated space - a lit camp neutralises it without a fight. Solitary and untameable.</description>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.4</maxPreyBodySize>
+      <petness>0</petness>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.85</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <meatLabel>skarnix meat</meatLabel>
+      <nameOnTameChance>0</nameOnTameChance>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <gestationPeriodDays>9</gestationPeriodDays>
+      <lifeExpectancy>10</lifeExpectancy>
+      <lifeStageAges Inherit="False">
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+          <soundWounded>Pawn_Cat_Injured</soundWounded>
+          <soundDeath>Pawn_Cat_Death</soundDeath>
+          <soundCall>Pawn_Cat_Call</soundCall>
+          <soundAngry>Pawn_Cat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+    </race>
+    <statBases>
+      <Mass>28</Mass>
+      <Flammability>0.7</Flammability>
+      <LeatherAmount>22</LeatherAmount>
+      <ToxicResistance>0.5</ToxicResistance>
+      <MoveSpeed>5.4</MoveSpeed>
+      <MarketValue>310</MarketValue>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <FilthRate>1</FilthRate>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <comps>
+      <li>
+        <compClass>CompAttachBase</compClass>
+      </li>
+      <li Class="RimMandrake.Abyss.CompProperties_LightAversion">
+        <fleeSearchRadius>10</fleeSearchRadius>
+        <fleeExpiryTicks>600</fleeExpiryTicks>
+      </li>
+    </comps>
+    <graphicData>
+      <texPath>RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.6</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBaseWolf">
+    <defName>RM_Skarnix</defName>
+    <label>skarnix</label>
+    <labelPlural>skarnixes</labelPlural>
+    <race>RM_Skarnix</race>
+    <combatPower>65</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>skarnix kit</label>
+        <labelPlural>skarnix kits</labelPlural>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_Abyss/Things/Pawn/Animal/RM_Skarnix/RM_Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.6</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.12)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

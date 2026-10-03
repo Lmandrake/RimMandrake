@@ -19,9 +19,8 @@
     Alpha Animals rows), wildPlants (all 8 Alpha Biomes/Alpha Genetics rows) —
     is the twin's content unchanged. Zero RSW_/SW_/RUT_ rows exist in the
     twin's wildAnimals, so nothing moves to a Utinni patch from THIS def; the
-    real Star Wars content for this biome (RSW_Cindermare/RSW_Skarnix) already
-    lives in a Utinni patch and only had its TARGET corrected to point here
-    (src/RimStarWars/SWBestiary/Patches/Livestock/Abyss_WildSpawns.xml).
+    Cindermare and Skarnix are invented, not canon, so they ship inline here as RM_Cindermare/RM_Skarnix
+    (ABYSS_INVENTED_CREATURES_TO_RM_1); no Star Wars patch wires them any more.
 
     ⚠️ NOT donor-free: terrain/texture and all 8 wildPlants entries carry no
     MayRequire (inherited from the twin, not this build's scope to fix) — see
@@ -100,6 +99,8 @@
       <RM_Durrgak>0.4</RM_Durrgak>  <!-- ABYSS_DURRGAK_BUILD_1: the placer; this biome only -->
       <RM_Gharrek>0.6</RM_Gharrek>  <!-- ABYSS_GHARREK_BUILD_1: gust-feeder, base of the web; this biome only -->
       <RM_Krizzak>0.3</RM_Krizzak>  <!-- ABYSS_KRIZZAK_BUILD_1: light-thief flier; this biome only -->
+      <RM_Cindermare>0.04</RM_Cindermare>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: grip-drain solitary predator; rarer than the skarnix; this biome only -->
+      <RM_Skarnix>0.09</RM_Skarnix>  <!-- ABYSS_INVENTED_CREATURES_TO_RM_1: firelight-averse ambush stalker; this biome only -->
       <AA_DuskRat MayRequire="sarg.alphaanimals">1.5</AA_DuskRat>  <!-- dusk rat - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_Murkling MayRequire="sarg.alphaanimals">1.0</AA_Murkling>  <!-- murkling - small, keep; boosted from 0.5 for the ecosystem pyramid law -->
       <AA_NightMule MayRequire="sarg.alphaanimals">0.5</AA_NightMule>  <!-- nightmule - large, keep -->

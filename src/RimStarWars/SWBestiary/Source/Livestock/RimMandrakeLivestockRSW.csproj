@@ -18,9 +18,8 @@
     here; verify a fresh build lands beside JawaIkee.dll at
     SWBestiary/Assemblies/ before trusting this comment again.
 
-    FORSAKEN_CRAGS_PREDATORS_BUILD_1's one C# hook: CompLightAversion,
-    Skarnix's firelight-avoidance comp. See CompLightAversion.cs's own
-    header for the mechanism and its vanilla precedent.
+    CompLightAversion (Skarnix's firelight-avoidance comp) moved to the Abyss mod
+    (RimMandrake.Abyss, ABYSS_INVENTED_CREATURES_TO_RM_1).
 
     LIVESTOCK_STARTER_TRIO_1 adds CompKilnBelly.cs: onnik's feed-cycle kiln
     mechanic (CompKilnBelly on the animal, CompKilnFeed on its clay feed).
@@ -57,7 +56,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="CompLightAversion.cs" />
     <Compile Include="CompKilnBelly.cs" />
     <Compile Include="CompMoornakGrief.cs" />
     <Compile Include="RSW_LivestockSettings.cs" />

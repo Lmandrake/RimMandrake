@@ -37,8 +37,8 @@
   into resources.assets, not loose PNGs, so this repo's static scan can't confirm it,
   and this project's convention is to reuse art that is physically present in this
   mod's own Textures/ folder. Reused instead: Things/Pawn/Animal/Skarnix/Skarnix — an
-  existing, already-shipped SWBestiary predator (RSW_Skarnix, "a cat-large ambush
-  stalker," Abyss) that is thematically the closest thing already on disk to
+  existing, already-shipped SWBestiary texture (the skarnix, "a cat-large ambush
+  stalker," now RM_Skarnix in the Abyss mod; this copy stays here) that is thematically the closest thing already on disk to
   an ambush stalker, and its PawnKindDef pattern (Graphic_Single, no dessicated
   variant) is copied exactly below. A proper sand-toned, sun-axis-asymmetric analog
   sprite for the sand stalker specifically is owed.
