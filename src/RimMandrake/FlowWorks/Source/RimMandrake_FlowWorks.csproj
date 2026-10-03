@@ -97,6 +97,7 @@
     <Compile Include="Pits\Trigger\CompProperties_PitCoverTrigger.cs" />
     <Compile Include="Pits\Trigger\CompPitCoverTrigger.cs" />
     <Compile Include="Pits\Trigger\PitCoverTier.cs" />
+    <Compile Include="Pits\Building_PitCover.cs" />
   </ItemGroup>
 
   <!-- ManyWaters, merged 2026-09-16. Namespace

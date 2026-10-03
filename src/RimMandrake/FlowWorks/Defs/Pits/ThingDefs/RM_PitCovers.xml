@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PIT_COVER_FALL_REWIRE_1 (Source/Pits/Building_PitCover.cs): a pit cover is a 1x1 building over a
+     SUPERDEEP (D=4) cell; neighbouring covers form one deck whose total standing mass is summed
+     every 30 ticks against the tier (PitCoverTier 40/120/220 kg, 220 the owner's ruling). It prints the
+     terrain around the pit (it has no art of its own by design). Costs and hit points are the
+     builder's proposal, not ruled. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PitCover_WovenScrap</defName>
+    <label>woven scrap pit cover</label>
+    <description>A mat of scrap and woven fiber stretched over a superdeep hole and dusted to match the ground around it. Anything heavier than about 40 kg standing on the cover goes through.\n\nNeighbouring covers act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
+    <graphicData>
+      <texPath>Terrain/Surfaces/Soil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>1</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <designationCategory>Security</designationCategory>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <WorkToBuild>500</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>10</WoodLog>
+      <Cloth>10</Cloth>
+    </costList>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_PitCoverOnSuperdeep</li>
+    </placeWorkers>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_PitCoverTrigger">
+        <scanIntervalTicks>30</scanIntervalTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_PitCoverExtension">
+        <tier>WovenScrap</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PitCover_PlankLattice</defName>
+    <label>plank pit cover</label>
+    <description>A lattice of planks over a superdeep hole, dusted to match the ground around it. It holds a person; it does not hold anything heavier than about 120 kg in total.\n\nNeighbouring covers act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
+    <graphicData>
+      <texPath>Terrain/Surfaces/Soil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>1</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <designationCategory>Security</designationCategory>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>900</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>30</WoodLog>
+    </costList>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_PitCoverOnSuperdeep</li>
+    </placeWorkers>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_PitCoverTrigger">
+        <scanIntervalTicks>30</scanIntervalTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_PitCoverExtension">
+        <tier>PlankLattice</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_PitCover_ReinforcedFrame</defName>
+    <label>reinforced pit cover</label>
+    <description>A braced steel frame over a superdeep hole, surfaced to match the ground around it. Only a load over about 220 kg in total, a great beast or several heavy bodies at once, breaks it.\n\nNeighbouring covers act as one: everyone standing anywhere on them counts together. Your own people are spared unless the "your own pit takes your own people" setting is on.</description>
+    <thingClass>RimMandrake.FlowWorks.Pits.Building_PitCover</thingClass>
+    <graphicData>
+      <texPath>Terrain/Surfaces/Soil</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <drawerType>MapMeshOnly</drawerType>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>1</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Normal</tickerType>
+    <designationCategory>Security</designationCategory>
+    <statBases>
+      <MaxHitPoints>160</MaxHitPoints>
+      <WorkToBuild>1600</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <costList>
+      <Steel>40</Steel>
+      <WoodLog>20</WoodLog>
+    </costList>
+    <building>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.Pits.PlaceWorker_PitCoverOnSuperdeep</li>
+    </placeWorkers>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.Pits.CompProperties_PitCoverTrigger">
+        <scanIntervalTicks>30</scanIntervalTicks>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.Pits.RM_PitCoverExtension">
+        <tier>ReinforcedFrame</tier>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

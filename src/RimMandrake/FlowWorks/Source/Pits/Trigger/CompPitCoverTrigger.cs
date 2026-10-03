@@ -58,25 +58,39 @@ namespace RimMandrake.FlowWorks.Pits
             // disarming still work, the pit just never fires on its own.
             if (!RimMandrakeFlowWorksSettings.trapTriggerEnabled) return;
 
-            float summedMass = 0f;
-            List<Pawn> onCover = new List<Pawn>();
-            CellRect rect = parent.OccupiedRect();
+            // PIT_COVER_FALL_REWIRE_1: a cover is one cell of a DECK (4-way connected covers); the
+            // deck's lead cover sums everyone standing anywhere on the deck, so a raider knot spread
+            // over several cells overloads it together. Own faction is spared unless the
+            // "your own pit takes your own people" setting is on (the carve-out stays a setting).
+            Building_PitCover self = parent as Building_PitCover;
             Map map = parent.Map;
             if (map == null) return;
+            List<IntVec3> cells = new List<IntVec3>();
+            if (self != null)
+            {
+                if (!self.IsDeckLead) return;
+                foreach (Building_PitCover c in RM_PitCoverUtility.Deck(self))
+                {
+                    cells.Add(c.Position);
+                }
+            }
+            else
+            {
+                foreach (IntVec3 c in parent.OccupiedRect())
+                {
+                    cells.Add(c);
+                }
+            }
 
-            foreach (IntVec3 cell in rect)
+            float summedMass = 0f;
+            List<Pawn> onCover = new List<Pawn>();
+            foreach (IntVec3 cell in cells)
             {
                 List<Thing> thingsHere = cell.GetThingList(map);
                 for (int i = 0; i < thingsHere.Count; i++)
                 {
-                    // Unlike vanilla Building_Trap (KnowsOfTrap / a near-zero
-                    // SpringChance for the trap's own faction), nothing here
-                    // excluded the parent's own faction -- a colonist crossing
-                    // their own armed pit sprang it exactly as readily as a
-                    // raider, and the def is Standable/pathCost 30, so colonists
-                    // route straight over it. A trap that captures its own
-                    // colony is not the intended "raider trap" use case.
-                    if (thingsHere[i] is Pawn p && !p.Dead && p.Faction != parent.Faction)
+                    if (thingsHere[i] is Pawn p && !p.Dead && !p.Flying
+                        && (p.Faction != parent.Faction || RimMandrakeFlowWorksSettings.superdeepCapturesOwnFaction))
                     {
                         onCover.Add(p);
                         summedMass += p.GetStatValue(StatDefOf.Mass);

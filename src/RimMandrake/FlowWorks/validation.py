@@ -658,10 +658,14 @@ def plot_G_pit(t):
         _frame(t, *twin_shot)    # occupied pit beside the empty twin in one frame
     with t.component("pit_cover_invisible",
                      shows=["pit_covered_invisible", "pit_covered_seam_at_max_zoom"]):
-        # BLOCKED: no superdeep cover exists (building-pit Building_TerrainMimicCover only)
+        # PIT_COVER_FALL_REWIRE_1: a reinforced deck over the empty twin (nobody on it is heavy enough
+        # to spring it), framed beside the open pit; the frame is the bar, the count is the guard.
+        t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_ReinforcedFrame:%d,%d" % (x, z) for x, z in twin))
         if t._guard():
-            raise ExpectationFailed("BLOCKED: superdeep terrain-mimic cover unbuilt")
-        _frame(t, *shot)
+            r = t.bridge_call("jawa/list_things", defName="RM_PitCover_ReinforcedFrame",
+                              rect=_rect(twin[0][0] - 1, twin[0][1] - 1, 5, 5))
+            _expect((r or {}).get("countMatched") == 9, "reinforced cover deck did not stand on all 9 twin cells: %r" % r)
+        _frame(t, *twin_shot)
     with t.component("ladder_state_look", toggle="ladderRequiredToExitEnabled",
                      shows=["ladder_state_legible"]):
         t.bridge_call("jawa/spawn_batch", ops="%s:%d,%d" % (LADDER, pit[0][0] - 1, pit[0][1]))
@@ -1004,6 +1008,33 @@ def ladder_prison_door(t):
             _wait(t, PULSE)
             if t._guard():
                 _expect(_pit_held(t, hid, pit) is False, "prison-door OFF but a ladder still holds the hostile")
+
+
+@suite.chain("pit_cover_fall")
+def pit_cover_fall(t):
+    """PIT_COVER_FALL_REWIRE_1 verify: a hostile heavier than the tier on a covered pit ends on the D=4
+    cell, held, with the deck gone; one lighter than the tier does not spring it and is not held."""
+    x0, z0 = _prep_plot(t, "G")
+    pit = _pit_cells(x0, z0)
+    twin = [(x + 9, z) for x, z in pit]
+    _dig_run(t, pit, 4)
+    _dig_run(t, twin, 4)
+    with t.component("heavy_springs_woven_cover", toggle="trapTriggerEnabled"):
+        t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_WovenScrap:%d,%d" % (x, z) for x, z in pit))
+        hid = _spawn_pawn_at(t, "Pirate", pit[4][0], pit[4][1], faction="hostile")
+        _wait(t, 2 * PULSE)
+        if t._guard():
+            r = t.bridge_call("jawa/list_things", defName="RM_PitCover_WovenScrap", rect=_rect(pit[0][0] - 1, pit[0][1] - 1, 5, 5))
+            _expect((r or {}).get("countMatched") == 0, "woven cover still standing under a ~70 kg hostile: %r" % r)
+            _expect(_pit_held(t, hid, pit) is True, "hostile not held after the cover gave way")
+    with t.component("light_does_not_spring_reinforced", toggle="trapTriggerEnabled"):
+        t.bridge_call("jawa/spawn_batch", ops=";".join("RM_PitCover_ReinforcedFrame:%d,%d" % (x, z) for x, z in twin))
+        lid = _spawn_pawn_at(t, "Pirate", twin[4][0], twin[4][1], faction="hostile")
+        _wait(t, 2 * PULSE)
+        if t._guard():
+            r = t.bridge_call("jawa/list_things", defName="RM_PitCover_ReinforcedFrame", rect=_rect(twin[0][0] - 1, twin[0][1] - 1, 5, 5))
+            _expect((r or {}).get("countMatched") == 9, "reinforced cover sprang under one ~70 kg pawn (220 kg tier): %r" % r)
+            _expect(_pit_held(t, lid, twin) is False, "pawn on an intact cover reads as held")
 
 
 @suite.chain("toggle_superdeep_shooting")

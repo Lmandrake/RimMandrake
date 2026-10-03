@@ -102,7 +102,8 @@ namespace RimMandrake.FlowWorks
 				return false;
 			}
 			bool onD4 = eng.IsSuperdeepExcavation(c);
-			if (!onD4 || !RuleOn)
+			// PIT_COVER_FALL_REWIRE_1: an intact cover is ground until it gives way.
+			if (!onD4 || !RuleOn || Pits.RM_PitCoverUtility.IsCovered(p.Map, c))
 			{
 				return false;
 			}
@@ -305,6 +306,7 @@ namespace RimMandrake.FlowWorks
 				if (lastCell.TryGetValue(p, out IntVec3 prev) && prev != pos
 					&& RimMandrakeFlowWorksSettings.superdeepCaptureEnabled
 					&& RM_PitTrapMath.IsPitDescent(eng.ExcavatedDepthAt(prev), eng.ExcavatedDepthAt(pos))
+					&& !Pits.RM_PitCoverUtility.IsCovered(map, pos)
 					&& !p.Flying && RM_SuperdeepTrap.Captures(p))
 				{
 					descents.Add(p);
