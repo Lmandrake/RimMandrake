@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MIASMA_ATTAR_STILL_1. Luxury oil refined from delta silt and delta salt. Glaze for artworks, balm for scars. Art is a PLACEHOLDER (amber tint of the silt icon); no artpipe job exists. -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Attar</defName>
+    <label>attar</label>
+    <description>A dark, heavy oil of astonishing scent, rendered from delta silt and salt. Artists brush it over a finished work as a glaze that deepens it; the vain rub it into old scars as a balm. It mends nothing, and it is not medicine.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_Attar/RM_Attar</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.65</drawSize>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Mass>0.05</Mass>
+      <Flammability>0.4</Flammability>
+      <MarketValue>90</MarketValue>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_AttarStill</defName>
+    <label>attar still</label>
+    <description>A copper pot and coil over a low fire, for rendering delta silt and salt into attar. Needs no power.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_AttarStill/RM_AttarStill</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,1)</drawSize>
+    </graphicData>
+    <size>(2,1)</size>
+    <costList>
+      <Steel>40</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <statBases>
+      <WorkToBuild>1200</WorkToBuild>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <constructionSkillPrerequisite>4</constructionSkillPrerequisite>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+    </building>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+    </comps>
+    <designationCategory>Production</designationCategory>
+    <surfaceType>Item</surfaceType>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <fillPercent>0.5</fillPercent>
+    <passability>PassThroughOnly</passability>
+    <pathCost>40</pathCost>
+    <placeWorkers>
+      <li>PlaceWorker_ReportWorkSpeedPenalties</li>
+    </placeWorkers>
+  </ThingDef>
+</Defs>

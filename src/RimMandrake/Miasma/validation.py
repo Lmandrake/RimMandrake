@@ -20,9 +20,9 @@ SETTINGS_TYPE = "RimMandrake.Miasma.RM_MiasmaSettings"
 DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTameChancePerCheck": 0.12,
             "plantPredationEnabled": True, "pollinationGateEnabled": True,
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
-            "ambushFrogHunts": True}
+            "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0}
 NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
-       "ambushFrogHunts"]
+       "ambushFrogHunts", "attarEnabled"]
 
 
 def static_checks():
@@ -84,13 +84,45 @@ def static_checks():
         bad.append("RM_Bozzuga placeholder texture missing")
     if "RM_Bozzuga" not in open(os.path.join(HERE, "Source", "RM_AmbushFrogHunting.cs")).read():
         bad.append("RM_AmbushFrogHunting does not target RM_Bozzuga")
+    # MIASMA_FLOTSAM_YARD_1
+    fl = os.path.join(HERE, "Source", "RM_MapComponent_FlotsamYard.cs")
+    if not os.path.exists(fl):
+        bad.append("RM_MapComponent_FlotsamYard.cs missing")
+    else:
+        ft = open(fl).read()
+        for needle in ("flotsamEnabled", "flotsamAmount", "LastRecedeCompletedTick", "RM_Thessamor", "RM_Thrannock"):
+            if needle not in ft:
+                bad.append("flotsam yard lacks %s" % needle)
+    # MIASMA_ATTAR_STILL_1
+    items = open(os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_Attar.xml")).read()
+    for d in ("RM_Attar", "RM_AttarStill"):
+        if items.count("<defName>%s</defName>" % d) != 1:
+            bad.append("%s ThingDef missing or duplicated" % d)
+    rec = open(os.path.join(HERE, "Defs", "RecipeDefs", "RM_MakeAttar.xml")).read()
+    for needle in ("<li>RM_DeltaSilt</li>", "<li>RM_DeltaSalt</li>", "<RM_Attar>1</RM_Attar>", "<li>RM_AttarStill</li>"):
+        if needle not in rec:
+            bad.append("RM_MakeAttar lacks %s" % needle)
+    if "<Medicine" in rec or "Medicine" in items:
+        bad.append("attar must not be medicine (ban 3)")
+    jobs = open(os.path.join(HERE, "Defs", "JobDefs", "RM_Jobs_Attar.xml")).read()
+    for j in ("RM_GlazeArtwork", "RM_BalmScar"):
+        if "<defName>%s</defName>" % j not in jobs:
+            bad.append("JobDef %s missing" % j)
+    att = open(os.path.join(HERE, "Source", "RM_Attar.cs")).read()
+    if "attarEnabled" not in att or "IsPermanent()" not in att:
+        bad.append("RM_Attar.cs must gate on attarEnabled and balm only permanent scars")
+    for t in ("Textures/Things/Item/Resource/RM_Attar/RM_Attar.png", "Textures/Things/Building/RM_AttarStill/RM_AttarStill.png"):
+        if not os.path.exists(os.path.join(HERE, t)):
+            bad.append("missing texture " + t)
+    if "StatPart_Glazed" not in open(os.path.join(HERE, "Patches", "RM_Attar_BeautyPart.xml")).read():
+        bad.append("Beauty StatPart patch missing")
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Miasma")
-    suite.toggles = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
+    suite.toggles = ["attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
 
     def _call(t, action, field, value=None):
         kw = dict(typeName=SETTINGS_TYPE, action=action, field=field)
@@ -153,6 +185,23 @@ def _build_suite():
             raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), "
                                     "spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live "
                                     "Miasma quicktest map with the bridge")
+
+    @suite.chain("flotsam_yard")
+    def flotsam_yard(t):
+        with t.component("flotsam_after_surge_in_root_lines", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: flotsam stacks standing on root-line cells after a debug surge and "
+                                    "recede (and none on dry inland ground) need a live Miasma quicktest map")
+
+    @suite.chain("attar_glaze_and_balm")
+    def attar_glaze_and_balm(t):
+        with t.component("attar_recipe_glaze_balm", toggle="attarEnabled"):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: RM_MakeAttar resolves on RM_AttarStill, a glazed sculpture's Beauty "
+                                    "stat rises by 3, and a balmed pawn's permanent scar fades while no non-permanent "
+                                    "injury changes; each needs a live Miasma quicktest map with an artwork and a scarred pawn")
 
     return suite
 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <JobDef>
+    <defName>RM_GlazeArtwork</defName>
+    <driverClass>RimMandrake.Miasma.JobDriver_UseAttar</driverClass>
+    <reportString>glazing TargetB with attar.</reportString>
+  </JobDef>
+  <JobDef>
+    <defName>RM_BalmScar</defName>
+    <driverClass>RimMandrake.Miasma.JobDriver_UseAttar</driverClass>
+    <reportString>balming TargetB with attar.</reportString>
+  </JobDef>
+</Defs>

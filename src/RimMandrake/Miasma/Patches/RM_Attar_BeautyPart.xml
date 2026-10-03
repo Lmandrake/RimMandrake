@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MIASMA_ATTAR_STILL_1: glazed artworks gain Beauty through StatPart_Glazed. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/StatDef[defName="Beauty"]/parts</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs/StatDef[defName="Beauty"]/parts</xpath>
+      <value><li Class="RimMandrake.Miasma.StatPart_Glazed"/></value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/StatDef[defName="Beauty"]</xpath>
+      <value><parts><li Class="RimMandrake.Miasma.StatPart_Glazed"/></parts></value>
+    </nomatch>
+  </Operation>
+</Patch>
