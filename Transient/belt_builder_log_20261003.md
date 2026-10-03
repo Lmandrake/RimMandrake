@@ -19,3 +19,5 @@
 - MINERAL_BIOME_LEAKS_1 closed 45346bd11 (silk knot scatter 0.6->0; lanternstone deep gate + setting; Rust Cathedral half was already fixed; live proof owed)
 - SCALD_SIMMERLACE_EKKEL_LORE_1 dropped (already built e3aba0de8)
 - PYRELANDS_FAUNA_TIER_PORT_BUILD_1 closed c0f2e9842 (13 defs git-mv'd to Pyrelands as RM_, textures moved, wildAnimals inline, Utinni patch shrunk to 7 canon Adds with FindMod, DLLs rebuilt; live load proof owed; Ashwallow/Emberscythe art still owed per PYRELANDS_SHIP_READINESS_1; Pyrelands heat-kind item now unblocked)
+- PYRELANDS_HEAT_KIND_BUILD_1 closed 23f664e46 (step 1 extension shipped; furnace-warmth retirement split to PYRELANDS_FURNACE_WARMTH_AMBIENT_1; live proof owed). Note: use ./publish (pull --rebase refuses on dirty Transient)
+- ROT_RM_CAST_MIGRATION_1 closed 941b4805e (port_fauna.py; ten RM_ defs; thozzik/illoth south art re-queued in pending; live load proof owed)
