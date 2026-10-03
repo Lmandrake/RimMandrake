@@ -2437,3 +2437,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"SHKAAR_FLAME_IDOL_BUILD_1","ts":"2026-10-03T19:03:04Z","tsn":1791054184681302849}
 {"seat":"FOUNDRY","event":"start","id":"SHKAAR_FLAME_IDOL_BUILD_1","ts":"2026-10-03T19:03:05Z","tsn":1791054185285236757}
 {"seat":"FOUNDRY","event":"close","id":"SHKAAR_FLAME_IDOL_BUILD_1","sha":"4a7fcdbeda76","ts":"2026-10-03T19:04:19Z","tsn":1791054259032676204}
+{"seat":"FOUNDRY","event":"note","id":"DEEPS_FAUNA_MECHANICS_2","text":"Offline part checked 2026-10-03: nothing left offline (hydrocarbon ext already on RSW/RM Gembug+GlowSlug; stale 'attached to NOTHING' line corrected). Remaining = live behaviour test.","ts":"2026-10-03T19:04:51Z","tsn":1791054291165105855}
