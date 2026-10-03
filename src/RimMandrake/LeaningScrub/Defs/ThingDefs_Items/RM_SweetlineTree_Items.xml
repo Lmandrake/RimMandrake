@@ -35,6 +35,12 @@
       <color>(196,193,186)</color>
       <commonality>0.04</commonality>
     </stuffProps>
+    <!-- SWEETLINE_FELT_COMFORT_BUILD_1: +0.10 Comfort on furniture of it, +2 mood worn (spec §5). -->
+    <modExtensions>
+      <li Class="RimMandrake.LeaningScrub.RM_StuffComfortExtension">
+        <comfortOffset>0.10</comfortOffset>
+      </li>
+    </modExtensions>
   </ThingDef>
 
   <!-- LEANINGSCRUB_SWEETLINE_VISITORS_1: what pilgrims leave at a sweetline tree.

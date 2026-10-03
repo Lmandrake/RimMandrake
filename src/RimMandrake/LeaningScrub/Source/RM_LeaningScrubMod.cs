@@ -87,6 +87,9 @@ namespace RimMandrake.LeaningScrub
         public static float sweetlineFeltShare = 0.2f;
         // SWEETLINE_TREE_MAP_STEP_1 (RM_GenStep_SweetlineTrees.cs)
         public static float sweetlineTreeMapChance = 0.25f;
+        // SWEETLINE_FELT_COMFORT_BUILD_1 (RM_SweetlineFelt.cs)
+        public static bool sweetlineFeltComfortEnabled = true;
+        public static bool sweetlineFeltApparelEnabled = true;
         // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
         public static bool visslerArmFoodEnabled = true;
 
@@ -132,6 +135,8 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineCoatReady, "sweetlineCoatReady", 0.8f, true);
             Scribe_Values.Look(ref sweetlineFeltShare, "sweetlineFeltShare", 0.2f, true);
             Scribe_Values.Look(ref sweetlineTreeMapChance, "sweetlineTreeMapChance", 0.25f, true);
+            Scribe_Values.Look(ref sweetlineFeltComfortEnabled, "sweetlineFeltComfortEnabled", true, true);
+            Scribe_Values.Look(ref sweetlineFeltApparelEnabled, "sweetlineFeltApparelEnabled", true, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
         }
 
@@ -263,6 +268,12 @@ namespace RimMandrake.LeaningScrub
                 "One tree, or two at 30%, at least 40 cells apart. Affects newly generated maps only; not worldgen. "
                 + "Needs named sweetline trees on."));
             sweetlineTreeMapChance = Mathf.Round(list.Slider(sweetlineTreeMapChance, 0f, 1f) * 20f) / 20f;
+
+            list.CheckboxLabeled("Sweetline felt furniture is more comfortable", ref sweetlineFeltComfortEnabled,
+                "Chairs, beds and other furniture made of sweetline felt get +0.10 comfort.");
+            list.CheckboxLabeled("Sweetline felt clothing lifts the mood", ref sweetlineFeltApparelEnabled,
+                "Anyone wearing at least one piece made of sweetline felt is a little happier (+2), however many "
+                + "pieces they wear.");
 
             list.CheckboxLabeled("Animals scratch their coats off on sweetline trees", ref sweetlineScratchingEnabled,
                 "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a calm sweetline tree "

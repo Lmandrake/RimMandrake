@@ -355,7 +355,8 @@ Pieces 1-5, 8 (the three scratching settings), 9 and 10 are **built** (`SWEETLIN
 departures: the felt store resets when it is paid out (in `GetAdditionalHarvestYield`), not in
 `PlantCollected`, so a failed harvest roll keeps it; and wild coats grow only while a sweetline tree
 stands somewhere in the running game. Piece 7 (map step) is built too (`SWEETLINE_TREE_MAP_STEP_1`, `Source/RM_GenStep_SweetlineTrees.cs`).
-Piece 6 (comfort) is its own item, `SWEETLINE_FELT_COMFORT_BUILD_1`.
+Piece 6 (comfort) is built (`SWEETLINE_FELT_COMFORT_BUILD_1`, `Source/RM_SweetlineFelt.cs`, settings
+`sweetlineFeltComfortEnabled` / `sweetlineFeltApparelEnabled`). §11 is now fully built; live proof is owed.
 
 | # | piece | where | size |
 |---|---|---|---|
