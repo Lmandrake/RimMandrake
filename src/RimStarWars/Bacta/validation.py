@@ -491,20 +491,13 @@ def tank_heals(t):
 
 # ------------------------------------------------------------------ chain 3: scar erasure
 
-def _find_permanent_action(t):
-    r = t.bridge_call("rimworld/search_debug_actions", query="Make injuries permanent", limit=10)
-    if not isinstance(r, dict) or not r.get("success"):
-        _unmeasured(t, "search_debug_actions failed: %s" % str(r)[:200])
-    stack = [r]
-    while stack:
-        o = stack.pop()
-        if isinstance(o, dict):
-            if isinstance(o.get("path"), str) and "permanent" in o["path"].lower():
-                return o["path"]
-            stack.extend(o.values())
-        elif isinstance(o, list):
-            stack.extend(o)
-    _unmeasured(t, "no 'Make injuries permanent' debug action found")
+def _make_permanent(t, pid):
+    """Mark the pawn's injuries permanent with jawa/pawn_health action=permanent (companion, added 2026-10-03).
+    RULED OUT (hung the game TWICE, main thread frozen for good): rimworld/search_debug_actions + execute_debug_action
+    'Make injuries permanent'. search_debug_actions expands every debug-menu node, and expanding them runs the quest
+    generator's test loops (QuestNode_TradeRequest_RandomOfferDuration NRE spam, then a frozen Player.log)."""
+    r = t.bridge_call("jawa/pawn_health", pawn=pid, action="permanent")
+    _ok(r, "pawn_health permanent")
 
 
 @suite.chain("tank_scar")
@@ -518,11 +511,7 @@ def tank_scar(t):
             _sset(t, "autoEjectEnabled", False)   # nothing heals with scars off, so the tank would release the pawn
             _sset(t, "scarHealPerDay", 20)
             _add(t, S["pawn"], "Cut", "Torso", 0.3)
-            path = _find_permanent_action(t)
-            x, z = t.anchor
-            pos = _pawn(t, S["pawn"]).get("position") or {}
-            _ok(t.bridge_call("rimworld/execute_debug_action", path=path, pawnId=S["pawn"],
-                      x=pos.get("x", x), z=pos.get("z", z)), "execute_debug_action permanent")
+            _make_permanent(t, S["pawn"])
             S["scar0"] = _sev(_pawn(t, S["pawn"]), "Cut", "Torso")
             if S["scar0"] is None:
                 _unmeasured(t, "the cut vanished when made permanent (fixture)")
