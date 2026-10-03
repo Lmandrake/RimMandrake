@@ -34,6 +34,12 @@ namespace RimMandrake.Abyss
         // ABYSS_ETCHFALL_BUILD_1: grain erosion strength on unroofed rock and steel. 0 = off, 1 = shipped.
         public static float etchfallStrength = 1f;
 
+        // ABYSS_DARK_BUILD_1: the Dark as real air. Master toggle, strength slider (0 = no effect, 1 = shipped), the Unveiling and the storm call.
+        public static bool darkEnabled = true;
+        public static float darkStrength = 1f;
+        public static bool unveilingEnabled = true;
+        public static bool stormCallEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -42,6 +48,10 @@ namespace RimMandrake.Abyss
             Scribe_Values.Look(ref durrgakRingsEnabled, "durrgakRingsEnabled", true, true);
             Scribe_Values.Look(ref krizzakLightEatingEnabled, "krizzakLightEatingEnabled", true, true);
             Scribe_Values.Look(ref etchfallStrength, "etchfallStrength", 1f, true);
+            Scribe_Values.Look(ref darkEnabled, "darkEnabled", true, true);
+            Scribe_Values.Look(ref darkStrength, "darkStrength", 1f, true);
+            Scribe_Values.Look(ref unveilingEnabled, "unveilingEnabled", true, true);
+            Scribe_Values.Look(ref stormCallEnabled, "stormCallEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -67,6 +77,18 @@ namespace RimMandrake.Abyss
             list.Label("Etchfall strength: " + (etchfallStrength <= 0.001f ? "off" : etchfallStrength.ToString("0.0") + "x"));
             etchfallStrength = list.Slider(etchfallStrength, 0f, 3f);
             list.Label("How fast falling grain erodes unroofed rock and steel into tholin dust. 0 = off; roofed cells are never touched. Safe mid-game; hollows already made stay.");
+
+            list.CheckboxLabeled("The Dark blinds and swallows lamplight", ref darkEnabled,
+                "On: in the Abyss the air is dark; pawns lose sight, aim and melee skill and lamps shrink, except where warmth thins it. Off: the Abyss weather is plain sky only. Safe mid-game.");
+            list.Label("Dark strength: " + (darkStrength <= 0.001f ? "off" : darkStrength.ToString("0.0") + "x"));
+            darkStrength = list.Slider(darkStrength, 0f, 2f);
+            list.Label("How hard the Dark presses on sight, aim, melee and lamplight. 0 = no effect. Warm places stay clear at any strength.");
+
+            list.CheckboxLabeled("The Unveiling may happen", ref unveilingEnabled,
+                "On: rarely the Dark folds away for a few hours and the whole country shows. Off: it never lifts.");
+
+            list.CheckboxLabeled("Storm giant calls in Witchfire storms", ref stormCallEnabled,
+                "On: some thunder in Witchfire storms is a summ calling, a flash with no lightning, and one may come down and cross the map. Off: ordinary storms.");
 
             list.End();
         }

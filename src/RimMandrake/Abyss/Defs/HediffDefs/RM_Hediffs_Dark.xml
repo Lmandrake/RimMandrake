@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ABYSS_DARK_BUILD_1. Not a new heat: this is sight, not temperature. Severity = local Dark * strength slider, set and cleared by RM_MapComponent_Dark. -->
+  <HediffDef>
+    <defName>RM_Murk</defName>
+    <label>murk</label>
+    <description>The Dark hangs in the air here and swallows light. Sight, aim and fighting all suffer. Warmth thins it.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55,0.55,0.70)</defaultLabelColor>
+    <isBad>false</isBad>
+    <tendable>false</tendable>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>2</maxSeverity>
+    <initialSeverity>0.05</initialSeverity>
+    <stages>
+      <li>
+        <label>thin</label>
+        <minSeverity>0</minSeverity>
+        <capMods><li><capacity>Sight</capacity><offset>-0.08</offset></li></capMods>
+        <statOffsets><ShootingAccuracyPawn>-0.05</ShootingAccuracyPawn><MeleeHitChance>-0.04</MeleeHitChance></statOffsets>
+      </li>
+      <li>
+        <label>thick</label>
+        <minSeverity>0.35</minSeverity>
+        <capMods><li><capacity>Sight</capacity><offset>-0.2</offset></li></capMods>
+        <statOffsets><ShootingAccuracyPawn>-0.15</ShootingAccuracyPawn><MeleeHitChance>-0.1</MeleeHitChance></statOffsets>
+      </li>
+      <li>
+        <label>blinding</label>
+        <minSeverity>0.7</minSeverity>
+        <capMods><li><capacity>Sight</capacity><offset>-0.35</offset></li></capMods>
+        <statOffsets><ShootingAccuracyPawn>-0.3</ShootingAccuracyPawn><MeleeHitChance>-0.2</MeleeHitChance></statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

@@ -92,9 +92,9 @@
     </terrainsByFertility>
     <baseWeatherCommonalities>
       <Clear>0</Clear>
-      <AB_ForsakenNight MayRequire="sarg.alphabiomes">70</AB_ForsakenNight>
-      <AB_ForsakenThunderstorm MayRequire="sarg.alphabiomes">4</AB_ForsakenThunderstorm>
-      <AB_ForsakenRainyNight MayRequire="sarg.alphabiomes">4</AB_ForsakenRainyNight>
+      <RM_AbyssDark>70</RM_AbyssDark>  <!-- ABYSS_DARK_BUILD_1: the permanent state -->
+      <RM_AbyssUnveiling>0.5</RM_AbyssUnveiling>  <!-- rare, brief lift -->
+      <RM_AbyssWitchfire>4</RM_AbyssWitchfire>  <!-- storms; thunder is sometimes the Summ calling -->
     </baseWeatherCommonalities>
     <wildAnimals>
       <RM_Durrgak>0.4</RM_Durrgak>  <!-- ABYSS_DURRGAK_BUILD_1: the placer; this biome only -->

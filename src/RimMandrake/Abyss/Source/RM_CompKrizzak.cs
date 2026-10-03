@@ -85,6 +85,8 @@ namespace RimMandrake.Abyss
 
         public RM_MapComponent_KrizzakDimming(Map map) : base(map) { }
 
+        public bool IsDimmed(CompGlower g) { return dimmed.ContainsKey(g); }
+
         public bool AtFloor(CompGlower g, float minFraction)
         {
             return dimmed.TryGetValue(g, out Entry e) && g.GlowRadius <= e.original * minFraction + 0.01f;
