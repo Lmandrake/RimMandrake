@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True}
+          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -508,6 +508,21 @@ def defs_static(t):
                 _unmeasured(t, "genSteps not serialisable: %s" % str(gs)[:120])
             if "RM_SlimeVisitorSeed" not in gs:
                 _fail("RM_SlimeVisitorSeed not in Base_Player.genSteps (MapGen patch matched nothing)")
+
+    with _comp(t, "farm_ruins_genstep_registered", toggle="farmRuinsEnabled"):
+        if t._guard():
+            rows, nf = _defs(t, ["MapGeneratorDef/Base_Player"], fields="genSteps")
+            row = rows.get("MapGeneratorDef/Base_Player")
+            if row is None:
+                _unmeasured(t, "MapGeneratorDef/Base_Player did not resolve")
+            gs = (row.get("fields") or {}).get("genSteps")
+            if not isinstance(gs, list):
+                _unmeasured(t, "genSteps not serialisable: %s" % str(gs)[:120])
+            if "RM_SlimeFarmRuins" not in gs:
+                _fail("RM_SlimeFarmRuins not in Base_Player.genSteps (MapGen patch matched nothing)")
+            rows2, nf2 = _defs(t, ["TerrainDef/RM_Slime_Grass", "TerrainDef/RM_Slime_Mud", "ThingDef/Fence", "ThingDef/Wall"])
+            if nf2:
+                _fail("farm ruin ingredients missing live: %s" % nf2)
 
     with _comp(t, "gene_archive_resolves", toggle="preferHigherPriorityArchive"):
         if t._guard():
@@ -974,5 +989,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False)):
+                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

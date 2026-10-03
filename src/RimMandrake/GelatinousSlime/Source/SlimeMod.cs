@@ -90,6 +90,10 @@ namespace RimMandrake.GelatinousSlime
         // Multiplier on how many cells are tried per pass. 0.25-4.
         public static float fieldConversionRate = 1f;
 
+        // GELATINOUSSLIME_FARM_RUINS_1 (WORLDGEN-AFFECTING: applies to maps generated afterwards).
+        // Off: no ruined farms are placed on a newly generated slime map.
+        public static bool farmRuinsEnabled = true;
+
         // Off: no wandering arrivals and no map-generation seed pass.
         public static bool visitorsEnabled = true;
 
@@ -138,6 +142,7 @@ namespace RimMandrake.GelatinousSlime
             Scribe_Values.Look(ref slimificationClockDays, "slimificationClockDays", 7f, true);
             Scribe_Values.Look(ref fieldConversionEnabled, "fieldConversionEnabled", true, true);
             Scribe_Values.Look(ref fieldConversionRate, "fieldConversionRate", 1f, true);
+            Scribe_Values.Look(ref farmRuinsEnabled, "farmRuinsEnabled", true, true);
             Scribe_Values.Look(ref visitorsEnabled, "visitorsEnabled", true, true);
             Scribe_Values.Look(ref visitorArrivalRate, "visitorArrivalRate", 1f, true);
         }
@@ -183,6 +188,11 @@ namespace RimMandrake.GelatinousSlime
                 + "a few harvests. Off: fields stay as laid.");
             list.Label("Conversion rate: " + fieldConversionRate.ToString("0.00") + "x");
             fieldConversionRate = list.Slider(fieldConversionRate, 0.25f, 4f);
+            list.CheckboxLabeled("Ruined farms (affects newly generated maps)", ref farmRuinsEnabled,
+                "On (default): a newly generated slime map holds two to four failed farms half "
+                + "sunk into slime-grass: fence stubs, a dead irrigation channel, a collapsed "
+                + "shed and a little left behind. Off: none are placed. WORLDGEN-AFFECTING: "
+                + "changes only maps generated afterwards, never one that already exists.");
             list.CheckboxLabeled("Visitors", ref visitorsEnabled,
                 "On (default): placid, part-read wild animals wander onto a slime map. "
                 + "Off: none arrive and the map opens without them.");
