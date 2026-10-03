@@ -311,7 +311,9 @@ LABEL = {}
 
 def labels():
     import sqlite3
-    db = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/defs.sqlite"
+    sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "src/RimMandrake/Utils"))
+    from game_paths import DUMP_ROOT
+    db = str(Path(DUMP_ROOT) / "defs.sqlite")
     con = sqlite3.connect("file:" + db + "?mode=ro", uri=True)
     for r in ROWS:
         row = con.execute("SELECT label FROM defs WHERE def_name=? AND def_type IN ('ThingDef','TerrainDef')", (r[0],)).fetchone()
