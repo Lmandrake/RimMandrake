@@ -94,7 +94,7 @@
     <statBases>
       <MoveSpeed>1.0</MoveSpeed>
       <MarketValue>6</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.5</Wildness>
     </statBases>
@@ -185,7 +185,7 @@
     <statBases>
       <MoveSpeed>1.6</MoveSpeed>
       <MarketValue>8</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.55</Wildness>
       <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
@@ -277,7 +277,7 @@
     <statBases>
       <MoveSpeed>0.3</MoveSpeed>
       <MarketValue>9</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.3</Wildness>
     </statBases>
@@ -365,7 +365,7 @@
     <statBases>
       <MoveSpeed>0.8</MoveSpeed>
       <MarketValue>3</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.4</Wildness>
     </statBases>
@@ -457,7 +457,7 @@
     <statBases>
       <MoveSpeed>2.2</MoveSpeed>
       <MarketValue>10</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.7</Wildness>
     </statBases>
@@ -553,7 +553,7 @@
     <statBases>
       <MoveSpeed>0.3</MoveSpeed>
       <MarketValue>12</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.2</Wildness>
     </statBases>

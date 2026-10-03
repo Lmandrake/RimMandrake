@@ -49,7 +49,7 @@
     <statBases>
       <MoveSpeed>4.5</MoveSpeed>
       <MarketValue>6</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.7</Wildness>
     </statBases>
@@ -139,7 +139,7 @@
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
       <MarketValue>8</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.6</Wildness>
     </statBases>
@@ -228,7 +228,7 @@
     <statBases>
       <MoveSpeed>3.5</MoveSpeed>
       <MarketValue>9</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.6</Wildness>
     </statBases>
@@ -318,7 +318,7 @@
       <MoveSpeed>5.5</MoveSpeed>
       <Mass>28</Mass>
       <MarketValue>220</MarketValue>
-      <ComfyTemperatureMin>-100</ComfyTemperatureMin>
+      <ComfyTemperatureMin>-150</ComfyTemperatureMin>
       <ComfyTemperatureMax>-30</ComfyTemperatureMax>
       <Wildness>0.95</Wildness>
     </statBases>
