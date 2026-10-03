@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WildAnimals_TwilightSea.xml          UtinniPatches — NABOO_FISH_TO_TWILIGHT_1, 2026-10-03
+  Owner, typed (Scald sitting, decision 6): "Put them in the twilight sea instead."
+  The canon Naboo scalefish mee and faa leave the Scald floor (WildAnimals_TheScald.xml)
+  and go to RM_TwilightSea: a floor resident row each in <wildAnimals> AND a catch each in
+  <fishTypes> (a sea owes both). Canon Star Wars, so it rides this layer, gated on swbestiary.
+  Floor commonality 0.5 each = what the Scald carried. Catches 0.4 / 0.3 = the Greentide split.
+  ⚠️ No <li>: BiomeAnimalRecord reads the node NAME as the animal. fishTypes is Odyssey-gated
+  in RM_TwilightSea, so each catch op is conditional on its bucket existing.
+  Greentide and Miasma keep their mee/faa rows (evictions stopped, owner 2026-09-22).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/wildAnimals</xpath>
+    <value>
+      <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>
+      <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/fishTypes/saltwater_Common</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/fishTypes/saltwater_Common</xpath>
+      <value>
+        <RSW_MeeCatch>0.4</RSW_MeeCatch>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
+    <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/fishTypes/saltwater_Uncommon</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_TwilightSea"]/fishTypes/saltwater_Uncommon</xpath>
+      <value>
+        <RSW_FaaCatch>0.3</RSW_FaaCatch>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
