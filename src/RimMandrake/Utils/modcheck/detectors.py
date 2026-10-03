@@ -68,6 +68,11 @@ HEDIFF_CAUSE = {
     "Malaria": "disease", "FoodPoisoning": "disease",
 }
 WEAPON_CAUSES = ("weapon",)
+# Hediffs that a mod's own AMBIENT WEATHER / game condition applies to every exposed colonist by design (TheRot's
+# Sheen weathers, BlueDesert's Haze, LeaningScrub's Gale). Their arrival is the mechanic working, never an injury:
+# listing them as colonist_injured_unexpectedly aborted every later component of a chain (2026-10-03, WeepingStones/
+# Cauldron/LeaningScrub/BlueDesert). A chain that TESTS one asserts it with its own component.
+AMBIENT_WEATHER_HEDIFFS = frozenset(("RM_SheenCoating", "RM_HazeFilm", "RM_GaleDeafened"))
 HOSTILE_NEAR_CELLS = 30
 FAR_CELLS = 40
 RAID_WINDOW_TICKS = 600
@@ -388,6 +393,8 @@ def colonist_injured_unexpectedly(snap, baseline, exps, ctx):
             if key not in baseline.hediffs:
                 if h["def"] in explained:
                     continue          # colonist_damaged already reported it, with the real cause
+                if h["def"] in AMBIENT_WEATHER_HEDIFFS:
+                    continue          # a mod's ambient weather working as designed, not an injury
                 new.append(h)
             elif (h["severity"] or 0) - baseline.hediffs[key] >= PROGRESSION_DELTA:
                 grown.append({"def": h["def"], "part": h["part"],
