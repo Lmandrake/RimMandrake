@@ -22,7 +22,10 @@ well as new validation scripts. And that's good. They evolve together."* And on 
 you learned in terms of tests to detect this from now on. Including other theories that
 proved false but would be informative to know."*
 
-## 1. The build pause — in force from 2026-10-01
+## 1. The build pause — 2026-10-01, LIFTED 2026-10-02
+
+**Lifted by the owner 2026-10-02, typed: *"Build pause is lifted."*** The rest of this section is
+the record of what the pause was; the first-script contract (§2) still applies to every mod.
 
 Owner, typed: *"It's worth slowing or stopping all current build to get this in place
 everywhere and really exercise northstar. I really do mean stop and start working a new

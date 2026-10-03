@@ -15,9 +15,9 @@ went stale on Haiku — see that file's history.)
 *"I really do mean stop and start working a new way."* Every mod gets a functional script
 and is debugged through it; every live poking session ends by writing what it learned —
 including informative false theories — into that script. Agents write and approve those
-scripts; the owner's hash-bound `## north star` bars stay his. 🔴 **Build pause:** no new
-content until every mod has a first script with a recorded run. The process, the
-first-script contract and the exact lift condition: `design/RimMandrake/debug_process.md`.
+scripts; the owner's hash-bound `## north star` bars stay his. The 2026-10-01 build pause was **lifted by the owner
+2026-10-02** (*"Build pause is lifted."*); every new mod still ships with its first script. The process
+and the first-script contract: `design/RimMandrake/debug_process.md`.
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 
