@@ -50,7 +50,7 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("WeepingStones")
-suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays"]
+suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays", "waterTruceSuppressionEnabled"]
 SLIDERS = {"vhorrinOddsMultiplier": (1.0, 0.0, 3.0), "vizhikEscapeChance": (0.05, 0.0, 0.25),
            "condenserSeasonDays": (15.0, 3.0, 30.0)}   # WEEPINGSTONES_WALKING_CONDENSER_1
 
@@ -58,6 +58,8 @@ SETTINGS = "RimMandrake.WeepingStones.RM_WeepingStonesSettings"
 EH_SETTINGS = "RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings"
 EH_SLIDERS = {"waterTruceRadius": (10.0, 3.0, 25.0)}   # truce radius, cells
 TOGGLE = "stockedPoolsEnabled"
+EH_TOGGLE = "waterTruceSuppressionEnabled"   # WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1 (lives in EnvironmentalHazards)
+_EH_SRC = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "EnvironmentalHazards", "Source")
 BIOME = "RM_WeepingStones"
 OUR_PACKAGES = ("mandrake.rm.biomes", "mandrake.rm.weepingstones")
 ACTIVE_ON_TIER = ("Ludeon.RimWorld.Odyssey", "Ludeon.RimWorld.Biotech", "Ludeon.RimWorld.Ideology",
@@ -796,6 +798,65 @@ def settings_sliders(t):
             finally:
                 if t.session is not None:
                     t.session.call("jawa/mod_settings_field", typeName=stype, action="set", field=field, value=str(default))
+
+
+def _truce_hunt_source_problems():
+    """Offline structure of WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1, read from the kit's own source."""
+    probs = []
+
+    def src(name):
+        try:
+            with open(os.path.join(_EH_SRC, name), encoding="utf-8") as fh:
+                return fh.read()
+        except OSError as ex:
+            probs.append("cannot read %s: %s" % (name, ex))
+            return ""
+    hook = src("RM_WaterTruceHuntSuppression.cs")
+    for needle in ("IsAcceptablePreyFor_Postfix", "MakeNewToils_Postfix", "AddFailCondition", "IsTruceWater",
+                   "waterTruceSuppressionEnabled"):
+        if needle not in hook:
+            probs.append("RM_WaterTruceHuntSuppression.cs lacks %s" % needle)
+    if "ByDefName" in hook or "RM_WeepingStones" in hook:
+        probs.append("suppression keys on a biome defName; it must read RM_WaterTruceExtension via the map component")
+    if "RM_WaterTruceHuntSuppression.cs" not in src("RM_EnvironmentalHazards.csproj"):
+        probs.append("RM_WaterTruceHuntSuppression.cs is not in RM_EnvironmentalHazards.csproj (compiles into nothing)")
+    patches = src("BiomeGlowPatches.cs")
+    for seam in ("IsAcceptablePreyFor", "JobDriver_PredatorHunt"):
+        if seam not in patches:
+            probs.append("BiomeGlowPatches.cs does not arm the %s seam" % seam)
+    mod = src("RM_EnvironmentalHazardsMod.cs")
+    if "waterTruceSuppressionEnabled = true" not in mod or '"waterTruceSuppressionEnabled"' not in mod \
+            or "ref waterTruceSuppressionEnabled," not in mod:
+        probs.append("waterTruceSuppressionEnabled is not declared default-true, scribed and shown in the settings window")
+    return probs
+
+
+@suite.chain("truce_hunt_suppression")
+def truce_hunt_suppression(t):
+    """WEEPINGSTONES_TRUCE_HUNT_SUPPRESSION_1: the suppression half of the water truce is wired (source) and its
+    toggle ships on and round-trips. The behaviour itself (10 hungry predators + 10 prey inside a pool's radius,
+    zero hunt jobs over 30,000 ticks; setting off = at least one, the control; a chase abandoned on entering) is a
+    statistical live quicktest named on the item and NOT measurable offline: so no component here claims it."""
+    with _comp(t, "suppression_source_wired", independent=True):
+        if _live(t):
+            probs = _truce_hunt_source_problems()
+            if probs:
+                _fail("; ".join(probs))
+
+    with _comp(t, "suppression_toggle_default_and_roundtrip", independent=True, toggle=EH_TOGGLE):
+        try:
+            r = t.bridge_call("jawa/mod_settings_field", typeName=EH_SETTINGS, action="get", field=EH_TOGGLE)
+            if _live(t):
+                _ok(r, "mod_settings_field(get)")
+                if str(r.get("value")) != "True":
+                    _fail("%s reads %r; the shipped default is true" % (EH_TOGGLE, r.get("value")))
+            w = t.bridge_call("jawa/mod_settings_field", typeName=EH_SETTINGS, action="set", field=EH_TOGGLE, value="False")
+            back = t.bridge_call("jawa/mod_settings_field", typeName=EH_SETTINGS, action="get", field=EH_TOGGLE)
+            if _live(t) and str(back.get("value")) != "False":
+                _fail("%s wrote False but reads back %r" % (EH_TOGGLE, back.get("value")))
+        finally:
+            if t.session is not None:
+                t.session.call("jawa/mod_settings_field", typeName=EH_SETTINGS, action="set", field=EH_TOGGLE, value="True")
 
 
 def _condenser_source_problems():
