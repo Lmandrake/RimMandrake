@@ -2237,3 +2237,9 @@
 {"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-10-03T15:04:27Z","tsn":1791039867937294550}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-10-03T15:09:12Z","tsn":1791040152538377068}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"full belt: clean deploy, launch, situational_rerun","ts":"2026-10-03T15:09:44Z","tsn":1791040184443698071}
+{"seat":"FOUNDRY","event":"claim","id":"MODCHECK_COMPOSED_BIOMES_LIST_1","ts":"2026-10-03T15:14:06Z","tsn":1791040446145967691}
+{"seat":"FOUNDRY","event":"start","id":"MODCHECK_COMPOSED_BIOMES_LIST_1","ts":"2026-10-03T15:14:06Z","tsn":1791040446657078568}
+{"seat":"FOUNDRY","event":"close","id":"MODCHECK_COMPOSED_BIOMES_LIST_1","sha":"c9d07f4c4","reason":"composed_into already existed; tier closure added + selftest","ts":"2026-10-03T15:14:10Z","tsn":1791040450265254479}
+{"seat":"FOUNDRY","event":"claim","id":"JAWA_NAMEMAKER_NEVER_FIRES_1","ts":"2026-10-03T15:14:10Z","tsn":1791040450767551159}
+{"seat":"FOUNDRY","event":"start","id":"JAWA_NAMEMAKER_NEVER_FIRES_1","ts":"2026-10-03T15:14:11Z","tsn":1791040451271657610}
+{"seat":"FOUNDRY","event":"close","id":"JAWA_NAMEMAKER_NEVER_FIRES_1","sha":"685b0d6ab","reason":"chanceToUseNameMaker 999 added; live proof via modcheck run StarWarsRaces owed","ts":"2026-10-03T15:14:17Z","tsn":1791040457563173007}
