@@ -38,6 +38,32 @@ def static_checks():
     return bad
 
 
+OFF_FLOOR = ["RM_Hoolen", "RM_Vaunoom", "AA_AuroraSylph", "AA_Skyeel"]
+BIOME = os.path.join(HERE, "Defs", "BiomeDefs", "RM_TheChill.xml")
+
+
+def roster_checks():
+    """wildAnimals parsed as XML (node name = animal, text = commonality; no <li>)."""
+    bad = []
+    root = ET.parse(BIOME).getroot()
+    bd = [b for b in root.findall("BiomeDef") if b.findtext("defName") == "RM_TheChill"]
+    if len(bd) != 1:
+        return ["RM_TheChill BiomeDef not found exactly once"]
+    wa = bd[0].find("wildAnimals")
+    rows = {c.tag: c.text for c in wa} if wa is not None else {}
+    if len(rows) < 6:
+        bad.append("roster sanity probe: only %d rows (expected the 6 floor natives)" % len(rows))
+    for n in ("RM_Heemin", "RM_Oovanam", "RM_Fessu", "RM_Krellik", "RM_Oddu", "RM_Oovu", "RM_Iliss", "RM_Tarnn"):
+        if n not in rows:
+            bad.append("floor native %s missing from wildAnimals" % n)
+    for n in OFF_FLOOR:
+        if n in rows:
+            bad.append("%s must be off the floor roster (Q1a)" % n)
+    if any(c.tag == "li" for c in (wa if wa is not None else [])):
+        bad.append("<li> row in wildAnimals (discards the entry)")
+    return bad
+
+
 try:
     from modcheck import Suite
     suite = Suite("TerminalBiomes")
@@ -48,11 +74,18 @@ try:
         if bad:
             from modcheck import ExpectationFailed
             raise ExpectationFailed("; ".join(bad))
+
+    @suite.chain("floor_roster_trimmed")
+    def floor_roster_trimmed(t):
+        bad = roster_checks()
+        if bad:
+            from modcheck import ExpectationFailed
+            raise ExpectationFailed("; ".join(bad))
 except ImportError:
     suite = None
 
 if __name__ == "__main__":
-    problems = static_checks()
+    problems = static_checks() + roster_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)
