@@ -21,7 +21,7 @@ DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
             "titanoslimeMaxStage": "5", "titanoslimeSheds": "True",
             "slimificationEnabled": "True", "slimificationClockDays": "7", "fieldConversionEnabled": "True",
-            "fieldConversionRate": "1", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True"}
+            "fieldConversionRate": "1", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True"}
 TITAN_STAGES = [0, 0, 1, 2, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0, 2]
 
 
@@ -147,6 +147,8 @@ class SlimeSim(object):
                 r = el.find("race")
                 fl["race"] = {k: r.findtext(k) for k in ("predator", "maxPreyBodySize", "baseBodySize",
                                                           "manhunterOnDamageChance", "manhunterOnTameFailChance")}
+            if typ == "ThingDef" and el is not None and el.find("statBases/MaxFlightTime") is not None:
+                fl["statBases"] = {"MaxFlightTime": 0 if "noflight" in self.f else float(el.findtext("statBases/MaxFlightTime"))}
             if typ == "MapGeneratorDef":
                 fl["genSteps"] = ["TerrainGen"] + ([] if "nostep" in self.f else ["RM_SlimeVisitorSeed"])
             if typ.endswith("GeneArchiveDef"):

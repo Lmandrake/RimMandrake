@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    GELATINOUSSLIME_DWOMMO_FLIER_1: the dwommo, the Slime's flying aristocracy. A translucent amber
+    gas bladder trailing feeding fronds that drifts over the body. All numbers // INVENTED.
+    FLIGHT: real flight via the core stat MaxFlightTime (Pawn_FlightTracker.CanEverFly = stat > 0)
+    plus the race flight flags (Locust shape). NO wing render node, and no flip-book frames exist
+    yet, so PawnKindDef carries no flyingAnimation* fields (flying without them is correct).
+    Immune to the wading trap by identity (SlimeResistantExtension) and by never standing in it.
+    Mod Settings switch SlimeSettings.dwommoFlies (DwommoFlight.cs) zeroes MaxFlightTime when off.
+    Not a predator: the fubbum is the Slime's one hunter. One home: wired inline on
+    RM_GelatinousSlime/wildAnimals. Art: queued from art_lists/gelatinousslime_turn1_2026-10-02.csv.
+    Not built: the "lands only on hardened slime" preference (no behaviour code; flavour text only).
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Dwommo</defName>
+    <label>dwommo</label>
+    <description>A translucent amber bladder the size of a barrel, filled with a lighter-than-air gas that glows faintly from within, trailing long feeding fronds that comb the surface of the Slime for drifting lobes. It does not walk or wade; it floats over the body and settles, when it must, only on slime that has set hard. The Slime cannot touch it. The little herds below treat it as weather.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <Mass>12</Mass>
+      <MarketValue>260</MarketValue>
+      <Wildness>0.85</Wildness>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <MaxFlightTime>60</MaxFlightTime>
+      <FlightCooldown>2</FlightCooldown>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <tools>
+      <li>
+        <label>frond</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>2</power>
+        <cooldownTime>3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Bird</body>
+      <predator>false</predator>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <herdAnimal>false</herdAnimal>
+      <lifeExpectancy>12</lifeExpectancy>
+      <flightStartChanceOnJobStart>0.6</flightStartChanceOnJobStart>
+      <flightSpeedFactor>1.5</flightSpeedFactor>
+      <canFlyIntoMap>true</canFlyIntoMap>
+      <canLeaveMapFlying>false</canLeaveMapFlying>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Dwommo</defName>
+    <label>dwommo</label>
+    <race>RM_Dwommo</race>
+    <combatPower>30</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dwommo/RM_Dwommo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dwommo/RM_Dwommo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Dwommo/RM_Dwommo</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

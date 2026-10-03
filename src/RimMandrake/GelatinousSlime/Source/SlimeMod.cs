@@ -104,11 +104,16 @@ namespace RimMandrake.GelatinousSlime
         // grazer-of-nothing that ignores prey (race.predator false); applied by FubbumHunting.
         public static bool fubbumHunts = true;
 
+        // GELATINOUSSLIME_DWOMMO_FLIER_1: the dwommo flies. Off: MaxFlightTime 0, it stays grounded;
+        // applied by DwommoFlight.
+        public static bool dwommoFlies = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
+            Scribe_Values.Look(ref dwommoFlies, "dwommoFlies", true, true);
             Scribe_Values.Look(ref preferHigherPriorityArchive, "preferHigherPriorityArchive", true, true);
             Scribe_Values.Look(ref rarityFactor, "rarityFactor", 1f, true);
             Scribe_Values.Look(ref flavorEntryRecorded, "flavorEntryRecorded", true, true);
@@ -180,6 +185,9 @@ namespace RimMandrake.GelatinousSlime
             list.CheckboxLabeled("Fubbum hunts gelatids", ref fubbumHunts,
                 "On (default): the fubbum, the Slime's one hunter, stalks the gelatid herds. It "
                 + "never hunts colonists first. Off: it stays on the map but hunts nothing.");
+            list.CheckboxLabeled("Dwommo flies", ref dwommoFlies,
+                "On (default): the dwommo, the Slime's gas-float aristocracy, drifts over the body in "
+                + "real flight. Off: it stays on the map but never leaves the ground.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");
@@ -277,6 +285,7 @@ namespace RimMandrake.GelatinousSlime
             base.WriteSettings();
             TitanoslimeSpawnTuning.Apply();
             FubbumHunting.Apply();
+            DwommoFlight.Apply();
             GeneArchiveDef.InvalidateActiveCache();
         }
     }

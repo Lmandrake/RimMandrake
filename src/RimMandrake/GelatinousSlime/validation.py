@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True}
+          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -350,6 +350,42 @@ def defs_static(t):
             for k in ("manhunterOnDamageChance", "manhunterOnTameFailChance"):
                 if float(race.get(k, 1) or 0) != 0:
                     _fail("%s %r != 0: the fubbum must never turn manhunter" % (k, race.get(k)))
+
+    with _comp(t, "dwommo_flight_def", toggle="dwommoFlies"):
+        # GELATINOUSSLIME_DWOMMO_FLIER_1: flight is a STAT (CanEverFly = MaxFlightTime > 0), never a node.
+        # Def-level (shipped XML) check first; it needs no live map.
+        x = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Races", "Dwommo.xml")).getroot()
+        th = next((e for e in x.findall("ThingDef") if e.findtext("defName") == "RM_Dwommo"), None)
+        if th is None:
+            _fail("RM_Dwommo ThingDef missing from Defs/ThingDefs_Races/Dwommo.xml")
+        try:
+            mft = float(th.findtext("statBases/MaxFlightTime"))
+        except (TypeError, ValueError):
+            mft = 0.0
+        if not mft > 0:
+            _fail("shipped RM_Dwommo MaxFlightTime must be > 0 (CanEverFly reads the stat); got %r" % mft)
+        if th.find("statBases/FlightCooldown") is None or not float(th.findtext("race/flightSpeedFactor") or 0) > 0:
+            _fail("RM_Dwommo needs FlightCooldown and race flightSpeedFactor")
+        if "Spastic" in ET.tostring(x, encoding="unicode") or x.find(".//flyingAnimationFramePathPrefix") is not None:
+            _fail("RM_Dwommo must carry no Spastic wing node and no flip-book prefix until real frames exist")
+        # Live: the loaded def's stat. With the switch on it must be > 0. Needs the running game, not a map.
+        if t._guard():
+            rows, nf = _defs(t, ["ThingDef/RM_Dwommo"], fields="statBases", deep=True)
+            row = rows.get("ThingDef/RM_Dwommo")
+            if row is None:
+                _fail("ThingDef/RM_Dwommo absent live")
+            sb = (row.get("fields") or {}).get("statBases")
+            live = None
+            if isinstance(sb, list):
+                for m in sb:
+                    if isinstance(m, dict) and "MaxFlightTime" in str(m.get("stat")):
+                        live = m.get("value")
+            elif isinstance(sb, dict):
+                live = sb.get("MaxFlightTime")
+            if live is None:
+                _unmeasured(t, "statBases not serialised with MaxFlightTime: %s" % str(sb)[:120])
+            if not float(live) > 0:
+                _fail("RM_Dwommo MaxFlightTime %r live; with dwommoFlies on it must be > 0" % live)
 
     with _comp(t, "terrain_tagged"):
         if t._guard():
@@ -862,5 +898,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False)):
+                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

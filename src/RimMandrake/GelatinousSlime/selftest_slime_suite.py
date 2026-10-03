@@ -18,6 +18,7 @@ PLAN = os.path.join(HERE, "northstar_plan.py")
 CASES = {
     "nodef:ThingDef/RM_RawSlime": ["all_defs_resolve"],
     "notag": ["terrain_tagged"],
+    "noflight": ["dwommo_flight_def"],
     "nodry": ["drying_biomes_tagged"],
     "nostep": ["visitor_genstep_registered"],
     "defaultswrong": ["settings_defaults"],
