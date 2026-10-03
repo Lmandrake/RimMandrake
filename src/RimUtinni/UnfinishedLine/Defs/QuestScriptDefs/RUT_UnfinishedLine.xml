@@ -67,6 +67,7 @@
           <beats>
             <li>RUT_UnfinishedLine_1_Count</li>
             <li>RUT_UnfinishedLine_2_Envoy</li>
+            <li>RUT_UnfinishedLine_3_Cores</li>
           </beats>
           <totalBeats>5</totalBeats>
           <outSignalComplete>ChainComplete</outSignalComplete>
@@ -92,6 +93,40 @@
         <li Class="QuestNode_End">
           <inSignal>ChainBroken</inSignal>
           <outcome>Unknown</outcome>
+        </li>
+
+        <!-- The sell-out (Q3=A, owner 2026-10-03): beat 3's cores sold to the Empire. The beat tells this
+             parent through QuestPart_RUT_SignalParent ("LineSold" here is this quest's own signal). The truce
+             ends hostile, both peoples turn on you, and the chain fails. -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_Truce">
+          <inSignal>LineSold</inSignal>
+          <breakIt>true</breakIt>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>LineSold</inSignal>
+          <label TKey="LetterLabelLineSold">Nothing they freed comes back</label>
+          <letterDef>ThreatBig</letterDef>
+          <text TKey="LetterTextLineSold">The Empire's shuttle was not even out of the sky before [hiveFaction_name] knew. [enclaveFaction_name] knew an hour later, from the Hive.
+
+The patterns were the Hive's memory, and the line was the Enclaves' only way to stop counting their dead. The Jawa sold both for silver. Neither people will forget it, and nothing they freed comes back.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>LineSold</inSignal>
+          <faction>$hiveFaction</faction>
+          <change>-100</change>
+          <ensureHostile>true</ensureHostile>
+          <reason>RUT_LineCoresBetrayed</reason>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>LineSold</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>-100</change>
+          <ensureHostile>true</ensureHostile>
+          <reason>RUT_LineCoresBetrayed</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>LineSold</inSignal>
+          <outcome>Fail</outcome>
         </li>
 
         <li Class="QuestNode_End">
@@ -624,6 +659,187 @@ The Hive holds off its raids while the truce lasts. Keep your guests whole.</cus
         </li>
         <li Class="QuestNode_End">
           <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!--
+    BEAT 3 — "The Pattern Cores" (design §2.3), UNFINISHED_LINE_CORES_BEAT_1.
+
+    FICTION (owner 2026-10-03: the secret is the Hive's, bartered from it or, likelier, stolen from it by the
+    Jawa; never the Enclaves'): the patterns live in the Hive's databases; the three cores that make them
+    usable were left sealed in the collapsed silicax foundry both peoples fled. The Hive's engineer tells the
+    Jawa where; the Jawa go in. Selling the cores is the theft the ruling names.
+
+    SPEC: ask - recover the three pattern cores from the foundry ruin and bring them home within 12 days.
+          reason - without them the patterns in the Hive's databases are only memory.
+          choice - light: capture the wild droids and release them unbolted (Enclave goodwill each) or destroy
+                   them; heavy (Q3=A): once the cores are home an Imperial salvage broker offers silver for them.
+          failure - a core destroyed, or 12 days pass without all three home: Fail, the spine re-offers.
+          reward - cores to an Enclave courier: Hive +10, Enclaves +10, beat 4. Sold: silver, Empire goodwill,
+                   and the parent chain fails with both peoples hostile.
+          deadline - 12 days, the quest's own shown timer, stopped when the cores are home.
+    DELIVERY: the design delivers the cores "to the chosen site"; the site choice is UNFINISHED_LINE_SITE_CHOICE_1
+    (blocked), so until it lands an Enclave courier collects them from your colony.
+    The site's machinery is C#: SitePartWorker_RUT_FoundryRuin (cores), GenStep_RUT_FoundryRuin (hall + pack),
+    QuestPart_RUT_PatternCores (home watch, broker, freed droids), QuestPart_RUT_SignalParent (the sell-out
+    reaches the parent).
+  -->
+  <QuestScriptDef>
+    <defName>RUT_UnfinishedLine_3_Cores</defName>
+    <epicParent>RUT_UnfinishedLine</epicParent>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>5~8</expireDaysRange>
+    <defaultChallengeRating>2</defaultChallengeRating>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Pattern Cores</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[hiveFaction_name]'s foundry engineer has told the Jawa what the Hive never told anyone: the three pattern cores are still sealed in the fabrication hall of the old silicax foundry, the company site both [hiveFaction_name] and [enclaveFaction_name] fled when it collapsed.\n\nThe Hive cannot go back. Its queen does not move, and its workers will not leave her. The Enclaves will not walk into a factory. The Jawa will.\n\nDroids the company left behind still walk the ruin, gone wild in the dark. Bring them down however you like. Any you capture and release without a restraining bolt will walk to the Enclaves, and the Enclaves will remember it.\n\nBring all three cores home within [coreTicks_duration]. Then [enclaveFaction_name] will send for them.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_AdjustPointsForDistantFight</def>
+        </li>
+
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>settlement</storeSettlementAs>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>coreTicks</name>
+          <value>720000</value>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>siteDistRange</name>
+          <value>4~12</value>
+        </li>
+
+        <li Class="QuestNode_GetSiteTile">
+          <storeAs>siteTile</storeAs>
+          <preferCloserTiles>true</preferCloserTiles>
+          <selectLandmarkChance>0</selectLandmarkChance>
+        </li>
+
+        <li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+          <storeAs>sitePartDefs</storeAs>
+          <storeFactionAs>siteFaction</storeFactionAs>
+          <sitePartsTags>
+            <li>
+              <tag>RUT_SilicaxFoundryRuin</tag>
+            </li>
+          </sitePartsTags>
+        </li>
+
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+        </li>
+
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+
+        <!-- Home watch, the broker, and the freed-droid goodwill. Reads $site, $cores, $enclaveFaction. -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_PatternCores">
+          <outSignalHome>CoresHome</outSignalHome>
+          <outSignalSold>CoresSold</outSignalSold>
+          <outSignalDelivered>CoresDelivered</outSignalDelivered>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$coreTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inSignalDisable>CoresHome</inSignalDisable>
+          <outSignalComplete>CoresTimeout</outSignalComplete>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>CoresTimeout</inSignal>
+          <label TKey="LetterLabelLineCoresTimeout">The Pattern Cores: too long</label>
+          <letterDef>NegativeEvent</letterDef>
+          <text TKey="LetterTextLineCoresTimeout">[enclaveFaction_name] have stopped asking after the cores. [hiveFaction_name] say nothing at all. The ruin keeps them a while longer.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>CoresTimeout</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+        <li Class="QuestNode_Signal">
+          <inSignal>cores.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineCoreLost">The Pattern Cores: one is gone</label>
+                <letterDef>NegativeEvent</letterDef>
+                <text TKey="LetterTextLineCoreLost">A pattern core was destroyed. The patterns it held are gone with it, and the other two are only part of a memory.</text>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>CoresDelivered</inSignal>
+          <label TKey="LetterLabelLineCoresDelivered">The Pattern Cores: carried home</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineCoresDelivered">An Enclave courier came for the three cores, a hauling droid with an escort that did not take its eyes off the horizon. It signed for each core twice, once for [enclaveFaction_name] and once for [hiveFaction_name].\n\nThe patterns and the means to read them are in one place again for the first time since the company left.</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>CoresDelivered</inSignal>
+          <faction>$hiveFaction</faction>
+          <change>10</change>
+          <reason>RUT_LineCoresDelivered</reason>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>CoresDelivered</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>10</change>
+          <reason>RUT_LineCoresDelivered</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>CoresDelivered</inSignal>
+          <outcome>Success</outcome>
+        </li>
+
+        <!-- The sell-out: tell the parent FIRST (it fails the chain and turns both peoples), then end this
+             beat. Success for this quest: the deal was done. -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_SignalParent">
+          <inSignal>CoresSold</inSignal>
+          <parentSignal>LineSold</parentSignal>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>CoresSold</inSignal>
+          <outcome>Success</outcome>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>enclaveFaction.BecameHostileToPlayer</inSignal>
           <outcome>Fail</outcome>
         </li>
 

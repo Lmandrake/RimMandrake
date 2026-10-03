@@ -23,13 +23,14 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("UnfinishedLine")
-suite.toggles = ["chainEnabled", "brokeredTruceEnabled"]
+suite.toggles = ["chainEnabled", "brokeredTruceEnabled", "coreBrokerEnabled"]
 
 PROOF = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineProof"
 SETTINGS_TYPE = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings"
 PARENT = "RUT_UnfinishedLine"
 BEAT1 = "RUT_UnfinishedLine_1_Count"
 BEAT2 = "RUT_UnfinishedLine_2_Envoy"
+BEAT3 = "RUT_UnfinishedLine_3_Cores"
 NEEDLES = ("mandrake.rut.unfinishedline", "UnfinishedLine", "RUT_LineCount", "QuestPart_RUT_SequentialSubquests")
 
 
@@ -55,7 +56,9 @@ def load_clean(t):
 @suite.chain("defs")
 def defs(t):
     with t.component("all_defs_resolve", beyond_toggle=True):
-        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "IncidentDef/RUT_UnfinishedLine_Offer",
+        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "QuestScriptDef/%s" % BEAT3,
+                "IncidentDef/RUT_UnfinishedLine_Offer", "SitePartDef/RUT_SilicaxFoundryRuin", "ThingDef/RUT_FoundryPatternCore",
+                "MentalStateDef/RUT_WildDroidPack", "LetterDef/RUT_CoreBrokerOffer",
                 "FactionDef/RUT_Jawa_FreeDroidEnclaves", "FactionDef/RUT_Jawa_GeonosianFoundryHive"]
         r = t.bridge_call("jawa/get_defs", defs=";".join(want), fields="defName")
         if t._guard():
@@ -122,6 +125,43 @@ def truce(t):
             raise ExpectationFailed("brokeredTruceEnabled OFF but a truce started: %s" % text)
 
 
+@suite.chain("wild_pack")
+def wild_pack(t):
+    """UNFINISHED_LINE_CORES_BEAT_1: the ruin's wild droids are a pack (not hostile to each other), still hostile to you."""
+    with t.component("pack_does_not_fight_itself", beyond_toggle=True):
+        text = _proof(t, "ProofWildPack", "3")
+        if t._guard() and not ("in pack state 3" in text and "mutual hostile pairs 0" in text and "hostile to player 3" in text):
+            raise ExpectationFailed("wild-droid pack contract broken: %s" % text)
+
+
+@suite.chain("cores")
+def cores(t):
+    """UNFINISHED_LINE_CORES_BEAT_1: walk the chain to beat 3, carry the cores home, answer the broker. Run on a
+    throwaway save: the 'sell' component turns both factions hostile. Not proven here: the site map's hall and pack
+    (first poke: accept the beat, form a caravan to the site, screenshot), and Released->goodwill (capture one, release it)."""
+    with t.component("beat3_offered_after_two_successes", beyond_toggle=True):
+        _proof(t, "ProofOffer", "true")
+        _proof(t, "ProofNextBeat")
+        _proof(t, "ProofEndBeat", "true")
+        _proof(t, "ProofNextBeat")
+        _proof(t, "ProofEndBeat", "true")
+        text = _proof(t, "ProofNextBeat")
+        if t._guard() and not text.startswith("OFFERED %s" % BEAT3):
+            raise ExpectationFailed("after two successes the spine did not offer The Pattern Cores: %s" % text)
+    with t.component("cores_home_raises_the_broker", toggle="coreBrokerEnabled"):
+        _proof(t, "ProofCores", "home")  # accepts the offered beat first
+        t.bridge_call("jawa/step_game_ticks", ticks=300)
+        text = _proof(t, "ProofCores", "state")
+        if t._guard() and not ("home True" in text and "decided False" in text and "broker deadline -1" not in text):
+            raise ExpectationFailed("all three cores home did not raise the broker's offer: %s" % text)
+    with t.component("selling_fails_the_chain", toggle="coreBrokerEnabled"):
+        text = _proof(t, "ProofCores", "sell")
+        t.bridge_call("jawa/step_game_ticks", ticks=60)
+        chain_text = _proof(t, "ProofChain")
+        if t._guard() and not (text.startswith("CORES SOLD") and chain_text.startswith("CHAIN EndedFailed")):
+            raise ExpectationFailed("the sell-out did not reach the parent: %s || %s" % (text, chain_text))
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -158,6 +198,22 @@ def static_checks():
             bad.append("The Envoy must start the truce on acceptance (QuestNode_RUT_Truce with no breakIt)")
         if sum(1 for n in truces if n.findtext("breakIt") == "true") < 2:
             bad.append("The Envoy must break the truce on both envoys.Destroyed and envoys.Arrested")
+    beat3 = quests.get(BEAT3)
+    if beat3 is None or BEAT3 not in beats:
+        bad.append("%s missing or not on the spine" % BEAT3)
+    else:
+        classes = [(n.get("Class") or "") for n in beat3.iter("li")]
+        if not any(c.endswith("QuestNode_RUT_PatternCores") for c in classes):
+            bad.append("The Pattern Cores has no QuestNode_RUT_PatternCores (home watch / broker)")
+        sp = [n for n in beat3.iter("li") if (n.get("Class") or "").endswith("QuestNode_RUT_SignalParent")]
+        if not sp or sp[0].findtext("parentSignal") != "LineSold":
+            bad.append("The Pattern Cores must tell the parent LineSold on the sell-out")
+        if not any(n.findtext("inSignal") == "LineSold" and n.get("Class") == "QuestNode_End" for n in parent.iter("li")):
+            bad.append("the parent has no End on LineSold (the sell-out would not end the chain)")
+    for rel in ("SitePartDefs/RUT_SilicaxFoundryRuin.xml", "ThingDefs_Items/RUT_FoundryPatternCore.xml",
+                "MentalStateDefs/RUT_WildDroidPack.xml", "LetterDefs/RUT_CoreBrokerOffer.xml"):
+        if not os.path.exists(os.path.join(HERE, "Defs", rel)):
+            bad.append("missing Defs/%s" % rel)
     inc = ET.parse(os.path.join(HERE, "Defs", "IncidentDefs", "RUT_UnfinishedLine_Offer.xml")).getroot()
     incs = [e for e in inc if e.tag == "IncidentDef"]
     if not incs or incs[0].findtext("questScriptDef") != PARENT:

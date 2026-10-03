@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using LudeonTK;
 using RimWorld;
@@ -146,6 +147,81 @@ namespace RimMandrake.Utinni.UnfinishedLine
             if (hive == null) return "REFUSED: no Hive faction";
             return "TRUCE " + (comp.truceActive ? "active" : "off") + " | hive goodwill " + hive.GoodwillWith(Faction.OfPlayer)
                 + " | relation " + hive.RelationKindWith(Faction.OfPlayer);
+        }
+
+        /// <summary>Accepts the pending beat if offered, then ends it with the given outcome, so a walk can
+        /// reach a later beat without playing the earlier ones. "ENDED def:Outcome || CHAIN ...".</summary>
+        public static string ProofEndBeat(bool success)
+        {
+            Quest q = FindChain();
+            Quest beat = q?.GetSubquests().FirstOrDefault(c => c.State == QuestState.Ongoing || c.State == QuestState.NotYetAccepted);
+            if (beat == null) return "REFUSED: no pending beat || " + ProofChain();
+            if (beat.State == QuestState.NotYetAccepted) beat.Accept(null);
+            beat.End(success ? QuestEndOutcome.Success : QuestEndOutcome.Fail, sendLetter: false);
+            return "ENDED " + beat.root.defName + ":" + beat.State + " || " + ProofChain();
+        }
+
+        /// <summary>Beat 3 (any action but "state" accepts an offered beat first). action: "state" reads the part; "home" carries undelivered cores (still on the
+        /// unvisited site, or anywhere) to the home map's trade drop spot; "sell" / "refuse" answer the broker.
+        /// "CORES ... || CHAIN ...".</summary>
+        public static string ProofCores(string action)
+        {
+            Quest beat = Find.QuestManager.QuestsListForReading
+                .Where(x => x.root?.defName == "RUT_UnfinishedLine_3_Cores" && (x.State == QuestState.Ongoing || x.State == QuestState.NotYetAccepted))
+                .OrderByDescending(x => x.appearanceTick).FirstOrDefault();
+            if (beat != null && beat.State == QuestState.NotYetAccepted && action != "state") beat.Accept(null);
+            QuestPart_RUT_PatternCores part = beat?.PartsListForReading.OfType<QuestPart_RUT_PatternCores>().FirstOrDefault();
+            if (part == null) return "REFUSED: no offered or ongoing Pattern Cores beat || " + ProofChain();
+            string did = "state";
+            switch (action)
+            {
+                case "home":
+                    Map home = Find.AnyPlayerHomeMap;
+                    if (home == null) return "REFUSED: no home map";
+                    IntVec3 spot = DropCellFinder.TradeDropSpot(home);
+                    foreach (Thing c in part.LiveCores.ToList())
+                    {
+                        if (c.Spawned) c.DeSpawn();
+                        else c.holdingOwner?.Remove(c);
+                        GenPlace.TryPlaceThing(c, spot, home, ThingPlaceMode.Near);
+                    }
+                    did = "home";
+                    break;
+                case "sell":
+                    did = part.Sell();
+                    break;
+                case "refuse":
+                    did = part.Deliver();
+                    break;
+            }
+            return "CORES " + did + " | " + part.Describe() + " | beat " + beat.State + " || " + ProofChain();
+        }
+
+        /// <summary>Spawns <paramref name="count"/> wild-droid-pack droids near the home map's centre and
+        /// reports how many ordered pairs of them are hostile to each other (the pack contract: 0) and
+        /// whether each is hostile to the player. "PACK n | mutual hostile pairs k | hostile to player m".</summary>
+        public static string ProofWildPack(int count)
+        {
+            Map map = Find.AnyPlayerHomeMap;
+            if (map == null) return "REFUSED: no home map";
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("RSW_DW_OuterRim_ImperialLaborDroid");
+            if (kind == null) return "REFUSED: no RSW_DW_OuterRim_ImperialLaborDroid";
+            List<Pawn> pack = new List<Pawn>();
+            for (int i = 0; i < count; i++)
+            {
+                Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null, PawnGenerationContext.NonPlayer,
+                    map.Tile, forceGenerateNewPawn: true, canGeneratePawnRelations: false));
+                GenSpawn.Spawn(p, CellFinder.RandomClosewalkCellNear(map.Center, map, 8), map);
+                GenStep_RUT_FoundryRuin.MakePack(p);
+                pack.Add(p);
+            }
+            int mutual = 0;
+            foreach (Pawn a in pack)
+                foreach (Pawn b in pack)
+                    if (a != b && a.HostileTo(b)) mutual++;
+            int toPlayer = pack.Count(p => p.HostileTo(Faction.OfPlayer));
+            int inState = pack.Count(p => p.MentalState is MentalState_RUT_WildDroidPack);
+            return "PACK " + pack.Count + " | in pack state " + inState + " | mutual hostile pairs " + mutual + " | hostile to player " + toPlayer;
         }
 
         [DebugAction("Quests", "Offer The Unfinished Line (skip gates)", allowedGameStates = AllowedGameStates.PlayingOnMap)]

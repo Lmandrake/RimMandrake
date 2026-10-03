@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UNFINISHED_LINE_CORES_BEAT_1. Shape and numbers copied from vanilla AIPersonaCore (Items_Exotic.xml).
+     PLACEHOLDER ART: the persona core's texture until a pattern-core sprite is made (none in artpipe, 2026-10-03). -->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_FoundryPatternCore</defName>
+    <label>pattern core</label>
+    <description>A sealed company data core from the silicax foundry, one of three. Together they hold what the Hive's databases only remember: the exact patterns for building droid bodies on a line. Alone it is a heavy, humming brick nobody on this world can open.</description>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(170,150,120)</color>
+    </graphicData>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Metal_Drop</soundDrop>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MarketValue>1200</MarketValue>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>8</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <drawGUIOverlay>false</drawGUIOverlay>
+    <tradeability>None</tradeability>
+    <techLevel>Ultra</techLevel>
+  </ThingDef>
+</Defs>
