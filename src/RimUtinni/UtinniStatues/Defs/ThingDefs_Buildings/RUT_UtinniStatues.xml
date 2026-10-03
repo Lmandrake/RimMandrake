@@ -7,8 +7,8 @@
   subject is picked on the placed statue ("Dedicate"). Stats copy the matching vanilla tier (§1.3).
   ParentName SculptureBase is safe: a child's <comps> list APPENDS to the parent's (XmlInheritance
   RecursiveNodeCopyOverwriteElements appends list elements unless Inherit="False"), so CompQuality/CompArt stay.
-  Placeholder art: the vanilla sculpture folder until a carving is chosen AND its PNG has landed in
-  Textures/Things/Building/Art/RUT_UtinniIdols/<id>.png (16 jobs, art list utinni_statues_wave1_2026-10-03.csv).
+  Art: the vanilla sculpture folder until a carving is chosen; then Textures/Things/Building/Art/RUT_UtinniIdols/<id>.png
+  (all 16 wave-one carvings wired 2026-10-03, UTINNI_STATUES_ART_WIRING_1; tinted by stuff like vanilla sculptures).
 -->
 <Defs>
 
@@ -136,8 +136,8 @@
        Sh'kaar's grand carving. Not carved directly (no recipeMaker: ArtBuildingBase, not SculptureBase); minifies and
        reinstalls. Vanilla only: Refuelable (chemfuel per R4; Sumpgas in the campaign, switched at startup by
        UtinniStatuesStartup.ApplyIdolFuel), Glower (dark without fuel via the refuelable's IThingGlower), ONE vanilla
-       FireOverlay at the sun-disc crown. Offset/size are first values for the placeholder art; re-measure from
-       rut_idol_shkaar_grand_v1 when it lands. The palms join with Mod 2's RM_CompFlamePoints (FLAME_STATUES_MOD_BUILD_1). -->
+       FireOverlay at the crown bowl. Offset MEASURED from rut_idol_shkaar_grand_v1 (bowl at ~3% from the top of
+       the 1024 canvas, centred, drawSize 4 -> z +1.8); an in-game glance confirms it. The palms join with Mod 2's RM_CompFlamePoints (FLAME_STATUES_MOD_BUILD_1). -->
   <ThingDef ParentName="ArtBuildingBase">
     <defName>RUT_StatueGrand_Shkaar</defName>
     <label>burning idol of Sh'kaar</label>
@@ -218,7 +218,7 @@
       </li>
       <li Class="CompProperties_FireOverlay">
         <fireSize>0.8</fireSize>
-        <offset>(0,0,1.25)</offset>
+        <offset>(0,0,1.8)</offset>
       </li>
     </comps>
   </ThingDef>
