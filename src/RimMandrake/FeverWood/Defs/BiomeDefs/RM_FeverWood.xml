@@ -46,6 +46,12 @@
     <label>the Fever Wood</label>
     <description>The place where trees finally won. Great solid trunks, much more than one tile wide, have rooted the backswamp still and solid, tamed the flowing waters into shallow surface pools with deep, deep mud beneath. Their arches and branches have grown into byways well above the dark still pools -- roads made of living wood. In the crown: a whole arboreal world. Below: the black mirrors, unrippled. Nothing goes in the water here. Everything remembers why.</description>
     <workerClass>RimMandrake.FeverWood.RM_BiomeWorker_FeverWood</workerClass>
+    <!-- FEVERWOOD_TIER_LEAKS_FIX_1: no ancient dangers here. The donor twin got this only from a
+         campaign patch (AncientDangerGenSteps_AmbientDoctrine.xml); it is the place's own doctrine
+         (vanilla genstep, no IP), so the free def declares it. Same field Pyrelands uses. -->
+    <preventGenSteps>
+      <li>ScatterShrines</li>
+    </preventGenSteps>
     <foragedFood>RawBerries</foragedFood>
     <allowRoads>true</allowRoads>
     <allowRivers>true</allowRivers>

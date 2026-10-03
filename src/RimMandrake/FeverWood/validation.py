@@ -607,6 +607,23 @@ def source_guards(t):
             if hits:
                 _fail("top-level <Operation MayRequire=...> is ignored by the engine and can reset ModsConfig: %s" % hits)
 
+    with _comp(t, "campaign_patches_and_free_def_tier_leaks_closed", independent=True):
+        # FEVERWOOD_TIER_LEAKS_FIX_1. UNMEASURED live: offline source read only.
+        if t.session is not None:
+            utp = os.path.join(_HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "WildAnimals_FeverWood.xml")
+            txt = open(utp, encoding="utf-8").read()
+            if "RM_FeverWood" not in txt:
+                _fail("sanity probe: campaign roster patch does not mention RM_FeverWood: parse failure")
+            if re.search(r"<Operation\b[^>]*\bMayRequire", txt):
+                _fail("WildAnimals_FeverWood.xml: top-level <Operation MayRequire=...> is inert in 1.6")
+            dropped = [n for n in ("RSW_GlowSlug", "RSW_JewelBeetle", "RSW_AcidSlug") if re.search(r"<%s>" % n, txt)]
+            if dropped:
+                _fail("owner dropped these Biomes! ports from the Fever Wood roster: %s" % dropped)
+            biome = ET.parse(os.path.join(_HERE, "Defs", "BiomeDefs", "RM_FeverWood.xml")).getroot().find("BiomeDef")
+            prevent = [(li.text or "").strip() for li in biome.findall("preventGenSteps/li")]
+            if "ScatterShrines" not in prevent:
+                _fail("RM_FeverWood must carry preventGenSteps ScatterShrines itself (no ancient dangers): %r" % prevent)
+
 
 @suite.chain("defs_resolve")
 def defs_resolve(t):
