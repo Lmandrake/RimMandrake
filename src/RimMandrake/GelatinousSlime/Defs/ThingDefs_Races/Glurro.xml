@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    GELATINOUSSLIME_GLURRO_SALVE_1: the glurro, an iron-crusted crawler that grazes the slime channels
+    and is never read (SlimeResistantExtension). Tamed, it is MILKED (vanilla CompProperties_Milkable)
+    for RM_GlurroSalve; butchered, it yields RM_GlurroSalveConcentrate (the "rendered down" half:
+    the item named a slime-pit rendering station paired with GELATINOUSSLIME_PIT_SOLVENT_1, which
+    does not exist, so the concentrate is a butcher product, no station). All numbers // INVENTED.
+    One home: wired inline on RM_GelatinousSlime/wildAnimals. Art queued from the turn1 CSV row;
+    magenta until it lands.
+  -->
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Glurro</defName>
+    <label>glurro</label>
+    <description>A low, solid crawler wearing a rust-brown crust of iron it has drawn out of the slime and baked into its own back. The glurro grazes the liquid channels with a soft wet underside and is never read: the body that reads everything else leaves it be, and the crust is why people suspect. Tamed and milked, it gives a thick rust-amber salve that slows the film's reading of whoever wears it. It cannot stop it.</description>
+    <statBases>
+      <MoveSpeed>2.0</MoveSpeed>
+      <Mass>40</Mass>
+      <MarketValue>160</MarketValue>
+      <Wildness>0.35</Wildness>
+      <ComfyTemperatureMin>-5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.4</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.25</ArmorRating_Blunt>
+    </statBases>
+    <modExtensions>
+      <li Class="RimMandrake.GelatinousSlime.SlimeResistantExtension" />
+    </modExtensions>
+    <comps>
+      <li Class="CompProperties_Milkable">
+        <milkDef>RM_GlurroSalve</milkDef>
+        <milkIntervalDays>6</milkIntervalDays>
+        <milkAmount>2</milkAmount>
+        <milkFemaleOnly>false</milkFemaleOnly>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>crusted head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <butcherProducts>
+      <RM_GlurroSalveConcentrate>1</RM_GlurroSalveConcentrate>
+    </butcherProducts>
+    <race>
+      <body>TurtleLike</body>
+      <predator>false</predator>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHealthScale>1.0</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <herdAnimal>true</herdAnimal>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>12</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundCall>Pawn_Tortoise_Call</soundCall>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Reptile_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Glurro</defName>
+    <label>glurro</label>
+    <race>RM_Glurro</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Glurro/RM_Glurro</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Glurro/RM_Glurro</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Glurro/RM_Glurro</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.4</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

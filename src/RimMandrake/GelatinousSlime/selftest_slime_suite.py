@@ -19,6 +19,8 @@ CASES = {
     "nodef:ThingDef/RM_RawSlime": ["all_defs_resolve"],
     "notag": ["terrain_tagged"],
     "noflight": ["dwommo_flight_def"],
+    "nosalve": ["glurro_salve_slows_growth"],
+    "nodef:ThingDef/RM_GlurroSalve": ["glurro_salve_defs"],
     "nodry": ["drying_biomes_tagged"],
     "nostep": ["visitor_genstep_registered"],
     "defaultswrong": ["settings_defaults"],
