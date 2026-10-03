@@ -1,0 +1,6 @@
+# Scarlands livefix 2026-10-03 (script faults, edited src/RimMandrake/Scarlands/validation.py)
+
+1. tracking/barrel_follows_mover_and_never_fires: FIXED. ordered_job called with undeclared targetAPos; now targetAX/targetAZ ints. Other calls in the chain (list_things defName/rect, inspect_string thingIds, mod_settings_field, spawn_pawn) are used identically elsewhere or passed earlier; not re-verified live.
+2. refit_gizmo/refit_gated_by_toggle: script fault. Repo XML RM_OldLineTurret.xml has ComponentSpacer 3 + RM_Etchant 10; deployed copy was stale. Live reader returns costList as type names only, so live check now asserts the two-row shape; static_checks asserts the named 10 etchant + 3 ComponentSpacer in repo XML. Stale deploy still fails live (correct).
+3. totchak/old_tongue/hospice/rainbow_pools "needs live Warscar map" components: raised ExpectationFailed("UNMEASURED..") = FAIL. Now _unmeasured(t, why) sets t.upstream_reason/upstream_failed (the harness's route, same as Stillsand), so verdict is UNMEASURED. Applied to all 4 plus the "could not spawn pawn" case.
+Checks: static PASS (0 findings); module imports, suite builds (7 chains). No selftest exists in the folder. No live run.
