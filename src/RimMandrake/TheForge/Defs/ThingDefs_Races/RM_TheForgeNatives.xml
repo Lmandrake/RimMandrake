@@ -488,6 +488,9 @@
         <slowFinalHours>0.25</slowFinalHours>
         <slowHediff>RM_DhuvvoxRunSlowing</slowHediff>
         <wakeSound>RM_DhuvvoxNoduleClick</wakeSound>
+        <runSound>RM_DhuvvoxScuttle</runSound>
+        <runSoundIntervalTicks>70</runSoundIntervalTicks>
+        <runSoundSlowFactor>4</runSoundSlowFactor>
       </li>
     </comps>
     <race>

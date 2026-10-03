@@ -53,6 +53,7 @@ namespace RimMandrake.TheForge
         public static bool forgeVoicesEnabled = true;
         public static bool forgeVoicesVisualCues = false;
         public static bool dhuvvoxClockEnabled = true;
+        public static bool dhuvvoxRunSoundEnabled = true;
 
         // FORGE_WHITE_PLUME_FRONTS_1 — quench-steam fronts off the new crust, each half separately switchable.
         public static bool plumeFrontsEnabled = true;
@@ -95,6 +96,7 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref forgeVoicesEnabled, "forgeVoicesEnabled", true);
             Scribe_Values.Look(ref forgeVoicesVisualCues, "forgeVoicesVisualCues", false);
             Scribe_Values.Look(ref dhuvvoxClockEnabled, "dhuvvoxClockEnabled", true);
+            Scribe_Values.Look(ref dhuvvoxRunSoundEnabled, "dhuvvoxRunSoundEnabled", true);
             Scribe_Values.Look(ref plumeFrontsEnabled, "plumeFrontsEnabled", true);
             Scribe_Values.Look(ref plumeObscureEnabled, "plumeObscureEnabled", true);
             Scribe_Values.Look(ref plumeSoakEnabled, "plumeSoakEnabled", true);
@@ -170,6 +172,9 @@ namespace RimMandrake.TheForge
                 "Awake dhuvvox show how long their run has left, slow in its final "
               + "quarter-hour, and visibly curl back into their nodules when it ends. "
               + "Off: they still seal on the cycle, without the clock.");
+            list.CheckboxLabeled("  Scuttling sound", ref dhuvvoxRunSoundEnabled,
+                "Awake dhuvvox tick and scuttle where they run; the ticks space out and fade as the "
+              + "run's final quarter-hour passes. Needs the dhuvvox clock.");
             list.GapLine();
 
             list.CheckboxLabeled("White plume fronts", ref plumeFrontsEnabled,

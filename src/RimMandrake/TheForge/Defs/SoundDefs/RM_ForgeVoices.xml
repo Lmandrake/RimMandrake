@@ -195,6 +195,25 @@
     </subSounds>
   </SoundDef>
 
+  <!-- FORGE_DHUVVOX_SWARM_REMAINDER_1: an awake dhuvvox's scuttle tick; the comp spaces it out in the run's final quarter-hour. -->
+  <SoundDef>
+    <defName>RM_DhuvvoxScuttle</defName>
+    <context>MapOnly</context>
+    <maxSimultaneous>6</maxSimultaneous>
+    <subSounds>
+      <li>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>UI/TickHigh</clipPath>
+          </li>
+        </grains>
+        <volumeRange>5~8</volumeRange>
+        <pitchRange>1.9~2.4</pitchRange>
+        <distRange>4~30</distRange>
+      </li>
+    </subSounds>
+  </SoundDef>
+
   <!-- Keelwork: each linked keel brace rings once as the gravship launches (RM_Patch_KeelRing). -->
   <SoundDef>
     <defName>RM_ForgeVoice_KeelRing</defName>
