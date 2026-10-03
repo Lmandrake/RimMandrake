@@ -42,6 +42,10 @@ namespace RimMandrake.FlowWorks
 		// CANAL_BOTTOM_SPIKES_1
 		public static ThingDef RM_Spikes;
 
+		// FLOWWORKS_DOOR_FAMILY_1
+		public static ThingDef RM_Sluice;
+		public static ThingDef RM_SecurityGrateDoor;
+
 		/// <summary>PIT_LEGACY_CODE_RETIRE_1: merged from the retired RimMandrakePits_DefOf
 		/// (only the surviving hediffs). REWIRE pending: drowning keyed to fill at D=4
 		/// (PIT_FILL_EFFECTS_1); exposure driven by temperature (PIT_TEMPERATURE_SOFTENING_1).</summary>

@@ -91,3 +91,19 @@ Not written. Design work; goes to a backgrounded high-tier subagent per
 - Liquid passes both while closed — proven in game, not by reading the def.
 - Neither is openable by a pawn standing in a superdeep cell.
 - A wooden one burns.
+
+## built (belt r21, 2026-10-03)
+
+- `RM_Sluice` and `RM_SecurityGrateDoor`, both `DoorBase` + Metallic/Woody/Stony stuff, thingClass
+  `Building_RM_FlowDoor` (`Source/Superdeep/RM_FlowDoors.cs`), Light affordance (not the stuff's) so a
+  stone/steel gate stands in a dug channel. Placeholder vanilla door art.
+- Liquid: the depth engine never read edifices, so a door on a dug cell already passes the level; the
+  legacy flood walk (`Flood_FlowWorks.CanFloodInto`) now treats these two as open.
+- "Small creature" = non-humanlike with `RequiredWidth == 1` — the Q4 pit-width rule, so the sluice and
+  the pit agree. A sluice gives way to any non-player humanlike or wider creature; the grate holds like a
+  vanilla door. Neither opens for a pawn `RM_SuperdeepTrap.IsHeld`. Verdict: `RM_PitTrapMath.FlowDoorOpens`
+  (C# selftest case). Settings `flowDoorsSealedFromPitEnabled`, `sluiceLetsBigThroughEnabled` (29 toggles).
+- Fire: no special case — a grate passing burning oil is stuff flammability, and a wooden one burns.
+- Chain `flow_doors` (liquid past both closed doors; who opens what; sealed from the pit) via
+  `RM_FlowDoorRules.ProofOpen/ProofLiquid`; `sluice_state_look` and the stale `spikes_look` BLOCKED stubs
+  now spawn and frame. Live proof owed — first poke: `flow_doors` chain.
