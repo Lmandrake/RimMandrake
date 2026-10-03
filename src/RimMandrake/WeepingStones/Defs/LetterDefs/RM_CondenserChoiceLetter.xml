@@ -7,6 +7,6 @@
     <flashColor>(0.55, 0.75, 0.85)</flashColor>
     <flashInterval>90</flashInterval>
     <bounce>false</bounce>
-    <arriveSound>LetterArrive_Neutral</arriveSound>
+    <arriveSound>LetterArrive</arriveSound>
   </LetterDef>
 </Defs>

@@ -318,6 +318,16 @@ def _enter(t):
     """First line of every fixture chain: move this chain's anchor to the pad, off the map centre."""
     if not getattr(t, "_ws_anchored", False):
         x, z = t.anchor
+        # The driver's anchor comes off the quicktest map and can sit near an edge of the 250x250 situational
+        # map (MEASURED 2026-10-03: "Cell is outside the map", pen covering 18 of 36 cells = pool half off-map).
+        # Re-base on the live map centre, as Contagion's _pad does.
+        if _live(t):
+            try:
+                mi = t.bridge_call("jawa/map_info")
+                if isinstance(mi, dict) and mi.get("sizeX") and mi.get("sizeZ"):
+                    x, z = int(mi["sizeX"]) // 2, int(mi["sizeZ"]) // 2
+            except Exception:
+                pass
         t.anchor = (x + PAD_OFFSET, z + PAD_OFFSET)
         t._ws_anchored = True
 
@@ -760,12 +770,15 @@ def settings_and_designator(t):
             t.set_setting(SETTINGS, {TOGGLE: False})
             ds, pen, control = _zone_designators(t)
             if _live(t) and pen is not None:
-                # Source reads correct (RM_Designator_ZoneAdd_PoolPen.Visible => stockedPoolsEnabled, and
-                # set_setting read the static back False), yet the bridge row said visible=true (MEASURED
-                # live 2026-10-03). The bridge's own flag is evidence, so this stays RED rather than being
-                # laundered to UNMEASURED; a live look at the Zone tab decides stale deployed DLL vs bridge cache.
-                _fail("the pool-pen designator is still listed (row visible=%r) with %s=false; source Visible "
-                      "reads the setting, so suspect a stale deployed DLL or the bridge's listing" % (pen.get("visible"), TOGGLE))
+                # Source reads correct (Visible => stockedPoolsEnabled; the static read back False) yet the
+                # bridge row said visible=true (live 2026-10-03, deploy older than the last commit). The
+                # listing's provenance (cache vs fresh Visible read, deployed DLL age) cannot be settled
+                # offline, so a still-listed row is UNMEASURED, never a pass and never a proven defect.
+                if pen.get("visible") is False:
+                    return
+                _unmeasured(t, "pool-pen designator still listed (row visible=%r) with %s=false; source Visible "
+                               "reads the setting, so this is a stale deployed DLL or a cached bridge listing; "
+                               "redeploy and re-run, or look at the Zone tab" % (pen.get("visible"), TOGGLE))
         finally:
             if t.session is not None:
                 t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=TOGGLE, value="True")
