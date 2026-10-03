@@ -37,6 +37,7 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True,
             "settlingEnabled": True, "settlingCalmThreshold": 0.35, "settlingCalmHours": 4.0, "settlingEndWind": 0.8,
             "settlingEndHours": 1.0, "settlingToxicStrength": 1.0, "liftFrontEnabled": True, "warDustEnabled": True,
+            "warDustBlightCureEnabled": True,
             "ordnancePerMap": 3.0,
             "choirEnabled": True, "choirVolume": 1.0, "choirTickVolumeCeiling": 1.0, "choirTickDensity": 1.0,
             "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True}
@@ -44,7 +45,7 @@ CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_
               "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
                  "ThingDef/RM_BuriedOrdnance", "JobDef/RM_SweepWarDust", "JobDef/RM_DefuseOrdnance",
-                 "JobDef/RM_TriggerOrdnance"]
+                 "JobDef/RM_TriggerOrdnance", "JobDef/RM_DustBlight", "RecipeDef/RM_StretchDyeWithWarDust"]
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
@@ -387,7 +388,7 @@ def static_checks():
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled"]
+    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled", "warDustBlightCureEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL): the harness's own route is upstream_failed, which
@@ -631,6 +632,11 @@ def _build_suite():
             if t.session is None:
                 return
             _unmeasured(t, "a sweep job on a film cell yielding RM_WarDust (more in crater bowls) needs a live film cell and a pawn")
+        with t.component("war_dust_cures_blight", toggle="warDustBlightCureEnabled"):
+            if t.session is None:
+                return
+            _unmeasured(t, "a grower carrying one RM_WarDust to a blighted crop (dev Blight incident on a sown zone) and the "
+                           "Blight thing being gone with the plant alive needs a live map and a pawn")
         with t.component("buried_ordnance_revealed_and_defusable", beyond_toggle=True):
             if t.session is None:
                 return

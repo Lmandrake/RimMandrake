@@ -50,6 +50,7 @@
     <Compile Include="MapComponent_WreckLichen.cs" />
     <Compile Include="RM_Settling.cs" />
     <Compile Include="RM_GeigerChoir.cs" />
+    <Compile Include="RM_WarDustUses.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
