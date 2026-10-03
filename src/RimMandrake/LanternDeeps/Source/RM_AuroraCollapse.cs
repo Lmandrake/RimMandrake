@@ -231,6 +231,8 @@ namespace RimMandrake.LanternDeeps
 
         public int Pending => due.Count;
 
+        public IEnumerable<IntVec3> PendingCells => due.Keys;
+
         public void MarkForced(IntVec3 c)
         {
             forced.Add(c);
@@ -269,7 +271,10 @@ namespace RimMandrake.LanternDeeps
                 }
                 if (!due.ContainsKey(c))
                 {
-                    due[c] = now + LanternDeepsSettings.collapseWarningTicks;
+                    // LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1: a tame knocker hears it sooner
+                    float window = LanternDeepsSettings.collapseWarningTicks
+                        * (RM_CompKnocker.TameKnockerOn(map) ? LanternDeepsSettings.knockerWarningFactor : 1f);
+                    due[c] = now + (int)window;
                     fresh = true;
                 }
                 marked.RemoveAt(i);

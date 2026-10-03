@@ -529,3 +529,32 @@ def aurora_collapse(t):
         res = str((t.bridge_call("jawa/static_call", type=AP, method="ProofCollapse", args="") or {}).get("result", ""))
         if t._guard() and "heldForWarning=True" not in res:
             raise ExpectationFailed("the roof was not held for its warning: %r" % res)
+
+
+@suite.chain("hydrocarbon_wave2")
+def hydrocarbon_wave2(t):
+    """LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1: slick, blinker, knocker load; a slick leaves fuel on the cells it leaves; a
+    blinker's flash puts up its flare and dazzles a beast beside it; a knocker hears a roof held for its warning. Run in a
+    Deep (the knocker needs the collapse component). Not proven here: a spark running a slick trail, predators drawn to a
+    flash, the tame knocker's longer warning window."""
+    WP = "RimMandrake.LanternDeeps.RM_HydrocarbonWave2Proof"
+    with t.component("wave2_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RM_Slick", "ThingDef/RM_Blinker", "ThingDef/RM_Knocker", "ThingDef/RM_BlinkerFlare",
+                  "HediffDef/RM_BlinkerDazzled"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("slick_lays_fuel", toggle="slickTrailEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofSlick", args="") or {}).get("result", ""))
+        m = re.search(r"moved=(\d+) fuelCells=(\d+)", res)
+        if t._guard() and (not m or int(m.group(1)) == 0 or int(m.group(2)) == 0):
+            raise ExpectationFailed("no fuel trail: %r" % res)
+    with t.component("blinker_flashes", toggle="blinkerFlashEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofBlinker", args="") or {}).get("result", ""))
+        if t._guard() and "flare=True" not in res:
+            raise ExpectationFailed("no flash: %r" % res)
+    with t.component("knocker_hears_failing_roof", toggle="knockerAlarmEnabled"):
+        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofKnocker", args="") or {}).get("result", ""))
+        m = re.search(r"heard=(\d+)", res)
+        if t._guard() and (not m or int(m.group(1)) == 0):
+            raise ExpectationFailed("the knocker heard nothing: %r" % res)
