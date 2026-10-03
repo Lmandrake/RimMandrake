@@ -63,6 +63,7 @@
     <Compile Include="RM_CreepCleavers.cs" />
     <Compile Include="RM_AuroraCollapse.cs" />
     <Compile Include="RM_HydrocarbonWave2.cs" />
+    <Compile Include="RM_HydrocarbonWave3.cs" />
   </ItemGroup>
 
   <ItemGroup>

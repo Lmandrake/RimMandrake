@@ -184,6 +184,10 @@
       <RM_Slick>0.3</RM_Slick>
       <RM_Blinker>0.3</RM_Blinker>
       <RM_Knocker>0.12</RM_Knocker>
+      <!-- LANTERNDEEPS_HYDROCARBON_WAVE3_BUILD_1 (the hush is placed by RM_DeepHush, not rostered) -->
+      <RM_Sipper>0.4</RM_Sipper>
+      <RM_Tapper>0.08</RM_Tapper>
+      <RM_Pooler>0.08</RM_Pooler>
     </wildAnimals>
 
     <allowedPackAnimals>

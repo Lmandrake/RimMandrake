@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_LanternDeeps_Hydrocarbon_Wave3.xml   LanternDeeps · LANTERNDEEPS_HYDROCARBON_WAVE3_BUILD_1
+  Hush, sipper, tapper, pooler: the last four of the twelve ruled hydrocarbon animals. Concepts:
+  rosters/lantern_deeps_repopulation_proposals.md §1, §4, §6, §7. Same premises as waves 1-2:
+  RM_HydrocarbonBloodExtension, Filth_Fuel for blood, no meat or leather, fuel-class butcher products.
+  Mechanics: Source/RM_HydrocarbonWave3.cs. Art: artpipe RM_<Name>_south/east/north at the art's own
+  drawsizes (hush 2.0, sipper 0.6, tapper 1.0, pooler 1.0). The hush is placed by RM_DeepHush (1-2 per
+  new Deep), never rostered; sipper/tapper/pooler are roster rows in RM_LanternDeeps.
+-->
+<Defs>
+
+  <!-- The hush's unseen state: vanilla invisibility (the Horaxian/Revenant machinery), undrawn and
+       untargetable while present. RM_CompHush adds it on unlit ground and removes it when lit or striking. -->
+  <HediffDef>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defName>RM_HushUnseen</defName>
+    <label>unseen in the dark</label>
+    <description>On unlit ground this creature is a hole in the floor: nothing that looks for it can find it. Light, a wound or its own strike shows it.</description>
+    <isBad>false</isBad>
+    <comps>
+      <li Class="HediffCompProperties_Invisibility">
+        <visibleToPlayer>false</visibleToPlayer>
+        <fadeDurationTicks>45</fadeDurationTicks>
+        <recoverFromDisruptedTicks>120</recoverFromDisruptedTicks>
+      </li>
+      <li Class="HediffCompProperties_DisappearsOnDeath" />
+    </comps>
+  </HediffDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Hush</defName>
+    <label>hush</label>
+    <description>The one thing in the Deep that does not glow: a wide flat sheet two cells across and less than a hand thick, matte black, with the faintest blue edge-light where a lamp catches its rim. At rest it lies over the fungal floor like a spill of shadow, and on unlit ground nothing can see it at all. Step within two cells and it peels up from the front edge and folds over you; the underside is a field of small pale-blue hooks. Light it and it is a plain black slab you can shoot from across the room.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
+    </modExtensions>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <Wildness>1</Wildness>
+      <MarketValue>250</MarketValue>
+      <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>hook field</label>
+        <capacities><li>Scratch</li></capacities>
+        <power>14</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>folding edge</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>10</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>1.6</baseBodySize>
+      <baseHealthScale>1.4</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>2</maxPreyBodySize>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <herdAnimal>false</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0.5</manhunterOnDamageChance>
+      <bloodDef>Filth_Fuel</bloodDef>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <Chemfuel>25</Chemfuel>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.RM_CompProperties_Hush">
+        <unseenHediff>RM_HushUnseen</unseenHediff>
+        <litThreshold>0.3</litThreshold>
+        <lungeRange>2</lungeRange>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Hush</defName>
+    <label>hush</label>
+    <race>RM_Hush</race>
+    <combatPower>140</combatPower>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Hush/Hush</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.1</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Hush/Hush</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Hush/Hush</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Sipper</defName>
+    <label>sipper</label>
+    <description>A swarm vermin the size of a thumbnail: a clear bead of liquid in a pale-blue skin so thin the yellow droplet inside shows as a point of colour, on three hair-fine legs. Alone it is invisible; a swarm is a scatter of sparks. Sippers hop toward the brightest light near them and sit on it, drinking photons into pentane, and every one of them on a lamp makes it a little dimmer. They do not fight. They just come back.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
+      <li Class="RimMandrake.CreatureBehaviors.RM_VerminPressureExtension">
+        <populationSoftCap>20</populationSoftCap>
+        <populationHardCap>40</populationHardCap>
+      </li>
+    </modExtensions>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <Wildness>0.9</Wildness>
+      <MarketValue>3</MarketValue>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>bead</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>1</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.08</baseBodySize>
+      <baseHealthScale>0.15</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <canBePredatorPrey>true</canBePredatorPrey>
+      <herdAnimal>true</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <bloodDef>Filth_Fuel</bloodDef>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <Chemfuel>1</Chemfuel>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.RM_CompProperties_Sipper">
+        <seekRadius>30</seekRadius>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_VerminBreeder">
+        <pawnSpawnIntervalDays>1~2</pawnSpawnIntervalDays>
+        <pawnSpawnRadius>3</pawnSpawnRadius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Sipper</defName>
+    <label>sipper</label>
+    <race>RM_Sipper</race>
+    <combatPower>4</combatPower>
+    <ecoSystemWeight>0.02</ecoSystemWeight>
+    <wildGroupSize>4~8</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.33</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.48</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Sipper/Sipper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tapper</defName>
+    <label>tapper</label>
+    <description>A flat plate on many feet: a rounded pale-blue disc one cell wide, the yellow fluid inside branching through it in lightning-tree veins that brighten and dim in a slow pulse. It eats electricity. A wild tapper walks to your batteries, sits on them and drains them; a bank of them empties a battery bank in a night. A tame one never drains: it stores charge while the aurora storms over the Deep and pours it into any battery it sits beside.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
+    </modExtensions>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <Wildness>0.5</Wildness>
+      <MarketValue>180</MarketValue>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>rim feet</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>2</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>BeetleLike</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <canBePredatorPrey>true</canBePredatorPrey>
+      <herdAnimal>false</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <bloodDef>Filth_Fuel</bloodDef>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <Chemfuel>6</Chemfuel>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.RM_CompProperties_Tapper">
+        <drainPerDay>600</drainPerDay>
+        <chargePerDay>1200</chargePerDay>
+        <capacity>300</capacity>
+        <aurora>RM_DeepAurora</aurora>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tapper</defName>
+    <label>tapper</label>
+    <race>RM_Tapper</race>
+    <combatPower>20</combatPower>
+    <ecoSystemWeight>0.1</ecoSystemWeight>
+    <wildGroupSize>1~2</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Tapper/Tapper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Tapper/Tapper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Tapper/Tapper</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Pooler</defName>
+    <label>pooler</label>
+    <description>A creature that is a puddle: a rounded meniscus of pale, cold-blue liquid with a slowly turning yellow core the size of a coin. It pours itself around obstacles and is drawn to warmth the way everything else here is drawn to light. It drapes itself over the warmest thing it can find: a fire under it goes out flat with no smoke, a heater stops, and a warm body under it chills fast until it is pushed off. Fire cannot touch it. A tame pooler hunts only fires.</description>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
+    </modExtensions>
+    <statBases>
+      <MoveSpeed>1.6</MoveSpeed>
+      <Wildness>0.6</Wildness>
+      <MarketValue>200</MarketValue>
+      <MeatAmount>0</MeatAmount>
+      <LeatherAmount>0</LeatherAmount>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>30</ComfyTemperatureMax>
+      <FilthRate>0</FilthRate>
+    </statBases>
+    <tools>
+      <li>
+        <label>meniscus</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>2</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>0.9</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <herdAnimal>false</herdAnimal>
+      <trainability>None</trainability>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <bloodDef>Filth_Fuel</bloodDef>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <butcherProducts>
+      <Chemfuel>8</Chemfuel>
+    </butcherProducts>
+    <comps>
+      <li Class="RimMandrake.LanternDeeps.RM_CompProperties_Pooler">
+        <seekRadius>40</seekRadius>
+        <pawnSeekRadius>14</pawnSeekRadius>
+        <hypothermiaPerCheck>0.03</hypothermiaPerCheck>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Pooler</defName>
+    <label>pooler</label>
+    <race>RM_Pooler</race>
+    <combatPower>25</combatPower>
+    <ecoSystemWeight>0.12</ecoSystemWeight>
+    <wildGroupSize>1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Pooler/Pooler</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.55</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Pooler/Pooler</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>RM_LanternDeeps/Fauna/Hydrocarbon/Pooler/Pooler</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <GenStepDef>
+    <defName>RM_DeepHush</defName>
+    <order>960</order>
+    <genStep Class="RimMandrake.LanternDeeps.RM_GenStep_Hush">
+      <kind>RM_Hush</kind>
+      <count>1~2</count>
+    </genStep>
+  </GenStepDef>
+
+</Defs>
