@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_GUT_MOTHER_VAT_1 - the Gut-Mother. Mechanism in Source/RM_GutMother.cs (read its header).
+  sac (dropped by a dead hwelgrue) -> study it (vanilla Biotech CompAnalyzableUnlockResearch + requiredAnalyzed)
+  -> research RM_GutMotherCulture -> grow the vat ANYWHERE from a sac OR a starter: both are stuff of the one
+  category RM_GutMotherCulture, so the build menu offers whichever you hold (vanilla stuff choice, no bespoke OR).
+  Corpses arrive by a bill (RM_FeedGutMother: vanilla hauling and filters); its RecipeWorker keeps the corpse
+  instead of destroying it and hands it to the vat. Nutrition is a CompRefuelable of raw meat, drawn by the
+  vat's own rare tick (CompRefuelable only burns fuel on a Normal ticker). Art: artpipe RM_GutMotherSac,
+  RM_GutMotherStarter, RM_GutMotherVat_south (done 2026-10-02, wired from _artsrc). Numbers PROPOSED.
+-->
+<Defs>
+
+  <StuffCategoryDef>
+    <defName>RM_GutMotherCulture</defName>
+    <label>gut-mother culture</label>
+  </StuffCategoryDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GutMotherSac</defName>
+    <label>gut-mother sac</label>
+    <description>A pale, veined sac cut from a dead hwelgrue: the culture that digests everything it swallows. It is still alive, and dying slowly. Studied, it teaches how to keep it alive; grown into a vat anywhere, it becomes a gut-mother that returns the metal and machinery of whatever corpse it is fed.\n\nIt rots in about fifteen days unless used.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>RM_TheRot/Items/RM_GutMotherSac</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.1</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <statBases>
+      <MarketValue>350</MarketValue>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Mass>4</Mass>
+      <Flammability>0.6</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+    <stuffProps>
+      <categories>
+        <li>RM_GutMotherCulture</li>
+      </categories>
+      <commonality>0</commonality>
+      <stuffAdjective>sac-grown</stuffAdjective>
+      <color>(255,255,255)</color>
+    </stuffProps>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>15</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <analysisID>66012031</analysisID>
+        <requiresMechanitor>false</requiresMechanitor>
+        <analysisDurationHours>2</analysisDurationHours>
+        <destroyedOnAnalyzed>false</destroyedOnAnalyzed>
+        <completedLetterLabel>Gut-mother sac studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By studying the gut-mother sac, {PAWN_labelShort} has learned what keeps it alive. Your researchers can now begin {RESEARCH}.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Study...</activateLabelString>
+        <activateDescString>Study the gut-mother sac.</activateDescString>
+        <jobString>Study gut-mother sac</jobString>
+        <guiLabelString>Choose who should study this</guiLabelString>
+        <inspectString>Can be studied by a colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_GutMotherStarter</defName>
+    <label>gut-mother starter</label>
+    <description>A sealed jar of live gut-mother culture, split from a grown vat. Unlike the sac it keeps: it does not rot or lose viability anywhere. A starter grows a new vat on any ground. Traders who deal in exotic goods pay well for one.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <graphicData>
+      <texPath>RM_TheRot/Items/RM_GutMotherStarter</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>5</stackLimit>
+    <useHitPoints>true</useHitPoints>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <soundInteract>Standard_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <statBases>
+      <MarketValue>900</MarketValue>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Mass>1.5</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>0</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>All</tradeability>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <stuffProps>
+      <categories>
+        <li>RM_GutMotherCulture</li>
+      </categories>
+      <commonality>0</commonality>
+      <stuffAdjective>starter-grown</stuffAdjective>
+      <color>(255,255,255)</color>
+    </stuffProps>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>RM_GutMotherCulture</defName>
+    <label>gut-mother culture</label>
+    <description>Keep a hwelgrue's digesting sac alive outside the animal: grow it into a vat anywhere, feed it corpses, and take back the implants and gear it cannot digest. Needs a studied gut-mother sac.</description>
+    <techLevel>Neolithic</techLevel>
+    <baseCost>1500</baseCost>
+    <prerequisites>
+      <li>RM_AdvancedFungi</li>
+    </prerequisites>
+    <requiredAnalyzed>
+      <li>RM_GutMotherSac</li>
+    </requiredAnalyzed>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>0.7</researchViewY>
+  </ResearchProjectDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GutMotherVat</defName>
+    <label>gut-mother vat</label>
+    <description>A gut-mother grown in a cradle of fungal ribs. Give it a corpse and a day, and it digests everything organic and spills out what it cannot: bionic parts, implants, weapons, clothing, whatever the body carried. It needs a little raw meat each day or it goes dormant; it never dies of hunger. A grown vat can be split to make a starter culture.</description>
+    <thingClass>RimMandrake.TheRot.Building_RM_GutMotherVat</thingClass>
+    <graphicData>
+      <texPath>RM_TheRot/Buildings/RM_GutMotherVat</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2.2,2.2)</drawSize>
+      <shadowData>
+        <volume>(1.6, 0.5, 1.4)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <tickerType>Rare</tickerType>
+    <canOverlapZones>false</canOverlapZones>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <stuffCategories>
+      <li>RM_GutMotherCulture</li>
+    </stuffCategories>
+    <costStuffCount>1</costStuffCount>
+    <costList>
+      <RawFungus>25</RawFungus>
+    </costList>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <resourcesFractionWhenDeconstructed>0</resourcesFractionWhenDeconstructed>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>2000</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>-6</Beauty>
+      <Cleanliness>-5</Cleanliness>
+    </statBases>
+    <designationCategory>Production</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <researchPrerequisites>
+      <li>RM_GutMotherCulture</li>
+    </researchPrerequisites>
+    <constructEffect>ConstructDirt</constructEffect>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <recipes>
+      <li>RM_FeedGutMother</li>
+      <li>RM_SplitGutMother</li>
+    </recipes>
+    <building>
+      <spawnedConceptLearnOpportunity>BillsTab</spawnedConceptLearnOpportunity>
+      <ai_chillDestination>false</ai_chillDestination>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>2</fuelConsumptionRate>
+        <fuelCapacity>20</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <fuelLabel>Nutrition</fuelLabel>
+        <fuelGizmoLabel>Nutrition</fuelGizmoLabel>
+        <outOfFuelMessage>Dormant: hungry</outOfFuelMessage>
+        <fuelFilter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </fuelFilter>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+      </li>
+      <li Class="RimMandrake.TheRot.CompProperties_RM_GutMotherDigest" />
+    </comps>
+    <placeWorkers>
+      <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+    </placeWorkers>
+  </ThingDef>
+
+  <WorkGiverDef>
+    <defName>RM_DoBillsGutMother</defName>
+    <label>tend the gut-mother</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Cooking</workType>
+    <priorityInType>89</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RM_GutMotherVat</li>
+    </fixedBillGiverDefs>
+    <verb>tend</verb>
+    <gerund>tending</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+    <prioritizeSustains>true</prioritizeSustains>
+  </WorkGiverDef>
+
+  <RecipeDef>
+    <defName>RM_FeedGutMother</defName>
+    <label>feed a body to the gut-mother</label>
+    <description>Lay one corpse in the gut-mother. It digests the body over about a day and spills out every implant, weapon and piece of clothing the body held. Nothing organic comes back.</description>
+    <jobString>Feeding the gut-mother.</jobString>
+    <workerClass>RimMandrake.TheRot.RecipeWorker_RM_FeedGutMother</workerClass>
+    <workAmount>300</workAmount>
+    <effectWorking>ButcherFlesh</effectWorking>
+    <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
+    <uiIconThing>RM_GutMotherSac</uiIconThing>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>Corpses</li>
+          </categories>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>Corpses</li>
+      </categories>
+      <disallowedCategories>
+        <li>CorpsesMechanoid</li>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">CorpsesDrone</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>CorpsesHumanlike</li>
+      </categories>
+    </defaultIngredientFilter>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_SplitGutMother</defName>
+    <label>split a starter culture</label>
+    <description>Cut a live piece from the gut-mother and seal it in a jar: one gut-mother starter, which keeps anywhere and grows a new vat. It costs the vat nutrition and half a day of rest.</description>
+    <jobString>Splitting the gut-mother.</jobString>
+    <workerClass>RimMandrake.TheRot.RecipeWorker_RM_SplitGutMother</workerClass>
+    <workAmount>1200</workAmount>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>ButcherFlesh</effectWorking>
+    <soundWorking>Recipe_ButcherCorpseFlesh</soundWorking>
+    <products>
+      <RM_GutMotherStarter>1</RM_GutMotherStarter>
+    </products>
+  </RecipeDef>
+
+</Defs>

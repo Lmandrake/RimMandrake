@@ -235,6 +235,7 @@ namespace RimMandrake.TheRot
         public override void Notify_Killed(Map prevMap, DamageInfo? dinfo = null)
         {
             base.Notify_Killed(prevMap, dinfo);
+            RM_GutMother.DropSac(parent.PositionHeld, prevMap); // ROT_GUT_MOTHER_VAT_1: one sac per carcass
             if (gut.Count == 0 || prevMap == null) return;
             Thing casting = MakeCasting();
             if (casting != null) GenPlace.TryPlaceThing(casting, parent.PositionHeld, prevMap, ThingPlaceMode.Near);
