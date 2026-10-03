@@ -2248,3 +2248,6 @@
 {"seat":"FOUNDRY","event":"start","id":"FLAWED_MASTERWORK_ENGINE_CHECK_1","ts":"2026-10-03T15:15:07Z","tsn":1791040507018817244}
 {"seat":"FOUNDRY","event":"close","id":"FLAWED_MASTERWORK_ENGINE_CHECK_1","sha":"4b3d663bf","reason":"answered by source read: no cross-god amplifier exists; fallback chosen","ts":"2026-10-03T15:15:10Z","tsn":1791040510110769992}
 {"seat":"FOUNDRY","event":"drop","id":"STILLSAND_SUN_GOGGLES_ART_1","reason":"stale-drop: RM_SunGoggles.xml already sets texPath + wornGraphicPath and Textures/Things/Pawn/Humanlike/Apparel/RM_SunGoggles/ holds the icon + south/east/north worn PNGs","ts":"2026-10-03T15:15:37Z","tsn":1791040537010578751}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_INVENTED_CREATURES_TO_RM_1","ts":"2026-10-03T15:19:27Z","tsn":1791040767133134074}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_INVENTED_CREATURES_TO_RM_1","ts":"2026-10-03T15:19:27Z","tsn":1791040767650381407}
+{"seat":"FOUNDRY","event":"close","id":"ABYSS_INVENTED_CREATURES_TO_RM_1","sha":"f75f996c6","reason":"defs/comp/settings ported, DLLs rebuilt, Abyss static check PASS; live load proof owed","ts":"2026-10-03T15:19:28Z","tsn":1791040768172617510}
