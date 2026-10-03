@@ -23,7 +23,7 @@ namespace RimMandrake.CreatureBehaviors
     /// optional radius) for pawns and refreshes a configured HediffDef on
     /// each one found, the "adhesive slick" itself; the hediff's own
     /// stages carry the "slick vs locked" escalation (see
-    /// RUT_Webwork_Slick — early stage a slow-down, late stage a near-full
+    /// RM_Webwork_Slick — early stage a slow-down, late stage a near-full
     /// Moving cap, same "CRIPPLES, never downs" posture RM_Hediff_SunScald
     /// already established for this campaign) and its own
     /// HediffCompProperties_TendDuration is the "a doctor can free them"
@@ -38,7 +38,7 @@ namespace RimMandrake.CreatureBehaviors
     ///   <comps>
     ///     <li Class="CompProperties_Flickable" />
     ///     <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_AdhesiveSlick">
-    ///       <slickHediff>RUT_Webwork_Slick</slickHediff>
+    ///       <slickHediff>RM_Webwork_Slick</slickHediff>
     ///       <radiusCells>0</radiusCells>
     ///     </li>
     ///   </comps>

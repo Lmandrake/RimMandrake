@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """WEBWORK_WEB_STRUCTURES_1 — flat-colour placeholder art for the three
-web-network structures (RUT_Webwork_Anchor/_Web/_Gutter) that currently ship
-a retinted vanilla Hive texture (RUT_WebworkStructures.xml's own header
+web-network structures (RM_Webwork_Anchor/_Web/_Gutter) that currently ship
+a retinted vanilla Hive texture (RM_WebworkStructures.xml's own header
 flags this as owed).
 
 ⚠️ THIS IS A PLACEHOLDER AND IS MEANT TO BE REPLACED. It exists so each of
@@ -20,7 +20,7 @@ adapted for architecture rather than a creature silhouette: each structure
 is non-rotatable and non-directional (Graphic_Single, one file, no facing
 suffix), so one canvas per def is enough.
 
-    python3 src/RimUtinni/UtinniPatches/art/Structures/gen_webwork_structures_placeholder.py
+    python3 src/RimMandrake/Webwork/art/Structures/gen_webwork_structures_placeholder.py
 """
 
 import os
@@ -96,9 +96,9 @@ def draw_gutter() -> Image.Image:
 
 
 STRUCTURES = [
-    ("RUT_Webwork_Anchor", draw_anchor),
-    ("RUT_Webwork_Web", draw_web),
-    ("RUT_Webwork_Gutter", draw_gutter),
+    ("RM_Webwork_Anchor", draw_anchor),
+    ("RM_Webwork_Web", draw_web),
+    ("RM_Webwork_Gutter", draw_gutter),
 ]
 
 

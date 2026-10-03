@@ -38,7 +38,7 @@ namespace RimMandrake.Webwork
 	/// Not wired to any recipe by this mod: the creep-web harvest that will
 	/// attach this comp belongs to SHOKKWEAVE_SOLE_SOURCE_1 (unbuilt as of
 	/// this move) — see that item's own note on why the two harvest nodes
-	/// shipped so far (RUT_Webwork_Anchor/_Web/_Gutter, combat-destroyed via
+	/// shipped so far (RM_Webwork_Anchor/_Web/_Gutter, combat-destroyed via
 	/// DestroyMode.KillFinalize) cannot use this comp as-is.
 	/// </summary>
 	public class RM_CompEmergentSpawnOnDestroy : ThingComp

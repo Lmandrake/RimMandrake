@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_WebworkSlick.xml                 UtinniPatches - WEBWORK_WEB_STRUCTURES_1
+  RM_WebworkSlick.xml                 Webwork - WEBWORK_BASE_PORT_BUILD_1 (ported from UtinniPatches, WEBWORK_WEB_STRUCTURES_1)
   ============================================================================
   The "commandable-adhesive slick/locked" mechanism webwork_kit_spec.md §3
   and the owner-and-nest sitting (§1a's mapping table, "commandable adhesive
@@ -24,7 +24,7 @@
   the way a lethal bind might.
 
   Refreshed by RM_CompAdhesiveSlick (RimMandrake.CreatureBehaviors) — see
-  RUT_WebworkStructures.xml for the structure wiring (RUT_Webwork_Web, the
+  RM_WebworkStructures.xml for the structure wiring (RM_Webwork_Web, the
   sheet web, is the one of the three that carries it: a broad plane a pawn
   actually stands IN, not a thin anchor line or a plumbing gutter).
 
@@ -35,7 +35,7 @@
 <Defs>
 
   <HediffDef>
-    <defName>RUT_Webwork_Slick</defName>
+    <defName>RM_Webwork_Slick</defName>
     <hediffClass>HediffWithComps</hediffClass>
     <label>webbed-slick</label>
     <labelNoun>a web-slick coating</labelNoun>

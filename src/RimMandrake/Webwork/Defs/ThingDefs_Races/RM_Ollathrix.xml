@@ -158,6 +158,11 @@
         <autoAttack>true</autoAttack>
       </li>
     </comps>
+    <!-- WEBWORK_BASE_PORT_BUILD_1: the butchery route of the thrixweave sole-source law. The silk is in the spider, not its hide
+         (leather untouched). Invented first value, midpoint of the spec's 10-20. -->
+    <butcherProducts>
+      <Hyperweave>15</Hyperweave>
+    </butcherProducts>
     <race>
       <body>BeetleLikeWithClaw</body>
       <predator>true</predator>

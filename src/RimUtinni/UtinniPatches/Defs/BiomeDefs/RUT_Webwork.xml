@@ -79,9 +79,9 @@
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_FrontCreepExtension">
         <frontThingDefNames>
-          <li>RUT_Webwork_Anchor</li>
-          <li>RUT_Webwork_Web</li>
-          <li>RUT_Webwork_Gutter</li>
+          <li>RM_Webwork_Anchor</li>
+          <li>RM_Webwork_Web</li>
+          <li>RM_Webwork_Gutter</li>
         </frontThingDefNames>
         <advanceIntervalTicks>60000</advanceIntervalTicks>
         <maxBandDepth>10</maxBandDepth>
