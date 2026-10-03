@@ -1,8 +1,10 @@
-# SALVAGE_WRECKAGE_EVERYWHERE_1: design (DRAFT, for owner ruling)
+# SALVAGE_WRECKAGE_EVERYWHERE_1: design (placement, repair and salvage ruled 2026-10-03)
 
-BENCH design helper, 2026-10-02. Design only: no defs, code, items or ledger verbs came out of
-this pass. Item filed by the owner 2026-09-25: *"I like the wreckage you made, game should be
-filled with lots of this all over the place given it's salvage focus."*
+BENCH design helper, 2026-10-02; placement rewritten 2026-10-03 to the owner's rulings (§8). Design
+only: no defs or code came out of this pass. Item filed by the owner 2026-09-25: *"I like the
+wreckage you made, game should be filled with lots of this all over the place given it's salvage
+focus."* The richer scavenging system the owner asked for on 2026-10-03 is pitched separately in
+`design/RimMandrake/jawa_scavenge_system_pitch_2026-10-03.md`.
 
 **The short version.** The Scald's three wrecks work, and they are built the expensive way:
 one ThingDef per silhouette, one GenStepDef per silhouette (the class takes a single
@@ -50,8 +52,9 @@ All paths are relative to `/home/mandrake/rm/bench` (Windows mirror: `D:\Luke\de
 - **WreckedMachines** (`src/RimMandrake/WreckedMachines/`, `mandrake.rm.wreckedmachines`): the start
   ship's machines with three tiers, Wrecked → Kludged → Repaired. *"cannot be removed"*. These are **repair**
   wrecks, not **strip** wrecks, and are a separate grammar. `WRECKED_DISTILLATION_MODULE_1` adds a sibling.
-  ⇒ The scatter families here are **strip-only**. A scattered wreck never becomes a repairable machine
-  (§8 Q3 asks about the one exception).
+  ⇒ Ruled 2026-10-03 (§8): the named set-pieces (Weeping Stones condensers, the Ship in the Wall)
+  **and a rare few field wrecks** are repairable through the Wrecked Machines tiers. Every other
+  scattered wreck is strip-only. §3d says how a field list carries the repairable few.
 - **AssailantSalvage** (`src/RimMandrake/AssailantSalvage/`, `mandrake.rut.assailantsalvage`): 22 owned
   `RUT_` frozen-ancient-ship props (airlocks, busted turrets, terminals, cryptopod), *"not yet wired into
   any map generation"*. This is a ready-made **interior** family for a hulk prefab.
@@ -108,14 +111,14 @@ the doc records. Per CLAUDE.md, **no tile counts**: whether a biome is painted y
 | **Fever Wood** | "chitin and salvage", the two-front war's leavings (`the_fever_wood.md:168`, ruled) | none | an overgrown-war-wreck family |
 | **Rot** | the gut that eats wrecks and passes "Sheen-glazed salvage castings"; the old ship pinging inside (owner typed "AWESOME", `rot_bedazzle_review_2026-10-02.md:541`) | none | a digested-wreck family, plus the pinging ship (a set-piece, its own item) |
 | **The Forge** | forge-tech salvage in the towers (`the_forge.md:142`) | `RUT_FoundrySalvageCache` marker only (no loot, no art) | the cache's loot table (the same comp as §3) |
-| **Grey Deep** (sea) | "the jacketed salvage": wrecks chiselled free from crystal (`the_grey_deep.md:366,463`, ruled) | none | crystal-jacketed wreck family on the floor map (inside the dive generator, not a tag; see §1a's Grey precedent) |
+| **Grey Deep** (sea) | "the jacketed salvage": wrecks chiselled free from crystal (`the_grey_deep.md:366,463`, ruled) | none | crystal-jacketed wreck family on the floor map (inside the floor map generator, not a tag; see §1a's Grey precedent) |
 | **Twilight Deep** (sea) | "the wrecks of the impatient"; `RM_PickedWreck`, 1-2 per floor, hull-rib with a salvage-mark and **nothing inside** (`the_twilight_deep_content_2026-09-26.md:816-823`, proposed) | none | the picked-clean family (low yield by design) |
 | **Propane Lake** (sea) | sealed ancient cartridges, an unfinished pipeline junction (floor agenda `:219-221,389`, proposed) | none | pending its sitting |
 | **Nightside Ice** | failed Junker crystal expeditions; "a seam of wreckage" (`nightside_ice.md:135`, ruled; review option proposed) | none | an ice-locked expedition-wreck family |
-| **Weeping Stones** | ancient condenser arrays to salvage **or restore** (`weeping_stones.md:165,284`, ruled) | none | a restore-or-strip choice, which is WreckedMachines' grammar, not a strip family (§8 Q3) |
+| **Weeping Stones** | ancient condenser arrays to salvage **or restore** (`weeping_stones.md:165,284`, ruled) | none | a restore-or-strip choice, which is WreckedMachines' grammar, not a strip family (ruled repairable, §8) |
 | **Cauldron** | corroded ruins and small finds (a spent filter cartridge, a hauled-in tank); it **contrasts itself** with the dayside wrecks (`cauldron.md:227-230`) | none | small-finds scatter only, no hulls |
 | **Sump** | Junker stations (derricks, barrel yards) (`the_sump.md:151,161`) | dig-stratum table | none: the Junker stations are structures, not wrecks |
-| **Greentide, Pyrelands, Gelatinous Slime, Contagion, Lantern Deeps, Webwork, Terminator Sea, Leaning Scrub** | **nothing promised** (grep-only for Pyrelands and the Propane Lakes sheet). Lantern Deeps declined the Inherited Wreck rite (`lanterndeeps_bedazzle_review_2026-10-01.md:261`) | none | §8 Q1: does "everywhere" override a sheet that is silent, or one that said no? |
+| **Greentide, Pyrelands, Gelatinous Slime, Contagion, Lantern Deeps, Webwork, Terminator Sea, Leaning Scrub** | **nothing promised** (grep-only for Pyrelands and the Propane Lakes sheet). Lantern Deeps declined the Inherited Wreck **rite** (`lanterndeeps_bedazzle_review_2026-10-01.md:261`), which is a rite, not a scatter | none | density comes from the placement law (§3d), not from the sheet's silence |
 
 **Reading the table.** About 20 biomes promise wreckage and 3 have any scatter built: the Scald,
 plus the desert band via the scrapfields and the hulk. Most of the promises share one shape: a
@@ -192,9 +195,16 @@ carries; Odyssey/vanilla `CompProperties_Explosive` for a live tank. No new haza
 
 `RM_CompSalvageLoot` overrides `PostDestroy(DestroyMode mode, Map previousMap)` (verified to exist,
 §1d). It fires **only on `DestroyMode.Deconstruct`**, so smashing gives `killedLeavings`, and
-stripping properly gives the costList **plus** a roll. That makes deconstructing the skilled path,
-which a Jawa campaign wants. It reads the family's loot tier, shifts it by the weathering, and
-generates from a `ThingSetMakerDef` named `RM_SalvageLoot_<Tier>`:
+stripping properly gives the costList **plus** a roll. It reads the family's loot tier, shifts it by
+the weathering, and generates from a `ThingSetMakerDef` named `RM_SalvageLoot_<Tier>`.
+
+**Ruled 2026-10-03: the rare-part chance scales with the salvager's skill.** `PostDestroy` is not told
+who did the work, and vanilla deconstruction has no skill term at all: `GenLeaving`'s Deconstruct
+branch is `count × resourcesFractionWhenDeconstructed`, and `JobDriver_Deconstruct` only trains
+Construction (RimSage, read 2026-10-03). So a Harmony **prefix** on `JobDriver_Deconstruct.FinishedRemoving`
+stashes the pawn before `Destroy` runs and the comp reads it. The Ninefold mod already patches that
+method (`src/RimMandrake/Ninefold/Source/Patch_BuildingDeconstructed.cs`, a postfix), so the hook point is
+proven. How far skill reaches beyond the rare roll is the scavenging pitch's question, not this one.
 
 | tier | typical roll (INVENTED, for tuning) | rare roll |
 |---|---|---|
@@ -238,15 +248,73 @@ The same comp closes the Forge's `RUT_FoundrySalvageCache` "loot owed" gap and t
 
 There is one GenStepDef per biome, not per silhouette, so the Scald's three collapse to one.
 Registration stays the proven way: a patch adds it to the biome's `extraGenSteps`. Sea floors are
-named in their dive generator's `<genSteps>` (the Grey precedent: the floor terrain tag is shared by
+named in their floor map generator's `<genSteps>` (the Grey precedent: the floor terrain tag is shared by
 all four seas, so a tag would leak). ⚠️ Element-name-as-key lists (the `<RM_ScaldWreckHull>1</…>`
 form) need a custom loader, like `BiomeAnimalRecord`. Use the same `LoadDataFromXmlCustom` pattern
 and **never** a `<li>` form, so that a roster counter does not read zero (see CLAUDE.md, `<wildAnimals>`).
 
-**Density note.** The owner said *"lots of this all over the place"*. The per-biome `countPer10k`
-is the single knob for that, and the Mod Settings expose a global multiplier (§6). The Scald's
-~1.5 total per 10k cells is "a few in the shallows". A land biome might sit at 2-4 per 10k
-before clusters. These numbers are INVENTED and tuned live.
+### 3d-i. The placement law (owner, 2026-10-03)
+
+The owner's ruling, by question card with typed answers: crashed ships are **rare**, and anything that
+falls where people live or travel is **cleaned off the surface within a few decades**. So a wreck
+**persists only where a biome is hostile or inaccessible and far from normal travel**, which is
+*"perfect for the Utinni to visit"*. Every **sea floor** is high density, because *"almost no one can or
+would bother to go there"*. The **Contagion** has wrecks, but it erodes them and little remains. The
+**deep nightside** is *riddled* with them.
+
+Density therefore follows **one axis, how long a wreck survives there**, and that is set by two things:
+how hard the place is to reach, and whether the place itself eats metal. It never follows how many
+ships fell, since falls are rare everywhere. One consequence follows directly: **the remoter the
+wreck, the less it has been picked over**, so persistence and yield rise together (the nightside cold
+also stops corrosion, the premise of the superseded `wreck_fields.md` sheet).
+
+| class | why wrecks last there | count per 10k cells (INVENTED, tuned live) | yield / loot shift | repairable few (§8 ruling 2) |
+|---|---|---|---|---|
+| **Riddled** | deep nightside: nobody goes, the cold stops corrosion | 6-10, cluster chance 0.5 | ×1.0, loot +1 tier | yes, highest weight |
+| **High** | sea floors: only a gravship gets down | 4-6, cluster chance 0.3 | ×1.0, +1 tier (except where a sheet rules otherwise) | yes |
+| **Moderate** | hostile land: lethal terrain, heat, radiation, rot; few visitors | 1.5-3 | per weathering row (§3b) | rare |
+| **Low** | hostile but crossed, or the land buries and reveals | 0.3-0.8 | per weathering row | no |
+| **Eroded** | the Contagion: present, but the biome eats them | 1-2 fragments | ×0.2, Scrap tier only, no rare roll | no |
+| **Cleaned** | inhabited or travelled: cleared within decades | **0 scatter**. A fresh crash arrives as an event (§3e), never as map-gen | n/a | no |
+| **Fresh** | the Fall Line: the falling outruns the cleaning | delivered by §3e, renewable | +1 tier | 1 in 10 live/powered |
+
+**Per-biome assignment.** This is BENCH's reading of each biome's sheet against the law; a biome's own
+sitting may move its row (the owner's "biome by biome" rule), and the table is the paint-list's source
+until then.
+
+| biome | class | reason in one line |
+|---|---|---|
+| **Nightside Ice** | Riddled | deep nightside; the sheet already has failed Junker expeditions |
+| **Lantern Deeps** | Riddled | deep nightside; its sheet declined a wreck *rite*, which is not a scatter |
+| **Cauldron** | Riddled at its nightward edge, else Moderate | its sheet contrasts its finds with the dayside; the sitting fixes where the line falls |
+| **Grey Deep, Twilight Deep, Propane Lake, Terminator Sea, Scald** (floor maps) | High | every sea floor, by ruling. Twilight Deep's `RM_PickedWreck` stays low-yield: that is its own sheet's law, not a density |
+| **The Scald** (shallows) | Moderate | the shallows burn every trip |
+| **Warscar** | Moderate | a live war zone few cross; but "plundered to skeletons", so yield stays ×0.35 |
+| **Wasteland** | Moderate | radiation keeps people out |
+| **Blue Desert** | Moderate | ice-locked and remote; the ablation incidents stay the main route |
+| **Abyss** | Moderate | a chasm; the Ship in the Wall is its own item |
+| **Rot** | Moderate | the gut eats people too; it digests wrecks slowly (weathering ×0.6) |
+| **Webwork, Pyrelands, Gelatinous Slime, Fever Wood, Miasma, Weeping Stones** | Moderate | each is lethal or hostile to cross; Weeping Stones' condensers are repair set-pieces on top |
+| **Dune Sea / Stillsand** | Low | remote, but the sand buries and reveals; finds are sealed and intact |
+| **Deep Desert** | Low | its sheet already rules wrecks rare |
+| **Cracked Lands / Flooded Canyon** | Low | floods expose and the mud reclaims (built) |
+| **The Contagion** | Eroded | by ruling |
+| **Desert, Arid Shrubland, Greentide, Leaning Scrub, Long Shade** | Cleaned | travelled land. The Jawa scrapfields' slag is consistent: slag is what cleaning leaves. Long Shade's crawler-road wrecks are fresh casualties of the road, not a field |
+| **Rust Cathedral, The Forge, Sump** | Cleaned | inhabited; the Cathedral's walls are sacred salvage (a flag, not a scatter), the Forge cache is one placed thing |
+| **Fall Line** | Fresh | delivered and renewed (§3e) |
+
+⚠️ **One existing build disagrees with the law**: the Jawa ground hulk is stamped once on **every**
+desert map (`JawaGroundHulk.xml`, count 1), which is travelled land. It is a card question in the
+scavenging pitch, not a change made here.
+
+**Implementation.** Each class is a row of a small `RM_WreckDensityClassDef` (count range, cluster
+chance, loot shift, repairable weight) and a biome's GenStepDef names its class instead of restating
+numbers, so re-tuning "High" re-tunes every sea. The Mod Settings density multiplier (§6) scales all
+classes. **The repairable few:** a list may name a Wrecked Machines Wrecked-tier def (for example
+`RM_WM_AutomatedSmelter` Wrecked) at the class's repairable weight. It is placed like any wreck and then
+climbs the existing Kludged and Repaired tiers, so no new repair code exists in this framework. That
+depends on the resurrection design's ruling that sacred scrap is a clan policy, not an undeconstructible
+def (`design/Jawa/wrecked_machines_resurrection.md`, change 4).
 
 ### 3e. Fresh wrecks (the Fall Line's law, and any arrival)
 
@@ -270,9 +338,9 @@ landspeeder, skiff, crawler) go in `RSW_`; campaign-specific registers go in `RU
 |---|---|---|---|---|---|
 | **The Scald** (worked example) | Hull, Tank, Frame (3, built) | **Cooked**: ×0.75, slag | Hull/Tank tiers, no sealed | the shallows burn per trip (terrain, unchanged) | migrate `RUT_ScaldWreck*` → `RM_ScaldWreck*` onto the family parents; art and texPaths unchanged |
 | **Fall Line** | Hull, Speeder, Carapace, TIE-panel (`RSW_`) | **Fresh**: ×1.0, +1 tier, live power on 1 in 10 | Hull/Carapace; Imperial parts | vermin nests; Imperial attention if hauled in bulk (Phase 3 idea) | delivered by §3e, **not** scattered; "Nothing here is old" |
-| **Desert / Deep Desert** | Speeder, Hull (rare in the Deep Desert) | **Sand-scoured**: ×0.6, sand leavings | Scrap/Hull | wreck shade pocket (Deep Desert) | the hulk stays as the one landmark |
+| **Deep Desert** (Low; Desert is Cleaned, §3d-i) | Speeder, Hull, rare | **Sand-scoured**: ×0.6, sand leavings | Scrap/Hull | wreck shade pocket | Desert keeps only the scrapfields slag; the hulk is a card question |
 | **Dune Sea / Stillsand** | Hull, Tank, Tread | **Sealed**: ×1.0, +1 tier | Sealed (intact parts, chemfuel) | half-buried; a storm-reveal variant later | "uncorroded" is the sheet's own law |
-| **Long Shade** | Speeder, Skiff (`RSW_`), Cart (`RM_`, built), Tread (built) | **Sun-baked**: ×0.8 | Hull/Speeder; richest on the map | none | the road is the placement; feed the existing `RM_GenStep_CrawlerRoad` the family list |
+| **Long Shade** (Cleaned, §3d-i) | road casualties only: Skiff (`RSW_`), Cart (`RM_`, built), Tread (built) | **Sun-baked**: ×0.8 | Hull/Speeder | none | the crawler road is the placement (`RM_GenStep_CrawlerRoad`); no field scatter beside it |
 | **Warscar** | Hull, Frame, FailedChassis, Shield-gen | **Stripped**: ×0.35, −1 tier ("plundered to skeletons") | Scrap; the live shield generator is the one prize | carries `RM_WreckSurface` so `RM_WreckLichen` grows; chatrak food web | unblocks the ruled web |
 | **Wasteland** | Hull, Warcasket sarcophagus (salvage-within-salvage) | **Irradiated**: ×0.9, a rad hazard via existing Wasteland hediffs | Hull; sarcophagus = Carapace +1 | radiation on deconstruct | |
 | **Blue Desert** | Hull, Frame | **Ice-locked**: ×0.9, must mine free first (a `RockBase` jacket) | Hull, freeze-dried finds | none new | ablation incidents stay the main route |
@@ -284,11 +352,13 @@ landspeeder, skiff, crawler) go in `RSW_`; campaign-specific registers go in `RU
 | **Abyss** | Wind-farm vane, Pylon | **Storm-torn**: ×0.8 | Scrap/Tank (gravlite) | none | Ship in the Wall is `ABYSS_LIGHTFALL_BROOD_WRECK_1` |
 | **Rust Cathedral** | none scattered; the walls are the salvage | **Sacred** (a flag, no scatter) | none | stripping costs faction goodwill | the Mending Weld rite reads this flag |
 | **The Forge** | Salvage cache (built shell) | **Forge-warm**: ×1.0 | `RUT_FoundrySalvage` extra table | none | gets the §3c comp and art |
-| **Grey Deep** (floor) | Hull, Spine | **Crystal-jacketed**: mine the jacket first | Hull + crystal shards | none | in the dive generator |
+| **Grey Deep** (floor) | Hull, Spine | **Crystal-jacketed**: mine the jacket first | Hull + crystal shards | none | in the floor map generator |
 | **Twilight Deep** (floor) | Picked hull-rib (`RM_PickedWreck`, 1-2) | **Picked**: ×0.2, no loot roll | none ("nothing inside") | a Compact salvage-mark | yield is low on purpose |
 | **Scald floor** | Hull (the surface S6 set, deeper) | **Cooked** | Hull | heat | per its floor sitting |
-| **Propane Lake**, **Weeping Stones**, **Cauldron** | pending their sittings | | | | Weeping Stones is restore-or-strip (Q3); Cauldron is small finds only |
-| **Greentide, Pyrelands, Slime, Contagion, Lantern Deeps, Webwork, Leaning Scrub, Terminator Sea** | none until Q1 is answered | | | | |
+| **Propane Lake** (floor, High), **Weeping Stones** (Moderate), **Cauldron** (Riddled/Moderate) | families pending their sittings | | | | Weeping Stones' condensers are repair set-pieces (§8 ruling 2); Cauldron is small finds only |
+| **Nightside Ice, Lantern Deeps** (Riddled) | Expedition rig, Tank, Hull | **Frozen**: ×1.0, +1 tier, no corrosion | Hull/Tank, Junker tools | none | the densest fields on the planet |
+| **Contagion** (Eroded) | fragments of any family | **Eroded**: ×0.2, Scrap only | Scrap | none | little remains, by ruling |
+| **Pyrelands, Slime, Webwork, Terminator Sea floor** (Moderate / High) | pending their sittings | | | | **Greentide, Leaning Scrub** are Cleaned: no scatter |
 
 So about 8 weathering rows, about 7 families, and 15-18 biome scatter lists cover every promise.
 Art: about 2 variants per biome × family pair, through the artpipe. **Search artpipe state first**
@@ -338,14 +408,14 @@ step says so. Effort is rough.
 
 | # | step | effort | proof |
 |---|---|---|---|
-| 0 | **Owner sitting**: §8 questions, plus `FASCINATING_WORLD_JUNK_1` Phase 3 cards for the family list. Blocks the names, not the engine | sitting | ruled roster as data (`junk_roster.json`, the target Phase 3 already names) |
+| 0 | **Owner sitting**: the scavenging-system cards (`Transient/jawa_scavenge_cards_2026-10-03.json`), plus `FASCINATING_WORLD_JUNK_1` Phase 3 cards for the family list. Blocks the names, not the engine | sitting | ruled roster as data (`junk_roster.json`, the target Phase 3 already names) |
 | 1 | **Engine**: `Wreckage` compose entry; `RM_WreckWeatheringDef` + extension + resolve pass; `RM_CompSalvageLoot` (Deconstruct-only); `RM_GenStep_WreckField` with the custom-loader list; settings page; `RM_MechanicGates` keys; 6 family parents; 8 weathering rows; 5 loot tiers | M (about 400 lines of C#, 4 XML files) | selftest under `--mock`; quicktest: spawn one family wreck, deconstruct → costList×factor + a loot roll; smash → slag only |
 | 2 | **Migrate the Scald** onto the framework: 3 defs reparented and renamed `RM_`; 3 GenStepDefs → 1; the S6 bool → per-biome key with alias. Art untouched | S | quicktest Scald map: wrecks only on `RUT_ScaldShallow`; toggle off → new map has none |
-| 3 | **Desert band** (Desert, Deep Desert, Dune Sea/Stillsand, Long Shade): 4 lists; Long Shade's road GenStep reads the family list | S-M | one quicktest per biome; `SALVAGE_PALETTE` regen shows every new def in USABLE-YIELDS |
+| 3 | **Riddled and High first** (the law's densest places): Nightside Ice, Lantern Deeps, the Cauldron's nightward edge, and the sea floors (Grey, Twilight, Propane Lake, Terminator, Scald floor) named in their floor map generators; plus `RM_WreckDensityClassDef` and the repairable-few list entry | M | one quicktest per biome; a floor map holds wrecks at the High count; `SALVAGE_PALETTE` regen shows every new def in USABLE-YIELDS |
 | 4 | **Warscar + Wasteland** (unblocks the Warscar lichen web) | S | lichen spawns adjacent to a wreck (state read) |
 | 5 | **§3e wreck fall**: the incident + Fall Line list; refactor the Cracked Lands recede to read a list; Miasma flotsam trigger | M | debug-fire the incident → 1-4 wrecks land in the area; recede drops from the list |
-| 6 | **Remaining land biomes** (Blue Desert, Nightside, Miasma, Cracked Lands, Fever Wood, Rot, Abyss, Forge cache loot) | M, 1 sitting each | per-biome quicktest |
-| 7 | **Sea floors** (Grey, Twilight, Scald floor) via the dive generators | S | dive-map quicktest |
+| 6 | **Moderate, Low and Eroded land** (Blue Desert, Miasma, Cracked Lands, Fever Wood, Rot, Abyss, Webwork, Pyrelands, Slime, Weeping Stones, Dune Sea/Stillsand, Deep Desert, Contagion; Forge cache loot) | M, 1 sitting each | per-biome quicktest |
+| 7 | **Cleaned biomes**: confirm zero scatter; Long Shade's crawler road reads the family list | S | quicktest Desert map: no field wrecks, slag only |
 | 8 | **Art waves** through the artpipe: about 2 variants per new biome × family pair. Search first | daemon | no magenta (`prove-art-missing-first`) |
 | 9 | **RSW/RUT layers**: canon hulls, Star Wars loot rows, Fall Line Imperial register | S | full-list load, zero new Config errors |
 
@@ -385,39 +455,18 @@ The walk `design/validation_walks/RimMandrake/Wreckage.md`, `## must be true`:
 Each check must be shown able to fail: run check 2 against a deliberately mis-tagged GenStep, and
 check 3 with the loot toggle off.
 
-## 8. Questions for the owner
+## 8. Owner rulings (2026-10-03, question card, answers typed)
 
-**Q1. "Everywhere": does every biome get wrecks, even ones whose sheet is silent or said no?**
-Eight biomes promise none (Greentide, Pyrelands, Slime, Contagion, Lantern Deeps, Webwork, Leaning
-Scrub, Terminator Sea), and Lantern Deeps turned down the wreck rite.
-- **A. Only where a sheet promises it.** About 20 biomes. This respects the sittings, and some
-  places stay clean, so wrecks keep meaning "this region had a fall".
-- **B. Everywhere, with a light default in silent biomes.** One or two small wrecks. This matches
-  "all over the place", but blurs the Fall Line's identity as the wreck land.
-- **C. Decide at each biome's own sitting.** This is slowest, but it is consistent with "biome by
-  biome, not sweeping changes".
-
-**Q2. What happens to the vanilla tanks, trucks and cars that spawn on every map today?**
-- **A. Switch them off and let these wreck fields replace them.** This gives one coherent look, but
-  it removes vanilla junk from non-Ash'karr maps too, unless that is behind a setting.
-- **B. Reskin them as Star Wars junk** (`FASCINATING_WORLD_JUNK_1` Phase 4). They stay everywhere,
-  and the wreck fields are added on top. This means more junk overall and more art.
-- **C. Leave them for now.** The wreck fields come first, and the vanilla junk is decided at the
-  Phase 3 roster sitting.
-
-**Q3. Can a scattered wreck ever be repaired instead of stripped?**
-Today they are separate: field wrecks are stripped for parts, and the Wrecked Machines are repaired
-in tiers. Weeping Stones' condensers ("salvage or restore") and the Fall Line's live, powered wrecks
-blur that line.
-- **A. Never.** Field wrecks are always strip-only, which is simple and clear.
-- **B. A rare few ("live" wrecks)** can be repaired through the Wrecked Machines tiers. This is a
-  great find, but it adds a second mechanism to the field.
-- **C. Only named set-pieces** (Weeping Stones condensers, the Ship in the Wall). The field stays
-  strip-only.
-
-**Q4. Should breaking a wreck apart give the same as taking it apart carefully?**
-- **A. No: careful deconstruction adds a loot roll, and smashing gives slag.** (This is the design
-  above.) It rewards the skilled path, which is the Jawa fantasy.
-- **B. Both give the same.** This is simpler, and close to vanilla ship chunks.
-- **C. Careful work gives loot, and the chance of rare parts scales with the colonist's skill.** This
-  goes deepest, but it is one more number to balance.
+1. **Placement.** Wrecks are rare and cleaned off within decades, so they persist only where a biome is
+   hostile or inaccessible and far from normal travel. All sea floors high; the Contagion eroded; the
+   deep nightside riddled. Realised as the law and table in §3d-i.
+2. **Repair.** The named set-pieces (Weeping Stones condensers, the Ship in the Wall) **and** a rare few
+   field wrecks are repairable through the Wrecked Machines tiers: *"it's a scavenger game, so this
+   really should be honored"*. Realised as the repairable-few list entry in §3d-i.
+3. **Vanilla junk.** Reskin the vanilla tanks, trucks and cars as Star-Wars-adjacent junk, with lots of
+   variety, right away. Handled by a separate art pass, not by this design.
+4. **Smash versus care.** Careful salvage gives loot, and the rare-part chance scales with the
+   colonist's skill (§3c). The owner also asked whether this can grow into a richer system: *"Jawa
+   SCAVENGE. It's what they do, and they're good at it."* That is pitched with options in
+   `design/RimMandrake/jawa_scavenge_system_pitch_2026-10-03.md`, and its questions are cards in
+   `Transient/jawa_scavenge_cards_2026-10-03.json`.

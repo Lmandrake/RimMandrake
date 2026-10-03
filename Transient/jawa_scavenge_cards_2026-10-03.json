@@ -1,0 +1,97 @@
+{
+  "cards": [
+    {
+      "questions": [
+        {
+          "question": "How big should the Jawa scavenging system be at its core?",
+          "header": "Core size",
+          "multiSelect": false,
+          "options": [
+            {"label": "Skill only", "description": "Buys: exactly your ruling, a better Jawa brings home more rare parts. Costs: about a day of work, but the player never makes a choice; it happens out of sight."},
+            {"label": "Strip, then sort at home (Recommended)", "description": "Why: smallest version with a real reveal. Buys: wrecks give metal plus unsorted crates; your best appraiser sorts them at the scrap shrine and finds the treasure. Costs: about two weeks, a bench and crate art, and more hauling."},
+            {"label": "Full scavenging process", "description": "Buys: survey a wreck first, choose how to cut it apart, then sort at home; the richest version. Costs: four weeks or more, lots of writing for wreck stories, and more steps per wreck that players must learn."},
+            {"label": "Sort only, no field changes", "description": "Buys: the reveal moment at home without touching how wrecks are stripped. Costs: about a week, but skill on site stops mattering, which is half of your ruling."}
+          ]
+        },
+        {
+          "question": "Which skill should decide how well a Jawa strips a wreck on site?",
+          "header": "Strip skill",
+          "multiSelect": false,
+          "options": [
+            {"label": "Construction (Recommended)", "description": "Why: the game already trains Construction when taking things apart. Buys: no surprises for players, and Jawa already have a Construction gift. Costs: builders and scavengers are the same people."},
+            {"label": "Crafting", "description": "Buys: scavenging reads as fine handwork, and splits from building. Costs: goes against the game, which still trains Construction while stripping; feels odd."},
+            {"label": "Better of the two", "description": "Buys: any skilled Jawa is useful; forgiving. Costs: blurs who the clan's real scavenger is; less character."},
+            {"label": "A new salvaging skill", "description": "Buys: scavenging becomes a named skill on every pawn, the strongest statement of identity. Costs: a new skill touches every pawn, every mod's skill screens and balance; the most expensive and riskiest."}
+          ]
+        },
+        {
+          "question": "Should some salvaged parts come out unidentified until a Jawa appraises them?",
+          "header": "Appraisal",
+          "multiSelect": false,
+          "options": [
+            {"label": "Yes, rare finds only (Recommended)", "description": "Why: keeps the surprise special. Buys: a corroded part that a good appraiser reveals as a prize; an appraiser role. Costs: one extra job per rare find and a new item per size."},
+            {"label": "Yes, everything from a wreck", "description": "Buys: every haul is a mystery box. Costs: sorting becomes a chore, and players stop caring about the reveal."},
+            {"label": "No, parts arrive known", "description": "Buys: simplest, no extra job. Costs: no treasure-hunt moment; skill only changes how much you get."}
+          ]
+        },
+        {
+          "question": "Besides raw skill, how should the clan get better at scavenging?",
+          "header": "Get better",
+          "multiSelect": false,
+          "options": [
+            {"label": "Tools and droid help", "description": "Buys: progress through research: a hydrospanner, a cutting torch, a salvage droid module for lethal maps. Costs: art for each tool and a droid module; a week or so."},
+            {"label": "Jawa gene and traits", "description": "Buys: makes the Jawa description's 'instinct for salvage' true, cheap XML, colonists known as the appraiser. Costs: changes every Jawa including traders; no research path."},
+            {"label": "Both, on one shared number (Recommended)", "description": "Why: one stat keeps bonuses from stacking into nonsense. Buys: the gene and the first tools both feed one salvage rating. Costs: the most balancing, and the tool art."},
+            {"label": "Skill only, nothing more", "description": "Buys: nothing to build or balance. Costs: no progression beyond skill, and the Jawa identity stays words, not numbers."}
+          ]
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "question": "Should a Jawa be able to choose how to cut a wreck apart?",
+          "header": "Cut plan",
+          "multiSelect": false,
+          "options": [
+            {"label": "Yes: quick, careful or gut one part", "description": "Buys: a real decision on every wreck, the closest thing to a scavenging minigame; on a lethal map time on site matters. Costs: two weeks, balance work, and more clicks per wreck."},
+            {"label": "Only 'gut one part'", "description": "Buys: aim at the drive or power cell and leave the rest; one clear choice. Costs: still a new button and job; less depth than three modes."},
+            {"label": "Not now, after the core ships (Recommended)", "description": "Why: worth it once hauls are worth protecting. Buys: the core ships sooner. Costs: no on-site choice until later."}
+          ]
+        },
+        {
+          "question": "Should surveying a wreck before stripping it reveal its story and hazards?",
+          "header": "Read wreck",
+          "multiSelect": false,
+          "options": [
+            {"label": "Hazards and loot tier only", "description": "Buys: pick which wreck is worth the trip on a lethal map; warns of nests and live charges. Costs: about a week; a short extra job, optional."},
+            {"label": "Also lore and leads", "description": "Buys: wrecks with names and manifests that point to cargo still out there, feeding quests and the antiquities tree. Costs: lots of writing, and each lead needs a quest to point at."},
+            {"label": "Later, once leads have quests (Recommended)", "description": "Why: a lead with nowhere to go is a tooltip. Buys: no writing debt now. Costs: wrecks stay resource piles for a while."},
+            {"label": "No survey step", "description": "Buys: nothing to build, no extra step. Costs: wrecks never carry stories."}
+          ]
+        },
+        {
+          "question": "The clan's crashed-ship landmark sits on every desert map, but the new wreck law calls deserts travelled land; what should happen to it?",
+          "header": "Desert hulk",
+          "multiSelect": false,
+          "options": [
+            {"label": "Make it rare (Recommended)", "description": "Why: matches your law without losing the landmark. Buys: finding one becomes an event. Costs: most desert maps lose their one big wreck."},
+            {"label": "Keep it on every desert map", "description": "Buys: the clan's home ground keeps its familiar landmark. Costs: breaks the law that travelled land is cleaned within decades."},
+            {"label": "Move it to the deep desert only", "description": "Buys: the wreck sits where few go, which the law likes. Costs: the ordinary desert has no big wreck at all."},
+            {"label": "Remove it", "description": "Buys: the cleanest reading of the law. Costs: throws away built content and the start area's one landmark."}
+          ]
+        },
+        {
+          "question": "Should a part's revealed grade change what traders pay, and may a Jawa bluff about it?",
+          "header": "Selling",
+          "multiSelect": false,
+          "options": [
+            {"label": "Grade sets price, no bluffing", "description": "Buys: good appraisal pays at every trader at once, simple. Costs: a few days; no trickster play."},
+            {"label": "Grade sets price, bluff in haggling (Recommended)", "description": "Why: the Jawa trader at full strength. Buys: pass junk off as good during the haggle, with a reputation cost if caught. Costs: waits on the haggle screen, which is planned but not built."},
+            {"label": "Grade is flavour only", "description": "Buys: nothing to balance in trade. Costs: appraisal pays only through use, not sale."}
+          ]
+        }
+      ]
+    }
+  ]
+}
