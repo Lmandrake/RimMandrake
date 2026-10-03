@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  STILLSAND_SOLAR_STILL_1: the still's water and its brine feedstock.
+  Output choice: the still makes Dubs Bad Hygiene's DBH_WaterBottle when that def is live, else
+  RM_StilledWater (RM_SolarStill.cs RM_CompSolarStill.WaterDef). RM_StilledWater carries the
+  water-volume comp so the Return ritual can pour it onto sand. FlowWorks liquid stock is not used:
+  a still is a hand-fed item machine, not a plumbing node.
+  Art: no art job exists; both reuse the sun-glass icon tinted (flat stand-ins).
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_StilledWater</defName>
+    <label>stilled water</label>
+    <description>A stoppered flask of water, clean and faintly flat. One flask is one litre. Where Dubs Bad Hygiene is present, a still fills ordinary water bottles instead.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SunGlass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(190,215,225)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>2</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <tradeability>All</tradeability>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.Stillsand.RM_CompProperties_WaterVolume">
+        <litres>1</litres>
+        <drawnAs>still flask</drawnAs>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_Brine</defName>
+    <label>brine</label>
+    <description>Salt-bitter water dipped from a cave seep. It cannot be drunk, but a solar still boils the water out of it and leaves the salt behind.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/RM_SunGlass</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(150,170,150)</color>
+    </graphicData>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <MarketValue>0.5</MarketValue>
+      <Mass>1</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+</Defs>

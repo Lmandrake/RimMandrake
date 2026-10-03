@@ -27,6 +27,9 @@ namespace RimMandrake.Stillsand
         public static float sunWorkSpeedMultiplier = 1f;
         public static bool sieveEnabled = true;
         public static float sieveYieldMultiplier = 1f;
+        public static bool solarStillEnabled = true;
+        public static float stillRateMultiplier = 1f;
+        public static bool wringingStillEnabled = true;
 
         public static bool TableEnabled(RM_SunTableKind kind)
         {
@@ -35,6 +38,7 @@ namespace RimMandrake.Stillsand
                 case RM_SunTableKind.furnace: return sunFurnaceEnabled;
                 case RM_SunTableKind.lensBench: return lensBenchEnabled;
                 case RM_SunTableKind.oven: return solarOvenEnabled;
+                case RM_SunTableKind.still: return solarStillEnabled;
                 default: return true;
             }
         }
@@ -48,6 +52,9 @@ namespace RimMandrake.Stillsand
             Scribe_Values.Look(ref sunWorkSpeedMultiplier, "sunWorkSpeedMultiplier", 1f);
             Scribe_Values.Look(ref sieveEnabled, "sieveEnabled", true);
             Scribe_Values.Look(ref sieveYieldMultiplier, "sieveYieldMultiplier", 1f);
+            Scribe_Values.Look(ref solarStillEnabled, "solarStillEnabled", true);
+            Scribe_Values.Look(ref stillRateMultiplier, "stillRateMultiplier", 1f);
+            Scribe_Values.Look(ref wringingStillEnabled, "wringingStillEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -70,6 +77,13 @@ namespace RimMandrake.Stillsand
                 "Pawns carrying a sand sieve sift glass sand in the home area into fine sand, unordered. Off: nobody sifts and no pawn fetches a sieve.");
             list.Label("Sieve yield: x" + sieveYieldMultiplier.ToString("0.00") + " fine sand");
             sieveYieldMultiplier = list.Slider(sieveYieldMultiplier, 0.25f, 3f);
+            list.GapLine();
+            list.CheckboxLabeled("Solar still", ref solarStillEnabled,
+                "A glazed lens condenser distils water from brine, eggs and raw meat in open sun. Off: stills stand idle.");
+            list.CheckboxLabeled("Wringing still", ref wringingStillEnabled,
+                "The wringing still also distils corpses, and onlookers dislike it. Off: it stands idle.");
+            list.Label("Still rate: x" + stillRateMultiplier.ToString("0.00"));
+            stillRateMultiplier = list.Slider(stillRateMultiplier, 0.25f, 3f);
             list.GapLine();
             list.Label("Glass sand from shovelled drifts is set in \"Moving Dunes\". Fulgurites on sand "
                        + "follow the Pyrelands' fulgurite toggle.");
