@@ -305,8 +305,8 @@ def settings_checks():
     defs = shipped_defs()
     if len(defs) < 100:
         bad.append("sanity probe: only %d shipped defs parsed (expected 150+)" % len(defs))
-    if len(terrain_defs()) != 15:
-        bad.append("sanity probe: %d terrain defs parsed, expected 15 (Scald 7, Grey Sea 5, Chill 2, Crater 1)" % len(terrain_defs()))
+    if len(terrain_defs()) != 17:
+        bad.append("sanity probe: %d terrain defs parsed, expected 17 (Scald 7, Grey Sea 5, Chill 2, Crater 1, Bank silt 2)" % len(terrain_defs()))
     bf = biome_facts()
     for b in BIOMES:
         if b not in bf:
@@ -550,7 +550,7 @@ if Suite is not None:
 
     @suite.chain("terrains_paint")
     def terrains_paint(t):
-        """Each of the 15 biome terrains can be painted on a cell and read back; a vanilla terrain is the control."""
+        """Each of the 17 biome terrains can be painted on a cell and read back; a vanilla terrain is the control."""
         names = terrain_defs()
         P = {}
         with _comp(t, "site_ready_terrain_row", beyond_toggle=True):
