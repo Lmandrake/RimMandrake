@@ -23,12 +23,13 @@ sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
 from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("UnfinishedLine")
-suite.toggles = ["chainEnabled"]
+suite.toggles = ["chainEnabled", "brokeredTruceEnabled"]
 
 PROOF = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineProof"
 SETTINGS_TYPE = "RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings"
 PARENT = "RUT_UnfinishedLine"
 BEAT1 = "RUT_UnfinishedLine_1_Count"
+BEAT2 = "RUT_UnfinishedLine_2_Envoy"
 NEEDLES = ("mandrake.rut.unfinishedline", "UnfinishedLine", "RUT_LineCount", "QuestPart_RUT_SequentialSubquests")
 
 
@@ -54,7 +55,7 @@ def load_clean(t):
 @suite.chain("defs")
 def defs(t):
     with t.component("all_defs_resolve", beyond_toggle=True):
-        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "IncidentDef/RUT_UnfinishedLine_Offer",
+        want = ["QuestScriptDef/%s" % PARENT, "QuestScriptDef/%s" % BEAT1, "QuestScriptDef/%s" % BEAT2, "IncidentDef/RUT_UnfinishedLine_Offer",
                 "FactionDef/RUT_Jawa_FreeDroidEnclaves", "FactionDef/RUT_Jawa_GeonosianFoundryHive"]
         r = t.bridge_call("jawa/get_defs", defs=";".join(want), fields="defName")
         if t._guard():
@@ -96,6 +97,31 @@ def chain(t):
             raise ExpectationFailed("a second beat was offered while the first was pending: %s" % text)
 
 
+@suite.chain("truce")
+def truce(t):
+    """UNFINISHED_LINE_ENVOY_BEAT_1 (owner Q2 'both'): the brokered truce floors the Hive at Neutral. Not proven
+    here: the truce starting on beat-2 acceptance and breaking (Hive hostile, chain failed) when an envoy dies --
+    first poke: accept The Envoy via ProofNextBeat after a forced Count success, kill an overseer, read ProofChain."""
+    with t.component("truce_holds_hive_neutral", toggle="brokeredTruceEnabled"):
+        text = _proof(t, "ProofTruce", "true")
+        try:
+            gw = int(text.split("hive goodwill ")[1].split(" ")[0])
+        except (IndexError, ValueError):
+            gw = None
+        if t._guard() and not (text.startswith("TRUCE active") and gw is not None and gw >= 0):
+            raise ExpectationFailed("the truce did not hold the Hive at goodwill >= 0: %s" % text)
+    with t.component("truce_off_does_nothing", toggle="brokeredTruceEnabled"):
+        _proof(t, "ProofTruce", "false")
+        t.set_setting(SETTINGS_TYPE, {"brokeredTruceEnabled": False})
+        try:
+            text = _proof(t, "ProofTruce", "true")
+        finally:
+            t.set_setting(SETTINGS_TYPE, {"brokeredTruceEnabled": True})
+            _proof(t, "ProofTruce", "false")
+        if t._guard() and not text.startswith("TRUCE off"):
+            raise ExpectationFailed("brokeredTruceEnabled OFF but a truce started: %s" % text)
+
+
 def static_checks():
     """Offline, no game. Returns failure strings; empty means pass."""
     bad = []
@@ -123,6 +149,15 @@ def static_checks():
         gens = [n for n in beat1.iter("li") if n.get("Class") == "QuestNode_RandomNode"]
         if len(gens) != 3:
             bad.append("The Count brings three droids; parsed %d droid generators" % len(gens))
+    beat2 = quests.get(BEAT2)
+    if beat2 is None or BEAT2 not in beats:
+        bad.append("%s missing or not on the spine" % BEAT2)
+    else:
+        truces = [n for n in beat2.iter("li") if (n.get("Class") or "").endswith("QuestNode_RUT_Truce")]
+        if not any(n.findtext("breakIt") != "true" for n in truces):
+            bad.append("The Envoy must start the truce on acceptance (QuestNode_RUT_Truce with no breakIt)")
+        if sum(1 for n in truces if n.findtext("breakIt") == "true") < 2:
+            bad.append("The Envoy must break the truce on both envoys.Destroyed and envoys.Arrested")
     inc = ET.parse(os.path.join(HERE, "Defs", "IncidentDefs", "RUT_UnfinishedLine_Offer.xml")).getroot()
     incs = [e for e in inc if e.tag == "IncidentDef"]
     if not incs or incs[0].findtext("questScriptDef") != PARENT:

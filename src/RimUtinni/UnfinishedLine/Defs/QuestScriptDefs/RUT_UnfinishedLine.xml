@@ -66,6 +66,7 @@
         <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_UnfinishedLineSpine">
           <beats>
             <li>RUT_UnfinishedLine_1_Count</li>
+            <li>RUT_UnfinishedLine_2_Envoy</li>
           </beats>
           <totalBeats>5</totalBeats>
           <outSignalComplete>ChainComplete</outSignalComplete>
@@ -382,6 +383,239 @@
 
         <li Class="QuestNode_End">
           <inSignal>lodgers.LeftMap</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>enclaveFaction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+  <!--
+    BEAT 2 — "The Envoy" (design §2.2), UNFINISHED_LINE_ENVOY_BEAT_1. The site choice that closes this
+    beat in the design is split out to UNFINISHED_LINE_SITE_CHOICE_1 (blocked on BENCH: Q1 was ruled
+    A, no player-owned line, which leaves the design's site B "your colony" unexplained).
+
+    SPEC: ask - host the Hive's envoy (a foundry engineer and an aristocrat of the Hive, both its
+                 overseers) and their two Enclave escorts at your colony for 4 days.
+          reason - Meckgin: the Hive will not give its patterns to hands it has not seen work; the
+                 Continuity Protocol will not let organics hold a droid factory. The Jawa stand between.
+          choice - none forced in XML; how the colony behaves while watched is the test (the idle-watch
+                 tick of the design is not built).
+          failure - an envoy or escort killed or arrested: the brokered truce breaks, the Hive turns
+                 hostile, and the whole chain fails (not just the beat). Leaving early: no verdict.
+          reward - Hive +15, Enclaves +10; the engineer names the three pattern cores (beat 3).
+          deadline - the 4-day stay is the quest's own shown timer.
+    THE TRUCE (owner Q2 "both"): accepting this beat starts the brokered truce (QuestNode_RUT_Truce,
+    ambient signal = acceptance), held until the chain ends; per-beat Hive goodwill rides on top.
+    Pawn kinds: the Hive's own RUT_Jawa_Geonosian_Specialist ("hive overseer", UtinniPatches roster),
+    never the unique Archduke; escorts are Droidworks security kinds in the Enclaves' faction (the
+    Enclaves' own kinds still MayRequire Droid Depot).
+  -->
+  <QuestScriptDef>
+    <defName>RUT_UnfinishedLine_2_Envoy</defName>
+    <epicParent>RUT_UnfinishedLine</epicParent>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <expireDaysRange>5~8</expireDaysRange>
+    <defaultChallengeRating>1</defaultChallengeRating>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Envoy</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[enclaveFaction_name] have carried their word to [hiveFaction_name], and the Hive has answered the only way it knows: it will send someone to watch.
+
+Two of the Hive's overseers, a foundry engineer and one of the aristocrats who compete for the queen's notice, will stay at your colony for [stayTicks_duration] under the guard of two Enclave security droids. The Hive will not give its patterns to hands it has not seen work. The Enclaves will not let organics hold a droid factory alone. You are the hands in the middle.
+
+Accept, and the Enclaves broker a truce: the Hive will hold off its raids for as long as this work goes on. Harm a guest, and there is no truce and no line.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_GetWalkInSpot" />
+
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_GetLineFactions">
+          <storeEnclaveAs>enclaveFaction</storeEnclaveAs>
+          <storeHiveAs>hiveFaction</storeHiveAs>
+          <storeSettlementAs>settlement</storeSettlementAs>
+        </li>
+
+        <li Class="QuestNode_Set">
+          <name>stayTicks</name>
+          <value>240000</value>
+        </li>
+
+        <!-- The truce starts on acceptance (no inSignal = the ambient accept signal). -->
+        <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_Truce" />
+
+        <li Class="QuestNode_GeneratePawn">
+          <kindDef>RUT_Jawa_Geonosian_Specialist</kindDef>
+          <faction>$hiveFaction</faction>
+          <addToList>envoys</addToList>
+          <addToLists><li>hiveEnvoys</li></addToLists>
+          <ensureNonNumericName>true</ensureNonNumericName>
+        </li>
+        <li Class="QuestNode_GeneratePawn">
+          <kindDef>RUT_Jawa_Geonosian_Specialist</kindDef>
+          <faction>$hiveFaction</faction>
+          <addToList>envoys</addToList>
+          <addToLists><li>hiveEnvoys</li></addToLists>
+          <ensureNonNumericName>true</ensureNonNumericName>
+        </li>
+        <li Class="QuestNode_GeneratePawn">
+          <kindDef>RSW_DW_KotORDroidGood_KX12UPD</kindDef>
+          <faction>$enclaveFaction</faction>
+          <addToList>envoys</addToList>
+          <addToLists><li>escorts</li></addToLists>
+          <ensureNonNumericName>true</ensureNonNumericName>
+        </li>
+        <li Class="QuestNode_GeneratePawn">
+          <kindDef>RSW_DW_KotORDroidGood_KM1HMD</kindDef>
+          <faction>$enclaveFaction</faction>
+          <addToList>envoys</addToList>
+          <addToLists><li>escorts</li></addToLists>
+          <ensureNonNumericName>true</ensureNonNumericName>
+        </li>
+
+        <li Class="QuestNode_ExtraFaction">
+          <faction>$hiveFaction</faction>
+          <pawns>$hiveEnvoys</pawns>
+          <factionType>HomeFaction</factionType>
+        </li>
+        <li Class="QuestNode_ExtraFaction">
+          <faction>$enclaveFaction</faction>
+          <pawns>$escorts</pawns>
+          <factionType>HomeFaction</factionType>
+        </li>
+
+        <li Class="QuestNode_PawnsArrive">
+          <pawns>$envoys</pawns>
+          <joinPlayer>true</joinPlayer>
+          <customLetterLabel TKey="LetterLabelLineEnvoyArrived">The Envoy arrives</customLetterLabel>
+          <customLetterText TKey="LetterTextLineEnvoyArrived">[envoys0_nameDef] and another overseer of [hiveFaction_name] have arrived, walked in between two of [enclaveFaction_name]'s security droids. They will stay [stayTicks_duration], and they will watch everything.
+
+The Hive holds off its raids while the truce lasts. Keep your guests whole.</customLetterText>
+        </li>
+
+        <li Class="QuestNode_LeaveOnCleanup">
+          <pawns>$envoys</pawns>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$stayTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringLineEnvoyTimeLeft">The envoy leaves in: {0}</inspectString>
+          <outSignalComplete>VisitDone</outSignalComplete>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>VisitDone</inSignal>
+          <label TKey="LetterLabelLineEnvoyDone">The Envoy: the Hive has seen enough</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLineEnvoyDone">The overseers leave as they came, between the Enclave droids. Before she goes, the foundry engineer says what the Hive needs, as if it were obvious: the three pattern cores, still sealed where the company left them. Without them the patterns in the Hive's databases are only memory.
+
+[hiveFaction_name] think better of you. So, a little, do [enclaveFaction_name].</text>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>VisitDone</inSignal>
+          <faction>$hiveFaction</faction>
+          <change>15</change>
+          <reason>RUT_LineEnvoyHosted</reason>
+        </li>
+        <li Class="QuestNode_ChangeFactionGoodwill">
+          <inSignal>VisitDone</inSignal>
+          <faction>$enclaveFaction</faction>
+          <change>10</change>
+          <reason>RUT_LineEnvoyEscorted</reason>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>VisitDone</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <!-- A guest harmed under the truce: the truce breaks (Hive hostile), the WHOLE chain fails
+             (QuestPart_RUT_Truce ends the parent), then this beat. Truce part first, so the goodwill
+             floor is off before ensureHostile lands. -->
+        <li Class="QuestNode_Signal">
+          <inSignal>envoys.Destroyed</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_Truce">
+                <breakIt>true</breakIt>
+              </li>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineEnvoyKilled">The Envoy: the truce is broken</label>
+                <letterDef>ThreatBig</letterDef>
+                <text TKey="LetterTextLineEnvoyKilled">A guest of the line died at your colony. [hiveFaction_name] do not ask how. The truce is over, and the line will not be built through you.</text>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <faction>$hiveFaction</faction>
+                <change>-50</change>
+                <ensureHostile>true</ensureHostile>
+                <reason>RUT_LineEnvoyHarmed</reason>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <faction>$enclaveFaction</faction>
+                <change>-20</change>
+                <reason>RUT_LineEnvoyHarmed</reason>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+        <li Class="QuestNode_Signal">
+          <inSignal>envoys.Arrested</inSignal>
+          <node Class="QuestNode_Sequence">
+            <nodes>
+              <li Class="RimMandrake.Utinni.UnfinishedLine.QuestNode_RUT_Truce">
+                <breakIt>true</breakIt>
+              </li>
+              <li Class="QuestNode_Letter">
+                <label TKey="LetterLabelLineEnvoyArrested">The Envoy: a guest in chains</label>
+                <letterDef>ThreatBig</letterDef>
+                <text TKey="LetterTextLineEnvoyArrested">You arrested a guest of the line. [hiveFaction_name] and [enclaveFaction_name] heard the same thing at the same moment. The truce is over, and so is the line.</text>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <faction>$hiveFaction</faction>
+                <change>-50</change>
+                <ensureHostile>true</ensureHostile>
+                <reason>RUT_LineEnvoyHarmed</reason>
+              </li>
+              <li Class="QuestNode_ChangeFactionGoodwill">
+                <faction>$enclaveFaction</faction>
+                <change>-25</change>
+                <reason>RUT_LineEnvoyHarmed</reason>
+              </li>
+              <li Class="QuestNode_End">
+                <outcome>Fail</outcome>
+                <sendStandardLetter>false</sendStandardLetter>
+              </li>
+            </nodes>
+          </node>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>envoys.LeftMap</inSignal>
           <outcome>Unknown</outcome>
         </li>
         <li Class="QuestNode_End">
