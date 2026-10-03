@@ -239,8 +239,12 @@ def _things(t, defName, rect=None, limit=200):
     return list(_ok(r, "list_things(%s)" % defName).get("things") or [])
 
 
-def _get_defs(t, defs, fields):
-    r = t.bridge_call("jawa/get_defs", defs=defs, fields=fields, limit=200)
+def _get_defs(t, defs, fields, deep=False):
+    # LIVE 2026-10-03: WITHOUT deep=True get_defs answers a list field as class NAMES ("WeatherCommonalityRecord"), so
+    # reading baseWeatherCommonalities/wildPlants as dict rows raised AttributeError ('str' has no .get). WITH deep=True
+    # a modExtensions entry flattens to its FIELDS ([{}] for the empty marker RM_LeanExtension): read that one shallow.
+    kw = {"deep": True} if deep else {}
+    r = t.bridge_call("jawa/get_defs", defs=defs, fields=fields, limit=200, **kw)
     if not _live(t):
         return {}, None
     _ok(r, "get_defs(%s)" % defs[:80])
@@ -474,8 +478,10 @@ def defs_chain(t):
     with _comp(t, "biome_weather_table"):
         if _live(t):
             f, _ = _get_defs(t, "BiomeDef/RM_LeaningScrub",
-                             "baseWeatherCommonalities,animalDensity,wildPlants,modExtensions")
-            row = f.get("RM_LeaningScrub") or {}
+                             "baseWeatherCommonalities,animalDensity,wildPlants", deep=True)
+            row = dict(f.get("RM_LeaningScrub") or {})
+            f2, _ = _get_defs(t, "BiomeDef/RM_LeaningScrub", "modExtensions")
+            row["modExtensions"] = (f2.get("RM_LeaningScrub") or {}).get("modExtensions")
             table = row.get("baseWeatherCommonalities")
             if not isinstance(table, list) or not table:
                 _unmeasured(t, "post-patch weather table unreadable: %r" % table)
