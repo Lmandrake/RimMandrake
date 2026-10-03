@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_NAVIGATOR_LOG_SITES_1 (Swallowed Navigator part B). Mechanism: Source/RM_NavigatorLog.cs.
+  Every N pings (setting navigatorPingsPerEntry, 4) of the swallowed drive core, the next entry of the dead ship's
+  flight log is read out as a letter; entries listed in siteEntries also reveal a salvage site
+  (RM_NavigatorSalvageSite). campaignSiteTiles: empty = free tier (vanilla tile finder near the colony); the
+  campaign patch (UtinniPatches) fills it with authored Ash'karr tiles, used in order.
+  ENTRY TEXT: DRAFT, written by FOUNDRY 2026-10-03 for the free RM_ tier (no franchise names); BENCH/owner may rewrite.
+-->
+<Defs>
+
+  <RimMandrake.TheRot.RM_NavigatorLogDef>
+    <defName>RM_NavigatorLog</defName>
+    <label>the dead ship's log</label>
+    <siteEntries>
+      <li>2</li>
+      <li>4</li>
+      <li>6</li>
+      <li>8</li>
+    </siteEntries>
+    <entries>
+      <li>Log, day one on the ground. We came down hard in the white country. Hull is whole. The drive coil is whole. The mat under us is warm, like something breathing. Captain says we lift when the fog clears.</li>
+      <li>Day four. The fog does not clear; it sticks. We sent the boat out with the spare stores and buried them under a rib of dead fungus a short walk from the ship, marked with a coil housing. If we have to leave in a hurry we leave light.</li>
+      <li>Day nine. Something big came through camp in the night. Slow. Pale. It ate the cargo netting, the tarps, the galley. It did not touch us. It left the cutlery in a glossy lump by the ramp, clean as new.</li>
+      <li>Day twelve. Pulled the long-range beacon and the med kit off the ship and cached them where the ground goes hard, away from the warm mat. The pale thing only eats what lies in the open. Note for whoever reads this: cover what you keep.</li>
+      <li>Day fifteen. Engineer took the drive coil out to clean the spores off it. Left it on the mat for one hour. One hour. It is gone, and the pale thing is lying where it was, and we can hear the coil humming inside it.</li>
+      <li>Day sixteen. We did not shoot it. Shoot it and the coil goes with it. We packed the last of the ship's tools into a crate and left them with the beacon cache's twin, further out. We are walking.</li>
+      <li>Day twenty. The coil still pings. We can hear it from two hills away when the wind is right. It is following the warm ground, and we are following it. The captain wants it back. I want to go home.</li>
+      <li>Last entry. Whoever finds this ship: the coil is good. It will fly. We left everything we could not carry in the last cache, past the third ridge. Cut the beast open gently. It never meant us harm. It just keeps</li>
+    </entries>
+  </RimMandrake.TheRot.RM_NavigatorLogDef>
+
+  <QuestScriptDef>
+    <defName>RM_NavigatorSalvageSite</defName>
+    <autoAccept>true</autoAccept>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The dead ship's log names a cache its crew left behind, not far from [map_definite]. Salvage worth [itemStashContentsValue]:\n\n[itemStashContents]\n\nIt seems that [allSitePartsDescriptionsExceptFirst]</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The [cache] in the log</li>
+        <li>cache->Cache</li>
+        <li>cache->Crew's Cache</li>
+        <li>cache->Ship's Stores</li>
+      </rulesStrings>
+    </questNameRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_SubScript">
+          <def>Util_RandomizePointsChallengeRating</def>
+          <parms>
+            <pointsFactorTwoStar>1.5</pointsFactorTwoStar>
+            <pointsFactorThreeStar>2</pointsFactorThreeStar>
+          </parms>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_AdjustPointsForDistantFight</def>
+        </li>
+        <li Class="QuestNode_GetMap" />
+        <li Class="QuestNode_IsSet">
+          <name>siteTile</name>
+          <elseNode Class="QuestNode_GetSiteTile">
+            <storeAs>siteTile</storeAs>
+            <preferCloserTiles>true</preferCloserTiles>
+          </elseNode>
+        </li>
+        <!-- Defended always when violent quests are allowed: no free loot from the log. -->
+        <li Class="QuestNode_ViolentQuestsAllowed">
+          <node Class="QuestNode_Set">
+            <name>siteThreatChance</name>
+            <value>1</value>
+          </node>
+          <elseNode Class="QuestNode_Set">
+            <name>siteThreatChance</name>
+            <value>0</value>
+          </elseNode>
+        </li>
+        <li Class="QuestNode_GetSitePartDefsByTagsAndFaction">
+          <storeAs>sitePartDefs</storeAs>
+          <storeFactionAs>siteFaction</storeFactionAs>
+          <sitePartsTags>
+            <li>
+              <tag>ItemStash</tag>
+            </li>
+            <li>
+              <tag>ItemStashQuestThreat</tag>
+              <chance>$siteThreatChance</chance>
+            </li>
+          </sitePartsTags>
+        </li>
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+          <parms>
+            <hiddenSitePartsPossible>true</hiddenSitePartsPossible>
+          </parms>
+        </li>
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+        <li Class="QuestNode_AddItemsReward">
+          <items>$generatedItemStashThings</items>
+          <inSignalChoiceUsed>site.MapGenerated</inSignalChoiceUsed>
+          <generateQuestParts>false</generateQuestParts>
+        </li>
+        <li Class="QuestNode_NoWorldObject">
+          <worldObject>$site</worldObject>
+          <node Class="QuestNode_End" />
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

@@ -48,6 +48,7 @@
     <Compile Include="RM_HwelgrueSwallow.cs" />
     <Compile Include="RM_SwallowedCore.cs" />
     <Compile Include="RM_GutMother.cs" />
+    <Compile Include="RM_NavigatorLog.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -66,6 +66,7 @@ namespace RimMandrake.TheRot
         public static float navigatorRangeBonus = 0.25f;
         public static float navigatorShipDamageFactor = 0.5f;
         public static float navigatorRuinThreshold = 25f;
+        public static int navigatorPingsPerEntry = 4;
         // ROT_GUT_MOTHER_VAT_1 (Technology section)
         public static bool gutMother = true;
         public static float gutMotherDigestHours = 24f;
@@ -114,6 +115,7 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref navigatorRangeBonus, "navigatorRangeBonus", 0.25f);
             Scribe_Values.Look(ref navigatorShipDamageFactor, "navigatorShipDamageFactor", 0.5f);
             Scribe_Values.Look(ref navigatorRuinThreshold, "navigatorRuinThreshold", 25f);
+            Scribe_Values.Look(ref navigatorPingsPerEntry, "navigatorPingsPerEntry", 4);
             Scribe_Values.Look(ref gutMother, "gutMother", true);
             Scribe_Values.Look(ref gutMotherDigestHours, "gutMotherDigestHours", 24f);
             Scribe_Values.Look(ref gutMotherRecoveryChance, "gutMotherRecoveryChance", 1f);
@@ -245,6 +247,8 @@ namespace RimMandrake.TheRot
             navigatorShipDamageFactor = list.Slider(navigatorShipDamageFactor, 0f, 2f);
             list.Label("  Integrity below which the core comes out ruined: " + navigatorRuinThreshold.ToString("0"));
             navigatorRuinThreshold = list.Slider(navigatorRuinThreshold, 0f, 90f);
+            list.Label("  Pings per entry of the dead ship's log: " + navigatorPingsPerEntry);
+            navigatorPingsPerEntry = Mathf.RoundToInt(list.Slider(navigatorPingsPerEntry, 1f, 12f));
             list.GapLine();
 
             list.Label("Technology: the gut-mother");

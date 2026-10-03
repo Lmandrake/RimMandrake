@@ -41,6 +41,10 @@ namespace RimMandrake.TheRot
         public bool spent;
         public int pings;
         public bool firstPingLettered;
+        // ROT_NAVIGATOR_LOG_SITES_1
+        public int entriesRead;
+        public int sitesRevealed;
+        public bool logCut;
 
         public RM_WorldComponent_SwallowedCore(World world) : base(world)
         {
@@ -55,6 +59,9 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref spent, "spent", false);
             Scribe_Values.Look(ref pings, "pings", 0);
             Scribe_Values.Look(ref firstPingLettered, "firstPingLettered", false);
+            Scribe_Values.Look(ref entriesRead, "entriesRead", 0);
+            Scribe_Values.Look(ref sitesRevealed, "sitesRevealed", 0);
+            Scribe_Values.Look(ref logCut, "logCut", false);
         }
     }
 
@@ -73,6 +80,7 @@ namespace RimMandrake.TheRot
         public float integrity = 100f;
         private bool claimChecked;
         private int nextPingTick = -1;
+        private bool engineSeen; // ROT_NAVIGATOR_LOG_SITES_1: an engine appearing = a landing -> ping at once
 
         private Pawn Self => parent as Pawn;
 
@@ -91,6 +99,9 @@ namespace RimMandrake.TheRot
             }
             if (!carrier) return;
             int now = Find.TickManager.TicksGame;
+            bool engineNow = EngineOn(p.Map) != null;
+            if (engineNow && !engineSeen) nextPingTick = now;
+            engineSeen = engineNow;
             if (nextPingTick < 0) nextPingTick = now;
             if (now >= nextPingTick)
             {
@@ -125,6 +136,7 @@ namespace RimMandrake.TheRot
             if (EngineOn(map) == null) return false;
             RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
             if (w != null) w.pings++;
+            RM_NavigatorLog.Notify_Ping(w, map);
             SoundInfo info = SoundInfo.InMap(new TargetInfo(p.Position, map));
             info.pitchFactor = Mathf.Lerp(0.6f, 1f, integrity / 100f);
             RM_HwelgrueDefOf.RM_CorePing?.PlayOneShot(info);
@@ -169,6 +181,7 @@ namespace RimMandrake.TheRot
             if (!carrier || prevMap == null) return;
             RM_WorldComponent_SwallowedCore w = RM_WorldComponent_SwallowedCore.Get;
             if (w != null) w.spent = true;
+            RM_NavigatorLog.Notify_CarrierDied(w);
             carrier = false;
             Thing drop = MakeDrop(integrity);
             if (drop != null)
@@ -206,6 +219,7 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref integrity, "integrity", 100f);
             Scribe_Values.Look(ref claimChecked, "claimChecked", false);
             Scribe_Values.Look(ref nextPingTick, "nextPingTick", -1);
+            Scribe_Values.Look(ref engineSeen, "engineSeen", false);
         }
     }
 

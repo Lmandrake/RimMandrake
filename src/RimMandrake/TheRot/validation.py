@@ -12,6 +12,8 @@ CHAINS
   biome_wiring       RM_TheRot's animalDensity and plantDensity are > 0 and its workerClass names RM_BiomeWorker_TheRot.
   gut_mother         ROT_GUT_MOTHER_VAT_1: studied sac unlocks the research; a fed vat returns a bionic arm, rifle and parka
                      and consumes the body; an unfed vat does not progress; the starter keeps, trades, and a split makes one.
+  navigator_log      ROT_NAVIGATOR_LOG_SITES_1: 4 pings read one log entry, 8 read two and reveal one salvage site; after the
+                     carrier dies, pings do not move the log. Landing ping UNMEASURED (needs a gravship landing).
   map_mechanics      the ten toggled mechanics: UNMEASURED, each naming what it needs (a generated RM_TheRot map, ticks, a game condition).
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game. Nothing here has been run live.
@@ -166,6 +168,14 @@ def static_checks():
         bad.append("RM_GutMotherStarter must never rot or lose viability (ROT_GUT_MOTHER_VAT_1 ruled exception)")
     if "RM_GutMother.DropSac" not in open(os.path.join(HERE, "Source", "RM_Hwelgrue.cs"), encoding="utf-8").read():
         bad.append("a dead hwelgrue must drop the gut-mother sac (RM_CompGutDigest.Notify_Killed)")
+    nl = open(os.path.join(HERE, "Defs", "Misc", "RM_NavigatorLog.xml"), encoding="utf-8").read()
+    n_entries = nl.split("<entries>", 1)[1].split("</entries>", 1)[0].count("<li>") if "<entries>" in nl else 0
+    if n_entries != 8 or "RM_NavigatorSalvageSite" not in nl:
+        bad.append("RM_NavigatorLog must carry 8 entries and the RM_NavigatorSalvageSite quest (ROT_NAVIGATOR_LOG_SITES_1), found %d" % n_entries)
+    core = open(os.path.join(HERE, "Source", "RM_SwallowedCore.cs"), encoding="utf-8").read()
+    for need in ("RM_NavigatorLog.Notify_Ping", "RM_NavigatorLog.Notify_CarrierDied", "engineSeen"):
+        if need not in core:
+            bad.append("RM_SwallowedCore.cs lacks %s (ROT_NAVIGATOR_LOG_SITES_1)" % need)
     bad += cast_checks()
     return bad
 
@@ -489,6 +499,29 @@ def _build_suite():
             text = _gm(t, "ProofStarter")
             if _live(t) and not ("rottable False" in text and "viability False" in text and "tradeable True" in text and "split makes 1" in text):
                 raise ExpectationFailed("the starter rots, cannot trade, or the split is not exactly one: %s" % text)
+
+    @suite.chain("navigator_log")
+    def navigator_log(t):
+        """ROT_NAVIGATOR_LOG_SITES_1. Needs a FRESH world (or one whose RM_WorldComponent_SwallowedCore has 0 pings) and a
+        player home map: pings are added straight to the world component (no engine). The landing ping is not proven
+        here -- first poke: stand a carrier on a map, land a gravship there, read ProofClaim's pings before/after."""
+        with t.component("entry_every_n_pings", toggle="navigatorPingsPerEntry"):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_NavigatorLogProof", method="ProofPings", args="4")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if _live(t) and "entries 1 " not in text + " ":
+                raise ExpectationFailed("4 pings did not read exactly one entry: %s" % text)
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_NavigatorLogProof", method="ProofPings", args="4")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if _live(t) and not ("entries 2 " in text + " " and "sites 1 " in text + " " and "quests 1" in text):
+                raise ExpectationFailed("8 pings did not read 2 entries and reveal one salvage site: %s" % text)
+        with t.component("carrier_death_cuts_log", toggle="navigatorCore"):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_NavigatorLogProof", method="ProofKillThenPing", args="8")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            if _live(t) and not ("entries 2 -> 2" in text and "cut True" in text):
+                raise ExpectationFailed("pings after the carrier died moved the log: %s" % text)
+        with t.component("landing_pings_at_once", toggle="navigatorCore"):
+            if _live(t):
+                _unmeasured(t, "needs a living carrier on a map and a gravship landing there; RM_SwallowedCoreProof.ProofClaim pings 0 -> 1, and 0 with no carrier")
 
     return suite
 
