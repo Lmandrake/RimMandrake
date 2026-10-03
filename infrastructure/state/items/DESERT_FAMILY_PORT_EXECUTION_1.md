@@ -220,8 +220,8 @@ Alpha Biomes, ReGrowth or Droid Depot changes nothing a player sees in the deser
 
 ## the art review sheet — built 2026-09-20, waiting on the owner's eye
 
-`D:\Luke\dev\Rimworld\Transient\desert_art_verdict_2026-09-20.html`
-decisions → `D:\Luke\dev\Rimworld\Transient\desert_art_verdict_2026-09-20.decisions.json`
+`D:\Luke\dev\RimMandrake\Transient\desert_art_verdict_2026-09-20.html`
+decisions → `D:\Luke\dev\RimMandrake\Transient\desert_art_verdict_2026-09-20.decisions.json`
 
 Serve it:
 ```
