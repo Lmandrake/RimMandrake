@@ -63,12 +63,18 @@ def main():
     clean = run({"NS_SLIME_MOCK_BREAK": ""})
     n = len(clean)
     nonpass = {k: v for k, v in clean.items() if not v.startswith("PASS")}
-    if n < 30 or set(nonpass) != {"drying_biome_decays"}:
+    if n < 31 or set(nonpass) != {"drying_biome_decays"}:
         bad.append("clean run: %d components, non-pass %s (expected only drying_biome_decays UNMEASURED)" % (n, nonpass))
     dry = run({"NS_SLIME_MOCK_BIOME": "Desert"})
     if not dry.get("drying_biome_decays", "").startswith("PASS") or any(
             v == "FAIL" for v in dry.values()):
         bad.append("Desert run: %s" % {k: v for k, v in dry.items() if not v.startswith("PASS")})
+    bp = os.path.join(tempfile.mkdtemp(prefix="gs_"), "bad.xml")
+    with open(bp, "w") as f:
+        f.write('<Patch><Operation Class="PatchOperationRemove" MayRequire="x"><xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/baseWeatherCommonalities/Rain</xpath></Operation></Patch>')
+    got = run({"NS_SLIME_MOCK_BREAK": "", "NS_SLIME_RAIN_PATCH": bp})
+    if got.get("campaign_rain_strip_patch", "MISSING").startswith("PASS"):
+        bad.append("broken rain-strip patch did not turn campaign_rain_strip_patch red")
     for fault, comps in CASES.items():
         got = run({"NS_SLIME_MOCK_BREAK": fault})
         for c in comps:

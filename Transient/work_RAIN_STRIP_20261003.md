@@ -1,0 +1,8 @@
+# RAIN_STRIP 2026-10-03 (GELATINOUSSLIME_RAIN_STRIP_1)
+- Searched src/ first: NO campaign patch strips Rain/FoggyRain from RM_GelatinousSlime or RUT_Slime (grep; only donor AB_GelatinousSuperorganism carries ops). Slime rain (RM_Weather_SlimeRain 30) is already in the RM_ def. Neither RM_ nor RUT_ Slime carries preventGenSteps today.
+- Placement: spec item 1 says CAMPAIGN patch, so it lives in UtinniPatches (outside GelatinousSlime folder; the free mod is not edited, spec 4): src/RimUtinni/UtinniPatches/Patches/SlimeRainStrip_Campaign.xml. UtinniPatches loadAfter mandrake.rm.biomes, so RM_GelatinousSlime is present when it runs.
+- Guards: every op is a Conditional on the target node existing (match only, no nomatch), never MayRequire on an Operation. Safe if the biome or node is absent.
+- Ops: remove Rain + FoggyRain from RM_GelatinousSlime/baseWeatherCommonalities; remove Rain from RUT_Slime (spec 1, twin carries the world; its header's "slime rain carve-out" is overruled by ban 2 as the item says); shrine denial (preventGenSteps ScatterShrines) onto RM_GelatinousSlime, donor op left in place (spec 2). Also added RUT_Slime shrine denial? NO: spec names only RM_GelatinousSlime.
+- Spec 3: label/description ops untouched (BIOME_TIER_CLEANUP_1).
+- Mod Settings toggle: NOT added. Ban 2 is a ruling about the campaign world, not a feature; the patch lives in the campaign mod, which has no settings screen, and an XML patch cannot read a setting. Free-only list keeps Rain by construction.
+- Validation: validation.py chain `campaign_rain_strip` (offline, reads the patch XML; asserts ops shape and no MayRequire on Operations) + live weather read when bridge up. Live run NOT done (no bridge).

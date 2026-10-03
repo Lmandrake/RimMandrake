@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GELATINOUSSLIME_RAIN_STRIP_1. Ban 2 (no meteorological rain over the Slime) in the campaign tiers.
+  The free RM_GelatinousSlime keeps vanilla Rain/FoggyRain for generated planets; only this campaign
+  patch strips them. RM_Weather_SlimeRain stays. Every op is a Conditional on its target existing
+  (no nomatch), because MayRequire on an <Operation> is inert in 1.6 and a bare Remove on a missing
+  node logs an error. The donor AB_GelatinousSuperorganism shrine op in AncientDangerGenSteps_AmbientDoctrine.xml
+  stays until the donor retires.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/baseWeatherCommonalities/Rain</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/baseWeatherCommonalities/Rain</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/baseWeatherCommonalities/FoggyRain</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/baseWeatherCommonalities/FoggyRain</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/baseWeatherCommonalities/Rain</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BiomeDef[defName="RUT_Slime"]/baseWeatherCommonalities/Rain</xpath>
+    </match>
+  </Operation>
+
+  <!-- Shrine denial retargeted onto our def (the donor op stays). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/preventGenSteps</xpath>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]</xpath>
+        <value><preventGenSteps><li>ScatterShrines</li></preventGenSteps></value>
+      </nomatch>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/BiomeDef[defName="RM_GelatinousSlime"]/preventGenSteps</xpath>
+        <value><li>ScatterShrines</li></value>
+      </match>
+    </match>
+  </Operation>
+
+</Patch>
