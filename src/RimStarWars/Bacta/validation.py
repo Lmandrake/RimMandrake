@@ -24,9 +24,15 @@ tendQuality tuning and the infection assist (`WoundInfection` at any severity is
 """
 import contextlib
 import json
+import os
 import re
 import sys
 import time
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+_UTILS = os.path.join(HERE, "..", "..", "RimMandrake", "Utils")
+if os.path.isdir(_UTILS) and _UTILS not in sys.path:
+    sys.path.insert(0, _UTILS)
 
 from modcheck import Suite, ExpectationFailed
 
@@ -728,3 +734,96 @@ def revival(t):
                 row = [q for q in (r.get("pawns") or []) if q.get("id") == S["victim"]]
                 if not row or row[0].get("dead"):
                     _fail("corpse gone but the victim is neither in the tank nor alive on the map: %s" % row)
+
+
+# ------------------------------------------------------------------ chain 9: settings round trip
+
+_FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
+
+
+def settings_fields():
+    """{name: type} for every scalar `public static` field of BactaSettings, read from the C#."""
+    src = open(os.path.join(HERE, "Source", "BactaMod.cs"), encoding="utf-8").read()
+    body = src.split("class BactaSettings", 1)[1].split("ExposeData", 1)[0]
+    return dict((m.group(2), m.group(1)) for m in _FIELD.finditer(re.sub(r"//[^\n]*", "", body)))
+
+
+@suite.chain("settings_roundtrip")
+def settings_roundtrip(t):
+    """Every `public static` field of BactaSettings (regex over the C#, sanity probe >= 1): write the opposite or
+    old+1, read it back independently, restore, read the restore back. Numerics compare numerically."""
+    with _comp(t, "settings_probe_finds_fields", beyond_toggle=True):
+        f = settings_fields()
+        if len(f) < 1:
+            _fail("settings probe found no field (blind regex)")
+        if sorted(f) != sorted(DEFAULTS):
+            _fail("DEFAULTS %s differs from the C# fields %s" % (sorted(DEFAULTS), sorted(f)))
+    for field, ty in sorted(settings_fields().items()):
+        with _comp(t, "%s_round_trips" % field, toggle=field):
+            if not _live(t):
+                continue
+            old = _sget(t, field)
+            new = (str(old).lower() != "true") if ty == "bool" else float(old) + 1.0
+            try:
+                _sset(t, field, new)
+            finally:
+                _ok(t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=str(old)),
+                    "restore " + field)
+            if not _same(_sget(t, field), (str(old).lower() == "true") if ty == "bool" else old):
+                _fail("%s did not restore to %r" % (field, old))
+
+
+# ------------------------------------------------------------------ static (no game)
+
+def static_checks():
+    """Offline: the C# fields, DEFAULTS and suite.toggles agree; every field is Scribed and has a control; every .cs
+    is in the csproj; the def XML parses and names the defs the content chain expects; the walk exists."""
+    import xml.etree.ElementTree as ET
+    bad = []
+    srcdir = os.path.join(HERE, "Source")
+    fields = settings_fields()
+    if len(fields) < 1:
+        return ["settings probe found no scalar field (sanity probe failed)"]
+    if sorted(fields) != sorted(DEFAULTS):
+        bad.append("DEFAULTS differs from the C# settings fields: %s" % sorted(set(fields) ^ set(DEFAULTS)))
+    for n in suite.toggles:
+        if n not in fields:
+            bad.append("suite.toggles names %s which is not a C# field" % n)
+    src = open(os.path.join(srcdir, "BactaMod.cs"), encoding="utf-8").read()
+    after = src.split("ExposeData", 1)[1]
+    scribed = after.split("DoWindowContents", 1)[0]
+    ui = after.split("DoWindowContents", 1)[1] if "DoWindowContents" in after else ""
+    if not ui:
+        bad.append("no DoWindowContents found in BactaMod.cs (UI probe blind)")
+    for n in fields:
+        if '"%s"' % n not in scribed:
+            bad.append("settings field %s is not Scribed" % n)
+        if ui and not re.search(r"\b%s\b" % n, ui):
+            bad.append("settings field %s has no control in the settings window" % n)
+    proj = open(os.path.join(srcdir, "RimMandrake.StarWars.Bacta.csproj"), encoding="utf-8").read()
+    for fn in sorted(os.listdir(srcdir)):
+        if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj:
+            bad.append("%s is not in the csproj (compiles into nothing)" % fn)
+    names = set()
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
+        for fn in files:
+            if fn.endswith(".xml"):
+                for el in ET.parse(os.path.join(dp, fn)).getroot():
+                    if isinstance(el.tag, str) and el.findtext("defName"):
+                        names.add(el.findtext("defName").strip())
+    if len(names) < 5:
+        bad.append("only %d defs parsed from Defs/ (sanity probe failed)" % len(names))
+    for d in (TANK, DROID, FLUID, PATCH, SPRAY):
+        if d not in names:
+            bad.append("def %s is not in Defs/" % d)
+    if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimStarWars", "Bacta.md")):
+        bad.append("walk missing")
+    return bad
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)

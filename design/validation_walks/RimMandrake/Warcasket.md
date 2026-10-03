@@ -18,6 +18,7 @@ Script: `src/RimMandrake/Warcasket/validation.py` (modcheck Suite), plan `src/Ri
 - One hazard alone never fails the suit. → compound_failure.single_hazard_never_fails
 - Mod Settings `compoundFailureEnabled` OFF: the suit never fails, stats unchanged. → compound_failure.compound_failure_off
 - Mod Settings `masterEnabled` OFF: none of the mod's mechanics run. → compound_failure.master_off, terrain_immersion.master_off_terrain, core_and_cask_bay.master_off_core
+- Every Mod Settings field of `RM_WarcasketSettings` (the six toggles) writes, reads back and restores. → settings_roundtrip.masterEnabled_round_trips, settings_roundtrip.compoundFailureEnabled_round_trips, settings_roundtrip.terrainImmersionEnabled_round_trips, settings_roundtrip.sarcophagiEnabled_round_trips, settings_roundtrip.caskBayShieldingEnabled_round_trips, settings_roundtrip.coreDoseEnabled_round_trips
 - Compound failure with VACUUM as one of the two hazards. → UNCOVERED: no bridge tool creates vacuum on a room (needs a `jawa/room_vacuum` tool; heat + pollution already exercise the same `hazards >= 2` branch)
 - A pawn on deep (non-walkable) water without protection accrues `RM_TerrainImmersionHazard`. → terrain_immersion.unprotected_on_deep_water_accrues
 - A warcasket wearer on the same water accrues at about a tenth of that rate (the clock is slowed by the protection stat, floored at 5%). → terrain_immersion.protected_wearer_barely_accrues
