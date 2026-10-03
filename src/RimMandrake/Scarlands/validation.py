@@ -293,9 +293,15 @@ def _build_suite():
             pawn = t.spawn_pawn("Colonist") if hasattr(t, "spawn_pawn") else None
             pid = (pawn or {}).get("id") if isinstance(pawn, dict) else pawn
             if t.session is not None and pid is not None:
-                t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto",
-                              targetAX=cells[0][0] + 10, targetAZ=cells[0][1] + 10)
+                job = t.bridge_call("jawa/ordered_job", pawnId=pid, jobDef="Goto",
+                                    targetAX=cells[0][0] + 10, targetAZ=cells[0][1] + 10)
                 t.wait_ticks(60)
+                if isinstance(job, dict) and not job.get("nowRunningRequested"):
+                    # The pawn was never confirmed walking (live run 2026-10-03: curJob '(none)', the
+                    # wait was a paused read), so no tracking line is expected: not evidence of a bug.
+                    _unmeasured(t, "ordered Goto never confirmed running (afterJobDef=%r): no mover, so the "
+                                   "tracking line cannot be judged" % job.get("afterJobDef"))
+                    return
                 if "follow" not in _inspect(t, wid):
                     raise ExpectationFailed("a broken turret beside a walking pawn reports no tracking state")
                 shots = (t.bridge_call("jawa/list_things", defName="Bullet_AncientArmoredTurret", rect=wreck_rect) or {}).get("things") or []
@@ -316,18 +322,25 @@ def _build_suite():
         with t.component("refit_gated_by_toggle", toggle="turretRefitEnabled"):
             if t.session is None:
                 return
-            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_OldLineTurret", fields="defName,costList", limit=2)
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_OldLineTurret", fields="defName,costList",
+                              deep=True, limit=2)
             if not isinstance(r, dict) or r.get("success") is False:
                 raise ExpectationFailed("could not read the refit target def: %r" % r)
-            # The live reader returns costList entries as type names only (['ThingDefCountClass', ...]), so the
-            # LIVE assertion is the shape: exactly two cost rows (ComponentSpacer + RM_Etchant). The named
-            # contents are asserted from the repo XML in static_checks(); a deployed copy older than that
-            # commit has another row count or fails here.
+            # deep=True expands each row to {thingDef: <defName>, count: N}. Real shape is THREE rows
+            # (Steel + ComponentSpacer 3 + RM_Etchant 10); assert the named rows, not a row count.
             rows = [d for d in (r.get("defs") or []) if d.get("defName") == "RM_OldLineTurret"]
             cl = ((rows[0].get("fields") or {}).get("costList") if rows else None)
-            if not isinstance(cl, list) or len(cl) != 2:
-                raise ExpectationFailed("refit target costList is not the two-row ComponentSpacer+RM_Etchant shape "
-                                        "(stale deploy?): %r" % (cl,))
+            if not isinstance(cl, list):
+                raise ExpectationFailed("refit target costList unreadable: %r" % (cl,))
+            if cl and not all(isinstance(x, dict) for x in cl):
+                _unmeasured(t, "get_defs returned costList rows as bare type names despite deep=true: %r" % (cl,))
+                return
+            got = {}
+            for x in cl:
+                got[str(x.get("thingDef"))] = x.get("count")
+            if got.get("RM_Etchant") != 10 or got.get("ComponentSpacer") != 3:
+                raise ExpectationFailed("refit target costList lacks ComponentSpacer 3 + RM_Etchant 10 "
+                                        "(stale deploy?): %r" % (got,))
             # Gizmo presence has no bridge reader; the toggle is read back so a dead setting still fails.
             _set(t, "turretRefitEnabled", False)
             try:
