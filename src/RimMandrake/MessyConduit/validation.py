@@ -7,6 +7,22 @@ Design: design/RimMandrake/messy_conduit_design_2026-10-02.md (section 5 "First 
     python.exe src/RimMandrake/MessyConduit/validation.py --live --fresh-map   # messyconduit tier, bridge held
     python.exe src/RimMandrake/MessyConduit/validation.py --save-load NAME     # M4 on the current map's scene (after --live)
     python.exe src/RimMandrake/MessyConduit/validation.py --removal-check NAME # M9: a tier WITHOUT the mod (e.g. flowworks)
+    python.exe src/RimMandrake/Utils/modcheck/cli.py run MessyConduit           # the same checks as a modcheck suite
+
+MODCHECK SUITE (module-level `suite`, 2026-10-03). The standalone modes above and the suite run the SAME
+functions; the CLI is a thin wrapper. Every standalone row becomes one component of the same id (FAIL raises;
+UNMEASURED/UNBUILT/UNCOVERED read UNMEASURED, never PASS).
+  * chain `offline_O1_O5`: run_offline(). Under python.exe (no numpy) it runs in WSL python3 via `--rows-json -`.
+  * chain `live_battery`: live_battery() on the runner's map and Session. The scene is built around the runner's
+    anchor (clamped inside the map), every tick goes through t.wait_ticks (clockgate + detector sweeps when the
+    run is situational), the runner's map stands in for L0 (--fresh-map), and the SITE rect is destroyed at the end.
+  Separate lanes, NOT chains, and why:
+  * M4 --save-load: it loads a save, which replaces the map the runner's Session, anchor, fixture ledger and
+    bland-world proof belong to; every later chain would run on a map the runner did not prepare.
+  * M9 --removal-check: needs a cold load onto a mod list WITHOUT this mod; a suite runs inside one list.
+  * northstar_matrix/run_live.py: places 100 scenes over an absolute 226x100 REGION with map-wide clears
+    (non-colonists destroyed, weather/clock pinned), which the anchor/teardown model and the bland world cannot
+    contain; it reads a spec JSON precomputed by design_spec.py (numpy, absent under python.exe); ~26 min wall.
 
 M4 (--save-load): census, save as a NEW name with the Saves folder stat'd before/after (only NAME.rws may
 appear, nothing else may change), assert the save holds nothing of ours, load it, census, compare the cord set
@@ -82,6 +98,10 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
+if UTILS not in sys.path:
+    sys.path.insert(0, UTILS)
+from modcheck import Suite, ExpectationFailed  # noqa: E402
+
 MOD = "MessyConduit"
 PKG = "mandrake.rm.messyconduit"
 TIER = "messyconduit"
@@ -300,16 +320,14 @@ def run_offline():
 
 
 # ============================================================================ live
-class Bridge(object):
-    def __init__(self):
-        sys.path.insert(0, UTILS)
-        import rimbridge_client as rb  # noqa: E402
-        host, port, token = rb.resolve_endpoint()
-        self.S = rb.RimBridge(host=host, port=port, token=token, timeout=600.0)
-        self.S.connect()
+class _BridgeBase(object):
+    """call / probe / ticks over a raw transport (`_raw`): the standalone socket or the suite's Session."""
+
+    def _raw(self, tool, kw):
+        raise NotImplementedError
 
     def call(self, tool, **kw):
-        r = self.S.call(tool, kw, check=False) or {}
+        r = self._raw(tool, kw) or {}
         if isinstance(r, dict) and r.get("content"):
             try:
                 r = json.loads(r["content"][0]["text"])
@@ -338,18 +356,72 @@ class Bridge(object):
         return self.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=120000)
 
 
-# The scene, absolute cells on a fresh quicktest map (centre 125,125 avoided: colonists stand there).
-X0, Z0 = 150, 150
-SITE = (X0 - 2, Z0 - 2, 34, 14)                   # cleared + painted Soil + unfogged
-ROOM = (X0 + 10, Z0, X0 + 18, Z0 + 6)              # wall perimeter x0,z0,x1,z1
-DOOR = (X0 + 10, Z0 + 3)
-BATTERY = (X0 + 2, Z0 + 3)                         # Battery 1x2, rot N: cells z..z+1
-MAIN = [(x, Z0 + 3) for x in range(X0 + 3, X0 + 18)]        # through the door, across the room
-BRANCH = [(X0 + 13, Z0 + 4), (X0 + 13, Z0 + 5)]               # north branch -> lamp (its hookup keeps it)
-INTO_WALL = [(X0 + 17, Z0 + 2), (X0 + 18, Z0 + 2)]            # off the main run's end, INTO the east wall (ends inside)
-LAMP = (X0 + 12, Z0 + 5)                                      # nearest conduit = the branch end
-FAR = [(X0 + 28, Z0 + 9), (X0 + 29, Z0 + 9)]                  # isolated far-away run (local invalidation)
-GAP = (X0 + 7, Z0 + 3)                                        # the conduit cell destroyed for the break
+class Bridge(_BridgeBase):
+    """Standalone: its own socket to the bridge."""
+
+    def __init__(self):
+        sys.path.insert(0, UTILS)
+        import rimbridge_client as rb  # noqa: E402
+        host, port, token = rb.resolve_endpoint()
+        self.S = rb.RimBridge(host=host, port=port, token=token, timeout=600.0)
+        self.S.connect()
+
+    def _raw(self, tool, kw):
+        return self.S.call(tool, kw, check=False)
+
+
+class SuiteBridge(_BridgeBase):
+    """Suite: calls ride the runner's Session; game time goes through t.wait_ticks (clock-verified, and under a
+    situational run budgeted + detector-swept), so no tick moves behind the watch's back."""
+
+    def __init__(self, t):
+        self.t = t
+
+    def _raw(self, tool, kw):
+        return self.t.session.call(tool, **kw)
+
+    def ticks(self, n):
+        self.t.wait_ticks(n)
+        return {"success": True}
+
+
+# The scene, cells relative to an origin (X0, Z0). Standalone: absolute 150,150 on a fresh quicktest map (centre
+# 125,125 avoided: colonists stand there). Suite: the runner's anchor, clamped inside the map (_set_origin).
+SCENE_EXTENT = (-2, -2, 32, 12)                   # min dx, min dz, max dx, max dz of everything built (== SITE)
+
+
+def _set_origin(x0, z0):
+    g = globals()
+    X0, Z0 = x0, z0                                         # locals here; published below
+    g["X0"], g["Z0"] = X0, Z0
+    g["SITE"] = (X0 - 2, Z0 - 2, 34, 14)                   # cleared + painted Soil + unfogged
+    g["ROOM"] = (X0 + 10, Z0, X0 + 18, Z0 + 6)              # wall perimeter x0,z0,x1,z1
+    g["DOOR"] = (X0 + 10, Z0 + 3)
+    g["BATTERY"] = (X0 + 2, Z0 + 3)                         # Battery 1x2, rot N: cells z..z+1
+    g["MAIN"] = [(x, Z0 + 3) for x in range(X0 + 3, X0 + 18)]        # through the door, across the room
+    g["BRANCH"] = [(X0 + 13, Z0 + 4), (X0 + 13, Z0 + 5)]               # north branch -> lamp (its hookup keeps it)
+    g["INTO_WALL"] = [(X0 + 17, Z0 + 2), (X0 + 18, Z0 + 2)]            # off the main run's end, INTO the east wall
+    g["LAMP"] = (X0 + 12, Z0 + 5)                                      # nearest conduit = the branch end
+    g["FAR"] = [(X0 + 28, Z0 + 9), (X0 + 29, Z0 + 9)]                  # isolated far-away run (local invalidation)
+    g["GAP"] = (X0 + 7, Z0 + 3)                                        # the conduit cell destroyed for the break
+    # phase 1b lane A plot (see lane_a_live)
+    g["BAT2"] = (X0 + 19, Z0 + 8)
+    g["FIELD"] = [(x, z) for x in range(X0 + 20, X0 + 24) for z in range(Z0 + 8, Z0 + 11)]
+    g["RUN2"] = [(X0 + 24, Z0 + 9), (X0 + 25, Z0 + 9), (X0 + 26, Z0 + 9)]
+    g["WALL2"] = [(X0 + 26, Z0 + 8), (X0 + 26, Z0 + 9), (X0 + 26, Z0 + 10)]
+
+
+def origin_for_anchor(anchor, size_x, size_z, margin=3):
+    """The scene origin that centres the scene on `anchor`, clamped so the whole SITE (+margin) is on the map."""
+    mx0, mz0, mx1, mz1 = SCENE_EXTENT
+    x = anchor[0] - (mx0 + mx1) // 2
+    z = anchor[1] - (mz0 + mz1) // 2
+    x = max(margin - mx0, min(size_x - 1 - margin - mx1, x))
+    z = max(margin - mz0, min(size_z - 1 - margin - mz1, z))
+    return x, z
+
+
+_set_origin(150, 150)
 
 
 def perimeter(x0, z0, x1, z1):
@@ -366,10 +438,23 @@ def ops(defn, cells, rot=None):
 
 
 def run_live(args):
-    B = Bridge()
-    rows, log = [], []
+    return live_battery(Bridge(), fresh_map=args.fresh_map)
+
+
+def _reraise_harness_stop(ex):
+    """A detector / clock abort (watch.SurpriseAbort) or a failed clock-verified wait must end the suite
+    component, never be folded into a block's own FAIL row (that would charge the environment to the mod)."""
+    if getattr(ex, "is_surprise_abort", False) or isinstance(ex, ExpectationFailed):
+        raise ex
+
+
+def live_battery(B, fresh_map=False, rows=None):
+    """The live tier on B's map. `rows` (optional) is filled in place, so a caller sees every row measured
+    before an abort."""
+    rows = [] if rows is None else rows
+    log = []
     res = {"mod": MOD, "mode": "live", "tier": TIER, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows}
-    if args.fresh_map:
+    if fresh_map:
         B.call("rimworld/go_to_main_menu")
         r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
         st = None
@@ -514,10 +599,12 @@ def run_live(args):
     try:
         lane_a_live(B, rows, log)
     except Exception as ex:  # noqa: BLE001
+        _reraise_harness_stop(ex)
         row(rows, "P1B_block", "FAIL", "HARNESS", "lane A block raised: %r" % ex)
     try:
         style_live(B, rows, log)
     except Exception as ex:  # noqa: BLE001
+        _reraise_harness_stop(ex)
         row(rows, "ST_block", "FAIL", "HARNESS", "lane C style block raised: %r" % ex)
     # source off -> the live end reads dead within one 250-tick poll, no manual poll
     if bat_id:
@@ -565,10 +652,7 @@ def run_live(args):
 # A second plot north-east of the room: battery 2, a 4x3 conduit field (a TANGLE at the default threshold 9),
 # a run east into a wall that carries one buried conduit cell (a live WALL terminal = downed wire, outdoors so
 # it sways). Run after M8b, so the west end of the gap is a LIVE floor terminal (whip) on screen.
-BAT2 = (X0 + 19, Z0 + 8)
-FIELD = [(x, z) for x in range(X0 + 20, X0 + 24) for z in range(Z0 + 8, Z0 + 11)]
-RUN2 = [(X0 + 24, Z0 + 9), (X0 + 25, Z0 + 9), (X0 + 26, Z0 + 9)]
-WALL2 = [(X0 + 26, Z0 + 8), (X0 + 26, Z0 + 9), (X0 + 26, Z0 + 10)]
+# BAT2 / FIELD / RUN2 / WALL2 are set by _set_origin with the rest of the scene.
 SHOTS = os.path.join(REPO, "Transient", "messy_conduit_live_20261002")
 
 
@@ -959,6 +1043,124 @@ def run_removal_check(args):
     return res
 
 
+# ============================================================================ modcheck suite
+suite = Suite("MessyConduit")
+suite.toggles = list(SHIPPED)          # every Mod Settings field; floor.uncovered() names the ones no row flips
+
+# rows whose check flips a Mod Settings field (the component's `toggle`)
+ROW_TOGGLES = {"M7_off_restores_vanilla": "enabled", "M7b_on_again_invisible": "enabled",
+               "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "M10_tangle_threshold_setting": "tangleMin",
+               "ST2_switch_changes_textures": "style", "ST3_extcord_colour_modes": "extCordColorMode"}
+ROW_TOGGLES.update({"ST1_%s_textures_load" % s: "style" for s in ["StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek"]})
+NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")
+MIRROR_POSIX = "/mnt/d/Luke/dev/RimMandrake"       # read-only origin/main mirror: the offline tier writes exports
+
+
+def _report_rows(t, rows, declare=()):
+    """One component per standalone row, same id. FAIL raises (-> FAIL + finding); UNMEASURED/UNBUILT/UNCOVERED
+    record UNMEASURED with the status in the detail. The rows are already-measured, independent results, so a
+    FAIL row does not blank the rows after it (it would under the chain's upstream rule, which exists for
+    components that still drive the game). Under the declaration probe (no game) `declare` lists the ids to
+    declare, so toggle coverage is answerable offline."""
+    if not t._guard() and not rows:
+        for rid in declare:
+            with t.component(rid, toggle=ROW_TOGGLES.get(rid)):
+                pass
+        return
+    for r in rows:
+        st = r["status"]
+        with t.component(r["id"], toggle=ROW_TOGGLES.get(r["id"])):
+            if t._guard() and st == "FAIL":
+                raise ExpectationFailed("[%s] %s" % (r.get("class"), str(r.get("detail"))[:600]))
+        c = t.components[-1]
+        c.evidence.append({"call": "row %s" % r["id"], "result": r})
+        if c.verdict == "FAIL":
+            t.upstream_failed = False        # this row only; it touched nothing
+        elif c.verdict == "PASS":
+            if st in NOT_MEASURED or st not in ("PASS", "FAIL"):
+                c.verdict, c.detail = "UNMEASURED", "%s: %s" % (st, str(r.get("detail"))[:400])
+            else:
+                c.detail = str(r.get("detail"))[:400]
+
+
+def _posix(p):
+    import re
+    m = re.match(r"^\\\\wsl(?:\.localhost|\$)\\[^\\]+\\(.*)$", p)
+    if m:
+        return "/" + m.group(1).replace("\\", "/")
+    m = re.match(r"^([A-Za-z]):[\\/](.*)$", p)
+    if m:
+        return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+    return p
+
+
+def offline_rows():
+    """run_offline()'s rows. Under python.exe (the bridge side: no numpy, no WSL selftest toolchain) the same
+    function runs in WSL python3 through `--rows-json -`."""
+    if os.name != "nt":
+        return run_offline()
+    me = _posix(os.path.abspath(__file__))
+    if me.startswith(MIRROR_POSIX):
+        rows = []
+        row(rows, "O0_offline_tier_reachable", "UNMEASURED", "HARNESS",
+            "validation.py was loaded from the read-only mirror (%s); the offline tier re-exports into its own tree, "
+            "so it runs only from a seat clone" % me)
+        return rows
+    r = subprocess.run(["wsl.exe", "python3", me, "--rows-json", "-"], capture_output=True, text=True, timeout=3600)
+    for ln in reversed(r.stdout.splitlines()):
+        if ln.startswith("ROWS_JSON "):
+            return json.loads(ln[len("ROWS_JSON "):])
+    raise ExpectationFailed("offline tier in WSL printed no ROWS_JSON (exit %s): %s"
+                            % (r.returncode, (r.stdout + r.stderr).strip()[-400:]))
+
+
+OFFLINE_IDS = ["O1_mod_files", "O2_settings_defaults", "O5_style_art_sane", "O3_core_selftest",
+               "O3n_selftest_can_fail", "O4_python_oracle"]
+
+
+@suite.chain("offline_O1_O5")
+def offline_O1_O5(t):
+    """O1 files/csproj/DLL/textures, O2 shipped defaults, O5 style art sanity (+ planted negatives), O3 the C#
+    core SelfTest against the Python oracle (+ --probe must turn red), O4 the oracle's own selftest. 0 ticks."""
+    rows = []
+    with t.component("offline_tier_ran"):
+        if t._guard():
+            rows = offline_rows()
+    if t.components and t.components[-1].verdict == "PASS":
+        _report_rows(t, rows, declare=OFFLINE_IDS)
+
+
+@suite.chain("live_battery")
+def live_battery_chain(t):
+    """validation.py --live on the runner's map: scene built around the anchor, M1-M3, M5-M8, D1, phase-1b lane A
+    (B1-B9, M10), lane C styles (ST1-ST5), log budget, and the UNBUILT/UNCOVERED scope rows (UNMEASURED)."""
+    rows = []
+    built = False
+    try:
+        with t.component("live_battery_ran"):
+            if t._guard():
+                info = t.session.call("jawa/map_info") or {}
+                if isinstance(info, dict) and info.get("content"):
+                    info = json.loads(info["content"][0]["text"])
+                ox, oz = origin_for_anchor(t.anchor, int(info.get("sizeX", 250)), int(info.get("sizeZ", info.get("sizeX", 250))))
+                _set_origin(ox, oz)
+                built = True
+                res = live_battery(SuiteBridge(t), fresh_map=False, rows=rows)
+                if res.get("aborted"):
+                    raise ExpectationFailed("live tier aborted: %s" % res["aborted"])
+        ran = t.components[-1] if t.components else None
+        if ran is not None and ran.verdict in ("PASS", "FAIL") and ran.surprises is None:
+            t.upstream_failed = False        # the rows measured before a crash/abort are still real results
+            _report_rows(t, rows, declare=sorted(ROW_TOGGLES))
+    finally:
+        if built and t.session is not None:
+            try:                             # teardown is absolute: the whole scene (SITE holds every build)
+                t.session.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % SITE, categories="All")
+            except Exception:                # noqa: BLE001 - the runner's own sweep still follows
+                pass
+            _set_origin(150, 150)
+
+
 def main(argv=None):
     import argparse
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -969,7 +1171,13 @@ def main(argv=None):
     ap.add_argument("--removal-check", default=None, metavar="NAME", help="M9: load NAME on a tier WITHOUT the mod, read the log")
     ap.add_argument("--style-shots", action="store_true",
                     help="lane C: on the current map (after --live and validation_aerial --live) screenshot every style, same rects")
+    ap.add_argument("--rows-json", default=None, metavar="-",
+                    help="offline tier, then print its rows as one 'ROWS_JSON <json>' line (the suite's WSL hop)")
     a = ap.parse_args(argv)
+    if a.rows_json:
+        rows = run_offline()
+        print("ROWS_JSON " + json.dumps(rows, default=str))
+        return 0
     if a.style_shots:
         return run_style_shots()
     if a.save_load or a.removal_check:
