@@ -1,47 +1,46 @@
 {
- "posture": "whitelist",
- "criterion": "Pre-filled keep for all seven: this ranks nothing. The only judgement I applied was whether the art is alien enough for this campaign. It cannot say whether the creature is WORTH having in the Long Shade, which is yours.",
- "reviewStatus": {
-  "state": "prefill",
-  "by": null,
-  "at": null,
-  "evidence": "agent pre-fill, no human has ruled"
- },
- "decisions": {
-  "maidenbloom": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
+  "posture": "whitelist",
+  "criterion": "Pre-filled keep for all seven: this ranks nothing. The only judgement I applied was whether the art is alien enough for this campaign. It cannot say whether the creature is WORTH having in the Long Shade, which is yours.",
+  "reviewStatus": "ruled",
+  "decisions": {
+    "maidenbloom": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "much better, thanks"
+    },
+    "shadespire": {
+      "decision": "redo",
+      "prefill": "keep",
+      "note": "Good lord. That's like a whole party. I didn't mean that celebrated. Keep the interesting husk-like fruits, but make it dull green without all that wild color and frills."
+    },
+    "pavecrust": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "tazzok": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "skarrok": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "Keep art, redo description based on image. "
+    },
+    "vrekka": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "Tint it a bit darker please."
+    },
+    "sippra": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
   },
-  "shadespire": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "pavecrust": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "tazzok": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "skarrok": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "vrekka": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  },
-  "sippra": {
-   "decision": "keep",
-   "prefill": "keep",
-   "note": ""
-  }
- }
+  "decidedCount": 7,
+  "exportedBy": "review-sheet-page",
+  "exportedAt": "2026-10-03T05:36:44.919Z",
+  "approvalRoute": "owner exported from the sheet page and pasted the export into BENCH chat 2026-10-02 22:37 PDT"
 }
