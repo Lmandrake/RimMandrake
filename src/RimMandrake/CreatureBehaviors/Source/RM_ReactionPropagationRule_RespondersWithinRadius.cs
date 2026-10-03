@@ -91,8 +91,27 @@ namespace RimMandrake.CreatureBehaviors
     // general path and the migrated alarm cannot drift apart: a race with no
     // RM_AlarmResponderExtension (or a blank tag) never answers; a blank
     // event tag matches any responder; otherwise tags must be identical.
+    // FEVERWOOD_HIVE_PARASITE_CHAMBER_1: "a parasite the ants tolerate or
+    // cannot see". A race carrying this extension with a tag (blank = every
+    // tag) is invisible to that reaction network: never noticed as an
+    // intruder, and hurting a source never rings its alarm. Content-blind.
+    public class RM_ReactionUnseenExtension : DefModExtension
+    {
+        public List<string> unseenBy = new List<string>();
+    }
+
     public static class RM_ReactionResponders
     {
+        public static bool IsUnseenBy(Pawn p, string eventTag)
+        {
+            RM_ReactionUnseenExtension ext = p?.def?.GetModExtension<RM_ReactionUnseenExtension>();
+            if (ext == null)
+            {
+                return false;
+            }
+            return ext.unseenBy.NullOrEmpty() || (!eventTag.NullOrEmpty() && ext.unseenBy.Contains(eventTag));
+        }
+
         public static bool Answers(Pawn p, string eventTag)
         {
             RM_AlarmResponderExtension ext = p?.def?.GetModExtension<RM_AlarmResponderExtension>();

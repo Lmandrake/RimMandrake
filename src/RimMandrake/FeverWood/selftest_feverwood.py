@@ -246,9 +246,16 @@ class FWGame(MockGame):
 
     def t_jawa_pawn_census(self, p):
         ids = [i for i in str(p.get("ids") or "").split(",") if i]
-        rows = [{"id": q["id"], "kindDef": q["kindDef"], "mentalState": q.get("mental"),
+        rows = [{"id": q["id"], "kindDef": q["kindDef"], "mentalState": q.get("mental"), "dead": q.get("dead", False),
+                 "downed": q["downed"],
                  "job": {"def": "Wait_Wander"}} for q in self.pawns if not ids or q["id"] in ids]
         return {"success": True, "pawns": rows}
+
+    def t_jawa_pawn_need(self, p):
+        q = self._pawn(p.get("pawn"))
+        if q is not None and p.get("need") == "Food":
+            q["food"] = float(p.get("level"))
+        return {"success": True}
 
     def t_jawa_list_things(self, p):
         r = self._rect(p)
@@ -410,6 +417,7 @@ class FWGame(MockGame):
 
     def _sim(self):
         self._sim_hive()
+        self._sim_parasite()
         for o in list(self.objs):
             d = o["def"]
             if d.startswith("RM_Sekkulaath_") and o["first_hit"] is not None and d != "RM_Sekkulaath_Porter":
@@ -463,6 +471,28 @@ class FWGame(MockGame):
                 b["mental"] = {"def": V.HIVE_RALLY, "causedByPawn": col["id"]}
             if "hive_silent" not in self.brk:
                 self.msgs.append({"text": "The kurreth hive has noticed you. The alarm is spreading.", "reads": 0})
+
+
+    def _sim_parasite(self):
+        """RM_CompHiveParasite: a hungry glomvar kills the nearest calm wild kurreth within 12; never a colonist."""
+        if not (self.sb("antHiveParasiteChamberEnabled") or "parasite_ignores_toggle" in self.brk):
+            return
+        for g in [q for q in self.pawns if q["kindDef"] == "RM_Glomvar" and not q.get("dead")]:
+            if g.get("food", 1.0) > 0.4:
+                continue
+            if "parasite_bites_colonist" in self.brk:
+                for c in self.pawns:
+                    if c["faction"] is not None:
+                        c["downed"] = True
+            if "parasite_never" in self.brk:
+                continue
+            prey = [q for q in self.pawns if q["kindDef"] == "RM_Kurreth" and q["faction"] is None and not q.get("dead")
+                    and math.hypot(q["x"] - g["x"], q["z"] - g["z"]) <= 12]
+            if prey:
+                prey[0]["dead"] = True
+                g["food"] = 1.0
+                if "parasite_rings_alarm" in self.brk:
+                    self.msgs.append({"text": "The kurreth hive has noticed you.", "reads": 0})
 
 
 def run(brk=(), log_lines=()):
@@ -540,7 +570,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 11, V.BOOL_TOGGLES)
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 12, V.BOOL_TOGGLES)
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
@@ -606,6 +636,10 @@ def main():
         ("hive_no_hop", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
         ("hive_silent", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
         ("hive_ignores_toggle", {"hive_rally.with_detection_off_the_same_layout_rallies_nobody"}),
+        ("parasite_never", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
+        ("parasite_bites_colonist", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
+        ("parasite_rings_alarm", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
+        ("parasite_ignores_toggle", {"hive_parasite.with_the_parasite_toggle_off_the_kurreth_lives"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))

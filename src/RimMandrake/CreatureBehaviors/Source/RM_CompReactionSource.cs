@@ -62,6 +62,11 @@ namespace RimMandrake.CreatureBehaviors
 				return; // step 5: a source standing in suppression does not ring
 			}
 
+			if (instigator != null && RM_ReactionResponders.IsUnseenBy(instigator, Props.tag))
+			{
+				return; // the network cannot perceive this one (a tolerated parasite)
+			}
+
 			int now = Find.TickManager.TicksGame;
 			if (now - lastTriggerTick < Props.cooldownTicks)
 			{
@@ -217,9 +222,10 @@ namespace RimMandrake.CreatureBehaviors
 					continue;
 				}
 
-				if (RM_ReactionResponders.Answers(p, Props.tag) || p.def == parent.def)
+				if (RM_ReactionResponders.Answers(p, Props.tag) || p.def == parent.def
+				    || RM_ReactionResponders.IsUnseenBy(p, Props.tag))
 				{
-					continue; // kin never trip their own alarm
+					continue; // kin never trip their own alarm; the unseen are never noticed
 				}
 
 				if (Props.detectRequiresLineOfSight && !GenSight.LineOfSight(parent.Position, p.Position, map))
