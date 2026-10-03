@@ -672,6 +672,37 @@ def settings_defaults(t):
                     _fail("%s reads %r; the shipped default is %r (RM_WastelandMod.cs)" % (field, r.get("value"), DEFAULTS[field]))
 
 
+@suite.chain("settings_roundtrip")
+def settings_roundtrip(t):
+    """Every `public static` bool/int/float of RM_WastelandMod.cs (found by regex, so a new field is covered
+    unasked): read, write a different value, read it back, restore, read the restore. Numerics compare as
+    numbers. The settings class is RimMandrake.Wasteland.RM_WastelandSettings."""
+    with _comp(t, "roundtrip_probe_finds_fields", independent=True):
+        if len(DEFAULTS) < 1:
+            _fail("settings regex found no field (blind probe)")
+    for field in sorted(DEFAULTS):
+        default = DEFAULTS[field]
+        with _comp(t, "%s_round_trips" % field, independent=True,
+                   toggle=(field if isinstance(default, bool) else None)):
+            if not _live(t):
+                continue
+            def _get():
+                r = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+                return (r if isinstance(r, dict) else {}).get("value")
+            old = _get()
+            if old is None:
+                _fail("%s: get returned no value" % field)
+            new = (not (str(old).lower() == "true")) if isinstance(default, bool) else float(str(old)) + 1.0
+            try:
+                t.set_setting(SETTINGS, {field: new})
+                if not _same(_get(), new):
+                    _fail("%s: wrote %r, read %r" % (field, new, _get()))
+            finally:
+                t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=str(old))
+            if not _same(_get(), old):
+                _fail("%s did not restore to %r (read %r)" % (field, old, _get()))
+
+
 @suite.chain("biome_roster")
 def biome_roster(t):
     """`RM_Wasteland` as the game resolved it (jawa/biome_probe reads the runtime caches, the only tool that
@@ -1938,3 +1969,33 @@ def rite_of_tipping(t):
     finally:
         _restore(t, ["tippingEnabled"])
         _teardown(t)
+
+
+def static_checks():
+    """Offline structural checks (no game): the parse floors, sanity probes, the csproj, the walk."""
+    bad = list(_ERRORS)
+    for ty, n in FLOORS.items():
+        if len(_BY_TYPE.get(ty, [])) < n:
+            bad.append("only %d %s parsed, floor %d (blind parse)" % (len(_BY_TYPE.get(ty, [])), ty, n))
+    if len(DEFAULTS) < 30:
+        bad.append("settings regex found %d fields, floor 30" % len(DEFAULTS))
+    proj = open(os.path.join(HERE, "Source", "RM_Wasteland.csproj"), encoding="utf-8").read()
+    for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):
+        if fn.endswith(".cs") and 'Include="%s"' % fn not in proj:
+            bad.append("%s is not in the csproj (compiles into nothing)" % fn)
+    if _BIOME_EL is None or not BIOME_ANIMALS:
+        bad.append("biome roster not parsed")
+    if not BIOME_SCALARS.get("animalDensity", 0) > 0:
+        bad.append("animalDensity is 0: the roster would be dead content")
+    walk = os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "Wasteland.md")
+    if not os.path.isfile(walk):
+        bad.append("walk missing")
+    return bad
+
+
+if __name__ == "__main__":
+    _problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not _problems else "FAIL"))
+    for _p in _problems:
+        print("  - " + _p)
+    sys.exit(1 if _problems else 0)

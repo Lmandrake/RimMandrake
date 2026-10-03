@@ -1,0 +1,405 @@
+"""validation.py -- modcheck suite for RimMandrake: the Rust Cathedral (mandrake.rm.rustcathedral).
+
+First north-star script (RUST_CATHEDRAL_FIRST_SCRIPT_1). Walk: design/validation_walks/RimMandrake/RustCathedral.md
+(`## must be true`, agent-owned, not hashed). Process: design/RimMandrake/debug_process.md section 2.
+
+The mod: a mechanoid-garrisoned plateau biome (RM_RustCathedral) that absorbed two former kits, the Hum
+(attitude value voiced as hum layers, living bolts, bolt-shed curiosities, coolant-eel fishing consequences, the
+deep-drill response) and the Walls (deck plate, dead smartsteel, sacred wall, live pattern metal), plus the
+cathedral roaches. Fold-aware: when folded into mandrake.rm.biomes the mod is active under the composed name
+'RimMandrake: Baroque Biomes'; every read here is by def name / Harmony id / settings type, never by mod name.
+
+CHAINS
+  defs_resolve        every def under Defs/ (parsed from the XML) resolves live; a control reads notFound; the one
+                      namespaced def class (the attitude def) is read separately and says UNMEASURED if the tool
+                      cannot take its type name.
+  settings_roundtrip  every `public static` scalar of the THREE settings classes (own / Hum / Walls), found by regex.
+  biome_wiring        animalDensity > 0, roster rows, fishTypes and forceRockTypes land, wildPlants stays EMPTY
+                      (ruled zero, never a gap), the wall scatter steps are on MapCommonBase.
+  hum_attitude        the attitude def targets this biome and carries the five-band thresholds.
+  harmony_gates       the Walls deep-scan gate and the Hum watched-bolt / fishing / infestation hooks are installed.
+  roach_gate          the roach think tree carries the cleaning toggle node ahead of the eat-cleanable node.
+  map_mechanics       bolt dance and freeze, curiosity pricing, eel fishing consequence, drill response, wall tiers
+                      at mapgen: UNMEASURED, each says what it needs (a generated RM_RustCathedral map, game time).
+
+STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
+"""
+import os
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+BIOME = "RM_RustCathedral"
+CONTROL_ABSENT = "ThingDef/RM_RustCathedralNoSuchDef_ZZ"
+OWN_SETTINGS = "RimMandrake.RustCathedral.RM_RustCathedralSettings"
+HUM_SETTINGS = "RimMandrake.Utinni.RustCathedralHum.RustCathedralHumSettings"
+WALLS_SETTINGS = "RimMandrake.Utinni.RustCathedralWalls.RustCathedralWallsSettings"
+SETTINGS_SOURCES = (
+    (OWN_SETTINGS, os.path.join("Source", "RustCathedral", "RM_RustCathedralMod.cs"), "RM_RustCathedralSettings"),
+    (HUM_SETTINGS, os.path.join("Source", "Hum", "RustCathedralHumSettings.cs"), "RustCathedralHumSettings"),
+    (WALLS_SETTINGS, os.path.join("Source", "Walls", "RustCathedralWallsSettings.cs"), "RustCathedralWallsSettings"),
+)
+# a real field line: `public static T name = value;` -- not `const`, not the `=>` computed properties
+_FIELD = re.compile(r"public\s+static\s+(bool|int|float|string)\s+(\w+)\s*=(?!>)\s*([^;]+);")
+# (typeName, methodName, expected harmony owner, what it gates)
+HARMONY = (
+    ("CompDeepScanner", "ChooseLumpThingDef", "mandrake.rut.rustcathedralwalls", "live pattern metal only from the cathedral's deep scans"),
+    ("Pawn", "Kill", "mandrake.rut.rustcathedralhum", "killing a living bolt irritates the hum"),
+    ("CompSpawner", "TryDoSpawn", "mandrake.rut.rustcathedralhum", "bolt shed curiosity gated by its toggle"),
+    ("WaterBodyTracker", "Notify_Fished", "mandrake.rut.rustcathedralhum", "coolant eel catch consequences"),
+    ("IncidentWorker_DeepDrillInfestation", "CanFireNowSub", "mandrake.rut.rustcathedralhum", "vanilla infestation replaced by the cathedral response"),
+)
+
+
+def _read(rel):
+    with open(os.path.join(HERE, rel), encoding="utf-8") as fh:
+        return fh.read()
+
+
+def _nocomment(src):
+    return re.sub(r"//[^\n]*", "", re.sub(r"/\*.*?\*/", "", src, flags=re.S))
+
+
+def settings_fields():
+    """{(typeName, field): (cs type, default text)} read from the three C# settings classes."""
+    out = {}
+    for typ, rel, cls in SETTINGS_SOURCES:
+        src = _nocomment(_read(rel))
+        body = src.split("class " + cls, 1)[1]
+        body = body.split("ExposeData", 1)[0] if cls == "RM_RustCathedralSettings" else body
+        for m in _FIELD.finditer(body):
+            out[(typ, m.group(2))] = (m.group(1), m.group(3).strip())
+    return out
+
+
+def shipped_defs():
+    """[(DefTypeTag, defName)] for every non-abstract top-level def under Defs/, from the XML."""
+    out = []
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
+        for fn in sorted(files):
+            if fn.endswith(".xml"):
+                for el in ET.parse(os.path.join(dp, fn)).getroot():
+                    nm = el.find("defName") if isinstance(el.tag, str) else None
+                    if nm is not None and nm.text and el.get("Abstract", "").lower() != "true":
+                        out.append((el.tag, nm.text.strip()))
+    return sorted(set(out))
+
+
+SHIPPED = shipped_defs()
+PLAIN = [(t, n) for t, n in SHIPPED if "." not in t]
+NAMESPACED = [(t, n) for t, n in SHIPPED if "." in t]
+
+
+def _biome():
+    return ET.parse(os.path.join(HERE, "Defs", "BiomeDefs", "RM_RustCathedral_Biome.xml")).getroot().find("BiomeDef")
+
+
+def static_checks():
+    bad = []
+    if len(SHIPPED) < 20:
+        return ["only %d defs parsed from Defs/ (sanity probe failed)" % len(SHIPPED)]
+    fields = settings_fields()
+    if len(fields) < 14:
+        return ["settings probe found %d scalar fields, floor 14 (sanity probe failed)" % len(fields)]
+    own_src = _read(os.path.join("Source", "RustCathedral", "RM_RustCathedralMod.cs"))
+    for (typ, name), _v in sorted(fields.items()):
+        if typ == OWN_SETTINGS:
+            if '"%s"' % name not in own_src:
+                bad.append("own settings field %s is not Scribed" % name)
+        else:
+            prefix = "hum_" if typ == HUM_SETTINGS else "walls_"
+            if '"%s%s"' % (prefix, name) not in own_src:
+                bad.append("absorbed field %s.%s is not Scribed by RM_RustCathedralSettings (it would never persist)" % (typ.rsplit(".", 1)[1], name))
+    for sub in ("RustCathedral", "Hum", "Walls"):
+        d = os.path.join(HERE, "Source", sub)
+        projs = [f for f in os.listdir(d) if f.endswith(".csproj")]
+        proj = _read(os.path.join("Source", sub, projs[0]))
+        for fn in sorted(os.listdir(d)):
+            if fn.endswith(".cs") and 'Compile Include="%s"' % fn not in proj:
+                bad.append("%s/%s is not in the csproj (compiles into nothing)" % (sub, fn))
+    b = _biome()
+    if b is None or b.findtext("defName") != BIOME:
+        bad.append("BiomeDef %s not parsed" % BIOME)
+    else:
+        if not float(b.findtext("animalDensity") or 0) > 0:
+            bad.append("animalDensity is 0: the roster is dead content")
+        if len(list(b.find("wildAnimals"))) < 3:
+            bad.append("wildAnimals roster has fewer than 3 rows")
+        if b.find("wildPlants") is not None and len(list(b.find("wildPlants"))):
+            bad.append("wildPlants is no longer empty: ruled zero (frozen sheet ban 7), a deliberate edit must update this check")
+    for need in ("BiomeDef", "ThingDef", "PawnKindDef", "GenStepDef", "ThinkTreeDef", "HediffDef", "IncidentDef", "TerrainDef", "SoundDef"):
+        if need not in set(t for t, _n in SHIPPED):
+            bad.append("no %s parsed" % need)
+    for cls in ("RM_BiomeWorker_RustCathedral", "GenStep_ScatterCathedralWallTiers", "GenStep_ScatterSacredWalls",
+                "RM_ThinkNode_ConditionalRoachCleaningEnabled"):
+        found = any(("class %s" % cls) in _read(os.path.join("Source", d, f))
+                    for d in ("RustCathedral", "Hum", "Walls") for f in os.listdir(os.path.join(HERE, "Source", d)) if f.endswith(".cs"))
+        if not found:
+            bad.append("class %s not found in Source/" % cls)
+    walls_src = _read(os.path.join("Source", "Walls", "HarmonyPatch_GateLivePatternMetal.cs"))
+    if "ChooseLumpThingDef" not in walls_src:
+        bad.append("the deep-scan gate no longer patches CompDeepScanner.ChooseLumpThingDef")
+    if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "RustCathedral.md")):
+        bad.append("walk missing")
+    return bad
+
+
+try:
+    _UTILS = os.path.join(HERE, "..", "Utils")
+    if os.path.isdir(_UTILS) and _UTILS not in sys.path:
+        sys.path.insert(0, _UTILS)
+    from modcheck import Suite, ExpectationFailed
+except ImportError:
+    Suite = None
+
+
+def _build_suite():
+    suite = Suite("RustCathedral")
+    suite.toggles = sorted(n for (_t, n), (ty, _v) in settings_fields().items() if ty == "bool")
+
+    def _live(t):
+        return t.session is not None and not t.upstream_failed
+
+    def _unmeasured(t, why):
+        t.upstream_reason = "UNMEASURED: " + why
+        t.upstream_failed = True
+
+    def _raw(t, typ, action, field, value=None):
+        if value is not None:
+            r = t.session.call("jawa/mod_settings_field", typeName=typ, action=action, field=field, value=str(value))
+        else:
+            r = t.session.call("jawa/mod_settings_field", typeName=typ, action=action, field=field)
+        return r if isinstance(r, dict) else {}
+
+    def _same(ty, a, b):
+        if ty == "bool":
+            return str(a).lower() == str(b).lower()
+        if ty == "string":
+            return str(a) == str(b)
+        try:
+            return abs(float(a) - float(b)) <= 1e-4 * max(1.0, abs(float(b)))
+        except (TypeError, ValueError):
+            return False
+
+    def _flat(o):
+        if isinstance(o, dict):
+            for k, v in o.items():
+                yield str(k)
+                for x in _flat(v):
+                    yield x
+        elif isinstance(o, (list, tuple)):
+            for v in o:
+                for x in _flat(v):
+                    yield x
+        elif o is not None:
+            yield str(o)
+
+    @suite.chain("defs_resolve")
+    def defs_resolve(t):
+        with t.component("control_probe_can_say_absent", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs=CONTROL_ABSENT, fields="defName", limit=2)
+            if _live(t):
+                if not isinstance(r, dict) or r.get("success") is False:
+                    raise ExpectationFailed("get_defs failed outright on the control: %r" % r)
+                if int(r.get("foundCount", 0)) != 0 or not r.get("notFound"):
+                    raise ExpectationFailed("control def reads as present: %r" % r)
+        with t.component("every_shipped_def_resolves", beyond_toggle=True):
+            names = ["%s/%s" % p for p in PLAIN]
+            missing, ok = [], 0
+            for i in range(0, len(names), 40):
+                r = t.bridge_call("jawa/get_defs", defs=";".join(names[i:i + 40]), fields="defName", limit=60)
+                if not _live(t):
+                    continue
+                if not isinstance(r, dict) or r.get("success") is False:
+                    raise ExpectationFailed("get_defs failed: %r" % r)
+                missing.extend(r.get("notFound") or [])
+                ok += int(r.get("foundCount", 0))
+            if _live(t) and (missing or ok != len(names)):
+                raise ExpectationFailed("%d of %d defs resolved; notFound=%r" % (ok, len(names), missing[:8]))
+        with t.component("namespaced_attitude_def_resolves", beyond_toggle=True):
+            for ty, nm in NAMESPACED:
+                short = ty.rsplit(".", 1)[1]
+                r = t.bridge_call("jawa/get_defs", defs="%s/%s" % (short, nm), fields="defName", limit=2)
+                if not _live(t):
+                    continue
+                if not isinstance(r, dict) or r.get("success") is False:
+                    _unmeasured(t, "get_defs cannot take the custom def type %s: %s" % (short, str(r)[:140]))
+                    return
+                if int(r.get("foundCount", 0)) != 1:
+                    raise ExpectationFailed("%s/%s did not resolve: %r" % (short, nm, r))
+
+    @suite.chain("settings_roundtrip")
+    def settings_roundtrip(t):
+        fields = settings_fields()
+        with t.component("settings_probe_finds_fields_in_all_three_classes", beyond_toggle=True):
+            if len(fields) < 14 or len(set(k[0] for k in fields)) != 3:
+                raise ExpectationFailed("settings probe found %d fields in %d classes (blind regex)" % (len(fields), len(set(k[0] for k in fields))))
+        for (typ, field), (ty, _dv) in sorted(fields.items()):
+            with t.component("%s_%s_round_trips" % (typ.rsplit(".", 1)[1].replace("RustCathedral", "")[:8] or "own", field),
+                             toggle=(field if ty == "bool" else None), beyond_toggle=(ty != "bool")):
+                if not _live(t):
+                    continue
+                old = _raw(t, typ, "get", field).get("value")
+                if old is None:
+                    raise ExpectationFailed("%s.%s: get returned no value" % (typ, field))
+                if ty == "bool":
+                    new = "False" if str(old).lower() == "true" else "True"
+                elif ty == "string":
+                    new = "zz_probe"
+                else:
+                    new = str(float(old) + 1.0)
+                try:
+                    if not _raw(t, typ, "set", field, new).get("success"):
+                        raise ExpectationFailed("%s.%s: set failed" % (typ, field))
+                    back = _raw(t, typ, "get", field).get("value")
+                    if not _same(ty, back, new):
+                        raise ExpectationFailed("%s.%s: wrote %s, read %r" % (typ, field, new, back))
+                finally:
+                    _raw(t, typ, "set", field, old)
+                back = _raw(t, typ, "get", field).get("value")
+                if not _same(ty, back, old):
+                    raise ExpectationFailed("%s.%s did not restore to %r (read %r)" % (typ, field, old, back))
+
+    @suite.chain("biome_wiring")
+    def biome_wiring(t):
+        b = _biome()
+        want_animals = [c.tag for c in b.find("wildAnimals")]
+        want_fish = [c.tag for ft in b.find("fishTypes") for c in ft]
+        want_rock = [li.text.strip() for li in b.find("forceRockTypes")]
+        with t.component("animal_density_positive_and_deep_read_succeeds", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs="BiomeDef/" + BIOME, fields="animalDensity,plantDensity,maxFishPopulation,workerClass", deep=True, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or []
+                if not isinstance(r, dict) or r.get("success") is False or not rows:
+                    raise ExpectationFailed("could not read %s: %r" % (BIOME, r))
+                f = rows[0].get("fields") or {}
+                try:
+                    ad = float(f.get("animalDensity"))
+                except (TypeError, ValueError):
+                    _unmeasured(t, "get_defs did not return a numeric animalDensity: %r" % (f,))
+                    return
+                if not ad > 0:
+                    raise ExpectationFailed("animalDensity %s: the whole roster would never spawn" % ad)
+        with t.component("roster_fish_and_rock_rows_present", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs="BiomeDef/" + BIOME, fields="wildAnimals,fishTypes,forceRockTypes,wildPlants", deep=True, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or []
+                if not isinstance(r, dict) or r.get("success") is False or not rows:
+                    raise ExpectationFailed("could not read %s: %r" % (BIOME, r))
+                f = rows[0].get("fields") or {}
+                blob = "|".join(_flat({k: f.get(k) for k in ("wildAnimals", "fishTypes", "forceRockTypes")}))
+                if not f or all(f.get(k) in (None, "") for k in ("wildAnimals", "fishTypes", "forceRockTypes")):
+                    _unmeasured(t, "get_defs did not serialise the roster fields: %r" % (list(f)[:6],))
+                    return
+                missing = [n for n in want_animals + want_fish + want_rock if n not in blob]
+                if missing:
+                    raise ExpectationFailed("biome lacks rows the XML ships: %s" % missing)
+        with t.component("wild_plants_stay_empty_ruled_zero", beyond_toggle=True):
+            r = t.bridge_call("jawa/biome_probe", biomes=BIOME)
+            if _live(t):
+                if not isinstance(r, dict) or r.get("success") is False:
+                    _unmeasured(t, "biome_probe could not be asked: %s" % str(r)[:140])
+                    return
+                rows = r.get("biomes") or []
+                row = next((x for x in rows if x.get("defName") == BIOME or x.get("biome") == BIOME), rows[0] if len(rows) == 1 else None)
+                if row is None or "plants" not in row:
+                    _unmeasured(t, "biome_probe returned no plants list for %s: %s" % (BIOME, str(r)[:140]))
+                    return
+                if row.get("plants"):
+                    raise ExpectationFailed("%s now lists wild plants %r: ruled zero (frozen sheet ban 7)" % (BIOME, row.get("plants")))
+        with t.component("wall_scatter_steps_on_map_common_base", beyond_toggle=True):
+            steps = [n for ty, n in SHIPPED if ty == "GenStepDef"]
+            r = t.bridge_call("jawa/get_defs", defs="MapGeneratorDef/MapCommonBase", fields="genSteps", deep=True, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or []
+                if not isinstance(r, dict) or r.get("success") is False or not rows or "genSteps" not in (rows[0].get("fields") or {}):
+                    _unmeasured(t, "get_defs did not serialise MapCommonBase.genSteps (the patch is a plain PatchOperationAdd): %s" % str(r)[:140])
+                    return
+                blob = "|".join(_flat(rows[0]["fields"]["genSteps"]))
+                miss = [s for s in steps if s not in blob]
+                if miss:
+                    raise ExpectationFailed("MapCommonBase.genSteps lacks %s: the wall patch did not apply" % miss)
+
+    @suite.chain("hum_attitude")
+    def hum_attitude(t):
+        with t.component("attitude_def_targets_this_biome", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs="RM_BiomeAttitudeDef/RUT_RustCathedralAttitude", fields="targetBiome,bandThresholds", deep=True, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or []
+                if not isinstance(r, dict) or r.get("success") is False or not rows:
+                    _unmeasured(t, "get_defs cannot read the custom attitude def: %s" % str(r)[:140])
+                    return
+                f = rows[0].get("fields") or {}
+                if BIOME not in "|".join(_flat(f.get("targetBiome"))):
+                    raise ExpectationFailed("attitude def targetBiome is %r, not %s" % (f.get("targetBiome"), BIOME))
+                bands = [x for x in _flat(f.get("bandThresholds")) if re.fullmatch(r"-?\d+(\.\d+)?", x)]
+                if len(bands) != 4:
+                    raise ExpectationFailed("attitude def should carry four band thresholds (five bands), read %r" % bands)
+
+    @suite.chain("harmony_gates")
+    def harmony_gates(t):
+        for typ, meth, owner, why in HARMONY:
+            with t.component("%s_%s_patched_by_%s" % (typ, meth, owner.rsplit(".", 1)[1]), beyond_toggle=True):
+                r = t.bridge_call("jawa/harmony_patches", typeName=typ, methodName=meth)
+                if _live(t):
+                    if not isinstance(r, dict) or r.get("success") is not True or r.get("harmonyError"):
+                        _unmeasured(t, "harmony_patches could not be asked: %s" % str(r)[:160])
+                        return
+                    owners = []
+                    for m in (r.get("methods") or []):
+                        for kind in ("prefixes", "postfixes", "transpilers", "finalizers"):
+                            owners.extend(p.get("owner") for p in (m.get(kind) or []))
+                    if owner not in owners:
+                        raise ExpectationFailed("%s.%s carries no patch from %s (%s); owners: %s"
+                                                % (typ, meth, owner, why, sorted(set(o for o in owners if o))[:8]))
+
+    @suite.chain("roach_gate")
+    def roach_gate(t):
+        with t.component("think_tree_carries_cleaning_toggle_node", toggle="roachCleaningEnabled"):
+            r = t.bridge_call("jawa/get_defs", defs="ThinkTreeDef/RM_ThinkTree_CathedralRoach", fields="thinkRoot", deep=True, limit=2)
+            if _live(t):
+                rows = (r or {}).get("defs") or []
+                if not isinstance(r, dict) or r.get("success") is False or not rows or "thinkRoot" not in (rows[0].get("fields") or {}):
+                    _unmeasured(t, "get_defs did not serialise the think tree: %s" % str(r)[:140])
+                    return
+                blob = "|".join(_flat(rows[0]["fields"]["thinkRoot"]))
+                if "RM_ThinkNode_ConditionalRoachCleaningEnabled" not in blob:
+                    raise ExpectationFailed("the roach tree no longer carries the cleaning toggle node (the toggle gates nothing)")
+
+    @suite.chain("map_mechanics")
+    def map_mechanics(t):
+        for name, toggle, why in (
+            ("bolts_dance_and_freeze_with_the_hum", "boltDanceEnabled",
+             "the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated "
+             "RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time"),
+            ("watched_pricing_and_kill_irritation", "boltWatchedPricingEnabled",
+             "carrying a curiosity or killing a bolt must raise irritation silently; no tool reads the attitude value"),
+            ("eel_fishing_consequence", "fishingPricingEnabled",
+             "a catch consequence needs a fishing job on a river of a generated Cathedral map"),
+            ("deep_drill_response_replaces_infestation", "drillResponseEnabled",
+             "the response incident fires from a deep drill on the Cathedral; fire_incident dry-run reports success=False with "
+             "canFireNow=False, so no honest read exists"),
+            ("wall_tiers_laid_at_mapgen", "wallTiersEnabled",
+             "deck plate, dead smartsteel and sacred wall scatter exist only on a map GENERATED as RM_RustCathedral; the bridge cannot generate one"),
+            ("hum_commentary_and_goodwill_drain", "goodwillDrainEnabled",
+             "a drain of -1 per 4 hours at the worst band needs hours of game time and a Forsaken faction relation"),
+        ):
+            with t.component(name, toggle=toggle):
+                if _live(t):
+                    _unmeasured(t, why)
+        with t.component("roach_eats_filth", toggle="roachCleaningEnabled"):
+            if _live(t):
+                _unmeasured(t, "a roach seeking filth needs a spawned roach, filth and a ticked map; the think-tree wiring is read in roach_gate")
+
+    return suite
+
+
+suite = _build_suite() if Suite is not None else None
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)
