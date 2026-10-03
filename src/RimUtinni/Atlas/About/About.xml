@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Scavenger's Atlas</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.atlas</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>A map of the unseen for the Utinni scenario. Every strange thing the clan can find, tame, build, survive or perform is a running light on the hull of the Utinni herself, laid out across her mandibles, holds, factory pods and reliquary heart.
+
+Before you find a thing, its light is dark and its card shows a riddle. Click the card and it flips over to a plainer hint. Find the thing (see it, use it, or perform it, depending on what it is) and the light comes on. A lit card can be clicked through to a short piece of lore, if you want it. Nothing is ever pushed at you.
+
+No rewards by default. Optional small material rewards can be switched on in Mod Settings, for discoveries made after you switch them on.
+
+Entries cover the Utinni campaign's own content and the free RimMandrake and RimStarWars mods the scenario runs. An entry whose subject is not loaded in your game is shown as absent from this world, never as a task left undone.
+
+Design: design/RimMandrake/utinni_discovery_achievements_design_2026-10-02.md (owner rulings 2026-10-02). Item: UTINNI_DISCOVERY_ACHIEVEMENTS_1.</description>
+
+  <loadAfter>
+    <li>mandrake.rm.lorestages</li>
+    <li>mandrake.rut.antiquities</li>
+    <li>mandrake.rut.shipmemory</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>
