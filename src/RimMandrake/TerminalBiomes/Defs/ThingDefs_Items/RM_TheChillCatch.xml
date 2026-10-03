@@ -207,7 +207,7 @@
     <label>zhiil</label>
     <description>The young of the thing that makes the V-wake. Hand-long, black, ridged, a body built of the same propane-native chemistry as its parent and already agitated by anything that moves in the fuel — a zhiil in a net thrashes until it freezes solid, and then it is a spiny black icicle that thaws back to thrashing on the fire. Scrapers who have fished up a zhiil pull the line and leave, because the parent is a thing that attacks pipe on sight and has a fairly clear idea of where its young went.</description>
     <graphicData>
-      <texPath>Things/Pawn/Animal/RM_Vaunoom/RM_Vaunoom</texPath>
+      <texPath>Things/Pawn/Animal/RM_Zhiil/RM_Zhiil</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
