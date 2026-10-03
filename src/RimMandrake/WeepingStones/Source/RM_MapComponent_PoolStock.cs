@@ -47,9 +47,8 @@ namespace RimMandrake.WeepingStones
 		private const int PulseIntervalTicks = 2500;
 
 		/// <summary>Pool fauna standing in a pen's cells is what population reads.
-		/// RM_Murrin is included even though its own biome-wiring is owed
-		/// elsewhere (FISH_BY_BIOME_1's successor): the spec names murrin rings
-		/// as the primary telemetry species (§2.0/§3), and a pen holding none
+		/// RM_Murrin is the primary telemetry species (§2.0/§3), and a
+		/// pen holding none
 		/// simply reads a population of zero from this list, same as any other
 		/// empty pen — never a crash, never a special case.</summary>
 		private static readonly HashSet<string> PoolFaunaDefNames = new HashSet<string>

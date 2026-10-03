@@ -49,8 +49,9 @@
   (design/Jawa/worldbuilding/biomes/weeping_stones_stocked_pool_2026-09-24.md
   §2) are wired below per the two-def law (§0/§2): a wildAnimals pawn entry
   (floor/pen presence) plus a fishTypes item entry (the catchable half,
-  RM_StockedPoolCatchItems.xml). RM_Murrin is UNTOUCHED here — its species
-  selection is owed to FISH_BY_BIOME_1's successor, per wave 1's own note.
+  RM_StockedPoolCatchItems.xml). RM_Murrin is wired too
+  (WEEPINGSTONES_MURRIN_CATCH_WIRING_1): wildAnimals 0.8 and RM_MurrinCatch in
+  fishTypes at 0.5, the gentlest and commonest of the pool fish.
   RM_Vhorrin carries zero ambient commonality by design (spec §2d: "the
   stocked line's set-piece... an enormous single harvest"; RM_Vhorrin ThingDef
   header: "NOT placed on any wildAnimals list") — it is a PoolStock
@@ -146,8 +147,9 @@
       <ColossusToad MayRequire="Ludeon.RimWorld.Odyssey">0.4</ColossusToad>  <!-- colossus toad - medium-resident, keep; vanilla Odyssey animal -->
       <RM_Ikee MayRequire="mandrake.rm.stillsand">0.1</RM_Ikee>  <!-- ikee - omen, import; non-Star-Wars donor, stays RM tier per Q9 -->
       <!-- STOCKED_POOL_BUILD_1 wave 2 — the stocked-pool bestiary's floor/pen
-           half (two-def law). RM_Murrin and RM_Vhorrin deliberately excluded,
-           see the header comment above. -->
+           half (two-def law). RM_Vhorrin deliberately excluded, see the
+           header comment above. -->
+      <RM_Murrin>0.8</RM_Murrin>  <!-- murrin - the gentle baseline, ring-maker; // INVENTED commonality, above skarrin/karrek -->
       <RM_Skarrin>0.6</RM_Skarrin>  <!-- skarrin - ring-breaker, common -->
       <RM_Karrek>0.6</RM_Karrek>  <!-- karrek - flenser swarm, common -->
       <RM_Vizhik>0.25</RM_Vizhik>  <!-- vizhik - the walker, uncommon -->
@@ -200,8 +202,9 @@
         <!-- STOCKED_POOL_BUILD_1 wave 2 — the stocked line's catch half
              (two-def law); a colonist fishing the pool edge with no husbandry
              job running can still occasionally pull one of these up
-             (RM_StockedPoolCatchItems.xml header). RM_Murrin/RM_Vhorrin
-             excluded, see the wildAnimals comment above for why. -->
+             (RM_StockedPoolCatchItems.xml header). RM_Vhorrin excluded,
+             see the wildAnimals comment above for why. -->
+        <RM_MurrinCatch>0.5</RM_MurrinCatch>  <!-- // INVENTED: commonest, gentle row -->
         <RM_SkarrinCatch>0.4</RM_SkarrinCatch>
         <RM_KarrekCatch>0.4</RM_KarrekCatch>
         <RM_VizhikCatch>0.2</RM_VizhikCatch>

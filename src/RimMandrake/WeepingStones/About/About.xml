@@ -108,7 +108,7 @@ shipped this wave, inert — no spawn path yet.
 **Build state (2026-09-24, wave 2):** six of the eight bestiary rows
 (`RM_Skarrin`/`RM_Karrek`/`RM_Vizhik`/`RM_Loomu`/`RM_Huldu`/`RM_Ivvol`) are now
 wired into `RM_WeepingStones`'s own `wildAnimals`/`fishTypes` per the two-def
-law (`RM_Murrin` stays untouched, owed to `FISH_BY_BIOME_1`'s successor;
+law (`RM_Murrin` was wired afterwards by `WEEPINGSTONES_MURRIN_CATCH_WIRING_1`;
 `RM_Vhorrin` stays at zero ambient commonality by design). The pen half of
 the husbandry loop landed too: a `RM_Zone_PoolPen` zone designator (water
 cells only, registered on the vanilla "Zone" tab) and

@@ -137,9 +137,9 @@ class WSGame(MockGame):
 
     # ------------------------------------------------------------------- settings / UI
     def t_jawa_mod_settings_field(self, p):
-        if p.get("field") in V.SLIDERS:
+        if p.get("field") in V.SLIDERS or p.get("field") in V.EH_SLIDERS:
             if not hasattr(self, "sliders"):
-                self.sliders = {k: v[0] for k, v in V.SLIDERS.items()}
+                self.sliders = {k: v[0] for k, v in list(V.SLIDERS.items()) + list(V.EH_SLIDERS.items())}
             if p.get("action") == "set":
                 self.sliders[p["field"]] = float(p.get("value"))
             return {"success": True, "value": str(self.sliders[p["field"]])}
@@ -286,7 +286,7 @@ def main():
     check("rottable items derived (%d)" % len(V.ROTTABLE_ITEMS), len(V.ROTTABLE_ITEMS) >= 10)
     check("flora products derived", [p for p, _ in V.FLORA_PRODUCTS] == ["RM_Bladderquill", "RM_Steamfrond", "RM_Dewgourd"],
           V.FLORA_PRODUCTS)
-    check("stocked catch kinds derived", len(V.CATCH_KINDS) == 6, V.CATCH_KINDS)
+    check("stocked catch kinds derived", len(V.CATCH_KINDS) == 7, V.CATCH_KINDS)   # 7 with RM_MurrinCatch (2026-10-03)
     check("settings field named in the C# source",
           "stockedPoolsEnabled" in open(os.path.join(HERE, "Source", "RM_WeepingStonesSettings.cs"), encoding="utf-8").read())
     decl = V.suite.components_declared()
