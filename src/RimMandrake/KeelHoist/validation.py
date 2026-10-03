@@ -91,8 +91,44 @@ def source_rules(t):
             raise ExpectationFailed("compiled into nothing (EnableDefaultCompileItems false): %s" % missing)
 
 
+@suite.chain("fixed_site_frames")
+def fixed_site_frames(t):
+    """HOIST_FIXED_SITE_FRAMES_1: the head-frame is genstep-placed only; the Foundry tower door carries it."""
+    t.clear_area(size=6)
+    with t.component("frame_not_player_buildable", beyond_toggle=True):
+        defs = {d.findtext("defName"): d for d in _xml("Defs", "ThingDefs_Buildings", "RM_HoistFrame.xml").findall("ThingDef")}
+        if set(defs) != {"RM_HoistFrame", "RM_SealedPit"}:   # sanity probe: the instrument sees both defs
+            raise ExpectationFailed("read %s" % sorted(defs))
+        for name, d in defs.items():
+            for field in ("designationCategory", "researchPrerequisites", "costList"):
+                if d.find(field) is not None:
+                    raise ExpectationFailed("%s carries %s, so a player could build it" % (name, field))
+    with t.component("genstep_registered_and_tower_wired", beyond_toggle=True):
+        reg = _xml("Patches", "RM_HoistFrames_Register.xml")
+        if "RM_HoistFrames" not in [li.text for li in reg.iter("li")]:
+            raise ExpectationFailed("RM_HoistFrames not added to Base_Player")
+        tower = ET.parse(os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches",
+                                      "RUT_FoundryTowerHoistFrame.xml")).getroot()
+        op = tower.find("Operation")
+        if op is None or op.findtext("xpath") != '/Defs/ThingDef[defName="RM_HoistFrame"]':
+            raise ExpectationFailed("tower wiring is not guarded on RM_HoistFrame existing")
+        if not [li for li in tower.iter("li") if li.get("Class") == "RimMandrake.KeelHoist.RM_HoistFrameSiteExtension"]:
+            raise ExpectationFailed("tower door does not get RM_HoistFrameSiteExtension")
+    with t.component("holder_lift_waits_for_gate", beyond_toggle=True):
+        hoist = _src("RM_KeelHoist.cs")
+        raise_body = hoist[hoist.index("public void RaiseCradle()"):hoist.index("public override IEnumerable<Gizmo> GetGizmos()")]
+        if raise_body.find("GateOpen") < 0 or raise_body.find("GateOpen") > raise_body.find("TakeAll"):
+            raise ExpectationFailed("RaiseCradle can empty a holder before checking its gate")
+    with t.component("frame_defs_resolve_live", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_HoistFrame;ThingDef/RM_SealedPit;GenStepDef/RM_HoistFrames")
+        if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
+            raise ExpectationFailed("frame defs missing live: %r" % r)
+
+
 # Live mechanics are NOT components here: a component with nothing to ask would record PASS. They are walk lines
 # marked UNCOVERED until a drive exists (walk: design/validation_walks/RimMandrake/KeelHoist.md):
 #   items + a downed wild animal down RM_LanternDeepMineshaft and back up, manifest 2 DOWN + 2 UP, beast restrained;
 #   CanLaunch refused with the cable down ("Reel in the keel hoist first."), accepted after reel-in or tetherLock off;
-#   a downed hostile humanlike lowered to a cell target arrives IsPrisonerOfColony.
+#   a downed hostile humanlike lowered to a cell target arrives IsPrisonerOfColony;
+#   a Forge home map with a foundry tower door gets a paired RM_HoistFrame beside it (RM_HoistFrames genstep);
+#   RM_SealedPit owned by a faction with able members on the map refuses Raise cradle, and lifts once they are gone.
