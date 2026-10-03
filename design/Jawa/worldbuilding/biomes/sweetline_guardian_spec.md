@@ -1,453 +1,439 @@
-# Sweetline guardian — generic guardian species spec
+# The sweetline tree, its wool and its bark-wardens: the ruled spec
 
-**Item:** `SHRUBLAND_TREE_GUARDIAN_1` · **Ruling:** owner, 2026-09-21, option (b) — one
-generic `PawnKindDef` that spawns near any sweetline tree and guards it.
-**Status:** DESIGN — no def, XML or C# written. Build is a separate item.
+**The one authoritative spec** for the sweetline tree's wool economy, the scratching-tree
+behaviour, the bark-warden guardian and its activation, tree placement, and their settings.
+Every owner question on `LEANINGSCRUB_SWEETLINE_GUARDIAN_1` is ruled (2026-10-03). The former
+`leaningscrub_sweetline_guardian_activation_2026-10-02.md` was merged here and is now a pointer.
+The owner-facing account of how this was reached is `Transient/barkwarden_readout_2026-10-03.md`
+(transient; this file is the authority).
+
+Items: `SHRUBLAND_TREE_GUARDIAN_1` (closed, built `fd8b0b8d2`), `SWEETLINE_SCRATCHING_TREE_BUILD_1`
+(the rubbing behaviour, owed), `LEANINGSCRUB_SWEETLINE_GUARDIAN_1` (this decision item), and
+`TREE_GRAPHICS_OWNERSHIP_1` (tree art pick). Mod: `mandrake.rm.leaningscrub`
+(`src/RimMandrake/LeaningScrub/`), shipped inside the composed `mandrake.rm.biomes`.
 
 ## 0. Summary
 
-- **What:** a medium-band arboreal climber that roosts in the crown of a sweetline tree
-  (`RM_SweetlineTree`), lines its bower with the giant-wool snagged on the bark, and defends the
-  tree against whoever harms it (whether a lone visitor near the trunk is charged is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md). Two or three per tree. Wild
-  (faction-null), huntable, tameable but wild (0.95). It does not fly.
-- **Mechanism:** the `SHRUBLAND_GIANT_ENRAGE_1` shape, generalised from "guard a calf" to
-  "guard a Thing" — a comp on the guardian is anchored on its HOME TREE and is pushed into
-  the existing scoped `MentalState_Manhunter` subclass `RM_MentalState_ScopedAggression`
-  (hostile to ONE pawn, ends when that pawn is beyond `disengageRadius` of the anchor cell);
-  what pushes it, a proximity scan or a harm trigger, is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md. Two more small pieces: a roost comp on the
-  tree that spawns and re-spawns its guardians, and an `Animal_PreMain` think-tree insert that
-  walks a strayed guardian home. **Needs C#** — three small classes in
-  `mandrake.rm.creaturebehaviors`, each a generalisation of code already in that assembly. No
-  Harmony, no patch of any vanilla def (§2).
-- **Tier (RULED, card 2026-09-25 + Q11a):** species def `RM_Barkwarden` in the Arid
-  Shrubland's own `RM_` biome mod; mechanism `RM_` in the kit; the binding (the roost comp on
-  the tree and the biome wiring) `RM_`, in `mandrake.rm.leaningscrub`'s own XML (§7).
-- **Names (RULED, card 2026-09-25):** defName `RM_Barkwarden`; player label **"bark-warden"** (§7).
-- **Owner questions:** §11 — the wool-harvest pace reconciliation and the tunnel-snake
-  body-size flag; tier and name are ruled.
+- **The tree** (`RM_SweetlineTree`) is an ancient named giant. A **rare map step** plants one or
+  two on a Leaning Scrub map (§8). It cannot be felled by Cut or Harvest, only by damage.
+- **The wool comes from animals, not from giants alone.** Any animal that grows a shearable coat
+  now and then walks to a sweetline tree and **rubs its coat off** against the bark: an
+  auto-shearing spot, *"just a really wonderfully scratchy tree they like"* (§3). Most of the coat
+  drops on the ground at the trunk as that animal's own product; the rest felts into the bark.
+- **Two ways to take wool, both worth it** (§4). The **free drop** stays generous: the rubbed-off
+  coats on the ground, plus the tree's own shed of felt (5 every 5 days, which keeps going after
+  a harvest). The **harvest** strips the **felted mass of everything rubbed in**, which with the
+  bark's resins is a uniquely comfortable blend: the existing item `RM_SweetlineWool` (§5).
+- **The bark-wardens** (`RM_Barkwarden`, 2–3 per tree) sleep **visibly** against the trunk:
+  *"Roosting in the crown of <tree name>."* Walking up is not hostile; they watch. Harvest work and
+  wounds fill a **disturbance meter** with two warnings, and at full they drop on the harvester,
+  about halfway through the job. The tree forgives in about 5 days (§6, §7). Built `fd8b0b8d2`.
+- **Owed:** the rubbing behaviour, the felt store and harvest bonus, the comfort effect, the
+  placement genstep, text fixes, art and live proof (§11, about 500 lines of C# in total).
 
-## 1. What the creature is
+## 1. Rulings
 
-The tree is the only vertical in a biome that is a knee-high canopy horizon to horizon. Its
-crown is the one place on the plain with sightlines, shade and a hanging larder — the
-giant-wool the bark snags — and the bark-warden is what took it. A knuckle-walking climber about
-the mass of a large dog, long-armed, hook-clawed, with a flat wide head and a coat the
-silver-grey of the wool it sleeps in; it is invisible in the crown until it is not. It eats
-what the tree brings it (bark-lickers, the runway animals that come to the trunk, fuzz at the
-foot of the tree when nothing else comes) and never goes far, because the tree is the whole
-of its territory: a bark-warden more than a dozen cells from its trunk is a bark-warden walking back.
-
-What it does to you: whether it charges a lone visitor near the trunk, and whether any tell
-precedes a charge, is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md. Harm to the tree brings the bark-wardens down on
-the harmer; whether harvesting the wool counts as harm is open in the same document. Cutting
-and harvesting do not kill this tree (`harvestAfterGrowth 0.05` makes `HarvestDestroys` false,
-so `PlantCollected` only resets growth); only damage kills it. That is the whole
-creature: **a valuable hanging harvest, in a dangerous place**, where the danger is
-proportional, local, and readable — you can see the tree from a day's walk, and every Jawa
-knows what lives in it.
-
-Register notes, for the description text: the wild here is quiet and "danger announces itself
-by posture, never by voice" (§5 of the biome sheet) — whether the bark-warden gives a tell
-before a charge is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md, and its `soundAngry` should be breath and claws, not a roar. Slots in the size ladder:
-medium, the interface-killer band, alongside Anooba and Massiff; it is the one medium
-predator that hunts DOWN from above rather than across the interface, which is the niche the
-ladder leaves open ("come from the sky and dive" is the fliers' route; this is the canopy's).
-
-## 2. Territorial mechanism — how "aggressive only near the tree" is actually done
-
-RimWorld has no territory field. Four real mechanisms were checked against the decompiled 1.6
-engine this pass (RimSage, 2026-09-21) before choosing; the first three are rejected with the
-measured reason.
-
-**(i) The hive pattern — `CompSpawnerPawn` + a hidden hostile faction + a defend lord.**
-REJECTED. `CompSpawnerPawn.TrySpawnPawn` generates the pawn with `parent.Faction` and ALWAYS
-files it into a lord: `(Lord ?? CreateNewLord(parent, aggressive, Props.defendRadius,
-Props.lordJob)).AddPawn(pawn)`, where `CreateNewLord` is
-`LordMaker.MakeNewLord(byThing.Faction, Activator.CreateInstance(lordJobType, new
-SpawnedPawnParams{…}))` (RimWorld/CompSpawnerPawn.cs l.140–154, l.263–290). A plant has no
-faction and no `lordJob` type exists that takes `SpawnedPawnParams` except the hive and
-mechanoid ones, so on a tree this either throws or builds a faction-null hive lord. And a
-faction-null pawn is hostile to nobody — `GenHostility.HostileTo(Thing, Thing)` falls through
-every special case to `if (a.Faction == null || b.Faction == null) return false`
-(RimWorld/GenHostility.cs l.9–98, re-read this pass) — so the defend-point duties'
-`JobGiver_AIFightEnemies` would never find a target. Giving the guardian a hidden
-permanent-enemy faction instead (Insect-style) makes it hostile to every colonist on the whole
-map, untameable, and an active threat for `DangerWatcher` (`GenHostility.IsActiveThreatTo`
-exempts only `LordJob_DefendAndExpandHive`, l.311–334). That is the exact opposite of
-"aggressive only near the tree".
-
-**(ii) `CompCanBeDormant` + `CompWakeUpDormant`** (what `RSW_TunnelSnake` uses). REJECTED as
-the mechanism: it is a sleep switch, not a territory. It wakes into vanilla behaviour with no
-leash and no scope, and a woken faction-null animal still attacks nobody.
-
-**(iii) Vanilla Manhunter via the kit's `RM_CompPlantAlarm`** (`ROT_GUARDIAN_GROVES_1`):
-damage or harvest on the plant pushes `MentalStateDefOf.Manhunter` onto every tagged responder
-within 18 cells. REJECTED as the primary — `MentalState_Manhunter.ForceHostileTo` answers true
-for every humanlike and every humanlike faction on the map (Verse/AI/MentalState_Manhunter.cs
-l.13–35), so one harvest turns the tree's guardians into a map-wide manhunter pack that
-chases your colonists home. Kept, in scoped form, as the harvest hook (below).
-
-**(iv) A scoped manhunter subclass — CHOSEN.** This is `SHRUBLAND_GIANT_ENRAGE_1`, already
-built, deployed and wired onto `RSW_ShrublandGiant`, with the anchor changed from "my calf"
-to "my tree". Two engine facts carry it, and both are load-bearing:
-
-1. `GenHostility.HostileTo(Thing a, Thing b)` consults `pawn.MentalState.ForceHostileTo(b)`
-   BEFORE any faction logic (GenHostility.cs l.9–98: the mental-state check comes right
-   after the dormancy, `hostileToAll` and trait tests; the faction-vs-faction comparison is
-   the final fallthrough). A state whose `ForceHostileTo(Thing)` answers true for exactly
-   one pawn makes the guardian hostile to that pawn and nobody else; `ForceHostileTo(Faction)`
-   answering false means no faction ever goes to war over it. Symmetric for free: the
-   intruder sees the guardian as hostile and may shoot back.
-2. `ThinkTreeDef MentalStateNonCritical` routes manhunting through
-   `ThinkNode_ConditionalMentalStateClass`, whose `Satisfied()` is
-   `stateClass.IsInstanceOfType(mentalState)` — an instance check, so a SUBCLASS of
-   `MentalState_Manhunter` inherits `JobGiver_Manhunter`'s whole chase-and-melee behaviour
-   with no think-tree patch. (MEASURED 2026-09-20 by the enrage build, Verse/AI/
-   ThinkNode_ConditionalMentalStateClass.cs l.19; not re-read this pass.)
-
-And one fact that shapes what the guardian can attack at all: `JobGiver_Manhunter.
-FindPawnTarget`'s validator is `x is Pawn && (int)x.def.race.intelligence >= 1` — ToolUser
-or Humanlike only (RimWorld/JobGiver_Manhunter.cs l.79–84). **A bark-warden can never target an
-animal.** Your pets grazing under the tree are safe; so is every wild thing. "Defend them from
-human-sized things" is what the engine gives, not something to build.
-
-### The three pieces, all in `mandrake.rm.creaturebehaviors` (RM tier — names no species)
-
-**A. `RM_TreeGuardianExtension` (DefModExtension on the race) + `RM_CompTreeGuardian`
-(ThingComp on the race).** The comp holds `homeTree` (a `Thing`, `Scribe_References`). At
-`CompTickRare` (250 ticks; a pawn comp, which does Rare-tick), if the home tree is spawned and
-the pawn is wild and not already in a mental state: a bounded `GenRadial.RadialDistinctThingsAround`
-scan of `triggerRadius` cells around the TREE (whether a proximity scan exists at all is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md; this
-describes it if it is chosen) (not the pawn — the pawn may be up the trunk or twelve cells off
-grazing; the territory is the tree's). Same intruder filter as `RM_CompParentalEnrage.
-FindIntruder`: ToolUser+ only, exempt same race, exempt the guardian's own faction (a tamed
-one never rages at its handlers), skip psychologically-invisible, LOS optional and off. The
-nearest qualifying pawn becomes `otherPawn` of a forced, force-wake `TryStartMentalState` of
-`RM_MentalState_ScopedAggression`. Cooldown per guardian `600` ticks — short on purpose: a loiterer inside
-the radius gets charged again every ~15 in-game minutes, which is the pressure the loop needs.
-
-Fields, with the shipped defaults for the bark-warden: `rageState` (null = inert, as
-`enrageState` is), `triggerRadius 9`, `disengageRadius 18` (explicit rather than 2×, so a
-race can be given a tight trigger and a long grudge), `rageDurationTicks 2500`,
-`cooldownTicks 600`, `leashRadius 12`, `rehomeSearchRadius 60`,
-`onlyToolUserOrHumanlikeTriggers true`, `exemptSameRace true`, `exemptSameFaction true`,
-`requireLineOfSight false`.
-
-**The mental state already exists:** `RM_MentalState_ScopedAggression`
-(`src/RimMandrake/CreatureBehaviors/Source/RM_MentalState_ScopedAggression.cs`), a
-`MentalState_Manhunter` subclass with `ForceHostileTo(Thing t) => t == causedByPawn`,
-`ForceHostileTo(Faction) => false`, and a disengage check every 30 ticks that recovers once the
-target is dead, downed, despawned, off-map, or farther than `disengageRadius` from `anchorCell`.
-The anchor is a cell, so the tree's own cell serves; the state is measured from the anchor, not
-the guardian, because the guardian is the one doing the chasing. Use it, or a new MentalStateDef
-with that `stateClass` (the shipped `RM_SwarmAggression` is one; its timing is the wasp's, so a
-guardian wants its own def). No new state class is owed. Whether a charge carries a `beginLetter`
-or other tell is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md.
-
-**B. `RM_CompProperties_GuardianRoost` (ThingComp on the TREE, attached by the RUT flora
-XML with `MayRequire="mandrake.rm.creaturebehaviors"`).** Fields: `guardianKind`
-(PawnKindDef), `count` (IntRange, `2~3`), `respawnDays` (FloatRange, `8~14`),
-`spawnRadius 4`, `stopIfInHomeArea true`, `homeAreaGraceDays 3`. Behaviour:
-- `PostSpawnSetup(respawningAfterLoad: false)` → spawn the full complement. This fires on
-  map generation and on wild regrowth alike (both reach `GenSpawn.Spawn`); on a save that
-  already has trees it does NOT fire, and the top-up below fills them within one respawn
-  interval instead, so existing maps get guardians without a special case.
-- `CompTickLong` (a Plant never Rare-ticks; `Plant` overrides only `TickLong`, so a comp on the
-  tree must override `CompTickLong`, and the engine's Long cadence is the throttle) → prune the `guardians` list of dead/despawned; if fewer than `count` are
-  alive and bound to me and the respawn timer has elapsed, spawn ONE and reset the timer.
-- Spawn is `PawnGenerator.GeneratePawn(new PawnGenerationRequest(guardianKind, faction: null,
-  fixedBiologicalAge: adult))` at `CellFinder.RandomClosewalkCellNear(parent.Position,
-  spawnRadius)` — the shape `WildAnimalSpawner.SpawnRandomWildAnimalAt` uses (RimWorld/
-  WildAnimalSpawner.cs l.109–161), no lord, no faction. Then set the new pawn's
-  `RM_CompTreeGuardian.homeTree = parent`.
-- Nothing about points, storyteller reproduction factor, dormancy or messages is copied from
-  `CompSpawnerPawn`; a guardian spawning is silent (the biome's law).
-
-**C. `RM_JobGiver_ReturnToRoost`** in a `ThinkTreeDef` with `<insertTag>Animal_PreMain
-</insertTag>` — the kit's own `RM_ThinkTree_VerminBehaviors` pattern (`Defs/ThinkTreeDefs/`),
-so no vanilla def is patched. In Core's `Animal.xml` that tag sits at l.99, AFTER the
-`MentalStateNonCritical` subtree at l.72 (RimSage, this pass): a rage always outranks the
-leash, which is the right order. `TryGiveJob` returns null unless the pawn carries the
-extension, is wild, has a spawned home tree, and is farther than `leashRadius` from it; then
-it is a `Goto` to a random standable cell within 3 of the trunk. Vanilla wander drifts it;
-the leash pulls it back; `predator false` (§4) means nothing else drags it off.
-
-**Harvest hook.** The tree also carries the kit's existing `RM_CompProperties_PlantAlarm`
-with `tag SweetlineGuardian` and `radius 24`; the race carries `RM_AlarmResponderExtension`
-with the same tag. One small change to `RM_CompPlantAlarm` is owed: an optional
-`scopedRageState` field (MentalStateDef) — when set, a responder is pushed into THAT state
-with `otherPawn = dinfo.Instigator` (damage) or the harvester (`Plant.PlantCollected(Pawn by,
-…)`, RimWorld/Plant.cs l.621 — the only harvest seam; the tree's `thingClass` becomes a tiny
-`RM_Plant_Alarming : Plant` whose override calls `TriggerAlarm(by)`), instead of vanilla
-`Manhunter`. Default null keeps the rot grove exactly as it behaves today. Cutting and harvesting leave the tree standing (see §1); whether a harvest
-wakes the guardians at all is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md.
-
-**Cost.** One radial scan of radius 9 (≈250 cells) per guardian per 250 ticks, one list
-prune per tree per Long tick. Trees are `wildClusterWeight 0.05`; a 250×250 shrubland map
-carries a handful. Negligible.
-
-## 3. Finding its tree at spawn; tree death
-
-- **Roost-spawned (the normal case):** the roost comp sets `homeTree` at spawn. No search.
-- **Spawned any other way** (dev spawn, a trader's cargo escaping, a tamed one going feral,
-  a future incident): `homeTree` is null, so on its first rare tick the guardian comp runs a
-  ONE-TIME search for the nearest thing carrying `RM_CompGuardianRoost` within
-  `rehomeSearchRadius` (60) that has a vacancy (`guardians.Count < count.max`), and binds to
-  it — the roost's list gains the pawn, so the roost stops re-spawning for that slot. If none:
-  it is an ordinary wild animal — no rage, no leash, wanders, leaves the map when vanilla says
-  so. The search is repeated at most once a day, never every rare tick.
-- **The tree dies** (only damage kills it; cutting and harvesting do not): `homeTree` despawns → the same re-home rule, once. Guardians
-  that find no vacant tree are simply free animals from then on. Nothing kills them, nothing
-  makes them manhunt, nothing spawns a replacement (the roost comp died with the tree). The
-  rage started by the killing ends on its own rules (target gone or `rageDurationTicks`).
-- **The tree burns** (`Flammability 0.1`): same as dying; the arsonist is `dinfo.Instigator`
-  on the fire damage and gets the scoped rage via the harvest hook while it burns.
-- **Tamed:** faction non-null → the comp goes inert (no scan, no leash), the roost prunes it
-  on its next long tick (it checks faction as well as death), and the slot re-spawns on the
-  timer. A tamed bark-warden is a normal Advanced-trainable animal from then on. Going feral
-  again re-enters the "spawned any other way" rule.
-- **Save/load:** both references are `Scribe_References`; a `homeTree` that fails to
-  resolve reads as null and the re-home rule handles it.
-
-## 4. Combat weight and numbers
-
-**Band constraint first.** Biome ban 4 (linter-checkable): no resident creature in the LARGE
-band, 1.5–3.5 bodySize. The guardian is therefore MEDIUM, capped at 1.4 — it makes the harvest
-dangerous by numbers, an opener and a leash-bounded fight, not by mass.
-
-**Calibration set** — read from the defs on disk this pass (`mlie.starwarsanimalcollection`
-`1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml`, and our own `src/RimStarWars/SWBestiary/
-Defs/ThingDefs_Races/`):
-
-| creature | bodySize | healthScale | speed | main attacks (power / cooldown) | armour S/B | combatPower | group |
-|---|---|---|---|---|---|---|---|
-| Anooba (medium interface) | 0.95 | 1.00 | 5.0 | bite 16/2.0, scratch 10.9/2.0 ×2 | — | 80 | 3–6 |
-| Massiff (medium interface) | 0.85 | 1.00 | 5.0 | bite 16/2.0, scratch 9.9/2.0 ×2 | 0.12/0.12 | 60 | 3–6 |
-| Strill (medium, flier) | 1.0 | 2.00 | 3.5 | bite 18/2.0, scratch 10.9/2.0 ×2 | 0.12/0.12 | 60 | — |
-| `RSW_TunnelSnake` | 2.0 ⚠ | 3.00 | 3.2 | toxic stinger 16/2.6, claws 15/2.0 ×2 (+stun 8 surprise), bite 18/1.4 | 0.25/0.35 | 320 | 1 |
-| `RSW_ShrublandGiant` | 6.0 | 8.50 | 2.8 | bite 26/2.6, feet 22/2.0 ×2 | 0.50/0.45 | 380 | 1–3 |
-| Mudhorn (huge predator icon) | 4.0 | 4.50 | 4.0 | horn 26/2.0, bite 19/2.6 | 0.24/0.24 | 475 | 1 |
-| **bark-warden (proposed)** | **1.2** | **1.6** | **4.8** | **bite 15/1.8; hook-claws Scratch 12/2.0 ×2, surpriseAttack Stun 6; head Blunt 6/2.0 (chanceFactor 0.2)** | **0.20/0.15** | **110** | **2–3 per tree** |
-
-⚠ `RSW_TunnelSnake` at bodySize 2.0 is inside the banned large band. Found while calibrating,
-not this spec's to fix; reported to the owner (§11). It is NOT used as a ceiling here for that
-reason — the bark-warden is calibrated against Anooba (the biome's own medium predator) and the
-giant (the thing whose wool it lives in).
-
-**Why these numbers.**
-- bodySize 1.2 / healthScale 1.6: about 1.6× an Anooba's hit points, well under the snake's,
-  so a single bark-warden dies to two colonists with any weapon but outlasts one unarmed Jawa.
-- Speed 4.8 vs Anooba 5.0: a colonist (4.6) with a head start reaches the 18-cell disengage
-  line before being caught more often than not; a colonist who dawdles inside the radius does
-  not. The rage disengages at the line, so the chase is bounded by design, not by speed.
-- The opener: `surpriseAttack` Stun 6 on the hook-claws is the drop from the crown — a stun of
-  that size is a lost second or two, enough for the second bark-warden to arrive, not enough to
-  chain-lock a pawn (the snake's is 8; that one is an ambusher by trade). No venom: the venom
-  register belongs to the small band and the snake, and toxic on a 2–3 pack tips "dangerous"
-  into "lethal on contact".
-- Armour 0.20/0.15: bark-hide; noticeably tougher than Anooba, a third of the giant. Bullets
-  work.
-- combatPower 110 each, so a full tree is 220–330 points — roughly one tunnel snake, or a
-  third to half a shrubland giant. That is the weight the loop wants: **one colonist alone
-  should lose; two with guns firing from outside 9 cells win while the bark-wardens charge (they
-  charge — see manhunterOnDamage below); three in melee take real wounds.** The re-spawn
-  timer (8–14 days) makes it a renewable cost, not a one-time clearance.
-- `Wildness 0.95`, `manhunterOnDamageChance 1.0`, `manhunterOnTameFailChance 0.5`: shooting
-  one from thirty cells is vanilla revenge — it comes for the shooter, unscoped, exactly as a
-  wild animal should. Ranged cheese is still a fight.
-- `predator false`, `foodType OmnivoreAnimal`, `baseHungerRate 0.4`: it eats fuzz and whatever
-  the build's donor body allows, and does not roam to hunt. The "eats the bark-lickers" line is
-  description text, not `predator true` — a predator's hunt range would drag it off its tree
-  and would make it hunt your pets. `maxPreyBodySize` unset.
-- `herdAnimal false`, `wildGroupSize 1` on the PawnKindDef: it must NEVER appear through the
-  biome's `wildAnimals` table (commonality 0 there, and not listed at all) — every bark-warden
-  comes from a roost. A bark-warden with no tree is the failure mode, not a spawn table entry.
-- `lifeStageAges` the ordinary three-stage ladder (adult at 1.0 years); the roost spawns
-  adults; `gestationPeriodDays 12`; young born on the map inherit `homeTree` from the mother
-  in `RM_CompTreeGuardian.PostSpawnSetup` if she has one and the roost has a vacancy —
-  otherwise the "spawned any other way" rule. Live birth (flesh, blood) like the giant.
-- `ComfyTemperatureMin -5 / Max 50`, the giant's envelope: same plain, same wind.
-
-## 5. Huntable, tameable, drops
-
-- **Huntable: yes.** Vanilla Hunt designation works on a wild faction-null animal; the
-  approach to hunt it is the approach that rouses it, and a hit at range is a manhunter
-  revenge, so hunting IS the fight. No special case.
-- **Tameable: yes, hard.** `trainability Advanced`, `petness 0`, `Wildness 0.95`. Taming
-  requires standing inside the trigger radius with food — the rage is the tame-failure
-  penalty before the roll ever happens (`onlyToolUserOrHumanlikeTriggers` does not exempt a
-  handler). A tamed bark-warden goes inert as a guardian (§3) and is a good guard animal for its
-  weight; it does not guard anything of the colony's. No `specialTrainables` beyond the
-  Odyssey `AttackTarget` the snake already ships.
-- **Drops:** meat and a leather from the donor body the build reskins — the giant precedent
-  (`RSW_Leather_Fambaa` / `RSW_Gorg_Meat`) is to reuse rather than mint. **No signature drop.**
-  The reward is the tree's, deliberately: if the bark-warden dropped wool, killing them would be
-  the harvest and the tree would be scenery again. `MarketValue 420` (Anooba 400, Strill 450).
-- **Its bower** is not a Thing. The wool it sleeps in is the wool on the bark; the harvest
-  and the roost are one object, which is why harvesting is an attack on it.
-
-## 6. Mod Settings
-
-Standing ruling (owner, 2026-09-12): every mod ships a real settings screen; defaults =
-shipped behaviour; all-off degrades gracefully. This feature's switches live in the kit's
-existing `RM_CreatureBehaviorsSettings` screen (`RM_CreatureBehaviorsMod.cs`, numbered
-entries 28–31 in its header list, same conventions as 27 `parentalEnrageEnabled`). The RSW
-race and the RUT binding carry no settings of their own — SWBestiary's
-`RSW_BeastMechanicsSettings` precedent is for mechanics that live in SWBestiary; these do not.
-
-| setting | type / range | default | on → off, exactly |
+| # | ruling | when, how | recorded |
 |---|---|---|---|
-| `treeGuardiansEnabled` | bool | **true** | Off: roost comps spawn nothing new; guardian comps stop scanning and stop leashing, so every existing bark-warden is an ordinary wild animal from the next rare tick (it is NOT despawned — the owner's animals stay his). A rage already running ends on its own rules. Stats, tools and `manhunterOnDamageChance` are untouched: it is exactly as dangerous as its card says and no more. |
-| `treeGuardianRadiusMultiplier` | slider 0.5–2.0 | **1.0** | Scales `triggerRadius` and `disengageRadius` together (so the hysteresis ratio holds). 0.5 = "you have to touch the trunk"; 2.0 = a 36-cell exclusion zone. Never the leash. |
-| `treeGuardianCountMultiplier` | slider 0–2.0 | **1.0** | Scales the roost `count` range (rounded, floor 0). At 0 a tree spawns and re-spawns nothing; existing bark-wardens stay. At 2.0 a tree holds 4–6. |
-| `treeGuardianHarvestRage` | bool | **true** | Off: cutting, harvesting or burning the tree does not rouse them (the PlantAlarm scoped path is skipped); proximity still does. For the player who wants the sentry, not the siege. |
+| R1 | One **generic** guardian species, not per-tree uniques | card 2026-09-21 | `SHRUBLAND_TREE_GUARDIAN_1` |
+| R2 | Name **bark-warden**, defName `RM_Barkwarden`, `RM_` tier in the Leaning Scrub mod (invented name, Q11a) | card 2026-09-25; Q11a 2026-09-26 | same |
+| R3 | Gated by the **"Named sweetline trees"** Mod Setting | item criteria | `LEANINGSCRUB_SWEETLINE_GUARDIAN_1` |
+| R4 | Nothing strikes or vanishes without a **readable sign** | owner 2026-09-29/30 | `CLAUDE.md` |
+| R5 | **Walking up is not hostile**; the wardens watch | card 2026-10-03 | ledger note on this item |
+| R6 | **Harvesting wakes them gradually**: stirring, restless, then the drop on the harvester **about halfway** | card 2026-10-03 | same |
+| R7 | A harmed tree **forgives in about 5 days**, adjustable | card 2026-10-03 | same |
+| R8 | Wardens **visible, asleep against the trunk**, "Roosting in the crown of <tree>" when selected | card 2026-10-03 | same |
+| R9 | The **disturbance meter is the only robbed-nest effect** (no extra sulk after a harvest) | 2026-10-03 | same |
+| R10 | **Wool source:** any animal that produces a wool-like shearable product periodically comes to the tree and rubs it off; an auto-shearing spot, any animal, whatever its material | typed, 2026-10-03 | same |
+| R11 | **Prize = both:** the free drop stays generous, and a harvested tree keeps shedding | card 2026-10-03 | same |
+| R12 | **Harvest** gathers the felted mass of everything rubbed into the bark; with the bark's resins it makes a uniquely comfortable material: the existing sweetline wool item, now a blend | typed, 2026-10-03 | same |
+| R13 | **Placement:** a rare map step plants one or two sweetline trees on Leaning Scrub maps | card 2026-10-03 | same |
+| R14 | The bark-warden **does not fly**; it climbs and drops | flyer rule, 2026-09-19 | this spec §6 |
 
-Label the group **"Tree guardians (map generation and wild regrowth)"** — it is not a
-worldgen toggle (the planet is fixed and shipped), but it does decide what a NEW map or a
-regrown tree spawns, and the standing ruling asks for that class of effect to be named.
+## 2. The tree
 
-Graceful degradation, checked case by case: `rageState` null in XML → inert, as
-`enrageState` is; kit absent (`MayRequire` on every block) → the tree is a tree and the race
-loads as a plain animal with no comp; assembly present but the settings file missing →
-defaults; all four at their minimum → a tree with no guardians and a bark-warden that is a
-slightly tough Anooba.
+**Fiction (ruled, biome sheet `arid_shrubland.md` §4):** huge, ancient, never small; grows only on
+the sweetline; a surveyor's mark seen from a day's walk; every tree has a name and the roads run
+tree to tree. Its bark is rough enough that every coated beast of the plain comes to scratch on it,
+and the scratched-off coats, matted into the bark's resin, are the sweetline felt.
 
-## 7. Naming — defName and player-facing label
+**As built** (`src/RimMandrake/LeaningScrub/Defs/ThingDefs_Plants/RM_SweetlineTree.xml`,
+`thingClass RimMandrake.LeaningScrub.RM_Plant_Guarded`):
 
-**Tier, and why.** `design/NAMING_SCHEME_PLAN.md` §1: the engine/content rule says "the
-engine takes the highest tier it honestly passes, the content pack takes its own tier; one
-mod may not straddle." So this is three tiers, one each, and none of them straddles:
+| field | value | note |
+|---|---|---|
+| HP / Flammability / Mass / outdoor beauty | 650 / 0.1 / 900 / 10 | flavour values, not a balance pass |
+| Drawn size | 7.7–10 cells on a one-cell footprint | |
+| growDays | 240 | the map step plants them fully grown (§8) |
+| harvestWork | 4200 | the meter's timing is set against this (§7) |
+| harvestedThingDef / harvestYield | `RM_SweetlineWool` / 20 | the base yield; the felt store adds to it (§4) |
+| harvestMinGrowth / harvestAfterGrowth | 0.40 (TreeBase) / 0.05 | regrow to the next harvest: 240 × 0.35 = **84 growing days** |
+| Cut vs Harvest | the same act; neither fells it | engine §12 E1 |
+| Kills it | damage only: weapons, explosives, fire | |
+| Comps | `RM_CompSweetlineStation` (name, History, shed, visitors) and `RM_CompGuardianRoost` (wardens, meter) | `Source/RM_SweetlineStation.cs`, `Source/RM_SweetlineGuardians.cs` |
 
-| layer | tier | where | why |
+**Name and History (built).** Each tree rolls a unique name on first spawn
+(`RM_NamerSweetlineTree`, register draft in `leaningscrub_sweetline_name_register_2026-10-03.md`)
+and keeps up to 12 dated History entries: named, shed, struck by, visitors, warden events. The
+rubbing adds a "scratched" entry (§3).
+
+**Not in `wildPlants`, on purpose.** A landmark is not scatter; it reaches maps only through the
+map step in §8 (or dev spawn).
+
+## 3. The scratching tree: animals rub their coats off
+
+**Ruling R10.** Any animal that produces a shearable, wool-like product comes to the tree now and
+then and rubs it off. It is the animal's own idea; nobody orders it.
+
+**Who rubs.** Any spawned animal (wild or tame, any faction) whose race carries vanilla
+`CompShearable` (or a subclass), whatever its `woolDef` is: sheep and alpaca wool, muffalo and
+bison coats, bantha and nerf wool in the campaign layer, the Sump's brommet wool, and anything a
+mod adds. Milk (`CompMilkable`) and eggs are not coats and never count. Humanlikes never rub.
+
+🔴 **Engine fact that shapes the build (E2): a wild animal grows no wool in vanilla.**
+`CompHasGatherableBodyResource.Active` returns false when `parent.Faction == null`, and
+`CompTick` only grows `fullness` while Active. So a wild bantha's coat sits at 0 forever and a wild
+animal would never have anything to rub off. The free `RM_` Leaning Scrub roster has **no**
+shearable animal at all; the campaign layer adds wild `RSW_Bantha` (100 wool / 25 days) and
+`RSW_FeralNerf` (40 / 30 days). So:
+
+- **Tame and other-faction animals** use vanilla `fullness` as-is.
+- **Wild animals** need their coat to grow. Built as a **Harmony postfix on `CompShearable.Active`**:
+  for a pawn with no faction, return true when the vanilla checks other than faction pass (life
+  stage `shearable`, not a shambler, not suspended). A side effect, wanted: wild animals then show
+  vanilla's "Wool growth: N%" inspect line, which is the readable sign of an animal that is due a
+  scratch. Vanilla `WorkGiver_Shear` only takes the player's own animals, so the player still
+  cannot shear wild ones in place. The patch is behind the scratching setting (§9). It runs in the
+  per-tick `Active` getter, so it must be a field test and a cached settings bool, nothing more.
+
+**When it goes.** A `ThinkTreeDef` inserted at **`Animal_PreWander`** (Core `Animal.xml`,
+engine E4): after needs, mating, trained jobs and the tame "useful things" block, and before idle
+wandering. It applies to wild and tame animals alike. Inside it, a
+`ThinkNode_ChancePerHour_Constant` (MTB about 6 hours) and then `RM_JobGiver_ScratchOnSweetline`,
+which returns a job only if all of these hold:
+
+- the pawn has a `CompShearable` with `Fullness ≥` the "coat ready" threshold (default 0.8);
+- a spawned sweetline tree is within 60 cells, and `pawn.CanReach` it (`TraverseParms.For(pawn)`
+  already honours fences for fence-avoiding animals, engine E5, so a penned herd only reaches a
+  tree inside its pen);
+- for a player animal, the trunk's touch cell is in its allowed area, and it is not roped;
+- the tree is not in the **awake** stage (§7). Wardens never target animals (engine E6), but an
+  animal walking into a fight looks wrong.
+
+**The job** `RM_JobDriver_ScratchOnSweetline`: go to touch the trunk, then about 600 ticks of
+rubbing (the tree's harvest effecter or a dust fleck, posture maintained). At the end:
+
+1. `amount = RoundRandom(woolAmount × fullness)`.
+2. **Ground share** (default 80%) of `amount` drops beside the trunk as the animal's own `woolDef`,
+   with `GenPlace.TryPlaceThing(Near)`. Unforbidden for player animals; whatever vanilla does for
+   wild-dropped items otherwise.
+3. **Felt share** (the remaining 20%) is banked in the tree's felt store at the felt rate (§4).
+4. `fullness = 0` by direct field write (`AccessTools.FieldRefAccess` on the protected
+   `fullness`). **Do not call `Gathered(doer)`** (engine E3): it rolls the doer's
+   `AnimalGatherYield` stat, places the product at the doer, and logs an error when the comp is not
+   Active, so it is a colonist-shearing API, not a self-shearing one.
+5. History: "<animal kind> scratched against the bark" (at most one line per day per tree, so a
+   herd does not flood the 12 entries). A short message for the player's own animals is not
+   wanted; the pile at the trunk is the sign.
+
+**What it never does.** It never raises the disturbance meter (not plant work, not a person),
+never involves the wardens, and never needs a colonist. A colony that keeps a woolly herd near a
+tree has an auto-shearer that keeps 80% of the wool and turns 20% into felt for the harvest.
+
+## 4. Ground drop vs harvest: what each path gives, and the rates
+
+**Three sources, one place (the trunk):**
+
+| path | what you get | guarded? | rate |
 |---|---|---|---|
-| mechanism (extension, comps, rage state, roost, leash JobGiver) | **RM_** | `mandrake.rm.creaturebehaviors` | names no species, no tree, no biome — "guard a Thing" would serve a medieval-tribe player's own mod unchanged (the RM test). Same call the enrage kit made. |
-| the species (ThingDef + PawnKindDef + art) | **RM_** | the Arid Shrubland's own `RM_` biome mod (staged with the biome kit until that mod exists at its sitting) | **Q11a** (`design/RimMandrake/biome_mod_architecture.md` §7, owner 2026-09-22): an invented name is not Star Wars IP, so it does not route through the franchise layer — and the free `RM_` biome mod must carry its full cast, never a thinned fallback. The def names no tree and no campaign lore: it guards whatever roost spawned it, so nothing about it is Utinni-specific either. Ruled by card 2026-09-25 (name = Bark-warden; tier by the Q11a test). |
-| the binding (roost comp + PlantAlarm on `RM_SweetlineTree`) | **RM_** | `mandrake.rm.leaningscrub`, in `RM_SweetlineTree`'s own XML (`Defs/ThingDefs_Plants/RM_SweetlineTree.xml`) | the tree is `RM_SweetlineTree` in that mod (§7 Q8 of `design/RimMandrake/biome_mod_architecture.md`), so the binding sits on it and names no campaign lore. |
+| **Rubbed-off coats** (§3) | each animal's own product (sheep wool, bantha wool …), 80% of its coat | no | one animal's whole coat per rub, as often as its coat regrows (sheep 10 days, muffalo 15) |
+| **The tree's shed** (built) | `RM_SweetlineWool` felt, 5 at a time | no | 5 every 5 days, about 60 per in-game year; keeps going after a harvest (R11, built `fd8b0b8d2` via the station's `everMature` flag) |
+| **The harvest** (Harvest or Cut on the tree) | `RM_SweetlineWool` felt: base yield **plus the whole felt store** | yes: the wardens drop on the harvester about halfway (§7) | base 10–20 (vanilla `YieldNow`: growth and HP scaled) once per 84 growing days, plus the store |
 
-(`RSW_ShrublandGiant` / `RSW_TunnelSnake` were this spec's original tier precedent; they predate
-Q11a and are themselves due `RSW_`→`RM_` at the shrubland's biome sitting per the split rulings of
-2026-09-23, so they no longer argue for `RSW_` here.)
+**The felt store** (`feltStore`, a float on the tree, Scribed):
 
-**Names — RULED by card, 2026-09-25.** defName **`RM_Barkwarden`** (reused for ThingDef and
-PawnKindDef, the siblings' convention); player label **"bark-warden"**. The rename joins
-`ARIDSHRUBLAND_SHIPPING_NAMES_1` only if the sitting later changes the word — the label is his
-pick, not a working placeholder.
+- Each rub banks `0.2 × amount × feltPerCoatUnit`, with `feltPerCoatUnit` default **0.25**
+  (felting is lossy: four units of rubbed coat make one of felt).
+- Cap **120** felt, so an untended tree cannot hoard forever.
+- Paid out at harvest through `ThingComp.GetAdditionalHarvestYield()` on the roost or station comp
+  (engine E7: `JobDriver_PlantWork` calls it on every comp when the plant is harvestable), then
+  reset to 0 in `PlantCollected`. No change to `YieldNow`.
+- Shown on the tree's inspect pane: "Felted into the bark: 37 (harvestable)".
 
-## 8. Flight
+**Worked numbers, per 84-day harvest cycle (defaults):**
 
-**It does not fly.** It climbs, and it drops. Nothing in §1 or in the description text may
-say glide, wing, sail or soar — the standing rule ("if it flies in the fiction, it flies in
-the game") is satisfied by keeping the fiction on the ground: the drop from the crown is the
-`surpriseAttack` stun on the claw tool, an animation-free melee opener, not a flight. The
-dive route on the interface is already the fliers' (Whisperbird, Convor, the scrap-nest
-birds), and this creature is the canopy's answer, not the sky's. `MaxFlightTime` is not set;
-`canFlyIntoMap` is false (a bark-warden arriving by air would have no tree).
+| situation | free (ground) | harvest |
+|---|---|---|
+| No coated animals (free `RM_` roster, no herd) | about 84 felt from the shed | 10–20 felt |
+| Wild campaign banthas, say 2 rubbing each 25 days | the shed, plus about 540 bantha wool | 10–20 + about 34 felt |
+| A tame herd of 6 sheep fenced with the tree (45 wool, 10 days) | the shed, plus about 1,800 sheep wool | 10–20 + **about 113 felt** (cap 120) |
 
-If the owner wants it to glide between trees, that is a different creature: `MaxFlightTime`
-> 0 (a stat, never a bool), a whole-body directional flip-book on the PawnKindDef, and no
-Spastic wing layer — and it would need the roost logic to survive a mid-air re-home. Not
-proposed.
+**Why both are worth it.** The ground path is safe, generous and never stops: the shed alone is
+about one felt a day, and a herd's coats arrive sheared for free. The harvest is the only way to
+get felt **in bulk**, and its size is something the player builds by keeping animals at the tree,
+then pays for with a fight. A tree with no animals gives a small harvest, which is the honest
+consequence of R10 (the wool is the animals'). All numbers here are tunables in the comp props or
+settings (§9), set to these values on first build.
 
-## 9. What could make this annoying rather than good
+## 5. The material: sweetline felt, a blend
 
-Honest list. Each has a mitigation in the design or a stated acceptance.
+**Ruling R12.** The harvest is "the felted mass of everything rubbed into the bark", which with the
+bark's resins becomes a uniquely comfortable material. It is the **existing item**
+`RM_SweetlineWool` (`Defs/ThingDefs_Items/RM_SweetlineTree_Items.xml`, `ParentName WoolBase`), now
+described as a blend. One item serves both the shed and the harvest; there is no per-animal felt.
 
-1. **A tree on the doorstep.** Roads follow the trees; players settle by landmarks; a
-   colony built around a sweetline tree gets charged every time someone walks to the fridge.
-   Mitigation, built in: `stopIfInHomeArea` — a roost whose tree stands inside the player's
-   Home area stops re-spawning, and guardians whose tree has been inside the Home area for
-   `homeAreaGraceDays` (3) quit: re-home to another tree if one is vacant within 60 cells,
-   otherwise become free wild animals. The player who wants the tree tame has a lever that
-   is already in the game (the Home area) and a three-day siege to earn it. No new UI.
-2. **Rage flapping at the edge.** An intruder standing at exactly the trigger line would
-   trigger/disengage every rare tick. Mitigation: hysteresis — trigger 9, disengage 18, and
-   a 600-tick per-guardian cooldown.
-3. **The eternal harvest job.** A colonist ordered to cut the tree is interrupted by a rage,
-   the rage ends, the job resumes, another rage — for as long as the player leaves the order
-   standing. Accepted: that IS "dares the traffic", and the player's options (guards, guns,
-   give up) are the design. What must NOT happen is the harvest completing between rages
-   without a fight: `harvestWork 4200` on the tree and `cooldownTicks 600` guarantee several
-   charges per harvest.
-4. **Visitors, traders and quest pawns on the tree-roads.** They are tool-users; they get
-   mauled. A wild animal attack costs no goodwill, but a dead trader is a lost trade.
-   Accepted as the biome ("every raider knows…"), and it applies to raiders too — players
-   will route a raid past a tree on purpose. Emergent, allowed.
-5. **Ranged cheese.** Shoot from 30 cells and the bark-warden cannot reach you before it dies.
-   `manhunterOnDamageChance 1.0` makes it charge on the first hit, so it costs ammunition and
-   a fight, and the roost re-spawns in 8–14 days, so it is a recurring cost, not a one-time
-   clearance. Accepted.
-6. **Threat state while a rage runs.** `category Aggro` puts the pawn in
-   `pawnsInAggroMentalState`, so for up to 2500 ticks the map has an active threat (danger
-   music, some jobs refused). Bounded by the time-box and the disengage rule; the giant
-   already does this and the owner has tested it live without complaint.
-7. **Warning.** Whether a charge is announced by a readable sign is open — see leaningscrub_sweetline_guardian_activation_2026-10-02.md.
-8. **The bark-warden that lost its tree.** A free ex-guardian is a 1.2-body wild animal that
-   wanders like any other. Fine. What it must not do is manhunt or vanish; both are covered
-   in §3.
-9. **A guardian on a tree the player never visits** costs a radial scan every 250 ticks
-   forever. Negligible at these counts (§2, Cost); worth a profiler line in the build's
-   quicktest, not a design change.
-10. **Pets cannot be hurt by it and cannot bait it** (`JobGiver_Manhunter` targets ToolUser+
-    only). A player expecting a guard-dog stand-off gets nothing. Accepted: the alternative —
-    a bark-warden that kills a passing muffalo — makes every tree a pet-killer and the loop
-    stops being about the harvest.
-11. **The two-tree overlap.** Two sweetline trees within 18 cells of each other would give
-    a single intruder two roosts' worth of rages. `wildClusterRadius 0` / `wildClusterWeight
-    0.05` make this rare; the roost comp additionally refuses to spawn if another roost tree
-    stands within `triggerRadius` — its slot stays empty. Worth one line in the build.
+- **Keeps:** fabric stuff (sharp 0.42, heat armour 1.3, cold 36, heat 14), value 5.5, rare in
+  random generation (0.04), the smother-blanket recipe (15 felt + 40 fuzz fiber,
+  `RM_SmotherCraft.xml`).
+- **Label:** "giant-wool" names a source that is no longer the source. Working label **"sweetline
+  felt"** in the rebuilt description; the defName stays `RM_SweetlineWool` (§13 asks the owner to
+  confirm the word).
+- **Description (to write):** coats of every woolly beast that scratches on the bark, matted and
+  cured in the tree's resin into a dense, soft felt; warmer than fleece and softer against the skin
+  than anything sheared.
+
+**"Uniquely comfortable" needs code (engine E8).** Vanilla has no comfort from a material: the
+`Comfort` StatDef has only a quality part, nothing reads the stuff, and apparel has no comfort
+stat. Two cheap real channels, both built:
+
+1. **Furniture:** a `StatPart_RM_StuffComfort` appended to `StatDef Comfort` by a PatchOperationAdd,
+   adding **+0.10** when the thing's Stuff carries `RM_StuffComfortExtension` (on
+   `RM_SweetlineWool`). Matters for fabric-stuffed seats such as the armchair.
+2. **Apparel:** a `ThoughtDef` with a `ThoughtWorker` modelled on vanilla
+   `ThoughtWorker_HumanLeatherApparel`: "Sweetline felt against the skin" **+2 mood** while wearing
+   at least one piece made of it. Not stacked per piece.
+
+## 6. The bark-warden
+
+**Built** `fd8b0b8d2`: `src/RimMandrake/LeaningScrub/Defs/ThingDefs_Races/RM_Barkwarden.xml`
+(ThingDef, PawnKindDef and the `RM_RoostDefence` MentalStateDef).
+
+**Visual brief** (the source for any future art prompt): a knuckle-walking climber about the mass
+of a large dog, long-armed, hook-clawed, flat wide head, coat the silver-grey of the felt it sleeps
+in. It sleeps curled against the trunk; "in the crown" is fiction, because a pawn occupies a ground
+cell.
+
+| aspect | value (built) |
+|---|---|
+| Body size / health scale / speed | 1.2 / 1.6 / 4.8 (medium band; the biome bans residents of 1.5–3.5) |
+| Attacks | bite 15; two hook-claws 12 with a stun-6 surprise opener (the drop); headbutt 6 |
+| Armour | 0.20 sharp / 0.15 blunt |
+| combatPower / MarketValue | 110 / 420. A full tree (2–3) is 220–330: one colonist alone loses, two with guns win |
+| Diet | `OmnivoreAnimal`, **not a predator** (a predator would leave the tree and hunt pets) |
+| Wildness / trainability | 0.95 / Advanced; `manhunterOnDamageChance` 1.0 |
+| Flight | none (R14): no `MaxFlightTime`, `canFlyIntoMap` false |
+| Dormancy | `CompCanBeDormant` (`startsDormant`, job dormancy, Food and Rest frozen); `CompWakeUpDormant` with `wakeUpOnDamage` and the radius wake **off** |
+| Body | interim reskin of vanilla Cougar art (`Things/Pawn/Animal/Cougar/Cougar`) |
+| Spawning | only from a tree's roost; **never** in any `wildAnimals` table |
+| Drops | the reskinned body's meat and leather. **No felt, no special drop**: if killing them gave felt, the tree would be scenery |
+| Sound | breath and claws, no roar ("danger announces itself by posture, never by voice") |
+
+**Who it can attack (engine E6).** Its rage is `RM_MentalState_ScopedAggression`, hostile to one
+pawn and never to a faction. `JobGiver_Manhunter`'s target validator only accepts tool-users and
+humanlikes, so it can never attack an animal: rubbing herds and pets are always safe.
+
+**Life cycle (built):**
+
+- **Roost:** `RM_CompGuardianRoost.PostSpawnSetup` spawns 2–3 (capped by the per-tree setting)
+  adult, factionless wardens within 3 cells, asleep, bound to the tree. On an existing save the
+  refill fills them.
+- **Refill:** one dead, tamed or lost slot refills every **30–60 days**, so clearing a tree by
+  force buys about one harvest. History: "a bark-warden has taken up the crown". Never silent.
+- **Kept asleep:** the warden's own 250-tick check puts a sleeper the animal think tree woke back
+  to sleep (whether a lordless wild animal leaves `Wait_AsleepDormancy` on its own is UNMEASURED
+  live; this covers both answers).
+- **Tamed:** ordinary Advanced animal; inert as a guardian; its slot refills. Taming one does not
+  tame the tree: a harvest by its handler still counts.
+- **Tree dies:** its wardens wake and become ordinary wild animals ("…have lost their tree"); they
+  re-home once a day to a vacant tree within 60 cells, never vanish, never despawn.
+- **Breeding:** asleep with frozen needs they do not breed; a free (tree-less) one breeds as any
+  wild animal. Not a defect.
+- **Hunting a sleeper:** dormant pawns are skipped by auto-targeting and threat detection (engine
+  E9); whether a Hunt order can target one is UNMEASURED. Shooting one wakes it (vanilla
+  `wakeUpOnDamage`) and it takes ordinary revenge on the shooter.
+
+## 7. Activation: the disturbance meter
+
+Each tree's roost comp keeps `disturbance` from 0 to 1 (Scribed). Built in
+`RM_CompGuardianRoost`; numbers are the shipped comp props.
+
+| act | counts? | amount | caught by |
+|---|---|---|---|
+| Harvest/Cut work on the tree by a person | yes | +0.10 per 250 ticks × harvest setting | the warden's 250-tick check (plant work applies no damage, engine E1) |
+| That harvest completing | yes | +0.25 × harvest setting | `RM_Plant_Guarded.PlantCollected` |
+| Violent damage to the tree | yes | +0.05 per damage point (two rifle shots wake them) | roost `PostPostApplyDamage` |
+| Fire or damage with no person behind it | yes | as above | they wake **watchful**, with nobody to attack |
+| Damage to a sleeping warden | wakes that one | instant | vanilla `wakeUpOnDamage`, then revenge |
+| Walking, standing, camping near the tree | **no** (R5) | 0 | raises the watching sign only |
+| Picking up shed felt or rubbed-off coats | **never** | 0 | |
+| Animals doing anything, including rubbing (§3) | **never** | 0 | instigator must be a tool-user or humanlike |
+| Lingering, **only if** the opt-in setting is on | yes | +0.02 per check | off by default |
+
+**Stages (R6).** At 0.3 **stirring**: a caution message, "The bark-wardens of <tree> are stirring.
+Whoever is working the tree should stop." At 0.6 **restless**: "…are about to drop." At 1.0
+**awake**: every bound warden wakes and enters `RM_RoostDefence` against the last harm-doer, anchor
+the tree, disengage at 18 cells, about 2500 ticks; message "…drop on <pawn>." plus a History entry.
+No letter. At harvest speed 1 the meter fills at about 2500 of the 4200 work ticks, around 60% of
+the job, which is "about halfway".
+
+**After.** Wardens return to the trunk and stay **watchful** (leashed within 6 cells) until the meter
+falls below 0.3, then sleep again: "…climb back into the crown." The meter drains at
+`1 / forgiveness days` per day while nobody is raging (R7, default 5 days).
+
+**Signs (R4, R8), all built:** the sleepers are visible; their inspect line is "Roosting in the
+crown of <tree name>"; the tree reads "Bark-wardens roost here (3). Calm."; a disturbance bar gizmo
+with marks at 30% and 60%; a "watching <pawn>" line and mote when a person is within 9 cells.
+
+**The robbed nest (R9):** nothing beyond the meter. A harvested tree is not touchier afterwards.
+
+## 8. Placement: the map step
+
+**Ruling R13:** a rare map step plants one or two sweetline trees on Leaning Scrub maps.
+
+- **Hook (engine E10):** `BiomeDef.extraGenSteps` is concatenated onto the map generator's steps
+  for every map of that biome. Add a `GenStepDef RM_SweetlineTrees` to `RM_LeaningScrub`'s
+  `extraGenSteps`. The frozen `RUT_` twin is not touched.
+- **Order 910:** after `Plants` (900) so the trunk cell can be cleared of scrub, before `Animals`
+  (1200). Core's ordering comment puts non-critical generation (geysers, plants, animals) at
+  900–1200.
+- **`RM_GenStep_SweetlineTrees`** (about 70 lines). With chance **25%** (setting) the map gets
+  trees; then 1 tree, or 2 with chance 30%. Cell rules: standable, not water, fertility above 0,
+  at least 15 cells from the map edge, no building or `UsedRect`, and **at least 40 cells from the
+  other tree** so two roosts' 18-cell rage radii never overlap. Up to 200 random tries, then give
+  up silently (a map without a tree is the normal case).
+- **Spawn:** `ThingMaker.MakeThing(RM_SweetlineTree)`, set `Growth = 1` and a large `Age` (an
+  ancient giant), clear plants on the cell, `GenSpawn.Spawn`. Spawning runs the station comp
+  (name, History "named") and the roost comp (wardens, asleep). Pawns spawning during map
+  generation is normal (`GenStep_Animals` does it).
+- **Not retroactive.** It runs only when a map is generated. An existing home map gets no tree;
+  the dev spawn remains the way to place one by hand.
+- **Off** when "Named sweetline trees" is off or the placement chance is 0.
+
+## 9. Mod Settings
+
+All under LeaningScrub's existing **"Named sweetline trees"** group (`RM_LeaningScrubMod.cs`,
+`RM_LeaningScrubSettings`), which gates everything here (R3). Defaults equal shipped behaviour.
+
+| setting | range | default | at off / minimum | state |
+|---|---|---|---|---|
+| `sweetlineStationsEnabled` "Named sweetline trees" | bool | on | no names, History, shed, wardens, rubbing or placement | built |
+| `sweetlineVisitorsEnabled` + `sweetlineVisitIntervalDays` | bool, 2–30 | on, 8 | no road-folk visits | built |
+| `sweetlineGuardiansEnabled` "Bark-wardens guard sweetline trees" | bool | on | no new wardens; existing ones wake as ordinary wild animals, none removed | built |
+| `sweetlineGuardianMaxPerTree` | 0–4 | 3 (each tree rolls 2–3) | 0: a tree spawns and refills none | built |
+| `sweetlineHarvestDisturbance` | 0–3× | 1× | 0: harvest is never harm; wounds still are | built |
+| `sweetlineForgivenessDays` | 1–30 | 5 | drain rate of the meter | built |
+| `sweetlineProximityCharge` "also rouse at anyone who lingers" | bool | **off** | opt-in only (R5 rules walk-up harmless by default) | built |
+| `sweetlineScratchingEnabled` "Animals scratch their coats off on sweetline trees" | bool | on | no rubbing, and the wild-coat patch (§3) is inert | owed |
+| `sweetlineCoatReady` "Coat fullness before an animal goes to scratch" | 50–100% | 80% | | owed |
+| `sweetlineFeltShare` "Share of a rubbed coat that felts into the bark" | 0–50% | 20% | 0: rubs give only ground wool, the harvest is base yield only | owed |
+| `sweetlineTreeMapChance` "Chance a new Leaning Scrub map has sweetline trees" | 0–100% | 25% | 0: no trees on new maps (labelled "affects newly generated maps; not worldgen") | owed |
 
 ## 10. Art
 
-**None exists, and none is queued here.** Searched this pass by subject:
-`infrastructure/artpipe/done/*.json`, `infrastructure/artpipe/registry.jsonl` and
-`infrastructure/artpipe/_artsrc/` for `sweetline`, `guardian`, `warden` — the only hits are
-`ROT_GUARDIAN_GROVES_1`'s flora (agelesscap, euphoriccrown, falsefruit, regenerantveil),
-which is a different item and a different biome. No review sheet has ruled on a creature for
-this slot.
+| subject | state | plan |
+|---|---|---|
+| Tree, 14 variants A–N (`Textures/Things/Plant/RM_SweetlineTree/`) | shipped | `TREE_GRAPHICS_OWNERSHIP_1` waits on the owner's pick among recovered candidates; nothing here changes it |
+| Bark-warden | interim Cougar reskin | silver-grey long-armed climber per the §6 brief; invented species, so no canon entry and no canon target. New art only after the owner has seen the reskin in a review save |
+| `RM_SweetlineWool` (felt) stack icon | **missing**: the def points at `Things/Item/Resource/RM_SweetlineWool` and no such file exists in the mod | search artpipe first (`artpipe_state.py find sweetline`), then queue a matted silver-grey felt bundle |
+| `RM_SweetlineToken` | missing, placeholder | already owed by `LEANINGSCRUB_SWEETLINE_VISITORS_1` |
+| Rubbing | no new art | the tree harvest effecter or a dust fleck; the dropped coats are vanilla items |
 
-**Build-pass recommendation:** do what both siblings did — reskin an existing RSW quadruped
-body and art under the new defName with a silver-grey retint (`RSW_ShrublandGiant` reskinned
-Fambaa; `RSW_TunnelSnake` reskinned Klorslug; zero new PNGs either time). Pick a donor with a
-long-armed, low, clawed silhouette at drawSize ~1.6–1.8, and check `design/Jawa/fauna/
-cast_assignment.csv` first so the donor SPECIES is not double-booked (the snake pass's own
-rule). New art is the owner's call, after he has seen the reskin in a review save.
+## 11. Build plan, sized
 
-**Canon:** this is an invented species with no `design/RimStarWars/canon_references/` entry,
-and the canon skill is explicit that no entry means no target — do not fabricate one. The
-visual brief is §1 of this spec; if new art is ever commissioned, §1 is the prompt's source
-and the reskin is the reference image.
+**Built** (`fd8b0b8d2`, `SHRUBLAND_TREE_GUARDIAN_1`, in `mandrake.rm.leaningscrub`, not the kit):
+`Source/RM_SweetlineGuardians.cs` (roost comp, warden comp, dormancy comp, `RM_Plant_Guarded`,
+disturbance gizmo), `Defs/ThingDefs_Races/RM_Barkwarden.xml`, the roost comp on the tree, 5
+guardian settings, the shed continuing after a harvest. Live proof is owed.
 
-## 11. Open questions for the owner
+**Owed** — one FOUNDRY pass, about **500 lines of C#** in LeaningScrub plus XML; filed as
+`SWEETLINE_SCRATCHING_TREE_BUILD_1` (rubbing) and the rest under it or as siblings.
+`RM_LeaningScrub.csproj` lists compile items explicitly, so every new `.cs` needs its
+`<Compile Include>` line.
 
-1. ✅ **RULED (card 2026-09-25 + Q11a test): species def is `RM_Barkwarden`, `RM_` tier**, in
-   the shrubland's own biome mod — invented name, no IP, nothing campaign-specific in the def
-   (§7). Mechanism RM, binding RM (on `RM_SweetlineTree` in `mandrake.rm.leaningscrub`).
-2. ✅ **RULED (card 2026-09-25): the label is "bark-warden".**
-3. ✅ **BUILT, `SWEETLINE_WOOL_HARVEST_1` (2026-09-21).** `RUT_SweetlineTree` now ships
-   `harvestedThingDef` RUT_SweetlineWool (`RUT_SweetlineTree_Items.xml`, ParentName WoolBase)
-   and `harvestAfterGrowth` 0.05, so `HarvestDestroys` is false and both the Harvest and Cut
-   Plant jobs leave the tree standing. harvestYield dropped from TreeBase's 160 (wood) to 20.
-   ⚠️ **Pace does NOT match this spec's own suggestion.** This item's regrow pace is
-   `growDays * (harvestMinGrowth - harvestAfterGrowth)` = `240 * (0.40 - 0.05)` = **84 in-game
-   days**, picked to read as "rare" against arid_shrubland.md's own fiction directly — it was
-   NOT matched to this spec's suggested 8–14-day roost respawn (that number did not exist as a
-   ruling when the harvest was built, only as this open question). Whoever builds the guardian
-   next must reconcile the two paces — either retune `harvestAfterGrowth`/`harvestMinGrowth` on
-   the tree, or accept a guardian roost cycle that outpaces the harvest it's guarding.
-4. ⚠ **`RSW_TunnelSnake` is bodySize 2.0**, inside biome ban 4's large-band void (1.5–3.5),
-   with the roster's own Terrorworm interim beside it. Found while calibrating §4; not this
-   spec's to change. Either the ban has a snake carve-out he has not written down, or the
-   snake needs to come down to ≤1.4 (or the Klorslug body it borrows is the wrong donor).
+| # | piece | where | size |
+|---|---|---|---|
+| 1 | Harmony postfix on `CompShearable.Active` for wild animals (§3) | new `Source/RM_SweetlineScratching.cs` | ~30 |
+| 2 | `RM_JobGiver_ScratchOnSweetline` + `ThinkTreeDef` at `Animal_PreWander` + `JobDef` | same + `Defs/ThinkTreeDefs/`, `Defs/JobDefs/` | ~90 + XML |
+| 3 | `RM_JobDriver_ScratchOnSweetline` (rub, drop, bank, reset fullness by field ref, History) | same | ~110 |
+| 4 | Map-level tree registry (cached list of spawned sweetline trees, so the job giver and the postfix never scan) | same, or the station comp's spawn/despawn | ~40 |
+| 5 | Felt store on the station comp: bank, cap, inspect line, `GetAdditionalHarvestYield`, reset on `PlantCollected`, Scribe | `RM_SweetlineStation.cs`, `RM_Plant_Guarded` | ~60 |
+| 6 | Comfort: `StatPart_RM_StuffComfort` + PatchOperationAdd on `StatDef Comfort` + `RM_StuffComfortExtension`; `ThoughtWorker` + `ThoughtDef` for felt apparel | new `Source/RM_SweetlineFelt.cs`, `Patches/`, `Defs/ThoughtDefs/` | ~70 + XML |
+| 7 | `RM_GenStep_SweetlineTrees` + `GenStepDef` + `extraGenSteps` entry on `RM_LeaningScrub` | new `Source/RM_GenStep_SweetlineTrees.cs`, `Defs/` | ~70 + XML |
+| 8 | Four settings (§9) | `RM_LeaningScrubMod.cs` | ~30 |
+| 9 | **Text fixes** (below) | XML and C# strings | small |
+| 10 | Validation bars in `src/RimMandrake/LeaningScrub/validation.py` and the functional script | | |
 
-## Build handoff (for the item that follows)
+**Text that is now false and must be rewritten in the build (R10, R12):**
 
-Files the build touches, so the estimate is honest: kit — three new `.cs` (extension+comp,
-roost comp+props, leash JobGiver), one new MentalStateDef XML, one ThinkTreeDef insert XML,
-one small change to `RM_CompPlantAlarm` (optional scoped state + a pawn-carrying
-`TriggerAlarm(Pawn)`), one `RM_Plant_Alarming : Plant`, four settings entries; the shrubland's `RM_` biome mod —
-one race XML (`RM_Barkwarden` ThingDef + PawnKindDef, reskin); LeaningScrub — three lines on
-`RM_SweetlineTree` (thingClass, roost comp, plant alarm) under `MayRequire`. Nothing in
-the shrubland biome def — the Bark-warden is not a `wildAnimals` entry and must never become one.
-Quicktest, minimal list + the three mods: spawn a tree, confirm 2–3 guardians within 4 cells,
-walk a colonist to 8 cells (rage), to 19 cells (recovery), cut the tree (rage at the cutter),
-save/load mid-rage, and toggle each of the four settings live.
+- `RM_SweetlineTree` description: "scarred smooth … where the biome's giants have rubbed …; the
+  bark sheds their snagged wool". Rewrite: every coated beast of the plain scratches here; the
+  bark holds what they leave as felt. Keep the warden sentence.
+- `RM_SweetlineWool` label "giant-wool" and description ("where the biome's giants have rubbed
+  their flanks", "thick and oily with the animal that grew it"). Rewrite per §5.
+- The shed's History line "shed N giant-wool snagged from passing giants."
+  (`RM_SweetlineStation.cs`) and its inspect line "Snagged giant-wool …". Rewrite: "let go N
+  sweetline felt".
+- The tree XML's comment "a trickle beside the 20-hank harvest" and the station header's
+  "snagged-wool timer": describe the shed as the generous free path (R11).
+- The same wording on the frozen `RUT_SweetlineTree` / `RUT_SweetlineWool` in
+  `src/RimUtinni/AshkarrFlora/` stays, because that mod is frozen until its world def is deleted.
+
+**Quicktest** (minimal list + creaturebehaviors + leaningscrub, all DLC), extending the guardian
+build's script:
+
+1. Generate a Leaning Scrub map with the chance at 100%: 1–2 full-grown named trees, wardens asleep.
+2. Dev-spawn a tame sheep at full coat in a pen with the tree: it walks over, rubs, 36 wool on the
+   ground, about 2 felt banked, coat 0, History line, meter unchanged.
+3. Dev-spawn a wild muffalo: "Wool growth" shows and rises; at 80% it scratches.
+4. A penned sheep with the tree outside the pen never goes.
+5. Harvest: the stages fire, the drop lands around 60%, the yield is base plus the store, the store
+   resets, the shed continues.
+6. Felt armchair comfort +0.10; a colonist in felt apparel has the +2 thought.
+7. Save and load mid-rub and with a non-empty store; flip each new setting.
+8. The guardian build's own owed checks: still asleep after 2 days, Hunt on a sleeper, burn, kill
+   the tree, tame one.
+
+## 12. Engine facts this spec rests on
+
+Read from the decompiled 1.6 source (RimSage), 2026-10-03 unless dated otherwise.
+
+- **E1** `PlantProperties.HarvestDestroys => harvestAfterGrowth <= 0`; this tree's 0.05 makes it
+  false, so `Plant.PlantCollected` resets growth to 0.05 and keeps the tree. `JobDriver_PlantWork`
+  calls `PlantCollected` for Harvest and Cut alike, and harvest work applies no damage, so harvest
+  in progress is only visible by looking at the worker's job (2026-10-02).
+- **E2** `CompHasGatherableBodyResource.Active` is false when `parent.Faction == null`, and
+  `CompTick` grows `fullness` only while Active (`1 / (interval × 60000)` per tick ×
+  `BodyResourceGrowthSpeed`). `CompShearable.Active` adds the life-stage `shearable` and shambler
+  checks. **Wild animals grow no wool.**
+- **E3** `Gathered(Pawn doer)` rolls `doer.GetStatValue(AnimalGatherYield)`, places the product at
+  `doer.Position`, logs an error if not Active, and zeroes `fullness` (a protected field). Its only
+  caller is `JobDriver_GatherAnimalBodyResources`.
+- **E4** Core `Animal.xml` has two modder hooks, `Animal_PreMain` (after lord duties, before the
+  wild-animal leave rules) and `Animal_PreWander` (after needs, mating and trained jobs, before idle
+  wandering); both run for wild and tame animals.
+- **E5** `TraverseParms.For(pawn)` sets `fenceBlocked = pawn.ShouldAvoidFences`, so `CanReach`
+  respects pens.
+- **E6** `JobGiver_Manhunter.FindPawnTarget` accepts only `intelligence >= ToolUser`: a scoped-rage
+  warden can never target an animal (2026-09-21).
+- **E7** `JobDriver_PlantWork` adds `ThingComp.GetAdditionalHarvestYield()` from every comp when
+  the plant is `HarvestableNow`, before `PlantCollected`. `Plant.YieldNow()` is virtual.
+- **E8** `StatDef Comfort` carries only `StatPart_Quality`; no stat part reads the stuff, and
+  apparel has no comfort stat. `ThoughtWorker_HumanLeatherApparel` is the vanilla pattern for a
+  mood effect from worn apparel's material.
+- **E9** Dormant pawns are skipped by `AttackTargetFinder`, `GenHostility` threat checks and
+  `DangerWatcher`; `CompCanBeDormant.ShowZs` is false for pawns, so the visible sign is ours
+  (2026-10-02).
+- **E10** `MapGenerator` concatenates `map.Biome.extraGenSteps` onto the generator's steps;
+  `GenStepDef` order puts plants at 900 and animals at 1200.
+- **E11** `GenHostility.HostileTo` consults `MentalState.ForceHostileTo` before faction logic, which
+  is why a scoped rage works on a factionless animal (2026-09-21).
+
+## 13. Open, not blocking
+
+1. **The word for the material.** "giant-wool" no longer fits R10; the build ships "sweetline felt"
+   as a working label unless the owner names it.
+2. **Should the thunderstep grow a coat?** `RSW_ShrublandGiant` has no `CompShearable`, so under R10
+   it does not rub. One comp line (campaign layer) would make the giants scratch here too. Not ruled.
+3. **Body for the bark-warden art**: the Cougar reskin is interim until the owner sees it.
+4. `TREE_GRAPHICS_OWNERSHIP_1`'s art pick and `LEANINGSCRUB_SWEETLINE_NAME_REGISTER_1`'s three
+   naming answers are their own items.
