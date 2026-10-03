@@ -19,3 +19,8 @@ questions."*
 ## verify
 
 - A design doc exists with the GPT consult cited, and the owner has ruled its open questions.
+
+## Addition 2026-10-02 (owner, typed)
+
+*"Add to the design pass that achievements can be rewarded with Jawa lore or world lore should the
+player seek that."* An unlocked achievement may reveal Jawa or world lore, opt-in for players who want it.
