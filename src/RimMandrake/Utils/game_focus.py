@@ -75,12 +75,25 @@ def foreground_title():
     return _ps(_PS_HELPER + "\n(Get-Fg).title")
 
 
-def focus_game(timeout_s=5):
+def focus_game(timeout_s=5, attempts=4, pause_s=3):
     """Bring RimWorld forward. Returns the previously-focused handle, or None.
 
     Raises RuntimeError if the window will not come forward -- callers must not
     silently measure a starved main thread.
     """
+    import time
+    last = None
+    for i in range(max(1, attempts)):
+        try:
+            return _focus_game_once()
+        except RuntimeError as e:             # another window (media player, browser) held focus: try again
+            last = e
+            if i + 1 < attempts:
+                time.sleep(pause_s)
+    raise last
+
+
+def _focus_game_once():
     script = _PS_HELPER + r'''
 $prev = Get-Fg
 $p = Get-Process RimWorldWin64 -ErrorAction SilentlyContinue
