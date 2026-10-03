@@ -178,6 +178,8 @@ namespace RimMandrake.DivingInteraction
         public static bool walkerGrazingEnabled = true;
         // SCALD_RETURN_GALLERY_1. WORLDGEN-AFFECTING: new Scald floors may lay the Return Gallery ruin.
         public static bool scaldReturnGalleryEnabled = true;
+        // CHILL_RETURN_COMB_LANDMARK_1. WORLDGEN-AFFECTING: new Chill floors may lay the Return Comb (scenery and lore only).
+        public static bool chillReturnCombEnabled = true;
 
         // REALFOW_POCKET_MAP_COMPAT_1, 2026-09-30. Compatibility fix for the
         // third-party Real Fog of War (Patch_RealFoWStaleHearing.cs): stops
@@ -213,6 +215,7 @@ namespace RimMandrake.DivingInteraction
             Scribe_Values.Look(ref scaldVentDischargeHarms, "scaldVentDischargeHarms", true);
             Scribe_Values.Look(ref walkerGrazingEnabled, "walkerGrazingEnabled", true);
             Scribe_Values.Look(ref scaldReturnGalleryEnabled, "scaldReturnGalleryEnabled", true);
+            Scribe_Values.Look(ref chillReturnCombEnabled, "chillReturnCombEnabled", true);
             Scribe_Values.Look(ref realFowCompatEnabled, "realFowCompatEnabled", true);
         }
 
@@ -281,6 +284,11 @@ namespace RimMandrake.DivingInteraction
                   + "Rust Cathedral coolant manifold: probe its five branch outlets, read the gauges, and mark "
                   + "the branch that still returns warm water to open its locker. A wrong mark only jams the "
                   + "latch for a day. Floors already generated keep what they have. Off: new floors have none.");
+                list.CheckboxLabeled("The Chill: Return Comb landmark (affects floor generation)", ref chillReturnCombEnabled,
+                    "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor map lays the Return Comb: a "
+                  + "horseshoe of ice-rock cut by black busbars, the return junction of the unfinished planetary "
+                  + "dynamo. Scenery and lore only, no puzzle. Floors already generated keep what they have. "
+                  + "Off: new floors have none.");
 
                 list.Gap();
                 list.CheckboxLabeled("Grey Sea: brine pools crystallise intruders", ref greyPoolDefenceEnabled,
