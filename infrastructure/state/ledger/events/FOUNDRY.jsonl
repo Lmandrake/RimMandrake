@@ -2390,3 +2390,8 @@
 {"seat":"FOUNDRY","event":"claim","id":"PIT_COVER_FALL_REWIRE_1","ts":"2026-10-03T18:03:34Z","tsn":1791050614619627580}
 {"seat":"FOUNDRY","event":"start","id":"PIT_COVER_FALL_REWIRE_1","ts":"2026-10-03T18:03:35Z","tsn":1791050615154205545}
 {"seat":"FOUNDRY","event":"close","id":"PIT_COVER_FALL_REWIRE_1","sha":"9d6cefabd3c9","ts":"2026-10-03T18:03:50Z","tsn":1791050630481813519}
+{"seat":"FOUNDRY","event":"claim","id":"SWEETLINE_SCRATCHING_TREE_BUILD_1","ts":"2026-10-03T18:10:17Z","tsn":1791051017812728895}
+{"seat":"FOUNDRY","event":"start","id":"SWEETLINE_SCRATCHING_TREE_BUILD_1","ts":"2026-10-03T18:10:18Z","tsn":1791051018344204298}
+{"seat":"FOUNDRY","event":"file","id":"SWEETLINE_FELT_COMFORT_BUILD_1","title":"Sweetline felt comfort: +0.10 Comfort StatPart on felt-stuffed furniture, +2 mood thought for felt apparel (spec sec 5, piece 6)","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/biomes/sweetline_guardian_spec.md","for":"FOUNDRY","ts":"2026-10-03T18:10:18Z","tsn":1791051018878113103}
+{"seat":"FOUNDRY","event":"file","id":"SWEETLINE_TREE_MAP_STEP_1","title":"RM_GenStep_SweetlineTrees: rare map step plants 1-2 sweetline trees on new Leaning Scrub maps + sweetlineTreeMapChance setting (spec sec 8, piece 7)","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/worldbuilding/biomes/sweetline_guardian_spec.md","for":"FOUNDRY","ts":"2026-10-03T18:10:19Z","tsn":1791051019419569040}
+{"seat":"FOUNDRY","event":"close","id":"SWEETLINE_SCRATCHING_TREE_BUILD_1","sha":"7f3b13094597","ts":"2026-10-03T18:10:47Z","tsn":1791051047413692035}
