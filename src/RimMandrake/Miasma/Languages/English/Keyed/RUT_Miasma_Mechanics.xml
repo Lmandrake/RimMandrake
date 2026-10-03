@@ -21,8 +21,7 @@
 
   <!-- COMMISSION_LEDGER_CLEANUP_1 the_miasma sheet, slug
        delta-loam-composter-castings-producer: RM_CompGatherableGas's
-       inspect-string label, attached to RUT_Karrobel.xml this pass. -->
-  <RUT_DeltaLoamCastings>castings</RUT_DeltaLoamCastings>
+       inspect-string label, attached to the karrobel. -->
   <RM_DeltaLoamCastings>castings</RM_DeltaLoamCastings>
 
   <!-- WARDEN_MOTHER_SUCCESSION_1: RM_HediffComp_SelfTameOnRecord and
