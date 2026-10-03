@@ -50,7 +50,7 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("WeepingStones")
-suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays", "waterTruceSuppressionEnabled", "dewsilkEnabled"]
+suite.toggles = ["oasisNativeFloraEnabled", "stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance", "condenserSeasonDays", "waterTruceSuppressionEnabled", "dewsilkEnabled"]
 SLIDERS = {"vhorrinOddsMultiplier": (1.0, 0.0, 3.0), "vizhikEscapeChance": (0.05, 0.0, 0.25),
            "condenserSeasonDays": (15.0, 3.0, 30.0)}   # WEEPINGSTONES_WALKING_CONDENSER_1
 
@@ -906,7 +906,7 @@ def walking_condenser(t):
 
 
 # components that are UNMEASURED by design on a healthy run (a live mechanic this suite cannot drive)
-LIVE_ONLY_UNMEASURED = {"dewsilk.tamed_mirrik_yield_cocoons"}
+LIVE_ONLY_UNMEASURED = {"dewsilk.tamed_mirrik_yield_cocoons", "oasis_flora.oasis_map_census"}
 
 
 def _dewsilk_source_problems():
@@ -992,6 +992,122 @@ def dewsilk(t):
         if _live(t):
             _unmeasured(t, "needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map "
                            "(tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired")
+
+
+# ---------------------------------------------------------------- WEEPINGSTONES_OASIS_MUTATOR_FLORA_1
+OASIS_STRIPPED = ("Plant_TreePalm", "Plant_RatPalm", "Plant_Grass", "Plant_GrayGrass", "TreePalma", "VEE_Plant_DatePalm")
+OASIS_WORKER = "RimMandrake.WeepingStones.RM_TileMutatorWorker_Oasis"
+
+
+def _oasis_source_problems():
+    """Offline structure of the Oasis swap, read from the mod's own files: the patch whitelists our biome and swaps
+    the worker, the biome carries the extension (every Earth plant stripped, only our own plants added, Reeds kept),
+    the worker is in the csproj, and the setting ships default-true, scribed and shown."""
+    probs = []
+    here = os.path.dirname(os.path.abspath(__file__))
+    try:
+        pr = ET.parse(os.path.join(here, "Patches", "RM_OasisMutatorFlora.xml")).getroot()
+        xp = " ".join((x.text or "") for x in pr.iter("xpath"))
+        vals = " ".join((x.text or "") for x in pr.iter("li")) + " " + " ".join((x.text or "") for x in pr.iter("workerClass"))
+        if 'defName="Oasis"' not in xp or "biomeWhitelist" not in xp or BIOME not in vals:
+            probs.append("the patch does not whitelist %s into the Oasis mutator" % BIOME)
+        if OASIS_WORKER not in vals:
+            probs.append("the patch does not swap in %s" % OASIS_WORKER)
+        for bad in ("PatchOperationAddOrReplace", "MayRequire"):
+            if bad in open(os.path.join(here, "Patches", "RM_OasisMutatorFlora.xml"), encoding="utf-8").read().replace("MayRequire\n", ""):
+                probs.append("the Oasis patch uses %s (inert/invalid on a whole Operation)" % bad)
+    except Exception as ex:
+        probs.append("Oasis patch unreadable: %s" % ex)
+    ext = None
+    if _BIOME_EL is not None:
+        for li in _BIOME_EL.findall("modExtensions/li"):
+            if (li.get("Class") or "").endswith("RM_OasisFloraExtension"):
+                ext = li
+    if ext is None:
+        probs.append("%s carries no RM_OasisFloraExtension" % BIOME)
+    else:
+        stripped = [x.text for x in ext.findall("stripDefNames/li")]
+        for need in OASIS_STRIPPED:
+            if need not in stripped:
+                probs.append("the extension does not strip %s" % need)
+        if "Plant_Reeds" in stripped:
+            probs.append("Plant_Reeds is a ruled keep and must not be stripped")
+        own = set(n for _t, n, _e in _BY_DIR["ThingDefs_Plants"])
+        plants = [(x.tag, x.text) for x in ext.findall("plants/*")]
+        if not plants:
+            probs.append("the extension adds no native plants")
+        for tag, txt in plants:
+            if tag not in own:
+                probs.append("oasis plant %s is not a plant this mod defines" % tag)
+            if tag in stripped:
+                probs.append("oasis plant %s is also stripped" % tag)
+            try:
+                if float(txt) <= 0:
+                    probs.append("oasis plant %s has no weight" % tag)
+            except (TypeError, ValueError):
+                probs.append("oasis plant %s has a non-numeric weight %r" % (tag, txt))
+    src = os.path.join(here, "Source")
+    try:
+        with open(os.path.join(src, "RM_WeepingStones.csproj"), encoding="utf-8") as fh:
+            if "RM_TileMutatorWorker_Oasis.cs" not in fh.read():
+                probs.append("RM_TileMutatorWorker_Oasis.cs is not in RM_WeepingStones.csproj (compiles into nothing)")
+        with open(os.path.join(src, "RM_WeepingStonesSettings.cs"), encoding="utf-8") as fh:
+            st = fh.read()
+        if ("oasisNativeFloraEnabled = true" not in st or '"oasisNativeFloraEnabled"' not in st
+                or "ref oasisNativeFloraEnabled," not in st):
+            probs.append("oasisNativeFloraEnabled is not declared default-true, scribed and shown in the settings window")
+    except OSError as ex:
+        probs.append("cannot read Source: %s" % ex)
+    return probs
+
+
+@suite.chain("oasis_flora")
+def oasis_flora(t):
+    """WEEPINGSTONES_OASIS_MUTATOR_FLORA_1: the Oasis mutator accepts our biome and runs our worker (source + loaded
+    def), the toggle ships on, and the map-level result (no Earth palm/grass on our oasis, native blade plants
+    present, a vanilla desert oasis still grows palms) needs a generated oasis map and is UNMEASURED here."""
+    with _comp(t, "oasis_source_wired", independent=True):
+        if _live(t):
+            _need_parse(t)
+            probs = _oasis_source_problems()
+            if probs:
+                _fail("; ".join(probs))
+
+    with _comp(t, "oasis_def_accepts_our_biome", independent=True):
+        rows, missing = _get_defs(t, ["TileMutatorDef/Oasis"], fields="biomeWhitelist,workerClass")
+        if _live(t):
+            if missing or not rows:
+                _fail("TileMutatorDef/Oasis is not loaded (Odyssey absent?): %r" % missing)
+            blob = list(_flat(rows[0].get("fields")))
+            if "biomeWhitelist" not in blob or "workerClass" not in blob:
+                _unmeasured(t, "get_defs did not return biomeWhitelist/workerClass for Oasis")
+            if BIOME not in blob:
+                _fail("Oasis.biomeWhitelist does not contain %s: %r" % (BIOME, blob[:20]))
+            if not any(OASIS_WORKER in x or x.endswith("RM_TileMutatorWorker_Oasis") for x in blob):
+                _fail("Oasis.workerClass is not %s: %r" % (OASIS_WORKER, blob[:20]))
+
+    with _comp(t, "oasis_toggle_default_and_roundtrip", independent=True, toggle="oasisNativeFloraEnabled"):
+        try:
+            r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="oasisNativeFloraEnabled")
+            if _live(t):
+                _ok(r, "mod_settings_field(get)")
+                if str(r.get("value")) != "True":
+                    _fail("oasisNativeFloraEnabled reads %r; the shipped default is true" % r.get("value"))
+            t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="oasisNativeFloraEnabled", value="False")
+            back = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field="oasisNativeFloraEnabled")
+            if _live(t) and str(back.get("value")) != "False":
+                _fail("oasisNativeFloraEnabled wrote False but reads back %r" % back.get("value"))
+        finally:
+            if t.session is not None:
+                t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field="oasisNativeFloraEnabled", value="True")
+
+    with _comp(t, "oasis_map_census", independent=True):
+        if _live(t):
+            _enter(t)
+            _unmeasured(t, "needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero "
+                           "Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native "
+                           "RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing palms); "
+                           "the suite does not generate world-tile maps")
 
 
 @suite.chain("pen_zone")

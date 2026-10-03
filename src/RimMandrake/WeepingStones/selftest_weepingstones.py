@@ -67,6 +67,8 @@ class WSGame(MockGame):
             self.known[("ThingDef", n)] = "mandrake.rm.biomes"
         for k in ("ElectricStove", "FueledStove"):
             self.known[("ThingDef", k)] = "Ludeon.RimWorld"
+        if "oasis_unwired" not in self.brk:
+            self.known[("TileMutatorDef", "Oasis")] = "Ludeon.RimWorld.Odyssey"
         if "missing_def" in self.brk:
             plain = [n for n in V.GROUPS[2][2] if n not in V.PAIRED and n not in V.ROTTABLE_ITEMS][-1]
             del self.known[("ThingDef", plain)]
@@ -115,6 +117,8 @@ class WSGame(MockGame):
                     "modExtensions": [] if "no_truce" in self.brk else [{"Class": "RM_WaterTruceExtension", "radius": 10}]}
             if "no_fish" in self.brk:
                 allf["fishTypes"] = {}
+        elif typ == "TileMutatorDef":
+            allf = {"biomeWhitelist": ["Desert", "ExtremeDesert", V.BIOME], "workerClass": V.OASIS_WORKER}
         elif name in ("ElectricStove", "FueledStove"):
             allf = {"recipes": ["CookMealSimple"] + ([] if "no_recipe_patch" in self.brk else list(V.RECIPES))}
         elif name in V.ROTTABLE_ITEMS:
@@ -327,6 +331,7 @@ def main():
         ("no_designator", {"settings_and_designator.designator_listed_when_on"}),   # pen chains go UNMEASURED
         ("toggle_ignored", set()),   # a still-listed row is UNMEASURED (stale DLL vs cached listing), asserted below
         ("pen_on_dry", {"pen_zone.pen_refuses_dry_floor"}),
+        ("oasis_unwired", {"oasis_flora.oasis_def_accepts_our_biome"}),
         ("net_noop", {"job_net.net_turns_wild_pawn_into_breeding_stock"}),
         ("stock_noop", {"job_stock.stock_releases_species_pawn_into_pen"}),
         ("stock_in_dry", {"job_stock_outside_pen.stock_outside_pen_releases_nothing"}),

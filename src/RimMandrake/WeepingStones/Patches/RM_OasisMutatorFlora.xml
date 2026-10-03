@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WEEPINGSTONES_OASIS_MUTATOR_FLORA_1. Whitelists RM_WeepingStones into the Oasis mutator and swaps in a worker
+     that replaces the Earth palms/grasses with the biome's own flora on our tiles only (RM_TileMutatorWorker_Oasis).
+     Both ops are conditional: no match is a silent no-op (no Odyssey = no Oasis def). -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist[not(li="RM_WeepingStones")]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/TileMutatorDef[defName="Oasis"]/biomeWhitelist</xpath>
+      <value>
+        <li>RM_WeepingStones</li>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/TileMutatorDef[defName="Oasis"]/workerClass[text()="TileMutatorWorker_Oasis"]</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/TileMutatorDef[defName="Oasis"]/workerClass</xpath>
+      <value>
+        <workerClass>RimMandrake.WeepingStones.RM_TileMutatorWorker_Oasis</workerClass>
+      </value>
+    </match>
+  </Operation>
+</Patch>

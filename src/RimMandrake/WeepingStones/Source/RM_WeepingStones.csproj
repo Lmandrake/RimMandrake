@@ -66,6 +66,7 @@
     <Compile Include="RM_WalkingCondenser.cs" />
     <Compile Include="RM_AncientCondenserPlant.cs" />
     <Compile Include="RM_DewsilkSwitch.cs" />
+    <Compile Include="RM_TileMutatorWorker_Oasis.cs" />
   </ItemGroup>
 
   <ItemGroup>
