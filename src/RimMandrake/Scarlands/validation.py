@@ -32,6 +32,8 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
             "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0,
             "chotrixEnabled": True, "chotrixPerMap": 2.0, "chotrixRevealSeconds": 4.0, "lacquerCloakEnabled": True, "lacquerSeenRadius": 15.0,
+            "enableChatrak": True, "enableTetchik": True, "enablePallbearer": True, "enableScarRoach": True,
+            "enableWreckLichenSeeder": True, "enableInterimDonors": True,
             "poolsEnabled": True, "poolsPerMap": 3.0, "poolCycleHours": 24.0, "bloomDanger": 1.0, "catalystEnabled": True}
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
@@ -267,6 +269,63 @@ def static_checks():
                    "lacquerCloakEnabled", "Notify_Unequipped", "GenSight.LineOfSight", "BecomeVisible"):
         if needle not in cx:
             bad.append("RM_Chotrix.cs lacks %s" % needle)
+    # WARSCAR_FREE_TIER_BODY_1
+    for c in ("RM_WarscarPatches.cs", "MapComponent_WreckLichen.cs"):
+        if 'Compile Include="%s"' % c not in csproj:
+            bad.append("%s missing from RM_Warscar.csproj" % c)
+    biome_txt = open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read()
+    if "<label>Warscar</label>" not in biome_txt:
+        bad.append("biome label is not 'Warscar'")
+    if "<terrain>Soil</terrain>" in biome_txt:
+        bad.append("Soil band still in the terrain list")
+    for r in ("RM_Chatrak", "RM_Tetchik", "RM_Pallbearer", "RM_ScarRoach"):
+        if "<%s>" % r not in biome_txt:
+            bad.append("wildAnimals lacks %s" % r)
+    if "<RM_Totchak>" in biome_txt:
+        bad.append("totchak must stay genstep-only (not a wildAnimals row)")
+    fa = ET.parse(os.path.join(D, "ThingDefs_Races", "RM_WarscarFauna.xml")).getroot()
+    fd = {e.findtext("defName"): e for e in fa if e.tag == "ThingDef"}
+    for r in ("RM_Chatrak", "RM_Tetchik", "RM_Pallbearer", "RM_ScarRoach"):
+        if r not in fd:
+            bad.append("race %s missing" % r)
+    if fd["RM_Chatrak"].findtext("race/leatherDef") != "RM_ChatrakPlate":
+        bad.append("chatrak leather is not RM_ChatrakPlate")
+    if fd["RM_Chatrak"].findtext("race/manhunterOnDamageChance") != "0":
+        bad.append("chatrak must not go manhunter on damage")
+    if fd["RM_Tetchik"].findtext("statBases/MeatAmount") != "0":
+        bad.append("tetchik must be inedible (MeatAmount 0)")
+    for n, tex in (("Chatrak", "Pawn/Animal/RM_Chatrak/RM_Chatrak"), ("Totchak", "Pawn/Animal/RM_Totchak/RM_Totchak"),
+                   ("Tetchik", "Pawn/Animal/RM_Tetchik/RM_Tetchik"), ("Pallbearer", "Pawn/Animal/RM_Pallbearer/RM_Pallbearer"),
+                   ("ScarRoach", "Pawn/Animal/RM_ScarRoach/RM_ScarRoach")):
+        for f in ("south", "east", "north"):
+            if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + "_%s.png" % f):
+                bad.append("%s texture %s missing" % (n, f))
+    for tex in ("Plant/RM_Glower/RM_Glower_a", "Plant/RM_WreckLichen/RM_WreckLichen_a", "Item/Resource/RM_GlowerCrust/RM_GlowerCrust_a",
+                "Item/Resource/RM_WreckLichenScrapings/RM_WreckLichenScrapings", "Pawn/Animal/RM_TotchakDormant/RM_TotchakDormant"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
+            bad.append("texture %s missing" % tex)
+    it = open(os.path.join(D, "ThingDefs_Items", "RM_WarscarItems.xml")).read()
+    if "<allowColorGenerators>false</allowColorGenerators>" not in it or "RM_ChatrakPlate" not in it:
+        bad.append("chatrak plate leather missing or colour-generator not disabled")
+    wsrc = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_WarscarPatches.cs")).read())
+    for needle in ("CommonalityOfAnimalNow", "RM_Tetchik", "RM_Glower", "DesiredColor", "RM_ChatrakPlate"):
+        if needle not in wsrc:
+            bad.append("RM_WarscarPatches.cs lacks %s" % needle)
+    wl = open(os.path.join(D, "ThingDefs_Plants", "RM_WarscarFlora.xml")).read()
+    if "<defName>RM_WreckLichen</defName>" not in wl or "<neverBlightable>true</neverBlightable>" not in wl:
+        bad.append("wreck-lichen def missing or blightable")
+    if "<RM_WreckLichen>" in biome_txt:
+        bad.append("wreck-lichen must never be a wildPlants row")
+    wm = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "MapComponent_WreckLichen.cs")).read())
+    for needle in ("StartsWith(\"Ancient\")", "enableWreckLichenSeeder", "RM_Warscar"):
+        if needle not in wm:
+            bad.append("MapComponent_WreckLichen.cs lacks %s" % needle)
+    if "mandrake.rm.creaturebehaviors" not in open(os.path.join(HERE, "About", "About.xml")).read():
+        bad.append("About.xml lacks the CreatureBehaviors dependency (RM_EatCleanableExtension)")
+    ch = open(os.path.join(D, "ThingDefs_Races", "RM_Chotrix.xml")).read()
+    for prey in ("RM_Tetchik", "RM_Chatrak"):
+        if "<li>%s</li>" % prey in ch and prey not in fd:
+            bad.append("chotrix prey %s does not resolve" % prey)
     return bad
 
 
@@ -469,6 +528,24 @@ def _build_suite():
                 return
             _unmeasured(t, "equip a lacquered cloak, stand still unseen (hediff present), walk (absent), "
                            "and save/load persistence need a live map")
+
+    @suite.chain("body")
+    def body(t):
+        with t.component("body_defs_resolve"):
+            for d in ("ThingDef/RM_Chatrak", "ThingDef/RM_Tetchik", "ThingDef/RM_Pallbearer", "ThingDef/RM_ScarRoach",
+                      "ThingDef/RM_ChatrakPlate", "ThingDef/RM_WreckLichen", "ThingDef/RM_WreckLichenScrapings",
+                      "PawnKindDef/RM_Chatrak", "PawnKindDef/RM_Tetchik"):
+                r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
+                if t.session is None:
+                    return
+                if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                    raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
+        with t.component("spawn_gates_and_lichen_placement", toggle="enableWreckLichenSeeder"):
+            if t.session is None:
+                return
+            _unmeasured(t, "a quicktest Warscar map spawning chatrak and tetchik (tetchik only within 6 cells of glower), "
+                           "wreck-lichen only beside ruins, a butchered chatrak yielding undyeable chatrak plate, "
+                           "and the canonical save loading with no new reference error need a live map")
 
     return suite
 

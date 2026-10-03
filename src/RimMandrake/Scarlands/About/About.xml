@@ -19,9 +19,14 @@
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
     </li>
+    <li>
+      <packageId>mandrake.rm.creaturebehaviors</packageId>
+      <displayName>RimMandrake: Creature Behaviors</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
+    <li>mandrake.rm.creaturebehaviors</li>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <li>Ludeon.RimWorld.Anomaly</li>
@@ -56,12 +61,10 @@ keep serving the campaign world exactly as before.
 
 Three donor wildlife rows ship inline (`AA_SpinedGow`, `AA_Helixien` --
 sarg.alphaanimals; `RG_Rimclaw` -- regrowth.botr.core), each individually
-MayRequire-gated. The remaining ten rows of the frozen twin's live roster --
+MayRequire-gated. The remaining eight rows of the frozen twin's live roster --
 eight genuine Star Wars/donor-tier fauna (`Mynock`, `RSW_CrystalFairyMole`,
 `RSW_MegaphoridLarva`, `SW_Electrictick`, `RSW_FoundryBeetle`, `RSW_Korrum`,
-`SW_Electricgryllotalpa`, `SW_Juggernautbeetles`) plus two RimUtinni-owned
-campaign creatures (`RUT_ScarRoach`, the Scarlands sibling of the Rust
-Cathedral's cleaner roaches; `RUT_MortuaryCrawler`) are wired onto this biome
+`SW_Electricgryllotalpa`, `SW_Juggernautbeetles`) -- are wired onto this biome
 from `mandrake.rut.patches`' own `WildAnimals_Warscar.xml` (`PatchOperationAdd`
 onto this def's `wildAnimals`) rather than referenced directly here, because an
 RM-tier def may not name RimUtinni- or RimStarWars-tier content directly
@@ -99,5 +102,11 @@ pass.
 Live-tile safety: the frozen `RUT_Scarlands` keeps its 90 live tiles on the
 canonical save untouched -- this build changes nothing about it, matching the
 compatibility-duplicate half of the item's own spec (it is frozen with a header
-notice, never deleted or repointed).</description>
+notice, never deleted or repointed).
+WARSCAR_FREE_TIER_BODY_1: the free tier owns its cast inline -- `RM_Chatrak`
+(plated grazer, leather `RM_ChatrakPlate`, undyeable), `RM_Totchak` art, `RM_Tetchik`
+(inedible, spawns only near glower), `RM_Pallbearer` (was RUT_MortuaryCrawler, retired)
+and `RM_ScarRoach` (RUT_ScarRoach stays a hidden alias for one release) -- plus
+`RM_WreckLichen`, seeded only beside ruins and wreck. Mod Settings toggle each species,
+the lichen seeder and the interim donor rows.</description>
 </ModMetaData>
