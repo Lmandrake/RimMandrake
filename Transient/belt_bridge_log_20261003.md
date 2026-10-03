@@ -36,3 +36,9 @@
 - 12:52:24 rerun8 (--bland-world w/ ZBiome_Grasslands added to bland_world DRY_BIOMES) running
 - 12:53:19 load5 WEDGED: bland_world destroy-ruins on 2nd map -> RimWorldRealFoW IndexOutOfRange every Update; step_game_ticks fails on every map. Relaunching load 6 without mlie.nwnrealfogofwar in ModsConfig; ZBiome_Grasslands bland tile kept
 - 13:00:07 load6 launched 12:59:40 (no RealFoW, 634 mods); committing lessons + LeaningScrub warden check fix (pawn rows)
+- 13:04:39 load6 loading; offline: BlueDesert wax comp check via comp_read, Cauldron log_clean ignores non-destroyable vent clean-up noise
+- 13:09:30 load6 loading
+- 13:18:58 load6 still loading
+- 13:20:34 load6 UP 13:20, harvest6 clean of BrainWorms discard; starting rerun9 --bland-world
+- 13:27:08 rerun9 running
+- 13:29:28 FOUND (poke): jawa/damage skips player pawns without allowColonists; Pawn HitPoints ~0 so any damage detonates+kills a CompExplosive pawn (suush Cut1/Stun1). Fixed def requiredDamageTypeToExplode=Bullet (needs restart), suush chain, detectors MCR hediff ignore

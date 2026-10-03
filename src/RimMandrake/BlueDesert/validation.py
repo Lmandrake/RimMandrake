@@ -642,9 +642,19 @@ def defs_chain(t):
                     _unmeasured(t, "get_def(%s) returned no readable comps list: %r" % (d, r))
                 need = want.get(d, "PlantCharge")
                 if not any(need in n for n in names):
-                    if d == "RM_ColdWax" and "Verse.CompProperties" in names:
-                        _unmeasured(t, "get_def lists the generic Verse.CompProperties for the wax's "
-                                       "detonator comp, so its compClass is not readable: %s" % names)
+                    if d == "RM_ColdWax" and any(n in ("CompProperties", "Verse.CompProperties") for n in names):
+                        # LIVE 2026-10-03: get_def lists the wax's detonator as the generic "CompProperties" (its
+                        # compClass is not in the name), so the def cannot answer. A SPAWNED wax can: jawa/comp_read
+                        # resolves a comp by a substring of its TYPE name on the live thing.
+                        x, z = t.anchor
+                        t.bridge_call("jawa/spawn_batch", ops="RM_ColdWax:%d,%d,1" % (x, z))
+                        cr = t.bridge_call("jawa/comp_read", thing="RM_ColdWax", comp="RuinedDetonator")
+                        t.bridge_call("jawa/destroy_batch", rects="%d,%d,1,1" % (x, z), categories="All")
+                        if isinstance(cr, dict) and cr.get("success") and "RuinedDetonator" in str(cr.get("compType")):
+                            continue
+                        bad.append("RM_ColdWax carries no live RuinedDetonator comp (comp_read: %s)"
+                                   % (str((cr or {}).get("message") or cr)[:200],))
+                        continue
                     bad.append("%s has no %s comp: %s" % (d, need, names))
             if bad:
                 _fail("; ".join(bad))

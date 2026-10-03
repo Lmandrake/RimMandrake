@@ -959,7 +959,7 @@ def suush_chain(t):
                 # LIVE 2026-10-03: a WILD suush is a flier that flees damage and leaves the map, so "row is None" after 400 ticks
                 # could not tell "detonated" from "flew away". A player-faction animal stays put, so absence means it died.
                 ids["melee"] = _spawn(t, SUUSH, x - 8, z, "player")
-                t.bridge_call("jawa/damage", damageDef="Cut", amount=2, thingId=ids["melee"])
+                t.bridge_call("jawa/damage", damageDef="Cut", amount=2, thingId=ids["melee"], allowColonists=True)
                 t.wait_ticks(400)
                 row = _rows(t).get(ids["melee"])
                 if not row or row.get("dead"):
@@ -970,7 +970,11 @@ def suush_chain(t):
                 if ids.get("melee") not in _rows(t):
                     _unmeasured(t, "the melee control suush is gone, cannot attribute the shot suush")
                 ids["shot"] = _spawn(t, SUUSH, x + 8, z, "player")
-                t.bridge_call("jawa/damage", damageDef="Bullet", amount=2, thingId=ids["shot"])
+                # LIVE 2026-10-03: jawa/damage SKIPS player-faction pawns unless allowColonists=True, so the first runs hit nothing.
+                # And a Pawn's Thing.HitPoints is ~0, so before requiredDamageTypeToExplode=Bullet any damage (Cut 1, Stun 1)
+                # detonated a fresh suush; the Bullet shot below goes up on purpose, so declare its fires.
+                t.expect("fire", lambda e: True)
+                t.bridge_call("jawa/damage", damageDef="Bullet", amount=2, thingId=ids["shot"], allowColonists=True)
                 t.wait_ticks(400)
                 rows = _rows(t)
                 _note(t, "shot suush row / melee control still there", [rows.get(ids["shot"]), ids["melee"] in rows])
@@ -1620,6 +1624,11 @@ def log_chain(t):
                 r = t.bridge_call("jawa/drain_log", contains=needle, errorsOnly=True, limit=100)
                 for m in ((_ok(r, "drain_log(%s)" % needle)).get("messages") or []):
                     text = m.get("text") or ""
+                    if text.startswith("Tried to destroy non-destroyable thing"):
+                        # the vents are indestructible on purpose (destroyable false, like a geyser) and this suite's own
+                        # pad clean-up (destroy_batch over the vents chain's rect) asks the engine to destroy them, which
+                        # logs this. The harness caused it; not a defect in the mod (LIVE 2026-10-03, both runs).
+                        continue
                     if needle == "Cauldron" or any(d in text for d in owned):
                         bad.append(text)
             _note(t, "log scan", {"errors naming the mod or one of its defs": len(bad),
