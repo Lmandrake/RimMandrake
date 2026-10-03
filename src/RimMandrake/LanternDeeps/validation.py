@@ -461,3 +461,28 @@ def orun_ghal(t):
         res = str((r or {}).get("result", ""))
         if t._guard() and ("tier=3" not in res or "mining=False" not in res):
             raise ExpectationFailed("nine visits did not befriend it, or it is mining: %r" % (r,))
+
+
+@suite.chain("hydrocarbon_wave1")
+def hydrocarbon_wave1(t):
+    """LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1: drifter, candler, galuush, chiller, shoal load; a drifter killed with a blade
+    is judged a cold kill and one killed by burns a hot kill (the ignition gate); a galuush can be hung in a Deep.
+    Not proven here: the explosion itself on screen, the chiller's cooling (vanilla CompHeatPusher on a pawn -- read a
+    penned chiller's room temperature over an hour), milking a candler, and the shoal's shared wounds."""
+    HP = "RimMandrake.LanternDeeps.RM_HydrocarbonProof"
+    with t.component("wave1_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RM_Drifter", "ThingDef/RM_Candler", "ThingDef/RM_Galuush", "ThingDef/RM_Chiller",
+                  "ThingDef/RM_Shoal", "HediffDef/RM_ShoalSharedCirculation", "GenStepDef/RM_DeepGaluush"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+    with t.component("drifter_ignites_only_when_killed_hot", toggle="hydrocarbonIgnitionEnabled"):
+        cold = str((t.bridge_call("jawa/static_call", type=HP, method="ProofDrifterKill", args="cold") or {}).get("result", ""))
+        hot = str((t.bridge_call("jawa/static_call", type=HP, method="ProofDrifterKill", args="hot") or {}).get("result", ""))
+        if t._guard() and ("killedHot=False" not in cold or "killedHot=True" not in hot):
+            raise ExpectationFailed("ignition gate wrong: cold=%r hot=%r" % (cold, hot))
+    with t.component("galuush_hung_in_a_deep", toggle="galuushEnabled"):
+        r = t.bridge_call("jawa/static_call", type=HP, method="ProofGaluush", args="")
+        res = str((r or {}).get("result", ""))
+        if t._guard() and not res.startswith("placed"):
+            raise ExpectationFailed("galuush not placed: %r" % (r,))

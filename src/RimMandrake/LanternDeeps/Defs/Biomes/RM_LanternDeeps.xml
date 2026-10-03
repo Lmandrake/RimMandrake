@@ -173,6 +173,11 @@
       <RM_FacetMothLarvae>0.05</RM_FacetMothLarvae>
       <RM_MossBeetleLarvae>0.1</RM_MossBeetleLarvae>
       <RM_BloodropMoth>0.25</RM_BloodropMoth>
+      <!-- LANTERNDEEPS_HYDROCARBON_WAVE1_BUILD_1 (the galuush is placed by RM_DeepGaluush, not rostered) -->
+      <RM_Drifter>0.25</RM_Drifter>
+      <RM_Candler>0.12</RM_Candler>
+      <RM_Chiller>0.06</RM_Chiller>
+      <RM_Shoal>0.4</RM_Shoal>
     </wildAnimals>
 
     <allowedPackAnimals>
