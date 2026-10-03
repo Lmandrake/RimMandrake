@@ -161,6 +161,11 @@
         <chanceToStartFire>0.5</chanceToStartFire>
         <postExplosionGasType>ToxGas</postExplosionGasType>
         <explodeOnKilled>true</explodeOnKilled>
+        <!-- LIVE 2026-10-03 (poke): a Pawn's Thing.HitPoints is ~0, so CompExplosive.PostPreApplyDamage's
+             "Amount >= HitPoints" branch fired for ANY damage type: Cut 1 or Stun 1 instantly detonated and killed a
+             fresh suush, contradicting "melee does NOT trigger this" above. requiredDamageTypeToExplode gates that
+             branch (CanExplodeFromDamageType) to gunfire; Bomb still lights the fuse through startWickOnDamageTaken. -->
+        <requiredDamageTypeToExplode>Bullet</requiredDamageTypeToExplode>
         <drawWick>true</drawWick>
       </li>
     </comps>
