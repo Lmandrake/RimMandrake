@@ -128,7 +128,7 @@
           <li>Mud</li>
           <li MayRequire="sarg.alphabiomes">AB_FertileMud</li>
         </landRepaintSource>
-        <landTerrain>RUT_Jawa_SaltCrust</landTerrain>
+        <landTerrain>RM_MiasmaSaltCrust</landTerrain>
         <!-- MIASMA_FLORA_ROSTER_1: the salt-line gauge. The moment a cell
              holding a living RM_Ilbareen repaints to landTerrain (brine has
              just reached it), RM_GradientAxisRepaint kills it and spawns
@@ -166,7 +166,7 @@
         <decayDaysRange>3~8</decayDaysRange>
         <poolSizeThreshold>4</poolSizeThreshold>
         <searchRadius>60</searchRadius>
-        <dryTerrain>RUT_Jawa_SaltCrust</dryTerrain>
+        <dryTerrain>RM_MiasmaSaltCrust</dryTerrain>
         <strandedDeformationHediff>RUT_StrandedDeformation</strandedDeformationHediff>
         <strandedDeformationChance>0.25</strandedDeformationChance>
       </li>
