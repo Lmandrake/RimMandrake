@@ -1985,3 +1985,14 @@
 {"seat":"FOUNDRY","event":"claim","id":"WARSCAR_TURRETS_TRACK_1","ts":"2026-10-03T05:45:51Z","tsn":1791006351636102267}
 {"seat":"FOUNDRY","event":"start","id":"WARSCAR_TURRETS_TRACK_1","ts":"2026-10-03T05:45:52Z","tsn":1791006352188948903}
 {"seat":"FOUNDRY","event":"note","id":"WARSCAR_TURRETS_TRACK_1","text":"Built offline in Scarlands (Warscar): CompTurretAim (verbless), RM_OldLineTurret + refit gizmo/blueprint, 4 Mod Settings, patch onto 3 broken turrets, validation.py. Owed: live round (aim state + firing), RM_Etchant in costList after WARSCAR_RAINBOW_POOLS_1, own art (vanilla TurretMini placeholder). Uncommitted.","ts":"2026-10-03T05:48:46Z","tsn":1791006526953355384}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_DURRGAK_BUILD_1","ts":"2026-10-03T06:57:30Z","tsn":1791010650644356844}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_DURRGAK_BUILD_1","ts":"2026-10-03T06:57:31Z","tsn":1791010651151965187}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_ETCHFALL_BUILD_1","ts":"2026-10-03T06:58:57Z","tsn":1791010737254993975}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_ETCHFALL_BUILD_1","ts":"2026-10-03T06:58:57Z","tsn":1791010737774999991}
+{"seat":"FOUNDRY","event":"note","id":"ABYSS_ETCHFALL_BUILD_1","text":"Offline built; grain stand-in IsGrainfall (biome RM_Abyss) to be replaced by ABYSS_DARK_BUILD_1. Live proof joint.","ts":"2026-10-03T07:00:29Z","tsn":1791010829097916435}
+{"seat":"FOUNDRY","event":"claim","id":"ABYSS_KRIZZAK_BUILD_1","ts":"2026-10-03T07:01:22Z","tsn":1791010882567317054}
+{"seat":"FOUNDRY","event":"start","id":"ABYSS_KRIZZAK_BUILD_1","ts":"2026-10-03T07:01:23Z","tsn":1791010883077493975}
+{"seat":"FOUNDRY","event":"file","id":"FLIGHT_STATE_READ_TOOL_1","title":"JawaBench debug [Tool] reading Pawn_FlightTracker state, so every flyer is proved by state read (Krizzak, Firehawk, Murmuration)","kind":"build","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-10-03T07:02:59Z","tsn":1791010979978611947}
+{"seat":"FOUNDRY","event":"claim","id":"FLIGHT_STATE_READ_TOOL_1","ts":"2026-10-03T07:03:34Z","tsn":1791011014033692838}
+{"seat":"FOUNDRY","event":"start","id":"FLIGHT_STATE_READ_TOOL_1","ts":"2026-10-03T07:03:34Z","tsn":1791011014543190258}
+{"seat":"FOUNDRY","event":"drop","id":"FLIGHT_STATE_READ_TOOL_1","reason":"duplicate: jawa/pawn_flight already exists (f707e69f1); filed without searching src/. Flyer verification reads it directly","ts":"2026-10-03T07:03:44Z","tsn":1791011024736209295}
