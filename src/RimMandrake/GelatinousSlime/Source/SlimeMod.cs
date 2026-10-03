@@ -75,6 +75,27 @@ namespace RimMandrake.GelatinousSlime
         // Off: a cut titanoslime stops leaking gelatids.
         public static bool titanoslimeSheds = true;
 
+        // ── SLIMIFICATION / FARMS / VISITORS (GELATINOUSSLIME_SETTINGS_SWITCHES_1) ──
+        // Off = a body you can stand on: no film is applied, none grows, and
+        // anything already on a pawn only wipes off or leaches away.
+        public static bool slimificationEnabled = true;
+
+        // Days for the film to read a pawn standing on the body (shipped ~7;
+        // the injected dose scales with it). 2-30.
+        public static float slimificationClockDays = 7f;
+
+        // Off: sown fields on slime-grass stay slime-grass.
+        public static bool fieldConversionEnabled = true;
+
+        // Multiplier on how many cells are tried per pass. 0.25-4.
+        public static float fieldConversionRate = 1f;
+
+        // Off: no wandering arrivals and no map-generation seed pass.
+        public static bool visitorsEnabled = true;
+
+        // Multiplier on the arrival chance. 0.25-4.
+        public static float visitorArrivalRate = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -88,6 +109,12 @@ namespace RimMandrake.GelatinousSlime
             Scribe_Values.Look(ref titanoslimeReversible, "titanoslimeReversible", false, true);
             Scribe_Values.Look(ref titanoslimeMaxStage, "titanoslimeMaxStage", 5, true);
             Scribe_Values.Look(ref titanoslimeSheds, "titanoslimeSheds", true, true);
+            Scribe_Values.Look(ref slimificationEnabled, "slimificationEnabled", true, true);
+            Scribe_Values.Look(ref slimificationClockDays, "slimificationClockDays", 7f, true);
+            Scribe_Values.Look(ref fieldConversionEnabled, "fieldConversionEnabled", true, true);
+            Scribe_Values.Look(ref fieldConversionRate, "fieldConversionRate", 1f, true);
+            Scribe_Values.Look(ref visitorsEnabled, "visitorsEnabled", true, true);
+            Scribe_Values.Look(ref visitorArrivalRate, "visitorArrivalRate", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -116,6 +143,26 @@ namespace RimMandrake.GelatinousSlime
                 "The body acknowledges each genome it finishes filing.");
             list.CheckboxLabeled("Read-marks", ref flavorReadMarks,
                 "Slimified creatures leave a smear where they have walked.");
+            list.GapLine();
+
+            list.Label("THE BODY'S MECHANICS");
+            list.CheckboxLabeled("Slimification", ref slimificationEnabled,
+                "On (default): standing on the body slowly reads a creature into it. "
+                + "Off: nothing is applied or grows, so the slime is ground you can stand on; "
+                + "any film already on a pawn just wipes off.");
+            list.Label("Days to be read: " + slimificationClockDays.ToString("0.0")
+                       + " (shipped 7). Shorter is deadlier; the injected dose scales with it.");
+            slimificationClockDays = Mathf.Round(list.Slider(slimificationClockDays, 2f, 30f) * 2f) / 2f;
+            list.CheckboxLabeled("Farm conversion", ref fieldConversionEnabled,
+                "On (default): sown fields on slime-grass revert to ordinary slime ground over "
+                + "a few harvests. Off: fields stay as laid.");
+            list.Label("Conversion rate: " + fieldConversionRate.ToString("0.00") + "x");
+            fieldConversionRate = list.Slider(fieldConversionRate, 0.25f, 4f);
+            list.CheckboxLabeled("Visitors", ref visitorsEnabled,
+                "On (default): placid, part-read wild animals wander onto a slime map. "
+                + "Off: none arrive and the map opens without them.");
+            list.Label("Arrival rate: " + visitorArrivalRate.ToString("0.00") + "x");
+            visitorArrivalRate = list.Slider(visitorArrivalRate, 0.25f, 4f);
             list.GapLine();
 
             list.Label("THE TITANOSLIME");

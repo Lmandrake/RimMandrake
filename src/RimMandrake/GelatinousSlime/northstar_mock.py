@@ -19,7 +19,9 @@ SLIME_TERRAINS = {"RM_Slime_Hardened", "RM_Slime_Rich", "RM_Slime_Grass", "RM_Sl
 DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks": "True",
             "titanoslimeSpawnFactor": "1", "titanoslimeEngulfs": "True", "titanoslimeGrows": "True",
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
-            "titanoslimeMaxStage": "5", "titanoslimeSheds": "True"}
+            "titanoslimeMaxStage": "5", "titanoslimeSheds": "True",
+            "slimificationEnabled": "True", "slimificationClockDays": "7", "fieldConversionEnabled": "True",
+            "fieldConversionRate": "1", "visitorsEnabled": "True", "visitorArrivalRate": "1"}
 TITAN_STAGES = [0, 0, 1, 2, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0, 2]
 
 

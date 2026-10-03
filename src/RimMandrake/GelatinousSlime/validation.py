@@ -21,7 +21,7 @@ WHAT IT PROVES (intended function, each line sourced from About.xml / the C# / d
            poison AND charges the fee in the same bite; Slime-marked costs opinion.
   titano   spawn roll spreads over stages; titanoslimeMaxStage clamps; a cut stage>=2 titanoslime sheds a
            gelatid when titanoslimeSheds is on and does not when off.
-  settings all 10 SlimeSettings fields: shipped defaults, write+read-back, and the effect where a bridge can
+  settings all 16 SlimeSettings fields: shipped defaults, write+read-back, and the effect where a bridge can
            see it (flavorReadMarks, titanoslimeMaxStage, titanoslimeSheds).
 
 SITE. Components that need no map (defs) run anywhere. Pawn chains build their own 40x40 site (left half
@@ -48,7 +48,9 @@ SETTINGS = "RimMandrake.GelatinousSlime.SlimeSettings"
 FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": True,
           "titanoslimeSpawnFactor": 1, "titanoslimeEngulfs": True, "titanoslimeGrows": True,
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
-          "titanoslimeMaxStage": 5, "titanoslimeSheds": True}
+          "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
+          "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
+          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -832,5 +834,8 @@ def settings_flip(t):
     # every field has a write+read-back component or an effect component above; these close the rest
     for field, off in (("rarityFactor", 0), ("titanoslimeSpawnFactor", 0), ("flavorEntryRecorded", False),
                        ("titanoslimeEngulfs", False), ("titanoslimeGrows", False),
-                       ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False)):
+                       ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
+                       ("slimificationEnabled", False), ("slimificationClockDays", 2),
+                       ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
+                       ("visitorsEnabled", False), ("visitorArrivalRate", 4)):
         _flip(t, "%s_setting_flips" % field, field, off)
