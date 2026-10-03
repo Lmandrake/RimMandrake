@@ -70,6 +70,15 @@
 -->
 <Defs>
 
+  <!-- Her last season: age 38 of lifeExpectancy 45 (ART job RM_WardenMother_Aged). Visible-age swap only;
+       whatever the succession code reads is WARDEN_MOTHER_SUCCESSION_1's. -->
+  <LifeStageDef>
+    <defName>RM_WardenMotherElder</defName>
+    <label>elder</label>
+    <visible>true</visible>
+    <bodySizeFactor>1</bodySizeFactor>
+  </LifeStageDef>
+
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_WardenMother</defName>
     <label>warden mother</label>
@@ -132,6 +141,10 @@
           <def>AnimalAdult</def>
           <minAge>0.4</minAge>
         </li>
+        <li>
+          <def>RM_WardenMotherElder</def>
+          <minAge>38</minAge>
+        </li>
       </lifeStageAges>
     </race>
     <comps>
@@ -177,6 +190,13 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>7.5</drawSize>
         </bodyGraphicData>
