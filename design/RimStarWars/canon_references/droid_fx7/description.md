@@ -85,6 +85,7 @@ that is a limit of the sources, not an omission here.
   in-universe by Hera Syndulla identifying one on sight as "a Medtech."
 - **Era:** **blank** on both articles — `firstmade=` and `retired=` are empty in both
   wikitexts. Do not infer one from *Empire Strikes Back*.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** **none.** Neither the FX-7 nor FX-series article states a year in its prose (FX-7 is placed only "shortly before the battle" of Hoth). Nothing filled.
 - **Typical owners:** **Galactic Republic** and the **Alliance to Restore the Republic**
   (FX-7 infobox); **Galactic Empire** and the **Alliance to Restore the Republic**
   (FX-series infobox — FX-9 served in the Empire's medical facility during Vader's surgery).

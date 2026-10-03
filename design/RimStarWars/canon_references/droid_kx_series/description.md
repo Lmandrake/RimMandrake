@@ -101,6 +101,7 @@ The remainder of History, "Behind the scenes" and Appearances are **UNREAD, not 
 - **Era:** **blank.** The infobox `firstmade=` and `retired=` fields are literally empty. The
   dated in-text events above (18 BBY deployment, 9 BBY Enforcer variant, 5 BBY Niamos) are
   narrative and are **not promoted into this field**, per the brief.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "in service to the Galactic Empire during the Galactic Civil War" (lead); deployed "as early as **18 BBY**"; Enforcer variant "by **9 BBY**"; still in use **~14 ABY** (Droid Gotra) (article body). [KX-series security droid](https://starwars.fandom.com/wiki/KX-series_security_droid)
 - **Typical owners:** **Galactic Empire** — Imperial Military, Imperial Security Bureau, the
   Inquisitorius; **Alliance to Restore the Republic** (*appropriated*) and **Rogue One**
   (*appropriated*); Second Revelation; the Droid uprising; the **Scourge** (as a vessel); the

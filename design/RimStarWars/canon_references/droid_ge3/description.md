@@ -85,6 +85,7 @@ owner makes here is authorship, not correction.
   innocuous Czerka protocol droid that disguise trades on. That connection is worth keeping.
 - **Era:** **blank.** `firstmade` and `retired` are both empty. The only sourced time anchors
   are relative: best-selling during the **Jedi Civil War** and the **Dark Wars**.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** **none stated.** The prose carries no year; only the relative anchors already listed above. Nothing filled. [GE3-series protocol droid](https://starwars.fandom.com/wiki/GE3-series_protocol_droid)
 - **Typical owners:** the infobox `affiliation` field is **blank**, and `DROIDS_INDEX.md:724`
   correspondingly leaves the owners column blank. What the body text attests: **planetary
   governments of the Galactic Republic** (bulk purchases at a discount), and effectively

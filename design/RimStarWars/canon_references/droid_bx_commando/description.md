@@ -66,6 +66,7 @@ recalls that as a battle droid he cared only about following orders and destroyi
   literally empty. The in-text "new in 22 BBY" and "built five cycles before the Clone
   Wars" are narrative statements, recorded above as such and deliberately **not** promoted
   into an era field.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "still considered new in **22 BBY**"; one unit claims it was built five "cycles" before the Clone Wars; deactivated with the droid army in **19 BBY**; later seen **5 ABY** and **~14 ABY** (article body, History). [BX-series droid commando](https://starwars.fandom.com/wiki/BX-series_droid_commando)
 - **Typical owners**: Confederacy of Independent Systems (Separatist Droid Army);
   **Hutt Clan** — Ziro the Hutt's criminal organization and Jabba's criminal empire;
   **Cad Bane's group**; Separatist holdouts (including the Desix holdout); **Bedlam

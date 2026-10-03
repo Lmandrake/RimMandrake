@@ -88,6 +88,7 @@ sourcebooks, not on canon description.**
   in use ~130 years by **3956 BBY**, T3s attested at Taris circa **4086 BBY**, T3-M4 introduced
   before the Jedi Civil War, near-extinct by the Galactic Alliance era — but no era field, so
   this stays blank per the brief.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** produced "at some point prior to the Great Droid Revolution"; in use "approximately 130 years" as of **3956 BBY**; T3-M4 introduced before the Jedi Civil War (lead/body). [T3-series utility droid](https://starwars.fandom.com/wiki/T3-series_utility_droid)
 - **Typical owners:** the infobox `affiliation` field is **blank**. What the body text
   actually attests: **starport operators** (Taris), **traders and smugglers** (the article
   names them as the favoured buyers), **starfighter pilots** (via the unendorsed interface

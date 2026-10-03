@@ -59,6 +59,7 @@ describes them as "relics of the Clone War, designed to battle Jedi Knights."
   to General Grievous's specifications.
 - **Era**: **blank** — the article's `firstmade=` and `retired=` infobox fields are
   literally empty. Nothing is inferred from the Clone Wars setting.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "The MagnaGuard existed by **33 BBY**" (article body). No production date. [IG-100 MagnaGuard](https://starwars.fandom.com/wiki/IG-100_MagnaGuard)
 - **Typical owners**: **Confederacy of Independent Systems** (Separatist Droid Army) —
   in practice **General Grievous** personally and **Count Dooku**; later the **Infinite
   Coil**, the **Bedlam Raiders**, the **Scourge** (as a vessel), and **Zahra's raider

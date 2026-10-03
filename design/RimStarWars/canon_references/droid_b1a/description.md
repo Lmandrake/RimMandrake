@@ -71,6 +71,7 @@ this droid has no recorded manufacturer, despite being a B-series derivative.
 - **Era:** **blank.** No `firstmade` or `retired` value in the infobox. The in-text history
   places its two appearances at the Battle of Coruscant and on Utapau — narrative placement,
   not an infobox era, and not promoted into this field.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** **none.** The prose names the Battle of Coruscant and Utapau with no year, and states no production date. Nothing filled. [B1-A air battle droid](https://starwars.fandom.com/wiki/B1-A_air_battle_droid)
 - **Typical owners:** **Confederacy of Independent Systems**, specifically the **Separatist
   Droid Army**. That is the entire sourced owner list — one faction, no species, no world.
   [B1-A air battle droid](https://starwars.fandom.com/wiki/B1-A_air_battle_droid)

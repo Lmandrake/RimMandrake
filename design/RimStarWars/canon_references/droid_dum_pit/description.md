@@ -70,6 +70,7 @@ Sections read in full: infobox, lead, Characteristics, History, Behind the scene
 - **Era:** **blank.** `firstmade=` and `retired=` are empty in the wikitext. The article's
   own dated statement — in use "for about two centuries" by the Invasion of Naboo, with
   `232 BBY` linked — is narrative text, not an infobox era, and is not promoted here.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "in use for about two centuries by the time of the Invasion of Naboo"; **32 BBY** Boonta Eve Classic; **3 BBY** Garel; **~18 BBY** odd jobs; **34 ABY** Colossus (article body). [DUM-series pit droid](https://starwars.fandom.com/wiki/DUM-series_pit_droid)
 - **Typical owners:** **Galactic Republic**; **Alliance to Restore the Republic**;
   **Scourge** (marked in the infobox as *"as a vessel"* — i.e. infected hosts, not owners);
   the **Colossus** (infobox `affiliation=`, same article). In-text also: podracer pit crews

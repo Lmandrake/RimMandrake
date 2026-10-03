@@ -154,6 +154,7 @@ designer, creator, `firstmade`, `retired`.
   timeline — Old Republic Cold War through the sequel-era Resistance — so *any* era value
   would be misleading even if one existed. Blank is the right answer here for a reason beyond
   "the field is empty."
+- **Era (from article prose) *(prose pass 2026-10-03)*:** canon article: a grey unit in Jabba's Palace "around **4 ABY**"; Legends article: "existed at least since the time of the Cold War". No production date in either. [canon](https://starwars.fandom.com/wiki/GNK-series_power_droid) / [Legends](https://starwars.fandom.com/wiki/GNK_power_droid/Legends)
 - **Typical owners:** the richest owner list of the five chassis in this batch.
   - **(C)** **Galactic Republic**; **Alliance to Restore the Republic** (and *Uprising*);
     **Scourge** — *as a vessel*, i.e. the droid was a host, not an operator; **New Republic**;

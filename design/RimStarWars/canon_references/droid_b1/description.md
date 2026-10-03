@@ -95,6 +95,7 @@ grey with dark red paint.
 - **Era**: **blank** — Wookieepedia's droid infobox carries no era for the B1-series.
   The one exception in this chassis group is `B1 supervisor droid`, whose infobox gives
   **c. 32 BBY**. Nothing else here is inferred.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** the article body states B1 forces were provided to the CIS in **22 BBY**, "ten years after the Battle of Naboo", and that a group sat on Opop Hibbedit **22-19 BBY** (History). No introduction date for the series is stated in prose. [B1-series battle droid](https://starwars.fandom.com/wiki/B1-series_battle_droid)
 - **Typical owners**: Trade Federation (and Trade Federation military), Techno Union,
   Confederacy of Independent Systems (and Confederacy military), Cato Neimoidian
   government, Jedi Order (captured units). Post-war: Droid Gotra and "The Twins" on Nal

@@ -115,6 +115,7 @@ History, summarised from the article's own two sections:
 - **Era:** **blank.** `firstmade` and `retired` are both empty in the infobox. Cited dated
   events, not promoted into this field: **Battle of Kamino 21 BBY**, **Battle of Mon Cala
   20 BBY** — i.e. mid-Clone Wars. `DROIDS_INDEX.md:218` also carries a blank era.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** first seen deployed at Kamino in **21 BBY**, and again at Mon Cala in **20 BBY** (article body, History). No production date is stated; the field stays blank. [AQ-series battle droid](https://starwars.fandom.com/wiki/AQ-series_battle_droid)
 - **Typical owners:** **Confederacy of Independent Systems**, specifically the **Separatist
   Droid Army**. Named individual commanders: **Asajj Ventress** (Kamino) and **Riff Tamson**
   (Mon Cala), with **Count Dooku** sending the Mon Cala reinforcements. Allied troops:

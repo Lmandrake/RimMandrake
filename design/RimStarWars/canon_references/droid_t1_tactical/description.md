@@ -154,6 +154,7 @@ Provenance for the droid **the sprite actually depicts**:
 - **Era:** **blank.** `firstmade=` and `retired=` are empty. Dated events the text gives, cited
   rather than inferred: CDE-T use over a decade before the Clone Wars; three T-1s in the
   Christophsis campaign in **22 BBY**; continued service "up until at least **19 BBY**".
+- **Era (from article prose) *(prose pass 2026-10-03)*:** introduced as the CDE-T "in the years before the outbreak of the Clone Wars"; three used at Christophsis **22 BBY**; "continued use up until at least **19 BBY**" (article body). [T-series ...](https://starwars.fandom.com/wiki/T-series_military_strategic_analysis_and_tactics_droid)
 - **Typical owners:** **Confederacy of Independent Systems** and its **Confederacy military**;
   **Atha Prime**; **Zygerrian Slave Empire**; **Separatist holdouts** (the **Desix** holdout);
   **Bedlam Raiders**; **Alliance to Restore the Republic**, specifically the **Rebel officer

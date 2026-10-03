@@ -88,6 +88,7 @@ Deployment and reuse, all from the article:
 - **Era:** **blank.** No `firstmade` or `retired` value in the infobox. The article's body
   does give **3956 BBY and 3951 BBY** as when the model was "commonly used" — that is a
   narrative usage window, cited here rather than promoted into the era field.
+- **Era (from article prose) *(prose pass 2026-10-03)*:** "commonly used around **3956 BBY** and **3951 BBY**" (lead sentence). [K-X12 probe droid](https://starwars.fandom.com/wiki/K-X12_probe_droid)
 - **Typical owners:** ⚠️ **the infobox `affiliation` field is empty and
   `DROIDS_INDEX.md:967` carries a blank owners column.** No faction owns this droid. What the
   article does name are *individual and site* users: the **Peragus Mining Facility**,
