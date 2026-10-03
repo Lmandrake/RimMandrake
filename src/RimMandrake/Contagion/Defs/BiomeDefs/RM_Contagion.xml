@@ -77,12 +77,12 @@
     <texture>Biomes/AB_OcularForest</texture>
     <diseaseMtbDays>30</diseaseMtbDays>
     <diseases>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_SporesAllergy</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_SporeAllergy</diseaseInc>
         <commonality>50</commonality>
       </li>
-      <li MayRequire="sarg.alphabiomes">
-        <diseaseInc>AB_Disease_AnimalSporesAllergy</diseaseInc>
+      <li>
+        <diseaseInc>RM_Disease_AnimalSporeAllergy</diseaseInc>
         <commonality>50</commonality>
       </li>
       <li>

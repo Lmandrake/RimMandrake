@@ -102,6 +102,18 @@ def static_checks():
             continue
         if len(re.findall(r"\b%s\b" % n, reader_text)) < 2:
             bad.append("settings field %s has a control but no reader (moves and does nothing)" % n)
+    # ROT_SPORE_ALLERGY_PORT_1: the free Rot and Contagion name OUR two incidents and no donor disease; the four defs ship in EH.
+    eh = os.path.join(HERE, "..", "EnvironmentalHazards", "Defs")
+    ehtxt = "".join(open(os.path.join(dp, f), encoding="utf-8").read()
+                    for dp, _d, fs in os.walk(eh) for f in fs if f.endswith(".xml"))
+    for dn in ("RM_SporeAllergy", "RM_AnimalSporeAllergy", "RM_Disease_SporeAllergy", "RM_Disease_AnimalSporeAllergy"):
+        if "<defName>%s</defName>" % dn not in ehtxt:
+            bad.append("%s is not shipped by EnvironmentalHazards" % dn)
+    for rel in (("Defs", "BiomeDefs", "RM_TheRot_Biome.xml"), ("..", "Contagion", "Defs", "BiomeDefs", "RM_Contagion.xml")):
+        bt = re.sub(r"<!--.*?-->", "", open(os.path.join(HERE, *rel), encoding="utf-8").read(), flags=re.S)
+        if "AB_Disease" in bt or "<diseaseInc>RM_Disease_SporeAllergy</diseaseInc>" not in bt \
+                or "<diseaseInc>RM_Disease_AnimalSporeAllergy</diseaseInc>" not in bt:
+            bad.append("%s diseases must name the RM_ spore-allergy pair and no AB_ def" % rel[-1])
     if "RM_KitFronts" not in src:
         bad.append("RM_TheRotFront does not register into RM_KitFronts")
     proj = open(os.path.join(HERE, "Source", "RM_TheRot.csproj"), encoding="utf-8").read()
