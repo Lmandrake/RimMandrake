@@ -30,3 +30,4 @@
 - ROT_SPORE_ALLERGY_PORT_1 closed 891c1d14a (2 hediffs + 2 incidents in EnvironmentalHazards, AB_ pair gone from free Rot+Contagion, Rot screen on/off+incidence, Contagion now depends on EH; Contagion maps NOT governed by Rot screen toggle; live proof owed)
 - ROT_WOUND_SHARING_WIRING_1 closed 8d2f36142 (patch on 5 AA bodies + RM_CompGrantHediff in CB + RM_KinMendingNetwork; Health sharing checkbox back, restart-to-apply; CB+Rot DLLs rebuilt; live split/mend reads UNMEASURED)
 - CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 built (6 flora, 3 items, RM_ZennaqLightningPatch on WeatherEvent_LightningStrike.DoStrike, 2 settings, art wired from _artsrc, 3 item icons queued; pending sha)
+- WEBWORK_BASE_PORT_BUILD_1 built (RM_ anchor/web/gutter/slick + creep ext + thrixweave rename/strip/butcher/killedLeavings, 3 settings, validation chain; silk-knot/nest scatter stay campaign-side; sha pending)

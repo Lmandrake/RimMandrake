@@ -218,7 +218,7 @@ namespace RimMandrake.CreatureBehaviors
     //      "degrades cleanly" posture as every other toggle here. The dial
     //      scales only the severity added per scan (never the hediff's own
     //      stage thresholds, decay rate or tend rate, which stay whatever
-    //      RUT_Webwork_Slick says); a structure also carrying CompFlickable
+    //      RM_Webwork_Slick says); a structure also carrying CompFlickable
     //      is the player's own on/off command regardless of this setting.
     //  36. shadowFollowEnabled — RM_JobGiver_FollowShadowCaster
     //      (DESERT_GLITTER_BIRDS_COMMENSALS_1). Off: a shadow-follower-

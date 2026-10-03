@@ -11,15 +11,9 @@
   - Renames Hyperweave (defName UNCHANGED, Core shortHash 26103) to "shokkweave"
     with new flavor text. 617 RecipeDefs and every savegame reference keep working
     because the defName never moves.
-  - Strips trader stocking via tradeability All -> Sellable: colonists can still
-    sell it, but no trader (SingleDef, Tag, or Category route) ever generates or
-    stocks it. TraderCanSell() gates Verse.RimWorld.StockGeneratorUtility.TryMakeForStockSingle
-    directly, so this closes the KotOR guy762 SingleDef traders (Czerka,
-    HuttGalleon) without touching their XML.
-  - Strips it from the standard quest-reward pool (thingSetMakerTags: RewardStandardCore).
-  - Belt-and-braces: also removes the ExoticMisc trade tag it is reached through.
-  - Halves its stuff-commonality (0.1 -> 0.05) so rare offworld shokkweave gear
-    survives as flavor at half the vanilla roll rate.
+  - The trader/quest/commonality strip and the rename's first half now live in the free
+    mod mandrake.rm.webwork (thrixweave, WEBWORK_BASE_PORT_BUILD_1); this mod only repaints
+    the same Hyperweave def as "shokkweave" and keeps the campaign-only routes below.
   - Gives the donor Wyyyschokk (mlie.starwarsanimalcollection) a small butcher
     yield of shokkweave: the silk is in the spider, not its hide (race.leatherDef
     untouched).
@@ -30,13 +24,9 @@
     open drops a much larger shokkweave payout.
 
   Out of scope here (see the item and spec): live trader-generation proof and
-  the quest-reward roll pass (both need a quicktest map). Border creep-web:
-  RUT_Webwork_Anchor/_Web/_Gutter (WEBWORK_KIT_BUILD_1) now carry a small
-  killedLeavings shokkweave yield attached here (ShokkweaveCreepWebYield.xml)
-  — the "yields" half of the ruling. The "spawns an emergent Shokk" half is
-  NOT done: SHOKK_RSW_MOD_1's spawn-hook comp only fires on
-  DestroyMode.Vanish, which combat-killing these Things never produces; a
-  dedicated harvest job is still owed (see that patch file's own note).
+  the quest-reward roll pass (both need a quicktest map). The border creep-web
+  structures (RM_Webwork_Anchor/_Web/_Gutter) and their small killedLeavings yield
+  moved into mandrake.rm.webwork (WEBWORK_BASE_PORT_BUILD_1).
 
   WEBWORK_EGG_BLACKMARKET_BUILD_1: the Hutt Cartel egg black market.
   RUT_Caravan_HuttCartel_EggMarket (a rare Cartel caravan variant, appended to
@@ -64,5 +54,6 @@
     <li>Mlie.StarWarsAnimalCollection</li>
     <li>mandrake.rut.patches</li>
     <li>mandrake.rm.biomes</li>
+    <li>mandrake.rm.webwork</li>
   </loadAfter>
 </ModMetaData>

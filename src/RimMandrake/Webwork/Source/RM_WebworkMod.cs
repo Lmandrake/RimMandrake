@@ -33,6 +33,13 @@ namespace RimMandrake.Webwork
 		public static bool nestEnabled = true;
 		public static float eggRelayIntervalMultiplier = 1f;
 
+		// WEBWORK_BASE_PORT_BUILD_1: the creeping front (both apply at startup, so a restart) and the
+		// thrixweave sole-source strip (trader stock, quest rewards, trade tag, stuff commonality).
+		// The rename of Hyperweave to thrixweave always applies.
+		public static bool frontCreepEnabled = true;
+		public static float frontCreepIntervalMultiplier = 1f;
+		public static bool thrixweaveTraderStripEnabled = true;
+
 		public override void ExposeData()
 		{
 			base.ExposeData();
@@ -41,6 +48,9 @@ namespace RimMandrake.Webwork
 			Scribe_Values.Look(ref emergentSpawnChanceMultiplier, "emergentSpawnChanceMultiplier", 1f);
 			Scribe_Values.Look(ref nestEnabled, "nestEnabled", true);
 			Scribe_Values.Look(ref eggRelayIntervalMultiplier, "eggRelayIntervalMultiplier", 1f);
+			Scribe_Values.Look(ref frontCreepEnabled, "frontCreepEnabled", true);
+			Scribe_Values.Look(ref frontCreepIntervalMultiplier, "frontCreepIntervalMultiplier", 1f);
+			Scribe_Values.Look(ref thrixweaveTraderStripEnabled, "thrixweaveTraderStripEnabled", true);
 		}
 
 		public void DoWindowContents(Rect inRect)
@@ -80,6 +90,22 @@ namespace RimMandrake.Webwork
 					+ "x (lower = faster; shipped default re-lays every 20-30 days)");
 				eggRelayIntervalMultiplier = list.Slider(eggRelayIntervalMultiplier, 0.1f, 3f);
 			}
+
+			list.Gap();
+			list.Label("Creeping front and thrixweave (restart to apply)");
+			list.CheckboxLabeled("The web creeps out over the border", ref frontCreepEnabled,
+				"On: a map bordering a Webwork slowly grows anchor lines, sheet webs and gutters inward from "
+			  + "that edge. Off: the Webwork stays in its own tiles. Applies at startup.");
+			if (frontCreepEnabled)
+			{
+				list.Label("  Creep advance interval: " + frontCreepIntervalMultiplier.ToString("0.00")
+					+ "x (higher = slower; shipped default one band step per day)");
+				frontCreepIntervalMultiplier = list.Slider(frontCreepIntervalMultiplier, 0.25f, 4f);
+			}
+			list.CheckboxLabeled("Thrixweave is sold by no trader", ref thrixweaveTraderStripEnabled,
+				"On: no trader stocks thrixweave (Hyperweave, renamed), it leaves the standard quest-reward "
+			  + "pool, and tailored gear is half as likely to be made of it - the Webwork is its only source. "
+			  + "Off: it trades like vanilla Hyperweave. The rename always applies. Applies at startup.");
 
 			list.End();
 		}

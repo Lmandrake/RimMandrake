@@ -66,6 +66,55 @@ def _biome():
     return ET.parse(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Webwork_Biome.xml")).getroot().find("BiomeDef")
 
 
+def _base_port_findings():
+    bad = []
+    txt = lambda rel: re.sub(r"<!--.*?-->", "", _read(rel), flags=re.S)
+    st = txt(os.path.join("Defs", "ThingDefs_Buildings", "RM_WebworkStructures.xml"))
+    for n in ("Anchor", "Web", "Gutter"):
+        m = re.search(r"<defName>RM_Webwork_%s</defName>(.*?)</ThingDef>" % n, st, flags=re.S)
+        if not m:
+            bad.append("RM_Webwork_%s not defined" % n)
+        else:
+            if "<Hyperweave>" not in m.group(1) or "RM_CompProperties_SenseWebNode" not in m.group(1):
+                bad.append("RM_Webwork_%s needs a thrixweave killedLeavings and a sense-web comp" % n)
+            if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "Natural", "RM_Webwork_%s.png" % n)):
+                bad.append("RM_Webwork_%s has no texture" % n)
+    if "RM_Webwork_Slick" not in txt(os.path.join("Defs", "HediffDefs", "RM_WebworkSlick.xml")):
+        bad.append("RM_Webwork_Slick hediff missing")
+    biome = txt(os.path.join("Defs", "BiomeDefs", "RM_Webwork_Biome.xml"))
+    ext = re.search(r"RM_FrontCreepExtension\">(.*?)</spawnDensity>", biome, flags=re.S)
+    if not ext or any("<li>RM_Webwork_%s</li>" % n not in ext.group(1) for n in ("Anchor", "Web", "Gutter")):
+        bad.append("RM_Webwork lacks RM_FrontCreepExtension naming the three RM_ structures")
+    ren = txt(os.path.join("Patches", "RM_Thrixweave_Rename.xml"))
+    if "<label>thrixweave</label>" not in ren:
+        bad.append("Hyperweave is not renamed thrixweave")
+    oll = txt(os.path.join("Defs", "ThingDefs_Races", "RM_Ollathrix.xml"))
+    if not re.search(r"<butcherProducts>\s*<Hyperweave>\d+</Hyperweave>", oll):
+        bad.append("RM_Ollathrix has no thrixweave butcher yield")
+    # the retired campaign names must be gone repo-wide, with a probe that the search can see anything
+    root = os.path.normpath(os.path.join(HERE, "..", ".."))
+    gone = re.compile(r"RUT_Webwork_(Anchor|Web|Gutter|Slick)\b")
+    probe, hits = 0, []
+    for dp, _d, files in os.walk(root):
+        if "__pycache__" in dp or os.sep + "Textures" in dp or os.sep + "Assemblies" in dp:
+            continue
+        for fn in files:
+            if fn.endswith((".xml", ".cs", ".py")):
+                try:
+                    body = open(os.path.join(dp, fn), encoding="utf-8").read()
+                except (OSError, UnicodeDecodeError):
+                    continue
+                if "RM_Webwork_NestWall" in body:
+                    probe += 1
+                if gone.search(body) and fn != "validation.py":
+                    hits.append(os.path.relpath(os.path.join(dp, fn), root))
+    if probe == 0:
+        bad.append("sanity probe: RM_Webwork_NestWall found in no source file (the walk cannot see)")
+    if hits:
+        bad.append("retired RUT_Webwork_Anchor/Web/Gutter/Slick still named in: %s" % sorted(hits)[:6])
+    return bad
+
+
 def static_checks():
     bad = []
     # WEBWORK_HEAT_SHADE_BUILD_1: the biome declares an overhead sun-heat kind (state read lives in the live chain)
@@ -109,6 +158,8 @@ def static_checks():
             bad.append("wildAnimals has fewer than 6 rows")
         if len(list(b.find("wildPlants"))) < 16:
             bad.append("wildPlants has fewer than 16 rows")
+    # WEBWORK_BASE_PORT_BUILD_1: structures, front extension, thrixweave rename, butcher yield (parsed from the XML)
+    bad.extend(_base_port_findings())
     for cls in ("RM_GenStep_WebworkNest", "RM_CompEggClutchRelay", "RM_CompEmergentSpawnOnDestroy", "RM_BiomeWorker_Webwork"):
         if not any(("class %s" % cls) in _read(os.path.join("Source", f)) for f in os.listdir(os.path.join(HERE, "Source")) if f.endswith(".cs")):
             bad.append("class %s not found in Source/" % cls)
@@ -306,6 +357,27 @@ def _build_suite():
                 for need in ("CanBeDormant", "TurretGun"):
                     if need not in blob:
                         raise ExpectationFailed("RM_Ollathrix lacks a %s comp (ambush burst / loom spit): %s" % (need, blob[:200]))
+
+    @suite.chain("thrixweave_and_front")
+    def thrixweave_and_front(t):
+        """WEBWORK_BASE_PORT_BUILD_1: state reads. Free tier only (the campaign layer repaints the label to shokkweave)."""
+        with t.component("hyperweave_reads_thrixweave", beyond_toggle=True):
+            f = _deep(t, "ThingDef/Hyperweave", "label")
+            if f is not None and "thrixweave" not in "|".join(_flat(f.get("label"))).lower():
+                raise ExpectationFailed("Hyperweave label reads %r, expected thrixweave (free tier)" % (f.get("label"),))
+        with t.component("trader_strip_applied", toggle="thrixweaveTraderStripEnabled"):
+            f = _deep(t, "ThingDef/Hyperweave", "tradeability")
+            if f is not None and "Sellable" not in "|".join(_flat(f.get("tradeability"))):
+                raise ExpectationFailed("Hyperweave tradeability reads %r with the strip on, expected Sellable" % (f.get("tradeability"),))
+        with t.component("front_creep_extension_on_biome", toggle="frontCreepEnabled"):
+            f = _deep(t, "BiomeDef/" + BIOME, "modExtensions")
+            if f is not None and "RM_FrontCreepExtension" not in "|".join(_flat(f.get("modExtensions"))):
+                raise ExpectationFailed("RM_Webwork carries no RM_FrontCreepExtension with the toggle on: %r" % (f.get("modExtensions"),))
+        with t.component("structures_resolve", beyond_toggle=True):
+            for n in ("Anchor", "Web", "Gutter"):
+                f = _deep(t, "ThingDef/RM_Webwork_" + n, "killedLeavings")
+                if f is not None and "Hyperweave" not in "|".join(_flat(f.get("killedLeavings"))):
+                    raise ExpectationFailed("RM_Webwork_%s yields no Hyperweave on kill: %r" % (n, f.get("killedLeavings")))
 
     @suite.chain("scald_binding")
     def scald_binding(t):

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WEBWORK_BASE_PORT_BUILD_1: the rename half of the thrixweave sole-source law, moved down from the campaign tier
+  (ShokkweaveEconomy, SHOKKWEAVE_SOLE_SOURCE_1). Hyperweave KEEPS its defName (Core; hundreds of RecipeDefs and savegame
+  Things reference it): only label and description move. stuffAdjective is null on the base def, so "thrixweave duster"
+  derives from the label. Core is always present, so no FindMod guard. The campaign layer then patches the same two
+  fields to "shokkweave" (label and lore only) and loads after this mod.
+  The trader/quest/commonality strip is in code (RM_ThrixweaveGate), because it has a Mod Settings toggle.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/label</xpath>
+    <value>
+      <label>thrixweave</label>
+    </value>
+  </Operation>
+
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/ThingDef[defName="Hyperweave"]/description</xpath>
+    <value>
+      <description>Silk cut whole from the Webwork's webs and never rewoven by any hand. The great ollathrix spin it under their own strength, layer over layer, until it holds an edge and a flame the way no vat-grown fiber ever has. No lab has cultured it and no trader stocks it: a caravan that wants thrixweave has to go to the Webwork for it.</description>
+    </value>
+  </Operation>
+
+</Patch>

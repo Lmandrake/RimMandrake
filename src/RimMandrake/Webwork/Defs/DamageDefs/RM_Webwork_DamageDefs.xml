@@ -23,7 +23,7 @@
   RSW_Shokk_DamageDefs.xml, SHOKK_RSW_MOD_1), re-tokened. Near-zero direct
   damage — the point of the spit is additionalHediffs -> RM_LoomBound, not
   the hit itself. Sole-source guard (webwork_kit_spec.md §3, unchanged):
-  this def yields nothing and creates no thrixweave/Shokkweave.
+  this def deals damage only: it yields no thrixweave and spawns nothing.
 -->
 <Defs>
 

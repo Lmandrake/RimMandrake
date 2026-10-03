@@ -23,15 +23,23 @@
 
   <BiomeDef>
     <defName>RM_Webwork</defName>
-    <!-- No modExtensions in Phase A: the frozen twin's RM_FrontCreepExtension
-         names RUT_Webwork_Anchor/_Web/_Gutter, Utinni-tier structures not
-         ported here (WEBWORK_WEB_STRUCTURES_1's scope) — an extension naming
-         no front things would do nothing, so it is left off until that item
-         builds the structures and can wire it for real. -->
     <label>the Webwork</label>
     <description>The place where the plants grew so dense and thick that they drank their entire river -- soaked it up into a thicket of terrible, nightmare plants ever churning against itself. The map shows a jungle with no water because the water is inside. It is eerily silent -- most of the animals have been eaten, and few will enter. Those who do frequently discover a shadow, seconds before it lands upon them, and know nothing more.</description>
     <workerClass>RimMandrake.Webwork.RM_BiomeWorker_Webwork</workerClass>
     <modExtensions>
+      <!-- WEBWORK_BASE_PORT_BUILD_1: the creeping front (webwork_kit_spec 6). RM_MapComponent_FrontCreep reads this off the
+           NEIGHBOUR biome and scatters these structures inward along the border. Numbers invented, live-balance pass owed.
+           Toggle and advance rate: RM_WebworkSettings.frontCreepEnabled / frontCreepIntervalMultiplier (applied at startup). -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_FrontCreepExtension">
+        <frontThingDefNames>
+          <li>RM_Webwork_Anchor</li>
+          <li>RM_Webwork_Web</li>
+          <li>RM_Webwork_Gutter</li>
+        </frontThingDefNames>
+        <advanceIntervalTicks>60000</advanceIntervalTicks>
+        <maxBandDepth>10</maxBandDepth>
+        <spawnDensity>0.15</spawnDensity>
+      </li>
       <!-- WEBWORK_HEAT_SHADE_BUILD_1 (SOLAR_HEAT_EXPOSURE_1): sun heat kind "overhead" - one kind of heat planet-wide.
            The sun's elevation comes from the map tile's latitude (never a region name); below 55 deg the cover that
            counts is lowSun's (lee/rock), above it roofs, parasols and canopy shade count. The sunlit clearing that

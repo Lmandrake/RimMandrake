@@ -44,6 +44,7 @@
     <Compile Include="RM_CompEmergentSpawnOnDestroy.cs" />
     <Compile Include="RM_GenStep_WebworkNest.cs" />
     <Compile Include="RM_CompEggClutchRelay.cs" />
+    <Compile Include="RM_WebworkStartupGate.cs" />
   </ItemGroup>
 
   <ItemGroup>

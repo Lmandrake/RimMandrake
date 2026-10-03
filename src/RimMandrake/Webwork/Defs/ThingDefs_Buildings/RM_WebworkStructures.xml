@@ -1,51 +1,31 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_WebworkStructures.xml            UtinniPatches - WEBWORK_KIT_BUILD_1
+  RM_WebworkStructures.xml             Webwork - WEBWORK_BASE_PORT_BUILD_1
   ============================================================================
-  The roster's own "web networks" (the_webwork.md §8): "anchor lines, sheet
-  webs, and the silk irrigation gutters, laid through the entire ecosystem."
-  Three decorative/sensory Things, each carrying
-  RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode so they
-  register with RM_MapComponent_SenseWeb on that map (webwork_kit_spec.md
-  §1). The anchor also carries RM_ChewableExtension — the one of the three
-  the anchor-beetles chew (§5; "chew through web anchors", not the sheet
-  webs or gutters themselves).
+  The Webwork's web network (webwork_kit_spec): anchor line, sheet web and silk
+  irrigation gutter. Ported from the campaign tier (RUT_Webwork_*, UtinniPatches,
+  WEBWORK_KIT_BUILD_1 / WEBWORK_WEB_STRUCTURES_1) into the free mod; the RUT_
+  defs are deleted. Each carries RM_CompProperties_SenseWebNode so it registers
+  with RM_MapComponent_SenseWeb; the anchor also carries RM_ChewableExtension
+  (the thing anchor-beetles chew); the sheet web carries the commandable
+  adhesive (Flickable + RM_CompProperties_AdhesiveSlick -> RM_Webwork_Slick).
 
-  Placement is NOT this file's job: RM_MapComponent_FrontCreep spawns these
-  on border maps (mechanic 6); an ordinary interior-map scatter GenStep is
-  deferred (not asked by this item; ShokkweaveHarvestNodes.xml's own
-  dedicated resource nodes already cover interior-map harvest routes).
+  Placement is RM_MapComponent_FrontCreep's job (RM_FrontCreepExtension on the
+  RM_Webwork BiomeDef). Destroying a node yields thrixweave (Hyperweave, renamed
+  in Patches/RM_Thrixweave_Rename.xml): web-cutting is one of the sole-source
+  routes. The emergent-spawn half (RM_CompProperties_EmergentSpawnOnDestroy) is
+  not attached: it fires only on DestroyMode.Vanish, and combat destruction
+  never produces that; a dedicated harvest job is still owed.
 
-  🔴 Sole-source guard: NONE of these three carry killedLeavings or a
-  resource-yield comp. Destroying/chewing a sense-web node drops nothing —
-  any Shokkweave yield off a creep-spawned node is SHOKKWEAVE_SOLE_SOURCE_1's
-  own patch to attach (owner card 4, 2026-09-11: border creep-web "yields,
-  with teeth"), not this def's job.
-
-  Cross-mod compClass/modExtension reference: mandrake.rm.creaturebehaviors
-  is a standing dependency of this campaign's Utinni-tier content (already
-  always active alongside mandrake.rut.patches); no MayRequire wrapper is
-  used, matching how other RM_-tier comps are referenced directly elsewhere
-  in this campaign's RUT_ content.
-
-  Art: WEBWORK_WEB_STRUCTURES_1 — the retinted-Hive placeholder is replaced
-  with a flat-fill placeholder distinct per structure
-  (art/Structures/gen_webwork_structures_placeholder.py), Graphic_Single at
-  this mod's own texPath (matches RUT_ScaldVent's own-art convention). Real
-  bespoke art is QUEUED: infrastructure/artpipe/pending/webwork_anchor.json,
-  webwork_web.json, webwork_gutter.json (webwork_design_render.csv) — swap
-  the texPath back to the daemon's output when it lands, no def-shape
-  change needed.
-
-  HP/fillPercent/pathCost are ❓INVENTED, expecting the same live-balance
-  pass every other number in this kit's build carries.
+  Art: placeholder flat-fills (art/Structures/gen_webwork_structures_placeholder.py);
+  real art is queued in artpipe. HP/fillPercent/pathCost/yields are invented
+  first values for the live-balance pass.
   ============================================================================
 -->
 <Defs>
 
   <ThingDef ParentName="BuildingNaturalBase">
-    <defName>RUT_Webwork_Anchor</defName>
+    <defName>RM_Webwork_Anchor</defName>
     <label>web anchor line</label>
     <description>A thick catenary of shokkweave, spun taut between two fixed points and hardened until it reads as architecture rather than silk. The whole network hangs off lines like this one; cut or chewed through, the web nearby goes slack and blind.</description>
     <!-- BuildingNaturalBase sets no thingClass of its own (unlike RockBase,
@@ -54,11 +34,11 @@
          ReadingPolicyDatabase.GenerateStartingPolicies() NREs on
          item.thingClass.SameOrSubclassOf, for EVERY Game construction, not
          just this one. Found live 2026-09-12 (FOUNDRY): missing here on
-         all 3 defs in this file plus RUT_Webwork_Nest, blocking every
+         all 3 defs in this file plus RM_Webwork_Nest, blocking every
          quicktest and every save load on the whole mod list. -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/RUT_Webwork_Anchor</texPath>
+      <texPath>Things/Building/Natural/RM_Webwork_Anchor</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>1.0</drawSize>
@@ -74,6 +54,9 @@
       <MaxHitPoints>40</MaxHitPoints>
       <Flammability>1.4</Flammability>
     </statBases>
+    <killedLeavings>
+      <Hyperweave>3</Hyperweave>
+    </killedLeavings>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_ChewableExtension" />
     </modExtensions>
@@ -83,13 +66,13 @@
   </ThingDef>
 
   <ThingDef ParentName="BuildingNaturalBase">
-    <defName>RUT_Webwork_Web</defName>
+    <defName>RM_Webwork_Web</defName>
     <label>sheet web</label>
     <description>A broad plane of silk strung between trunks, thick enough to blot out the canopy above it. Nothing touches it without the whole network knowing.</description>
-    <!-- see RUT_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
+    <!-- see RM_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/RUT_Webwork_Web</texPath>
+      <texPath>Things/Building/Natural/RM_Webwork_Web</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>1.2</drawSize>
@@ -105,6 +88,9 @@
       <MaxHitPoints>30</MaxHitPoints>
       <Flammability>1.6</Flammability>
     </statBases>
+    <killedLeavings>
+      <Hyperweave>2</Hyperweave>
+    </killedLeavings>
     <comps>
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
       <!-- WEBWORK_WEB_STRUCTURES_1 — the deferred "commandable adhesive
@@ -112,24 +98,24 @@
            one of the three structures a pawn actually stands IN, so it is
            the one that carries the adhesive. CompProperties_Flickable is
            the whole "commandable" half — the player's own Gizmo toggle,
-           zero new C#; see RUT_WebworkSlick.xml for the hediff's own
+           zero new C#; see RM_WebworkSlick.xml for the hediff's own
            slick-vs-locked escalation. -->
       <li Class="CompProperties_Flickable" />
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_AdhesiveSlick">
-        <slickHediff>RUT_Webwork_Slick</slickHediff>
+        <slickHediff>RM_Webwork_Slick</slickHediff>
         <radiusCells>0</radiusCells>
       </li>
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="BuildingNaturalBase">
-    <defName>RUT_Webwork_Gutter</defName>
+    <defName>RM_Webwork_Gutter</defName>
     <label>silk irrigation gutter</label>
     <description>A woven channel of dense silk, carrying the stolen river's water further than roots alone could reach. Plumbing, not habitat — but it is still web, and it still feels.</description>
-    <!-- see RUT_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
+    <!-- see RM_Webwork_Anchor's comment above: BuildingNaturalBase sets no thingClass -->
     <thingClass>Building</thingClass>
     <graphicData>
-      <texPath>Things/Building/Natural/RUT_Webwork_Gutter</texPath>
+      <texPath>Things/Building/Natural/RM_Webwork_Gutter</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <shaderType>Transparent</shaderType>
       <drawSize>1.0</drawSize>
@@ -145,6 +131,9 @@
       <MaxHitPoints>50</MaxHitPoints>
       <Flammability>1.2</Flammability>
     </statBases>
+    <killedLeavings>
+      <Hyperweave>5</Hyperweave>
+    </killedLeavings>
     <comps>
       <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_SenseWebNode" />
     </comps>
