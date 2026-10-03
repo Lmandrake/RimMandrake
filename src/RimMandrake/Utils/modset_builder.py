@@ -167,6 +167,13 @@ TIERS = {
         "forbid": ["glitchgoblin.invisibleconduitcont"],
         "dlc": True,
     },
+    "builds_biomes": {
+        "why": "Live def-resolve proof of the biome-mod content built 2026-10-03 (Abyss, Stillsand, Scarlands, "
+               "Contagion suites run through the situational re-run job). Those mods are folded into the "
+               "composed mandrake.rm.biomes, so that is the one packageId to ask for.",
+        "want": [BRIDGE, "mandrake.rm.biomes"],
+        "dlc": True,
+    },
     "visibility": {
         "why": "Prove mandrake.rm.visibility's threat-point Prefix and "
                "tile-memory round trip (COLONY_VISIBILITY_BUILD_1) with "
