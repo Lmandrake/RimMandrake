@@ -429,7 +429,9 @@ def tank_heals(t):
             t.wait_ticks(2500)
             p = _pawn(t, S["pawn"])
             cut = _sev(p, "Cut", "Torso")
-            if cut is None or S["cut0"] - cut > 0.3:
+            # LIVE 2026-10-03: a 4.0 cut heals ~0.36 by the body's OWN natural healing in 2500 ticks with the tank OFF (4.0 -> 3.64), so the
+            # old 0.3 limit read natural healing as bacta. The tank's tuned rate is several times that.
+            if cut is None or S["cut0"] - cut > 0.5:
                 _fail("healing is OFF yet the cut fell %s -> %s in 2500 ticks" % (S["cut0"], cut))
             if _fuel(t, S["tank"]) < S["fuel1"] - 1e-3:
                 _fail("healing OFF yet bacta drained %s -> %s" % (S["fuel1"], _fuel(t, S["tank"])))
@@ -546,8 +548,10 @@ def tank_power(t):
             _site(t, S)
             _refuel(t, S, 10)
             _add(t, S["pawn"], "Cut", "Torso", 4.0)
-            S["cut0"] = _sev(_pawn(t, S["pawn"]), "Cut", "Torso")
             _enter(t, S)
+            # LIVE 2026-10-03: read the baseline AFTER entering: the 700 ticks _enter waits are healed by the POWERED tank, so a
+            # baseline taken before it made the unpowered phase read as healing.
+            S["cut0"] = _sev(_pawn(t, S["pawn"]), "Cut", "Torso")
 
     with _comp(t, "unpowered_tank_does_not_heal"):
         if _live(t):
@@ -557,7 +561,7 @@ def tank_power(t):
             f0 = _fuel(t, S["tank"])
             t.wait_ticks(1500)
             cut = _sev(_pawn(t, S["pawn"]), "Cut", "Torso")
-            if cut is None or S["cut0"] - cut > 0.3:
+            if cut is None or S["cut0"] - cut > 0.5:
                 _fail("tank has no power yet the cut fell %s -> %s" % (S["cut0"], cut))
             if _fuel(t, S["tank"]) < f0 - 1e-3:
                 _fail("tank has no power yet it drained bacta")
