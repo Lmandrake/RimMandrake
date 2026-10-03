@@ -166,7 +166,10 @@ def _fish_names():
 FISH_NAMES = _fish_names()
 BIOME_SCALARS = dict((k, float(_BIOME_EL.findtext(k))) for k in ("animalDensity", "plantDensity", "maxFishPopulation")
                      if _BIOME_EL is not None and _BIOME_EL.findtext(k))
-RECIPES = [n for _, n, _ in _BY_DIR["RecipeDefs"]]
+# stove recipes only: a recipe that declares its own <recipeUsers> (RM_SpinDewsilk -> tailor benches) is wired by the def,
+# not by RM_StockedPoolRecipeWiring.xml. Live 2026-10-03 flagged RM_SpinDewsilk as "missing from the stoves" -- a script
+# bug (wrong bench), not a content bug.
+RECIPES = [n for _, n, el in _BY_DIR["RecipeDefs"] if el.find("recipeUsers") is None]
 
 # the stocked-pool species: pawnkind <K> pairs with RM_<K>Meat (HARVEST/CULL drop it), and the seven
 # stockable ones also with <K>BreedingStock (NET drops it, STOCK reads it): RM_PoolBreederUtility.cs.
@@ -1153,7 +1156,14 @@ def oasis_flora(t):
                 _unmeasured(t, "get_defs did not return biomeWhitelist/workerClass for Oasis")
             if BIOME not in blob:
                 _fail("Oasis.biomeWhitelist does not contain %s: %r" % (BIOME, blob[:20]))
-            if not any(OASIS_WORKER in x or x.endswith("RM_TileMutatorWorker_Oasis") for x in blob):
+            # LIVE 2026-10-03: get_defs cannot serialise TileMutatorDef.workerClass (a non-public System.Type field; it
+            # answers "(non-public field 'workerClass' ... type RuntimeType not serialis...)"), so the worker swap is
+            # NOT readable here and the old check failed on EVERY run for an instrument reason. What this component
+            # can prove is the whitelist; the worker swap is proved by oasis_source_wired (offline) and, in play, by
+            # oasis_map_census.
+            if any(x.startswith("(non-public field 'workerClass'") for x in blob):
+                _note(t, "Oasis.workerClass not serialisable by get_defs (instrument limit)", True)
+            elif not any(OASIS_WORKER in x or x.endswith("RM_TileMutatorWorker_Oasis") for x in blob):
                 _fail("Oasis.workerClass is not %s: %r" % (OASIS_WORKER, blob[:20]))
 
     with _comp(t, "oasis_toggle_default_and_roundtrip", independent=True, toggle="oasisNativeFloraEnabled"):
