@@ -41,6 +41,7 @@
     <Compile Include="UnfinishedLineOffer.cs" />
     <Compile Include="UnfinishedLineTruce.cs" />
     <Compile Include="UnfinishedLineCores.cs" />
+    <Compile Include="UnfinishedLineFirstLight.cs" />
   </ItemGroup>
 
 
