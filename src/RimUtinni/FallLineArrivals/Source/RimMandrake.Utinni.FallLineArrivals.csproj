@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="FallLineArrivalsMod.cs" />
     <Compile Include="FallLineArrivalIncidents.cs" />
+    <Compile Include="FeralSurvivors.cs" />
   </ItemGroup>
 
 

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_FERAL_SURVIVORS_BUILD_1 (spec §5.2): "wily, flee-prone". Core Humanlike.xml's
+     Humanlike_PreMain hook sits after downed, burning, mental states, lord duties and prisoner
+     handling, so a prisoner or a manhunting survivor never reaches it. Gated on the feral hediff
+     (ThinkNode_ConditionalFeralFree: flagged, factionless, free, no lord); flee first, else lurk. -->
+<Defs>
+
+  <ThinkTreeDef>
+    <defName>RUT_FeralDroidInsert</defName>
+    <insertTag>Humanlike_PreMain</insertTag>
+    <insertPriority>60</insertPriority>
+    <thinkRoot Class="RimMandrake.Utinni.FallLineArrivals.ThinkNode_ConditionalFeralFree">
+      <subNodes>
+        <li Class="ThinkNode_Tagger">
+          <tagToGive>Misc</tagToGive>
+          <subNodes>
+            <li Class="RimMandrake.Utinni.FallLineArrivals.JobGiver_FeralFlee" />
+            <li Class="RimMandrake.Utinni.FallLineArrivals.JobGiver_FeralLurk" />
+          </subNodes>
+        </li>
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+</Defs>

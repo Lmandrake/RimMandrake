@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FALL_LINE_FERAL_SURVIVORS_BUILD_1 (spec §5.2-§5.3): the feral flag. The flee/lurk think-tree
+     splice is gated on it, the per-map cap counts it, and it removes itself the moment the pawn
+     joins the player (a wild-keyed data spike recruits it), so the wipe is clean by construction. -->
+<Defs>
+
+  <HediffDef>
+    <defName>RUT_Hediff_Feral</defName>
+    <label>feral</label>
+    <description>Out on the Fall Line alone since its fall, long enough to forget what it was for. It runs from people, hides in wreckage, and fights only when cornered. A wild-keyed data spike, once it is a prisoner, wipes this away completely.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.6, 0.4)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <comps>
+      <li Class="RimMandrake.Utinni.FallLineArrivals.HediffCompProperties_FeralClears" />
+    </comps>
+  </HediffDef>
+
+</Defs>

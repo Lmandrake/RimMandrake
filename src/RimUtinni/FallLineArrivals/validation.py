@@ -17,13 +17,17 @@ from modcheck import Suite, ExpectationFailed
 
 suite = Suite("FallLineArrivals")
 suite.toggles = ["onlyOnFallLine", "wreckFallsEnabled", "wreckHull", "wreckCargo", "wreckTank",
-                 "labRatEnabled"]
+                 "labRatEnabled", "survivorsEnabled", "allowDestroyer", "feralAttackInstead"]
 
 SETTINGS_TYPE = "RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings"
 WRECKS = ("RUT_FallWreck_Hull", "RUT_FallWreck_Cargo", "RUT_FallWreck_Tank")
 VERMIN = ("RSW_Mynock", "RSW_Scavrat", "RSW_WompRat", "RSW_Zhakka")
 NEEDLES = ("mandrake.rut.falllinearrivals", "RUT_FallWreck", "RUT_LabRat", "RUT_FallLine",
-           "IncidentWorker_FallArrival", "IncidentWorker_LabRatFalls", "RM_CompVerminNest")
+           "IncidentWorker_FallArrival", "IncidentWorker_LabRatFalls", "RM_CompVerminNest",
+           "RUT_FallSurvivor", "RUT_Hediff_Feral", "FeralSurvivors", "JobGiver_Feral", "RUT_CompFeralLurker")
+FERAL_POOL = ("RSW_DW_OuterRim_MSEDroid", "RSW_DW_OuterRim_SalvageAssistDroid", "RSW_DW_OuterRim_DUMDroid",
+              "RSW_DW_OuterRim_GNKDroid", "RSW_DW_OuterRim_RSeriesDroid", "RSW_DW_OuterRim_FX7Droid",
+              "RSW_DW_OuterRim_MuckrakerDroid", "RSW_DW_OuterRim_DestroyerDroid")
 
 
 def _dry(t, incident):
@@ -57,6 +61,7 @@ def load_clean(t):
 def defs(t):
     with t.component("all_defs_resolve", beyond_toggle=True):
         want = ["IncidentDef/RUT_FallArrival", "IncidentDef/RUT_LabRatFalls", "PawnKindDef/RUT_LabRat",
+                "IncidentDef/RUT_FallSurvivor", "HediffDef/RUT_Hediff_Feral", "ThinkTreeDef/RUT_FeralDroidInsert",
                 "TileMutatorDef/RUT_FallLine"] + ["ThingDef/%s" % w for w in WRECKS] + \
                ["ThingDef/%s" % w.replace("FallWreck_", "FallWreckIncoming_") for w in WRECKS]
         r = t.bridge_call("jawa/get_defs", defs=";".join(want), fields="defName")
@@ -128,3 +133,31 @@ def specimen(t):
             rats = [x for x in ((p or {}).get("pawns") or []) if x.get("kindDef") == "RUT_LabRat"]
             if not rats:
                 raise ExpectationFailed("no RUT_LabRat pawn on the map after the pod opened")
+
+
+# FALL_LINE_FERAL_SURVIVORS_BUILD_1 (Band B). Environment adds mandrake.rsw.droidworks (the pool).
+# Not yet proven here (first pokes, in order): a colonist walking at a survivor -> a Flee job toward a
+# wreck (>= 5 droids, one pawn is RNG); boxed in -> AttackMelee; night -> Wait beside a wreck; an armed
+# wreck (DEV gizmo) bolting one at 25 cells; recruitment by RSW_DW_DataSpike_Wild clearing the hediff.
+@suite.chain("survivors")
+def survivors(t):
+    t.set_setting(SETTINGS_TYPE, {"onlyOnFallLine": False})
+    with t.component("survivor_toggle_off_refuses", toggle="survivorsEnabled"):
+        t.set_setting(SETTINGS_TYPE, {"survivorsEnabled": False})
+        off = _dry(t, "RUT_FallSurvivor")
+        t.set_setting(SETTINGS_TYPE, {"survivorsEnabled": True})
+        if off is not False:
+            raise ExpectationFailed("survivorsEnabled OFF but RUT_FallSurvivor can fire")
+    with t.component("survivor_drifts_in_feral", toggle="survivorsEnabled"):
+        r = t.bridge_call("jawa/fire_incident", incidentDef="RUT_FallSurvivor", dryRun=False)
+        if t._guard() and not (r or {}).get("fired"):
+            raise ExpectationFailed("RUT_FallSurvivor did not fire (Droidworks loaded? pool empty?): %r" % r)
+        t.wait_ticks(120)
+        p = t.bridge_call("jawa/list_pawns", limit=500, includeHealth=True)
+        if t._guard():
+            rows = [x for x in ((p or {}).get("pawns") or []) if x.get("kindDef") in FERAL_POOL]
+            feral = [x for x in rows if not x.get("faction") and any(
+                h.get("def") == "RUT_Hediff_Feral" for h in ((x.get("health") or {}).get("hediffs") or []))]
+            if not feral:
+                raise ExpectationFailed("no factionless pool droid carrying RUT_Hediff_Feral after the drift-in: %r"
+                                        % [(x.get("kindDef"), x.get("faction")) for x in rows][:5])
