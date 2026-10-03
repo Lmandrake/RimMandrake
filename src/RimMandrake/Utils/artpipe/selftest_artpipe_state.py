@@ -96,10 +96,25 @@ def test_migrate(tmp: Path):
     check("re-run is a no-op", not {k: v for k, v in again.items() if k != "kept_further_along"})
 
 
+def test_requeue(tmp: Path):
+    import requeue_quota_failures as RQ
+    for d in ("done", "failed", "pending"):
+        (tmp / d).mkdir()
+    for jid, err in (("quota", "You've hit your usage limit, try again at 22:00"), ("reject", "validator REJECT")):
+        (tmp / "failed" / f"{jid}.json").write_text("{}")
+        (tmp / "failed" / f"{jid}.manifest.json").write_text(json.dumps({"worker_stderr_tail": err}))
+    check("requeue dry-run moves nothing", RQ.one_pass(tmp, dry_run=True) == (1, 2)
+          and (tmp / "failed" / "quota.json").exists())
+    check("requeue sees both failed manifests, moves only the quota one", RQ.one_pass(tmp) == (1, 2))
+    check("quota job is pending, its manifest parked in the state dir",
+          (tmp / "pending" / "quota.json").exists() and len(list((tmp / "_requeued_manifests").iterdir())) == 1)
+    check("rejected job stays failed", (tmp / "failed" / "reject.json").exists())
+
+
 def main() -> int:
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
-        for i, fn in enumerate((test_resolver, test_collect, test_migrate)):
+        for i, fn in enumerate((test_resolver, test_collect, test_migrate, test_requeue)):
             sub = tmp / str(i)
             sub.mkdir()
             fn(sub)
