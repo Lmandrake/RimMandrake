@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SWEETLINE_TREE_MAP_STEP_1 (Source/RM_GenStep_SweetlineTrees.cs; spec sweetline_guardian_spec.md §8,
+     owner ruling R13). Reached only through RM_LeaningScrub's extraGenSteps. Order 910: after Plants
+     (900), before Animals (1200). The map chance is the Mod Setting sweetlineTreeMapChance (default 25%). -->
+<Defs>
+  <GenStepDef>
+    <defName>RM_SweetlineTrees</defName>
+    <order>910</order>
+    <genStep Class="RimMandrake.LeaningScrub.RM_GenStep_SweetlineTrees">
+      <treeDef>RM_SweetlineTree</treeDef>
+      <secondTreeChance>0.3</secondTreeChance>
+      <edgeMargin>15</edgeMargin>
+      <minTreeSpacing>40</minTreeSpacing>
+      <maxTries>200</maxTries>
+    </genStep>
+  </GenStepDef>
+</Defs>

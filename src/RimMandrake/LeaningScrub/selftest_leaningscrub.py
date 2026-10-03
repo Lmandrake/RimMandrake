@@ -334,6 +334,13 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_static_call(self, type=None, method=None, args="", **k):
+        if method == "ProofMapStep":
+            chance = float(args.split("|")[1])
+            n = 0
+            if (chance > 0 or "map_step_ignores_chance" in self.broken) and "no_map_step" not in self.broken:
+                n = 1
+                self.new(V.TREE, 5, 5, growth=1.0, stackCount=1)
+            return {"success": True, "result": "PLANTED %d" % n}
         if method != "ProofOrderScratch":
             return {"success": False, "message": "No public static " + str(method)}
         on = self.on("sweetlineStationsEnabled") and self.on("sweetlineScratchingEnabled")
@@ -503,6 +510,8 @@ BREAKS = {
     "no_wool": "sweetline.station_sheds_wool",
     "no_scratch": "sweetline.scratch_drops_coat",
     "scratch_ignores_toggle": "sweetline.scratch_toggle_off_refused",
+    "no_map_step": "sweetline.map_step_plants_one_or_two",
+    "map_step_ignores_chance": "sweetline.map_step_chance_zero_plants_none",
     "visitors_ignore_toggle": "sweetline.visitors_toggle_off_quiet",
     "no_visits": "sweetline.visitors_come_and_leave_marks",
     "log_error": "log.log_clean",

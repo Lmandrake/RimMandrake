@@ -85,6 +85,8 @@ namespace RimMandrake.LeaningScrub
         public static bool sweetlineScratchingEnabled = true;
         public static float sweetlineCoatReady = 0.8f;
         public static float sweetlineFeltShare = 0.2f;
+        // SWEETLINE_TREE_MAP_STEP_1 (RM_GenStep_SweetlineTrees.cs)
+        public static float sweetlineTreeMapChance = 0.25f;
         // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
         public static bool visslerArmFoodEnabled = true;
 
@@ -129,6 +131,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineScratchingEnabled, "sweetlineScratchingEnabled", true, true);
             Scribe_Values.Look(ref sweetlineCoatReady, "sweetlineCoatReady", 0.8f, true);
             Scribe_Values.Look(ref sweetlineFeltShare, "sweetlineFeltShare", 0.2f, true);
+            Scribe_Values.Look(ref sweetlineTreeMapChance, "sweetlineTreeMapChance", 0.25f, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
         }
 
@@ -254,6 +257,12 @@ namespace RimMandrake.LeaningScrub
                     "Off (default, the owner's ruling): walking up only makes them watch. On: a person within 9 cells "
                     + "slowly disturbs them too (about five hours of loitering fills the bar), with the same warnings.");
             }
+
+            list.Label("Chance a new Leaning Scrub map has sweetline trees: " + sweetlineTreeMapChance.ToStringPercent()
+                + (sweetlineTreeMapChance <= 0f ? " (none)" : ""), -1f, (TipSignal?)(
+                "One tree, or two at 30%, at least 40 cells apart. Affects newly generated maps only; not worldgen. "
+                + "Needs named sweetline trees on."));
+            sweetlineTreeMapChance = Mathf.Round(list.Slider(sweetlineTreeMapChance, 0f, 1f) * 20f) / 20f;
 
             list.CheckboxLabeled("Animals scratch their coats off on sweetline trees", ref sweetlineScratchingEnabled,
                 "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a calm sweetline tree "

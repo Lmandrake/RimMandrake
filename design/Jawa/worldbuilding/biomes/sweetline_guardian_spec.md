@@ -326,7 +326,7 @@ All under LeaningScrub's existing **"Named sweetline trees"** group (`RM_Leaning
 | `sweetlineScratchingEnabled` "Animals scratch their coats off on sweetline trees" | bool | on | no rubbing, and the wild-coat patch (§3) is inert | built |
 | `sweetlineCoatReady` "Coat fullness before an animal goes to scratch" | 50–100% | 80% | | built |
 | `sweetlineFeltShare` "Share of a rubbed coat that felts into the bark" | 0–50% | 20% | 0: rubs give only ground wool, the harvest is base yield only | built |
-| `sweetlineTreeMapChance` "Chance a new Leaning Scrub map has sweetline trees" | 0–100% | 25% | 0: no trees on new maps (labelled "affects newly generated maps; not worldgen") | owed |
+| `sweetlineTreeMapChance` "Chance a new Leaning Scrub map has sweetline trees" | 0–100% | 25% | 0: no trees on new maps (labelled "affects newly generated maps; not worldgen") | built |
 
 ## 10. Art
 
@@ -354,7 +354,8 @@ Pieces 1-5, 8 (the three scratching settings), 9 and 10 are **built** (`SWEETLIN
 `Source/RM_SweetlineScratching.cs`, `Defs/JobDefs/RM_SweetlineScratching.xml`). Two deliberate
 departures: the felt store resets when it is paid out (in `GetAdditionalHarvestYield`), not in
 `PlantCollected`, so a failed harvest roll keeps it; and wild coats grow only while a sweetline tree
-stands somewhere in the running game. Pieces 6 (comfort) and 7 (map step) are their own items.
+stands somewhere in the running game. Piece 7 (map step) is built too (`SWEETLINE_TREE_MAP_STEP_1`, `Source/RM_GenStep_SweetlineTrees.cs`).
+Piece 6 (comfort) is its own item, `SWEETLINE_FELT_COMFORT_BUILD_1`.
 
 | # | piece | where | size |
 |---|---|---|---|
