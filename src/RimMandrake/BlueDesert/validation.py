@@ -1625,3 +1625,54 @@ def log_chain(t):
                                   "bufferLines": buf.get("totalInBuffer")})
             if bad or xref or cfg or conf:
                 _fail("log carries errors: %s" % [str(x)[:160] for x in (bad + xref + cfg + conf)[:4]])
+
+
+# ---------------------------------------------------------------------------------------------- static
+
+def static_checks():
+    """Offline checks, no game: shipped defs parse, the DEFAULTS table matches the C# (>=1 field found, or the
+    probe is blind), every field is Scribed, and the walk exists with a coverage arrow on every line.
+    The deeper offline proof is selftest_bluedesert.py (a scripted fake game per broken behaviour)."""
+    bad = []
+    src = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_BlueDesertMod.cs"), encoding="utf-8").read())
+    found = {m.group(2): (m.group(1), m.group(3).strip())
+             for m in re.finditer(r"public\s+static\s+(bool|float|int)\s+(\w+)\s*=\s*([^;]+);", src)
+             if m.group(2) != "settings"}
+    if not found:
+        return ["settings regex found 0 static fields in RM_BlueDesertMod.cs: the probe is blind"]
+    for f, (kind, raw) in found.items():
+        if f not in DEFAULTS:
+            bad.append("C# settings field %s is not in DEFAULTS" % f)
+            continue
+        want = (raw == "true") if kind == "bool" else float(raw.rstrip("f"))
+        if want != DEFAULTS[f]:
+            bad.append("default drift on %s: C# %s vs script %r" % (f, raw, DEFAULTS[f]))
+        if '"%s"' % f not in src:
+            bad.append("settings field %s is not Scribed" % f)
+    for f in DEFAULTS:
+        if f not in found:
+            bad.append("DEFAULTS field %s is gone from the C#" % f)
+    if not SHIPPED or not NATIVES or not FLORA:
+        bad.append("def parser found nothing (defs %d natives %d flora %d): the probe is blind"
+                   % (len(SHIPPED), len(NATIVES), len(FLORA)))
+    csproj = open(os.path.join(HERE, "Source", "RM_BlueDesert.csproj"), encoding="utf-8").read()
+    for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):
+        if fn.endswith(".cs") and 'Include="%s"' % fn not in csproj:
+            bad.append("%s is not a <Compile Include> in the csproj" % fn)
+    walk = os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "BlueDesert.md")
+    if not os.path.exists(walk):
+        bad.append("walk design/validation_walks/RimMandrake/BlueDesert.md is missing")
+    else:
+        w = open(walk, encoding="utf-8").read().split("## must be true", 1)[-1].split("\n## ", 1)[0]
+        for ln in w.splitlines():
+            if ln.startswith("- ") and "→" not in ln:
+                bad.append("walk line has no coverage arrow: %s" % ln[:70])
+    return bad
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)
