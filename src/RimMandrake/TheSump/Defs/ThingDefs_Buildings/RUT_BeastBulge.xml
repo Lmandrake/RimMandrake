@@ -39,22 +39,16 @@
   CompProperties_CanBeDormant.ConfigErrors demands it whenever jobDormancy
   is false (true here — this parent is a Building, not a Pawn).
 
-  emergePawnKind (Thrumbo, in the comp below) is a WIRING PLACEHOLDER —
-  roster pass replaces with the real tar-beast kind. points is 500~500 to
-  clear Thrumbo's own combatPower (500, confirmed via RimSage) —
-  CompPawnSpawnOnWakeup.GeneratePawns only rolls a kind whose combatPower is
-  <= the remaining points pool. pawnSpawnRadius is widened from the stock
+  The emerged kind is RM_TarBeast (SUMP_TAR_BEAST_BUILD_1, combatPower 450, so
+  points 500~500 rolls exactly one). pawnSpawnRadius is widened from the stock
   default (2) to 2~8 — INVENTED-BUILD: RM_TarDeep is Impassable
   (WaterDeepBase-derived), so the walk-cell search CompPawnSpawnOnWakeup
   itself runs at wake time needs room to find dry ground past the tar
-  region's own edge; not verified live, out of this pass's no-bridge scope.
+  region's own edge; not verified live.
 
   Site validator (on the GenStepDef, not here) is entirely stock too:
   Verse.ScattererValidator_TerrainDef — no new validator class needed.
 
-  DEPLOY_HOLD'd together with RUT_SumpTarBeastGenStep.xml and its Register
-  patch (src/DEPLOY_HOLD.txt) — genuinely new bespoke content, no
-  vanilla/existing-mod texture reads as "a smooth bulge in tar."
 -->
 <Defs>
 
@@ -93,8 +87,7 @@
       </li>
       <li Class="CompProperties_PawnSpawnOnWakeup">
         <spawnablePawnKinds>
-          <!-- PLACEHOLDER — roster pass replaces with the real tar-beast kind. -->
-          <li>Thrumbo</li>
+          <li>RM_TarBeast</li>
         </spawnablePawnKinds>
         <points>500~500</points>
         <pawnSpawnRadius>2~8</pawnSpawnRadius>
@@ -102,6 +95,10 @@
         <destroyAfterSpawn>true</destroyAfterSpawn>
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_CompBeastWakeRelay" />
+      <!-- SUMP_TAR_BEAST_BUILD_1: a running deep drill (or a listed pump) within range wakes it. -->
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_BulgePumpWake">
+        <radius>30</radius>
+      </li>
     </comps>
   </ThingDef>
 

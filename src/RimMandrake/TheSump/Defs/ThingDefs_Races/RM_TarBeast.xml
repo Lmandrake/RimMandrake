@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TarBeast.xml                          RM_TheSump - SUMP_TAR_BEAST_BUILD_1
+  The tar beast (sump_bedazzle_review_2026-10-01.md s3): never a fightable wild spawn - it only exists woken from a RUT_BeastBulge.
+  Behaviour is C# in the EnvironmentalHazards assembly: RM_CompStationEater (swallow, mound + letter), RM_CompTarBeast (tar trail,
+  shoving, sinking back into a bulge), RM_JobGiver_TarBeastEat (densest cluster of the colony's buildings). All numbers are
+  invented first values for live balance; the settings live on the Environmental Hazards screen.
+  Art: three whole-body facings, static, drawSize 7. No bite tools of note: pawns in the way are staggered, never bitten.
+-->
+<Defs>
+
+  <HediffDef>
+    <defName>RM_TarBeastPace</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>tar-beast pace</label>
+    <description>Set from the Tar beast speed setting. Not an ailment.</description>
+    <isBad>false</isBad>
+    <maxSeverity>3</maxSeverity>
+    <stages>
+      <li>
+        <label>slow</label>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li><capacity>Moving</capacity><postFactor>0.5</postFactor></li>
+        </capMods>
+      </li>
+      <li>
+        <label>standard</label>
+        <minSeverity>1</minSeverity>
+      </li>
+      <li>
+        <label>fast</label>
+        <minSeverity>2</minSeverity>
+        <capMods>
+          <li><capacity>Moving</capacity><postFactor>2</postFactor></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <ThinkTreeDef>
+    <defName>RM_ThinkTree_TarBeast</defName>
+    <insertTag>Animal_PreMain</insertTag>
+    <thinkRoot Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.EnvironmentalHazards.RM_JobGiver_TarBeastEat" />
+      </subNodes>
+    </thinkRoot>
+  </ThinkTreeDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_TarBeast</defName>
+    <label>tar beast</label>
+    <description>A glossy black hill that crawls. It lives in the deep tar and wakes only when the colony disturbs it: a blow, a new wall, a deep dig, a running pump. Then it creeps, slowly and without hurry, toward the thickest knot of buildings, swallows them whole, and lays tar behind it. It does not bite and cannot be reasoned with; people in its way are simply shoved aside. When it has had enough it sinks back into the black, and a smooth bulge rises somewhere else.</description>
+    <statBases>
+      <MoveSpeed>0.46</MoveSpeed>
+      <MarketValue>0</MarketValue>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>120</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.8</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.6</ArmorRating_Blunt>
+      <ArmorRating_Heat>0.3</ArmorRating_Heat>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>heave</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>6</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_StationEater">
+        <searchRadius>60</searchRadius>
+        <eatDamagePerHit>120</eatDamagePerHit>
+        <ticksPerBite>120</ticksPerBite>
+        <maxStructuresEaten>999</maxStructuresEaten>
+        <maxTicksAwake>240000</maxTicksAwake>
+        <moundFilthDef>RM_Filth_Tar</moundFilthDef>
+        <moundLayers>4</moundLayers>
+        <letterLabel>Tar beast: building swallowed</letterLabel>
+        <letterText>The tar beast has swallowed {0}. A mound of black tar is all that is left where it stood.</letterText>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_TarBeast">
+        <trailFilthDef>RM_Filth_Tar</trailFilthDef>
+        <trailLayers>2</trailLayers>
+        <bulgeDef>RUT_BeastBulge</bulgeDef>
+        <paceHediff>RM_TarBeastPace</paceHediff>
+      </li>
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_DreadSource">
+        <radius>10</radius>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <baseBodySize>9</baseBodySize>
+      <baseHealthScale>9</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>RM_Filth_Tar</bloodDef>
+      <manhunterOnDamageChance>0</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>200</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+    </race>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_TarBeast</defName>
+    <label>tar beast</label>
+    <race>RM_TarBeast</race>
+    <combatPower>450</combatPower>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <canArriveManhunter>false</canArriveManhunter>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_TarBeast/RM_TarBeast</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>7</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
