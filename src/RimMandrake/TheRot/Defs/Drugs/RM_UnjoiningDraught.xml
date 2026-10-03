@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ROT_UNJOINING_DRAUGHT_1. Mechanism: Source/RM_Unjoining.cs. A brutal purge, usable anywhere: removes the listed
+  parasites, every Rot symbiont and any hediff carrying RM_UnjoinableExtension (other mods opt in by data); drops a
+  husk per symbiont; forces a metalhorror OUT (Hediff_MetalhorrorImplant.Emerge, the vanilla emergence with its
+  own ThreatBig letter carrying our reason line), never a silent delete; always the purge, plus a permanent
+  chemical-burn scar on a liver or kidney (setting). RM_UnjoiningPurge is shared with ROT_UNJOINING_RITE_1.
+  Art: artpipe RM_UnjoiningDraught, RM_SymbiontHusk (done, wired from _artsrc). Numbers PROPOSED.
+-->
+<Defs>
+
+  <RimMandrake.TheRot.RM_UnjoiningTargetsDef>
+    <defName>RM_UnjoiningTargets</defName>
+    <label>unjoining targets</label>
+    <parasites>
+      <li>MuscleParasites</li>
+      <li>GutWorms</li>
+    </parasites>
+    <symbionts>
+      <li>RM_Sym_Quickflesh</li>
+      <li>RM_Sym_Nightwake</li>
+      <li>RM_Sym_Sheenblood</li>
+      <li>RM_Sym_Mycoid</li>
+      <li>RM_SheenSymbiosis</li>
+    </symbionts>
+    <organs>
+      <li>Liver</li>
+      <li>Kidney</li>
+    </organs>
+    <organInjury>ChemicalBurn</organInjury>
+    <organInjurySeverity>4</organInjurySeverity>
+  </RimMandrake.TheRot.RM_UnjoiningTargetsDef>
+
+  <HediffDef>
+    <defName>RM_UnjoiningPurge</defName>
+    <label>unjoining purge</label>
+    <description>The body is throwing out everything living in it that is not itself. Fever, cramps, vomiting, and a deep weakness. It passes in about a day.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.85, 0.55)</defaultLabelColor>
+    <isBad>true</isBad>
+    <makesSickThought>true</makesSickThought>
+    <initialSeverity>1</initialSeverity>
+    <maxSeverity>1</maxSeverity>
+    <comps>
+      <li Class="HediffCompProperties_Disappears">
+        <disappearsAfterTicks>60000</disappearsAfterTicks>
+        <showRemainingTime>true</showRemainingTime>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <painOffset>0.45</painOffset>
+        <vomitMtbDays>0.15</vomitMtbDays>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.35</offset>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <ThingDef ParentName="DrugBase">
+    <defName>RM_UnjoiningDraught</defName>
+    <label>unjoining draught</label>
+    <description>A vile fungal purge. Drunk, it drives out every living thing joined to the body: muscle parasites, gut worms, any symbiont of the Rot, and anything worse hiding in the flesh. The patient spends a day very sick, and the draught leaves a permanent scar on a liver or kidney.\n\nIf something is hiding in the body that is not a parasite, the draught will find it, and it will come out fighting.</description>
+    <graphicData>
+      <texPath>RM_TheRot/Items/RM_UnjoiningDraught</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <rotatable>false</rotatable>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <Flammability>0.7</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Beauty>-4</Beauty>
+      <MarketValue>120</MarketValue>
+      <Mass>0.2</Mass>
+    </statBases>
+    <techLevel>Neolithic</techLevel>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+      <maxNumToIngestAtOnce>1</maxNumToIngestAtOnce>
+      <defaultNumToIngestAtOnce>1</defaultNumToIngestAtOnce>
+      <chairSearchRadius>0</chairSearchRadius>
+      <foodType>Processed</foodType>
+      <baseIngestTicks>200</baseIngestTicks>
+      <ingestSound>Ingest_Drink</ingestSound>
+      <ingestHoldUsesTable>false</ingestHoldUsesTable>
+      <ingestCommandString>Drink {0}</ingestCommandString>
+      <ingestReportString>Drinking {0}.</ingestReportString>
+      <drugCategory>Medical</drugCategory>
+      <outcomeDoers>
+        <li Class="RimMandrake.TheRot.IngestionOutcomeDoer_RM_Unjoining" />
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Drug">
+        <listOrder>1010</listOrder>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_SymbiontHusk</defName>
+    <label>symbiont husk</label>
+    <description>The grey, dried husk of a symbiont the Unjoining Draught drove out of its host. Dead, light, and brittle. Proof that it was there.</description>
+    <graphicData>
+      <texPath>RM_TheRot/Items/RM_SymbiontHusk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MarketValue>3</MarketValue>
+      <MaxHitPoints>20</MaxHitPoints>
+      <Mass>0.1</Mass>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>4</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+  <ResearchProjectDef>
+    <defName>RM_UnjoiningDraught</defName>
+    <label>unjoining draught</label>
+    <description>A brutal fungal purge that drives every living passenger out of a body: parasites, symbionts, and worse. Costly to learn.</description>
+    <techLevel>Neolithic</techLevel>
+    <baseCost>3000</baseCost>
+    <prerequisites>
+      <li>RM_AdvancedFungi</li>
+    </prerequisites>
+    <researchViewX>6.00</researchViewX>
+    <researchViewY>1.4</researchViewY>
+  </ResearchProjectDef>
+
+  <RecipeDef>
+    <defName>RM_Make_UnjoiningDraught</defName>
+    <label>make unjoining draught</label>
+    <description>Brew an unjoining draught from fungal medicine and healroot.</description>
+    <jobString>Brewing an unjoining draught.</jobString>
+    <workerClass>RimMandrake.TheRot.RecipeWorker_RM_UnjoiningDraught</workerClass>
+    <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+    <workSkill>Intellectual</workSkill>
+    <workAmount>1500</workAmount>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Drug</soundWorking>
+    <recipeUsers>
+      <li>DrugLab</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_UnjoiningDraught</researchPrerequisite>
+    <skillRequirements>
+      <Intellectual>5</Intellectual>
+    </skillRequirements>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_MedicineFungal</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>MedicineHerbal</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_MedicineFungal</li>
+        <li>MedicineHerbal</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_UnjoiningDraught>1</RM_UnjoiningDraught>
+    </products>
+  </RecipeDef>
+
+</Defs>

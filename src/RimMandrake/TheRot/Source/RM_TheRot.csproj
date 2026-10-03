@@ -49,6 +49,7 @@
     <Compile Include="RM_SwallowedCore.cs" />
     <Compile Include="RM_GutMother.cs" />
     <Compile Include="RM_NavigatorLog.cs" />
+    <Compile Include="RM_Unjoining.cs" />
   </ItemGroup>
 
   <ItemGroup>

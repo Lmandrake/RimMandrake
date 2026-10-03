@@ -72,6 +72,10 @@ namespace RimMandrake.TheRot
         public static float gutMotherDigestHours = 24f;
         public static float gutMotherRecoveryChance = 1f;
         public static float gutMotherStarterValue = 900f;
+        // ROT_UNJOINING_DRAUGHT_1 (Technology section)
+        public static bool unjoiningDraught = true;
+        public static bool unjoiningOrganDamage = true;
+        public static float unjoiningPurgeHours = 24f;
 
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
@@ -120,6 +124,9 @@ namespace RimMandrake.TheRot
             Scribe_Values.Look(ref gutMotherDigestHours, "gutMotherDigestHours", 24f);
             Scribe_Values.Look(ref gutMotherRecoveryChance, "gutMotherRecoveryChance", 1f);
             Scribe_Values.Look(ref gutMotherStarterValue, "gutMotherStarterValue", 900f);
+            Scribe_Values.Look(ref unjoiningDraught, "unjoiningDraught", true);
+            Scribe_Values.Look(ref unjoiningOrganDamage, "unjoiningOrganDamage", true);
+            Scribe_Values.Look(ref unjoiningPurgeHours, "unjoiningPurgeHours", 24f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -261,6 +268,13 @@ namespace RimMandrake.TheRot
             gutMotherRecoveryChance = list.Slider(gutMotherRecoveryChance, 0f, 1f);
             list.Label("  Starter culture market value: " + gutMotherStarterValue.ToString("0"));
             gutMotherStarterValue = list.Slider(gutMotherStarterValue, 50f, 3000f);
+            list.CheckboxLabeled("Unjoining draught", ref unjoiningDraught,
+                "A brutal purge brewed at a drug lab: drives out parasites, Rot symbionts and any hidden metalhorror. "
+              + "Off: drinking it does nothing and new bills for it are not offered.");
+            list.CheckboxLabeled("  Leaves a scar on a liver or kidney", ref unjoiningOrganDamage,
+                "Off: the purge still makes the patient sick, but no permanent organ scar.");
+            list.Label("  Purge sickness length: " + unjoiningPurgeHours.ToString("0") + " hours");
+            unjoiningPurgeHours = list.Slider(unjoiningPurgeHours, 1f, 72f);
             list.GapLine();
 
             list.Label("Cross-biome opt-in (WORLDGEN-AFFECTING — new maps only)");
