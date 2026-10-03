@@ -284,13 +284,15 @@ def restore_needs(session, ids):
     demanding it made a bland map 'unestablishable'). Verified against the pawn's own need list."""
     acted = 0
     low = []
+    # LIVE 2026-10-03: pawn_need(list) answered with no "needs" key for a pawn (BlueDesert: KeyError 'needs' aborted the
+    # whole suite); a pawn with no readable need list simply has nothing to restore.
     for pid in ids:
-        lv = dict((x["need"], x["level"]) for x in session.call("jawa/pawn_need", pawn=pid, action="list")["needs"])
+        lv = dict((x["need"], x["level"]) for x in (session.call("jawa/pawn_need", pawn=pid, action="list") or {}).get("needs") or [])
         have = [n for n in RESTORE_NEEDS if n in lv]
         for need in have:
             session.call("jawa/pawn_need", pawn=pid, action="need", need=need, level=1.0)
             acted += 1
-        lv2 = dict((x["need"], x["level"]) for x in session.call("jawa/pawn_need", pawn=pid, action="list")["needs"])
+        lv2 = dict((x["need"], x["level"]) for x in (session.call("jawa/pawn_need", pawn=pid, action="list") or {}).get("needs") or [])
         low.extend((pid, n) for n in have if lv2.get(n, 0) < 0.95)
     return HelperResult("restore_needs", acted=acted, verified=not low, residue=low)
 
