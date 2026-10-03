@@ -158,6 +158,7 @@
       <RM_Dredgel>0.2</RM_Dredgel>  <!-- dredgel - the archive's janitor -->
       <RM_Skarrid>0.25</RM_Skarrid>  <!-- skarrid - the still hunter -->
       <RM_Skellarn>0.15</RM_Skellarn>  <!-- skellarn - the stilt-flier, ruled 2026-09-24 -->
+      <RM_Kethrel>0.2</RM_Kethrel>  <!-- kethrel - the scrap-shell wearer (SUMP_KETHREL_BUILD_1); commonality invented, density in Mod Settings -->
     </wildAnimals>
     <coastalWildAnimals />
     <wildPlants>

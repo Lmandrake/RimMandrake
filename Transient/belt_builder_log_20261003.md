@@ -32,3 +32,4 @@
 - CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 built (6 flora, 3 items, RM_ZennaqLightningPatch on WeatherEvent_LightningStrike.DoStrike, 2 settings, art wired from _artsrc, 3 item icons queued; pending sha)
 - WEBWORK_BASE_PORT_BUILD_1 built (RM_ anchor/web/gutter/slick + creep ext + thrixweave rename/strip/butcher/killedLeavings, 3 settings, validation chain; silk-knot/nest scatter stay campaign-side; sha pending)
 - ART WIRED: Rot thozzik/illoth south frames from _artsrc (ART_OWED emptied); Yammeth_south, Selvix, item icons, Qeshra roe/char-lace still pending/failed in artpipe
+- SUMP_KETHREL_BUILD_1 built (RM_Kethrel race+kind, shell comp/hediff/render tree/ITab, 12 sprites wired from _artsrc, 6 settings, roster row in held biome; no Harmony; live proof owed)

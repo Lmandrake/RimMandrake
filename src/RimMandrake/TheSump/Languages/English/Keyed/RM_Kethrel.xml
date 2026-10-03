@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RM_TabKethrelShell>Shell</RM_TabKethrelShell>
+  <RM_KethrelShellContents>Carried in the shell</RM_KethrelShellContents>
+  <RM_KethrelMoltLabel>Coax a molt</RM_KethrelMoltLabel>
+  <RM_KethrelMoltDesc>Have the most skilled animal handler coax this kethrel to shed its shell. Everything it carries drops where it stands. A clumsy handler can set off a panicked charge.</RM_KethrelMoltDesc>
+  <RM_KethrelMoltNoHandler>No able animal handler on the map to coax a molt.</RM_KethrelMoltNoHandler>
+  <RM_KethrelMoltDone>{0} molted its shell; {1} things dropped.</RM_KethrelMoltDone>
+  <RM_KethrelMoltPanic>{0} panicked when {1} tried to coax a molt, and charged.</RM_KethrelMoltPanic>
+  <RM_KethrelLeft>{0} left the area; its shell dropped where it stood.</RM_KethrelLeft>
+  <RM_KethrelShellInspect>Shell: {0} ({1} kg carried, {2} things)</RM_KethrelShellInspect>
+</LanguageData>
