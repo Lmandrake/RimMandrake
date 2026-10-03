@@ -375,3 +375,24 @@ def chance_multiplier_sliders_flip(t):
         t.set_setting(SETTINGS_TYPE, {"mineshaftChanceMultiplier": 1.0})
         t.set_setting(SETTINGS_TYPE, {"darknessThresholdMultiplier": 2.0})
         t.set_setting(SETTINGS_TYPE, {"darknessThresholdMultiplier": 1.0})
+
+
+@suite.chain("fauna_residents_loaded")
+def fauna_residents_loaded(t):
+    """LANTERNDEEPS_FAUNA_TIER_PORT_BUILD_1 (Q12): the eight RM_ residents loaded (a def with an unresolvable
+    field is silently discarded) and RM_LanternDeeps names all eight. Whether light draws one is the darkness
+    walk, not this chain. A false theory worth keeping: the old RSW_ rows were patch-added, so reading the
+    BiomeDef alone showed an EMPTY roster; it is inline now."""
+    kinds = ["BloodropMoth", "GlowSlug", "BovineBeetle", "FacetMothLarvae",
+             "Gembug", "Megapleura", "MossBeetleLarvae", "ShatterjawBeetle"]
+    with t.component("fauna_kinds_loaded", beyond_toggle=True):
+        for k in kinds:
+            r = t.bridge_call("jawa/get_defs", defs="PawnKindDef/RM_%s" % k)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("PawnKindDef/RM_%s did not load: %r" % (k, r))
+    with t.component("biome_roster_inline", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="BiomeDef/RM_LanternDeeps", fields="wildAnimals", deep=True)
+        blob = str(r)
+        miss = [k for k in kinds if "RM_" + k not in blob]
+        if t._guard() and miss:
+            raise ExpectationFailed("RM_LanternDeeps.wildAnimals missing %r: %r" % (miss, r))

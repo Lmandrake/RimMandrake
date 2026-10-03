@@ -25,7 +25,7 @@ namespace RimMandrake.LanternDeeps
 	// Mechanism: periodically samples ground glow at every colonist's position.
 	// Sustained bright light accumulates "exposure"; darkness lets it decay.
 	// Once exposure crosses a threshold, a predator already resident in
-	// RM_LanternDeeps (RSW_BloodropMoth) is drawn toward the brightest
+	// RM_LanternDeeps (RM_BloodropMoth) is drawn toward the brightest
 	// colonist and goes manhunter -- no new creature invented; the
 	// crystal-studded roster stays evicted per HARD BAN #3, and the rest of
 	// the non-crystal cast is still "the sitting"'s call, not this build's.
@@ -42,12 +42,12 @@ namespace RimMandrake.LanternDeeps
 
 		// CAVERNS_PARITY_BUILD_1: the predators that actually live in
 		// RM_LanternDeeps.wildAnimals, in order of preference. Bloodrop moth is
-		// the donor biome's own predator, ported as RSW_BloodropMoth; shatterjaw
-		// is the fallback if SWBestiary ever drops the moth line.
+		// the donor biome's own predator, RM_BloodropMoth; shatterjaw
+		// is the fallback if the moth line is ever dropped.
 		private static readonly string[] DeepPredatorKindNames =
 		{
-			"RSW_BloodropMoth",
-			"RSW_ShatterjawBeetle",
+			"RM_BloodropMoth",
+			"RM_ShatterjawBeetle",
 		};
 
 		private float lightExposure;
@@ -181,7 +181,7 @@ namespace RimMandrake.LanternDeeps
 			// is ALSO one of the seven stragglers RULED CUT 2026-09-11 -- so it was
 			// going to become a permanent silent no-op twice over. Now the ambush
 			// draws a resident of our own biome's wildAnimals list, which are the
-			// RSW_* ports already shipped in SWBestiary. First match wins; a null
+			// RM_ residents in Defs/Fauna. First match wins; a null
 			// return is still a no-op and never a crash.
 			PawnKindDef predatorKind = null;
 			foreach (string kindName in DeepPredatorKindNames)
