@@ -19,6 +19,8 @@ calling a run "running" (doctrine: `infrastructure/agents/FOUNDRY.md` § Hangs a
 | 5b | `STALLED belt_logs <file> written 20m+ ago` | A subagent went silent. It is either dead (a background agent dies at 600 s of silence) or wedged on a hang above. | Check its notification. Respawn it with a skeleton-first brief and an instruction to call the watchdog every 5 min. |
 | 6 | `WEDGED heartbeat … BUDGET: step 'suite X' ran N s > budget`, exit 4 | One suite outran its wall-clock budget (`BELT_SUITE_BUDGET_S`, default 1500 s). | The runner recorded UNMEASURED(BUDGET) and exited by itself. Poke that suite alone, using the heartbeat step to find where it stopped. |
 | 7 | `STALLED bridge … MAIN THREAD call failed` with `ping` OK | The main thread is starved (unfocused) or busy (a long event or loop). | Fix focus first. If the problem persists for more than 5 min and the game reads `BUSY` at about one core, treat it as class 2. |
+| 8 | `WEDGED player_log` loop of `QuestNode_TradeRequest_RandomOfferDuration` NRE right after a bridge call, then a frozen log | `rimworld/search_debug_actions` expands every debug-menu node; expanding runs the quest generator's test loops on the main thread (MEASURED 2026-10-03: hung twice in Bacta `tank_scar`, and again on a plain poke; on the entry scene it NREs in `RitualSiegeWithSpecifics`) | Never call `search_debug_actions` / `execute_debug_action` from a suite. Use `jawa/pawn_health action=permanent` for permanent injuries; kill and relaunch the game. |
+
 
 ## What the signals mean
 
