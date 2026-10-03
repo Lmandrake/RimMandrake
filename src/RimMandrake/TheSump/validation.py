@@ -105,6 +105,25 @@ def static_checks():
         bad.append("DEPLOY_HOLD.txt names no TheSump file (hold parser sanity probe failed; ten files were held on 2026-10-03)")
     if not HELD_DEFS:
         bad.append("no held def parsed (hold parser or def parser is blind)")
+    # SUMP_KETHREL_BUILD_1: defs, art, code seams (parsed from the source; no game needed)
+    names = set(n for _t, n in SHIPPED) | set(h[1] for h in HELD_DEFS)
+    for need in ("RM_Kethrel", "RM_KethrelShell", "RM_KethrelTree"):
+        if need not in names:
+            bad.append("%s is not defined" % need)
+    for stg in range(4):
+        for fc in ("south", "east", "north"):
+            if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_Kethrel", "RM_Kethrel_Stage%d_%s.png" % (stg, fc))):
+                bad.append("kethrel stage %d %s sprite missing" % (stg, fc))
+    kcs = open(os.path.join(HERE, "Source", "RM_Kethrel.cs"), encoding="utf-8").read()
+    for cls in ("RM_CompKethrelShell", "RM_PawnRenderNode_KethrelBody", "RM_ITab_KethrelShell", "RM_CompProperties_KethrelShell"):
+        if "class %s" % cls not in kcs:
+            bad.append("class %s not found in RM_Kethrel.cs" % cls)
+    kx = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Kethrel.xml"), encoding="utf-8").read()
+    for ref in ("RimMandrake.TheSump.RM_PawnRenderNode_KethrelBody", "RimMandrake.TheSump.RM_ITab_KethrelShell", "RimMandrake.TheSump.RM_CompProperties_KethrelShell"):
+        if ref not in kx:
+            bad.append("RM_Kethrel.xml does not reference %s" % ref)
+    if "HarmonyLib" in kcs:
+        bad.append("RM_Kethrel.cs uses Harmony: this assembly has no Harmony reference by design (the render tree names the node class)")
     if "class RM_BiomeWorker_TheSump" not in open(os.path.join(HERE, "Source", "RM_TheSumpBiome.cs"), encoding="utf-8").read():
         bad.append("biome worker class RM_BiomeWorker_TheSump not found")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", MOD + ".md")):
@@ -221,6 +240,15 @@ def _build_suite():
         with t.component("deep_black_mere_generated", toggle="deepBlackMereEnabled"):
             if _live(t):
                 _unmeasured(t, 'a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve')
+        with t.component("kethrel_wears_shell_and_steps_stage", toggle="kethrelShellEnabled"):
+            if _live(t):
+                _unmeasured(t, "needs a spawned RM_Kethrel beside tar with a dropped weapon, then a read of RM_CompKethrelShell stage and the RM_KethrelShell severity; no bridge tool reads the comp yet (a [Tool] returning Stage/LoadKg is the first thing to add)")
+        with t.component("kethrel_molt_drops_everything", toggle="kethrelMoltLoadKg"):
+            if _live(t):
+                _unmeasured(t, "needs a loaded kethrel and a molt; the same missing [Tool] as the stage read")
+        with t.component("kethrel_ignores_home_area_unless_allowed", toggle="kethrelTakeColonyProperty"):
+            if _live(t):
+                _unmeasured(t, "needs a home area, a weapon inside it and a kethrel beside it, with the toggle off then on")
         with t.component("tar_vault_seals_contents", toggle="tarVaultEnabled"):
             if _live(t):
                 _unmeasured(t, "RM_Comp_TarVaultSeal lives in this assembly but the vault def RUT_TarVault ships in UtinniPatches, not in this mod's Defs/ (MEASURED: no def of this mod names the comp), so a read needs the campaign tier loaded plus a vault with a stored item and ticks")

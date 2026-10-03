@@ -48,6 +48,8 @@
     <Compile Include="RM_TheSumpBiome.cs" />
     <Compile Include="RM_Comp_TarVaultSeal.cs" />
     <Compile Include="RUT_GenStep_DeepBlackMere.cs" />
+    <Compile Include="RM_Kethrel.cs" />
+    <Compile Include="RM_KethrelStartup.cs" />
   </ItemGroup>
 
   <ItemGroup>

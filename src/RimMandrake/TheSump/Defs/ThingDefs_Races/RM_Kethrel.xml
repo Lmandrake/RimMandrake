@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  RM_Kethrel.xml                            RM_TheSump - SUMP_KETHREL_BUILD_1
+  ============================================================================
+  The kethrel (sump_bedazzle_review_2026-10-01.md, "RULED: the kethrel"): a boneless hydrocarbon animal of the tar's
+  surface that picks up loose rigid things (dropped weapons, slag, components, scrap) and wears them as an armour shell.
+  Four static armour stages (bare, light, heavy, full), each a whole-body sprite set of three facings, swapped by load.
+  Heavier means slower and better armoured (RM_KethrelShell hediff stages). Every carried object stays a real item in the
+  comp's ThingOwner, listed on an inspect tab, and drops on molt, death or leaving the map.
+
+  Rendering: no Harmony. The race names its own PawnRenderTreeDef (a copy of the vanilla Animal tree) whose Body node class
+  is RM_PawnRenderNode_KethrelBody, which picks the stage graphic. Load changes mark the graphics dirty.
+  Placeholder-free: all 12 sprites were generated and approved (artpipe RM_Kethrel_Stage0..3).
+  Numbers (body size, speed, armour per stage, thresholds) are invented first values for the live-balance pass.
+  ============================================================================
+-->
+<Defs>
+
+  <PawnRenderTreeDef>
+    <defName>RM_KethrelTree</defName>
+    <root Class="PawnRenderNodeProperties_Parent">
+      <debugLabel>Root</debugLabel>
+      <tagDef>Root</tagDef>
+      <children>
+        <li>
+          <debugLabel>Body</debugLabel>
+          <tagDef>Body</tagDef>
+          <nodeClass>RimMandrake.TheSump.RM_PawnRenderNode_KethrelBody</nodeClass>
+          <workerClass>PawnRenderNodeWorker_AnimalBody</workerClass>
+          <useRottenColor>true</useRottenColor>
+          <children>
+            <li>
+              <debugLabel>Wounds</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayWounds</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>3</baseLayer>
+            </li>
+            <li>
+              <debugLabel>Firefoam</debugLabel>
+              <nodeClass>PawnRenderNode_AnimalPart</nodeClass>
+              <workerClass>PawnRenderNodeWorker_OverlayFirefoam</workerClass>
+              <overlayLayer>Body</overlayLayer>
+              <useGraphic>false</useGraphic>
+              <baseLayer>10</baseLayer>
+            </li>
+          </children>
+        </li>
+        <li Class="PawnRenderNodeProperties_Carried">
+          <debugLabel>Carried thing</debugLabel>
+          <workerClass>PawnRenderNodeWorker_Carried</workerClass>
+        </li>
+      </children>
+    </root>
+  </PawnRenderTreeDef>
+
+  <HediffDef>
+    <defName>RM_KethrelShell</defName>
+    <hediffClass>HediffWithComps</hediffClass>
+    <label>scrap shell</label>
+    <labelNoun>a scrap shell</labelNoun>
+    <description>Loose rigid scrap bound to the body with tar. The more it carries, the slower and harder to hurt it is.</description>
+    <defaultLabelColor>(0.55, 0.5, 0.45)</defaultLabelColor>
+    <maxSeverity>3.99</maxSeverity>
+    <isBad>false</isBad>
+    <stages>
+      <li>
+        <label>bare</label>
+        <minSeverity>0</minSeverity>
+      </li>
+      <li>
+        <label>light shell</label>
+        <minSeverity>1</minSeverity>
+        <statOffsets>
+          <ArmorRating_Sharp>0.12</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.08</ArmorRating_Blunt>
+        </statOffsets>
+        <capMods>
+          <li><capacity>Moving</capacity><postFactor>0.88</postFactor></li>
+        </capMods>
+      </li>
+      <li>
+        <label>heavy shell</label>
+        <minSeverity>2</minSeverity>
+        <statOffsets>
+          <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.2</ArmorRating_Blunt>
+        </statOffsets>
+        <capMods>
+          <li><capacity>Moving</capacity><postFactor>0.72</postFactor></li>
+        </capMods>
+      </li>
+      <li>
+        <label>full carapace</label>
+        <minSeverity>3</minSeverity>
+        <statOffsets>
+          <ArmorRating_Sharp>0.5</ArmorRating_Sharp>
+          <ArmorRating_Blunt>0.35</ArmorRating_Blunt>
+        </statOffsets>
+        <capMods>
+          <li><capacity>Moving</capacity><postFactor>0.5</postFactor></li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Kethrel</defName>
+    <label>kethrel</label>
+    <description>A boneless, tar-slick animal the size of a pony that creeps over the surface of the Sump and wears what it finds: dropped blades, slag, components, anything rigid, pressed into its back and bound with tar until it is a walking midden of scrap. The more it carries, the slower and harder it gets, and the louder it clanks. It never digs and never leaves the tar's edge, because it needs the tar to bind a shell. A patient handler can coax it to molt, and everything it wore drops where it stands; a clumsy one gets a panicked charge.</description>
+    <statBases>
+      <MoveSpeed>2.6</MoveSpeed>
+      <Mass>120</Mass>
+      <MarketValue>340</MarketValue>
+      <Flammability>0.5</Flammability>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <ComfyTemperatureMax>45</ComfyTemperatureMax>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>shell-ram</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+    </tools>
+    <comps>
+      <li Class="RimMandrake.TheSump.RM_CompProperties_KethrelShell">
+        <!-- Besides any weapon: loose rigid scrap it will wear. -->
+        <pickupDefs>
+          <li>ChunkSlagSteel</li>
+          <li>ComponentIndustrial</li>
+          <li>ComponentSpacer</li>
+          <li>Steel</li>
+          <li>Plasteel</li>
+        </pickupDefs>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <renderTree>RM_KethrelTree</renderTree>
+      <baseBodySize>1.3</baseBodySize>
+      <baseHealthScale>1.5</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <manhunterOnDamageChance>0.15</manhunterOnDamageChance>
+      <trainability>Intermediate</trainability>
+      <lifeExpectancy>20</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_MediumBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_MediumBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_MediumBash_Miss</soundMeleeMiss>
+    </race>
+    <inspectorTabs>
+      <li>RimMandrake.TheSump.RM_ITab_KethrelShell</li>
+    </inspectorTabs>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Kethrel</defName>
+    <label>kethrel</label>
+    <race>RM_Kethrel</race>
+    <combatPower>85</combatPower>
+    <wildGroupSize>1~1</wildGroupSize>
+    <ecoSystemWeight>0.4</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.0</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Kethrel/RM_Kethrel_Stage0</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

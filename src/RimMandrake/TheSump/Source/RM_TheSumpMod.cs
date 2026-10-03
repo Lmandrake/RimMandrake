@@ -62,12 +62,28 @@ namespace RimMandrake.TheSump
         // generates today, nothing else changes.
         public static bool deepBlackMereEnabled = true;
 
+        // SUMP_KETHREL_BUILD_1 - the kethrel's scrap shell (RM_CompKethrelShell reads these static fields).
+        // Off: it picks nothing up and wears no shell (the stock animal). Density scales its wild commonality at
+        // startup (restart to apply). The value ceiling is silver per stack it will still pick up.
+        public static bool kethrelShellEnabled = true;
+        public static float kethrelDensity = 1f;
+        public static float kethrelValueCeiling = 200f;
+        public static bool kethrelTakeColonyProperty = false;
+        public static float kethrelMoltLoadKg = 30f;
+        public static float kethrelHandlingDifficulty = 1f;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref tarVaultEnabled, "tarVaultEnabled", true, true);
             Scribe_Values.Look(ref deepBlackMereEnabled, "deepBlackMereEnabled", true, true);
+            Scribe_Values.Look(ref kethrelShellEnabled, "kethrelShellEnabled", true, true);
+            Scribe_Values.Look(ref kethrelDensity, "kethrelDensity", 1f, true);
+            Scribe_Values.Look(ref kethrelValueCeiling, "kethrelValueCeiling", 200f, true);
+            Scribe_Values.Look(ref kethrelTakeColonyProperty, "kethrelTakeColonyProperty", false, true);
+            Scribe_Values.Look(ref kethrelMoltLoadKg, "kethrelMoltLoadKg", 30f, true);
+            Scribe_Values.Look(ref kethrelHandlingDifficulty, "kethrelHandlingDifficulty", 1f, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -93,6 +109,21 @@ namespace RimMandrake.TheSump
               + "clear of the edge -- the biome's own \"ocean\" at map scale, and (via FlowWorks' "
               + "natural-liquid-source rule) an effectively infinite canal source once a channel "
               + "reaches it. Off: the map keeps only the biome's ordinary scattered tar pockets.");
+            list.GapLine();
+
+            list.CheckboxLabeled("Kethrel wears a scrap shell", ref kethrelShellEnabled,
+                "The kethrel picks up loose weapons and scrap near tar and wears them as armour, "
+              + "getting slower and harder with load. Off: it picks nothing up (the plain animal).");
+            list.Label("Kethrel density: " + kethrelDensity.ToString("0.0") + "x (restart to apply)");
+            kethrelDensity = list.Slider(kethrelDensity, 0f, 3f);
+            list.Label("Most valuable thing a kethrel will pick up: " + kethrelValueCeiling.ToString("0") + " silver per stack");
+            kethrelValueCeiling = list.Slider(kethrelValueCeiling, 20f, 2000f);
+            list.CheckboxLabeled("Kethrel may take things from the colony's home area", ref kethrelTakeColonyProperty,
+                "Off: it ignores anything lying inside your home area. On: stockpiled weapons and scrap are fair game.");
+            list.Label("Kethrel molts by itself at: " + kethrelMoltLoadKg.ToString("0") + " kg carried");
+            kethrelMoltLoadKg = list.Slider(kethrelMoltLoadKg, 10f, 80f);
+            list.Label("Molt handling difficulty: " + kethrelHandlingDifficulty.ToString("0.0") + "x");
+            kethrelHandlingDifficulty = list.Slider(kethrelHandlingDifficulty, 0f, 2f);
             list.GapLine();
 
             list.Label("This biome's own mechanics — the poured tar moat and fuse-"
