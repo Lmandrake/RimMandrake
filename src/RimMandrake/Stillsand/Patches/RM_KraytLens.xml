@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_KraytLens.xml                    RimMandrake - STILLSAND_GLASS_CHAIN_REMAINDER_1 (spec 4)
+
+  The krayt lens, apex of the lens chain: a krayt pearl ground into lens glass at the lens bench.
+  RSW_KraytPearl is the Star Wars bestiary's def (SWBestiary) and Stillsand does not depend on it,
+  so the lens def and its recipe are added only when that def exists (PatchOperationConditional on
+  its xpath: a MayRequire on an Operation node is ignored by the engine, and a recipe naming an
+  absent ingredient NREs RecipeDefGenerator and resets ModsConfig). Patches run after every mod's
+  Defs have loaded, so load order does not matter.
+
+  The lens is RSW tier in name and in its recipe; it ships beside the Stillsand patches only
+  because this item was scoped to the Stillsand folder. Mod Settings: kraytLensEnabled (a Harmony
+  postfix on RecipeDef.AvailableNow hides the recipe).
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_KraytPearl"]</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>Defs</xpath>
+      <value>
+
+        <ThingDef ParentName="ResourceBase">
+          <defName>RSW_KraytLens</defName>
+          <label>krayt lens</label>
+          <description>A lens ground from a greater krayt dragon's pearl and seated in lens glass. The pearl is a natural focusing crystal, and no glass lens gathers light like it. It is a trade prize and a wonder to look at; a solar still treats it as a plain lens.</description>
+          <graphicData>
+            <texPath>Things/Item/Resource/RSW_KraytLens</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+          </graphicData>
+          <soundInteract>Metal_Drop</soundInteract>
+          <soundDrop>Metal_Drop</soundDrop>
+          <stackLimit>5</stackLimit>
+          <healthAffectsPrice>true</healthAffectsPrice>
+          <statBases>
+            <MaxHitPoints>60</MaxHitPoints>
+            <MarketValue>900</MarketValue>
+            <Mass>0.3</Mass>
+            <Flammability>0</Flammability>
+            <DeteriorationRate>0.3</DeteriorationRate>
+            <Beauty>20</Beauty>
+          </statBases>
+          <thingCategories>
+            <li>Manufactured</li>
+          </thingCategories>
+          <tradeability>All</tradeability>
+          <tradeTags>
+            <li>Exotic</li>
+          </tradeTags>
+          <techLevel>Medieval</techLevel>
+        </ThingDef>
+
+        <RecipeDef>
+          <defName>RSW_GrindKraytLens</defName>
+          <label>grind krayt lens</label>
+          <description>Grind a krayt pearl into a lens, seated in lens glass.</description>
+          <jobString>Grinding a krayt lens.</jobString>
+          <workAmount>9000</workAmount>
+          <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+          <effectWorking>CutStone</effectWorking>
+          <soundWorking>Recipe_MakeStoneBlocks</soundWorking>
+          <workSkill>Crafting</workSkill>
+          <skillRequirements>
+            <Crafting>12</Crafting>
+          </skillRequirements>
+          <ingredients>
+            <li>
+              <filter>
+                <thingDefs>
+                  <li>RSW_KraytPearl</li>
+                </thingDefs>
+              </filter>
+              <count>1</count>
+            </li>
+            <li>
+              <filter>
+                <thingDefs>
+                  <li>RM_LensGlass</li>
+                </thingDefs>
+              </filter>
+              <count>2</count>
+            </li>
+          </ingredients>
+          <fixedIngredientFilter>
+            <thingDefs>
+              <li>RSW_KraytPearl</li>
+              <li>RM_LensGlass</li>
+            </thingDefs>
+          </fixedIngredientFilter>
+          <products>
+            <RSW_KraytLens>1</RSW_KraytLens>
+          </products>
+          <recipeUsers>
+            <li>RM_LensBench</li>
+          </recipeUsers>
+        </RecipeDef>
+
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

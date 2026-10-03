@@ -729,8 +729,15 @@ def main():
 def _main(bad):
     healthy = run()
     # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
+    # glass.* below: STILLSAND_GLASS_CHAIN_REMAINDER_1 live-proof arms, UNMEASURED until a driven session
+    owed = ("glass.drift_clear_drops_glass_sand", "glass.furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof",
+            "glass.oven_cooks_in_sun_not_shade", "glass.lightning_on_deepsand_leaves_fulgurite_pyrelands_off",
+            "glass.recipe_toggles_hide_recipes")
+    for k in owed:
+        if healthy.get(k, ("",))[0] != "UNMEASURED":
+            bad.append("%s should read UNMEASURED: %s" % (k, healthy.get(k)))
     notpass = dict((k, v) for k, v in healthy.items()
-                   if v[0] != "PASS" and k != "gale.gale_dims_sun_exposure")
+                   if v[0] != "PASS" and k != "gale.gale_dims_sun_exposure" and k not in owed)
     if healthy.get("gale.gale_dims_sun_exposure", ("",))[0] != "UNMEASURED":
         bad.append("gale.gale_dims_sun_exposure should read UNMEASURED: %s" % (healthy.get("gale.gale_dims_sun_exposure"),))
     n_comp = len(healthy)

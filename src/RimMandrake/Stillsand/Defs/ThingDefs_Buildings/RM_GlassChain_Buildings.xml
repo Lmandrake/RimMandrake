@@ -74,12 +74,13 @@
   <ThingDef ParentName="BenchBase">
     <defName>RM_LensBench</defName>
     <label>lens bench</label>
-    <description>A grinding wheel, a polishing lap and a sighting mirror on a long bench. Lenses are ground here and then checked against the sun, so the bench works only in open sun. It stops in a sand gale and under a roof.\n\nLens glass grinds into precision lenses. A glass pearl ground into lens glass makes a pearl lens.</description>
+    <description>A grinding wheel, a polishing lap and a sighting mirror on a long bench. Lenses are ground here and then checked against the sun, so the bench works only in open sun. It stops in a sand gale and under a roof.\n\nLens glass grinds into precision lenses. A glass pearl ground into lens glass makes a pearl lens, and a krayt pearl makes a krayt lens.</description>
     <thingClass>Building_WorkTable</thingClass>
     <graphicData>
-      <!-- art pending: artpipe RM_LensBench (north/east/south) -->
+      <!-- art pending: artpipe RM_LensBench_v2 (one sprite, the first three-facing job failed on
+           its prompt). Until it lands the bench has no texture. -->
       <texPath>Things/Building/Production/RM_LensBench</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3.5,1.75)</drawSize>
     </graphicData>
     <size>(3,1)</size>

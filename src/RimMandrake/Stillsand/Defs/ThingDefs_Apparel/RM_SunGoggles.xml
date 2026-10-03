@@ -7,9 +7,13 @@
   at a crafting spot (or a tailoring bench). The sun-glass recipe is owed to
   STILLSAND_GLASS_LENS_CHAIN_1.
 
-  ART: the icon and worn set (RM_SunGoggles, RM_SunGogglesWorn_south/east/north) are queued in
-  infrastructure/artpipe/pending/. Until they land the icon is the biosilica texture and there is
-  no wornGraphicPath (nothing drawn on the head), which renders clean rather than magenta.
+  ART: the icon and worn set (RM_SunGoggles, RM_SunGogglesWorn_south/east/north) are wired from
+  artpipe (STILLSAND_GLASS_CHAIN_REMAINDER_1).
+
+  RM_SunGogglesGlass is the sun-glass recipe (parent item spec 9): smoked sun-glass lenses, no
+  stuff (a recipe taking glass plus leather would pick the glass as the stuff), same tag, same
+  art. Its recipe is the one this def's recipeMaker makes; the Mod Settings toggle
+  glassGogglesEnabled hides it.
 -->
 <Defs>
 
@@ -19,7 +23,7 @@
     <description>Thick biosilica lenses, smoked dark, set in a stitched leather band with side shields against the glare off the sand. Whoever wears them is never glare-blinded.</description>
     <techLevel>Neolithic</techLevel>
     <graphicData>
-      <texPath>Things/Item/Resource/RM_Biosilica</texPath>
+      <texPath>Things/Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGoggles</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(0.8, 0.8)</drawSize>
     </graphicData>
@@ -49,6 +53,53 @@
       <bodyPartGroups>
         <li>Eyes</li>
       </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGogglesWorn</wornGraphicPath>
+      <layers>
+        <li>EyeCover</li>
+      </layers>
+      <tags>
+        <li>RM_GlareProtection</li>
+      </tags>
+      <canBeGeneratedToSatisfyWarmth>false</canBeGeneratedToSatisfyWarmth>
+      <canBeGeneratedToSatisfyToxicEnvironmentResistance>false</canBeGeneratedToSatisfyToxicEnvironmentResistance>
+    </apparel>
+    <colorGenerator Class="ColorGenerator_StandardApparel" />
+    <tradeTags>
+      <li>Clothing</li>
+    </tradeTags>
+  </ThingDef>
+
+  <ThingDef ParentName="HatMakeableBase">
+    <defName>RM_SunGogglesGlass</defName>
+    <label>sun-glass goggles</label>
+    <description>Round lenses of smoked sun glass, set in a stitched cloth band with side shields against the glare off the sand. Whoever wears them is never glare-blinded.</description>
+    <techLevel>Neolithic</techLevel>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGoggles</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(0.8, 0.8)</drawSize>
+    </graphicData>
+    <costList>
+      <RM_SunGlass>4</RM_SunGlass>
+      <Cloth>12</Cloth>
+    </costList>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToMake>1800</WorkToMake>
+      <Mass>0.15</Mass>
+      <EquipDelay>0.8</EquipDelay>
+    </statBases>
+    <recipeMaker>
+      <recipeUsers>
+        <li>CraftingSpot</li>
+      </recipeUsers>
+    </recipeMaker>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <bodyPartGroups>
+        <li>Eyes</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGogglesWorn</wornGraphicPath>
       <layers>
         <li>EyeCover</li>
       </layers>

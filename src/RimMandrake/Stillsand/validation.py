@@ -88,7 +88,8 @@ SETTINGS = {
                                    "sieveEnabled": True, "sieveYieldMultiplier": 1.0,
                                    "solarStillEnabled": True, "stillRateMultiplier": 1.0,
                                    "wringingStillEnabled": True, "sunLanceEnabled": True,
-                                   "geophoneEnabled": True, "geophoneRadius": 20.0},
+                                   "geophoneEnabled": True, "geophoneRadius": 20.0,
+                                   "kraytLensEnabled": True, "glassGogglesEnabled": True},
     NS + "RM_SandSwimRemSettings": {"thumperEnabled": True, "thumperRadius": 40.0,
                                     "sandFishingWakeEnabled": True, "sandFishingWakeChance": 0.15,
                                     "driftSwimEnabled": True, "driftSwimDepth": 0.3,
@@ -1431,6 +1432,74 @@ def glass_chain(t):
             if not (1.8 <= got / base <= 2.2):
                 _fail("sunWorkSpeedMultiplier 2 moved the furnace's work speed %.2f -> %.2f (expected x2)"
                       % (base, got))
+
+    # STILLSAND_GLASS_CHAIN_REMAINDER_1: krayt lens (patch-added), sun-glass goggles, art wire-in.
+    with _comp(t, "glass_remainder_static"):
+        import re as _re
+        rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read()
+        patch = rd("Patches", "RM_KraytLens.xml")
+        if "PatchOperationConditional" not in patch or 'defName="RSW_KraytPearl"' not in patch:
+            _fail("RM_KraytLens.xml does not guard the lens on RSW_KraytPearl's own xpath")
+        if _re.search(r"<Operation[^>]*MayRequire", patch) or "PatchOperationAddOrReplace" in patch:
+            _fail("RM_KraytLens.xml uses an Operation MayRequire or PatchOperationAddOrReplace")
+        for need in ("<defName>RSW_KraytLens</defName>", "<defName>RSW_GrindKraytLens</defName>",
+                     "<li>RSW_KraytPearl</li>", "<li>RM_LensGlass</li>", "<li>RM_LensBench</li>"):
+            if need not in patch:
+                _fail("RM_KraytLens.xml is missing %s" % need)
+        gog = rd("Defs", "ThingDefs_Apparel", "RM_SunGoggles.xml")
+        if gog.count("<li>RM_GlareProtection</li>") != 2 or "<defName>RM_SunGogglesGlass</defName>" not in gog \
+                or "<RM_SunGlass>" not in gog:
+            _fail("RM_SunGogglesGlass is missing, or does not carry RM_GlareProtection / cost sun glass")
+        if "canBeDoneByNonColonists" in gog or "<minifiable>" in gog:
+            _fail("goggles XML carries a field Core does not define")
+        bld = rd("Defs", "ThingDefs_Buildings", "RM_GlassChain_Buildings.xml")
+        if "RM_LensBench" in bld and "Graphic_Multi" in bld.split("<defName>RM_LensBench</defName>")[1].split("</graphicData>")[0]:
+            _fail("RM_LensBench is Graphic_Multi but the art job delivers one sprite")
+        tex = os.path.join(HERE, "Textures", "Things")
+        for f in ("Item/Resource/RM_FineSand.png", "Item/Resource/RSW_KraytLens.png",
+                  "Building/Production/RM_SolarOven.png",
+                  "Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGoggles.png",
+                  "Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGogglesWorn_south.png",
+                  "Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGogglesWorn_east.png",
+                  "Pawn/Humanlike/Apparel/RM_SunGoggles/RM_SunGogglesWorn_north.png"):
+            if not os.path.isfile(os.path.join(tex, *f.split("/"))):
+                _fail("wired art is missing: %s" % f)
+        mod = rd("Source", "RM_GlassChainMod.cs")
+        for need in ("kraytLensEnabled", "glassGogglesEnabled", "get_AvailableNow", "PropertyGetter",
+                     "RSW_GrindKraytLens", "RM_SunGogglesGlass"):
+            if need not in mod and need != "get_AvailableNow":
+                _fail("RM_GlassChainMod.cs does not carry %s" % need)
+
+    with _comp(t, "glass_remainder_defs_live"):
+        if _live(t):
+            r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_SunGogglesGlass;RecipeDef/RM_GrindPearlLens",
+                              fields="defName", limit=5)
+            _ok(r, "get_defs(goggles)")
+            if r.get("notFound"):
+                _fail("glass goggles / pearl lens recipe did not resolve live: %s" % r.get("notFound"))
+            p = _ok(t.bridge_call("jawa/get_defs", defs="ThingDef/RSW_KraytPearl", fields="defName", limit=2), "get_defs(pearl)")
+            if p.get("notFound"):
+                _unmeasured(t, "RSW_KraytPearl is not loaded (the Star Wars bestiary is absent): the "
+                               "conditional krayt-lens patch correctly added nothing")
+            k = _ok(t.bridge_call("jawa/get_defs", defs="ThingDef/RSW_KraytLens;RecipeDef/RSW_GrindKraytLens",
+                                  fields="defName", limit=5), "get_defs(krayt lens)")
+            if k.get("notFound"):
+                _fail("RSW_KraytPearl is loaded but the krayt lens did not resolve: %s" % k.get("notFound"))
+            for f in ("kraytLensEnabled", "glassGogglesEnabled"):
+                if not _same(_get_setting(t, f), True):
+                    _fail("%s is not at its shipped default True" % f)
+
+    # LIVE PROOF owed by the parent's criteria. Not driven this pass (the game was in use by another
+    # window); each records UNMEASURED with its reason so none can read as a pass.
+    for name, why in (
+            ("drift_clear_drops_glass_sand", "needs a driven drift clear on a Stillsand quicktest"),
+            ("furnace_and_bench_cycle_in_sun_stop_in_gale_and_roof", "needs a full bill cycle in sun, in a gale and under a roof"),
+            ("oven_cooks_in_sun_not_shade", "needs a cooked meal in sun and in shade"),
+            ("lightning_on_deepsand_leaves_fulgurite_pyrelands_off", "needs a forced strike on RM_DeepSand with the Pyrelands master toggle off"),
+            ("recipe_toggles_hide_recipes", "no bridge tool reads RecipeDef.AvailableNow for a bench")):
+        with _comp(t, name):
+            if _live(t):
+                _unmeasured(t, why + " (not driven: the live game was in use)")
 
 
 # ----------------------------------------------------------------------------- chain: water
