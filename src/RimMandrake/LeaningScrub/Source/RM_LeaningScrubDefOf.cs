@@ -14,6 +14,7 @@ namespace RimMandrake.LeaningScrub
         public static HediffDef RM_GaleDeafened;
 
         public static JobDef RM_SmotherVenomvine;
+        public static JobDef RM_ScratchOnSweetline;
         public static ThingDef RM_SmotherBlanket;
         public static ThingDef RM_DeadVenomvine;
 

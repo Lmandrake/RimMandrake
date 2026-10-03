@@ -68,6 +68,7 @@
     <Compile Include="RM_SweetlineStation.cs" />
     <Compile Include="RM_VisslerArm.cs" />
     <Compile Include="RM_SweetlineGuardians.cs" />
+    <Compile Include="RM_SweetlineScratching.cs" />
   </ItemGroup>
 
   <ItemGroup>

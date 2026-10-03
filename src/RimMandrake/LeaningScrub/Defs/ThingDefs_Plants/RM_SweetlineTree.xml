@@ -33,7 +33,7 @@
     <label>sweetline tree</label>
     <!-- SHRUBLAND_TREE_GUARDIAN_1: the harvest seam for the bark-warden roost. -->
     <thingClass>RimMandrake.LeaningScrub.RM_Plant_Guarded</thingClass>
-    <description>A single ancient giant, centuries old, growing only where the moisture-light trade balances exactly. Its trunk is scarred smooth in patches where the biome's giants have rubbed against it for longer than any settlement nearby has stood; the bark sheds their snagged wool in long silver hanks. Every sweetline tree has a name, and the roads of the shrubland are laid tree to tree along the line they mark.\n\nBark-wardens roost asleep against the trunk. They watch whoever passes, and drop on whoever strips the wool or wounds the bark.</description>
+    <description>A single ancient giant, centuries old, growing only where the moisture-light trade balances exactly. Its bark is rough enough that every coated beast of the plain comes to scratch on it, and the trunk is worn smooth in patches where they have rubbed for longer than any settlement nearby has stood. Their coats pile at its foot, and what the bark keeps it mats with its resin into sweetline felt. Every sweetline tree has a name, and the roads of the shrubland are laid tree to tree along the line they mark.\n\nBark-wardens roost asleep against the trunk. They watch whoever passes, and drop on whoever strips the wool or wounds the bark.</description>
     <graphicData>
       <texPath>Things/Plant/RM_SweetlineTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -62,10 +62,11 @@
       <wildOrder>4</wildOrder>
     </plant>
     <comps>
-      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1: name, history panel, snagged-wool timer
-           (Source/RM_SweetlineStation.cs). TUNED: 5 hanks every 5 days once mature,
-           a trickle beside the 20-hank harvest so the tree pays visitors without
-           replacing the harvest. -->
+      <!-- LEANINGSCRUB_GPT_ENRICHMENT_1: name, history panel, shed timer
+           (Source/RM_SweetlineStation.cs). 5 felt every 5 days once mature: the
+           generous free path, which keeps going after a harvest (owner R11).
+           SWEETLINE_SCRATCHING_TREE_BUILD_1: animals rub their coats off here and
+           a share felts into the bark (feltPerCoatUnit, feltCap), paid out at harvest. -->
       <li Class="RimMandrake.LeaningScrub.RM_CompProperties_SweetlineStation">
         <namer>RM_NamerSweetlineTree</namer>
         <woolThing>RM_SweetlineWool</woolThing>
@@ -76,6 +77,8 @@
         <tokenThing>RM_SweetlineToken</tokenThing>
         <pilgrimChance>0.6</pilgrimChance>
         <maxTokensNear>3</maxTokensNear>
+        <feltPerCoatUnit>0.25</feltPerCoatUnit>
+        <feltCap>120</feltCap>
       </li>
       <!-- SHRUBLAND_TREE_GUARDIAN_1 (Source/RM_SweetlineGuardians.cs): 2-3 roosting
            bark-wardens, a disturbance meter that harvest work and wounds fill, warning

@@ -8,7 +8,7 @@
   the region." (arid_shrubland.md, frozen sheet)
 
     RM_FuzzFiber         harvest of RM_Fuzz (RM_Fuzz.xml now names it).
-    RM_SmotherBlanket    woven at a tailor bench from fuzz fiber + giant-wool
+    RM_SmotherBlanket    woven at a tailor bench from fuzz fiber + sweetline felt
                          (RM_SweetlineWool, the sweetline-snag harvest).
     RM_DeadVenomvine     what a smothered stand leaves when its claim matures.
                          Burns wherever wood burns (Patches/RM_DeadVenomvine_Fuel.xml).
@@ -48,7 +48,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RM_SmotherBlanket</defName>
     <label>smother-blanket</label>
-    <description>A heavy felt of fuzz fiber and giant-wool, woven so tight no light passes. Thrown over a venomvine stand it starves the plant of light for seasons, until what is left is dead wood. A trade good all across the plain.</description>
+    <description>A heavy cloth of fuzz fiber and sweetline felt, woven so tight no light passes. Thrown over a venomvine stand it starves the plant of light for seasons, until what is left is dead wood. A trade good all across the plain.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Cloth</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
@@ -96,7 +96,7 @@
   <RecipeDef>
     <defName>RM_Make_SmotherBlanket</defName>
     <label>weave smother-blanket</label>
-    <description>Felt fuzz fiber and giant-wool into a light-proof smother-blanket.</description>
+    <description>Felt fuzz fiber and sweetline felt into a light-proof smother-blanket.</description>
     <jobString>Weaving a smother-blanket.</jobString>
     <workAmount>2400</workAmount>
     <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

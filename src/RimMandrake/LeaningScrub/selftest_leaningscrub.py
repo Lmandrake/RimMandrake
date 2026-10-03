@@ -197,6 +197,14 @@ class Fake(object):
                             if p["kind"] == "RM_Vissler" and arms < 4:
                                 arms += 1
                                 self.new("RM_VisslerArm", p["x"], p["z"], stackCount=1)
+        # --- sweetline scratching (one ordered rub at a time)
+        sc = getattr(self, "scratch", None)
+        if sc and self.ticks >= sc["due"]:
+            self.scratch = None
+            trs = self.of(V.TREE)
+            if trs and "no_scratch" not in b:
+                self.new("WoolSheep", trs[0]["x"] + 1, trs[0]["z"], stackCount=36)
+                trs[0]["felt"] = trs[0].get("felt", 0) + 2.25
         # --- sweetline wool
         for tr in self.of(V.TREE):
             tr.setdefault("wool", self.ticks + 3 * 60000)
@@ -325,6 +333,15 @@ class Fake(object):
         return {"success": True, "scanned": 100, "countMatched": len(rows),
                 "things": [dict(t) for t in rows[:limit]]}
 
+    def t_static_call(self, type=None, method=None, args="", **k):
+        if method != "ProofOrderScratch":
+            return {"success": False, "message": "No public static " + str(method)}
+        on = self.on("sweetlineStationsEnabled") and self.on("sweetlineScratchingEnabled")
+        if not on and "scratch_ignores_toggle" not in self.broken:
+            return {"success": True, "result": "REFUSED: scratching is off"}
+        self.scratch = {"due": self.ticks + 700}
+        return {"success": True, "result": "ORDERED P1 -> T1"}
+
     def t_spawn_batch(self, ops="", **k):
         for op in ops.split(";"):
             d, nums = op.split(":")
@@ -414,7 +431,9 @@ class Fake(object):
         elif d == V.TREE and (self.on("sweetlineStationsEnabled") or "station_ignores_toggle" in self.broken):
             if "no_name" not in self.broken:
                 label = "Ashveil (sweetline tree)"
-            lines = ["Snagged giant-wool sheds in 4 days."]
+            lines = ["Loose sweetline felt falls in 4 days."]
+            if t.get("felt", 0) >= 1:
+                lines.append("Felted into the bark: %d (harvestable)." % int(t["felt"]))
             if self.on("sweetlineGuardiansEnabled") and "no_roost" not in self.broken:
                 lines.append("Bark-wardens roost here (2). Calm.")
             if t.get("visits") and (self.on("sweetlineVisitorsEnabled") or "visitors_ignore_toggle" in self.broken):
@@ -482,6 +501,8 @@ BREAKS = {
     "station_ignores_toggle": "sweetline.station_toggle_off_plain",
     "no_name": "sweetline.station_named_and_timed",
     "no_wool": "sweetline.station_sheds_wool",
+    "no_scratch": "sweetline.scratch_drops_coat",
+    "scratch_ignores_toggle": "sweetline.scratch_toggle_off_refused",
     "visitors_ignore_toggle": "sweetline.visitors_toggle_off_quiet",
     "no_visits": "sweetline.visitors_come_and_leave_marks",
     "log_error": "log.log_clean",

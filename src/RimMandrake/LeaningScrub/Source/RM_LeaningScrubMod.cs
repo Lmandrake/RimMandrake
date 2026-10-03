@@ -81,6 +81,10 @@ namespace RimMandrake.LeaningScrub
         public static float sweetlineHarvestDisturbance = 1f;
         public static float sweetlineForgivenessDays = 5f;
         public static bool sweetlineProximityCharge = false;
+        // SWEETLINE_SCRATCHING_TREE_BUILD_1 (RM_SweetlineScratching.cs)
+        public static bool sweetlineScratchingEnabled = true;
+        public static float sweetlineCoatReady = 0.8f;
+        public static float sweetlineFeltShare = 0.2f;
         // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
         public static bool visslerArmFoodEnabled = true;
 
@@ -122,6 +126,9 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineHarvestDisturbance, "sweetlineHarvestDisturbance", 1f, true);
             Scribe_Values.Look(ref sweetlineForgivenessDays, "sweetlineForgivenessDays", 5f, true);
             Scribe_Values.Look(ref sweetlineProximityCharge, "sweetlineProximityCharge", false, true);
+            Scribe_Values.Look(ref sweetlineScratchingEnabled, "sweetlineScratchingEnabled", true, true);
+            Scribe_Values.Look(ref sweetlineCoatReady, "sweetlineCoatReady", 0.8f, true);
+            Scribe_Values.Look(ref sweetlineFeltShare, "sweetlineFeltShare", 0.2f, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
         }
 
@@ -216,8 +223,8 @@ namespace RimMandrake.LeaningScrub
                 + "crustweevils scatter, fuzzrunners bolt, dustflutters burst up and land again "
                 + "far off, visslers drop a twitching arm and run.");
             list.CheckboxLabeled("Named sweetline trees", ref sweetlineStationsEnabled,
-                "Every sweetline tree carries a name and a short remembered history, and sheds "
-                + "snagged giant-wool beside its trunk every few days once grown.");
+                "Every sweetline tree carries a name and a short remembered history, and lets go "
+                + "loose sweetline felt beside its trunk every few days once grown.");
             list.CheckboxLabeled("Sweetline visitors", ref sweetlineVisitorsEnabled,
                 "Road-folk now and then camp a night under a grown sweetline tree, and pilgrims "
                 + "leave small tokens at its trunk. Each visit is remembered in the tree's history. "
@@ -246,6 +253,21 @@ namespace RimMandrake.LeaningScrub
                 list.CheckboxLabeled("Bark-wardens also rouse at anyone who lingers under the tree", ref sweetlineProximityCharge,
                     "Off (default, the owner's ruling): walking up only makes them watch. On: a person within 9 cells "
                     + "slowly disturbs them too (about five hours of loitering fills the bar), with the same warnings.");
+            }
+
+            list.CheckboxLabeled("Animals scratch their coats off on sweetline trees", ref sweetlineScratchingEnabled,
+                "Any animal with a shearable coat (wild or tame, any wool) now and then walks to a calm sweetline tree "
+                + "within 60 cells and rubs its coat off: most of it drops beside the trunk, the rest felts into the "
+                + "bark and comes out with the next harvest. Wild animals grow their coats while this is on and a "
+                + "sweetline tree stands anywhere. Penned animals only reach a tree inside their pen. "
+                + "Needs named sweetline trees on. Off: no rubbing, and wild coats stop growing.");
+            if (sweetlineScratchingEnabled)
+            {
+                list.Label("Coat fullness before an animal goes to scratch: " + sweetlineCoatReady.ToStringPercent());
+                sweetlineCoatReady = Mathf.Round(list.Slider(sweetlineCoatReady, 0.5f, 1f) * 20f) / 20f;
+                list.Label("Share of a rubbed coat that felts into the bark: " + sweetlineFeltShare.ToStringPercent()
+                    + (sweetlineFeltShare <= 0f ? " (rubs give only ground wool)" : ""));
+                sweetlineFeltShare = Mathf.Round(list.Slider(sweetlineFeltShare, 0f, 0.5f) * 20f) / 20f;
             }
 
             list.CheckboxLabeled("Vissler arms are carrion", ref visslerArmFoodEnabled,

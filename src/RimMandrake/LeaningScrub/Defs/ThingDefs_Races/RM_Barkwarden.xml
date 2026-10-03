@@ -39,7 +39,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Barkwarden</defName>
     <label>bark-warden</label>
-    <description>The sweetline tree is the only thing on the plain that stands taller than a person, and the bark-warden is what took it. A knuckle-walking climber about the mass of a large dog, long-armed and hook-clawed, with a flat wide head and a coat the silver-grey of the giant-wool it sleeps in. Two or three roost against every trunk, asleep and easy to see, and they open their eyes when someone comes near.\n\nThey do not care who walks past. They care who works the tree: strip its wool or wound its bark and they stir, then grow restless, then drop from the crown onto whoever is doing it. Walk away far enough and they climb back up. A tree forgives in a few days.\n\nIt cannot fly. It climbs, and it drops.</description>
+    <description>The sweetline tree is the only thing on the plain that stands taller than a person, and the bark-warden is what took it. A knuckle-walking climber about the mass of a large dog, long-armed and hook-clawed, with a flat wide head and a coat the silver-grey of the felt it sleeps in. Two or three roost against every trunk, asleep and easy to see, and they open their eyes when someone comes near.\n\nThey do not care who walks past. They care who works the tree: strip its felt or wound its bark and they stir, then grow restless, then drop from the crown onto whoever is doing it. Walk away far enough and they climb back up. A tree forgives in a few days.\n\nIt cannot fly. It climbs, and it drops.</description>
     <statBases>
       <MoveSpeed>4.8</MoveSpeed>
       <MarketValue>420</MarketValue>

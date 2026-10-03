@@ -16,8 +16,13 @@ namespace RimMandrake.LeaningScrub
     //            shown as the tree's label.
     //   history  a short Scribed list of dated entries (named, wool shed,
     //            struck) behind a "History" gizmo — the small panel.
-    //   wool     a Scribed timer: every woolIntervalDays a mature tree sheds
-    //            woolCount of woolThing beside its trunk.
+    //   wool     a Scribed timer: every woolIntervalDays a mature tree lets go
+    //            woolCount of woolThing (sweetline felt) beside its trunk: the
+    //            generous free path, which keeps going after a harvest (R11).
+    //   felt     SWEETLINE_SCRATCHING_TREE_BUILD_1: the felt store. Animals that
+    //            rub their coats off here (RM_SweetlineScratching.cs) bank a share
+    //            of each coat; a harvest pays the whole store out on top of the
+    //            base yield (GetAdditionalHarvestYield).
     // Plants only TickLong, so the timer rides CompTickLong (never CompTick)
     // and the engine's own Long cadence is the only throttle.
     //
@@ -36,6 +41,10 @@ namespace RimMandrake.LeaningScrub
         public ThingDef tokenThing;
         public float pilgrimChance = 0.6f;
         public int maxTokensNear = 3;
+        // SWEETLINE_SCRATCHING_TREE_BUILD_1: rubbed coat felts into the bark at this rate (four
+        // units of coat make one of felt), up to feltCap; paid out at harvest.
+        public float feltPerCoatUnit = 0.25f;
+        public float feltCap = 120f;
 
         public RM_CompProperties_SweetlineStation()
         {
@@ -68,6 +77,8 @@ namespace RimMandrake.LeaningScrub
         private int nextVisitTick = -1;
         private int campCount;
         private int pilgrimCount;
+        private float feltStore;
+        private int lastScratchHistoryTick = -999999;
 
         public RM_CompProperties_SweetlineStation Props => (RM_CompProperties_SweetlineStation)props;
 
@@ -100,6 +111,7 @@ namespace RimMandrake.LeaningScrub
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            RM_SweetlineScratching.Register(parent);
             if (treeName == null && Props.namer != null)
             {
                 treeName = NameGenerator.GenerateName(Props.namer, n => !NameTakenOnMap(n));
@@ -152,7 +164,7 @@ namespace RimMandrake.LeaningScrub
             wool.stackCount = Props.woolCount;
             if (GenPlace.TryPlaceThing(wool, parent.Position, parent.Map, ThingPlaceMode.Near))
             {
-                AddHistory("shed " + Props.woolCount + " " + Props.woolThing.label + " snagged from passing giants.");
+                AddHistory("let go " + Props.woolCount + " " + Props.woolThing.label + ".");
             }
         }
 
@@ -232,6 +244,41 @@ namespace RimMandrake.LeaningScrub
             AddHistory("struck by " + by + ".");
         }
 
+        public float FeltStore => feltStore;
+
+        public override void PostDeSpawn(Map map, DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.PostDeSpawn(map, mode);
+            RM_SweetlineScratching.Deregister(parent, map);
+        }
+
+        /// <summary>SWEETLINE_SCRATCHING_TREE_BUILD_1: an animal finished rubbing its coat off here.</summary>
+        public void Notify_Scratched(Pawn animal, float coatUnitsFelted)
+        {
+            feltStore = Mathf.Min(Props.feltCap, feltStore + Mathf.Max(0f, coatUnitsFelted) * Props.feltPerCoatUnit);
+            int now = Find.TickManager.TicksGame;
+            // One line a day at most, so a herd does not flood the 12 entries.
+            if (now - lastScratchHistoryTick >= GenDate.TicksPerDay)
+            {
+                lastScratchHistoryTick = now;
+                Remember((animal.kindDef?.label ?? animal.LabelShort) + " scratched against the bark.");
+            }
+        }
+
+        // Paid out once per harvest (JobDriver_PlantWork is the only caller). Reset here rather
+        // than in PlantCollected so a failed harvest roll does not throw the store away.
+        public override IEnumerable<ThingDefCountClass> GetAdditionalHarvestYield()
+        {
+            int pay = Mathf.FloorToInt(feltStore);
+            if (!Enabled || pay <= 0 || Props.woolThing == null)
+            {
+                return System.Linq.Enumerable.Empty<ThingDefCountClass>();
+            }
+            feltStore -= pay;
+            Remember("gave up " + pay + " " + Props.woolThing.label + " felted into its bark.");
+            return new List<ThingDefCountClass> { new ThingDefCountClass(Props.woolThing, pay) };
+        }
+
         /// <summary>SHRUBLAND_TREE_GUARDIAN_1: the bark-warden roost writes its events here.</summary>
         public void Remember(string text)
         {
@@ -271,12 +318,15 @@ namespace RimMandrake.LeaningScrub
             string visits = VisitorsOn && (campCount + pilgrimCount) > 0
                 ? "Visitors remembered: " + campCount + " camps, " + pilgrimCount + " pilgrims.\n"
                 : "";
+            string felt = feltStore >= 1f
+                ? "\nFelted into the bark: " + Mathf.FloorToInt(feltStore) + " (harvestable)."
+                : "";
             int left = nextWoolTick - Find.TickManager.TicksGame;
             if (left <= 0)
             {
-                return visits + "Snagged " + Props.woolThing.label + " ready to shed.";
+                return visits + "Loose " + Props.woolThing.label + " ready to fall." + felt;
             }
-            return visits + "Snagged " + Props.woolThing.label + " sheds in " + left.ToStringTicksToPeriod() + ".";
+            return visits + "Loose " + Props.woolThing.label + " falls in " + left.ToStringTicksToPeriod() + "." + felt;
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -322,6 +372,8 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref pilgrimCount, "rmSweetlinePilgrims", 0);
             Scribe_Values.Look(ref lastStruckTick, "rmSweetlineLastStruck", -999999);
             Scribe_Values.Look(ref everMature, "rmSweetlineEverMature", false);
+            Scribe_Values.Look(ref feltStore, "rmSweetlineFeltStore", 0f);
+            Scribe_Values.Look(ref lastScratchHistoryTick, "rmSweetlineLastScratch", -999999);
             Scribe_Collections.Look(ref history, "rmSweetlineHistory", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && history == null)
             {
