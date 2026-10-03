@@ -15,6 +15,7 @@ BENCH puts them to him as cards in this order unless he picks another.
 | 8 | Cauldron sounds and visuals — `CAULDRON_ENRICHMENT_AUDIO_1` / `_VISUALS_1` | `design/Jawa/worldbuilding/biomes/cauldron_enrichment_audio_visuals_spec_2026-10-02.md` | 3 |
 | 9 | Desert art sheet (09-20): rebuild fresh or review as is — `DESERT_FAMILY_PORT_EXECUTION_1` | `Transient/desert_art_verdict_2026-09-20.html` | 1 |
 | 11 | Greatbole song, sanctuary, pilgrims, crossovers — `GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1` | `design/Jawa/worldbuilding/biomes/greatbole_atmosphere_crossovers_design_2026-10-02.md` | 4 |
+| 12 | Rites: what counts toward a god's cap, build order, re-explanation — `SALVATION_RITES_UNIFICATION_1` | `design/Jawa/salvation_rites_unification_audit_2026-10-02.md` | 4 |
 | 10 | 18 older owner questions from the BENCH triage | `Transient/bench_claimables_triage_2026-10-02.md` (OWNER rows) | 18 |
 
 Also for his eyes, no question: the Atlas (`src/RimUtinni/Atlas`) is built and with FOUNDRY for its
