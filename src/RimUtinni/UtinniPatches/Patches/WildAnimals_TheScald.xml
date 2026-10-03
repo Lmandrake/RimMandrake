@@ -4,7 +4,7 @@
   WildAnimals_TheScald.xml                  UtinniPatches — new file 2026-09-25
   ============================================================================
   TERMINALBIOMES_RM_MOD_BUILD_1 step 2. Wires the THREE genuine canon Star
-  Wars residents RM_TheScald.xml (src/RimMandrake/TerminalBiomes) does NOT
+  Wars resident RM_TheScald.xml (src/RimMandrake/TerminalBiomes) does NOT
   carry — item §3/§6/criteria: "the Star Wars fauna ride a Utinni patch
   rather than the RimMandrake def." Values are the exact commonalities
   RUT_TheScald.xml (now frozen) shipped for these same rows — nothing
@@ -15,6 +15,9 @@
   (verified against Wookieepedia's search API: no canon hit) — it now ships
   inline in RM_TheScald.xml as `RM_ElderSando` (RM_SeaBeasts_Invented.xml),
   no MayRequire, so a franchise-free install still gets it.
+
+  NABOO_FISH_TO_TWILIGHT_1 (2026-10-03): RSW_Faa and RSW_Mee (0.5 each) were removed from this
+  patch on the owner's word and now live in WildAnimals_TwilightSea.xml.
 
   ⚠️ No <li>: BiomeAnimalRecord's custom loader reads the node NAME as the
   animal and the node TEXT as the commonality — an <li> wrapper would
@@ -27,8 +30,6 @@
     <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/wildAnimals</xpath>
     <value>
       <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
-      <RSW_Faa MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Faa>
-      <RSW_Mee MayRequire="mandrake.rsw.swbestiary">0.5</RSW_Mee>
     </value>
   </Operation>
 

@@ -157,6 +157,56 @@ def repo_checks(t):
                 "test def was renamed/removed" % referencing)
 
 
+def naboo_fish_checks():
+    """NABOO_FISH_TO_TWILIGHT_1 (offline, XML parsed): mee/faa are off the Scald and on the Twilight
+    Sea as floor residents (wildAnimals node names, no <li>) with their catches in fishTypes.
+    Live spawn/catch is UNMEASURED here (needs the seabed floor generator; SEABED_PER_SEA_FLOORS_1)."""
+    import xml.etree.ElementTree as ET
+    bad = []
+    pdir = os.path.join(_MOD_DIR, "Patches")
+
+    def ops(fn):
+        return ET.parse(os.path.join(pdir, fn)).getroot().findall("Operation")
+
+    def added(fn, biome, sub):
+        out = []
+        for op in ops(fn):
+            for o in [op] + list(op.iter("match")):
+                xp = o.findtext("xpath") or ""
+                if 'defName="%s"]/%s' % (biome, sub) in xp.replace("Defs/", "/Defs/", 1) or xp.endswith('"%s"]/%s' % (biome, sub)):
+                    v = o.find("value")
+                    if v is not None:
+                        out += [(c.tag, c.text) for c in v]
+        return out
+
+    scald = [t for t, _ in added("WildAnimals_TheScald.xml", "RM_TheScald", "wildAnimals")]
+    if "RSW_SandoAquaMonster" not in scald:
+        bad.append("sanity probe: Scald patch lost RSW_SandoAquaMonster (reader broken or row cut)")
+    for n in ("RSW_Mee", "RSW_Faa"):
+        if n in scald:
+            bad.append("%s still on the Scald floor" % n)
+    tw = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "wildAnimals"))
+    for n in ("RSW_Mee", "RSW_Faa"):
+        if n not in tw:
+            bad.append("%s missing from RM_TwilightSea wildAnimals" % n)
+    if any(c.tag == "li" for op in ops("WildAnimals_TwilightSea.xml") for c in op.iter("li")):
+        bad.append("<li> in WildAnimals_TwilightSea.xml (discards the entry)")
+    c1 = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "fishTypes/saltwater_Common"))
+    c2 = dict(added("WildAnimals_TwilightSea.xml", "RM_TwilightSea", "fishTypes/saltwater_Uncommon"))
+    if "RSW_MeeCatch" not in c1:
+        bad.append("RSW_MeeCatch not added to Twilight saltwater_Common")
+    if "RSW_FaaCatch" not in c2:
+        bad.append("RSW_FaaCatch not added to Twilight saltwater_Uncommon")
+    return bad
+
+
+@suite.chain("naboo_fish_in_twilight")
+def naboo_fish_in_twilight(t):
+    bad = naboo_fish_checks()
+    if bad:
+        raise ExpectationFailed("; ".join(bad))
+
+
 @suite.chain("twinkle_flora_spike_survives_ticking")
 def twinkle_flora_spike_survives_ticking(t):
     """The one live-drivable mechanism (module docstring). Spawns the
