@@ -1,0 +1,544 @@
+{
+ "cards": [
+  {
+   "title": "Long Shade: how shade gear is learned",
+   "item": "SHADECRAFT_LESSONS_DESIGN_1",
+   "context_md": "Long Shade colonists learn to make shade gear (parasol, shade tent, sun shield) by studying the biome rather than by plain research. You also ruled the shade gear MUST work on every extreme-heat biome. Every lesson named so far exists only in the Long Shade, so these two rulings collide. Answers here become the build spec.",
+   "questions": [
+    {
+     "question": "Every shade-gear lesson can only be learned in the Long Shade, but the gear must also serve other hot biomes. A colony that never visits the Long Shade could never make the sun shield its own desert needs. How should that be resolved?",
+     "header": "Gear access",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Lessons speed it up (Recommended)",
+       "description": "Plain research always unlocks the gear; Long Shade study makes it faster and cheaper. Every hot-biome colony gets its gear, the Long Shade still feels special. Costs the 'you must learn it there' flavour. Why: keeps your must-work-everywhere ruling with the least new content."
+      },
+      {
+       "label": "Each hot biome teaches its own",
+       "description": "Every extreme-heat biome gets its own study source for the same gear. Richest, every biome has a lesson to find. Costs new content in each hot biome (several sources to design and art), and slows shade gear until they exist."
+      },
+      {
+       "label": "Lock only for Long Shade starts",
+       "description": "The study gate applies only to colonies that begin in the Long Shade; everyone else researches normally. Cheap and keeps the gate where it fits. Costs a start-dependent rule players may find arbitrary."
+      },
+      {
+       "label": "Keep the hard lock",
+       "description": "Gear can only be learned in the Long Shade; other colonies must travel there. Strongest sense of place. Costs: directly contradicts your earlier ruling that the gear must work on every extreme-heat biome."
+      }
+     ]
+    },
+    {
+     "question": "There are three lessons (studying the dew-fringe rim, a herd crossing, and mirrak hide) and three gear pieces (parasol, shade tent, sun shield). How should lessons map to gear?",
+     "header": "Lesson map",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "One lesson, one piece",
+       "description": "Each lesson unlocks one named piece in order (parasol, tent, shield). Easiest to read and build. Costs: the order is arbitrary, nothing says why mirrak hide teaches a sun shield."
+      },
+      {
+       "label": "Lessons teach ideas (Recommended)",
+       "description": "Each lesson teaches an idea (keeping dew off, portable shade, deeper shade cloth) and pieces need a combination of ideas. Feels like real learning. Why: matches how the design notes framed them. Costs a slightly more complex research tree."
+      },
+      {
+       "label": "Any N lessons unlock the set",
+       "description": "A counter: learn any three lessons and all shade gear opens. Simplest to build, order-free. Costs any link between a specific lesson and a specific piece."
+      }
+     ]
+    },
+    {
+     "question": "One lesson is 'studying a herd crossing' (animals dashing from shade to shade). What should a colonist actually do to learn it?",
+     "header": "Herd study",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Watch it happen nearby (Recommended)",
+       "description": "A colonist who is within sight when a herd dashes between patches gains progress automatically. No new job, it happens during normal play. Why: cheapest and rewards being out in the biome. Costs: players may not notice it happening."
+      },
+      {
+       "label": "A job at a patch rim",
+       "description": "Assign a colonist to sit at a shade patch rim and observe, like a research job in the field. Clear and controllable. Costs a new job and colonists exposed to heat and predators."
+      },
+      {
+       "label": "Count crossings seen",
+       "description": "The colony tallies crossings seen by anyone; at a threshold the lesson is learned, with a letter. Simple and visible. Costs the sense that any one colonist learned something."
+      }
+     ]
+    },
+    {
+     "question": "Should the learning progress show up as an ordinary research project, or as its own knowledge tracker with letters?",
+     "header": "Progress UI",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Hidden research project (Recommended)",
+       "description": "A normal research project that appears once a lesson is learned, same pattern already built for the Forge's spunstone. Familiar screen, cheap. Why: reuses a working pattern. Costs less storytelling."
+      },
+      {
+       "label": "Its own tracker with letters",
+       "description": "A colony-wide knowledge log that sends a letter for each lesson learned. More flavour and story. Costs a new system and a new screen to build and test."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Long Shade: lee-side middens",
+   "item": "LONGSHADE_MIDDENS_DESIGN_1",
+   "context_md": "A midden is a heap of what animals leave in the shade behind the big rocks: bones, cracked water vessels, dung, shed scales and wind-sorted scrap. A clean patch with no midden is meant to be a warning that something lives there. The vrekka is a proposed small creature that piles the middens up. Answers become the build spec.",
+   "questions": [
+    {
+     "question": "What is a midden in game?",
+     "header": "Midden form",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Searchable heap, searched once",
+       "description": "A building like an ancient crate: open it, get loot, done. Simplest and familiar. Costs: no reason to come back."
+      },
+      {
+       "label": "Heap that regrows (Recommended)",
+       "description": "A heap that refills over weeks and can be searched again. Gives a reason to return and ties to the vrekka if it is in. Why: a living biome feature beats a one-off crate. Costs a timer and a little C#."
+      },
+      {
+       "label": "Ground layer you dig or clean",
+       "description": "A filth or terrain layer colonists clear for yields. Reads as ground, not an object. Costs: hard to see and fiddly to click."
+      }
+     ]
+    },
+    {
+     "question": "What does searching a midden yield?",
+     "header": "Yield",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Vanilla items only",
+       "description": "Scrap steel, leather scraps, the odd component. Zero new items. Costs: vanilla has no bone item, so the 'bones' flavour is lost."
+      },
+      {
+       "label": "Vanilla plus a sample item (Recommended)",
+       "description": "Ordinary loot plus a new 'biological sample' that feeds shade-gear study. Why: makes middens matter to the learning system. Costs one new item with art."
+      },
+      {
+       "label": "New biome items",
+       "description": "Bones, shed scales and broken vessels as their own items with uses. Most flavour. Costs several new items, art and uses for each."
+      }
+     ]
+    },
+    {
+     "question": "A patch with no midden at all is meant to warn the player that something dangerous lives there. How does the player see that warning?",
+     "header": "Clean tell",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Visible on the ground (Recommended)",
+       "description": "The clean patch simply looks different: no heaps, no dung, bare ground in a busy area. Why: players learn it by looking, no UI. Costs: some players will never notice."
+      },
+      {
+       "label": "Inspect line on the patch",
+       "description": "Selecting the ground shows a line such as 'Nothing rests here.' Reliable. Costs: only found by players who click."
+      },
+      {
+       "label": "Message when a colonist passes",
+       "description": "A colonist walking by triggers 'Something keeps this shade empty.' Hard to miss. Costs: can feel like a nag and gives the secret away."
+      }
+     ]
+    },
+    {
+     "question": "The vrekka is a small scavenger that piles up the middens. Is it in?",
+     "header": "Vrekka",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "In, and it builds the heaps (Recommended)",
+       "description": "Its heaps ARE the visible middens; kill or drive them off and middens stop regrowing. Why: a creature behind the feature makes it read as ecology. Costs a creature behaviour to build and test."
+      },
+      {
+       "label": "In, as plain wildlife",
+       "description": "A scavenger that lives near middens but does not make them. Cheaper. Costs the link between animal and heap."
+      },
+      {
+       "label": "Out",
+       "description": "Middens just exist. Cheapest. Costs a living reason for them."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Long Shade: the shade whale and the seven deferred ideas",
+   "item": "GLOOMCAST_WAKE_RIDERS_1, LONGSHADE_SHADE_EXTRAS_1",
+   "context_md": "The gloomcast is the colossal 'shade whale' whose moving shadow crosses the Long Shade; the tiny pirrik already ride it. Smaller grazers can be set to follow its shadow on purpose; otherwise they only shelter if it happens to pass. Separately, seven small ideas you deferred are listed at D:\\Luke\\dev\\RimMandrake\\Transient\\longshade_deferred_ideas_2026-10-03.md.",
+   "questions": [
+    {
+     "question": "The tebbra is a quick little close-herd grazer, the gennok a slow strong endurer, the sollak a tower-shouldered giant that makes its own shade. Which of them should actively follow the shade whale's shadow?",
+     "header": "Followers",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Tebbra only (Recommended)",
+       "description": "The small herd grazer rides the shadow; the others shelter only if it passes. Why: the clearest picture, a little herd scurrying under a moving giant. Costs: one follower can look thin."
+      },
+      {
+       "label": "Tebbra and gennok",
+       "description": "Two followers, fast and slow, a fuller procession. Costs: the slow gennok may lag and look broken following a fast shadow."
+      },
+      {
+       "label": "All three",
+       "description": "Every grazer follows. Busiest spectacle. Costs: the sollak is a giant that casts its own shade, so following contradicts its description."
+      },
+      {
+       "label": "None follow",
+       "description": "Grazers only shelter when it passes by chance. Zero work. Costs the signature image."
+      }
+     ]
+    },
+    {
+     "question": "The shade whale's dung already lies on the ground for about 50 days. Should its feeding leave a separate scar too?",
+     "header": "Feed scar",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Dung is enough (Recommended)",
+       "description": "No new mark. Why: the dung already tells players it passed. Costs: nothing shows WHERE it fed versus where it walked."
+      },
+      {
+       "label": "Churned-sand ground",
+       "description": "Feeding leaves a churned terrain patch that fades. Readable track on the map. Costs a new terrain with art."
+      },
+      {
+       "label": "Separate filth with own art",
+       "description": "A distinct feeding mark beside the dung. Clear. Costs new art and visual clutter."
+      }
+     ]
+    },
+    {
+     "question": "How do you want to rule the seven deferred Long Shade ideas (empty patch, tollok ticks, stampede for your roof, lure awning, mirror field, harrok, the crawler that comes back)?",
+     "header": "Seven ideas",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Review sheet, keep or cut each (Recommended)",
+       "description": "A one-page sheet with the seven rows; you click keep or cut. Why: per-row choices read faster on a sheet than a card. Costs one short sitting."
+      },
+      {
+       "label": "Park until Long Shade ships",
+       "description": "Leave them until the current Long Shade build is done and played. No time spent now. Costs: they sit open longer."
+      },
+      {
+       "label": "Drop all seven",
+       "description": "Close them; the biome is rich enough. Clears the list. Costs: loses the stampede and the mirror field, the two strongest."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Cauldron: vexxith, the acid-proof animal plate",
+   "item": "VEXXITH_CLOSED_LOOP_BUILD_1",
+   "context_md": "Vexxith is the plate sheared from a tamed vexxiss in the Cauldron: acid beads off it, fire cannot warm it. The design says things made of it ignore acid, it makes poor weapons and walls, and it has a few special uses. Today it is just a strong material (hit points x1.6), which contradicts 'poor walls'.",
+   "questions": [
+    {
+     "question": "Making vexxith things ignore acid needs a game-code patch, and the Cauldron mod is deliberately built without one. Where should that code live?",
+     "header": "Acid hook",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Shared code library (Recommended)",
+       "description": "Put the patch in a shared library other mods can reuse for any material immunity. Why: keeps the Cauldron clean and the hook reusable. Costs a cross-mod dependency."
+      },
+      {
+       "label": "Add code patching to Cauldron",
+       "description": "Simplest wiring, all in one mod. Costs: the Cauldron loses its no-patch purity and becomes riskier to update."
+      },
+      {
+       "label": "Drop acid immunity",
+       "description": "Acid-proof stays flavour text only. No code. Costs the material's main reason to exist."
+      }
+     ]
+    },
+    {
+     "question": "'Poor for weapons and walls' contradicts today's strong material. How should vexxith be restricted?",
+     "header": "Poor walls",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Only special items accept it (Recommended)",
+       "description": "Vexxith gets its own material category, so only the purpose-built vexxith items can use it; no walls or weapons at all. Why: makes it a specialist material, which fits the design. Costs: it can no longer be used for ordinary furniture."
+      },
+      {
+       "label": "Weaker stats",
+       "description": "Keep it usable anywhere but make walls and weapons from it weak. Flexible. Costs: players may still misuse it and it reads as a bad material."
+      },
+      {
+       "label": "Leave it strong",
+       "description": "Drop the 'poor walls' line. No work. Costs: it becomes a best-in-class wall material by accident."
+      }
+     ]
+    },
+    {
+     "question": "Filter vessels and vent-cap liners wait on other Cauldron machines; a vexxith door is already fireproof as an ordinary door; ship 'scab-scrapers' sit next to the scab item you declined. Which vexxith-only items should exist?",
+     "header": "Recipes",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Vessels and liners only (Recommended)",
+       "description": "Build the two that feed the Cauldron's machines when those machines land. Why: each has a job in the loop. Costs: no door, no ship item."
+      },
+      {
+       "label": "Add a vexxith door",
+       "description": "Also a distinct plate-only door. Costs a near-duplicate of the fireproof ordinary door."
+      },
+      {
+       "label": "Add the scab-scrapers too",
+       "description": "Include the ship item. Costs: you already declined its neighbour, so it may be unwanted."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The Forge: spunstone bonding",
+   "item": "FORGE_SPUNSTONE_SOURCES_1",
+   "context_md": "In the Forge, colonists study mature floatstone gardens; enough study reveals the 'spunstone bonding' research, which unlocks a keel brace for the gravship. The spec also promised two more sources and unlocks that were never defined.",
+   "questions": [
+    {
+     "question": "The spec says foundry salvage caches (a campaign-only loot pile with no art yet) are a second study source. Should they be?",
+     "header": "Salvage",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Yes, campaign only (Recommended)",
+       "description": "Campaign players can study the salvage too; the free mod keeps gardens only. Why: matches the spec and costs one small patch. Costs: needs the salvage cache's art first to look right."
+      },
+      {
+       "label": "No, gardens only",
+       "description": "One source, simpler. Costs the spec's second route."
+      },
+      {
+       "label": "Yes, and give it art now",
+       "description": "Wire it and queue the cache's missing art together. Complete. Costs an art job."
+      }
+     ]
+    },
+    {
+     "question": "The spec says spunstone bonding also unlocks 'high-speed doors and advanced structural parts', but nothing defines them. What should it unlock?",
+     "header": "Unlocks",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Keel brace only (Recommended)",
+       "description": "Drop the vague extras. Why: the brace is built and enough; no invented items. Costs: a thinner research reward."
+      },
+      {
+       "label": "Add a floatstone door",
+       "description": "A light, fast door made of floatstone. One new building. Costs art and balancing."
+      },
+      {
+       "label": "Door plus structural parts",
+       "description": "Also a light floatstone wall or beam for the ship. Richest. Costs several new defs and art."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Non-Star-Wars people types",
+   "item": "VANILLA_XENOTYPE_REMOVAL_ASSESSMENT_1",
+   "context_md": "You ruled only Star Wars species belong. Twelve non-Star-Wars human variants still appear: Dirtmole, Genie, Highmate, Hussar, Impid, Neanderthal, Pigskin, Sanguophage (vampires), Starjack, Saurid, Waster, Yttakin. Plain baseline humans stay (removing them removes ordinary humanity). Most ride generic faction lists, so they can be stopped from appearing with one patch.",
+   "questions": [
+    {
+     "question": "How should the twelve non-Star-Wars human variants be removed?",
+     "header": "Removal",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Stop them spawning (Recommended)",
+       "description": "Patch them out of every faction list: no player ever meets one, nothing breaks, reversible in one file. Why: everything a cut buys, without the risk. Costs: they still exist in dev tools."
+      },
+      {
+       "label": "Cut them entirely",
+       "description": "Remove the definitions. Cleanest list. Costs: irreversible, can break saves and leave factions without valid pawns."
+      },
+      {
+       "label": "Stop spawning, except vampires",
+       "description": "As recommended, but keep Sanguophages and reflavour them as a dark-side longevity line. Keeps a built vampire system. Costs a design pass on the Sith tie-in."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Duplicate creatures",
+   "item": "STARWARS_DONOR_PORT_LABEL_COLLISIONS_1, WYYYSCHOKK_IDENTITY_COLLISION_1",
+   "context_md": "We copied a borrowed Star Wars animal mod's creatures into our own mod. Our own biomes now use only our copies. But while the borrowed mod is still switched on, it adds ITS originals to other biomes, so about 60 animals (bantha, ronto, krayt dragon...) exist twice under the same name. Separately, the Webwork's own spider creature now wears the wyyyschokk name, while our copy of the original Star Wars wyyyschokk (tameable, egg-laying) still exists.",
+   "questions": [
+    {
+     "question": "About 60 animals exist twice while the borrowed animal mod is still on. How should the doubles be ended?",
+     "header": "Doubles",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Ends when that mod retires (Recommended)",
+       "description": "Do nothing now; the doubles live only in biomes that disappear when the planet is repainted with ours, and vanish when the borrowed mod is switched off. Why: zero work, and the real fix is already planned. Costs: duplicates show in dev tools until then."
+      },
+      {
+       "label": "Patch the originals out now",
+       "description": "One patch strips the borrowed mod's originals from every biome. Clean today. Costs a broad patch to maintain and some risk of stripping a creature with no copy yet."
+      },
+      {
+       "label": "Switch that mod off now",
+       "description": "Retire it immediately. Cleanest. Costs: three plants still have no copy of ours, and the current save holds its creatures."
+      }
+     ]
+    },
+    {
+     "question": "The Webwork's spider-creature now wears the wyyyschokk name and art. Our separate copy of the canon wyyyschokk (tameable, lays eggs, lives in jungles we do not have) also still exists. What happens to the copy?",
+     "header": "Wyyyschokk",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Retire the copy (Recommended)",
+       "description": "The Webwork creature is THE wyyyschokk; remove the copy and repoint its two users (a trophy recipe, a tolerance patch). Why: one creature, one name. Costs a small cleanup and losing a tameable variant."
+      },
+      {
+       "label": "Rename the copy",
+       "description": "Keep it as a different jungle creature under a new name you pick. Keeps the content. Costs a naming call and a creature with no home on our world."
+      },
+      {
+       "label": "Leave both",
+       "description": "It never spawns on our world anyway. Zero work. Costs two creatures with one name in the files."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "The Leaning Scrub's groundcover name",
+   "item": "ARIDSHRUBLAND_SHIPPING_NAMES_1",
+   "context_md": "The Leaning Scrub's signature plant is knee-high silver-green groundcover that covers the whole biome. It ships as 'the fuzz'. You ruled the biome's other names (thunderstep, yanker, venomvine, the Stall, the Gale) and held this one. Since then several creatures and plants were named after it: fuzzrunner, fuzzviper, whipfuzz, tanglefuzz.",
+   "questions": [
+    {
+     "question": "What should the Leaning Scrub's groundcover be called?",
+     "header": "Fuzz name",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Keep 'the fuzz' (Recommended)",
+       "description": "Already in every description, and four other names are built on it. Why: renaming now breaks a family of names. Costs: some may find it too casual."
+      },
+      {
+       "label": "Silverfuzz",
+       "description": "Keeps the family, adds the signature colour. Costs a label change and descriptions to touch."
+      },
+      {
+       "label": "Combgrass",
+       "description": "After the way the wind combs it one way forever. Costs: breaks the link to fuzzrunner, fuzzviper and the rest."
+      },
+      {
+       "label": "Kneegrass",
+       "description": "Plain, says its height. Costs the same break with the fuzz-family names."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Ancient machines: what is still open",
+   "item": "RAKATAN_ARCHOTECH_MACHINES_1",
+   "context_md": "You ruled that ancient (Rakatan) machines never stop working, they sag and keep going, that archotech IS Rakatan tech, and that relics are sacred loot the ship heals over time. A few smaller questions were left open in the spec.",
+   "questions": [
+    {
+     "question": "Should a wrecked ancient machine be destroyable at all?",
+     "header": "Destroyable",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "No, it only degrades (Recommended)",
+       "description": "Damage drops it to its lowest grade but never destroys it. Why: it is the trait itself, it survives. Costs: an unkillable object raiders and fires cannot remove."
+      },
+      {
+       "label": "Yes, like any building",
+       "description": "Can be destroyed outright. Simplest. Costs the core trait."
+      },
+      {
+       "label": "Only by deliberate teardown",
+       "description": "Damage cannot kill it; only a colonist deconstructing it removes it. Survives, still removable. Costs a special rule."
+      }
+     ]
+    },
+    {
+     "question": "Relics are worth a lot. Should that worth count toward colony wealth, which makes raids bigger?",
+     "header": "Relic worth",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Count it",
+       "description": "Honest: treasure draws raiders. Costs: the ship's slow self-repair raises raid size with no player choice."
+      },
+      {
+       "label": "Do not count it (Recommended)",
+       "description": "Relics are sacred and unsellable, so they add no raid pressure. Why: avoids punishing a hoard that grows by itself. Costs: a large source of value raiders ignore."
+      },
+      {
+       "label": "Count it at a fraction",
+       "description": "Some pressure, not all. Costs a tuning number to get right."
+      }
+     ]
+    },
+    {
+     "question": "Where are relics found?",
+     "header": "Relic source",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Ancient ruin sites (Recommended)",
+       "description": "Map sites and ancient complexes hold them, found by exploring. Why: rewards travel and fits wreck lore. Costs site content to author."
+      },
+      {
+       "label": "Quest rewards",
+       "description": "Given by quests. Controllable pacing. Costs quest authoring."
+      },
+      {
+       "label": "Traders, rarely",
+       "description": "Bought, at great price. Cheap to build. Costs: clashes with relics being sacred and unsellable."
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "answered": [
+  {
+   "item": "XENOTYPE_CANON_CORRECTION_1",
+   "where": "Owner rulings 2026-09-15/17/20 recorded in infrastructure/state/items/XENOTYPE_CANON_CORRECTION_1.md (fix clear-cut now, cosmetics gated and asked case by case, canon gaps borrow nearest relative, aptitudes confirmed one by one at 0bab8ad74, Sith castes kept, Gungan stays); remaining work is head-shape art and a grid review, so the item stays open with needs set to offline"
+  },
+  {
+   "item": "SPECIES_TRAITS_OVER_APTITUDES_1",
+   "where": "Owner ruling 2026-09-20 in the item's '## RULED' section: traits replace surrogate aptitudes; a gene when it applies to all of a race, a trait when to most; remaining work is BENCH building the qualifying-species list, so the item stays open with needs set to offline"
+  }
+ ],
+ "hold": [
+  {
+   "item": "NORTH_STAR_ATMOSPHERIC_TBD_1",
+   "why": "Owner 2026-09-17: 'file it as TBD ... until we can play with it live first'; reopens only after live play"
+  },
+  {
+   "item": "WORLD_REMAKE_FINAL_STEP_1",
+   "why": "Owner 2026-09-20: the remake is the very last act before the first play session; nothing to do until then"
+  },
+  {
+   "item": "GREYSEA_USELESS_ARTIFACT_PLOT_1",
+   "why": "Ruled by card 2026-09-27 (Q15): build only when a plot pass names the artifact's significance"
+  },
+  {
+   "item": "WEBWORK_EGG_WEAPON_VERSION_1",
+   "why": "Target v2; card ruling 7 (webwork_egg_blackmarket_2026-09-24.md:317) defers the farm-ban re-answer to when this future version is built"
+  },
+  {
+   "item": "UNSUBSTANTIATED_SPECIES_ABILITIES_1",
+   "why": "Not owner-ready: the reverse audit is BENCH work and has not run; his keep/cut comes after, as a review sheet. needs set to offline"
+  }
+ ]
+}
