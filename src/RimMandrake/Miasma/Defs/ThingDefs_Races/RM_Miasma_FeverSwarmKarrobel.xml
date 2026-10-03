@@ -204,7 +204,7 @@
       <soundEating>Insectoid_Eat</soundEating>
     </race>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas" MayRequire="mandrake.rm.environmentalhazards">
+      <li Class="RimMandrake.EnvironmentalHazards.CompProperties_GatherableGas" MayRequire="mandrake.rm.biomes">
         <gatherIntervalDays>3</gatherIntervalDays>
         <gatherAmount>8</gatherAmount>
         <gatherDef>RM_DeltaLoam</gatherDef>

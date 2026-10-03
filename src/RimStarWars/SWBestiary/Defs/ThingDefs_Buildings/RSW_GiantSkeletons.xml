@@ -13,7 +13,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.stillsand">
+  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_KraytSkeleton</defName>
     <label>krayt dragon skeleton</label>
     <description>The sun-bleached skeleton of a krayt dragon, a long arc of vertebrae and ribs like the frame of a beached ship, the sand drifted up one flank. Fresh krayt bones mean krayts come here. The skull lies beside it, and a careful crew can take it whole; now and then the gizzard stones still hold a pearl.</description>
@@ -40,7 +40,7 @@
     </modExtensions>
   </ThingDef>
 
-  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.stillsand">
+  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_GreaterKraytSkeleton</defName>
     <label>greater krayt dragon skeleton</label>
     <description>The old-ivory skeleton of a greater krayt dragon, longer than anything still walking. The bones are the one vertical for kilometres. Its gizzard stones are more likely than not to hold a pearl.</description>
@@ -67,7 +67,7 @@
     </modExtensions>
   </ThingDef>
 
-  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.stillsand">
+  <ThingDef ParentName="RM_GiantSkeletonBase" MayRequire="mandrake.rm.biomes">
     <defName>RSW_WarWyrmSkeleton</defName>
     <label>war wyrm skeleton</label>
     <description>The grey bones of a war wyrm, coiled where it died, the ribs sprung outward like a broken cage.</description>

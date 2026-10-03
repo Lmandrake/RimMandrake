@@ -98,7 +98,7 @@
       <value>
         <wildAnimals>
           <AA_Murkling MayRequire="sarg.alphaanimals">0.2</AA_Murkling>  <!-- murkling - the-Spenders, adjust-keep -->
-          <RM_Ommok MayRequire="mandrake.rm.longshade">0.1</RM_Ommok>  <!-- sand squid - the-Sealed, adjust-keep -->
+          <RM_Ommok MayRequire="mandrake.rm.biomes">0.1</RM_Ommok>  <!-- sand squid - the-Sealed, adjust-keep -->
         </wildAnimals>
       </value>
     </match>
