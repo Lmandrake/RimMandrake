@@ -58,6 +58,7 @@
     <Compile Include="FubbumHunting.cs" />
     <Compile Include="GlurroSalve.cs" />
     <Compile Include="PitSolvent.cs" />
+    <Compile Include="FarmRuins.cs" />
   </ItemGroup>
 
   <ItemGroup>

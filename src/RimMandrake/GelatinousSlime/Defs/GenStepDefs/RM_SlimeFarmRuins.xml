@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  GELATINOUSSLIME_FARM_RUINS_1. Order 752: after the visitor seed (751), so
+  it never steps on animals; terrain is already laid. Self-gates on biome and
+  on SlimeSettings.farmRuinsEnabled (worldgen-affecting toggle).
+-->
+<Defs>
+  <GenStepDef>
+    <defName>RM_SlimeFarmRuins</defName>
+    <order>752</order>
+    <genStep Class="RimMandrake.GelatinousSlime.GenStep_SlimeFarmRuins" />
+  </GenStepDef>
+</Defs>

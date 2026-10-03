@@ -21,7 +21,7 @@ DEFAULTS = {"rarityFactor": "1", "flavorEntryRecorded": "True", "flavorReadMarks
             "preferHigherPriorityArchive": "True", "titanoslimeReversible": "False",
             "titanoslimeMaxStage": "5", "titanoslimeSheds": "True",
             "slimificationEnabled": "True", "slimificationClockDays": "7", "fieldConversionEnabled": "True",
-            "fieldConversionRate": "1", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True", "glurroSalve": "True", "pitSolvent": "True"}
+            "fieldConversionRate": "1", "farmRuinsEnabled": "True", "visitorsEnabled": "True", "visitorArrivalRate": "1", "gappoChannels": "True", "fubbumHunts": "True", "dwommoFlies": "True", "glurroSalve": "True", "pitSolvent": "True"}
 TITAN_STAGES = [0, 0, 1, 2, 1, 0, 2, 1, 0, 0, 1, 2, 0, 1, 0, 2]
 
 
@@ -119,7 +119,7 @@ class SlimeSim(object):
             typ, name = w.split("/", 1)
             ok = w in self.defs or w in {"BiomeDef/Desert", "BiomeDef/ExtremeDesert", "BiomeDef/AridShrubland",
                                          "BiomeDef/Ocean", "BiomeDef/TemperateForest",
-                                         "MapGeneratorDef/Base_Player"} or typ == "GeneDef" and name in self.genes()
+                                         "MapGeneratorDef/Base_Player", "ThingDef/Fence", "ThingDef/Wall"} or typ == "GeneDef" and name in self.genes()
             if ("nodef:" + w) in self.f:
                 ok = False
             if not ok:
@@ -150,7 +150,7 @@ class SlimeSim(object):
             if typ == "ThingDef" and el is not None and el.find("statBases/MaxFlightTime") is not None:
                 fl["statBases"] = {"MaxFlightTime": 0 if "noflight" in self.f else float(el.findtext("statBases/MaxFlightTime"))}
             if typ == "MapGeneratorDef":
-                fl["genSteps"] = ["TerrainGen"] + ([] if "nostep" in self.f else ["RM_SlimeVisitorSeed"])
+                fl["genSteps"] = ["TerrainGen"] + ([] if "nostep" in self.f else ["RM_SlimeVisitorSeed"]) + ([] if "nofarmstep" in self.f else ["RM_SlimeFarmRuins"])
             if typ.endswith("GeneArchiveDef"):
                 tg, rg = self.archive()
                 fl.update(priority=0, targetGenes=tg, riderGenes=rg)
