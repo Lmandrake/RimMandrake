@@ -2451,3 +2451,7 @@
 {"seat":"FOUNDRY","event":"close","id":"UNFINISHED_LINE_SPINE_COUNT_1","sha":"63d5ed55728d","ts":"2026-10-03T19:17:28Z","tsn":1791055048264984437}
 {"seat":"FOUNDRY","event":"close","id":"DROID_MASS_PRODUCTION_QUEST_CHAIN_1","sha":"63d5ed55728d","ts":"2026-10-03T19:17:39Z","tsn":1791055059198949263}
 {"seat":"FOUNDRY","event":"note","id":"DROID_MASS_PRODUCTION_QUEST_CHAIN_1","text":"Split per beat at 63d5ed557: UNFINISHED_LINE_SPINE_COUNT_1 (built+closed), UNFINISHED_LINE_ENVOY_BEAT_1, _CORES_BEAT_1, _TITHE_BEAT_1, _FIRSTLIGHT_BEAT_1, UNFINISHED_LINE_WORLD_FOUNDRY_1 (open, FOUNDRY). Envoy item carries an open question on site B vs Q1=A.","ts":"2026-10-03T19:17:39Z","tsn":1791055059760058624}
+{"seat":"FOUNDRY","event":"claim","id":"CANAL_BOTTOM_SPIKES_1","ts":"2026-10-03T19:19:44Z","tsn":1791055184702881760}
+{"seat":"FOUNDRY","event":"start","id":"CANAL_BOTTOM_SPIKES_1","ts":"2026-10-03T19:19:45Z","tsn":1791055185205742672}
+{"seat":"FOUNDRY","event":"close","id":"CANAL_BOTTOM_SPIKES_1","sha":"05b688a8149d","ts":"2026-10-03T19:24:11Z","tsn":1791055451954946781}
+{"seat":"FOUNDRY","event":"file","id":"SPIKE_DAMAGE_NUMBERS_RULING_1","title":"Pit spike damage numbers for the owner's word: built PROPOSED 3 Stab hits totalling 40 x BodySize (human ~13/hit = 40, muffalo ~96, thrumbo ~160), armour applies; cost 30 wood; old pit was one flat 25 Stab","kind":"decision","target":"v1","needs":"owner","caused_by":"CANAL_BOTTOM_SPIKES_1","for":"BENCH","ts":"2026-10-03T19:24:12Z","tsn":1791055452454543940}
