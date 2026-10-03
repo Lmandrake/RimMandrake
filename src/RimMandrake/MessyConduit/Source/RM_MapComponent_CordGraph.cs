@@ -347,14 +347,15 @@ namespace RimMandrake.MessyConduit
                     foreach (CordStrand s in p.Strands)
                     {
                         if (s.WhipA <= 0 && s.WhipB <= 0) continue;
-                        foreach (bool atStart in new[] { true, false })
+                        for (int side = 0; side < 2; side++)
                         {
+                            bool atStart = side == 0;
                             int cnt = atStart ? s.WhipA : s.WhipB;
                             if (cnt <= 0 || WhipDraws >= cap) continue;
+                            V2 tip = atStart ? s.Pts[cnt - 1] : s.Pts[s.Pts.Count - cnt];   // outer end of the tail; test it before allocating
+                            if (!view.Contains(CordWorldAdapter.I(tip.Floor))) continue;
                             List<V2> tail = atStart ? s.Pts.GetRange(0, cnt) : s.Pts.GetRange(s.Pts.Count - cnt, cnt);
                             if (atStart) tail.Reverse();                       // tail[0] = the joint
-                            V2 tip = tail[tail.Count - 1];
-                            if (!view.Contains(CordWorldAdapter.I(tip.Floor))) continue;
                             ulong seed = CordRng.Hash("whip", p.Key, s.S0, atStart);
                             List<V2> bent = CordMotion.Whip(tail, now, seed, 0.12);
                             SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, bent, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
@@ -534,29 +535,26 @@ namespace RimMandrake.MessyConduit
         }
     }
 
-    /// <summary>Marks the map's cord graph stale when a section carrying one of our layer's change flags is
-    /// left dirty off screen (TryUpdate regenerates only sections overlapping the view; see StaleOffscreen).</summary>
-    [HarmonyLib.HarmonyPatch(typeof(Section), nameof(Section.TryUpdate))]
-    internal static class Patch_Section_TryUpdate_MarkStale
+    /// <summary>Marks the map's cord graph stale on every mesh-dirty event for our layer's flags that lands outside the
+    /// view (TryUpdate regenerates only sections overlapping the view; see StaleOffscreen). Hooking the dirty event
+    /// itself, not Section.dirtyFlags, catches the 2nd+ change to a section whose bits are already set, keeps one
+    /// rebuild per dirty event, and holds no per-section state (nothing to leak after a map is discarded).</summary>
+    [HarmonyLib.HarmonyPatch(typeof(MapDrawer), nameof(MapDrawer.MapMeshDirty), new[] { typeof(IntVec3), typeof(ulong), typeof(bool), typeof(bool) })]
+    internal static class Patch_MapDrawer_MapMeshDirty_MarkStale
     {
         private static ulong mask;
-        // mask bits already reported per off-screen section: vanilla leaves them set until the section is viewed,
-        // so only NEWLY set bits mark the graph stale (one rebuild per dirty event, not one per frame).
-        private static readonly System.Collections.Generic.Dictionary<Section, ulong> seen = new System.Collections.Generic.Dictionary<Section, ulong>();
 
-        private static void Prefix(Section __instance, CellRect view)
+        private static void Prefix(MapDrawer __instance, IntVec3 loc, ulong dirtyFlags)
         {
             if (!MessyConduitSettings.enabled) return;
-            if (__instance.dirtyFlags == 0UL) { if (seen.Count > 0) seen.Remove(__instance); return; }
             if (mask == 0UL)
                 mask = (ulong)MapMeshFlagDefOf.Buildings | (ulong)MapMeshFlagDefOf.PowerGrid | (ulong)MapMeshFlagDefOf.Terrain |
-                       (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MapMeshFlagDefOf.Roofs | (ulong)MessyConduitDefOf.RM_MessyCords;
-            ulong m = __instance.dirtyFlags & mask;
-            if (m == 0UL || __instance.CellRect.Overlaps(view)) { if (seen.Count > 0) seen.Remove(__instance); return; }
-            seen.TryGetValue(__instance, out ulong prev);
-            if ((m & ~prev) == 0UL) return;
-            seen[__instance] = prev | m;
-            RM_MapComponent_CordGraph comp = __instance.map?.GetComponent<RM_MapComponent_CordGraph>();
+                       (ulong)MapMeshFlagDefOf.FogOfWar | (ulong)MapMeshFlagDefOf.Roofs;
+            if ((dirtyFlags & mask) == 0UL) return;
+            Map map = HarmonyLib.Traverse.Create(__instance).Field("map").GetValue<Map>();
+            if (map == null) return;
+            if (map == Find.CurrentMap && Find.CameraDriver != null && Find.CameraDriver.CurrentViewRect.ExpandedBy(3).Contains(loc)) return; // on screen: the layer regenerates itself
+            RM_MapComponent_CordGraph comp = map.GetComponent<RM_MapComponent_CordGraph>();
             if (comp != null) comp.StaleOffscreen = true;
         }
     }
