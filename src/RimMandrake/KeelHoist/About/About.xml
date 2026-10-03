@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Keel Hoist</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.keelhoist</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>HOIST_SHIP_PART_BUILD_1: the keel hoist, a gravship part for vertical cargo.
+
+Drop the cable onto a cave mouth or dungeon entrance within reach, or onto a cell nobody can walk to from the hoist (a pit floor, a cliff shelf), then load it like any portal: items, colonists awake, prisoners, slaves, tame animals, the downed. Downed strangers arrive as your prisoners and downed wild beasts arrive bound in the restraint cradle. Transit is a timer, heavier loads longer. Raise the cradle to bring up what waits below. Every arrival is written to the hoist's Manifest tab. The ship will not launch while a cable is down (tether lock), and an Open Line count rises on the map while it is.
+
+Mod Settings: master switch, ship-only placement, tether lock, colonists may ride, downed strangers and beasts, Open Line meter, cycle time, cable reach, restraint hours.</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HOIST_SHIP_PART_BUILD_1: the keel hoist, ship form (design/RimMandrake/ship_cargo_hoist_design_2026-10-01.md §2).
+     A MapPortal subclass (RimMandrake.KeelHoist.RM_KeelHoist); <portal> is present only because MapPortal reads
+     def.portal, and no pocket map is ever generated. ART: placeholder vanilla pod-launcher art; animation is never
+     in scope and art is the last, optional step. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_KeelHoist</defName>
+    <label>keel hoist</label>
+    <description>A ship's winch, cable and cradle. Drop the cable onto a cave mouth or dungeon entrance, or onto a ledge nobody can walk to; then load it like any portal. Cargo rides the cable for a while before it arrives, heavier loads longer. Downed strangers arrive as prisoners and downed wild beasts arrive bound. Raise the cradle to bring up what waits below. The ship cannot launch while the cable is down.</description>
+    <thingClass>RimMandrake.KeelHoist.RM_KeelHoist</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/PodLauncher</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <color>(150,140,120)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.5</fillPercent>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+    <canOverlapZones>false</canOverlapZones>
+    <designationCategory>Misc</designationCategory>
+    <terrainAffordanceNeeded>Medium</terrainAffordanceNeeded>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <WorkToBuild>6000</WorkToBuild>
+      <Mass>120</Mass>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>30</Plasteel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <building>
+      <isEdifice>true</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal />
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>250</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.KeelHoist.PlaceWorker_NeedsGravEngine</li>
+    </placeWorkers>
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+      <li>RimMandrake.KeelHoist.ITab_HoistManifest</li>
+    </inspectorTabs>
+    <researchPrerequisites>
+      <li>RM_KeelHoist</li>
+    </researchPrerequisites>
+  </ThingDef>
+</Defs>

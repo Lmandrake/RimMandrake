@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HOIST_SHIP_PART_BUILD_1, design §2e: one row on the gravship branch. Prerequisite MEASURED (RimSage,
+     Defs/Odyssey/ResearchProjectDefs/ResearchProjects_Misc.xml): BasicGravtech, viewed at (9.0, 4.8). -->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_KeelHoist</defName>
+    <label>keel hoist</label>
+    <description>A winch, a cable and a cradle under the keel. Lower cargo, prisoners, the downed and anyone brave enough to ride into a cave mouth or onto a ledge nobody can walk to, then raise what is waiting below.</description>
+    <baseCost>900</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>BasicGravtech</li>
+    </prerequisites>
+    <researchViewX>10.00</researchViewX>
+    <researchViewY>5.40</researchViewY>
+  </ResearchProjectDef>
+</Defs>
