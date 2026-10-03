@@ -62,10 +62,18 @@ namespace RimMandrake.Miasma
         public static float strandedDeformationChance = 0.25f;
         // MIASMA_AMBUSH_FROG_REMAKE_1: the bozzuga hunts scuttlers and stranded young (race.predator).
         public static bool ambushFrogHunts = true;
+        // MIASMA_ATTAR_STILL_1: the attar still's recipe, glazing artworks and balming scars.
+        public static bool attarEnabled = true;
+
+        // MIASMA_FLOTSAM_YARD_1: river goods washed into the root-lines at map start and after each surge recede.
+        public static bool flotsamEnabled = true;
+        public static float flotsamAmount = 1f;
 
         public override void ExposeData()
         {
             base.ExposeData();
+            Scribe_Values.Look(ref flotsamEnabled, "flotsamEnabled", true, true);
+            Scribe_Values.Look(ref flotsamAmount, "flotsamAmount", 1f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref wardenSuccessionEnabled, "wardenSuccessionEnabled", true, true);
             Scribe_Values.Look(ref selfTameChancePerCheck, "selfTameChancePerCheck", 0.12f, true);
@@ -74,6 +82,7 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref strandedDeformationEnabled, "strandedDeformationEnabled", true, true);
             Scribe_Values.Look(ref strandedDeformationChance, "strandedDeformationChance", 0.25f, true);
             Scribe_Values.Look(ref ambushFrogHunts, "ambushFrogHunts", true, true);
+            Scribe_Values.Look(ref attarEnabled, "attarEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -137,6 +146,24 @@ namespace RimMandrake.Miasma
                 "The bozzuga, the root-maze's ambush frog, lies in wait and eats scuttlers and stranded young. "
                 + "Off: it is a placid animal that hunts nothing.");
 
+            list.GapLine();
+            list.CheckboxLabeled("Flotsam in the root-lines",
+                ref flotsamEnabled,
+                "River goods (scrap steel, wood, cloth, the odd component) wash into the roots at the start of "
+                + "a Miasma map and again after every surge recedes. Off: none arrives.");
+            if (flotsamEnabled)
+            {
+                list.Label("  Amount: " + flotsamAmount.ToString("0.0") + "x");
+                flotsamAmount = list.Slider(flotsamAmount, 0.25f, 3f);
+            }
+
+            list.GapLine();
+            list.CheckboxLabeled("Attar: still, glaze and balm",
+                ref attarEnabled,
+                "Delta silt and salt refine into attar at the attar still. Glazing raises an artwork's beauty; balm "
+                + "fades one scar and heals nothing else. Off: the still's recipe is hidden and glaze and balm cannot "
+                + "be used (glazed artworks lose the bonus). Attar already made stays in the world.");
+
             list.End();
         }
 
@@ -171,11 +198,25 @@ namespace RimMandrake.Miasma
             {
                 ApplyDeformation();
                 ApplyPollinationGate();
+                ApplyAttar();
             }
             catch (System.Exception e)
             {
                 Log.Warning("[RM Miasma] settings applier failed, defs left as shipped: " + e.Message);
             }
+        }
+
+        // Hides/shows the attar recipe on its still. ThingDef.allRecipesCached is private, so reset by reflection.
+        private static void ApplyAttar()
+        {
+            RecipeDef recipe = DefDatabase<RecipeDef>.GetNamedSilentFail("RM_MakeAttar");
+            ThingDef bench = DefDatabase<ThingDef>.GetNamedSilentFail("RM_AttarStill");
+            if (recipe == null || bench == null) return;
+            if (recipe.recipeUsers == null) recipe.recipeUsers = new System.Collections.Generic.List<ThingDef>();
+            if (RM_MiasmaSettings.attarEnabled) { if (!recipe.recipeUsers.Contains(bench)) recipe.recipeUsers.Add(bench); }
+            else recipe.recipeUsers.Remove(bench);
+            typeof(ThingDef).GetField("allRecipesCached", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                ?.SetValue(bench, null);
         }
 
         private static void ApplyDeformation()

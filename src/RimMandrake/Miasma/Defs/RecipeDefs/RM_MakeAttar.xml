@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <RecipeDef>
+    <defName>RM_MakeAttar</defName>
+    <label>render attar</label>
+    <description>Render attar from delta silt and delta salt.</description>
+    <jobString>Rendering attar.</jobString>
+    <workAmount>1600</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <skillRequirements><Crafting>5</Crafting></skillRequirements>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>RM_DeltaSilt</li></thingDefs></filter>
+        <count>4</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>RM_DeltaSalt</li></thingDefs></filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs><li>RM_DeltaSilt</li><li>RM_DeltaSalt</li></thingDefs>
+    </fixedIngredientFilter>
+    <products><RM_Attar>1</RM_Attar></products>
+    <recipeUsers><li>RM_AttarStill</li></recipeUsers>
+  </RecipeDef>
+</Defs>

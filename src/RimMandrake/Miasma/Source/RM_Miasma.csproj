@@ -51,6 +51,8 @@
     <Compile Include="RM_CompProperties_PlantPredator.cs" />
     <Compile Include="RM_CompPlantPredator.cs" />
     <Compile Include="RM_AmbushFrogHunting.cs" />
+    <Compile Include="RM_Attar.cs" />
+    <Compile Include="RM_MapComponent_FlotsamYard.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
