@@ -45,7 +45,9 @@
         <useDuration>180</useDuration>
         <showUseGizmo>true</showUseGizmo>
       </li>
-      <li Class="CompProperties_Equippable" />
+      <li>
+        <compClass>CompEquippable</compClass>
+      </li>
       <li Class="RimMandrake.GelatinousSlime.CompProperties_ChunkShelf" />
       <li Class="CompProperties_Targetable">
         <compClass>RimMandrake.GelatinousSlime.CompTargetable_SlimeBreachable</compClass>

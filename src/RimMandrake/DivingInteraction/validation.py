@@ -33,7 +33,7 @@ def per_sea_floor_biomes(t):
     with t.component("sea_biomes_name_their_floor", beyond_toggle=True):
         r = t.bridge_call("jawa/get_defs",
                           defs=";".join("BiomeDef/%s" % s for s in SEAS),
-                          fields="modExtensions")
+                          fields="modExtensions", deep=True)     # without deep=True get_defs returns the extensions as bare type names
         if _live(t):
             text = str(r)
             bad = [s for s, f in SEAS.items() if f not in text]
