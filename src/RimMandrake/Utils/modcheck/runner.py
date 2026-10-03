@@ -462,6 +462,15 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 session.call("jawa/weather_set", weather="Clear", lockWeather=True)
             except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
                 pass
+            # A previous chain's pad clean-up destroys walls but leaves their roofs, and the unsupported roof then COLLAPSES
+            # onto colonists mid-chain ("Roof collapse", Crush by nobody; LIVE 2026-10-03: lash, fire, vents chains). Every chain
+            # starts with no roof anywhere; a chain that needs one builds it itself (make_empty_room).
+            try:
+                mi = session.call("jawa/map_info")
+                session.call("jawa/set_roof_batch", ops="None:0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))),
+                             refresh=False)
+            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                pass
             from watch import Watch  # noqa: E402
             cap_kw = ({"session_cap": suite.chain_caps[name]}
                       if name in getattr(suite, "chain_caps", {}) else {})
