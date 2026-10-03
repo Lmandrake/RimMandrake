@@ -552,6 +552,33 @@ def defs_static(t):
             if bad:
                 _fail("cure geography not as shipped (a patch that matches nothing logs nothing): %s" % bad)
 
+    with _comp(t, "campaign_rain_strip_patch"):
+        # GELATINOUSSLIME_RAIN_STRIP_1: ban 2 in the campaign tiers. Reads the shipped campaign patch (the
+        # free mod is deliberately NOT edited). Live effect (weather commonalities on a campaign list) is
+        # UNCOVERED here: no proven bridge field for baseWeatherCommonalities.
+        pp = os.environ.get("NS_SLIME_RAIN_PATCH") or os.path.join(
+            HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "SlimeRainStrip_Campaign.xml")
+        if not os.path.isfile(pp):
+            _fail("campaign patch missing: %s" % pp)
+        root_el = ET.parse(pp).getroot()
+        ops = list(root_el.iter("Operation"))
+        if any("MayRequire" in o.attrib for o in ops):
+            _fail("MayRequire on an <Operation> is inert in 1.6; guard with Conditional/FindMod")
+        removed = set()
+        for o in ops:
+            if o.get("Class") == "PatchOperationRemove" or o.find("match[@Class='PatchOperationRemove']") is not None:
+                xp = o.find(".//xpath")
+                removed.add(re.sub(r"\s+", "", xp.text or ""))
+        want = ['/Defs/BiomeDef[defName="%s"]/baseWeatherCommonalities/%s' % (b, w)
+                for b, w in (("RM_GelatinousSlime", "Rain"), ("RM_GelatinousSlime", "FoggyRain"), ("RUT_Slime", "Rain"))]
+        miss = [w for w in want if w not in removed]
+        if miss:
+            _fail("campaign patch does not remove: %s" % miss)
+        if any("RM_Weather_SlimeRain" in (o.findtext(".//xpath") or "") for o in ops):
+            _fail("campaign patch touches RM_Weather_SlimeRain; slime rain stays")
+        if 'defName="RM_GelatinousSlime"]/preventGenSteps' not in ET.tostring(root_el, encoding="unicode").replace(" ", ""):
+            _fail("shrine denial (ScatterShrines) not retargeted onto RM_GelatinousSlime")
+
     with _comp(t, "visitor_genstep_registered"):
         if t._guard():
             rows, nf = _defs(t, ["MapGeneratorDef/Base_Player"], fields="genSteps")
