@@ -231,7 +231,7 @@ Unrooted — flight, the refusal to root"* (`divine_satiation_engine.md` ⑥).
 | The Unjoining | Ta'Baa | feeding | a colonist carrying a Rot symbiont is held by the participants through a hard purge until the symbiont dies (benefit gone for good); counts if the clan launches within days, sours if it stays the season; the first one teaches the Unjoining Draught | The Rot, a Wildsteam pilgrim path: an overturned empty brewing vessel, a rag stiff with dried Sheen, footprints that stop shining halfway | RULED (owner, 2026-10-02, question card); build `ROT_UNJOINING_RITE_1` | `design/Jawa/worldbuilding/biomes/rot_bedazzle_review_2026-10-02.md` §6 R2, §8 |
 
 Ta'Baa carries four found rites (the Returned, B7, ruled-kept; the Shadow Walk and the Vindication Walk, B7,
-pitched; the Unjoining, B13): one under the cap.
+accepted; the Unjoining, B13): one under the cap.
 
 ### B14. Found rites ruled at the Sump sitting (RULED)
 
@@ -246,7 +246,7 @@ These two were ticketed without a register row; added here.
 ### B15. Found rites ruled at the Weeping Stones sitting (RULED)
 
 Owner, typed 2026-10-02: *"This is pretty cool (2). Gotta do it."* Option (2) was *the refused toll, for the god
-of debt and trade* (Mob'Unloo). The Open Water (Oomo) was not chosen; Oomo keeps his one slot.
+of debt and trade* (Mob'Unloo). The Open Water (Oomo) was not chosen. (Oomo's count is in B16: he is at five.)
 
 | Rite | God | Kind | Condition | Found | Status | Source |
 |---|---|---|---|---|---|---|
