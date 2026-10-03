@@ -66,6 +66,10 @@ suite = Suite("TheForge")
 
 SETTINGS = "RimMandrake.TheForge.RM_TheForgeSettings"
 HAZ_SETTINGS = "RimMandrake.EnvironmentalHazards.RM_EnvironmentalHazardsSettings"
+# LIVE 2026-10-03: the composed mod registers ~30 settings surfaces under ONE packageId, so open_mod_settings(modId=
+# "mandrake.rm.biomes") is refused as "matched multiple loaded mods". The surface is addressed by its handle class
+# name (or label "The Forge"): this resolves to exactly one surface.
+DIALOG_QUERY = "RM_TheForgeMod"
 MOD_ID = "mandrake.rm.biomes"        # the composed mod hosting RM_TheForgeMod: what the settings dialog is keyed by
 BIOME = "RM_TheForge"
 COND = "RM_ForgePulse"
@@ -529,7 +533,7 @@ def _apply(t):
     """Make RM_TheForgeMod.WriteSettings run, the way a player does: open the Mod Settings dialog and close it."""
     if not _live(t):
         return
-    r = t.bridge_call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True) or {}
+    r = t.bridge_call("rimworld/open_mod_settings", modId=DIALOG_QUERY, replaceExisting=True) or {}
     if not r.get("success", False):
         _unmeasured(t, "cannot open the Mod Settings dialog for %s: %s" % (MOD_ID, json.dumps(r, default=str)[:200]))
     t.bridge_call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
@@ -539,7 +543,7 @@ def _apply_safely(t):
     if t.session is None:
         return
     try:
-        t.session.call("rimworld/open_mod_settings", modId=MOD_ID, replaceExisting=True)
+        t.session.call("rimworld/open_mod_settings", modId=DIALOG_QUERY, replaceExisting=True)
         t.session.call("jawa/window_list_close", action="close", typeName="ModSettings", closeAll=True)
     except Exception:
         pass
@@ -723,6 +727,13 @@ def _weather(t):
     return cur.get("current") if isinstance(cur, dict) else cur
 
 
+def _lbl(l):
+    """A letter label off jawa/letter_list is a TaggedString dict {"RawText": ...}, not a str (LIVE 2026-10-03:
+    a dict used as a key raised TypeError: unhashable type)."""
+    v = l.get("label")
+    return v.get("RawText") if isinstance(v, dict) else v
+
+
 def _letters(t):
     """{label: count} of every letter on the stack."""
     r = t.bridge_call("jawa/letter_list")
@@ -731,7 +742,7 @@ def _letters(t):
     _ok(r, "letter_list")
     out = {}
     for l in r.get("letters") or []:
-        out[l.get("label")] = out.get(l.get("label"), 0) + 1
+        out[_lbl(l)] = out.get(_lbl(l), 0) + 1
     return out
 
 
@@ -1087,6 +1098,15 @@ def settings(t):
 
 # ---------------------------------------------------------------- the grand cycle, default settings
 
+def _declare_cycle_events(t):
+    """The grand cycle's OWN telegraph letters (Glowing cracks = ThreatBig, The melt = ThreatSmall) and the gas
+    wash's fires are the feature under test, not surprises. LIVE 2026-10-03 the watch read the letters as a raid
+    (`raid_arrived`) and the wash's 17 fires as `fire_on_map`, which aborted every later component."""
+    for lab in ("Glowing cracks", "The melt", "The freeze"):
+        t.expect("letter", {"label_contains": lab})
+    t.expect("fire", lambda e: True)
+
+
 @suite.chain("cycle_walk")
 def cycle_walk(t):
     """One full grand cycle on a LavaDeep square, stepped with the mod's debug action and read back through
@@ -1094,6 +1114,7 @@ def cycle_walk(t):
     melt -> still heat. Everything on the pad is removed by teardown; the shared hazard scald is off for the long
     Rain windows (restored in finally)."""
     _enter(t)
+    _declare_cycle_events(t)
     box = {}
     try:
         with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False):
@@ -1260,6 +1281,7 @@ def cycle_arms(t):
     (a failed arm does not hide the next) and begins by walking the cycle back to still heat, so it never inherits the
     previous arm's phase. Every arm restores its field in a finally; the pad's lava is permanent so every pass reuses it."""
     _enter(t)
+    _declare_cycle_events(t)
     try:
         with _settings(t, HAZ_SETTINGS, environmentalDamageEnabled=False):
             with _comp(t, "site_ready_arms"):
