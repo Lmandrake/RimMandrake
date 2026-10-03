@@ -75,6 +75,12 @@ namespace RimMandrake.LeaningScrub
         public static bool sweetlineStationsEnabled = true;
         public static bool sweetlineVisitorsEnabled = true;
         public static float sweetlineVisitIntervalDays = 8f;
+        // SHRUBLAND_TREE_GUARDIAN_1 (RM_SweetlineGuardians.cs)
+        public static bool sweetlineGuardiansEnabled = true;
+        public static int sweetlineGuardianMaxPerTree = 3;
+        public static float sweetlineHarvestDisturbance = 1f;
+        public static float sweetlineForgivenessDays = 5f;
+        public static bool sweetlineProximityCharge = false;
         // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
         public static bool visslerArmFoodEnabled = true;
 
@@ -111,6 +117,11 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineStationsEnabled, "sweetlineStationsEnabled", true, true);
             Scribe_Values.Look(ref sweetlineVisitorsEnabled, "sweetlineVisitorsEnabled", true, true);
             Scribe_Values.Look(ref sweetlineVisitIntervalDays, "sweetlineVisitIntervalDays", 8f, true);
+            Scribe_Values.Look(ref sweetlineGuardiansEnabled, "sweetlineGuardiansEnabled", true, true);
+            Scribe_Values.Look(ref sweetlineGuardianMaxPerTree, "sweetlineGuardianMaxPerTree", 3, true);
+            Scribe_Values.Look(ref sweetlineHarvestDisturbance, "sweetlineHarvestDisturbance", 1f, true);
+            Scribe_Values.Look(ref sweetlineForgivenessDays, "sweetlineForgivenessDays", 5f, true);
+            Scribe_Values.Look(ref sweetlineProximityCharge, "sweetlineProximityCharge", false, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
         }
 
@@ -215,6 +226,26 @@ namespace RimMandrake.LeaningScrub
             {
                 list.Label("Days between visits (average): " + sweetlineVisitIntervalDays.ToString("F0"));
                 sweetlineVisitIntervalDays = Mathf.Round(list.Slider(sweetlineVisitIntervalDays, 2f, 30f));
+            }
+
+            list.CheckboxLabeled("Bark-wardens guard sweetline trees", ref sweetlineGuardiansEnabled,
+                "Two or three bark-wardens roost asleep on every newly spawned sweetline tree. Working the tree "
+                + "(harvest or cut) or wounding it disturbs them: they stir, turn restless, then drop on whoever "
+                + "did it. Walking past only makes them watch. Off: no new wardens spawn and existing ones wake "
+                + "as ordinary wild animals (none are removed). Affects newly spawned sweetline trees; not worldgen. "
+                + "Needs named sweetline trees on.");
+            if (sweetlineGuardiansEnabled)
+            {
+                list.Label("Most bark-wardens per tree: " + sweetlineGuardianMaxPerTree + " (each tree rolls 2-3)");
+                sweetlineGuardianMaxPerTree = Mathf.RoundToInt(list.Slider(sweetlineGuardianMaxPerTree, 0f, 4f));
+                list.Label("How fast harvesting disturbs them: x" + sweetlineHarvestDisturbance.ToString("0.0")
+                    + (sweetlineHarvestDisturbance <= 0f ? " (harvest is never harm)" : ""));
+                sweetlineHarvestDisturbance = list.Slider(sweetlineHarvestDisturbance, 0f, 3f);
+                list.Label("Days for a disturbed tree to calm: " + sweetlineForgivenessDays.ToString("0"));
+                sweetlineForgivenessDays = Mathf.Round(list.Slider(sweetlineForgivenessDays, 1f, 30f));
+                list.CheckboxLabeled("Bark-wardens also rouse at anyone who lingers under the tree", ref sweetlineProximityCharge,
+                    "Off (default, the owner's ruling): walking up only makes them watch. On: a person within 9 cells "
+                    + "slowly disturbs them too (about five hours of loitering fills the bar), with the same warnings.");
             }
 
             list.CheckboxLabeled("Vissler arms are carrion", ref visslerArmFoodEnabled,

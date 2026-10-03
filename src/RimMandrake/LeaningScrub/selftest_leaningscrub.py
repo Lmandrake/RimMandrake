@@ -345,6 +345,9 @@ class Fake(object):
                     tid = self.new(d, cx, cz, growth=growth, stackCount=1)
                     if d == V.TREE:
                         self.things[tid]["wool"] = self.ticks + 3 * 60000     # staggered first shed
+                        if self.on("sweetlineGuardiansEnabled") and "no_roost" not in self.broken:
+                            for dx in (1, -1):                                # two roosting bark-wardens
+                                self.new("RM_Barkwarden", cx + dx, cz, stackCount=1)
         return {"success": True}
 
     def t_destroy_batch(self, rects="", categories="All", **k):
@@ -412,10 +415,14 @@ class Fake(object):
             if "no_name" not in self.broken:
                 label = "Ashveil (sweetline tree)"
             lines = ["Snagged giant-wool sheds in 4 days."]
+            if self.on("sweetlineGuardiansEnabled") and "no_roost" not in self.broken:
+                lines.append("Bark-wardens roost here (2). Calm.")
             if t.get("visits") and (self.on("sweetlineVisitorsEnabled") or "visitors_ignore_toggle" in self.broken):
                 lines.insert(0, "Visitors remembered: %d camps, 0 pilgrims." % t["visits"])
         elif d == V.TREE:
             label = "sweetline tree"
+        elif d == "RM_Barkwarden":
+            label, lines = "bark-warden", ["Roosting in the crown of Ashveil."]
         return {"success": True, "things": [{"id": t["id"], "label": label, "inspect": lines}]}
 
 
@@ -443,6 +450,7 @@ def run(broken=()):
 # break -> the component that must go FAIL
 BREAKS = {
     "missing_def": "defs.defs_resolve",
+    "no_roost": "sweetline.guardians_roost_on_spawn",
     "no_weather_entry": "defs.biome_weather_table",
     "no_lean_ext": "defs.biome_lean_extension",
     "rule_unarmed": "patches.rules_armed",

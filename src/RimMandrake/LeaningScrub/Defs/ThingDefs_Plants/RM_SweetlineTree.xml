@@ -31,7 +31,9 @@
   <ThingDef ParentName="TreeBase">
     <defName>RM_SweetlineTree</defName>
     <label>sweetline tree</label>
-    <description>A single ancient giant, centuries old, growing only where the moisture-light trade balances exactly. Its trunk is scarred smooth in patches where the biome's giants have rubbed against it for longer than any settlement nearby has stood; the bark sheds their snagged wool in long silver hanks. Every sweetline tree has a name, and the roads of the shrubland are laid tree to tree along the line they mark.</description>
+    <!-- SHRUBLAND_TREE_GUARDIAN_1: the harvest seam for the bark-warden roost. -->
+    <thingClass>RimMandrake.LeaningScrub.RM_Plant_Guarded</thingClass>
+    <description>A single ancient giant, centuries old, growing only where the moisture-light trade balances exactly. Its trunk is scarred smooth in patches where the biome's giants have rubbed against it for longer than any settlement nearby has stood; the bark sheds their snagged wool in long silver hanks. Every sweetline tree has a name, and the roads of the shrubland are laid tree to tree along the line they mark.\n\nBark-wardens roost asleep against the trunk. They watch whoever passes, and drop on whoever strips the wool or wounds the bark.</description>
     <graphicData>
       <texPath>Things/Plant/RM_SweetlineTree</texPath>
       <graphicClass>Graphic_Random</graphicClass>
@@ -74,6 +76,25 @@
         <tokenThing>RM_SweetlineToken</tokenThing>
         <pilgrimChance>0.6</pilgrimChance>
         <maxTokensNear>3</maxTokensNear>
+      </li>
+      <!-- SHRUBLAND_TREE_GUARDIAN_1 (Source/RM_SweetlineGuardians.cs): 2-3 roosting
+           bark-wardens, a disturbance meter that harvest work and wounds fill, warning
+           stages at 30%/60%, the drop at 100%. Refill 30-60 days (builder's reconcile
+           against the 84-day wool regrow, activation doc §6). -->
+      <li Class="RimMandrake.LeaningScrub.RM_CompProperties_GuardianRoost">
+        <guardianKind>RM_Barkwarden</guardianKind>
+        <rageState>RM_RoostDefence</rageState>
+        <count>2~3</count>
+        <respawnDays>30~60</respawnDays>
+        <spawnRadius>3</spawnRadius>
+        <disengageRadius>18</disengageRadius>
+        <rageDurationTicks>2500</rageDurationTicks>
+        <rageCooldownTicks>600</rageCooldownTicks>
+        <workDisturbance>0.10</workDisturbance>
+        <harvestDisturbance>0.25</harvestDisturbance>
+        <damageDisturbancePerPoint>0.05</damageDisturbancePerPoint>
+        <watchRadius>9</watchRadius>
+        <rehomeRadius>60</rehomeRadius>
       </li>
     </comps>
   </ThingDef>
