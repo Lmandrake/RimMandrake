@@ -223,6 +223,24 @@ them or grow them."*
   against the scripts, on his clock (`NORTHSTAR_ADVERSARIAL_REVIEW_1`). A weakened, proxy
   or never-red check they find is a script defect. It is fixed and recorded like any bug.
 
+### 6a. The north-star ladder (`NORTHSTAR_PHASE_LADDER_1`)
+
+A mod with owner bars climbs these rungs in order, one ledger item per rung per mod, named
+`<MOD>_NORTHSTAR_<RUNG>_1` (the trial plans in `design/RimMandrake/northstar_trials/` list theirs).
+
+| rung | reached when | evidence that closes it |
+|---|---|---|
+| DRAFT | the walk has a `## north star` section, `state: DRAFT` | the commit |
+| VALIDATED | the owner's word, `modcheck/cli.py validate <Mod> --owner-said "…"` (hash-bound; corrected prose means re-validate the same sitting) | the ledger event |
+| WIRED | every must-show / cannot-show line is claimed by a component's `shows=` in `validation.py`; `modcheck floor <Mod>` reports no uncovered or orphan id | the `floor` output |
+| GREEN minimal | `northstar_driver` on the minimal list + the mod: preflight OK, every expected bar PASS (UNMEASURED is not green) | results JSON under `Transient/northstar/` |
+| GREEN full | the same on the full canonical list, all five DLCs | results JSON |
+| SHIPPED | deployed copy == repo with `.srchash` matching, Mod Settings complete, art complete, `code_review_status.py check` CLEAN for every file | the deploy plan + `check` output |
+
+A rung closes only against that evidence, never against prose. A rung that regresses
+reopens as a finding, not a silent edit. MEASURED 2026-10-03: 3 of 110 tracked
+`validation.py` files carry `shows=` (FlowWorks, Graffiti, Pyrelands); re-measure, the number moves.
+
 ## 7. Briefing a bridge-driving subagent
 
 - **One driver at a time.** The holder takes the bridge lock; the subagent drives through

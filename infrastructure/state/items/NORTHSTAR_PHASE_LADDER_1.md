@@ -7,7 +7,7 @@ per mod, named `<MOD>_NORTHSTAR_<RUNG>_1`.
 2. VALIDATED — the owner's word, recorded with `modcheck/cli.py validate <Mod> --owner-said "..."`
    (hash-bound; prose corrected later means re-validate in the same sitting).
 3. WIRED — every must-show/cannot-show bar has a component claiming it via `shows=` in validation.py
-   (`modcheck floor <Mod>` shows no uncovered/orphan ids). Today 0 of 54 validation.py files have `shows=`.
+   (`modcheck floor <Mod>` shows no uncovered/orphan ids). MEASURED 2026-10-03: 3 of 110 validation.py files carry `shows=`.
 4. GREEN minimal list — `northstar_driver` run on the minimal mod list + the mod: preflight OK, every
    expected bar PASS (UNMEASURED is not green). Results JSON in Transient/northstar/.
 5. GREEN full list — same on the full canonical list (all five DLCs; see CLAUDE.md).
