@@ -257,6 +257,8 @@
       <RM_Karravel>3.5</RM_Karravel>  <!-- karravel - the carpet; the bulk of the floor, cheap protein for everything -->
       <RM_Karrimeth>0.8</RM_Karrimeth>  <!-- karrimeth - the mass; an event, not background, wildGroupSize carries the "carpet crossing" read -->
       <RM_Karrolun>1.2</RM_Karrolun>  <!-- karrolun - the harvest; the arthropod industry's actual target -->
+      <!-- MIASMA_AMBUSH_FROG_REMAKE_1: bozzuga - root-maze ambusher, eats scuttlers and stranded young; one home (this biome only) -->
+      <RM_Bozzuga>0.3</RM_Bozzuga>
       <VFEI2_Swarmling MayRequire="oskarpotocki.vfe.insectoid2">0.7</VFEI2_Swarmling>  <!-- swarmlings - vermin -->
       <VFEI2_BlackSwarmling MayRequire="sarg.alphaanimals,oskarpotocki.vfe.insectoid2">0.5</VFEI2_BlackSwarmling>  <!-- black swarmlings - vermin -->
       <AA_Lockjaw MayRequire="sarg.alphaanimals">0.2</AA_Lockjaw>  <!-- lockjaw - channel-predator -->

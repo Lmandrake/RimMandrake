@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Bozzuga.xml                                     MIASMA_AMBUSH_FROG_REMAKE_1
+
+  The giant ambush frog, remade as ours (owner card 2026-09-10, the_miasma roster round 2: "keep the
+  giant-ambush-frog body plan, new name + alienized art"). Name coined under check_pseudo_sw_name.py
+  (PASS shape+collision; Wookieepedia search API: zero hits for "Bozzuga"); the CSV's placeholder id
+  RM_MiasmaAmbushFrog is renamed to RM_Bozzuga in the art list. RM_ tier: invented, franchise-free (Q11a).
+
+  Hunting is the VANILLA predator AI (race.predator + maxPreyBodySize 0.6: above the karrolun's 0.35 and the
+  nursery juveniles, below any colonist), the same shape as GelatinousSlime's fubbum. Nothing here drives
+  behaviour; RM_AmbushFrogHunting only applies the Mod Settings switch (off => race.predator false).
+  Its prey are the scuttlers and stranded young that the rest of the Miasma already supplies.
+  "Waits in the channels": it is a slow, low animal (low MoveSpeed, short roam) so it ambushes rather than pursues.
+  One home: wired ONLY to RM_Miasma.
+  Art: flat-colour south-only placeholder; the real job is in miasma_turn1_2026-10-02.csv (id RM_Bozzuga).
+-->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Bozzuga</defName>
+    <label>bozzuga</label>
+    <description>A squat, wide-mouthed ambusher the colour of wet silt, mottled with salt-white warts, that sits half-sunk in the root-maze channels for days at a time with only its eyes showing. Nothing about it moves until something small comes within a lunge, and then the whole head is mouth. Karrolun, stranded young and anything else small enough to swallow whole are its diet; it has no interest in anything larger.</description>
+    <statBases>
+      <MoveSpeed>2.4</MoveSpeed>
+      <Mass>60</Mass>
+      <MarketValue>240</MarketValue>
+      <Wildness>0.85</Wildness>
+      <ComfyTemperatureMin>10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>58</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.1</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.1</ArmorRating_Blunt>
+    </statBases>
+    <tools>
+      <li>
+        <label>jaws</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>11</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <predator>true</predator>
+      <maxPreyBodySize>0.6</maxPreyBodySize>
+      <baseBodySize>0.9</baseBodySize>
+      <baseHealthScale>1.1</baseHealthScale>
+      <baseHungerRate>0.7</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <meatLabel>bozzuga meat</meatLabel>
+      <meatColor>(92,84,70)</meatColor>
+      <meatMarketValue>1.5</meatMarketValue>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <herdAnimal>false</herdAnimal>
+      <roamMtbDays>6</roamMtbDays>
+      <manhunterOnDamageChance>0.25</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <lifeExpectancy>14</lifeExpectancy>
+      <gestationPeriodDays>14</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(2, 1)</li>
+          <li>(3, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.5</minAge>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Bozzuga</defName>
+    <label>bozzuga</label>
+    <race>RM_Bozzuga</race>
+    <combatPower>70</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.6</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bozzuga/RM_Bozzuga</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>0.8</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bozzuga/RM_Bozzuga</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.2</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/RM_Bozzuga/RM_Bozzuga</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>1.6</drawSize>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

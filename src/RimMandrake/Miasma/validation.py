@@ -19,8 +19,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 SETTINGS_TYPE = "RimMandrake.Miasma.RM_MiasmaSettings"
 DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTameChancePerCheck": 0.12,
             "plantPredationEnabled": True, "pollinationGateEnabled": True,
-            "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25}
-NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance"]
+            "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
+            "ambushFrogHunts": True}
+NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
+       "ambushFrogHunts"]
 
 
 def static_checks():
@@ -70,6 +72,18 @@ def static_checks():
             bad.append("%s not in the stranding-pool strandedSpawnList" % y)
         if "<li>%s</li>" % y not in creche:
             bad.append("%s not in the creche youngKinds" % y)
+    # MIASMA_AMBUSH_FROG_REMAKE_1
+    frog = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Bozzuga.xml")).read()
+    if frog.count("<defName>RM_Bozzuga</defName>") != 2:
+        bad.append("RM_Bozzuga needs exactly a ThingDef and a PawnKindDef")
+    if "<predator>true</predator>" not in frog or "<maxPreyBodySize>" not in frog:
+        bad.append("RM_Bozzuga is not a vanilla predator with a prey size cap")
+    if not re.search(r"<RM_Bozzuga>[\d.]+</RM_Bozzuga>", biome):
+        bad.append("RM_Bozzuga not in RM_Miasma wildAnimals")
+    if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "RM_Bozzuga", "RM_Bozzuga_south.png")):
+        bad.append("RM_Bozzuga placeholder texture missing")
+    if "RM_Bozzuga" not in open(os.path.join(HERE, "Source", "RM_AmbushFrogHunting.cs")).read():
+        bad.append("RM_AmbushFrogHunting does not target RM_Bozzuga")
     return bad
 
 
@@ -130,6 +144,15 @@ def _build_suite():
             raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
                                     "recede on a free-only tier stranding at least one of them (spawn many), need "
                                     "a live Miasma map with the bridge")
+
+    @suite.chain("ambush_frog_free_tier")
+    def ambush_frog_free_tier(t):
+        with t.component("bozzuga_defs_and_hunts", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 2 on RM_Bozzuga (ThingDef+PawnKindDef), "
+                                    "spawn on a free-only Miasma map, and a bozzuga hunting a karrolun, need a live "
+                                    "Miasma quicktest map with the bridge")
 
     return suite
 
