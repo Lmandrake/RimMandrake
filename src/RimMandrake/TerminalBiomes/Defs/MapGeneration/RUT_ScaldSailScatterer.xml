@@ -70,22 +70,12 @@
   choice for "riding the vent's own bubble column" without the pawn needing
   to stand on the vent's own cell.
 
-  pawnKind Penguin (Ludeon.RimWorld Core, vanilla, always loaded) is a
-  WIRING PLACEHOLDER, per this task's own instruction not to author the
-  real sail kind. Chosen DISTINCT from every other RM_SetPieceElement_
-  AnchoredPawn placeholder already claimed in this repo (RSW_OpeeSeaKiller,
-  MIASMA_MECHANICS_1 M6; Mech_Pikeman, FORGE_MECHANICS_1 F4) to avoid
-  ambiguous cross-references — and thematically closer than either: a
-  small, already near-nil-combat vanilla animal, unlike those two
-  ambush/military picks. Real anchoring does NOT occur with this
-  placeholder: Penguin's own ThingDef carries no RM_CompTerritorialAnchor,
-  so RM_SetPieceElement_AnchoredPawn's own WarningOnce/no-op path fires —
-  expected, not a bug, same posture every prior AnchoredPawn placeholder
-  consumer already documents inline. Radius 8 (this pass's own INVENTED
-  tether value, "never leave their bubble line") is therefore recorded here
-  as the value the real sail ThingDef's own CompProperties_
-  TerritorialAnchor.anchorRadius should carry once authored — not something
-  this pass actually wires live.
+  pawnKind RM_Noohm (the real bubble-sailor). This GenStep is registered on
+  Base_Player and its validator only passes next to a RUT_ScaldVent. The
+  Scald FLOOR's vents, sailors and tether are built by DivingInteraction's
+  RM_ScaldVentField step and RM_MapComponent_ScaldVentForecast
+  (SCALD_FLOOR_VENT_FIELDS_1). RM_Noohm carries no RM_CompTerritorialAnchor,
+  so the AnchoredPawn element's own no-op path fires here: expected.
 
   "Never flees, never fights" — confirmed structural, no new C# needed.
   RM_CompTerritorialAnchor itself never calls a JobGiver; it only sets
@@ -134,9 +124,7 @@
       </validators>
       <elements>
         <li Class="RimMandrake.EnvironmentalHazards.RM_SetPieceElement_AnchoredPawn">
-          <!-- WIRING PLACEHOLDER — see this file's own header. Roster pass
-               replaces with the real bubble-sailor kind. -->
-          <pawnKind>Penguin</pawnKind>
+          <pawnKind>RM_Noohm</pawnKind>
         </li>
       </elements>
     </genStep>

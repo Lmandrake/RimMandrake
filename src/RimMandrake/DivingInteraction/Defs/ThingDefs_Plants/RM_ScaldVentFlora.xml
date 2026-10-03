@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SCALD_FLOOR_VENT_FIELDS_1. The two vent-adjacency plants from
+  design/Jawa/worldbuilding/biomes/the_scald_underwater_flora_pass_2026-09-27.md (Route B:
+  placed by GenStep_ScaldVentField, never in wildPlants). Textures are tinted vanilla
+  placeholders (same precedent as RM_Stillbloom); real art is owed (artpipe jobs queued).
+  The glass-spire keepsake harvest the pass rules for glasskelle needs an item def that does not
+  exist yet, so glasskelle ships without a harvest.
+-->
+<Defs>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Glasskelle</defName>
+    <label>glasskelle</label>
+    <description>Hard-soft coral that builds its skeleton from the silica the vents dissolve, drawing glass thread out of water no colony should survive. Its tissue lives inside fused glass capillaries laid down at vent temperature, so the boil reads as pleasantly cool. It cannot live off a vent. When a colony dies it stays standing: a vent field is a forest of clear dead spires with living colour only at the growing tips.</description>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Beauty>4</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/SnakePlant/SnakePlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(214,236,238)</color>
+      <colorTwo>(240,150,70)</colorTwo>
+    </graphicData>
+    <plant>
+      <growDays>15</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.9~1.2</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RM_Pulsebead</defName>
+    <label>pulsebead</label>
+    <description>Between geyser pulses a pulsebead is a dead ceramic pea baked onto the stone. When the splash comes it wakes, swells into a soft grey-green button, feeds and seeds, and bakes back to a bead as the stone dries. Pilgrims call a blooming field "the applause."</description>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Beauty>1</Beauty>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Plant/PincushionPlant/PincushionPlantA</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <color>(172,196,164)</color>
+    </graphicData>
+    <plant>
+      <growDays>6</growDays>
+      <maxMeshCount>1</maxMeshCount>
+      <visualSizeRange>0.35~0.5</visualSizeRange>
+      <wildOrder>2</wildOrder>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+  </ThingDef>
+
+</Defs>

@@ -64,3 +64,62 @@ def scald_immersion_berth(t):
         if "GenTemperature.PushHeat" not in code:
             raise ExpectationFailed("berth no longer works through vanilla room heat")
         t.screenshot()
+
+
+@suite.chain("scald_walking_pasture")
+def scald_walking_pasture(t):
+    """SCALD_WALKING_PASTURE_1: the bottom-walker exists as a herd animal in the Scald roster, and the
+    crew job follows the herd (offers only mat near a walker, backs off, stops when it moves)."""
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    with t.component("walker_def_present_and_in_scald_roster", beyond_toggle=True):
+        for d in ("ThingDef/RM_ScaldWalker", "PawnKindDef/RM_ScaldWalker", "WorkGiverDef/RM_GatherGrazedMat"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
+                raise ExpectationFailed("%s missing: %r" % (d, r))
+        t.screenshot()
+    with t.component("walker_grazing_exposes_mat", beyond_toggle=False):
+        # live: spawn RM_ScaldWalker beside RM_Crowncarpet plants, step ~600 ticks, expect loose RM_CrowncarpetFresh.
+        pass_source = open(os.path.join(here, "Source", "RM_MapComponent_ScaldWalkerGrazing.cs"), encoding="utf-8").read()
+        if "RM_DivingSettings.walkerGrazingEnabled" not in pass_source or "pather.Moving" not in pass_source:
+            raise ExpectationFailed("grazing component lost its toggle or its standing-still gate")
+        t.screenshot()
+    with t.component("crew_follows_herd_and_backs_off", beyond_toggle=False):
+        src = open(os.path.join(here, "Source", "RM_WorkGiver_GatherGrazedMat.cs"), encoding="utf-8").read()
+        for need in ("FollowRadius", "TurnRadius", "BackOffRadius", "HaulToStorageJob"):
+            if need not in src:
+                raise ExpectationFailed("crew job lost %s" % need)
+        t.screenshot()
+
+
+@suite.chain("scald_vent_fields")
+def scald_vent_fields(t):
+    """SCALD_FLOOR_VENT_FIELDS_1: vent flora and sailor defs exist; the Scald generator lists the step; forecast never lies."""
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    with t.component("vent_flora_and_sailor_defs", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs="ThingDef/RM_Glasskelle;ThingDef/RM_Pulsebead;ThingDef/RUT_ScaldVent;PawnKindDef/RM_Noohm")
+        if _live(t) and ((r or {}).get("success") is False or (r or {}).get("notFound")):
+            raise ExpectationFailed("vent field defs missing: %r" % r)
+        t.screenshot()
+    with t.component("scald_generator_lists_vent_field_only", beyond_toggle=True):
+        text = open(os.path.join(here, "Defs", "MapGeneration", "RM_SeaDiveGenerators.xml"), encoding="utf-8").read()
+        blocks = text.split("<MapGeneratorDef>")[1:]
+        for b in blocks:
+            name = b.split("<defName>")[1].split("</defName>")[0]
+            has = "RM_ScaldVentField" in b
+            if (name == "RM_SeaDiveGenerator_TheScald") != has:
+                raise ExpectationFailed("%s vent-field listing wrong (has=%s)" % (name, has))
+        t.screenshot()
+    with t.component("forecast_warns_before_every_discharge", beyond_toggle=True):
+        src = open(os.path.join(here, "Source", "RM_MapComponent_ScaldVentForecast.cs"), encoding="utf-8").read()
+        code = "\n".join(l for l in src.splitlines() if not l.strip().startswith("//"))
+        # the only path into phase 2 (discharge) must be from phase 1 (warning)
+        if "phase == 1)\n            {\n                phase = 2;" not in code.replace("\r", ""):
+            raise ExpectationFailed("discharge no longer follows the warning phase")
+        for banned in ["Building_Door", "Gravship", "Launch"]:
+            if banned in code:
+                raise ExpectationFailed("forecast touches %s" % banned)
+        t.screenshot()

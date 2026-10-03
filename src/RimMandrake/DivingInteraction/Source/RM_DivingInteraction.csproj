@@ -86,6 +86,10 @@
     <Compile Include="RM_CompPowerPlantAuroraSurge.cs" />
     <Compile Include="Patch_RealFoWStaleHearing.cs" />
     <Compile Include="RM_MapComponent_ScaldImmersionBerth.cs" />
+    <Compile Include="GenStep_ScaldVentField.cs" />
+    <Compile Include="RM_MapComponent_ScaldVentForecast.cs" />
+    <Compile Include="RM_MapComponent_ScaldWalkerGrazing.cs" />
+    <Compile Include="RM_WorkGiver_GatherGrazedMat.cs" />
   </ItemGroup>
 
   <ItemGroup>
