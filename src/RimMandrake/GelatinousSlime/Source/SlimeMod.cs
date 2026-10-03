@@ -123,12 +123,16 @@ namespace RimMandrake.GelatinousSlime
         // GELATINOUSSLIME_VAULT_SEAL_BREACH_1: a titanoslime chunk dissolves a slime-breachable seal. Off: the chunk does nothing.
         public static bool sealBreach = true;
 
+        // GELATINOUSSLIME_ARCHIVE_RESURRECTION_1: the body files each colonist it reads, and the archive vat can grow a dead one back from the last entry. Off: no new entries, the vat does nothing.
+        public static bool archiveResurrection = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref glurroSalve, "glurroSalve", true, true);
             Scribe_Values.Look(ref pitSolvent, "pitSolvent", true, true);
             Scribe_Values.Look(ref sealBreach, "sealBreach", true, true);
+            Scribe_Values.Look(ref archiveResurrection, "archiveResurrection", true, true);
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
             Scribe_Values.Look(ref dwommoFlies, "dwommoFlies", true, true);
@@ -222,6 +226,10 @@ namespace RimMandrake.GelatinousSlime
             list.CheckboxLabeled("Titanoslime chunk breaches seals", ref sealBreach,
                 "On (default): a chunk cut from a titanoslime dissolves an Assailant seal and drenches the "
                 + "doorway in slime. Off: the chunk does nothing and seals stay shut.");
+            list.CheckboxLabeled("Archive resurrection", ref archiveResurrection,
+                "On (default): every time the body reads a colonist it files them as they were, and an "
+                + "archive vat can grow a dead one back from that last entry, with no memory of anything since. "
+                + "Off: no new entries are filed and the vat does nothing; entries already filed are kept.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");

@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True, "sealBreach": True}
+          "fieldConversionRate": 1, "farmRuinsEnabled": True, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True, "sealBreach": True, "archiveResurrection": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -468,6 +468,35 @@ def defs_static(t):
             rows, nf = _defs(t, ["ThingDef/RM_TitanoslimeChunk"])
             if nf:
                 _fail("chunk not resolving live (foundCount != 1): %s" % nf)
+
+    with _comp(t, "archive_resurrection_defs", toggle="archiveResurrection"):
+        # GELATINOUSSLIME_ARCHIVE_RESURRECTION_1 (Slime-side slice): vat building on its class + power, gated by a
+        # project requiring vanilla Archogenetics, plus the returned-mark hediff and the kin thought it grants.
+        vx = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "SlimeArchiveVat.xml")).getroot()
+        vat = [e for e in vx.findall("ThingDef") if e.findtext("defName") == "RM_ArchiveVat"]
+        if not vat:
+            _fail("SlimeArchiveVat.xml must define RM_ArchiveVat")
+        if "Building_SlimeArchiveVat" not in (vat[0].findtext("thingClass") or ""):
+            _fail("RM_ArchiveVat needs thingClass Building_SlimeArchiveVat")
+        if vat[0].find("comps/li[@Class='CompProperties_Power']") is None:
+            _fail("RM_ArchiveVat must be powered")
+        if vat[0].findtext("researchPrerequisites/li") != "RM_ArchiveGrowing":
+            _fail("RM_ArchiveVat must be gated by RM_ArchiveGrowing")
+        rx = ET.parse(os.path.join(HERE, "Defs", "ResearchProjectDefs", "ArchiveGrowing.xml")).getroot()
+        pre = [e.text for e in rx.findall("ResearchProjectDef/prerequisites/li")]
+        if "Archogenetics" not in pre:
+            _fail("RM_ArchiveGrowing must require vanilla Archogenetics: %s" % pre)
+        for f, dn in (("HediffDefs/ArchiveReturned.xml", "RM_ArchiveReturned"), ("ThoughtDefs/ArchiveThoughts.xml", "RM_KnewBothSelves")):
+            if dn not in open(os.path.join(HERE, "Defs", f)).read():
+                _fail("%s must define %s" % (f, dn))
+        src = open(os.path.join(HERE, "Source", "RM_GelatinousSlime.csproj")).read()
+        if "ArchiveResurrection.cs" not in src:
+            _fail("ArchiveResurrection.cs missing from the csproj Compile list (compiles into nothing otherwise)")
+        if t._guard():
+            rows, nf = _defs(t, ["ThingDef/RM_ArchiveVat", "ResearchProjectDef/RM_ArchiveGrowing",
+                                 "HediffDef/RM_ArchiveReturned", "ThoughtDef/RM_KnewBothSelves"])
+            if nf:
+                _fail("archive resurrection defs not resolving live: %s" % nf)
 
     with _comp(t, "terrain_tagged"):
         if t._guard():
@@ -1015,5 +1044,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False), ("sealBreach", False)):
+                       ("farmRuinsEnabled", False), ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False), ("sealBreach", False), ("archiveResurrection", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

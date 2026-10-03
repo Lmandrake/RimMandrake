@@ -455,6 +455,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 return;
             }
+            SlimeArchiveUtility.Touch(p); // the body files what it swallows (ARCHIVE_RESURRECTION_1)
 
             // The Devourer's trick, MEASURED: tell the victim's lord it took
             // damage so a raid reacts to one of its own vanishing.
