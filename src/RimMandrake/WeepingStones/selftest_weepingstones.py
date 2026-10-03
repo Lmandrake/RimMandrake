@@ -114,7 +114,8 @@ class WSGame(MockGame):
             allf = {"fishTypes": {"freshwater_Common": dict((n, 1.0) for n in V.FISH_NAMES[:3]),
                                   "freshwater_Uncommon": dict((n, 1.0) for n in V.FISH_NAMES[3:])},
                     "maxFishPopulation": V.BIOME_SCALARS.get("maxFishPopulation"),
-                    "modExtensions": [] if "no_truce" in self.brk else [{"Class": "RM_WaterTruceExtension", "radius": 10}]}
+                    "modExtensions": ([] if "no_truce" in self.brk else [{"Class": "RM_WaterTruceExtension", "radius": 10}])
+                                      + [{"Class": "RM_SunHeatExtension", "heatKind": "lowSun"}]}
             if "no_fish" in self.brk:
                 allf["fishTypes"] = {}
         elif typ == "TileMutatorDef":
