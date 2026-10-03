@@ -2405,3 +2405,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"SWEETLINE_FELT_COMFORT_BUILD_1","ts":"2026-10-03T18:19:39Z","tsn":1791051579162183428}
 {"seat":"FOUNDRY","event":"start","id":"SWEETLINE_FELT_COMFORT_BUILD_1","ts":"2026-10-03T18:19:39Z","tsn":1791051579674295402}
 {"seat":"FOUNDRY","event":"close","id":"SWEETLINE_FELT_COMFORT_BUILD_1","sha":"103d2793db88","ts":"2026-10-03T18:19:50Z","tsn":1791051590341657489}
+{"seat":"FOUNDRY","event":"note","id":"LEANINGSCRUB_SWEETLINE_GUARDIAN_1","text":"Ruled 2026-10-03 (R1-R14, spec sweetline_guardian_spec.md) and the whole spec sec 11 is built: guardians fd8b0b8d2, scratching 7f3b13094, map step fc4fa8530, felt comfort 103d2793d. Spec sec 13 leftovers are open-not-blocking (material word, thunderstep coat, warden art, sibling items). Live proof owed on each build item.","ts":"2026-10-03T18:20:07Z","tsn":1791051607128758348}
+{"seat":"FOUNDRY","event":"close","id":"LEANINGSCRUB_SWEETLINE_GUARDIAN_1","sha":"103d2793db88","ts":"2026-10-03T18:20:07Z","tsn":1791051607663442962}
