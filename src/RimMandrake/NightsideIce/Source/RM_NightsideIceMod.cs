@@ -9,32 +9,28 @@ namespace RimMandrake.NightsideIce
     //
     // Precedent: src/RimMandrake/FeverWood/Source/RM_FeverWoodMod.cs.
     //
-    // Deliberately thin, and that is a finding, not a shortcut:
-    // NIGHTSIDEICE_RM_MOD_BUILD_1 steps 1-4 ship only the BiomeDef itself.
-    // No kit spec exists for this biome (§8 of the item: grepped
-    // src/RimMandrake, src/RimUtinni, src/RimStarWars for "tunneler",
-    // "one-move", "landform catalyst", "catalytic sheet" — zero hits outside
-    // prose), and workerClass stays the vanilla Core BiomeWorker_IceSheet, so
-    // there is no natural-placement scoring toggle either (unlike
-    // RM_FeverWoodSettings.naturalPlacementEnabled, which gates a real
-    // RM_BiomeWorker_FeverWood this biome does not have). A per-mechanic
-    // toggle for content this mod does not ship would be a settings screen
-    // that lies, so only a master switch is built.
+    // Master switch plus the heat dial (NIGHTSIDEICE_HEAT_DIAL_1, RM_HeatDial.cs). The breach
+    // cracks and the shivven that read the dial are filed, unbuilt, and get settings when they land.
     // ════════════════════════════════════════════════════════════════════
     public class RM_NightsideIceSettings : ModSettings
     {
-        /// <summary>Master switch. Off: this mod's def still loads (nothing
-        /// on a saved game silently disappears) — there is currently nothing
-        /// else for this toggle to gate, since the biome ships no kit
-        /// mechanic and no custom worker of its own. Reserved for whichever
-        /// mechanic (tunnelers, icy insects, landform catalysts — all
-        /// unbuilt, see the item's §8) lands here first.</summary>
+        /// <summary>Master switch. Off: the def still loads; no mechanic of this mod runs.</summary>
         public static bool masterEnabled = true;
+
+        // NIGHTSIDEICE_HEAT_DIAL_1 -- the heat dial (RM_HeatDial.cs)
+        public static bool heatDialEnabled = true;            // measure the colony's heat on the Sleeping Ice
+        public static float heatDialScale = 150f;             // raw heat at which the dial reads about 63%
+        public static bool heatDialAlert = true;              // show the thermal-signature alert
+        public static float heatDialAlertThreshold = 0.2f;    // dial at which the alert appears
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref masterEnabled, "masterEnabled", true);
+            Scribe_Values.Look(ref heatDialEnabled, "heatDialEnabled", true);
+            Scribe_Values.Look(ref heatDialScale, "heatDialScale", 150f);
+            Scribe_Values.Look(ref heatDialAlert, "heatDialAlert", true);
+            Scribe_Values.Look(ref heatDialAlertThreshold, "heatDialAlertThreshold", 0.2f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -44,14 +40,27 @@ namespace RimMandrake.NightsideIce
 
             list.Label("Nightside Ice");
             list.CheckboxLabeled("Mod enabled", ref masterEnabled,
-                "Off: RM_NightsideIce still loads and can be assigned to a tile directly. "
-              + "No kit mechanic exists yet for this toggle to gate — the biome is deliberately "
-              + "near-empty by design (no photosynthesis, almost no animal life), not a build "
-              + "gap.");
+                "Off: RM_NightsideIce still loads and can be assigned to a tile directly, but none of its "
+              + "mechanics run.");
             list.GapLine();
-            list.Label("No per-mechanic settings exist yet: this biome ships no kit spec "
-              + "(tunnelers, icy insects and landform catalysts are unbuilt, separate authoring "
-              + "work) and its BiomeWorker is vanilla Core's own BiomeWorker_IceSheet.");
+            list.Label("The heat dial");
+            list.CheckboxLabeled("Measure the colony's heat on the ice", ref heatDialEnabled,
+                "One continuous dial of how warm the colony is against the ice: working heaters, fires, power "
+              + "drawn and heated rooms. Everything in the ice that hunts by heat reads it. Off: it reads zero.");
+            if (heatDialEnabled)
+            {
+                list.Label("Sensitivity: the dial reads about 63% at " + heatDialScale.ToString("0") + " heat "
+                    + "(a heater is about 21, a 1000 W draw about 10)");
+                heatDialScale = list.Slider(heatDialScale, 25f, 600f);
+                list.CheckboxLabeled("Show the thermal-signature alert", ref heatDialAlert);
+                if (heatDialAlert)
+                {
+                    list.Label("Alert from " + Mathf.RoundToInt(heatDialAlertThreshold * 100f) + "%");
+                    heatDialAlertThreshold = list.Slider(heatDialAlertThreshold, 0f, 1f);
+                }
+            }
+            list.GapLine();
+            list.Label("Not built yet, so no settings: the breach cracks and the shivven that answer the dial.");
 
             list.End();
         }

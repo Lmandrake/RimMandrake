@@ -29,11 +29,9 @@ silhouettes). `workerClass` stays the vanilla Core `BiomeWorker_IceSheet` —
 the twin never used a donor type, so this mod owes no
 `RM_BiomeWorker_NightsideIce` of its own.
 
-This is the thinnest row in the biome-mod-split wave: no kit spec exists for
-this biome and no mechanic is shipped or owed here (the roster's unbuilt
-tunnelers, icy insects and landform catalysts are separate, not-yet-filed
-authoring work). Ships only the BiomeDef itself, unaltered from its twin
-except for the defName and the eviction of the one Star Wars canon row.
+Ships the BiomeDef and the heat dial (NIGHTSIDEICE_HEAT_DIAL_1): one continuous
+reading of how warm the colony is against the ice, shown as a thermal-signature
+alert, which the ruled breach loop and shivven (filed, unbuilt) will read.
 
 ⛔ Star Wars canon fauna does NOT ship here — Q11a (owner ruling, 2026-09-22):
 a genuinely canon name is IP and must route through the Utinni campaign patch
