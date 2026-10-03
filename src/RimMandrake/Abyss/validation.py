@@ -230,6 +230,49 @@ def etchfall_check():
     return bad
 
 
+def dark_check():
+    """Offline: the three weathers, murk hediff, biome wiring (no donor weather), Dark component, settings, grain hook, csproj."""
+    bad = []
+    w = {d.findtext("defName"): d for d in _defs("WeatherDefs/RM_Weathers_Abyss.xml").iter("WeatherDef")}
+    for n in ("RM_AbyssDark", "RM_AbyssUnveiling", "RM_AbyssWitchfire"):
+        if n not in w:
+            bad.append("weather missing: " + n)
+    if not any(d.findtext("defName") == "RM_Murk" for d in _defs("HediffDefs/RM_Hediffs_Dark.xml").iter("HediffDef")):
+        bad.append("RM_Murk hediff missing")
+    biome = _defs("BiomeDefs/RM_Abyss.xml")
+    bw = biome.find(".//baseWeatherCommonalities")
+    if bw is None:
+        return bad + ["biome has no baseWeatherCommonalities"]
+    c = {e.tag: float(e.text) for e in bw}
+    if c.get("Clear") != 0:
+        bad.append("Clear weather commonality must stay 0 (hard ban 4)")
+    if any(t.startswith("AB_") for t in c):
+        bad.append("donor AB_ weather still in the biome")
+    if not (c.get("RM_AbyssDark", 0) > 0 and 0 < c.get("RM_AbyssUnveiling", 0) <= 2 and c.get("RM_AbyssUnveiling", 0) < c.get("RM_AbyssDark", 0) / 20):
+        bad.append("Dark must dominate and the Unveiling be rare (<5%% of the Dark): %r" % c)
+    if c.get("RM_AbyssWitchfire", 0) <= 0:
+        bad.append("Witchfire not in biome")
+    if w.get("RM_AbyssUnveiling") is not None and w["RM_AbyssUnveiling"].findtext("repeatable") != "false":
+        bad.append("Unveiling must not be repeatable")
+    src = os.path.join(HERE, "Source")
+    cs = open(os.path.join(src, "RM_MapComponentDark.cs")).read() if os.path.isfile(os.path.join(src, "RM_MapComponentDark.cs")) else ""
+    for needle in ("GetTemperature(map)", "Roofed(map)", "RM_Murk", "CompGlower", "RM_Summ", "WeatherEvent_LightningFlash",
+                   "darkStrength", "unveilingEnabled", "stormCallEnabled", "RM_DurrgakCairn", "GrainMultiplier"):
+        if needle not in cs:
+            bad.append("Dark source lacks " + needle)
+    if "IsGrainfall" in cs and "return map?.Biome" in open(os.path.join(src, "RM_MapComponentEtchfall.cs")).read():
+        bad.append("IsGrainfall is still the biome stand-in")
+    mod = open(os.path.join(src, "RM_AbyssMod.cs")).read()
+    for needle in ("darkEnabled", "darkStrength", "unveilingEnabled", "stormCallEnabled"):
+        if needle not in mod:
+            bad.append("Mod Settings lacks " + needle)
+    if 'Compile Include="RM_MapComponentDark.cs"' not in open(os.path.join(src, "RM_Abyss.csproj")).read():
+        bad.append("RM_MapComponentDark.cs not in csproj")
+    if not os.path.isfile(os.path.join(HERE, "Assemblies", "RimMandrake.Abyss.dll")):
+        bad.append("DLL not built")
+    return bad
+
+
 try:
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Abyss")
@@ -271,6 +314,15 @@ try:
                 if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                     raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
 
+    @suite.chain("dark_defs_resolve")
+    def dark_defs_resolve(t):
+        """Live: the three weathers and the murk hediff loaded. The Dark's effect on a pawn needs a joint session (a state read of RM_Murk severity in a cold vs a heated room)."""
+        with t.component("dark_defs_loaded", beyond_toggle=True):
+            for d in ("WeatherDef/RM_AbyssDark", "WeatherDef/RM_AbyssUnveiling", "WeatherDef/RM_AbyssWitchfire", "HediffDef/RM_Murk"):
+                r = t.bridge_call("jawa/get_defs", defs=d)
+                if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                    raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
     @suite.chain("krizzak_defs_resolve")
     def krizzak_defs_resolve(t):
         """Live: the krizzak defs loaded. Flight itself is proved by a Pawn_FlightTracker state read with the owner present, never a visual hunt."""
@@ -293,4 +345,6 @@ if __name__ == "__main__":
     print("ETCHFALL static: %s" % ("PASS" if not e else "FAIL " + "; ".join(e)))
     k = krizzak_check()
     print("KRIZZAK static: %s" % ("PASS" if not k else "FAIL " + "; ".join(k)))
-    sys.exit(1 if (f or g or d or e or k) else 0)
+    r = dark_check()
+    print("DARK static: %s" % ("PASS" if not r else "FAIL " + "; ".join(r)))
+    sys.exit(1 if (f or g or d or e or k or r) else 0)

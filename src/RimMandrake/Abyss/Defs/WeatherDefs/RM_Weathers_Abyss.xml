@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- ABYSS_DARK_BUILD_1. Own weathers, no donor. The Dark itself (blindness, lamp-swallowing, heat pockets) is
+       RM_MapComponent_Dark reading these by defName; the defs carry sky, accuracy and sound only. -->
+  <WeatherDef>
+    <defName>RM_AbyssDark</defName>
+    <label>the Dark</label>
+    <description>Aurora-ash hangs in the air like a substance. It swallows light in transit; only warmth thins it.</description>
+    <accuracyMultiplier>0.6</accuracyMultiplier>
+    <repeatable>true</repeatable>
+    <favorability>Neutral</favorability>
+    <perceivePriority>0</perceivePriority>
+    <durationRange><min>8000</min><max>25000</max></durationRange>
+    <ambientSounds><li>Ambient_Wind_Fog</li></ambientSounds>
+    <skyColorsDay><sky>(0.40,0.43,0.50)</sky><shadow>(0.92,0.92,0.92)</shadow><overlay>(0.55,0.55,0.60)</overlay><saturation>0.9</saturation></skyColorsDay>
+    <skyColorsDusk><sky>(0.35,0.36,0.42)</sky><shadow>(0.93,0.90,0.92)</shadow><overlay>(0.45,0.45,0.50)</overlay><saturation>0.8</saturation></skyColorsDusk>
+    <skyColorsNightEdge><sky>(0.25,0.27,0.35)</sky><shadow>(0.92,0.82,0.92)</shadow><overlay>(0.40,0.40,0.45)</overlay><saturation>0.7</saturation></skyColorsNightEdge>
+    <skyColorsNightMid><sky>(0.20,0.24,0.32)</sky><shadow>(0.85,0.85,0.85)</shadow><overlay>(0.45,0.45,0.50)</overlay><saturation>0.7</saturation></skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_AbyssUnveiling</defName>
+    <label>the Unveiling</label>
+    <description>The Dark folds away all at once and the country shows itself, naked and lit. Then it folds back.</description>
+    <accuracyMultiplier>1</accuracyMultiplier>
+    <repeatable>false</repeatable>
+    <favorability>Good</favorability>
+    <perceivePriority>1</perceivePriority>
+    <durationRange><min>2500</min><max>7500</max></durationRange>
+    <ambientSounds><li>Ambient_Wind_Clear</li></ambientSounds>
+    <skyColorsDay><sky>(1,1,1)</sky><shadow>(0.718,0.745,0.757)</shadow><overlay>(1,1,1)</overlay><saturation>1.25</saturation></skyColorsDay>
+    <skyColorsDusk><sky>(0.858,0.650,0.423)</sky><shadow>(0.955,0.886,0.914)</shadow><overlay>(0.8,0.8,0.8)</overlay><saturation>1.25</saturation></skyColorsDusk>
+    <skyColorsNightEdge><sky>(0.482,0.603,0.682)</sky><shadow>(0.92,0.92,0.92)</shadow><overlay>(0.6,0.6,0.6)</overlay><saturation>1.25</saturation></skyColorsNightEdge>
+    <skyColorsNightMid><sky>(0.482,0.603,0.682)</sky><shadow>(0.85,0.85,0.85)</shadow><overlay>(0.6,0.6,0.6)</overlay><saturation>1.25</saturation></skyColorsNightMid>
+  </WeatherDef>
+
+  <WeatherDef>
+    <defName>RM_AbyssWitchfire</defName>
+    <label>Witchfire storm</label>
+    <description>Two atmospheres igniting into a chemistry native to neither: light and violence with no name. The Dark persists inside it. Some of the thunder is not thunder.</description>
+    <accuracyMultiplier>0.3</accuracyMultiplier>
+    <repeatable>true</repeatable>
+    <favorability>VeryBad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <windSpeedFactor>1.5</windSpeedFactor>
+    <durationRange><min>15000</min><max>40000</max></durationRange>
+    <ambientSounds><li>Ambient_Wind_Storm</li></ambientSounds>
+    <eventMakers>
+      <li><averageInterval>1500</averageInterval><eventClass>WeatherEvent_LightningFlash</eventClass></li>
+      <li><averageInterval>2400</averageInterval><eventClass>WeatherEvent_LightningStrike</eventClass></li>
+    </eventMakers>
+    <skyColorsDay><sky>(0.45,0.42,0.58)</sky><shadow>(0.92,0.92,0.92)</shadow><overlay>(0.60,0.55,0.70)</overlay><saturation>1</saturation></skyColorsDay>
+    <skyColorsDusk><sky>(0.42,0.38,0.55)</sky><shadow>(0.92,0.92,0.92)</shadow><overlay>(0.50,0.45,0.60)</overlay><saturation>0.9</saturation></skyColorsDusk>
+    <skyColorsNightEdge><sky>(0.35,0.30,0.48)</sky><shadow>(0.92,0.92,0.92)</shadow><overlay>(0.45,0.40,0.55)</overlay><saturation>0.75</saturation></skyColorsNightEdge>
+    <skyColorsNightMid><sky>(0.28,0.24,0.40)</sky><shadow>(0.92,0.92,0.92)</shadow><overlay>(0.45,0.40,0.55)</overlay><saturation>0.75</saturation></skyColorsNightMid>
+  </WeatherDef>
+</Defs>

@@ -16,11 +16,11 @@ namespace RimMandrake.Abyss
 
         public RM_MapComponent_Etchfall(Map map) : base(map) { }
 
-        /// <summary>The grain hook. Until ABYSS_DARK_BUILD_1 supplies the Dark as a real weather/overlay,
-        /// the grain falls wherever the biome is the Abyss. DARK replaces this body, nothing else.</summary>
+        /// <summary>The grain hook: true while the map's weather is one of the Abyss's Dark weathers
+        /// (the Dark, a Witchfire storm, or the Unveiling, when the Dark collapses to grain).</summary>
         public static bool IsGrainfall(Map map)
         {
-            return map?.Biome != null && map.Biome.defName == "RM_Abyss";
+            return RM_MapComponent_Dark.GrainMultiplier(map) > 0f;
         }
 
         public static bool Erodible(Thing edifice)
@@ -36,7 +36,7 @@ namespace RimMandrake.Abyss
             float strength = RM_AbyssSettings.etchfallStrength;
             if (strength <= 0.001f || !IsGrainfall(map)) return;
 
-            int tries = Mathf.CeilToInt(CellsPerPass * strength);
+            int tries = Mathf.CeilToInt(CellsPerPass * strength * RM_MapComponent_Dark.GrainMultiplier(map));
             for (int i = 0; i < tries; i++)
             {
                 IntVec3 c = CellRect.WholeMap(map).RandomCell;
