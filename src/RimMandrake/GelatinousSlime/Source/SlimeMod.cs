@@ -112,10 +112,15 @@ namespace RimMandrake.GelatinousSlime
         // Off: salved pawns get no slowing (read by GlurroSalveUtility.GrowthFactor).
         public static bool glurroSalve = true;
 
+        // GELATINOUSSLIME_PIT_SOLVENT_1: the slime pit offers the solvent recipes (toxipotatoes, twisted
+        // meat, glurro concentrate). Off: only the original slime-to-meal bill (applied by PitSolvent).
+        public static bool pitSolvent = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref glurroSalve, "glurroSalve", true, true);
+            Scribe_Values.Look(ref pitSolvent, "pitSolvent", true, true);
             Scribe_Values.Look(ref gappoChannels, "gappoChannels", true, true);
             Scribe_Values.Look(ref fubbumHunts, "fubbumHunts", true, true);
             Scribe_Values.Look(ref dwommoFlies, "dwommoFlies", true, true);
@@ -196,6 +201,10 @@ namespace RimMandrake.GelatinousSlime
             list.CheckboxLabeled("Glurro salve slows slimification", ref glurroSalve,
                 "On (default): salve and concentrate from the glurro slow the reading while they last. It "
                 + "never stops it; the antidote stays the only cure. Off: the items do nothing for slimification.");
+            list.CheckboxLabeled("Slime pit as a solvent", ref pitSolvent,
+                "On (default): the slime pit also renders toxipotatoes and twisted meat safe to eat and "
+                + "boils a glurro carcass down to salve concentrate. Off: the pit only makes simple meals "
+                + "from raw slime.");
             list.GapLine();
 
             list.Label("THE TITANOSLIME");
@@ -294,6 +303,7 @@ namespace RimMandrake.GelatinousSlime
             TitanoslimeSpawnTuning.Apply();
             FubbumHunting.Apply();
             DwommoFlight.Apply();
+            PitSolvent.Apply();
             GeneArchiveDef.InvalidateActiveCache();
         }
     }

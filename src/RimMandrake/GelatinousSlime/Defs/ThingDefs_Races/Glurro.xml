@@ -4,9 +4,8 @@
   <!--
     GELATINOUSSLIME_GLURRO_SALVE_1: the glurro, an iron-crusted crawler that grazes the slime channels
     and is never read (SlimeResistantExtension). Tamed, it is MILKED (vanilla CompProperties_Milkable)
-    for RM_GlurroSalve; butchered, it yields RM_GlurroSalveConcentrate (the "rendered down" half:
-    the item named a slime-pit rendering station paired with GELATINOUSSLIME_PIT_SOLVENT_1, which
-    does not exist, so the concentrate is a butcher product, no station). All numbers // INVENTED.
+    for RM_GlurroSalve; rendered down in the slime pit it yields RM_GlurroSalveConcentrate (recipe
+    RM_Render_GlurroConcentrate, GELATINOUSSLIME_PIT_SOLVENT_1; no longer a butcher product). All numbers // INVENTED.
     One home: wired inline on RM_GelatinousSlime/wildAnimals. Art queued from the turn1 CSV row;
     magenta until it lands.
   -->
@@ -47,9 +46,6 @@
         <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
       </li>
     </tools>
-    <butcherProducts>
-      <RM_GlurroSalveConcentrate>1</RM_GlurroSalveConcentrate>
-    </butcherProducts>
     <race>
       <body>TurtleLike</body>
       <predator>false</predator>

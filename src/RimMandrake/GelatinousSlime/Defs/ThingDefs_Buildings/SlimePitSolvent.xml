@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    GELATINOUSSLIME_PIT_SOLVENT_1 (free tier). The slime pit as a solvent: it renders down food that
+    would otherwise poison, and the glurro carcass into its concentrate. Toggle SlimeSettings.pitSolvent
+    (PitSolvent.cs) adds/removes these recipes from RM_SlimePit. All yields and work amounts // INVENTED.
+    Inputs are real vanilla defs (read from the installed Data, never guessed):
+      RawToxipotato (Biotech, FoodPoisonChanceFixedHuman 0.04), Meat_Twisted (Anomaly, 0.02).
+    Output is a SAFE ingredient (RawPotatoes) or a plain meal; the slime does the detox, so the
+    products carry no poison chance of their own. DLCs are assumed present (owner 2026-09-26).
+    NOT HERE: the campaign "Rot's finest" gourmet input (spec 3) lives in src/RimUtinni, and the
+    superdeep-pit/liquid primitives are unbuilt (PIT_SUPERDEEP_COLLAPSE_1), so this is the building recipe slice only.
+  -->
+
+  <RecipeDef>
+    <defName>RM_Render_Toxipotato</defName>
+    <label>render toxipotatoes safe</label>
+    <description>Boil toxipotatoes in the slime pit until the slime has taken the poison out of them, leaving ordinary potatoes.</description>
+    <jobString>Rendering toxipotatoes.</jobString>
+    <workAmount>400</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <recipeUsers>
+      <li>RM_SlimePit</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RawToxipotato</li>
+          </thingDefs>
+        </filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RawToxipotato</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RawPotatoes>20</RawPotatoes>
+    </products>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Render_TwistedMeat</defName>
+    <label>render twisted meat into a simple meal</label>
+    <description>Dissolve the tumorous gristle of twisted meat in the slime pit until it is something a person can eat without being sick.</description>
+    <jobString>Rendering twisted meat.</jobString>
+    <workAmount>600</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <recipeUsers>
+      <li>RM_SlimePit</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Meat_Twisted</li>
+          </thingDefs>
+        </filter>
+        <count>25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Meat_Twisted</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <MealSimple>1</MealSimple>
+    </products>
+  </RecipeDef>
+
+  <!-- The "rendered down" half of the glurro (GELATINOUSSLIME_GLURRO_SALVE_1): the carcass is no
+       longer a butcher product, it is rendered here. -->
+  <RecipeDef>
+    <defName>RM_Render_GlurroConcentrate</defName>
+    <label>render a glurro into salve concentrate</label>
+    <description>Boil a whole glurro carcass down in the slime pit to a pot of dark salve concentrate.</description>
+    <jobString>Rendering a glurro.</jobString>
+    <workAmount>900</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <workSkill>Cooking</workSkill>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <recipeUsers>
+      <li>RM_SlimePit</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Corpse_RM_Glurro</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Corpse_RM_Glurro</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_GlurroSalveConcentrate>1</RM_GlurroSalveConcentrate>
+    </products>
+  </RecipeDef>
+
+</Defs>

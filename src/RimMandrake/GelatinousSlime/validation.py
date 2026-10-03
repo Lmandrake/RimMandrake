@@ -50,7 +50,7 @@ FIELDS = {"rarityFactor": 1, "flavorEntryRecorded": True, "flavorReadMarks": Tru
           "preferHigherPriorityArchive": True, "titanoslimeReversible": False,
           "titanoslimeMaxStage": 5, "titanoslimeSheds": True,
           "slimificationEnabled": True, "slimificationClockDays": 7, "fieldConversionEnabled": True,
-          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True}
+          "fieldConversionRate": 1, "visitorsEnabled": True, "visitorArrivalRate": 1, "gappoChannels": True, "fubbumHunts": True, "dwommoFlies": True, "glurroSalve": True, "pitSolvent": True}
 suite.toggles = list(FIELDS)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -396,8 +396,8 @@ def defs_static(t):
         mk = gl.find("comps/li[@Class='CompProperties_Milkable']")
         if mk is None or mk.findtext("milkDef") != "RM_GlurroSalve":
             _fail("RM_Glurro must carry CompProperties_Milkable with milkDef RM_GlurroSalve")
-        if gl.findtext("butcherProducts/RM_GlurroSalveConcentrate") is None:
-            _fail("RM_Glurro must yield RM_GlurroSalveConcentrate when butchered")
+        if gl.findtext("butcherProducts/RM_GlurroSalveConcentrate") is not None:
+            _fail("RM_Glurro must NOT butcher to the concentrate; the slime pit renders it (RM_Render_GlurroConcentrate)")
         if not any("SlimeResistantExtension" in (e.get("Class") or "") for e in gl.findall("modExtensions/li")):
             _fail("RM_Glurro must be slime resistant (it is never read)")
         ix = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "GlurroSalve.xml")).getroot()
@@ -416,6 +416,32 @@ def defs_static(t):
             rows, nf = _defs(t, ["ThingDef/RM_Glurro", "ThingDef/RM_GlurroSalve", "ThingDef/RM_GlurroSalveConcentrate"])
             if nf:
                 _fail("glurro defs not resolving live (foundCount != 3): %s" % nf)
+
+    with _comp(t, "pit_solvent_defs", toggle="pitSolvent"):
+        # GELATINOUSSLIME_PIT_SOLVENT_1: the pit renders poison food safe and the glurro into concentrate.
+        # Offline: each recipe is used by RM_SlimePit, has a nonempty input and a product; the toxic inputs
+        # are real vanilla defs and the products are not themselves poison sources. Live: foundCount == 3
+        # (the live bill outcome, one toxic input becoming a safe output, is UNMEASURED: no tool runs a bill).
+        px = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "SlimePitSolvent.xml")).getroot()
+        want = {"RM_Render_Toxipotato": ("RawToxipotato", "RawPotatoes"),
+                "RM_Render_TwistedMeat": ("Meat_Twisted", "MealSimple"),
+                "RM_Render_GlurroConcentrate": ("Corpse_RM_Glurro", "RM_GlurroSalveConcentrate")}
+        got = {e.findtext("defName"): e for e in px.findall("RecipeDef")}
+        for name, (inp, out) in want.items():
+            r = got.get(name)
+            if r is None:
+                _fail("%s missing from SlimePitSolvent.xml" % name)
+            if r.findtext("recipeUsers/li") != "RM_SlimePit":
+                _fail("%s must be a recipe of RM_SlimePit" % name)
+            ins = [e.text for e in r.findall("ingredients/li/filter/thingDefs/li")]
+            if ins != [inp] or [e.text for e in r.findall("fixedIngredientFilter/thingDefs/li")] != [inp]:
+                _fail("%s must take exactly %s: %s" % (name, inp, ins))
+            if r.find("products/" + out) is None or len(list(r.find("products"))) != 1:
+                _fail("%s must yield only %s" % (name, out))
+        if t._guard():
+            rows, nf = _defs(t, ["RecipeDef/%s" % n for n in want])
+            if nf:
+                _fail("pit solvent recipes not resolving live (foundCount != 3): %s" % nf)
 
     with _comp(t, "terrain_tagged"):
         if t._guard():
@@ -948,5 +974,5 @@ def settings_flip(t):
                        ("titanoslimeReversible", True), ("preferHigherPriorityArchive", False),
                        ("slimificationEnabled", False), ("slimificationClockDays", 2),
                        ("fieldConversionEnabled", False), ("fieldConversionRate", 4),
-                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False)):
+                       ("visitorsEnabled", False), ("visitorArrivalRate", 4), ("gappoChannels", False), ("fubbumHunts", False), ("dwommoFlies", False), ("glurroSalve", False), ("pitSolvent", False)):
         _flip(t, "%s_setting_flips" % field, field, off)

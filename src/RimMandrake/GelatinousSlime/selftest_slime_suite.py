@@ -21,6 +21,7 @@ CASES = {
     "noflight": ["dwommo_flight_def"],
     "nosalve": ["glurro_salve_slows_growth"],
     "nodef:ThingDef/RM_GlurroSalve": ["glurro_salve_defs"],
+    "nodef:RecipeDef/RM_Render_TwistedMeat": ["pit_solvent_defs"],
     "nodry": ["drying_biomes_tagged"],
     "nostep": ["visitor_genstep_registered"],
     "defaultswrong": ["settings_defaults"],

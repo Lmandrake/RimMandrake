@@ -57,6 +57,7 @@
     <Compile Include="DwommoFlight.cs" />
     <Compile Include="FubbumHunting.cs" />
     <Compile Include="GlurroSalve.cs" />
+    <Compile Include="PitSolvent.cs" />
   </ItemGroup>
 
   <ItemGroup>
