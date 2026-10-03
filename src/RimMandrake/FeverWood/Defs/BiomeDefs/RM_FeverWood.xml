@@ -57,6 +57,11 @@
     <allowRivers>true</allowRivers>
     <allowFarmingCamps>true</allowFarmingCamps>
     <animalDensity>2.3</animalDensity>
+    <!-- FEVERWOOD_CROWN_SOUND_HEAT_1: the crown's working hum; RM_MapComponent_SilenceCue hushes it while a
+         sentinel is up (section 6k), so the silence cuts something real. -->
+    <soundsAmbient>
+      <li>RM_FeverWood_CrownHum</li>
+    </soundsAmbient>
     <plantDensity>0.7</plantDensity>
     <forageability>0.6</forageability>
     <movementDifficulty>5</movementDifficulty>
@@ -171,6 +176,14 @@
       <li Class="RimMandrake.FeverWood.RM_AntHiveBiomeExtension">
         <workerKind>RM_Kurreth</workerKind>
         <queenKind>RM_KurrethQueen</queenKind>
+      </li>
+      <!-- FEVERWOOD_CROWN_SOUND_HEAT_1 / SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - still, shadeless
+           heat under the crown: shade does nothing, only insulation or leaving helps. Vanilla temperature
+           only, no hediff. heatOffsetC is an INVENTED first value for the owner-watched sitting, same
+           posture as the Greentide's. -->
+      <li Class="RimMandrake.CreatureBehaviors.RM_SunHeatExtension" MayRequire="mandrake.rm.biomes">
+        <heatKind>ambient</heatKind>
+        <heatOffsetC>8</heatOffsetC>
       </li>
     </modExtensions>
     <baseWeatherCommonalities>
