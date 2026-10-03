@@ -81,6 +81,7 @@
       <li>ScarlandsJunkPrefabs</li>
       <li>RM_TotchakInWall</li>
       <li>RM_InscribedPanels</li>
+      <li>RM_KneelingRings</li>
     </extraGenSteps>
     <diseaseMtbDays>50</diseaseMtbDays>
     <diseases>

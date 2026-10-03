@@ -28,7 +28,9 @@ SETTINGS_TYPE = NS + "RM_WarscarSettings"
 DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWakeRadius": 12.0,
             "totchakBiteScale": 1.0, "totchakGrazeDays": 8.0, "turretTrackingEnabled": True, "turretRefitEnabled": True,
             "oldLineDamageFactor": 1.0, "oldLineCooldownFactor": 1.0,
-            "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8}
+            "oldTongueEnabled": True, "oldTonguePanelsPerMap": 3.0, "oldTongueRevealChance": 0.8, "oldTongueSkillGate": 8,
+            "hospiceEnabled": True, "hospiceIntactPerMap": 2, "hospiceStageDays": 1.5, "hospiceFailureChance": 0.08,
+            "hospiceLashOut": True, "hospiceWalkInEnabled": True, "hospiceWalkInFrequency": 1.0}
 PANELS = {"Hospice": 2, "Projector": 3, "Pool": 3}
 BROKEN = ["AncientAutocannonTurret", "AncientUraniumSlugTurret", "RUT_BustedShieldedTurret"]
 NEW_DEFS = ["ThingDef/RM_OldLineTurret", "ThingDef/RM_OldLineTurret_Gun", "ThingDef/RM_OldLineTurret_Bullet"]
@@ -130,6 +132,60 @@ def static_checks():
     cs = re.sub(r"//[^\n]*", "", cs)
     if re.search(r"\bVerb\b|Verb_|AttackTarget|TryStartCastOn|Projectile\b.*Launch", cs.split("OldLineTurretTuning")[0]):
         bad.append("the aim comp touches a verb or projectile -- it must stay verbless")
+    # WARSCAR_HOSPICE_DESERTERS_1
+    if 'Compile Include="RM_Hospice.cs"' not in csproj:
+        bad.append("RM_Hospice.cs missing from RM_Warscar.csproj")
+    D = os.path.join(HERE, "Defs")
+    hist = ET.parse(os.path.join(D, "RM_DeserterHistoryDefs", "RM_DeserterHistories.xml")).getroot()
+    hed = ET.parse(os.path.join(D, "HediffDefs", "RM_DeserterHediffs.xml")).getroot()
+    hed_names = set(e.findtext("defName") for e in hed)
+    if len(hist) != 7:
+        bad.append("expected 7 deserter histories, found %d" % len(hist))
+    bible = open(os.path.join(HERE, "..", "..", "..", "design", "Jawa", "worldbuilding", "biomes",
+                              "warscar_bedazzle_cast_2026-09-30.md"), encoding="utf-8").read().replace("*", "").replace("\u201c", '"').replace("\u201d", '"')
+    for h in hist:
+        mem = [li.text for li in h.findall("memories/li")]
+        if len(mem) != 3:
+            bad.append("%s does not have three memory lines" % h.findtext("defName"))
+        for m in mem:
+            if m.strip('[]') not in bible.replace("[", "").replace("]", ""):
+                bad.append("%s memory is not verbatim from cast bible 6A: %s" % (h.findtext("defName"), m))
+            for word in ("Rakata", "Assailant", "scaria", "Sith", "Empire", "Republic", "God", "Force"):
+                if word in m:
+                    bad.append("memory names the enemy/side/god (%s): %s" % (word, m))
+        for li in h.findall("modifications/li"):
+            if li.text not in hed_names:
+                bad.append("%s names missing hediff %s" % (h.findtext("defName"), li.text))
+    serv = ET.parse(os.path.join(D, "ThingDefs_Races", "RM_AncientServitor.xml")).getroot()
+    sraw = open(os.path.join(D, "ThingDefs_Races", "RM_AncientServitor.xml")).read()
+    if "OverseerSubject" in re.sub(r"<!--.*?-->", "", sraw, flags=re.S):
+        bad.append("servitor carries an overseer subject comp")
+    if serv.find("ThingDef/comps").get("Inherit") != "False":
+        bad.append("servitor comps do not drop the inherited overseer comp (Inherit=False)")
+    wt = [li.text for li in serv.findall("ThingDef/race/mechEnabledWorkTypes/li")]
+    if sorted(wt) != ["Cleaning", "Construction", "Hauling", "Mining"]:
+        bad.append("servitor work types wrong: %r" % wt)
+    for f in ("ThingDefs_Buildings/RM_Hospice.xml", "ThingDefs_Items/RM_HospiceItems.xml", "GenStepDefs/RM_KneelingRings.xml", "JobDefs/RM_HospiceJobs.xml"):
+        ET.parse(os.path.join(D, *f.split("/")))
+    bld = ET.parse(os.path.join(D, "ThingDefs_Buildings", "RM_Hospice.xml")).getroot()
+    cradle = [e for e in bld if e.findtext("defName") == "RM_HospiceCradle"][0]
+    if cradle.findtext("researchPrerequisites/li") != "RM_OldTongue_Hospice":
+        bad.append("cradle is not gated by the hospice protocols research (HospiceUnlocked)")
+    intact = [e for e in bld if e.findtext("defName") == "RM_KneelingChassis_Intact"][0]
+    if intact.findtext("minifiedDef") != "MinifiedThing" or intact.find("designationCategory") is not None or intact.find("costList") is not None:
+        bad.append("intact chassis must be minifiable and never fabricable")
+    if "RM_KneelingRings" not in open(os.path.join(D, "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("biome does not run the RM_KneelingRings genstep")
+    for tex in ("Building/RM_KneelingChassis_Slagged", "Building/RM_KneelingChassis_Posed", "Building/RM_KneelingChassis_Intact",
+                "Building/RM_HospiceCradle", "Item/RM_ChassisCore", "Item/RM_FailedChassis",
+                "Pawn/Mechanoid/RM_AncientServitor_south", "Pawn/Mechanoid/RM_AncientServitor_east", "Pawn/Mechanoid/RM_AncientServitor_north"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", *tex.split("/")) + ".png"):
+            bad.append("hospice texture %s missing" % tex)
+    hs = re.sub(r"//[^\n]*", "", open(os.path.join(HERE, "Source", "RM_Hospice.cs")).read())
+    for needle in ("HospiceUnlocked", "hospiceFailureChance", "hospiceLashOut", "hospiceWalkInEnabled", "Reveal(0)", "Reveal(1)", "Reveal(2)",
+                   "It looked at the Cathedral first.", "RM_FailedChassis", "MakeMinified", "stage++"):
+        if needle not in hs:
+            bad.append("RM_Hospice.cs lacks %s" % needle)
     return bad
 
 
@@ -252,6 +308,21 @@ def _build_suite():
                 return
             raise ExpectationFailed("UNMEASURED: Intellectual-8 refusal, set-size unlock and chalk-mark swap need "
                                     "a live Warscar map with pawns of differing skill")
+
+    @suite.chain("hospice")
+    def hospice(t):
+        with t.component("hospice_defs_resolve", toggle="hospiceEnabled"):
+            for d in ("ThingDef/RM_HospiceCradle", "ThingDef/RM_KneelingChassis_Intact", "ThingDef/RM_FailedChassis", "PawnKindDef/RM_AncientServitor"):
+                r = t.bridge_call("jawa/get_defs", defs=d, fields="defName", limit=2)
+                if t.session is None:
+                    return
+                if not isinstance(r, dict) or r.get("success") is False or r.get("notFound"):
+                    raise ExpectationFailed("%s did not resolve live: %r" % (d, r))
+        with t.component("five_stage_revival_and_walk_in", beyond_toggle=True):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: rings with 0-2 intact chassis, five-stage revival, failure wreck name, "
+                                    "mechanitor-free servitor and the dev-fired walk-in need a live Warscar map")
 
     return suite
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <JobDef>
+    <defName>RM_HospiceHaul</defName>
+    <driverClass>RimMandrake.Scarlands.JobDriver_HospiceHaul</driverClass>
+    <reportString>feeding the hospice cradle.</reportString>
+  </JobDef>
+  <WorkGiverDef>
+    <defName>RM_HospiceHaul</defName>
+    <label>feed hospice cradle</label>
+    <giverClass>RimMandrake.Scarlands.WorkGiver_HospiceHaul</giverClass>
+    <workType>Hauling</workType>
+    <priorityInType>60</priorityInType>
+    <verb>feed</verb>
+    <gerund>feeding</gerund>
+    <scanThings>true</scanThings>
+    <prioritizeSustains>false</prioritizeSustains>
+  </WorkGiverDef>
+  <IncidentDef>
+    <defName>RM_DeserterWalksIn</defName>
+    <label>deserter walks in</label>
+    <category>Misc</category>
+    <targetTags><li>Map_PlayerHome</li></targetTags>
+    <workerClass>RimMandrake.Scarlands.IncidentWorker_DeserterWalksIn</workerClass>
+    <baseChance>0.4</baseChance>
+    <minRefireDays>40</minRefireDays>
+  </IncidentDef>
+</Defs>
