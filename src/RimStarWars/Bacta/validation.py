@@ -342,10 +342,18 @@ def content(t):
                 if not isinstance(sg, list) or not sg or not all(isinstance(i, dict) for i in sg):
                     _unmeasured(t, "get_defs cannot show stockGenerators contents for %s: %r" % (row.get("defName"), str(sg)[:120]))
                 have = [(int((g.get("countRange") or {}).get("min", 10 ** 6)), int((g.get("countRange") or {}).get("max", 10 ** 6))) for g in sg]
-                tail = have[-len(want[row.get("defName")]):]
-                if tail != want[row.get("defName")]:
-                    _fail("%s stockGenerators tail %s is not the patch's rows %s: the patch matched nothing, or another mod "
-                          "rewrote the list" % (row.get("defName"), tail, want[row.get("defName")]))
+                # another mod may append rows after ours (Base_Outlander_Standard ends in (0,0) rows live), so the patch
+                # rows must appear as a multiset inside the list, not as its exact tail
+                pool = list(have)
+                missing = []
+                for tup in want[row.get("defName")]:
+                    if tup in pool:
+                        pool.remove(tup)
+                    else:
+                        missing.append(tup)
+                if missing:
+                    _fail("%s stockGenerators lack the patch's rows %s: the patch matched nothing, or another mod "
+                          "rewrote the list" % (row.get("defName"), missing))
 
     with _comp(t, "doctor_recipes_patch_landed"):
         if _live(t):

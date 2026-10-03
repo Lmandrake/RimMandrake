@@ -274,8 +274,9 @@ def _stack_total(t, defName, rect):
     return sum(int(w.get("stackCount") or 1) for w in _things(t, defName, rect, limit=500))
 
 
-def _get_defs(t, defs, fields):
-    r = t.bridge_call("jawa/get_defs", defs=defs, fields=fields, limit=200)
+def _get_defs(t, defs, fields, deep=False):
+    # LIVE 2026-10-03: without deep=True a list-of-record field (baseWeatherCommonalities) reads as class NAMES.
+    r = t.bridge_call("jawa/get_defs", defs=defs, fields=fields, limit=200, deep=bool(deep))
     if not _live(t):
         return {}, None
     _ok(r, "get_defs(%s)" % defs[:80])
@@ -576,7 +577,7 @@ def defs_chain(t):
 
     with _comp(t, "biome_weather_table"):
         if _live(t):
-            f, _ = _get_defs(t, "BiomeDef/RM_BlueDesert", "baseWeatherCommonalities,biomeMapConditions")
+            f, _ = _get_defs(t, "BiomeDef/RM_BlueDesert", "baseWeatherCommonalities,biomeMapConditions", deep=True)
             row = f.get("RM_BlueDesert") or {}
             table = row.get("baseWeatherCommonalities")
             if not isinstance(table, list) or not table:
@@ -1507,7 +1508,7 @@ def _cfg_mtime():
 
 
 def _weather_table(t):
-    f, _ = _get_defs(t, "BiomeDef/RM_BlueDesert", "baseWeatherCommonalities")
+    f, _ = _get_defs(t, "BiomeDef/RM_BlueDesert", "baseWeatherCommonalities", deep=True)
     table = (f.get("RM_BlueDesert") or {}).get("baseWeatherCommonalities")
     if not isinstance(table, list) or not table:
         _unmeasured(t, "weather table unreadable: %r" % (table,))
