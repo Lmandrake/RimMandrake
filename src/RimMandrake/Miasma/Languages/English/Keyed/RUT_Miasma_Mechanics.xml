@@ -31,4 +31,8 @@
   <RUT_WardenSuccessionMessage>The warden mother is gone, but {0} remains — the sea's memory, dying in its lifeboat, endures a little longer.</RUT_WardenSuccessionMessage>
   <RUT_CrecheMarkerHeir>Warden's heir: {0}</RUT_CrecheMarkerHeir>
 
+  <!-- MIASMA_YOUNG_CALL_1: the first-cry letter (Source/RM_MapComponent_YoungCall.cs). -->
+  <RM_YoungCallLetterLabel>A cry from the pools</RM_YoungCallLetterLabel>
+  <RM_YoungCallLetterText>A stranded {0} is crying out from a drying pool. The sound carries across the delta, and somewhere in the water something very large has heard it too.</RM_YoungCallLetterText>
+
 </LanguageData>

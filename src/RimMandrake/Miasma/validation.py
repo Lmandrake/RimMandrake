@@ -20,9 +20,9 @@ SETTINGS_TYPE = "RimMandrake.Miasma.RM_MiasmaSettings"
 DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTameChancePerCheck": 0.12,
             "plantPredationEnabled": True, "pollinationGateEnabled": True,
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
-            "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0}
+            "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True}
 NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
-       "ambushFrogHunts", "attarEnabled"]
+       "ambushFrogHunts", "attarEnabled", "youngCallEnabled"]
 
 
 def static_checks():
@@ -93,6 +93,23 @@ def static_checks():
         for needle in ("flotsamEnabled", "flotsamAmount", "LastRecedeCompletedTick", "RM_Thessamor", "RM_Thrannock"):
             if needle not in ft:
                 bad.append("flotsam yard lacks %s" % needle)
+    # MIASMA_YOUNG_CALL_1
+    yc = os.path.join(HERE, "Source", "RM_MapComponent_YoungCall.cs")
+    if not os.path.exists(yc):
+        bad.append("RM_MapComponent_YoungCall.cs missing")
+    else:
+        yt = open(yc).read()
+        for needle in ("youngCallEnabled", "RM_WardenMother", "RUT_StrandedDeformation", "IsWater", "JobDefOf.Goto"):
+            if needle not in yt:
+                bad.append("young call lacks %s" % needle)
+    if "RM_MapComponent_YoungCall.cs" not in open(os.path.join(HERE, "Source", "RM_Miasma.csproj")).read():
+        bad.append("RM_MapComponent_YoungCall.cs not in csproj Compile list")
+    if "ApplyYoungCall" not in src or "callSound" not in src:
+        bad.append("settings applier does not gate the shared cry (callSound)")
+    kx = open(os.path.join(HERE, "Languages", "English", "Keyed", "RUT_Miasma_Mechanics.xml")).read()
+    for k in ("RM_YoungCallLetterLabel", "RM_YoungCallLetterText"):
+        if "<%s>" % k not in kx:
+            bad.append("keyed %s missing" % k)
     # MIASMA_ATTAR_STILL_1
     items = open(os.path.join(HERE, "Defs", "ThingDefs_Items", "RM_Attar.xml")).read()
     for d in ("RM_Attar", "RM_AttarStill"):
@@ -147,7 +164,7 @@ def static_checks():
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Miasma")
-    suite.toggles = ["attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
+    suite.toggles = ["youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
 
     def _call(t, action, field, value=None):
         kw = dict(typeName=SETTINGS_TYPE, action=action, field=field)
@@ -201,6 +218,15 @@ def _build_suite():
             raise ExpectationFailed("UNMEASURED: jawa/get_defs foundCount 4 on the four *Juv PawnKindDefs, and a "
                                     "recede on a free-only tier stranding at least one of them (spawn many), need "
                                     "a live Miasma map with the bridge")
+
+    @suite.chain("young_call")
+    def young_call(t):
+        with t.component("cry_and_mother_heads_for_water", toggle="youngCallEnabled"):
+            if t.session is None:
+                return
+            raise ExpectationFailed("UNMEASURED: a placed stranded young emitting the cry, and its warden mother's "
+                                    "CurJob target moving toward it and stopping at the water edge, need a live "
+                                    "Miasma quicktest map with the bridge")
 
     @suite.chain("ambush_frog_free_tier")
     def ambush_frog_free_tier(t):
