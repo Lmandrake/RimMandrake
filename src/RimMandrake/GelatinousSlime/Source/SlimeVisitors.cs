@@ -58,7 +58,7 @@ namespace RimMandrake.GelatinousSlime
 
         public override void MapComponentTick()
         {
-            if (!isSlimeMap)
+            if (!isSlimeMap || !SlimeSettings.visitorsEnabled)
             {
                 return;
             }
@@ -66,7 +66,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 return;
             }
-            if (!Rand.Chance(ArrivalChancePerCheck))
+            if (!Rand.Chance(ArrivalChancePerCheck * SlimeSettings.visitorArrivalRate))
             {
                 return;
             }
@@ -98,7 +98,8 @@ namespace RimMandrake.GelatinousSlime
 
                 // Pre-staged, per spike C — and only if the creature can be
                 // read at all. A resistant arrival simply arrives.
-                if (SlimeDefs.Slimification != null && !SlimeUtility.IsResistant(pawn))
+                if (SlimeDefs.Slimification != null && SlimeSettings.slimificationEnabled
+                    && !SlimeUtility.IsResistant(pawn))
                 {
                     Hediff h = pawn.health.AddHediff(SlimeDefs.Slimification);
                     if (h != null)
@@ -227,7 +228,8 @@ namespace RimMandrake.GelatinousSlime
         {
             try
             {
-                if (SlimeDefs.GelatinousSlime == null || map.Biome != SlimeDefs.GelatinousSlime)
+                if (SlimeDefs.GelatinousSlime == null || map.Biome != SlimeDefs.GelatinousSlime
+                    || !SlimeSettings.visitorsEnabled)
                 {
                     return;
                 }
@@ -264,7 +266,8 @@ namespace RimMandrake.GelatinousSlime
                     // Arrive already part-read, same as the ambient spawner
                     // (§3 law 2: never hostile — pre-staged, not converted
                     // on arrival).
-                    if (SlimeDefs.Slimification != null && !SlimeUtility.IsResistant(pawn))
+                    if (SlimeDefs.Slimification != null && SlimeSettings.slimificationEnabled
+                    && !SlimeUtility.IsResistant(pawn))
                     {
                         Hediff h = pawn.health.AddHediff(SlimeDefs.Slimification);
                         if (h != null)

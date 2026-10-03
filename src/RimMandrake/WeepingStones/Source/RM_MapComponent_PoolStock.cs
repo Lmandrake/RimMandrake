@@ -350,9 +350,9 @@ namespace RimMandrake.WeepingStones
 				{
 					bool crowded = zone.CellCount > 0 && population >= zone.CellCount;
 					bool crashed = unfedDays >= UnfedDecayDays;
-					float emergenceChance = crowded ? VhorrinEmergenceChanceCrowded
+					float emergenceChance = (crowded ? VhorrinEmergenceChanceCrowded
 						: crashed ? VhorrinEmergenceChanceCrashed
-						: 0f;
+						: 0f) * RM_WeepingStonesSettings.vhorrinOddsMultiplier;
 					if (emergenceChance > 0f && Rand.Chance(emergenceChance))
 					{
 						TrySpawnVhorrin(candidates);
@@ -361,7 +361,7 @@ namespace RimMandrake.WeepingStones
 
 				if (vizhikByZone.TryGetValue(body.zoneId, out List<Pawn> vizhikCandidates)
 					&& vizhikCandidates.Count > 0
-					&& Rand.Chance(VizhikEscapeChance))
+					&& Rand.Chance(RM_WeepingStonesSettings.vizhikEscapeChance))
 				{
 					TryEscapeVizhik(vizhikCandidates[Rand.Range(0, vizhikCandidates.Count)]);
 				}

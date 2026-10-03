@@ -35,7 +35,7 @@ namespace RimMandrake.GelatinousSlime
             {
                 return;
             }
-            if (SlimeDefs.Slimification == null)
+            if (SlimeDefs.Slimification == null || !SlimeSettings.slimificationEnabled)
             {
                 return;
             }
@@ -168,7 +168,7 @@ namespace RimMandrake.GelatinousSlime
 
         public override void MapComponentTick()
         {
-            if (!biomeUsesSlimeGrass)
+            if (!biomeUsesSlimeGrass || !SlimeSettings.fieldConversionEnabled)
             {
                 return;
             }
@@ -181,7 +181,12 @@ namespace RimMandrake.GelatinousSlime
                 return;
             }
 
-            int attempts = (int)(map.Area / CellsPerAttempt);
+            float wanted = map.Area / CellsPerAttempt * SlimeSettings.fieldConversionRate;
+            int attempts = (int)wanted;
+            if (Rand.Chance(wanted - attempts))
+            {
+                attempts++;
+            }
             if (attempts < 1)
             {
                 attempts = 1;

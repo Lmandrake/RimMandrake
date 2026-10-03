@@ -156,10 +156,16 @@ namespace RimMandrake.GelatinousSlime
                 }
             }
 
+            // Settings: slimification off = nothing grows (wipe-off below still runs).
+            // Clock length scales the shipped 7-day clock; 7 days = factor 1.
+            bool grows = SlimeSettings.slimificationEnabled;
+            float clock = 7f / Mathf.Max(0.5f, SlimeSettings.slimificationClockDays);
+
             // On the body: it is reading you.
             if (SlimeUtility.IsBeingRead(pawn))
             {
-                return fastClock ? GrowthPerDayFastClock : GrowthPerDayOnSlime;
+                if (!grows) return -SelfRevertPerDay;
+                return (fastClock ? GrowthPerDayFastClock : GrowthPerDayOnSlime) * clock;
             }
 
             // The injected clock runs anywhere — the concentrated dose is
@@ -168,7 +174,7 @@ namespace RimMandrake.GelatinousSlime
             // to your people does not buy the patient time, only witnesses.
             if (fastClock)
             {
-                return GrowthPerDayFastClock;
+                return grows ? GrowthPerDayFastClock * clock : -SelfRevertPerDay;
             }
 
             // Ordinary country, no dose: stage 1 wipes off, stages 2-3 hold.

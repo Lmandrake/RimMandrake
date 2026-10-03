@@ -137,6 +137,12 @@ class WSGame(MockGame):
 
     # ------------------------------------------------------------------- settings / UI
     def t_jawa_mod_settings_field(self, p):
+        if p.get("field") in V.SLIDERS:
+            if not hasattr(self, "sliders"):
+                self.sliders = {k: v[0] for k, v in V.SLIDERS.items()}
+            if p.get("action") == "set":
+                self.sliders[p["field"]] = float(p.get("value"))
+            return {"success": True, "value": str(self.sliders[p["field"]])}
         if p.get("field") != V.TOGGLE:
             return MockGame.handle(self, "jawa/mod_settings_field", p)
         if p.get("action") == "set":

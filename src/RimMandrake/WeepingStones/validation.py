@@ -50,7 +50,8 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("WeepingStones")
-suite.toggles = ["stockedPoolsEnabled"]
+suite.toggles = ["stockedPoolsEnabled", "vhorrinOddsMultiplier", "vizhikEscapeChance"]
+SLIDERS = {"vhorrinOddsMultiplier": (1.0, 0.0, 3.0), "vizhikEscapeChance": (0.05, 0.0, 0.25)}
 
 SETTINGS = "RimMandrake.WeepingStones.RM_WeepingStonesSettings"
 TOGGLE = "stockedPoolsEnabled"
@@ -718,6 +719,27 @@ def settings_and_designator(t):
                 back = t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=TOGGLE) or {}
                 if str(back.get("value")) != "True":
                     raise ExpectationFailed("%s did not restore to its shipped default: %r" % (TOGGLE, back))
+
+
+@suite.chain("settings_sliders")
+def settings_sliders(t):
+    """The two sliders (WEEPINGSTONES_SETTINGS_SLIDERS_1): shipped default, then a write+read-back at the
+    top of the range; always restored to the shipped default in `finally`."""
+    for field, (default, _lo, hi) in SLIDERS.items():
+        with _comp(t, "%s_slider_roundtrip" % field, independent=True, toggle=field):
+            try:
+                r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+                if _live(t):
+                    _ok(r, "mod_settings_field(get)")
+                    if abs(float(r.get("value")) - default) > 1e-6:
+                        _fail("%s reads %r; the shipped default is %s" % (field, r.get("value"), default))
+                t.set_setting(SETTINGS, {field: hi})
+                back = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action="get", field=field)
+                if _live(t) and abs(float(back.get("value")) - hi) > 1e-6:
+                    _fail("%s wrote %s but reads back %r" % (field, hi, back.get("value")))
+            finally:
+                if t.session is not None:
+                    t.session.call("jawa/mod_settings_field", typeName=SETTINGS, action="set", field=field, value=str(default))
 
 
 @suite.chain("pen_zone")
