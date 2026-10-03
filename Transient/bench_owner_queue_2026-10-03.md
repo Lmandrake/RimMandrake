@@ -14,6 +14,7 @@ BENCH puts them to him as cards in this order unless he picks another.
 | 7 | Droid mass production, "The Unfinished Line" — `DROID_MASS_PRODUCTION_QUEST_CHAIN_1` (+3 doc contradictions) | `design/Jawa/proposals/droid_mass_production_quest_chain_2026-10-02.md` | 4+3 |
 | 8 | Cauldron sounds and visuals — `CAULDRON_ENRICHMENT_AUDIO_1` / `_VISUALS_1` | `design/Jawa/worldbuilding/biomes/cauldron_enrichment_audio_visuals_spec_2026-10-02.md` | 3 |
 | 9 | Desert art sheet (09-20): rebuild fresh or review as is — `DESERT_FAMILY_PORT_EXECUTION_1` | `Transient/desert_art_verdict_2026-09-20.html` | 1 |
+| 11 | Greatbole song, sanctuary, pilgrims, crossovers — `GREATBOLE_ATMOSPHERE_AND_CROSSOVERS_1` | `design/Jawa/worldbuilding/biomes/greatbole_atmosphere_crossovers_design_2026-10-02.md` | 4 |
 | 10 | 18 older owner questions from the BENCH triage | `Transient/bench_claimables_triage_2026-10-02.md` (OWNER rows) | 18 |
 
 Also for his eyes, no question: the Atlas (`src/RimUtinni/Atlas`) is built and with FOUNDRY for its
