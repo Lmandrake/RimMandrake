@@ -26,8 +26,8 @@ namespace RimMandrake.TheRot
     //   sporeAllergy(+Incidence)  sporeAllergy: the RM_Disease_SporeAllergy pair, on/off and chance factor
     //   guardianGroves, paleTreeSpawn: the wild-spawn rows leave RM_TheRot's wildPlants at startup (restart)
     //   crossBiome*: opt-in donor (RM_TheRot's extensions) for non-Rot maps; Coverage scales their intensity
-    //   healthSharing: the field is kept and saved, but the checkbox is hidden until ROT_WOUND_SHARING_WIRING_1
-    //                  gives it a reader (a control that moves and does nothing is the defect)
+    //   healthSharing: the wound-link / kin-mending comps patched onto the five Alpha Animals bodies are removed again
+    //                  at startup when off (restart to apply) - ROT_WOUND_SHARING_WIRING_1
     // ════════════════════════════════════════════════════════════════════
     public class RM_TheRotSettings : ModSettings
     {
@@ -147,6 +147,9 @@ namespace RimMandrake.TheRot
                 "Food/ingredient preparations stay biologically \"alive\" until used.");
             list.CheckboxLabeled("  Strict viability", ref livePreparationsStrictViability,
                 "Strict: viability lapses on any mishandling. Lenient: more forgiving window.");
+            list.CheckboxLabeled("Health sharing (restart to apply)", ref healthSharing,
+                "Chittik, gromma and rennok split wounds with kin in their grove; mullgoth and durrok heal faster among kin. "
+              + "Needs Alpha Animals. Applies on the next launch.");
             list.CheckboxLabeled("Guardian groves (new maps, restart to apply)", ref guardianGroves,
                 "Defended tea-source mushrooms wild-spawn with the false-fruit lure ring. WORLDGEN-AFFECTING: "
               + "applies to maps generated after the next launch.");
@@ -251,6 +254,16 @@ namespace RimMandrake.TheRot
                     ? DefDatabase<BiomeDef>.GetNamedSilentFail("RM_TheRot")
                     : null;
 
+            if (!RM_TheRotSettings.theRotEnabled || !RM_TheRotSettings.healthSharing)
+            {
+                foreach (string body in HealthSharingBodies)
+                {
+                    ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(body);
+                    def?.comps?.RemoveAll(c => c is RimMandrake.CreatureBehaviors.CompProperties_WoundLink
+                                               || c is RimMandrake.CreatureBehaviors.CompProperties_GrantHediff);
+                }
+            }
+
             // Wild-spawn gates take effect on the next launch (the roster is read at map generation).
             BiomeDef rot = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_TheRot");
             if (rot == null || rot.wildPlants == null)
@@ -267,6 +280,7 @@ namespace RimMandrake.TheRot
             }
         }
 
+        private static readonly string[] HealthSharingBodies = { "AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn" };
         private static readonly string[] GuardianGroveRows = { "RM_AgelessCap", "RM_RegenerantVeil", "RM_EuphoricCrown", "RM_FalseFruit" };
     }
 

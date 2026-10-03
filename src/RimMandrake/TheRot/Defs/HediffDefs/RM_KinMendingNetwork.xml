@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ROT_WOUND_SHARING_WIRING_1: the carrier hediff for RM_HediffComp_KinMending (heals the carrier's injuries while 2+ same-tag kin are near).
+     Granted at spawn by CompProperties_GrantHediff. Not a sickness: no stages, no label colour fuss. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_KinMendingNetwork</defName>
+    <label>kin mending</label>
+    <description>The grove tends its own: wounds close faster while others of its kind are near.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.CompProperties_KinMending" />
+    </comps>
+  </HediffDef>
+</Defs>

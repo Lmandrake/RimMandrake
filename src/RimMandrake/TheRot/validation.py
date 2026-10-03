@@ -88,18 +88,26 @@ def static_checks():
     for n in fields:
         if '"%s"' % n not in scribed:
             bad.append("settings field %s is not Scribed" % n)
-        if n != "healthSharing" and not re.search(r"\b%s\b" % n, ui):
+        if not re.search(r"\b%s\b" % n, ui):
             bad.append("settings field %s has no control in DoWindowContents" % n)
     # ROT_MOD_SETTINGS_WIRING_1: every field needs a READER outside its own Scribe line and the settings UI
-    # (declaration + one reader = 2 mentions). healthSharing is the one named exception until
-    # ROT_WOUND_SHARING_WIRING_1 gives it a reader; its checkbox is hidden meanwhile.
+    # (declaration + one reader = 2 mentions).
+    # ROT_WOUND_SHARING_WIRING_1: five Alpha Animals bodies carry the wound-link / kin-mending wiring by patch.
+    ws = open(os.path.join(HERE, "Patches", "RotSpecies_WoundSharing.xml"), encoding="utf-8").read()
+    for body in ("AA_Swarmling", "AA_Agaripod", "AA_Agaripawn", "AA_Wildpod", "AA_Wildpawn"):
+        if 'defName="%s"' % body not in ws:
+            bad.append("wound-sharing patch does not target %s" % body)
+    if "<tag>RotNetwork</tag>" not in ws or ws.count("CompProperties_WoundLink") < 5 or "mandrake.rm.therot" in ws and False:
+        bad.append("wound-sharing patch lacks the shared RotNetwork tag or a wound link per body")
+    if "<mods>" not in ws or re.search(r"<Operation[^>]*MayRequire", ws):
+        bad.append("wound-sharing patch must be gated by PatchOperationFindMod, never a top-level MayRequire")
+    if ws.count("<hediff>RM_KinMendingNetwork</hediff>") != 4:
+        bad.append("exactly the two mending bodies (mullgoth, durrok) carry the kin-mending hediff")
     reader_text = re.sub(r"Scribe_Values\.Look\([^\n]*\n", "", src)
     ui_start = reader_text.index("public void DoWindowContents")
     ui_end = reader_text.index("public class RM_TheRotFront") if "public class RM_TheRotFront" in reader_text else reader_text.index("static class RM_TheRotFront")
     reader_text = reader_text[:ui_start] + reader_text[ui_end:]
     for n in fields:
-        if n == "healthSharing":
-            continue
         if len(re.findall(r"\b%s\b" % n, reader_text)) < 2:
             bad.append("settings field %s has a control but no reader (moves and does nothing)" % n)
     # ROT_SPORE_ALLERGY_PORT_1: the free Rot and Contagion name OUR two incidents and no donor disease; the four defs ship in EH.
