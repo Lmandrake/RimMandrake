@@ -254,8 +254,8 @@ def aerial_expect(sc):
 def hose_expect(sc):
     if not sc.get("hose"):
         return None
-    return {"status": "UNBUILT (hose kit not built; phase-2 design 3)", "cells": len(sc["hose"]["cells"]),
-            "inflation": sc["hose"]["inflation"], "cord_edges_touching_hose": 0}
+    return {"cells": len(sc["hose"]["cells"]), "inflation": sc["hose"]["inflation"],
+            "state": {"flat": "Flat", "plump": "Plump"}[sc["hose"]["inflation"]], "cord_edges_touching_hose": 0}
 
 
 def full(sc, level="ropey"):

@@ -9,7 +9,7 @@ Run python.exe from the repo root with repo-relative paths (bridge calls only wo
 through tr -d '\\r'). --post runs under WSL python3 (numpy/PIL).
 
 What it does (one cold load, one fresh quicktest map):
-  1. Catalog: design_spec.build_spec() (109 scenes; hose scenes are UNBUILT and never placed). --catalog matrix
+  1. Catalog: design_spec.build_spec() (109 scenes; the 9 hose scenes are placed after the boards, step 3b). --catalog matrix
      falls back to matrix.py's 84-case complement (converted to the same spec shape).
   2. Site: fresh map, weather Clear locked, clock pinned to noon (time_set_ticks: a scrub, nothing simulated),
      incident queue cleared, non-colonists destroyed, the board REGION (south band, away from the colonists at the
@@ -22,6 +22,10 @@ What it does (one cold load, one fresh quicktest map):
      position and set; aerial masts linked by id through AerialProbe (autoLink OFF so no cross-scene link), cut by
      `cut:` and killed by `kill:` (staging ops; the behaviour is validation_aerial.py M14/M15), 30 ticks; 2 ticks for
      nets; poll.
+  3b. Hose scenes (MX_H00..H08): reel built by build_batch (RM_HoseReel), then the HoseProbe verbs validation_hose.py proved
+     live (12/12 PASS): `check:` (install validity), `lay:`, `flow:x,z=on` (Plump: transitionTicks+5 ticks; Filling50: half a
+     transition), a census read of that reel compared with the scene's intrinsic row (state, blend, visible width, width over
+     wire >= 4, bend >= 0.95 x setting, no self-intersection, no unwalkable point, couplings). placer.hose_plan emits the calls.
   4. Per scene: MessyConduitProbe `rect:x,z,w,h` (added for this runner: nodes, edges, strands, ends, nets,
      per-edge + scene geometry hash, strand bbox, laid polylines) compared with expect.intrinsic: counts,
      connectivity, live flags, bounds (strands within [cords_min, cords_max]), sprawl inside plot + R.
@@ -84,6 +88,10 @@ REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 for p in (HERE, MODDIR):
     if p not in sys.path:
         sys.path.insert(0, p)
+try:                                   # numpy-free: the scene -> bridge-call plans (python.exe can import it)
+    import placer as PL  # noqa: E402
+except ImportError:
+    PL = None
 try:                                   # numpy-backed (the nodal mock-up); python.exe has no numpy -> --spec JSON
     import design_spec as D  # noqa: E402
     import oracle as O  # noqa: E402
@@ -96,6 +104,8 @@ SHOTS = os.path.join(OUT_DIR, "shots")
 RESULT_DIR = os.path.join(MODDIR, "northstar")
 PROBE = "RimMandrake.MessyConduit.MessyConduitProbe"
 APROBE = "RimMandrake.MessyConduit.Aerial.AerialProbe"
+HPROBE = "RimMandrake.MessyConduit.Hose.HoseProbe"
+HOSE_PITCH = 3                         # cells between hose plots (hoses never reach sideways; walls/water are per plot)
 PKG = "mandrake.rm.messyconduit"
 MAP_W = 250
 REGION = (12, 12, 226, 100)             # x, z, w, h: south band; quicktest colonists stand near (125,125)
@@ -253,6 +263,10 @@ class LiveBridge(object):
     def ap(self, cmd, wait_s=30.0):
         return self._probe(APROBE, cmd, wait_s)
 
+    def hp(self, cmd, wait_s=20.0):
+        """HoseProbe, same request/serial/result protocol as validation_hose.py H.hp."""
+        return self._probe(HPROBE, cmd, wait_s)
+
     def ticks(self, n):
         return self.call("rimworld/step_game_ticks", ticks=n, pauseFirst=True, timeoutMs=180000)
 
@@ -287,6 +301,10 @@ class MockBridge(object):
                     failed.append(op + " (mock: masts not modelled)")
                     continue
                 n = [int(v) for v in rest.split(",")]
+                if name == self.FG.REEL:
+                    self.m.tool(tool, {"ops": op}, {})
+                    ok += 1
+                    continue
                 if self.fault == "flip_z" and name == "PowerConduit":
                     n[1] = n[1] + 1
                 c = (n[0], n[1])
@@ -327,6 +345,7 @@ class MockBridge(object):
             return {"success": True, "storedEnergyAfter": 600.0 * float(kw["value"])}
         if tool == "rimworld/step_game_ticks":
             self.ticks_game += kw.get("ticks", 0)
+            self.m.hose_tick(int(kw.get("ticks", 0)))
             return {"success": True}
         if tool in ("rimworld/screenshot_cell_rect", "jawa/take_screenshot"):
             return {"success": True, "path": None}
@@ -341,6 +360,9 @@ class MockBridge(object):
 
     def ap(self, cmd, wait_s=0):
         return {"success": True, "cmd": cmd, "anchors": [], "mock": True}
+
+    def hp(self, cmd, wait_s=0):
+        return self.m.hose_probe(cmd)
 
     def probe(self, cmd, wait_s=0):
         if cmd.startswith("set:"):
@@ -811,6 +833,112 @@ class Run(object):
                      got["cord_edges"] or 0, got["strands"] or 0, got["nets"] or 0, rec["geometryHash"], ("; " + art) if art else ""))
         return rec
 
+    # ------------------------------------------------------------------ hose scenes
+    def hose_layout(self, scs, region=REGION):
+        """Shelf-pack the hose plots into REGION (the floor boards are done and cleared by then)."""
+        rx, rz, rw, rh = region
+        x, z, row_h, out = rx, rz, 0, []
+        for sc in scs:
+            w, h = sc["plot"][2], sc["plot"][3]
+            if x + w > rx + rw:
+                x, z, row_h = rx, z + row_h + HOSE_PITCH, 0
+            if z + h > rz + rh:
+                raise SystemExit("hose scene %s does not fit the region %s" % (sc["id"], region))
+            out.append((sc, (x, z)))
+            x += w + HOSE_PITCH
+            row_h = max(row_h, h)
+        return out
+
+    def hose_scenes(self, scs):
+        """Place and check the design's hose scenes with validation_hose.py's call shapes (build RM_HoseReel, then the
+        HoseProbe `check:`/`lay:`/`flow:` verbs, a census read). Expectations are the scene row's own intrinsic block."""
+        B = self.B
+        d = B.hp("defaults")
+        self.row("H0_probe_channel", "PASS" if d.get("success") else "FAIL", "HARNESS", d if not d.get("success") else "HoseProbe defaults applied")
+        if not d.get("success"):
+            return
+        for sc, (X0, Z0) in self.hose_layout(scs):
+            sid = sc["id"]
+            pl = PL.hose_plan(sc, (X0, Z0))
+            pg = [X0, Z0, sc["plot"][2], sc["plot"][3]]
+            rec = {"id": sid, "group": "hose", "factors": sc.get("factors"), "origin": [X0, Z0], "plot_game": pg,
+                   "board": "hose", "settings": sc.get("settings"), "notes": sc.get("notes"), "shows": sc.get("shows"),
+                   "site_fail": [], "zoom_root": sc.get("zoom_root"), "view": sc.get("view"), "expected": pl["expect"],
+                   "reel": pl["reel"], "far": pl["far"]}
+            self.scenes[sid] = rec
+            reel, far = tuple(pl["reel"]), tuple(pl["far"])
+            probes, census = [], None
+            for st in pl["steps"]:
+                if st["kind"] == "tool":
+                    r = B.call(st["tool"], **st["args"])
+                    if st["tool"] == "jawa/build_batch" and r.get("survived") is not None:
+                        want = len(st["args"]["ops"].split(";"))
+                        if r.get("survived") != want:
+                            rec["site_fail"].append("%s %s/%s survived" % (st["args"]["ops"].split(":")[0], r.get("survived"), want))
+                elif st["kind"] == "hose_probe":
+                    r = B.hp(st["cmd"])
+                    probes.append({"cmd": st["cmd"], "success": r.get("success"), "reason": r.get("reason")})
+                    if st["cmd"].startswith("check:") and r.get("reason") is not None:
+                        rec["site_fail"].append("install check refused: %s" % r.get("reason"))
+                elif st["kind"] == "hose_census":
+                    c = B.hp("census")
+                    census = c
+            rec["probes"] = probes
+            h = {}
+            for x in (census or {}).get("hoses") or []:
+                if tuple(x["reel"]) == reel:
+                    h = x
+            rec["census"] = {k: h.get(k) for k in ("kind", "laid", "layOk", "state", "blend", "visibleWidth", "widthOverWire", "minBendFlat",
+                                                  "minBendPlump", "couplings", "flatLen", "pathLen", "poseLen", "selfIntersects",
+                                                  "unwalkablePoints", "fellBack", "geometryHash", "provider")}
+            rec["census"]["transitionTicks"] = (census or {}).get("transitionTicks")
+            diffs = self.hose_compare(pl["expect"], h, census or {})
+            if not h:
+                status, cls = "FAIL", "SITE"
+                diffs = [{"field": "reel", "expected": list(reel), "got": "no hose reel in the census"}]
+            elif rec["site_fail"] or not h.get("layOk"):
+                status, cls = "FAIL", "SITE"
+            elif diffs:
+                status, cls = "FAIL", "MOD"
+            else:
+                status, cls = "PASS", None
+            rec.update(status=status, **({"class": cls} if cls else {}))
+            rec["diffs"] = diffs
+            if not self.mock:
+                rec["shot"] = self.shot(sid, pg, sc.get("zoom_root") or 11, frame=True)
+            self.row("MX_" + sid, status, cls or "-", diffs or rec["site_fail"] or rec["census"])
+
+    @staticmethod
+    def hose_compare(e, h, c):
+        """The scene's intrinsic hose expectations against one HoseProbe census row (validation_hose.py H2-H6 thresholds)."""
+        out = []
+        if not h:
+            return out
+
+        def need(field, ok, want, got):
+            if not ok:
+                out.append({"field": field, "expected": want, "got": got})
+        need("kind", h.get("kind") == "Hose", "Hose", h.get("kind"))
+        need("state", h.get("state") == e["state"], e["state"], h.get("state"))
+        lo, hi = e["blend"]
+        b = h.get("blend")
+        need("blend", b is not None and lo <= b <= hi, e["blend"], b)
+        lo, hi = e["visible_width"]
+        w = h.get("visibleWidth")
+        need("visible_width", w is not None and lo <= w <= hi, e["visible_width"], w)
+        need("width_over_wire_ge", (h.get("widthOverWire") or 0) >= e["width_over_wire_ge"], e["width_over_wire_ge"], h.get("widthOverWire"))
+        mb = (c.get("minBendSetting") or e["min_bend_radius_ge"])
+        need("min_bend_radius_ge", min(h.get("minBendFlat") or 0, h.get("minBendPlump") or 0) >= 0.95 * mb,
+             "0.95 x %s" % mb, [h.get("minBendFlat"), h.get("minBendPlump")])
+        need("self_intersections", (0 if not h.get("selfIntersects") else 1) == e["self_intersections"], e["self_intersections"], h.get("selfIntersects"))
+        need("unwalkable_points", h.get("unwalkablePoints") == e["unwalkable_points"], e["unwalkable_points"], h.get("unwalkablePoints"))
+        # couplings: both ends + one every 8 cells of laid flat length (HoseMath.Couplings: at < length); also >= the scene's floor
+        fl = h.get("flatLen")
+        exact = 2 + len([k for k in range(1, 200) if 8 * k < fl]) if fl is not None else None
+        need("couplings", h.get("couplings") == exact and (h.get("couplings") or 0) >= e["couplings_min"],
+             {"exact_from_flatLen": exact, "min": e["couplings_min"]}, h.get("couplings"))
+        return out
+
     def aerial_compare(self, sc, rec, exp, aer, pg):
         if self.mock:
             return []
@@ -897,6 +1025,17 @@ def run(args, B, mock=False):
         t_start = R.eng_ticks()
         for b in boards:
             R.board(b)
+        # hose scenes: placed one by one in REGION (floor boards are done) with validation_hose.py's call shapes,
+        # inside the same screenshot-mode session so frame captures work the same way
+        hose = [sc for sc in scenes if sc["group"] == "hose"]
+        if hose:
+            try:
+                R.hose_scenes(hose)
+            finally:
+                try:
+                    B.hp("defaults")
+                except Exception:  # noqa: BLE001
+                    pass
     except Exception as ex:  # noqa: BLE001
         import traceback
         aborted = "%r" % ex
@@ -911,12 +1050,6 @@ def run(args, B, mock=False):
                 B.call("jawa/weather_set", weather="Clear", unlock=True)
         except Exception:  # noqa: BLE001
             pass
-    # hose scenes: nothing to place yet
-    for sc in spec["scenes"]:
-        if sc["group"] == "hose" and (not args.only or any(sc["id"].startswith(o) for o in args.only)):
-            R.scenes[sc["id"]] = {"id": sc["id"], "group": "hose", "factors": sc.get("factors"), "status": "UNBUILT",
-                                  "class": "SCOPE", "notes": sc.get("notes"), "expected": sc["expect"]["intrinsic"]}
-            R.row("MX_" + sc["id"], "UNBUILT", "SCOPE", "hose kit not deployed on this tier (lane D building it)")
     det = [s.get("determinism", {}).get("same") for s in R.scenes.values() if s.get("determinism")]
     if det:
         R.row("D1_zero_tick_rereads_same", "PASS" if all(det) else "FAIL", "MOD",
@@ -968,6 +1101,8 @@ def caption(rec):
         return "%s cells | %s" % (f.get("n"), f.get("S"))
     if rec["group"] == "aerial":
         return "%s poles x %s | %s | %s | %s" % (f.get("N"), f.get("R"), f.get("St"), f.get("G"), f.get("P"))
+    if rec["group"] == "hose":
+        return "%s | %s | L%s | %s" % (f.get("St"), f.get("Ro"), f.get("Le"), f.get("Fl"))
     return json.dumps(f)
 
 
@@ -1016,8 +1151,6 @@ def post(result_path):
     os.makedirs(OUT_DIR, exist_ok=True)
     groups = collections.OrderedDict()
     for sid, rec in sorted(recs.items()):
-        if rec.get("group") == "hose":
-            continue
         g = rec["group"]
         if g == "floor":
             g = "floor_T%02d_%s" % (D.T_LEVELS.index(rec["factors"]["T"]), rec["factors"]["T"])
@@ -1104,7 +1237,7 @@ def write_review(res, recs, out):
                          "map and photographed paused. The state verdict (PASS/FAIL and its class) comes from the probe census "
                          "against the generator's oracle, never from the picture. Floor rows read tidy, ropey, rat's nest, lattice "
                          "tangle in order for each topology. Only the Jawa family has real art: other styles are labelled. "
-                         "Hose scenes are not built yet.</p><p>Keep = this frame is right and becomes the golden frame later runs "
+                         "Hose scenes (frame captures) show the reel and its laid hose; their state verdict is the HoseProbe census.</p><p>Keep = this frame is right and becomes the golden frame later runs "
                          "are shown beside. Flag = something looks wrong; say what in the note.</p>"),
            "criterion": "Pre-filled keep only when the state oracle passed and the image checks (non-blank, no magenta, brightness, "
                         "frame size) passed -- those rank broken captures, not whether the cords look right; that is yours.",

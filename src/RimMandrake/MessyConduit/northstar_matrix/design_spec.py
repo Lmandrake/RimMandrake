@@ -318,15 +318,21 @@ def hose_spec(r, k):
         ops.append({"op": "build", "def": "Wall", "stuff": "Steel", "cells": [gc(p) for p in walls]})
     ops.append({"op": "debug_hose", "a": gc(a), "b": gc(b), "maxLength": int(math.ceil(L * 1.3)),
                 "fluid": {"water": "RM_Liquid_FreshWater", "tar": None, "chemfuel": None}[r["Fl"]], "fluid_key": r["Fl"],
-                "force_state": "Filling" if r["St"] == "Filling50" else r["St"], "unbuilt": True})
-    width = {"Flat": 0.34, "Plump": 0.22, "Filling50": 0.28}[r["St"]]
+                "force_state": "Filling" if r["St"] == "Filling50" else r["St"]})
+    # HoseMath: VisibleWidth = FlatVisible 0.38 + PlumpExtra 0.085 * plumpAmount(1) * eased; Filling50 is read half way
+    # through the transition (validation_hose.py H6: blend in (0.2, 0.8)), so its width lies strictly between the two.
+    state = "Filling" if r["St"] == "Filling50" else r["St"]
+    width = {"Flat": [0.375, 0.385], "Plump": [0.46, 0.47], "Filling": [0.381, 0.464]}[state]
+    dist = math.hypot(b[0] - a[0], b[1] - a[1])
     return {"id": "H%02d_%s_%s_L%d" % (k, r["St"], r["Ro"], L), "group": "hose", "factors": r, "plot": plot,
             "zoom_root": ZOOM_ROOT["close"], "settings": {}, "build": ops, "view": {"overlay": "none", "select_at": None},
-            "expect": {"intrinsic": {"state": r["St"], "width": width, "min_bend_radius_ge": 1.2,
-                                     "couplings": L // 8 + 2, "self_intersections": 0}, "parity": None},
+            "expect": {"intrinsic": {"state": state, "visible_width": width, "width_over_wire_ge": 4.0,
+                                     "blend": {"Flat": [0, 0], "Plump": [1, 1], "Filling": [0.2, 0.8]}[state],
+                                     "min_bend_radius_ge": 1.2, "couplings_min": 1 + int(math.ceil(dist / 8.0)),
+                                     "self_intersections": 0, "unwalkable_points": 0}, "parity": None},
             "shows": ["hose_thicker_than_wire"] + (["hose_flat_vs_plump"] if r["St"] in ("Flat", "Plump") else []),
-            "notes": ["hose kit UNBUILT (design 3.11); width at Filling50 = linear mid of 0.34/0.22 (design gives none)",
-                      "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent"]}
+            "notes": ["hose kit built; placed and read by run_live.py through HoseProbe (validation_hose.py call shapes)",
+                      "tar/chemfuel LiquidDef names not authored yet: fluid None, fluid_key carries the intent; HoseProbe has no fluid input"]}
 
 
 def control_specs():

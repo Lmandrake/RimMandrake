@@ -215,9 +215,12 @@ def run_live(args):
     # ---------------------------------------------------------------- log budget
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
     new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > log_base]
-    errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+    errs_all = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+    # the scene clear's own destroy_batch over a map geyser logs "Tried to destroy non-destroyable thing": harness, not the mod
+    site = [e for e in errs_all if "non-destroyable" in str(e.get("Message", ""))]
+    errs = [e for e in errs_all if e not in site]
     V.row(rows, "HZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
-          {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new)})
+          {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrors": len(site)})
     # leave hose 1 plump for the save-load mode (state must survive)
     B.hp("flow:%d,%d=on" % R1)
     B.ticks(tt + 5)

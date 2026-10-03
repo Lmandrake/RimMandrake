@@ -7,6 +7,8 @@ PowerConnectionMaker.BestTransmitterForConnector at the moment the connector spa
 transmitter's Position, scan z-ascending then x-ascending, strict <). So a wrong build ORDER or an ambiguous
 hookup in a plan shows up here as an oracle mismatch, before any game time is spent.
 """
+import heapq
+import math
 import os
 import sys
 
@@ -17,6 +19,9 @@ import scenes as S  # noqa: E402
 
 DEF_ROLE = {v["def"]: k for k, v in S.DEVICE_DEFS.items()}
 CONDUITS = ("PowerConduit", "WaterproofConduit")
+REEL = "RM_HoseReel"
+WIRE_VISIBLE = 0.11 * 25.0 / 32.0          # HoseMath.WireVisibleWidth
+FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.38, 0.085, 1.2, 30.0, 30   # HoseMath / HoseSettings defaults
 
 
 class FakeMap(object):
@@ -26,6 +31,7 @@ class FakeMap(object):
         self.edifice = {}            # cell -> ("Wall"|"Door"|"Granite")
         self.things = []             # devices: dict(def, pos, rot, id, footprint, hookup, charged)
         self.plants = set()
+        self.reels = {}              # (x, z) -> hose state (a crude stand-in for CompHoseReel + HoseProbe)
         self.next_id = 1
         self.log = []
 
@@ -67,6 +73,10 @@ class FakeMap(object):
             elif k == "resolve_thing":
                 hit = [t for t in self.things if t["def"] == st["def"] and list(t["pos"]) == list(st["cell"])]
                 vars_[st["as"]] = hit[0]["id"] if hit else None
+            elif k == "hose_probe":
+                self.hose_probe(st["cmd"])
+            elif k == "hose_census":
+                pass                                   # the census is read by whoever asks (hose_probe("census"))
             elif k == "cleanup":
                 pass                                   # leave the map built: read_back() is taken after the run
         return self
@@ -79,6 +89,7 @@ class FakeMap(object):
             self.edifice = {c: v for c, v in self.edifice.items() if not inside(c)}
             self.things = [t for t in self.things if not inside(t["pos"])]
             self.plants = {c for c in self.plants if not inside(c)}
+            self.reels = {c: r for c, r in self.reels.items() if not inside(c)}
         elif name == "jawa/set_terrain_batch":
             for d, n in self._ops(a["ops"]):
                 x, z, w, h = n
@@ -92,8 +103,12 @@ class FakeMap(object):
                     self.conduit.add(c)
                 elif d in ("Wall", "Door", "Granite"):
                     self.edifice[c] = d
+                elif d == REEL:
+                    self.reels[c] = {"far": None, "laid": False, "flow": False, "on_ticks": 0, "lay": None}
                 else:
                     self.spawn(d, c, n[2] if len(n) > 2 else 0)
+        elif name == "rimworld/step_game_ticks":
+            self.hose_tick(int(a.get("ticks", 0)))
         elif name == "jawa/battery_set":
             tid = vars_.get(a["thing"], a["thing"])
             for t in self.things:
@@ -103,6 +118,96 @@ class FakeMap(object):
             for d, n in self._ops(a["ops"]):
                 self.plants.add((n[0], n[1]))
         # every other tool (fog, roof, commit, camera, ticks, screenshot) changes nothing the graph reads
+
+    # ------------------------------------------------------------ hose kit stand-in (HoseProbe vocabulary)
+    def _blocked(self, c):
+        return self.edifice.get(c) in ("Wall", "Door", "Granite")
+
+    def _route(self, a, b):
+        """Shortest 8-connected route length round walls (no diagonal squeeze past a blocked corner), or None."""
+        dist, pq = {a: 0.0}, [(0.0, a)]
+        lim = 80
+        while pq:
+            d, c = heapq.heappop(pq)
+            if c == b:
+                return d
+            if d > dist.get(c, 1e18):
+                continue
+            for dx in (-1, 0, 1):
+                for dz in (-1, 0, 1):
+                    n = (c[0] + dx, c[1] + dz)
+                    if (dx, dz) == (0, 0) or self._blocked(n) or abs(n[0] - a[0]) > lim or abs(n[1] - a[1]) > lim:
+                        continue
+                    if dx and dz and (self._blocked((c[0] + dx, c[1])) or self._blocked((c[0], c[1] + dz))):
+                        continue
+                    nd = d + math.hypot(dx, dz)
+                    if nd < dist.get(n, 1e18):
+                        dist[n] = nd
+                        heapq.heappush(pq, (nd, n))
+        return None
+
+    def hose_check(self, reel, far):
+        if not (0 <= far[0] < 250 and 0 <= far[1] < 250):
+            return "out of bounds"
+        if math.hypot(far[0] - reel[0], far[1] - reel[1]) > MAX_LENGTH:
+            return "too far"
+        if self._blocked(far):
+            return "target blocked"
+        r = self._route(tuple(reel), tuple(far))
+        return None if r is not None and r <= MAX_LENGTH else "no route"
+
+    def hose_tick(self, n):
+        for r in self.reels.values():
+            if r["flow"]:
+                r["on_ticks"] += n
+
+    def hose_probe(self, cmd):
+        verb, _, arg = cmd.partition(":")
+        if verb in ("defaults", "census"):
+            return self.hose_census() if verb == "census" else {"success": True}
+        val = None
+        if "=" in arg:
+            arg, val = arg.split("=", 1)
+        a = [int(v) for v in arg.split(",")]
+        r = self.reels.get((a[0], a[1]))
+        if r is None:
+            return {"success": False, "error": "no hose reel at %d,%d" % (a[0], a[1])}
+        if verb == "check":
+            return {"success": True, "reason": self.hose_check((a[0], a[1]), (a[2], a[3]))}
+        if verb == "lay":
+            why = self.hose_check((a[0], a[1]), (a[2], a[3]))
+            if why is None:
+                path = self._route((a[0], a[1]), (a[2], a[3]))
+                flat = max(path, math.hypot(a[2] - a[0], a[3] - a[1])) * 1.02
+                r.update(far=(a[2], a[3]), laid=True, lay={"path": path, "flat": flat})
+            return {"success": why is None, "reason": why, "layOk": r["lay"] is not None}
+        if verb == "flow":
+            r["flow"] = val in ("on", "true", "1")
+            if not r["flow"]:
+                r["on_ticks"] = 0
+            return {"success": True}
+        return {"success": False, "error": "unknown verb"}
+
+    def hose_census(self):
+        hoses = []
+        for c, r in sorted(self.reels.items()):
+            blend = min(1.0, r["on_ticks"] / float(TRANSITION))
+            eased = blend * blend * (3 - 2 * blend)
+            state = "Plump" if blend >= 1 else ("Filling" if blend > 0 else "Flat")
+            vis = FLAT_VISIBLE + PLUMP_EXTRA * eased
+            h = {"id": 1, "kind": "Hose", "reel": list(c), "far": list(r["far"] or c), "laid": r["laid"], "layOk": r["lay"] is not None,
+                 "end": "Nozzle", "state": state, "transitions": 0 if state == "Flat" else 1, "blend": round(blend, 4),
+                 "eased": round(eased, 4), "visibleWidth": round(vis, 4), "widthOverWire": round(vis / WIRE_VISIBLE, 4),
+                 "provider": "debug", "signal": r["flow"], "debugFlowing": r["flow"], "history": []}
+            if r["lay"]:
+                f = r["lay"]["flat"]
+                h.update(pathLen=round(f, 3), flatLen=round(f, 3), plumpLen=round(f * 0.98, 3), poseLen=round(f * (1 - 0.02 * eased), 3),
+                         straight=round(math.hypot(r["far"][0] - c[0], r["far"][1] - c[1]), 3), minBendFlat=MIN_BEND, minBendPlump=MIN_BEND,
+                         selfIntersects=False, couplings=2 + sum(1 for k in range(1, 100) if 8 * k < f), points=int(f) + 2,
+                         fellBack=False, geometryHash="%016x" % (hash((c, r["far"])) & (2 ** 64 - 1)), unwalkablePoints=0)
+            hoses.append(h)
+        return {"success": True, "cmd": "census", "transitionTicks": TRANSITION, "minBendSetting": MIN_BEND,
+                "wireVisibleWidth": round(WIRE_VISIBLE, 4), "texturesInstalled": True, "hoses": hoses}
 
     def spawn(self, d, pos, rot):
         role = DEF_ROLE[d]

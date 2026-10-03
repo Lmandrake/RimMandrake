@@ -8,6 +8,10 @@ Step kinds:
   {"kind": "tool",  "tool": "jawa/build_batch", "args": {...}}
   {"kind": "resolve_thing", "def": "Battery", "cell": [gx, gz], "as": "$src"}   -> jawa/list_things, keep the id
   {"kind": "unbuilt", "what": ..., "why": ...}          -> nothing exists to call yet: the runner records UNBUILT
+                                                           (only for things with no tool/mod hook: switch flick, aerial masts)
+  {"kind": "hose_probe", "cmd": "lay:rx,rz,fx,fz"}     -> HoseProbe via jawa/mod_settings_field (validation_hose.py H.hp:
+                                                         set `request`, wait for `serial`); cmds lay: check: flow:x,z=on defaults
+  {"kind": "hose_census", "reel": [x, z], "expect": {...}}  -> HoseProbe census, pick the hose whose `reel` is [x, z]
   {"kind": "census" | "screenshot" | "cleanup", ...}
 
 The recipe is validation.py's proven one (live passes 1-2, 2026-10-02): destroy_batch All -> Soil -> unfog -> unroof
@@ -46,6 +50,65 @@ UNVERIFIED = [
     "WoodFiredGenerator spawns unfuelled (active=False in every scene): its node must census as 'source' while "
     "its net's liveness comes from the battery",
 ]
+
+
+REEL_DEF = "RM_HoseReel"
+TRANSITION_TICKS = 30            # HoseSettings.transitionTicks default; the census reports the live value
+
+
+def hose_steps(reel, far, state):
+    """Steps run AFTER map_commit + 2 ticks, the call shapes of validation_hose.py (12/12 PASS live): install-validity
+    check, lay, 2 ticks, then drive the flow signal to the wanted state and read the census. Flat: no flow, a 300-tick
+    settle. Plump: flow on, transition + 5 ticks. Filling (the Filling50 row): flow on, HALF a transition (blend ~0.5)."""
+    rf = "%d,%d,%d,%d" % (reel[0], reel[1], far[0], far[1])
+    st = [{"kind": "hose_probe", "cmd": "check:" + rf, "expect_reason": None},
+          {"kind": "hose_probe", "cmd": "lay:" + rf},
+          {"kind": "tool", "tool": "rimworld/step_game_ticks", "args": {"ticks": 2, "pauseFirst": True, "timeoutMs": 120000}}]
+    if state == "Flat":
+        st.append({"kind": "tool", "tool": "rimworld/step_game_ticks", "args": {"ticks": 300, "pauseFirst": True, "timeoutMs": 120000},
+                   "why": "no flow: stays Flat (validation_hose H5 settles 300 ticks)"})
+    else:
+        st.append({"kind": "hose_probe", "cmd": "flow:%d,%d=on" % (reel[0], reel[1])})
+        n = TRANSITION_TICKS // 2 if state == "Filling" else TRANSITION_TICKS + 5
+        st.append({"kind": "tool", "tool": "rimworld/step_game_ticks", "args": {"ticks": n, "pauseFirst": True, "timeoutMs": 120000},
+                   "why": "%s: H6 steps transitionTicks//2 for the mid read, transitionTicks for Plump" % state})
+    st.append({"kind": "hose_census", "reel": list(reel), "state": state})
+    return st
+
+
+def hose_plan(sc, origin):
+    """Plan for one DESIGN hose scene (design_spec.hose_spec): its ops are plot-local game cells (north up already), so
+    game = origin + cell. Returns {"site", "steps", "reel", "far", "expect"}; `expect` is the scene's own intrinsic row."""
+    X0, Z0 = origin
+    w, h = sc["plot"][2], sc["plot"][3]
+    site = [X0 - 1, Z0 - 1, w + 2, h + 2]
+    rect = "%d,%d,%d,%d" % tuple(site)
+    steps = []
+
+    def tool(t, **args):
+        steps.append({"kind": "tool", "tool": t, "args": args})
+    g = lambda c: [X0 + c[0], Z0 + c[1]]  # noqa: E731
+    tool("jawa/destroy_batch", rects=rect, categories="All")
+    tool("jawa/set_terrain_batch", ops="Soil:" + rect)
+    tool("jawa/set_fog", action="unfog", rect=rect)
+    tool("jawa/set_roof_batch", ops="None:" + rect)
+    reel = far = state = None
+    for op in sc["build"]:
+        if op["op"] == "terrain" and op["def"] != "Soil":
+            tool("jawa/set_terrain_batch", ops=";".join("%s:%d,%d,1,1" % ((op["def"],) + tuple(g(c))) for c in op["cells"]))
+        elif op["op"] == "build":
+            tool("jawa/build_batch", ops=_ops(op["def"], [g(c) for c in op["cells"]]), stuff=op["stuff"], faction="player",
+                 wipeExisting=False)
+        elif op["op"] == "debug_hose":
+            reel, far, state = g(op["a"]), g(op["b"]), op["force_state"]
+    tool("jawa/build_batch", ops=_ops(REEL_DEF, [reel]), faction="player", wipeExisting=False)
+    tool("jawa/map_commit")
+    tool("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=120000)
+    steps += hose_steps(reel, far, state)
+    for k, s in enumerate(steps):
+        s["n"] = k
+    return {"origin": [X0, Z0], "site": site, "steps": steps, "reel": reel, "far": far, "state": state,
+            "expect": sc["expect"]["intrinsic"]}
 
 
 class Mapper(object):
@@ -127,15 +190,18 @@ def plan(sc, case, origin=(150, 150)):
         steps.append({"kind": "unbuilt", "what": "aerial: %d RM_AerialMast at %s, spans %s, cut %s" % (
             len(a["poles"]), [M.g(p) for p in a["poles"]], a["spans"], a["cut"]),
             "why": "RM_AerialMast / CompAerialAnchor not built (phase-2 design section 2.3); floor part IS built"})
+    hose_after = []
     if sc.get("hose"):
         hs = sc["hose"]
-        steps.append({"kind": "unbuilt", "what": "hose %s, %d cells %s..%s" % (
-            hs["inflation"], len(hs["cells"]), M.g(hs["cells"][0]), M.g(hs["cells"][-1])),
-            "why": "hose kit not built (phase-2 design section 3)"})
+        reel, far = M.g(hs["cells"][0]), M.g(hs["cells"][-1])
+        tool("jawa/build_batch", ops=_ops(REEL_DEF, [reel]), faction="player", wipeExisting=False,
+             why="hose strip: reel at %s, far end %s (%d cells, %s)" % (reel, far, len(hs["cells"]), hs["inflation"]))
+        hose_after = hose_steps(reel, far, "Plump" if hs["inflation"] == "plump" else "Flat")
     tool("jawa/map_commit")
     tool("rimworld/frame_cell_rect", x=site[0], z=site[1], width=site[2], height=site[3], paddingCells=1)
     tool("rimworld/step_game_ticks", ticks=2, pauseFirst=True, timeoutMs=120000,
          why="power nets and connector hookups form on the next tick (validation.py LEARNED)")
+    steps += hose_after
     steps.append({"kind": "census", "cmd": "census", "compare": "oracle.graph via expect_game"})
     tool("rimworld/screenshot_cell_rect", x=site[0], z=site[1], width=site[2], height=site[3], paddingCells=1,
          fileName="%s.png" % sc["name"])
@@ -179,6 +245,8 @@ def check_plan(pl, tools=None):
     calls += [(s["tool"], s["args"]) for s in pl["steps"] if s["kind"] == "cleanup"]
     calls += [("jawa/mod_settings_field", {"typeName": 1, "action": 1, "field": 1, "value": 1})
               for s in pl["steps"] if s["kind"] in ("probe", "census")]
+    calls += [("jawa/mod_settings_field", {"typeName": 1, "action": 1, "field": 1, "value": 1})
+              for s in pl["steps"] if s["kind"] in ("hose_probe", "hose_census")]
     calls += [("jawa/list_things", {"defName": 1, "limit": 1}) for s in pl["steps"] if s["kind"] == "resolve_thing"]
     for t, args in calls:
         if t not in tools:

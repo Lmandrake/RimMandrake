@@ -246,6 +246,22 @@ def main(argv=None):
     check("DS1 design formulas: floor/aerial/hose pairwise-complete, 109 scenes",
           not any(gaps.values()) and len(spec["scenes"]) == 109 and spec["counts"]["floor"] == 64,
           {"counts": spec["counts"], "missing": gaps})
+    # ---------------------------------------------------------------- 9. hose scenes: placed + checked (no UNBUILT)
+    import run_live as RL
+    hs = [x for x in spec["scenes"] if x["group"] == "hose"]
+    hp = [P.hose_plan(x, (50, 50)) for x in hs]
+    hprobs = [p for pl_ in hp for p in P.check_plan(pl_, tools)]
+    check("HO1 %d hose plans use only live tools + declared params" % len(hp), len(hp) == 9 and not hprobs, hprobs[:2])
+    check("HO1b no hose scene or hose oracle row is marked UNBUILT",
+          not any("unbuilt" in op or "UNBUILT" in json.dumps(x["notes"]) for x in hs for op in x["build"])
+          and all("UNBUILT" not in json.dumps(O.hose_expect(c)) for c in [scs[k] for k in scs] if c.get("hose")))
+    args = RL.argparse.Namespace(catalog="design", only=["H"], max_boards=0, progress=None, verbose=False, fresh_map=False)
+    mres = RL.run(args, RL.MockBridge(), mock=True)
+    st = {k: v["status"] for k, v in mres["scenes"].items()}
+    check("HO2 mock run places and passes all 9 hose scenes", len(st) == 9 and set(st.values()) == {"PASS"}, st)
+    bad = RL.Run.hose_compare(hs[3]["expect"]["intrinsic"], dict(mres["scenes"][hs[3]["id"]]["census"], state="Flat", blend=0.0, flatLen=40.0),
+                              {"minBendSetting": 1.2})
+    check("HO2n hose comparator catches a Plump scene reading Flat", any(d["field"] == "state" for d in bad), bad)
     n3, miss3 = MX.prove(DS.floor_rows()[1:], DS.GROUP_AXES["floor"])
     check("DS1n proof catches a dropped floor row", len(miss3) > 0, "%d pairs missing" % len(miss3))
     check("DS2 design spec is deterministic (hash of 2 builds)", DS.build_spec()["spec_hash"] == spec["spec_hash"],
