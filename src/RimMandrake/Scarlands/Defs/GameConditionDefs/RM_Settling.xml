@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    WARSCAR_SETTLING_WEATHER_1: the Settling. Started and ended by MapComponent_Settling (calm wind
+    for N hours starts it, a strong wind for M hours ends it), never by an incident. Permanent while it
+    lasts. The class mirrors vanilla ToxicFallout (pale sky, falling overlay, ToxicUtility's airborne call)
+    without killing plants or stopping animals. Messages are the readable start and end signs.
+  -->
+  <GameConditionDef>
+    <defName>RM_Settling</defName>
+    <label>the Settling</label>
+    <description>The wind has dropped and the old war's dust is coming down out of the air. Anything not under a roof is slowly poisoned, and a pale film is laying itself over every open cell, thickest in the crater bowls. Every footprint made in it stays until the wind comes back and the ground forgets.</description>
+    <conditionClass>RimMandrake.Scarlands.RM_GameCondition_Settling</conditionClass>
+    <canBePermanent>true</canBePermanent>
+    <allowUnderground>false</allowUnderground>
+    <pennedAnimalsSeekShelter>true</pennedAnimalsSeekShelter>
+    <startMessage>The wind has dropped. The Settling begins.</startMessage>
+    <endMessage>The wind is back. The ground forgets.</endMessage>
+  </GameConditionDef>
+</Defs>

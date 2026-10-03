@@ -82,6 +82,17 @@ namespace RimMandrake.Scarlands
         public static bool enableWreckLichenSeeder = true;
         public static bool enableInterimDonors = true;
 
+        // WARSCAR_SETTLING_WEATHER_1 toggles.
+        public static bool settlingEnabled = true;           // calm starts the Settling at all
+        public static float settlingCalmThreshold = 0.35f;   // wind speed below this is calm
+        public static float settlingCalmHours = 4f;          // hours of calm before it starts
+        public static float settlingEndWind = 0.8f;          // wind speed above this ends it
+        public static float settlingEndHours = 1f;           // hours of strong wind before it ends
+        public static float settlingToxicStrength = 1f;      // scales the airborne toxic buildup (0 = harmless)
+        public static bool liftFrontEnabled = true;          // the visible front with brief toxic exposure
+        public static bool warDustEnabled = true;            // film can be swept up for war dust
+        public static float ordnancePerMap = 3f;             // buried shells per new map (0-8)
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -127,6 +138,15 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref enableScarRoach, "enableScarRoach", true);
             Scribe_Values.Look(ref enableWreckLichenSeeder, "enableWreckLichenSeeder", true);
             Scribe_Values.Look(ref enableInterimDonors, "enableInterimDonors", true);
+            Scribe_Values.Look(ref settlingEnabled, "settlingEnabled", true);
+            Scribe_Values.Look(ref settlingCalmThreshold, "settlingCalmThreshold", 0.35f);
+            Scribe_Values.Look(ref settlingCalmHours, "settlingCalmHours", 4f);
+            Scribe_Values.Look(ref settlingEndWind, "settlingEndWind", 0.8f);
+            Scribe_Values.Look(ref settlingEndHours, "settlingEndHours", 1f);
+            Scribe_Values.Look(ref settlingToxicStrength, "settlingToxicStrength", 1f);
+            Scribe_Values.Look(ref liftFrontEnabled, "liftFrontEnabled", true);
+            Scribe_Values.Look(ref warDustEnabled, "warDustEnabled", true);
+            Scribe_Values.Look(ref ordnancePerMap, "ordnancePerMap", 3f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -214,6 +234,26 @@ namespace RimMandrake.Scarlands
                 "A cloak made with cloak lacquer makes the wearer invisible while standing still and unseen. Permanent; never expires.");
             list.Label("Lacquer: seen within " + lacquerSeenRadius.ToString("0") + " cells by a hostile with line of sight");
             lacquerSeenRadius = list.Slider(lacquerSeenRadius, 3f, 40f);
+            list.GapLine();
+
+            list.CheckboxLabeled("The Settling (calm-triggered war fallout)", ref settlingEnabled,
+                "When the wind stays calm the old war's dust settles: toxic to anything unroofed, and a film that keeps every footprint until the wind returns. Off: it never starts and ends at once if running.");
+            list.Label("Calm means wind below: " + settlingCalmThreshold.ToString("0.00"));
+            settlingCalmThreshold = list.Slider(settlingCalmThreshold, 0.05f, 0.8f);
+            list.Label("Calm hours before it starts: " + settlingCalmHours.ToString("0.0"));
+            settlingCalmHours = list.Slider(settlingCalmHours, 0.5f, 24f);
+            list.Label("Strong wind that ends it: above " + settlingEndWind.ToString("0.00"));
+            settlingEndWind = list.Slider(settlingEndWind, 0.4f, 1.5f);
+            list.Label("Hours of strong wind before it ends: " + settlingEndHours.ToString("0.0"));
+            settlingEndHours = list.Slider(settlingEndHours, 0.25f, 12f);
+            list.Label("Toxic strength: x" + settlingToxicStrength.ToString("0.00") + (settlingToxicStrength <= 0f ? " (harmless)" : ""));
+            settlingToxicStrength = list.Slider(settlingToxicStrength, 0f, 3f);
+            list.CheckboxLabeled("Lift front", ref liftFrontEnabled,
+                "When the wind returns the film lifts as a grey front crossing the map downwind, with brief airborne toxic exposure as it passes.");
+            list.CheckboxLabeled("War dust", ref warDustEnabled,
+                "Colonists may sweep the film into war dust (thickest in crater bowls), a toxic powder for tox shells.");
+            list.Label("Buried shells per map: up to " + Mathf.RoundToInt(ordnancePerMap) + " (new maps)");
+            ordnancePerMap = Mathf.Round(list.Slider(ordnancePerMap, 0f, 8f));
             list.GapLine();
 
             list.Label("Species (restart required; affects maps generated afterwards)");

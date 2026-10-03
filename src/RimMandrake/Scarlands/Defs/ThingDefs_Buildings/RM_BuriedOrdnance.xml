@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+    WARSCAR_SETTLING_WEATHER_1 spec 7. An unexploded shell. Unrevealed ordnance is NOT a Thing: it is a cell recorded
+    by MapComponent_Settling (so it is invisible, unselectable and unminable by construction). The film writer never
+    settles on those cells, so after a Settling each shows as a clean round spot; the component then spawns this
+    building there. A revealed shell can be marked, defused (Crafting job, may detonate) or set off from range
+    (shooting it explodes it, like any shell). Art: artpipe done/RM_BuriedOrdnance (finished job 2026-10-01).
+  -->
+  <ThingDef>
+    <defName>RM_BuriedOrdnance</defName>
+    <label>unexploded shell</label>
+    <description>An artillery shell from the old war, half in the slag, corroded but whole. It never went off. Shooting it will; so will a clumsy hand. Defusing it yields a shell and parts.</description>
+    <thingClass>RimMandrake.Scarlands.Building_BuriedOrdnance</thingClass>
+    <category>Building</category>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <size>(1,1)</size>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Normal</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <graphicData>
+      <texPath>Things/Building/RM_BuriedOrdnance</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.1,1.1)</drawSize>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-8</Beauty>
+    </statBases>
+    <building>
+      <isEdifice>false</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="CompProperties_Explosive">
+        <explosiveRadius>3.4</explosiveRadius>
+        <explosiveDamageType>Bomb</explosiveDamageType>
+        <startWickHitPointsPercent>0.7</startWickHitPointsPercent>
+        <wickTicks>30~60</wickTicks>
+        <preExplosionSpawnSingleThingDef>Filth_BlastMark</preExplosionSpawnSingleThingDef>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>
