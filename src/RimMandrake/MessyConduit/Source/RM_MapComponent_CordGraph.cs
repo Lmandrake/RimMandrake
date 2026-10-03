@@ -52,6 +52,54 @@ namespace RimMandrake.MessyConduit
 
         public void Notify_SettingsChanged() => builtFrame = -1;
 
+        // ---- lane C (2026-10-02): per-net strand variant (extension-cord colour, Star Wars cable kind)
+        private Dictionary<LaidPiece, int> netSeeds = new Dictionary<LaidPiece, int>();
+
+        /// <summary>The strand variant of a piece: its cord net's seed through CordMaterials.VariantFor, so every
+        /// cord of one connected net shares a colour and the pick is the same on every rebuild and after a load.</summary>
+        public int VariantOf(LaidPiece p) => CordMaterials.VariantFor(netSeeds.TryGetValue(p, out int s) ? s : 0);
+
+        public int NetSeedOf(LaidPiece p) => netSeeds.TryGetValue(p, out int s) ? s : 0;
+
+        /// <summary>Union the pieces by the cells they touch (edge ends, node/coil/tangle owner cells); a component's
+        /// seed is a stable FNV hash of its smallest cell token -- pure geometry, no vanilla PowerNet (which is not
+        /// built yet while a loaded map's sections first regenerate).</summary>
+        private static Dictionary<LaidPiece, int> ComputeNetSeeds(List<LaidPiece> ps)
+        {
+            var parent = new Dictionary<string, string>();
+            string Find(string x)
+            {
+                if (!parent.TryGetValue(x, out string px)) { parent[x] = x; return x; }
+                while (px != x) { string g = parent[px]; parent[x] = g; x = px; px = g; }
+                return x;
+            }
+            void Union(string a, string b)
+            {
+                string ra = Find(a), rb = Find(b);
+                if (ra == rb) return;
+                if (string.CompareOrdinal(ra, rb) < 0) parent[rb] = ra; else parent[ra] = rb;
+            }
+            string Tok(string end) { int i = end.LastIndexOf(':'); return i >= 0 ? end.Substring(i + 1) : end; }
+            var first = new Dictionary<LaidPiece, string>();
+            foreach (LaidPiece p in ps)
+            {
+                string own = p.Owner.X + "," + p.Owner.Z;
+                string a = p.EndA != null ? Tok(p.EndA) : own;
+                Find(a);
+                if (p.EndB != null) Union(a, Tok(p.EndB));
+                first[p] = a;
+            }
+            var res = new Dictionary<LaidPiece, int>();
+            foreach (KeyValuePair<LaidPiece, string> kv in first)
+            {
+                string root = Find(kv.Value);          // roots are the ordinal-smallest token (Union keeps the smaller)
+                uint h = 2166136261u;
+                foreach (char c in root) h = unchecked((h ^ c) * 16777619u);
+                res[kv.Key] = unchecked((int)h);
+            }
+            return res;
+        }
+
         public void Rebuild()
         {
             builtFrame = Time.frameCount;
@@ -87,13 +135,16 @@ namespace RimMandrake.MessyConduit
             Dictionary<IntVec2, List<LaidPiece>> prevBy = bySection;
             pieces = next;
             bySection = nextBy;
+            Dictionary<LaidPiece, int> prevSeeds = netSeeds;
+            try { netSeeds = ComputeNetSeeds(next); }
+            catch (Exception ex) { netSeeds = new Dictionary<LaidPiece, int>(); Log.ErrorOnce("[MessyConduit] net seeds: " + ex, 0x4d43_5345); }
             // dirty every section whose owned set changed (not just the regenerating one)
             if (Current.ProgramState == ProgramState.Playing)
             {
                 var keys = new HashSet<IntVec2>(nextBy.Keys);
                 keys.UnionWith(prevBy.Keys);
                 foreach (IntVec2 s in keys)
-                    if (Sig(prevBy, s) != Sig(nextBy, s)) DirtySection(s);
+                    if (Sig(prevBy, s, prevSeeds) != Sig(nextBy, s, netSeeds)) DirtySection(s);
             }
         }
 
@@ -114,8 +165,12 @@ namespace RimMandrake.MessyConduit
             map.mapDrawer.MapMeshDirty(loc, MessyConduitDefOf.RM_MessyCords);
         }
 
-        private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s) =>
-            d.TryGetValue(s, out List<LaidPiece> l) ? string.Join("\n", l.Select(p => p.Key + "@" + p.GeometryHash())) : "";
+        /// <summary>A section's owned-set signature: piece keys, geometry, and (lane C) the net seed, so a net that
+        /// merges or splits reprints the sections whose cords change colour even when their geometry did not.</summary>
+        private static string Sig(Dictionary<IntVec2, List<LaidPiece>> d, IntVec2 s, Dictionary<LaidPiece, int> seeds) =>
+            d.TryGetValue(s, out List<LaidPiece> l)
+                ? string.Join("\n", l.Select(p => p.Key + "@" + p.GeometryHash() + "#" + (seeds.TryGetValue(p, out int v) ? v : 0)))
+                : "";
 
         private bool LiveNow(Cell c)
         {
@@ -218,7 +273,9 @@ namespace RimMandrake.MessyConduit
         // frame for what is on screen; nothing here touches the static section meshes.
         private bool motionErrorLogged;
         private readonly Dictionary<Cell, DownedWireSchedule> downed = new Dictionary<Cell, DownedWireSchedule>();
-        private Mesh floorMesh, faceMesh, hiMesh;
+        private Mesh hiMesh;
+        /// <summary>Per strand variant (lane C): one whip mesh and one sway mesh each, drawn with that variant's material.</summary>
+        private readonly Mesh[] floorMeshes = new Mesh[8], faceMeshes = new Mesh[8];
         private readonly List<Vector3> mv = new List<Vector3>();
         private readonly List<Vector2> mu = new List<Vector2>();
         private readonly List<int> mt = new List<int>();
@@ -270,12 +327,16 @@ namespace RimMandrake.MessyConduit
             float faceY = AltitudeLayer.BuildingOnTop.AltitudeFor() + SectionLayer_RM_MessyCords.FaceLift;
             bool whip = MessyConduitSettings.whip && MessyConduitSettings.breakReadout;
             // ---- B3 whipping live tails (floor)
-            mv.Clear(); mu.Clear(); mt.Clear();
+            int nv = Mathf.Clamp(CordMaterials.VariantCount, 1, floorMeshes.Length);
             int cap = MaxSparkingEnds * 3;
+            for (int v = 0; v < nv; v++)
+            {
+            mv.Clear(); mu.Clear(); mt.Clear();
             if (whip)
                 foreach (LaidPiece p in pieces)
                 {
                     if (WhipDraws >= cap) break;
+                    if (nv > 1 && VariantOf(p) != v) continue;
                     foreach (CordStrand s in p.Strands)
                     {
                         if (s.WhipA <= 0 && s.WhipB <= 0) continue;
@@ -303,16 +364,20 @@ namespace RimMandrake.MessyConduit
                         }
                     }
                 }
-            Flush(ref floorMesh, CordMaterials.Strand);
+            Flush(ref floorMeshes[v], CordMaterials.StrandFor(v));
+            }
             // ---- B7 sway of lifted pieces (wall-hanging tails), CPU path, game-time clock
-            mv.Clear(); mu.Clear(); mt.Clear();
             float wind = map.windManager.WindSpeed;
             LastWind = wind;
             double gt = Find.TickManager.TicksGame / 60.0;
             ulong h = 1469598103934665603UL;
+            for (int v = 0; v < nv; v++)
+            {
+            mv.Clear(); mu.Clear(); mt.Clear();
             foreach (LaidPiece p in pieces)
                 foreach (CordStrand s in p.Strands)
                 {
+                    if (nv > 1 && VariantOf(p) != v) continue;
                     if (!s.Lifted || !SwaysNow(map, s)) continue;
                     if (!view.Contains(CordWorldAdapter.I(s.Pts[0].Floor))) continue;
                     List<V2> sw = CordMotion.Sway(s.Pts, s.SwayW, gt, CordRng.Hash("sway", p.Key), 0.12 * MessyConduitSettings.swayAmplitude, wind);
@@ -324,9 +389,10 @@ namespace RimMandrake.MessyConduit
                     }
                     SwayDraws++;
                 }
-            SwayVerts = mv.Count;
+            SwayVerts += mv.Count;
+            Flush(ref faceMeshes[v], CordMaterials.StrandFaceFor(v) ?? CordMaterials.StrandFor(v));
+            }
             SwayHash = h;
-            Flush(ref faceMesh, CordMaterials.StrandFace ?? CordMaterials.Strand);
             // ---- B4 downed-wire bursts at live wall terminals (real-time schedule; flecks only while time runs)
             if (MessyConduitSettings.downedWire && SparksAllowed) DownedWires(now);
             // ---- B5 selection highlight

@@ -62,6 +62,12 @@ LEARNED (seed; each line is a check below, not prose only):
     highlight, whip, sway): the highlight was on screen (OS capture) yet absent from the cell-rect capture.
     The first highlight material tinted the near-black strand texture and stayed near-black; it is now a warm
     band on a white texture.
+  * Lane C art styles (2026-10-02): ST1-ST5 run inside --live (after the 1b block); --style-shots repeats them on the
+    current map with a screenshot per style. A style switch is set:style=X (Apply rebuilds the materials and regenerates
+    every map mesh); ST2 proves the PRINTED section meshes carry only that style's strands, not just the material table.
+    The settings round trip (ST4) writes the real Config/Mod_MessyConduit_MessyConduitMod.xml; when that file did not
+    exist before a session, delete it afterwards. At ~26 px/cell Star Wars reads as Jawa and Cybertek as dull grey-green
+    (look, README), which no state row can catch.
 RULED OUT: (none yet)
 """
 import glob
@@ -86,14 +92,17 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            "sparkIntensity": "1f", "hideHookupWires": "true", "debugDraw": "false",
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
-           "maxSparkingEnds": "24", "highlight": "true", "sway": "true", "swayAmplitude": "1f", "lod": "true"}
+           "maxSparkingEnds": "24", "highlight": "true", "sway": "true", "swayAmplitude": "1f", "lod": "true",
+           # lane C art styles
+           "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 
 # Bars this phase does not build or this short tier does not reach. Honest, named, never PASS.
 UNBUILT = [
     ("U_sway_shader_path", "UNBUILT", "CutoutPlant vertex-shader sway (phase-2 doc 1.5 option 1); the CPU path is what ships"),
     ("U_floor_ripple", "UNBUILT", "optional outdoor floor-cord ripple (phase-2 doc 1.3, default off)"),
     ("U_motion_look", "UNCOVERED", "whip / drip rhythm / sway LOOK: motion is not a Northstar bar (owner); state proxies above"),
-    ("U_other_styles", "UNBUILT", "Extension cord / Cybertek / Star Wars art families (art not installed)"),
+    ("U_style_missing_art", "UNBUILT", "per-family EndFrayed_Live / PowerStrip / StrandShadow art does not exist; those slots "
+                                       "fall back to the Jawa pieces (ST1 asserts the fallback list is exactly that)"),
     ("M4_save_load_hash", "UNCOVERED", "walk M4: same polylines after save/load -- its own mode, --save-load NAME"),
     ("M9_remove_mod_clean", "UNCOVERED", "walk M9: a save made with the mod loads clean without it -- its own mode, "
                                          "--removal-check NAME on a tier without the mod"),
@@ -176,10 +185,113 @@ def o4_oracle(rows):
     row(rows, "O4_python_oracle", "PASS" if r.returncode == 0 else "FAIL", "HARNESS", last)
 
 
+# ---------------------------------------------------------------- lane C: art styles (offline)
+# Every style's required PNGs (paths relative to Textures/RimMandrake/MessyConduit), canvas, and kind. Wired by
+# src/RimMandrake/Utils/mockups/messy_conduit/wire_style_art.py; slots not listed fall back to the Jawa root set.
+STYLE_FILES = {
+    "StarWarsJawa": ["Strand_Jawa", "Junction_Tape", "Junction_Tin", "Plug", "StubWall", "StubRock", "EndFrayed_Dead"],
+    "Cybertek": ["Styles/Cybertek/" + n for n in ("Strand", "Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
+    "ExtensionCord": ["Styles/ExtCord/Strand_" + c for c in ("Orange", "Green", "Brown", "Yellow", "Blue")] +
+                     ["Styles/ExtCord/" + n for n in ("Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
+    "StarWars": ["Styles/StarWars/Strand_" + v for v in ("BlackRubber", "CorrugatedSteel", "CoiledBlack")] +
+                ["Styles/StarWars/" + n for n in ("Junction_T", "Junction_X", "Plug", "StubWall", "StubRock", "EndFrayed_Dead")],
+}
+SHARED_FILES = ["StrandShadow", "SparkGlow", "EndFrayed_Live", "PowerStrip", "Aerial/AerialMast", "Aerial/AerialMastTop",
+                "Aerial/AerialLampMast", "Aerial/AerialLampMastTop", "Aerial/WallBracket", "Aerial/TapClamp", "Aerial/SpanShadow"]
+STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap")]
+ALLOWED_FALLBACKS = {"EndFrayed_Live", "PowerStrip", "PowerStripDark"}
+
+
+def _canvas_for(rel):
+    n = rel.split("/")[-1]
+    if rel.startswith("Hose/Strand"):
+        return (256, 64)
+    if n.startswith("Strand") or n in ("SpanShadow", "SpanWire"):
+        return (128, 32)
+    if n in ("EndFrayed_Dead", "EndFrayed_Live", "SparkGlow", "TapClamp"):
+        return (64, 64)
+    if n == "PowerStrip":
+        return (64, 32)
+    if n in ("AerialMast", "AerialLampMast"):
+        return (128, 256)
+    return (128, 128)
+
+
+def png_sanity(rel):
+    """None if the PNG is sane, else why: RGBA, exact canvas, real transparency, not empty, not magenta; a strip
+    (Strand*, SpanShadow, Hose strands) must tile: edge-column diff <= max(1.5 x mean adjacent diff, +4)."""
+    from PIL import Image
+    import numpy as np
+    p = os.path.join(HERE, "Textures", "RimMandrake", "MessyConduit", rel + ".png")
+    if not os.path.exists(p):
+        return "missing"
+    im = Image.open(p)
+    if im.mode != "RGBA":
+        return "mode %s" % im.mode
+    want = _canvas_for(rel)
+    if im.size != want:
+        return "size %s != %s" % (im.size, want)
+    a = np.asarray(im).astype(np.float32)
+    al = a[:, :, 3]
+    if (al > 8).mean() < 0.01:
+        return "empty"
+    if (al < 8).mean() < 0.02 and not rel.split("/")[-1].startswith("Strand"):
+        return "no transparency"
+    vis = a[al > 128][:, :3]
+    if len(vis) and ((vis[:, 0] > 200) & (vis[:, 1] < 60) & (vis[:, 2] > 200)).mean() > 0.2:
+        return "magenta"
+    n = rel.split("/")[-1]
+    if n.startswith("Strand") or n == "SpanShadow":
+        pm = np.concatenate([a[:, :, :3] * (a[:, :, 3:4] / 255.0), a[:, :, 3:4]], axis=2)
+        edge = float(np.abs(pm[:, 0] - pm[:, -1]).mean())
+        adj = float(np.abs(np.diff(pm, axis=1)).mean())
+        if edge > max(1.5 * adj, adj + 4.0):
+            return "seam %.1f vs adjacent %.1f" % (edge, adj)
+    return None
+
+
+def o5_style_art(rows):
+    probs = {}
+    n = 0
+    for style, files in STYLE_FILES.items():
+        for rel in files:
+            n += 1
+            why = png_sanity(rel)
+            if why:
+                probs.setdefault(style, []).append("%s: %s" % (rel, why))
+    for rel in SHARED_FILES + STAGED_HOSE:
+        n += 1
+        why = png_sanity(rel)
+        if why:
+            probs.setdefault("shared", []).append("%s: %s" % (rel, why))
+    # the sanity check must be able to fail: a planted magenta strip and a seam-broken strip are refused
+    import tempfile
+    from PIL import Image
+    import numpy as np
+    plant = np.zeros((32, 128, 4), np.uint8)
+    plant[8:24, :, :] = (255, 0, 255, 255)
+    seam = np.zeros((32, 128, 4), np.uint8)
+    seam[8:24, :64] = (20, 20, 20, 255)
+    seam[8:24, 64:] = (220, 220, 220, 255)
+    tdir = os.path.join(HERE, "Textures", "RimMandrake", "MessyConduit", "_o5probe")
+    can_fail = False
+    try:
+        os.makedirs(tdir, exist_ok=True)
+        Image.fromarray(plant).save(os.path.join(tdir, "Strand_magenta.png"))
+        Image.fromarray(seam).save(os.path.join(tdir, "Strand_seam.png"))
+        can_fail = png_sanity("_o5probe/Strand_magenta") == "magenta" and (png_sanity("_o5probe/Strand_seam") or "").startswith("seam")
+    finally:
+        import shutil
+        shutil.rmtree(tdir, ignore_errors=True)
+    row(rows, "O5_style_art_sane", "PASS" if not probs and can_fail else "FAIL", "MOD",
+        probs or "%d PNGs sane (4 styles + shared/aerial + staged hose); planted magenta+seam refused=%s" % (n, can_fail))
+
+
 def run_offline():
     rows = []
     o1_files(rows)
     o2_defaults(rows)
+    o5_style_art(rows)
     o3_csharp_selftest(rows)
     o4_oracle(rows)
     return rows
@@ -401,6 +513,10 @@ def run_live(args):
         lane_a_live(B, rows, log)
     except Exception as ex:  # noqa: BLE001
         row(rows, "P1B_block", "FAIL", "HARNESS", "lane A block raised: %r" % ex)
+    try:
+        style_live(B, rows, log)
+    except Exception as ex:  # noqa: BLE001
+        row(rows, "ST_block", "FAIL", "HARNESS", "lane C style block raised: %r" % ex)
     # source off -> the live end reads dead within one 250-tick poll, no manual poll
     if bat_id:
         B.call("jawa/battery_set", thing=bat_id, mode="setPct", value=0.0)
@@ -604,6 +720,111 @@ def lane_a_live(B, rows, log):
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
 
 
+# ============================================================================ lane C: art styles (live)
+STYLES = ["StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek"]
+
+
+def style_live(B, rows, log, shots_prefix=None):
+    """ST rows: every style loads every texture it needs (no null / bad / missing material, fallbacks only to
+    the Jawa slots no family has art for), switching re-prints the section meshes with that style's strand,
+    the extension-cord colour modes, the settings file round trip, and a clean return to the default."""
+    per = {}
+    for st in STYLES:
+        B.probe("set:style=%s" % st)
+        B.ticks(1)
+        time.sleep(0.5)
+        c = B.probe("census")
+        sp = B.probe("styles")
+        per[st] = sp
+        log.append({"style": st, "styles": sp})
+        fb = set(sp.get("fallbacks") or [])
+        allowed = set() if st == "StarWarsJawa" else ALLOWED_FALLBACKS
+        ok = (sp.get("success") and not sp.get("nulls") and not sp.get("bad") and not sp.get("missing") and fb <= allowed and
+              sp.get("builtKey") == sp.get("currentKey") and (sp.get("installed") or {}).get(st) and (c.get("layerVerts") or 0) > 0)
+        row(rows, "ST1_%s_textures_load" % st, "PASS" if ok else "FAIL", "MOD",
+            {"strandTex": sp.get("strandTex"), "fallbacks": sorted(fb), "nulls": sp.get("nulls"), "bad": sp.get("bad"),
+             "missing": sp.get("missing"), "layerVerts": c.get("layerVerts")})
+        if shots_prefix:
+            shots_prefix(st)
+    strand_sets = {st: tuple(per[st].get("strandTex") or []) for st in STYLES}
+    distinct = len(set(strand_sets.values())) == len(STYLES)
+    printed_ok = {st: any(t in (per[st].get("printedTex") or {}) for t in strand_sets[st]) and
+                  not any(t in (per[st].get("printedTex") or {}) for o in STYLES if o != st for t in strand_sets[o] if t not in strand_sets[st])
+                  for st in STYLES}
+    plug_ids = {st: ((per[st].get("slots") or {}).get("Plug") or {}).get("id") for st in STYLES}
+    span_ok = {st: per[st].get("aerialSpanTex") == (strand_sets[st][0] if strand_sets[st] else None) for st in STYLES}
+    row(rows, "ST2_switch_changes_textures", "PASS" if distinct and all(printed_ok.values()) and len(set(plug_ids.values())) == len(STYLES)
+        and all(span_ok.values()) else "FAIL", "MOD",
+        {"strandTex": strand_sets, "printedOnlyOwnStrand": printed_ok, "plugTexIds": plug_ids, "aerialSpanFollows": span_ok,
+         "rebuilds": [per[st].get("rebuilds") for st in STYLES]})
+    # extension cords: mixed = 5 colours, one per net (every piece of one net the same colour); single = one colour
+    B.probe("set:style=ExtensionCord")
+    B.probe("set:extCordColorMode=Mixed")
+    B.ticks(1)
+    mx = B.probe("styles")
+    B.probe("set:extCordColor=2")
+    B.probe("set:extCordColorMode=Single")
+    B.ticks(1)
+    time.sleep(0.5)
+    sg = B.probe("styles")
+    pt = sg.get("printedTex") or {}
+    other = [k for k in pt if k.startswith("Strand_") and k != "Strand_Brown" and "(lod)" not in k]
+    nets_ok = sum((mx.get("netsPerVariant") or {}).values()) == mx.get("cordNets")   # each net in exactly one variant
+    row(rows, "ST3_extcord_colour_modes", "PASS" if mx.get("variantCount") == 5 and nets_ok and sg.get("variantCount") == 1 and
+        sg.get("strandTex") == ["Strand_Brown"] and "Strand_Brown" in pt and not other else "FAIL", "MOD",
+        {"mixed": {k: mx.get(k) for k in ("variantCount", "piecesPerVariant", "netsPerVariant", "cordNets")},
+         "single": {"strandTex": sg.get("strandTex"), "printed": pt}})
+    B.probe("set:extCordColorMode=Mixed")
+    B.probe("set:extCordColor=0")
+    # the settings file round trip (written, reset in memory, read back), then the pre-test values restored
+    rt = B.probe("settingsroundtrip")
+    row(rows, "ST4_settings_roundtrip", "PASS" if rt.get("readBack") == "Cybertek/Single/3" and rt.get("afterReset") != rt.get("readBack")
+        and rt.get("fileHadStyle") and rt.get("fileHadMode") and not rt.get("restoredFileHasCybertek") else "FAIL", "MOD", rt)
+    # restore cleanly: the default style is back, same textures as the first read, master switch still works
+    B.probe("set:style=StarWarsJawa")
+    B.probe("set:enabled=False")
+    off = B.probe("census")
+    B.probe("set:enabled=True")
+    B.ticks(1)
+    time.sleep(0.5)
+    on = B.probe("census")
+    back = B.probe("styles")
+    row(rows, "ST5_restore_default_and_master", "PASS" if back.get("strandTex") == list(strand_sets["StarWarsJawa"]) and
+        not off.get("layerVisible") and on.get("layerVisible") and (on.get("layerVerts") or 0) > 0 and not back.get("nulls") else "FAIL",
+        "MOD", {"strandTex": back.get("strandTex"), "offVisible": off.get("layerVisible"), "onVerts": on.get("layerVerts"),
+                "printed": back.get("printedTex")})
+    return per
+
+
+AERIAL_RECT = (88, 178, 46, 20)        # validation_aerial.SITE (kept literal: that module imports this one)
+SHOT_NAMES = {"StarWarsJawa": "jawa", "StarWars": "starwars", "ExtensionCord": "extcord", "Cybertek": "cybertek"}
+
+
+def run_style_shots():
+    """Screenshot each style on the same scenes from the same rects: the cord site and the aerial site."""
+    B = Bridge()
+    log, rows = [], []
+
+    def snap(st):
+        n = SHOT_NAMES[st]
+        shot(B, "style_" + n, SITE, log)
+        shot(B, "style_" + n + "_aerial", AERIAL_RECT, log)
+    style_live(B, rows, log, shots_prefix=snap)
+    B.probe("set:style=ExtensionCord")
+    B.probe("set:extCordColor=2")
+    B.probe("set:extCordColorMode=Single")
+    B.ticks(1)
+    shot(B, "style_extcord_single_brown", SITE, log)
+    B.probe("defaults")
+    B.ticks(1)
+    out = os.path.join(HERE, "northstar", "validation_styles_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump({"mode": "style-shots", "rows": rows, "log": log}, f, indent=1, default=str)
+    bad = [r for r in rows if r["status"] != "PASS"]
+    print("style-shots: %d rows, %d not PASS -> %s" % (len(rows), len(bad), out))
+    return 1 if bad else 0
+
+
 # ============================================================================ M4 / M9 (own modes)
 def _saves_stat():
     return {n: (os.path.getsize(os.path.join(SAVES, n)), int(os.path.getmtime(os.path.join(SAVES, n))))
@@ -740,7 +961,11 @@ def main(argv=None):
     ap.add_argument("--out", default=None)
     ap.add_argument("--save-load", default=None, metavar="NAME", help="M4: census, save as NAME (new), load, census, compare")
     ap.add_argument("--removal-check", default=None, metavar="NAME", help="M9: load NAME on a tier WITHOUT the mod, read the log")
+    ap.add_argument("--style-shots", action="store_true",
+                    help="lane C: on the current map (after --live and validation_aerial --live) screenshot every style, same rects")
     a = ap.parse_args(argv)
+    if a.style_shots:
+        return run_style_shots()
     if a.save_load or a.removal_check:
         res = run_save_load(a) if a.save_load else run_removal_check(a)
         os.makedirs(os.path.join(HERE, "northstar"), exist_ok=True)

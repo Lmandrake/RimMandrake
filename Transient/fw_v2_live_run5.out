@@ -1,7 +1,7 @@
 L0_loaded_paused       PASS                programState Playing, ticksGame 1 -> 1 over 1 s
 L0_map_250             PASS                map 250x250 biome TropicalRainforest
-L1_log_clean           PASS                no FlowWorks error in 16 warn+ entries (base seq 40)
-L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 0fc9651256ec mvidMatchesFile True; repo sha 0fc9651256ec
+L1_log_clean           PASS                no FlowWorks error in 13 warn+ entries (base seq 13)
+L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 571e6eb55f04 mvidMatchesFile True; repo sha 571e6eb55f04
 L3_defs_live           PASS                live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})
 L4_settings_default    PASS                43 settings read, all shipped defaults
 L5_site_pristine       PASS                excavated 0 bodies 0 superdeep 0 activeFluidRaw None
@@ -43,8 +43,8 @@ E2_dry_ring            PASS                every non-channel, non-body ring cell
 E3b_recession_shipped  PASS                final [0, 0, 0, 1], W2R {'stock': 4.001896, 'recededCount': 1, 'activeCellCount': 0}
 E5_sink_drains         PASS                band run drained per oracle: sinkTransferredTotal +10.0 (oracle +10); final [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 E5_inner_holds         PASS                interior prefilled twin final [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-E2s_shared_source_oracle PASS                both pairs == oracle (first-dug claims the source): {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 0, 0, 0], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 0, 0, 0]}
-E2s_shared_source_both_fill FAIL       MOD      two channels off ONE source cell after 8 pulses: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 0, 0, 0], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 0, 0, 0]} -- the second-dug channel stalls at its inlet (FLOWWORKS_SHARED_SOURCE_STALL_1)
+E2s_shared_source_oracle PASS                both pairs == oracle (every channel gets the shared source): {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}
+E2s_shared_source_both_fill PASS                all four shared-source channels full: {'E2s_shared_E7': [1, 1, 1, 1], 'E2s_shared_N7': [1, 1, 1, 1], 'E2s_shared_N8': [1, 1, 1, 1], 'E2s_shared_E8': [1, 1, 1, 1]}
 A_global_vs_oracle     PASS                every excavated cell == oracle at every pulse
 E3_budget_exhaustion   PASS                cap-5 pond delivered exactly 5 ([0, 0, 0, 1, 1, 1, 1, 1]), then rested; stock 0.00162504055
 E3n_budget_off_supplies PASS                budget OFF: a spent pond supplies again ([0, 0, 0, 1, 1, 1, 1, 1] -> [0, 1, 1, 1, 1, 1, 1, 1])
@@ -58,16 +58,16 @@ J_orders_accepted      PASS                [('E8_dig', True, None), ('E7a_fillin
 J_workgiver_selection  UNCOVERED           WorkGiver_DigCanal/FillInCanal choosing the designation unprompted is not timed here (pawn AI noise; run 3 never chose it) -- owed HasJobOnCell probe tool
 E4_engine_off          PASS                OFF for 310 ticks, past the due tick 251: nextPulseTick 251->251, cells moved []
 E1b_pulse_clamp        PASS                pulseIntervalTicks set 30 -> engine reads 60 (clamp floor 60)
-E1c_cadence_real_scheduler PASS                16 chunks of 60 ticks: nextPulseTick advances [60], lead [1]
-E4_engine_on_scheduled PASS                after 16 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]
-E6n_rain_toggle_off    PASS                rain fell (rate now 0.318) with rainFillsExcavations OFF over 16 pulses: no cell gained
+E1c_cadence_real_scheduler PASS                7 chunks of 60 ticks: nextPulseTick advances [60], lead [1]
+E4_engine_on_scheduled PASS                after 7 real scheduled pulses every oracle cell == oracle; E4 channel [1, 1, 1, 1]
+E6n_rain_toggle_off    UNMEASURED HARNESS  rain too light to test: rate 0.1825 over 7 pulses would add ~0.64 levels (< 1.5)
 E7a_fillin_displaces   PASS                sum F 2 -> 2 (conserved), middle D=0 terrain Soil, vector [1, 0, 1]
 E7b_overflow_sanctioned PASS                no room: sum F 3 -> 2, overflowDestroyedTotal +1.0 (want +1)
-E8_player_dig          PASS                designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 960 ticks (cap 2973, MiningSpeed 1.52)
+E8_player_dig          PASS                designated cell dug by a colonist: D=1 terrain RM_Channel_Empty after 420 ticks (cap 3285, MiningSpeed 1.37)
 E6_roof_readback       PASS                roofed excavated cells [(182, 60)]
-E6_rain_fills_unroofed PASS                rate 0.318 x 4 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle
+E6_rain_fills_unroofed PASS                rate 0.182 x 6 pulses: unroofed F=1, roofed twin F=0, every excavated cell == oracle
 T0n_fluid_switch_refused PASS                set_active_fluid Tar after classification+fill: success=False, activeFluidRaw RM_Fluid_Water
 E9_log_budget          PASS                0 FlowWorks errors, 0 ledger imbalances, exactly 1 sanctioned conservation exception; 0 other error lines []
 Z_settings_restored    PASS                8 touched settings back to shipped defaults
-result -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2_result_20261002T074420.json
-LIVE: NOT GREEN  ticks 1270  wall 58.6s  calls 525  {'PASS': 55, 'FAIL': 1, 'UNMEASURED': 0, 'UNCOVERED': 2, 'UNBUILT': 12, 'SKIP': 1}
+result -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2_result_20261002T075252.json
+LIVE: NOT GREEN  ticks 730  wall 83.5s  calls 500  {'PASS': 55, 'FAIL': 0, 'UNMEASURED': 1, 'UNCOVERED': 2, 'UNBUILT': 12, 'SKIP': 1}

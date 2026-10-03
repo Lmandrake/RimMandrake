@@ -1,0 +1,2341 @@
+{
+ "result": "matrix_live_20261002T192306.json",
+ "thresholds": {
+  "std_min": 6.0,
+  "magenta_px_max": 50,
+  "bright": [
+   25.0,
+   230.0
+  ],
+  "diff_px": 40,
+  "diff_frac_min": 0.002,
+  "pair_median_max": 4.0
+ },
+ "controls_negative": {
+  "C00_empty": "NO_WIRES",
+  "C01_line_master_off": "FAIL"
+ },
+ "per_scene": {
+  "A00_N2_R6_up": {
+   "file": "A00_N2_R6_up.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.99,
+   "lum_std": 8.76,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1257,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A01_N2_R12_cut": {
+   "file": "A01_N2_R12_cut.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.36,
+   "lum_std": 8.59,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1306,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A02_N2_R19_fallen": {
+   "file": "A02_N2_R19_fallen.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 58.09,
+   "lum_std": 26.2,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3792,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A03_N3_R6_cut": {
+   "file": "A03_N3_R6_cut.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 81.86,
+   "lum_std": 17.03,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1458,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A04_N3_R12_fallen": {
+   "file": "A04_N3_R12_fallen.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 82.77,
+   "lum_std": 15.3,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1568,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A05_N3_R19_up": {
+   "file": "A05_N3_R19_up.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.93,
+   "lum_std": 16.35,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3035,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A06_N5_R6_fallen": {
+   "file": "A06_N5_R6_fallen.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.23,
+   "lum_std": 9.4,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1408,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A07_N5_R12_up": {
+   "file": "A07_N5_R12_up.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.0,
+   "lum_std": 10.07,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1941,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A08_N5_R19_cut": {
+   "file": "A08_N5_R19_cut.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.31,
+   "lum_std": 6.22,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4169,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A09_N2_R6_cut": {
+   "file": "A09_N2_R6_cut.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.7,
+   "lum_std": 9.13,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1986,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A10_N2_R12_fallen": {
+   "file": "A10_N2_R12_fallen.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.21,
+   "lum_std": 9.15,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1671,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A11_N2_R19_up": {
+   "file": "A11_N2_R19_up.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 82.65,
+   "lum_std": 14.18,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3102,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A12_N3_R6_fallen": {
+   "file": "A12_N3_R6_fallen.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.52,
+   "lum_std": 11.1,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1736,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A13_N3_R12_up": {
+   "file": "A13_N3_R12_up.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.52,
+   "lum_std": 9.51,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2022,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A14_N3_R19_cut": {
+   "file": "A14_N3_R19_cut.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.77,
+   "lum_std": 7.64,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3961,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A15_N5_R6_up": {
+   "file": "A15_N5_R6_up.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.36,
+   "lum_std": 9.81,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1894,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A16_N5_R12_cut": {
+   "file": "A16_N5_R12_cut.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 82.18,
+   "lum_std": 16.01,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1499,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "A17_N5_R19_fallen": {
+   "file": "A17_N5_R19_fallen.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 83.2,
+   "lum_std": 16.75,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2522,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "C00_empty": {
+   "file": "C00_empty.png",
+   "size": [
+    754,
+    647
+   ],
+   "lum_mean": 76.94,
+   "lum_std": 8.5,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1984,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.857,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "NO_WIRES",
+    "detail": "no laid cord vertices in this frame"
+   }
+  },
+  "C01_line_master_off": {
+   "file": "C01_line_master_off.png",
+   "size": [
+    1560,
+    861
+   ],
+   "lum_mean": 77.09,
+   "lum_std": 10.12,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1966,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.793,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 86.87,
+    "outside": 80.33,
+    "darker_by": -0.0813,
+    "threshold": 0.12,
+    "mask_px": 5156
+   }
+  },
+  "D00_n1_S0": {
+   "file": "D00_n1_S0.png",
+   "size": [
+    538,
+    539
+   ],
+   "lum_mean": 76.91,
+   "lum_std": 12.23,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1884,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.8,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 165.92,
+    "outside": 80.29,
+    "darker_by": -1.0665,
+    "threshold": 0.12,
+    "mask_px": 12
+   }
+  },
+  "D01_n1_S1": {
+   "file": "D01_n1_S1.png",
+   "size": [
+    538,
+    539
+   ],
+   "lum_mean": 76.94,
+   "lum_std": 12.27,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1874,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.8,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 173.11,
+    "outside": 80.32,
+    "darker_by": -1.1552,
+    "threshold": 0.12,
+    "mask_px": 19
+   }
+  },
+  "D02_n1_S2": {
+   "file": "D02_n1_S2.png",
+   "size": [
+    538,
+    539
+   ],
+   "lum_mean": 77.05,
+   "lum_std": 11.53,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2081,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.8,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 174.83,
+    "outside": 80.43,
+    "darker_by": -1.1737,
+    "threshold": 0.12,
+    "mask_px": 12
+   }
+  },
+  "D03_n1_S3": {
+   "file": "D03_n1_S3.png",
+   "size": [
+    538,
+    539
+   ],
+   "lum_mean": 76.88,
+   "lum_std": 11.86,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1993,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.8,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 172.37,
+    "outside": 80.25,
+    "darker_by": -1.1478,
+    "threshold": 0.12,
+    "mask_px": 19
+   }
+  },
+  "D04_n10_S0": {
+   "file": "D04_n10_S0.png",
+   "size": [
+    700,
+    701
+   ],
+   "lum_mean": 76.64,
+   "lum_std": 11.21,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1906,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.846,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 38.62,
+    "outside": 80.0,
+    "darker_by": 0.5173,
+    "threshold": 0.12,
+    "mask_px": 496
+   }
+  },
+  "D05_n10_S1": {
+   "file": "D05_n10_S1.png",
+   "size": [
+    700,
+    701
+   ],
+   "lum_mean": 76.61,
+   "lum_std": 11.43,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1944,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.846,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 69.71,
+    "outside": 79.97,
+    "darker_by": 0.1283,
+    "threshold": 0.12,
+    "mask_px": 2065
+   }
+  },
+  "D06_n10_S2": {
+   "file": "D06_n10_S2.png",
+   "size": [
+    700,
+    701
+   ],
+   "lum_mean": 76.05,
+   "lum_std": 12.68,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1875,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "pair_median_diff": 0.0,
+   "wire_diff_frac": 0.02556,
+   "wire_evidence": "PASS",
+   "ok": true,
+   "px_per_cell": 53.846,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 31.75,
+    "outside": 79.81,
+    "darker_by": 0.6022,
+    "threshold": 0.12,
+    "mask_px": 4828
+   }
+  },
+  "D07_n10_S3": {
+   "file": "D07_n10_S3.png",
+   "size": [
+    700,
+    701
+   ],
+   "lum_mean": 75.68,
+   "lum_std": 13.44,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1862,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.846,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 32.85,
+    "outside": 79.79,
+    "darker_by": 0.5883,
+    "threshold": 0.12,
+    "mask_px": 8714
+   }
+  },
+  "D08_n100_S0": {
+   "file": "D08_n100_S0.png",
+   "size": [
+    1130,
+    1131
+   ],
+   "lum_mean": 76.91,
+   "lum_std": 9.83,
+   "magenta_px": 0,
+   "top_colour_frac": 0.201,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.81,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 35.55,
+    "outside": 80.27,
+    "darker_by": 0.5571,
+    "threshold": 0.12,
+    "mask_px": 2743
+   }
+  },
+  "D09_n100_S1": {
+   "file": "D09_n100_S1.png",
+   "size": [
+    1130,
+    1131
+   ],
+   "lum_mean": 71.37,
+   "lum_std": 17.73,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1731,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.81,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 32.02,
+    "outside": 77.17,
+    "darker_by": 0.5851,
+    "threshold": 0.12,
+    "mask_px": 78292
+   }
+  },
+  "D10_n100_S2": {
+   "file": "D10_n100_S2.png",
+   "size": [
+    1130,
+    1131
+   ],
+   "lum_mean": 71.93,
+   "lum_std": 16.98,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1766,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.81,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 32.4,
+    "outside": 77.41,
+    "darker_by": 0.5814,
+    "threshold": 0.12,
+    "mask_px": 69030
+   }
+  },
+  "D11_n100_S3": {
+   "file": "D11_n100_S3.png",
+   "size": [
+    1130,
+    1131
+   ],
+   "lum_mean": 71.96,
+   "lum_std": 17.12,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1758,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.81,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 32.16,
+    "outside": 77.54,
+    "darker_by": 0.5853,
+    "threshold": 0.12,
+    "mask_px": 71173
+   }
+  },
+  "D12_n1000_S0": {
+   "file": "D12_n1000_S0.png",
+   "size": [
+    848,
+    849
+   ],
+   "lum_mean": 77.73,
+   "lum_std": 4.72,
+   "magenta_px": 0,
+   "top_colour_frac": 0.442,
+   "non_blank": false,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": false,
+   "px_per_cell": 19.721,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 38.11,
+    "outside": 81.14,
+    "darker_by": 0.5304,
+    "threshold": 0.12,
+    "mask_px": 1105
+   }
+  },
+  "D13_n1000_S1": {
+   "file": "D13_n1000_S1.png",
+   "size": [
+    848,
+    849
+   ],
+   "lum_mean": 72.75,
+   "lum_std": 14.67,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3835,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.721,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 37.17,
+    "outside": 80.0,
+    "darker_by": 0.5353,
+    "threshold": 0.12,
+    "mask_px": 68884
+   }
+  },
+  "D14_n1000_S2": {
+   "file": "D14_n1000_S2.png",
+   "size": [
+    848,
+    849
+   ],
+   "lum_mean": 72.75,
+   "lum_std": 14.67,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3835,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.721,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 37.17,
+    "outside": 80.0,
+    "darker_by": 0.5353,
+    "threshold": 0.12,
+    "mask_px": 68884
+   }
+  },
+  "D15_n1000_S3": {
+   "file": "D15_n1000_S3.png",
+   "size": [
+    848,
+    849
+   ],
+   "lum_mean": 72.75,
+   "lum_std": 14.67,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3835,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.721,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 37.17,
+    "outside": 80.0,
+    "darker_by": 0.5353,
+    "threshold": 0.12,
+    "mask_px": 68884
+   }
+  },
+  "F00_T0_S0": {
+   "file": "F00_T0_S0.png",
+   "size": [
+    1560,
+    861
+   ],
+   "lum_mean": 76.64,
+   "lum_std": 9.98,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1985,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.793,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 35.25,
+    "outside": 80.0,
+    "darker_by": 0.5594,
+    "threshold": 0.12,
+    "mask_px": 2054
+   }
+  },
+  "F01_T0_S1": {
+   "file": "F01_T0_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.37,
+   "lum_std": 13.8,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1745,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "off frame size (861, 1560) != on (1183, 1810)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F02_T0_S2": {
+   "file": "F02_T0_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.1,
+   "lum_std": 25.02,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2796,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F03_T0_S3": {
+   "file": "F03_T0_S3.png",
+   "size": [
+    572,
+    317
+   ],
+   "lum_mean": 77.27,
+   "lum_std": 5.91,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4294,
+   "non_blank": false,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": false,
+   "px_per_cell": 19.724,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 64.07,
+    "outside": 80.96,
+    "darker_by": 0.2086,
+    "threshold": 0.12,
+    "mask_px": 4040
+   }
+  },
+  "F04_T1_S0": {
+   "file": "F04_T1_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.35,
+   "lum_std": 20.43,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3009,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F05_T1_S1": {
+   "file": "F05_T1_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.37,
+   "lum_std": 20.51,
+   "magenta_px": 0,
+   "top_colour_frac": 0.297,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "off frame size (435, 494) != on (1183, 1810)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F06_T1_S2": {
+   "file": "F06_T1_S2.png",
+   "size": [
+    1346,
+    1183
+   ],
+   "lum_mean": 76.8,
+   "lum_std": 11.15,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1926,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.84,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 97.97,
+    "outside": 79.82,
+    "darker_by": -0.2274,
+    "threshold": 0.12,
+    "mask_px": 19618
+   }
+  },
+  "F07_T1_S3": {
+   "file": "F07_T1_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.22,
+   "lum_std": 10.52,
+   "magenta_px": 0,
+   "top_colour_frac": 0.198,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F08_T2_S0": {
+   "file": "F08_T2_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.0,
+   "lum_std": 9.66,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1919,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F09_T2_S1": {
+   "file": "F09_T2_S1.png",
+   "size": [
+    1614,
+    1183
+   ],
+   "lum_mean": 76.77,
+   "lum_std": 10.72,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1922,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.8,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 103.33,
+    "outside": 79.71,
+    "darker_by": -0.2963,
+    "threshold": 0.12,
+    "mask_px": 20769
+   }
+  },
+  "F10_T2_S2": {
+   "file": "F10_T2_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 71.57,
+   "lum_std": 22.02,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2893,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F11_T2_S3": {
+   "file": "F11_T2_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 61.25,
+   "lum_std": 25.38,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3251,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F12_T3_S0": {
+   "file": "F12_T3_S0.png",
+   "size": [
+    572,
+    337
+   ],
+   "lum_mean": 77.64,
+   "lum_std": 6.21,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4306,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.724,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 68.93,
+    "outside": 81.11,
+    "darker_by": 0.1502,
+    "threshold": 0.12,
+    "mask_px": 1306
+   }
+  },
+  "F13_T3_S1": {
+   "file": "F13_T3_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.24,
+   "lum_std": 28.53,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2274,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F14_T3_S2": {
+   "file": "F14_T3_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.96,
+   "lum_std": 13.57,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1788,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F15_T3_S3": {
+   "file": "F15_T3_S3.png",
+   "size": [
+    1560,
+    915
+   ],
+   "lum_mean": 76.66,
+   "lum_std": 10.7,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1912,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.793,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 67.98,
+    "outside": 79.64,
+    "darker_by": 0.1465,
+    "threshold": 0.12,
+    "mask_px": 17802
+   }
+  },
+  "F16_T4_S0": {
+   "file": "F16_T4_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.3,
+   "lum_std": 11.23,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1786,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F17_T4_S1": {
+   "file": "F17_T4_S1.png",
+   "size": [
+    1722,
+    861
+   ],
+   "lum_mean": 74.88,
+   "lum_std": 13.26,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1895,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.812,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 30.41,
+    "outside": 79.29,
+    "darker_by": 0.6165,
+    "threshold": 0.12,
+    "mask_px": 37125
+   }
+  },
+  "F18_T4_S2": {
+   "file": "F18_T4_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.93,
+   "lum_std": 25.66,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2812,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F19_T4_S3": {
+   "file": "F19_T4_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 73.2,
+   "lum_std": 25.93,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2817,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F20_T5_S0": {
+   "file": "F20_T5_S0.png",
+   "size": [
+    692,
+    553
+   ],
+   "lum_mean": 77.25,
+   "lum_std": 6.51,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4315,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.771,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 42.61,
+    "outside": 80.92,
+    "darker_by": 0.4734,
+    "threshold": 0.12,
+    "mask_px": 3290
+   }
+  },
+  "F21_T5_S1": {
+   "file": "F21_T5_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 64.52,
+   "lum_std": 23.72,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2609,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F22_T5_S2": {
+   "file": "F22_T5_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.46,
+   "lum_std": 16.75,
+   "magenta_px": 0,
+   "top_colour_frac": 0.187,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F24_T6_S0": {
+   "file": "F24_T6_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.88,
+   "lum_std": 12.89,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1775,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F25_T6_S1": {
+   "file": "F25_T6_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 80.76,
+   "lum_std": 14.7,
+   "magenta_px": 0,
+   "top_colour_frac": 0.175,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F26_T6_S2": {
+   "file": "F26_T6_S2.png",
+   "size": [
+    710,
+    317
+   ],
+   "lum_mean": 76.89,
+   "lum_std": 7.45,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4338,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.722,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 40.91,
+    "outside": 80.93,
+    "darker_by": 0.4945,
+    "threshold": 0.12,
+    "mask_px": 4013
+   }
+  },
+  "F27_T6_S3": {
+   "file": "F27_T6_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.23,
+   "lum_std": 25.23,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2802,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F28_T7_S0": {
+   "file": "F28_T7_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 61.39,
+   "lum_std": 25.39,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3255,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F29_T7_S1": {
+   "file": "F29_T7_S1.png",
+   "size": [
+    672,
+    375
+   ],
+   "lum_mean": 76.63,
+   "lum_std": 9.12,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4298,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "pair_median_diff": 0.0,
+   "wire_diff_frac": 0.02413,
+   "wire_evidence": "PASS",
+   "ok": true,
+   "px_per_cell": 19.765,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 38.58,
+    "outside": 81.07,
+    "darker_by": 0.5241,
+    "threshold": 0.12,
+    "mask_px": 6492
+   }
+  },
+  "F30_T7_S2": {
+   "file": "F30_T7_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.11,
+   "lum_std": 10.66,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1846,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F31_T7_S3": {
+   "file": "F31_T7_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.16,
+   "lum_std": 10.78,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1855,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F32_T8_S0": {
+   "file": "F32_T8_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.74,
+   "lum_std": 10.89,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1924,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F33_T8_S1": {
+   "file": "F33_T8_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.66,
+   "lum_std": 10.36,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1857,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F34_T8_S2": {
+   "file": "F34_T8_S2.png",
+   "size": [
+    672,
+    375
+   ],
+   "lum_mean": 77.55,
+   "lum_std": 6.35,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4271,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.765,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 82.05,
+    "outside": 81.14,
+    "darker_by": -0.0112,
+    "threshold": 0.12,
+    "mask_px": 6167
+   }
+  },
+  "F35_T8_S3": {
+   "file": "F35_T8_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 61.16,
+   "lum_std": 25.27,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3255,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F36_T9_S0": {
+   "file": "F36_T9_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 73.28,
+   "lum_std": 25.32,
+   "magenta_px": 0,
+   "top_colour_frac": 0.284,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F37_T9_S1": {
+   "file": "F37_T9_S1.png",
+   "size": [
+    672,
+    337
+   ],
+   "lum_mean": 77.2,
+   "lum_std": 6.74,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4168,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.765,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "FAIL",
+    "inside": 71.7,
+    "outside": 80.87,
+    "darker_by": 0.1133,
+    "threshold": 0.12,
+    "mask_px": 8342
+   }
+  },
+  "F38_T9_S2": {
+   "file": "F38_T9_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.19,
+   "lum_std": 14.44,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1727,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F39_T9_S3": {
+   "file": "F39_T9_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 78.42,
+   "lum_std": 12.8,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1757,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F41_T10_S1": {
+   "file": "F41_T10_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.04,
+   "lum_std": 11.09,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1846,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F42_T10_S2": {
+   "file": "F42_T10_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 73.92,
+   "lum_std": 24.95,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2885,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F43_T10_S3": {
+   "file": "F43_T10_S3.png",
+   "size": [
+    750,
+    375
+   ],
+   "lum_mean": 76.73,
+   "lum_std": 8.84,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4239,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.737,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 36.85,
+    "outside": 80.8,
+    "darker_by": 0.5439,
+    "threshold": 0.12,
+    "mask_px": 5043
+   }
+  },
+  "F44_T11_S0": {
+   "file": "F44_T11_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 60.29,
+   "lum_std": 25.66,
+   "magenta_px": 0,
+   "top_colour_frac": 0.3415,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F45_T11_S1": {
+   "file": "F45_T11_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 73.55,
+   "lum_std": 25.05,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2832,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F46_T11_S2": {
+   "file": "F46_T11_S2.png",
+   "size": [
+    1722,
+    969
+   ],
+   "lum_mean": 74.2,
+   "lum_std": 13.18,
+   "magenta_px": 0,
+   "top_colour_frac": 0.177,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.812,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 31.62,
+    "outside": 77.45,
+    "darker_by": 0.5918,
+    "threshold": 0.12,
+    "mask_px": 7068
+   }
+  },
+  "F47_T11_S3": {
+   "file": "F47_T11_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 75.56,
+   "lum_std": 12.1,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1672,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F48_T12_S0": {
+   "file": "F48_T12_S0.png",
+   "size": [
+    1722,
+    1023
+   ],
+   "lum_mean": 76.04,
+   "lum_std": 10.43,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1919,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.812,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 33.44,
+    "outside": 79.32,
+    "darker_by": 0.5783,
+    "threshold": 0.12,
+    "mask_px": 2967
+   }
+  },
+  "F49_T12_S1": {
+   "file": "F49_T12_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.2,
+   "lum_std": 11.38,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1842,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "off frame size (1023, 1722) != on (1183, 1810)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F50_T12_S2": {
+   "file": "F50_T12_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 71.38,
+   "lum_std": 21.85,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2913,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F51_T12_S3": {
+   "file": "F51_T12_S3.png",
+   "size": [
+    632,
+    375
+   ],
+   "lum_mean": 76.87,
+   "lum_std": 7.4,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4206,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 19.75,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 65.59,
+    "outside": 80.44,
+    "darker_by": 0.1846,
+    "threshold": 0.12,
+    "mask_px": 4215
+   }
+  },
+  "F52_T13_S0": {
+   "file": "F52_T13_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.58,
+   "lum_std": 23.99,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2874,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F53_T13_S1": {
+   "file": "F53_T13_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.61,
+   "lum_std": 24.06,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2854,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "off frame size (355, 672) != on (1183, 1810)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F55_T13_S3": {
+   "file": "F55_T13_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 76.4,
+   "lum_std": 13.08,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1766,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F56_T14_S0": {
+   "file": "F56_T14_S0.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.49,
+   "lum_std": 13.75,
+   "magenta_px": 0,
+   "top_colour_frac": 0.172,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F58_T14_S2": {
+   "file": "F58_T14_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 74.18,
+   "lum_std": 27.14,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2052,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F59_T14_S3": {
+   "file": "F59_T14_S3.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 72.86,
+   "lum_std": 25.7,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2823,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F60_T15_S0": {
+   "file": "F60_T15_S0.png",
+   "size": [
+    632,
+    355
+   ],
+   "lum_mean": 77.76,
+   "lum_std": 5.11,
+   "magenta_px": 0,
+   "top_colour_frac": 0.4222,
+   "non_blank": false,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": false,
+   "px_per_cell": 19.75,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 69.05,
+    "outside": 80.95,
+    "darker_by": 0.1469,
+    "threshold": 0.12,
+    "mask_px": 838
+   }
+  },
+  "F61_T15_S1": {
+   "file": "F61_T15_S1.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 77.29,
+   "lum_std": 27.59,
+   "magenta_px": 0,
+   "top_colour_frac": 0.2191,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F62_T15_S2": {
+   "file": "F62_T15_S2.png",
+   "size": [
+    1810,
+    1183
+   ],
+   "lum_mean": 79.29,
+   "lum_std": 12.31,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1774,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "frame_ok": null,
+   "mask_check": {
+    "verdict": "UNMEASURED",
+    "detail": "frame capture (per-frame draws): no cell->pixel transform"
+   }
+  },
+  "F63_T15_S3": {
+   "file": "F63_T15_S3.png",
+   "size": [
+    1722,
+    969
+   ],
+   "lum_mean": 76.76,
+   "lum_std": 10.03,
+   "magenta_px": 0,
+   "top_colour_frac": 0.1864,
+   "non_blank": true,
+   "no_magenta": true,
+   "brightness_ok": true,
+   "wire_evidence": "UNMEASURED",
+   "wire_detail": "no <case>_off.png pair (a single frame cannot prove cords)",
+   "ok": true,
+   "px_per_cell": 53.812,
+   "frame_ok": true,
+   "mask_check": {
+    "verdict": "PASS",
+    "inside": 68.68,
+    "outside": 79.94,
+    "darker_by": 0.1409,
+    "threshold": 0.12,
+    "mask_px": 11664
+   }
+  }
+ },
+ "sheets": [
+  "sheet_aerial_01.png",
+  "sheet_aerial_02.png",
+  "sheet_controls_01.png",
+  "sheet_density_01.png",
+  "sheet_floor_01.png",
+  "sheet_floor_02.png",
+  "sheet_floor_03.png",
+  "sheet_floor_04.png"
+ ],
+ "counts": {
+  "shots": 96,
+  "ok": 93,
+  "mask": {
+   "UNMEASURED": 60,
+   "NO_WIRES": 1,
+   "FAIL": 9,
+   "PASS": 26
+  },
+  "frame_ok_false": [],
+  "magenta": [],
+  "blank": [
+   "D12_n1000_S0",
+   "F03_T0_S3",
+   "F60_T15_S0"
+  ],
+  "wire_pair": {
+   "D06_n10_S2": "PASS",
+   "F29_T7_S1": "PASS"
+  }
+ }
+}

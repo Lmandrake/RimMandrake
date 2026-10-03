@@ -1,0 +1,12 @@
+L0_fresh_map           FAIL       SITE     {'success': False, 'message': 'Timed out waiting for RimWorld entry scene readiness.', 'state': {'programState': 'Playing', 'inEntryScene': False, 'hasCurrentGame': True, 'currentMapId': 'Map_0', 'currentMapIndex': 0, 'mapCount': 1, 'longEventPending': False, 'paused': True, 'timeSpeed': 'Paused', '
+L0_loaded_paused       PASS                programState Playing, ticksGame 1 -> 1 over 1 s
+L0_map_250             PASS                map 250x250 biome ExtremeDesert
+L1_log_clean           PASS                no FlowWorks error in 14 warn+ entries (base seq 17)
+L2_assembly_identity   PASS                loaded C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FlowWorks\Assemblies\RimMandrakeFlowWorks.dll sha 0fc9651256ec mvidMatchesFile True; repo sha 0fc9651256ec
+L3_defs_live           PASS                live pathCost {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300} (want {'RM_Channel_Empty': 30, 'RM_Channel_Mid': 45, 'RM_Channel_Deep': 80, 'RM_Channel_Superdeep': 300})
+L4_settings_default    PASS                43 settings read, all shipped defaults
+L5_site_pristine       FAIL       SITE     excavated 96 bodies 5 superdeep 3 activeFluidRaw RM_Fluid_Water
+ABORT                  FAIL       SITE     site not pristine -- start a fresh quicktest map (--fresh-map)
+Z_settings_restored    PASS                0 touched settings back to shipped defaults
+result -> \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\src\RimMandrake\FlowWorks\northstar\validation_v2_result_20261002T073849.json
+LIVE: NOT GREEN  ticks 0  wall 299.2s  calls 57  {'PASS': 7, 'FAIL': 3, 'UNMEASURED': 0, 'UNCOVERED': 0, 'UNBUILT': 0, 'SKIP': 0}
