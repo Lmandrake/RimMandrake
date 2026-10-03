@@ -134,6 +134,8 @@ namespace RimMandrake.CreatureBehaviors
             {
                 Messages.Message(alarmMessage, at, MessageTypeDefOf.ThreatBig);
             }
+
+            RM_ReactionEvents.RaiseAlarmAnnounced(evt);
         }
 
         private void Converge(RM_ReactionEvent evt, Pawn pawn)

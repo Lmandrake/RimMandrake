@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_HIVE_SEALED_PASSAGES_1. The plug a kurreth hive packs into the
+     tunnel behind an intruder when its alarm rings (RM_HiveSealing, spawned in
+     code, never built by a player). Impassable, breakable, and temporary:
+     CompLifespan crumbles it after 15000 ticks (~6 in-game hours, INVENTED), so
+     a sealed-in party can dig out (120 HP) or wait. Art: placeholder — vanilla
+     CollapsedRocks retinted resin-brown at 1x1; bespoke art is owed. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingNaturalBase">
+    <defName>RM_KurrethResinPlug</defName>
+    <label>kurreth resin plug</label>
+    <description>Chewed earth and hardened resin, packed into a tunnel by kurreth workers in moments. It will crumble on its own in a few hours; anything in a hurry has to break it.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Natural/CollapsedRocks</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(125,74,48)</color>
+      <drawSize>(1.15,1.15)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <blockWind>true</blockWind>
+    <fillPercent>1</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <rotatable>false</rotatable>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <building>
+      <isInert>true</isInert>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_Lifespan">
+        <lifespanTicks>15000</lifespanTicks>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

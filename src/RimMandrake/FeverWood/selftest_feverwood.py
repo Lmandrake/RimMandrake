@@ -540,7 +540,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 10, V.BOOL_TOGGLES)
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 11, V.BOOL_TOGGLES)
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)

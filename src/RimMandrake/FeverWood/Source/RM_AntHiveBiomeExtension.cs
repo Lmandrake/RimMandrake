@@ -75,6 +75,12 @@ namespace RimMandrake.FeverWood
 
         public float farmHerdRadius = 5f;
 
+        // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the reaction tag the defenders'
+        // RM_CompReactionSource rings with; an alarm carrying it seals the
+        // corridor behind the intruder (RM_HiveSealing). Must match the race's
+        // own comp <tag>.
+        public string alarmTag = "KurrethHive";
+
         public int edgeMargin = 10;
 
         public int placementAttempts = 60;
