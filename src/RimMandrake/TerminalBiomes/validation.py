@@ -113,6 +113,23 @@ def catch_checks():
     return bad
 
 
+def saal_name_checks():
+    """SCALD_SAAL_ONE_NAME_1: creature and catch are both labelled saal; no label says noohm."""
+    bad = []
+    for dp, _, fns in os.walk(os.path.join(HERE, "Defs")):
+        for fn in fns:
+            if not fn.endswith(".xml"):
+                continue
+            root = ET.parse(os.path.join(dp, fn)).getroot()
+            for d in root:
+                if d.findtext("defName") in ("RM_Noohm", "RM_Saal") and d.tag in ("ThingDef", "PawnKindDef"):
+                    if (d.findtext("label") or "").strip() != "saal":
+                        bad.append("%s %s label is %r, want 'saal'" % (d.tag, d.findtext("defName"), d.findtext("label")))
+                if "noohm" in (d.findtext("label") or "").lower():
+                    bad.append("%s label says noohm" % fn)
+    return bad
+
+
 try:
     from modcheck import Suite
     suite = Suite("TerminalBiomes")
@@ -131,6 +148,13 @@ try:
             from modcheck import ExpectationFailed
             raise ExpectationFailed("; ".join(bad))
 
+    @suite.chain("saal_one_name")
+    def saal_one_name(t):
+        bad = saal_name_checks()
+        if bad:
+            from modcheck import ExpectationFailed
+            raise ExpectationFailed("; ".join(bad))
+
     @suite.chain("catch_free_tier")
     def catch_free_tier(t):
         bad = catch_checks()
@@ -141,7 +165,7 @@ except ImportError:
     suite = None
 
 if __name__ == "__main__":
-    problems = static_checks() + roster_checks() + catch_checks()
+    problems = static_checks() + roster_checks() + catch_checks() + saal_name_checks()
     print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
     for p in problems:
         print("  - " + p)

@@ -69,7 +69,7 @@ exit — the vanilla portal load/unload flow, unchanged.
 
 | sea | the floor you walk | what is down there | the clock | bans honoured |
 |---|---|---|---|---|
-| **Scald** (`the_scald.md`, worked in §8) | a dark, unlit plain ringed by **chimney fields** of boiling cloud (three heat zones, §8.1); **bottom-walker** herds grazing the field edges and laying **Crowncarpet** (Deepfire's mat) behind them, lit by the **swirl** that feeds on them; **guardians** at the herds, **scalding swarms** at the chimneys; **shulla** shoals, **noohm** drifting; **wreckage** scattered on every floor and, on one hex, the mineral-crusted **Rakatan vessel** with dormant droids around it (§8.4) | Crowncarpet → Deepfire, walker chitin, **nodules** (gold, silver, uranium, Chimney Iron, magnetite, uraninite, Seep Salt, Pyrinth), **Mother-of-Scaldpearl** on the chimney flanks, wreck salvage; the one place the shoal-fish are *seen* not just caught | **heat as zones**: 55 °C ambient everywhere, `burnDamage` 0 / 3 / 8 by zone terrain (`HediffGiver_Terrain`, the shore jobs' own mechanism); the suit's heat armour is the gate (§8.1, §8.6) | ban 3 (crossing scald water always costs — heat + burn, no immunity item); ban 4 (the floor is "merely hot", nothing swims the boil: the map IS the depth, the surface never becomes walkable); ban 1 (nothing potable — no water source down here); ban 5 (nothing cools or drains it) |
+| **Scald** (`the_scald.md`, worked in §8) | a dark, unlit plain ringed by **chimney fields** of boiling cloud (three heat zones, §8.1); **bottom-walker** herds grazing the field edges and laying **Crowncarpet** (Deepfire's mat) behind them, lit by the **swirl** that feeds on them; **guardians** at the herds, **scalding swarms** at the chimneys; **shulla** shoals, **saal** drifting; **wreckage** scattered on every floor and, on one hex, the mineral-crusted **Rakatan vessel** with dormant droids around it (§8.4) | Crowncarpet → Deepfire, walker chitin, **nodules** (gold, silver, uranium, Chimney Iron, magnetite, uraninite, Seep Salt, Pyrinth), **Mother-of-Scaldpearl** on the chimney flanks, wreck salvage; the one place the shoal-fish are *seen* not just caught | **heat as zones**: 55 °C ambient everywhere, `burnDamage` 0 / 3 / 8 by zone terrain (`HediffGiver_Terrain`, the shore jobs' own mechanism); the suit's heat armour is the gate (§8.1, §8.6) | ban 3 (crossing scald water always costs — heat + burn, no immunity item); ban 4 (the floor is "merely hot", nothing swims the boil: the map IS the depth, the surface never becomes walkable); ban 1 (nothing potable — no water source down here); ban 5 (nothing cools or drains it) |
 | **Grey Sea** (`the_grey_deep.md`) | grey-green murk, a **pillar forest** (pale mineable pillar stone), **brine pools** with shores, the **statuary** (encased dead as mineable/chisel objects) | soluble minerals dip-harvested at pool **shores**, pillar stone, jacketed salvage, the giant's shed crust; **fessk** watching, **otheska/sorruth** grazing | **cold + brine**: 4 °C; pool water is `RM_WastelandBrineDeep` (impassable, so ban 1 is structural) ringed by `…BrineShallow` (`dangerous`, the harvest cell) | ban 1 (no survivable pool entry: deep brine is Impassable — engine-enforced, not a rule); ban 2 (no schools: `wildGroupSize 1` on every Grey kind); ban 4 (no glow: no glowing flora, the only light is the exit and what you carry); ban 5 (statuary never rots: they are Buildings, not corpses) |
 | **Twilight Sea** (`the_twilight_deep.md`) | green dusk under the **mat-roof**, **skylight** columns (a few unroofed light-well cells — the one place a flyer could enter, and the *only* natural light), **mud-channel rivers** (impassable "sinking water" channels with rich banks), kelp towers, and **lit Compact dwellings** on the banks (v1: a set-piece of 2–3 huts + lamps, uninhabited by pawns; the inhabited town is the sheet's v2) | bank harvest (the richest gathering ground), kelp, **noolim** shoals in the light columns, **loohn** hanging in the dark between | **mild**: 14 °C, the longest clock of the four — the comfortable sea, by ruling | ban 3 (no swimmable river: channels are Impassable); ban 4 (Compact never hostile: no pawns spawn, nothing attacks from the huts); ban 5 (no permanent skylight: regenerated per map, never a building); ban 1 (nothing this map does touches the surface roster) |
 | **Propane Lake** (`the_propane_lakes.md`) | black **solid-propane floor** (`RM_SolidPropane`) under liquid fuel; **tholin dust** fallout, the Blue Desert's arrived dead as salvage, and the **war lab's** outer wall as a locked set-piece (a sealed ancient door — nothing inside in v1) | **oovanam** sifting the dust, **heemin** shimmer in the fuel layer above (rendered as the map's weather, not a pawn: they are the catch, `fishTypes`), the **vaunoom** as a rare arrival that hunts pipe-and-pawn | **cold**: **−79 °C** map temperature; hypothermia is the whole clock and it is short. Fuel above: any fire/explosion on the floor is a map-wide ignition (§4) | ban 4 (no ignition without a source: the map ignites only from a heat or spark event); ban 8 (lab guardians stay mechanoid/ancient — a door, no fauna); ban 3 (no standing visibility penalty: the murk here is dark, not fog); ban 6 (nothing native leaves — the exit's `CanEnterPortal` check refuses tamed natives, §4) |
@@ -249,7 +249,7 @@ Fog                      (vanilla)
 
 ### 3.3 Where the cast and the catch come from
 
-- **Floor residents** = the sea BiomeDef's `<wildAnimals>` (already wired: Scald noohm/shulla;
+- **Floor residents** = the sea BiomeDef's `<wildAnimals>` (already wired: Scald saal/shulla;
   Grey fessk/sorruth/essarn/otheska; Twilight noolim/loohn/weloon/lunoowa; Propane
   vaunoom/heemin/oovanam/hoolen + `AA_*`). `RM_DiveMapExtension.excludeFromFloor` names kinds that
   are surface-only (hoolen, `AA_AuroraSylph`, `AA_Skyeel`, `AA_Aerofleet`); `RM_MapComponent_
@@ -337,7 +337,7 @@ All-off leaves the hatch inert. No worldgen-affecting toggle exists here
 2. **The Scald floor, bare (falsification test).** `RM_DiveMapExtension`, `RM_ScaldFloorGenerator` with only
    `RM_SeaFloorBase → GenStep_PlaceSeaDiveExit → Animals → Fog`, `RM_SeaFloorHabitat` mutator, the lifted
    growth-rate patch, the comfy-temperature pass on the 14 race defs. **Quicktest on the minimal
-   list + TerminalBiomes + DivingInteraction: do noohm and shulla spawn at gen and walk in from
+   list + TerminalBiomes + DivingInteraction: do saal and shulla spawn at gen and walk in from
    the roofed edge?** If no, §2.5 is wrong and the mutator flag is the first suspect. Ships: a
    walkable, populated Scald floor. Same test proves the ascent: surface with a hauled item.
 3. **The clock.** `RM_DeepExposure`, four murk weathers + held condition (the Scald's carries
@@ -449,7 +449,7 @@ for the whole floor — heatstroke is the ambient cost everywhere — and the zo
 
 | zone | terrain (new, `RM_`) | where | what is there | the cost |
 |---|---|---|---|---|
-| **1 — the plain** | `RM_ScaldFloorPlain` (dark mat-floored basalt; `burnDamage` 0; tag `RUT_ScaldMarginMat` so Crowncarpet can grow on it) | the outer ~55% of the floor, every map edge, the exit | walker herds and their swirl, Crowncarpet trails, shulla shoals, noohm drifting between, scattered wreckage (§8.4), loose Seep Salt and gold/silver nodules | ambient 55 °C only; nothing burns |
+| **1 — the plain** | `RM_ScaldFloorPlain` (dark mat-floored basalt; `burnDamage` 0; tag `RUT_ScaldMarginMat` so Crowncarpet can grow on it) | the outer ~55% of the floor, every map edge, the exit | walker herds and their swirl, Crowncarpet trails, shulla shoals, saal drifting between, scattered wreckage (§8.4), loose Seep Salt and gold/silver nodules | ambient 55 °C only; nothing burns |
 | **2 — the chimney fields** | `RM_ScaldFloorHot` (`burnDamage` **3** — the engine floor, MEASURED `Mathf.Max(burnDamage,3)`; cloudy overlay) | 3–5 discs, radius 9–14, each around a chimney cluster; never touching a map edge | the chimneys, Chimney Iron and uranium nodules, magnetite/uraninite crystals, Pyrinth, guardians on patrol, swarm nests | burn every tick standing; `ArmorRating_Heat` (the ladder's, §8.6) is what makes a crossing survivable |
 | **3 — the chimney cores** | `RM_ScaldFloorScalding` (`burnDamage` **8**, INVENTED; brighter cloud) | the inner radius 3–4 of each disc, hugging the chimneys | **Mother-of-Scaldpearl** growing on the chimney flanks, the richest crystals, the wreck's stern (wreck hex only) | *"threatens even protected divers"*: at the boil-suit's 0.55 heat armour a diver still takes ~half of 8 per tick-burst — a raid on the core is seconds, not a stroll |
 
@@ -481,7 +481,7 @@ add "terrain is Plain" to its validator).
 
 ### 8.2 Cast
 
-Existing residents stay as §1/§3.3 lists them (noohm, shulla, plus the Utinni-patched sando, faa,
+Existing residents stay as §1/§3.3 lists them (saal, shulla, plus the Utinni-patched sando, faa,
 mee). New — names are the owner's (§7b-16), all `RM_` unless marked:
 
 | creature | proposed def | role | behaviour (mechanism) | tier | art |
@@ -649,7 +649,7 @@ Each is one mechanism already named above; listed so FOUNDRY builds the *moment*
    gear** (Deepfire spec §3.4 — a worn item is a moving light and a target), **Crowncarpet**
    (`CompGlower` on the plant; if the Deepfire spec gives the mat none, add it here for the floor
    variant only), **chimneys** (orange, r 6), **uraninite** (green, r 1.5), and **glowing creatures**
-   (ullium cyan, feen orange-white, noohm's bubble line). A first dive with no Deepfire is a
+   (ullium cyan, feen orange-white, saal's bubble line). A first dive with no Deepfire is a
    torch-lit stumble along a rope; a Deepfire-lit dive sees the herd before the herd's guardians
    see you. Visibility is the progression reward (`references.md` #24).
 2. **The herd.** A walker herd is lit by its own swirl and trails a fresh rainbow behind it. Seen

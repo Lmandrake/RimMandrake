@@ -47,7 +47,7 @@ Every catch has a living floor creature, written from its own catch description:
 - **karrash**: crab that "looks like a piece of the vent walked off"; lives on the chimneys.
 - **ekkel**: fist-sized tumbling knot of heat-mirror filaments; travels by letting go down the chimney.
 - **bladderboil**: head-sized golden gas-sac that gulps itself taut in the roar and sighs out in quiet pools.
-- **noohm**: the bubble-sailor; a translucent bell heeled over on a bubble-line, sail-membrane up. Its catch is named **saal** (`RM_Saal`), different on purpose per `RM_ScaldFloorFauna.xml`'s header.
+- **saal**: the bubble-sailor; a translucent bell heeled over on a bubble-line, sail-membrane up. Creature (`RM_Noohm`, defName kept) and catch (`RM_Saal`) are both labelled **saal** (ruled, decision 5).
 - **elder sando**: invented leviathan (bs 20), "one per sea, if that". Floor-only, no catch, by the pairing rule.
 
 ### 1.3 Mechanics (`SCALD_MECHANICS_1`, kit S1–S6)
@@ -56,7 +56,7 @@ Every catch has a living floor creature, written from its own catch description:
 - **S2 steam-catch**: `RUT_SteamCatch` condenser on a vent. Its water output item is still unset; no item-water def exists.
 - **S3 margin fishing and baths**: **blocked.** Fishing needs shore cells. `RUT_ScaldMargin` (cool ring, burn 0) exists but must be hand-placed as a sealed cove, and never was.
 - **S4 geyser fields**: `RUT_ScaldVent`. It is placed by the bridge only, so a generated map has **no vents**.
-- **S5 set-pieces**: the sail scatterer (`RUT_ScaldSailScatterer`) is keyed to vents and spawns a **vanilla Penguin placeholder**, not the noohm. The walker surfacing (`RUT_WalkerSurfacing`) is a **message only**: no walker creature exists.
+- **S5 set-pieces**: the sail scatterer (`RUT_ScaldSailScatterer`) is keyed to vents and spawns a **vanilla Penguin placeholder**, not the saal. The walker surfacing (`RUT_WalkerSurfacing`) is a **message only**: no walker creature exists.
 - **S6 wreck salvage**: three wrecks (`RUT_ScaldWreck*`) scattered on the surface biome; shadows fixed (`SCALD_WATER_AGITATION_FLECKS_1`).
 - **Water agitation**: `RM_MapComponent_WaterAgitation`. Margin calm, shallow lightly agitated, deep always agitated.
 - **Gear and research**: `RM_ScaldWorking` research unlocks the boil-suit (`RM_Apparel_BoilSuit`); also the scald wrap. Scald damage, exposure hediff and a scald armor stat exist.
@@ -104,7 +104,7 @@ Scald's `wildAnimals`. "Catch" = an entry in its `fishTypes`.
 | karrash | vent-crust crab | `RM_Karrash` 0.45 | `RM_KarrashCatch` uncommon 1.0 + rare | ✅ pair |
 | ekkel | tumbling filament knot | `RM_Ekkel` 0.3 | `RM_EkkelCatch` uncommon 0.4 + rare | ✅ pair |
 | bladderboil | golden gas-sac | `RM_Bladderboil` 0.6 | `RM_BladderboilCatch` uncommon 0.5 | ✅ pair |
-| bubble-sailor | sail-bell riding bubble-lines | `RM_Noohm` 0.4 (bs 0.3) | `RM_Saal` uncommon 0.5 | ⚠️ pair under **two names**. The catch reads as "fist-sized, one stiff vane"; the creature reads as a heeled bell with a membrane. A deliberate choice, but the owner has never seen it side by side (decision 5) |
+| bubble-sailor | sail-bell riding bubble-lines | `RM_Noohm` 0.4 (bs 0.3) | `RM_Saal` uncommon 0.5 | One name, saal (ruled, decision 5). The catch reads as "fist-sized, one stiff vane"; the creature reads as a heeled bell with a membrane. |
 | elder sando | invented leviathan, one per sea | `RM_ElderSando` 0.005 | — | ✅ floor-only megafauna (pairing rule) |
 | **bottom-walker** | the sheet's huge armored herds mowing the mats at −350 m | **none** | — (chitin item exists) | 🔴 **missing**: the sheet's signature giant |
 | sando aqua monster | canon apex, campaign layer | `RSW_SandoAquaMonster` 0.03 | — | floor-only megafauna (campaign) |
@@ -135,7 +135,7 @@ GPT's costs **exclude** the shared seabed-layer work (1.4).
 | # | idea (GPT's name) | in plain words | the verb | nearest existing content, and why different (GPT's check) | cost |
 |---|---|---|---|---|---|
 | 1 | **The Walking Pasture** | Build the missing bottom-walkers as a real herd. Where they graze, the mat's pigment-rich underside is briefly exposed; your crew works behind the herd, stops when it turns, and backs off when two grazing lanes meet. Too close and you get shoved aside by something that barely notices you. | follow | Pyrelands' herds follow a fire regime; this one opens temporary access to a resource. The sheet already rules the herds and the dung economy; the **moving worksite** is the new part. | L |
-| 2 | **The Sail Forecast** | The noohm bubble-sailors shift from one vent branch to another *before* that vent discharges. Players learn to read sail traffic as the warning, then harvest the exposed vent-wall deposits in the safe window. | forecast | The geysers (S4) exist; what is new is wildlife telling you which vent is about to go. Not a map-wide countdown, not the Forge's boiling rain, not a light lure. | M |
+| 2 | **The Sail Forecast** | The saal bubble-sailors shift from one vent branch to another *before* that vent discharges. Players learn to read sail traffic as the warning, then harvest the exposed vent-wall deposits in the safe window. | forecast | The geysers (S4) exist; what is new is wildlife telling you which vent is about to go. Not a map-wide countdown, not the Forge's boiling rain, not a light lure. | M |
 | 3 | **The Immersion Berth** | **The Scald's ship-touch voice.** A parked hull slowly heats up: a small, tight ship is easy to keep cool, a sprawling one is not. Fit coolers and choose which rooms get power. The sea never seals doors or blocks launch; it makes the ship worse as a bedroom, hospital and workshop. | refrigerate | Grey grows matter on the hull and demands chipping before launch. This adds nothing to the hull and has no launch gate. Vanilla room temperature and coolers throughout. | M–L |
 | 4 | **The Return Gallery** | A half-buried, broken coolant manifold from the Rust Cathedral's circuit lies on the crater floor. Hook a pump to its ports and read the gauges to trace which branches are dead and which still return. Solving it opens a locker with an engineering schematic and a record of where the Cathedral dumps its heat. | trace | The coolant circuit is canon already; diagnosing its abandoned branches is new. It rewards understanding, where wreck salvage rewards extraction. It cannot touch the live trunk or stop the boil. | M |
 | 5 | **The Unanswered Wound** | A found rite for **Sh'kaar** (the forge god). After a native creature genuinely injures a colonist, the group tends the wounded and walks them back to shelter **without striking any resident**. The injury becomes a reason to protect, not to retaliate. A shared memory; no heat immunity. | refuse retaliation | Not the Snuffing (light), not the Anvil Gift (destroys a weapon: here weapons stay intact), not the Shade Tithe or Felled Noon. GPT says it uses Sh'kaar's last open found-rite slot. Guarded against injury-farming. | M |
