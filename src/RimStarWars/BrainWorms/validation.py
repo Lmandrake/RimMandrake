@@ -224,15 +224,32 @@ def _spawn(t, kind, x, z, faction="player"):
     if not pid:
         _fail("spawn_pawn(%s) returned no pawn: %r" % (kind, r))
     t.session.track("pawn", pid, x=x, z=z)
+    _POS[pid] = (x, z)
     return pid
 
 
+_POS = {}
+
+
 def _snap(t, pid):
+    """pawn_get snapshot, plus `hediffs` (with severity) from list_pawns includeHealth and `mentalState` from
+    pawn_mental list. LIVE 2026-10-03: pawn_get carries neither a hediffs list nor severities, which made the
+    infection, severity and puppet-state checks UNMEASURED for an instrument reason; those two tools carry them."""
     r = t.bridge_call("jawa/pawn_get", pawn=pid)
     if not _live(t):
         return {}
     snap = (r or {}).get("pawn") or r or {}
-    return snap if isinstance(snap, dict) else {}
+    snap = dict(snap) if isinstance(snap, dict) else {}
+    if pid in _POS:
+        x, z = _POS[pid]
+        lp = t.bridge_call("jawa/list_pawns", includeHealth=True, rect="%d,%d,25,25" % (x - 12, z - 12), limit=100)
+        for row in ((lp or {}).get("pawns") or []):
+            if row.get("id") == pid:
+                snap["hediffs"] = list(((row.get("health") or {}).get("hediffs")) or [])
+        pm = t.bridge_call("jawa/pawn_mental", pawn=pid, action="list")
+        if isinstance(pm, dict) and "currentState" in pm:
+            snap["mentalState"] = pm.get("currentState")
+    return snap
 
 
 def _hediff_row(snap, name):
