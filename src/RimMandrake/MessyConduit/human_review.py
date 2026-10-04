@@ -1,7 +1,7 @@
 """human_review.py -- the Northstar "for the human" review map for Messy Conduit (owner, 2026-10-04).
 
     python.exe src/RimMandrake/MessyConduit/human_review.py --build [--fresh-map] [--style StarWarsJawa] | tr -d '\\r'
-    python.exe src/RimMandrake/MessyConduit/human_review.py --goto 7 | tr -d '\\r'     # frame station 7 (0 = whole gallery, F = free area)
+    python.exe src/RimMandrake/MessyConduit/human_review.py --goto 7 | tr -d '\\r'     # frame station 7 (0 = south gallery 1-18, N0 = north gallery 19-29, F = free area)
     python.exe src/RimMandrake/MessyConduit/human_review.py --style Cybertek | tr -d '\\r'   # switch every station's cable look
     python.exe src/RimMandrake/MessyConduit/human_review.py --labels | tr -d '\\r'     # re-pin the labels (after a load/restart)
     python.exe src/RimMandrake/MessyConduit/human_review.py --clear | tr -d '\\r'      # wipe the review region and its labels
@@ -17,6 +17,11 @@ What it builds (one quicktest map, the messyconduit tier, ~1-2 min):
     OFF (he needs the UI), the review region unfogged + unroofed + Soil.
   * a GALLERY of numbered stations in three labelled rows (cords / overhead lines / hoses), each a self-contained
     little grid with its own battery, labelled in world by jawa/review_label (the dev-only JawaBench labeller).
+  * round 2 (owner notes 2026-10-04): a NORTH GALLERY (REGION2, above the colonists, out to the NE map corner) with
+    stations 19-29 appended after 18 so his station numbers never move: power showpieces (row E), hose mazes (row F,
+    judged by validation_hose.py through the hose hooks) and challenge configurations (row G). Some stations carry their
+    own terrain (river), roof (mountain, roofed room), fog (mountain: re-hidden after the region is unfogged) and
+    blueprints (half-built work for the save-load check).
   * a FREE AREA beside it: open soil, a charged power pad (2 solar + 3 batteries + a conduit stub to plug into),
     and stacks of steel, components and wood.
   * the key sheet: Transient/mc_human_review/KEYSHEET.md + keysheet.html (what each station is, what to notice,
@@ -48,7 +53,22 @@ STYLES = ("StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek")
 # the Mod Settings names (owner review 2026-10-04 B19: labels only, the enum names / saved keys are unchanged)
 LOOK = {"StarWarsJawa": "Scrapper", "StarWars": "Industrial", "ExtensionCord": "Modern", "Cybertek": "Futuristic"}
 REGION = (8, 6, 228, 106)              # x, z, w, h: everything the review owns (quicktest colonists stand near 125,125)
+REGION2 = (8, 140, 242, 110)           # round 2 stations 19+: north of the colonists, out to the map's NE corner (250x250)
+REGIONS = {1: REGION, 2: REGION2}
+MAP_SIZE = 250
+SPAN_RANGE = 20                        # AerialSettings.maxSpan default
 TAG = "mc_review"
+ROWS = (("A", "Row A - floor cords", ""),
+        ("B", "Row B - overhead lines", ""),
+        ("C", "Row C - flexible hoses", ""),
+        ("D", "Row D - hose crossings and parallel runs",
+         "Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece."),
+        ("E", "Row E - power showpieces (north gallery)",
+         "Round 2 (owner notes 2026-10-04): a pole with many kinds of devices, a crowded electric room under an overhead line, cords through a fogged mountain."),
+        ("F", "Row F - hose mazes (north gallery)",
+         "Two routes out of a small maze, then the short one walled off after laying. validation_hose.py owns the pass/fail; this map shows it."),
+        ("G", "Row G - challenge configurations (north gallery)",
+         "Built to make visible bugs show: map edge, water, roof edge, longest/odd spans, a full pole, neighbouring nets, half-built work and save-load."))
 GOLD, CREAM, TEAL, RUST = "#ffd27f", "#f2e6cf", "#8fd3c7", "#ff9a6b"
 
 # ------------------------------------------------------------------------------------------------ the gallery
@@ -198,10 +218,192 @@ def station_list():
         "FINDING to judge: where the S-curve slack of two hoses runs along each other they may overlap for a stretch"],
        cross_i, hoses=[dict(reel=(0, 6), far=(21, 6), state="Plump"), dict(reel=(0, 15), far=(21, 15), state="Plump"),
                        dict(reel=(6, 0), far=(6, 21), state="Plump"), dict(reel=(15, 0), far=(15, 21), state="Plump")])
+    stations_round2(st, hose_i)
     for d in S:
         if d["hose"] and not d["hoses"]:
             d["hoses"] = [d["hose"]]
     return S
+
+
+def rect_cells(x, z, w, h):
+    return [(i, j) for i in range(x, x + w) for j in range(z, z + h)]
+
+
+def perimeter(x0, z0, x1, z1, gaps=()):
+    c = [(x, z) for x in range(x0, x1 + 1) for z in range(z0, z1 + 1) if x in (x0, x1) or z in (z0, z1)]
+    return [p for p in c if p not in set(gaps)]
+
+
+def stations_round2(st, hose_i):
+    """Round 2 stations (owner notes 2026-10-04, design/RimMandrake/messyconduit_review_round2_owner_notes_2026-10-04.md).
+    Numbered AFTER 18 so the owner's station numbers never move. They live in REGION2, north of the quicktest colonists.
+    Extra per-station keys: terrain [(TerrainDef, rect)] painted before building; roof [(RoofDef, rect)] laid after the
+    region is unroofed; fog {refog: [rect], unfog: [rect]} applied last (the region is unfogged by clear()); blueprints
+    [(def, cell, rot)] placed as real blueprints; wconduit [cell] = WaterproofConduit; links may carry a third element,
+    the verdict the link is EXPECTED to get (Roofed / OutOfRange / FullA): a refusal shown on purpose; hook = the name of a
+    hose hook run after the hoses are laid."""
+    R2 = dict(region=2)
+    # ---- row E: power showpieces
+    s19 = [("Battery", (16, 10), 0, 1.0), ("Battery", (17, 10), 0, 1.0),            # adjacent to the pole
+           ("StandingLamp", (18, 15), None, None), ("Heater", (22, 15), None, None), ("SunLamp", (20, 10), None, None),
+           ("Turret_MiniTurret", (23, 12), None, None),
+           ("ElectricStove", (35, 13), None, None), ("HiTechResearchBench", (4, 16), None, None),   # at distance, by conduit
+           ("FlatscreenTelevision", (9, 9), 0, None), ("Cooler", (26, 21), 3, None),
+           ("WallLamp", (29, 23), 0, None), ("WallLamp", (29, 17), 0, None)]
+    st(19, "E", 12, 144, 40, 26, "POLE CLUSTER", "one power pole with a wide mix of devices: some right beside it (lamp, heater, sun "
+       "lamp, mini-turret, two batteries), some reached by conduit runs (stove, hi-tech research bench, TV), a walk-in freezer "
+       "with an in-wall cooler and wall lamps inside and out, and a lamp mast fed over the air",
+       ["each device right beside the pole gets its own hookup from the pole's insulators; with more hookups than insulators, "
+        "see whether they share a terminal or pile onto one (owner question: which terminal does each go to?)",
+        "big devices (5x2 bench, 3x1 stove, 2x1 TV): the cord should meet the building, not stop short of its edge or end in mid-air",
+        "the in-wall cooler: the cord reaches it through the wall face, not across the room",
+        "wall lamps (one inside the freezer, one outside on its south wall): their cords run to the wall, never through the room's "
+        "middle", "the turret's cord does not cross the turret's own base art",
+        "the lamp mast on the far NW gets its power through the air: one span, lit"],
+       ["toggle each device off (select > flick): its cord stays, the device goes dark",
+        "deconstruct the pole: every adjacent hookup falls; the conduit-fed devices keep their cords",
+        "build another lamp right beside the pole: does it pick a free terminal?"],
+       conduit=line(6, 19, 13) + line(21, 32, 13) + [(20, z) for z in range(14, 22)] + line(21, 25, 21),
+       walls=perimeter(26, 18, 32, 24, gaps=[(26, 21)]), devs=s19,
+       masts=[("RM_AerialMast", (20, 13)), ("RM_AerialLampMast", (6, 22))], links=[(0, 1)], **R2)
+    room = perimeter(4, 2, 30, 18, gaps=[(17, 2), (30, 13)])
+    s20 = [("Battery", (1, 7), 0, 1.0), ("Battery", (6, 7), 0, 1.0), ("Battery", (27, 11), 0, 1.0),
+           ("ElectricStove", (8, 15), None, None), ("ElectricStove", (12, 15), None, None),
+           ("HiTechResearchBench", (24, 15), None, None), ("FlatscreenTelevision", (7, 5), 0, None),
+           ("StandingLamp", (6, 12), None, None), ("StandingLamp", (27, 6), None, None), ("StandingLamp", (19, 4), None, None),
+           ("Heater", (25, 8), None, None), ("SunLamp", (14, 13), None, None), ("Turret_MiniTurret", (24, 4), None, None),
+           ("Cooler", (30, 13), 1, None), ("WallLamp", (18, 17), 0, None), ("WallLamp", (5, 14), 3, None),
+           ("StandingLamp", (33, 13), None, None)]
+    st(20, "E", 62, 144, 35, 22, "ELECTRIC ROOM", "a walled workshop crammed with powered devices joined by messy conduit (with a "
+       "tangle), and three power poles carrying a line OVER it: west pole outside, middle pole inside the room, east pole outside",
+       ["the showpiece: does the room read as lived-in and messy without turning into noise?",
+        "the overhead line passes over the walls and the devices; its ground shadow falls across the floor and furniture",
+        "floor cords never cross on top of a device's art; the tangle sits in the open between the stoves and the TV",
+        "the middle pole stands inside the (unroofed) room and joins both the overhead line and the floor run",
+        "the east pole lights the lamp outside the room through the air"],
+       ["unlink the east span: only the outside lamp goes dark", "roof the room (Architect > Structure > Build roof, god mode): "
+        "the middle pole is now under a roof - its spans should be cut (roof cut) and drop",
+        "switch looks (--style): the whole room changes at once"],
+       conduit=[(x, 10) for x in range(5, 30) if x != 17] + [(10, z) for z in range(11, 15)] + [(22, z) for z in range(5, 10)] +
+       rect_cells(13, 7, 3, 3) + [(29, 11), (29, 12), (29, 13)],
+       walls=room, devs=s20, masts=[("RM_AerialMast", (1, 10)), ("RM_AerialMast", (17, 10)), ("RM_AerialMast", (33, 10))],
+       links=[(0, 1), (1, 2)], **R2)
+    tunnel = [(4, 5, 3, 1), (6, 5, 1, 16), (6, 20, 12, 1), (18, 14, 7, 8), (25, 16, 19, 1)]   # x, z, w, h (station-local)
+    open_ = set(c for r in tunnel for c in rect_cells(*r))
+    st(21, "E", 108, 144, 48, 32, "MOUNTAIN TUNNEL", "a cord run through a winding one-cell tunnel and a small cavern inside a big "
+       "block of granite under OVERHEAD MOUNTAIN, fog of war ON over the rock; a pole in the cavern tries to link to one outside",
+       ["the cords stay INSIDE the tunnel: their curls must not draw over the fogged rock or poke out of the fog",
+        "the cords are drawn under the mountain-roof shading like everything else (no bright cord in a dark tunnel)",
+        "where the tunnel turns, the cord turns with it (no shortcut through rock)",
+        "the cavern pole is under the mountain roof: its link to the pole outside is REFUSED (anchors need open sky), "
+        "so no wire runs through the rock", "the lamp in the cavern and the one past the east exit are lit"],
+       ["mine a cell of the tunnel wall: the fog lifts there; do the cords move?", "toggle the roof overlay (bottom-right)",
+        "select the cavern pole > Link wire to the outside pole: the refusal message should say 'roofed'"],
+       rock=[c for c in rect_cells(4, 0, 40, 26) if c not in open_],
+       conduit=line(2, 6, 5) + [(6, z) for z in range(6, 21)] + line(7, 21, 20) + [(21, z) for z in range(16, 20)] +
+       line(22, 44, 16),
+       devs=[("Battery", (1, 5), 0, 1.0), ("StandingLamp", (19, 15), None, None), ("Heater", (23, 19), None, None),
+             ("StandingLamp", (46, 16), None, None)],
+       masts=[("RM_AerialMast", (21, 29)), ("RM_AerialMast", (23, 17))], links=[(0, 1, "Roofed")],
+       roof=[("RoofRockThick", (4, 0, 40, 26))], fog=dict(refog=[(4, 0, 40, 26)], unfog=tunnel), **R2)
+    # ---- row F: hose mazes (the paths are judged by validation_hose.py; this file only lays them out and calls the hooks)
+    maze = perimeter(0, 0, 12, 10, gaps=[(12, 1), (12, 2), (12, 8), (12, 9)]) + perimeter(4, 3, 8, 7, gaps=[(4, 5)]) + \
+        line(9, 11, 5)
+    maze_i = hose_i + ["reel it in and lay it again to the same free end: does it pick the same route?"]
+    st(22, "F", 166, 144, 18, 11, "HOSE MAZE: TWO ROUTES", "a hose laid from a reel deep inside a small walled maze to a free end "
+       "outside; two ways out: the short one (south-east gap) and a longer one (north-east gap)",
+       ["the hose finds the SHORT route out through the inner chamber's west door, down and out the south-east gap",
+        "it never clips a wall corner, and its bends stay smooth in the one-cell corridors",
+        "it stays inside the corridors (it never jumps a wall)"],
+       maze_i, walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_maze_hook", **R2)
+    st(23, "F", 194, 144, 18, 11, "HOSE MAZE: SHORT WAY WALLED", "station 22's maze; after the hose is laid, a wall is built across the "
+       "short (south-east) gap - does the hose re-route the long way, refuse, or pass through the new wall?",
+       ["what the hose does when its route is blocked AFTER laying: re-routes north-east, stays and clips the wall, or drops",
+        "if it re-routes, the new path is as clean as station 22's"],
+       maze_i + ["deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?"],
+       walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_block_wall_hook",
+       block=[(12, 1), (12, 2)], **R2)
+    # ---- row G: challenge configurations (bugs a human eye catches)
+    st(24, "G", 222, 226, 28, 24, "MAP EDGE", "poles and cords at the map's north-east corner: a pole IN the corner cell, poles on the "
+       "top and right edge cells, and floor runs lying along both edges",
+       ["the cords' loose curls must not draw off the map (nothing hanging past the edge, nothing cut off with a hard line)",
+        "the corner pole's wires and shadow stay on the map", "no red errors (open the debug log: none mentioning MessyConduit)"],
+       ["pan the camera to the edge: is anything drawn in the black past the map?", "deconstruct the corner pole: both its spans drop"],
+       conduit=line(2, 12, 23) + [(2, z) for z in range(13, 23)] + [(27, z) for z in range(0, 8)] + [(26, 2)],
+       devs=[("Battery", (3, 20), 0, 1.0), ("StandingLamp", (12, 21), None, None), ("Battery", (25, 2), 0, 1.0),
+             ("StandingLamp", (25, 6), None, None)],
+       masts=[("RM_AerialMast", (2, 12)), ("RM_AerialMast", (14, 23)), ("RM_AerialMast", (27, 23)), ("RM_AerialMast", (27, 8))],
+       links=[(0, 1), (1, 2), (2, 3)], label_below=True, **R2)
+    st(25, "G", 12, 192, 30, 22, "RIVER CROSSING", "a river (chest-deep moving water, shallow banks): an overhead span from bank to bank, "
+       "and a floor run fording the shallow end in waterproof conduit",
+       ["the overhead wire's shadow falls on the water like on the ground (or not at all), never as a dark stripe on the river bed",
+        "the floor cord on the water: does it float, sink or draw on top as if on soil? (waterproof conduit has its own look?)",
+        "the cords' curls do not wander into the deep water", "both far devices are lit"],
+       ["unpause: the river flows; does the cord on the water move with it (it should not)?",
+        "deconstruct one waterproof conduit cell in the river: the cut ends lie in water - do they still spark?"],
+       terrain=[("WaterMovingShallow", (11, 0, 8, 22)), ("WaterMovingChestDeep", (13, 8, 4, 14))],
+       conduit=line(2, 10, 4) + line(19, 26, 4) + line(3, 5, 12), wconduit=line(11, 18, 4),
+       devs=[("Battery", (1, 4), 0, 1.0), ("Heater", (27, 4), None, None), ("Battery", (2, 12), 0, 1.0),
+             ("StandingLamp", (27, 12), None, None)],
+       masts=[("RM_AerialMast", (6, 12)), ("RM_AerialMast", (23, 12))], links=[(0, 1)], **R2)
+    st(26, "G", 54, 192, 34, 20, "ROOF BOUNDARY", "a roofed steel room: an overhead span passes OVER its roof, a floor run goes in "
+       "under the wall, and a pole standing INSIDE under the roof tries to link out",
+       ["wires over a roof are allowed: the span is drawn over the roof, its shadow on the roof",
+        "the pole under the roof is refused (anchors need open sky): no wire through the roof",
+        "the floor cord inside the room: drawn under the roof shading, no seam where it passes the roof edge",
+        "the lamp and heater inside are lit"],
+       ["roof overlay on (bottom-right) to see the roof edge", "build a roof over the east pole (god mode): its span drops (roof cut)",
+        "remove the room's roof: link the inside pole from its gizmo"],
+       walls=perimeter(9, 4, 19, 14), roof=[("RoofConstructed", (9, 4, 11, 11))],
+       conduit=[(3, 10), (3, 11)] + line(4, 15, 11),
+       devs=[("Battery", (1, 9), 0, 1.0), ("StandingLamp", (15, 12), None, None), ("Heater", (12, 6), None, None),
+             ("StandingLamp", (25, 9), None, None)],
+       masts=[("RM_AerialMast", (3, 9)), ("RM_AerialMast", (22, 9)), ("RM_AerialMast", (14, 7))],
+       links=[(0, 1), (0, 2, "Roofed")], **R2)
+    st(27, "G", 96, 192, 44, 34, "LONG SPAN + DIAGONALS", "four chains: a span of EXACTLY the longest length (20), one cell too long "
+       "(21, refused), a 45-degree diagonal chain, an odd-angle span, and a very short span (3 cells)",
+       ["the 20-cell span: the deepest sag; it must not touch or dip below the ground, and its shadow stays a smooth curve",
+        "the 21-cell pair stays unlinked and its lamp dark (refused: too far)",
+        "diagonals: the wire leaves from the insulator tips on the correct side of the crossarm, not from the pole's middle",
+        "the odd-angle span: no kink or zig-zag where it changes direction",
+        "the 3-cell span: nearly no sag, but the wire still meets both insulators (not a straight line through the poles)"],
+       ["select a mast > Link wire to the 21-cell partner: the message says too far",
+        "Mod Settings: raise the longest span to 25: then link it"],
+       devs=[("Battery", (0, 2), 0, 1.0), ("StandingLamp", (23, 2), None, None), ("Battery", (0, 8), 0, 1.0),
+             ("StandingLamp", (24, 8), None, None), ("Battery", (0, 14), 0, 1.0), ("StandingLamp", (29, 14), None, None),
+             ("Battery", (30, 22), 0, 1.0), ("StandingLamp", (40, 6), None, None), ("Battery", (32, 29), 0, 1.0)],
+       masts=[("RM_AerialMast", (1, 2)), ("RM_AerialMast", (21, 2)), ("RM_AerialMast", (1, 8)), ("RM_AerialMast", (22, 8)),
+              ("RM_AerialMast", (1, 14)), ("RM_AerialMast", (14, 27)), ("RM_AerialMast", (27, 14)),
+              ("RM_AerialMast", (31, 22)), ("RM_AerialMast", (41, 8)), ("RM_AerialMast", (33, 30)), ("RM_AerialLampMast", (36, 31))],
+       links=[(0, 1), (2, 3, "OutOfRange"), (4, 5), (5, 6), (7, 8), (9, 10)], **R2)
+    st(28, "G", 156, 192, 32, 32, "CONVERGING HUB", "a hub pole with four spans (its maximum) arriving from N, E, S and W, a FIFTH pole "
+       "trying to link (refused: full), and three lamps plus a heater right beside the hub",
+       ["four wires meet on one crossarm: each lands on an insulator tip, none crossing through the pole art",
+        "with more wires than insulators, do two share a tip cleanly or overlap in a blob?",
+        "the fifth (NE) pole stays unlinked, its lamp dark", "the hub's local hookups: which terminal does each lamp take?"],
+       ["unlink one spoke, then link the NE pole: it takes the freed slot", "deconstruct the hub: four spans drop at once"],
+       devs=[("Battery", (13, 16), 0, 1.0), ("StandingLamp", (16, 19), None, None), ("StandingLamp", (19, 16), None, None),
+             ("StandingLamp", (16, 13), None, None), ("Heater", (19, 19), None, None),
+             ("StandingLamp", (18, 30), None, None), ("StandingLamp", (30, 18), None, None), ("StandingLamp", (18, 2), None, None),
+             ("StandingLamp", (2, 18), None, None), ("StandingLamp", (27, 29), None, None)],
+       masts=[("RM_AerialMast", (16, 16)), ("RM_AerialMast", (16, 30)), ("RM_AerialMast", (30, 16)), ("RM_AerialMast", (16, 2)),
+              ("RM_AerialMast", (2, 16)), ("RM_AerialMast", (27, 27))],
+       links=[(0, 1), (0, 2), (0, 3), (0, 4), (0, 5, "FullA")], **R2)
+    st(29, "G", 196, 192, 26, 24, "NETS SIDE BY SIDE + HALF-BUILT", "three separate powered nets two cells apart; two nets end to end "
+       "with a one-cell gap that is a conduit BLUEPRINT; a half-built run (conduit, then blueprints, a pole blueprint, a lamp blueprint)",
+       ["side by side: each net's cords stay with its own net (no cord jumping across to the neighbour's run)",
+        "Modern look, 'a different colour per power net': three nets = three colours; after the gap is built, the two merged nets "
+        "should become ONE colour", "blueprints draw no cords (a cord never runs to a ghost)",
+        "SAVE then LOAD the game here: every cord comes back the same (same curls, same colours), blueprints still cord-free"],
+       ["god mode: build the gap blueprint (or unpause and let colonists build): nets merge, the dark lamp lights",
+        "save, load, compare (this is the save-load station)", "--style ExtensionCord for the colour checks"],
+       conduit=line(2, 20, 2) + line(2, 20, 4) + line(2, 20, 6) + line(2, 10, 12) + line(12, 20, 12) + line(2, 8, 18),
+       devs=[("Battery", (1, 2), 0, 1.0), ("Battery", (1, 4), 0, 1.0), ("Battery", (1, 6), 0, 1.0),
+             ("StandingLamp", (21, 2), None, None), ("StandingLamp", (21, 4), None, None), ("StandingLamp", (21, 6), None, None),
+             ("Battery", (1, 12), 0, 1.0), ("StandingLamp", (21, 12), None, None),
+             ("Battery", (1, 18), 0, 1.0), ("StandingLamp", (4, 20), None, None)],
+       blueprints=[("PowerConduit", (11, 12), None)] + [("PowerConduit", (x, 18), None) for x in range(9, 19)] +
+       [("RM_AerialMast", (20, 20), None), ("StandingLamp", (21, 18), None)], **R2)
 
 
 FREE = dict(rect=(160, 10, 70, 30), pad_conduit=line(161, 176, 31),
@@ -225,16 +427,48 @@ def layout_check(S):
     """Every station inside REGION, no two stations closer than the cord lateral reach allows (2R+2 cells, R=5 from
     CordLayer.cs; overhead masts of different stations > 20 cells apart unless linked on purpose), the free area clear."""
     probs = []
-    rx, rz, rw, rh = REGION
-    rects = [(s["n"], s["origin"][0], s["origin"][1], s["size"][0], s["size"][1]) for s in S]
+    rects = [(s["n"], s["origin"][0], s["origin"][1], s["size"][0], s["size"][1], s.get("region", 1)) for s in S]
     fx, fz, fw, fh = FREE["rect"]
-    rects.append(("F", fx, fz, fw, fh))
-    for n, x, z, w, h in rects:
+    rects.append(("F", fx, fz, fw, fh, 1))
+    for n, x, z, w, h, reg in rects:
+        rx, rz, rw, rh = REGIONS[reg]
         if x < rx or z < rz or x + w > rx + rw or z + h > rz + rh:
-            probs.append("station %s outside REGION" % n)
+            probs.append("station %s outside REGION%s" % (n, "" if reg == 1 else reg))
+    r1, r2 = REGION, REGION2                # the two regions must not overlap (clear() wipes each)
+    if not (r1[1] + r1[3] <= r2[1] or r2[1] + r2[3] <= r1[1]):
+        probs.append("REGION and REGION2 overlap")
+    nums = [s["n"] for s in S]
+    if nums != list(range(1, len(S) + 1)):
+        probs.append("station numbers not 1..N in order: %s" % nums)
+    for s in S:                             # every cell a station uses stays inside its own footprint and on the map
+        w, h = s["size"]
+        cells = list(s["conduit"]) + list(s["walls"]) + list(s["rock"]) + list(s.get("wconduit", [])) + \
+            [d[1] for d in s["devs"]] + [m[1] for m in s["masts"]] + [b[1] for b in s.get("blueprints", [])] + list(s.get("block", []))
+        for hz in s["hoses"]:
+            cells += [hz["reel"], hz["far"]]
+        for c in cells:
+            if s["n"] >= 19 and not (0 <= c[0] < w and 0 <= c[1] < h):   # 1-18 predate the rule (st.9's N bracket)
+                probs.append("station %d cell %s outside its %dx%d footprint" % (s["n"], c, w, h))
+            gx, gz = g(s, c)
+            if not (0 <= gx < MAP_SIZE and 0 <= gz < MAP_SIZE):
+                probs.append("station %d cell %s off the map" % (s["n"], (gx, gz)))
+        for a, b, *exp in s["links"]:      # a link meant to succeed must be in range; an OutOfRange one must not be
+            (ax, az), (bx, bz) = s["masts"][a][1], s["masts"][b][1]
+            ok = (ax - bx) ** 2 + (az - bz) ** 2 <= SPAN_RANGE ** 2
+            if ok != (exp[:1] != ["OutOfRange"]):
+                probs.append("station %d link %d-%d: in range=%s but expected %s" % (s["n"], a, b, ok, exp or "Ok"))
+    masts = [(s["n"], g(s, m[1])) for s in S for m in s["masts"]] + \
+        [(s["n"], g(s, b[1])) for s in S for b in s.get("blueprints", []) if b[0].startswith("RM_Aerial")]
+    for i in range(len(masts)):              # round-2 stations: no mast within span range of another station's mast
+        for j in range(i + 1, len(masts)):
+            (na, pa), (nb, pb) = masts[i], masts[j]
+            if na != nb and max(na, nb) >= 19 and (pa[0] - pb[0]) ** 2 + (pa[1] - pb[1]) ** 2 <= SPAN_RANGE ** 2:
+                probs.append("masts of stations %d and %d within span range (%s, %s)" % (na, nb, pa, pb))
     for i in range(len(rects)):
         for j in range(i + 1, len(rects)):
             a, b = rects[i], rects[j]
+            if a[5] != b[5]:
+                continue
             dx = max(b[1] - (a[1] + a[3]), a[1] - (b[1] + b[3]))
             dz = max(b[2] - (a[2] + a[4]), a[2] - (b[2] + b[4]))
             if max(dx, dz) < 8:
@@ -257,7 +491,13 @@ SHORT = {1: "full battery, cord to heater + a plugged lamp", 2: "same build, bat
          9: "wire from a mast to a bracket on a shed wall, lamp inside", 10: "station 7 with the second span CUT",
          11: "clamp drains THEIR grid into our lamp", 12: "laid, nothing flowing", 13: "flow on, frozen half-filled",
          14: "flow on, fully filled", 15: "26 cells, bends round a wall stub", 16: "two hoses crossing: one cleanly over",
-         17: "two hoses side by side", 18: "four hoses crossing in a 2 x 2 grid"}   # in-world sub line: one short clause
+         17: "two hoses side by side", 18: "four hoses crossing in a 2 x 2 grid",
+         19: "one pole, many kinds of device, near and far", 20: "crowded electric room, a line overhead",
+         21: "cords through a fogged mountain tunnel", 22: "hose out of a maze: two routes",
+         23: "maze, short way walled after laying", 24: "poles and cords on the map's corner",
+         25: "span over a river, cord fording it", 26: "span over a roof, pole under one",
+         27: "longest span, too long, diagonals, tiny", 28: "four spans into one pole, a fifth refused",
+         29: "neighbour nets, a blueprint gap: save + load"}   # in-world sub line: one short clause
 
 
 def label_ops(S, style):
@@ -272,17 +512,71 @@ def label_ops(S, style):
     add(20 + 6, ROW_B + 14, "ROW B - OVERHEAD LINES", "stations 7-11", TEAL, "small")
     add(20 + 6, ROW_C + 8, "ROW C - FLEXIBLE HOSES", "stations 12-15", TEAL, "small")
     add(20 + 6, ROW_D + 23, "ROW D - HOSE CROSSINGS", "stations 16-18: crossings and parallel runs", TEAL, "small")
+    add(120, 182, "MESSY CONDUIT - NORTH GALLERY (round 2)", "stations 19-29   |   --goto N frames one   |   --goto N0 the whole north gallery", CREAM)
+    add(32, 174, "ROW E - POWER SHOWPIECES", "stations 19-21", TEAL, "small")
+    add(188, 160, "ROW F - HOSE MAZES", "stations 22-23", TEAL, "small")
+    add(30, 218, "ROW G - CHALLENGE CONFIGURATIONS", "stations 24-29: edge, river, roof, spans, hub, nets + save-load", TEAL, "small")
     for s in S:
         x, z = s["origin"]
         w, h = s["size"]
         sub = SHORT[s["n"]]
         if s["n"] == 4:   # the pile pieces follow the look: strips only in Modern, junction boxes elsewhere
             sub += " with power strips" if style == "ExtensionCord" else " with junction boxes"
-        add(x + w // 2, z + h, "%d  %s" % (s["n"], s["title"]), sub)
+        add(x + w // 2, z - 2 if s.get("label_below") else z + h, "%d  %s" % (s["n"], s["title"]), sub)
     fx, fz, fw, fh = FREE["rect"]
     add(fx + fw // 2, fz + fh + 1, "F  FREE BUILD AREA", "steel, components, wood below; charged power pad at the west end - build anything", RUST)
     add(179, 29, "plug in here", "end of the powered conduit (just left)", RUST, "small")
     return "\n".join(L)
+
+
+STUFFED = {"Turret_MiniTurret": "Steel", "HiTechResearchBench": "Steel"}   # MadeFromStuff (Metallic), RimSage 2026-10-04
+
+
+# ------------------------------------------------------------------------------------------------ hose hooks (st.22/23)
+# SLOT for validation_hose.py (HOSE workstream, owner notes round 2: "make the hose solve a complex path ... then 'build' a
+# wall to block the obvious solution so we can see if it changes to go the other way... or what happens"). This file
+# only lays the maze and the hose; the judging belongs to validation_hose.py. If it defines review_maze(R, station) or
+# review_block_wall(R, station), the hook hands over to it; otherwise the default below runs and records a census.
+def _hose_census(R, s):
+    reel = list(g(s, s["hose"]["reel"]))
+    hc = R.B.hp("census")
+    x = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
+    return {k: x.get(k) for k in ("state", "pathLen", "couplings", "layOk", "reason") if k in x}
+
+
+def _delegate(name, R, s):
+    try:
+        import validation_hose as VH                 # noqa: E402  (same folder; may not define the hook yet)
+    except Exception as e:                           # pragma: no cover - live only
+        R.notes.append("validation_hose import failed: %s" % e)
+        return False
+    fn = getattr(VH, name, None)
+    if fn is None:
+        return False
+    R.hook_results[s["n"]] = fn(R, s)
+    return True
+
+
+def hose_maze_hook(R, s):
+    """Station 22: the hose is already laid reel -> far through the maze. TODO(validation_hose.py): define
+    review_maze(R, station) to assert the SHORT route (out the inner west door, down, out the south-east gap)."""
+    if not _delegate("review_maze", R, s):
+        R.hook_results[s["n"]] = {"route": _hose_census(R, s), "judged": "TODO validation_hose.review_maze"}
+
+
+def hose_block_wall_hook(R, s):
+    """Station 23: after laying, wall off the short (south-east) gap and see what the hose does. TODO(validation_hose.py):
+    define review_block_wall(R, station) to judge it (re-route north-east / refuse / clip). Default: build the wall, step
+    60 ticks, census before and after."""
+    if _delegate("review_block_wall", R, s):
+        return
+    before = _hose_census(R, s)
+    R.call("jawa/build_batch", ops=PL._ops("Wall", [g(s, c) for c in s["block"]]), stuff="Steel", faction="player", wipeExisting=False)
+    R.B.ticks(60)
+    R.hook_results[s["n"]] = {"before": before, "after_wall": _hose_census(R, s), "judged": "TODO validation_hose.review_block_wall"}
+
+
+HOOKS = {"hose_maze_hook": hose_maze_hook, "hose_block_wall_hook": hose_block_wall_hook}
 
 
 # ------------------------------------------------------------------------------------------------ live build
@@ -290,6 +584,7 @@ class Review(object):
     def __init__(self, B, log):
         self.B, self.log = B, log
         self.notes = []
+        self.hook_results, self.refusals, self.S = {}, {}, []
 
     def say(self, msg):
         line_ = "%s %s" % (time.strftime("%H:%M:%S"), msg)
@@ -334,31 +629,58 @@ class Review(object):
         self.call("jawa/research_bulk", mode="finish_all")
         self.call("rimworld/set_god_mode", enabled=True)
         self.call("jawa/screenshot_mode", enabled=False)
-        rr = "%d,%d,%d,%d" % REGION
-        pw = B.call("jawa/list_pawns", rect=rr, limit=50)
-        self.pawns_in_region = [p.get("label") or p.get("id") for p in pw.get("pawns") or []]
+        self.pawns_in_region = []
+        for reg in (REGION, REGION2):
+            pw = B.call("jawa/list_pawns", rect="%d,%d,%d,%d" % reg, limit=50)
+            self.pawns_in_region += [p.get("label") or p.get("id") for p in pw.get("pawns") or []]
 
     def clear(self):
         B = self.B
-        rr = "%d,%d,%d,%d" % REGION
         B.call("jawa/review_label", action="clear", tag=TAG)
-        B.call("jawa/destroy_batch", rects=rr, categories="All")
-        B.call("jawa/set_terrain_batch", ops="Soil:" + rr)
-        B.call("jawa/set_fog", action="unfog", rect=rr)
-        B.call("jawa/set_roof_batch", ops="None:" + rr)
+        for reg in (REGION, REGION2):
+            rr = "%d,%d,%d,%d" % reg
+            B.call("jawa/destroy_batch", rects=rr, categories="All")
+            B.call("jawa/set_terrain_batch", ops="Soil:" + rr)
+            B.call("jawa/set_fog", action="unfog", rect=rr)
+            B.call("jawa/set_roof_batch", ops="None:" + rr)
 
     def no_roofs(self):
         """The shed of station 9 is an enclosed room: vanilla adds it to the Build-roof area and colonists roof it (the
         frozen Mote_TempRoof then hides the bracket). Keep the region out of Home and Build roof, and unroofed."""
-        rr = "%d,%d,%d,%d" % REGION
-        for area in ("BuildRoof", "Home"):
-            r = self.B.call("jawa/paint_area", area=area, ops=rr, value=False)
-            if not r.get("success", True):
-                self.notes.append("paint_area %s: %s" % (area, json.dumps(r)[:200]))
-        self.B.call("jawa/set_roof_batch", ops="None:" + rr)
+        for reg in (REGION, REGION2):
+            rr = "%d,%d,%d,%d" % reg
+            for area in ("BuildRoof", "Home"):
+                r = self.B.call("jawa/paint_area", area=area, ops=rr, value=False)
+                if not r.get("success", True):
+                    self.notes.append("paint_area %s: %s" % (area, json.dumps(r)[:200]))
+            self.B.call("jawa/set_roof_batch", ops="None:" + rr)
+        self.station_roofs()
+
+    def station_roofs(self):
+        """Round 2: the stations that are ABOUT a roof (21 mountain, 26 roofed room) get theirs back after every unroofing."""
+        ops = ["%s:%d,%d,%d,%d" % ((rd,) + g(s, r[:2]) + tuple(r[2:])) for s in self.S for rd, r in s.get("roof", [])]
+        if ops:
+            r = self.call("jawa/set_roof_batch", ops=";".join(ops))
+            self.roofs = r.get("success")
+
+    def station_fog(self):
+        """Round 2 per-station fog: clear() unfogs the whole region (and never uses unfogAll, which has wedged the game);
+        a station with `fog` is re-hidden over its refog rects, then its unfog rects (the tunnel) are revealed again."""
+        for s in self.S:
+            f = s.get("fog")
+            if not f:
+                continue
+            for act in ("refog", "unfog"):
+                for r in f.get(act, []):
+                    x, z = g(s, r[:2])
+                    self.call("jawa/set_fog", action=act, rect="%d,%d,%d,%d" % (x, z, r[2], r[3]))
 
     def build(self, S, style):
         B = self.B
+        self.S = S
+        terr = ["%s:%d,%d,%d,%d" % ((td,) + g(s, r[:2]) + tuple(r[2:])) for s in S for td, r in s.get("terrain", [])]
+        if terr:                                       # round 2 (st.25 river): paint before anything is built on it
+            self.call("jawa/set_terrain_batch", ops=";".join(terr))
         B.probe("defaults")
         B.probe("set:style=%s" % style)
         B.ap("defaults")
@@ -375,6 +697,8 @@ class Review(object):
                 put("Wall", g(s, c), stuff="Steel")
             for c in s["conduit"]:
                 put("PowerConduit", g(s, c))
+            for c in s.get("wconduit", []):
+                put("WaterproofConduit", g(s, c))
             for h in s["hostile"]:
                 put(h[0], g(s, h[1]), rot=h[2] if len(h) > 2 else None, faction="hostile")
                 if h[0] == "Battery":
@@ -383,7 +707,7 @@ class Review(object):
                 # the bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall); station 9's wall is south
                 put(m[0], g(s, m[1]), rot=m[2] if len(m) > 2 else None)
             for d, c, rot, ch in s["devs"]:
-                put(d, g(s, c), rot=rot)
+                put(d, g(s, c), stuff=STUFFED.get(d), rot=rot)
                 if d == "Battery":
                     bats.append((g(s, c), ch))
             for h in s["hoses"]:
@@ -397,7 +721,7 @@ class Review(object):
             put("SolarGenerator", c)
         transmitters = ("Battery", "WoodFiredGenerator", "PowerSwitch", "SolarGenerator", "RM_AerialMast", "RM_AerialLampMast",
                         "RM_AerialWallBracket", "RM_HoseReel")
-        order = ["Granite", "Wall", "PowerConduit"] + list(transmitters)
+        order = ["Granite", "Wall", "PowerConduit", "WaterproofConduit"] + list(transmitters)
         keys = sorted(per, key=lambda k: (order.index(k[0]) if k[0] in order else 99, k[0], str(k[3])))
         self.builds = {}
         for k in keys:
@@ -421,22 +745,35 @@ class Review(object):
                 self.notes.append("battery at %s not found" % (cell,))
                 continue
             self.call("jawa/battery_set", thing=tid, mode="setPct", value=pct)
+        for s in S:                                    # round 2 (st.29): real blueprints, left unbuilt for the owner
+            for d, c, rot in s.get("blueprints", []):
+                kw = {"def": d}
+                x, z = g(s, c)
+                kw.update(x=x, z=z, faction="Player", ignoreValidity=True)
+                if rot is not None:
+                    kw["rot"] = str(rot)
+                self.call("jawa/blueprint_place", **kw)
         for item, n, c in FREE["stock"]:
             self.call("rimworld/spawn_thing", defName=item, stackCount=n, x=c[0], z=c[1])
         self.call("jawa/map_commit")
         self.no_roofs()
         B.ticks(1)
         # overhead lines: link by id, then cut
+        self.refusals = {}
         c0 = B.ap("census")
         apos = {(a["x"], a["z"]): a["id"] for a in c0.get("anchors") or []}
         for s in S:
             ids = [apos.get(g(s, m[1])) for m in s["masts"]]
-            for a, b in s["links"]:
+            for a, b, *exp in s["links"]:
                 if ids[a] is None or ids[b] is None:
                     self.notes.append("station %d: anchor missing for link %d-%d" % (s["n"], a, b))
                     continue
                 v = B.ap("link:%d,%d" % (ids[a], ids[b])).get("verdict")
-                if v not in ("Ok", "Linked", "Success", None):
+                if exp:                                # a refusal shown on purpose (round 2: Roofed / OutOfRange / FullA)
+                    self.refusals["%d:%d-%d" % (s["n"], a, b)] = "%s (expected %s)" % (v, exp[0])
+                    if v != exp[0]:
+                        self.notes.append("station %d link %d-%d verdict %s, expected %s" % (s["n"], a, b, v, exp[0]))
+                elif v not in ("Ok", "Linked", "Success", None):
                     self.notes.append("station %d link %d-%d verdict %s" % (s["n"], a, b, v))
             s["_ids"] = ids
         B.ticks(2)
@@ -469,6 +806,9 @@ class Review(object):
             if h["state"] == "Filling":
                 B.hp("flow:%d,%d=on" % g(s, h["reel"]))
         B.ticks(PL.TRANSITION_TICKS // 2)
+        for s in S:                                    # round 2 (st.22/23): the maze hooks, after the hoses are down
+            if s.get("hook"):
+                HOOKS[s["hook"]](self, s)
         hc = B.hp("census")
         self.hose_states = {}
         for s, h in hs:
@@ -476,6 +816,7 @@ class Review(object):
             x = next((x for x in hc.get("hoses") or [] if x.get("reel") == reel), {})
             self.hose_states["%d@%d,%d" % (s["n"], reel[0], reel[1])] = {k: x.get(k) for k in ("state", "blend", "couplings", "pathLen")}
         B.probe("poll")
+        self.station_fog()
         self.call("rimworld/pause_game", pause=True)
 
     def labels(self, S, style):
@@ -486,7 +827,7 @@ class Review(object):
         return r
 
     def goto(self, S, which, sub=None):
-        if sub and which not in ("0", "all") and which.upper() != "F":
+        if sub and which not in ("0", "all") and which.upper() not in ("F", "N0"):
             s = next(s for s in S if str(s["n"]) == which)
             dx, dz, w, h = sub
             r = self.B.call("rimworld/frame_cell_rect", x=s["origin"][0] + dx, z=s["origin"][1] + dz, width=w, height=h, paddingCells=0)
@@ -494,6 +835,8 @@ class Review(object):
             return r
         if which in ("0", "all"):
             x, z, w, h = REGION
+        elif which.upper() == "N0":                     # round 2: the north gallery (stations 19-29)
+            x, z, w, h = REGION2
         elif which.upper() == "F":
             x, z, w, h = FREE["rect"]
         else:
@@ -509,7 +852,8 @@ def keysheet(S, style, live=None):
           "Built by `src/RimMandrake/MessyConduit/human_review.py`. Game paused, god mode on, weather clear, noon, Peaceful.",
           "Cable look now: **%s** (one global setting: flip it with Mod Settings > RimMandrake: Messy Conduit > Style, "
           "or `human_review.py --style <X>`; every station changes at once)." % LOOK.get(style, style), "",
-          "Jump the camera: `human_review.py --goto N` (N = station, 0 = whole gallery, F = free area).", "",
+          "Jump the camera: `human_review.py --goto N` (N = station, 0 = south gallery 1-18, N0 = north gallery 19-29, F = free area).", "",
+          "Station numbers never move: round-2 stations are appended as 19-29 in a north gallery (above the colonists).", "",
           "## Everywhere", "",
           "- Mod Settings > RimMandrake: Messy Conduit: master switch OFF restores vanilla conduit art instantly, ON brings the cords back.",
           "- Looks (Mod Settings name = `--style` value): Scrapper = StarWarsJawa, Industrial = StarWars, Modern = ExtensionCord, "
@@ -517,12 +861,15 @@ def keysheet(S, style, live=None):
           "Modern also has a colour mode: in 'one colour everywhere' every plug, junction box and wall stub takes that colour.",
           "- Unpause (space) to see motion: sway, live-end sparks, hose filling. Pause again to study a frame.",
           "- Power overlay (bottom-right toggle) still shows vanilla connector lines.", ""]
-    for row, name in (("A", "Row A - floor cords"), ("B", "Row B - overhead lines"), ("C", "Row C - flexible hoses"),
-                      ("D", "Row D - hose crossings and parallel runs (hoses never branch: no T or + pieces, by ruling)")):
-        md += ["## " + name, ""]
+    for row, name, blurb in ROWS:
+        md += ["## " + name, ""] + ([blurb, ""] if blurb else [])
         for s in [s for s in S if s["row"] == row]:
             md += ["### %d. %s" % (s["n"], s["title"]), "", s["what"], "", "**Notice**", ""] + ["- " + x for x in s["notice"]] + \
                   ["", "**Try**", ""] + ["- " + x for x in s["interact"]] + [""]
+    md += ["## Expected refusals (shown on purpose)", "",
+           "- 21: the cavern pole's link to the outside pole is refused (Roofed).",
+           "- 26: the pole inside the roofed room is refused (Roofed).",
+           "- 27: the 21-cell pair is refused (OutOfRange).", "- 28: the fifth pole is refused (FullA: the hub's 4 slots are used).", ""]
     md += ["## F. Free build area", "", "Open soil east of the hoses. West end: a charged power pad (2 solar generators, 3 full "
            "batteries) with a conduit stub labelled *plug in here*. South edge: steel, components and wood. God mode builds "
            "instantly; research is finished. Masts built here auto-link (shipped default); gallery masts are more than 20 cells "
@@ -551,16 +898,14 @@ ul{margin:0;padding-left:18px}.what{margin:4px 0;color:var(--muted)}.go{margin:8
 code{color:var(--rust)}.box{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
 </style></head><body>
 <h1>Messy Conduit &mdash; human review</h1>
-<p class="sub">Cable look now: <b>%s</b> (Scrapper = StarWarsJawa, Industrial = StarWars, Modern = ExtensionCord, Futuristic = Cybertek). Game paused, god mode on, clear weather, noon, Peaceful. Jump: <code>human_review.py --goto N</code> (0 = whole gallery, F = free area). Flip every station's look: Mod Settings &rsaquo; RimMandrake: Messy Conduit &rsaquo; Style, or <code>--style StarWars | ExtensionCord | Cybertek | StarWarsJawa</code>.</p>
+<p class="sub">Cable look now: <b>%s</b> (Scrapper = StarWarsJawa, Industrial = StarWars, Modern = ExtensionCord, Futuristic = Cybertek). Game paused, god mode on, clear weather, noon, Peaceful. Jump: <code>human_review.py --goto N</code> (0 = south gallery 1-18, N0 = north gallery 19-29, F = free area). Flip every station's look: Mod Settings &rsaquo; RimMandrake: Messy Conduit &rsaquo; Style, or <code>--style StarWars | ExtensionCord | Cybertek | StarWarsJawa</code>.</p>
 <div class="box"><b>Everywhere:</b> master switch OFF = vanilla conduit art, ON = cords back, no restart. Unpause (space) for motion: sway, sparks, hoses filling. Power overlay still shows the vanilla connector lines.</div>
-<h2>Row A &mdash; floor cords</h2><div class="grid">%s</div>
-<h2>Row B &mdash; overhead lines</h2><div class="grid">%s</div>
-<h2>Row C &mdash; flexible hoses</h2><div class="grid">%s</div>
-<h2>Row D &mdash; hose crossings and parallel runs</h2><p class="sub">Hoses never branch (ruled by card): one hose is one line with two ends. Shown as the system does it today; there is no crossing piece.</p><div class="grid">%s</div>
+%s
 <h2>F &mdash; free build area</h2><div class="box">Open soil east of the hoses. West end: charged power pad (2 solar, 3 full batteries) with a conduit stub labelled <i>plug in here</i>. South edge: steel, components, wood. God mode builds instantly; research is finished. New masts here auto-link (shipped default); gallery masts are over 20 cells away. <span class="go">--goto F</span></div>
-</body></html>""" % (E(LOOK.get(style, style)), "".join(c for c, s in zip(cards, S) if s["row"] == "A"),
-                     "".join(c for c, s in zip(cards, S) if s["row"] == "B"), "".join(c for c, s in zip(cards, S) if s["row"] == "C"),
-                     "".join(c for c, s in zip(cards, S) if s["row"] == "D"))
+</body></html>""" % (E(LOOK.get(style, style)), "\n".join(
+        '<h2>%s</h2>%s<div class="grid">%s</div>' % (E(name.replace(" - ", " \u2014 ", 1)), '<p class="sub">%s</p>' % E(blurb) if blurb else "",
+                                                     "".join(c for c, s in zip(cards, S) if s["row"] == row))
+        for row, name, blurb in ROWS))
     with open(os.path.join(OUT, "keysheet.html"), "w", encoding="utf-8") as f:
         f.write(page)
 
@@ -612,6 +957,7 @@ def main(argv=None):
         R.say("labels: added %s, refused %s" % (lab.get("added"), lab.get("refused")))
         R.goto(S, "0")
         live = {"style": style, "builds": R.builds, "hose_states": R.hose_states, "peaceful": R.peaceful,
+                "expected_refusals": R.refusals, "hose_hooks": R.hook_results, "station_roofs": getattr(R, "roofs", None),
                 "pawns_in_region": R.pawns_in_region, "notes": R.notes, "wall_s": round(time.time() - t0, 1)}
         keysheet(S, style, live)
         R.say("DONE in %ss; notes: %s" % (live["wall_s"], R.notes or "none"))
