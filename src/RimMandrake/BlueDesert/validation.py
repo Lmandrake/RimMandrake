@@ -782,15 +782,27 @@ def flora_chain(t):
     def body():
         with _comp(t, "flora_spawns"):
             if _live(t):
-                cells = {}
+                cells, why = {}, {}
                 for i, d in enumerate(FLORA):
                     cx, cz = rect[0] + 3 + i * 4, rect[1] + 6
                     cells[d] = (cx, cz)
-                    t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, cx, cz), growth=1.0)
+                    r = t.bridge_call("jawa/set_plants", ops="%s:%d,%d,1,1" % (d, cx, cz), growth=1.0)
+                    if isinstance(r, dict) and r.get("rejectionReasons"):
+                        why[d] = r.get("rejectionReasons")
                 lost = [d for d, (cx, cz) in cells.items() if _count(t, d, "%d,%d,1,1" % (cx, cz)) < 1]
-                _note(t, "flora set", {"asked": len(FLORA), "lost": lost})
+                # BLUEDESERT_FLORA_PLANT_REFUSAL_1: set_plants refuses on PlantUtility.CanEverPlantAt, whose
+                # temperature gate reads Tile.MinTemperature - a lazy cache RimWorld never invalidates, so a
+                # retile to -5 C can leave the warm bland tile's min standing (all 8 have maxGrowthTemperature -1).
+                # Record the tool's own reasons and the tile's cached-vs-expected min/max beside the verdict.
+                cache = None
                 if lost:
-                    _fail("plant def(s) did not stand after set_plants: %s" % lost)
+                    tile = (t.bridge_call("jawa/map_info") or {}).get("tile")
+                    if tile is not None:
+                        cache = t.bridge_call("jawa/world_cache_audit", tiles=str(tile), includeTemps=True, limit=5)
+                _note(t, "flora set", {"asked": len(FLORA), "lost": lost, "rejectionReasons": why,
+                                       "tileTempCache": cache})
+                if lost:
+                    _fail("plant def(s) did not stand after set_plants: %s (reasons %r)" % (lost, why))
     _stable(t, body)
 
 
