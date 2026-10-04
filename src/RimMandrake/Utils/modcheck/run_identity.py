@@ -59,11 +59,26 @@ def _rolled(root, rels):
 
 # ------------------------------------------------------------------ run identity
 
+def _git(root, *args, timeout=30):
+    """Run `git -C <root> args` and return the CompletedProcess. Under Windows python.exe (the runner's interpreter) a
+    \\\\wsl.localhost\\<distro>\\... checkout has no usable Windows git, so the repo identity read 'unknown' and EVERY
+    run's deploy fingerprint was 'unproven' (load 13): there git runs inside WSL through wsl.exe."""
+    if os.name == "nt":
+        norm = root.replace("/", "\\")
+        low = norm.lower()
+        for pre in ("\\\\wsl.localhost\\", "\\\\wsl$\\"):
+            if low.startswith(pre):
+                rest = norm[len(pre):].split("\\")[1:]          # drop the distro name
+                return subprocess.run(["wsl.exe", "-e", "git", "-C", "/" + "/".join(rest)] + list(args),
+                                      capture_output=True, text=True, timeout=timeout)
+    return subprocess.run(["git", "-C", root] + list(args), capture_output=True, text=True, timeout=timeout)
+
+
 def git_state(root=ROOT):
     """{"source": git|mirror|unknown, "sha": ...}. One git call; never raises."""
     if os.path.exists(os.path.join(root, ".git")):
         try:
-            r = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True, timeout=30)
+            r = _git(root, "rev-parse", "HEAD")
             if r.returncode == 0:
                 return {"source": "git", "sha": r.stdout.strip()}
         except Exception:                                         # noqa: BLE001
@@ -82,8 +97,7 @@ def src_dirty(src_dir, root=ROOT):
     if not os.path.exists(os.path.join(root, ".git")):
         return None
     try:
-        r = subprocess.run(["git", "-C", root, "status", "--porcelain", "--", src_dir],
-                           capture_output=True, text=True, timeout=60)
+        r = _git(root, "status", "--porcelain", "--", src_dir, timeout=60)
         return bool(r.stdout.strip()) if r.returncode == 0 else None
     except Exception:                                             # noqa: BLE001
         return None
