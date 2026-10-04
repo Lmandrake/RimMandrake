@@ -321,7 +321,7 @@ def hearth_layout_static(t):
             import game_paths as _GP
             import json as _json
             import os as _os
-            rows = _json.load(open(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json")))["defs"]
+            rows = _json.load(open(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json"), encoding="utf-8"))["defs"]
         except Exception as e:
             raise Precondition("no readable def dump for ResearchProjectDef: %s" % e)
         nodes = effective_tab_nodes(rows, "RUT_Tree_Hearth", patched_view_coords())
@@ -431,7 +431,7 @@ def _load_rows():
     import os as _os
     try:
         import game_paths as _GP
-        data = _json.load(open(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json")))["defs"]
+        data = _json.load(open(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json"), encoding="utf-8"))["defs"]
     except Exception as e:
         raise Precondition("no readable def dump for ResearchProjectDef: %s" % e)
     return dict((d["defName"], d) for d in data)

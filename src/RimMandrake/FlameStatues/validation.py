@@ -105,5 +105,6 @@ if __name__ == "__main__":
 
 
 shipped_defs.add_chain(suite, __file__,
-                       fields_by_type={"ThingDef": ("label", "fillPercent", "costStuffCount", "tickerType", "size")},
+                       fields_by_type={"ThingDef": ("label", "fillPercent", "costStuffCount", "tickerType")},   # size: jawa/get_defs answers "(no such field)" for ThingDef.size (a struct), MEASURED live 2026-10-04
+
                        sanity=("RM_FlameStatue_Colossus",), min_count=3)
