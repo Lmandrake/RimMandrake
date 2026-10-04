@@ -1,0 +1,126 @@
+[
+ {
+  "id": "desert_gap_DUM_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the DUM-series pit droid.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "canon": "droid_dum_pit"
+ },
+ {
+  "id": "desert_gap_FX7_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the FX-7 medical assistant droid.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "canon": "droid_fx7"
+ },
+ {
+  "id": "desert_gap_GNK_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the GNK gonk power droid.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "canon": "droid_gnk"
+ },
+ {
+  "id": "desert_gap_MSE_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the MSE-6 mouse repair droid.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "canon": "droid_mse"
+ },
+ {
+  "id": "desert_gap_Destroyer_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the destroyer droid (droideka), deployed upright form.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true,
+  "canon": "droid_droideka"
+ },
+ {
+  "id": "desert_gap_Muckraker_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the Muckraker crab droid. No canon entry exists; do not invent canon. Derived from the donor sprite silhouette only: a smooth domed spherical body carried between four large heavy angular pincer-claws, two raised and two lowered at the sides, short dark clawed feet. Weathered mud-grimed grey-white plating with dark joint segments, dull amber sensor lens low on the front dome.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "desert_gap_SalvageAssist_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld droid sprite: the salvage assist droid. No canon entry exists; do not invent canon. Derived from the donor sprite silhouette only: an upright boxy hauler body with chamfered corners, a broad flat loading face on top, two banded horizontal ribs across the lower body, two short squat wheeled or tracked foot-pods at the base. Scuffed utility grey-white plating with hazard-yellow trim and grime.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld droid sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Weathered scavenged metal, rust and dust dulling the plating; neutral lighting, plating carries its own colour (no biome grade). Same individual in all three facings.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ }
+]
