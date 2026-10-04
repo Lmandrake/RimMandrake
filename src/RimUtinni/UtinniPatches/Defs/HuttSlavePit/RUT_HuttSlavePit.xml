@@ -64,6 +64,7 @@
       <li Class="RimMandrake.KeelHoist.RM_BuyerPitSiteExtension">
         <holderDef>RUT_HuttSlavePitShaft</holderDef>
         <frameDef>RM_HoistFrame</frameDef>
+        <chuteDef>RM_ChanceChute</chuteDef>
         <factionDef>RUT_Jawa_HuttCartel</factionDef>
         <keeperKind>RUT_Jawa_Hutt_Leader</keeperKind>
         <guardKind>RUT_Jawa_Hutt_Grunt</guardKind>
@@ -92,7 +93,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->A Hutt Cartel pit-keeper has set up over an oubliette a few days' walk away, and is buying. Bring slaves, prisoners or beasts knocked senseless, tame or not; your own people lower them down the keepers' head-frame and the silver comes up the cable. Fighters fetch more in the weeks the arena is short.\n\nThe pit holds people already. While the Hutts hold the place nobody lifts them out. If the place were taken, the head-frame could bring them all up.</li>
+        <li>questDescription->A Hutt Cartel pit-keeper has set up over an oubliette a few days' walk away, and is buying. Bring slaves, prisoners or beasts knocked senseless, tame or not; your own people lower them down the keepers' head-frame and the silver comes up the cable. Fighters fetch more in the weeks the arena is short. The house also runs a chance chute: stake goods, slaves or beasts and a crate comes up hours later; the house always takes its cut.\n\nThe pit holds people already. While the Hutts hold the place nobody lifts them out. If the place were taken, the head-frame could bring them all up.</li>
       </rulesStrings>
     </questDescriptionRules>
     <root Class="QuestNode_Sequence">

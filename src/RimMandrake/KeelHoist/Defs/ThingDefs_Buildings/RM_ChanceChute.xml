@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- HUTT_LOTTERY_CHUTE_BUILD_1 (design §4). A fixed head-frame in chute mode: never player-buildable (no
+     designationCategory, research or cost); a buyer-pit site's layout places it (RM_BuyerPitSiteExtension.chuteDef)
+     and gives it the house's faction. ART: placeholder (vanilla pod launcher, tinted), art is the optional last step. -->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ChanceChute</defName>
+    <label>chance chute</label>
+    <description>A house's gambling chute: a winch over a shaft into the dark. Load a stake (goods, slaves, beasts) and it goes down. Hours later a crate comes up, usually worth a little less than what went down, sometimes three times as much, sometimes scraps. The house always takes its cut first. What goes down alive stays the house's.</description>
+    <thingClass>RimMandrake.KeelHoist.RM_ChanceChute</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/PodLauncher</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(2,3)</drawSize>
+      <color>(150,120,60)</color>
+    </graphicData>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0.5</fillPercent>
+    <disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <portal />
+    <inspectorTabs>
+      <li>ITab_ContentsMapPortal</li>
+      <li>RimMandrake.KeelHoist.ITab_HoistManifest</li>
+    </inspectorTabs>
+  </ThingDef>
+</Defs>
