@@ -10,3 +10,13 @@ Owner, typed, 2026-10-01 (Sump turn 1): *"Remove lasso's from the game, but keep
 
 ## verify
 - A full-list load: no lasso craftable or on any spawned pawn; no Melee Animation errors in `Player.log`; melee animations still play.
+
+## Progress (FOUNDRY belt builder, 2026-10-04)
+- ✅ SHIP profile (`infrastructure/state/cherrypicker/CherryPicker.SHIP.xml`) now cuts `ThingDef/AM_LassoCloth` plus the
+  three generated recipes `Make_AM_LassoCloth/Devilstrand/Hyperwave` (all three lassos inherit `AM_LassoBaseMakeable`'s
+  recipeMaker; no research gates them). Same RecipeDef/Make_AM_* convention the SHIP list already uses.
+- ⏳ NOT applied live: the live Cherry Picker config is UNRECOGNISED (`cherrypicker_swap.py --status`: 2133 cuts matching
+  neither profile), so `--ship --apply` would discard someone's in-game edits — reconcile first, at game-down.
+- ⏳ Melee Animation spawn roll: the setting field is `LassoSpawnChance` (zAnimationMod.dll; Keyed label "Lasso
+  Commonality"), or preset `NoLassos`. Set to 0 at game-down, settings first, then the cut (step 4 above).
+NEXT: at game-down, reconcile the live CP list vs SHIP, apply, and set LassoSpawnChance 0.
