@@ -72,7 +72,26 @@ def load_order():
     return {p: i for i, p in enumerate(act)}, f"{src}: {len(act)} active"
 
 
+def _composed() -> dict:
+    """source folder -> the composed mod's packageId, for entries a *.compose.json ships inside a unified mod
+    (wave <= compose_wave). Their own packageIds are never on the load list: the unified mod is."""
+    if not hasattr(_composed, "m"):
+        _composed.m = {}
+        for f in (L.REPO_ROOT / "src").glob("*/*.compose.json"):
+            try:
+                d = json.loads(f.read_text())
+                pid = d["about"]["packageId"].lower()
+                for e in d["entries"]:
+                    if e.get("wave", 99) <= d.get("compose_wave", -1):
+                        _composed.m[str((f.parent / e["source"]).relative_to(L.REPO_ROOT))] = pid
+            except (OSError, ValueError, KeyError, TypeError):
+                continue
+    return _composed.m
+
+
 def package_id(mod: str) -> str:
+    if mod.rstrip("/") in _composed():
+        return _composed()[mod.rstrip("/")]
     about = L.REPO_ROOT / mod / "About" / "About.xml"
     try:
         el = ET.parse(about).getroot().find("packageId")
@@ -456,7 +475,7 @@ def pick_options(n: int) -> list[dict]:
     then redo / hold. Only 'hold' gets an all-rows button."""
     opts = [{"key": LETTERS[i], "label": LETTERS[i], "hotkey": str(i + 1) if i < 9 else "",
              "color": "#5ac37f", "counts": "in", "bulk": False} for i in range(n)]
-    return opts + [{"key": "redo", "label": "redo (note why)", "hotkey": "r", "color": "#e8b64c",
+    return opts + [{"key": "redo", "label": "redo", "hotkey": "r", "color": "#e8b64c",
                     "counts": "out", "bulk": False},
                    {"key": "hold", "label": "hold", "hotkey": "h", "color": "#98a2b3", "counts": "out"}]
 
@@ -829,12 +848,14 @@ window.itemBody = it => {
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
   const noart = it.noArt ? `<div class="bs-noart" title="${esc(it.noArtWhy)}">NO ART YET — the art ledger holds no picture for this row</div>` : '';
-  const rul = it.rulings.length ? `<div class="ac-rulings">${it.rulings.map(r => `<div class="ac-r ac-t-${r.trust}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`).join('')}</div>` : '';
+  const rline = r => `<div class="ac-r bs-r ac-t-${r.trust}" title="${esc(r.at + ' ' + r.verdict + ' · ' + r.trust + ' · ' + r.sheet + (r.note ? '\n“' + r.note + '”' : ''))}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`;
+  const rs = it.rulings.slice().reverse();          /* newest first; older ones fold */
+  const rul = rs.length ? `<div class="ac-rulings">${rs.slice(0, 2).map(rline).join('')}${rs.length > 2 ? `<details><summary class="sub">${rs.length - 2} older ruling(s)</summary>${rs.slice(2).map(rline).join('')}</details>` : ''}</div>` : '';
   const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
   return `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
-    <div class="effect">${esc(it.effect)}</div>
+    <div class="bs-meta"><div class="effect">${esc(it.effect)}</div>
     <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
-    ${links}${elsewhere}${rul}${noart}
+    ${links}${elsewhere}${rul}${noart}</div>
     <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${canon}</div></div>`;
 };
 window.artPick = (id, g, letter) => {
@@ -866,7 +887,13 @@ document.addEventListener('click', e => {
 
 BIOME_STYLE = """
 <style>
-.bs-content{display:flex;gap:10px;align-items:flex-start;margin-top:5px}
+.bs-body{display:flex;gap:14px;align-items:flex-start}
+.bs-meta{flex:0 0 300px;min-width:0}
+.bs-meta .effect{font-size:12px}
+.bs-r{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bs-content{flex:1;min-width:0;display:flex;gap:10px;align-items:flex-start}
+@media (max-width:1450px){.bs-body{display:block}.bs-meta{margin-bottom:4px}
+  .bs-cell,.bs-cell .ac-thumb{width:72px;height:72px;flex-basis:72px}}
 .bs-graphics{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start}
 .bs-g{max-width:100%;min-width:0}
 .bs-gh{font-size:12px;color:#d8c7a8;margin:2px 0}
@@ -891,8 +918,8 @@ BIOME_STYLE = """
 .bs-canonp{flex:0 0 300px;border:1px solid #5a4a2a;background:#14110c;border-radius:6px;padding:3px 5px}
 .bs-chead span{color:#e8b64c}.bs-chead b{color:#e8b64c}
 .bs-cimgs{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0}
-.bs-cthumb{width:92px;height:92px;flex:0 0 92px}
-.bs-must{font-size:11.5px;color:#c3cad6;max-height:150px;overflow:auto}
+.bs-cthumb{width:68px;height:68px;flex:0 0 68px}
+.bs-must{font-size:11.5px;color:#c3cad6;max-height:112px;overflow:auto}
 .bs-must pre{white-space:pre-wrap;font:inherit;margin:1px 0 4px}
 .bs-must summary{cursor:pointer;color:var(--dim)}
 .bs-prior{font-size:11.5px;color:#9fe0a8;margin:1px 0 2px}
@@ -910,7 +937,7 @@ BIOME_STYLE = """
 .row .opts button[data-set="redo"],.row .opts button[data-set="hold"]{flex:1 1 40%;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .opts button[data-set="redo"]{order:98}.row .opts button[data-set="hold"]{order:99}
 .row .opts::after{content:"";order:97;flex-basis:100%;height:0}
-@media (max-width:1400px){.bs-canonp{flex-basis:240px}.bs-cthumb{width:72px;height:72px;flex-basis:72px}}
+@media (max-width:1400px){.bs-canonp{flex-basis:240px}.bs-cthumb{width:56px;height:56px;flex-basis:56px}}
 </style>
 """
 
