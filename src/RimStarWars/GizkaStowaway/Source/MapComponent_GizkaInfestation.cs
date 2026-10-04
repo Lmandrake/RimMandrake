@@ -90,9 +90,18 @@ namespace RimMandrake.StarWars.GizkaStowaway
         {
             if (count <= 0) return GizkaStage.None;
             if (cap < 4) cap = 4;
-            if (count >= Mathf.Max(6, Mathf.RoundToInt(cap * 0.72f))) return GizkaStage.Plague;
-            if (count >= Mathf.Max(4, Mathf.RoundToInt(cap * 0.32f))) return GizkaStage.Infestation;
-            if (count >= Mathf.Max(3, Mathf.RoundToInt(cap * 0.14f))) return GizkaStage.Underfoot;
+            // Spec (gizka_ship_pest_draft.md): Plague is "population has peaked"
+            // and "no stage skips". Breeding halts AT the cap, so each band's
+            // floor is clamped below the one above it: Plague never needs more
+            // than the cap, and at the slider's low end (4, 5) the four stages
+            // fall on consecutive counts instead of Plague becoming unreachable.
+            // Fractions and floors are unchanged for cap >= 6. PROVISIONAL bands.
+            int plague = Mathf.Min(cap, Mathf.Max(6, Mathf.RoundToInt(cap * 0.72f)));
+            int infest = Mathf.Min(plague - 1, Mathf.Max(4, Mathf.RoundToInt(cap * 0.32f)));
+            int under = Mathf.Min(infest - 1, Mathf.Max(3, Mathf.RoundToInt(cap * 0.14f)));
+            if (count >= plague) return GizkaStage.Plague;
+            if (count >= infest) return GizkaStage.Infestation;
+            if (count >= under) return GizkaStage.Underfoot;
             return GizkaStage.Cute;
         }
 

@@ -295,16 +295,30 @@ def stage_for(srcs, count, cap):
     plague, infest, under = [(float(a), int(c)) for a, c in m]
     rnd = lambda x: int(x + 0.5) if x - int(x) != 0.5 else (int(x) if int(x) % 2 == 0 else int(x) + 1)   # Mathf.RoundToInt: banker's
     cap = max(cap, 4)
-    for lvl, (frac, mn) in ((4, plague), (3, infest), (2, under)):
-        if count >= max(mn, rnd(cap * frac)):
+    p = max(plague[1], rnd(cap * plague[0]))
+    if "int plague = Mathf.Min(cap, " in b:          # each clamp mirrored only while the source carries it
+        p = min(cap, p)
+    i = max(infest[1], rnd(cap * infest[0]))
+    if "int infest = Mathf.Min(plague - 1, " in b:
+        i = min(p - 1, i)
+    u = max(under[1], rnd(cap * under[0]))
+    if "int under = Mathf.Min(infest - 1, " in b:
+        u = min(i - 1, u)
+    for lvl, floor in ((4, p), (3, i), (2, u)):
+        if count >= floor:
             return lvl
     return 1
 
 
 def plague_unreachable_caps(srcs):
-    """Population caps on the settings slider (4..80) at which the Plague band's floor of 6 exceeds the cap, so the stage
-    can never be reached. MEASURED finding, not a bar: 4 and 5 (the slider's low end)."""
+    """Population caps on the settings slider (4..80) at which Plague is never reached at a full map (breeding halts AT
+    the cap). Was [4, 5] before the 2026-10-04 clamp (floor 6 > cap); the bar below now requires []."""
     return [c for c in range(4, 81) if stage_for(srcs, c, c) != 4]
+
+
+def skipped_stage_caps(srcs):
+    """Caps (4..80) at which counting 0..cap does not pass through every stage 0..4 ("no stage skips", spec)."""
+    return [c for c in range(4, 81) if sorted(set(stage_for(srcs, n, c) for n in range(0, c + 1))) != [0, 1, 2, 3, 4]]
 
 
 def infestation_findings(srcs):
@@ -314,6 +328,10 @@ def infestation_findings(srcs):
     names = [stage_for(srcs, n, 22) for n in (0, 1, 3, 7, 16)]
     if names != [0, 1, 2, 3, 4]:
         out.append("stage bands at the shipped cap 22 are %s for counts 0,1,3,7,16 (want 0,1,2,3,4: none, cute, underfoot, infestation, plague)" % names)
+    if plague_unreachable_caps(srcs):
+        out.append("Plague is unreachable at a full map for caps %s (the stage that says 'population has peaked')" % plague_unreachable_caps(srcs))
+    if skipped_stage_caps(srcs):
+        out.append("a stage is skipped on the way to the cap for caps %s (spec: no stage skips)" % skipped_stage_caps(srcs)[:8])
     for cap in (6, 8, 22, 80):
         seq = [stage_for(srcs, n, cap) for n in range(0, cap + 1)]
         if seq != sorted(seq) or seq[-1] != 4:
