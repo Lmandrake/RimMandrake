@@ -71,6 +71,12 @@ namespace RimMandrake.MovingDunes
             }
         }
 
+        /// <summary>The yield (before random rounding) for a removed depth: 0 when the setting is off.</summary>
+        public static float YieldAmount(bool enabled, float removedDepth, float perDepth, float multiplier)
+        {
+            return enabled ? removedDepth * perDepth * multiplier : 0f;
+        }
+
         /// <summary>Drops the biome's clear yield for <paramref name="removedDepth"/> of sand.
         /// Public so a debug action or a selftest can drive it without a pawn.</summary>
         public static int Pay(Map map, IntVec3 cell, float removedDepth)
@@ -84,8 +90,8 @@ namespace RimMandrake.MovingDunes
             {
                 return 0;
             }
-            int count = GenMath.RoundRandom(removedDepth * ext.clearYieldPerDepth
-                                            * MovingDunesSettings.clearYieldMultiplier);
+            int count = GenMath.RoundRandom(YieldAmount(MovingDunesSettings.clearYieldEnabled, removedDepth,
+                                                        ext.clearYieldPerDepth, MovingDunesSettings.clearYieldMultiplier));
             if (count <= 0)
             {
                 return 0;

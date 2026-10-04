@@ -59,6 +59,8 @@
     <Compile Include="MovingDunesDebugActions.cs" />
     <!-- STILLSAND_GLASS_LENS_CHAIN_1 §1: shovelled drift yields the biome's sand item -->
     <Compile Include="Patch_ClearSandYield.cs" />
+    <!-- MOVINGDUNES_COVERAGE_GAPS_1: live proof hooks for the north-star script (jawa/static_call) -->
+    <Compile Include="MovingDunesProof.cs" />
   </ItemGroup>
 
   <ItemGroup>

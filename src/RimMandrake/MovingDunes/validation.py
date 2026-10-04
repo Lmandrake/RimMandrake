@@ -16,8 +16,12 @@ CHAINS
   dune_field_report  needs the CURRENT map to be a dune-field biome: reads the mod's own debug-action report line (the three
                      armed flags, material, wind), shifts the wind and reads it change, runs 100 batches and reads the sand
                      total. Any other biome reads "not a dune field" and the chain is UNMEASURED with that reason.
-  slow_*             one chain per slow mechanic (transport/banking, influx, burial, plant choke, wind lock, clear yield):
-                     UNMEASURED, each with its own reason.
+  slow_*             one chain per slow mechanic (transport/banking, influx, burial, plant choke, wind lock, clear yield),
+                     MOVINGDUNES_COVERAGE_GAPS_1: MovingDunesProof (static_call) reads the SHIPPED pure rules (attempts,
+                     influx debt, choke sizing, wind-lock gate + bearing, yield) against values derived from the material
+                     XML, drives the real burial API and (on a dune map) the real burial gate on/off and real transport
+                     batches. Every setting's gate is also checked statically (gate_findings). What needs game days or a
+                     colonist stays an UNMEASURED component placed last in its chain, naming the missing instrument.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 """
@@ -69,6 +73,82 @@ def settings_fields():
     return dict((m.group(2), m.group(1)) for m in _FIELD.finditer(re.sub(r"//[^\n]*", "", body)))
 
 
+GATES = (   # (setting, file, method) -- the setting must be read INSIDE the method that does the work
+    ("duneEngineEnabled", "MapComponent_DuneField.cs", "MapComponentTick"),
+    ("transportRateMultiplier", "MapComponent_DuneField.cs", "MapComponentTick"),
+    ("transportRateMultiplier", "MapComponent_DuneField.cs", "DebugRunBatches"),
+    ("burialEnabled", "MapComponent_DuneField.cs", "TryBuryAt"),
+    ("plantChokeEnabled", "MapComponent_DuneField.cs", "RunPlantChoke"),
+    ("windLockEnabled", "MapComponent_DuneField.cs", "ApplyWindLock"),
+    ("clearYieldEnabled", "Patch_ClearSandYield.cs", "Pay"),
+    ("clearYieldMultiplier", "Patch_ClearSandYield.cs", "Pay"),
+)
+USES = (    # (shipped function the proof reads, file, method that must call it) -- else the proof proves a dead copy
+    ("TransportAttempts(", "MapComponent_DuneField.cs", "RunTransportBatch"),
+    ("InfluxDebtDelta(", "MapComponent_DuneField.cs", "RunInflux"),
+    ("ChokeSamples(", "MapComponent_DuneField.cs", "RunPlantChoke"),
+    ("ChokeDamage(", "MapComponent_DuneField.cs", "RunPlantChoke"),
+    ("WindLockApplies(", "MapComponent_DuneField.cs", "ApplyWindLock"),
+    ("YieldAmount(", "Patch_ClearSandYield.cs", "Pay"),
+)
+
+
+def load_sources():
+    out = {}
+    d = os.path.join(HERE, "Source")
+    for fn in os.listdir(d):
+        if fn.endswith(".cs"):
+            out[fn] = open(os.path.join(d, fn), encoding="utf-8").read()
+    return out
+
+
+def method_body(src, name):
+    """The brace-matched body of the first method called `name` (a declaration, not a call), or None."""
+    for m in re.finditer(r"(?:public|private|internal|protected)[^;{=]*?\b%s\s*\([^)]*\)\s*\{" % re.escape(name), src):
+        i, depth = m.end(), 1
+        while i < len(src) and depth:
+            depth += {"{": 1, "}": -1}.get(src[i], 0)
+            i += 1
+        return src[m.end():i]
+    return None
+
+
+def gate_findings(srcs):
+    """Findings, each tagged [setting] or [function]: a setting no longer read where it does its job, or a proof-read
+    function the shipped method no longer calls. Pure over {filename: text}, so the selftest can plant breaks."""
+    bad = []
+    for setting, fn, meth in GATES:
+        body = method_body(re.sub(r"//[^\n]*", "", srcs.get(fn, "")), meth)
+        if body is None:
+            bad.append("[%s] %s: method %s not found" % (setting, fn, meth))
+        elif "MovingDunesSettings.%s" % setting not in body:
+            bad.append("[%s] %s.%s no longer reads MovingDunesSettings.%s (the toggle gates nothing)" % (setting, fn, meth, setting))
+    for fnc, fn, meth in USES:
+        body = method_body(re.sub(r"//[^\n]*", "", srcs.get(fn, "")), meth)
+        if body is None or fnc not in body:
+            bad.append("[%s] %s.%s no longer calls %s (the live proof would read a dead copy)" % (fnc.rstrip("("), fn, meth, fnc))
+    return bad
+
+
+def material_params():
+    """Numbers of the shipped RM_Dunes_Sand material: the def's XML over the C# field defaults."""
+    src = open(os.path.join(HERE, "Source", "RM_DuneMaterialDef.cs"), encoding="utf-8").read()
+    out = dict((m.group(1), float(m.group(2))) for m in re.finditer(r"public float (\w+) = ([0-9.]+)f?;", src))
+    for el in ET.parse(os.path.join(HERE, "Defs", "DuneMaterialDefs", "Materials.xml")).getroot():
+        nm = el.find("defName")
+        if nm is not None and nm.text == "RM_Dunes_Sand":
+            for ch in el:
+                if ch.tag in out and ch.text:
+                    out[ch.tag] = float(ch.text)
+    return out
+
+
+def expected_attempts(mat, factor, cells=62500):
+    """K = max(1, round(attemptsPerCellPerDay x cells / 240)); attempts = round(K x max(0.01, factor))."""
+    k = max(1, int(round(mat["attemptsPerCellPerDay"] * cells / 240.0)))
+    return int(round(k * max(0.01, factor)))
+
+
 def static_checks():
     bad = []
     if len(SHIPPED) < 3:
@@ -100,6 +180,9 @@ def static_checks():
     for b in BOUND_BIOMES:
         if 'defName="%s"' % b not in bind:
             bad.append("BiomeBindings.xml no longer binds %s" % b)
+    bad.extend(gate_findings(load_sources()))
+    if "MovingDunesProof.cs" not in proj or 'Compile Include="MovingDunesProof.cs"' not in proj:
+        bad.append("MovingDunesProof.cs is not compiled: the proof chains read a method that does not exist")
     kinds = set(ty for ty, _n in SHIPPED)
     for need in ("ThingDef", "RM_DuneMaterialDef", "RM_DuneGlobalsDef"):
         if need not in kinds:
@@ -308,30 +391,184 @@ def _build_suite():
                 if ok and not re.search(r"totalDepth=[\d.]+", lines[-1]):
                     raise ExpectationFailed("after 100 batches the report carries no totalDepth: %s" % lines[-1][:200])
 
-    def _slow(name, toggle, why):
-        @suite.chain(name)      # one chain each: an UNMEASURED reason must not bleed into the next mechanic
-        def _chain(t):
-            with t.component("state_read", toggle=toggle):
-                if _live(t):
-                    _unmeasured(t, why)
+    # MOVINGDUNES_COVERAGE_GAPS_1: the slow mechanics now carry offline-provable bars. MovingDunesProof (jawa/static_call)
+    # runs the SHIPPED pure rules (transport attempts, influx debt, plant-choke sizing, wind-lock gate/bearing, clear
+    # yield) under fixed numbers and drives the real burial API / real transport batches on a dune-field map. Expected
+    # values are derived HERE from the material XML + documented formulas, never read back from the C#. What a proof
+    # cannot show (game-day accumulators, a colonist's shovel job, an RM_Stillsand map) stays an explicit UNMEASURED
+    # component placed LAST in its chain, naming the missing instrument.
+    PROOF = "RimMandrake.MovingDunes.MovingDunesProof"
+    mat = material_params()
 
-    for _n, _tg, _why in (
-        ("slow_crests_hop_downwind_and_bank_in_shelter", "transportRateMultiplier",
-         "sand depth changing by cell in the lee of a wall needs seeded drift (the seed debug action is a mouse-cell "
-         "ToolMap the bridge cannot click) and many game hours of transport"),
-        ("slow_upwind_influx_and_downwind_loss", "duneEngineEnabled",
-         "influx and edge loss are day-scale accumulators (influxPerDay 25) and need a dune-field map"),
-        ("slow_loose_gear_buried_and_returns", "burialEnabled",
-         "burial needs >= 0.6 depth over an item outside stockpile/home area, then wind turning over game days; "
-         "RM_Dunes_BuriedCache defs resolve in defs_resolve"),
-        ("slow_deep_drift_kills_plants", "plantChokeEnabled",
-         "plantChokeDays 3 on a plant under >= 0.5 depth: game days on a dune-field map"),
-        ("slow_wind_locked_to_the_sun_on_stillsand", "windLockEnabled",
-         "needs an RM_Stillsand map (owned by the Stillsand/biomes mods)"),
-        ("slow_shovelled_drift_yields_sand", "clearYieldEnabled",
-         "needs a drift cell, a clear-sand designation and a colonist job on an RM_Stillsand map"),
-    ):
-        _slow(_n, _tg, _why)
+    def _proof(t, method, args=""):
+        r = t.bridge_call("jawa/static_call", type=PROOF, method=method, args=args)
+        if not _live(t):
+            return None, ""
+        text = (r or {}).get("result") if isinstance(r, dict) else None
+        if text in (None, ""):
+            _unmeasured(t, "MovingDunesProof.%s answered nothing (DLL not rebuilt/deployed yet?): success=%s %s"
+                        % (method, (r or {}).get("success"), str((r or {}).get("message") or (r or {}).get("error"))[:120]))
+            return None, ""
+        text = str(text)
+        if text.startswith("ERROR"):
+            raise ExpectationFailed("MovingDunesProof.%s: %s" % (method, text))
+        return dict(re.findall(r"(\w+)=(\S+)", text)), text
+
+    def _near(a, b, tol=0.01):
+        return a is not None and abs(float(a) - float(b)) <= tol * max(1.0, abs(float(b)))
+
+    def _gates(t, setting):
+        """The setting must be read inside the method that does the work (static, runs offline too)."""
+        bad = [f for f in gate_findings(load_sources()) if ("[%s]" % setting) in f]
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+
+    @suite.chain("slow_crests_hop_downwind_and_bank_in_shelter")
+    def slow_transport(t):
+        with t.component("transport_attempts_scale_with_the_drift_slider", toggle="transportRateMultiplier"):
+            _gates(t, "transportRateMultiplier")
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                a1, a2, a5 = expected_attempts(mat, 1.0), expected_attempts(mat, 2.0), expected_attempts(mat, 0.5)
+                for key, want in (("att1", a1), ("att2", a2), ("att05", a5)):
+                    if not _near(kv.get(key), want, 0.002):
+                        raise ExpectationFailed("%s: %s attempts, XML-derived formula says %s (%s)" % (key, kv.get(key), want, text[:200]))
+                if int(kv["att2"]) <= int(kv["att1"]) or int(kv["att05"]) >= int(kv["att1"]):
+                    raise ExpectationFailed("drift slider does not scale transport attempts monotonically: %s" % text[:200])
+        with t.component("sand_actually_moves_on_a_dune_field", beyond_toggle=True):
+            kv, text = _proof(t, "ProofMove", "300")
+            if kv:
+                if kv.get("field") != "True":
+                    _unmeasured(t, "the current map is not a dune field (needs a Desert/ExtremeDesert/Stillsand map)")
+                elif float(kv.get("wind", "0")) < float(kv.get("thr", "0")):
+                    _unmeasured(t, "wind %s is under the material threshold %s: a calm map moves nothing by design; "
+                                   "retry in a gust" % (kv.get("wind"), kv.get("thr")))
+                elif int(kv.get("changed", "0")) < 1:
+                    raise ExpectationFailed("300 batches under wind >= threshold changed no cell's sand depth: %s" % text)
+        with t.component("banking_in_a_wall_lee_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "sand depth changing by cell in the lee of a wall needs seeded drift (the seed debug action "
+                               "is a mouse-cell ToolMap the bridge cannot click); instrument missing: a [Tool] that seeds "
+                               "a slab and reads the lee cell")
+
+    @suite.chain("slow_upwind_influx_and_downwind_loss")
+    def slow_influx(t):
+        with t.component("influx_baseline_scales_with_the_drift_slider_once", beyond_toggle=True):
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                base = mat["influxPerDay"] / 240.0
+                if not _near(kv.get("infl_base1"), base, 0.002) or not _near(kv.get("infl_base2"), 2 * base, 0.002):
+                    raise ExpectationFailed("baseline influx %s / %s, want %s / %s (flat per-day term x weather x slider, once): %s"
+                                            % (kv.get("infl_base1"), kv.get("infl_base2"), base, 2 * base, text[:200]))
+        with t.component("loss_term_is_not_squared_by_the_slider", beyond_toggle=True):
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                want = 10.0 * mat["influxLossRatio"]
+                for key in ("infl_loss1", "infl_loss2"):
+                    if not _near(kv.get(key), want, 0.002):
+                        raise ExpectationFailed("%s: lost 10 gives %s debt, want %s (the 2026-09-11 slider-squared bug): %s"
+                                                % (key, kv.get(key), want, text[:200]))
+        with t.component("engine_off_gate_reads_duneEngineEnabled", toggle="duneEngineEnabled"):
+            _gates(t, "duneEngineEnabled")
+        with t.component("edge_loss_and_influx_over_days_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "edge loss and influx are day-scale accumulators (influxPerDay) needing real ticks on a dune "
+                               "map; instrument missing: a tick-free influx probe reading TotalDepth across ProofRunInflux")
+
+    @suite.chain("slow_loose_gear_buried_and_returns")
+    def slow_burial(t):
+        with t.component("burial_api_caches_the_thing_and_removes_it_from_the_map", beyond_toggle=True):
+            kv, text = _proof(t, "ProofBury")
+            if kv:
+                if kv.get("api_cache") != "True" or kv.get("api_count") != "1" or kv.get("api_spawned") != "False":
+                    raise ExpectationFailed("BuryThingsAt did not leave exactly one cached, despawned item: %s" % text)
+        with t.component("only_wild_unforbidden_loot_is_a_burial_candidate", beyond_toggle=True):
+            kv, text = _proof(t, "ProofBury")
+            if kv:
+                if kv.get("cand") != "True":
+                    raise ExpectationFailed("a free item outside the home area is not a burial candidate: %s" % text)
+                if kv.get("cand_forbidden") != "False":
+                    raise ExpectationFailed("a forbidden item IS a burial candidate (the colony's stores are exempt): %s" % text)
+        with t.component("burialEnabled_off_arm_buries_nothing", toggle="burialEnabled"):
+            _gates(t, "burialEnabled")
+            kv, text = _proof(t, "ProofBury")
+            if kv:
+                if kv.get("field") != "True":
+                    _unmeasured(t, "the current map is not a dune field, so the real burial gate (TryBuryAt) cannot be reached")
+                elif kv.get("arm_off_cache") != "False" or kv.get("arm_off_spawned") != "True":
+                    raise ExpectationFailed("burialEnabled=false still buried the item: %s" % text)
+                elif kv.get("arm_on_cache") != "True" or kv.get("arm_on_spawned") != "False":
+                    raise ExpectationFailed("burialEnabled=true did not bury a candidate on a dune field: %s" % text)
+        with t.component("burial_by_advancing_drift_and_wind_turn_return_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "an advancing dune depositing >= burialDepth then the wind turning over game days; "
+                               "instrument missing: a tick-free deposit probe (burial half is proven by the arms above)")
+
+    @suite.chain("slow_deep_drift_kills_plants")
+    def slow_choke(t):
+        with t.component("choke_sample_rate_scales_with_the_drift_slider", beyond_toggle=True):
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                for key, f in (("choke1", 1.0), ("choke2", 2.0)):
+                    want = expected_attempts(mat, f) * mat["plantChokeSampleFraction"]
+                    if not _near(kv.get(key), want, 0.002):
+                        raise ExpectationFailed("%s: %s samples, XML-derived formula says %s: %s" % (key, kv.get(key), want, text[:200]))
+        with t.component("choke_damage_kills_a_buried_plant_in_plantChokeDays", beyond_toggle=True):
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                if int(kv.get("dmg_a", "0")) != 17 or int(kv.get("dmg_b", "0")) != 1:
+                    raise ExpectationFailed("damage per visit for 100hp/3d/2 visits is %s (want 17), floor-of-1 case %s (want 1): %s"
+                                            % (kv.get("dmg_a"), kv.get("dmg_b"), text[:200]))
+        with t.component("plant_choke_gate_reads_plantChokeEnabled", toggle="plantChokeEnabled"):
+            _gates(t, "plantChokeEnabled")
+        with t.component("plants_dying_over_game_days_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "plantChokeDays 3 on a plant under >= 0.5 depth: game days on a dune-field map; "
+                               "instrument missing: a [Tool] that runs RunPlantChoke on a staged plant")
+
+    @suite.chain("slow_wind_locked_to_the_sun_on_stillsand")
+    def slow_windlock(t):
+        with t.component("lock_applies_only_with_setting_and_a_locking_biome", toggle="windLockEnabled"):
+            _gates(t, "windLockEnabled")
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                want = {"lock_tt": "True", "lock_ft": "False", "lock_tf": "False", "lock_tn": "False"}
+                bad = dict((k, kv.get(k)) for k, v in want.items() if kv.get(k) != v)
+                if bad:
+                    raise ExpectationFailed("wind-lock gate truth table wrong %s (want %s): %s" % (bad, want, text[:200]))
+        with t.component("locked_wind_follows_the_sun_bearing", beyond_toggle=True):
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                # from (0,0): substellar due north = bearing 0, due east = 90; the wind blows along the shadows (+180)
+                want = {"bear_n": 0.0, "bear_e": 90.0}
+                for k, v in want.items():
+                    if not _near(kv.get(k), v, 0.001):
+                        raise ExpectationFailed("%s = %s, want %s: %s" % (k, kv.get(k), v, text[:200]))
+                for k, v in (("wind_away_n", "4"), ("wind_toward_n", "0"), ("wind_away_e", "6")):
+                    if kv.get(k) != v:
+                        raise ExpectationFailed("%s = %s, want %s (0 = north, clockwise, 8-way): %s" % (k, kv.get(k), v, text[:200]))
+        with t.component("stillsand_map_wind_is_locked_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "needs an RM_Stillsand map (owned by the Stillsand/biomes mods) to read the live wind index")
+
+    @suite.chain("slow_shovelled_drift_yields_sand")
+    def slow_yield(t):
+        with t.component("yield_scales_with_depth_removed_and_multiplier", toggle="clearYieldMultiplier"):
+            _gates(t, "clearYieldMultiplier")
+            kv, text = _proof(t, "ProofMath")
+            if kv:
+                if not _near(kv.get("yield_on"), 0.5 * 6.0, 0.002) or not _near(kv.get("yield_x2"), 0.5 * 6.0 * 2.0, 0.002):
+                    raise ExpectationFailed("0.5 depth x 6/depth yields %s (want 3), x2 slider %s (want 6): %s"
+                                            % (kv.get("yield_on"), kv.get("yield_x2"), text[:200]))
+        with t.component("clearYieldEnabled_off_arm_yields_nothing", toggle="clearYieldEnabled"):
+            _gates(t, "clearYieldEnabled")
+            kv, text = _proof(t, "ProofMath")
+            if kv and not _near(kv.get("yield_off"), 0.0, 0.0001):
+                raise ExpectationFailed("clearYieldEnabled=false still yields %s: %s" % (kv.get("yield_off"), text[:200]))
+        with t.component("colonist_shovel_job_pays_the_yield_state_read", beyond_toggle=True):
+            if _live(t):
+                _unmeasured(t, "needs a drift cell, a clear-sand designation and a colonist job on an RM_Stillsand map; "
+                               "instrument missing: a [Tool] that runs Patch_ClearSand_Yield.Pay on a staged cell")
 
     return suite
 

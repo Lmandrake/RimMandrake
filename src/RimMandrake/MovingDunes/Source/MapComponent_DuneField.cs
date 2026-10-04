@@ -228,13 +228,12 @@ namespace RimMandrake.MovingDunes
         /// Re-applied every batch, so turning the setting back on snaps it home.</summary>
         private bool ApplyWindLock()
         {
-            if (!MovingDunesSettings.windLockEnabled || map.Biome == null || Find.WorldGrid == null
-                || !map.Tile.Valid)
+            if (map.Biome == null || Find.WorldGrid == null || !map.Tile.Valid)
             {
                 return false;
             }
             DuneFieldExtension ext = map.Biome.GetModExtension<DuneFieldExtension>();
-            if (ext == null || !ext.lockBearingToSubstellar)
+            if (!WindLockApplies(MovingDunesSettings.windLockEnabled, ext))
             {
                 return false;
             }
@@ -243,6 +242,13 @@ namespace RimMandrake.MovingDunes
                 ext.substellarLatitude, ext.substellarLongitude);
             windDir = DuneWindBearing.WindDirFromSunBearing(bearing, ext.windBlowsTowardSubstellar);
             return true;
+        }
+
+        /// <summary>MOVINGDUNES_COVERAGE_GAPS_1: the wind-lock gate as a pure function, so the proof
+        /// hook reads the shipped decision (setting AND a biome that locks) for every combination.</summary>
+        public static bool WindLockApplies(bool settingOn, DuneFieldExtension ext)
+        {
+            return settingOn && ext != null && ext.lockBearingToSubstellar;
         }
 
         private void ScheduleNextWindShift()
@@ -289,6 +295,13 @@ namespace RimMandrake.MovingDunes
 
         // -------------------------------------------------------------- transport
 
+        /// <summary>Slab attempts per batch: the material's K scaled by the storm factor (which already
+        /// carries the drift-speed slider). Pure, so the proof hook reads the shipped scaling.</summary>
+        public static int TransportAttempts(RM_DuneMaterialDef m, int numCells, float stormFactor)
+        {
+            return Mathf.RoundToInt(m.AttemptsPerBatch(numCells) * Mathf.Max(0.01f, stormFactor));
+        }
+
         /// <summary>Runs one batch of slab attempts. Returns the total depth that left
         /// the map over the leeward edge — the sink half of source/sink.</summary>
         private float RunTransportBatch(float stormFactor)
@@ -301,8 +314,7 @@ namespace RimMandrake.MovingDunes
 
             SandGrid grid = map.sandGrid;
             IntVec3 wind = WindVector;
-            int attempts = Mathf.RoundToInt(
-                material.AttemptsPerBatch(map.cellIndices.NumGridCells) * Mathf.Max(0.01f, stormFactor));
+            int attempts = TransportAttempts(material, map.cellIndices.NumGridCells, stormFactor);
             float q = material.slabSize;
             float lost = 0f;
 
@@ -468,6 +480,14 @@ namespace RimMandrake.MovingDunes
         /// knob); <paramref name="driftMult"/> now applies exactly once more, on the flat
         /// per-day baseline only, which has no other route to the slider.
         /// </summary>
+        /// <summary>Debt added per batch: the loss term scales by the weather only (the drift slider
+        /// already shaped lostDepth), the flat per-day baseline by weather AND the slider, once each.</summary>
+        public static float InfluxDebtDelta(RM_DuneMaterialDef m, float lostDepth, float weather, float driftMult)
+        {
+            return lostDepth * m.influxLossRatio * weather
+                 + m.influxPerDay / BatchesPerDay * weather * driftMult;
+        }
+
         private void RunInflux(float lostDepth, float stormFactor, float driftMult)
         {
             int cells = map.cellIndices.NumGridCells;
@@ -480,8 +500,7 @@ namespace RimMandrake.MovingDunes
             }
 
             float weather = Mathf.Max(0f, stormFactor);
-            influxDebt += lostDepth * material.influxLossRatio * weather
-                        + material.influxPerDay / BatchesPerDay * weather * driftMult;
+            influxDebt += InfluxDebtDelta(material, lostDepth, weather, driftMult);
             if (influxDebt <= 0f)
             {
                 return;
@@ -604,6 +623,21 @@ namespace RimMandrake.MovingDunes
         /// <c>plantChokeDays</c> to die whatever K is tuned to — an advancing front
         /// leaves a dead strip, legible and slow.
         /// </summary>
+        public static int ChokeSamples(RM_DuneMaterialDef m, int numCells, float stormFactor)
+        {
+            return Mathf.RoundToInt(m.AttemptsPerBatch(numCells) * m.plantChokeSampleFraction
+                                    * Mathf.Max(0.01f, stormFactor));
+        }
+
+        /// <summary>Damage per visit, sized so a fully-buried plant dies in plantChokeDays.</summary>
+        public static int ChokeDamage(float maxHitPoints, float chokeDays, float visitsPerDay)
+        {
+            return Mathf.Max(1, Mathf.RoundToInt(maxHitPoints / (chokeDays * visitsPerDay)));
+        }
+
+        /// <summary>Batches per in-game day, for the proof hook's visit-rate arithmetic.</summary>
+        public const int BatchesPerGameDay = BatchesPerDay;
+
         private void RunPlantChoke(float stormFactor)
         {
             if (!MovingDunesSettings.plantChokeEnabled)
@@ -615,9 +649,7 @@ namespace RimMandrake.MovingDunes
                 return;
             }
             int cells = map.cellIndices.NumGridCells;
-            int samples = Mathf.RoundToInt(
-                material.AttemptsPerBatch(cells) * material.plantChokeSampleFraction
-                * Mathf.Max(0.01f, stormFactor));
+            int samples = ChokeSamples(material, cells, stormFactor);
             if (samples < 1)
             {
                 return;
@@ -643,13 +675,18 @@ namespace RimMandrake.MovingDunes
                 {
                     continue;
                 }
-                int damage = Mathf.Max(1, Mathf.RoundToInt(
-                    plant.MaxHitPoints / (material.plantChokeDays * visitsPerDay)));
+                int damage = ChokeDamage(plant.MaxHitPoints, material.plantChokeDays, visitsPerDay);
                 plant.TakeDamage(new DamageInfo(DamageDefOf.Deterioration, damage));
             }
         }
 
         // ------------------------------------------------------------------- debug
+
+        /// <summary>Proof hook: the shipped burial gate (burialEnabled, cache cap, candidates) on one cell.</summary>
+        public void ProofTryBuryAt(IntVec3 cell)
+        {
+            TryBuryAt(cell);
+        }
 
         /// <summary>Dev only: turn the wind now, without waiting out the schedule.</summary>
         public void DebugShiftWind()
