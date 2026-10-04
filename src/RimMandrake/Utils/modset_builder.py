@@ -74,6 +74,11 @@ CORE = "ludeon.rimworld"
 HARMONY = "brrainz.harmony"
 BRIDGE = "brrainz.rimbridgeserver"
 
+# Owner policy 2026-10-04: EVERY debug set carries the extra camera-zoom mod so he can zoom in
+# and study what is happening. Added in resolve_tier, so no tier can forget it. Incompatible
+# with Camera+ (brrainz.cameraplus); a tier that wants Camera+ must say so via `no_zoom`.
+ZOOM = "ray1203.simplecamerasetting"
+
 # Ours always loads last; this is the invariant the armoury patches depend on.
 OURS_PREFIX = "mandrake."
 
@@ -569,6 +574,8 @@ def resolve_tier(name, installed):
     else:
         want += [CORE]
     want += [HARMONY]
+    if not t.get("no_zoom") and ZOOM in installed:
+        want.append(ZOOM)
     pids, missing = close_over(want, installed)
     ordered = order(pids, installed)
     return ordered, missing, tier_guard(t, ordered)
