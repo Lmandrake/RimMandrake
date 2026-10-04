@@ -219,7 +219,7 @@ STYLE_FILES = {
 }
 SHARED_FILES = ["StrandShadow", "SparkGlow", "EndFrayed_Live", "PowerStrip", "Aerial/AerialMast", "Aerial/AerialMastTop",
                 "Aerial/AerialLampMast", "Aerial/AerialLampMastTop", "Aerial/WallBracket", "Aerial/TapClamp", "Aerial/SpanShadow"]
-STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap", "Binding", "Mouth")]
+STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap", "Binding", "Mouth", "Coupling_Bare", "EndCap_Bare", "Nozzle_Bare")]
 # owner review round 1 (2026-10-04): the margin-safe switch (B3) and the extension-cord pieces in every cord colour (B14)
 SHARED_FILES += ["PowerSwitch", "PowerSwitch_Off"]
 STYLE_FILES["ExtensionCord"] += ["Styles/ExtCord/%s/%s" % (c, n) for c in ("Green", "Brown", "Yellow", "Blue")
