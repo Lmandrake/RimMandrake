@@ -131,6 +131,23 @@ def load_clean(t):
                 % (hits, msgs))
 
 
+def _genstep_read(t, def_name, order, xml_file, cls):
+    """GenStepDef order read live; the genStep CLASS asserted from the shipped XML. jawa/get_defs shows a GenStep as
+    its FIELDS and never names its class, so 'class name in the reply' FAILED loaded, correct defs (load 13). The live
+    half still proves the def resolved with a non-null genStep object -- an unresolvable Class= discards the whole def."""
+    import os as _o
+    path = _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "Defs", "MapGeneration", xml_file)
+    if 'Class="RimMandrake.LanternDeeps.%s"' % cls not in open(path, encoding="utf-8").read():
+        raise ExpectationFailed("%s no longer names RimMandrake.LanternDeeps.%s" % (xml_file, cls))
+    r = t.bridge_call("jawa/get_defs", defs="GenStepDef/%s" % def_name, fields="order,genStep", deep=True)
+    if t._guard():
+        rows = (r or {}).get("defs") or []
+        f = (rows[0].get("fields") or {}) if rows else {}
+        if (r or {}).get("notFound") or float(f.get("order") or -1) != float(order) or not isinstance(f.get("genStep"), dict):
+            raise ExpectationFailed("%s did not read back loaded with order=%s and a genStep object: %r" % (def_name, order, r))
+    return r
+
+
 @suite.chain("defs_resolve_as_documented")
 def defs_resolve_as_documented(t):
     """Walk steps 2-5: every field the module docstring/walk doc claims,
@@ -181,15 +198,7 @@ def defs_resolve_as_documented(t):
                 "Caverns GenStepDef: %r" % gs)
 
     with t.component("scatter_genstepdef_and_global_patch", beyond_toggle=True):
-        r = t.bridge_call("jawa/get_defs",
-                          defs="GenStepDef/%s" % EMERGENCE_SCATTER,
-                          fields="order,genStep", deep=True)
-        blob = str(r)
-        if "320" not in blob or "GenStep_ScatterCavePortal" not in blob:
-            raise ExpectationFailed(
-                "%s order/genStep class did not read back as expected "
-                "(order=320, class GenStep_ScatterCavePortal): %r"
-                % (EMERGENCE_SCATTER, r))
+        _genstep_read(t, EMERGENCE_SCATTER, 320, "RM_LanternDeepEmergence_Scatter.xml", "GenStep_ScatterCavePortal")
         base = t.bridge_call("jawa/get_defs",
                              defs="MapGeneratorDef/MapCommonBase",
                              fields="genSteps", deep=True)
@@ -206,15 +215,7 @@ def defs_resolve_as_documented(t):
         t.screenshot()
 
     with t.component("mineshaft_genstepdef_fields", beyond_toggle=True):
-        r = t.bridge_call("jawa/get_defs",
-                          defs="GenStepDef/%s" % MINESHAFT_SCATTER,
-                          fields="order,genStep", deep=True)
-        blob = str(r)
-        if "321" not in blob or "GenStep_ScatterMineshaftPortal" not in blob:
-            raise ExpectationFailed(
-                "%s order/genStep class did not read back as expected "
-                "(order=321, class GenStep_ScatterMineshaftPortal): %r"
-                % (MINESHAFT_SCATTER, r))
+        _genstep_read(t, MINESHAFT_SCATTER, 321, "RM_LanternDeepMineshaft_Scatter.xml", "GenStep_ScatterMineshaftPortal")
 
 
 @suite.chain("master_toggle_gates_before_per_mechanic")
