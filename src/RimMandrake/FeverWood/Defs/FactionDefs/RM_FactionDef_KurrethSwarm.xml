@@ -29,6 +29,10 @@
     <label>kurreth swarm</label>
     <pawnSingular>kurreth</pawnSingular>
     <pawnsPlural>kurreth</pawnsPlural>
+    <!-- fixedName: FactionGenerator.NewGeneratedFaction -> NameGenerator.GenerateName NREs on a def with neither a
+         factionNameMaker nor a fixedName (vanilla Insect carries fixedName). Without it the lure's lazy GetOrCreateFaction
+         threw in the real game and no kurreth raid could ever arrive (found by RM_KurrethTheftProof.ProofRaid, load 14). -->
+    <fixedName>the kurreth swarm</fixedName>
     <categoryTag>FeverWoodTwoFrontRaiders</categoryTag>
     <humanlikeFaction>false</humanlikeFaction>
     <hidden>true</hidden>
