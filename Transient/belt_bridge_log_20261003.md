@@ -98,3 +98,5 @@
 - 18:57:05 FeverWood still running (15m of 25m budget), healthy
 - 18:58:52 FeverWood 75P/7F/17U recorded RED (fixed: modExt instrument, foul-pool count=amount; remaining F: severed flesh drop, ProofRaid staged-column x2 (likely stale DLL: builder C# after deploy), oil-boil flash starts no fire). TheSump running
 - 19:02:20 run17c done: TheSump 3P/3F/32U (STALE: builder committed SUMP_FREE_TIER_MOVE 18:35 after my 18:13 deploy; 18 defs not live), RustCathedral recorded; run17d (WS,Forge,LeaningScrub,Cauldron,Bacta,BrainWorms,BlueDesert) started 19:02 and keeps running after I return (setsid)
+- 19:09:23 handoff FOUNDRY_HANDOFF_202610040201 published; run17d WS stage healthy (7m)
+- 19:16:44 FINAL: handoff published; run17d WS stage will hit budget ~19:27 (exit kills later suites); returning to parent
