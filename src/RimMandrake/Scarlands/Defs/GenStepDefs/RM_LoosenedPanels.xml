@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_LOOSENED_PANEL_BUILD_1: after the ruin gensteps (AncientFortifiedWall exists) and the inscribed panels. -->
+  <GenStepDef>
+    <defName>RM_LoosenedPanels</defName>
+    <order>531</order>
+    <genStep Class="RimMandrake.Scarlands.RM_GenStep_LoosenedPanels" />
+  </GenStepDef>
+</Defs>

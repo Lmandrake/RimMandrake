@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_LOOSENED_PANEL_BUILD_1: ordered from the panel's float menu, gated on a deepening Warscar mark. -->
+  <JobDef>
+    <defName>RM_WorkPanelLoose</defName>
+    <driverClass>RimMandrake.Scarlands.RM_JobDriver_WorkPanelLoose</driverClass>
+    <reportString>working TargetA loose.</reportString>
+  </JobDef>
+</Defs>

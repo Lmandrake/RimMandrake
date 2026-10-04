@@ -42,7 +42,8 @@ DEFAULTS = {"totchakEnabled": True, "totchakEatsPlayerWalls": True, "totchakWake
             "choirEnabled": True, "choirVolume": 1.0, "choirTickVolumeCeiling": 1.0, "choirTickDensity": 1.0,
             "choirWindEnabled": True, "choirReducedRepetition": False, "choirJarWarnings": True,
             "markEnabled": True, "markAccrualPerDay": 0.3, "markFloorEnabled": True, "markTradeBonusesEnabled": True,
-            "snapEnabled": True, "snapArmingHours": 24.0, "snapStageSpeed": 1.0}
+            "snapEnabled": True, "snapArmingHours": 24.0, "snapStageSpeed": 1.0,
+            "loosenedPanelsEnabled": True, "loosenedPanelsPerMap": 3.0}
 CHOIR_DEFS = ["SoundDef/RM_GeigerTick", "SoundDef/RM_WindOnMetal", "SoundDef/RM_ProjectorHum", "SoundDef/RM_PoolBoil",
               "ThingDef/RM_CapturedTetchik", "ThingDef/RM_TetchikJar", "RecipeDef/RM_MakeTetchikJar"]
 SETTLING_DEFS = ["GameConditionDef/RM_Settling", "ThingDef/RM_Filth_SettledFilm", "ThingDef/RM_WarDust",
@@ -386,13 +387,33 @@ def static_checks():
         bad.append("RM_TetchikJar texture missing")
     if "RM_CapturedTetchik" not in open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_WarscarFauna.xml")).read():
         bad.append("tetchik butcherProducts does not yield RM_CapturedTetchik")
+    # WARSCAR_LOOSENED_PANEL_BUILD_1
+    lp = open(os.path.join(HERE, "Defs", "ThingDefs_Buildings", "RM_LoosenedPanel.xml")).read()
+    for needle in ("<defName>RM_LoosenedPanel</defName>", "RimMandrake.Scarlands.RM_Building_LoosenedPanel",
+                   "<passability>Impassable</passability>", "<useHitPoints>false</useHitPoints>", "<deconstructible>false"):
+        if needle not in lp:
+            bad.append("RM_LoosenedPanel lacks %s" % needle)
+    if "<li>RM_LoosenedPanels</li>" not in open(os.path.join(HERE, "Defs", "BiomeDefs", "RM_Warscar.xml")).read():
+        bad.append("RM_Warscar does not run RM_LoosenedPanels")
+    lcs = open(os.path.join(HERE, "Source", "RM_LoosenedPanel.cs")).read()
+    for needle in ("It won't give. Someone who knows this ground might.", "loosenedPanelsEnabled", "loosenedPanelsPerMap",
+                   '"deepening"', '"AncientSealedCrate"', "AncientFortifiedWall"):
+        if needle not in lcs:
+            bad.append("RM_LoosenedPanel.cs lacks %s" % needle)
+    if 'Compile Include="RM_LoosenedPanel.cs"' not in open(os.path.join(HERE, "Source", "RM_Warscar.csproj")).read():
+        bad.append("RM_LoosenedPanel.cs missing from RM_Warscar.csproj")
+    if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Building", "RM_LoosenedPanel.png")):
+        bad.append("RM_LoosenedPanel texture missing")
+    mark = open(os.path.join(HERE, "Defs", "HediffDefs", "RM_WarscarMark.xml")).read()
+    if "<label>deepening mark</label>" not in mark:
+        bad.append("the mark has no 'deepening' stage for the panel gate to read")
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Warscar")
-    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled", "warDustBlightCureEnabled", "markEnabled", "markFloorEnabled", "markTradeBonusesEnabled", "snapEnabled"]
+    suite.toggles = ["poolsEnabled", "catalystEnabled", "oldTongueEnabled", "turretTrackingEnabled", "turretRefitEnabled", "totchakEnabled", "totchakEatsPlayerWalls", "chotrixEnabled", "lacquerCloakEnabled", "settlingEnabled", "liftFrontEnabled", "warDustEnabled", "warDustBlightCureEnabled", "markEnabled", "markFloorEnabled", "markTradeBonusesEnabled", "snapEnabled", "loosenedPanelsEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL): the harness's own route is upstream_failed, which
@@ -727,6 +748,30 @@ def _build_suite():
                 return
             if "NOT ARMED" not in txt:
                 raise ExpectationFailed("snapEnabled OFF but a chatrak was armed: %s" % txt)
+
+    def _panel_proof(t, sev):
+        r = t.bridge_call("jawa/static_call", type=NS + "RM_LoosenedPanelProof", method="ProofWork",
+                          args="current|%s" % sev)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    @suite.chain("loosened_panel")
+    def loosened_panel(t):
+        """WARSCAR_LOOSENED_PANEL_BUILD_1: a pawn below a deepening mark is refused at a loosened panel; one at
+        deepening works it loose onto a real sealed crate. Each proof spawns its own panel and colonist on the
+        CURRENT map. Not proven here: the genstep on a real Warscar map (first poke: static_call
+        RM_LoosenedPanelProof ProofPlace current on a Warscar quicktest with ancient ruins)."""
+        with t.component("below_deepening_is_refused", toggle="loosenedPanelsEnabled"):
+            txt = _panel_proof(t, "0.3")
+            if t.session is None:
+                return
+            if "canWork False" not in txt or "opened False" not in txt or "It won't give" not in txt:
+                raise ExpectationFailed("a mild-marked pawn was not refused with the line: %s" % txt)
+        with t.component("deepening_opens_onto_a_sealed_crate", toggle="loosenedPanelsEnabled"):
+            txt = _panel_proof(t, "0.6")
+            if t.session is None:
+                return
+            if "canWork True" not in txt or "opened True" not in txt or "SealedCrate" not in txt:
+                raise ExpectationFailed("a deepening-marked pawn did not open the panel onto a crate: %s" % txt)
 
     @suite.chain("geiger_choir")
     def geiger_choir(t):
