@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Traces</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.traces</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Event traces: the signs that something happened here - blaster scars on walls, bolt pits, crawl and drag trails, breached doorways, drifted sand and dust film in abandoned rooms, mend plates and soot rings. Design: design/RimMandrake/event_trace_props_library_design_2026-10-03.md (EVENT_TRACE_PROPS_LIBRARY_1).
+
+STEP 0 SPIKE ONLY (build plan §8): two placeholder filth defs on vanilla textures, no C#, no art. RM_Trace_SpikeWall is a Carrier W filth (altitudeLayer BuildingOnTop, Graphic_ClusterTight) meant to be spawned ON a wall cell; RM_Trace_SpikeFloor is a directed Carrier F filth (Graphic_ClusterTight). The spike answers §2.2's three UNMEASUREDs - does a filth spawn on a wall cell, does it draw above the wall, can the clean job reach it - before any runtime or art is paid for. Not for players; do not ship this state.</description>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
