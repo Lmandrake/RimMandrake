@@ -148,7 +148,7 @@ def _wait(t, n, fast=None):
     """Advance `n` real ticks. Short waits use t.wait_ticks (exact, one tick per frame: MEASURED
     ~53 ticks/s, so 7 days would take ~2.2 h). Long waits run the game at Ultrafast and poll the
     real clock, then pause; the overshoot is recorded. Raises on a stalled clock."""
-    if t.session is None or t.upstream_failed or (n <= 5000 and not fast):
+    if t.session is None or t.upstream_failed or getattr(t, "watch", None) is not None or (n <= 5000 and not fast):
         return t.wait_ticks(n)
     _on_site(t)
     s = t.session

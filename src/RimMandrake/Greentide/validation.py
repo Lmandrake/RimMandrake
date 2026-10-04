@@ -168,7 +168,9 @@ if Suite is not None:
 
     def _wait(t, n):
         """Advance n real ticks; long waits run Ultrafast and poll the real clock (ExplosiveGrowth's pattern)."""
-        if t.session is None or t.upstream_failed or n <= 3000:
+        # LIVE 2026-10-03: under the situational watch the Ultrafast poll moves the clock outside the budgeted gate (BudgetExceeded:
+        # spent 2811 of cap 1086 on the 3200-tick swallow waits); a watched run uses the chunked, budgeted t.wait_ticks.
+        if t.session is None or t.upstream_failed or n <= 3000 or getattr(t, "watch", None) is not None:
             return t.wait_ticks(n)
         s = t.session
         start = s._ticks()
