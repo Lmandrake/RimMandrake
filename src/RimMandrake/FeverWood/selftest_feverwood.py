@@ -355,7 +355,7 @@ class FWGame(MockGame):
         tid = p.get("thingId")
         o = self._obj(tid)
         if o is not None:
-            self._hit_obj(o, amount)
+            self._hit_obj(o, amount, p.get("damageDef") or "Blunt")
             return {"success": True}
         q = self._pawn(tid)
         if q is not None:
@@ -366,8 +366,16 @@ class FWGame(MockGame):
             return {"success": True}
         return {"success": False, "message": "no such thing"}
 
-    def _hit_obj(self, o, amount):
+    def _hit_obj(self, o, amount, damage_def="Blunt"):
         d = o["def"]
+        if d.startswith("RM_Sekkulaath_") and damage_def == "Blunt" and "no_building_factor" not in self.brk:
+            amount = amount * V.BLUNT_BUILDING_FACTOR    # DamageWorker.Apply: Blunt buildingDamageFactor 1.5
+        if d.startswith("RM_Sekkulaath_") and d != "RM_Sekkulaath_Bloom" and o["hp"] - amount <= 0:
+            # Kill runs before the comp's damage hook: the comp sees no map; only killedLeavingsRanges drop flesh
+            self.objs.remove(o)
+            if "no_kill_leavings" not in self.brk:
+                self._add("RM_SeveredTentacleFlesh", o["x"], o["z"], stack=3)
+            return
         o["hp"] -= amount
         o["dmg"] += amount
         if d == "RM_Sekkulaath_Porter":
@@ -645,6 +653,8 @@ def main():
         ("ticker_never", {"rottable_items_tick.rottable_items_tick"}),
         ("feeler_nosever", {"tentacle_ladder.severe_damage_severs_the_limb_and_drops_flesh"}),
         ("no_flesh", {"tentacle_ladder.severe_damage_severs_the_limb_and_drops_flesh"}),
+        ("no_kill_leavings", {"tentacle_ladder.a_killing_blow_still_drops_flesh"}),
+        ("no_building_factor", {"tentacle_ladder.severe_damage_severs_the_limb_and_drops_flesh"}),
         ("feeler_noretreat", {"tentacle_ladder.mild_damage_retreats_without_dropping_anything"}),
         ("retreat_drops_flesh", {"tentacle_ladder.mild_damage_retreats_without_dropping_anything"}),
         ("porter_noloot", {"tentacle_porter.unmolested_porter_deposits_loot_then_withdraws"}),

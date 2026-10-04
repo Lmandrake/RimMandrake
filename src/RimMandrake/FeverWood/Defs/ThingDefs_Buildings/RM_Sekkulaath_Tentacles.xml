@@ -49,6 +49,13 @@
     <fillPercent>0.4</fillPercent>
     <coversFloor>false</coversFloor>
     <useHitPoints>true</useHitPoints>
+    <!-- A blow that KILLS a limb outright destroys it before the comp's damage hook runs (DamageWorker.Apply
+         calls Kill first), so the comp's own drop sees no map and drops nothing. The flesh for that path
+         comes from here, matching harvestCountRange's 2~5. Sever/retreat use DestroyMode.Vanish: no leavings. -->
+    <killedLeavingsRanges>
+      <RM_SeveredTentacleFlesh>2~5</RM_SeveredTentacleFlesh>
+    </killedLeavingsRanges>
+    <forceLeavingsAllowed>true</forceLeavingsAllowed>
     <tickerType>Normal</tickerType>
     <drawerType>MapMeshOnly</drawerType>
     <altitudeLayer>Building</altitudeLayer>
