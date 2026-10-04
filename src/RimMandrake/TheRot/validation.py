@@ -333,6 +333,8 @@ def _build_suite():
                     new = "False" if str(old).lower() == "true" else "True"
                 elif ty == "string":
                     new = "zz_probe" if str(old) != "zz_probe" else "zz_probe2"
+                elif ty == "int":
+                    new = str(int(float(old)) + 1)       # an Int32 field refuses "25.0" (LIVE 2026-10-03)
                 else:
                     new = str(float(old) + 1.0)
                 try:
@@ -372,6 +374,10 @@ def _build_suite():
                 wc = str(((rows[0].get("fields") if rows else None) or {}).get("workerClass") or "")
                 if not wc:
                     _unmeasured(t, "get_defs returned no workerClass field: %r" % (r,))
+                    return
+                if "no such field" in wc:
+                    # LIVE 2026-10-03: jawa/get_defs cannot read System.Type fields on any def; not an answer about the worker.
+                    _unmeasured(t, "get_defs cannot read BiomeDef.workerClass ('(no such field)'); the worker class is unproven here")
                     return
                 if WORKER not in wc:
                     raise ExpectationFailed("workerClass reads %r, expected a type containing %s" % (wc, WORKER))
