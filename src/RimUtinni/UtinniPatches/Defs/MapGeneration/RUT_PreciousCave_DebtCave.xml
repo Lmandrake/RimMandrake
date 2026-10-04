@@ -2,7 +2,7 @@
 <!-- STILLSAND_CAVE_TIER_ROWS_1: the debt cave, an old Sun-Debt shrine in the Stillsand precious-cave table.
      A worn debt stone (Return lines cut into it), a mummified priest, sealed water jars. The jars carry the
      Return's pourable water comp, so they are the cave's water for the Debt. PLACEHOLDER ART: the worn stone
-     reuses RUT_DebtStone's texture; the jar reuses RM_EggScaled. -->
+     reuses RUT_DebtStone's texture; the jar has its own sprite (artpipe RM_SealedWaterJar). -->
 <Defs>
   <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
     <defName>RUT_DebtStoneWorn</defName>
@@ -39,7 +39,7 @@
       <li>Items</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Egg/RM_EggScaled</texPath>
+      <texPath>Things/Item/RUT_SealedWaterJar</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <altitudeLayer>Item</altitudeLayer>

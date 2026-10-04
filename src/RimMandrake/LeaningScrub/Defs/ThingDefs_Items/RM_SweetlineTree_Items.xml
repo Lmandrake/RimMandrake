@@ -11,8 +11,8 @@
   mandrake.rut.ashkarrflora, untouched, for the same reason as the rest of
   this mod's moved content — see RM_LeaningScrub_Biome.xml's own header.
 
-  Art: none exists for either the old or the new defName (MEASURED, same as
-  the original) — expected, not a defect.
+  Art: the felt is artpipe rut_sweetlinewool_v2 (wired 2026-10-03); the
+  pilgrim's token still has no render.
 -->
 <Defs>
 
@@ -22,7 +22,7 @@
     <description>The coats of every woolly beast that scratches against a sweetline tree, matted and cured in the bark's resin into a dense, soft, silver-grey felt. Warmer than fleece and softer against the skin than anything sheared. A grown tree lets a little go on its own; the rest comes out only when someone strips the bark, under the bark-wardens.</description>
     <graphicData>
       <texPath>Things/Item/Resource/RM_SweetlineWool</texPath>
-      <color>(196,193,186)</color>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>5.5</MarketValue>

@@ -28,10 +28,12 @@
   Neolithic, no research, tailoring benches or a crafting spot for the
   parasol; the tent and shield are built from the Temperature tab.
 
-  ART IS OWED (queued by LONGSHADE_BEDAZZLE_SITTING_1, infrastructure/artpipe/
-  pending/RM_Parasol*.json, RM_ShadeTent.json, RM_SunShield_*.json). The
-  texPaths below are this mod's own, and resolve once the renders land in
-  EnvironmentalHazards/Textures at those paths. No donor art.
+  ART: all four pieces wired from the artpipe (LONGSHADE_BEDAZZLE_SITTING_1 jobs):
+  RM_Parasol (item), RM_ParasolWorn_{south,east,north} (worn; Belt is a utility
+  layer with no wornGraphicData, so it renders as a pack with no body-type
+  suffix; RimSage PawnRenderUtility.RenderAsPack), RM_ShadeTent, and
+  RM_SunShield_{south,east,north} (Graphic_Multi; landed 2026-10-03 after the
+  facing-coherence rewording). No donor art.
 
   Mod Settings: Creature Behaviors entry 40, one toggle per piece.
 -->

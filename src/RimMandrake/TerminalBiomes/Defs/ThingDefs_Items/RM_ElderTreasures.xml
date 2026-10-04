@@ -84,7 +84,7 @@
     <label>sealed relic</label>
     <description>A flask of grown salt, closed all round with no seam anywhere on it, holding something that was alive. The Elder that produced it could describe the contents exactly — the proteins, the trace metals, the isotope ratios, the way the tissue gave up its water — and could not say what the animal was called, where it lived or when it stopped existing, because it has never held those as facts about anything. Whatever is in there has no living relative left on this planet. It has not decayed and it is not going to.</description>
     <graphicData>
-      <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem</texPath>
+      <texPath>Things/Item/RM_GreySea/RM_SaltCrystalItem/RM_SaltCrystalItem_a</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(212,226,214)</color>
     </graphicData>

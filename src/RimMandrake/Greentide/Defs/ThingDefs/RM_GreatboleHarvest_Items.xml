@@ -139,7 +139,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/Chemfuel</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(120, 60, 130)</color>
       <drawSize>0.5</drawSize>
     </graphicData>
@@ -168,8 +168,8 @@
     <label>rind coat</label>
     <description>A heavy coat cut from cured Royal Rind. It runs warm against extreme cold and shrugs off scalding heat alike — the same trick the greatbole itself uses to keep its own heartwood alive.</description>
     <graphicData>
-      <texPath>Things/Item/Apparel/Duster/Duster</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <texPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <apparel>
       <bodyPartGroups>
@@ -184,7 +184,7 @@
       <tags>
         <li>Greatbole</li>
       </tags>
-      <wornGraphicPath>Things/Item/Apparel/Duster/Duster</wornGraphicPath>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Duster/Duster</wornGraphicPath>
     </apparel>
     <statBases>
       <MaxHitPoints>180</MaxHitPoints>

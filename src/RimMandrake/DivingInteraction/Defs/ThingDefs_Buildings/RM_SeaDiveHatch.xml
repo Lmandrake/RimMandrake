@@ -39,7 +39,7 @@
     <designationCategory>Structure</designationCategory>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(2,2)</drawSize>
     </graphicData>
     <altitudeLayer>FloorEmplacement</altitudeLayer>

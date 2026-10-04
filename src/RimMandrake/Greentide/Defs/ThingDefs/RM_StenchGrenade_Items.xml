@@ -40,7 +40,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/PlantFoodRaw/PsychoidLeaves</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(120, 145, 40)</color>
     </graphicData>
     <statBases>

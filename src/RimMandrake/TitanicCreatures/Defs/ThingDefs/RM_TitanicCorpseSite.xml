@@ -25,7 +25,7 @@
     <size>(4,4)</size>
     <graphicData>
       <texPath>Things/Building/RubblePile</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <drawSize>(4,4)</drawSize>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
