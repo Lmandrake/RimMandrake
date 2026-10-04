@@ -179,6 +179,13 @@ def modal_sweep(call, dialogs=MODAL_DIALOGS):
                     r = json.loads(r["content"][0]["text"])
                 except Exception:                                 # noqa: BLE001
                     pass
+            # The tool answers "nothing open" as success:false + "No open window's type name contains ..." -- the CLEAN
+            # state, and the normal one. Recorded as an error it made every chain's modal check "failed" and every
+            # verdict of the run unknown (load 13, 22:41 runs). Only that exact answer reads as closedCount 0.
+            if isinstance(r, dict) and r.get("success") is False and \
+                    str(r.get("message") or "").startswith("No open window"):
+                out["dialogs"][d] = 0
+                continue
             if not isinstance(r, dict) or r.get("success") is False:
                 out["dialogs"][d] = None
                 out["errors"].append("%s: %s" % (d, (r or {}).get("message") if isinstance(r, dict) else r))

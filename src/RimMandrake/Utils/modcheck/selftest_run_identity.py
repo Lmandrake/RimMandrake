@@ -101,6 +101,12 @@ check("modal_sweep: a raising call is an error entry, dialog None, never raises"
 mf = R.modal_sweep(lambda tool, **kw: {"success": False, "message": "no"})
 check("modal_sweep: reply success false is an error, not 'closed none'", mf["errors"] and not mf["found_open"])
 
+mn = R.modal_sweep(lambda tool, **kw: {"success": False, "message": "No open window's type name contains '%s'." % kw["typeName"]})
+check("modal_sweep: the tool's 'No open window' refusal is a clean read (closed 0), not an error",
+      not mn["errors"] and not mn["found_open"] and all(v == 0 for v in mn["dialogs"].values()), mn)
+mo = R.modal_sweep(lambda tool, **kw: {"success": False, "message": "No bridge session"})
+check("modal_sweep: any OTHER success:false stays an error (control)", mo["errors"] and all(v is None for v in mo["dialogs"].values()))
+
 # git_state is real here
 g = R.git_state()
 check("git_state resolves this checkout", g["source"] in ("git", "mirror") and g["sha"], g)
