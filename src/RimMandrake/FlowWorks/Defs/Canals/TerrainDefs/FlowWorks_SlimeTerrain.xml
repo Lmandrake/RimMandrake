@@ -18,8 +18,9 @@
        which WaterShallow already does and this file's ParentName inherits,
        as a limitless source — no new C#).
 
-       pathCost per tier matches RM_Fill_Tar_* exactly (200/300/300,
-       Trace left at WaterShallow's own inherited 30) — slime is the SAME
+       pathCost per tier matches RM_Fill_Tar_* exactly (100/200/300/300;
+       the trace was left at WaterShallow's inherited 30 until
+       DEPTH_FILL_COST_MATRIX_1, cheaper than the dry Deep cut it fills) — slime is the SAME
        Heavy viscosityClass as tar on the wade axis; what makes it read as
        thicker still is the canal fluid's own ticksPerTile (480 vs tar's
        360, FlowWorks_Fluids.xml), not a heavier wade cost invented fresh.
@@ -38,6 +39,8 @@
     <defName>RM_Fill_SlimeRed_Trace</defName>
     <label>shallow channel, red slime</label>
     <description>A channel carrying a trace of red slime — already thick enough to cling.</description>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
+    <pathCost>100</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -121,6 +124,8 @@
     <defName>RM_Fill_SlimeGreen_Trace</defName>
     <label>shallow channel, green slime</label>
     <description>A channel carrying a trace of green slime — already thick enough to cling.</description>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
+    <pathCost>100</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -204,6 +209,8 @@
     <defName>RM_Fill_SlimeWhite_Trace</defName>
     <label>shallow channel, white slime</label>
     <description>A channel carrying a trace of white slime — already thick enough to cling.</description>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
+    <pathCost>100</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -291,6 +298,8 @@
     <defName>RM_Fill_SlimeYellow_Trace</defName>
     <label>shallow channel, yellow slime</label>
     <description>A channel carrying a trace of yellow slime — already thick enough to cling.</description>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. Slime matches the tar trace (100). -->
+    <pathCost>100</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>

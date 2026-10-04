@@ -372,8 +372,27 @@ def test_offline(P):
         check("%s answers from the real repo (%s)" % (r.name, r.status), r.status in (PASS, FAIL), r.evidence)
 
 
+def test_fill_costs():
+    """DEPTH_FILL_COST_MATRIX_1: the O1 fill-cost row reds on the named regression (Half 42 < Mid 45)."""
+    import validation_v2 as V
+    defs = V._xml_blocks()
+    check("O1 fill costs: shipped flooded > dry at every depth 1-3", V.fill_cost_findings(defs) == [],
+          V.fill_cost_findings(defs))
+    k, a, b, fn = defs["RM_Fill_Water_Half"]
+    mut = dict(defs)
+    mut["RM_Fill_Water_Half"] = (k, a, re.sub(r"<pathCost>\d+</pathCost>", "<pathCost>42</pathCost>", b), fn)
+    found = V.fill_cost_findings(mut)
+    check("O1 fill costs: Half 42 regression reds at D2 F1", any("D2 F1" in x and "RM_Channel_Mid" in x for x in found), found)
+    k, a, b, fn = defs["RM_Fill_SlimeRed_Trace"]
+    mut = dict(defs)
+    mut["RM_Fill_SlimeRed_Trace"] = (k, a, re.sub(r"\s*<pathCost>\d+</pathCost>", "", b), fn)
+    found = V.fill_cost_findings(mut)
+    check("O1 fill costs: trace inheriting WaterShallow 30 reds at D3 F1", any("SlimeRed D3 F1" in x for x in found), found)
+
+
 def main():
     try:
+        test_fill_costs()
         test_tier()
         test_settings_match_source()
         test_layout()

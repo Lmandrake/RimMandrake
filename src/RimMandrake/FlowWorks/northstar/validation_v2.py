@@ -547,6 +547,51 @@ def _field(block, name):
     return m.group(1).strip() if m else None
 
 
+VANILLA_PATHCOST = {"WaterShallow": 30}     # RimSage, Core TerrainDef WaterShallow, 2026-10-03
+
+
+def _path_cost(defs, name, depth=0):
+    b = defs.get(name)
+    if b is None:
+        return VANILLA_PATHCOST.get(name)
+    pc = _field(b[2], "pathCost")
+    if pc is not None:
+        return float(pc)
+    m = re.search(r'ParentName="([^"]+)"', b[1])
+    return _path_cost(defs, m.group(1), depth + 1) if m and depth < 8 else None
+
+
+def _fill_tier(f, d):                       # mirrors RM_ExcavationDepth.FillTier
+    r = float(f) / d
+    return 1 if r <= 0.34 else (2 if r <= 0.67 else 3)
+
+
+def fill_cost_findings(defs):
+    """DEPTH_FILL_COST_MATRIX_1 / ruling [E]: at every depth 1-3, every reachable fill (F = 1..D, tier by
+    FillTier, terrain by FluidDef.FillTerrainFor) costs strictly more to cross than the same depth dry.
+    Named regression: RM_Fill_Water_Half 42 < RM_Channel_Mid 45 (D=2, F=1)."""
+    dry = {1: "RM_Channel_Empty", 2: "RM_Channel_Mid", 3: "RM_Channel_Deep"}
+    probs, n = [], 0
+    for name, b in sorted(defs.items()):
+        if not b[0].endswith("FluidDef"):
+            continue
+        tiers = {1: _field(b[2], "floodTerrain"), 2: _field(b[2], "fillTerrainHalf") or _field(b[2], "floodTerrain"),
+                 3: _field(b[2], "fillTerrainBrim") or _field(b[2], "fillTerrainHalf") or _field(b[2], "floodTerrain")}
+        for d, dn in dry.items():
+            dc = _path_cost(defs, dn)
+            for f in range(1, d + 1):
+                t = tiers[_fill_tier(f, d)]
+                c = _path_cost(defs, t) if t else None
+                n += 1
+                if c is None or dc is None:
+                    probs.append("%s D%d F%d: cost unresolved (%s=%r, %s=%r)" % (name, d, f, t, c, dn, dc))
+                elif not c > dc:
+                    probs.append("%s D%d F%d: %s %g <= dry %s %g" % (name, d, f, t, c, dn, dc))
+    if n < 12:
+        probs.append("fill-cost census blind: %d (fluid, D, F) rows" % n)
+    return probs
+
+
 def o1_defs():
     defs = _xml_blocks()
     probs = []
@@ -585,6 +630,7 @@ def o1_defs():
               "RM_Fluid_Tar", "RM_Fluid_SlimeGreen", "RM_Ladder"):
         if n not in defs:
             probs.append("missing def " + n)
+    probs += fill_cost_findings(defs)
     return Check("O1", not probs, "; ".join(probs) or "%d defs parsed" % len(defs))
 
 

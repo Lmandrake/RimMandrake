@@ -182,6 +182,8 @@
     <defName>RM_Fill_Water_Trace</defName>
     <label>shallow channel water</label>
     <description>A channel carrying a trace of liquid — ankle-to-knee deep, enough to wade and enough to put out a fire.</description>
+    <!-- DEPTH_FILL_COST_MATRIX_1: a trace only occurs at D=3 (FillTier), so it must beat dry Deep 80. PROVISIONAL. -->
+    <pathCost>90</pathCost>
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
@@ -204,7 +206,9 @@
     <temporary>true</temporary>
     <driesTo></driesTo>
     <canFreeze>false</canFreeze>
-    <pathCost>42</pathCost>
+    <!-- DEPTH_FILL_COST_MATRIX_1: was 42, cheaper than dry Mid 45 (a half-full mid canal was FASTER than
+         a dry one). Half occurs at D=2 and D=3, so it must beat dry Deep 80. PROVISIONAL. -->
+    <pathCost>120</pathCost>
     <extraDraftedPerceivedPathCost>30</extraDraftedPerceivedPathCost>
     <extraNonDraftedPerceivedPathCost>240</extraNonDraftedPerceivedPathCost>
     <renderPrecedence>395</renderPrecedence>
