@@ -3,3 +3,4 @@
 - 15:46 subject.py PUBLISHED 9f6c5d948; fill_queue binding + load_job shape checks + daemon canon attach written; next: selftests
 - 15:47 artpipe binding done, selftest_artpipe 481 ok; publishing; next selftest_subject.py
 - 15:48 selftest_subject ALL PASS; running run_selftests
+- 15:54 phase 1 done: run_selftests 173/176 (3 unrelated: modcheck/selftest.py stalls after 'composed' checks, bridgetools tool_metadata DLL surface, utinnipatches_dump passes solo). Stopped before phase 2.
