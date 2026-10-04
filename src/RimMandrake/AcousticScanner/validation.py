@@ -247,6 +247,9 @@ def _build_suite():
         if sid is None:
             _unmeasured(t, "the sounder did not spawn on the pad (spawn_batch refused it)")
             return None
+        # LIVE 2026-10-03: a spawned sounder is unclaimed, and GetGizmos yields nothing but vanilla's 'Claim' unless
+        # Faction == Player (so the 'Sound the ground' gizmo was never listed). Claim it as a player would.
+        t.bridge_call("jawa/set_thing_props", thing=sid, faction="Player")
         state.update(sid=sid, rect=rect)
         return sid, rect
 
