@@ -39,6 +39,16 @@ def _dry(t, incident):
     return (r or {}).get("canFireNow")
 
 
+def _count_pawns(t, kinds):
+    """Live pawns of these kinds (list_things does not list pawns, so the vermin were never counted by _count)."""
+    r = t.bridge_call("jawa/list_pawns", limit=500)
+    if not t._guard():
+        return 0
+    if not (r or {}).get("success"):
+        raise ExpectationFailed("list_pawns unreadable: %r" % (r,))
+    return sum(1 for x in (r.get("pawns") or []) if x.get("kindDef") in kinds and not x.get("dead"))
+
+
 def _count(t, defName):
     r = t.bridge_call("jawa/list_things", defName=defName, limit=50)
     if not t._guard():
@@ -108,9 +118,9 @@ def wreck_falls_and_nests(t):
         if t._guard() and after <= before:
             raise ExpectationFailed("no wreck on the map after the fall (%d -> %d)" % (before, after))
     with t.component("vermin_burst_from_wreck", toggle="wreckFallsEnabled"):
-        before = sum(_count(t, v) for v in VERMIN)
+        before = _count_pawns(t, VERMIN)
         t.wait_ticks(2600)                                 # initialBurstDelayTicks 600~2400
-        after = sum(_count(t, v) for v in VERMIN)
+        after = _count_pawns(t, VERMIN)
         if t._guard() and after <= before:
             raise ExpectationFailed("no ship-vermin came out of the wreck within 2600 ticks (%d -> %d)"
                                     % (before, after))
