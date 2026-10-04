@@ -73,7 +73,49 @@ Still not proven / likely first-live-run corrections:
      realistic, not a confirmed requirement for a FORCED `Ingest` job to
      be accepted.
 """
-from modcheck import Suite, ExpectationFailed
+import os
+import sys
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+MIASMA_BED_XML = os.path.join(HERE, "..", "..", "RimMandrake", "Miasma", "Defs", "ThingDefs_Buildings", "RM_DecayCell.xml")
+ROTTING_BED_PATCH = os.path.join(HERE, "Patches", "RSW_RottingBed_MarshFungus.xml")
+
+
+def static_checks():
+    """MIASMA_ROTTING_BED_CUISINE_1, offline: the cross-tier patch applies to the real Miasma bed def exactly once
+    (lxml stands in for the engine's xpath: the outer Conditional matches, comps is created if absent, and the
+    spawner lands naming RSW_MarshFungus), it is not guarded by a top-level MayRequire, and the item is PlantFoodRaw
+    through RSW_CultureStarters. Sanity probe: the bed def must be found first, or nothing is measured."""
+    from lxml import etree
+    bad = []
+    bed = etree.parse(MIASMA_BED_XML)
+    beds = bed.xpath('/Defs/ThingDef[defName="RM_RottingBed"]')
+    if len(beds) != 1:
+        return ["sanity: RM_RottingBed found %d times in %s (expected 1)" % (len(beds), MIASMA_BED_XML)]
+    patch = etree.parse(ROTTING_BED_PATCH)
+    top = patch.xpath("/Patch/Operation")
+    if len(top) != 1 or top[0].get("Class") != "PatchOperationConditional" or top[0].get("MayRequire"):
+        bad.append("rotting bed patch must be one top-level PatchOperationConditional with no MayRequire")
+    if not beds[0].xpath("comps"):
+        etree.SubElement(beds[0], "comps")
+    spawner = patch.xpath('//li[@Class="CompProperties_Spawner"]')
+    if len(spawner) != 1 or spawner[0].findtext("thingToSpawn") != "RSW_MarshFungus":
+        bad.append("rotting bed patch must add exactly one CompProperties_Spawner of RSW_MarshFungus")
+    if len(bed.xpath('/Defs/ThingDef[defName="RM_RottingBed"]/comps')) != 1:
+        bad.append("RM_RottingBed/comps does not resolve to one node after the conditional")
+    src = open(os.path.join(HERE, "..", "..", "RimMandrake", "Miasma", "Source", "RM_RottingBed.cs"), encoding="utf-8").read()
+    if "base.TickRare();" not in src:
+        bad.append("RM_Building_RottingBed.TickRare must call base or CompSpawner.CompTickRare never runs")
+    fungus = etree.parse(os.path.join(HERE, "Defs", "RSW_MarshFungus.xml"))
+    if fungus.xpath('//ThingCategoryDef[defName="RSW_CultureStarters"]/parent/text()') != ["PlantFoodRaw"]:
+        bad.append("RSW_CultureStarters must be a child of PlantFoodRaw (the stick recipes filter on PlantFoodRaw)")
+    cats = fungus.xpath('//ThingDef[defName="RSW_MarshFungus"]/thingCategories/li/text()')
+    if cats != ["RSW_CultureStarters"]:
+        bad.append("RSW_MarshFungus thingCategories = %r" % cats)
+    return bad
+
+
+from modcheck import Suite, ExpectationFailed  # noqa: E402
 
 suite = Suite("Cuisine")
 suite.toggles = []   # no Settings.cs / ModSettings anywhere in this mod's tree
@@ -330,3 +372,33 @@ def eating_empty_skewer_applies_mood_thought(t):
                 "eater has no RSW_AteEmptySkewer thought after eating a "
                 "RSW_CookedSkewer: %s" % defs)
         t.screenshot()
+
+
+@suite.chain("rotting_bed_grows_marsh_fungus")
+def rotting_bed_grows_marsh_fungus(t):
+    """MIASMA_ROTTING_BED_CUISINE_1: with the Miasma loaded, RM_RottingBed carries the cuisine's spawner of
+    RSW_MarshFungus; with it absent the bed is simply not there (UNMEASURED here, never a pass)."""
+    with t.component("offline_patch_shape", beyond_toggle=True):
+        bad = static_checks()
+        t._record("static_checks -> %r" % bad, not bad)
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("bed_spawner_live", beyond_toggle=True):
+        r = _get_defs(t, "ThingDef/RM_RottingBed", "comps")
+        row = _row_for(r, "ThingDef/RM_RottingBed")
+        if row is None:
+            t._record("RM_RottingBed absent from this load (Miasma not loaded): UNMEASURED", True)
+            return
+        got = str((row.get("fields") or {}).get("comps", ""))
+        ok = "RSW_MarshFungus" in got
+        t._record("RM_RottingBed.comps -> %r" % got, ok)
+        if not ok:
+            raise ExpectationFailed("RM_RottingBed.comps lacks the RSW_MarshFungus spawner: %r" % got)
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)
