@@ -732,7 +732,7 @@
         </capacities>
         <power>3</power>
         <cooldownTime>1.6</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>FrontLeftClaws</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
@@ -833,7 +833,7 @@
         </capacities>
         <power>16</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>TurtleBeakAttackTool</linkedBodyPartsGroup>
       </li>
       <li>
         <label>claw</label>
@@ -842,7 +842,6 @@
         </capacities>
         <power>9</power>
         <cooldownTime>1.6</cooldownTime>
-        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
       </li>
     </tools>
     <race>
