@@ -95,6 +95,53 @@ namespace RimMandrake.RustChrome
             Log.Message("[RimMandrake.RustChrome] colour fields " + (enabled ? "set to theme." : "restored to vanilla."));
         }
 
+        private static string Rgb(Color c)
+        {
+            return Mathf.RoundToInt(c.r * 255f) + "," + Mathf.RoundToInt(c.g * 255f) + "," + Mathf.RoundToInt(c.b * 255f);
+        }
+
+        private static string FieldsNow(string prefix)
+        {
+            return prefix + "_wfill=" + Rgb(GetColorField(typeof(Widgets), "WindowBGFillColor"))
+                + " " + prefix + "_wborder=" + Rgb(GetColorField(typeof(Widgets), "WindowBGBorderColor"))
+                + " " + prefix + "_sfill=" + Rgb(GetColorField(typeof(Widgets), "MenuSectionBGFillColor"))
+                + " " + prefix + "_sborder=" + Rgb(GetColorField(typeof(Widgets), "MenuSectionBGBorderColor"))
+                + " " + prefix + "_ounsel=" + Rgb(GetColorField(typeof(Widgets), "OptionUnselectedBGFillColor"))
+                + " " + prefix + "_osel=" + Rgb(GetColorField(typeof(Widgets), "OptionSelectedBGFillColor"));
+        }
+
+        /// <summary>RUSTCHROME_COVERAGE_GAPS_1 live proof hook (jawa/static_call): Apply(true) then Apply(false) through the SHIPPED
+        /// code, reading the six Widgets colour fields and the inspect-tab fill texture back after each, then Apply(current setting).
+        /// "on_*=r,g,b ... off_*=r,g,b ... van_*=r,g,b (captured vanilla) tex_on=r,g,b tex_off_is_vanilla=B final_matches_setting=B".</summary>
+        public static string ProofTheme(string args)
+        {
+            bool was = RustChromeMod.settings == null || RustChromeMod.settings.themeEnabled;
+            try
+            {
+                CaptureVanilla();
+                string s = "setting=" + was;
+                s += " van_wfill=" + Rgb(vanillaWindowFill) + " van_wborder=" + Rgb(vanillaWindowBorder) + " van_sfill=" + Rgb(vanillaSectionFill)
+                    + " van_sborder=" + Rgb(vanillaSectionBorder) + " van_ounsel=" + Rgb(vanillaOptionUnselectedFill) + " van_osel=" + Rgb(vanillaOptionSelectedFill);
+                Apply(true);
+                s += " " + FieldsNow("on");
+                Texture2D onTex = GetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex");
+                s += " tex_on=" + (onTex == null ? "-" : Rgb(onTex.GetPixel(0, 0)));
+                Apply(false);
+                s += " " + FieldsNow("off");
+                Texture2D offTex = GetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex");
+                s += " tex_off_is_vanilla=" + (vanillaInspectTabTex == null ? "-" : (offTex == vanillaInspectTabTex ? "True" : "False"));
+                return s;
+            }
+            catch (Exception e)
+            {
+                return "ERROR " + e.GetType().Name + ": " + e.Message;
+            }
+            finally
+            {
+                Apply(was);
+            }
+        }
+
         private static Color GetColorField(Type type, string fieldName)
         {
             FieldInfo field = type.GetField(fieldName, BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
