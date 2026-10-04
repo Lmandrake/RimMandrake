@@ -449,10 +449,10 @@ def _build_suite():
             text = _hp_s(t, "ProofSwallow")
             if _live(t) and not (text.startswith("SWALLOW held") and "spawned False" in text and "still alive in there" in text):
                 raise ExpectationFailed("a downed drifter was not swallowed with a naming inspect line: %s" % text)
-            # ProofCut hits the BELLY (core part), never a random part: a leg hit capped the dealt damage and flaked.
+            # ProofCut hits the BELLY (core part) first, then the other parts: the release rule is CUMULATIVE (150 summed) and a belly hit alone caps at its own 100 hp (load 13: 'dealt 100, not released').
             text = _hp_s(t, "ProofCut", "200")
             if _live(t) and not ("released True" in text and "spawned True" in text):
-                raise ExpectationFailed("200 damage did not cut the swallowed pawn out alive: %s" % text)
+                raise ExpectationFailed("cutting the hwelgrue (200 a hit, belly first, at most six parts) did not cut the swallowed pawn out alive: %s" % text)
         with t.component("knocking_louder_early", toggle="swallowLoudness"):
             hi, lo = _hp_s(t, "ProofKnock", "0.8"), _hp_s(t, "ProofKnock", "0.2")
             try:

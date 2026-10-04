@@ -357,24 +357,35 @@ namespace RimMandrake.TheRot
                 + " | spawned " + victim.Spawned + " | inspect " + (comp.CompInspectStringExtra() ?? "null");
         }
 
-        /// <summary>Cuts the hwelgrue's belly (its body core part) for <paramref name="damage"/>.
-        /// "CUT released B | spawned B | inside NAME|none | via belly|downed|dead | dealt N".
-        /// The part is fixed, not random: an untargeted hit landing on a leg is capped at the leg's hit points,
-        /// so the same 200 sometimes released and sometimes did not (run17 TheRot, 2026-10-03). A belly hit
-        /// past the core part's hit points kills, which also releases; `via` says which ending fired.</summary>
+        /// <summary>Cuts the hwelgrue until the swallowed pawn is out or six hits are spent: the belly (body core part)
+        /// first, then its other parts, each for <paramref name="damage"/>. The release rule is CUMULATIVE
+        /// (swallowBellyCutDamage, default 150, summed over every part), and the belly alone is capped at its own hit
+        /// points (100 on this body), so one belly hit can never reach the default threshold: run18/19 read
+        /// 'dealt 100, not released' from a proof that expected one cut to do it.
+        /// "CUT released B | spawned B | inside NAME|none | via belly|downed|dead | hits N | dealt N".</summary>
         public static string ProofCut(float damage)
         {
             Pawn h = Hwelgrue;
             RM_CompGutSwallow comp = h?.TryGetComp<RM_CompGutSwallow>();
             if (comp == null) return "REFUSED: no hwelgrue on the current map";
             Pawn before = comp.Inside;
-            BodyPartRecord belly = h.RaceProps.body.corePart;
-            DamageInfo cut = new DamageInfo(DamageDefOf.Cut, damage, 0f, -1f, null, belly);
-            cut.SetApplyAllDamage(true);
-            float dealt = h.TakeDamage(cut).totalDamageDealt;
+            List<BodyPartRecord> parts = new List<BodyPartRecord> { h.RaceProps.body.corePart };
+            parts.AddRange(h.RaceProps.body.AllParts.Where(p => p != h.RaceProps.body.corePart));
+            float dealt = 0f;
+            int hits = 0;
+            foreach (BodyPartRecord part in parts)
+            {
+                if (hits >= 6 || !comp.Holding || h.Dead) break;
+                if (h.health.hediffSet.PartIsMissing(part)) continue;
+                DamageInfo cut = new DamageInfo(DamageDefOf.Cut, damage, 0f, -1f, null, part);
+                cut.SetApplyAllDamage(true);
+                dealt += h.TakeDamage(cut).totalDamageDealt;
+                hits++;
+            }
             string via = h.Dead ? "dead" : h.Downed ? "downed" : "belly";
             return "CUT released " + (before != null && !comp.Holding) + " | spawned " + (before?.Spawned ?? false)
-                + " | inside " + (comp.Inside?.LabelShort ?? "none") + " | via " + via + " | dealt " + dealt.ToString("0");
+                + " | inside " + (comp.Inside?.LabelShort ?? "none") + " | via " + via + " | hits " + hits
+                + " | dealt " + dealt.ToString("0");
         }
 
         /// <summary>The knock schedule at a given time-left fraction: "KNOCK def | volume v".</summary>
