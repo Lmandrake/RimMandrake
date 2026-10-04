@@ -10,10 +10,12 @@ render, 2-3 MB PNG copy). Split the run in two; the state pass carries every ver
     python.exe src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --live --fresh-map --no-shots --catalog <scenes.json> --out <result.json>
     python.exe src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --live --sweep-shots <result.json> --catalog <scenes.json>
     python3    src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --post <result.json>
-  --no-shots   state reads and pass bars only: no screenshot, no camera move/wait except for the net-selected scenes (the highlight
-               read needs the camera), no on/off-pair or power-overlay staging. Verdict rows are identical in kind to a full run; the
-               screenshot-dependent checks (image sanity, frame_ok, census mask, frame captures) are the single row I0_screenshots =
-               UNMEASURED with the reason, never PASS/FAIL. Prove equivalence by --compare against a full run on the same spec.
+  --no-shots   state pass with the render skipped: no screenshot_cell_rect / take_screenshot call, no PNG copy. Every camera move,
+               settle wait, selection, on/off toggle and view staging is KEPT, because the cord graph rebuilds off camera-driven
+               section regeneration (RM_MapComponent_CordGraph: Rebuild runs from an on-screen SectionLayer regenerate or the
+               StaleOffscreen flag) and a first cut that also dropped the camera moves failed scenes the full run passed (live,
+               2026-10-04: F17_T4_S1, F49_T12_S1, F34_T8_S2, D12_n1000_S0, highlight rows). Screenshot-dependent checks are the single
+               row I0_screenshots = UNMEASURED with the reason. Prove equivalence by --compare against a full run on the same spec.
   --sweep-shots <result.json>  second pass on a live 250x250 map with the site pinned (same --catalog; do NOT pass --fresh-map unless a
                fresh map is intended). Every board is laid out from the SAME origin and destroyed after its census, so nothing from the
                state pass is still standing: the sweep rebuilds each board (same builds, same ticks, so the same geometry), then takes
@@ -21,6 +23,8 @@ render, 2-3 MB PNG copy). Split the run in two; the state pass carries every ver
                destroys it. Shot records (shot / shot_on / shot_off) are merged into <result.json> (or --out); verdicts are untouched.
                --shot-settle S (default 1.5 for a full run, 0.7 in the sweep) is the wait after a frame move before a frame capture;
                raise it if sweep frames come out blurred or mid-pan. PNG copies run on 4 threads, overlapping the bridge calls.
+  --profile    per bridge call name / probe verb: count, total s, avg s in result["timing"]["calls_profile"] and printed (top 25).
+  --probe-poll S  seconds between serial polls of a probe (default 0.25; 0.05 was tried and is not proven safe).
   Timing: result["timing"] = wall seconds per phase (site_setup, board_build, board_ticks, scene_probes, determinism, shots,
   shot_copy_wait, hose, teardown, post; shots are nested out of the phase they ran in), per board in boards[].phases_s, printed
   at the end as a TIMING line.
@@ -136,6 +140,7 @@ TRANSMITTERS = ("Battery", "WoodFiredGenerator", "PowerSwitch", "RM_AerialMast")
 CONNECTORS = ("Heater", "ElectricSmelter", "StandingLamp")
 ONOFF_PAIRS = ("F01_T0_S1", "F05_T1_S1", "F29_T7_S1", "F49_T12_S1", "F53_T13_S1", "D06_n10_S2")
 FRAME_VIEWS = ("selected", "overlay")
+PROBE_POLL_S = 0.25                    # --probe-poll; 0.05 was tried 2026-10-04 and is NOT proven safe (see docstring)
 
 
 # ============================================================================ geometry of the board
@@ -276,7 +281,7 @@ class LiveBridge(object):
                     return json.loads(res)
                 except Exception:  # noqa: BLE001
                     return {"success": False, "raw": str(res)[:300]}
-            time.sleep(0.05)
+            time.sleep(PROBE_POLL_S)
         return {"success": False, "error": "probe timed out (no frame serviced it)", "cmd": cmd}
 
     def probe(self, cmd, wait_s=30.0):
@@ -818,7 +823,7 @@ class Run(object):
         root = sc.get("zoom_root") or 11
         v0 = sc.get("view") or {}
         # --no-shots: the camera only matters to the highlight read (net-selected view); every other scene skips the move + wait
-        if not self.mock and (self.shots or v0.get("select_at")):
+        if not self.mock:
             B.call("rimworld/set_camera_zoom", rootSize=root)
             self.frame(pg, root)
             B.sleep(0.6)
@@ -873,7 +878,7 @@ class Run(object):
             if not (sa.get("success") and m.get("highlightCords") and m.get("highlightCords") == hl["netCords"]):
                 mism.append({"field": "highlight_cords_eq_net_cords", "expected": True, "got": hl})
             del m1
-        elif v.get("overlay") == "power" and not self.mock and self.shots:
+        elif v.get("overlay") == "power" and not self.mock:
             src = [o for o in sc["build"] if o["op"] == "battery"]
             if src:
                 B.probe("set:highlight=False")
@@ -890,11 +895,11 @@ class Run(object):
             rec["class"] = "SITE" if site_fail else "MOD"
         frame_cap = (v.get("select_at") or v.get("overlay") == "power" or sc["group"] == "aerial")
         rec["shot"] = self.shot(sid, pg, root, frame=bool(frame_cap))
-        sel_used = bool(v.get("select_at")) or (v.get("overlay") == "power" and self.shots)
+        sel_used = bool(v.get("select_at")) or (v.get("overlay") == "power")
         if sel_used and not self.mock:
             B.probe("deselect")
             B.probe("set:highlight=True")
-        if sid in ONOFF_PAIRS and self.shots:
+        if sid in ONOFF_PAIRS:
             B.probe("set:enabled=False")
             rec["shot_off"] = self.shot(sid + "_off", pg, root)
             B.probe("set:enabled=True")
@@ -1053,14 +1058,13 @@ class Run(object):
         B = self.B
         if self.mock:
             return None
-        if not self.shots:
-            return {"file": None, "kind": "skipped", "ok": None, "skipped": "--no-shots", "rect": pg}
-        with self.ph("shots"):
+        with self.ph("shots" if self.shots else "shots_camera_only"):
             return self._shot(name, pg, root, frame)
 
     def _shot(self, name, pg, root, frame):
         B = self.B
-        self.nshots += 1
+        render = self.shots
+        self.nshots += 1 if render else 0
         settle = self.settle if self.settle is not None else 1.5
         if frame:
             # a frame_cell_rect with the same args was already issued by scene() and nothing moved the camera since: do not
@@ -1072,7 +1076,16 @@ class Run(object):
                 self.frame(pg, root)
                 B.sleep(settle)
             self._framed = None
+            if not render:
+                return {"file": None, "kind": "skipped", "ok": None, "skipped": "--no-shots", "rect": pg}
             r = B.call("jawa/take_screenshot", fileName="mcx_" + name)
+        elif not render:
+            # --no-shots: the capture tool also moves the camera to the rect; the cord graph rebuilds off camera-driven section
+            # regeneration, so make the same move (frame_cell_rect, same settle) and skip only render + PNG + copy.
+            self.frame(pg, root)
+            B.sleep(settle)
+            self._framed = None
+            return {"file": None, "kind": "skipped", "ok": None, "skipped": "--no-shots", "rect": pg}
         else:
             # LEARNED smoke 2026-10-02: rootSize overrides the rect framing (a wide frame with the scene small and
             # off-centre), so the cell-rect capture takes the tool's own rect fit; Z is set on the live camera.
@@ -1161,6 +1174,37 @@ def merge_sweep(old_path, res, out):
     return n
 
 
+def install_profiler(B):
+    """--profile: wall time per bridge call name (jawa/..., rimworld/...) and per probe verb (probe:rect, ap:census, hp:flow ...)
+    plus sleep: {name: [count, total_s]}. A probe total includes its serial polling AND the nested jawa/mod_settings_field calls (counted again under their own name), so do not add the rows together."""
+    prof = collections.OrderedDict()
+
+    def rec(name, dt):
+        e = prof.setdefault(name, [0, 0.0])
+        e[0] += 1
+        e[1] += dt
+
+    def wrap(attr, namer):
+        orig = getattr(B, attr)
+
+        def f(*a, **kw):
+            t = time.time()
+            try:
+                return orig(*a, **kw)
+            finally:
+                rec(namer(a, kw), time.time() - t)
+        setattr(B, attr, f)
+
+    verb = lambda a: str(a[0]).split(":")[0] if a else "?"
+    wrap("call", lambda a, kw: a[0] if a else "?")
+    wrap("probe", lambda a, kw: "probe:" + verb(a))
+    wrap("ap", lambda a, kw: "ap:" + verb(a))
+    wrap("hp", lambda a, kw: "hp:" + verb(a))
+    wrap("sleep", lambda a, kw: "sleep")
+    B.prof = prof
+    return prof
+
+
 def run(args, B, mock=False):
     spec = load_catalog(args.catalog)
     scenes = spec["scenes"]
@@ -1175,6 +1219,7 @@ def run(args, B, mock=False):
     if args.max_boards:
         boards = boards[:args.max_boards]
     R = Run(B, args, mock)
+    prof = install_profiler(B) if getattr(args, "profile", False) else None
     res = {"mod": "MessyConduit", "script": "northstar_matrix/run_live.py", "mode": "mock" if mock else "live",
            "pass": "sweep-shots" if sweep_src else ("state-only (--no-shots)" if getattr(args, "no_shots", False) else "full"),
            "tier": "messyconduit", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "spec_hash": spec.get("spec_hash"),
@@ -1262,6 +1307,8 @@ def run(args, B, mock=False):
     res["wall_s"] = round(time.time() - R.t0, 1)
     res["timing"] = {"phases_s": {k: round(v, 1) for k, v in sorted(R.tm.items(), key=lambda kv: -kv[1]) if k != "done"},
                      "shots_taken": R.nshots, "calls": getattr(B, "n", None),
+                     "calls_profile": ({k: {"n": v[0], "total_s": round(v[1], 2), "avg_s": round(v[1] / max(v[0], 1), 3)}
+                                        for k, v in sorted(prof.items(), key=lambda kv: -kv[1][1])} if prof else None),
                      "note": "phases add up to wall_s; shots are nested out of the phase they ran in; shot_copy_wait is the "
                              "residual PNG copy that did not overlap the bridge calls"}
     res["ticks_spent"] = (t_end - t_start) if isinstance(t_start, int) and isinstance(t_end, int) else None
@@ -1478,6 +1525,8 @@ def main(argv=None):
     ap.add_argument("--no-shots", action="store_true", help="state pass only: skip every screenshot (and the camera moves that only served them)")
     ap.add_argument("--sweep-shots", default=None, metavar="RESULT_JSON",
                     help="screenshot-only pass: rebuild each board of that state-pass result, take its shots, merge them into the JSON")
+    ap.add_argument("--profile", action="store_true", help="record per-call wall time (call name -> count, total s) in result['timing']['calls_profile']")
+    ap.add_argument("--probe-poll", type=float, default=0.25, help="seconds between serial polls while waiting for a probe answer (default 0.25)")
     ap.add_argument("--shot-settle", type=float, default=None, help="seconds to wait after a frame move before a frame capture (default 1.5; sweep 0.7)")
     ap.add_argument("--post", default=None, metavar="RESULT_JSON")
     ap.add_argument("--compare", nargs=2, metavar="RESULT_JSON")
@@ -1495,6 +1544,8 @@ def main(argv=None):
         return 2
     if a.no_shots and a.sweep_shots:
         ap.error("--no-shots and --sweep-shots are opposites")
+    global PROBE_POLL_S
+    PROBE_POLL_S = a.probe_poll
     if a.sweep_shots and a.shot_settle is None:
         a.shot_settle = 0.7
     B = MockBridge(a.fault) if a.mock else LiveBridge()
@@ -1515,6 +1566,11 @@ def main(argv=None):
         res["mode"].upper(), res["summary"], res["ticks_spent"], res["wall_s"], res["calls"], len(res["boards"]), res["aborted"]))
     print("TIMING %ss wall, %d shots: %s" % (res["wall_s"], res["timing"]["shots_taken"],
           ", ".join("%s %ss" % kv for kv in res["timing"]["phases_s"].items())))
+    cp = res["timing"].get("calls_profile")
+    if cp:
+        print("PROFILE (name n total_s avg_s), top 25:")
+        for k, v in list(cp.items())[:25]:
+            print("  %-34s %5d %8.1f %7.3f" % (k, v["n"], v["total_s"], v["avg_s"]))
     for b in (res["boards"] if not a.mock else []):
         print("  %-14s %s" % (b["id"], b.get("phases_s")))
     return 0 if not res["aborted"] else 1
