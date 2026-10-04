@@ -275,3 +275,112 @@ def mindstone_gallery(t):
         res = str((r or {}).get("result", ""))
         if t._guard() and (not res.startswith("veins=") or res.startswith("veins=0")):
             raise ExpectationFailed("no mindstone veins placed: %r" % (r,))
+
+
+# ---- UTINNIPATCHES_COVERAGE_GAPS_1 static bars (no bridge) -------------------------------------------------
+_GATE_CLASS = "RimMandrake.Utinni.UtinniPatches.PatchOperationSettingGate"
+_CORE_DEFS = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data/Core/Defs"
+
+
+def setting_gate_problems(mod_dir=None):
+    """(problems, gates_seen). Every PatchOperationSettingGate in Patches/ (any depth) names a <setting> the
+    C# switch handles (an unknown name logs Log.Error and returns false = a red 'Patch operation failed'),
+    carries a match or nomatch branch, and the case reads a public static bool on UtinniPatchesSettings
+    that ExposeData Scribes under the same key (else the toggle never persists)."""
+    import re
+    import xml.etree.ElementTree as ET
+    mod_dir = mod_dir or _MOD_DIR
+    src = open(os.path.join(mod_dir, "Source", "PatchOperationSettingGate.cs"), encoding="utf-8").read()
+    cases = dict(re.findall(r'case\s+"(\w+)"\s*:\s*on\s*=\s*UtinniPatchesSettings\.(\w+)\s*;', src))
+    st = open(os.path.join(mod_dir, "Source", "UtinniPatchesSettings.cs"), encoding="utf-8").read()
+    bad, seen = [], 0
+    if not cases:
+        return ["blind parse: no switch cases read from PatchOperationSettingGate.cs"], 0
+    for root, _d, files in os.walk(os.path.join(mod_dir, "Patches")):
+        for fn in sorted(files):
+            if not fn.endswith(".xml"):
+                continue
+            p = os.path.join(root, fn)
+            for el in ET.parse(p).getroot().iter():
+                if el.get("Class") != _GATE_CLASS:
+                    continue
+                seen += 1
+                s = (el.findtext("setting") or "").strip()
+                where = "%s gate '%s'" % (fn, s)
+                if s not in cases:
+                    bad.append("%s: not a case of the C# switch (red 'unknown setting' + patch failed)" % where)
+                    continue
+                if el.find("match") is None and el.find("nomatch") is None:
+                    bad.append("%s: no match/nomatch branch -- gates nothing" % where)
+                field = cases[s]
+                if not re.search(r"public\s+static\s+bool\s+%s\b" % field, st):
+                    bad.append("%s: UtinniPatchesSettings.%s is not a public static bool" % (where, field))
+                if not re.search(r'Scribe_Values\.Look\(ref\s+%s\s*,\s*"%s"' % (field, field), st):
+                    bad.append("%s: %s is not Scribed under its own key -- the toggle never persists" % (where, field))
+    if seen == 0:
+        bad.append("blind parse: no PatchOperationSettingGate found under Patches/")
+    return bad, seen
+
+
+def infestation_ban_problems(core_defs=_CORE_DEFS, mod_dir=None):
+    """None if Core is unreachable (UNMEASURED), else problems. The planet-wide ban is a bare
+    PatchOperationReplace on Core IncidentDef Infestation/baseChance: Core must still carry that node (a
+    Replace that matches nothing logs red), must not carry baseChanceWithRoyalty (which would win over
+    baseChance), and our value must be 0 with no other src patch touching that incident's chance."""
+    import glob
+    import xml.etree.ElementTree as ET
+    mod_dir = mod_dir or _MOD_DIR
+    if not os.path.isdir(core_defs):
+        return None
+    inc = None
+    for p in glob.glob(os.path.join(core_defs, "**", "*.xml"), recursive=True):
+        try:
+            r = ET.parse(p).getroot()
+        except ET.ParseError:
+            continue
+        for d in r.findall("IncidentDef"):
+            if (d.findtext("defName") or "").strip() == "Infestation":
+                inc = d
+    bad = []
+    if inc is None:
+        return ["sanity: Core IncidentDef Infestation not found under %s" % core_defs]
+    if inc.find("baseChance") is None:
+        bad.append("Core Infestation has no <baseChance>: the Replace matches nothing (red patch error)")
+    if inc.find("baseChanceWithRoyalty") is not None:
+        bad.append("Core Infestation now carries baseChanceWithRoyalty: zeroing baseChance no longer bans it")
+    ops = ET.parse(os.path.join(mod_dir, "Patches", "Infestation_PlanetwideBan.xml")).getroot().findall("Operation")
+    vals = [(o.get("Class"), o.findtext("xpath"), o.findtext("value/baseChance")) for o in ops]
+    if vals != [("PatchOperationReplace", 'Defs/IncidentDef[defName="Infestation"]/baseChance', "0")]:
+        bad.append("Infestation_PlanetwideBan.xml is not the single Replace baseChance=0: %r" % (vals,))
+    src_root = os.path.abspath(os.path.join(mod_dir, "..", ".."))
+    for p in glob.glob(os.path.join(src_root, "**", "Patches", "**", "*.xml"), recursive=True):
+        if os.path.basename(p) == "Infestation_PlanetwideBan.xml":
+            continue
+        txt = open(p, encoding="utf-8", errors="replace").read()
+        if 'IncidentDef[defName="Infestation"]' in txt:
+            bad.append("another patch touches Core Infestation: %s" % os.path.relpath(p, src_root))
+    return bad
+
+
+@suite.chain("settings_gates_static")
+def settings_gates_static(t):
+    """Static: settings-gated patch ops (PatchOperationSettingGate) all name a handled, Scribed toggle."""
+    with t.component("every_setting_gate_names_a_handled_scribed_toggle", beyond_toggle=True):
+        bad, seen = setting_gate_problems()
+        if bad:
+            raise ExpectationFailed("%d gate problem(s) over %d gate(s): %s" % (len(bad), seen, bad))
+
+
+@suite.chain("infestation_ban_static")
+def infestation_ban_static(t):
+    """Static: the planet-wide Infestation ban lands on Core's current IncidentDef and is the only hand on it.
+    Live readback (get_defs IncidentDef/Infestation baseChance == 0) is the deploy-side bar."""
+    with t.component("infestation_ban_lands_on_core_baseChance", beyond_toggle=True):
+        bad = infestation_ban_problems()
+        if bad is None:
+            t._why = "Core Defs unreachable from this machine (%s)" % _CORE_DEFS
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: " + t._why
+            return
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
