@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Sumpgas.xml                       UtinniPatches — SUMP_GASLIGHT_1
+  RM_TarGas.xml                       TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_GASLIGHT_1
 
   Item spec §1, the reaction: "tar + acid -> green gas (Helixien-compatible).
   One acid, three uses — this reaction IS how the cleaner works... it is how
   vault extraction works... and a small tar+acid mix in a lamp is the
   light." The owner's own naming instruction (same sitting): "the utinni
   layer should rename it to our own form of gas. Let's call it Sumpgas" —
-  so this def is RUT_-tier by his own explicit word, not the usual
-  RM_-tier-content-lands-as-RUT_-for-now stopgap SUMP_TAR_NASTINESS_1 used
-  elsewhere in this kit.
+  so only the NAME is campaign-tier. The 2026-10-01 bedazzle sitting ruled
+  the gas itself into the free mod ("Move it all into the free mod"): it
+  ships here as RM_TarGas, "tar gas", and UtinniPatches'
+  RUT_TarGas_SumpgasLabel.xml relabels it Sumpgas in the campaign.
 
   "Helixien-compatible" — investigated, not guessed. The live def dump
   (vanillaexpanded.helixiengas, package installed and active) was read in
@@ -19,30 +20,30 @@
   scatter shape (Gold/Jade's own idiom) — i.e. it is an internal
   scatter/pipenet-feed marker that DESTROYS ITSELF ON SPAWN, not a
   haulable crafting product a recipeMaker could ever output (it would
-  vanish the instant the bill finished). So RUT_Sumpgas is its own real,
+  vanish the instant the bill finished). So RM_TarGas is its own real,
   haulable, stackable ThingDef — the SAME green-gas substance in flavor and
   name (the ruling's own "leverage that [Helixien] economy"), not a
   disguised VHGE_Helixien. Literal PipeSystem/VHGE_HelixienNet interop
-  (piping RUT_Sumpgas through Helixien infrastructure, or vice versa) is
+  (piping RM_TarGas through Helixien infrastructure, or vice versa) is
   NOT built this pass — flagged owed, since it would need VHGE's own
   PipeSystem.CompResourceTrader wiring studied live, which this pass had no
   bridge access to verify.
 
   The reaction itself: a plain vanilla recipeMaker shorthand (same route
-  RUT_WeakTarSolvent already uses in this repo) rather than a full
-  RecipeDef — costList takes RUT_Bitumen (tar, rendered solid per its own
-  header) + RUT_WeakTarSolvent (the acid) together, matching the ruling's
-  "reacting it with some acid." Gated behind RUT_GaslightChemistry
-  (Defs/ResearchProjectDefs/RUT_Sump_Research.xml, this same item) — a
+  RM_WeakTarSolvent already uses in this repo) rather than a full
+  RecipeDef — costList takes RM_Bitumen (tar, rendered solid per its own
+  header) + RM_WeakTarSolvent (the acid) together, matching the ruling's
+  "reacting it with some acid." Gated behind RM_GaslightChemistry
+  (Defs/ResearchProjectDefs/RM_Sump_Research.xml, this same item) — a
   plain researchable project for now; wiring it to auto-complete on first
   witnessing a natural flame/geyser (item spec §6, the discovery pilot) is
   explicitly deferred, see that file's own header.
 
-  This is also the byproduct RUT_ScrubTarred now spawns on a successful
-  cure (RUT_Tarred_Surgery.xml, this same item, repointed to
+  This is also the byproduct RM_ScrubTarred now spawns on a successful
+  cure (RM_Tarred_Surgery.xml, this same item, repointed to
   RM_Recipe_RemoveHediffWithByproduct) — "cleaning tar converts it to gas."
 
-  Texture: same placeholder posture as RUT_Bitumen/RUT_ThrummelSeepwax
+  Texture: same placeholder posture as RM_Bitumen/RM_ThrummelSeepwax
   (procedurally-drawn, UtinniPatches' own Textures/Things/Item/Resource/
   namespace already claimed per those defs' own headers) — a translucent
   green swirl distinct from both.
@@ -50,14 +51,14 @@
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_Sumpgas</defName>
-    <label>Sumpgas</label>
+    <defName>RM_TarGas</defName>
+    <label>tar gas</label>
     <description>Bottled green gas, rendered by working an acid into raw tar until it lets go of its own vapor. The same chemistry the geysers do for free, on demand and by the jug — sharp-smelling, faintly luminous, and the only fuel on the Sump that burns warm instead of foul.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_Sumpgas</texPath>
+      <texPath>Things/Item/Resource/RM_TarGas</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(96, 214, 128)</color>
     </graphicData>
@@ -77,12 +78,12 @@
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
       <workSkill>Crafting</workSkill>
       <displayPriority>430</displayPriority>
-      <researchPrerequisite>RUT_GaslightChemistry</researchPrerequisite>
+      <researchPrerequisite>RM_GaslightChemistry</researchPrerequisite>
       <productCount>3</productCount>
     </recipeMaker>
     <costList>
-      <RUT_Bitumen>1</RUT_Bitumen>
-      <RUT_WeakTarSolvent>1</RUT_WeakTarSolvent>
+      <RM_Bitumen>1</RM_Bitumen>
+      <RM_WeakTarSolvent>1</RM_WeakTarSolvent>
     </costList>
   </ThingDef>
 

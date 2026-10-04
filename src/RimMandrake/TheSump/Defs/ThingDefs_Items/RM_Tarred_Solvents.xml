@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Tarred_Solvents.xml               UtinniPatches — SUMP_TAR_NASTINESS_1
+  RM_Tarred_Solvents.xml               TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_TAR_NASTINESS_1
 
   Item spec §3, "Solvents — a WEAK solvent craftable in-biome (an ACID
   rendered from thrummel seepwax, ruled generous per the item's own 'one
@@ -11,27 +11,22 @@
 
   PARTIAL BY DESIGN, three pieces:
 
-  1. RUT_ThrummelSeepwax — the raw feedstock. sump_fauna_roster_2026-09-24.md
+  1. RM_ThrummelSeepwax — the raw feedstock. sump_fauna_roster_2026-09-24.md
      §4 already names "seepwax" as the thrummel hive's own invented product
      (no donor def, chitin+wax economy, roster line 78). The thrummel
-     creature/hive itself is NOT built this pass (0 of the roster's under-
-     layer species exist yet, per that roster's own build-status table) — so
-     this def carries NO recipeMaker (nothing to render it FROM yet) and is
-     flagged as awaiting its real source, the hive raid, "ruled generous:
-     one raid should give you a lot" (SUMP_GASLIGHT_1's own verbatim owner
-     quote). Tradeable/debug-spawnable in the meantime, same "compiles now,
-     real source owed" posture this whole kit already uses throughout
-     (RUT_WickStem's own header is the precedent for "non-zero MarketValue
-     only so the def is legally tradeable, not a pricing call").
+     product is RM_Seepwax (RM_SumpFaunaItems.xml); this def renders from
+     it at a machining table (1 : 1, WorkToMake 60), the recipe that used to
+     ride UtinniPatches' RUT_ThrummelSeepwax_RosterSource.xml, inlined here
+     when SUMP_FREE_TIER_MOVE_BUILD_1 put both defs in one mod.
 
-  2. RUT_WeakTarSolvent — the local acid. Crafted straight from
-     RUT_ThrummelSeepwax via recipeMaker (the SAME short vanilla route
+  2. RM_WeakTarSolvent — the local acid. Crafted straight from
+     RM_ThrummelSeepwax via recipeMaker (the SAME short vanilla route
      RM_SapResin -> RM_ToxinSealant already uses in this repo,
      Greentide/RM_Greentide_Items.xml — no separate RecipeDef needed for a
      plain bench-crafted resource). Deliberately GENEROUS yield
      (productCount 4 off a costList of 1) per the ruling's own "not meant as
-     a starvation mechanic" — this is what actually cures RUT_Tarred
-     (RUT_Tarred_Surgery.xml, this item's piece 2/3 seam) and gates vault
+     a starvation mechanic" — this is what actually cures RM_Tarred
+     (RM_Tarred_Surgery.xml, this item's piece 2/3 seam) and gates vault
      extraction (SUMP_TAR_VAULT_1) and the gaslight reaction
      (SUMP_GASLIGHT_1) elsewhere.
 
@@ -40,18 +35,18 @@
      its own full mechanism (a Helixien-compatible gas byproduct, the
      warbling light, vault extraction, three uses of one acid) — this item's
      own verify section only promises "a weak solvent removes it [the
-     hediff]", which RUT_Tarred_Surgery.xml's Recipe_RemoveHediff bill
+     hediff]", which RM_Tarred_Surgery.xml's Recipe_RemoveHediff bill
      delivers directly, with no gas byproduct modeled here. Building the
      reaction/byproduct here would duplicate SUMP_GASLIGHT_1's own scope
      rather than extend it.
 
-  3. RUT_StrongTarSolvent — the foreign trade hook ONLY, per this item's own
+  3. RM_StrongTarSolvent — the foreign trade hook ONLY, per this item's own
      explicit instruction not to build that side. No recipeMaker (never
      craftable here), no source def wired to it — a real, legally-tradeable
      ThingDef that BIOME_NUISANCE_NORMALIZATION_1's own Poison Forest acid
      line can later point trade routes at. Distinguished from the weak
      solvent by color/MarketValue only; both accepted as equally valid
-     ingredients by RUT_Tarred_Surgery.xml's own ingredient filter (either
+     ingredients by RM_Tarred_Surgery.xml's own ingredient filter (either
      cures the hediff; the strong one is simply never the thing a Sump
      colony can make for itself).
 
@@ -71,14 +66,14 @@
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_ThrummelSeepwax</defName>
+    <defName>RM_ThrummelSeepwax</defName>
     <label>thrummel seepwax</label>
     <description>Warm, waxy secretion harvested from a thrummel mound — the hive's own building material and, rendered right, the feedstock for the Sump's one homegrown acid. A raid on a mound yields it by the barrel; nothing about gathering it is stingy.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_ThrummelSeepwax</texPath>
+      <texPath>Things/Item/Resource/RM_ThrummelSeepwax</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(196, 156, 64)</color>
     </graphicData>
@@ -87,21 +82,34 @@
       <MarketValue>1.4</MarketValue>
       <Mass>0.18</Mass>
       <Flammability>0.5</Flammability>
+      <WorkToMake>60</WorkToMake>
       <DeteriorationRate>2</DeteriorationRate>
     </statBases>
     <stackLimit>150</stackLimit>
     <techLevel>Neolithic</techLevel>
+    <recipeMaker>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <displayPriority>415</displayPriority>
+      <productCount>1</productCount>
+    </recipeMaker>
+    <costList>
+      <RM_Seepwax>1</RM_Seepwax>
+    </costList>
   </ThingDef>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_WeakTarSolvent</defName>
+    <defName>RM_WeakTarSolvent</defName>
     <label>weak tar solvent</label>
     <description>Thrummel seepwax rendered down into a mild acid — sharp-smelling, safe enough to handle bare-handed, and the only thing on the Sump that lets go of tar once it has set. A colony that raids the mounds is never really short of it.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_WeakTarSolvent</texPath>
+      <texPath>Things/Item/Resource/RM_WeakTarSolvent</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(178, 196, 110)</color>
     </graphicData>
@@ -128,20 +136,20 @@
       <productCount>4</productCount>
     </recipeMaker>
     <costList>
-      <RUT_ThrummelSeepwax>1</RUT_ThrummelSeepwax>
+      <RM_ThrummelSeepwax>1</RM_ThrummelSeepwax>
     </costList>
   </ThingDef>
 
   <!-- The foreign side — hook only, per this item's own instruction. -->
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_StrongTarSolvent</defName>
+    <defName>RM_StrongTarSolvent</defName>
     <label>strong tar solvent</label>
     <description>An industrial-strength acid, far past anything the Sump renders for itself — this is the Poison Forest's own line of work, not the tar-country trade the local mounds support. Whatever it touches lets go of tar at once, no scrubbing needed.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_StrongTarSolvent</texPath>
+      <texPath>Things/Item/Resource/RM_StrongTarSolvent</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(214, 96, 48)</color>
     </graphicData>

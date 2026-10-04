@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_Tar_GlasswalkCooling.xml         UtinniPatches — SUMP_TAR_HYDROLOGY_1
+  RM_Tar_GlasswalkCooling.xml         TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_TAR_HYDROLOGY_1
   ============================================================================
   Repoints RM_Fluid_Tar's new coolsToGlassEdge field (Defs/Canals/FluidDefs/
   FlowWorks_Fluids.xml, this same pass) from FlowWorks' own generic
-  RM_TarGlass onto this campaign's bespoke RUT_Glasswalk
-  (Defs/TerrainDefs/RUT_SumpWalkways.xml, SUMP_WALKWAYS_1) — same "the free
+  RM_TarGlass onto this campaign's bespoke RM_Glasswalk
+  (Defs/TerrainDefs/RM_SumpWalkways.xml, SUMP_WALKWAYS_1) — same "the free
   mod works standalone, the campaign layer swaps in the nicer art/mechanic"
   posture RM_Fluid_Tar_AlphaBiomesAdoption.xml already established for
   floodTerrain's own texture, read in full before writing this.
@@ -18,12 +18,12 @@
   is absent" and "the field got renamed/reverted upstream" both need the same
   silent-no-op rather than a red launch error every time either happens).
 
-  RUT_Glasswalk's own header (RUT_SumpWalkways.xml, SUMP_WALKWAYS_1) explicitly
+  RM_Glasswalk's own header (RM_SumpWalkways.xml, SUMP_WALKWAYS_1) explicitly
   deferred "crossing the liquid tar itself" to this item — this patch is that
   deferred half landing: a belch flood that cools naturally now hardens its
   own edge into the SAME terrain a player can build by hand, complete with
   that terrain's RM_SlipperyWalkway tag (the generic pratfall hook) and its
-  filth-proof surface. RUT_Glasswalk is not <temporary>, so
+  filth-proof surface. RM_Glasswalk is not <temporary>, so
   FluidDef.ConfigErrors' own coolsToGlassEdge check (this same pass) is
   satisfied.
   ============================================================================
@@ -37,7 +37,7 @@
     <match Class="PatchOperationReplace">
       <xpath>/Defs/RimMandrake.FlowWorks.FluidDef[defName="RM_Fluid_Tar"]/coolsToGlassEdge</xpath>
       <value>
-        <coolsToGlassEdge>RUT_Glasswalk</coolsToGlassEdge>
+        <coolsToGlassEdge>RM_Glasswalk</coolsToGlassEdge>
       </value>
     </match>
   </Operation>

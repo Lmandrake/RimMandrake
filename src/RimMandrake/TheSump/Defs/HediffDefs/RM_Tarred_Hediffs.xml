@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Tarred_Hediffs.xml                UtinniPatches — SUMP_TAR_NASTINESS_1
+  RM_Tarred_Hediffs.xml                TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_TAR_NASTINESS_1
 
   Item spec §2, "tarred-pawn hediffs — tar on yourself: move/work penalties,
   mood, hygiene-flavored stink, spreads filth, maybe flammability. Severity
@@ -39,14 +39,14 @@
 
   "Removal is not free" (the spec's own line): severityPerDayClean below
   heals a tarred pawn off on their own once their boots are clean, but
-  RUT_ScrubTarredSolvent (this item's piece 3, RUT_Tarred_Solvents.xml) is
+  RUT_ScrubTarredSolvent (this item's piece 3, RM_Tarred_Solvents.xml) is
   the deliberate, priced cure via a real Recipe_RemoveHediff bill — same
   shape RSW_RemoveBrainWorm already ships in this repo.
 -->
 <Defs>
 
   <HediffDef>
-    <defName>RUT_Tarred</defName>
+    <defName>RM_Tarred</defName>
     <label>tarred</label>
     <description>Black tar tracked in and stuck fast — on boots, cuffs, skin. It does not wash off with water, it reeks, and it does not care whose floor it ends up on next. Left alone it thickens; scrubbed clean, or dissolved with the right solvent, it lets go.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -55,7 +55,7 @@
     <isBad>true</isBad>
     <scenarioCanAdd>false</scenarioCanAdd>
     <comps>
-      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure" MayRequire="mandrake.rm.biomes">
+      <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure">
         <filthDef>RM_Filth_Tar</filthDef>
         <!-- INVENTED-BUILD tuning: ~1.1 in-game days from fresh contact to the
              top stage while continuously re-exposed; ~1.7 days to heal off

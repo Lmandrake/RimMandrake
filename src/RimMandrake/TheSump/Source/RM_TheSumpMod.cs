@@ -119,7 +119,7 @@ namespace RimMandrake.TheSump
             list.GapLine();
 
             list.CheckboxLabeled("Tar vault seals contents (no rot; extraction needs solvent)", ref tarVaultEnabled,
-                "The tar vault (RUT_TarVault) freezes rot on anything sealed inside it. "
+                "The tar vault (RM_TarVault) freezes rot on anything sealed inside it. "
               + "Off: it behaves like an ordinary shelf, no sealing, no solvent gate.");
             list.GapLine();
 

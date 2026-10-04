@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SUMP_FREE_TIER_MOVE_BUILD_1: the tar kit moved from the campaign tier
+  (mandrake.rut.patches, RUT_ names) into this free mod under RM_ names. A save
+  that holds the old names (a placed vault or lamp, a laid walkway, a tarred
+  pawn, a researched project) loads them as the new defs through
+  RM_DefAliasDef (EnvironmentalHazards, RM_DefAliases.cs, which says why it is
+  a Harmony postfix and not a BackCompatibilityConverter). The strings name
+  campaign defs only as save-history; nothing here needs the campaign loaded.
+-->
+<Defs>
+  <RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+    <defName>RM_SumpTierMoveAliases</defName>
+    <aliases>
+      <li><from>RUT_Tarred</from><to>RM_Tarred</to></li>
+      <li><from>RUT_TarredThought</from><to>RM_TarredThought</to></li>
+      <li><from>RUT_WeakTarSolvent</from><to>RM_WeakTarSolvent</to></li>
+      <li><from>RUT_StrongTarSolvent</from><to>RM_StrongTarSolvent</to></li>
+      <li><from>RUT_ThrummelSeepwax</from><to>RM_ThrummelSeepwax</to></li>
+      <li><from>RUT_TarRuinedGoods</from><to>RM_TarRuinedGoods</to></li>
+      <li><from>RUT_TarVault</from><to>RM_TarVault</to></li>
+      <li><from>RUT_GaslightLamp</from><to>RM_GaslightLamp</to></li>
+      <li><from>RUT_Sumpgas</from><to>RM_TarGas</to></li>
+      <li><from>RUT_Duckboards</from><to>RM_Duckboards</to></li>
+      <li><from>RUT_Glasswalk</from><to>RM_Glasswalk</to></li>
+      <li><from>RUT_GaslightChemistry</from><to>RM_GaslightChemistry</to></li>
+      <li><from>RUT_TarRendering</from><to>RM_TarRendering</to></li>
+      <li><from>RUT_ScrubTarred</from><to>RM_ScrubTarred</to></li>
+      <li><from>RUT_Bitumen</from><to>RM_Bitumen</to></li>
+    </aliases>
+  </RimMandrake.EnvironmentalHazards.RM_DefAliasDef>
+</Defs>

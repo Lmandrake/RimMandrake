@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_TarVault.xml                      UtinniPatches — SUMP_TAR_VAULT_1
+  RM_TarVault.xml                      TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_TAR_VAULT_1
 
   Owner ruling 2026-09-24, typed on the question card, verbatim: "I love
   this, but it requires solvents to extract things or else they are
@@ -55,7 +55,7 @@
   storageGroupTag repointed to its own tag so vaults link/rename as their
   own group, distinct from ordinary Shelf furniture.
 
-  Research: RUT_TarRendering — SUMP_GASLIGHT_1's own build note flagged this
+  Research: RM_TarRendering — SUMP_GASLIGHT_1's own build note flagged this
   ResearchProjectDef as "defined but deliberately left UNWIRED to anything
   ... a future pass wiring the discovery comp decides what 'first meeting
   tar' should gate, if anything beyond flavor." This pass wires it for real,
@@ -67,7 +67,7 @@
 
   Cost: Bitumen (the tar's own reward material, SUMP_TAR_NASTINESS_1 §4)
   alongside stuff-costed structure, on the same "the tar does the work"
-  logic RUT_GaslightLamp.xml already costs its Sumpgas-burning fixture in
+  logic RM_GaslightLamp.xml already costs its Sumpgas-burning fixture in
   Bitumen too.
 
   Texture: gen_tarvault_placeholder.py, same flat-fill-plus-outline posture
@@ -78,12 +78,12 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="StorageShelfBase" MayRequire="mandrake.rm.biomes">
-    <defName>RUT_TarVault</defName>
+  <ThingDef ParentName="StorageShelfBase">
+    <defName>RM_TarVault</defName>
     <label>tar vault</label>
     <description>A sunk barrel-rack packed in black Sump tar. Anything lowered into it stops aging the moment the tar closes over it — food stays fresh, a corpse stays whole, a hide stays supple, for as long as it sits sealed. The tar does not let go easily: pulling something back out clean takes a solvent to cut the seal, or it comes up ruined, fused uselessly into the tar that kept it.</description>
     <graphicData>
-      <texPath>Things/Building/RUT_TarVault/RUT_TarVault</texPath>
+      <texPath>Things/Building/RM_TarVault/RM_TarVault</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,1)</drawSize>
     </graphicData>
@@ -92,7 +92,7 @@
     <tickerType>Normal</tickerType>
     <costStuffCount>16</costStuffCount>
     <costList>
-      <RUT_Bitumen>10</RUT_Bitumen>
+      <RM_Bitumen>10</RM_Bitumen>
     </costList>
     <statBases>
       <MaxHitPoints>120</MaxHitPoints>
@@ -101,7 +101,7 @@
       <Flammability>0.4</Flammability>
     </statBases>
     <building>
-      <storageGroupTag>RUT_TarVault</storageGroupTag>
+      <storageGroupTag>RM_TarVault</storageGroupTag>
       <defaultStorageSettings>
         <priority>Important</priority>
         <filter>
@@ -120,7 +120,7 @@
       </li>
     </comps>
     <researchPrerequisites>
-      <li>RUT_TarRendering</li>
+      <li>RM_TarRendering</li>
     </researchPrerequisites>
     <techLevel>Neolithic</techLevel>
     <designationCategory>Furniture</designationCategory>

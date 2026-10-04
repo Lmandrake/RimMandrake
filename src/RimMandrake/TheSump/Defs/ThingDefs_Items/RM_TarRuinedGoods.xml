@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_TarRuinedGoods.xml                UtinniPatches — SUMP_TAR_VAULT_1
+  RM_TarRuinedGoods.xml                TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_TAR_VAULT_1
 
   The "tarred variant" the item's own spec names — what comes out of
-  RUT_TarVault when RM_Comp_TarVaultSeal.ExtractOne finds no
-  RUT_WeakTarSolvent/RUT_StrongTarSolvent anywhere on the map. One uniform
+  RM_TarVault when RM_Comp_TarVaultSeal.ExtractOne finds no
+  RM_WeakTarSolvent/RM_StrongTarSolvent anywhere on the map. One uniform
   ruined stand-in for ALL sealed content (food, corpse or hide alike) rather
   than a per-category spoiled variant of each: the spec gives no per-type
   ruin economics to build against, and food/corpse/hide each "ruin"
@@ -19,14 +19,14 @@
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_TarRuinedGoods</defName>
+    <defName>RM_TarRuinedGoods</defName>
     <label>tar-ruined goods</label>
     <description>Whatever this was — food, flesh, hide — the tar did not let go clean. It came up as a single fused black lump, worthless for anything but burning.</description>
     <thingCategories>
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/RUT_TarRuinedGoods/RUT_TarRuinedGoods</texPath>
+      <texPath>Things/Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <color>(40, 34, 28)</color>
     </graphicData>

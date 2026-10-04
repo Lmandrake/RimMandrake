@@ -20,11 +20,13 @@
   already uses.
 
   Gate: PatchOperationConditional (silent no-op if RM_TheSump is ever absent)
-  wrapping a PatchOperationAdd, MayRequire="mandrake.rsw.swbestiary" on the
-  whole Operation — the real source mod for RSW_Hssiss, not the donor
+  wrapping a PatchOperationAdd, itself inside a Conditional on the RSW_Hssiss
+  def existing (SUMP_FREE_TIER_MOVE_BUILD_1: a MayRequire on a top-level
+  Operation is ignored by the 1.6 engine). RSW_Hssiss comes from
+  mandrake.rsw.swbestiary, not the donor
   "Star Wars Animal Collection (Continued)" (Anooba/Iriaz/etc.'s own mod);
-  Hssiss is one of THIS repo's own SWBestiary ports, so the gate is our own
-  packageId, matching every other RSW_-tier reference in this repo.
+  Hssiss is one of THIS repo's own SWBestiary ports, so the gate is our own def,
+  not a donor packageId.
 
   ⚠️ A patch that matches nothing logs nothing (PatchOperationConditional
   returns true on no match) — validate with
@@ -33,15 +35,16 @@
   ============================================================================
 -->
 <Patch>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_TheSump"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_Hssiss"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_TheSump"]/wildAnimals</xpath>
-      <value>
-        <RSW_Hssiss>0.18</RSW_Hssiss>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_TheSump"]/wildAnimals</xpath>
+        <value>
+          <RSW_Hssiss>0.18</RSW_Hssiss>
+        </value>
+      </match>
     </match>
   </Operation>
-
 </Patch>

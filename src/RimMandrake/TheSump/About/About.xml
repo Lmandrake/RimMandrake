@@ -68,10 +68,11 @@ NOT in this mod: RSW_Hssiss (the biome's one seated canon beast) rides a Utinni
 patch (WildAnimals_Sump.xml) onto this mod's own RM_TheSump def instead, per the
 Q11a naming-tier ruling (SUMP_UTINNI_LAYER_1 §3). The Sumpgas rename, the flame-
 statue's holy-act-to-the-hungry-sun-god ideoligion meaning, and the Junker-station
-campaign labels are SUMP_UTINNI_LAYER_1's own campaign-tier work, not this mod's;
-the tar coating/tarred hediff/surgery/solvents/thoughts content and the Walkways/
-Bitumen/Sumpgas/Gaslight kit content (all shipped 2026-09-24) are not biome-gated
-and stay in mandrake.rut.patches for now.
+campaign labels are SUMP_UTINNI_LAYER_1's own campaign-tier work, not this mod's.
+The tar kit IS this mod's: tar coating and the tarred hediff (RM_Tarred), the
+solvents and the scrub-off-tar surgery, the walkways (duckboards, glasswalk),
+bitumen, tar gas and the gaslight lamp, the tar vault, and both research
+projects (gaslight chemistry, tar rendering).
 
 Live proof (step 5, a scratch-world quicktest with all five expansions) is
 Desktop-only and OWED — see the item's own verify record.

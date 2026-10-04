@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_TarredSurgery_RecipeUsers.xml     SUMP_TAR_NASTINESS_1
+  RM_TarredSurgery_RecipeUsers.xml     SUMP_TAR_NASTINESS_1
 
-  Attaches RUT_ScrubTarred to every race that can be operated on at all.
+  Attaches RM_ScrubTarred to every race that can be operated on at all.
   Identical shape and reasoning to src/RimStarWars/BrainWorms/Patches/
   BrainWormSurgery_RecipeUsers.xml (read in full before writing this):
   vanilla attaches surgeries like ExciseCarcinoma through each race
@@ -15,7 +15,7 @@
   and reaches any alien race in the load order that copied the vanilla list
   rather than inheriting it.
 
-  Animals match too. Harmless: an animal never carries RUT_Tarred without
+  Animals match too. Harmless: an animal never carries RM_Tarred without
   first carrying RM_Filth_Tar (RM_MapComponent_CarriedFilthHediffLink reads
   Pawn_FilthTracker the same way for every pawn on the map, humanlike or
   not), and Recipe_RemoveHediff.AvailableOnNow returns false whenever the
@@ -31,7 +31,7 @@
   <Operation Class="PatchOperationAdd">
     <xpath>/Defs/ThingDef[recipes/li="ExciseCarcinoma"]/recipes</xpath>
     <value>
-      <li>RUT_ScrubTarred</li>
+      <li>RM_ScrubTarred</li>
     </value>
   </Operation>
 

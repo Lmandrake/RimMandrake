@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_GaslightLamp.xml                  UtinniPatches — SUMP_GASLIGHT_1
+  RM_GaslightLamp.xml                  TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_GASLIGHT_1
 
   Item spec §3, "gaslight lamps: fueled by the mix; the biome's mood
   answer — warm lamplight offsetting the squalor a Sump colony cannot
   escape." Comp shape cribbed from RUT_DryAirBlower.xml's own
   CompProperties_Refuelable block (this repo's established fueled-building
-  pattern), fuelFilter repointed at RUT_Sumpgas instead of Chemfuel.
+  pattern), fuelFilter repointed at RM_TarGas instead of Chemfuel.
 
   Glow: CompProperties_Glower (vanilla, static base) +
   RM_CompProperties_WarblingGlow (this item's own new comp, riding
@@ -35,12 +35,12 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.biomes">
-    <defName>RUT_GaslightLamp</defName>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_GaslightLamp</defName>
     <label>gaslight lamp</label>
-    <description>A small brass-and-glass fixture that burns a mix of tar-rendered Sumpgas in a warble-flamed wick. No two flickers land the same color twice — the light dances warm through amber, orange and rose and back, throwing shifting shadows nothing else on the Sump can match. Colonists linger near it without quite knowing why.</description>
+    <description>A small brass-and-glass fixture that burns a mix of tar-rendered tar gas in a warble-flamed wick. No two flickers land the same color twice — the light dances warm through amber, orange and rose and back, throwing shifting shadows nothing else on the Sump can match. Colonists linger near it without quite knowing why.</description>
     <graphicData>
-      <texPath>Things/Building/Furniture/RUT_GaslightLamp/RUT_GaslightLamp</texPath>
+      <texPath>Things/Building/Furniture/RM_GaslightLamp/RM_GaslightLamp</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
@@ -60,7 +60,7 @@
     </statBases>
     <costList>
       <Steel>15</Steel>
-      <RUT_Bitumen>3</RUT_Bitumen>
+      <RM_Bitumen>3</RM_Bitumen>
     </costList>
     <building>
       <isPlayerEjectable>false</isPlayerEjectable>
@@ -95,18 +95,18 @@
         <autoRefuelPercent>0.35</autoRefuelPercent>
         <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
         <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
-        <fuelLabel>Sumpgas</fuelLabel>
-        <fuelGizmoLabel>Sumpgas</fuelGizmoLabel>
-        <outOfFuelMessage>Gaslight lamp out of Sumpgas</outOfFuelMessage>
+        <fuelLabel>tar gas</fuelLabel>
+        <fuelGizmoLabel>tar gas</fuelGizmoLabel>
+        <outOfFuelMessage>Gaslight lamp out of tar gas</outOfFuelMessage>
         <fuelFilter>
           <thingDefs>
-            <li>RUT_Sumpgas</li>
+            <li>RM_TarGas</li>
           </thingDefs>
         </fuelFilter>
       </li>
     </comps>
     <researchPrerequisites>
-      <li>RUT_GaslightChemistry</li>
+      <li>RM_GaslightChemistry</li>
     </researchPrerequisites>
     <designationCategory>Furniture</designationCategory>
     <techLevel>Neolithic</techLevel>

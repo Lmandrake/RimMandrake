@@ -74,8 +74,8 @@
     <recededTerrain>Mud</recededTerrain>
     <!-- SUMP_TAR_HYDROLOGY_1 ruling 3, "flood fronts cool to glass". Our own
          def (Defs/LiquidTypes/TerrainDefs/RM_TarGlass.xml), tier-neutral so
-         glass cooling works standalone; Patches/RUT_Tar_GlasswalkCooling.xml
-         repoints this at the campaign's own bespoke RUT_Glasswalk when
+         glass cooling works standalone; Patches/RM_Tar_GlasswalkCooling.xml
+         repoints this at the campaign's own bespoke RM_Glasswalk when
          UtinniPatches is active. -->
     <coolsToGlassEdge>RM_TarGlass</coolsToGlassEdge>
   </RimMandrake.FlowWorks.FluidDef>

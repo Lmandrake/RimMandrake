@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ============================================================================
-  RUT_SumpWalkways.xml           UtinniPatches · authored 2026-09-24
+  RM_SumpWalkways.xml           UtinniPatches · authored 2026-09-24
   ============================================================================
   SUMP_WALKWAYS_1 build pass ("Sump walkways, two tiers"). Owner ruling
   (question card, 2026-09-24): duckboards (cheap, foul with tar, burn) and
@@ -13,7 +13,7 @@
   the tar-adjacent margin; crossing the liquid tar itself is FlowWorks'
   canal/gate scope, SUMP_TAR_HYDROLOGY_1, not this item's).
 
-  ── RUT_Duckboards ──────────────────────────────────────────────────────
+  ── RM_Duckboards ──────────────────────────────────────────────────────
   "Full speed when fresh; fouls with tar (accumulating filth slows it until
   scrubbed); flammable" (item spec §1). pathCost 0 = full speed, matching
   WoodPlankFloor/RUT_Boughway's own zero-or-near-zero convention for a
@@ -51,7 +51,7 @@
   establish for terrain (not the Things/ namespace-ownership check
   validate_patch.py enforces for ThingDefs).
 
-  ── RUT_Glasswalk ───────────────────────────────────────────────────────
+  ── RM_Glasswalk ───────────────────────────────────────────────────────
   "Never fouls, never needs cleaning, tar-proof; permanently speed-capped
   (~80%, never full speed — his spec), plus rare slip-and-fall" (item
   spec §2). filthAcceptanceMask None is the SAME real engine gate
@@ -79,11 +79,11 @@
   to glass") and RUT_TarSpent's own already-shipped "burnt tar is spent"
   precedent; since it is never flammable no burnedDef is required.
 
-  costList: RUT_Bitumen, 6/cell — REPOINTED, SUMP_TAR_NASTINESS_1
+  costList: RM_Bitumen, 6/cell — REPOINTED, SUMP_TAR_NASTINESS_1
   (2026-09-24): was Chemfuel/6 as a PLACEHOLDER pending a real bitumen def;
-  RUT_Bitumen.xml (this same pass) ships that def, so the placeholder is
+  RM_Bitumen.xml (this same pass) ships that def, so the placeholder is
   retired here in the same commit that created its replacement. ⚠️ Still
-  OWED: RUT_Bitumen itself has no harvest source yet (the korveth plant and
+  OWED: RM_Bitumen itself has no harvest source yet (the korveth plant and
   the dig-barrel economy are both separately unbuilt) — the cost is real,
   the supply chain feeding it is not.
 
@@ -110,7 +110,7 @@
 <Defs>
 
   <TerrainDef>
-    <defName>RUT_Duckboards</defName>
+    <defName>RM_Duckboards</defName>
     <label>duckboards</label>
     <description>Cheap brindeth-plank walkway laid straight over the muck. Fast when fresh — but the black tracks in on every boot, and a fouled board is a slow board until someone scrubs it. Dry planking over a tar biome; treat fire seriously.</description>
     <renderPrecedence>250</renderPrecedence>
@@ -139,7 +139,7 @@
   </TerrainDef>
 
   <TerrainDef>
-    <defName>RUT_Glasswalk</defName>
+    <defName>RM_Glasswalk</defName>
     <label>glasswalk</label>
     <description>Bitumen poured, packed, and let cool to a hard black sheen. Nothing sticks to it, nothing tracks off it, and it never needs a scrub — but glass underfoot never lets you run flat out, and a hurrying pawn occasionally finds that out the hard way.</description>
     <renderPrecedence>251</renderPrecedence>
@@ -163,7 +163,7 @@
       <li>RM_SlipperyWalkway</li>
     </tags>
     <costList>
-      <RUT_Bitumen>6</RUT_Bitumen>
+      <RM_Bitumen>6</RM_Bitumen>
     </costList>
     <statBases>
       <WorkToBuild>240</WorkToBuild>
