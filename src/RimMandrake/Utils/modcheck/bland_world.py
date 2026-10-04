@@ -234,7 +234,22 @@ def setup(session, colonists=3, tmpdir=None, max_tiles=40, log=None):
             close_naming_dialogs(session)
             rows_ = H.read_pawns(session, health=False)
             cols = [x["id"] for x in rows_ if H.is_colonist(x) and not x.get("dead")]
-            say("reusing the bland map already current (tile %s, %d colonists)" % (cur.get("tile"), len(cols)))
+            # MEASURED 2026-10-04: every earlier suite leaves its spawned colonists/player animals behind (12 colonists + 6 thornbugs
+            # on the 'bland' map; FeverWood then read their deaths as colonist_died FATAL). Keep the oldest `colonists`, destroy the
+            # rest (clear_area on the pawn's own cell: the only pawn-destroying tool; a cell holding a kept colonist is skipped).
+            keep = sorted(cols, key=lambda i: int("".join(ch for ch in i if ch.isdigit()) or 0))[:colonists]
+            keep_cells = set((x.get("x"), x.get("z")) for x in rows_ if x["id"] in keep)
+            gone = 0
+            for x in rows_:
+                if x.get("isPlayer") and x["id"] not in keep and x.get("spawned", True) and x.get("x") is not None \
+                        and (x.get("x"), x.get("z")) not in keep_cells:
+                    try:
+                        session.call("jawa/clear_area", rect="%d,%d,1,1" % (int(x["x"]), int(x["z"])), dryRun=False)
+                        gone += 1
+                    except Exception:                                  # noqa: BLE001 - reset()'s assert reports what is left
+                        pass
+            cols = keep
+            say("reusing the bland map already current (tile %s, kept %d colonists, destroyed %d surplus player pawns)" % (cur.get("tile"), len(cols), gone))
             rep = reset(session)
             return {"tile": cur.get("tile"), "mapIndex": cur.get("mapId"), "colonists": cols, "ruins_destroyed": 0,
                     "wildlife_destroyed": 0, "ruins_left": 0, "problems": rep["problems"], "reused": True}
