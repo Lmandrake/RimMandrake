@@ -601,7 +601,7 @@ def colonist_damaged(snap, baseline, exps, ctx):
         hits.append(_hit("colonist_damaged", "colonist %s took %d damage event(s): %s"
                          % (p.get("name") or vid, len(evs), "; ".join(causes)),
                          {"id": vid, "events": [{k: e.get(k) for k in ("seq", "tick", "damageDef", "amount", "instigatorId",
-                                                                      "instigatorDef", "weapon", "hediffsAdded")}
+                                                                      "instigatorDef", "weapon", "origin", "hediffsAdded")}
                                                 for e in evs[:10]], "via": "damage_log"},
                          suggest=["restore_colonists"], focus=_focus(p) if p.get("x") is not None else None,
                          fp="colonist_damaged:%s:%s" % (vid, ",".join(str(e.get("seq")) for e in evs))))
