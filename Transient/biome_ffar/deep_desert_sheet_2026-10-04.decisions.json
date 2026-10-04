@@ -2,7 +2,7 @@
  "sheetId": "deep_desert_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/deep_desert_sheet_2026-10-04.snapshot.json",
- "snapshotId": "7abf7db89bdb18f3",
+ "snapshotId": "78a5fec1d0539d51",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_Stillsand",
  "reviewStatus": {
@@ -120,8 +120,8 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/KraytDragon/KraytDragon_j": "C",
-    "swanimals/KraytDragon/KraytDragon_m": "D"
+    "swanimals/KraytDragon/KraytDragon_j": "B",
+    "swanimals/KraytDragon/KraytDragon_m": "C"
    }
   },
   "RSW_Kreetle": {
@@ -137,7 +137,7 @@
    "note": "",
    "prefill": "A",
    "picks": {
-    "swanimals/Scurrier/Scurrier_m": "C"
+    "swanimals/Scurrier/Scurrier_m": "B"
    }
   },
   "RSW_Vozzik": {
@@ -166,24 +166,24 @@
    "prefill": "A"
   },
   "RM_LightPipeNub": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RM_Ollim": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RSW_LightPipeNub": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RSW_Ollim": {
-   "decision": "A",
+   "decision": "hold",
    "note": "",
-   "prefill": "A"
+   "prefill": "hold"
   },
   "RSW_Plant_Bloddle": {
    "decision": "A",

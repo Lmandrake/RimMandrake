@@ -2,7 +2,7 @@
  "sheetId": "blue_desert_sheet_2026-10-04",
  "posture": "pick-one",
  "snapshot": "infrastructure/state/art/sheets/blue_desert_sheet_2026-10-04.snapshot.json",
- "snapshotId": "9183de3c41298a5d",
+ "snapshotId": "4a3c4f2fb0916499",
  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
  "biome": "RM_BlueDesert",
  "reviewStatus": {
@@ -68,9 +68,9 @@
    "prefill": "A"
   },
   "Vapaad": {
-   "decision": "hold",
+   "decision": "A",
    "note": "",
-   "prefill": "hold"
+   "prefill": "A"
   },
   "RM_Chimeglobe": {
    "decision": "A",

@@ -1,9 +1,9 @@
 {
  "biome": "RM_BlueDesert",
- "built": "2026-10-04T15:23:47-0700",
+ "built": "2026-10-04T15:48:03-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "eeff5234d",
- "loadOrder": "ModsConfig.xml 9 active, modified 2026-10-04 10:55",
+ "census_git_head": "87e6995b6",
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 10 mods \u2014 a test list): 610 active",
  "rows": {
   "AA_Thunderbeast": {
    "columns": {},
@@ -22,14 +22,14 @@
     }
    },
    "graphic_of": {
-    "A": "_byname",
-    "B": "_byname"
+    "A": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
+    "B": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe"
    },
    "labels": {
     "A": "render bluedesert_chimeglobe",
     "B": "render bluedesert_chimeglobe_b"
    },
-   "res": null,
+   "res": "Things/Plant/RM_Chimeglobe/RM_Chimeglobe",
    "subject_key": "chimeglobe"
   },
   "RM_Dorrak": {
@@ -61,7 +61,7 @@
     "A": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Pawn/Animal/RM_Dovvik/RM_Dovvik",
    "subject_key": "dovvik"
@@ -79,16 +79,16 @@
     }
    },
    "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname"
+    "A": "Things/Plant/RM_Glassfern/RM_Glassfern",
+    "B": "Things/Plant/RM_Glassfern/RM_Glassfern",
+    "C": "Things/Plant/RM_Glassfern/RM_Glassfern"
    },
    "labels": {
     "A": "render bluedesert_glassfern",
     "B": "render bluedesert_glassfern_b",
     "C": "render bluedesert_glassfern_c"
    },
-   "res": null,
+   "res": "Things/Plant/RM_Glassfern/RM_Glassfern",
    "subject_key": "glassfern"
   },
   "RM_Kethevar": {
@@ -101,7 +101,7 @@
     "A": "Things/Plant/RM_Kethevar/RM_Kethevar"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Plant/RM_Kethevar/RM_Kethevar",
    "subject_key": "kethevar"
@@ -133,7 +133,7 @@
     "A": "Things/Plant/RM_Lisqueth/RM_Lisqueth"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Plant/RM_Lisqueth/RM_Lisqueth",
    "subject_key": "lisqueth"
@@ -150,7 +150,7 @@
     "A": "Things/Pawn/Animal/RM_Murrek/RM_Murrek"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Pawn/Animal/RM_Murrek/RM_Murrek",
    "subject_key": "murrek"
@@ -167,7 +167,7 @@
     "A": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Pawn/Animal/RM_Ossivel/RM_Ossivel",
    "subject_key": "ossivel"
@@ -185,34 +185,29 @@
     }
    },
    "graphic_of": {
-    "A": "_byname",
-    "B": "_byname",
-    "C": "_byname"
+    "A": "Things/Plant/RM_Palefloss/RM_Palefloss",
+    "B": "Things/Plant/RM_Palefloss/RM_Palefloss",
+    "C": "Things/Plant/RM_Palefloss/RM_Palefloss"
    },
    "labels": {
     "A": "render bluedesert_palefloss",
     "B": "render bluedesert_palefloss_b",
     "C": "render bluedesert_palefloss_c"
    },
-   "res": null,
+   "res": "Things/Plant/RM_Palefloss/RM_Palefloss",
    "subject_key": "palefloss"
   },
   "RM_Qeshra": {
    "columns": {
     "A": {
      "single": "537d854c068db37f83ac4756a1abb71142460b322e8d4b6d5431b7a665bd0086"
-    },
-    "B": {
-     "single": "53d984ef1c2280426b0bb49c427f004965d2737db6b39c8beb577c96cb2c1d6c"
     }
    },
    "graphic_of": {
-    "A": "Things/Plant/RM_Qeshra/RM_Qeshra",
-    "B": "_byname"
+    "A": "Things/Plant/RM_Qeshra/RM_Qeshra"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert",
-    "B": "render RM_QeshraRoe"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Plant/RM_Qeshra/RM_Qeshra",
    "subject_key": "qeshra"
@@ -229,7 +224,7 @@
     "A": "Things/Pawn/Animal/RM_Utikka/RM_Utikka"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Pawn/Animal/RM_Utikka/RM_Utikka",
    "subject_key": "utikka"
@@ -244,7 +239,7 @@
     "A": "Things/Plant/RM_Vashpuk/RM_Vashpuk"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Plant/RM_Vashpuk/RM_Vashpuk",
    "subject_key": "vashpuk"
@@ -288,7 +283,7 @@
     "C": "Things/Pawn/Animal/RM_Vhaulk/RM_Vhaulk"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert",
+    "A": "IN GAME \u2014 BlueDesert",
     "B": "render RM_Vhaulk_v2",
     "C": "render RM_Vhaulk"
    },
@@ -305,7 +300,7 @@
     "A": "Things/Plant/RM_Virr/RM_Virr"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Plant/RM_Virr/RM_Virr",
    "subject_key": "virr"
@@ -322,7 +317,7 @@
     "A": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk",
    "subject_key": "vrisk"
@@ -339,19 +334,29 @@
     "A": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz"
    },
    "labels": {
-    "A": "shipped, shadowed \u2014 BlueDesert"
+    "A": "IN GAME \u2014 BlueDesert"
    },
    "res": "Things/Pawn/Animal/RM_Zhaaz/RM_Zhaaz",
    "subject_key": "zhaaz"
   },
   "Vapaad": {
-   "columns": {},
-   "graphic_of": {},
-   "labels": {},
+   "columns": {
+    "A": {
+     "east": "d418708efa632ed653207322bb3ae3eb2aedf42dcaacfd141b9eb37c87be38c7",
+     "north": "888ef88237d28c1172509750e2cd0df3ea1770cb01cefab9bf806e052fe687b1",
+     "south": "f31b5019fc5052940411751ec9f6996c5eefff02c44b19f6992d98e070b3c803"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render bluedesert_Vapaad_v1"
+   },
    "res": null,
    "subject_key": "vapaad"
   }
  },
  "sheetId": "blue_desert_sheet_2026-10-04",
- "snapshotId": "9183de3c41298a5d"
+ "snapshotId": "4a3c4f2fb0916499"
 }
