@@ -214,6 +214,107 @@ def sweetline_thingdef_readback(t):
         t.screenshot()
 
 
+# ---------------------------------------------------------------- every shipped def (NORTHSTAR_PARTIAL_GAPS_FILL_1)
+# The audit row: "5 of 6 defs unasserted". This reads EVERY non-abstract def this mod ships straight from its own
+# Defs/ XML (so a def added later is covered with no edit here) and reads each back live: statBases via jawa/get_def
+# (flat {stat: value}), the plant block via jawa/get_defs(fields=plant, deep). Only scalar values the XML itself
+# authors are compared -- ranges (a~b) and nested lists are skipped (their serialised shape is unmeasured).
+import os as _os
+import xml.etree.ElementTree as _ET
+
+_DEFS_DIR = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Defs")
+
+
+def shipped_defs(defs_dir=None):
+    """[(defType, defName, {stat: str}, {plantField: str})] for every non-abstract def under Defs/."""
+    out = []
+    for root, _dirs, files in _os.walk(defs_dir or _DEFS_DIR):
+        for fn in sorted(files):
+            if not fn.endswith(".xml"):
+                continue
+            for el in _ET.parse(_os.path.join(root, fn)).getroot():
+                if not isinstance(el.tag, str) or el.get("Abstract", "").lower() == "true":
+                    continue
+                name = (el.findtext("defName") or "").strip()
+                if not name:
+                    continue
+                stats = dict((c.tag, (c.text or "").strip()) for c in (el.find("statBases") if el.find("statBases") is not None else [])
+                             if isinstance(c.tag, str))
+                plant_el = el.find("plant")
+                plant = {}
+                if plant_el is not None:
+                    for c in plant_el:
+                        v = (c.text or "").strip()
+                        if isinstance(c.tag, str) and len(c) == 0 and v and "~" not in v:
+                            plant[c.tag] = v
+                out.append((el.tag, name, stats, plant))
+    return out
+
+
+def same_value(expect, got):
+    """XML text vs a live readback: numbers numerically, bools case-blind, the rest exactly."""
+    if got is None:
+        return False
+    a, b = str(expect).strip(), str(got).strip()
+    try:
+        return abs(float(a) - float(b)) <= 1e-4 * max(1.0, abs(float(a)))
+    except ValueError:
+        return a.lower() == b.lower() if a.lower() in ("true", "false") else a == b
+
+
+@suite.chain("every_shipped_def_reads_back")
+def every_shipped_def_reads_back(t):
+    """Every def in Defs/ resolves live and carries the statBases and scalar plant fields its own XML authors."""
+    defs = shipped_defs()
+    box = {}
+
+    with t.component("every_shipped_def_is_found_and_the_list_is_sane", beyond_toggle=True):
+        names = [n for _ty, n, _s, _p in defs]
+        if "RUT_SweetlineTree" not in names or len(names) < 6:
+            raise ExpectationFailed("the Defs/ parse is blind: found %r (expected RUT_SweetlineTree and >= 6 defs)" % names)
+        r = t.bridge_call("jawa/get_defs", defs=";".join("%s/%s" % (ty, n) for ty, n, _s, _p in defs),
+                          fields="plant", deep=True)
+        if _live(t):
+            if not (r or {}).get("success"):
+                raise ExpectationFailed("get_defs failed: %r" % r)
+            if r.get("notFound"):
+                raise ExpectationFailed("shipped defs not loaded by the game: %r" % r.get("notFound"))
+            box["rows"] = dict((row.get("defName"), row) for row in (r.get("defs") or []))
+
+    with t.component("every_shipped_def_statbases_match_xml", beyond_toggle=True):
+        bad = []
+        for ty, name, stats, _plant in defs:
+            if not stats:
+                continue
+            r = t.bridge_call("jawa/get_def", defType=ty, defName=name)
+            if not _live(t):
+                continue
+            live = (r or {}).get("statBases") or {}
+            if not live:
+                bad.append("%s: get_def returned no statBases" % name)
+                continue
+            bad.extend("%s.%s: xml %s, live %r" % (name, k, v, live.get(k))
+                       for k, v in sorted(stats.items()) if not same_value(v, live.get(k)))
+        if bad:
+            raise ExpectationFailed("statBases drift: %s" % "; ".join(bad))
+
+    with t.component("every_shipped_plant_block_matches_xml", beyond_toggle=True):
+        if _live(t):
+            rows = box.get("rows") or {}
+            bad = []
+            for _ty, name, _stats, plant in defs:
+                if not plant:
+                    continue
+                live = ((rows.get(name) or {}).get("fields") or {}).get("plant")
+                if not isinstance(live, dict):
+                    bad.append("%s: no plant object read back" % name)
+                    continue
+                bad.extend("%s.plant.%s: xml %s, live %r" % (name, k, v, live.get(k))
+                           for k, v in sorted(plant.items()) if not same_value(v, live.get(k)))
+            if bad:
+                raise ExpectationFailed("plant field drift: %s" % "; ".join(bad))
+
+
 @suite.chain("betterTrees_patch_stays_noop_on_minimal")
 def betterTrees_patch_stays_noop_on_minimal(t):
     """On the minimal list (the three BetterTrees-family donor mods absent),
