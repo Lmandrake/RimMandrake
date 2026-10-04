@@ -1511,6 +1511,17 @@ def build_job_prompt(job: dict) -> str:
                      "or overhead view: we do not look down on its back, and "
                      "only the near side of the body is visible."),
         }
+        # A building/furniture job is drawn from RimWorld's top-down building
+        # camera, so the creature eye-level clauses above contradict its own
+        # "top-down building style" note. RUT_AncientBlackBox_east failed
+        # twice on exactly that contradiction (no image_gen call at all).
+        if "building sprite" in job["prompt"].lower():
+            facing_direction = {
+                f: (f"Facing: {f} — RimWorld's top-down building camera, "
+                    f"looking straight down; the building's front faces "
+                    f"{ {'north': 'up', 'south': 'down', 'east': 'right', 'west': 'left'}[f] } "
+                    f"on the canvas. Not a side elevation.")
+                for f in ("north", "south", "east", "west")}
         parts.append(facing_direction.get(str(job["facing"]).lower(),
                                           f"Facing: {job['facing']}."))
     return " ".join(parts)
