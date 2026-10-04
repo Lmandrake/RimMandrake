@@ -1,0 +1,184 @@
+{
+  "criterion": "Ordered by what a ruling UNBLOCKS: the four rows at the top change other rows' answers or change what gets built at all; groups 2\u20138 are by subject. That ranks leverage, not importance \u2014 it cannot tell you which of these you actually care about, and a row you feel strongly about sitting at #29 means the ordering was wrong, not your feeling.",
+  "decisions": {
+    "ark_key": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "ark_seed": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "cage_chain": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "cage_passable": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "canopy_name": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "clinging_layer": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "dead_gardener": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "deepwater_houses": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "fishing_where": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "floor_persistence": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "gardener_agency": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "gardener_studiable": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "growing_light": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "hazard_plant": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "living_decor_neglect": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "mod_settings": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "orrilith_gems": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "permit_system": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "rain_parasites": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "river_build_order": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "river_lane": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "river_sink": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "seaweed_cut": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "skylight_rights": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "sunsphere_feed": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "techprints": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "the_sharing": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "top_three": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "two_shoals": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "unlimited_fishing": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "waelune": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "whale_label": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    },
+    "whale_sequence": {
+      "decision": "",
+      "note": "",
+      "prefill": "a"
+    }
+  },
+  "generatedBy": "twilight_deep_sitting_20260926_build.py (agent pre-fill, 2026-09-26)",
+  "invented": [
+    "The organising law for this whole ocean \u2014 \u201cevery reward here is alive, renewable, expiring or relational; if a reward survives in a stockpile with nobody tending it, it belongs to the Grey Sea\u201d \u2014 was written by an agent today, not asked for. It is the entire basis of the conflict in row 7, so if you reject the law, row 7 dissolves rather than needing an answer.",
+    "\u201cThe oolune\u201d and the veil / the lid / veil-fall vocabulary (row 2) is an invented proposal, not a name you gave.",
+    "\u201cThe sun-sphere frees the player from the skylight economy\u201d (row 5) is a consequence one document invented for itself, and it is what undercuts the other document's number-one idea.",
+    "Splitting the two silver shoals by light (row 15) is an invented reconciliation of two defs that collided; neither description asks for it.",
+    "The gardener OPENING new skylights (row 22) goes beyond the frozen sheet, which says it keeps them open. Closing them is the sheet's; opening them is ours.",
+    "Every timing in the whale's five-beat sequence (row 20) is a placeholder invented to be judged by watching, not a measured number.",
+    "\u201cPermits lapse in reverse order, highest first\u201d (row 28) is an invented revocation rule."
+  ],
+  "posture": "ruling sitting \u2014 default UNANSWERED",
+  "postureExplain": "Nothing on this page is decided until you touch it. Every row's `decision` is EMPTY on arrival; BENCH's own position is stored alongside it as `prefill` and shown on the row as a proposal, never as your answer. A row you never touch stays unanswered in the file and comes back. Typed notes override the option and are the only thing that counts as your words.",
+  "reviewStatus": "retired",
+  "retiredBy": "owner, typed in BENCH chat 2026-10-02: \"yes treat them as retired\" (no live item references this sheet)"
+}

@@ -1,0 +1,70 @@
+{
+  "sheetId": "bedazzle_cracked_lands_art_review_2026_09_28",
+  "posture": "blacklist",
+  "criterion": "Prefill = artpipe validator/facts PASS, which ranks technical validity (alpha, canvas, facing presence) — it cannot rank whether the thing looks right for the biome. Your eye rules.",
+  "exportedBy": "review-sheet-page",
+  "exportedAt": "2026-09-29T03:47:27.175Z",
+  "decidedCount": 11,
+  "decisions": {
+    "RM_Irqit": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Muttavaq": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "south graphic is obviously wrong, like bad grep or something?",
+      "at": "2026-09-29T03:42:48.892Z"
+    },
+    "RM_Tarruq": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "Needs really cool sounds associated",
+      "at": "2026-09-29T03:43:27.556Z"
+    },
+    "RM_Uttaqar": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Veqma": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "You should not be able to see the taproot if this is supposed to be the plant in the ground. If this is instead the harvested plant it is ok",
+      "at": "2026-09-29T03:44:37.943Z"
+    },
+    "RM_CrackWaxSuit": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_FossilDeepStratum": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_FossilImpression": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_FossilSkeleton": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "That skeleton doesn't make sense, needs to be joined together and be more alien",
+      "at": "2026-09-29T03:45:58.994Z"
+    },
+    "RM_Swale": {
+      "decision": "regen",
+      "prefill": "keep",
+      "note": "I think you're going to need to take screenshots of what canals look like before you can actually generate this art. You can use this as placeholder as long as you make a ticket to work with Flowworks to make an actual canal and take snapshots of a live example so you can spec out the art.",
+      "at": "2026-09-29T03:47:05.178Z"
+    },
+    "RUT_CrackWax": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}

@@ -1,0 +1,6379 @@
+{
+ "sheetId": "mineral_numbers_review_2026-10-03",
+ "posture": "whitelist",
+ "criterion": "Rows are biomes; every number is an agent GUESS converted from the draft registry's units-per-map. Ordered by biome group, then CSV order. This ranks nothing for worth - you judge whether a biome should bear a thing at all, and how often.",
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "agent-generated proposal; no human has ruled"
+ },
+ "proposed": {
+  "RM_Abyss": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_BlueDesert": {
+   "steel": {
+    "deposits": 5.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 1.5,
+    "rivers": 0.8,
+    "prov": "guess"
+   },
+   "silver": {
+    "deposits": 3.75,
+    "rivers": 1.9,
+    "prov": "guess"
+   },
+   "uranium": {
+    "deposits": 0.75,
+    "rivers": 0.38,
+    "prov": "guess"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Cauldron": {
+   "steel": {
+    "deposits": 6.67,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_ChillCrater": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Contagion": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_FeverWood": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_FloodedCanyon": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 2.08,
+    "rivers": 1.0,
+    "prov": "guess"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 6.67,
+    "rivers": 3.3,
+    "prov": "guess"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 1.25,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "fossils": {
+    "deposits": 2.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_GelatinousSlime": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Greentide": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_GreySea": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 50.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_LanternDeeps": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 3.33,
+    "rivers": 1.7,
+    "prov": "guess"
+   },
+   "ruby": {
+    "deposits": 4.17,
+    "rivers": 2.1,
+    "prov": "guess"
+   },
+   "sapphire": {
+    "deposits": 4.17,
+    "rivers": 2.1,
+    "prov": "guess"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 25.0,
+    "rivers": 12.5,
+    "prov": "guess"
+   },
+   "pyrinth": {
+    "deposits": 2.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "kyber": {
+    "deposits": 5.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "glowstone": {
+    "deposits": 16.7,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "lanternstone": {
+    "deposits": 266.7,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 1.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_LeaningScrub": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_LongShade": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Miasma": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 30.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_NightsideIce": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 1.67,
+    "rivers": 0.8,
+    "prov": "guess"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Pyrelands": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 1.25,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 20.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_RustCathedral": {
+   "steel": {
+    "deposits": 25.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 15.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Stillsand": {
+   "steel": {
+    "deposits": 5.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 2.5,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_TheChill": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 30.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_TheForge": {
+   "steel": {
+    "deposits": 16.7,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 3.33,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 1.67,
+    "rivers": 0.8,
+    "prov": "guess"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_TheRot": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_TheScald": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_TheSump": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_TwilightSea": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Warscar": {
+   "steel": {
+    "deposits": 12.5,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Wasteland": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 1.0,
+    "rivers": 0.5,
+    "prov": "guess"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 7.5,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 20.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "bezoars": {
+    "deposits": 60.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_Webwork": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_WeepingStones": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 40.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_SeabedFloor_TheScald": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 20.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "gold": {
+    "deposits": 3.75,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "silver": {
+    "deposits": 7.5,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "uranium": {
+    "deposits": 3.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "uraninite": {
+    "deposits": 6.67,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "magnetite": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.5,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 6.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "Rakatan hull shard": {
+    "deposits": 2.0,
+    "rivers": 0.0,
+    "prov": "intent"
+   }
+  },
+  "RM_SeabedFloor_GreySea": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 33.3,
+    "rivers": 0.0,
+    "prov": "intent"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_SeabedFloor_TwilightSea": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RM_SeabedFloor_TheChill": {
+   "steel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "owner-intent-zero"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RUT_AridShrubland": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RUT_Desert": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RUT_ExtremeDesert": {
+   "steel": {
+    "deposits": 5.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RUT_FuelSnows": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  },
+  "RUT_Umbra": {
+   "steel": {
+    "deposits": 10.0,
+    "rivers": 0.0,
+    "prov": "guess"
+   },
+   "chimney iron": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gold": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "silver": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uranium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "uraninite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "magnetite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "jade": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "obsidian": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "diamond": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "ruby": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "sapphire": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rough gem (Minerals Sparkle)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "pyrinth": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "kyber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "glowstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "lanternstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "dead smartsteel": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "amber": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fossils": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "coarse and crystal salts": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "seep-salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "delta salt": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "cooking salt (VCE)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "brine plate, drazz, tekk": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "bezoars": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "mindstone": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "fulgurite": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "rime nodules (propane)": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "gallium": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "vexxith": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Mother-of-Scaldpearl": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   },
+   "Rakatan hull shard": {
+    "deposits": 0.0,
+    "rivers": 0.0,
+    "prov": "zero"
+   }
+  }
+ },
+ "decisions": {
+  "RM_Abyss": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_BlueDesert": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Cauldron": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_ChillCrater": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Contagion": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_FeverWood": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_FloodedCanyon": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_GelatinousSlime": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Greentide": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_GreySea": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_LanternDeeps": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_LeaningScrub": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_LongShade": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Miasma": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_NightsideIce": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Pyrelands": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_RustCathedral": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Stillsand": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_TheChill": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_TheForge": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_TheRot": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_TheScald": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_TheSump": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_TwilightSea": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Warscar": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Wasteland": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_Webwork": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_WeepingStones": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_SeabedFloor_TheScald": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_SeabedFloor_GreySea": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_SeabedFloor_TwilightSea": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RM_SeabedFloor_TheChill": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RUT_AridShrubland": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RUT_Desert": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RUT_ExtremeDesert": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RUT_FuelSnows": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  },
+  "RUT_Umbra": {
+   "decision": "pending",
+   "prefill": "pending",
+   "note": ""
+  }
+ }
+}

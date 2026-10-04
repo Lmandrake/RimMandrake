@@ -1,0 +1,79 @@
+{
+  "sheetId": "bedazzle_cauldron_art_review_2026_09_28",
+  "posture": "blacklist",
+  "criterion": "Prefill = artpipe validator/facts PASS, which ranks technical validity (alpha, canvas, facing presence) — it cannot rank whether the thing looks right for the biome. Your eye rules.",
+  "exportedBy": "review-sheet-page",
+  "exportedAt": "2026-09-29T04:08:35.020Z",
+  "decidedCount": 13,
+  "decisions": {
+    "RM_Eskith": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Looks like it has five eyes. That means you can only see three on side profile.",
+      "at": "2026-09-29T04:05:45.520Z"
+    },
+    "RM_Vexxiss": {
+      "decision": "improve",
+      "prefill": "keep",
+      "note": "Make its outside as colorful as the Cauldron Vents",
+      "at": "2026-09-29T04:08:15.886Z"
+    },
+    "RM_Zisska": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": "",
+      "at": "2026-09-29T04:08:27.915Z"
+    },
+    "RM_Xithess": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_CauldronVent": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_CorrodedCondenserStack": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_CorrodedShrine": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_CorrodedWellhead": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_FilterCartridge": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_FilterWorks": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_GasTapScaffold": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "RM_Seismograph": {
+      "decision": "regen",
+      "prefill": "keep",
+      "note": "weird, replace",
+      "at": "2026-09-29T04:07:23.266Z"
+    },
+    "RM_Vexxith": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    }
+  }
+}

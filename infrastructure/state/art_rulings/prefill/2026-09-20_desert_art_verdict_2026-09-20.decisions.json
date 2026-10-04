@@ -1,0 +1,137 @@
+{
+  "criterion": "None that a metric can rank — art quality is eye judgment only (the Rot wave found 4 of 61 bad renders and only a human eye caught them). Rows are pre-filled KEEP only because every one PASSED the automated facts checker (alpha/canvas/facing sanity) — that is an administrative pass, not a look. Overrule freely; that is the entire point of this sheet.",
+  "decisions": {
+    "RSW_Anooba": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Bantha": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Corinathoth": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Eopie": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Ferroclaw": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_FrilledGorg": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Gizka": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Gorg": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Gutkurr": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Hrumph": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Igitz": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Iriaz": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_IridonianReek": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Jamel": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Jimvu": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Kreetle": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Kwi": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Kybuck": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_LongtailGorg": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Lothcat": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Massiff": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Mudhorn": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Mynock": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Nuna": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RSW_Pufferpig": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    }
+  },
+  "posture": "verdict",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "no savedBy/reviewed_by/approvedBy/frozen at all; criterion explicitly says rows are pre-filled KEEP only because they passed the automated facts checker — \"an administrative pass, not a [human judgement]\" — one of the item's three named 100%-prefill-identical sheets",
+    "state": "prefill"
+  }
+}

@@ -1,0 +1,2814 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Review sheet</title>
+
+<!--
+  sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
+
+  The chrome in here is the part humans complain about when it is missing: a brief that
+  folds AND is height-bounded, a save path that is present and copyable, and a group
+  label that follows while scrolling. An earlier version of this asset was a ~100-line
+  fragment that said "wire the three marked hooks", and agents rebuilt the chrome from
+  scratch and dropped one. So the chrome is no longer yours to author.
+
+  YOU FILL IN EXACTLY THREE THINGS:
+    1. <script id="CONFIG"  type="application/json">   the brief, posture, criterion, options
+    2. <script id="ITEMS"   type="application/json">   the rows
+    3. (optional) <script id="RENDER">                 window.itemBody = it => html
+                                                       — only if the default row is wrong
+
+  Everything else — persistence, keyboard, grid, undo, overrides, sticky labels — is done.
+  Run assets/check_sheet.py against your output before you hand it over.
+-->
+
+<style>
+/* ── palette ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+  --rowh:84px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:0 5px;font-size:11px;color:var(--link)}
+a{color:var(--link)}
+
+/* ── 1. THE HEADER, AND THE BRIEF THAT FOLDS *AND* IS BOUNDED ────────────────────────
+   Folding alone is not enough. A brief that is open and unbounded still eats the page —
+   that is the actual complaint ("the top instructions are persistent and block the
+   screen"). max-height turns the worst case from "the rows are off-screen" into "the
+   brief scrolls inside itself". Fold state persists, because re-collapsing it on every
+   visit is the same annoyance wearing a different hat. */
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 18px;flex-wrap:wrap}
+.hrow h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:12px}
+.spacer{margin-left:auto}
+#brief{max-height:26vh;overflow:auto;padding:0 18px 10px;border-top:1px solid #1e232b}
+body.folded #brief{display:none}
+@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 3px #3d6a92}}
+#fold.flash{animation:flash 1.1s ease-in-out 2}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;margin:8px 0;font-size:12.5px}
+.panel h3{margin:0 0 5px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.panel.invented{border-color:#5a4320;background:#1a1408}
+.panel.invented h3{color:var(--warn)}
+.panel.posture{border-color:#2f4358;background:#0d151d}
+.crit{color:var(--accent);font-size:12px}
+
+/* buttons */
+.btn{cursor:pointer;background:#1b2028;border:1px solid var(--line);border-radius:5px;
+  padding:4px 10px;font-size:12px}
+.btn:hover{background:#232a34}
+.btn.pri{background:#1d2733;border-color:#2f4358;color:var(--link)}
+.btn.on{background:#243447;border-color:#3d6a92;color:#dff0ff}
+
+/* ── 2. THE SAVE PATH IS PRESENT AND COPYABLE ────────────────────────────────────────
+   Only a fallback now — with the sidecar there is no picker and no path to paste. It
+   stays because the sheet must still work opened straight off disk with nothing running. */
+.pathbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--link);word-break:break-all}
+.pathbar b{color:var(--dim);font-weight:600}
+/* the visible fallback for "copy JSON" when the clipboard API is refused: the work itself,
+   on screen, selectable — never a button that silently did nothing */
+#exportTa{width:100%;margin:0 0 8px;background:#0c1420;border:1px solid #2b3a4d;
+  border-radius:6px;padding:7px 9px;color:#dff0ff;font-family:ui-monospace,monospace;
+  font-size:11px;resize:vertical}
+
+/* filter bar — OUTSIDE #brief, so folding the brief never hides the search box */
+.bar{display:flex;gap:8px;align-items:center;padding:8px 18px;flex-wrap:wrap;
+  background:#101317;border-top:1px solid #1e232b}
+.bar input[type=search],.bar select{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:5px 9px;font-size:12px}
+.bar input[type=search]{min-width:240px}
+.pill{font-size:11.5px;color:var(--dim);background:#0d1014;border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.pill.live{border-color:#2f4358;color:var(--link)}
+.pill.bad{border-color:#5a2b2b;color:#ffb0b0;background:#1a0e0e}
+
+/* ── 3. THE GROUP LABEL FOLLOWS WHILE SCROLLING ──────────────────────────────────────
+   `top` is set from the MEASURED header height at the end of every render and on resize:
+   the header changes height when the brief folds, and a hardcoded offset leaves labels
+   floating in mid-page or buried under the bar. */
+.gh{position:sticky;z-index:20;background:#10141a;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:5px 18px;font-size:12px;font-weight:650;
+  color:var(--accent);display:flex;gap:10px;align-items:center}
+.gh.nostick{position:static}      /* groups of <=3: a sticky label covers the only row */
+.gh .ghcount{color:var(--dim);font-weight:400}
+.gh .ghbulk{margin-left:auto;display:flex;gap:5px}
+.gh .ghbulk button{font-size:11px;padding:2px 7px}
+
+/* ── rows ──────────────────────────────────────────────────────────────────────────── */
+#list{padding-bottom:60vh}         /* so the last group can still scroll under the header */
+.row{display:flex;gap:12px;align-items:flex-start;padding:9px 18px;
+  border-bottom:1px solid #171b21}
+body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
+.row:hover{background:#0f1318}
+.row.focus{background:#131a24;box-shadow:inset 3px 0 0 var(--info)}
+.row.override{box-shadow:inset 3px 0 0 var(--accent)}
+.row.focus.override{box-shadow:inset 3px 0 0 var(--info),inset 6px 0 0 var(--accent)}
+
+.thumb{width:64px;height:64px;flex:0 0 64px;border-radius:5px;border:1px solid var(--line);
+  /* checkerboard: a sprite with transparency is unjudgeable on a flat dark field */
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+.main{flex:1;min-width:0}
+.label{font-weight:600;font-size:13px;display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.label .id{color:#5f6b7a;font-size:11px;font-family:ui-monospace,monospace}
+/* the consequence line: what the entry DOES. Not its name. */
+.effect{color:#c3cad6;font-size:12.5px;margin-top:2px}
+.marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
+.mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+.mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
+.mark.absent{color:var(--dim);border-color:var(--line)}
+.mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
+
+.ctrl{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch;width:210px}
+.opts{display:flex;gap:4px}
+.opts button{flex:1;cursor:pointer;background:#161a20;border:1px solid var(--line);
+  border-radius:5px;padding:5px 4px;font-size:11.5px;color:var(--dim)}
+.opts button:hover{border-color:#3d4653;color:var(--ink)}
+.opts button.sel{color:#0b0d10;font-weight:700;border-color:transparent}
+/* the note must be the most inviting control on the row, not an afterthought beside the
+   dropdown: the notes are worth more than the agreements. */
+.note{width:100%;background:#0c1420;border:1px solid #2b3a4d;border-radius:5px;
+  padding:5px 8px;font-size:12px;min-height:30px;resize:vertical;color:#dff0ff}
+.note::placeholder{color:#5c7590}
+.note:focus{outline:2px solid #3d6a92;outline-offset:-1px;background:#0e1826}
+.row.override .note{border-color:#5a4320;background:#150f06}
+
+/* ── grid / contact-sheet mode ───────────────────────────────────────────────────────── */
+body.grid #list{display:grid;gap:10px;padding:12px 18px 60vh;
+  grid-template-columns:repeat(auto-fill,minmax(var(--cell,132px),1fr))}
+body.grid .gh{grid-column:1/-1;margin:6px -18px 0}
+body.grid .row{flex-direction:column;gap:6px;padding:7px;border:1px solid #1b2028;
+  border-radius:7px;background:#0f1216;align-items:stretch}
+body.grid.perf .row{contain-intrinsic-size:auto 190px}
+body.grid .thumb{width:100%;height:var(--cell,132px);flex:none}
+body.grid .ctrl{width:auto}
+body.grid .effect{font-size:11px;max-height:2.9em;overflow:hidden}
+body.grid .note{min-height:26px;font-size:11px}
+body.grid .row.sel-tint{border-color:currentColor}
+
+/* zoom overlay — judging a sprite at 64px is judging nothing */
+#zoom{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,8,.86);cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom .box{background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                            linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;background-color:#1a1d22;
+  border:1px solid var(--line);border-radius:8px;padding:14px}
+#zoom img{image-rendering:pixelated;max-width:70vw;max-height:70vh}
+#zoom .cap{text-align:center;color:var(--dim);font-size:12px;margin-top:8px}
+
+/* ── keymap legend ───────────────────────────────────────────────────────────────────── */
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:min(560px,92vw)}
+#keys.on{display:block}
+#keys table{border-collapse:collapse;font-size:12.5px}
+#keys td{padding:3px 12px 3px 0;vertical-align:top}
+#keys h3{margin:0 0 10px;font-size:13px}
+
+.banner{padding:8px 18px;font-size:12.5px;border-bottom:1px solid}
+.banner.bad{background:#1e0f0f;border-color:#5a2b2b;color:#ffc9c9}
+.banner.warn{background:#1c1608;border-color:#5a4320;color:#ffe2ac}
+.banner.ok{background:#0d1a12;border-color:#2b5a3b;color:#c9ffd9}
+.banner button{margin-left:8px}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
+<script id="CONFIG" type="application/json">
+{
+  "sheetId": "desert_family_review_2026-09-20",
+  "title": "Desert family \u2014 flora & fauna review",
+  "subtitle": "109 unique species \u2014 17 flora, 92 fauna \u2014 across RUT_ExtremeDesert (3,969 tiles), RUT_Desert (2,390 tiles), RUT_AridShrubland (628 tiles)",
+  "briefHtml": "<p><b>Posture: BLACKLIST.</b> Every row defaults to <b>keep</b>. Nothing is removed from a biome's roster unless you mark it otherwise \u2014 disagreeing is the whole point of this page.</p><p>Three BiomeDefs, one sheet, because they share one donor-heavy roster problem. <b>RUT_BlueDesert was dropped from this pass</b>: it is UNAUTHORED, not sterile-by-design \u2014 its intended fauna (Swallowers, Burners, Pickers) and flora (transparent fractal life) were commissioned in the_blue_desert.md and never built, so animalDensity/plantDensity were zeroed because there is nothing yet to scale. A verdict sheet reviews roster entries that already exist; this biome has none yet \u2014 it needs authoring, tracked as its own item, not a verdict pass here.</p><p>Every row's <b>[origin]</b> tag is the real packageId from that entry's own MayRequire attribute in the biome XML \u2014 never inferred from the defName's prefix. Star Wars Animal Collection (mlie) ships many BARE defNames (Bantha, Kreetle, Scavrat, Rat-lookalike plant names) that a prefix rule would misread as vanilla; it is in fact the single largest donor here.</p><p><b>\u26a0 UNGUARDED rows</b> carry NO MayRequire attribute in the biome file at all, despite most of them belonging to a donor mod \u2014 each one's real owner was independently resolved by a scoped search (never a blind full-workshop scan) and is named in its origin tag. These are flagged, not fixed: no MayRequire attribute was added anywhere by this pass.</p><p>This sheet is fully DATA-DRIVEN \u2014 every row is parsed live from the three BiomeDef XML files and every def's own label/description/texPath/size, never a hand-transcribed table (unlike the Rot and Deeps sheets) \u2014 see build_desert_review_sheet.py's module docstring for why.</p><p><b>Size:</b> fauna rows print the ADULT (last) lifeStage's bodyGraphicData.drawSize \u2014 never life stage 0, which is the baby. Flora rows print drawSize \u00d7 visualSizeRange.max (mature size), resolved from the def's own &lt;plant&gt; node only (no ParentName chain walk in this pass \u2014 rows that don't set their own visualSizeRange are marked UNMEASURED rather than guessed).</p><p><b>Thumbnails:</b> resolved live from each donor mod's own loose Textures/ folder (suffix ladder: _south, bare, Graphic_Random A\u2013H, both bare-letter and underscore forms, per the reading-rimworld-graphics skill), falling back to this repo's own extracted observed/inventory/bundle_textures cache for sources with no loose art (mlie.horrors) or for vanilla Core/DLC (resources.assets, already extracted there). A row with no thumbnail is marked 'art UNRESOLVED' with the reason, never left silently blank.</p>",
+  "criterion": "Sorted by MAX commonality across the biomes each species appears in, within Flora/Fauna \u2014 ranks how often a player meets it in its worst-affected biome, not its worth or its art quality.",
+  "invented": [
+    "Grouping is Flora/Fauna (not per-biome) because most species appear in 2-3 of the three biomes at once and a per-biome grouping would either duplicate rows or force a pick; each row's 'biomes' meta chip and the effect line's '[origin] in <BiomeShort=commonality, ...>' text name every biome + commonality it actually carries, so no membership fact is lost.",
+    "The origin bucket for a defName with a MayRequire attribute present on one biome's entry but (hypothetically) absent on another was taken from whichever biome in ExtremeDesert/Desert/AridShrubland order carries a MayRequire first \u2014 not observed to matter for this roster (every shared defName in this set carries the same guard state on every biome that lists it), but stated here as the tie-break rule in case a future biome file disagrees.",
+    "UNGUARDED_ORIGIN's 19 entries were each resolved by a scoped grep against ONE specific candidate mod root (Alpha Biomes, Star Wars Animal Collection, ReGrowth, vanilla Core/Biotech), never a blind full-Workshop scan \u2014 one such scan was tried and did not return within 120s. See the build report for which root matched which defName.",
+    "AB_DessertTree resolves to a real ThingDef, but that def lives under Alpha Biomes' own 1.6/Mods/Odyssey/ subfolder, which its LoadFolders.xml only loads when Ludeon.RimWorld.Odyssey is active \u2014 true on every campaign mod list per the 2026-09-19 all-five-expansions ruling, so this is not currently a stranded-folder gap, just worth naming."
+  ],
+  "posture": {
+    "mode": "blacklist",
+    "explain": "Default is KEEP. A row only leaves a biome's wildAnimals/wildPlants if you mark it cut."
+  },
+  "options": [
+    {
+      "key": "keep",
+      "label": "Keep",
+      "hotkey": "1",
+      "color": "#5ac37f",
+      "counts": "in"
+    },
+    {
+      "key": "retire",
+      "label": "Retire (cut donor)",
+      "hotkey": "2",
+      "color": "#e06c6c",
+      "counts": "out"
+    },
+    {
+      "key": "replace",
+      "label": "Replace with owned",
+      "hotkey": "3",
+      "color": "#6aa6e8",
+      "counts": "in"
+    },
+    {
+      "key": "undecided",
+      "label": "Undecided",
+      "hotkey": "4",
+      "color": "#98a2b3",
+      "counts": "in"
+    }
+  ],
+  "groupLabel": "group",
+  "media": true,
+  "decisionsFile": "desert_family_review_2026-09-20.decisions.json",
+  "decisionsPath": "/mnt/d/Luke/dev/Rimworld/Transient/desert_family_review_2026-09-20.decisions.json",
+  "sheetPath": "/mnt/d/Luke/dev/Rimworld/Transient/desert_family_review_2026-09-20.html"
+}
+</script>
+
+<!-- ══ FILL IN #2 ═══════════════════════════════════════════════════════════════════ -->
+<script id="ITEMS" type="application/json">
+[
+  {
+    "id": "A_Kreetle",
+    "label": "kreetle [Kreetle]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.2, Desert=1.3, AridShrubland=0.8. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). Kreetle were a fast breeding arthropod native to the planet Tatooine. They were was often found in cities, homes, and other urban areas and were universally considered a pest. They gave birth to young in the form of\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Kreetle.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.2, Desert=1.3, AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_FrilledGorg",
+    "label": "frilled gorg [FrilledGorg]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Frilled Gorgs, were small frilled amphibians that could be found on several planets. This subspecies was notable for the frills along it's back and tail (hence the name) and for being slightly more aggressive in nature.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/FrilledGorg.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2, AridShrubland=1.0",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Gorg",
+    "label": "gorg [Gorg]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Gorgs, known as 'chubas' in Huttese, were small precocious amphibians that could be found on several planets. They were popularly favored as food by many humanoid species. Thus they became popular livestock on sparse\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Gorg.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4, AridShrubland=1.0",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Iriaz",
+    "label": "iriaz [Iriaz]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.65\u00d71.65 cells (last lifeStage). Iriaz were docile creatures from the grassland planet Dantooine. While not normally aggressive, they could attack if provoked. They were a prey of choice for local hunters (and natural predators alike) given that they\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Iriaz.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.1, AridShrubland=1.0",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_LongtailGorg",
+    "label": "longtail gorg [LongtailGorg]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4, AridShrubland=1.0. adult bodyGraphicData.drawSize 1.75\u00d71.75 cells (last lifeStage). Longtail Gorgs, were small tailed amphibians that could be found on several planets. This subspecies was slightly larger than the usual and had a tail (hence the name) and could lay unfertilized eggs. Their spread can\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/LongtailGorg.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4, AridShrubland=1.0",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Scavrat",
+    "label": "Scavrats [Scavrat]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.6, Desert=1.0, AridShrubland=0.6. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Scavrats were large, omnivorous rodents of unknown planetary origin albeit common enough on multiple worlds that they were considered pests. They were often mistaken for the Tattooinian Womp Rat, but the big behavioural\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Scavrat.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.6, Desert=1.0, AridShrubland=0.6",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Bantha",
+    "label": "bantha [Bantha]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.8, AridShrubland=0.5. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Banthas are a species of large, hairy mammals with sharp, spiraling horns. They inhabit the desert planet Tatooine, though they are bred on many worlds throughout the galaxy. They are social herd animals, and are often\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Bantha.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.8, AridShrubland=0.5",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Eopie",
+    "label": "eopie [Eopie]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3, AridShrubland=0.8. adult bodyGraphicData.drawSize 2.25\u00d72.25 cells (last lifeStage). Eopies were a species of quadrupedal mammallian herbivores native to the planet Tatooine. These tough creatures were acclimated to their homeworld's endless deserts, and as a result were domesticated and exported\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Eopie.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3, AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Lothcat",
+    "label": "loth-cat [Lothcat]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.8. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). Loth-cats were a non-sentient feline species from the planet Lothal. They were small, temperamental creatures, and while at times friendly, were still able hunters with sharp teeth and claws. They were often kept as\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Lothcat.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Mudhorn",
+    "label": "mudhorn [Mudhorn]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.8. adult bodyGraphicData.drawSize 4.50\u00d74.50 cells (last lifeStage). Mudhorns were large horned creatures that originated from the planet Arvala-7. The eggs of mudhorns were considered a delicacy by Jawas. It was this reason that populations of these creatures were established on other\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Mudhorn.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Ronto",
+    "label": "ronto [Ronto]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4, AridShrubland=0.8. adult bodyGraphicData.drawSize 7.00\u00d77.00 cells (last lifeStage). Ronto were large, quadruped mammals that were commonly used as beasts of burden on Tatooine. They were known for their loyalty and strength, being able to carry heavy cargo. Their tolerance to heat and relatively low\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Ronto.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4, AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Scurrier",
+    "label": "scurrier [Scurrier]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.1, AridShrubland=0.8. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). The scurrier was a rodent native to the planet Tatooine. They were fast breeding, curious omnivores that many considered a pest. The males could be distinguished from females by their curved display horns. They were\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Scurrier.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.1, AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Sketto",
+    "label": "sketto [Sketto]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.8, AridShrubland=0.8. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Skettos were carnivorous flying reptiles that dwelled in the caverns of the planet Tatooine. Only emerging at daybreak and twilight, they possessed many rods in their eyes to assist their vision in low-light conditions\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Sketto.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.8, AridShrubland=0.8",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Igitz",
+    "label": "igitz [Igitz]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.7. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Igitz were a species of small amphibians hailing from the planet Naboo. Those blue-skinned, omnivorous critters dwelled in the planet's many dense swamps. Because of the environment in which they had evolved, the igitz\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Igitz.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.7",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_RSW_ImperialToad",
+    "label": "imperial toad [RSW_ImperialToad]",
+    "group": "Fauna",
+    "effect": "[OURS \u2014 SWBestiary] in AridShrubland=0.7. adult bodyGraphicData.drawSize 0.87\u00d70.87 cells (last lifeStage). The imperial toad is native to the cave systems below deserts on the Rim. It tends to be preyed upon quite easily but many cave dwellers have taken a shine to it as a pet due to its regal posture.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/RSW_ImperialToad.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "OURS \u2014 SWBestiary",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.7",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_RSW_Jellypot",
+    "label": "jellypot [RSW_Jellypot]",
+    "group": "Fauna",
+    "effect": "[OURS \u2014 SWBestiary] in Desert=0.7. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). Named the jellypot for its ability to produce insect jelly in its large thoracic sac, this rare animal is almost exclusively found near insectoid hives. Despite being farmed much like ants do with aphids, it does not\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/RSW_Jellypot.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "OURS \u2014 SWBestiary",
+      "unguarded": "no",
+      "biomes": "Desert=0.7",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Terrorworm",
+    "label": "terrorworm [Terrorworm]",
+    "group": "Fauna",
+    "effect": "[Horrors (mlie)] in AridShrubland=0.7. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). An alien (or at least unknown) worm. It is large enough to pose a threat to a human, however they do not seem incredibly fast or ferocious They are often accompanied by other Horrors and seem to have a supporting role\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Terrorworm.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Horrors (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.7",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Urusai",
+    "label": "urusai [Urusai]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.7. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Urusai were winged reptavians native to the desert planet Tatooine. They were predominantly opportunistic scavengers of carrion that would use the thermal currents of their homeworld to travel far and wide in search of\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Urusai.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.7",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_WompRat",
+    "label": "womp rat [WompRat]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.4, Desert=0.7, AridShrubland=0.4. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Womp rats were large, omnivorous rodents native to Tatooine that were widely considered to be pests. While womp rats were opportunists and fond of carrion, they were also predators. Although their normal prey included\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/WompRat.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.4, Desert=0.7, AridShrubland=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Kybuck",
+    "label": "kybuck [Kybuck]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.6. adult bodyGraphicData.drawSize 1.80\u00d71.80 cells (last lifeStage). Kybucks were bipedal ungulates native to the planet Kashyyyk, and similar in appearance to the tauntauns of Hoth. These herding pack animals were fast and sociable, which made domestication and export offworld common.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Kybuck.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.6",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Massiff",
+    "label": "massiff [Massiff]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.6. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Massiffs were reptilian creatures found on both Geonosis and Tatooine, although it's planet of origin is unknown. Massiffs were reptiles that had coarse skin, large jaws, toothy mouths, big dark eyes and a line of hard\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Massiff.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.6",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Shyrack",
+    "label": "shyrack [Shyrack]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.6. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Shyracks were large, bat-like avian creatures with razor like teeth native to the caves of the planet Korriban. While ungainly and slow-moving without eyes, Shyracks were potentially dangerous pests, especially when\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Shyrack.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.6",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_JOE_Landopus",
+    "label": "landopus [JOE_Landopus]",
+    "group": "Fauna",
+    "effect": "[OURS \u2014 UtinniPatches] in Desert=0.5. adult bodyGraphicData.drawSize 0.80\u00d70.80 cells (last lifeStage). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Despite the name, this bad-tempered creature evolved from squid and has eight tentacles and two arms. The landopus has a venomous bite and a full load of its deadly neurotoxin will kill a healthy adult human in a minute\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/JOE_Landopus.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "OURS \u2014 UtinniPatches",
+      "unguarded": "YES",
+      "biomes": "Desert=0.5",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Pufferpig",
+    "label": "Pufferpig [Pufferpig]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.5. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Pufferpigs were a non-sentient, herbivorous porcine species native to the planet Kyryll. Puffer pigs were occasionally bred for their meat, which was consumable by several sentient species and resulted in the animal\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Pufferpig.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.5",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_DesertAve",
+    "label": "desert ave [AA_DesertAve]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in Desert=0.4. adult bodyGraphicData.drawSize 2.75\u00d72.75 cells (last lifeStage). The Desert Ave is a large flightless bird adapted to living in very arid terrains. Large bony plates cover its neck, giving it a much-needed defense both from predators and from the scalding heat of the desert sun.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_DesertAve.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Anooba",
+    "label": "anooba [Anooba]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Anoobas were aggressive pack predators that lived throughout the Outer Rim Territories. Opportunistic hunters as well as scavengers, these wolflike canines would attack virtually anything smaller than themselves (such\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Anooba.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Corinathoth",
+    "label": "corinathoth [Corinathoth]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.4. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). Corinathoths were large, slow-moving herbivores native to the planet Maridun. Although large and intimidating, they were fairly harmless unless provoked. It is likely they were spread as a large game animal to several\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Corinathoth.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Gizka",
+    "label": "gizka [Gizka]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.01, Desert=0.1, AridShrubland=0.4. adult bodyGraphicData.drawSize 0.87\u00d70.87 cells (last lifeStage). Whatever their native world, their extraordinary reproduction rate led to a fair amount of gizka on many worlds, even including uncharted planets such as Lehon, finding their way from the wreckage of crashed starships.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Gizka.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.01, Desert=0.1, AridShrubland=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Gutkurr",
+    "label": "gutkurr [Gutkurr]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Gutkurrs were fierce insectile predators native to the planet Ryloth. They were aggressive and displayed very limited intelligence, however they were observed to work in small hunting packs. These traits however has\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Gutkurr.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Jamel",
+    "label": "Jamel [Jamel]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Jamel were a slow moving reptomammal creature native to the planet Utapau. Jamels were one of the many creatures used as beasts of burden on their planet of origin and exported offworld for such purposes. Their natural\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Jamel.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Nuna",
+    "label": "nuna [Nuna]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2, AridShrubland=0.4. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Nuna (commonly called 'swamp turkeys'), were reptavian gamebirds native to the planet Naboo. Nuna were diminutive bipeds, mostly covered in scaly skin and sporting a distinctive dorsal ridge. They possessed a notably\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Nuna.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2, AridShrubland=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Worrt",
+    "label": "worrt [Worrt]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2, AridShrubland=0.4. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). The Worrt was an amphibious creature native to the planet Tatooine, though they could also be found on other worlds (including Nal Hutta and Phaeda). Worrts were omnivorous, but was also known to attempt to eat rocks\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Worrt.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2, AridShrubland=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Wraid",
+    "label": "wraid [Wraid]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.4. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Wraids were large reptilian creatures found on many desert planets across the galaxy (including but not limited to Tatooine, Ruhnuk, Korriban and even Tython). They were carnivorous creatures, relying on scavening and\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Wraid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.4",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Needleroll",
+    "label": "needleroll [AA_Needleroll]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.3, Desert=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Needlerolls are needleposts that have evolved to grow in the most arid and dry environments in the Rim.\\n\\nNeedleposts need almost no sustenance, absorbing all the energy they need from sunlight and minute amounts of\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Needleroll.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.3, Desert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Hrumph",
+    "label": "hrumph [Hrumph]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). The hrumphs were powerful, thick-necked herbivores native to planet Naboo, but also found on other worlds like Aargonar. Hrumphs received their name from the loud, deep, guttural sounds they produced. They had four long\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Hrumph.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_IridonianReek",
+    "label": "iridonian reek [IridonianReek]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Reek could be found on the planets Iridonia, Kashyyyk, Ithor, Codian Moon, Tatooine and Saleucami (to name just a few). Various subspecies invariably sprung up as the base stock adapted to new environments. The\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/IridonianReek.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Jimvu",
+    "label": "jimvu [Jimvu]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 2.50\u00d72.50 cells (last lifeStage). The jimvu were native to the grasslands of the planet Naboo. The jimvu was an agile, six-legged, ungulate-like reptile whose best defense was its swiftness. Their main predators were the veermok and narglatch. They were\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Jimvu.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Kwi",
+    "label": "Kwi [Kwi]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). The Kwi were large, bipedal saurians native to the planet Dathomir. They were herbivorous and yet remarkably sociable and intelligent. They were believed to be the degenerated descendants of the saurian 'Kwa' race. How\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Kwi.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Mynock",
+    "label": "mynock [Mynock]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Mynocks were silicon-based parasitical organisms found across the galaxy. They were considered parasites by pilots and starport personnel. Their strange metabolism allowed them to digest various metals and components\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Mynock.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_RSW_MossBeetle",
+    "label": "moss beetle [RSW_MossBeetle]",
+    "group": "Fauna",
+    "effect": "[OURS \u2014 SWBestiary] in AridShrubland=0.3. adult bodyGraphicData.drawSize 1.20\u00d71.20 cells (last lifeStage). A large beetle, commonly found in dark, damp places.\\n\\nIt feeds off low underbrush in fungal forests and while not the best source of meat, it works when little else is available.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/RSW_MossBeetle.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "OURS \u2014 SWBestiary",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Skalder",
+    "label": "skalder [Skalder]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3, AridShrubland=0.08. adult bodyGraphicData.drawSize 3.80\u00d73.80 cells (last lifeStage). The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. They were not normally ridden by sentient beings, but were surprisingly fast if such a feat was managed.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Skalder.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3, AridShrubland=0.08",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Uvak",
+    "label": "uvak [Uvak]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). Uvak were a large, membranous-winged reptavian species with sharp beaks. They were native to the planet of Kesh, where they were used by the indigenous Keshiri as pack animals and mounts. It's was believed that the\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Uvak.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_VFEI2_Fuelmite",
+    "label": "fuelmite [VFEI2_Fuelmite]",
+    "group": "Fauna",
+    "effect": "[VFE \u2014 Insectoids 2 (Oskar Potocki)] in ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3. adult bodyGraphicData.drawSize 2.50\u00d72.50 cells (last lifeStage). A large, genetically-engineered mite native to the planet Nuchadus, where it fuels gigantic megaforges of the corporations. Fuelmites are capable of synthesising volatile chemfuel in their fuel sacks, and can eject it\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/VFEI2_Fuelmite.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "VFE \u2014 Insectoids 2 (Oskar Potocki)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Varactyl",
+    "label": "varactyl [Varactyl]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). Varactyls, also known as 'dragonmounts', were reptavian herbivores native to the planet Utapau, though some specimens found their way to other worlds (such as Kashyyyk and Belsavis) as their eggs were easily transported\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Varactyl.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Zeer",
+    "label": "zeer [Zeer]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). The Zeer were a species of long-necked herbivorous animals of unknown planetary origin. They were sociable herd animals. Their exotic appearance made them popular in both galactic zoological exhibits and circuses,\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Zeer.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.3",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Cactipine",
+    "label": "cactipine [AA_Cactipine]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in AridShrubland=0.25. adult bodyGraphicData.drawSize 1.20\u00d71.20 cells (last lifeStage). In an effort to make deserts more viable for colonization, scientists introduced a variety of genetically modified creatures that are made to survive the melting heat and provide food to those who wished to live in such\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Cactipine.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.25",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Falumpaset",
+    "label": "falumpaset [Falumpaset]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). The falumpaset were a large mammalalian creature native to the planet Naboo. Their distinctive bellowing calls could be heard for kilometers around and their intelligence made them likely to form strong bonds with their\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Falumpaset.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Grank",
+    "label": "Grank [Grank]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.2. adult bodyGraphicData.drawSize 1.75\u00d71.75 cells (last lifeStage). The Grank (or 'saw-toothed grank') were a medium-sized carnivore believed to have originated on the planet Naboo. They were a species of predatory scavengers with sharp teeth and powerful jaws. Despite their fearsome\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Grank.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Jakobeast",
+    "label": "jakobeast [Jakobeast]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). Jakobeasts were polar herd animals found in the tundras of icy planets in the Outer Rim. Jakobeasts were domesticated primarily for their meat, milk, and fur. While excellent livestock, they were ill-suited to serve as\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Jakobeast.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Nerf",
+    "label": "nerf [Nerf]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Nerfs were a species of furry, non-sentient animals raised for their milk, meat, and hide. They could be found on a variety of planets across the galaxy, from Alderaan to Lothal. Despite their usefulness, nerfs were\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Nerf.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Qormot",
+    "label": "qormot [Qormot]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.2. adult bodyGraphicData.drawSize 1.75\u00d71.75 cells (last lifeStage). Qormots were omnivorous forest creatures from the planet Yeshocq. During the mating season their ferocity increased, usually making anyone bold (or foolish) enough to stray into Qormot territory a likely target.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Qormot.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Rat",
+    "label": "rat [Rat]",
+    "group": "Fauna",
+    "effect": "[Vanilla Core] in ExtremeDesert=0.1, Desert=0.2, AridShrubland=0.1. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A widely-hated rodent known for soiling kitchens and spreading disease, rats have a way of following humans everywhere they go. It eats almost anything and lives almost anywhere.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Rat.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Vanilla Core",
+      "unguarded": "YES",
+      "biomes": "ExtremeDesert=0.1, Desert=0.2, AridShrubland=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Shaak",
+    "label": "shaak [Shaak]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Shaaks were plump pachydermoid herd animals native to the planet of Naboo. Shaaks were often raised for their meat, and had large, rotund bodies. Due to their high rate of reproduction they were often sold offworld in\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Shaak.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Strill",
+    "label": "strill [Strill]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.2. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Strills were a species of highly intelligent, six-legged carnivorous mammals native to the planet Mandalore. They had folds of leathery skin between their legs which allowed them to glide short distances with sufficient\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Strill.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_TeeMuss",
+    "label": "tee muss [TeeMuss]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Tee-muss were a species of domesticated farm animals native to the jungle planet Onderon. They were found on various worlds around the galaxy due to escape from domestic populations.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/TeeMuss.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_WarWyrm",
+    "label": "war wyrm [WarWyrm]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.2. adult bodyGraphicData.drawSize 10.00\u00d710.00 cells (last lifeStage). The war wyrm (or sometimes called the 'sith wyrm') were a truly colossal creature believed to have been created on the fourth moon of Yavin where one such creature lived in a large subterranean lair beneath a Massassi\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/WarWyrm.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.2",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Cannok",
+    "label": "cannok [Cannok]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.16. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Cannoks were small, aggressive predators native to the moon of Dxun. They had a habit of eating anything that could fit in their mouths and were known as pests, due to a high reproduction rate and notable curiosity.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Cannok.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.16",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Eyeling",
+    "label": "eyeling [AA_Eyeling]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.15. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). A grotesquely enlarged eye, crawling around with the help of a few fleshy tentacles. Not very useful at all. Created by infusing an animal with the strange energies from an extradimensional corruption.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Eyeling.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.15",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_KraytDragon",
+    "label": "krayt dragon [KraytDragon]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.15. adult bodyGraphicData.drawSize 8.30\u00d78.30 cells (last lifeStage). Krayt dragons are large, carnivorous reptiles from Tatooine, a desert planet in the galaxy's Outer Rim Territories. They come in two native subspecies and, despite their fierceness, are hunted for the valuable skulls.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/KraytDragon.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.15",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Whisperbird",
+    "label": "whisperbird [Whisperbird]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.15. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Whisper birds were energetic avians native to the moon Yavin 4. They were known for their radiant plumage and gained their name due to their seemingly noiseless flight. They used their dexterous tongue to emit their\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Whisperbird.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.15",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Needlepost",
+    "label": "needlepost [AA_Needlepost]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in AridShrubland=0.1. adult bodyGraphicData.drawSize 1.80\u00d71.80 cells (last lifeStage). A cactus genetically modified to give it sentience. The first iteration of this creature was supposed to be a stationary tactical deterrent (the Whip Cactus), but having no intelligence or mobility crippled its\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Needlepost.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Wildpawn",
+    "label": "wildpawn [AA_Wildpawn]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in AridShrubland=0.1. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Wildpawns are a variant of the wildpods that have adapted to life outside of swamps and rainforests. Since they have less access to water and rotting vegetation, they grow much less, and are much less dangerous.\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Wildpawn.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Bolotaur",
+    "label": "bolotaur [Bolotaur]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 4.00\u00d74.00 cells (last lifeStage). The Bolotaur are a large, long-necked herbivorous reptilian creatures native to the planet Kashyyyk. They were short-lived but reproduced quickly and were a favoured mount by the Trandoshan species, which resulted in\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Bolotaur.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Clodhopper",
+    "label": "clodhopper [Clodhopper]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). Clodhoppers were omnivorous and dim-witted flightless avians from the planet Naboo but could be found as castaway populations on numerous worlds due to illegal egg exports. Clodhopper weren't large creatures, but they\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Clodhopper.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_FeralGrazer",
+    "label": "feral grazer [FeralGrazer]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). These slow-moving herbivorous mammalia were native to Alderaan. 'Feral' or 'wild' grazers were significantly leaner than the fatter and more well-fed domestic grazer; however both species were distantly related to\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/FeralGrazer.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_GraniteSlug",
+    "label": "granite slug [GraniteSlug]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.1. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). The granite slug was a silica parasite native to the planet Coruscant. This small terrestrial mollusk has corrosive acidic green-gray slime blood. Its body consisted of four eyestalks, two retractable mouths, one foot,\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/GraniteSlug.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Krykna",
+    "label": "krykna [Krykna]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 2.50\u00d72.50 cells (last lifeStage). Krykna were predatory, non-sentient, spider-like creatures native to the planet Atollon. They were resistant to heat based damage and were highly tempramental, making them extremely difficult to tame.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Krykna.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_MSEDroid",
+    "label": "MSE Repair Droid [OuterRim_MSEDroid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). An MSE Repair Droid, repairs other droids within a 2 tile radius and is capable of hauling and cleaning.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_MSEDroid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_SalvageAssistDroid",
+    "label": "salvage assist droid [OuterRim_SalvageAssistDroid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1. adult bodyGraphicData.drawSize 1.50\u00d71.50 cells (last lifeStage). A groundmech salvage assist droid, cheap to produce but not capable of much beyond hauling and cleaning.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_SalvageAssistDroid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Pikobis",
+    "label": "pikobis [Pikobis]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.1. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Pikobi were fast-moving, flightless reptavians which were native to the swamps of Naboo and the jungles of Onderon. Pikobis also had long, pointed beaks lined with sharp teeth that were used to spear and hold onto\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Pikobis.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Runyip",
+    "label": "runyip [Runyip]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.1. adult bodyGraphicData.drawSize 2.25\u00d72.25 cells (last lifeStage). Runyip or Yavin Runyip were a species of squat quadrupeds from the moon Yavin 4. The creatures had antlered heads with a flexible nose. Their coats had a characteristic pattern of black or dark brown stripes on a\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Runyip.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.1",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Convor",
+    "label": "convor [Convor]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.08. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Convor (also known as \"Trandoshan birds\"), were a species of beautiful mammavian from the Wasskah moon of Hsskhor. Although Convor had short, plump bodies, they were excellent fliers. Their popularity as a pet meant\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Convor.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.08",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_DUMDroid",
+    "label": "DUM Repair Droid [OuterRim_DUMDroid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). A DUM-series pit droid, a model of repair droid manufactured by Serv-O-Droid Inc. They are a common sight in salvage yards, despite their intended design of maintaining podracers, they are cheap and expendable enough\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_DUMDroid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_GNKDroid",
+    "label": "GNK Power Droid [OuterRim_GNKDroid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08. adult drawSize UNMEASURED (no PawnKindDef/lifeStages resolved). An GNK Power Droid, simply functions as a moving power generator, filling batteries it's close to.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_GNKDroid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Vulptex",
+    "label": "vulptex [Vulptex]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.08. adult bodyGraphicData.drawSize 1.45\u00d71.45 cells (last lifeStage). Vulptices were a non-sentient species of omnivorous and gregarious canids from the mineral world Crait. They were distinguished by their coats made up of white crystalline bristles.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Vulptex.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.08",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Gigantelope",
+    "label": "gigantelope [AA_Gigantelope]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in Desert=0.05. adult bodyGraphicData.drawSize 3.00\u00d73.00 cells (last lifeStage). Gigantelopes were once designed as bigger, more powerful variants of the muffalo. An ideal pack beast that carries more weight than their body mass would usually allow. While they are mammals, Gigantelopes have\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Gigantelope.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "Desert=0.05",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_SandProwler",
+    "label": "sand prowler [AA_SandProwler]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in Desert=0.05. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). A genetic amalgamation possessing features of a lion, a shark and a sand skink, the Sand Prowler was originally created as a ferocious hunting animal for desert planets.\\n\\n.The Sand Prowler can quickly burrow and\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_SandProwler.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "Desert=0.05",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_FX7Droid",
+    "label": "fx-7 medical droid [OuterRim_FX7Droid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05. adult drawSize UNMEASURED (no PawnKindDef/lifeStages resolved). An fx-7 medical droid, capable of performing medical procedures.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_FX7Droid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_MuckrakerDroid",
+    "label": "Muckraker Crab Droid [OuterRim_MuckrakerDroid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05. adult bodyGraphicData.drawSize 1.70\u00d71.70 cells (last lifeStage). The LM-432 \"Muckraker\" crab droid, commonly referred to as the crab droid or simply \"Muckraker,\" was a four-legged droid walker of various sizes manufactured by the Techno Union. These droids are the equivalent of a\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_MuckrakerDroid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Voorpak",
+    "label": "voorpak [Voorpak]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.05, AridShrubland=0.02. adult bodyGraphicData.drawSize 0.85\u00d70.85 cells (last lifeStage). Voorpaks were a non-sentient but still quite smart species of puffy-looking mammalians that were native to the planet of Naboo. Diminutive carnivores, voorpaks were much beloved by many due to their cuteness and as pets\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Voorpak.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.05, AridShrubland=0.02",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_FeralNerf",
+    "label": "feral nerf [FeralNerf]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.04. adult bodyGraphicData.drawSize 2.25\u00d72.25 cells (last lifeStage). Nerfs were a species of antlered, herbivorous mammalia found all across the galaxy. Because of the nerf's ability to easily adapt to harsh environments, several defined sub-species existed and were often referred to as\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/FeralNerf.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.04",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Porg",
+    "label": "porg [Porg]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.04. adult bodyGraphicData.drawSize 1.00\u00d71.00 cells (last lifeStage). The Porg.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Porg.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.04",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Terramorph",
+    "label": "terramorph [AA_Terramorph]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in Desert=0.035. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). This strange looking crustacean was created with a single goal in mind: mineral processing. The Terramorph can feed on iron compounds, and process them chemically to slowly turn them into a hardened mineral usually know\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Terramorph.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "Desert=0.035",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_BoulderMit",
+    "label": "bouldermit [AA_BoulderMit]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.025. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). A large genetically-engineered crab which uses a boulder for a shell. It is alternatively known as the Atlas Crab throughout various colonized planets. These massive creatures sport incredible strength and are commonly\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_BoulderMit.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.025",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_SandSquid",
+    "label": "sand squid [AA_SandSquid]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in Desert=0.025. adult bodyGraphicData.drawSize 3.50\u00d73.50 cells (last lifeStage). Despite their common name, sand squids are actually genetically modified creatures that incorporate features from both cephalopods and cone snails. Sand squids were created as cattle adapted to extremely water deprived\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_SandSquid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "Desert=0.025",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_Wildpod",
+    "label": "wildpod [AA_Wildpod]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in AridShrubland=0.025. adult bodyGraphicData.drawSize 3.80\u00d73.80 cells (last lifeStage). This lumbering mass of apparently decomposing plant matter is a Wildpod, a sentient mycoid creature native to some jungle infested planet on the Rim. The Wildpod is almost impervious to gunfire, with bullets simply\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_Wildpod.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.025",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_OuterRim_DestroyerDroid",
+    "label": "Destroyer Droid [OuterRim_DestroyerDroid]",
+    "group": "Fauna",
+    "effect": "[Outer Rim \u2014 Droid Depot (neronix17)] in ExtremeDesert=0.02, Desert=0.02, AridShrubland=0.02. adult bodyGraphicData.drawSize 2.00\u00d72.00 cells (last lifeStage). Manufactured by the Colicoids on Colla IV, droidekas were dangerous and deadly, designed to exterminate their adversaries with extreme prejudice. They are configured with a deflector shield built in.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/OuterRim_DestroyerDroid.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Outer Rim \u2014 Droid Depot (neronix17)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.02, Desert=0.02, AridShrubland=0.02",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_MammothWorm",
+    "label": "mammoth worm [AA_MammothWorm]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in Desert=0.015. adult bodyGraphicData.drawSize 4.10\u00d74.10 cells (last lifeStage). An extremely large, genetically-engineered worm. Despite its incredibly intimidating size and arsenal, these huge creatures are rather quite peaceful. It was once part of the worker caste of an artificial ecosystem of\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_MammothWorm.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "Desert=0.015",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_Horax",
+    "label": "horax [Horax]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.01. adult bodyGraphicData.drawSize 8.00\u00d78.00 cells (last lifeStage). Horaxes were colossal, slow reptiles native to the planet Nelvaan. They were capable of growing to huge sizes thanks to the low gravity of their homeworld. Their powerfully muscled frames were covered in thick, knobby,\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Horax.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "Desert=0.01",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_KowakianMonkeyLizard",
+    "label": "kowakian monkey-lizard [KowakianMonkeyLizard]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.01. adult bodyGraphicData.drawSize 1.25\u00d71.25 cells (last lifeStage). Kowakian monkey-lizards were a bipedal reptillian primate species native to a jungle-like Outer Rim planet called Kowak. Their intelligence and cunning made them popular exports as exotic pets, with some specimens\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/KowakianMonkeyLizard.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "AridShrubland=0.01",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_GreaterKraytDragon",
+    "label": "greater krayt dragon [GreaterKraytDragon]",
+    "group": "Fauna",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.001. adult bodyGraphicData.drawSize 10.00\u00d710.00 cells (last lifeStage). The greater krayt dragon was the largest species of krayt dragon, and the apex predator of the planet Tatooine. Using its ten strong legs, it literally swam through the shifting sands. This larger subspecies is both\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/GreaterKraytDragon.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.001",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "A_AA_TetraSlug",
+    "label": "tetra slug [AA_TetraSlug]",
+    "group": "Fauna",
+    "effect": "[Alpha Animals (sarg)] in ExtremeDesert=0.0005. adult bodyGraphicData.drawSize 4.10\u00d74.10 cells (last lifeStage). These massive slugs are a common sight among Glitterworld controlled territories, where they lumber about as glorified power plants. Outside of one, they are deployed as a mobile power source for Glitterworld research\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AA_TetraSlug.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Animals (sarg)",
+      "unguarded": "no",
+      "biomes": "ExtremeDesert=0.0005",
+      "kind": "animal"
+    }
+  },
+  {
+    "id": "P_Plant_ShrubLow",
+    "label": "low shrubs [Plant_ShrubLow]",
+    "group": "Flora",
+    "effect": "[Vanilla Core] in AridShrubland=0.9. mature size 1.05 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.05, grows from 0.85). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Various low broadleaf shrubs. These grow in clusters and slow down movement.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_ShrubLow.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Vanilla Core",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.9",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_AB_HardyGrass",
+    "label": "hardy grass [AB_HardyGrass]",
+    "group": "Flora",
+    "effect": "[Alpha Biomes (sarg)] in Desert=0.6. mature size 0.60 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.60, grows from 0.40). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Wild grass. Grows anywhere there is a little light and minimally fertile ground.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AB_HardyGrass.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Biomes (sarg)",
+      "unguarded": "YES",
+      "biomes": "Desert=0.6",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_RG_Plant_AridGrass",
+    "label": "grass [RG_Plant_AridGrass]",
+    "group": "Flora",
+    "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.5. mature size 0.60 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.60, grows from 0.40). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) Wild grass. Grows in arid regions where there is little light and minimally fertile ground.",
+    "thumb": null,
+    "prefill": "keep",
+    "inferred": true,
+    "meta": {
+      "origin": "ReGrowth 2 (BOTR core)",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.5",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_Brambles",
+    "label": "brambles [Plant_Brambles]",
+    "group": "Flora",
+    "effect": "[Vanilla Core] in AridShrubland=0.3. mature size 1.44 cells (drawSize 1.70 \u00d7 visualSizeRange max 0.85, grows from 1.19). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Tangled, thorny, woody shoots covered with leaves. Brambles grow in clusters, and slow down anyone moving over them.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_Brambles.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Vanilla Core",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.3",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_Bush",
+    "label": "bush [Plant_Bush]",
+    "group": "Flora",
+    "effect": "[Vanilla Core] in AridShrubland=0.3. mature size 1.26 cells (drawSize 1.15 \u00d7 visualSizeRange max 1.10, grows from 0.80). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A short shrub. Does not typically talk.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_Bush.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Vanilla Core",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.3",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_Chakroot_Wild",
+    "label": "wild chak-root plant [Plant_Chakroot_Wild]",
+    "group": "Flora",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.3. mature size 1.50 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.50, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Chak-root was a flavorful red root plant that grew in the marshlands of the planet Erysthes, but was also be found on Naboo (amongst others where it was exported). The sale of this plant carried high taxes, so it was a\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_Chakroot_Wild.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "YES",
+      "biomes": "Desert=0.3",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_Ripthorn",
+    "label": "ripthorn [Plant_Ripthorn]",
+    "group": "Flora",
+    "effect": "[Vanilla Biotech DLC] in AridShrubland=0.3. mature size 1.19 cells (drawSize 1.40 \u00d7 visualSizeRange max 0.85, grows from 0.98). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A short toxin-adapted shrub that looks like a dense, tough tangle of thorny branches. Difficult to move through, it slows down anyone moving over it. It can only grow in polluted areas.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_Ripthorn.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Vanilla Biotech DLC",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.3",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_HealrootWild",
+    "label": "wild healroot [Plant_HealrootWild]",
+    "group": "Flora",
+    "effect": "[Vanilla Core] in AridShrubland=0.25. mature size 1.00 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.00, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A slow-growing plant which yields herbal medicine when harvested.\\n\\nThis wild breed of healroot is hardier than domesticated healroot, but too difficult to cultivate. It is prized by tribespeople in colder climates.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_HealrootWild.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Vanilla Core",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.25",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_Nysyllin_Wild",
+    "label": "wild nysyllin plant [Plant_Nysyllin_Wild]",
+    "group": "Flora",
+    "effect": "[Star Wars Animal Collection (mlie)] in AridShrubland=0.22. mature size 1.30 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.30, grows from 0.70). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) The Nysillin plants also known as nysillim was a healing herb grown as a common crop plant across the galaxy.",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_Nysyllin_Wild.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.22",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_HubbaGourd_Wild",
+    "label": "wild hubba gourd plant [Plant_HubbaGourd_Wild]",
+    "group": "Flora",
+    "effect": "[Star Wars Animal Collection (mlie)] in Desert=0.2. mature size 1.00 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.00, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A hardy gourd crop native to the planet Tatooine. It was popular with both the Jawa and Tusken people and was a major staple in their diet. It was soon exported to other worlds with arid evironments where it thrived in\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_HubbaGourd_Wild.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "YES",
+      "biomes": "Desert=0.2",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_RG_Plant_CreepStern",
+    "label": "creep stern [RG_Plant_CreepStern]",
+    "group": "Flora",
+    "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.2. mature size 1.30 cells (drawSize 1.00 \u00d7 visualSizeRange max 1.30, grows from 0.80). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) Wild Ivy with star shaped leaves that grows in patches in cold and wet biomes. Takes a long time to grow, but is very frost-resistant.",
+    "thumb": null,
+    "prefill": "keep",
+    "inferred": true,
+    "meta": {
+      "origin": "ReGrowth 2 (BOTR core)",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.2",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_RG_Plant_CrimsonCushion",
+    "label": "crimson cushion [RG_Plant_CrimsonCushion]",
+    "group": "Flora",
+    "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.2. mature size 0.90 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.90, grows from 0.50). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) Wild crimson colored carpet plant. Takes a long time to grow, but is very frost-resistant.",
+    "thumb": null,
+    "prefill": "keep",
+    "inferred": true,
+    "meta": {
+      "origin": "ReGrowth 2 (BOTR core)",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.2",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_RG_Plant_Dervish",
+    "label": "dervish [RG_Plant_Dervish]",
+    "group": "Flora",
+    "effect": "[ReGrowth 2 (BOTR core)] in AridShrubland=0.2. mature size 0.50 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.50, grows from 0.30). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry); art UNRESOLVED (no loose PNG and no bundle_textures cache entry) A beautiful bluish flower growing in colder and wet biomes. Can only be found in cold bogs.",
+    "thumb": null,
+    "prefill": "keep",
+    "inferred": true,
+    "meta": {
+      "origin": "ReGrowth 2 (BOTR core)",
+      "unguarded": "YES",
+      "biomes": "AridShrubland=0.2",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_AB_Aaklac",
+    "label": "aaklac [AB_Aaklac]",
+    "group": "Flora",
+    "effect": "[Alpha Biomes (sarg)] in Desert=0.12. drawSize 1.50\u00d71.50 cells; visualSizeRange UNMEASURED. \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A rare, huge flower which can be found in the deepest jungles. Its quite striking colour and nice smell makes it popular in gardening, if it can be extracted from the deep jungle, of course.\\n\\nBased on artwork by Rob\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AB_Aaklac.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Biomes (sarg)",
+      "unguarded": "YES",
+      "biomes": "Desert=0.12",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_AB_DessertTree",
+    "label": "dessert tree [AB_DessertTree]",
+    "group": "Flora",
+    "effect": "[Alpha Biomes (sarg)] in Desert=0.06. mature size 3.00 cells (drawSize 1.00 \u00d7 visualSizeRange max 3.00, grows from 2.10). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) An easy answer to the question: \"what would you create if you were an insane plant geneticist?\". This whimsical tree with a sugary trunk, frosting-like growths, and fruit that resembles glazed confections lures animals\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AB_DessertTree.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Biomes (sarg)",
+      "unguarded": "YES",
+      "biomes": "Desert=0.06",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_Plant_Bloddle",
+    "label": "bloddle plant [Plant_Bloddle]",
+    "group": "Flora",
+    "effect": "[Star Wars Animal Collection (mlie)] in ExtremeDesert=0.05. mature size 0.60 cells (drawSize 1.00 \u00d7 visualSizeRange max 0.60, grows from 0.30). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) Bloddle was a tasty bulb vegetable grown in the hydroponic gardens and was a popular crop on Tatooine (although it could be found on several worlds). It could be used to enhance the flavor of other foods and was\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/Plant_Bloddle.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Star Wars Animal Collection (mlie)",
+      "unguarded": "YES",
+      "biomes": "ExtremeDesert=0.05",
+      "kind": "plant"
+    }
+  },
+  {
+    "id": "P_AB_GiantStikehr",
+    "label": "giant stikehr [AB_GiantStikehr]",
+    "group": "Flora",
+    "effect": "[Alpha Biomes (sarg)] in ExtremeDesert=0.04. mature size 3.80 cells (drawSize 1.00 \u00d7 visualSizeRange max 3.80, grows from 2.00). \u2014 \u26a0 UNGUARDED (no MayRequire guard on this entry) A giant alien mushroom that glows in the strange darkening mist. Contrary to the smaller domesticated strands, the giant Stikehr can grow in light environments, as long as it is protected by the Forsaken mists. Its\u2026",
+    "thumb": "desert_family_review_thumbs_2026-09-20/AB_GiantStikehr.png",
+    "prefill": "keep",
+    "inferred": false,
+    "meta": {
+      "origin": "Alpha Biomes (sarg)",
+      "unguarded": "YES",
+      "biomes": "ExtremeDesert=0.04",
+      "kind": "plant"
+    }
+  }
+]
+</script>
+
+<header>
+  <div class="hrow">
+    <h1 id="title">Review sheet</h1>
+    <span class="sub" id="subtitle"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="link">connecting…</span>
+    <button class="btn" id="fold">▾ brief</button>
+  </div>
+
+  <div id="brief">
+    <div id="briefBody"></div>
+    <div class="panel posture" id="posturePanel"></div>
+    <div class="panel invented hide" id="inventedPanel"></div>
+    <div class="pathbar hide" id="pathbar">
+      <b>Save decisions to</b>
+      <code id="dpath"></code>
+      <button class="btn" data-copy="dpath">copy path</button>
+      <span class="sub" id="pathwhy"></span>
+    </div>
+    <div class="pathbar hide" id="spathbar">
+      <b>This sheet</b> <code id="spath"></code>
+      <button class="btn" data-copy="spath">copy path</button>
+    </div>
+    <!-- The export route out of browser-only storage. It exists because SKILL.md §8 tells
+         a human whose work never reached disk to "reopen the sheet and click copy JSON" —
+         and for a long time there was no such control anywhere on the page. -->
+    <div class="pathbar hide" id="exportbar">
+      <b>Not saving to a file</b>
+      <span class="sub">your decisions are held in this browser only</span>
+      <button class="btn pri" id="copyJson">copy JSON</button>
+      <span class="sub" id="copywhy">puts the whole decisions file on the clipboard — paste it over the .json</span>
+    </div>
+    <textarea id="exportTa" class="hide" rows="8" spellcheck="false" readonly></textarea>
+  </div>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="search name, id, or effect…">
+    <select id="fstate"></select>
+    <select id="fgroup"></select>
+    <select id="fmark">
+      <option value="">all rows</option>
+      <option value="override">overrides only</option>
+      <option value="contested">contested only</option>
+      <option value="inferred">inferred only</option>
+      <option value="noted">has a note</option>
+    </select>
+    <span class="spacer"></span>
+    <span class="pill" id="progress"></span>
+    <button class="btn" id="nextUndecided" title="jump to the next undecided row (g)">next undecided</button>
+    <button class="btn hide" id="btnGrid" title="list / grid (v)">grid</button>
+    <input type="range" id="cell" class="hide" min="80" max="260" value="132" title="thumbnail size">
+    <button class="btn" id="btnKeys" title="keyboard help (?)">?</button>
+  </div>
+
+  <div class="banner bad hide" id="err"></div>
+</header>
+
+<div id="list"></div>
+
+<div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
+
+<div id="keys">
+  <h3>Keyboard</h3>
+  <table id="keysBody"></table>
+  <div class="sub" style="margin-top:10px">Esc closes. Keys are ignored while typing in a note.</div>
+</div>
+
+<!-- ══ FILL IN #3 (optional) ════════════════════════════════════════════════════════
+     Only if the default row is wrong for your items. The default already handles a
+     thumbnail, a consequence line, meta chips and the inferred/contested/absent marks.
+<script id="RENDER">
+  window.itemBody = it => `<div class="effect">${esc(it.effect)}</div>`;
+</script>
+-->
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   config + items
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const CFG   = JSON.parse(document.getElementById('CONFIG').textContent);
+const ITEMS = JSON.parse(document.getElementById('ITEMS').textContent);
+const OPTS  = CFG.options || [];
+const OPTBY = Object.fromEntries(OPTS.map(o => [o.key, o]));
+const SIDECAR = window.__SIDECAR__ || null;
+
+
+const el   = id => document.getElementById(id);
+const esc  = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+window.esc = esc;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   storage keys are NAMESPACED, and this is not decoration.
+
+   MEASURED: every file:// page shares ONE storage origin. A page in /tmp/a.html read a
+   key written by a page in /tmp/b/other.html — origin is literally "file://". So two
+   review sheets opened from disk share localStorage AND IndexedDB. An unnamespaced
+   'decisions' key means sheet B silently eats sheet A's review, and an unnamespaced
+   IndexedDB handle means sheet B auto-writes into sheet A's FILE while reporting "saved".
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const NS = 'rs:' + (CFG.sheetId || 'unnamed') + ':';
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); }
+              catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   state
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let DEC = {};                 // id -> {decision, note, prefill, at}
+let dirty = new Map();        // id -> decision object, pending flush
+const undoStack = [], redoStack = [];
+let focusIdx = -1, shown = [], backend = null, frozen = false;
+
+const prefillOf = it => (it.prefill ?? null);
+const decOf     = id => DEC[id] || null;
+const decisionOf = id => { const d = decOf(id); return d && d.decision ? d.decision : ''; };
+const isDecided = id => !!decisionOf(id);
+/* A CLEARED row is not a disagreement. {decision:'', prefill:'keep'} means "I unset this",
+   so the amber override rail and the "overrides only" filter must both leave it alone —
+   serve_sheet.py counts it the same way. */
+const isOverride = id => {
+  const d = decOf(id); if (!d || !d.decision) return false;
+  const pf = d.prefill ?? null;
+  return pf !== null && pf !== '' && d.decision !== pf;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   persistence — three backends, one interface: load() and save(ops).
+
+   The server backend is the good one. It exists because moving the write out of the page
+   relocates the rules an agent has to remember (merge per row, keep unknown top-level
+   keys, refuse a truncating write, stamp provenance) into plumbing that enforces them.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+class ServerBackend {
+  constructor(cfg) { this.cfg = cfg; this.name = 'sidecar'; this.writes = 0; }
+  async load() {
+    const r = await fetch('/decisions', { headers: { 'X-Sheet-Token': this.cfg.token } });
+    if (!r.ok) throw new Error('GET /decisions ' + r.status);
+    const doc = await r.json();
+    frozen = doc.frozen === true;
+    this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops, opts = {}) {
+    const r = await fetch('/decisions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sheet-Token': this.cfg.token },
+      body: JSON.stringify(opts.force ? { ops, force: true } : { ops }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 423) { frozen = true; throw new Error('frozen: ' + (body.frozenMeaning || 'read-only')); }
+    if (r.status === 409) {
+      const e = new Error(body.hint || body.error || 'refused a truncating write');
+      /* Only the truncation refusal is forceable. A "decisions is not an object" 409 is a
+         corrupt file, and forcing past it would destroy exactly what it is protecting. */
+      e.forceable = body.error === 'truncating-write';
+      throw e;
+    }
+    if (!r.ok) throw new Error(body.error || ('POST /decisions ' + r.status));
+    this.writes = body.writeCount;
+    return body;
+  }
+  get where() { return this.cfg.decisionsPath || CFG.decisionsFile; }
+}
+
+/* Fallback for a sheet opened straight off disk with nothing running. No paste: the
+   decisions file already exists next to the sheet, so the human OPENS it rather than
+   doing Save-As into a folder the picker will not let us preselect. */
+class FileBackend {
+  constructor() { this.name = 'file'; this.handle = null; this.writes = 0; }
+  static available() { return typeof window.showOpenFilePicker === 'function'; }
+
+  async idb(mode = 'readonly') {
+    if (!this._db) this._db = await new Promise((res, rej) => {
+      const r = indexedDB.open('review_sheets', 1);
+      r.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    return this._db.transaction('handles', mode).objectStore('handles');
+  }
+  // NB the key is namespaced: see the shared file:// origin note above.
+  async remember(h) { const s = await this.idb('readwrite'); s.put(h, NS + 'handle'); }
+  async recall() {
+    const s = await this.idb();
+    return new Promise(res => { const g = s.get(NS + 'handle'); g.onsuccess = () => res(g.result || null); g.onerror = () => res(null); });
+  }
+
+  async link(handle) {
+    // Verify the handle is for THIS sheet's file before writing a byte. A stale or
+    // cross-sheet handle that passes silently writes one review into another's file.
+    const want = CFG.decisionsFile;
+    if (want && handle.name !== want)
+      throw new Error(`that file is "${handle.name}", this sheet writes "${want}" — pick the right one`);
+    if (await handle.queryPermission({ mode: 'readwrite' }) !== 'granted')
+      if (await handle.requestPermission({ mode: 'readwrite' }) !== 'granted')
+        throw new Error('write permission refused');
+    this.handle = handle; await this.remember(handle); return handle;
+  }
+  async pick() {
+    const [h] = await window.showOpenFilePicker({
+      id: 'review-sheets',                     // makes the picker reopen in the same folder
+      multiple: false,
+      types: [{ description: 'Decisions', accept: { 'application/json': ['.json'] } }],
+    });
+    return this.link(h);
+  }
+  async load() {
+    const h = this.handle || await this.recall();
+    if (!h) return null;                        // not linked yet
+    if (await h.queryPermission({ mode: 'readwrite' }) !== 'granted') { this.handle = h; return null; }
+    this.handle = h;
+    const doc = JSON.parse(await (await h.getFile()).text() || '{}');
+    frozen = doc.frozen === true; this.doc = doc; this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops) {
+    if (!this.handle) throw new Error('not linked to a file yet');
+    // Read-modify-write, because THIS page is not the only author of its own file: a
+    // whole-file writer deletes keys it does not know about (frozen/frozenOn/…).
+    const doc = JSON.parse(await (await this.handle.getFile()).text() || '{}');
+    /* Judge the freeze on the doc we JUST read, not on a boot-time global: a freeze
+       applied while the sheet is open must bite on the next write, not after a reload.
+       The freeze is enforced, not announced. */
+    if (doc.frozen === true) {
+      frozen = true; paintLink();
+      throw new Error('frozen: ' + (doc.frozenMeaning || 'the decisions file is read-only'));
+    }
+    if (frozen) throw new Error('frozen: read-only');
+    const merged = Object.assign({}, doc.decisions || {}, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete merged[k];
+    doc.decisions = merged;
+    doc.savedBy = 'review-sheet-page'; doc.savedAt = new Date().toISOString();
+    doc.writeCount = (doc.writeCount || 0) + 1;
+    doc.decidedCount = Object.values(doc.decisions).filter(v => v && v.decision).length;
+    const w = await this.handle.createWritable();
+    await w.write(JSON.stringify(doc, null, 2) + '\n'); await w.close();
+    this.writes = doc.writeCount;
+    return { writeCount: doc.writeCount, savedAt: doc.savedAt };
+  }
+  get where() { return this.handle ? this.handle.name : (CFG.decisionsPath || CFG.decisionsFile); }
+}
+
+/* Last resort. Loud, because this is the state that once cost a human a 71-row review:
+   they finished, the file was byte-identical to the pre-fill, and every choice was in
+   localStorage. */
+class LocalBackend {
+  constructor() { this.name = 'localStorage'; this.writes = 0; }
+  async load() { return LS.get('decisions', null); }
+  async save(ops) {
+    const cur = LS.get('decisions', {}) || {};
+    Object.assign(cur, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete cur[k];   // null deletes
+    LS.set('decisions', cur);
+    this.writes++; return { writeCount: this.writes };
+  }
+  get where() { return 'browser storage — NOT a file'; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   flush: debounced, op-based. Only touched rows are ever sent, so no client bug can
+   empty the file — the failure this format was bitten by.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, forceNext = false;
+/* Whether the banner currently on screen is one FLUSH put there. Only those get cleared on
+   a successful save — a seed or freeze banner is not mine to remove. */
+let saveBannerUp = false;
+function queue(id) {
+  DEC[id].at = new Date().toISOString();
+  dirty.set(id, DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, 700);       // notes are typed per keystroke
+}
+async function flush() {
+  if (saving || !dirty.size || !backend) return;
+  const ops = Object.fromEntries(dirty); dirty.clear();
+  const force = forceNext; forceNext = false;
+  saving = true; saveErr = null; paintLink();
+  try {
+    const r = await backend.save(ops, { force });
+    lastSaved = new Date(); if (r && r.writeCount) backend.writes = r.writeCount;
+    /* The write landed — so the refusal on screen is now a LIE. Nothing else clears it:
+       paintLink only repaints the pill, and a red "refused…" banner over a disabled
+       "clearing…" button left the human staring at a failure that had already succeeded.
+       Saved-but-contradicted is worse than not-saved, because he has no reason to look
+       again. Only clear it when there is nothing left pending to fail. */
+    if (saveBannerUp && !dirty.size) { clearBanner(); saveBannerUp = false; }
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const [k, v] of Object.entries(ops)) if (!dirty.has(k)) dirty.set(k, v);   // keep it pending
+    // A forced write that fails must say so with a FRESH banner and a live button, not
+    // leave the stale one up: showTruncationRefusal/showErr rebuild the node entirely.
+    if (e.forceable) showTruncationRefusal(e); else showErr(saveErr);
+    saveBannerUp = true;
+  } finally { saving = false; paintLink(); if (dirty.size && !saveErr) setTimeout(flush, 300); }
+}
+
+/* The truncation guard is right to refuse a batch that clears dozens of decided rows —
+   and undoing a bulk action is exactly such a batch when it is legitimate. Without a way
+   through, those ops sit pending forever and the screen and the file diverge silently.
+   So the page offers the way through as an explicit human act: one button, one click,
+   sending force=1 for that batch only. It is never sent automatically. */
+function showTruncationRefusal(e) {
+  const b = banner('bad',
+    esc(e.message || 'refused: this batch clears an implausible number of decided rows.')
+    + ` <b>${dirty.size}</b> change(s) are still pending in the page and nothing has been `
+    + 'written. If you meant to clear them, say so:',
+    '<button class="btn pri" id="forceSave">yes — clear them anyway</button>');
+  const btn = b.querySelector('#forceSave');
+  if (btn) btn.onclick = () => {
+    btn.disabled = true; btn.textContent = 'clearing…';
+    forceNext = true; saveErr = null; clearTimeout(flushTimer);
+    Promise.resolve(flush()).then(() => {
+      /* A success removes this whole banner and a failure rebuilds it, so in both cases
+         this node is gone. Still connected means the flush no-opped (a save already in
+         flight, nothing pending) — give the human a live button back rather than one
+         permanently reading "clearing…". */
+      if (btn.isConnected) { btn.disabled = false; btn.textContent = 'yes — clear them anyway'; }
+    });
+  };
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Unsaved decisions are still pending.'; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   decisions
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function setDecision(id, key, opts = {}) {
+  if (frozen) { showErr('This sheet is frozen — decisions are read-only.'); return; }
+  const it = byId.get(id); if (!it) return;
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  if (rec.prefill === undefined) rec.prefill = prefillOf(it);
+  rec.decision = (rec.decision === key && opts.toggle) ? '' : key;
+  if (!opts.noUndo) { undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0; }
+  queue(id);
+  patchRow(id);
+  paintCounts();
+  /* Deliberately NOT auto-focusing the note here. An earlier version grabbed focus and
+     demanded "why?" on every disagreement; it reads as nagging, and a control that fights
+     the human gets worked around rather than used. The row still MARKS itself as an
+     override (the ⟲ chip and the amber rail in card()), the "overrides only" filter still
+     finds them, and `serve_sheet.py --overrides` still reads them as a group — which is
+     what section 2b actually asks for, since the reader is the agent, not the human. */
+}
+function setNote(id, text) {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.note = text; queue(id); paintCounts();
+}
+/* Undo and redo work on ONE entry shape — {entries:[{id, before}]} — whether the action
+   touched one row or eighty. An earlier version had a separate batch shape that undo()
+   did not understand, so `u` silently did nothing after a bulk apply. Measured, not
+   theorised: an irreversible bulk action over 80 rows is one nobody dares use. */
+function applyEntries(entries) {
+  const inverse = entries.map(({ id }) =>
+    ({ id, before: DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null }));
+  for (const { id, before } of entries) {
+    if (before === null) delete DEC[id]; else DEC[id] = before;
+    /* null is DELETE in the protocol. Sending an empty stub instead left a row behind that
+       reads as "looked at it, decided nothing" — undoing back to a row that was never
+       touched must remove the entry, not invent one. */
+    dirty.set(id, before === null ? null : DEC[id]);
+    patchRow(id);
+  }
+  clearTimeout(flushTimer); flushTimer = setTimeout(flush, 400);
+  paintCounts(); paintLink();
+  return inverse;
+}
+function undo() {
+  const u = undoStack.pop(); if (!u) return;
+  redoStack.push({ entries: applyEntries(u.entries) });
+}
+function redo() {
+  const r = redoStack.pop(); if (!r) return;
+  undoStack.push({ entries: applyEntries(r.entries) });
+}
+function bulkGroup(group, key) {
+  const rows = shown.filter(it => it.group === group);
+  if (!rows.length) return;
+  const entries = rows.map(it => ({ id: it.id, before: DEC[it.id] ? JSON.parse(JSON.stringify(DEC[it.id])) : null }));
+  rows.forEach(it => setDecision(it.id, key, { noUndo: true, bulk: true }));
+  undoStack.push({ entries });
+  redoStack.length = 0;
+  render();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   render
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const byId = new Map(ITEMS.map(it => [it.id, it]));
+let renderMs = 0;
+
+function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+
+function defaultBody(it) {
+  const marks = [];
+  if (it.inferred)  marks.push('<span class="mark inferred" title="guessed from the name — the data was empty">⚠ inferred</span>');
+  if (it.contested) marks.push('<span class="mark contested" title="defensible both ways">◆ contested</span>');
+  if (it.occurs === false) marks.push('<span class="mark absent">does not occur</span>');
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
+}
+
+function card(it) {
+  const d = decOf(it.id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  const ovr = isOverride(it.id);
+  const body = (window.itemBody || defaultBody)(it);
+  const thumb = it.thumb
+    ? `<div class="thumb" data-zoom="${esc(it.thumb)}" data-cap="${esc(it.label || it.id)}"><img src="${esc(it.thumb)}" loading="lazy" decoding="async" alt=""></div>`
+    : '';
+  const opts = OPTS.map(op => `<button data-set="${esc(op.key)}" class="${op.key === key ? 'sel' : ''}"`
+      + `${op.key === key ? ` style="background:${esc(op.color)}"` : ''}`
+      + ` title="${esc(op.label)} (${esc(op.hotkey || '')})">${esc(op.label)}</button>`).join('');
+  return `<div class="row${ovr ? ' override' : ''}" data-id="${esc(it.id)}"${o ? ` style="color:${esc(o.color)}"` : ''}>
+    ${thumb}
+    <div class="main">
+      <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
+        ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
+      ${body}
+    </div>
+    <div class="ctrl">
+      <div class="opts">${opts}</div>
+      <textarea class="note" rows="1" placeholder="note…">${esc(d ? d.note || '' : '')}</textarea>
+    </div>
+  </div>`;
+}
+
+function passes(it) {
+  const q = el('q').value.trim().toLowerCase();
+  if (q) {
+    const hay = `${it.id} ${it.label || ''} ${it.effect || ''} ${it.group || ''}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  const fs = el('fstate').value;
+  if (fs === '__undecided' && isDecided(it.id)) return false;
+  if (fs === '__decided' && !isDecided(it.id)) return false;
+  if (fs && fs.startsWith('k:') && decisionOf(it.id) !== fs.slice(2)) return false;
+  const fg = el('fgroup').value;
+  if (fg && it.group !== fg) return false;
+  const fm = el('fmark').value;
+  if (fm === 'override' && !isOverride(it.id)) return false;
+  if (fm === 'contested' && !it.contested) return false;
+  if (fm === 'inferred' && !it.inferred) return false;
+  if (fm === 'noted' && !String((decOf(it.id) || {}).note || '').trim()) return false;
+  return true;
+}
+
+function render() {
+  const t0 = performance.now();
+  shown = ITEMS.filter(passes);
+  const groups = new Map();
+  for (const it of shown) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+  let html = '';
+  for (const [name, items] of groups) {
+    const bulk = OPTS.map(op => `<button class="btn" data-bulk="${esc(op.key)}" data-group="${esc(name)}">all ${esc(op.label.toLowerCase())}</button>`).join('');
+    /* de-stick groups of <=3: a sticky label sits on top of the only row in a group of
+       one, which makes it unreadable and unclickable. */
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${esc(name)}`
+          + `<span class="ghcount">${items.length}</span><span class="ghbulk">${bulk}</span></div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || `<div style="padding:40px 18px;color:var(--dim)">Nothing matches these filters.</div>`;
+  for (const ta of el('list').querySelectorAll('.note')) if (ta.value) grow(ta);
+  renderMs = performance.now() - t0;
+  measure();                                  // new .gh nodes have no top yet
+  paintCounts();
+  if (focusIdx >= shown.length) focusIdx = shown.length - 1;
+  paintFocus(false);
+}
+
+/* patch ONE row instead of re-rendering the list: at 600 rows a full innerHTML rebuild
+   on every keystroke drops the caret out of the note field and feels broken. */
+function patchRow(id) {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  if (!node) return;
+  const it = byId.get(id), d = decOf(id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  node.style.color = o ? o.color : '';
+  node.classList.toggle('override', isOverride(id));
+  for (const b of node.querySelectorAll('[data-set]')) {
+    const on = b.dataset.set === key;
+    b.classList.toggle('sel', on);
+    b.style.background = on ? OPTBY[b.dataset.set].color : '';
+  }
+  const lab = node.querySelector('.label .mark.ovr');
+  if (isOverride(id) && !lab) node.querySelector('.label').insertAdjacentHTML('beforeend',
+    `<span class="mark ovr">⟲ was ${esc(d.prefill)}</span>`);
+  if (!isOverride(id) && lab) lab.remove();
+}
+
+/* ── measured header height, every render and every resize ───────────────────────────── */
+function measure() {
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h + 'px');
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   counts, link state, banners
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function paintCounts() {
+  const total = ITEMS.length;
+  let decided = 0, ovr = 0, noted = 0, contested = 0;
+  const per = {};
+  for (const it of ITEMS) {
+    const k = decisionOf(it.id);
+    if (k) { decided++; per[k] = (per[k] || 0) + 1; }
+    if (isOverride(it.id)) ovr++;
+    if (String((decOf(it.id) || {}).note || '').trim()) noted++;
+    if (it.contested && !isDecided(it.id)) contested++;
+  }
+  const inn = OPTS.filter(o => o.counts === 'in').reduce((n, o) => n + (per[o.key] || 0), 0);
+  const out = OPTS.filter(o => o.counts === 'out').reduce((n, o) => n + (per[o.key] || 0), 0);
+  el('progress').innerHTML =
+    `<b>${decided}</b>/${total} decided · <b>${total - decided}</b> left`
+    + (OPTS.some(o => o.counts) ? ` · ${inn} in · ${out} stripped` : '')
+    + ` · ${ovr} overruled · ${noted} noted`
+    + (shown.length !== total ? ` · showing ${shown.length}` : '')
+    + ` · render ${renderMs.toFixed(0)}ms`;
+  paintPosture(inn, out, total - decided);
+}
+
+function paintPosture(inn, out, undecided) {
+  const p = CFG.posture || {};
+  const strip = p.mode === 'whitelist';
+  el('posturePanel').innerHTML =
+    `<h3>Posture — ${esc((p.mode || 'whitelist').toUpperCase())}</h3>`
+    + `<div>${esc(p.explain || (strip
+        ? 'Default is EXCLUDE. Anything not kept will be stripped.'
+        : 'Default is INCLUDE. Only what you cut will be stripped.'))}</div>`
+    + `<div style="margin-top:5px"><b style="color:var(--ok)">${inn}</b> kept · `
+    + `<b style="color:var(--bad)">${out}</b> stripped`
+    + (strip && undecided ? ` · <b style="color:var(--warn)">${undecided} undecided, which this posture also strips</b>` : '')
+    + `</div>`;
+}
+
+function paintLink() {
+  const p = el('link');
+  const n = dirty.size;
+  let cls = 'pill live', txt;
+  if (!backend) { txt = 'connecting…'; cls = 'pill'; }
+  else if (frozen) { txt = '🔒 frozen — read only'; cls = 'pill'; }
+  else if (saveErr) { txt = '⚠ not saved — ' + saveErr.slice(0, 60); cls = 'pill bad'; }
+  else if (saving) txt = '↑ saving…';
+  else if (n) txt = `● ${n} pending`;
+  else if (backend.name === 'localStorage') { txt = '⚠ browser storage only — NOT a file'; cls = 'pill bad'; }
+  else if (backend.name === 'file' && !backend.handle) { txt = '○ not linked — click “link file”'; cls = 'pill bad'; }
+  else txt = `● ${backend.name} · saved${lastSaved ? ' ' + ago(lastSaved) : ''} · ${backend.writes} write${backend.writes === 1 ? '' : 's'}`;
+  p.className = cls; p.textContent = txt; p.title = backend ? backend.where : '';
+  /* The copy-JSON escape hatch is shown exactly while the work is NOT in a file, and it
+     disappears the moment a link is established. */
+  const unlinked = !!backend && (backend.name === 'localStorage'
+                                 || (backend.name === 'file' && !backend.handle));
+  el('exportbar').classList.toggle('hide', !unlinked);
+  if (!unlinked) el('exportTa').classList.add('hide');
+}
+const ago = d => { const s = Math.round((Date.now() - d) / 1000);
+  return s < 2 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + 'm ago'; };
+setInterval(() => { if (!dirty.size && !saving) paintLink(); }, 5000);
+
+/* Banners share one node, so every writer must set its OWN class. The seed banner used to
+   leave 'banner warn' behind and every later error — save failed, frozen, 409 — rendered
+   amber for the rest of the session. Colour is the only thing that says "this one matters". */
+function banner(cls, html, extra = '') {
+  const b = el('err');
+  b.className = 'banner ' + cls;
+  b.classList.remove('hide');
+  b.innerHTML = html + ' ' + extra
+    + ' <button class="btn" onclick="this.parentNode.classList.add(\'hide\')">dismiss</button>';
+  return b;
+}
+function showErr(msg, extra = '') { banner('bad', esc(msg), extra); }
+/* Take the banner down and empty it. Emptying matters as much as hiding: a stale node
+   left in the DOM comes back with the next classList toggle still carrying old text and
+   a disabled button. */
+function clearBanner() {
+  const b = el('err');
+  b.classList.add('hide');
+  b.className = 'banner bad hide';
+  b.innerHTML = '';
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: keyboard. Mouse-only across 600 rows is the real bottleneck.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const KEYMAP = [
+  ['j / ↓', 'next row'], ['k / ↑', 'previous row'],
+  ['1 … 9', 'set the decision for the focused row'],
+  ['⇧ + 1…9', 'apply to the whole visible group'],
+  ['n', 'jump into the note'], ['Enter', 'leave the note'],
+  ['u / ⇧U', 'undo / redo — bulk actions undo as one'],
+  ['g', 'next undecided row'], ['c', 'next contested row'],
+  ['/', 'search'], ['v', 'list / grid'],
+  ['z', 'zoom the focused thumbnail'], ['?', 'this help'],
+];
+function paintKeys() {
+  el('keysBody').innerHTML = KEYMAP.map(([k, d]) =>
+    `<tr><td><kbd>${esc(k)}</kbd></td><td>${esc(d)}</td></tr>`).join('')
+    + OPTS.map(o => `<tr><td><kbd>${esc(o.hotkey)}</kbd></td><td>= ${esc(o.label)}</td></tr>`).join('');
+}
+function focusRow(i, scroll = true) {
+  if (!shown.length) return;
+  focusIdx = Math.max(0, Math.min(shown.length - 1, i));
+  paintFocus(scroll);
+}
+function paintFocus(scroll) {
+  for (const r of document.querySelectorAll('.row.focus')) r.classList.remove('focus');
+  const it = shown[focusIdx]; if (!it) return;
+  const node = document.querySelector(`.row[data-id="${cssEsc(it.id)}"]`);
+  if (!node) return;
+  node.classList.add('focus');
+  if (scroll) {
+    const top = node.getBoundingClientRect().top;
+    const hh = document.querySelector('header').offsetHeight + 34;   // clear the sticky group label
+    if (top < hh || top > innerHeight - 90)
+      scrollBy({ top: top - hh - 8, behavior: 'instant' });
+  }
+}
+function jumpTo(pred, from = focusIdx) {
+  for (let n = 1; n <= shown.length; n++) {
+    const i = (from + n + shown.length) % shown.length;
+    if (pred(shown[i])) { focusRow(i); return true; }
+  }
+  return false;
+}
+
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === 'Escape') {
+    if (typing) { document.activeElement.blur(); return; }
+    el('keys').classList.remove('on'); el('zoom').classList.remove('on');
+    return;
+  }
+  if (typing) {
+    if (e.key === 'Enter' && document.activeElement.classList.contains('note')) {
+      e.preventDefault(); document.activeElement.blur();
+    }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+
+  if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); focusRow(focusIdx + 1); return; }
+  if (k === 'k' || k === 'ArrowUp')   { e.preventDefault(); focusRow(focusIdx - 1); return; }
+  if (k === '/') { e.preventDefault(); el('q').focus(); el('q').select(); return; }
+  if (k === '?') { el('keys').classList.toggle('on'); return; }
+  if (k === 'u') { undo(); return; }
+  if (k === 'U') { redo(); return; }
+  if (k === 'g') { if (!jumpTo(it => !isDecided(it.id))) showErr('No undecided rows in view.'); return; }
+  if (k === 'c') { if (!jumpTo(it => it.contested)) showErr('No contested rows in view.'); return; }
+  if (k === 'v' && CFG.media) { toggleGrid(); return; }
+  if (k === 'n') { const it = shown[focusIdx]; if (it) {
+      const n = document.querySelector(`.row[data-id="${cssEsc(it.id)}"] .note`); if (n) { e.preventDefault(); n.focus(); } }
+    return; }
+  if (k === 'z') { const it = shown[focusIdx]; if (it && it.thumb) openZoom(it.thumb, it.label || it.id); return; }
+
+  const op = OPTS.find(o => o.hotkey === k);
+  if (op) {
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    e.preventDefault();
+    if (focusIdx < 0) focusRow(0);
+    setDecision(it.id, op.key);
+    focusRow(focusIdx + 1);                     // advance, so triage is one key per row
+    return;
+  }
+  const shifted = OPTS.find(o => o.hotkey && '!@#$%^&*('['123456789'.indexOf(o.hotkey)] === k);
+  if (shifted) { const it = shown[focusIdx]; if (it) { e.preventDefault(); bulkGroup(it.group, shifted.key); } }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: grid / contact sheet
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function toggleGrid() {
+  const on = !document.body.classList.contains('grid');
+  document.body.classList.toggle('grid', on);
+  el('btnGrid').classList.toggle('on', on);
+  el('btnGrid').textContent = on ? 'list' : 'grid';
+  el('cell').classList.toggle('hide', !on);
+  LS.set('grid', on); measure(); paintFocus(false);
+}
+function openZoom(src, cap) {
+  el('zimg').src = src; el('zcap').textContent = cap; el('zoom').classList.add('on');
+}
+el('zoom').onclick = () => el('zoom').classList.remove('on');
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   wiring
+   ───────────────────────────────────────────────────────────────────────────────────── */
+el('list').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]');
+  if (set) { const row = set.closest('.row'); setDecision(row.dataset.id, set.dataset.set, { toggle: true });
+             focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); return; }
+  const bulk = e.target.closest('[data-bulk]');
+  if (bulk) { bulkGroup(bulk.dataset.group, bulk.dataset.bulk); return; }
+  const th = e.target.closest('[data-zoom]');
+  if (th) { openZoom(th.dataset.zoom, th.dataset.cap); return; }
+  const row = e.target.closest('.row');
+  if (row) { focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); }
+});
+el('list').addEventListener('input', e => {
+  if (e.target.classList.contains('note')) {
+    setNote(e.target.closest('.row').dataset.id, e.target.value);
+    grow(e.target);
+  }
+});
+/* Notes auto-grow. A one-line box that hides what the human just wrote makes the most
+   valuable field on the row look like the least important one. */
+function grow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+for (const id of ['q', 'fstate', 'fgroup', 'fmark'])
+  el(id).addEventListener(id === 'q' ? 'input' : 'change', () => { render(); LS.set('filters', filtersNow()); });
+const filtersNow = () => ({ q: el('q').value, s: el('fstate').value, g: el('fgroup').value, m: el('fmark').value });
+
+el('fold').onclick = () => { autofoldArmed = false; setFold(!document.body.classList.contains('folded')); };
+function setFold(f) {
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  LS.set('folded', f);
+  measure();                                    // the header just changed height
+}
+
+/* The brief has two jobs that fight each other: it must be SEEN — it carries the posture
+   and any rule the agent invented, and burying those is the most expensive mistake this
+   format makes — and it must not sit in front of the rows the human came to work on.
+   Bounding its height stops the worst case. Auto-folding on the FIRST real scroll
+   resolves the rest: they see it, then the moment they start working it gets out of the
+   way, and the fold is remembered from then on. One click brings it back. */
+let autofoldArmed = false;
+function armAutofold(neverChosen) {
+  if (!neverChosen) return;                     // they have folded or unfolded before: respect it
+  autofoldArmed = true;
+  addEventListener('scroll', onFirstScroll, { passive: true });
+}
+function onFirstScroll() {
+  if (!autofoldArmed || scrollY < 220) return;
+  autofoldArmed = false;
+  removeEventListener('scroll', onFirstScroll);
+  setFold(true);
+  el('fold').classList.add('flash');            // say where it went
+  setTimeout(() => el('fold').classList.remove('flash'), 2400);
+}
+el('nextUndecided').onclick = () => { if (!jumpTo(it => !isDecided(it.id), focusIdx)) showErr('No undecided rows in view.'); };
+el('btnKeys').onclick = () => el('keys').classList.toggle('on');
+el('btnGrid').onclick = toggleGrid;
+el('cell').oninput = e => { document.documentElement.style.setProperty('--cell', e.target.value + 'px'); measure(); };
+
+/* ── copy JSON: the export route when the work is NOT in a file ───────────────────────
+   The whole decisions doc, on the clipboard, in the shape the file wants — so a session
+   that never reached disk can be recovered by pasting rather than retyped or lost. */
+function decisionsDoc() {
+  return JSON.stringify({
+    sheetId: CFG.sheetId || 'unnamed',
+    posture: (CFG.posture || {}).mode || '',
+    criterion: CFG.criterion || '',
+    exportedBy: 'review-sheet-page',        // NOT savedBy: this is a copy, not a save
+    exportedAt: new Date().toISOString(),
+    decidedCount: Object.values(DEC).filter(v => v && v.decision).length,
+    decisions: DEC,
+  }, null, 2) + '\n';
+}
+async function copyDecisions(btn) {
+  const text = decisionsDoc(), ta = el('exportTa'), why = el('copywhy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { ok = false; }
+  if (!ok) {
+    // Show the JSON rather than fail quietly: the clipboard API is refused on some
+    // file:// pages, and a copy button that does nothing is how a review gets lost.
+    ta.classList.remove('hide'); ta.value = text; ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    why.textContent = ok
+      ? 'copied — and shown below so you can check it landed'
+      : 'the clipboard is blocked here — the JSON is below: select all (Ctrl/⌘+A), copy, '
+        + 'and paste it over the decisions .json';
+  }
+  btn.textContent = ok ? 'copied ✓' : 'copy it below ↓';
+  setTimeout(() => { btn.textContent = 'copy JSON'; }, 2500);
+}
+el('copyJson').onclick = () => copyDecisions(el('copyJson'));
+
+for (const b of document.querySelectorAll('[data-copy]'))
+  b.onclick = () => copyText(el(b.dataset.copy).textContent, b);
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'copied ✓'; }
+  catch (e) {                                   /* refused on some file:// pages */
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = 'copied ✓'; }
+    catch (e2) { btn.textContent = 'press ⌘/Ctrl+C'; }
+    ta.remove();
+  }
+  setTimeout(() => btn.textContent = label, 1400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   boot
+   ───────────────────────────────────────────────────────────────────────────────────── */
+async function boot() {
+  el('title').textContent = CFG.title || 'Review sheet';
+  el('subtitle').textContent = CFG.subtitle || '';
+  document.title = CFG.title || 'Review sheet';
+  el('briefBody').innerHTML = (CFG.briefHtml || '')
+    + (CFG.criterion ? `<div class="crit">⭐ Ranked by: ${esc(CFG.criterion)}</div>` : '');
+
+  /* Any rule the agent INVENTED goes in its own panel, stated plainly. An invented premise
+     presented as a finding is the most expensive mistake this format makes. */
+  if ((CFG.invented || []).length) {
+    el('inventedPanel').classList.remove('hide');
+    el('inventedPanel').innerHTML = '<h3>⚠ Rules I invented — overrule these</h3><ul style="margin:4px 0 0 16px;padding:0">'
+      + CFG.invented.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  }
+
+  el('fstate').innerHTML = `<option value="">any state</option><option value="__undecided">undecided</option>`
+    + `<option value="__decided">decided</option>`
+    + OPTS.map(o => `<option value="k:${esc(o.key)}">= ${esc(o.label)}</option>`).join('');
+  const groups = [...new Set(ITEMS.map(it => it.group))].sort();
+  el('fgroup').innerHTML = `<option value="">all ${esc(CFG.groupLabel || 'group')}s (${groups.length})</option>`
+    + groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  paintKeys();
+  document.body.classList.add('perf');
+  if (CFG.media) el('btnGrid').classList.remove('hide');
+
+  const f = LS.get('filters', null);
+  if (f) { el('q').value = f.q || ''; el('fstate').value = f.s || ''; el('fgroup').value = f.g || ''; el('fmark').value = f.m || ''; }
+  const foldChoice = LS.get('folded', null);    // read BEFORE setFold writes it
+  setFold(foldChoice === true);
+  armAutofold(foldChoice === null);
+
+  /* pick a backend */
+  let loaded = null;
+  if (SIDECAR && SIDECAR.mode === 'server') {
+    backend = new ServerBackend(SIDECAR);
+    el('dpath').textContent = SIDECAR.decisionsPath;
+    el('spath').textContent = SIDECAR.sheetPath;
+    el('pathwhy').textContent = 'the sidecar owns this file — nothing to copy or paste';
+    el('pathbar').classList.remove('hide'); el('spathbar').classList.remove('hide');
+    try { loaded = await backend.load(); }
+    catch (e) { showErr('Could not read the decisions file: ' + e.message); }
+  } else if (FileBackend.available()) {
+    backend = new FileBackend();
+    el('pathbar').classList.remove('hide');
+    el('dpath').textContent = CFG.decisionsPath || CFG.decisionsFile;
+    el('pathwhy').innerHTML = 'no sidecar running — <button class="btn pri" id="linkBtn">link file</button> '
+      + 'or drag it onto this page';
+    el('spathbar').classList.toggle('hide', !CFG.sheetPath);
+    el('spath').textContent = CFG.sheetPath || '';
+    setTimeout(() => { const b = el('linkBtn'); if (b) b.onclick = async () => {
+      try { await backend.pick(); const d = await backend.load(); if (d) { DEC = d; render(); } paintLink(); }
+      catch (e) { showErr(e.message); } }; }, 0);
+    try { loaded = await backend.load(); } catch (e) { loaded = null; }
+    if (loaded === null) showErr('Not linked to a file yet — decisions are being held in the browser only. '
+      + 'Click “link file” (or drag the decisions .json onto this page) before you start. '
+      + 'Whatever you have already done can be lifted out with “copy JSON” in the brief above.');
+  } else {
+    backend = new LocalBackend();
+    loaded = await backend.load();
+    showErr('This browser cannot write files (no File System Access API) and no sidecar is running. '
+      + 'Work is held in browser storage only — run serve_sheet.py, or use “copy JSON” in the '
+      + 'brief above to lift it out and paste it over the decisions .json.');
+  }
+
+  /* Seed. Only rows the loaded file says NOTHING about take the pre-fill. Seeding
+     all-or-nothing is how 350 pre-filled rows once vanished because two rows had been
+     clicked — and the mirror-image bug is just as bad: ANY record for a row, including
+     one whose decision is '', is a human act. CLEARING a row is a decision, so re-seeding
+     over it puts a choice on the screen that the file does not hold, and under whitelist
+     posture the row is stripped while the sheet says it is kept. */
+  let seeded = 0, kept = 0, cleared = 0;
+  DEC = loaded && typeof loaded === 'object' ? loaded : {};
+  for (const it of ITEMS) {
+    const rec = Object.prototype.hasOwnProperty.call(DEC, it.id) ? DEC[it.id] : undefined;
+    if (rec != null) { if (rec.decision) kept++; else cleared++; continue; }
+    if (prefillOf(it) != null) {
+      DEC[it.id] = { decision: prefillOf(it), prefill: prefillOf(it), note: '' };
+      seeded++;
+    }
+  }
+  if (seeded && (kept || cleared)) {
+    banner('warn', `Filled in <b>${seeded}</b> rows from the pre-fill and left your existing `
+      + `entries untouched — <b>${kept}</b> decided`
+      + (cleared ? `, <b>${cleared}</b> deliberately cleared` : '') + '.');
+  }
+
+  /* drag the decisions file onto the page — no picker at all (Chromium) */
+  if (backend instanceof FileBackend) {
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', async e => {
+      e.preventDefault();
+      const item = e.dataTransfer.items && e.dataTransfer.items[0];
+      if (!item || !item.getAsFileSystemHandle) return;
+      try { const h = await item.getAsFileSystemHandle();
+        if (h.kind !== 'file') return showErr('Drop the decisions .json, not a folder.');
+        await backend.link(h); const d = await backend.load(); if (d) { DEC = d; render(); }
+        paintLink(); el('err').classList.add('hide');
+      } catch (err) { showErr(err.message); }
+    });
+  }
+
+  if (LS.get('grid', false) && CFG.media) toggleGrid();
+  render();
+  paintLink();
+  if (frozen) showErr('This sheet is FROZEN. The decisions file is the source of truth and is read-only.');
+}
+boot();
+</script>
+</body>
+</html>
