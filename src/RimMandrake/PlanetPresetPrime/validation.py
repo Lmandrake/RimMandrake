@@ -78,6 +78,119 @@ suite.toggles = []   # no Source/ ModSettings class, no XML defs -- every
 BOOT_LOG_TAG = "[RimMandrake.PlanetPresetPrime] loaded:"
 
 
+# ---- PLANETPRESETPRIME_COVERAGE_GAPS_1 (offline half, round 41) -------------------------------------------------
+# The mechanism has no live hook (see the docstring), but every NAME and SIGNATURE it depends on can be checked against
+# the decompiled engine (reference tree dated 2026-08-19) and My Little Planet's own source: a rename in a game update
+# turns the postfix into a silent no-op or a Harmony error, and the mod only warns at runtime.
+import glob as _glob
+import os as _os
+import re as _re
+
+_HERE = _os.path.dirname(_os.path.abspath(__file__))
+DECOMPILED = "/mnt/d/Luke/dev/reference/rimworld-decompiled"
+_WORKSHOP = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
+
+
+def mlp_source_dir():
+    for about in _glob.glob(_WORKSHOP + "/*/About/About.xml"):
+        try:
+            if "<packageid>oblitus.mylittleplanet</packageid>" in open(about, encoding="utf-8-sig", errors="replace").read().lower():
+                d = _os.path.join(_os.path.dirname(_os.path.dirname(about)), "Source")
+                return d if _os.path.isdir(d) else None
+        except OSError:
+            continue
+    return None
+
+
+def _rd(*parts):
+    return open(_os.path.join(*parts), encoding="utf-8", errors="replace").read()
+
+
+def mod_findings(cs):
+    out = []
+    cov = _re.search(r"public const float Coverage\s*=\s*([0-9.]+)f;", cs)
+    sub = _re.search(r"public const int\s+Subdivisions\s*=\s*(\d+);", cs)
+    if not cov or float(cov.group(1)) != 1.0 or not sub or int(sub.group(1)) != 7:
+        out.append("primed constants are not coverage 1.0 / subdivisions 7 (the 21,872-tile Ash'karr grid): %s / %s" % (cov and cov.group(1), sub and sub.group(1)))
+    if '[HarmonyPatch(typeof(Page_CreateWorldParams), "Reset")]' not in cs or "[HarmonyPostfix]" not in cs:
+        out.append("the patch is no longer a postfix on Page_CreateWorldParams.Reset")
+    for need in ('AccessTools.Field(typeof(Page_CreateWorldParams), "planetCoverage")', 'AccessTools.TypeByName("WorldGenRules.WorldGenRules")',
+                 'AccessTools.Field(t, "subcount")', "f.FieldType == typeof(int)", "PlanetLayerSettingsDefOf.Surface"):
+        if need not in cs:
+            out.append("mod source lost `%s`" % need)
+    if "[StaticConstructorOnStartup]" not in cs or "loaded: will prime coverage" not in cs:
+        out.append("the startup boot line / StaticConstructorOnStartup is gone (the mod would look unloaded)")
+    i_mlp, i_van = cs.find("f.SetValue(null, n)"), cs.find("surface.settings.subdivisions = n")
+    if not (0 < i_mlp < i_van):
+        out.append("the MLP slider field must be set BEFORE the vanilla subdivisions (MLP's slider re-stamps its own value)")
+    return out
+
+
+def engine_findings(page_cs, layer_cs, def_cs, defof_cs, coverage, subdivisions):
+    out = []
+    if len(_re.findall(r"public void Reset\(\)", page_cs)) != 1 or _re.search(r"void Reset\([^)]", page_cs):
+        out.append("Page_CreateWorldParams.Reset is gone, overloaded, or no longer public void Reset()")
+    if not _re.search(r"private float planetCoverage;", page_cs):
+        out.append("Page_CreateWorldParams.planetCoverage is no longer a private float (the reflective set would miss)")
+    body = _re.search(r"public void Reset\(\)\s*\{(.*?)\n\t\}", page_cs, _re.S)
+    if not body or "planetCoverage =" not in body.group(1):
+        out.append("Reset() no longer assigns planetCoverage, so a Reset postfix has nothing to override")
+    arr = _re.search(r"PlanetCoverages = new float\[\d+\] \{([^}]*)\}", page_cs)
+    vals = [float(x.strip().rstrip("f")) for x in arr.group(1).split(",")] if arr else []
+    if coverage not in vals:
+        out.append("coverage %s is not one of the page's legal PlanetCoverages %s" % (coverage, vals))
+    if len(_re.findall(r"\bReset\(\);", page_cs)) < 2:
+        out.append("Reset() has fewer than two callers (PreOpen and the Reset button): the postfix may not fire on every open")
+    if "if (!initialized)" not in page_cs:
+        out.append("PreOpen's once-only `initialized` guard is gone: the postfix would be re-applied on every open")
+    if not _re.search(r"public int subdivisions = \d+;", layer_cs):
+        out.append("PlanetLayerSettings.subdivisions is no longer a public int")
+    if not _re.search(r"public PlanetLayerSettings settings;", def_cs):
+        out.append("PlanetLayerSettingsDef.settings is no longer a public PlanetLayerSettings")
+    if not _re.search(r"public static PlanetLayerSettingsDef Surface;", defof_cs):
+        out.append("PlanetLayerSettingsDefOf.Surface is gone")
+    return out
+
+
+def mlp_findings(tile_cs, subdivisions):
+    out = []
+    if not _re.search(r"namespace WorldGenRules", tile_cs) or not _re.search(r"\bclass WorldGenRules\b", tile_cs):
+        out.append("MLP no longer has class WorldGenRules in namespace WorldGenRules")
+    if not _re.search(r"public static int subcount\s*=", tile_cs):
+        out.append("MLP's subcount is no longer a public static int")
+    m = _re.search(r"HorizontalSlider\(rect, subcount, ([0-9.]+)f, ([0-9.]+)f", tile_cs)
+    if not m or not float(m.group(1)) <= subdivisions <= float(m.group(2)):
+        out.append("subdivisions %d is outside MLP's slider range %s" % (subdivisions, m and (m.group(1), m.group(2))))
+    if "Surface.settings.subdivisions = subcount" not in tile_cs:
+        out.append("MLP no longer copies subcount into Surface.settings.subdivisions: priming its field is no longer needed or enough")
+    return out
+
+
+@suite.chain("signatures_static")
+def signatures_static(t):
+    """Offline: every engine/MLP name the Reset postfix relies on still exists with the shape it assumes. UNMEASURED when the
+    decompiled reference tree or My Little Planet's source is not reachable from this machine."""
+    with t.component("reset_postfix_targets_exist_in_engine_and_mlp", beyond_toggle=True):
+        mlp = mlp_source_dir()
+        eng = _os.path.join(DECOMPILED, "RimWorld")
+        if mlp is None or not _os.path.isfile(_os.path.join(eng, "Page_CreateWorldParams.cs")):
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: decompiled engine tree (%s) or My Little Planet source not reachable" % DECOMPILED
+            return
+        cs = _rd(_HERE, "Source", "PlanetPresetPrime.cs")
+        mod = mod_findings(cs)
+        page = _rd(eng, "Page_CreateWorldParams.cs")
+        if len(page) < 2000 or len(cs) < 2000:
+            raise ExpectationFailed("blind read: engine page %d chars, mod %d chars" % (len(page), len(cs)))
+        eng_f = engine_findings(page, _rd(eng, "PlanetLayerSettings.cs"), _rd(eng, "PlanetLayerSettingsDef.cs"),
+                                _rd(eng, "PlanetLayerSettingsDefOf.cs"), 1.0, 7)
+        mlp_f = mlp_findings(_rd(mlp, "MyLittlePlanet", "TileSize.cs"), 7)
+        bad = mod + eng_f + mlp_f
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:5]))
+
+
+
 @suite.chain("boot_prime_values_logged")
 def boot_prime_values_logged(t):
     """The only thing this suite can prove (see module docstring for why
