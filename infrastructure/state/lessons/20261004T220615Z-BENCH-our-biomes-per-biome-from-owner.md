@@ -1,0 +1,1 @@
+'Our biomes' / 'per biome' from the owner means the Baroque Biomes set — the RM_ BiomeDefs of src/RimMandrake/Biomes.compose.json — never vanilla Desert/ExtremeDesert or the RUT_ twins; a first census that mixed them inflated Desert to 101 rows vs the real 75 on RM_LongShade (owner correction 2026-10-04).
