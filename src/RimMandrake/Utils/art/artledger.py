@@ -388,22 +388,40 @@ class Refused(Exception):
     pass
 
 
+MECHANICAL_REASONS = ("artpipe-collect", "script:")   # a --reason must start with one of these
+
+
+def is_mechanical_reason(reason: str | None) -> bool:
+    if not reason:
+        return False
+    for p in MECHANICAL_REASONS:
+        if reason == p and not p.endswith(":"):
+            return True
+        if p.endswith(":") and reason.startswith(p) and len(reason) > len(p):
+            return True
+    return False
+
+
 def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
-            owner_said: str | None = None, dry_run: bool = False) -> dict:
+            owner_said: str | None = None, reason: str | None = None,
+            provenance: dict | None = None, dry_run: bool = False) -> dict:
     """The only sanctioned writer into src/**/Textures. Ledger-checked; saves the old
     picture into the store FIRST; atomic write; appends a `live` event.
 
-    Authorization: the incoming sha needs an owner ruling (trust=ruled) naming it, given
-    as --ruling <id>, or the owner's typed words (--owner-said), which are recorded as a
-    ruling. If the displaced sha is protected, the incoming one must be the owner's
-    selection — always true when authorised as above, so the rule reduces to: never
-    without an owner ruling for the incoming bytes.
+    Authorization, one of:
+      * ruling_id: an owner keep (trust=ruled) naming the incoming sha;
+      * owner_said: his typed words, recorded as an owner keep ruling;
+      * reason: a mechanical tag (`artpipe-collect`, `script:<repo path>`) for a writer
+        installing without an owner decision. REFUSED when the displaced picture is
+        protected by an owner keep — only his selection may replace a kept picture.
     """
     idx = Index()
     if idx.is_purged(sha):
         raise Refused(f"{sha[:12]} was purged by the owner — it cannot be installed")
     if not store_has(sha):
         raise Refused(f"{sha[:12]} is not in the art store ({store_dir()}) — put it there first")
+    if "/Textures/" in "/" + rel.replace("\\", "/") or rel.startswith("/"):
+        raise Refused(f"rel must be the path UNDER Textures/, got {rel}")
     target = src_root().parent / mod / "Textures" / rel if not Path(mod).is_absolute() else Path(mod) / "Textures" / rel
     ruling = None
     if ruling_id:
@@ -417,20 +435,43 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
                 or normalise_verdict(ruling.get("verdict")) != "keep":
             raise Refused(f"ruling {ruling_id} is {ruling.get('by')}/{ruling.get('trust')}/"
                           f"{ruling.get('verdict')} — only an owner keep with real provenance authorises")
-    elif not owner_said:
-        raise Refused("install needs --ruling <owner keep id> or --owner-said \"<his typed words>\"")
+    elif owner_said:
+        pass
+    elif reason:
+        if not is_mechanical_reason(reason):
+            raise Refused(f"reason {reason!r} is not a mechanical tag (allowed: "
+                          f"{', '.join(MECHANICAL_REASONS)}<name>)")
+    else:
+        raise Refused("install needs an owner keep ruling id, the owner's typed words, "
+                      "or a mechanical reason (artpipe-collect | script:<path>)")
     old_sha = sha256_file(target) if target.is_file() else None
     if old_sha == sha:
-        return {"status": "already-live", "path": str(target)}
+        return {"status": "already-live", "path": str(target), "new": sha}
+    old_protected = bool(old_sha and idx.protected(old_sha))
+    if old_protected and not (ruling or owner_said):
+        raise Refused(f"{target} holds {old_sha[:12]}, an owner-KEPT picture — a mechanical "
+                      f"install ({reason}) may not displace it; it needs his ruling "
+                      f"(art.py install {mod} {rel} <sha> --ruling <keep id>)")
     plan = {"status": "planned", "path": str(target), "old": old_sha, "new": sha,
-            "old_protected": bool(old_sha and idx.protected(old_sha))}
+            "old_protected": old_protected}
     if dry_run:
         return plan
     w = Writer({e["id"] for e in idx.events})
+    if sha not in idx.variants:
+        pt = parse_texfile(rel)
+        try:
+            ph, wd, ht = dhash(store_get(sha))
+        except Exception:
+            ph, wd, ht = "", 0, 0
+        w.add({"type": "variant", "id": det_id("variant", "install", sha, f"{mod}/Textures/{rel}"),
+               "sha": sha, "ph": ph, "w": wd, "h": ht, "kind": (provenance or {}).get("kind", "install"),
+               "loc": f"{mod}/Textures/{rel}", "date": time.strftime("%Y-%m-%d"), "mod": str(mod),
+               "res": pt["res"], "facing": pt["facing"], "mask": pt["mask"],
+               "provenance": provenance or {}, "subjects": []})
     if owner_said:
         ruling = {"id": det_id("ruling-cli", sha, owner_said), "type": "ruling",
                   "target": {"sha": sha}, "verdict": "keep", "by": "owner", "said": owner_said,
-                  "via": "art install --owner-said", "trust": "ruled", "subject_key": ""}
+                  "via": "art install (owner words)", "trust": "ruled", "subject_key": ""}
         w.add(ruling)
     if old_sha:
         store_put_file(target)                       # archive BEFORE writing
@@ -441,12 +482,81 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
     with os.fdopen(fd, "wb") as fh:
         fh.write(store_get(sha))
     os.replace(tmp, target)
-    rel_mod = str(Path(mod))
-    w.add({"type": "live", "mod": rel_mod, "rel": rel, "sha": sha, "prev": old_sha,
-           "ruling_id": ruling["id"], "reason": "install"})
+    live = {"type": "live", "mod": str(Path(mod)), "rel": rel, "sha": sha, "prev": old_sha}
+    if ruling:
+        live.update(ruling_id=ruling["id"], reason="install")
+    else:
+        live.update(reason=reason)
+    w.add(live)
     w.flush()
     plan["status"] = "installed"
     return plan
+
+
+def locate(dest) -> tuple[str, str]:
+    """A path (absolute, or relative to the clone root) to a file under some mod's
+    Textures/ -> (mod, rel) as the ledger keys them ('src/X/Mod', 'a/b.png')."""
+    root = src_root().parent.resolve()
+    p = Path(dest)
+    p = (p if p.is_absolute() else root / p).resolve()
+    try:
+        relp = p.relative_to(root).as_posix()
+    except ValueError:
+        raise Refused(f"{dest} is not inside this clone ({root})") from None
+    sp = split_texture_path(relp)
+    if not sp or not relp.startswith("src/"):
+        raise Refused(f"{dest} is not under src/**/Textures/")
+    return sp
+
+
+def install_bytes(dest, data: bytes, *, reason: str, provenance: dict | None = None,
+                  dry_run: bool = False) -> dict:
+    """The writer-side entry every art script calls INSTEAD of Image.save / shutil.copy
+    into Textures: put `data` in the store, then `install` it at `dest` on a mechanical
+    reason (refused over an owner-kept picture)."""
+    mod, rel = locate(dest)
+    if dry_run:
+        sha = sha256_bytes(data)
+        if not store_has(sha):
+            return {"status": "planned", "path": str(dest), "new": sha}
+    else:
+        sha = store_put_bytes(data)
+    return install(mod, rel, sha, reason=reason, provenance=provenance, dry_run=dry_run)
+
+
+def install_file(dest, src_png, **kw) -> dict:
+    return install_bytes(dest, Path(src_png).read_bytes(), **kw)
+
+
+def install_image(dest, img, **kw) -> dict:
+    """PIL Image -> PNG bytes -> install_bytes."""
+    import io
+    b = io.BytesIO()
+    img.save(b, "PNG")
+    return install_bytes(dest, b.getvalue(), **kw)
+
+
+def retire(dest, *, reason: str | None = None, owner_said: str | None = None) -> dict:
+    """Remove a Textures file through the ledger: archive, delete, `live` with sha None."""
+    mod, rel = locate(dest)
+    target = src_root().parent / mod / "Textures" / rel
+    if not target.is_file():
+        return {"status": "absent", "path": str(target)}
+    idx = Index()
+    old = sha256_file(target)
+    if idx.protected(old) and not owner_said:
+        raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words")
+    if not (owner_said or is_mechanical_reason(reason)):
+        raise Refused("retire needs the owner's words or a mechanical reason")
+    store_put_file(target)
+    if not store_has(old):
+        raise Refused("archive did not verify — nothing removed")
+    target.unlink()
+    ev = {"type": "live", "mod": mod, "rel": rel, "sha": None, "prev": old, "reason": reason or "retire"}
+    if owner_said:
+        ev["said"] = owner_said
+    append(ev)
+    return {"status": "retired", "path": str(target), "old": old}
 
 
 # ─────────────────────────────────────────────────────────────── purging ──
