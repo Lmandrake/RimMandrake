@@ -10,7 +10,8 @@ Sources: `src/RimMandrake/Pyrinth/About/About.xml`, `Defs/Absorbed_EpochsPyrinth
 - The pyrinth defNames (ore, items, furniture, blade, effects) resolve live; a bogus name reads notFound. → defs_resolve.every_deployed_def_resolves
 - The mineable ore yields `DV_Pyrinth` at the XML's yield. → ore_and_donor_identity.mineable_ore_yield_matches_xml
 - THIS pack, not the donor, supplied the defs. → ore_and_donor_identity.this_mod_is_the_loaded_copy (UNMEASURED)
-- Furniture glow/heat/meditation, blade, MO and Royalty patches. → furniture_and_weapon.* (UNMEASURED)
+- The torch/wall torch/pylon/heater glow and heat (heater > pylon > torch, wall torch dimmer), the three flames give Flame meditation focus and count each other, the spark effecters resolve to attached motes that fire, the blade's three tools hit and its edge and point sear, and every reference and patch target resolves inside the pack. → furniture_and_weapon.torch_family_glows_heats_and_carries_the_ladder, .flame_furniture_gives_meditation_focus, .spark_effecters_resolve_to_attached_motes_that_fire, .pyrinth_blade_tools_hit_and_the_edge_and_point_sear, .every_reference_and_patch_target_resolves_inside_the_pack (static over the effective shipped XML; selftest_pyrinth_semantics.py)
+- Built-instance glow/heat in play, blade damage in a fight, MO and Royalty patch live effect. → furniture_and_weapon.* stubs (UNMEASURED)
 
 ## the walk
 1. [D] `jawa/get_defs` over every def derived from `Defs/**/*.xml`   # defs_resolve
