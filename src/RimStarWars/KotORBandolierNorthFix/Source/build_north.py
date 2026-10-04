@@ -59,6 +59,12 @@ import sys
 from collections import deque
 
 from PIL import Image, ImageDraw, ImageFilter
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
          "3254370945/Textures/SWApparel/Accessories")
@@ -231,9 +237,9 @@ def build():
             # facing, so the mask is a plain tint field. The author ships his own
             # north masks as a 16x16 solid red; this is the same thing at the
             # art's own canvas, where it cannot be mistaken for a truncated file.
-            Image.new("RGBA", south.size, (255, 0, 0, 255)).save(
+            _tw.save(Image.new("RGBA", south.size, (255, 0, 0, 255)),
                 os.path.join(out_dir, f"Apparel_{body}_northm.png"))
-            north.save(os.path.join(out_dir, f"Apparel_{body}_north.png"))
+            _tw.save(north, os.path.join(out_dir, f"Apparel_{body}_north.png"))
 
             made.append((s, body, changed, alpha_count(south)))
             cells.append((f"{s.split('_')[1]} {body}", south, north))

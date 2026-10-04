@@ -50,6 +50,12 @@ import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pnglib import measure, contact_sheet, PngError          # noqa: E402
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD_ROOT = os.path.dirname(HERE)
@@ -193,7 +199,7 @@ def grab(def_name, quiet=False):
         if not os.path.isfile(src):
             missing.append(fn); continue
         dst = os.path.join(restored, fn)
-        shutil.copy2(src, dst)
+        _tw.copy(src, dst)
         copied.append(fn)
         try:
             m = measure(dst)

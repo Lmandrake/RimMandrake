@@ -57,6 +57,12 @@ def main():
     check(("src/Fix", "A/Two.png") in idx.live, "save installs via the ledger")
     check((tex / "Three.dds").read_bytes() == b"not a png" and tw.counts["plain"] == 1, "non-PNG copied plainly")
     check(tw.counts["installed"] == 2, "counts installs")
+    tw.save(Image.new("RGB", (4, 4)), tmp / "preview" / "sheet.png", optimize=True)
+    tw.save(Image.new("RGB", (4, 4)), tmp / "preview" / "bg.jpg", "JPEG", quality=90)
+    check((tmp / "preview" / "sheet.png").is_file() and (tmp / "preview" / "bg.jpg").is_file()
+          and tw.counts["installed"] == 2, "a non-Textures path is written plainly (sheet, JPEG)")
+    check(not tw.put(red, "/elsewhere/Mod/Textures/X.png") and tw.counts["kept"] == 1,
+          "a PNG aimed at another repo's Textures/ is refused")
 
     tw2 = TextureWriter(__file__)
     tw2.copy(srcf, tex / "One_south.png")
@@ -75,6 +81,7 @@ def main():
     check(L.store_has(idx.live[("src/Fix", "A/Two.png")]["sha"]), "retired picture is archived")
     check(("src/Fix", "A/Two.png") not in L.Index().live, "retire recorded (no longer live)")
     check(tw3.report() == 1, "report returns the refusal count")
+    check((tmp / "preview" / "sheet.png").is_file(), "sync stays inside the dir it was given")
 
     print("\nALL PASS" if not FAILS else f"\n{len(FAILS)} FAIL")
     return 1 if FAILS else 0

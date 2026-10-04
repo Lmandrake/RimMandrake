@@ -39,6 +39,12 @@ import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from absorption_content_fixes import apply_content_fixes  # noqa: E402
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 
 def _find_repo_root(start):
@@ -152,7 +158,7 @@ def _copy_sibling_frames(tex_path, src, base_dir, stem):
                 d2 = os.path.join(TEX_ROOT, rel.replace("/", os.sep) + fext)
                 if not os.path.isfile(d2):
                     os.makedirs(os.path.dirname(d2), exist_ok=True)
-                    shutil.copyfile(os.path.join(base_dir, fn), d2)
+                    _tw.copy(os.path.join(base_dir, fn), d2)
                 copied += 1
     return copied
 
@@ -168,7 +174,7 @@ def find_and_copy_texture(tex_path, src_tex_root, seen, missing):
         if os.path.isfile(src):
             dst = os.path.join(TEX_ROOT, tex_path.replace("/", os.sep) + ext)
             os.makedirs(os.path.dirname(dst), exist_ok=True)
-            shutil.copyfile(src, dst)
+            _tw.copy(src, dst)
             seen.add(tex_path)
             _copy_sibling_frames(tex_path, src, base_dir, stem)
             return
@@ -187,7 +193,7 @@ def find_and_copy_texture(tex_path, src_tex_root, seen, missing):
                 d2 = os.path.join(TEX_ROOT, tex_path.replace("/", os.sep), fn)
                 if not os.path.isfile(d2):
                     os.makedirs(os.path.dirname(d2), exist_ok=True)
-                    shutil.copyfile(os.path.join(src_as_dir, fn), d2)
+                    _tw.copy(os.path.join(src_as_dir, fn), d2)
                 n += 1
     if n:
         seen.add(tex_path)

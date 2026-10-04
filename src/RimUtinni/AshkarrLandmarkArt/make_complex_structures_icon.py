@@ -25,6 +25,12 @@ same icon and there is no seed that could roll a different one.
 """
 import os
 from PIL import Image, ImageDraw
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "Textures", "World", "Landmarks", "Ashkarr",
@@ -86,7 +92,7 @@ def main():
         ox, oy = (i % 2) * CELL, (i // 2) * CELL
         draw_variant(d, ox, oy, nodes, links)
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    img.save(OUT)
+    _tw.save(img, OUT)
     print("wrote %s  %s" % (OUT, img.size))
 
 

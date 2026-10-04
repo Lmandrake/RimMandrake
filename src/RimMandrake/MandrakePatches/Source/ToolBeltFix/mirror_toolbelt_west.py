@@ -37,6 +37,12 @@ donor or the donor's blank file wins and the repair is invisible.
 """
 import os, sys
 from PIL import Image
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 WS = r"C:\Program Files (x86)\Steam\steamapps\workshop\content\294100"
 VAEA = "2521176396"                    # Vanilla Apparel Expanded - Accessories
@@ -65,7 +71,7 @@ if cov < 1.0:
 
 out = os.path.join(OUT, REL + "_west.png")
 os.makedirs(os.path.dirname(out), exist_ok=True)
-im.transpose(Image.FLIP_LEFT_RIGHT).save(out, "PNG", optimize=True)
+_tw.save(im.transpose(Image.FLIP_LEFT_RIGHT), out, "PNG", optimize=True)
 chk = Image.open(out).convert("RGBA")
 print(f"  {os.path.basename(out):<20} {chk.width}x{chk.height}  "
       f"{os.path.getsize(out):>6} B  coverage={coverage(chk):5.2f}%  "

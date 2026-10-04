@@ -21,6 +21,12 @@ Then:  python3 gen_bg.py   # crops+upscales the raws to the shipped finals
 """
 import os
 from PIL import Image
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
@@ -69,9 +75,9 @@ def crop_to_16x9_and_upscale(src, dst, w=2560, h=1440, jpg=False):
     im = im.resize((w, h), Image.LANCZOS)
     os.makedirs(os.path.dirname(dst), exist_ok=True)
     if jpg:
-        im.save(dst, "JPEG", quality=92)
+        _tw.save(im, dst, "JPEG", quality=92)
     else:
-        im.save(dst, "PNG")
+        _tw.save(im, dst, "PNG")
     print(f"{os.path.relpath(dst, MOD)}: {im.size}")
 
 if __name__ == "__main__":

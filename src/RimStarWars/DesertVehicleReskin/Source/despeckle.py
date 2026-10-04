@@ -47,6 +47,12 @@ import glob
 import os
 import sys
 from collections import deque
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 try:
     from PIL import Image
@@ -115,7 +121,7 @@ def clean(path: str, apply: bool) -> tuple[int, int, list[str]]:
         if apply:
             arr[ys, xs] = (0, 0, 0, 0)
     if apply and removed:
-        Image.fromarray(arr, "RGBA").save(path)
+        _tw.save(Image.fromarray(arr, "RGBA"), path)
     return removed, pixels, kept
 
 

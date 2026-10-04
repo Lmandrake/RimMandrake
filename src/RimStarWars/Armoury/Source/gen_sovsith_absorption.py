@@ -36,6 +36,12 @@ import os
 import shutil
 import sys
 import xml.etree.ElementTree as ET
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 
 def _find_repo_root(start):
@@ -174,7 +180,7 @@ def _copy_one(rel_stem_with_ext, src_root, dst_root):
     src = os.path.join(src_root, rel_stem_with_ext.replace("/", os.sep))
     dst = os.path.join(dst_root, rel_stem_with_ext.replace("/", os.sep))
     os.makedirs(os.path.dirname(dst), exist_ok=True)
-    shutil.copyfile(src, dst)
+    _tw.copy(src, dst)
 
 
 def find_and_copy_texture(tex_path, seen, missing):
@@ -234,7 +240,7 @@ def copy_language_files(rel_path, seen, missing):
     if os.path.isfile(src):
         dst = os.path.join(LANG_ROOT, rel_path.replace("/", os.sep) + ".txt")
         os.makedirs(os.path.dirname(dst), exist_ok=True)
-        shutil.copyfile(src, dst)
+        _tw.copy(src, dst)
         seen.add(rel_path)
         return
     missing.add(rel_path)

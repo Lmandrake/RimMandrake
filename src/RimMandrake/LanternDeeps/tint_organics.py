@@ -13,6 +13,12 @@ Crystals/, Chunks/, Item/, Natural/ or Terrains/.
 import argparse, glob, os, sys
 import numpy as np
 from PIL import Image, ImageDraw
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "Textures", "RM_LanternDeeps", "Things", "Plant")
@@ -55,7 +61,7 @@ def main():
         before = Image.open(f).convert("RGBA")
         after = shift(before)
         if args.apply:
-            after.save(f)
+            _tw.save(after, f)
         tiles.append((os.path.relpath(f, ROOT), before.resize((128, 128)), after.resize((128, 128))))
         print(("shifted " if args.apply else "would shift ") + os.path.relpath(f, HERE))
     if args.sheet:
