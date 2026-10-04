@@ -762,6 +762,9 @@ def apply_overrides(bytype, texhits):
 def copy_textures(texhits, texidx, dry=False):
     """Every directional variant, not just the base name -- a body or head that
     ships only `_south` here renders from nothing in three of four facings."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "art"))
+    from artwrite import TextureWriter     # ART_VERSION_WRANGLING_1: the only writer into Textures/
+    tw = TextureWriter(__file__)
     n_files = 0
     for tag, p in sorted(texhits):
         m = texidx[tag]
@@ -783,10 +786,9 @@ def copy_textures(texhits, texidx, dry=False):
             n_files += 1
             if dry:
                 continue
-            os.makedirs(os.path.dirname(dst), exist_ok=True)
-            if not os.path.isfile(dst) or \
-                    os.path.getsize(dst) != os.path.getsize(s):
-                shutil.copyfile(s, dst)
+            tw.copy(s, dst)        # through the art ledger: archived, owner keeps never replaced
+    if not dry:
+        tw.report()
     return n_files
 
 

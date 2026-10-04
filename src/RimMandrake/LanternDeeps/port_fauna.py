@@ -6,7 +6,7 @@ texture / sound paths at this mod. Re-runnable: it rewrites Defs/Fauna/*.xml,
 Textures/RM_LanternDeeps/Fauna and Sounds/RM_LanternDeeps/Fauna from the SWBestiary source.
 Run from anywhere:  python3 port_fauna.py
 """
-import xml.etree.ElementTree as ET, glob, re, os, shutil
+import xml.etree.ElementTree as ET, glob, re, os, shutil, sys
 from collections import defaultdict
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -49,8 +49,13 @@ snd_src = os.path.join(SW, 'Sounds')
 out_defs = os.path.join(HERE, 'Defs', 'Fauna')
 out_tex = os.path.join(HERE, 'Textures', 'RM_LanternDeeps', 'Fauna')
 out_snd = os.path.join(HERE, 'Sounds', 'RM_LanternDeeps', 'Fauna')
-for p in (out_defs, out_tex, out_snd):
+for p in (out_defs, out_snd):
     shutil.rmtree(p, ignore_errors=True); os.makedirs(p)
+# Textures go through the art ledger (ART_VERSION_WRANGLING_1): no rmtree; stale PNGs are
+# retired by tw.sync() after the run, and an owner-kept picture is never overwritten.
+sys.path.insert(0, os.path.join(HERE, '..', 'Utils', 'art'))
+from artwrite import TextureWriter
+tw = TextureWriter(__file__)
 
 copied = {'tex': 0, 'snd': 0}
 def copy_tex(path):
@@ -61,7 +66,7 @@ def copy_tex(path):
         rel = path[len(TEX_OLD):]
         for s, f in files:
             os.makedirs(os.path.join(out_tex, rel), exist_ok=True)
-            shutil.copy2(s, os.path.join(out_tex, rel, f)); copied['tex'] += 1
+            tw.copy(s, os.path.join(out_tex, rel, f)); copied['tex'] += 1
         return
     d, b = os.path.split(base)
     hits = [f for f in os.listdir(d) if f == b + '.png' or f.startswith(b + '_')]
@@ -69,7 +74,7 @@ def copy_tex(path):
     rel = os.path.dirname(path[len(TEX_OLD):])
     os.makedirs(os.path.join(out_tex, rel), exist_ok=True)
     for f in hits:
-        shutil.copy2(os.path.join(d, f), os.path.join(out_tex, rel, f)); copied['tex'] += 1
+        tw.copy(os.path.join(d, f), os.path.join(out_tex, rel, f)); copied['tex'] += 1
 def copy_snd(path):
     base = os.path.join(snd_src, path)
     assert os.path.isdir(base), base
@@ -108,4 +113,5 @@ for grp, ds in groups.items():
     ET.ElementTree(root).write(os.path.join(out_defs, 'RM_LanternDeeps_Fauna_%s.xml' % grp),
                                encoding='utf-8', xml_declaration=True)
 bad = [p for p in glob.glob(out_defs + '/*.xml') if 'RSW_' in open(p, encoding='utf8').read()]
+tw.sync(out_tex); tw.report()
 print('defs', len(seen), 'groups', {g: len(v) for g, v in groups.items()}, 'copied', copied, 'RSW left in', bad)
