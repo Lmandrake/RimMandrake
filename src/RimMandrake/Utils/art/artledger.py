@@ -353,7 +353,10 @@ class Index:
         key = (ev["mod"], ev["rel"])
         cur = self.live.get(key)
         if cur is None or ev.get("prev") == cur.get("sha") or ev.get("ts", "") >= cur.get("ts", ""):
-            self.live[key] = ev
+            if ev.get("sha") is None:           # retire: the file was archived and removed
+                self.live.pop(key, None)
+            else:
+                self.live[key] = ev
 
     def protected(self, sha: str) -> list[dict]:
         """Owner keeps with real provenance that name this sha and are not released."""
