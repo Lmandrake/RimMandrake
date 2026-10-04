@@ -156,6 +156,7 @@ namespace RimMandrake.FlowWorks
 				touchesEdge,
 				found.Count,
 				RimMandrakeFlowWorksSettings.MinLimitlessBodyCells);
+			body.fluid = RM_FluidIdentity.FluidOfTerrain(map.terrainGrid.TerrainAt(seed)) ?? RimMandrakeFlowWorks_DefOf.RM_Fluid_Water;
 			FluidDef fluid = owner.ActiveFluid;
 			body.capacity = RM_StockMath.BodyCapacity(
 				found.Count,

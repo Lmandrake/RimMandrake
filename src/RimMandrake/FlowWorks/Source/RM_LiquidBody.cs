@@ -56,6 +56,11 @@ namespace RimMandrake.FlowWorks
 		/// cells in a save file.</summary>
 		public bool truncated;
 
+		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 step 1: which liquid this body is, set ONCE in FormBody from its
+		/// base terrain (LiquidDef.terrainSuite -> canalFluid, fallback water) and sticky like `limitless`. Stored
+		/// only in this pass; readers still use the map's ActiveFluid until step 3 retires it.</summary>
+		public FluidDef fluid;
+
 		public RM_LiquidBody()
 		{
 		}
@@ -78,6 +83,7 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref stock, "stock", 0f);
 			Scribe_Values.Look(ref capacity, "capacity", 0f);
 			Scribe_Values.Look(ref truncated, "truncated", false);
+			Scribe_Defs.Look(ref fluid, "fluid");
 			Scribe_Collections.Look(ref cells, "cells", LookMode.Value);
 			Scribe_Collections.Look(ref receded, "receded", LookMode.Value);
 			if (Scribe.mode == LoadSaveMode.PostLoadInit)

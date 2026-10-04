@@ -46,6 +46,15 @@ namespace RimMandrake.FlowWorks
 		/// arrives with it, not here. Null until the first pulse resolves it.</summary>
 		private FluidDef activeFluid;
 
+		/// <summary>LIQUID_BODY_FLUID_IDENTITY_1 step 1. Per-cell liquid identity beside D and F: 0 = none, else
+		/// 1 + an index into <see cref="fluidPalette"/>. A pit is not an RM_LiquidBody (its component is re-found
+		/// every pulse), so identity has to live per cell. This pass only RECORDS it (SyncFluidIdentity stamps the
+		/// map's ActiveFluid where F &gt; 0 and clears where F == 0); the no-mix filter in PickDonor and the retirement
+		/// of ActiveFluid at every reader are steps 2-3 of the item.</summary>
+		private byte[] fluidGrid;
+
+		private List<FluidDef> fluidPalette = new List<FluidDef>();
+
 		private int nextPulseTick = -1;
 
 		/// <summary>PHASE 4. The map's memory of what a cell was before FlowWorks
@@ -209,6 +218,78 @@ namespace RimMandrake.FlowWorks
 			{
 				fillGrid = new byte[cells];
 			}
+			if (fluidGrid == null || fluidGrid.Length != cells)
+			{
+				fluidGrid = new byte[cells];
+			}
+			if (fluidPalette == null)
+			{
+				fluidPalette = new List<FluidDef>();
+			}
+		}
+
+		// ── fluid identity (LIQUID_BODY_FLUID_IDENTITY_1) ─────────────────
+
+		/// <summary>The liquid recorded on a cell, or null for a dry/unrecorded cell.</summary>
+		public FluidDef FluidAt(IntVec3 c)
+		{
+			if (fluidGrid == null || !c.InBounds(map))
+			{
+				return null;
+			}
+			int k = fluidGrid[map.cellIndices.CellToIndex(c)];
+			return k == 0 || k > fluidPalette.Count ? null : fluidPalette[k - 1];
+		}
+
+		private byte PaletteKey(FluidDef fluid)
+		{
+			if (fluid == null)
+			{
+				return 0;
+			}
+			int i = fluidPalette.IndexOf(fluid);
+			if (i < 0)
+			{
+				if (fluidPalette.Count >= 254)
+				{
+					return 0;
+				}
+				fluidPalette.Add(fluid);
+				i = fluidPalette.Count - 1;
+			}
+			return (byte)(i + 1);
+		}
+
+		/// <summary>Stamps the map's ActiveFluid on every excavated cell whose F went 0 -&gt; &gt;0 without a record
+		/// and clears the record where F is 0. Also the save migration (step 4): a save with no fluidGrid loads an
+		/// all-zero grid and this stamps every wet cell. Bodies with no fluid (an old save) take ActiveFluid too.
+		/// Behaviour-neutral: nothing reads the grid to decide flow yet.</summary>
+		internal void SyncFluidIdentity()
+		{
+			EnsureGrids();
+			byte active = PaletteKey(ActiveFluid);
+			foreach (IntVec3 c in excavatedCells)
+			{
+				int i = map.cellIndices.CellToIndex(c);
+				if (fillGrid[i] == 0)
+				{
+					fluidGrid[i] = 0;
+				}
+				else if (fluidGrid[i] == 0)
+				{
+					fluidGrid[i] = active;
+				}
+			}
+			if (stock != null)
+			{
+				foreach (RM_LiquidBody b in stock.Bodies)
+				{
+					if (b.fluid == null)
+					{
+						b.fluid = ActiveFluid;
+					}
+				}
+			}
 		}
 
 		public override void ExposeData()
@@ -221,6 +302,8 @@ namespace RimMandrake.FlowWorks
 			// internally, so callers do not guard on it.
 			DataExposeUtility.LookByteArray(ref depthGrid, "RM_excavationDepthGrid");
 			DataExposeUtility.LookByteArray(ref fillGrid, "RM_excavationFillGrid");
+			DataExposeUtility.LookByteArray(ref fluidGrid, "RM_excavationFluidGrid");
+			Scribe_Collections.Look(ref fluidPalette, "RM_excavationFluidPalette", LookMode.Def);
 			Scribe_Defs.Look(ref activeFluid, "RM_activeFluid");
 			Scribe_Values.Look(ref nextPulseTick, "RM_nextPulseTick", -1);
 			Scribe_Values.Look(ref overflowDestroyedTotal, "RM_overflowDestroyedTotal", 0f);
@@ -267,6 +350,7 @@ namespace RimMandrake.FlowWorks
 				stock = new RM_LiquidStock();
 			}
 			stock.RebuildIndex(map);
+			SyncFluidIdentity();
 			// SUPERDEEP_HOLDER_RETIRE_1: a save written while the holder Thing
 			// existed carries RM_SuperdeepPit Things; the def is gone, so the
 			// loader drops them ("Could not load reference") — nothing to shed.
@@ -825,6 +909,7 @@ namespace RimMandrake.FlowWorks
 					MaxComponentCells);
 				ResolveComponent();
 			}
+			SyncFluidIdentity();
 		}
 
 		private System.Predicate<IntVec3> isSourcePredicateCache;
