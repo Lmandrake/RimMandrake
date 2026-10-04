@@ -6,10 +6,11 @@ toggle must gate mechanics, not only worldgen).
 
 ## acceptance (gaps MEASURED 2026-09-30)
 
-- [ ] **`RUT_Ashwallow` gets art.** Its texPath `Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow`
-      has no file in the repo or in the deployed UtinniPatches. Search `_artsrc`/`done/` first.
-- [ ] **`RUT_Emberscythe` off placeholder vanilla Megascarab art.** `emberscythe_v1_*` already
-      sits in `infrastructure/artpipe/done/`; check for an owner ruling before any regen.
+- [x] **Ashwallow has art.** It is `RM_Ashwallow` now, and its three facings sit under
+      `src/RimMandrake/Pyrelands/Textures/Things/Pawn/Animal/Pyrelands/Ashwallow/` (checked 2026-10-04).
+- [x] **`RM_Emberscythe` is off the Megascarab placeholder.** `emberscythe_v1` (kept on the 2026-09-12
+      art review sheet) is wired at `Textures/Things/Pawn/Animal/Pyrelands/Emberscythe/` (2026-10-04). Only the
+      dessicated graphic still borrows Megascarab's.
 - [ ] `BARBSLINGER_SCORPION_REDESIGN_1` closed. The FireHawk flight frames are judged in an
       owner-present session (`FIREHAWK_FLIGHT_BEHAVIOR_1`), never by an unattended hunt.
 - [ ] Code review CLEAN. Currently DIRTY:
