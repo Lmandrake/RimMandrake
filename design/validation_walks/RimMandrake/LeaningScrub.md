@@ -60,6 +60,9 @@ Venomvine rooms, the runway bloom, sweetline trees
 - With `crownMobEnabled` off they do not. → crown.crown_toggle_off_stays_away
 - A person walking through the canopy sets off the bloom: crustweevils, fuzzrunners, dustflutters and visslers take Flee jobs; visslers drop `RM_VisslerArm`. → bloom.bloom_answers_a_walker
 - With `runwayBloomEnabled` off nothing answers. → bloom.bloom_toggle_off_quiet
+- Fire-stamping (part 5, first half): two open fires send no stamper; a cluster of six open fires sends every wild, awake stamper (a creature carrying `RM_FireStamperExtension`; the thunderstep gets it from UtinniPatches) toward the blaze; a stamper within 2.9 cells puts fires out. Thresholds PROVISIONAL (5 fires, 6-cell cluster). → stamp.stamp_answers_a_blaze
+- With `fireStampEnabled` off the herd ignores fire. → stamp.stamp_toggle_off_ignores_fire
+- Roofed or indoor fires never count; the stomp damages what was burning; one message per blaze. → UNCOVERED: the proof hook reads only open fires on open ground; roof/room exclusion and stomp damage are read from source (`RM_FireStamp.cs` IsOpenFire/Stomp)
 - A sweetline tree carries a generated name (its label) and a wool-timer line in its inspect text. → sweetline.station_named_and_timed
 - With `sweetlineStationsEnabled` off the tree reads as a plain sweetline tree. → sweetline.station_toggle_off_plain
 - A mature sweetline tree sheds 5 `RM_SweetlineWool` beside its trunk once its timer has passed. → sweetline.station_sheds_wool

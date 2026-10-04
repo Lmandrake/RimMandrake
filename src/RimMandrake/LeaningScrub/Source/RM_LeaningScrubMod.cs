@@ -93,6 +93,9 @@ namespace RimMandrake.LeaningScrub
         // LEANINGSCRUB_VISSLER_ARM_SCAVENGERS_1 (RM_VisslerArm.cs)
         public static bool visslerArmFoodEnabled = true;
 
+        // LEANINGSCRUB_MECHANICS_BUILD_1 part 5 (RM_FireStamp.cs).
+        public static bool fireStampEnabled = true;
+
         private static Vector2 scroll;
         private static float viewHeight = 900f;
 
@@ -138,6 +141,7 @@ namespace RimMandrake.LeaningScrub
             Scribe_Values.Look(ref sweetlineFeltComfortEnabled, "sweetlineFeltComfortEnabled", true, true);
             Scribe_Values.Look(ref sweetlineFeltApparelEnabled, "sweetlineFeltApparelEnabled", true, true);
             Scribe_Values.Look(ref visslerArmFoodEnabled, "visslerArmFoodEnabled", true, true);
+            Scribe_Values.Look(ref fireStampEnabled, "fireStampEnabled", true, true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -294,6 +298,11 @@ namespace RimMandrake.LeaningScrub
                 "A shed vissler arm is meat: hungry wild predators, scavengers and omnivores come "
                 + "to it and eat it, and it rots in about six days. Off: arms are inedible trade goods "
                 + "that never rot (the arm's rot timer is a def field; off stops the eating only).");
+
+            list.CheckboxLabeled("Giants stamp out open fires", ref fireStampEnabled,
+                "A blaze of five or more open fires close together (not under a roof or indoors; stoves "
+                + "and campfires never count) draws every wild giant that hates fire on the map to stamp "
+                + "it out, crushing whatever was burning. Off: the herds ignore fire.");
 
             viewHeight = list.CurHeight + 20f;
             list.End();

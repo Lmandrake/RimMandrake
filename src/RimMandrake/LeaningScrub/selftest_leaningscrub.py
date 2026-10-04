@@ -334,6 +334,13 @@ class Fake(object):
                 "things": [dict(t) for t in rows[:limit]]}
 
     def t_static_call(self, type=None, method=None, args="", **k):
+        if method == "ProofStamp":
+            on = (args != "off" and "stamp_never" not in self.broken) or (args == "off" and "stamp_ignores_toggle" in self.broken)
+            if args != "off":
+                return {"success": True, "result": ("PASS sent=1 stamped=2" if on else
+                                                     "FAIL: a six-fire blaze sent no stamper toward it")}
+            return {"success": True, "result": ("FAIL: fireStampEnabled off but the herd answered" if on
+                                                 else "PASS off sent=0 stamped=0")}
         if method == "ProofComfortDelta":
             on = self.on("sweetlineFeltComfortEnabled") or "comfort_ignores_toggle" in self.broken
             d = 0.10 if on and "no_comfort" not in self.broken else 0.0
@@ -526,6 +533,8 @@ BREAKS = {
     "visitors_ignore_toggle": "sweetline.visitors_toggle_off_quiet",
     "no_visits": "sweetline.visitors_come_and_leave_marks",
     "log_error": "log.log_clean",
+    "stamp_never": "stamp.stamp_answers_a_blaze",
+    "stamp_ignores_toggle": "stamp.stamp_toggle_off_ignores_fire",
 }
 
 

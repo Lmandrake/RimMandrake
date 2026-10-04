@@ -71,6 +71,7 @@
     <Compile Include="RM_SweetlineScratching.cs" />
     <Compile Include="RM_GenStep_SweetlineTrees.cs" />
     <Compile Include="RM_SweetlineFelt.cs" />
+    <Compile Include="RM_FireStamp.cs" />
   </ItemGroup>
 
   <ItemGroup>
