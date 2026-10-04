@@ -1,0 +1,436 @@
+{
+ "built": "2026-10-04T08:16:09-0700",
+ "loadOrder": "ModsConfig.xml 638 active, modified 2026-10-04 04:38",
+ "rows": {
+  "swanimals/Bantha/BanthaW": {
+   "columns": {
+    "A": {
+     "east": "01c401b413258699f664f7aa5e57a1a3a48cb5f23d999c7463bd142d62b42959",
+     "north": "eb2d9a95561181eb59dbb31dac27fa993f7ea5a2cd2885e910763019a4cbfdd7",
+     "south": "7b1fbfb715d9e53e06322c00ad5f5644787e09b77795e4749cb9f416ab2ff4cc"
+    },
+    "B": {
+     "east": "bbbf4a6404e8cc0e45692e638150ce7facdf0614dd31fb73f537fb1d4f40e1a8",
+     "north": "5c6c925af9fe6837cb441c74d9aef0339fc31938c1baf1f7a9ae8a7fc4205e47",
+     "south": "9d5476d23d82bd405e195c1a6b0a00b07325db880e93886af0e6f140737b9076"
+    },
+    "C": {
+     "east": "4211aef404d352faa2c371c6148991f3ede159ae53ebaa52a70d90ba8689acce",
+     "north": "180410ff27f77194026df59b76551860bb8ea7c98d637b8ae32bbe9e096e4169",
+     "south": "66fafe41129a51519c705af64630f8cd2b4e769a405806495843448706d5e9b6"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_bantha"
+   },
+   "res": "swanimals/Bantha/BanthaW",
+   "subject_key": "bantha"
+  },
+  "swanimals/Bantha/BanthaW_j": {
+   "columns": {
+    "A": {
+     "east": "6ec05e049ec6c0e01e4acfff0214b3e6e71d79f83d3fa076c1768f5cee6faa61",
+     "north": "cd19965295c9404aad0435a1517a5cbc927449f3996e10c33063f0ecad4fbb0c",
+     "south": "e39eb240a2d3fe1372ff2c5dab6d035b52b876b728862a5cdc470f59ea0d9f5c"
+    },
+    "B": {
+     "east": "bbbf4a6404e8cc0e45692e638150ce7facdf0614dd31fb73f537fb1d4f40e1a8",
+     "north": "5c6c925af9fe6837cb441c74d9aef0339fc31938c1baf1f7a9ae8a7fc4205e47",
+     "south": "9d5476d23d82bd405e195c1a6b0a00b07325db880e93886af0e6f140737b9076"
+    },
+    "C": {
+     "east": "4211aef404d352faa2c371c6148991f3ede159ae53ebaa52a70d90ba8689acce",
+     "north": "180410ff27f77194026df59b76551860bb8ea7c98d637b8ae32bbe9e096e4169",
+     "south": "66fafe41129a51519c705af64630f8cd2b4e769a405806495843448706d5e9b6"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_bantha"
+   },
+   "res": "swanimals/Bantha/BanthaW_j",
+   "subject_key": "bantha"
+  },
+  "swanimals/Dalgo/Dalgo": {
+   "columns": {
+    "A": {
+     "east": "59600ba22d28a0d6dfd1a17bfa443a560368b3cffc4a96648b8102f8e20638f4",
+     "north": "5fbbc26d986460617ff6994ebb504f98c8b3b280ff6f3303fa47828697141998",
+     "south": "01701e6929f442a7af8bb4e475c2cf777cb83245541a4f640f179b3ed2fd208d"
+    },
+    "B": {
+     "east": "3c899a7822f892fca6000caf78c46ba1069e4eb9dd137124d214bbb31ec277dc",
+     "north": "44f229222949dc126256abcc6f685e704cefb4d0d060ee599bd71920e60d3ef8",
+     "south": "44802e3e140bae63a3424eddec749187e285f3caa0b89a6f124f73376f6a7a2f"
+    },
+    "C": {
+     "east": "328c71d44c7c4f4505a461304e61496d796f4c2168c27860c78e722a705c2a7a",
+     "north": "9e0d33f13e0ed8ab7ff57735410e63716ef012779f8e8d6c823f990ed84ffe83",
+     "south": "09fb257cfcfaec36e7e2afd694aebe7cf9a531e79d94fba60649bc758fdc6020"
+    },
+    "D": {
+     "east": "643948896b78d9de069d59cdc0bb992c9f654e5a8c4fb67f5db527079cdff79c",
+     "north": "4d9a16d4e273cf5e0ceb2c1cf1bc338186e20b039411d15279cc104728c8e3cf",
+     "south": "d225abbb3e1d8abf6ef216f11bb42be0c4c7c11c0870b4a9cf9a872177960b03"
+    },
+    "E": {
+     "east": "bad7d8226b8670e33a087cfa443ff8d797c80c5613cc614917489480c04f4792",
+     "north": "cc17fdc77fd524ef160b8f5631987d489b4e1f74e2017c0620a3333ce6d9ee8d",
+     "south": "11617c1a94d5fbca848d4ee4b6f92f45055b5a30953c3d4f16c2030a45290bbd"
+    },
+    "F": {
+     "east": "002e2f698d87a21626bb963cca4e225c0d2f0d73cfcc5dc95d01697db823f204",
+     "north": "1964cc764f572ca1b7a07774ab481787e769f72cd941ffb688ef792eb45e4b5c",
+     "south": "cb0f2dfa7a1c974d20a5fadd6c55b561bcc32bf866b9997555e8a895c4ab15e4"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 DalgoArtOverride",
+    "C": "render pyrelands_dalgo_v1",
+    "D": "history DalgoArtOverride 2026-09-14",
+    "E": "history DalgoArtOverride 2026-09-17",
+    "F": "donor original mlie.starwarsanimalcollection"
+   },
+   "res": "swanimals/Dalgo/Dalgo",
+   "subject_key": "dalgo"
+  },
+  "swanimals/Eopie/Eopie": {
+   "columns": {
+    "A": {
+     "east": "175b5632c893c4df8e6ee71932e4113efa20826dbae97003f6a70b80a1c9b5d1",
+     "north": "42f39bfebf676e8dbb530025d7adca91170aecf7797363446ec75dd95e90a1a6",
+     "south": "65248648d1d1ed3398fbdba10379c8882d52653044bdaa7d07cb0a3fcd4d4bf8"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/Eopie",
+   "subject_key": "eopie"
+  },
+  "swanimals/Eopie/EopieA": {
+   "columns": {
+    "A": {
+     "east": "59067cd6d7fbe098e30da291ef846200b60efe1930d9acfeef3b516ff3286a01",
+     "north": "fce4799b03ba2f24c8d9f0ff56517674ea3a802fceec841010d848a384b0a7fa",
+     "south": "cfba411c2e4ea908472e8720051d67e1c57fb5fafb981579cc4e2cc2470a50fa"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/EopieA",
+   "subject_key": "eopie"
+  },
+  "swanimals/Eopie/EopieB": {
+   "columns": {
+    "A": {
+     "east": "99faa30057d94f19a797687ee52f74f43baf9c8ee5ddba9a48a073c81c9da950",
+     "north": "3e83748424af197db789e9aa1493093a8eeb806fc2e60c1cd2f4391b57f83503",
+     "south": "c3a0a590550448ca2df0544da93eccf3662dd1a204b252e7866ca1b00cc33e22"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/EopieB",
+   "subject_key": "eopie"
+  },
+  "swanimals/Eopie/EopieC": {
+   "columns": {
+    "A": {
+     "east": "54493ac7ffcac192c5f5b347a3179c3567ef70a04a4a69ce2b274119971ed53b",
+     "north": "e978981336e1d4ee13179b4ce515c34815029726ac892c497b88e6bbc20f1e84",
+     "south": "c95dc5184653b0023bf7a12f2b14e805175357bd9f4d0387b981fae9bd709cde"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/EopieC",
+   "subject_key": "eopie"
+  },
+  "swanimals/Eopie/EopieD": {
+   "columns": {
+    "A": {
+     "east": "f72f365c8199de22c3bc41488ed579a8f806c1560782cc9a4d09a6ce4469445f",
+     "north": "21302a3650c4749133a0433f51cf12db322669b64da69f7202b31efa4eecf974",
+     "south": "71344b54a700fa201e8a248feb6e9d0346e834f97b488890896fd04d7abece4b"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/EopieD",
+   "subject_key": "eopie"
+  },
+  "swanimals/Eopie/EopieE": {
+   "columns": {
+    "A": {
+     "east": "8cbe9b3c8a524f4941e1bb1f97397f5d10e91679806b034371fac341ae7f250e",
+     "north": "226c93857427d66a568ff23bc5ad34012666d20697e5ab0c98de5ca5fc92c294",
+     "south": "9ba059bacd1324ff290c6c2e2f4a37c92f708b1a3dde6a867fb218f05357ee47"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/EopieE",
+   "subject_key": "eopie"
+  },
+  "swanimals/Eopie/Eopie_j": {
+   "columns": {
+    "A": {
+     "east": "dfc421ff4d871aeaa1def4a4ed5131c067a9c4ec87eeb2db6ce3c4a0ea027392",
+     "north": "550bf96d6a9d4bc119024a4327471895a512fe2980e8b1b47b6dc35ba7e8d99b",
+     "south": "f45c7cbc5051f9c07d9a618eee0001e90ef28790fda21a454bcf565f166d59f2"
+    },
+    "B": {
+     "east": "305ed2283f53b5a5e7ae7a69498cdd37e3472ef7e55944cc8437d07489ebfb42",
+     "north": "7a1d3d48817790589836446a01da7efa8f3c7809c6a7dd8c23adca2ef06cd90b",
+     "south": "0b1cf5fc262da4bc2b3fe3720a01174c512178ad880612b236c4ef5780e23898"
+    },
+    "C": {
+     "east": "4beba166c81b44be7e2c9cfe4d3588dfdc8bf5dbf82b2bc7d136e2d06dbe9e66",
+     "north": "53a3da0ee8d1eb822a7b9a32429bc286d8a0096c3b0239c2dc68fffb654e6c87",
+     "south": "3719dbf40fb23d45a17789349d8832c36009c02c2a2ca6eebda8895b0685ccae"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 StarWarsPatches",
+    "C": "render desert_swaca_eopie"
+   },
+   "res": "swanimals/Eopie/Eopie_j",
+   "subject_key": "eopie"
+  },
+  "swanimals/Iriaz/Iriaz": {
+   "columns": {
+    "A": {
+     "east": "1c9975dd7e0a36005569f9b01cb76475f19d2b10aad8804576133cc9ee5538c0",
+     "north": "f0417789c32fb83912fbe9d56b6d1fc1f769e308826567e01f678e111de62a67",
+     "south": "21a39e0981d79fa8f04c97d063b04018936b710b6f6184c1f4660fbb3450fca9"
+    },
+    "B": {
+     "east": "51a1e8a59765bae754d5a286305875fcb75a18485e1a365aa85b74bfe0f211f9",
+     "north": "2b33ce06b59e38194e148128657a69bfa40eee4fbb293c1bffc822b9e6f0466e",
+     "south": "0c71a8259e7497dfe8798e1ca10309cb7f6137b0eefcc5a78b85d005c4f34139"
+    },
+    "C": {
+     "east": "7c9f26fc6ee999bf673977843d6989fd6f3cf0437143f84a308ff942e99f5889",
+     "north": "bee207641dd4880eac99b682e44a1187ff016697eff485c6b308b3dc334b1376",
+     "south": "716520e54f7f0860184504c85e8a0068cd30f3f2302ada30edee41a8e3de57e6"
+    },
+    "D": {
+     "east": "b62c6edacee6405152a7f039ff9f2eec0d527646da2f7352ce311d24dcec33d3",
+     "north": "847ed6c765b78ceefc6511a5a4ea268ae5a1f0de20fec7a9d37eba2ca97e1294",
+     "south": "0de8eff19362b2c97c17f8dc2f7511343ded2d81842c805b60c635b9064b3363"
+    },
+    "E": {
+     "east": "4f79c85dda5a8edfdb6c06f54482bac3edfceff6c6c0c18eb05315d2e353a053",
+     "north": "e40bc3c2adf55f194fd6feaac6d2c2938c2b3c0984bfa4644f777d1417ab9a47",
+     "south": "2a7cb65763c0ff45061f212f70c062bba0b67d7ef3b1bf13195790e4b8734959"
+    },
+    "F": {
+     "east": "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
+     "north": "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
+     "south": "2a992e80b52bdfb60bacf805ea2a912f8f24492bfc64741333d5e76e0f61ea14"
+    },
+    "G": {
+     "east": "6df9daa0dd032d2d6fe8ab9b6ccd293c927307b3cb26db6ee2d2abb66138ad24",
+     "north": "c89db66e50c906953a07ef5c10ed194b1a05abfccf64dff33dcb38a06a796205",
+     "south": "dbf9e182ffe4b57075ce9f21a9505c6f389901e6ab11db6e475a761c32295be6"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 IriazArtOverride",
+    "C": "render desert_swaca_iriaz",
+    "D": "render pyrelands_iriaz_v1",
+    "E": "history IriazArtOverride 2026-09-14",
+    "F": "history IriazArtOverride 2026-09-17",
+    "G": "history IriazArtOverride 2026-09-18"
+   },
+   "res": "swanimals/Iriaz/Iriaz",
+   "subject_key": "iriaz"
+  },
+  "swanimals/Nuna/Nuna_f": {
+   "columns": {
+    "A": {
+     "east": "65c74d2b395db00a4fde2484de1eca85695d63cfcd6962282f9a76d18fca08c8",
+     "north": "98f37666c7df36beebabb3e58bf908d5631747abcedd0522ee3b1b73fbe416fb",
+     "south": "b12317061a53c913cd657f739d5477c9f9e82cd95fc66b0e8a7602f2aa8dfa65"
+    },
+    "B": {
+     "east": "66936a7c2bc87ac65aaaef294188ad354464acbbb4eb5f8f0374cfd1e0421874",
+     "north": "aed678e3adb39a376d6bd5822d88376baafda2554fa9f776b145a39851fdaa43",
+     "south": "cd9244f5a57e7a021b068852551e540e656ec50fc817222f218bf7e96934661b"
+    },
+    "C": {
+     "east": "46dd242f451dd7ba71f49cfc1fbc540390ecf2d82896e9b0629c7af18080543a",
+     "north": "cb850e7dd07e5b5ae06928cc61e3d6aef18bd7b8d062017b66a09184edd2b507",
+     "south": "6fcc662c3bb3b5a1907e6d0837c4ffcecae563b14d9a0503eae2321bca8b21a7"
+    },
+    "D": {
+     "east": "69411aa58ee3ffe8b744ac358f461dd15e4e8dd68ef9aa5941a6dadb190f4224",
+     "north": "79692f8ee7a10859845e5806223cdeed91ba62640bf06234cd184d19888ca641",
+     "south": "f0b3164a7a7f243735e73621a80b833fae7ca3a62b17d33d7e5983996a28c201"
+    },
+    "E": {
+     "east": "be8c539adf93e9502fb56372c9666142c352b0c59dacd710ae0d8283849ce83d",
+     "north": "4af91e34dfc61e4e8aaaf56368799a31db966e6c8bd4ec7618fb7984e28aeaa0",
+     "south": "3d47791c42c93707884858483f0f18786b3148edf56471282750d7611b5918a8"
+    },
+    "F": {
+     "east": "74568adf6237e3eeeac695d7fa90f3cf6d3c5e6ec95e99defe76c7d525f3addd",
+     "north": "1c566bc5ad930c46e35978a5b424d6e868eaf41bbf6353b9a05c847d48dfd581",
+     "south": "68624fb1fb9c5969ad4c1efcac95776a735850501e4663cb169c717ad1cba718"
+    },
+    "G": {
+     "east": "d682bd53d4888a212fb9a59822e2290e9e925b5b666c74687d8b2ed62c1f46a6",
+     "north": "a578e325bfdfab8ac5453ec6d266d26839f5603276f176c343e9d7d3cc7e798d",
+     "south": "b347f5280e9fb2aa0dcf95ee6d4a5c7f74f0431faa56b8c24aae3807d23b4847"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 NunaArtOverride",
+    "C": "render desert_swaca_nuna",
+    "D": "render pyrelands_nuna_v1",
+    "E": "history NunaArtOverride 2026-09-14",
+    "F": "history NunaArtOverride 2026-09-14",
+    "G": "history NunaArtOverride 2026-09-17"
+   },
+   "res": "swanimals/Nuna/Nuna_f",
+   "subject_key": "nuna"
+  },
+  "swanimals/Nuna/Nuna_m": {
+   "columns": {
+    "A": {
+     "east": "bb31936d090a504a8a3c3fdb3096792b6284d7e6ba9f63077d763b63a0831bc0",
+     "north": "2c70ed792c2fa6111362bc59a464cbfdd0c2cd9bdacdd8f8a7310a1c96fa0167",
+     "south": "9006f37f9c6b7b3fca57cdba873c5106ce5955695342a46a6ad14484e0e9a5e0"
+    },
+    "B": {
+     "east": "faa1dc986f17054cb20da7c577288428e364f18581ad97f80cabeecf5caa63d7",
+     "north": "6cb1a6951fe2db7b3c087564389ddbdaf8dea2db601109bc8882e5c6cf4aa73d",
+     "south": "d52d491b83afcd6705e228381f4634ab5a3821acdbe2a1741f44be7d3e75ff33"
+    },
+    "C": {
+     "east": "46dd242f451dd7ba71f49cfc1fbc540390ecf2d82896e9b0629c7af18080543a",
+     "north": "cb850e7dd07e5b5ae06928cc61e3d6aef18bd7b8d062017b66a09184edd2b507",
+     "south": "6fcc662c3bb3b5a1907e6d0837c4ffcecae563b14d9a0503eae2321bca8b21a7"
+    },
+    "D": {
+     "east": "69411aa58ee3ffe8b744ac358f461dd15e4e8dd68ef9aa5941a6dadb190f4224",
+     "north": "79692f8ee7a10859845e5806223cdeed91ba62640bf06234cd184d19888ca641",
+     "south": "f0b3164a7a7f243735e73621a80b833fae7ca3a62b17d33d7e5983996a28c201"
+    },
+    "E": {
+     "east": "4ba3fe1d161e6311f879bcb501c7d6c4de26385755008a3956dbb0134ec8ee7b",
+     "north": "4af91e34dfc61e4e8aaaf56368799a31db966e6c8bd4ec7618fb7984e28aeaa0",
+     "south": "3d47791c42c93707884858483f0f18786b3148edf56471282750d7611b5918a8"
+    },
+    "F": {
+     "east": "74568adf6237e3eeeac695d7fa90f3cf6d3c5e6ec95e99defe76c7d525f3addd",
+     "north": "1c566bc5ad930c46e35978a5b424d6e868eaf41bbf6353b9a05c847d48dfd581",
+     "south": "68624fb1fb9c5969ad4c1efcac95776a735850501e4663cb169c717ad1cba718"
+    },
+    "G": {
+     "east": "454b124b9892052ba9e210acca1116af25e290461e745108a4f460a18276ce54",
+     "north": "94337b21463b22cd31ae2520a57031fa46984d47dcd1cd4a42dedfcd3099bc09",
+     "south": "32a2409950576da1c1313ea707b12e79792be9bbca2b7fbcd60139ec8252066d"
+    }
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "shipped, shadowed \u2014 NunaArtOverride",
+    "C": "render desert_swaca_nuna",
+    "D": "render pyrelands_nuna_v1",
+    "E": "history NunaArtOverride 2026-09-14",
+    "F": "history NunaArtOverride 2026-09-14",
+    "G": "history NunaArtOverride 2026-09-17"
+   },
+   "res": "swanimals/Nuna/Nuna_m",
+   "subject_key": "nuna"
+  }
+ },
+ "sheetId": "art_doubles_compare_2026-10-04",
+ "snapshotId": "f91adcf56ec9933e"
+}

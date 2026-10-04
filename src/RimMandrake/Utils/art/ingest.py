@@ -45,10 +45,13 @@ def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
         if not v.get("at"):
             out["untouched"] += 1
             continue
+        # A row touched only to purge never turns its prefill into a ruling: the page stamps
+        # decidedAt on a real decision click; purgeTouched marks a purge-only touch.
+        decided = bool(v.get("decidedAt")) or not v.get("purgeTouched")
         srow = (snap.get("rows") or {}).get(row)
         dec = (v.get("decision") or "").strip()
         note = (v.get("note") or "").strip()
-        if dec and srow:
+        if dec and srow and decided:
             cols = srow.get("columns") or {}
             if dec in cols:
                 shas = sorted({s for s in cols[dec].values() if s})
@@ -65,7 +68,7 @@ def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
                       "subject_key": srow.get("subject_key", ""), "source_file": via}
             if not dry_run and w.add(ev):
                 out["rulings"] += 1
-        elif dec:
+        elif dec and decided:
             out["unresolved"].append(row)
         for sha in v.get("purge") or []:
             if dry_run:

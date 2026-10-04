@@ -340,3 +340,20 @@ build-from-ledger), where replaced art is stored, whether exact mechanical opera
 keep, how the 45 doubles are settled, how the 109 desert rows are split into sittings, and which
 variant is prefilled. The design above assumes each card's recommended answer; a different answer
 changes only the named subsection.
+
+## 7. Built so far (2026-10-04) and where it departs from §1–§4
+
+Code: `src/RimMandrake/Utils/art/` — `artledger.py` (library), `art.py` (CLI), `backfill.py`, `ingest.py`,
+`art_sheet.py`, `selftest_art.py`. Store: `D:\Luke\dev\_artstore\<sha[:2]>\<sha>.png`. Events:
+`infrastructure/state/art/events/<SEAT>.jsonl`. Phase-0 manifest: `infrastructure/state/art/snapshots/`;
+git tag `art-snapshot-2026-10-04`. Sheet snapshots: `infrastructure/state/art/sheets/`.
+
+- **Purge (owner ruling 2026-10-04, new verb):** `art.py purge <sha> --owner-said "…"`, or ✕ on a picture in
+  a compare sheet then `art.py ingest`. Deletes the bytes from the store, appends a `purge` event; every later
+  sheet and every backfill skips the sha. Refused for a picture live in a mod; an owner keep on it is released
+  in the same act (sheet route) or needs `--release-keep` (CLI). Renders stay in `_artsrc` (artpipe's state).
+- **Slots are resolved from our defs on read** (`scan_def_slots`), not stored as `bind` events.
+- **Prefill inference:** with no byte-exact owner keep anywhere yet, the doubles sheet prefills a shipped column
+  whose installing commit (or a look-alike parent before the halo sweep) cites an owner approval, marked ⚠ inferred.
+- **Not built yet:** the commit guard (by design: writers are rewired first), `art transform`, the deploy check,
+  `art recover`/journal, and the per-biome desert sheets.
