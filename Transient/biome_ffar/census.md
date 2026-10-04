@@ -1,43 +1,38 @@
-# Biome flora/fauna art census — 2026-10-04 14:45
+# Biome flora/fauna art census — 2026-10-04 14:52
 
 Item `BIOME_FLORAFAUNA_ART_REVIEW_1`. Generator: `src/RimMandrake/Utils/art/biome_census.py` (schema in its docstring). Machine-readable: `census.json` beside this file.
 
 Columns: **rows** = species rows (donor + our port merged) · **art** = rows with ≥1 picture set in the art ledger · **canon** = rows with a `canon_references` entry · **canon, no entry** = no entry but an exact Wookieepedia title (a candidate, not proof) · **non-canon twin** = canon row with an RM_/RUT_ stand-in, or the stand-in itself · **any twin** = donor/port or RM_/RSW_ relation of any kind · **no art** = zero picture sets.
 
-## 1. Desert (the Long Shade) (`desert`)
+## 1. the Long Shade (`RM_LongShade`)
 
-defs: `RUT_Desert` (61), `RM_LongShade` (75), `Desert` (9)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 34, patch mandrake.rut.patches 41
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 101 | 79 | 22 | 0 | 98 | 37 | 0 | 1 | 28 | 3 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `RSW_GreatDevourer` (great devourer) — texPath `Things/Pawn/Animal/AA_GreatDevourer/AA_GreatDevourer` not in the art ledger (vanilla/donor texture)
-- `RSW_Groundrunner` (groundrunner) — texPath `Things/Pawn/Animal/AA_GroundRunner/AA_GroundRunner` not in the art ledger (vanilla/donor texture)
-- `RSW_MatureFleshbeast` (mature fleshbeast) — texPath `Things/Pawn/Animal/AA_MatureFleshbeast/AA_MatureFleshbeast` not in the art ledger (vanilla/donor texture)
-
-**Non-canon twins:** `RSW_GreatDevourer` ↔ `RM_GreatDevourer`
-
-## 2. Deep Desert (the Stillsand / Dune Sea) (`deep_desert`)
-
-defs: `RUT_ExtremeDesert` (17), `RM_Stillsand` (28), `ExtremeDesert` (10)
+defs: `RM_LongShade` (75)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 45 | 29 | 15 | 1 | 43 | 6 | 0 | 0 | 12 | 2 |
+| 75 | 62 | 13 | 0 | 75 | 34 | 0 | 0 | 14 | 0 |
 
-**NO ART** (no picture set of ours in the ledger):
-- `RSW_Drazzik` (drazzik) — texPath `Things/Pawn/Animal/AA_SandLion/AA_SandLion` not in the art ledger (vanilla/donor texture)
-- `RSW_SandLion` (vekka) — texPath `Things/Pawn/Animal/AA_SandLion/AA_SandLion` not in the art ledger (vanilla/donor texture)
+## 2. the Stillsand (`RM_Stillsand`)
 
-## 3. Blue Desert (`blue_desert`)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 20, patch mandrake.rut.patches 8
 
-defs: `RUT_BlueDesert` (9), `RM_BlueDesert` (20)
+defs: `RM_Stillsand` (28)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 23 | 12 | 11 | 0 | 12 | 0 | 0 | 0 | 0 | 11 |
+| 28 | 22 | 5 | 1 | 28 | 6 | 0 | 0 | 5 | 0 |
+
+## 3. the Blue Desert (`RM_BlueDesert`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 19, patch mandrake.rut.patches 1
+
+defs: `RM_BlueDesert` (20)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 20 | 12 | 8 | 0 | 12 | 0 | 0 | 0 | 0 | 8 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Thunderbeast` — no texPath resolved
@@ -45,20 +40,19 @@ defs: `RUT_BlueDesert` (9), `RM_BlueDesert` (20)
 - `RM_Krissek` (krissek) — texPath `Things/Pawn/Animal/Warg/Warg` not in the art ledger (vanilla/donor texture)
 - `RM_Vekkit` (vekkit) — texPath `Things/Pawn/Animal/Squirrel/Squirrel` not in the art ledger (vanilla/donor texture)
 - `Vapaad` — no texPath resolved
-- `AB_CrystalHorn` — no texPath resolved
-- `AB_ToxiGrass` — no texPath resolved
-- `PoisonPlantTallGrass` — no texPath resolved
 - `RM_Chimeglobe` (chimeglobe) — texPath `Things/Plant/RM_Chimeglobe/RM_Chimeglobe` not in the art ledger (vanilla/donor texture)
 - `RM_Glassfern` (glassfern) — texPath `Things/Plant/RM_Glassfern/RM_Glassfern` not in the art ledger (vanilla/donor texture)
 - `RM_Palefloss` (palefloss) — texPath `Things/Plant/RM_Palefloss/RM_Palefloss` not in the art ledger (vanilla/donor texture)
 
-## 4. the Abyss (`abyss`)
+## 4. the Abyss (`RM_Abyss`)
 
-defs: `RUT_Abyss` (26), `RM_Abyss` (31)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 31
+
+defs: `RM_Abyss` (31)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 32 | 22 | 10 | 0 | 11 | 0 | 0 | 0 | 2 | 21 |
+| 31 | 21 | 10 | 0 | 10 | 0 | 0 | 0 | 1 | 21 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_CrepuscularBeetle` — no texPath resolved
@@ -83,30 +77,15 @@ defs: `RUT_Abyss` (26), `RM_Abyss` (31)
 - `AG_Gamma` — no texPath resolved
 - `AG_Septimum` — no texPath resolved
 
-## 5. Arid Shrubland (the Leaning Scrub) (`arid_shrubland`)
+## 5. the Cauldron (`RM_Cauldron`)
 
-defs: `RUT_AridShrubland` (56), `RM_LeaningScrub` (77), `AridShrubland` (10)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 38, patch mandrake.rut.patches 8
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 91 | 60 | 31 | 0 | 84 | 33 | 0 | 0 | 45 | 7 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `RSW_Vurra` (vurra) — texPath `Things/Pawn/Animal/Terrorworm/TerrorWorm` not in the art ledger (vanilla/donor texture)
-- `Plant_Brambles` — no texPath resolved
-- `RG_Plant_AridGrass` — no texPath resolved
-- `RG_Plant_CreepStern` — no texPath resolved
-- `RG_Plant_CrimsonCushion` — no texPath resolved
-- `RG_Plant_Dervish` — no texPath resolved
-- `RSW_Plant_Nysyllin_Wild` (wild nysyllin plant) — texPath `swplants/Nysillin` not in the art ledger (vanilla/donor texture)
-
-## 6. the Cauldron (`cauldron`)
-
-defs: `RUT_Cauldron` (28), `RM_Cauldron` (46)
+defs: `RM_Cauldron` (46)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 55 | 29 | 26 | 0 | 31 | 5 | 2 | 0 | 8 | 24 |
+| 46 | 29 | 17 | 0 | 29 | 5 | 2 | 0 | 3 | 17 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_BedBug` — no texPath resolved
@@ -126,101 +105,282 @@ defs: `RUT_Cauldron` (28), `RM_Cauldron` (46)
 - `GR_Beetlefleet` — no texPath resolved
 - `Silooth` — no texPath resolved
 - `Visceral` — no texPath resolved
-- `AB_BloodBouquet` — no texPath resolved
-- `AB_CrystalFlower` — no texPath resolved
-- `AB_GiantAgariTox` — no texPath resolved
-- `AB_GiantToxicFlower` — no texPath resolved
-- `AB_KeeningCordax` — no texPath resolved
-- `AB_RavenNettle` — no texPath resolved
-- `AB_RedBugloss` — no texPath resolved
 
 **Canon, no entry (Wookieepedia title):** `RSW_Screecher` → Screecher, `Silooth` → Silooth/Legends
 
-## 7. the Chill (propane lakes) (`chill`)
+## 6. the Chill crater (`RM_ChillCrater`)
 
-defs: `RUT_PropaneLake` (10), `RM_TheChill` (29), `RM_ChillCrater` (0), `RM_SeabedFloor_TheChill` (0)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 39 | 13 | 10 | 16 | 37 | 0 | 0 | 0 | 15 | 2 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_AuroraSylph` — no texPath resolved
-- `AA_Skyeel` — no texPath resolved
-
-## 8. the Contagion (`contagion`)
-
-defs: `RUT_Contagion` (21), `RM_Contagion` (35)
+defs: `RM_ChillCrater` (0)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 55 | 33 | 22 | 0 | 37 | 0 | 1 | 1 | 10 | 18 |
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 
-**NO ART** (no picture set of ours in the ledger):
-- `AA_BloodShrimp` — no texPath resolved
-- `AA_Drainer` — no texPath resolved
-- `AA_DrainerLarva` — no texPath resolved
-- `AA_Helixien` — no texPath resolved
-- `AA_InfectedAerofleet` — no texPath resolved
-- `AA_OcularJelly` — no texPath resolved
-- `AA_RedGoo` — no texPath resolved
-- `AA_RedSpore` — no texPath resolved
-- `AA_RoughPlatedMonitor` — no texPath resolved
-- `AB_AlienGrass` — no texPath resolved
-- `AB_AlienTree` — no texPath resolved
-- `AB_AlienTree_Polluted` — no texPath resolved
-- `AB_BloodBouquet` — no texPath resolved
-- `AB_GlobularPlant` — no texPath resolved
-- `AB_HalfAlienTree` — no texPath resolved
-- `AB_RedLeaves` — no texPath resolved
-- `AB_RedPlantsTall` — no texPath resolved
-- `AB_TentacularPlant` — no texPath resolved
+## 7. the Contagion (`RM_Contagion`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 35
+
+defs: `RM_Contagion` (35)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 35 | 22 | 13 | 0 | 35 | 0 | 1 | 1 | 10 | 0 |
 
 **Canon, no entry (Wookieepedia title):** `RM_Peeper` → Peeper
 
 **Non-canon twins:** `RM_BloodyMess` ↔ `RSW_Jerba`
 
-## 9. the Cracked Lands (`cracked_lands`)
+## 8. the Fever Wood (`RM_FeverWood`)
 
-defs: `RUT_CrackedLands` (25), `RM_FloodedCanyon` (25)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 28, patch mandrake.rut.patches 10
+
+defs: `RM_FeverWood` (38)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 36 | 16 | 13 | 7 | 28 | 5 | 0 | 0 | 6 | 8 |
+| 38 | 16 | 22 | 0 | 35 | 7 | 0 | 0 | 1 | 3 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `VFEI2_Megathrips` — no texPath resolved
+- `Plant_HydenockTree_Wild` — no texPath resolved
+- `Plant_JoganTree_Wild` — no texPath resolved
+
+## 9. the Cracked Lands (`RM_FloodedCanyon`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 10, patch mandrake.rut.patches 15
+
+defs: `RM_FloodedCanyon` (25)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 25 | 15 | 10 | 0 | 21 | 4 | 0 | 0 | 1 | 4 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Murkling` — no texPath resolved
 - `RM_Muttavaq` (muttavaq) — texPath `Things/Pawn/Animal/Thrumbo/Thrumbo` not in the art ledger (vanilla/donor texture)
 - `RM_Tarruq` (tarruq) — texPath `Things/Pawn/Animal/Monkey/Monkey` not in the art ledger (vanilla/donor texture)
 - `RM_Uttaqar` (rock troll) — texPath `Animal/RockTroll/RockTroll` not in the art ledger (vanilla/donor texture)
-- `RSW_Rocktooth` (rocktooth) — texPath `swanimals/BiomesTeam/BMT_Caverns/Things/Item/Fish/Small/Rocktooth` not in the art ledger (vanilla/donor texture)
-- `AB_GargantuanLithops` — no texPath resolved
-- `AB_HardyGrass` — no texPath resolved
-- `GRimMoss` — no texPath resolved
 
-## 10. the Fever Wood (`fever_wood`)
+## 10. the Slime (`RM_GelatinousSlime`)
 
-defs: `RUT_FeverWood` (18), `RM_FeverWood` (38)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 12
+
+defs: `RM_GelatinousSlime` (12)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 45 | 19 | 26 | 0 | 39 | 7 | 0 | 0 | 10 | 6 |
+| 12 | 8 | 4 | 0 | 12 | 0 | 0 | 0 | 1 | 0 |
+
+## 11. the Greentide (`RM_Greentide`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 39, patch mandrake.rut.patches 25
+
+defs: `RM_Greentide` (64)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 64 | 32 | 25 | 7 | 61 | 21 | 2 | 0 | 8 | 3 |
 
 **NO ART** (no picture set of ours in the ledger):
-- `VFEI2_Megathrips` — no texPath resolved
-- `AB_Gomphoeria` — no texPath resolved
-- `AB_Iashiphus` — no texPath resolved
-- `AB_KeeningCordax` — no texPath resolved
-- `Plant_HydenockTree_Wild` — no texPath resolved
-- `Plant_JoganTree_Wild` — no texPath resolved
+- `AA_BloodShrimp` — no texPath resolved
+- `Plant_Grass` — no texPath resolved
+- `Plant_TallGrass` — no texPath resolved
 
-## 11. the Forge (`forge`)
+**Canon, no entry (Wookieepedia title):** `RM_Saava` → Saava, `Plant_Grass` → Grass
 
-defs: `RUT_TheForge` (18), `RM_TheForge` (24)
+## 12. the Grey Sea (`RM_GreySea`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 45
+
+defs: `RM_GreySea` (45)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 28 | 15 | 13 | 0 | 15 | 2 | 1 | 0 | 8 | 13 |
+| 45 | 17 | 16 | 12 | 45 | 0 | 0 | 0 | 9 | 0 |
+
+## 13. the Lantern Deeps (`RM_LanternDeeps`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 31
+
+defs: `RM_LanternDeeps` (31)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 31 | 19 | 12 | 0 | 28 | 0 | 0 | 0 | 8 | 3 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RM_Lanternstone_Sowable` (fast growing lanternstone) — texPath `RM_LanternDeeps/Things/Crystals/LanternstoneMedium` not in the art ledger (vanilla/donor texture)
+- `RM_PrennaLace` (prenna lace) — texPath `RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown` not in the art ledger (vanilla/donor texture)
+- `RM_TwitchingPuffer` (twitching puffer) — texPath `RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown` not in the art ledger (vanilla/donor texture)
+
+## 14. the Leaning Scrub (`RM_LeaningScrub`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 37, patch mandrake.rut.patches 40
+
+defs: `RM_LeaningScrub` (77)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 77 | 58 | 19 | 0 | 70 | 33 | 0 | 0 | 10 | 7 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `RSW_Vurra` (vurra) — texPath `Things/Pawn/Animal/Terrorworm/TerrorWorm` not in the art ledger (vanilla/donor texture)
+- `Plant_Brambles` — no texPath resolved
+- `RG_Plant_AridGrass` — no texPath resolved
+- `RG_Plant_CreepStern` — no texPath resolved
+- `RG_Plant_CrimsonCushion` — no texPath resolved
+- `RG_Plant_Dervish` — no texPath resolved
+- `RSW_Plant_Nysyllin_Wild` (wild nysyllin plant) — texPath `swplants/Nysillin` not in the art ledger (vanilla/donor texture)
+
+## 15. the Miasma (`RM_Miasma`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 41, patch mandrake.rut.patches 19
+
+defs: `RM_Miasma` (60)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 60 | 40 | 20 | 0 | 46 | 11 | 0 | 0 | 6 | 14 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `AA_DecayDrake` — no texPath resolved
+- `AA_Helixien` — no texPath resolved
+- `AA_Lockjaw` — no texPath resolved
+- `AA_RaptorShrimp` — no texPath resolved
+- `AA_Slurrypede` — no texPath resolved
+- `AA_Thermadon` — no texPath resolved
+- `VFEI2_BlackSwarmling` — no texPath resolved
+- `RM_Braskeen` (braskeen) — texPath `Things/Plant/RM_Braskeen/RM_Braskeen` not in the art ledger (vanilla/donor texture)
+- `RM_Brelloch` (brelloch) — texPath `Things/Plant/RM_Brelloch/RM_Brelloch_a` not in the art ledger (vanilla/donor texture)
+- `RM_Immarel` (immarel) — texPath `Things/Plant/RM_Immarel/RM_Immarel_a` not in the art ledger (vanilla/donor texture)
+- `RM_Ismerrow` (ismerrow) — texPath `Things/Plant/RM_Ismerrow/RM_Ismerrow` not in the art ledger (vanilla/donor texture)
+- `RM_Ollamane` (ollamane) — texPath `Things/Plant/RM_Ollamane/RM_Ollamane_a` not in the art ledger (vanilla/donor texture)
+- `RM_Quennath` (quennath) — texPath `Things/Plant/RM_Quennath/RM_Quennath_a` not in the art ledger (vanilla/donor texture)
+- `RM_Thessamor` (thessamor) — texPath `Things/Plant/RM_Thessamor/RM_Thessamor_a` not in the art ledger (vanilla/donor texture)
+
+## 16. the Sleeping Ice (`RM_NightsideIce`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 1, patch mandrake.rut.patches 3
+
+defs: `RM_NightsideIce` (4)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 4 | 0 | 0 | 2 | 1 | 1 | 0 | 0 | 2 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `AA_ShockGoat` — no texPath resolved
+- `Tauntaun` — no texPath resolved
+
+**Canon, no entry (Wookieepedia title):** `Tauntaun` → Tauntaun
+
+## 17. the Pyrelands (`RM_Pyrelands`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 11, patch mandrake.rut.patches 7
+
+defs: `RM_Pyrelands` (18)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 18 | 16 | 2 | 0 | 18 | 7 | 2 | 0 | 3 | 0 |
+
+**Canon, no entry (Wookieepedia title):** `RM_FireHawk` → Firehawk, `RM_FireWasp` → Fire wasp/Legends
+
+## 18. the Rust Cathedral (`RM_RustCathedral`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 4
+
+defs: `RM_RustCathedral` (4)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 4 | 3 | 0 | 1 | 2 | 0 | 0 | 0 | 1 | 2 |
+
+**NO ART** (no picture set of ours in the ledger):
+- `GR_Mecharat` — no texPath resolved
+- `RM_CoolantEelCatch` (coolant eel) — texPath `Things/Item/Fish/Dogfish` not in the art ledger (vanilla/donor texture)
+
+## 19. sea floor (`RM_SeabedFloor`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
+
+defs: `RM_SeabedFloor` (0)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## 20. Grey Sea floor (`RM_SeabedFloor_GreySea`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
+
+defs: `RM_SeabedFloor_GreySea` (0)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## 21. Chill floor (`RM_SeabedFloor_TheChill`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
+
+defs: `RM_SeabedFloor_TheChill` (0)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## 22. the Scald floor (`RM_SeabedFloor_TheScald`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
+
+defs: `RM_SeabedFloor_TheScald` (0)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## 23. Twilight Sea floor (`RM_SeabedFloor_TwilightSea`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
+
+defs: `RM_SeabedFloor_TwilightSea` (0)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## 24. bedrock (`RM_SeabedUnavailable`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: 
+
+defs: `RM_SeabedUnavailable` (0)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+## 25. the Chill (`RM_TheChill`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 29
+
+defs: `RM_TheChill` (29)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 29 | 10 | 10 | 9 | 29 | 0 | 0 | 0 | 8 | 0 |
+
+## 26. the Forge (`RM_TheForge`)
+
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 20, patch mandrake.rut.patches 4
+
+defs: `RM_TheForge` (24)
+
+| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 24 | 14 | 10 | 0 | 11 | 2 | 1 | 0 | 3 | 13 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Aerofleet` — no texPath resolved
@@ -239,137 +399,15 @@ defs: `RUT_TheForge` (18), `RM_TheForge` (24)
 
 **Canon, no entry (Wookieepedia title):** `Tibidee` → Tibidee
 
-## 12. the Fuel Snows (`fuel_snows`)
+## 27. the Rot (`RM_TheRot`)
 
-defs: `RUT_FuelSnows` (9)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 54, patch mandrake.rut.patches 2
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 9 | 5 | 4 | 0 | 1 | 0 | 0 | 0 | 1 | 8 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_FrostboundBehemoth` — no texPath resolved
-- `AA_Frostmite` — no texPath resolved
-- `AA_Slurrypede` — no texPath resolved
-- `RUT_BurnerAscendant` (burner, ascendant) — texPath `Things/Pawn/Animal/Warg/Warg` not in the art ledger (vanilla/donor texture)
-- `AB_CrystalHorn` — no texPath resolved
-- `AB_FrostLeaf` — no texPath resolved
-- `AB_RimeNodules` — no texPath resolved
-- `PoisonShrub` — no texPath resolved
-
-## 13. the Greentide (`greentide`)
-
-defs: `RUT_Greentide` (47), `RM_Greentide` (64)
+defs: `RM_TheRot` (56)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 85 | 32 | 36 | 17 | 71 | 24 | 3 | 0 | 36 | 14 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_BloodShrimp` — no texPath resolved
-- `RSW_FaaCatch` (faa scalefish) — texPath `Things/Pawn/Animal/SeaBeasts/Faa/Faa_south` not in the art ledger (vanilla/donor texture)
-- `RSW_LaaCatch` (laa scalefish) — texPath `Things/Pawn/Animal/SeaBeasts/Laa/Laa_south` not in the art ledger (vanilla/donor texture)
-- `RSW_MeeCatch` (mee scalefish) — texPath `Things/Pawn/Animal/SeaBeasts/Mee/Mee_south` not in the art ledger (vanilla/donor texture)
-- `AB_JungleTree` — no texPath resolved
-- `AB_SugarFamewort` — no texPath resolved
-- `Plant_Bubblespore_Wild` — no texPath resolved
-- `Plant_FelucianGlowspore_Wild` — no texPath resolved
-- `Plant_Grass` — no texPath resolved
-- `Plant_HydenockTree_Wild` — no texPath resolved
-- `Plant_JoganTree_Wild` — no texPath resolved
-- `Plant_MujaFruit_Wild` — no texPath resolved
-- `Plant_TallGrass` — no texPath resolved
-- `Plant_TookeTrap_Wild` — no texPath resolved
-
-**Canon, no entry (Wookieepedia title):** `RM_Saava` → Saava, `RUT_Saava` → Saava, `Plant_Grass` → Grass
-
-## 14. the Grey Sea (`grey_sea`)
-
-defs: `RUT_GreySea` (9), `RM_GreySea` (45), `RM_SeabedFloor_GreySea` (0)
-
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 54 | 19 | 16 | 19 | 53 | 0 | 0 | 0 | 17 | 1 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_Aerofleet` — no texPath resolved
-
-## 15. the Lantern Deeps (`lantern_deeps`)
-
-defs: `RM_LanternDeeps` (31), `BMT_CrystalCaverns` (0)
-
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 31 | 19 | 12 | 0 | 28 | 0 | 0 | 0 | 8 | 3 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `RM_Lanternstone_Sowable` (fast growing lanternstone) — texPath `RM_LanternDeeps/Things/Crystals/LanternstoneMedium` not in the art ledger (vanilla/donor texture)
-- `RM_PrennaLace` (prenna lace) — texPath `RM_LanternDeeps/Things/Plant/PrennaLace/PrennaLaceGrown` not in the art ledger (vanilla/donor texture)
-- `RM_TwitchingPuffer` (twitching puffer) — texPath `RM_LanternDeeps/Things/Plant/TwitchingPuffer/PufferGrown` not in the art ledger (vanilla/donor texture)
-
-## 16. the Miasma (`miasma`)
-
-defs: `RUT_Miasma` (37), `RM_Miasma` (60)
-
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 70 | 47 | 23 | 0 | 51 | 13 | 0 | 0 | 17 | 19 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_BloodShrimp` — no texPath resolved
-- `AA_DecayDrake` — no texPath resolved
-- `AA_Helixien` — no texPath resolved
-- `AA_Lockjaw` — no texPath resolved
-- `AA_Plasmorph` — no texPath resolved
-- `AA_RaptorShrimp` — no texPath resolved
-- `AA_Slurrypede` — no texPath resolved
-- `AA_Thermadon` — no texPath resolved
-- `VFEI2_BlackSwarmling` — no texPath resolved
-- `AB_MangrovePalm` — no texPath resolved
-- `AB_MangroveTree` — no texPath resolved
-- `AB_ParasiticMangrove` — no texPath resolved
-- `RM_Braskeen` (braskeen) — texPath `Things/Plant/RM_Braskeen/RM_Braskeen` not in the art ledger (vanilla/donor texture)
-- `RM_Brelloch` (brelloch) — texPath `Things/Plant/RM_Brelloch/RM_Brelloch_a` not in the art ledger (vanilla/donor texture)
-- `RM_Immarel` (immarel) — texPath `Things/Plant/RM_Immarel/RM_Immarel_a` not in the art ledger (vanilla/donor texture)
-- `RM_Ismerrow` (ismerrow) — texPath `Things/Plant/RM_Ismerrow/RM_Ismerrow` not in the art ledger (vanilla/donor texture)
-- `RM_Ollamane` (ollamane) — texPath `Things/Plant/RM_Ollamane/RM_Ollamane_a` not in the art ledger (vanilla/donor texture)
-- `RM_Quennath` (quennath) — texPath `Things/Plant/RM_Quennath/RM_Quennath_a` not in the art ledger (vanilla/donor texture)
-- `RM_Thessamor` (thessamor) — texPath `Things/Plant/RM_Thessamor/RM_Thessamor_a` not in the art ledger (vanilla/donor texture)
-
-## 17. the Nightside Ice (Sleeping Ice) (`nightside_ice`)
-
-defs: `RUT_NightsideIce` (8), `RM_NightsideIce` (4)
-
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 10 | 10 | 0 | 0 | 5 | 1 | 1 | 0 | 3 | 5 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_RedGoo` — no texPath resolved
-- `AA_ShockGoat` — no texPath resolved
-- `AA_Slurrypede` — no texPath resolved
-- `AA_SummitCrab` — no texPath resolved
-- `Tauntaun` — no texPath resolved
-
-**Canon, no entry (Wookieepedia title):** `Tauntaun` → Tauntaun
-
-## 18. the Pyrelands (`pyrelands`)
-
-defs: `RM_Pyrelands` (18), `ZBiome_Grasslands` (1)
-
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 18 | 16 | 2 | 0 | 18 | 7 | 2 | 0 | 3 | 0 |
-
-**Canon, no entry (Wookieepedia title):** `RM_FireHawk` → Firehawk, `RM_FireWasp` → Fire wasp/Legends
-
-## 19. the Rot (`rot`)
-
-defs: `RUT_TheRot` (50), `RM_TheRot` (56)
-
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 66 | 31 | 35 | 0 | 59 | 1 | 1 | 0 | 4 | 7 |
+| 56 | 21 | 35 | 0 | 49 | 1 | 1 | 0 | 3 | 7 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Agaripod` — no texPath resolved
@@ -382,26 +420,15 @@ defs: `RUT_TheRot` (50), `RM_TheRot` (56)
 
 **Canon, no entry (Wookieepedia title):** `Snoruuk` → Snoruuk/Legends
 
-## 20. the Rust Cathedral (`rust_cathedral`)
+## 28. the Scald (`RM_TheScald`)
 
-defs: `RUT_RustCathedral` (3), `RM_RustCathedral` (4)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 21, patch mandrake.rut.patches 1
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 6 | 5 | 0 | 1 | 3 | 0 | 0 | 0 | 2 | 3 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `GR_Mecharat` — no texPath resolved
-- `Ling_Cockroach` — no texPath resolved
-- `RM_CoolantEelCatch` (coolant eel) — texPath `Things/Item/Fish/Dogfish` not in the art ledger (vanilla/donor texture)
-
-## 21. the Scald (`scald`)
-
-defs: `RUT_TheScald` (12), `RM_TheScald` (22), `RM_SeabedFloor_TheScald` (0)
+defs: `RM_TheScald` (22)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 33 | 15 | 1 | 17 | 24 | 3 | 0 | 0 | 19 | 9 |
+| 22 | 12 | 1 | 9 | 13 | 1 | 0 | 0 | 10 | 9 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `RM_BladderboilCatch` (bladderboil) — texPath `Things/Item/Resource/RM_BladderboilCatch` not in the art ledger (vanilla/donor texture)
@@ -414,80 +441,38 @@ defs: `RUT_TheScald` (12), `RM_TheScald` (22), `RM_SeabedFloor_TheScald` (0)
 - `RM_ShullaCatch` (shulla) — texPath `Things/Item/Resource/RM_ShullaCatch` not in the art ledger (vanilla/donor texture)
 - `RM_ThuumCatch` (thuum) — texPath `Things/Item/Resource/RM_ThuumCatch` not in the art ledger (vanilla/donor texture)
 
-## 22. the Slime (`slime`)
+## 29. the Sump (`RM_TheSump`)
 
-defs: `RUT_Slime` (15), `RM_GelatinousSlime` (12)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 20, patch mandrake.rut.patches 1
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 26 | 17 | 9 | 0 | 12 | 0 | 0 | 0 | 1 | 14 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_AcanthamoebaGiganteaLarge` — no texPath resolved
-- `AA_DecayDrake` — no texPath resolved
-- `AA_GreenGoo` — no texPath resolved
-- `AA_Helixien` — no texPath resolved
-- `AA_Mime` — no texPath resolved
-- `AA_Plasmorph` — no texPath resolved
-- `AA_Thunderbeast` — no texPath resolved
-- `GR_Chickenrabbit` — no texPath resolved
-- `GR_Manbear` — no texPath resolved
-- `AB_LargeSlimyTree` — no texPath resolved
-- `AB_Slimecasia` — no texPath resolved
-- `AB_SlimyFern` — no texPath resolved
-- `AB_SlimyTree` — no texPath resolved
-- `AB_TallSlimyGrass` — no texPath resolved
-
-## 23. the Sump (`sump`)
-
-defs: `RUT_Sump` (4), `RM_TheSump` (21)
+defs: `RM_TheSump` (21)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 25 | 14 | 11 | 0 | 21 | 1 | 0 | 0 | 0 | 4 |
+| 21 | 11 | 10 | 0 | 21 | 1 | 0 | 0 | 0 | 0 |
 
-**NO ART** (no picture set of ours in the ledger):
-- `AA_Bumbledrone` — no texPath resolved
-- `AA_BumbledroneHierophant` — no texPath resolved
-- `AA_TarGuzzler` — no texPath resolved
-- `AB_TarPuddle` — no texPath resolved
+## 30. the Twilight Sea (`RM_TwilightSea`)
 
-## 24. the Twilight Sea (`twilight_sea`)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 31, patch mandrake.rut.patches 2
 
-defs: `RUT_TwilightSea` (2), `RM_TwilightSea` (33), `RM_SeabedFloor_TwilightSea` (0)
+defs: `RM_TwilightSea` (33)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 34 | 19 | 3 | 12 | 33 | 2 | 0 | 0 | 13 | 1 |
+| 33 | 18 | 3 | 12 | 32 | 2 | 0 | 0 | 12 | 1 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Aerofleet` — no texPath resolved
 
-## 25. Umbra (`umbra`)
+## 31. Warscar (`RM_Warscar`)
 
-defs: `RUT_Umbra` (9)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 9, patch mandrake.rut.patches 8
 
-| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
-|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 9 | 5 | 4 | 0 | 1 | 0 | 0 | 0 | 1 | 8 |
-
-**NO ART** (no picture set of ours in the ledger):
-- `AA_FrostboundBehemoth` — no texPath resolved
-- `AA_Frostmite` — no texPath resolved
-- `AA_Slurrypede` — no texPath resolved
-- `RUT_BurnerAscendant` (burner, ascendant) — texPath `Things/Pawn/Animal/Warg/Warg` not in the art ledger (vanilla/donor texture)
-- `AB_CrystalHorn` — no texPath resolved
-- `AB_FrostLeaf` — no texPath resolved
-- `AB_RimeNodules` — no texPath resolved
-- `PoisonShrub` — no texPath resolved
-
-## 26. Warscar (`warscar`)
-
-defs: `RUT_Scarlands` (14), `RM_Warscar` (17)
+defs: `RM_Warscar` (17)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 19 | 15 | 4 | 0 | 14 | 1 | 0 | 0 | 6 | 5 |
+| 17 | 15 | 2 | 0 | 12 | 1 | 0 | 0 | 3 | 5 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `AA_Helixien` — no texPath resolved
@@ -496,54 +481,45 @@ defs: `RUT_Scarlands` (14), `RM_Warscar` (17)
 - `SW_Electrictick` — no texPath resolved
 - `SW_Juggernautbeetles` — no texPath resolved
 
-## 27. the Wastes (`wasteland`)
+## 32. the Wastes (`RM_Wasteland`)
 
-defs: `RUT_Wasteland` (31), `RM_Wasteland` (21)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 12, patch mandrake.rut.patches 9
+
+defs: `RM_Wasteland` (21)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 40 | 20 | 20 | 0 | 27 | 1 | 1 | 0 | 8 | 13 |
+| 21 | 9 | 12 | 0 | 18 | 1 | 1 | 0 | 2 | 3 |
 
 **NO ART** (no picture set of ours in the ledger):
-- `AA_AcanthamoebaGiganteaSmall` — no texPath resolved
-- `GR_Beetlefleet` — no texPath resolved
-- `SW_Electrictick` — no texPath resolved
-- `Toxalope` — no texPath resolved
-- `VFEI2_BlackSwarmling` — no texPath resolved
-- `AB_ToxiBulb` — no texPath resolved
-- `AB_WeepingToxberry` — no texPath resolved
 - `Plant_GrayGrass` — no texPath resolved
 - `Plant_Toxipotato` — no texPath resolved
 - `Plant_TreePolux` — no texPath resolved
-- `RG_Plant_TallToxiGrass` — no texPath resolved
-- `RG_Plant_ToxiGrass` — no texPath resolved
-- `VRE_PoluxBush` — no texPath resolved
 
 **Canon, no entry (Wookieepedia title):** `RSW_Screecher` → Screecher
 
-## 28. the Webwork (`webwork`)
+## 33. the Webwork (`RM_Webwork`)
 
-defs: `RUT_Webwork` (11), `RM_Webwork` (23)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 22, patch mandrake.rut.patches 1
+
+defs: `RM_Webwork` (23)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 33 | 10 | 23 | 0 | 27 | 3 | 0 | 0 | 3 | 6 |
+| 23 | 6 | 17 | 0 | 22 | 0 | 0 | 0 | 0 | 1 |
 
 **NO ART** (no picture set of ours in the ledger):
-- `AB_Gomphoeria` — no texPath resolved
-- `AB_JungleTree` — no texPath resolved
-- `AB_RedBugloss` — no texPath resolved
-- `AB_TangleTea` — no texPath resolved
 - `Plant_TookeTrap_Wild` — no texPath resolved
-- `RG_Plant_TropicalChokevine` — no texPath resolved
 
-## 29. the Weeping Stones (`weeping_stones`)
+## 34. the Weeping Stones (`RM_WeepingStones`)
 
-defs: `RUT_WeepingStones` (20), `RM_WeepingStones` (52)
+file `src/RimMandrake/WeepingStones/Defs/BiomeDefs/RM_WeepingStones_Biome.xml` · layers: inline_RM 44, patch mandrake.rut.patches 8
+
+defs: `RM_WeepingStones` (52)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 60 | 27 | 14 | 19 | 29 | 8 | 1 | 1 | 31 | 31 |
+| 52 | 26 | 13 | 13 | 22 | 8 | 1 | 1 | 16 | 30 |
 
 **NO ART** (no picture set of ours in the ledger):
 - `ColossusToad` — no texPath resolved
@@ -575,7 +551,6 @@ defs: `RUT_WeepingStones` (20), `RM_WeepingStones` (52)
 - `RM_Ullo` (ullo) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
 - `RM_VizhikCatch` (vizhik) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
 - `RM_Vobbal` (vobbal) — texPath `Things/Item/Resource/MeatFoodRaw/Meat_Small` not in the art ledger (vanilla/donor texture)
-- `AB_GreenRockFern` — no texPath resolved
 - `Plant_Reeds` — no texPath resolved
 
 **Canon, no entry (Wookieepedia title):** `RM_Kirruk` → Kirruk/Legends
@@ -586,13 +561,12 @@ defs: `RUT_WeepingStones` (20), `RM_WeepingStones` (52)
 
 | rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 1178 | 653 | 416 | 109 | 912 | 160 | 13 | 3 | 317 | 266 |
+| 911 | 538 | 309 | 64 | 758 | 146 | 12 | 2 | 138 | 153 |
 
-Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 1025.
+Rows are per biome: a species cast in two biomes counts in each. Distinct species rows: 841.
 
-**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 2, hawkbat 1, bantha 3, anooba 3, stoneback 2, _canon_index_defnames 233, _artpipe_jobs_anooba 8, _ledger_variants 10307
+**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): korrum 1, hawkbat 1, bantha 3, anooba 3, stoneback 1, _canon_index_defnames 233, _artpipe_jobs_anooba 8, _ledger_variants 10546
 
-**Patch targets not in any biome here:** `AB_GallatrossGraveyard` (8), `BorealForest` (1), `ColdBog` (2), `GlacialPlain` (1), `Glowforest` (3), `Grasslands` (3), `IceSheet` (1), `LavaField` (1), `Scarlands` (2), `SeaIce` (2), `TemperateForest` (3), `TemperateSwamp` (3), `TropicalRainforest` (7), `TropicalSwamp` (7), `Tundra` (1), `Wasteland` (1), `ZBiome_DesertOasis` (1)
 
 **UNMEASURED:**
 - base rosters of vanilla/donor BiomeDefs (e.g. Core's own Desert cast) — only OUR patches onto them are read

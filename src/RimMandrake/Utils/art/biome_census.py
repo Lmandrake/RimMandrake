@@ -7,16 +7,16 @@
   -> <out>/census.json   machine-readable; the schema below is what the per-biome sheet builder reads
   -> <out>/census.md     one summary table per biome + the NO-ART and canon-entry-missing rows named
 
-BIOMES. A census "biome" is one logical biome = every BiomeDef that carries it: the RUT_ campaign def,
-its RM_ standalone twin (design/RimMandrake/biome_mod_architecture.md §2a/§2b), and the vanilla/donor
-def our patches add to (Desert, ExtremeDesert, AridShrubland, ZBiome_Grasslands). Order: desert,
-deep_desert (incl. RM_Stillsand), blue_desert, then the rest alphabetically. Arid Shrubland is its own
-biome (owner: strictly biome by biome). Any of our BiomeDefs not in BIOME_GROUPS becomes its own biome.
+BIOMES. Scope = "RimMandrake: Baroque Biomes" (mandrake.rm.biomes): every non-abstract RM_ BiomeDef
+declared under the Defs/ of an entry of src/RimMandrake/Biomes.compose.json (derived on each run, never
+listed here; includes the RM_SeabedFloor_* defs). One biome = one RM_ BiomeDef. NOT in scope: vanilla
+or donor biomes, the RUT_ campaign twins, and patches onto any non-RM biome. Order: RM_LongShade (the
+Desert's Baroque twin), RM_Stillsand (deep desert), RM_BlueDesert, then the rest alphabetically.
 
 ROSTERS. Read from src/ only, as XML ELEMENTS: <wildAnimals>/<wildPlants> are `<DefName>c</DefName>`
 (never <li>); <fishTypes> are `<group><DefName>c</DefName></group>`. Inline rows come from each
 BiomeDef; patch rows come from every PatchOperation whose OWN <xpath> targets
-Defs/BiomeDef[defName=...]/wildAnimals|wildPlants|fishTypes (Add/Insert read <value>, Replace of the
+Defs/BiomeDef[defName="RM_..."]/wildAnimals|wildPlants|fishTypes (Add/Insert read <value>, Replace of the
 whole list resets it, Remove of /wildAnimals/<Name> removes; Conditional/FindMod/Sequence are walked
 into, never read as an add). Files are applied in path order. NOT read (UNMEASURED): the base rosters
 of vanilla/donor BiomeDefs (Core's own Desert cast), Cherry Picker cuts, other mods' patches.
@@ -54,11 +54,13 @@ census.json top-level keys:
   inputs            ledger/event counts, load-order fingerprint, artpipe root, wookiee on/off
   sanity_probe      {name: rows hit} for known-present species — a zero there means the census is broken
   biome_order       [biome keys, review order]
-  biomes            {key: {label, order, defs:[{defName, ours, file}], summary:{...}, rows:[ROW]}}
-  unmapped_patch_targets  BiomeDefs our patches touch that belong to no biome here (with species counts)
+  biomes            {RM_ defName: {label, biome_def, biome_file, compose_entry, order, defs:[{defName, ours,
+                    file, rows_here}], summary:{...}, rows:[ROW]}}
+  unmapped_patch_targets  out-of-scope BiomeDefs (RUT_/vanilla/donor) with roster rows, for traceability only
   unmeasured        list of strings
 ROW: key, kind (fauna|flora|fish), label, defNames, port, donors, pairing, placements[{biome_def,
-  as_written, commonality, source(inline|patch), file, may_require}], commonality_max,
+  as_written, commonality, source(inline|patch), layer(inline_RM|patch), patch_mod (packageId of the
+  patching mod, null inline), file, may_require}], commonality_max,
   canon{entry, match, images, has_must_show, ruled, wookieepedia, canon_missing_entry},
   twins[{defName, relation, evidence, in_this_biome}], noncanon_twin,
   art{resources[{res, role, joined_by, in_ledger, subjects, live{mod,label,faces}|null, versions[{kind,label,
@@ -94,39 +96,30 @@ WOOKIEE_CACHE = Path.home() / ".cache" / "rm_biome_census" / "wookiee.json"
 PROBES = ("korrum", "hawkbat", "bantha", "anooba", "stoneback")
 REQUIRED_PROBES = ("korrum", "hawkbat", "bantha")
 
-# key, label, defs (RUT_ campaign def, RM_ twin, vanilla/donor defs our patches add to)
-BIOME_GROUPS = [
-    ("desert", "Desert (the Long Shade)", ["RUT_Desert", "RM_LongShade", "Desert"]),
-    ("deep_desert", "Deep Desert (the Stillsand / Dune Sea)", ["RUT_ExtremeDesert", "RM_Stillsand", "ExtremeDesert"]),
-    ("blue_desert", "Blue Desert", ["RUT_BlueDesert", "RM_BlueDesert"]),
-    ("arid_shrubland", "Arid Shrubland (the Leaning Scrub)", ["RUT_AridShrubland", "RM_LeaningScrub", "AridShrubland"]),
-    ("abyss", "the Abyss", ["RUT_Abyss", "RM_Abyss"]),
-    ("cauldron", "the Cauldron", ["RUT_Cauldron", "RM_Cauldron"]),
-    ("chill", "the Chill (propane lakes)", ["RUT_PropaneLake", "RM_TheChill", "RM_ChillCrater", "RM_SeabedFloor_TheChill"]),
-    ("contagion", "the Contagion", ["RUT_Contagion", "RM_Contagion"]),
-    ("cracked_lands", "the Cracked Lands", ["RUT_CrackedLands", "RM_FloodedCanyon"]),
-    ("fever_wood", "the Fever Wood", ["RUT_FeverWood", "RM_FeverWood"]),
-    ("forge", "the Forge", ["RUT_TheForge", "RM_TheForge"]),
-    ("fuel_snows", "the Fuel Snows", ["RUT_FuelSnows"]),
-    ("greentide", "the Greentide", ["RUT_Greentide", "RM_Greentide"]),
-    ("grey_sea", "the Grey Sea", ["RUT_GreySea", "RM_GreySea", "RM_SeabedFloor_GreySea"]),
-    ("lantern_deeps", "the Lantern Deeps", ["RM_LanternDeeps", "BMT_CrystalCaverns"]),
-    ("miasma", "the Miasma", ["RUT_Miasma", "RM_Miasma"]),
-    ("nightside_ice", "the Nightside Ice (Sleeping Ice)", ["RUT_NightsideIce", "RM_NightsideIce"]),
-    ("pyrelands", "the Pyrelands", ["RM_Pyrelands", "ZBiome_Grasslands"]),
-    ("rot", "the Rot", ["RUT_TheRot", "RM_TheRot"]),
-    ("rust_cathedral", "the Rust Cathedral", ["RUT_RustCathedral", "RM_RustCathedral"]),
-    ("scald", "the Scald", ["RUT_TheScald", "RM_TheScald", "RM_SeabedFloor_TheScald"]),
-    ("slime", "the Slime", ["RUT_Slime", "RM_GelatinousSlime"]),
-    ("sump", "the Sump", ["RUT_Sump", "RM_TheSump"]),
-    ("twilight_sea", "the Twilight Sea", ["RUT_TwilightSea", "RM_TwilightSea", "RM_SeabedFloor_TwilightSea"]),
-    ("umbra", "Umbra", ["RUT_Umbra"]),
-    ("warscar", "Warscar", ["RUT_Scarlands", "RM_Warscar"]),
-    ("wasteland", "the Wastes", ["RUT_Wasteland", "RM_Wasteland"]),
-    ("webwork", "the Webwork", ["RUT_Webwork", "RM_Webwork"]),
-    ("weeping_stones", "the Weeping Stones", ["RUT_WeepingStones", "RM_WeepingStones"]),
-]
-FIRST = ["desert", "deep_desert", "blue_desert"]
+COMPOSE = SRC / "RimMandrake" / "Biomes.compose.json"
+FIRST = ["RM_LongShade", "RM_Stillsand", "RM_BlueDesert"]     # Desert's Baroque twin, deep desert, blue desert
+
+
+def baroque_biomes():
+    """[(defName, label, file, compose entry key)] — every non-abstract RM_ BiomeDef declared under the Defs/
+    of an entry of Biomes.compose.json ('RimMandrake: Baroque Biomes', mandrake.rm.biomes). Derived, never listed."""
+    comp = json.load(open(COMPOSE))
+    out = []
+    for e in comp["entries"]:
+        base = SRC / "RimMandrake" / e["source"]
+        for f in sorted(base.rglob("*.xml")):
+            if "/Defs/" not in str(f):
+                continue
+            root = parse(f)
+            if root is None:
+                continue
+            for bd in root.iter("BiomeDef"):
+                dn = (bd.findtext("defName") or "").strip()
+                if dn.startswith("RM_") and bd.get("Abstract") != "True":
+                    out.append((dn, (bd.findtext("label") or "").strip(), str(f.relative_to(REPO)), e["key"]))
+    return out
+
+
 LISTS = {"wildAnimals": "fauna", "wildPlants": "flora", "fishTypes": "fish"}
 OURS_RE = re.compile(r"^(RSW_|RM_|RUT_|rut_)")
 BODY_ROLES = {"body", "flying", "swimming", "plant_immature", "plant_leafless"}
@@ -179,6 +172,21 @@ def list_entries(node, field):
 
 # ───────────────────────────────────────────────────────────── rosters ──
 
+_PKG = {}
+
+
+def mod_of(f: Path) -> str:
+    """packageId of the mod folder holding a patch file (src/<Tier>/<Mod>/...), else that folder."""
+    parts = f.relative_to(SRC).parts
+    folder = SRC / parts[0] / parts[1]
+    if folder not in _PKG:
+        try:
+            _PKG[folder] = (ET.parse(folder / "About" / "About.xml").getroot().findtext("packageId") or "").strip() or str(folder.relative_to(REPO))
+        except (ET.ParseError, OSError):
+            _PKG[folder] = str(folder.relative_to(REPO))
+    return _PKG[folder]
+
+
 def read_rosters():
     """biome_def -> {"ours": bool, "file": str, "entries": {(field, defName): placement}}."""
     R = {}
@@ -199,6 +207,7 @@ def read_rosters():
                     continue
                 for name, c, mr in list_entries(node, field):
                     ent[(field, name)] = {"as_written": name, "commonality": c, "source": "inline",
+                                          "layer": "inline_RM", "patch_mod": None,
                                           "file": str(f.relative_to(REPO)), "may_require": mr}
             R[dn] = {"ours": True, "file": str(f.relative_to(REPO)), "entries": ent}
     xp_re = re.compile(r'BiomeDef\s*\[\s*defName\s*=\s*"([^"]+)"\s*\]\s*/\s*(wildAnimals|wildPlants|fishTypes)(.*)$')
@@ -239,6 +248,7 @@ def read_rosters():
                 continue      # an add into a single entry's node: not a roster row
             for name, c, mr in list_entries(v, field):
                 ent[(field, name)] = {"as_written": name, "commonality": c, "source": "patch",
+                                      "layer": "patch", "patch_mod": mod_of(f),
                                       "file": rel, "may_require": mr}
     return R
 
@@ -459,15 +469,11 @@ def main(argv=None):
                 return c, "stem_rule"
         return None, None
 
-    # biome groups
-    groups = [(k, lbl, defs) for k, lbl, defs in BIOME_GROUPS]
-    grouped = {d for _, _, ds in groups for d in ds}
-    for dn, rec in sorted(R.items()):
-        if rec["ours"] and dn not in grouped and rec["entries"]:
-            groups.append((dn.lower(), dn, [dn]))
-            grouped.add(dn)
-    order = FIRST + sorted(k for k, _, _ in groups if k not in FIRST)
-    gmap = {k: (lbl, defs) for k, lbl, defs in groups}
+    # biomes = the Baroque Biomes compose set, one per RM_ BiomeDef
+    BB = baroque_biomes()
+    grouped = {dn for dn, _, _, _ in BB}
+    order = [d for d in FIRST if d in grouped] + sorted(d for d in grouped if d not in FIRST)
+    gmap = {dn: (lbl or dn, [dn], f, ek) for dn, lbl, f, ek in BB}
     unmapped = {dn: len(rec["entries"]) for dn, rec in R.items() if dn not in grouped and rec["entries"]}
 
     # art plumbing
@@ -558,7 +564,7 @@ def main(argv=None):
     biomes = {}
     all_rows = []
     for bk in order:
-        lbl, defs = gmap[bk]
+        lbl, defs, bfile, ekey = gmap[bk]
         rows = {}
         for bd in defs:
             rec = R.get(bd)
@@ -574,7 +580,8 @@ def main(argv=None):
                     r["donors"].append(name)
                     r["pairing"][name] = how
                 r["placements"].append(dict(pl, biome_def=bd))
-        biomes[bk] = {"label": lbl, "order": order.index(bk),
+        biomes[bk] = {"label": lbl, "biome_def": bk, "biome_file": bfile, "compose_entry": ekey,
+                      "order": order.index(bk),
                       "defs": [{"defName": d, "ours": R.get(d, {}).get("ours", False),
                                 "file": R.get(d, {}).get("file"), "rows_here": len(R.get(d, {}).get("entries", {}))}
                                for d in defs], "rows": sorted(rows.values(), key=lambda r: (r["kind"], r["key"].lower()))}
@@ -702,7 +709,12 @@ def main(argv=None):
         for kk, vv in S.items():
             tot[kk] += vv
         # md, filled per biome
+        lay = defaultdict(int)
+        for r in rs:
+            for pl in r["placements"]:
+                lay[pl["layer"] if pl["layer"] == "inline_RM" else "patch " + pl["patch_mod"]] += 1
         md += [f"## {order.index(bk) + 1}. {B['label']} (`{bk}`)", "",
+               f"file `{bfile}` · layers: " + ", ".join(f"{k} {v}" for k, v in sorted(lay.items())), "",
                "defs: " + ", ".join(f"`{d['defName']}` ({d['rows_here']})" for d in B["defs"]), "",
                "| rows | fauna | flora | fish | art ≥1 | canon | canon, no entry | non-canon twin | any twin | no art |",
                "|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
@@ -754,7 +766,6 @@ def main(argv=None):
            f"Distinct species rows: {len(ids)}.", "",
            "**Sanity probe** (rows hit; a zero on korrum/hawkbat/bantha means the census is broken): "
            + ", ".join(f"{k} {v}" for k, v in probe.items()), "",
-           "**Patch targets not in any biome here:** " + (", ".join(f"`{k}` ({v})" for k, v in sorted(unmapped.items())) or "none"),
            "", "**UNMEASURED:**", *[f"- {u}" for u in unmeasured], ""]
     md_path.write_text("\n".join(md) + "\n")
 
