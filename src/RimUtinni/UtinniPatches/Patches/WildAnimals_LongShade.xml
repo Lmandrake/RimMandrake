@@ -68,10 +68,9 @@
      RSW_SandLion (vekka) lives in the Stillsand, its one home. Nothing to fix
      here; desert.json's homeless-reserve entry already records this
      correctly, checked this pass (LONGSHADE_RULED_CONTENT_1).
-  2. def row RSW_Stoneback (0.5) is wired here (per the frozen twin) but
-     absent from rosters/desert.json — the roster file is stale by this
-     addition, not this file. Unaffected by this pass (not part of the 14
-     tier-move rows, still SW-tier).
+  2. The stoneback is NOT wired here: NONCANON_BEAST_RENAME_1 renamed it
+     (RSW_Stoneback -> RSW_Bokka -> RM_Bokka) and it is cast inline on
+     RM_LongShade.xml (RM_Bokka 0.5). No roster names RSW_Stoneback.
 
   ⚠️ A patch that matches nothing logs nothing — PatchOperationConditional returns
   true on no match, and an unmatched PatchOperationAdd is silent. A clean
