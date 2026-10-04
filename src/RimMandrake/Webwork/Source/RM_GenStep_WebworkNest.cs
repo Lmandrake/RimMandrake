@@ -50,9 +50,17 @@ namespace RimMandrake.Webwork
 				return;
 			}
 
+			PlaceNest(map);
+		}
+
+		/// <summary>Everything after the biome gate: the nestEnabled toggle and the placement. Public so
+		/// RM_WebworkProof can run it on a quicktest map (the bridge cannot generate an RM_Webwork map).
+		/// Returns the clutches placed, or -1 when nothing was placed.</summary>
+		public int PlaceNest(Map map)
+		{
 			if (!RM_WebworkSettings.nestEnabled)
 			{
-				return; // MOD_OPTIONS_RETROFIT_1: map-gen-affecting master toggle
+				return -1; // MOD_OPTIONS_RETROFIT_1: map-gen-affecting master toggle
 			}
 
 			ThingDef wallDef = DefDatabase<ThingDef>.GetNamedSilentFail(NestWallDefName);
@@ -61,14 +69,14 @@ namespace RimMandrake.Webwork
 			{
 				Log.Warning("[RM Webwork] RM_GenStep_WebworkNest: " + NestWallDefName + "/"
 					+ EggClutchDefName + " not found — nest skipped on " + map.Biome.defName + ".");
-				return;
+				return -1;
 			}
 
 			if (!TryFindCenter(map, out IntVec3 center))
 			{
 				Log.Warning("[RM Webwork] RM_GenStep_WebworkNest: no valid site found on "
 					+ map.Biome.defName + " — nest skipped this map (S6 ruling 3 expects one on every map).");
-				return;
+				return -1;
 			}
 
 			GenSpawn.Spawn(ThingMaker.MakeThing(wallDef), center, map);
@@ -101,6 +109,7 @@ namespace RimMandrake.Webwork
 
 			Log.Message("[RM Webwork] RM_GenStep_WebworkNest: placed a nest (1 wall, " + placed
 				+ " clutch/es) on " + map.Biome.defName + " at " + center + ".");
+			return placed;
 		}
 
 		private bool TryFindCenter(Map map, out IntVec3 result)

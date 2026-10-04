@@ -396,26 +396,77 @@ def _build_suite():
                 if "RM_Hediff_SunScald" not in "|".join(_flat(f.get("hediffClass"))):
                     raise ExpectationFailed("RM_Webwork_SunScald hediffClass is %r, not RM_Hediff_SunScald (mandrake.rm.creaturebehaviors)" % (f.get("hediffClass"),))
 
+    def _wp(t, method, args):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Webwork.RM_WebworkProof", method=method, args=args)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def _num(text, key):
+        import re as _re
+        m = _re.search(key + r" ([\d.\-]+)", text)
+        return float(m.group(1)) if m else None
+
     @suite.chain("map_mechanics")
     def map_mechanics(t):
-        for name, toggle, why in (
-            ("nest_placed_at_mapgen", "nestEnabled",
-             "one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map"),
-            ("clutch_relays_every_20_to_30_days", "eggRelayIntervalMultiplier",
-             "the re-lay needs a nest wall, a live ollathrix and 20-30 game days of ticks"),
-            ("emergent_spawn_on_destroy", "emergentSpawnEnabled",
-             "a 3 percent roll per destruction needs a def that carries the comp (none ships attached yet) and many trials"),
-            ("emergent_spawn_chance_scales", "emergentSpawnChanceMultiplier",
-             "statistical; no def in this mod carries the comp, so there is nothing to destroy"),
-            ("webwork_competes_for_tiles", "generateOnWorldgen",
-             "worldgen-affecting and inert on the frozen world (CLAUDE.md: no worldgen feature); no map can exercise it"),
-        ):
-            with t.component(name, toggle=toggle):
-                if _live(t):
-                    _unmeasured(t, why)
+        """WEBWORK_COVERAGE_GAPS_1. Runs on the CURRENT map through RM_WebworkProof (static_call); each proof sets
+        its settings for the call and restores them. Not proven here: the GenStep firing inside real mapgen
+        (static: it is in the biome's genSteps, biome_wiring), sun-scald, loom spit, front creep."""
+        with t.component("nest_placed_by_the_genstep", toggle="nestEnabled"):
+            text = _wp(t, "ProofNest", "true")
+            if _live(t):
+                if not text.startswith("NEST"):
+                    _unmeasured(t, "ProofNest gave no answer: %r" % text[:160]); return
+                if "biomeGateRefuses False" in text:
+                    raise ExpectationFailed("the nest GenStep placed a nest on a non-Webwork map: %s" % text)
+                walls = text.split("walls ")[1].split(" |")[0].split("->")
+                if not (_num(text, "placed") or 0) >= 1 or int(walls[1]) != int(walls[0]) + 1:
+                    raise ExpectationFailed("the nest placement did not lay one wall and >= 1 clutch: %s" % text)
+            off = _wp(t, "ProofNest", "false")
+            if _live(t) and not ("placed -1" in off and off.split("walls ")[1].split(" |")[0].split("->")[0] == off.split("walls ")[1].split(" |")[0].split("->")[1]):
+                raise ExpectationFailed("nestEnabled off still placed a nest: %s" % off)
+        with t.component("clutch_relays_every_20_to_30_days", toggle="eggRelayIntervalMultiplier", beyond_toggle=True):
+            text = _wp(t, "ProofRelay", "true|1")
+            if _live(t):
+                if not text.startswith("RELAY"):
+                    _unmeasured(t, "ProofRelay gave no answer: %r" % text[:160]); return
+                d = _num(text, "intervalDays")
+                if d is None or not (20.0 <= d <= 30.0):
+                    raise ExpectationFailed("relay interval at multiplier 1 is not 20-30 days: %s" % text)
+                if not text.endswith("0->1") and not text.endswith("0->2"):
+                    raise ExpectationFailed("a due nest with a living mother and no clutch did not re-lay 1-2: %s" % text)
+            half = _wp(t, "ProofRelay", "true|0.5")
+            if _live(t):
+                d = _num(half, "intervalDays")
+                if d is None or not (10.0 <= d <= 15.0):
+                    raise ExpectationFailed("eggRelayIntervalMultiplier 0.5 did not halve the interval: %s" % half)
+        with t.component("dying_nest_without_mother_relays_nothing", beyond_toggle=True):
+            text = _wp(t, "ProofRelay", "false|1")
+            if _live(t) and not ("mother False" in text and text.endswith("0->0")):
+                raise ExpectationFailed("a nest with no living ollathrix re-laid: %s" % text)
+        with t.component("emergent_spawn_on_destroy", toggle="emergentSpawnEnabled"):
+            text = _wp(t, "ProofEmergent", "true|1|1|Vanish")
+            if _live(t):
+                if not text.startswith("EMERGENT"):
+                    _unmeasured(t, "ProofEmergent gave no answer: %r" % text[:160]); return
+                if "spawned 1" not in text or "manhunter True" not in text:
+                    raise ExpectationFailed("a sure harvest (chance 1) did not spawn one manhunter ollathrix: %s" % text)
+            for args, why in (("false|1|1|Vanish", "emergentSpawnEnabled off"), ("true|1|1|KillFinalize", "a combat kill (not a harvest)")):
+                text = _wp(t, "ProofEmergent", args)
+                if _live(t) and "spawned 0" not in text:
+                    raise ExpectationFailed("%s still spawned: %s" % (why, text))
+        with t.component("emergent_spawn_chance_scales", toggle="emergentSpawnChanceMultiplier", beyond_toggle=True):
+            text = _wp(t, "ProofEmergent", "true|0.5|2|Vanish")
+            if _live(t) and "spawned 1" not in text:
+                raise ExpectationFailed("chance 0.5 x multiplier 2 (= 1) did not spawn: %s" % text)
+            text = _wp(t, "ProofEmergent", "true|1|0|Vanish")
+            if _live(t) and "spawned 0" not in text:
+                raise ExpectationFailed("multiplier 0 still spawned: %s" % text)
+        with t.component("webwork_competes_for_tiles", toggle="generateOnWorldgen"):
+            if _live(t):
+                _unmeasured(t, "worldgen-affecting and inert on the frozen world (CLAUDE.md: no worldgen feature); no map can exercise it")
         for name, why in (
-            ("sun_scald_in_open_sun", "a sun-scald hediff on an ollathrix in sunlight needs a spawned ollathrix on a lit map and ticks"),
+            ("sun_scald_in_open_sun", "RM_Hediff_SunScald lives in mandrake.rm.creaturebehaviors: its proof belongs there (an ollathrix in lit sun, ticks)"),
             ("loom_spit_fires", "the ranged spit needs an awake ollathrix and a hostile target"),
+            ("front_creep_advances", "frontCreepEnabled is consumed by CreatureBehaviors' front-creep, not Webwork C#; proof belongs there"),
         ):
             with t.component(name, beyond_toggle=True):
                 if _live(t):
