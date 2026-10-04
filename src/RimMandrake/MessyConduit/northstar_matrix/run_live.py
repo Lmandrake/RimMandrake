@@ -5,6 +5,26 @@
     python3    src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --post <result.json>   # contact sheets, image sanity, review.html
     python3    src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --compare A.json B.json  # determinism across runs
 
+FAST (owner 2026-10-04, 'we MUST accelerate this test time'): screenshots dominate the ~20 s/scene (frame/camera move, settle sleep,
+render, 2-3 MB PNG copy). Split the run in two; the state pass carries every verdict, the sweep only produces the pictures:
+    python.exe src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --live --fresh-map --no-shots --catalog <scenes.json> --out <result.json>
+    python.exe src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --live --sweep-shots <result.json> --catalog <scenes.json>
+    python3    src/RimMandrake/MessyConduit/northstar_matrix/run_live.py --post <result.json>
+  --no-shots   state reads and pass bars only: no screenshot, no camera move/wait except for the net-selected scenes (the highlight
+               read needs the camera), no on/off-pair or power-overlay staging. Verdict rows are identical in kind to a full run; the
+               screenshot-dependent checks (image sanity, frame_ok, census mask, frame captures) are the single row I0_screenshots =
+               UNMEASURED with the reason, never PASS/FAIL. Prove equivalence by --compare against a full run on the same spec.
+  --sweep-shots <result.json>  second pass on a live 250x250 map with the site pinned (same --catalog; do NOT pass --fresh-map unless a
+               fresh map is intended). Every board is laid out from the SAME origin and destroyed after its census, so nothing from the
+               state pass is still standing: the sweep rebuilds each board (same builds, same ticks, so the same geometry), then takes
+               that board's shots in plot order (south to north) with no census, no determinism re-reads, no verdict rows, then
+               destroys it. Shot records (shot / shot_on / shot_off) are merged into <result.json> (or --out); verdicts are untouched.
+               --shot-settle S (default 1.5 for a full run, 0.7 in the sweep) is the wait after a frame move before a frame capture;
+               raise it if sweep frames come out blurred or mid-pan. PNG copies run on 4 threads, overlapping the bridge calls.
+  Timing: result["timing"] = wall seconds per phase (site_setup, board_build, board_ticks, scene_probes, determinism, shots,
+  shot_copy_wait, hose, teardown, post; shots are nested out of the phase they ran in), per board in boards[].phases_s, printed
+  at the end as a TIMING line.
+
 Run python.exe from the repo root with repo-relative paths (bridge calls only work under python.exe; pipe its output
 through tr -d '\\r'). --post runs under WSL python3 (numpy/PIL).
 
@@ -72,6 +92,8 @@ LEARNED (2026-10-02, smoke + two full passes on two fresh maps, 100 placed scene
 """
 import argparse
 import collections
+import concurrent.futures
+import contextlib
 import glob
 import hashlib
 import json
@@ -254,7 +276,7 @@ class LiveBridge(object):
                     return json.loads(res)
                 except Exception:  # noqa: BLE001
                     return {"success": False, "raw": str(res)[:300]}
-            time.sleep(0.25)
+            time.sleep(0.05)
         return {"success": False, "error": "probe timed out (no frame serviced it)", "cmd": cmd}
 
     def probe(self, cmd, wait_s=30.0):
@@ -463,6 +485,41 @@ class Run(object):
         self.B, self.args, self.mock = B, args, mock
         self.rows, self.log, self.scenes, self.boards_out = [], [], {}, []
         self.t0 = time.time()
+        self.shots = not getattr(args, "no_shots", False)
+        self.sweep = bool(getattr(args, "sweep_shots", None))
+        self.settle = getattr(args, "shot_settle", None)
+        self.tm, self.btm, self.nshots = {}, None, 0
+        self._stack = [["setup", time.time()]]
+        self._copies = []
+        self._pool = concurrent.futures.ThreadPoolExecutor(max_workers=4)
+        self._framed = None                           # (key, t) of the last frame_cell_rect, to skip a redundant re-frame
+
+    # ------------------------------------------------------------------ per-phase wall clock
+    def _acc(self, name, d):
+        self.tm[name] = self.tm.get(name, 0.0) + d
+        if self.btm is not None:
+            self.btm[name] = self.btm.get(name, 0.0) + d
+
+    def switch(self, name):
+        """Close the current base phase and open `name` (call only outside a ph() block)."""
+        now = time.time()
+        top = self._stack[-1]
+        self._acc(top[0], now - top[1])
+        self._stack[-1] = [name, now]
+
+    @contextlib.contextmanager
+    def ph(self, name):
+        """Nested phase (shots): the enclosing phase is paused while it runs, so phases add up to the wall clock."""
+        now = time.time()
+        self._acc(self._stack[-1][0], now - self._stack[-1][1])
+        self._stack.append([name, now])
+        try:
+            yield
+        finally:
+            now = time.time()
+            n, t0 = self._stack.pop()
+            self._acc(n, now - t0)
+            self._stack[-1][1] = now
 
     def row(self, rid, status, cls, detail):
         self.rows.append({"id": rid, "status": status, "class": cls, "detail": detail})
@@ -487,11 +544,11 @@ class Run(object):
             B.call("rimworld/go_to_main_menu")
             r = B.call("rimworld/start_debug_game_ready", readiness="mapData", pauseIfNeeded=True, timeoutMs=280000)
             st = None
-            for _ in range(120):
+            for _ in range(480):
                 st = B.call("rimworld/get_ui_state").get("programState")
                 if st == "Playing" and B.call("jawa/map_info").get("success"):
                     break
-                time.sleep(2.0)
+                time.sleep(0.5)
             load = {"start": r.get("success"), "programState": st, "wall_s": round(time.time() - ts, 1)}
             self.row("L0_fresh_map", "PASS" if st == "Playing" else "FAIL", "SITE", load)
             if st != "Playing":
@@ -564,6 +621,8 @@ class Run(object):
     # ------------------------------------------------------------------ one board
     def board(self, b):
         B = self.B
+        self.btm = {}
+        self.switch("board_build")
         tb0, wb0 = self.eng_ticks(), time.time()
         rect = "%d,%d,%d,%d" % tuple(b["bbox"])
         self.progress("board %s %s scenes %d bbox %s" % (b["id"], b["settings"], len(b["scenes"]), rect))
@@ -654,6 +713,7 @@ class Run(object):
         ticks_b = 0
         # ---- aerial staging: link by id, cut, kill
         aer = {}
+        self.switch("board_ticks")
         if aerial and not self.mock:
             B.ticks(1)
             ticks_b += 1
@@ -701,16 +761,25 @@ class Run(object):
         ticks_b += 2
         B.sleep(0.5)
         B.probe("poll")
-        fresh = B.probe("fresh")
+        fresh = None if self.sweep else B.probe("fresh")
         # ---- master switch for the controls board
         if b["settings"].get("enabled") == "False":
             pass                                           # handled per scene below (ON census first, then OFF)
         results = []
-        for sc, (X0, Z0) in sorted(b["scenes"], key=lambda so: so[0]["id"]):
-            results.append(self.scene(sc, X0, Z0, site_fail.get(sc["id"]), aer.get(sc["id"]), b))
+        self.switch("scene_probes")
+        if self.sweep:
+            # sweep: screenshots only, ordered by plot position (south->north, west->east) to keep the camera travel short
+            for sc, (X0, Z0) in sorted(b["scenes"], key=lambda so: (so[1][1], so[1][0])):
+                self.scene_shots(sc, X0, Z0, b)
+        else:
+            for sc, (X0, Z0) in sorted(b["scenes"], key=lambda so: so[0]["id"]):
+                results.append(self.scene(sc, X0, Z0, site_fail.get(sc["id"]), aer.get(sc["id"]), b))
         # ---- determinism: zero-tick re-reads after every view toggle and on/off pair
         det = []
+        self.switch("determinism")
         for sc, (X0, Z0) in sorted(b["scenes"], key=lambda so: so[0]["id"]):
+            if self.sweep:
+                break
             rec = self.scenes[sc["id"]]
             if rec.get("geometryHash") is None:
                 continue
@@ -722,14 +791,18 @@ class Run(object):
             rec["determinism"] = {"same": same, "h2": h2.get("geometryHash"), "h3": h3.get("geometryHash")}
             det.append(same)
         tb1 = self.eng_ticks()
+        self.switch("teardown")
         B.call("jawa/destroy_batch", rects=rect, categories="All")
+        self.switch("idle")
         out = {"id": b["id"], "key": b["key"], "settings": b["settings"], "set": set_res, "bbox": b["bbox"],
                "scenes": [s["id"] for s, _ in b["scenes"]], "builds": builds, "batteries": bat_res, "fresh": fresh,
                "aerial": aer, "ticks": (tb1 - tb0) if isinstance(tb0, int) and isinstance(tb1, int) else ticks_b,
                "ticks_stepped": ticks_b, "wall_s": round(time.time() - wb0, 1),
-               "determinism_same": "%d/%d" % (sum(det), len(det))}
+               "determinism_same": "%d/%d" % (sum(det), len(det)),
+               "phases_s": {k: round(v, 1) for k, v in self.btm.items() if k != "idle"}}
+        self.btm = None
         self.boards_out.append(out)
-        self.progress("board %s done: %s ticks, %ss, det %s" % (b["id"], out["ticks"], out["wall_s"], out["determinism_same"]))
+        self.progress("board %s done: %s ticks, %ss, det %s, phases %s" % (b["id"], out["ticks"], out["wall_s"], out["determinism_same"], out["phases_s"]))
 
     # ------------------------------------------------------------------ one scene
     def scene(self, sc, X0, Z0, site_fail, aer, board):
@@ -743,9 +816,11 @@ class Run(object):
         exp = sc["expect"]["intrinsic"]
         rec["expected"] = exp
         root = sc.get("zoom_root") or 11
-        if not self.mock:
+        v0 = sc.get("view") or {}
+        # --no-shots: the camera only matters to the highlight read (net-selected view); every other scene skips the move + wait
+        if not self.mock and (self.shots or v0.get("select_at")):
             B.call("rimworld/set_camera_zoom", rootSize=root)
-            B.call("rimworld/frame_cell_rect", x=pg[0], z=pg[1], width=pg[2], height=pg[3], paddingCells=PAD, rootSize=root)
+            self.frame(pg, root)
             B.sleep(0.6)
         master_off = (sc.get("settings") or {}).get("enabled") == "False"
         if master_off:
@@ -798,7 +873,7 @@ class Run(object):
             if not (sa.get("success") and m.get("highlightCords") and m.get("highlightCords") == hl["netCords"]):
                 mism.append({"field": "highlight_cords_eq_net_cords", "expected": True, "got": hl})
             del m1
-        elif v.get("overlay") == "power" and not self.mock:
+        elif v.get("overlay") == "power" and not self.mock and self.shots:
             src = [o for o in sc["build"] if o["op"] == "battery"]
             if src:
                 B.probe("set:highlight=False")
@@ -815,10 +890,11 @@ class Run(object):
             rec["class"] = "SITE" if site_fail else "MOD"
         frame_cap = (v.get("select_at") or v.get("overlay") == "power" or sc["group"] == "aerial")
         rec["shot"] = self.shot(sid, pg, root, frame=bool(frame_cap))
-        if frame_cap and not self.mock:
+        sel_used = bool(v.get("select_at")) or (v.get("overlay") == "power" and self.shots)
+        if sel_used and not self.mock:
             B.probe("deselect")
             B.probe("set:highlight=True")
-        if sid in ONOFF_PAIRS:
+        if sid in ONOFF_PAIRS and self.shots:
             B.probe("set:enabled=False")
             rec["shot_off"] = self.shot(sid + "_off", pg, root)
             B.probe("set:enabled=True")
@@ -880,10 +956,14 @@ class Run(object):
                     probes.append({"cmd": st["cmd"], "success": r.get("success"), "reason": r.get("reason")})
                     if st["cmd"].startswith("check:") and r.get("reason") is not None:
                         rec["site_fail"].append("install check refused: %s" % r.get("reason"))
-                elif st["kind"] == "hose_census":
+                elif st["kind"] == "hose_census" and not self.sweep:
                     c = B.hp("census")
                     census = c
             rec["probes"] = probes
+            if self.sweep:                                  # sweep: built + flowed above, shot only, no verdict
+                if not self.mock:
+                    rec["shot"] = self.shot(sid, pg, sc.get("zoom_root") or 11, frame=True)
+                continue
             h = {}
             for x in (census or {}).get("hoses") or []:
                 if tuple(x["reel"]) == reel:
@@ -965,13 +1045,33 @@ class Run(object):
                 out.append({"field": "aerial." + k, "expected": want, "got": got.get(k)})
         return out
 
+    def frame(self, pg, root):
+        self.B.call("rimworld/frame_cell_rect", x=pg[0], z=pg[1], width=pg[2], height=pg[3], paddingCells=PAD, rootSize=root)
+        self._framed = ((tuple(pg), root), time.time())
+
     def shot(self, name, pg, root, frame=False):
         B = self.B
         if self.mock:
             return None
+        if not self.shots:
+            return {"file": None, "kind": "skipped", "ok": None, "skipped": "--no-shots", "rect": pg}
+        with self.ph("shots"):
+            return self._shot(name, pg, root, frame)
+
+    def _shot(self, name, pg, root, frame):
+        B = self.B
+        self.nshots += 1
+        settle = self.settle if self.settle is not None else 1.5
         if frame:
-            B.call("rimworld/frame_cell_rect", x=pg[0], z=pg[1], width=pg[2], height=pg[3], paddingCells=PAD, rootSize=root)
-            B.sleep(1.5)
+            # a frame_cell_rect with the same args was already issued by scene() and nothing moved the camera since: do not
+            # repeat it, only wait out whatever part of the settle time has not already elapsed (same total settle).
+            fk = self._framed
+            if fk and fk[0] == (tuple(pg), root):
+                B.sleep(max(0.0, settle - (time.time() - fk[1])))
+            else:
+                self.frame(pg, root)
+                B.sleep(settle)
+            self._framed = None
             r = B.call("jawa/take_screenshot", fileName="mcx_" + name)
         else:
             # LEARNED smoke 2026-10-02: rootSize overrides the rect framing (a wide frame with the scene small and
@@ -979,20 +1079,86 @@ class Run(object):
             r = B.call("rimworld/screenshot_cell_rect", x=pg[0], z=pg[1], width=pg[2], height=pg[3], paddingCells=PAD,
                        fileName="mcx_" + name, suppressMessage=True)
         src = r.get("path") or r.get("filePath")
-        for _ in range(20):
+        for _ in range(80):
             if src and os.path.exists(src):
                 break
-            time.sleep(0.25)
-        dst = None
-        try:
-            if src and os.path.exists(src):
-                os.makedirs(SHOTS, exist_ok=True)
-                dst = os.path.join(SHOTS, name + ".png")
-                shutil.copyfile(src, dst)
-        except Exception as ex:  # noqa: BLE001
-            self.log.append("copy failed %s: %r" % (name, ex))
-        return {"file": os.path.basename(dst) if dst else None, "kind": "frame" if frame else "cell_rect", "src": src,
-                "ok": r.get("success"), "pad": PAD, "rect": pg}
+            time.sleep(0.05)
+        rec = {"file": None, "kind": "frame" if frame else "cell_rect", "src": src,
+               "ok": r.get("success"), "pad": PAD, "rect": pg}
+        if src and os.path.exists(src):
+            dst = os.path.join(SHOTS, name + ".png")
+            os.makedirs(SHOTS, exist_ok=True)
+            rec["file"] = name + ".png"
+            # the 2-3 MB copy across the WSL/Windows boundary overlaps with the next bridge calls; joined in finish_copies()
+            self._copies.append((rec, name, self._pool.submit(shutil.copyfile, src, dst)))
+        return rec
+
+    def finish_copies(self):
+        with self.ph("shot_copy_wait"):
+            for rec, name, fut in self._copies:
+                try:
+                    fut.result()
+                except Exception as ex:  # noqa: BLE001
+                    rec["file"] = None
+                    self.log.append("copy failed %s: %r" % (name, ex))
+        self._copies = []
+        self._pool.shutdown(wait=True)
+
+    def scene_shots(self, sc, X0, Z0, board):
+        """Sweep pass: this scene's screenshots only (the same views, toggles and file names as scene()); no census, no
+        verdict. Records land in self.scenes[sid] and are merged into the state pass result by merge_sweep()."""
+        B = self.B
+        sid = sc["id"]
+        pg = [X0, Z0, sc["plot"][2], sc["plot"][3]]
+        rec = {"id": sid}
+        self.scenes[sid] = rec
+        root = sc.get("zoom_root") or 11
+        v = sc.get("view") or {}
+        if (sc.get("settings") or {}).get("enabled") == "False":
+            B.probe("set:enabled=True")
+            rec["shot_on"] = self.shot(sid + "_on", pg, root)
+            B.probe("set:enabled=False")
+            rec["shot"] = self.shot(sid, pg, root)
+            B.probe("set:enabled=True")
+            return
+        selected = False
+        if v.get("select_at") and not self.mock:
+            B.probe("select:%d,%d" % (X0 + v["select_at"][0], Z0 + v["select_at"][1]))
+            selected = True
+        elif v.get("overlay") == "power" and not self.mock:
+            src = [o for o in sc["build"] if o["op"] == "battery"]
+            if src:
+                B.probe("set:highlight=False")
+                B.probe("select:%d,%d" % (X0 + src[0]["at"][0], Z0 + src[0]["at"][1]))
+                selected = True
+        frame_cap = (v.get("select_at") or v.get("overlay") == "power" or sc["group"] == "aerial")
+        rec["shot"] = self.shot(sid, pg, root, frame=bool(frame_cap))
+        if selected:
+            B.probe("deselect")
+            B.probe("set:highlight=True")
+        if sid in ONOFF_PAIRS:
+            B.probe("set:enabled=False")
+            rec["shot_off"] = self.shot(sid + "_off", pg, root)
+            B.probe("set:enabled=True")
+
+
+def merge_sweep(old_path, res, out):
+    """Write the sweep's shot records into the state pass result JSON (verdicts untouched)."""
+    old = json.load(open(old_path, encoding="utf-8"))
+    n = 0
+    for sid, rec in res["scenes"].items():
+        tgt = old["scenes"].get(sid)
+        if tgt is None:
+            continue
+        for k in ("shot", "shot_on", "shot_off"):
+            if rec.get(k):
+                tgt[k] = rec[k]
+                n += 1
+    old.setdefault("sweep", []).append({"at": res["started"], "wall_s": res["wall_s"], "shots": res["timing"]["shots_taken"],
+                                         "phases_s": res["timing"]["phases_s"], "calls": res["calls"], "aborted": res["aborted"]})
+    with open(out, "w", encoding="utf-8") as f:
+        json.dump(old, f, indent=1, default=str)
+    return n
 
 
 def run(args, B, mock=False):
@@ -1000,11 +1166,17 @@ def run(args, B, mock=False):
     scenes = spec["scenes"]
     if args.only:
         scenes = [s for s in scenes if any(s["id"].startswith(o) for o in args.only)]
+    sweep_src = getattr(args, "sweep_shots", None)
+    if sweep_src:
+        # the sweep re-takes exactly the scenes of the state pass it follows (same catalog => same board layout)
+        have = set(json.load(open(sweep_src, encoding="utf-8"))["scenes"])
+        scenes = [s for s in scenes if s["id"] in have]
     boards = make_boards(scenes)
     if args.max_boards:
         boards = boards[:args.max_boards]
     R = Run(B, args, mock)
     res = {"mod": "MessyConduit", "script": "northstar_matrix/run_live.py", "mode": "mock" if mock else "live",
+           "pass": "sweep-shots" if sweep_src else ("state-only (--no-shots)" if getattr(args, "no_shots", False) else "full"),
            "tier": "messyconduit", "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "spec_hash": spec.get("spec_hash"),
            "catalog": spec.get("generator"), "reach": dict(R_SRC, R=R_REACH, GAP=GAP), "region": REGION,
            "rows": R.rows, "boards": R.boards_out, "scenes": R.scenes}
@@ -1020,7 +1192,12 @@ def run(args, B, mock=False):
         R.log.append("mod_hash unavailable: %r" % ex)
     aborted = None
     t_start = None
+    if getattr(args, "no_shots", False) and not sweep_src:
+        R.row("I0_screenshots", "UNMEASURED", "HARNESS",
+              "--no-shots: no screenshot was taken, so image sanity (census mask, frame_ok, blank/magenta), the on/off pair shots and "
+              "the net-selected/power-overlay frames are UNMEASURED; run --sweep-shots <this result> for them. State verdicts are unaffected.")
     try:
+        R.switch("site_setup")
         R.preflight()
         t_start = R.eng_ticks()
         for b in boards:
@@ -1029,6 +1206,7 @@ def run(args, B, mock=False):
         # inside the same screenshot-mode session so frame captures work the same way
         hose = [sc for sc in scenes if sc["group"] == "hose"]
         if hose:
+            R.switch("hose")
             try:
                 R.hose_scenes(hose)
             finally:
@@ -1042,6 +1220,7 @@ def run(args, B, mock=False):
         R.log.append(traceback.format_exc())
         R.row("ABORT", "FAIL", "HARNESS", aborted)
     finally:
+        R.switch("post")
         try:
             B.probe("defaults")
             B.ap("defaults")
@@ -1050,17 +1229,18 @@ def run(args, B, mock=False):
                 B.call("jawa/weather_set", weather="Clear", unlock=True)
         except Exception:  # noqa: BLE001
             pass
+    R.finish_copies()
     det = [s.get("determinism", {}).get("same") for s in R.scenes.values() if s.get("determinism")]
     if det:
         R.row("D1_zero_tick_rereads_same", "PASS" if all(det) else "FAIL", "MOD",
               "%d/%d scenes: geometry hash + census identical on 2 re-reads after all view toggles" % (sum(det), len(det)))
     fr = [b.get("fresh") or {} for b in R.boards_out]
-    if fr and not mock:
+    if fr and not mock and not sweep_src:
         bad = ["%s %s %s" % (b["id"], b["scenes"], {k: b["fresh"].get(k) for k in ("edges", "different", "missing")})
                for b in R.boards_out if (b.get("fresh") or {}).get("different") or (b.get("fresh") or {}).get("missing")]
         R.row("D2_fresh_builder_same", "PASS" if not bad else "FAIL", "MOD",
               bad or "%d boards: a fresh CordBuilder on the same map reproduces every laid edge" % len(fr))
-    if not mock:
+    if not mock and not sweep_src:
         lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
         new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > getattr(R, "log_base", 0)]
         errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
@@ -1078,7 +1258,12 @@ def run(args, B, mock=False):
     res["aborted"] = aborted
     res["log"] = R.log
     res["calls"] = getattr(B, "n", None)
+    R.switch("done")
     res["wall_s"] = round(time.time() - R.t0, 1)
+    res["timing"] = {"phases_s": {k: round(v, 1) for k, v in sorted(R.tm.items(), key=lambda kv: -kv[1]) if k != "done"},
+                     "shots_taken": R.nshots, "calls": getattr(B, "n", None),
+                     "note": "phases add up to wall_s; shots are nested out of the phase they ran in; shot_copy_wait is the "
+                             "residual PNG copy that did not overlap the bridge calls"}
     res["ticks_spent"] = (t_end - t_start) if isinstance(t_start, int) and isinstance(t_end, int) else None
     res["budget"] = {"design_ticks_stills": 138, "design_wall_min": "15-20 after cold load",
                      "boards": [{k: b[k] for k in ("id", "ticks", "ticks_stepped", "wall_s")} | {"scenes": len(b["scenes"])}
@@ -1174,6 +1359,8 @@ def post(result_path):
             CS.sheet(items[k:k + 16], out, cols=cols, title="Messy Conduit matrix (live 2026-10-02): %s %d-%d of %d  (floor rows: tidy, ropey, rat's nest, lattice tangle)" % (
                 g, k + 1, min(k + 16, len(items)), len(items)))
             sheets.append(out)
+    if not sanity:
+        print("post: UNMEASURED image checks: the result holds no screenshot (--no-shots and no --sweep-shots yet)")
     rep = {"result": os.path.basename(result_path), "thresholds": CS.T, "controls_negative": neg, "per_scene": sanity,
            "sheets": [os.path.basename(s) for s in sheets],
            "counts": {"shots": len(sanity), "ok": sum(1 for m in sanity.values() if m.get("ok")),
@@ -1288,6 +1475,10 @@ def main(argv=None):
     ap.add_argument("--out", default=None)
     ap.add_argument("--progress", default=None)
     ap.add_argument("--verbose", action="store_true")
+    ap.add_argument("--no-shots", action="store_true", help="state pass only: skip every screenshot (and the camera moves that only served them)")
+    ap.add_argument("--sweep-shots", default=None, metavar="RESULT_JSON",
+                    help="screenshot-only pass: rebuild each board of that state-pass result, take its shots, merge them into the JSON")
+    ap.add_argument("--shot-settle", type=float, default=None, help="seconds to wait after a frame move before a frame capture (default 1.5; sweep 0.7)")
     ap.add_argument("--post", default=None, metavar="RESULT_JSON")
     ap.add_argument("--compare", nargs=2, metavar="RESULT_JSON")
     a = ap.parse_args(argv)
@@ -1302,9 +1493,16 @@ def main(argv=None):
     if not (a.live or a.mock):
         ap.print_help()
         return 2
+    if a.no_shots and a.sweep_shots:
+        ap.error("--no-shots and --sweep-shots are opposites")
+    if a.sweep_shots and a.shot_settle is None:
+        a.shot_settle = 0.7
     B = MockBridge(a.fault) if a.mock else LiveBridge()
     res = run(a, B, mock=a.mock)
-    if a.live:
+    if a.sweep_shots:
+        n = merge_sweep(a.sweep_shots, res, a.out or a.sweep_shots)
+        print("sweep: %d shot records merged into %s" % (n, a.out or a.sweep_shots))
+    elif a.live:
         os.makedirs(RESULT_DIR, exist_ok=True)
         out = a.out or os.path.join(RESULT_DIR, "matrix_live_%s.json" % time.strftime("%Y%m%dT%H%M%S"))
         with open(out, "w", encoding="utf-8") as f:
@@ -1315,6 +1513,10 @@ def main(argv=None):
             json.dump(res, f, indent=1, default=str)
     print("%s: %s ticks %s wall %ss calls %s boards %d aborted %s" % (
         res["mode"].upper(), res["summary"], res["ticks_spent"], res["wall_s"], res["calls"], len(res["boards"]), res["aborted"]))
+    print("TIMING %ss wall, %d shots: %s" % (res["wall_s"], res["timing"]["shots_taken"],
+          ", ".join("%s %ss" % kv for kv in res["timing"]["phases_s"].items())))
+    for b in (res["boards"] if not a.mock else []):
+        print("  %-14s %s" % (b["id"], b.get("phases_s")))
     return 0 if not res["aborted"] else 1
 
 
