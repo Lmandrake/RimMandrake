@@ -153,7 +153,17 @@ namespace RimMandrake.MessyConduit.Aerial
         }
 
         private static readonly string[] RotNames = { "North", "East", "South", "West" };
-        public static readonly Dictionary<string, Vector2> BracketTable = BracketGeometryTable.Build();
+        public static readonly Dictionary<string, P2> BracketTable = BracketGeometryTable.Build();
+        public static readonly Dictionary<string, double> BracketPlateEdge = BracketGeometryTable.PlateEdge();
+
+        /// <summary>Round 2 (owner 2026-10-04): the look's per-facing bracket draw offset, plate on the wall's outer edge
+        /// (AerialMath.BracketDrawOffset); null = no measured art (the def's own offsets stand).</summary>
+        public static Vector3? BracketDrawOffset(string look, int rot)
+        {
+            if (!BracketPlateEdge.TryGetValue(look + "/" + RotNames[rot & 3], out double e)) return null;
+            P2 o = AerialMath.BracketDrawOffset(rot, e);
+            return new Vector3((float)o.X, 0f, (float)o.Z);
+        }
 
         /// <summary>A wall bracket drawing its look's own per-facing art: where its insulator is, as an offset from the
         /// graphic centre (BracketGeometryTable, measured per Look/rotation). Null = the stand-in (the def's attachZ).</summary>
@@ -161,7 +171,7 @@ namespace RimMandrake.MessyConduit.Aerial
         {
             ThingDef d = a?.parent?.def;
             if (d == null || d != AerialDefOf.RM_AerialWallBracket || !realArt.Contains(d)) return null;
-            return BracketTable.TryGetValue(Look + "/" + RotNames[a.parent.Rotation.AsInt & 3], out Vector2 v) ? v : (Vector2?)null;
+            return BracketTable.TryGetValue(Look + "/" + RotNames[a.parent.Rotation.AsInt & 3], out P2 v) ? new Vector2((float)v.X, (float)v.Z) : (Vector2?)null;
         }
 
         private static void ApplyGeometry(ThingDef d, bool real)
@@ -197,7 +207,19 @@ namespace RimMandrake.MessyConduit.Aerial
                 bool multi = d == AerialDefOf.RM_AerialWallBracket;
                 bool real = multi ? Exists(own + "_north") && Exists(own + "_east") && Exists(own + "_south") : Exists(own);
                 if (real) realArt.Add(d); else realArt.Remove(d);
-                if (real) { use.texPath = own; use.color = Color.white; if (multi) use.graphicClass = typeof(Graphic_Multi); }
+                if (real)
+                {
+                    use.texPath = own; use.color = Color.white;
+                    if (multi)
+                    {
+                        use.graphicClass = typeof(Graphic_Multi);
+                        // round 2: per-look offsets so the plate sits on the wall's OUTER edge and the arm leans out
+                        use.drawOffsetNorth = BracketDrawOffset(Look, 0) ?? orig.drawOffsetNorth;
+                        use.drawOffsetEast = BracketDrawOffset(Look, 1) ?? orig.drawOffsetEast;
+                        use.drawOffsetSouth = BracketDrawOffset(Look, 2) ?? orig.drawOffsetSouth;
+                        use.drawOffsetWest = BracketDrawOffset(Look, 3) ?? orig.drawOffsetWest;
+                    }
+                }
                 else
                 {
                     use.color = PoleTint;

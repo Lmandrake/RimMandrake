@@ -126,7 +126,9 @@
     <description>A riveted angle-iron bracket with one bottle insulator, bolted onto a wall so an overhead wire can start at a building. Place it beside a wall, facing the wall.</description>
     <!-- Wall attachment the vanilla way (owner review 2026-10-04 B7; copied from Core TorchWallLamp / Odyssey OxygenPump):
          the bracket occupies the cell IN FRONT of the wall, its rotation points AT the wall (Placeworker_AttachedToWall),
-         it is not an edifice (so it never claims the wall cell) and its graphic is drawn 0.9 cell onto the wall face.
+         it is not an edifice (so it never claims the wall cell). The 0.9 offsets below apply only to a look with no art of
+         its own: a look with art gets per-facing offsets that put its plate on the wall's OUTER edge (round 2,
+         AerialMath.BracketDrawOffset).
          CompAerialAnchor.BasePoint adds the same per-rotation offset, so the wire lands on the drawn insulator. -->
     <rotatable>true</rotatable>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
@@ -193,11 +195,14 @@
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
     <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <!-- round 2 (owner 2026-10-04): the clamp is drawn per frame BITING the victim's line (RM_MapComponent_Aerial.DrawTaps,
+         turned toward its line, sparks while it draws power); the building itself draws nothing, the icon is the clamp -->
     <graphicData>
-      <texPath>RimMandrake/MessyConduit/Aerial/TapClamp</texPath>
+      <texPath>RimMandrake/MessyConduit/ConduitTransparent</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
+    <uiIconPath>RimMandrake/MessyConduit/Aerial/TapClamp</uiIconPath>
     <statBases>
       <MaxHitPoints>80</MaxHitPoints>
       <WorkToBuild>300</WorkToBuild>

@@ -452,19 +452,27 @@ namespace RimMandrake.MessyConduit.Core
             return m.InsetN;
         }
 
+        /// <summary>Owner round 2 (2026-10-04, station 4: "connectors not properly meeting the lightbulbs ... just go to the
+        /// centroid of a building and be beneath them on the drawstack"): every cord into a machine runs on under its art to
+        /// the footprint CENTROID, the last <see cref="CentroidApproach"/> cell straight along the way in (so the plug sits
+        /// square at the end). The cord is printed at Conduits altitude, below every building, so the art hides the run and
+        /// no art inset or misalignment can show. Points are inside the machine's own footprint by design.</summary>
+        public const double CentroidApproach = 0.2;
+
+        public static V2 Centroid(MachineInfo m) => new V2(m.X0 + m.W / 2.0, m.Z0 + m.H / 2.0);
+
         private static List<V2> IntoArt(List<V2> P, bool atStart, MachineInfo m)
         {
             if (P.Count < 2) return P;
             V2 tip = atStart ? P[0] : P[P.Count - 1];
             V2 into = IntoMachine(m, tip);
-            double inset = ArtInset(m, into);
-            if (inset <= 0) return P;
-            // measured from the footprint edge, not from the tip (which sits just outside it)
-            double gap = into.X > 0.5 ? m.X0 - tip.X : into.X < -0.5 ? tip.X - (m.X0 + m.W) : into.Z > 0.5 ? m.Z0 - tip.Z : tip.Z - (m.Z0 + m.H);
-            inset += Math.Max(0, gap);
+            V2 c = Centroid(m), pre = c - into * CentroidApproach;
             var ext = new List<V2>();
-            for (double d = 0.05; d < inset - 0.02; d += 0.05) ext.Add(tip + into * d);
-            ext.Add(tip + into * inset);
+            double d1 = V2.Dist(tip, pre);
+            int k1 = Math.Max(1, (int)Math.Ceiling(d1 / 0.05));
+            for (int i = 1; i <= k1; i++) ext.Add(tip + (pre - tip) * (i / (double)k1));
+            for (double d = 0.05; d < CentroidApproach - 0.02; d += 0.05) ext.Add(pre + into * d);
+            ext.Add(c);
             var o = new List<V2>(P);
             if (atStart) { ext.Reverse(); o.InsertRange(0, ext); }
             else o.AddRange(ext);
@@ -506,10 +514,11 @@ namespace RimMandrake.MessyConduit.Core
             V2 tip = atStart ? first[0] : first[first.Count - 1];
             if (nd.IsMachine)
             {
-                // one plug per end (every strand of the edge converges on the plug point), its head
-                // pointing INTO the machine and pushed past the footprint edge
-                V2 into = IntoMachine(nd.Machine, tip);
-                piece.Decals.Add(new CordDecal(DecalKind.Plug, tip + into * PlugInset, Math.Atan2(into.Z, into.X), PlugScale));
+                // one plug per end, at the footprint centroid where every strand converges (round 2), its head pointing
+                // INTO the machine along the cord's last straight run; drawn under the building like the cord
+                V2 a = atStart ? first[Math.Min(first.Count - 1, 1)] : first[Math.Max(0, first.Count - 2)];
+                V2 into = Snap4(tip - a);
+                piece.Decals.Add(new CordDecal(DecalKind.Plug, tip - into * (PlugScale * 0.25), Math.Atan2(into.Z, into.X), PlugScale));
             }
             else if (nd.Type == NodeType.Terminal)
             {

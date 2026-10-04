@@ -186,6 +186,19 @@ namespace RimMandrake.MessyConduit.SelfTest
         }
 
         // ------------------------------------------------------------------ laid geometry
+        /// <summary>Owner round 2 (2026-10-04): a cord into a machine runs on UNDER its art to the footprint centroid
+        /// (CordBuilder.IntoArt), so its END run lies inside the machine's own (unwalkable) footprint by design. The floor
+        /// and attachment checks judge the strand with that end run trimmed off; a vertex inside a footprint anywhere else
+        /// in the strand still fails them.</summary>
+        internal static List<V2> TrimUnderArt(CordWorld w, List<V2> pts)
+        {
+            bool In(V2 p) => w.Machines.Any(m => p.X >= m.X0 && p.X < m.X0 + m.W && p.Z >= m.Z0 && p.Z < m.Z0 + m.H);
+            int a = 0, b = pts.Count - 1;
+            while (a < b && In(pts[a])) a++;
+            while (b > a && In(pts[b])) b--;
+            return pts.GetRange(a, b - a + 1);
+        }
+
         private static void GeometryChecks(string name, JsonElement sc)
         {
             CordWorld w = World(sc);
@@ -200,11 +213,14 @@ namespace RimMandrake.MessyConduit.SelfTest
             int bad = 0, total = 0;
             foreach (LaidPiece p in p1)
                 foreach (CordStrand s in p.Strands.Where(x => !x.OverFace))
-                    for (int i = 1; i < s.Pts.Count - 1; i++)
+                {
+                    List<V2> q = TrimUnderArt(w, s.Pts);
+                    for (int i = 1; i < q.Count - 1; i++)
                     {
                         total++;
-                        if (!w.IsWalkable(s.Pts[i].Floor)) bad++;
+                        if (!w.IsWalkable(q[i].Floor)) bad++;
                     }
+                }
             Check(bad == 0, $"{name}: {bad}/{total} laid vertices in unwalkable cells");
             // endpoint attachment of the laid cord: first/last point = the planned endpoints
             CordGraph g = b1.Graph;
@@ -212,11 +228,23 @@ namespace RimMandrake.MessyConduit.SelfTest
             foreach (LaidPiece p in p1.Where(x => x.EndA != null))
                 foreach (CordStrand s in p.Strands.Where(x => !x.OverFace))
                 {
-                    V2 a = s.Pts[0], z = s.Pts[s.Pts.Count - 1];
+                    List<V2> q = TrimUnderArt(w, s.Pts);
+                    V2 a = q[0], z = q[q.Count - 1];
                     bool okA = g.CordEdges().Any(e => (V2.Dist(e.PA, a) < 0.45 && V2.Dist(e.PB, z) < 0.45) || (V2.Dist(e.PB, a) < 0.45 && V2.Dist(e.PA, z) < 0.45));
                     if (!okA) detached++;
                 }
             Check(detached == 0, $"{name}: {detached} laid strands do not start and end at their edge's two nodes");
+            // round 2: every cord end inside a machine's footprint sits exactly on that machine's centroid
+            int mEnds = 0, centred = 0;
+            foreach (CordStrand s in p1.SelectMany(p => p.Strands))
+                foreach (V2 e in new[] { s.Pts[0], s.Pts[s.Pts.Count - 1] })
+                    foreach (MachineInfo m in w.Machines.Where(m => e.X >= m.X0 && e.X <= m.X0 + m.W && e.Z >= m.Z0 && e.Z <= m.Z0 + m.H))
+                    {
+                        mEnds++;
+                        if (V2.Dist(e, CordBuilder.Centroid(m)) < 1e-6) centred++;
+                    }
+            Check(mEnds == centred, $"{name}: {centred}/{mEnds} cord ends into a machine end on its centroid");
+            Console.WriteLine($"  {name}: {centred}/{mEnds} machine cord ends on the centroid");
             ArtFitChecks(name, w, g, p1, live);
             // determinism: a fresh builder gives bit-identical geometry
             List<LaidPiece> p2 = new CordBuilder().Build(World(sc), new BuildOptions(), live.Contains);

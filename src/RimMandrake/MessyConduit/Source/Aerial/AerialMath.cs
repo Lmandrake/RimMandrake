@@ -279,6 +279,59 @@ namespace RimMandrake.MessyConduit.Aerial
             return Math.Max(0, Math.Min(insulators - 1, i));
         }
 
+        // ------------------------------------------------------------------ local drops onto a pole's terminals (owner round 2, 2026-10-04)
+        /// <summary>
+        /// Which insulator (terminal, left to right) each LOCAL connection of one pole takes: the devices wired to it and the
+        /// transmitters standing beside it. Ordered by where they stand across the crossarm (<c>X</c>, east = right), then id,
+        /// so wires never cross needlessly. Up to one per insulator they never share (one device takes the middle, two the
+        /// outer pair, three one each: <see cref="InsulatorIndex"/>); with more devices than insulators they share in
+        /// contiguous, even groups (left devices on the left terminal). Deterministic; every id in, one terminal out.
+        /// </summary>
+        public static Dictionary<int, int> AssignTerminals(IList<(int Id, double X)> devices, int insulators)
+        {
+            var r = new Dictionary<int, int>();
+            var order = devices.OrderBy(d => d.X).ThenBy(d => d.Id).ToList();
+            int k = order.Count, n = Math.Max(1, insulators);
+            for (int i = 0; i < k; i++)
+                r[order[i].Id] = n <= 1 ? 0 : k <= n ? InsulatorIndex(i, k, n) : Math.Min(n - 1, i * n / k);
+            return r;
+        }
+
+        // ------------------------------------------------------------------ the wall bracket (owner round 2, 2026-10-04)
+        /// <summary>How far the bracket plate's wall-side extreme reaches past the wall's outer face INTO the wall (cells):
+        /// enough that the plate visibly sits ON the wall edge, never so much that the bracket reads as buried. PROVISIONAL.</summary>
+        public const double BracketPlateInset = 0.12;
+
+        /// <summary>Unit normal from the bracket's cell toward its wall. rot = RimWorld Rot4.AsInt (0 N, 1 E, 2 S, 3 W): a
+        /// wall-attached bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall).</summary>
+        public static P2 WallNormal(int rot)
+        {
+            switch (rot & 3)
+            {
+                case 0: return new P2(0, 1);
+                case 1: return new P2(1, 0);
+                case 2: return new P2(0, -1);
+                default: return new P2(-1, 0);
+            }
+        }
+
+        public static double Dot(P2 a, P2 b) => a.X * b.X + a.Z * b.Z;
+
+        /// <summary>The bracket graphic's draw offset from its cell centre: along the wall normal only, so the plate's
+        /// wall-side extreme (<paramref name="plateEdge"/>, cells from the graphic centre toward the wall, measured from the
+        /// art) lands <see cref="BracketPlateInset"/> past the wall's outer face (which is 0.5 from the cell centre). The arm
+        /// and insulator then stand over the bracket's own cell, out from the wall.</summary>
+        public static P2 BracketDrawOffset(int rot, double plateEdge)
+        {
+            P2 n = WallNormal(rot);
+            double d = 0.5 + BracketPlateInset - plateEdge;
+            return new P2(n.X * d, n.Z * d);
+        }
+
+        /// <summary>Does the art lean OUT from the wall: its insulator (offset from the graphic centre) lies on the side away
+        /// from the wall? (Scrapper/Futuristic "south" renders came back plate-up: insulator toward the wall.)</summary>
+        public static bool BracketLeansOut(int rot, P2 insulator) => Dot(insulator, WallNormal(rot)) < -0.02;
+
         // ------------------------------------------------------------------ a fallen / cut wire (design 2.6, owner review B11/B21)
         /// <summary>
         /// A cut or orphaned wire as ONE continuous cable (owner review 2026-10-04 B21: never a hanging drop joined to a
