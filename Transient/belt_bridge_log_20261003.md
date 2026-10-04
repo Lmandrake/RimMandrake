@@ -131,3 +131,9 @@
 - 23:06 r5 TheRot 59P/17U/1F: ProofCut proof was wrong (cumulative 150 rule; belly caps at 100) -> ProofCut now cuts parts until released; DLL rebuilt+pushed (needs load 14). LanternDeeps running
 - 23:13 r5 load 14 launched (plain+biomes+companion deployed; FlowWorks terrain xml deployed mid-edit by builder - parses OK)
 - 23:24 load 14 loading healthy
+- 23:37 r5 load 14 UP. ProofRaid stack: NameGenerator.GenerateName NRE inside FactionGenerator.NewGeneratedFaction = RM_FactionDef_KurrethSwarm (and RSW_Shokk_FeraliskBrood) have no fixedName/factionNameMaker -> the lure's lazy faction creation NREs in the REAL game; fixed in defs (f?) needs restart to prove. run20a launched: Aftermath,TheRot,Armoury,LeaningScrub,WS,Forge,Cauldron,BrainWorms,Bacta
+- 23:43 r5 run20a: Aftermath (faction ensure fixed; 'battle opened' log wait added), TheRot 63P/14U/0F (swallow cut-out now PASSES), Armoury running; observatory identity now records git sha + modal 0 clean
+- 23:48 r5: Dialog_NodeTree (forcePause) opened during LeaningScrub; closed; taint appended; added to modal sweep. Foreground is the owner's Chrome (YouTube): not touched, RunInBackground True
+- 23:53 r5: modal Dialog_NodeTree was open from the Aftermath raid until 23:47:49 -> Aftermath/TheRot/Armoury/LeaningScrub run20a verdicts TAINTED (amendment widened to all mods 23:37-23:47); TheRot swallow PASS and Armoury 21P/6F need a clean rerun
+- 00:00 r5: killed run20a at TheForge start (WS recorded: clean modals); launched 20b clean rerun Aftermath,Armoury,TheRot,LeaningScrub (new modal sweep incl NodeTree, git identity)
+- 00:16 r5 FINAL: no runner live, game UP load 14, bridge still held by FOUNDRY; handoff FOUNDRY_HANDOFF_202610040706 written
