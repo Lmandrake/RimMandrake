@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RSW_ShrublandGiant_FireStamper.xml        UtinniPatches — LEANINGSCRUB_MECHANICS_BUILD_1 part 5
+
+  Makes the thunderstep a fire-stamper: "any open fire above threshold pulls
+  thunderstep herds to stamp it and its source". The mechanic lives in the
+  RM-tier Leaning Scrub (RM_FireStamp.cs) and names no Star Wars creature
+  (§7 Q11), so the RSW giant is marked HERE, in the layer that already casts
+  it onto RM_LeaningScrub (WildAnimals_LeaningScrub.xml).
+
+  Guards (no inert Operation-level MayRequire):
+    * FindMod on the bestiary that ships the giant;
+    * Conditional on RM_LeaningScrub's BiomeDef: that def carries this mod's
+      own C# extensions, so its presence proves the assembly holding
+      RM_FireStamperExtension is loaded (a modExtension of a missing type
+      would discard the giant's whole ThingDef);
+    * Conditional on the giant's own modExtensions node (it ships one).
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]</xpath>
+      <match Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="RSW_ShrublandGiant"]/modExtensions</xpath>
+        <match Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RSW_ShrublandGiant"]/modExtensions</xpath>
+          <value>
+            <li Class="RimMandrake.LeaningScrub.RM_FireStamperExtension" />
+          </value>
+        </match>
+      </match>
+    </match>
+  </Operation>
+</Patch>

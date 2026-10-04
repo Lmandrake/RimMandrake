@@ -74,6 +74,7 @@ DEFAULTS = {
     "sweetlineForgivenessDays": 5.0, "sweetlineProximityCharge": False,
     "sweetlineScratchingEnabled": True, "sweetlineCoatReady": 0.8, "sweetlineFeltShare": 0.2,
     "sweetlineTreeMapChance": 0.25, "sweetlineFeltComfortEnabled": True, "sweetlineFeltApparelEnabled": True,
+    "fireStampEnabled": True,
 }
 suite.toggles = sorted(k for k, v in DEFAULTS.items() if isinstance(v, bool))
 
@@ -1182,6 +1183,25 @@ def bloom_chain(t):
                     _fail("no ribbonwhip swaying or no surrik exit hole after a bloom: %s" % txt)
                 t.bridge_call("jawa/destroy_batch", rects=_rs(_rect(t, PAD_SIZE + 8)), categories="All")
     _stable(t, body)
+
+
+# --------------------------------------------------------------------------- chain: stamp
+
+@suite.chain("stamp")
+def stamp_chain(t):
+    """Part 5 fire-stamping (RM_FireStamp.cs). The C# proof hook builds the fixture on the current map (two
+    fires, then six; a far stamper, then a near one), drives the SHIPPED ConvergePass/StampPass and cleans up."""
+    for mode, name in (("on", "stamp_answers_a_blaze"), ("off", "stamp_toggle_off_ignores_fire")):
+        with _comp(t, name, toggle="fireStampEnabled"):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.LeaningScrub.RM_FireStampProof",
+                              method="ProofStamp", args=mode)
+            if _live(t):
+                txt = str((r or {}).get("result") or (r or {}).get("value") or r)
+                _note(t, "fire stamp proof (%s)" % mode, txt[:300])
+                if txt.startswith("FAIL"):
+                    _fail("fire stamp (%s): %s" % (mode, txt[:400]))
+                if not txt.startswith("PASS"):
+                    _unmeasured(t, "fire stamp proof did not answer PASS/FAIL: %s" % txt[:200])
 
 
 # --------------------------------------------------------------------------- chain: sweetline (last: jumps the clock)
