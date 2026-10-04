@@ -58,13 +58,16 @@ namespace RimMandrake.MessyConduit.Aerial
                     bool live = comp.FallenLiveCached(a) ?? comp.AnchorLive(a);
                     foreach (FallenCord f in a.fallen)
                     {
-                        FallenLay lay = comp.Lay(a, f);
-                        if (lay.Pts.Count < 2) continue;      // the wire itself is drawn per frame (one piece, B21); only its frayed end here
-                        Material fray = live ? AerialMaterials.FrayLive : AerialMaterials.FrayDead;
-                        if (fray != null)
+                        // round 3: every wire of the broken span lies here; each gets its own frayed end
+                        foreach (FallenLay lay in comp.Lays(a, f))
                         {
-                            P2 p0 = lay.Pts[lay.Pts.Count - 2], p1 = lay.Tip;
-                            verts += Quad(fray, p1, (float)Math.Atan2(p1.Z - p0.Z, p1.X - p0.X), 0.7f, 0.7f, cordY + 0.002f);
+                            if (lay.Pts.Count < 2) continue;      // the wire itself is drawn per frame (one piece, B21); only its frayed end here
+                            Material fray = live ? AerialMaterials.FrayLive : AerialMaterials.FrayDead;
+                            if (fray != null)
+                            {
+                                P2 p0 = lay.Pts[lay.Pts.Count - 2], p1 = lay.Tip;
+                                verts += Quad(fray, p1, (float)Math.Atan2(p1.Z - p0.Z, p1.X - p0.X), 0.55f, 0.55f, cordY + 0.002f);
+                            }
                         }
                         fallenN++;
                     }

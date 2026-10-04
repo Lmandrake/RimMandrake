@@ -101,6 +101,13 @@
         <compClass>CompPowerTrader</compClass>
         <transmitsPower>true</transmitsPower>
         <basePowerConsumption>60</basePowerConsumption>
+        <!-- round 3 (owner 2026-10-04: "standard lighting controls"): the vanilla StandingLamp's controls, copied from Core -->
+        <powerUpgrades>
+          <li>
+            <researchProject>ColoredLights</researchProject>
+            <factor>0.5</factor>
+          </li>
+        </powerUpgrades>
       </li>
       <!-- after the power comp: its PostDeSpawn must queue the deregistration before ours re-seeds the partners -->
       <li Class="RimMandrake.MessyConduit.Aerial.CompProperties_AerialAnchor" />
@@ -108,8 +115,13 @@
       <li Class="CompProperties_Glower">
         <glowRadius>9</glowRadius>
         <glowColor>(214,148,94,0)</glowColor>
+        <colorPickerEnabled>true</colorPickerEnabled>
+        <darklightToggle>true</darklightToggle>
       </li>
     </comps>
+    <placeWorkers>
+      <li>PlaceWorker_GlowRadius</li>
+    </placeWorkers>
     <modExtensions>
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">
         <maxLinks>3</maxLinks>

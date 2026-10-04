@@ -14,19 +14,19 @@ namespace RimMandrake.MessyConduit.Aerial
             d["Scrapper/East"] = new P2(-0.356, 0.154);
             d["Scrapper/West"] = new P2(0.356, 0.154);
             d["Scrapper/North"] = new P2(0.005, -0.132);
-            d["Scrapper/South"] = new P2(0.004, 0.229);
+            d["Scrapper/South"] = new P2(0.004, 0.160);
             d["Industrial/East"] = new P2(-0.335, 0.092);
             d["Industrial/West"] = new P2(0.335, 0.092);
             d["Industrial/North"] = new P2(0.000, -0.237);
-            d["Industrial/South"] = new P2(0.007, 0.222);
+            d["Industrial/South"] = new P2(0.007, 0.121);
             d["Modern/East"] = new P2(-0.309, 0.098);
             d["Modern/West"] = new P2(0.309, 0.098);
             d["Modern/North"] = new P2(-0.000, -0.218);
-            d["Modern/South"] = new P2(0.000, 0.175);
+            d["Modern/South"] = new P2(0.000, 0.126);
             d["Futuristic/East"] = new P2(-0.234, 0.049);
             d["Futuristic/West"] = new P2(0.234, 0.049);
             d["Futuristic/North"] = new P2(0.000, -0.128);
-            d["Futuristic/South"] = new P2(0.000, 0.081);
+            d["Futuristic/South"] = new P2(0.000, 0.056);
             return d;
         }
 
@@ -37,19 +37,19 @@ namespace RimMandrake.MessyConduit.Aerial
             d["Scrapper/East"] = 0.453;
             d["Scrapper/West"] = 0.453;
             d["Scrapper/North"] = 0.344;
-            d["Scrapper/South"] = 0.375;
+            d["Scrapper/South"] = 0.172;
             d["Industrial/East"] = 0.453;
             d["Industrial/West"] = 0.453;
             d["Industrial/North"] = 0.359;
-            d["Industrial/South"] = 0.320;
+            d["Industrial/South"] = 0.180;
             d["Modern/East"] = 0.492;
             d["Modern/West"] = 0.492;
             d["Modern/North"] = 0.391;
-            d["Modern/South"] = 0.359;
+            d["Modern/South"] = 0.172;
             d["Futuristic/East"] = 0.336;
             d["Futuristic/West"] = 0.336;
             d["Futuristic/North"] = 0.258;
-            d["Futuristic/South"] = 0.227;
+            d["Futuristic/South"] = 0.117;
             return d;
         }
     }

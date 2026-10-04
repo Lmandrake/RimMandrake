@@ -26,7 +26,7 @@ namespace RimMandrake.MessyConduit.Aerial
         private readonly List<CompAerialAnchor> pendingAuto = new List<CompAerialAnchor>();
         private readonly Dictionary<long, SpanMesh> meshes = new Dictionary<long, SpanMesh>();
         private readonly Dictionary<int, bool> anchorLive = new Dictionary<int, bool>();
-        private readonly Dictionary<FallenCord, FallenLay> lays = new Dictionary<FallenCord, FallenLay>();
+        private readonly Dictionary<FallenCord, List<FallenLay>> lays = new Dictionary<FallenCord, List<FallenLay>>();
 
         public int netRepairs, roofCuts, explosionCuts, autoLinks, watchdogRuns;
         public int lastSwayDraws, lastSpanDraws, lastTopDraws, lastGlowDraws, lastDropDraws;
@@ -90,12 +90,15 @@ namespace RimMandrake.MessyConduit.Aerial
             TapSparks(now);
         }
 
-        // ------------------------------------------------------------------ the power-tap clamp BITING its line (owner round 2)
-        /// <summary>The clamp art (Aerial/TapClamp: the jaws biting a vertical length of line at the art's LEFT, our cable
-        /// trailing off its right edge) is drawn per frame, its bitten line laid ON the victim transmitter's cell centre and
-        /// its handle turned toward the tap's own cell, so it reads as grabbed onto their line. Size and the bite's place in
-        /// the art (fraction of the width from the centre) PROVISIONAL, measured from the 128 px art.</summary>
-        public const float TapSize = 1.5f, TapBiteX = -0.375f;
+        // ------------------------------------------------------------------ the power-tap clamp: a NODE both grids cable into (round 3)
+        /// <summary>Round 3 (owner 2026-10-04): "the enemy grid ... will look like the same art. So the bite should just be 'on
+        /// top of' whatever's being drawn in the middle of their node there ... the power tap should be considered a Node that
+        /// both power systems now must connect with their cables." The tap is a node of the cord graph that BOTH nets' cables
+        /// run into (CordWorldAdapter: its machine hooks our connectParent conduit AND the conduit it bites), and the clamp
+        /// (Aerial/TapClamp: jaws only, no drawn line of its own since round 3) is drawn ON TOP of that node, its jaws on the
+        /// tap's centre where the cables meet, its handle turned toward our side. Size and the jaws' place in the art (fraction
+        /// of the width from the centre) PROVISIONAL, measured from the 128 px art.</summary>
+        public const float TapSize = 1.5f, TapBiteX = -0.40f;
         public int lastTapDraws, tapSparks;
         private static Material tapMat;
         private static bool tapMatTried;
@@ -104,15 +107,16 @@ namespace RimMandrake.MessyConduit.Aerial
         {
             Vector3 home = t.parent.TrueCenter();
             t.VictimNet(out Thing v);
-            angle = 0f;
-            if (v == null) { bite = centre = home; return false; }
-            bite = v.TrueCenter();
-            Vector3 back = home - bite;
+            bite = home;
+            Vector3 ours = t.Trader?.connectParent?.parent != null ? t.Trader.connectParent.parent.TrueCenter() : home;
+            Vector3 back = ours - home;
+            if (back.MagnitudeHorizontalSquared() < 1e-4f && v != null) back = home - v.TrueCenter();
             back.y = 0f;
+            if (back.sqrMagnitude < 1e-6f) back = Vector3.right;
             back = back.normalized;
             centre = bite - back * (TapBiteX * TapSize);
             angle = -Mathf.Atan2(back.z, back.x) * Mathf.Rad2Deg;
-            return true;
+            return v != null;
         }
 
         private void DrawTaps(CellRect view)
@@ -122,7 +126,8 @@ namespace RimMandrake.MessyConduit.Aerial
             {
                 tapMatTried = true;
                 Texture2D tex = ContentFinder<Texture2D>.Get(AerialMaterials.AerialDir + "TapClamp", false);
-                if (tex != null) tapMat = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent));
+                // above every cord material (strands 3000, plugs 3001, wall faces 3002): the clamp sits ON the meeting cables
+                if (tex != null) tapMat = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent) { renderQueue = Mathf.Max(3004, CordMaterials.FaceQueue + 2) });
             }
             if (tapMat == null) return;
             float y = AltitudeLayer.BuildingOnTop.AltitudeFor();
@@ -241,14 +246,15 @@ namespace RimMandrake.MessyConduit.Aerial
 
         public bool? FallenLiveCached(CompAerialAnchor a) => anchorLive.TryGetValue(a.thingIDNumber, out bool v) ? v : (bool?)null;
 
-        /// <summary>The fallen / cut wire of <paramref name="f"/>: ONE cable from the anchor's middle insulator down to the
-        /// break point on the ground (B21); Tip is the break. Cached until the ground or the look changes.</summary>
-        public FallenLay Lay(CompAerialAnchor a, FallenCord f)
+        /// <summary>The fallen / cut wires of <paramref name="f"/> (round 3: EVERY wire the span carried falls, f.wires of
+        /// them); each is ONE cable from its insulator down to the break on the ground (B21), Tip = its end at the break.
+        /// Cached until the ground or the look changes.</summary>
+        public List<FallenLay> Lays(CompAerialAnchor a, FallenCord f)
         {
-            if (lays.TryGetValue(f, out FallenLay l)) return l;
+            if (lays.TryGetValue(f, out List<FallenLay> l)) return l;
             Vector3 b = a.BasePoint;
             List<P2> tips = a.InsulatorTips();
-            P2 top = tips.Count > 0 ? tips[tips.Count / 2] : new P2(a.AttachPoint.x, a.AttachPoint.z);
+            if (tips.Count == 0) tips.Add(new P2(a.AttachPoint.x, a.AttachPoint.z));
             PathGrid pg = map.pathing.Normal.pathGrid;
             IntVec3 home = a.Position;
             Func<int, int, bool> walk = (x, z) =>
@@ -257,9 +263,17 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (!c.InBounds(map)) return false;
                 return c == home || pg.WalkableFast(c);
             };
-            l = AerialMath.LayFallen(top, new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, walk);
+            int n = f.wires > 0 ? f.wires : AerialMath.StrandCount(tips.Count, tips.Count, AerialSettings.maxStrands);
+            l = AerialMath.LayFallenStrands(tips, new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, n, walk);
             lays[f] = l;
             return l;
+        }
+
+        /// <summary>The middle fallen wire of <paramref name="f"/> (sparks, glow, the probe's single-wire fields).</summary>
+        public FallenLay Lay(CompAerialAnchor a, FallenCord f)
+        {
+            List<FallenLay> l = Lays(a, f);
+            return l[l.Count / 2];
         }
 
         private const int MaxSparkingEnds = 24;
@@ -515,10 +529,13 @@ namespace RimMandrake.MessyConduit.Aerial
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f));
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(a.Ext.attachZ * 1000f));
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
-            List<P2> pts = Lay(a, f).Pts;
-            if (pts.Count < 2) return null;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
             float w = AerialMaterials.SpanWidth;
+            foreach (FallenLay lay in Lays(a, f))
+            {
+            List<P2> pts = lay.Pts;
+            if (pts.Count < 2) continue;
+            int v0 = verts.Count;
             double u = 0;
             for (int i = 0; i < pts.Count; i++)
             {
@@ -531,10 +548,12 @@ namespace RimMandrake.MessyConduit.Aerial
                 verts.Add(new Vector3((float)(pts[i].X - nx), y, (float)(pts[i].Z - nz)));
                 uvs.Add(new Vector2((float)u, 1f)); uvs.Add(new Vector2((float)u, 0f));
                 if (i == 0) continue;
-                int q = 2 * (i - 1);
+                int q = v0 + 2 * (i - 1);
                 tris.Add(q); tris.Add(q + 2); tris.Add(q + 3);
                 tris.Add(q); tris.Add(q + 3); tris.Add(q + 1);
             }
+            }
+            if (verts.Count == 0) return null;
             var m = new Mesh { name = "RM_AerialFallenWire" };
             m.SetVertices(verts); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateBounds();
             if (drops.TryGetValue(f, out var old) && old.Value != null) UnityEngine.Object.Destroy(old.Value);

@@ -6,6 +6,21 @@ using System.Collections.Generic;
 
 namespace RimMandrake.MessyConduit.Core
 {
+    /// <summary>
+    /// Round 3 (owner 2026-10-04, "the wires should go beneath the Power Switch"): the draw-stack rule a building's art obeys
+    /// against our cords. Unity draws by render queue, then (opaque/cutout) by the depth buffer: a building drawn with a
+    /// depth-writing shader (Cutout, queue 2450) hides a cord printed BELOW it (Conduits altitude) whatever the cord's
+    /// queue; a Transparent building (queue 3000, no depth write) is painted over by any cord material at the same or a
+    /// later queue (strands 3000, plugs/junctions 3001). Verse-free so the SelfTest checks it.
+    /// </summary>
+    public static class DrawStack
+    {
+        public const int CutoutQueue = 2450, TransparentQueue = 3000;
+
+        public static bool CordsPaintOver(int buildingQueue, bool buildingWritesDepth, int cordQueue) =>
+            !buildingWritesDepth && cordQueue >= buildingQueue;
+    }
+
     /// <summary>An integer map cell. Ordered by X then Z, exactly like the oracle's (x, y) tuples.</summary>
     public struct Cell : IEquatable<Cell>, IComparable<Cell>
     {
