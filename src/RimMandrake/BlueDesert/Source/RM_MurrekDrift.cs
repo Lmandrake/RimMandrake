@@ -50,6 +50,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 using Verse.AI;
+using Verse.Sound;
 
 namespace RimMandrake.BlueDesert
 {
@@ -83,6 +84,10 @@ namespace RimMandrake.BlueDesert
         public float ambushRadius = 2.9f;
         public int burrowTicks = 180;
         public int maxBuriedTicks = 120000;
+        /// <summary>One-shot played where a buried murrek breaks the surface
+        /// (ambush, flush or damage). Vanilla clip by the 2026-10-03 audio
+        /// ruling; null = silent.</summary>
+        public SoundDef eruptSound;
 
         public override IEnumerable<string> ConfigErrors()
         {
@@ -174,6 +179,7 @@ namespace RimMandrake.BlueDesert
             if (pawn.Spawned)
             {
                 FleckMaker.ThrowDustPuffThick(pawn.DrawPos, pawn.Map, 2.2f, new Color(0.82f, 0.88f, 0.96f));
+                props.eruptSound?.PlayOneShot(new TargetInfo(pawn.Position, pawn.Map));
             }
         }
     }

@@ -71,6 +71,10 @@ namespace RimMandrake.BlueDesert
         public static bool vhaulkDepartsEnabled = true;
         public static float vhaulkStayDaysFactor = 1f;
 
+        // BLUEDESERT_MECHANICS_BUILD_1 §5 (RM_BlueDesertSoundscape.cs).
+        public static bool ossivelChoirEnabled = true;
+        public static bool virrSongEnabled = true;
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -97,6 +101,8 @@ namespace RimMandrake.BlueDesert
             Scribe_Values.Look(ref vhaulkRoadDaysFactor, "vhaulkRoadDaysFactor", 1f);
             Scribe_Values.Look(ref vhaulkDepartsEnabled, "vhaulkDepartsEnabled", true);
             Scribe_Values.Look(ref vhaulkStayDaysFactor, "vhaulkStayDaysFactor", 1f);
+            Scribe_Values.Look(ref ossivelChoirEnabled, "ossivelChoirEnabled", true);
+            Scribe_Values.Look(ref virrSongEnabled, "virrSongEnabled", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -181,6 +187,14 @@ namespace RimMandrake.BlueDesert
               + "any wild animal.");
             list.Label("How long a vhaulk stays: x" + vhaulkStayDaysFactor.ToString("0.00"));
             vhaulkStayDaysFactor = list.Slider(vhaulkStayDaysFactor, 0.25f, 4f);
+            list.GapLine();
+
+            list.CheckboxLabeled("Ossivel choir and its silence", ref ossivelChoirEnabled,
+                "A pack of three or more ossivels sings; the song stops at once when anything bigger than a "
+              + "person comes near them, and starts again a little after it leaves. Off: ossivels are silent "
+              + "and give no warning.");
+            list.CheckboxLabeled("Virr fields sing in the wind", ref virrSongEnabled,
+                "In a good wind the nearest virr field whistles, higher as its charge ripens. Off: virr are silent.");
 
             lastListHeight = list.CurHeight + 12f;
             list.End();

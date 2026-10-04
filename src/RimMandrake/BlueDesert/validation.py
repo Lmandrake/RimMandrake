@@ -77,7 +77,7 @@ DEFAULTS = {
     "crackCueEnabled": True, "murrekReseedEnabled": True, "coldSinkEnabled": True,
     "coldSinkCapacityFactor": 1.0, "ablationSalvageEnabled": True, "ablationPaceFactor": 1.0,
     "vhaulkRoadEnabled": True, "vhaulkRoadDaysFactor": 1.0, "vhaulkDepartsEnabled": True,
-    "vhaulkStayDaysFactor": 1.0,
+    "vhaulkStayDaysFactor": 1.0, "ossivelChoirEnabled": True, "virrSongEnabled": True,
 }
 suite.toggles = sorted(DEFAULTS)
 
@@ -1643,6 +1643,47 @@ def ablation_gate(t):
                       % (biome, bad))
 
 
+# --------------------------------------------------------------------------- chain: soundscape
+
+SOUND_PROOF = "RimMandrake.BlueDesert.RM_BlueDesertSoundProof"
+
+
+def _proof(t, method, mode, label):
+    """Run one C# proof hook (spawns, drives the SHIPPED Rescan on a synthetic clock, cleans up) and map
+    its PASS/FAIL/UNMEASURED answer onto the component."""
+    r = t.bridge_call("jawa/static_call", type=SOUND_PROOF, method=method, args=mode)
+    if not _live(t):
+        return
+    text = str((r or {}).get("result") or (r or {}).get("value") or r)
+    _note(t, label, {"answer": text[:300]})
+    if text.startswith("FAIL"):
+        _fail("%s: %s" % (label, text[:400]))
+    if not text.startswith("PASS"):
+        _unmeasured(t, "%s: proof did not answer PASS/FAIL: %s" % (label, text[:200]))
+
+
+@suite.chain("soundscape")
+def soundscape(t):
+    """BLUEDESERT_MECHANICS_BUILD_1 §5 (RM_BlueDesertSoundscape.cs). The sound itself has no state read;
+    what is read is the STATE that drives it: a pack of ossivels sings, a big pawn near them silences the
+    choir, the silence outlasts the intruder by the hold, and a virr in wind sings with a pitch that climbs
+    with growth. Each toggle-off arm must stay silent."""
+    _pad(t, "spawn")
+    with _comp(t, "choir_sings_and_falls_silent", toggle="ossivelChoirEnabled"):
+        _proof(t, "ProofChoir", "on", "choir on")
+    with _comp(t, "choir_toggle_off_silent", toggle="ossivelChoirEnabled"):
+        _proof(t, "ProofChoir", "off", "choir off")
+    try:
+        with _comp(t, "virr_sings_in_wind_pitch_climbs", toggle="virrSongEnabled"):
+            _lock_weather(t, "RM_IceSandDrift")
+            _wait(t, 600)
+            _proof(t, "ProofVirr", "on", "virr on")
+        with _comp(t, "virr_toggle_off_silent", toggle="virrSongEnabled"):
+            _proof(t, "ProofVirr", "off", "virr off")
+    finally:
+        _unlock_weather(t)
+
+
 # --------------------------------------------------------------------------- chain: vhaulk departs
 
 @suite.chain("vhaulk_departs")
@@ -1745,6 +1786,15 @@ def static_checks():
     for fn in sorted(os.listdir(os.path.join(HERE, "Source"))):
         if fn.endswith(".cs") and 'Include="%s"' % fn not in csproj:
             bad.append("%s is not a <Compile Include> in the csproj" % fn)
+    sc = open(os.path.join(HERE, "Source", "RM_BlueDesertSoundscape.cs"), encoding="utf-8").read()
+    for need in ("public static string ProofChoir(string mode)", "public static string ProofVirr(string mode)",
+                 "RM_BlueDesertSettings.ossivelChoirEnabled", "RM_BlueDesertSettings.virrSongEnabled",
+                 '"RitualSustainer_Christian"', '"Ambient_Wind_Desolate"', "info.pitchFactor = VirrPitch"):
+        if need not in sc:
+            bad.append("soundscape: %s missing from RM_BlueDesertSoundscape.cs" % need)
+    weathers = _xml_text("WeatherDefs/RM_BlueDesertWeathers.xml")
+    if "<eruptSound>FleshbeastDigging_End</eruptSound>" not in weathers:
+        bad.append("murrek eruption sound (eruptSound FleshbeastDigging_End) is not wired on RM_IceSandDrift")
     walk = os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "BlueDesert.md")
     if not os.path.exists(walk):
         bad.append("walk design/validation_walks/RimMandrake/BlueDesert.md is missing")

@@ -100,6 +100,8 @@
         <spawnClearanceFromColony>18</spawnClearanceFromColony>
         <ambushRadius>2.9</ambushRadius>
         <burrowTicks>180</burrowTicks>
+        <!-- vanilla Anomaly one-shot (audio ruling 2026-10-03: vanilla ships as final) -->
+        <eruptSound>FleshbeastDigging_End</eruptSound>
         <maxBuriedTicks>120000</maxBuriedTicks>
       </li>
     </modExtensions>
