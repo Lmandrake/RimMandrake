@@ -458,6 +458,13 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             # ambient weather (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain: a modal-free
             # `colonist_injured_unexpectedly` that aborted every later component. Every chain starts under locked Clear;
             # a chain that tests weather sets its own afterwards.
+            # Verse.Log stops writing after 1000 messages until ResetMessageCount (only called at data load), after which
+            # Player.log and jawa/drain_log are BLIND to every later error (MEASURED live 2026-10-03: log silent from 16:54,
+            # a spamming MCR logger). Reset it before every chain so log-based checks keep seeing.
+            try:
+                session.call("jawa/static_call", type="Verse.Log", method="ResetMessageCount")
+            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                pass
             try:
                 session.call("jawa/weather_set", weather="Clear", lockWeather=True)
             except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
