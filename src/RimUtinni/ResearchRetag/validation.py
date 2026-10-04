@@ -339,7 +339,7 @@ def hearth_layout_static(t):
 import re as _re
 
 PATCH_FILES = ("RUT_ResearchRetag.xml", "RUT_ResearchRetag_Supplement.xml", "RUT_ResearchTabAssign.xml")
-_TARGET = _re.compile(r'^Defs/ResearchProjectDef\[defName="([^"]+)"\](?:/(\w+))?$')
+_TARGET = _re.compile(r'^Defs/(?:ResearchProjectDef|VFETribals\.TribalResearchProjectDef)\[defName="([^"]+)"\](?:/(\w+))?$')
 SCALARS = ("techLevel", "baseCost", "tab", "researchViewX", "researchViewY")
 REMOVED = "<removed>"
 # Rows the dump is KNOWN not to hold, pinned so the rest are still held to it (known_unheld_rows_are_still_unheld goes red

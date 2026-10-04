@@ -58,9 +58,17 @@ TIER_TECHLEVELS = {  # mirror of research_manifest_validate.py, canonical first
 SURV = {"untouched", "keep", "reflavor"}
 
 
+def def_xpath(dn):
+    """VFE Tribals' research defs are <VFETribals.TribalResearchProjectDef> elements, so a
+    Defs/ResearchProjectDef[...] xpath never matches them (MEASURED live 2026-10-04: 13 rows unpatched)."""
+    if dn.startswith("VFET_"):
+        return 'Defs/VFETribals.TribalResearchProjectDef[defName="%s"]' % dn
+    return 'Defs/ResearchProjectDef[defName="%s"]' % dn
+
+
 def field_patch(dn, node, value_xml, present):
     """One field, guarded: Replace when the node exists, Add when it does not."""
-    base = 'Defs/ResearchProjectDef[defName="%s"]' % dn
+    base = def_xpath(dn)
     return """      <li Class="PatchOperationConditional">
         <xpath>%(base)s/%(node)s</xpath>
         <match Class="PatchOperationReplace">
@@ -75,7 +83,7 @@ def field_patch(dn, node, value_xml, present):
 
 
 def prereq_remove(dn):
-    base = 'Defs/ResearchProjectDef[defName="%s"]' % dn
+    base = def_xpath(dn)
     return """      <li Class="PatchOperationConditional">
         <xpath>%(base)s/prerequisites</xpath>
         <match Class="PatchOperationRemove">
@@ -172,13 +180,13 @@ def main():
         if not ops:
             continue
         blocks.append("""  <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="%s"]</xpath>
+    <xpath>%s</xpath>
     <match Class="PatchOperationSequence">
       <operations>
 %s
       </operations>
     </match>
-  </Operation>""" % (dn, "\n".join(ops)))
+  </Operation>""" % (def_xpath(dn), "\n".join(ops)))
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as fh:

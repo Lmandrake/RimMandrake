@@ -4484,17 +4484,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4502,17 +4502,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4520,17 +4520,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4538,17 +4538,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4556,17 +4556,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4574,17 +4574,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4592,17 +4592,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4610,17 +4610,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4628,17 +4628,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4646,17 +4646,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4664,17 +4664,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4682,17 +4682,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
@@ -4700,17 +4700,17 @@
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
       <li Class="PatchOperationConditional">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]/techLevel</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]/techLevel</xpath>
         <match Class="PatchOperationReplace">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]/techLevel</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]/techLevel</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </match>
         <nomatch Class="PatchOperationAdd">
-          <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]</xpath>
+          <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]</xpath>
           <value><techLevel>Neolithic</techLevel></value>
         </nomatch>
       </li>
