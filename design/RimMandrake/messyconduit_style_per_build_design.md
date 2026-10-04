@@ -302,3 +302,10 @@ new slots. The stand-ins disappear one by one, and nothing else changes.
 - **It stays one global Mod Setting** (a random colour per run, or one colour everywhere), as it is today.
 - **Always a random colour per run**, with no choice. This is simplest, but it gives up the one-colour option that
   exists today.
+
+## Owner decisions (question card, 2026-10-04 14:3x PDT)
+
+1. **Architecture: B** — one building per kind, style stored on it with the engine's own style system; a four-item style menu on the build button.
+2. **Merging runs of different styles:** the run with the **largest area (number of conduit cells) wins** and the smaller run is repainted to match. (Tie rule is open: use the older run.)
+3. **Restyling:** a free **"Restyle this run"** button on any piece repaints the whole run.
+4. **Modern cord colour:** chosen **per run in the build menu**, and the menu must include a **"random"** choice meaning the run is not uniform but a mixture of colours (alongside the single-colour choices such as brown and the existing multi-colour look).
