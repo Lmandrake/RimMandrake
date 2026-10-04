@@ -414,8 +414,13 @@ def _build_suite():
             on = t.bridge_call("jawa/fire_incident", incidentDef="RSW_BrainWormCargoPod", dryRun=True)
             if not isinstance(on, dict) or "canFireNow" not in on:
                 _fail("fire_incident dryRun gave no canFireNow: %r" % (on,))
-            _raw(t, "set", "cargoIncidentEnabled", "False")
+            setr = _raw(t, "set", "cargoIncidentEnabled", "False")
             try:
+                # LIVE 2026-10-03 the off arm still read canFireNow=True while the C# gate looks right: prove the write took
+                # before blaming the mod (a refused/ignored set is an instrument problem, not a verdict).
+                back = _raw(t, "get", "cargoIncidentEnabled")
+                if str(back.get("value", back.get("current"))).lower() != "false":
+                    _unmeasured(t, "cargoIncidentEnabled did not read back False after the set: set=%r get=%r" % (setr, back))
                 off = t.bridge_call("jawa/fire_incident", incidentDef="RSW_BrainWormCargoPod", dryRun=True)
             finally:
                 _raw(t, "set", "cargoIncidentEnabled", "True")
