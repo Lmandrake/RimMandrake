@@ -140,7 +140,7 @@ def station_list():
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialLampMast", (14, 4)), ("RM_AerialLampMast", (26, 4))], links=[(0, 1), (1, 2)])
     st(9, "B", B_X[2], ROW_B, 30, 11, "WALL BRACKET", "an overhead wire from a mast to a bracket bolted ON a shed wall, feeding a lamp INSIDE the shed",
        ["the bracket is drawn on the wall face, like a vanilla wall torch (it stands in the cell beside the wall, facing it); the look's own art per facing",
-        "three spare brackets show the other facings: on the shed's west wall (outside), east wall (outside) and north wall (inside)",
+        "three spare brackets show the other facings: on the shed's west, east and south walls (outside, unlinked)",
         "the wire ENDS on the bracket's insulator; nothing lies on the ground outside",
         "the power goes through the wall into the shed (a conduit under the wall) and lights the lamp inside"],
        ["build another: Architect > Power > scrap wall bracket, point it AT a wall (vanilla wall-attachment placement)",
@@ -149,7 +149,7 @@ def station_list():
        walls=line(12, 16, 3) + [(12, z) for z in range(0, 3)] + [(16, z) for z in range(0, 3)] + line(13, 15, 0),
        conduit=[(14, 3), (14, 2)],    # round 2 (B21 join rule): bracket -> under its wall -> the lamp inside; no floor cord outside
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialWallBracket", (14, 4), 2), ("RM_AerialWallBracket", (11, 1), 1),
-              ("RM_AerialWallBracket", (17, 1), 3), ("RM_AerialWallBracket", (13, 2), 0)],
+              ("RM_AerialWallBracket", (17, 1), 3), ("RM_AerialWallBracket", (13, -1), 0)],
        links=[(0, 1)])   # (def, cell, rot): rot points AT the wall; the linked one faces SOUTH, three unlinked show E / W / N
     st(10, "B", B_X[3], ROW_B, 30, 11, "CUT + FALLEN SPAN", "the station-7 chain with the SECOND span cut (as if blown by an explosion)",
        ["each cut half is ONE wire in the span's own cable: from the mast's insulator down to the break, where both halves meet on the ground",
@@ -435,6 +435,10 @@ class Review(object):
                 if not d:
                     self.notes.append("station %d cut %d-%d not done" % (s["n"], a, b))
         B.ticks(30)
+        # T4 (round 2): vanilla PowerNet.PowerNetTick switches waiting consumers on ONE at a time, every 200/n ticks
+        # (min 30), so a map paused right after the build left the second lamp mast of station 8 dark with the NeedsPower
+        # bolt although its net was live. Let every net finish switching on before the map is frozen.
+        B.ticks(600)
         B.ap("poll")
         B.ap("set:autoLink=True")                     # the free area behaves as shipped
         # hoses: lay all, flow the plump ones, then the filling one half a transition later
@@ -469,7 +473,13 @@ class Review(object):
             self.notes.append("labels: %s" % json.dumps(r)[:300])
         return r
 
-    def goto(self, S, which):
+    def goto(self, S, which, sub=None):
+        if sub and which not in ("0", "all") and which.upper() != "F":
+            s = next(s for s in S if str(s["n"]) == which)
+            dx, dz, w, h = sub
+            r = self.B.call("rimworld/frame_cell_rect", x=s["origin"][0] + dx, z=s["origin"][1] + dz, width=w, height=h, paddingCells=0)
+            self.B.call("rimworld/set_camera_zoom", rootSize=max(4.0, max(h, w * 9.0 / 16.0) / 2.0 + 0.5))
+            return r
         if which in ("0", "all"):
             x, z, w, h = REGION
         elif which.upper() == "F":
@@ -551,6 +561,7 @@ def main(argv=None):
     ap.add_argument("--fresh-map", action="store_true", help="with --build: start a new quicktest map first")
     ap.add_argument("--style", choices=STYLES, default=None)
     ap.add_argument("--goto", default=None)
+    ap.add_argument("--sub", default=None, help="with --goto N: frame only dx,dz,w,h (station-local cells), a close look")
     ap.add_argument("--labels", action="store_true")
     ap.add_argument("--clear", action="store_true")
     ap.add_argument("--log", default=os.path.join("Transient", "mc_human_review_build_log_20261004.md"))
@@ -602,8 +613,10 @@ def main(argv=None):
         r = R.labels(S, str(cur).replace("CordStyle.", ""))
         print("labels: %s" % {k: r.get(k) for k in ("added", "refused", "count", "installed")})
     if a.goto is not None:
-        r = R.goto(S, a.goto)
-        print("framed %s: %s" % (a.goto, r.get("success")))
+        sub = [int(v) for v in a.sub.split(",")] if a.sub else None
+        r = R.goto(S, a.goto, sub)
+        st = next((s for s in S if str(s["n"]) == a.goto), None)
+        print("framed %s%s: %s (origin %s)" % (a.goto, " sub %s" % sub if sub else "", r.get("success"), st["origin"] if st else "-"))
     return 0
 
 

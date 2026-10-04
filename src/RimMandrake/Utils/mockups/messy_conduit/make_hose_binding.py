@@ -10,6 +10,9 @@ can explain the width difference gracefully."* Writes into Textures/.../Hose/:
     away (the hose and fitting drawn beside it are the game's own), leaving the wrap, 82x40, wrap axis along +X.
   * Mouth.png -- the plain dark open mouth of an open free end (replaces the pale rough OpenEnd stub): a 64x64 ellipse,
     a darkened rim round a near-black bore; drawn hose-width across, squashed along the hose.
+  * Coupling_Bare.png / EndCap_Bare.png / Nozzle_Bare.png -- the fittings with their painted hose stub cut away
+    (alpha 0 left of the brass, BARE_FROM columns of 128): the wrap covers the join, and the stub otherwise showed
+    as a rust patch beyond the wrap on a plump hose (live review round 2). The originals stay for gizmo icons.
 RM_MapComponent_Hoses.BindBand is the wrap's widest opaque band of Binding.png's height; validation.py O6 re-measures it.
 """
 import os
@@ -20,6 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 H = os.path.join(HERE, "..", "..", "..", "MessyConduit", "Textures", "RimMandrake", "MessyConduit", "Hose")
 SRC = "/mnt/d/Luke/dev/_artpipe/_artsrc/messyconduit_hose_binding_v1/messyconduit_hose_binding_v1.png"
 X0, X1, Y0, Y1 = 22, 104, 12, 52
+BARE_FROM = {"Coupling_Brass": 58, "EndCap": 44, "Nozzle": 42}   # first brass column, judged on a 3x enlargement
 
 
 def binding():
@@ -46,7 +50,18 @@ def mouth():
     return c
 
 
+def bare():
+    for n, x0 in BARE_FROM.items():
+        im = Image.open(os.path.join(H, n + ".png")).convert("RGBA")
+        px = im.load()
+        for x in range(x0):
+            for y in range(im.size[1]):
+                px[x, y] = px[x, y][:3] + (0,)
+        im.save(os.path.join(H, n.split("_")[0] + "_Bare.png"))
+
+
 def main():
+    bare()
     b = binding()
     a = b.getchannel("A")
     band = max(sum(1 for y in range(b.size[1]) if a.getpixel((x, y)) > 128) for x in range(b.size[0]))

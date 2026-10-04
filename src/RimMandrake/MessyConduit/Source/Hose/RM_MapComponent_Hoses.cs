@@ -304,28 +304,29 @@ namespace RimMandrake.MessyConduit.Hose
         private void DrawEnds(CompHoseReel r, HoseLay lay, List<V2> pts, float vis, float y)
         {
             int n = pts.Count;
-            Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
+            Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f) * new Color(0.86f, 0.80f, 0.70f, 1f);   // aged cloth, not white
             // reel end: a brass coupling whose face meets the reel, pointing into it
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
-            Fitting(HoseMaterials.Coupling, CouplingMax, -JoinerFace, 0.125, pts[0], d0, vis, y, wrapTint);
+            Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
             foreach (int j0 in lay.Joints)
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + 1)] - pts[j - 1]).Norm();
-                Fitting(HoseMaterials.Coupling, CouplingMax, -JoinerFace, 0.125, pts[j], d, vis, y, wrapTint);
-                Fitting(HoseMaterials.Coupling, CouplingMax, -JoinerFace, 0.125, pts[j], -d, vis, y, wrapTint);
+                Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], d, vis, y, wrapTint);
+                Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], -d, vis, y, wrapTint);
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
-            if (r.end == HoseEnd.Nozzle) Fitting(HoseMaterials.Nozzle, NozzleMax, 0.05, -0.12, pts[n - 1], d1, vis, y, wrapTint);
-            else if (r.end == HoseEnd.EndCap) Fitting(HoseMaterials.EndCap, EndCapMax, -0.10, -0.06, pts[n - 1], d1, vis, y, wrapTint);
+            if (r.end == HoseEnd.Nozzle) Fitting(HoseMaterials.NozzleBare, NozzleMax, 0.05, -0.16, pts[n - 1], d1, vis, y, wrapTint);
+            else if (r.end == HoseEnd.EndCap) Fitting(HoseMaterials.EndCapBare, EndCapMax, -0.10, -0.15, pts[n - 1], d1, vis, y, wrapTint);
             else
             {
                 V2 e = pts[n - 1];
-                Wrap(e - d1 * (HoseMath.WrapLength / 2 + 0.06), d1, vis, y + 0.0002f, wrapTint);
-                PieceXZ(HoseMaterials.Mouth, e - d1 * (0.16 * vis), d1, 0.32f * vis, 0.86f * vis, y + 0.0003f, Color.white);
+                // the wrap runs right to the cut (it hides the hose's square end), the dark bore sits on its outer face
+                Wrap(e - d1 * (HoseMath.WrapLength / 2 - 0.02), d1, vis, y + 0.0002f, wrapTint);
+                PieceXZ(HoseMaterials.Mouth, e - d1 * (0.10 * vis), d1, 0.30f * vis, 0.86f * vis, y + 0.0003f, Color.white);
             }
         }
 
@@ -403,7 +404,7 @@ namespace RimMandrake.MessyConduit.Hose
     {
         private const string Dir = "RimMandrake/MessyConduit/Hose/";
         private static readonly Texture2D flatTex, plumpTex, shadowTex;
-        public static readonly Material Coupling, Nozzle, EndCap, Binding, Mouth;
+        public static readonly Material Binding, Mouth, CouplingBare, NozzleBare, EndCapBare;
         private static readonly Dictionary<long, Material> pool = new Dictionary<long, Material>();
         public static readonly int Queue;
 
@@ -413,10 +414,10 @@ namespace RimMandrake.MessyConduit.Hose
             plumpTex = Tiled("Strand_Plump");
             shadowTex = Tiled("Strand_Shadow");
             Queue = CordMaterials.StrandQueue + 3;
-            Coupling = Piece("Coupling_Brass");
-            Nozzle = Piece("Nozzle");
-            EndCap = Piece("EndCap");
             Binding = Piece("Binding");
+            CouplingBare = Piece("Coupling_Bare");
+            NozzleBare = Piece("Nozzle_Bare");
+            EndCapBare = Piece("EndCap_Bare");
             Mouth = Piece("Mouth");
         }
 
