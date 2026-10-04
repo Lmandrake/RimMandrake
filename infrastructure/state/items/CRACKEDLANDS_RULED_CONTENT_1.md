@@ -20,7 +20,8 @@ whichever name state is current when claimed).
 3. **Eopie off the roster, onto the roads**: remove from this biome's rows; add
    eopie (and the common-beast family the bible lists) to trader stock /
    caravan pack-animal availability so they arrive with merchants. Fliers
-   (CanCell/Convor/Woolamander) STAY — guests and migrants, owner-ruled.
+   (CanCell/Convor) STAY — guests and migrants, owner-ruled; the woolamander
+   stays as a walking resident (canon arboreal, no flight; owner 2026-10-03).
 4. **Five new natives** per the bible: RM_Muttavaq (pan giant — def lands here,
    wake/terrain mechanics in the mechanics item), RM_Uttaqar (rock troll ported
    as ours from DA_RockTroll — donor def leaves, ours replaces), RM_Irqit,

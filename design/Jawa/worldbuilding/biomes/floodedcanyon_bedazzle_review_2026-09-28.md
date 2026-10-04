@@ -75,7 +75,8 @@ missing. Parsed as XML elements this pass (`<DefName>commonality</DefName>` shor
 | `RSW_Eopie` | 0.25 | Patient | RSW_ port | ⚠️ **5 homes** (Desert, Leaning Scrub, Long Shade, Weeping Stones, here — MEASURED sweep). SW canon icon carve-out; annotate for the one-home law, do not evict here |
 | `RSW_Creature_Mantrap` | 0.15 | Patient | RSW_ port | lure predator at the hidden water; draft *saqqat* |
 | `RUT_EmperorVulture` | 0.15 | Patient (sky) | ours | real flight (`MaxFlightTime 60`); 🔴 **frozen twin only — missing from the RM_ patch** |
-| `RSW_CanCell` / `RSW_Convor` / `RSW_Woolamander` | 0.2/0.2/0.15 | flier-commuters | RSW_ ports | nest in the Desert (ban 4). Convor also Fever Wood/Greentide/Leaning Scrub — flier-migrant carve-out plausibly applies, annotate |
+| `RSW_CanCell` / `RSW_Convor` | 0.2/0.2 | flier-commuters | RSW_ ports | nest in the Desert (ban 4). Convor also Fever Wood/Greentide/Leaning Scrub — flier-migrant carve-out plausibly applies, annotate |
+| `RSW_Woolamander` | 0.15 | walking resident | RSW_ port | canon arboreal, no flight (owner, 2026-10-03) |
 | `RSW_SandPillar` | 0.5 | (small) | RSW_ port | wired 2026-09-23 on the RM_ patch only (correct — twin frozen); draft *luttaq* |
 | `DA_RockTroll` | roster 0.5 | the giant | donor | 🔴 **wired NOWHERE** (0 hits); the roster's import was never executed; draft *uttaqar* |
 

@@ -2,7 +2,7 @@
   "authored": "2026-09-09",
   "confidence": [
     {
-      "claim": "all flier rows (CanCell, Convor, Woolamander) are fliers",
+      "claim": "both flier rows (CanCell, Convor) are fliers; Woolamander is a walking resident (canon arboreal, no flight; owner 2026-10-03)",
       "status": "UNMEASURED",
       "why": "register flies special broken; by-name knowledge; nesting-elsewhere is design register (ban 4), not def-encoded"
     },
@@ -570,10 +570,10 @@
     },
     {
       "action": "import",
-      "band": "flier-commuter",
+      "band": "resident",
       "commonality": 0.15,
       "def": "Woolamander",
-      "law": "§4 fliers + R17; imported from the Scarlands eviction; nests in Desert (ban 4); flier UNMEASURED"
+      "law": "walking resident, canon arboreal (Wookieepedia: Massassi-tree canopy, Yavin 4; no flight) — owner 2026-10-03 by question card; imported from the Scarlands eviction"
     },
     {
       "action": "import",

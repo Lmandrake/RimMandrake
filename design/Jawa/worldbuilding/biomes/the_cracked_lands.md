@@ -37,9 +37,10 @@ dowsing plant, tip blushing green as the water table nears.
 (3) **Roster law applied**: all vanilla terrestrial life OFF the RM_ roster (as
 usual); the invented cast migrates to RM_ defs (Q11a — the free mod looks the
 same as the campaign one); **eopie and common beasts have ONE native biome and
-TRAVEL** — off this roster, arriving with merchants/caravans instead; the three
-flier-commuters (CanCell/convor/woolamander) STAY as guests and migrants (the
-flight carve-out); Sealed Sleeper + Emperor Vulture get their missing RM_-patch
+TRAVEL** — off this roster, arriving with merchants/caravans instead; the two
+flier-commuters (CanCell/convor) STAY as guests and migrants (the flight
+carve-out); the woolamander STAYS as a walking resident (canon: arboreal, no
+flight; owner, 2026-10-03); Sealed Sleeper + Emperor Vulture get their missing RM_-patch
 rows. The plant-form "mantrap" relabels to **Fang Leaf**.
 (4) **THE SWALE ruled** — the seep canal: a FlowWorks canal variant intentionally
 graded and perforated so carried water seeps into surrounding soil, climbing its

@@ -1,21 +1,21 @@
-# CRACKEDLANDS_WOOLAMANDER_FLIGHT_1 — the woolamander is a ruled flier but cannot fly
+# CRACKEDLANDS_WOOLAMANDER_FLIGHT_1 — the woolamander is a walking resident, not a flier
 
-Found by `CRACKEDLANDS_GPT_ENRICHMENT_1` §5 (the recede feast). The owner-picked text has
-"convor, can-cell and woolamander migrants physically fly in, feed, and fly out overhead".
-`CRACKEDLANDS_RULED_CONTENT_1` also rules the three as "Fliers (CanCell/Convor/Woolamander) STAY —
-guests and migrants".
+## ruling
 
-## the fact
+Owner, 2026-10-03 ~21:20 PDT, decision taken by question card: the woolamander is a **walking resident**
+of the Cracked Lands and follows canon (arboreal, no flight). No flight stats are added.
 
-`src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Woolamander.xml` has **no `MaxFlightTime`** and
-no `canFlyIntoMap` (grep, 2026-10-01). `RSW_Convor` (30) and `RSW_CanCell` (60) have both. The
-recede feast chooses its migrants from the biome's own flight-capable roster
-(`canFlyIntoMap` and `MaxFlightTime > 0`), so the woolamander is never among them, and it still
-spawns as a walking resident.
+## canon source
 
-## open question (owner)
+Wookieepedia, page `Woolamander` (parse API, `action=parse&page=Woolamander&prop=wikitext`, read
+2026-10-03): a species native to Yavin 4 living in the canopy of the Massassi trees, with long arms, short
+legs and a tufted tail; categories *Arboreal creatures* and *Primates*. Nothing in the article mentions
+wings or flight. Sources cited there: *Ultimate Star Wars* (2015), *Star Wars: Galactic Atlas*.
 
-Does the woolamander fly in our fiction? If yes, the standing rule *"if it flies in the fiction, it
-flies in the game"* applies: add the Locust-shaped stats and race flags. The flip-book frames are
-separate and never block flight. If no, the "flier-commuter" label on the Cracked Lands roster row
-is wrong and should be corrected. Verify canon with the Wookieepedia search API before asking.
+## what changed
+
+`RSW_Woolamander.xml` already had no `MaxFlightTime` or `canFlyIntoMap`, so the def was right. The text
+that called it a flier was corrected to match it: the roster comments in `RUT_CrackedLands.xml` and
+`WildAnimals_CrackedLands.xml`, the Cracked Lands bible, its roster JSON, the bedazzle cast and review
+docs, `cast_assignment.csv`, `CRACKEDLANDS_RULED_CONTENT_1`, and the recede-feast text in the closed
+`CRACKEDLANDS_GPT_ENRICHMENT_1`. The recede feast's migrants are the convor and the can-cell.

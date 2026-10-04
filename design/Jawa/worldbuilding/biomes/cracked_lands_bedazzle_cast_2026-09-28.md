@@ -293,10 +293,11 @@ mod looks the same as the campaign one; Q12–Q15 per-sitting migration):
 other guest rosters at their own sittings) and arrives with merchants — trader stock /
 caravan pack-animal availability instead of a wild row.
 
-**STAYS — canon on the RSW_/Utinni layer:** `RSW_Gornt` 0.3, and the three fliers
-`RSW_CanCell` 0.2 / `RSW_Convor` 0.2 / `RSW_Woolamander` 0.15 — owner, turn 4: the
-fliers are **guests and migrants** here under the migration carve-out (they nest in
-the Desert, ban 4 holds). Donor rows `AA_Murkling` 0.2 / `AA_SandSquid` 0.1 stay
+**STAYS — canon on the RSW_/Utinni layer:** `RSW_Gornt` 0.3, the two fliers
+`RSW_CanCell` 0.2 / `RSW_Convor` 0.2 — owner, turn 4: the fliers are **guests and
+migrants** here under the migration carve-out (they nest in the Desert, ban 4 holds);
+and `RSW_Woolamander` 0.15 as a **walking resident** — owner, 2026-10-03: follow canon
+(arboreal, no flight). Donor rows `AA_Murkling` 0.2 / `AA_SandSquid` 0.1 stay
 inline per the standing donor-fauna acceptance.
 
 **Names:** batch-4h renames (qattora, qetta, saqqat, luttaq, uttaqar-as-label) remain
