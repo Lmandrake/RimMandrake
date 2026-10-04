@@ -73,7 +73,9 @@ LOCK_PATH = LOG_PATH + ".lock"
 # site spec, mock game and the result JSONs each live run writes BESIDE it) --
 # without this, every recorded run changed the hash it was recorded at, so a
 # run could never be current (MEASURED 2026-10-02, `modcheck record`).
-_EXCLUDED_BASENAMES = {"validation.py", "__pycache__", "northstar"}
+# `human_review.py` is the Northstar "for the human" review-map builder (design/RimMandrake/northstar_human_review.md):
+# it stages a map for the owner to look at and changes nothing the mod does.
+_EXCLUDED_BASENAMES = {"validation.py", "__pycache__", "northstar", "human_review.py"}
 
 
 def mod_hash(mod_dir):

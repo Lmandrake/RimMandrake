@@ -20,4 +20,11 @@ status-hint: phase 1a of design/RimMandrake/messy_conduit_design_2026-10-02.md �
 2. [B] `python3 src/RimMandrake/Utils/modset_builder.py --tier messyconduit --apply`, launch via Steam, then `python.exe src/RimMandrake/MessyConduit/validation.py --live --fresh-map` (~270 ticks; state read through `MessyConduitProbe` via `jawa/mod_settings_field`)
 3. [B] `python.exe src/RimMandrake/MessyConduit/validation.py --save-load <NEW_NAME>` on the same map (M4) (the removal check is PAUSED, owner 2026-10-04: *"I don't want to do removal checks regularly"* — it stays UNCOVERED by design until he re-enables it; the commented-out step was: cold load onto `--tier flowworks`, then `validation.py --removal-check <NEW_NAME>` (M9))
 4. [B] record: `python3 -m modcheck.cli record MessyConduit --result <validation_result_*.json> --tier messyconduit` (REFUSED while UNBUILT/UNCOVERED bars remain — honest by design)
-X. [S] (human pass) the look: screenshots under Transient/messy_conduit_live_20261002/ or a keeper save; never a pass bar
+X. [S] (human pass) the look: `python.exe src/RimMandrake/MessyConduit/human_review.py --build --fresh-map` stages the labelled review map (15 stations + free build area, key sheet in Transient/mc_human_review/; principles: design/RimMandrake/northstar_human_review.md); screenshots under Transient/messy_conduit_live_20261002/ or a keeper save; never a pass bar
+
+## extended
+Not run in a basic checkout and never blocks one; run only when requested (design/RimMandrake/debug_process.md §6b).
+- E1. Removal: a save made with the mod loads clean without it (walk M9) -> `validation.py --removal-check NAME` on a tier without the mod (cold load onto `--tier flowworks`); PAUSED by the owner 2026-10-04 (*"I don't want to do removal checks regularly"*)
+- E2. Mod-mod compatibility: other conduit/power-render mods (hidden-conduit, power-grid overlay and wire mods) alongside MessyConduit -> UNBUILT (no tier or check yet)
+- E3. Declared incompatibilities: `About.xml` names every mod known to clash (incompatibleWith / loadAfter), and each one names a reason -> UNBUILT (no check yet)
+- E4. FlowWorks pump hookup: once FlowWorks ships `RM_PumpPortable`, a hose reel next to a running pump reads flowing through `FlowWorksPumpFlow` -> UNBUILT (no pump in FlowWorks yet)
