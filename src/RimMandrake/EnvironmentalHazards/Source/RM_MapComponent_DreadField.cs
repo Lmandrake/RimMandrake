@@ -71,7 +71,19 @@ namespace RimMandrake.EnvironmentalHazards
 
         public bool IsDreaded(IntVec3 cell)
         {
-            if (field == null || !cell.InBounds(map))
+            if (!cell.InBounds(map))
+            {
+                return false;
+            }
+
+            // SUMP_TAR_LIVING_SYSTEMS_1: fresh tar-glass crust the mice have learned to avoid (re-routed mouse-lines).
+            RM_MapComponent_SumpLivingMap living = map.GetComponent<RM_MapComponent_SumpLivingMap>();
+            if (living != null && living.IsFreshCrust(cell, Find.TickManager.TicksGame))
+            {
+                return true;
+            }
+
+            if (field == null)
             {
                 return false;
             }

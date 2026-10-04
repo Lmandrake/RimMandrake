@@ -79,6 +79,57 @@ def settings_fields():
     return dict((m.group(2), m.group(1)) for m in _FIELD.finditer(re.sub(r"//[^\n]*", "", body)))
 
 
+LIVING_MAP_CONSTS = ("ScanIntervalTicks", "MinRewriteCells", "SoffethDelayTicks", "SoffethIntervalTicks", "SoffethRingSize",
+                     "SoffethRingInner", "SoffethRingOuter", "MouseRerouteDelayTicks", "CrustSetTicks", "MarginDelayTicks",
+                     "MarginSproutChancePerScan", "MaxMarginSproutsPerScan")
+
+
+def _living_map_findings(comp_src=None, dread_src=None, mod_src=None):
+    """SUMP_TAR_LIVING_SYSTEMS_1 part 1 first script (offline): the responders are wired, gated, PROVISIONAL-marked and
+    their pacing is internally consistent. Red on any of those, so a toggle that gates nothing, a mouse-line that never
+    re-routes, or a margin that can never reach the crust before it sets is caught without a game."""
+    src = os.path.join(HERE, "Source")
+    rd = lambda f: open(os.path.join(src, f), encoding="utf-8").read()
+    comp_src = comp_src if comp_src is not None else rd("RM_MapComponent_SumpLivingMap.cs")
+    dread_src = dread_src if dread_src is not None else rd("RM_MapComponent_DreadField.cs")
+    mod_src = mod_src if mod_src is not None else _settings_src()
+    bad, vals = [], {}
+    for name in LIVING_MAP_CONSTS:
+        m = re.search(r"public const (?:int|float) %s = ([0-9.]+)f?;([^\n]*)" % name, comp_src)
+        if not m:
+            bad.append("living map: constant %s not found" % name)
+            continue
+        vals[name] = float(m.group(1))
+        if "PROVISIONAL" not in m.group(2):
+            bad.append("living map: %s is not marked PROVISIONAL (owner ruling 2026-10-03)" % name)
+    if len(vals) == len(LIVING_MAP_CONSTS):
+        if not 1 <= vals["SoffethRingSize"] <= 12:
+            bad.append("living map: SoffethRingSize %g outside 1..12" % vals["SoffethRingSize"])
+        if not 0 < vals["SoffethRingInner"] < vals["SoffethRingOuter"]:
+            bad.append("living map: soffeth ring inner/outer radius not 0 < inner < outer")
+        if not 0 < vals["MouseRerouteDelayTicks"] < vals["CrustSetTicks"]:
+            bad.append("living map: fresh crust sets before mice ever re-route (MouseRerouteDelayTicks >= CrustSetTicks)")
+        if not vals["MarginDelayTicks"] < vals["CrustSetTicks"]:
+            bad.append("living map: mirrelin can never reach new glass before the crust drops out (MarginDelayTicks >= CrustSetTicks)")
+        if not 0 < vals["MarginSproutChancePerScan"] <= 1:
+            bad.append("living map: MarginSproutChancePerScan not in (0,1]")
+        if vals["ScanIntervalTicks"] <= 0 or vals["MinRewriteCells"] < 1:
+            bad.append("living map: scan interval / rewrite threshold not positive")
+    tick = comp_src.split("MapComponentTick", 1)[1].split("public void Step", 1)[0] if "MapComponentTick" in comp_src else ""
+    if "sumpLivingMapEnabled" not in tick or "BiomeCarriesSumpFlora" not in tick:
+        bad.append("living map: MapComponentTick is not gated on sumpLivingMapEnabled AND the Sump-flora biome gate")
+    isd = dread_src.split("public bool IsDreaded", 1)[1].split("private void Rebuild", 1)[0] if "public bool IsDreaded" in dread_src else ""
+    if "IsFreshCrust" not in isd:
+        bad.append("living map: DreadField.IsDreaded never consults IsFreshCrust -- mouse-lines cannot re-route")
+    ui = mod_src.split("DoWindowContents", 1)[-1]
+    m = re.search(r'"Sump living map pace: "[^;]*;\s*list\.Label\(([^;]*)\);', ui)
+    if not m or "PROVISIONAL" not in m.group(1):
+        bad.append("living map: the pace setting's explanation does not say PROVISIONAL")
+    if "public static string ProofRewrite(string mode)" not in comp_src:
+        bad.append("living map: live proof hook RM_SumpLivingMapProof.ProofRewrite missing")
+    return bad
+
+
 def static_checks():
     bad = []
     if len(SHIPPED) < 10:
@@ -115,6 +166,7 @@ def static_checks():
         hd = ET.parse(os.path.join(HERE, "Defs", "HediffDefs", "RM_Hediffs_ContactVenom.xml")).getroot()
         if not any(float(e.findtext("lethalSeverity") or 0) > 0 for e in hd if isinstance(e.tag, str)):
             bad.append("RM_VenomvineVenom has no lethalSeverity (the lethal-off toggle holds under it)")
+    bad.extend(_living_map_findings())
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "EnvironmentalHazards.md")):
         bad.append("walk missing")
     return bad
@@ -244,6 +296,21 @@ def _build_suite():
                 if "FAIL" in text[:4]:
                     raise ExpectationFailed("alias proof: %s" % text[:400])
                 _unmeasured(t, "static_call did not answer: %s" % text[:200])
+
+    @suite.chain("sump_living_map")
+    def sump_living_map(t):
+        # SUMP_TAR_LIVING_SYSTEMS_1: the real component on the current map, synthetic clock, terrain/plants restored.
+        for mode in ("on", "off"):
+            with t.component("living_map_responders_" + mode, toggle="sumpLivingMapEnabled"):
+                r = t.bridge_call("jawa/static_call", type="RimMandrake.EnvironmentalHazards.RM_SumpLivingMapProof",
+                                  method="ProofRewrite", args=mode)
+                if not _live(t):
+                    return
+                text = str((r or {}).get("result") or (r or {}).get("value") or r)
+                if text.startswith("FAIL"):
+                    raise ExpectationFailed("living map proof (%s): %s" % (mode, text[:400]))
+                if not text.startswith("PASS"):
+                    _unmeasured(t, "proof did not answer PASS/FAIL: %s" % text[:200])
 
     @suite.chain("contact_venom_wiring")
     def contact_venom_wiring(t):
