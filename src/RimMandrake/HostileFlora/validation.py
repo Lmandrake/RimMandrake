@@ -265,6 +265,17 @@ def _build_suite():
             _unmeasured(t, "the off-control needs the previous component's cluster to have been readable; "
                            "owed to the first live run (state after recovery of RM_SwarmAggression is timed)")
 
+    @suite.chain("static_doctrine")
+    def static_doctrine(t):
+        """Offline, every run: static_checks() was only reachable from __main__, so no suite run asserted it.
+        Gallowroot is an AnimalThingBase animal, never a Plant; manhunterOnDamageChance 0 (all aggression goes
+        through the reaction comp); comp/propagation/response classes and the mental state exist in
+        CreatureBehaviors; the shared settings fields are declared. A blind parse (no defs) is itself a finding."""
+        with t.component("gallowroot_doctrine_static", beyond_toggle=True):
+            problems = static_checks()
+            if problems:
+                raise ExpectationFailed("; ".join(problems))
+
     return suite
 
 
