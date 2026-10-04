@@ -319,6 +319,16 @@
       <li>Traders</li>
     </givenBy>
     <randomlySelectable>false</randomlySelectable>
+    <!-- LOAD13_CONFIGERRORS_TRIAGE_1. isRootSpecial: QuestScriptDef.ConfigErrors
+         rejects defaultChallengeRating (inherited, 2) on a non-root quest, and
+         vanilla's trader givers (Odyssey Script_AlphaThrumboSighting) carry it.
+         rootSelectionWeight: TradeUtility.ReceiveQuestFromTrader picks among
+         every givenBy-Traders quest by RandomElementByWeight(rootSelectionWeight),
+         so at the default 0 this offer was NEVER chosen. randomlySelectable
+         false still keeps it out of the storyteller pool (IsRootRandomSelected).
+         0.15 = AlphaThrumbo's trader weight; PROVISIONAL. -->
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0.15</rootSelectionWeight>
     <rootMinPoints>300</rootMinPoints>
   </QuestScriptDef>
 

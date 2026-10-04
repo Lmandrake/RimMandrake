@@ -32,7 +32,8 @@ density readout would be a bad trade.
 
 ⚠️ AND IT DIFFS THE WHOLE PLANET'S MUTATORS AFTERWARDS. A landmark's mutatorChances
 rolls go through AddMutator and can DISPLACE existing mutators. RUT_ComplexStructures
-deliberately declares none, so the loss count must be zero — but "must be" is not
+declares only the inert RUT_LandmarkIconOnly (canSpawnOnLandmark false, so
+IsValidTile refuses it on a landmark tile), so the loss count must be zero — but "must be" is not
 "is", and these are the busiest tiles on the map, so it is checked rather than
 assumed.
 

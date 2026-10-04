@@ -27,9 +27,9 @@
   faint tracery" framing: legible up close, easy to miss at a glance,
   exactly the "the player who looks sees the gap" register.
 
-  placementMask [Terrain] (matching Filth_Dirt/Filth_AnimalFilth's own
-  choice, not the "Unnatural" default most incident-caused filth uses — a
-  mouse's own footprint is closer to those two than to blood/vomit/wreckage).
+  placementMask [Pawn]: a mouse's footprint is pawn-made, and RM_TarShallow
+  may not accept Terrain-flag filth because it generates filth itself
+  (TerrainDef.cs:538; LOAD13_CONFIGERRORS_TRIAGE_1).
   ignoreFilthMultiplierStat true — NOT a fix for an engine block
   (StatDefOf.FilthMultiplier defaults to 1/100% and nothing in this chain
   overrides it, confirmed against Stats_Basics_Special.xml) but a
@@ -66,8 +66,10 @@
       <color>(20,18,16,42)</color>
     </graphicData>
     <filth>
+      <!-- Pawn, not Terrain: RM_TarShallow generates filth, so the engine
+           forbids its mask from accepting Terrain (TerrainDef.cs:538). -->
       <placementMask>
-        <li>Terrain</li>
+        <li>Pawn</li>
       </placementMask>
       <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
       <disappearsInDays>6~10</disappearsInDays>

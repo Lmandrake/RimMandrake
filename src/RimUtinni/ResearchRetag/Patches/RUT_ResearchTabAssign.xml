@@ -6502,4 +6502,213 @@
       </nomatch>
     </match>
   </Operation>
+
+  <!-- HEARTH_LAYOUT (LOAD13_CONFIGERRORS_TRIAGE_1, 2026-10-03). Load 13 logged
+       'same research view coords and tab' for ModernFixtures/RR_Furniture (0,0)
+       and AdvancedShowers/VCE_StewCooking (2,0) in RUT_Tree_Hearth: the
+       consolidation put 44 projects from six mods into one tab, 14 of them
+       inside the engine's overlap box (|dx| < 0.5 and |dy| < 0.25,
+       ResearchProjectDef.GenerateNonOverlappingCoordinates), whose relaxation
+       then pushed nodes into exact coincidence. Each op below moves one node
+       DOWN/UP ITS OWN COLUMN only (x unchanged, so prerequisite left-to-right
+       order is untouched) to the nearest Y clear of every other node in the
+       column by >= 0.3. Computed from the load-13 def dump; guarded by
+       validation.py hearth_layout_static (red on any overlap left). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VBE_LiquorBrewing"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VBE_LiquorBrewing"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VBE_LiquorBrewing"]/researchViewY</xpath>
+        <value><researchViewY>0.3</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VBE_LiquorBrewing"]</xpath>
+        <value><researchViewY>0.3</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VCE_CondimentsResearch"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VCE_CondimentsResearch"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_CondimentsResearch"]/researchViewY</xpath>
+        <value><researchViewY>0.6</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_CondimentsResearch"]</xpath>
+        <value><researchViewY>0.6</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VBE_MixologyResearch"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VBE_MixologyResearch"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VBE_MixologyResearch"]/researchViewY</xpath>
+        <value><researchViewY>1.3</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VBE_MixologyResearch"]</xpath>
+        <value><researchViewY>1.3</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VCE_Grilling"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VCE_Grilling"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_Grilling"]/researchViewY</xpath>
+        <value><researchViewY>1.6</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_Grilling"]</xpath>
+        <value><researchViewY>1.6</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="MF_BasicFurniture"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="MF_BasicFurniture"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="MF_BasicFurniture"]/researchViewY</xpath>
+        <value><researchViewY>1.95</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="MF_BasicFurniture"]</xpath>
+        <value><researchViewY>1.95</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VCE_Canning"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VCE_Canning"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_Canning"]/researchViewY</xpath>
+        <value><researchViewY>2.25</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_Canning"]</xpath>
+        <value><researchViewY>2.25</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VFE_Res_Pottery"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VFE_Res_Pottery"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VFE_Res_Pottery"]/researchViewY</xpath>
+        <value><researchViewY>5.25</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VFE_Res_Pottery"]</xpath>
+        <value><researchViewY>5.25</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VCE_SoupCooking"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VCE_SoupCooking"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_SoupCooking"]/researchViewY</xpath>
+        <value><researchViewY>0.3</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_SoupCooking"]</xpath>
+        <value><researchViewY>0.3</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="Saunas"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="Saunas"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="Saunas"]/researchViewY</xpath>
+        <value><researchViewY>0.6</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="Saunas"]</xpath>
+        <value><researchViewY>0.6</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="VCE_CheeseMaking"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="VCE_CheeseMaking"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_CheeseMaking"]/researchViewY</xpath>
+        <value><researchViewY>2.1</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="VCE_CheeseMaking"]</xpath>
+        <value><researchViewY>2.1</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="CarpetMaking"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="CarpetMaking"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="CarpetMaking"]/researchViewY</xpath>
+        <value><researchViewY>2.45</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="CarpetMaking"]</xpath>
+        <value><researchViewY>2.45</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="MF_RoyalFurniture"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="MF_RoyalFurniture"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="MF_RoyalFurniture"]/researchViewY</xpath>
+        <value><researchViewY>2.8</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="MF_RoyalFurniture"]</xpath>
+        <value><researchViewY>2.8</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="MF_WasteDisposal"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="MF_WasteDisposal"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="MF_WasteDisposal"]/researchViewY</xpath>
+        <value><researchViewY>1.3</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="MF_WasteDisposal"]</xpath>
+        <value><researchViewY>1.3</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="ModernFixtures"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="ModernFixtures"]/researchViewY</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="ModernFixtures"]/researchViewY</xpath>
+        <value><researchViewY>2.1</researchViewY></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="ModernFixtures"]</xpath>
+        <value><researchViewY>2.1</researchViewY></value>
+      </nomatch>
+    </match>
+  </Operation>
+
 </Patch>

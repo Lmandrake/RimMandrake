@@ -43,6 +43,27 @@ def main():
     gone = sorted(set(p for ps in g.values() for p in ps if p not in g))
     c, d = v.prereq_findings(g, set())
     check("break empty load: every external prerequisite dangles", len(d) == sum(1 for ps in g.values() for p in ps if p not in g) and gone, d)
+    # hearth_layout_static (LOAD13_CONFIGERRORS_TRIAGE_1)
+    ov = v.patched_view_coords()
+    check("patch coord parse sees the Hearth layout ops (AdvancedShowers 2,1; VCE_CondimentsResearch y 0.6)",
+          ov.get("AdvancedShowers") == {"researchViewX": 2.0, "researchViewY": 1.0}
+          and ov.get("VCE_CondimentsResearch", {}).get("researchViewY") == 0.6, ov.get("AdvancedShowers"))
+    check("break overlap: two nodes 0.2 apart in a column are reported",
+          len(v.tab_overlaps([("A", 0, 0), ("B", 0, 0.2), ("C", 0, 1)])) == 1)
+    check("float edge: 4.9 vs 5.15 counts as overlap (float32 box edge)",
+          len(v.tab_overlaps([("A", 0, 4.9), ("B", 0, 5.15)])) == 1)
+    try:
+        import json
+        import game_paths as GP
+        rows = json.load(open(os.path.join(GP.DEF_DUMP, "defs", "ResearchProjectDef.json")))["defs"]
+    except Exception as e:
+        rows = None
+        print("UNMEASURED  shipped Hearth layout vs def dump: %s" % e)
+    if rows:
+        nodes = v.effective_tab_nodes(rows, "RUT_Tree_Hearth", ov)
+        check("shipped Hearth layout: no overlapping nodes", len(nodes) >= 20 and not v.tab_overlaps(nodes), v.tab_overlaps(nodes)[:4])
+        raw = v.effective_tab_nodes(rows, "RUT_Tree_Hearth", {})
+        check("break: without our coordinate ops the dump's Hearth overlaps (control)", len(v.tab_overlaps(raw)) > 0)
     if FAILS:
         print("\n%d ResearchRetag selftest(s) FAILED" % len(FAILS))
         return 1

@@ -36,6 +36,11 @@
     <commonality>0</commonality>
     <category>structure</category>
     <nameMaker>NamerLandmark_Ruins</nameMaker>
+    <!-- Inert: satisfies LandmarkDef.ConfigErrors' chance>=1 rule and is
+         never added to the tile (RUT_LandmarkIconOnly.xml says why). -->
+    <mutatorChances>
+      <RUT_LandmarkIconOnly>1</RUT_LandmarkIconOnly>
+    </mutatorChances>
   </LandmarkDef>
 
 </Defs>
