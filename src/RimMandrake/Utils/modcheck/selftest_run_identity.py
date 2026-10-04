@@ -85,6 +85,31 @@ h = R.mod_fingerprint("Zed", dm2)
 check("a held, undeployed file is not drift", h["state"] == "in-sync" and h["n_held"] == 1, h["drift"])
 check("same tree WITHOUT the hold IS drift (control)", R.mod_fingerprint("Zed", dm)["state"] == "drift")
 
+# folded biome mod: fingerprinted as the composed mod (was 'unknown: no source dir' => every pass unproven)
+import biomes_compose as _bc
+_cdir = os.path.join(tmp, "compose_master")
+for _rel, _d in (("About/About.xml", b"<a/>"), ("Biomes/Foo/Defs/a.xml", b"<Defs/>")):
+    put(_cdir, _rel, _d)
+    put(os.path.join(tmp, "mods", "Comp"), _rel, _d)
+_orig_build = _bc.build
+import shutil as _sh
+def _fake_build(*a, **k):      # the real build hands back a fresh temp dir the caller deletes
+    d = tempfile.mkdtemp(); _sh.copytree(_master, os.path.join(d, "Comp")); return ("Comp", os.path.join(d, "Comp"), [])
+_master = os.path.join(tmp, "compose_master")
+_bc.build = _fake_build
+dm3 = types.SimpleNamespace(**dict(vars(dm), mod_dirs=lambda: {}, folded=lambda: {"Foo": ("Comp", "Foo")}, SRC_ROOT=os.path.join(tmp, "src")))
+try:
+    c = R.mod_fingerprint("Foo", dm3)
+    check("folded mod fingerprints the composed folder", c["state"] == "in-sync" and c.get("composed") == "Comp", c.get("reason"))
+    put(_cdir, "Biomes/Bar/Defs/b.xml", b"<Defs/>")   # sibling biome only in repo: not Foo's drift
+    check("folded mod ignores sibling biome drift", R.mod_fingerprint("Foo", dm3)["state"] == "in-sync")
+    put(os.path.join(tmp, "mods", "Comp"), "Biomes/Foo/Defs/a.xml", b"<Defs><x/></Defs>")
+    _dd = R.mod_fingerprint("Foo", dm3); check("folded mod: composed drift => drift (control)", _dd["state"] == "drift", _dd.get("drift") or _dd.get("reason"))
+    dm4 = types.SimpleNamespace(**dict(vars(dm3), folded=lambda: {}))
+    check("not folded and no dir => unknown (control)", R.mod_fingerprint("Foo", dm4)["state"] == "unknown")
+finally:
+    _bc.build = _orig_build
+
 # modal_sweep records what it found
 calls = []
 def fake_call(tool, **kw):
