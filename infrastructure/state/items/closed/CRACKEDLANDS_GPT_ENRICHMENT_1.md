@@ -32,7 +32,7 @@ only GPT's extensions of them are out. Builds on `CRACKEDLANDS_RULED_CONTENT_1` 
    also owes this biome flora. New names must be collision-swept, with art to an owner review sheet
    before any def ships.
 5. **The recede feast.** Flood-touched mud suddenly moves like fur as irqit hatch in millions, breed
-   once, and die into visible windrows as the ground dries. Convor, can-cell and woolamander migrants
+   once, and die into visible windrows as the ground dries. Convor and can-cell migrants
    physically fly in, feed, and fly out overhead, never edge-spawning or vanishing. Build: bounded irqit
    cohorts from the soaked-cell list with lifecycle hediffs, and existing flight for the migrants. Small C#.
 6. **Floodline salvage claim.** Receding mud exposes half-buried components and wreck silhouettes.
