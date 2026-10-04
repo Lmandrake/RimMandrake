@@ -1,0 +1,2 @@
+- 15:41 started ART_SUBJECT_RESOLVER_1 phase 1; reading spec
+- 15:43 spec+code read; design: subject.py self-contained, job fields target_def/target_original/target_texpath/canon_reference (canon imgs attached as guidance, NOT reference — reference arms reskin-validate)
