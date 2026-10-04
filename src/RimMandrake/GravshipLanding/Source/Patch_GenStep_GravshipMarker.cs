@@ -15,21 +15,31 @@ namespace RimMandrake.GravshipLanding
         [HarmonyPostfix]
         public static void Postfix(Map map, GenStepParams parms)
         {
-            if (!ModsConfig.OdysseyActive || parms.gravship == null) return;
-            if (!GravshipLandingSettings.revealOutdoorsBeforeLanding) return;
             int before = CountFogged(map);
+            int roots = RevealIfArrival(map, parms.gravship != null, map.BoundsRect());
+            if (roots < 0) return;
+            int after = CountFogged(map);
+            Log.Message("[RimMandrake.GravshipLanding] arrival map " + map.Tile + ": revealed the outdoors from "
+                + roots + " roots, fogged cells " + before + " -> " + after + ".");
+        }
+
+        /// <summary>The whole mechanism, gates included: -1 when gated off (not an arrival map, Odyssey
+        /// inactive, or the setting off), else the number of unroofed fogged roots flood-unfogged in `area`.
+        /// The postfix calls it with the whole map; GravshipLandingProof with a staged rect.</summary>
+        public static int RevealIfArrival(Map map, bool arrival, CellRect area)
+        {
+            if (!ModsConfig.OdysseyActive || !arrival) return -1;
+            if (!GravshipLandingSettings.revealOutdoorsBeforeLanding) return -1;
             int roots = 0;
-            foreach (IntVec3 c in map.AllCells)
+            foreach (IntVec3 c in area)
             {
-                if (!map.fogGrid.IsFogged(c) || c.Roofed(map)) continue;
+                if (!c.InBounds(map) || !map.fogGrid.IsFogged(c) || c.Roofed(map)) continue;
                 Building edifice = c.GetEdifice(map);
                 if (edifice != null && edifice.def.MakeFog) continue;
                 FloodFillerFog.FloodUnfog(c, map);
                 roots++;
             }
-            int after = CountFogged(map);
-            Log.Message("[RimMandrake.GravshipLanding] arrival map " + map.Tile + ": revealed the outdoors from "
-                + roots + " roots, fogged cells " + before + " -> " + after + ".");
+            return roots;
         }
 
         private static int CountFogged(Map map)

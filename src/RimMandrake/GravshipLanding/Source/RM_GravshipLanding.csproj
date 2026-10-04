@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="GravshipLandingMod.cs" />
     <Compile Include="Patch_GenStep_GravshipMarker.cs" />
+    <Compile Include="GravshipLandingProof.cs" />
   </ItemGroup>
 
   <ItemGroup>
