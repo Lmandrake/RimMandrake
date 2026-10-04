@@ -1,0 +1,11 @@
+{
+  "decisions": {},
+  "posture": "verdict",
+  "criterion": "Nothing ranks these: rows are sorted by group then name, not by quality. Art fit is an eye judgment only; the validator passes were format checks (canvas, alpha, facing), not a look.",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": null,
+    "evidence": "generated 2026-10-03; no row has a decision, nothing pre-selected, no human has ruled"
+  }
+}
