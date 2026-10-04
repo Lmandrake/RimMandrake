@@ -3,6 +3,7 @@ using RimMandrake.CreatureBehaviors;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
 using Verse.AI;
 
 namespace RimMandrake.StarWars.Sarlacc
@@ -112,9 +113,40 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_Values.Look(ref seepMode, "rswRoadSeepMode", false);
         }
 
+        // §6.3 "What you hear": the swimmer's under-sand grinding. Vanilla Anomaly FleshbeastDigging (a sustainer)
+        // follows the road/seep swimmer while it is moving and stops when it halts, roots or dies. Owner ruling
+        // 2026-10-03: vanilla audio ships as final. Toggle: RSW_SarlaccSettings.swimmerGrindSoundEnabled.
+        public const string GrindSoundDefName = "FleshbeastDigging";
+        private Sustainer grind;
+
+        public bool GrindWanted()
+        {
+            return RSW_SarlaccSettings.swimmerGrindSoundEnabled && swimmer != null && !swimmer.Dead && swimmer.Spawned
+                && swimmer.Map == map && swimmer.pather != null && swimmer.pather.Moving;
+        }
+
+        private void TickGrindSound()
+        {
+            if (GrindWanted())
+            {
+                if (grind == null || grind.Ended)
+                {
+                    SoundDef def = DefDatabase<SoundDef>.GetNamedSilentFail(GrindSoundDefName);
+                    grind = def?.TrySpawnSustainer(SoundInfo.InMap(swimmer, MaintenanceType.PerTick));
+                }
+                grind?.Maintain();
+            }
+            else if (grind != null)
+            {
+                grind.End();
+                grind = null;
+            }
+        }
+
         public override void MapComponentTick()
         {
             base.MapComponentTick();
+            TickGrindSound();
             if (swimmer == null || Find.TickManager.TicksGame % CheckIntervalTicks != 0)
             {
                 return;

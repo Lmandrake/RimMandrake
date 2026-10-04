@@ -27,6 +27,7 @@
       <li>Map_PlayerHome</li>
     </targetTags>
     <workerClass>RimMandrake.StarWars.Sarlacc.RSW_IncidentWorker_SwimmerRoad</workerClass>
+    <!-- PROVISIONAL (owner ruling 2026-10-03, tuned live later): baseChance 0.6, earliestDay 20. -->
     <baseChance>0.6</baseChance>
     <earliestDay>20</earliestDay>
     <letterLabel>Sarlacc swimmer</letterLabel>

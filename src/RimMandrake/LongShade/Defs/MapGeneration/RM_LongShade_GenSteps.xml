@@ -16,7 +16,11 @@
 
   RM_GenStep_SunGraves (§6.5, the Long Carry): Drifter and Dromedary are
   Core defs. The readable is a vanilla Novel: lore, pointing nowhere (the
-  gnomon line was CUT). Load values are first values.
+  gnomon line was CUT).
+
+  PROVISIONAL numbers (owner ruling 2026-10-03, first guesses tuned live later): road spacingFactor
+  0.8, spacingCells 6~24, minGapSpacings 1.5, maxGapCells 160; graves count 1~3, the load (silver 80,
+  components 2, herbal medicine 4, pemmican 20) and readableChance 0.5.
 -->
 <Defs>
 
@@ -28,7 +32,7 @@
         <li>RM_WreckedCart</li>
       </linkDefs>
       <terminusMarker>RM_CrawlerRoadTerminus</terminusMarker>
-      <spacingFactor>0.8</spacingFactor>
+      <spacingFactor>0.8</spacingFactor>  <!-- PROVISIONAL -->
       <spacingCells>6~24</spacingCells>
       <minGapSpacings>1.5</minGapSpacings>
       <maxGapCells>160</maxGapCells>
@@ -39,14 +43,14 @@
     <defName>RM_GenStep_SunGraves</defName>
     <order>960</order>
     <genStep Class="RimMandrake.LongShade.RM_GenStep_SunGraves">
-      <count>1~3</count>
+      <count>1~3</count>  <!-- PROVISIONAL -->
       <travellerKinds>
         <li>Drifter</li>
       </travellerKinds>
       <packAnimalKinds>
         <li>Dromedary</li>
       </packAnimalKinds>
-      <load>
+      <load>  <!-- PROVISIONAL -->
         <Silver>80</Silver>
         <ComponentIndustrial>2</ComponentIndustrial>
         <MedicineHerbal>4</MedicineHerbal>
