@@ -81,7 +81,24 @@ altitude, the messy cords at `AltitudeLayer.Conduits` (SectionLayer_RM_MessyCord
 Not built (as asked).
 
 ## Build / tests / commits
-(pending)
+- Hose selftest 114/114 (102 round 3 + 12 round 4: st22/st23/owner-maze routes, wall-clip, pinch, slack cap, joiners,
+  L-bend joiner, drum mouth); whole MessyConduit selftest 503/503. Built in a clean clone at the committed source (the
+  working tree carries the aerial agent's mid-edit Core files, which do not compile in the selftest right now).
+- `winbuild.py MessyConduit`: Build succeeded, 0 errors. DLL built at 9e9f153d4, committed with its .srchash in 18d8ea30a
+  (this overwrote the aerial agent's uncommitted working-tree DLL; they rebuild on their next commit anyway).
+- run_selftests.py: 173/176; failures are northstar_matrix C2 (pre-existing: live shots in Transient) and two unrelated
+  mods (StarWarsPatches semantics, UtinniPatches dump).
+- Commits: 9e9f153d4 (code, def, art, ledger event, script, this report), 18d8ea30a (DLL). Both commit subjects came out
+  wrong (`publish` keeps only the last -m): 9e9f153d4's subject is its body sentence, 18d8ea30a's is the attribution line.
+- Station 23's notice text in `human_review.py` (the measured 25-of-30 and "add your own walls" line) is in the working
+  tree only: that file also carries the aerial agent's uncommitted edits to other stations, so it lands with their commit.
+- `northstar_matrix/fakegame.py` still models the round-3 length rule (staircase x1.08). It is the stricter rule, so the
+  stand-in refuses some routes the game now accepts. Owed: bring it in step.
+- Not deployed (game holds the DLL). Owed: `deploy_custom_mods.py --mod MessyConduit --apply` at the next shutdown.
 
 ## Unproven live
-(pending)
+- Everything visual: the 2.8 drawSize reading as "clearly 2x2" next to walls (it overhangs the footprint by 0.3 cell each
+  side); the repainted drum's underside; the hose coming off the drum through the gap above the base rail; the joiner on
+  its straight run at station 22's corner.
+- The retract message, inspect line and alert showing the cell counts ("needs about 36 cells, this reel holds 30").
+- That the new taut-route rule and the station-23 re-route behave in the game as offline (routes 19.9 / 23.6 cells).
