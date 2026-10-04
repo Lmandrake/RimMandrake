@@ -21,11 +21,11 @@
 ## Visual brief
 All three images show a **small frog-headed amphibian with a long thin tail**, sprawled
 four-legged with long splayed clawed toes and bulging eyes.
-- `wookieepedia_canon_1.png` (canon infobox, TPM prop/figure): lime-green with dark-green
+- `wookieepedia_canon_1.webp` (canon infobox, TPM prop/figure): lime-green with dark-green
   leopard spots, long red tongue extended.
-- `wookieepedia_legends_2.jpg` (Legends; TPM practical prop hung by the tail in Mos Espa):
+- `wookieepedia_legends_2.webp` (Legends; TPM practical prop hung by the tail in Mos Espa):
   **tan/ochre with dark brown spots** — the on-screen palette.
-- `wookieepedia_legends_1.jpg` (Legends; ROTJ film frame, `Longtailfrog.jpg`, "Jabba the Hutt
+- `wookieepedia_legends_1.webp` (Legends; ROTJ film frame, `Longtailfrog.jpg`, "Jabba the Hutt
   consumed gorgs live"): brown, wide-mouthed, low resolution.
 The two film-derived images agree on tan/brown spotted; the green is the figure's palette.
 
@@ -43,9 +43,9 @@ The two film-derived images agree on tan/brown spotted; the green is the figure'
 - https://starwars.fandom.com/wiki/Gorg/Legends (Legends; wikitext via API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.png` — CANON page `Gorg`, infobox image. File: `Gorg tongue.png` — https://static.wikia.nocookie.net/starwars/images/c/ce/Gorg_tongue.png/revision/latest?cb=20221122050031
-- `wookieepedia_legends_2.jpg` — LEGENDS page `Gorg/Legends`; caption: A gorg for sale in Mos Espa. File: `Gorg db.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/Gorg_db.jpg/revision/latest?cb=20071124191517
-- `wookieepedia_legends_1.jpg` — LEGENDS page `Gorg/Legends`; caption: Jabba the Hutt consumed gorgs live. File: `Longtailfrog.jpg` — https://static.wikia.nocookie.net/starwars/images/9/91/Longtailfrog.jpg/revision/latest?cb=20060620041238
+- `wookieepedia_canon_1.webp` — CANON page `Gorg`, infobox image. File: `Gorg tongue.png` — https://static.wikia.nocookie.net/starwars/images/c/ce/Gorg_tongue.png/revision/latest?cb=20221122050031
+- `wookieepedia_legends_2.webp` — LEGENDS page `Gorg/Legends`; caption: A gorg for sale in Mos Espa. File: `Gorg db.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/Gorg_db.jpg/revision/latest?cb=20071124191517
+- `wookieepedia_legends_1.webp` — LEGENDS page `Gorg/Legends`; caption: Jabba the Hutt consumed gorgs live. File: `Longtailfrog.jpg` — https://static.wikia.nocookie.net/starwars/images/9/91/Longtailfrog.jpg/revision/latest?cb=20060620041238
 
 ## ruling
 (empty — owner has not reviewed this creature yet)

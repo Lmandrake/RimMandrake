@@ -282,13 +282,15 @@ def fetch_images(found: dict, d: Path, max_img: int) -> list[dict]:
         n = 1
         while any(x.startswith(f"wookieepedia_{c['slot']}_{n}.") for x in existing):
             n += 1
-        fname = f"wookieepedia_{c['slot']}_{n}{ext}"
         try:
             b = _get({}, raw_url=url)
         except Exception:  # noqa: BLE001
             continue
         if len(b) < 2000:
             continue
+        # the CDN serves WebP whatever the file is named: name the file by its real bytes
+        ext = ".webp" if b[:4] == b"RIFF" and b[8:12] == b"WEBP" else ".png" if b[:4] == b"\x89PNG" else ext
+        fname = f"wookieepedia_{c['slot']}_{n}{ext}"
         d.mkdir(parents=True, exist_ok=True)
         (d / fname).write_bytes(b)
         existing.add(fname)

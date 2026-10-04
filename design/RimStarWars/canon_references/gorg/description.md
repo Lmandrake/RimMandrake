@@ -25,56 +25,67 @@ Natural predators included worrts, which the gorgs themselves were somewhat simi
 Gorgs were also known to be mutated by bio-engineers. One such mutation resulted in the successful growth of a chubafly: a colorful gorg but with wings that made it capable of flying.
 
 ## Visual brief
-"Gorg" is a **general term for several amphibian species** (canon page), so the four images do
-not show one animal — they show three different gorgs. Choose deliberately:
+🔑 **Gorg is a SPECIES WITH SEVERAL LEGITIMATE LOOKS, not one look** (owner, 2026-10-04: there
+are many kinds, all equally considered gorg). The canon page calls "gorg" "a general term used
+for several species of amphibians"; Legends names "long-tailed, three-eyed, and four-eyed
+varieties". Every variant below is a valid gorg; none is the "real" one. Shared by all: a
+**small (Legends: 0.2 m tall, up to 0.3 m long) frog/newt-like amphibian with a very wide mouth**.
 
-- **`wookieepedia_legends_1.png` — the purple rendering the owner pointed at** (Legends infobox,
-  `Gorg-WoSW.png`, a *Wildlife of Star Wars* field-guide painting). A **squat, frog-like
-  amphibian with a broad flattened head swept back into two pointed lateral lobes** (a
-  hammer/arrowhead shape), a **very wide lipless grin**, and **four small green eyes** in a row
-  across the face (matches the Legends text: "three-eyed, and four-eyed varieties"). Skin is
-  **violet-purple with iridescent teal/mint and cream highlights** and darker purple spots; pale
-  cream belly. **Webbed hind feet** with long splayed toes, thin forelimbs with curled
-  fingertips. No tail visible.
-- **`wookieepedia_canon_1.png` — the canon infobox** (a prop/figure from *The Phantom Menace*
-  market scene): a **lizard-frog with a long thin tail**, **lime-green skin covered in dark
-  green leopard spots**, sprawled four-legged with clawed splayed toes, and a **long red tongue**
-  shooting from the mouth.
-- **`wookieepedia_legends_2.jpg`** — the same TPM market gorg as a practical prop hanging by its
-  tail in Mos Espa: **tan/ochre body with dark brown spots**, long tail, bulbous eyes — so the
-  on-screen colour is tan-spotted, not lime (the canon image is a brighter toy/figure palette).
-- **`wookieepedia_legends_3.jpg`** — low-res film frame of the gorg Jabba eats in ROTJ:
-  brown, wide-mouthed, frog-headed. This is the long-tailed gorg (file name `Longtailfrog.jpg`)
-  and is the best reference for `RSW_LongtailGorg`.
+| # | variant | colour | shape | size cue | source image |
+|---|---|---|---|---|---|
+| 1 | **purple four-eyed gorg** | violet-purple, iridescent teal/mint and cream highlights, darker purple spots, cream belly | squat frog body, flat head swept into two pointed side-lobes, very wide lipless grin, **four small green eyes in a row**, webbed long-toed hind feet, no tail | small | `wookieepedia_legends_1.webp` (Legends infobox, `Gorg-WoSW.png`, *Wildlife of Star Wars* painting) |
+| 2 | **pale grinning gorg** | pale cream-green, white-speckled bulbous belly | bulbous pear body, huge **toothy grin with red tongue**, fringe of green tendrils/barbels hanging below the mouth, green webbed feet | small, round | `wookieepedia_nl_gorgs1.webp`, left (TPM market concept art) |
+| 3 | **hammer-headed gorg** | mottled mid/dark green | **broad flat hammer/arrowhead head with eyes at the outer corners**, tendril barbels under the jaw, clawed fingers | small, heavy-headed | `wookieepedia_nl_gorgs1.webp`, lower centre |
+| 4 | **spiky-backed gorg** | peach/tan body, **lavender-purple spiky dorsal ridge**, brown speckles | bulbous pear body, spindly limbs with **orange-yellow ball-tipped toes** | small, round | `wookieepedia_nl_gorgs1.webp`, upper centre |
+| 5 | **fin-tailed gorg** | pale green, speckled belly, red eye | slender newt body, upturned **toothy jaw**, **long thin tail ending in a webbed paddle/fin** | small, long | `wookieepedia_nl_gorgs1.webp`, right |
+| 6 | **spotted long-tailed gorg (the film gorg)** | tan/ochre with dark brown spots on screen (`wookieepedia_legends_2.webp`, TPM prop); lime-green with dark-green leopard spots on the canon infobox figure (`wookieepedia_canon_1.webp`); brown in ROTJ (`wookieepedia_legends_3.webp`) | sprawled lizard-frog, bulging eyes, **long thin tail**, long splayed clawed toes, **long red tongue** | small | `wookieepedia_canon_1.webp`, `wookieepedia_legends_2.webp`, `wookieepedia_legends_3.webp` |
 
-**Images vs prose:** the Legends text says gorgs are 0.2 m tall and "small precocious
-amphibians" similar to worrts — all images agree on small, frog-like, wide-mouthed. The prose
-never gives a colour; colour comes only from images, and it differs by variety (purple
-four-eyed; green or tan spotted long-tailed). No height/mass beyond the Legends infobox's
-0.2 m height / up to 0.3 m length is sourced.
+`wookieepedia_nl_gorgs1.webp` is the Dutch Wookieepedia's illustration on its `Gorg` page
+(file `Gorgs1.jpg`, used by nl:Gorg only): four different gorgs hung by their feet for sale,
+TPM Mos Espa market concept-style painting. It is the single best evidence that gorgs vary
+in **shape**, not only colour.
+
+**Images vs prose:** the prose never gives a colour; colour comes only from images and differs
+by variety. No height/mass beyond the Legends infobox (0.2 m tall, up to 0.3 m long) is sourced.
+
+### Our defs vs these looks (checked 2026-10-04)
+`RSW_Gorg` already uses `alternateGraphics` (`alternateGraphicChance` 0.8) with **six looks**:
+base + `GorgA`–`GorgE` under `src/RimStarWars/SWBestiary/Textures/swanimals/Gorg/`. But all six
+are the **same donor silhouette recoloured** (blue, green, ochre, salmon, purple, pink-spotted) —
+they vary colour only. The canon variants above vary **shape** (four-eyed lobed head, hammer
+head, spiky back, fin tail, long tail). So the slot structure can already carry one canon look
+per slot; the art would have to be new per slot. Same mechanism exists on `RSW_LongtailGorg`
+(base + A–D, one long-bodied fluke-tailed silhouette recoloured) and `RSW_FrilledGorg` (base +
+A–C, a spiky-backed silhouette recoloured). Unsourced observation: the donor's frilled gorg's
+spiky back resembles variant 4 and its longtail gorg's fluke resembles variant 5 — plausible
+donor inspiration, not a canon fact. Proposal only, not done: no cosmetic change without the
+owner's word.
 
 ## Must show
-- [ ] Small, squat, frog-like amphibian body (not a lizard or rodent)
-- [ ] Very wide, lipless mouth
-- [ ] If the purple rendering is the target: violet-purple skin with teal/cream highlights, flattened head with two swept-back lobes, four small eyes
-- [ ] If the film gorg is the target: long thin tail and dark-spotted tan/green skin
+- [ ] Every variant: small, squat or newt-like amphibian with a very wide mouth
+- [ ] Variants differ in SHAPE, not only colour (lobed four-eyed head / hammer head / spiky back / fin tail / long tail)
+- [ ] Purple four-eyed variant, if used: violet-purple with teal/cream highlights, two swept-back head lobes, four small eyes
+- [ ] Film variant, if used: long thin tail and dark spots on tan/brown (or green) skin
 - [ ] Webbed or long-toed splayed feet
 
 ## Engine limits
-- A single-channel tint mask cannot express the purple-with-teal iridescence or the spot
-  pattern — both need art, not a colour value.
-- The four-eyed face is ~a few pixels at RimWorld animal scale; read it as a wide head with an
-  eye row, not as countable eyes.
+- A single-channel tint mask cannot express the purple-with-teal iridescence, the spots, or a
+  differently-coloured spiky ridge (variant 4) — those need art, not a colour value.
+- Shape variants need separate art per `alternateGraphics` slot; tinting one silhouette (what
+  ships now) cannot produce them.
+- The four-eyed face is a few pixels at RimWorld animal scale: a wide head with an eye row.
 
 ## Source URLs
+- https://starwars.fandom.com/nl/wiki/Bestand:Gorgs1.jpg (Dutch Wookieepedia file used on nl:Gorg; pointed out by the owner 2026-10-04)
 - https://starwars.fandom.com/wiki/Gorg (canon; wikitext pulled via the API 2026-10-04)
 - https://starwars.fandom.com/wiki/Gorg/Legends (Legends; wikitext pulled via the API 2026-10-04)
 
 ## Candidate images
-- `wookieepedia_canon_1.png` — CANON page `Gorg`; wiki caption: infobox image. File: `Gorg tongue.png` — https://static.wikia.nocookie.net/starwars/images/c/ce/Gorg_tongue.png/revision/latest?cb=20221122050031
-- `wookieepedia_legends_1.png` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: infobox image. File: `Gorg-WoSW.png` — https://static.wikia.nocookie.net/starwars/images/d/da/Gorg-WoSW.png/revision/latest?cb=20230904021132
-- `wookieepedia_legends_2.jpg` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: A gorg for sale in Mos Espa. File: `Gorg db.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/Gorg_db.jpg/revision/latest?cb=20071124191517
-- `wookieepedia_legends_3.jpg` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: Jabba the Hutt consumed gorgs live. File: `Longtailfrog.jpg` — https://static.wikia.nocookie.net/starwars/images/9/91/Longtailfrog.jpg/revision/latest?cb=20060620041238
+- `wookieepedia_canon_1.webp` — CANON page `Gorg`; wiki caption: infobox image. File: `Gorg tongue.png` — https://static.wikia.nocookie.net/starwars/images/c/ce/Gorg_tongue.png/revision/latest?cb=20221122050031
+- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: infobox image. File: `Gorg-WoSW.png` — https://static.wikia.nocookie.net/starwars/images/d/da/Gorg-WoSW.png/revision/latest?cb=20230904021132
+- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: A gorg for sale in Mos Espa. File: `Gorg db.jpg` — https://static.wikia.nocookie.net/starwars/images/a/a2/Gorg_db.jpg/revision/latest?cb=20071124191517
+- `wookieepedia_legends_3.webp` — LEGENDS page (non-canon continuity) `Gorg/Legends`; wiki caption: Jabba the Hutt consumed gorgs live. File: `Longtailfrog.jpg` — https://static.wikia.nocookie.net/starwars/images/9/91/Longtailfrog.jpg/revision/latest?cb=20060620041238
+- `wookieepedia_nl_gorgs1.webp` — DUTCH Wookieepedia (nl) `Gorg` page illustration, four gorg varieties hanging for sale (TPM market). File: `Gorgs1.jpg` — https://static.wikia.nocookie.net/starwars/images/1/11/Gorgs1.jpg/revision/latest?cb=20070503175729&path-prefix=nl
 
 ## ruling
 (empty — owner has not reviewed this creature yet)
