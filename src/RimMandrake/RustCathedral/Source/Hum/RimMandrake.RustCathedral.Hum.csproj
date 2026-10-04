@@ -58,6 +58,7 @@
     <Compile Include="RM_CathedralFishing.cs" />
     <Compile Include="RM_IncidentWorker_CathedralResponse.cs" />
     <Compile Include="RustCathedralHumSettings.cs" />
+    <Compile Include="RM_RustCathedralHumProof.cs" />
   </ItemGroup>
 
   <ItemGroup>

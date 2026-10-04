@@ -369,14 +369,19 @@ def _build_suite():
                 if "RM_ThinkNode_ConditionalRoachCleaningEnabled" not in blob:
                     raise ExpectationFailed("the roach tree no longer carries the cleaning toggle node (the toggle gates nothing)")
 
+    def _hum(t, method, args):
+        kw = dict(type="RimMandrake.RustCathedral.Hum.RM_RustCathedralHumProof", method=method)
+        if args is not None:
+            kw["args"] = args
+        r = t.bridge_call("jawa/static_call", **kw)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
     @suite.chain("map_mechanics")
     def map_mechanics(t):
         for name, toggle, why in (
             ("bolts_dance_and_freeze_with_the_hum", "boltDanceEnabled",
              "the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated "
              "RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time"),
-            ("watched_pricing_and_kill_irritation", "boltWatchedPricingEnabled",
-             "carrying a curiosity or killing a bolt must raise irritation silently; no tool reads the attitude value"),
             ("eel_fishing_consequence", "fishingPricingEnabled",
              "a catch consequence needs a fishing job on a river of a generated Cathedral map"),
             ("deep_drill_response_replaces_infestation", "drillResponseEnabled",
@@ -390,6 +395,48 @@ def _build_suite():
             with t.component(name, toggle=toggle):
                 if _live(t):
                     _unmeasured(t, why)
+        with t.component("watched_pricing_and_kill_irritation", toggle="boltWatchedPricingEnabled"):
+            text = _hum(t, "ProofWatched", "true")
+            if _live(t):
+                if not text.startswith("WATCHED"):
+                    _unmeasured(t, "ProofWatched gave no answer: %r" % text[:160]); return
+                if not ("pickup +3.0" in text and "again +0.0" in text and "kill +15.0" in text):
+                    raise ExpectationFailed("pickup +3 once, kill +15 expected (RM_WatchedBolts): %s" % text)
+            off = _hum(t, "ProofWatched", "false")
+            if _live(t) and not ("pickup +0.0" in off and "kill +0.0" in off):
+                raise ExpectationFailed("boltWatchedPricingEnabled off still raised irritation: %s" % off)
+        with t.component("hum_value_ladder_and_hysteresis", beyond_toggle=True):
+            text = _hum(t, "ProofLadder", None)
+            if _live(t):
+                if not text.startswith("LADDER"):
+                    _unmeasured(t, "ProofLadder gave no answer: %r" % text[:160]); return
+                g = float(text.split("goodwill ")[1].split(" |")[0])
+                w = float(text.split("weight ")[1].split(" |")[0])
+                th, margin, layers = [10.0, 30.0, 55.0, 80.0], 6.0, 3
+                floor = max(0.0, min(100.0, -g * w))
+                expect, prev = [], 0
+                for c in (0, 10, 30, 55, 80, 77, 73, 52, 48):
+                    comp = max(floor, float(c))
+                    raw = sum(1 for x in th if comp >= x)
+                    if raw < prev and prev - 1 < len(th) and comp >= th[prev - 1] - margin:
+                        raw = prev
+                    prev = raw
+                    expect.append("%d:%d/%d" % (c, raw, 0 if raw >= len(th) else min(raw + 1, layers)))
+                got = text.split("up ")[1].split(" |")[0].split(",") + text.split("down ")[1].split(",")
+                if got != expect:
+                    raise ExpectationFailed("band/layer ladder %s != the def's thresholds/hysteresis %s (%s)" % (got, expect, text))
+        with t.component("calm_bands_reachable", beyond_toggle=True):
+            # LIVE question, not a tautology: the composite subtracts goodwill x weight with the vanilla Mechanoid
+            # faction, which is permanentEnemy (Faction.CanChangeGoodwillFor refuses every change, RimSage-read).
+            # If its goodwill sits at -100 the composite floor is +50 and bands 0-1 can never occur.
+            text = _hum(t, "ProofLadder", None)
+            if _live(t) and text.startswith("LADDER"):
+                g = float(text.split("goodwill ")[1].split(" |")[0])
+                w = float(text.split("weight ")[1].split(" |")[0])
+                if -g * w >= 10.0:
+                    raise ExpectationFailed("goodwill %d x weight %.2f puts the composite floor at %.0f: the calm bands (0-1) "
+                                            "are unreachable and the goodwill drain can never move it (RUSTCATHEDRAL_GOODWILL_FLOOR_1)"
+                                            % (g, w, -g * w))
         with t.component("roach_eats_filth", toggle="roachCleaningEnabled"):
             if _live(t):
                 _unmeasured(t, "a roach seeking filth needs a spawned roach, filth and a ticked map; the think-tree wiring is read in roach_gate")
