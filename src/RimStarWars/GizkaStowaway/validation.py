@@ -152,6 +152,239 @@ def static_checks():
     return bad
 
 
+# ============================================================================ behaviour rules, offline
+# GIZKASTOWAWAY_COVERAGE_GAPS_1 (offline half). Pure reads of the shipped C#/XML; every function takes the source dict so
+# selftest_gizkastowaway.py can plant a break in memory. Live behaviour (a landing delivering a gizka, game-days of
+# replication, chewing a real building) stays UNMEASURED and is listed by mechanics_unmeasured.
+
+def load_srcs():
+    d = os.path.join(HERE, "Source")
+    strip = lambda txt: re.sub(r"(?m)^\s*//.*$", "", txt)      # full-line comments only: prose must not satisfy or trip a check
+    return dict((f, strip(open(os.path.join(d, f), encoding="utf-8").read())) for f in sorted(os.listdir(d)) if f.endswith(".cs"))
+
+
+def method_body(src, header_re):
+    """First brace-balanced block after the first match of header_re (or the text to ';' for an expression member)."""
+    m = re.search(header_re, src)
+    if not m:
+        return None
+    i, semi = src.find("{", m.end()), src.find(";", m.end())
+    if semi >= 0 and (i < 0 or semi < i):
+        return src[m.end():semi]
+    if i < 0:
+        return None
+    depth = 0
+    for j in range(i, len(src)):
+        depth += (src[j] == "{") - (src[j] == "}")
+        if depth == 0:
+            return src[i:j + 1]
+    return None
+
+
+MGR, FEC, INF, PAT, POP = ("RSW_GizkaStowawayManager.cs", "HediffComp_GizkaFecundity.cs", "MapComponent_GizkaInfestation.cs",
+                           "RSW_GizkaHarmonyPatches.cs", "RSW_GizkaPopulation.cs")
+# (notify method, the trigger setting it must read, the chance constant it must roll) -- chances ordered by design:
+# the gravship landing is the flagship, a completed trade the rarest.
+TRIGGERS = [("Notify_GravshipLanded", "triggerGravship", "ChanceGravship"), ("Notify_SalvageDeconstructed", "triggerSalvage", "ChanceSalvage"),
+            ("Notify_TradeCompleted", "triggerTrade", "ChanceTrade"), ("Notify_QuestCompleted", "triggerQuest", "ChanceQuest")]
+
+
+def _const(src, name):
+    m = re.search(r"const (?:float|int) %s = ([0-9.]+)f?;" % name, src)
+    return float(m.group(1)) if m else None
+
+
+def trigger_findings(srcs):
+    out, m = [], srcs.get(MGR, "")
+    ready = method_body(m, r"private bool Ready\(bool triggerEnabled\)") or ""
+    for need in ("!s.stowawayEventsEnabled", "!triggerEnabled", "RSW_GizkaPopulation.Kind == null", "DiscoveryCooldownTicks"):
+        if need not in ready:
+            out.append("Ready() no longer checks %s (master switch / trigger toggle / donor absent / cooldown)" % need)
+    if _const(m, "DiscoveryCooldownTicks") != 900000:
+        out.append("discovery cooldown is %s ticks, ruled 900000 (15 days)" % _const(m, "DiscoveryCooldownTicks"))
+    chances = {}
+    for name, setting, const in TRIGGERS:
+        body = method_body(m, r"public void %s\(" % name)
+        if body is None:
+            out.append("%s missing" % name)
+            continue
+        if "Ready(RSW_GizkaStowawayMod.Settings?.%s ?? false)" % setting not in body:
+            out.append("%s does not gate on %s (a toggle with no effect, or default-on when settings are null)" % (name, setting))
+        if "Roll(%s)" % const not in body:
+            out.append("%s does not roll %s" % (name, const))
+        if body.count("Discover(") != 1:
+            out.append("%s calls Discover %d times: a trigger must deliver exactly one gizka" % (name, body.count("Discover(")))
+        chances[const] = _const(m, const)
+    if all(v is not None for v in chances.values()) and len(chances) == 4:
+        order = [chances[c] for c in ("ChanceGravship", "ChanceSalvage", "ChanceQuest", "ChanceTrade")]
+        if order != sorted(order, reverse=True) or len(set(order)) != 4:
+            out.append("trigger chances %s are not gravship > salvage > quest > trade" % order)
+    roll = method_body(m, r"private bool Roll\(float baseChance\)") or ""
+    if "Mathf.Clamp01(baseChance * f)" not in roll or "discoveryFrequency ?? 1f" not in roll:
+        out.append("Roll is no longer clamp01(baseChance * discoveryFrequency) defaulting to 1")
+    disc = method_body(m, r"private void Discover\(") or ""
+    if "SpawnStowaway(map, cell, Faction.OfPlayer, newborn: false)" not in disc or "lastDiscoveryTick = Find.TickManager.TicksGame" not in disc:
+        out.append("Discover must spawn ONE tame (player-faction, adult) stowaway and stamp the shared cooldown")
+    # the hooks reach Notify_* and nothing else delivers
+    pat = srcs.get(PAT, "")
+    for name, _s, _c in TRIGGERS:
+        if "Instance?.%s(" % name not in pat:
+            out.append("no Harmony hook calls %s" % name)
+    if "IncidentDef" in m:
+        out.append("an IncidentDef route exists: discovery must ride a player action, never a storyteller roll")
+    return out
+
+
+def discovery_chance(base, freq):
+    return min(1.0, max(0.0, base * freq))
+
+
+def replicate_interval_days(base_days, stretch_at_cap, pop, cap, rate):
+    """Mirror of HediffComp_GizkaFecundity.ResetInterval without the +-15 percent jitter, in days."""
+    rate = 1.0 if rate <= 0.01 else rate
+    fill = 1.0 if cap <= 0 else min(1.0, max(0.0, float(pop) / cap))
+    stretch = 1.0 + (max(1.0, stretch_at_cap) - 1.0) * fill
+    return base_days * stretch / rate
+
+
+def fecundity_findings(srcs, props):
+    """props = (baseReplicateIntervalDays, intervalStretchAtCap, minBreedingTemperature, minFoodLevel) from the hediff XML."""
+    out, f = [], srcs.get(FEC, "")
+    base, stretch, mint, minfood = props
+    tick = method_body(f, r"public override void CompPostTickInterval\(") or ""
+    order = [tick.find(x) for x in ("!s.stowawayEventsEnabled", "CurLifeStageIndex", "ticksUntilReplicate < 0", "IsComfortable(pawn)",
+                                    "ticksUntilReplicate -= delta", "TryReplicate(pawn)")]
+    if -1 in order or order != sorted(order):
+        out.append("CompPostTickInterval order is not master switch -> adult only -> init -> comfort gate -> burn fuse -> replicate (%s)" % order)
+    if "if (!IsComfortable(pawn)) return;" not in tick:
+        out.append("a cold or hungry gizka is not stalled: the comfort gate must return BEFORE the fuse burns")
+    com = method_body(f, r"private bool IsComfortable\(") or ""
+    if "temp < Props.minBreedingTemperature) return false" not in com or "food.CurLevelPercentage < Props.minFoodLevel) return false" not in com:
+        out.append("IsComfortable no longer refuses below minBreedingTemperature / minFoodLevel")
+    rep = method_body(f, r"private void TryReplicate\(") or ""
+    if "CountOnMap(pawn.Map) >= cap) return;" not in rep or rep.find(">= cap) return;") > rep.find("SpawnStowaway"):
+        out.append("TryReplicate can spawn at or above the population cap")
+    if "pawn.Faction, newborn: true" not in rep:
+        out.append("an offspring must inherit the parent's faction and be a newborn")
+    ri = method_body(f, r"private int ResetInterval\(") or ""
+    for need in ("s.breedingRate <= 0.01f) ? 1f", "Mathf.Lerp(1f, Mathf.Max(1f, Props.intervalStretchAtCap), fill)",
+                 "Props.baseReplicateIntervalDays * stretch / rate", "Mathf.Max(2500,", "* 60000f *", "Rand.Range(0.85f, 1.15f)"):
+        if need not in ri:
+            out.append("ResetInterval lost `%s`" % need)
+    # the numbers: slow burn at an empty map, 8x slower at the cap, breedingRate divides, the cap clamps
+    if replicate_interval_days(base, stretch, 0, 22, 1.0) != base:
+        out.append("an empty map does not replicate at the base interval")
+    if abs(replicate_interval_days(base, stretch, 22, 22, 1.0) - base * stretch) > 1e-9:
+        out.append("at the cap the interval does not stretch to base x intervalStretchAtCap")
+    if not replicate_interval_days(base, stretch, 0, 22, 1.0) < replicate_interval_days(base, stretch, 11, 22, 1.0) < replicate_interval_days(base, stretch, 22, 22, 1.0):
+        out.append("the interval is not strictly increasing toward the cap (the anti-exponential flattening)")
+    if abs(replicate_interval_days(base, stretch, 5, 22, 2.0) * 2 - replicate_interval_days(base, stretch, 5, 22, 1.0)) > 1e-9:
+        out.append("breedingRate 2x does not halve the interval")
+    if not (mint > 0 and 0 < minfood < 1):
+        out.append("comfort gate numbers are not usable (minBreedingTemperature %s, minFoodLevel %s)" % (mint, minfood))
+    return out
+
+
+def stage_for(srcs, count, cap):
+    b = method_body(srcs.get(INF, ""), r"public static GizkaStage StageFor\(") or ""
+    m = [(a, c) for c, a in re.findall(r"Mathf\.Max\((\d+), Mathf\.RoundToInt\(cap \* ([0-9.]+)f\)\)", b)]
+    if len(m) != 3 or "if (cap < 4) cap = 4;" not in b:
+        return None
+    if count <= 0:
+        return 0
+    plague, infest, under = [(float(a), int(c)) for a, c in m]
+    rnd = lambda x: int(x + 0.5) if x - int(x) != 0.5 else (int(x) if int(x) % 2 == 0 else int(x) + 1)   # Mathf.RoundToInt: banker's
+    cap = max(cap, 4)
+    for lvl, (frac, mn) in ((4, plague), (3, infest), (2, under)):
+        if count >= max(mn, rnd(cap * frac)):
+            return lvl
+    return 1
+
+
+def plague_unreachable_caps(srcs):
+    """Population caps on the settings slider (4..80) at which the Plague band's floor of 6 exceeds the cap, so the stage
+    can never be reached. MEASURED finding, not a bar: 4 and 5 (the slider's low end)."""
+    return [c for c in range(4, 81) if stage_for(srcs, c, c) != 4]
+
+
+def infestation_findings(srcs):
+    out, f = [], srcs.get(INF, "")
+    if stage_for(srcs, 5, 22) is None:
+        return ["StageFor no longer has the parsed shape (three fractions-of-cap bands with floors)"]
+    names = [stage_for(srcs, n, 22) for n in (0, 1, 3, 7, 16)]
+    if names != [0, 1, 2, 3, 4]:
+        out.append("stage bands at the shipped cap 22 are %s for counts 0,1,3,7,16 (want 0,1,2,3,4: none, cute, underfoot, infestation, plague)" % names)
+    for cap in (6, 8, 22, 80):
+        seq = [stage_for(srcs, n, cap) for n in range(0, cap + 1)]
+        if seq != sorted(seq) or seq[-1] != 4:
+            out.append("stage is not monotone in count (or never reaches Plague at the cap) for cap %d" % cap)
+    mc = method_body(f, r"public override void MapComponentTick\(\)") or ""
+    if "TicksGame % CheckIntervalTicks != 0" not in mc or "!s.stowawayEventsEnabled" not in mc:
+        out.append("MapComponentTick lost its cadence gate or the master switch")
+    if "if (s.chewingEnabled && stage >= GizkaStage.Infestation)" not in mc:
+        out.append("chewing is not gated on chewingEnabled AND the Infestation stage")
+    if "if (stage > lastStage) AnnounceStage" not in mc:
+        out.append("a stage is announced when it steps DOWN (the warning must be re-earned, never repeated on the way down)")
+    ch = method_body(f, r"private void DoChewing\(") or ""
+    for need in ("brk.BrokenDown) continue", "!power.PowerOn) continue", "perRoom.TryGetValue(room, out int here)",
+                 "ChewMtbTicksPerGizka / here", "brk.DoBreakdown();", "return;   // at most one chewed building per check"):
+        if need not in ch:
+            out.append("DoChewing lost `%s`" % need)
+    if "r.UsesOutdoorTemperature) continue" not in ch:
+        out.append("gizka outdoors can chew: an outdoor cell has no room to share with a building")
+    if _const(f, "ChewMtbTicksPerGizka") != 900000 or _const(f, "CheckIntervalTicks") != 2000:
+        out.append("chew cadence constants moved (ChewMtbTicksPerGizka %s, CheckIntervalTicks %s)" % (_const(f, "ChewMtbTicksPerGizka"), _const(f, "CheckIntervalTicks")))
+    pop = srcs.get(POP, "")
+    ls = method_body(pop, r"public static int CountOnMap\(") or ""
+    if "IsStowawayGizka(pawns[i])" not in ls:
+        out.append("the population count includes gizka that are not stowaway lineage (bought gizka would fill the cap)")
+    iw = method_body(pop, r"public static bool IsStowawayGizka\(") or ""
+    if "GetFirstHediffOfDef(Fecundity) != null" not in iw or "p.Dead" not in iw:
+        out.append("IsStowawayGizka is not 'alive and carries the fecundity hediff'")
+    return out
+
+
+def cull_findings(srcs):
+    out = []
+    b = method_body(srcs.get(PAT, ""), r"public static void Prefix\(Pawn __instance\)") or ""
+    if "!s.stowawayEventsEnabled || !s.cullGuiltEnabled) return;" not in b:
+        out.append("cull guilt is not gated on the master switch AND cullGuiltEnabled")
+    for need in ("IsStowawayGizka(victim)", "WitnessRadius", "GenSight.LineOfSight(", "FreeColonistsSpawned", "TryGainMemory(thought)"):
+        if need not in b:
+            out.append("cull guilt lost `%s`" % need)
+    if _const(srcs.get(PAT, ""), "WitnessRadius") != 12:
+        out.append("witness radius moved from 12")
+    if "typeof(Pawn), nameof(Pawn.Kill)" not in srcs.get(PAT, ""):
+        out.append("cull guilt is not a Pawn.Kill prefix")
+    return out
+
+
+def slider_findings(srcs):
+    """Each gameplay slider's range contains its shipped default, and discoveryFrequency can reach 0 (the off arm of discovery)."""
+    src = srcs.get("RSW_GizkaSettings.cs", "")
+    fields = dict((m.group(2), (m.group(1), m.group(3).strip())) for m in _FIELD.finditer(src.split("ExposeData", 1)[0]))
+    out = []
+    rng = dict((m.group(1), (float(m.group(2)), float(m.group(3)))) for m in re.finditer(
+        r"Settings\.(\w+) = (?:Mathf\.RoundToInt\()?l\.Slider\(Settings\.\1, ([0-9.]+)f, ([0-9.]+)f\)", src))
+    if len(rng) < 4:
+        return ["only %d sliders parsed from the settings window: parse failure" % len(rng)]
+    for n, (lo, hi) in rng.items():
+        d = _num(fields[n][1]) if n in fields else None
+        if d is None or not lo <= d <= hi:
+            out.append("slider %s range %s..%s does not contain its default %s" % (n, lo, hi, d))
+    if rng.get("discoveryFrequency", (1, 1))[0] != 0:
+        out.append("discoveryFrequency cannot be slid to 0: no way to silence discovery short of the master switch")
+    return out
+
+
+def behaviour_props():
+    h = [e for e in ET.parse(os.path.join(HERE, "Defs", "HediffDefs", "RSW_GizkaHediffs.xml")).getroot()
+         if e.findtext("defName") == FECUNDITY][0]
+    c = h.find("comps/li")
+    return tuple(float(c.findtext(k)) for k in ("baseReplicateIntervalDays", "intervalStretchAtCap", "minBreedingTemperature", "minFoodLevel"))
+
+
+
 try:
     _UTILS = os.path.join(HERE, "..", "..", "RimMandrake", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
@@ -397,6 +630,35 @@ def _build_suite():
                     _unmeasured(t, "no MarketValue row in statBases: %r" % (sb[:6],))
                 if abs(float(mv[0].get("value", -1)) - 15.0) > 1e-6:
                     _fail("%s MarketValue reads %r, patched to 15 (patch did not apply / stale deploy)" % (kind, mv[0]))
+
+    @suite.chain("behaviour_rules")
+    def behaviour_rules(t):
+        """GIZKASTOWAWAY_COVERAGE_GAPS_1 offline half: the four triggers each read their own toggle and chance, replication
+        halts while cold/hungry and at the cap, the interval formula, stage bands, chewing gates, cull guilt gates and slider
+        ranges. Cheap-and-wrong first (a failing component marks later ones UNMEASURED)."""
+        srcs = load_srcs()
+        with _comp(t, "sliders_reach_their_defaults_and_discovery_can_be_silenced", beyond_toggle=True):
+            if len(srcs) < 6:
+                _fail("read only %d source files: parse failure" % len(srcs))
+            bad = slider_findings(srcs)
+            if bad:
+                _fail("; ".join(bad[:4]))
+        with _comp(t, "four_triggers_each_gate_on_their_toggle_and_deliver_one", toggle="stowawayEventsEnabled"):
+            bad = trigger_findings(srcs)
+            if bad:
+                _fail("; ".join(bad[:4]))
+        with _comp(t, "replication_stalls_cold_and_hungry_and_stops_at_the_cap", toggle="populationCap"):
+            bad = fecundity_findings(srcs, behaviour_props())
+            if bad:
+                _fail("; ".join(bad[:4]))
+        with _comp(t, "stage_bands_and_chewing_gates_hold", toggle="chewingEnabled"):
+            bad = infestation_findings(srcs)
+            if bad:
+                _fail("; ".join(bad[:4]))
+        with _comp(t, "cull_guilt_gates_and_witness_rules_hold", toggle="cullGuiltEnabled"):
+            bad = cull_findings(srcs)
+            if bad:
+                _fail("; ".join(bad[:4]))
 
     @suite.chain("mechanics_unmeasured")
     def mechanics_unmeasured(t):
