@@ -31,9 +31,12 @@ FACINGS = ("east", "north", "south")
 # plate (wall) side of each render AS DRAWN, judged by eye 2026-10-04 (contact sheet of all landed renders)
 PLATE = {("scrapper", "east"): "left", ("scrapper", "north"): "top", ("scrapper", "south"): "top",
          ("industrial", "east"): "left", ("industrial", "north"): "top", ("industrial", "south"): "bottom",
-         ("modern", "east"): "left", ("modern", "north"): "top", ("modern", "south"): "top",
+         ("modern", "east"): "left", ("modern", "north"): "bottom", ("modern", "south"): "top",
          ("futuristic", "east"): "left", ("futuristic", "north"): "top", ("futuristic", "south"): "top"}
 VERSIONS = ("v2", "v1")          # newest first
+# in-game facing -> render facing, where a render came back drawn for the opposite wall (judged by eye 2026-10-04): the
+# modern v2 "north" render has its plate at the BOTTOM and its "south" at the TOP, the reverse of the other three looks
+SOURCE = {("modern", "north"): "south", ("modern", "south"): "north"}
 N = 128
 
 
@@ -72,7 +75,7 @@ def cells(px, py):
 def build(check):
     rows, notes, stale = [], [], False
     for lk, look in LOOKS.items():
-        srcs = {f: find_render(lk, f) for f in FACINGS}
+        srcs = {f: find_render(lk, SOURCE.get((lk, f), f)) for f in FACINGS}
         have = [f for f in FACINGS if os.path.exists(os.path.join(STY, look, "WallBracket_%s.png" % f))]
         if not check:
             if all(srcs.values()):
@@ -93,7 +96,7 @@ def build(check):
             continue
         for f in FACINGS:
             im = Image.open(os.path.join(STY, look, "WallBracket_%s.png" % f)).convert("RGBA")
-            plate = PLATE[(lk, f)]
+            plate = PLATE[(lk, SOURCE.get((lk, f), f))]
             if f == "east":
                 plate = {"left": "right", "right": "left"}.get(plate, plate)
             x, z = cells(*insulator(im, plate))
