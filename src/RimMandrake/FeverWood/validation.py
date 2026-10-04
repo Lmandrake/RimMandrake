@@ -583,6 +583,20 @@ def source_guards(t):
     mod folded into mandrake.rm.biomes is silently inert (BAROQUE wave-2 retarget), and `MayRequire` on a
     top-level patch <Operation> is ignored by the 1.6 engine (it reset ModsConfig twice on 2026-09-27). Read
     from this mod's own XML; needs no bridge, so it also runs offline."""
+    with _comp(t, "hidden_raider_factions_have_a_name_source", independent=True):
+        # FactionGenerator.NewGeneratedFaction -> NameGenerator.GenerateName NREs on a FactionDef with neither a
+        # factionNameMaker nor a fixedName. The lure creates its hidden factions lazily, so the first raid threw in the
+        # real game (found live by ProofRaid, load 14 -- 'NullReferenceException' hid for two loads behind the proof).
+        for rel in (os.path.join("Defs", "FactionDefs", "RM_FactionDef_KurrethSwarm.xml"),
+                    os.path.join("..", "..", "RimStarWars", "Shokk", "Defs", "FactionDefs", "RSW_Shokk_FeraliskBrood.xml")):
+            path = os.path.join(_HERE, rel)
+            if os.path.isfile(path):
+                fd = ET.parse(path).getroot().find("FactionDef")
+                if fd is not None and not (fd.findtext("fixedName") or fd.find("factionNameMaker") is not None):
+                    _fail("%s has no fixedName/factionNameMaker: the lazily created hidden faction NREs in NameGenerator" % rel)
+            elif t.session is not None and rel.startswith("Defs"):
+                _fail("%s missing" % rel)
+
     with _comp(t, "no_mayrequire_names_a_folded_standalone_mod", independent=True):
         if t.session is not None:
             _need_parse(t)

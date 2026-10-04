@@ -28,6 +28,9 @@
   <FactionDef MayRequire="mlie.starwarsanimalcollection">
     <defName>RSW_Shokk_FeraliskBrood</defName>
     <label>feralisk brood</label>
+    <!-- fixedName: a FactionDef with neither factionNameMaker nor fixedName NREs in NameGenerator.GenerateName when the
+         lure lazily creates it (same defect as RM_FactionDef_KurrethSwarm, found live 2026-10-03). -->
+    <fixedName>the feralisk brood</fixedName>
     <pawnSingular>feralisk</pawnSingular>
     <pawnsPlural>feralisks</pawnsPlural>
     <categoryTag>FeverWoodTwoFrontRaiders</categoryTag>
