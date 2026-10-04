@@ -1,6 +1,10 @@
 # Sound sourcing options (SOUND_SOURCING_ROUTE_1) — 2026-10-02
 
-Research for one owner ruling: **where do our sounds come from?** Every audio item is stalled on it.
+**Ruled 2026-10-03 (owner, typed): vanilla sounds ship as final for now, no retuning; sound work has not
+started.** No audio item is stalled on sourcing (`SOUND_SOURCING_ROUTE_1` dropped; `infrastructure/agents/FOUNDRY.md`
+"Audio"). The research below is for when sound work begins.
+
+Research for the question **where do our sounds come from?**
 The mods are meant for free Steam Workshop release, so every route is judged on whether we may
 **redistribute the clip as a loose `.ogg` inside a public mod**, not merely "use it in a project".
 
