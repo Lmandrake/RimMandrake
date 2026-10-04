@@ -24,7 +24,7 @@ RUT_Antiquities ships its own tab separately, untouched here. Labels ruled by
 the owner 2026-09-04: "Jawa Scavenging"/"The Utinni" rename Scavenger/THE
 SHIP; The Waking Mind ships unfolded, not merged into The Unbolting.
 
-RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.
+RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets; re-derived 2026-10-04 from the load-14 capture over all 406 targets of the three patch files: 15 more owners added, 63 total) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.
 
 RESEARCH_TRIO_RETIRE_1 (owner card 2026-09-18): this mod now OWNS 18 native
 ResearchProjectDefs (Defs/ResearchProjectDefs/RUT_Ported_ResearchTrio.xml) that
@@ -43,20 +43,30 @@ their own - a scoped, named follow-on, not silently invented or silently
 dropped.</description>
   <forceLoadAfter>
     <li>aoba.fortress.industrial</li>
+    <li>biomesteam.biomesfossils</li>
     <li>cain.mineshaft</li>
+    <li>clown.dedicatedturrets</li>
     <li>coldcrow.betterkibble</li>
     <li>dubwise.dubsbadhygiene.lite</li>
     <li>dubwise.rimefeller</li>
     <li>error277.tunneler.expanded</li>
+    <li>ghost.rootsofrimworld</li>
     <li>greg.customgastypes</li>
     <li>guy762.mm.kotorcore</li>
+    <li>hazn.huntingtraps</li>
     <li>jecrell.doorsexpanded</li>
     <li>kikohi.jewelry</li>
     <li>killathon.artificialbeings.syncore</li>
     <li>kilokio.rimai.core</li>
     <li>krkr.rule56</li>
+    <li>mandrake.rm.wreckedmachines</li>
     <li>mandrake.rsw.armoury</li>
     <li>mandrake.rsw.ionweapons</li>
+    <li>mandrake.rsw.patches</li>
+    <li>mandrake.rut.antiquities</li>
+    <li>mandrake.rut.patches</li>
+    <li>mingtuwuxiang.spacebasedecorative</li>
+    <li>mlie.dungeonpack</li>
     <li>mlie.miningcoalertspeaker</li>
     <li>mlie.miningcodrillturret</li>
     <li>mlie.miningcomms</li>
@@ -74,10 +84,13 @@ dropped.</description>
     <li>regrowth.botr.core</li>
     <li>sarg.alphamechs</li>
     <li>sihv.rombonesport</li>
+    <li>van.dacrypts</li>
     <li>vanillaexpanded.gravship</li>
+    <li>vanillaexpanded.helixiengas</li>
     <li>vanillaexpanded.vappe</li>
     <li>vanillaexpanded.vbrewe</li>
     <li>vanillaexpanded.vcooke</li>
+    <li>vanillaexpanded.vcookestews</li>
     <li>vanillaexpanded.vfeart</li>
     <li>vanillaexpanded.vfecore</li>
     <li>vanillaexpanded.vfefactory</li>
@@ -89,6 +102,8 @@ dropped.</description>
     <li>vanillaexpanded.vplantsesucculents</li>
     <li>vanillaexpanded.vwe</li>
     <li>vesper.egihologramsandprojectors</li>
+    <li>vlvop.tormentmaster.expansion</li>
+    <li>xmb.ancientminingindustry.mo</li>
     <li>zal.moreutilitypacks</li>
   </forceLoadAfter>
 </ModMetaData>

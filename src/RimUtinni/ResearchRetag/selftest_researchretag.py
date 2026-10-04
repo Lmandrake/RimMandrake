@@ -22,6 +22,9 @@ def check(name, cond, detail=""):
         FAILS.append(name)
 
 
+SCALARS_FOR_TEST = ("techLevel", "baseCost", "tab", "researchViewX", "researchViewY")
+
+
 def main():
     spec = importlib.util.spec_from_file_location("rr_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -78,6 +81,76 @@ def main():
                   len(v.tab_overlaps(planted_all)) > 0)
         else:
             check("break: without our coordinate ops the dump's Hearth overlaps (control)", len(v.tab_overlaps(raw)) > 0)
+    # ---- retag_rows_vs_dump (RESEARCHRETAG_COVERAGE_GAPS_1 offline half) ----
+    exp, targets = v.patch_expectations()
+    try:
+        rows = v._load_rows()
+    except Exception as e:
+        rows = None
+        print("UNMEASURED  retag rows vs dump: %s" % e)
+    if rows:
+        import copy
+        held, checked, bad = v.retag_findings(exp, rows)
+        check("sanity probe: >= 600 expectations, >= 380 targets, 13 pinned unheld rows", len(exp) >= 600 and len(targets) >= 380 and len(v.KNOWN_UNHELD) == 13, (len(exp), len(targets)))
+        check("shipped patches vs the load-14 dump: every checked value holds (%d/%d)" % (held, checked), checked >= 300 and not bad, bad[:3])
+        check("the 31 prerequisite removals are in the expectations", sum(1 for w in exp.values() if w == v.REMOVED) >= 25, sum(1 for w in exp.values() if w == v.REMOVED))
+        check("pinned rows are still unheld", v.unheld_findings(exp, rows) == [], v.unheld_findings(exp, rows))
+        check("forceLoadAfter names every owner", v.load_order_findings(targets, rows, v._force_load_after()) == [])
+        k, fld = sorted((d, f) for (d, f), w in exp.items() if f == "tab" and d in rows and d not in v.KNOWN_UNHELD)[0]
+        r2 = copy.deepcopy(rows)
+        r2[k]["fields"]["tab"] = "SomeOtherTab"
+        got = v.retag_findings(exp, r2)[2]
+        check("break: a tab that did not take is named (%s)" % k, len(got) == 1 and k in got[0], got)
+        rm = [d for (d, f), w in exp.items() if w == v.REMOVED and d in rows and d not in v.KNOWN_UNHELD][0]
+        r3 = copy.deepcopy(rows)
+        r3[rm]["fields"]["prerequisites"] = ["Electricity"]
+        got = v.retag_findings(exp, r3)[2]
+        check("break: a prerequisite removal that did not take is named (%s)" % rm, any(rm in g for g in got), got)
+        numeric = [(d, f) for (d, f), w in exp.items() if f == "baseCost" and d in rows and d not in v.KNOWN_UNHELD][0]
+        r4 = copy.deepcopy(rows)
+        r4[numeric[0]]["fields"]["baseCost"] = float(r4[numeric[0]]["fields"]["baseCost"]) + 1
+        check("break: a baseCost off by one is named (numeric compare, %s)" % numeric[0], len(v.retag_findings(exp, r4)[2]) == 1)
+        r5 = copy.deepcopy(rows)
+        pin = sorted(v.KNOWN_UNHELD)[0]
+        for (d, f), w in exp.items():
+            if d == pin and w != v.REMOVED:
+                r5[pin]["fields"][f] = w
+        check("break: a pinned row that now holds is flagged for un-pinning", any("now HOLDS" in g for g in v.unheld_findings(exp, r5)), v.unheld_findings(exp, r5))
+        r6 = copy.deepcopy(rows)
+        del r6[pin]
+        check("break: a pinned row missing from the dump is flagged", any("not in the dump" in g for g in v.unheld_findings(exp, r6)))
+        some_owner = rows[sorted(targets & set(rows))[40]]["packageId"].lower()
+        fla = [x for x in v._force_load_after() if x.lower() != some_owner]
+        check("break: an owner dropped from forceLoadAfter is named (%s)" % some_owner,
+              (some_owner in v.load_order_findings(targets, rows, fla)) or some_owner.startswith("ludeon") or some_owner == "mandrake.rut.researchretag")
+        check("break: a planted foreign owner is named", v.load_order_findings({"Electricity", "X_Planted"}, dict(rows, X_Planted={"packageId": "foo.bar"}), []) == ["foo.bar"])
+        # the chain, through its own Suite: green, green-with-pre-patch-dump is UNMEASURED, a broken value is red
+        import runner
+        from northstar_driver.session import FastSession
+        from northstar_driver.transport import MockGame, MockTransport
+
+        def chain(mut_rows):
+            saved = v._load_rows
+            v._load_rows = lambda: mut_rows
+            try:
+                own = v.Suite("ResearchRetag")
+                own.toggles = []
+                own.chains = [(n, f) for n, f in v.suite.chains if n == "retag_rows_vs_dump"]
+                with FastSession(transport=MockTransport(MockGame()), strict=False) as sess:
+                    res = runner.run_suite(own, sess, anchor=None, mod=None)
+            finally:
+                v._load_rows = saved
+            return dict((c["name"], c["verdict"]) for ch in res["chains"] for c in ch["components"])
+        got = chain(rows)
+        check("clean chain: all five retag bars PASS", sorted(got.values()) == ["PASS"] * 5, got)
+        got = chain(r2)
+        check("a tab that did not take reddens only the value bar", [n for n, vd in got.items() if vd == "FAIL"] == ["every_retag_value_and_prereq_removal_holds_in_the_dump"], got)
+        pre = copy.deepcopy(rows)
+        for (d, f), w in exp.items():
+            if d in pre and f in SCALARS_FOR_TEST and w != v.REMOVED:
+                pre[d]["fields"][f] = "unpatched"
+        got = chain(pre)
+        check("a dump that predates the patch is UNMEASURED, never PASS", got["dump_was_captured_with_this_patch_applied"] != "PASS", got)
     if FAILS:
         print("\n%d ResearchRetag selftest(s) FAILED" % len(FAILS))
         return 1
