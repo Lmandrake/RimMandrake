@@ -72,6 +72,12 @@ WHAT THIS SUITE CAN HONESTLY PROVE INSTEAD, on the minimal environment:
     independent read-back, no behavioral proof beyond that per the floor gap
     above.
 
+RESTRAININGBOLTS_COVERAGE_GAPS_1 (2026-10-03) closed most of that gap without the faction:
+`goodwill_cap_follows_bolted_count` drives RestrainingBoltsProof.ProofCap, which runs the SHIPPED
+`CeilingFor` (the same call GetMaxGoodwill returns) under fixed settings -- N-dependence, floor clamp,
+and each setting's off/scale arm -- and, only where the Enclaves faction exists (full list), the real
+worker's GetMaxGoodwill on it; on the minimal list that last bar records UNMEASURED, never PASS.
+
 Still not proven / likely first-live-run corrections:
   1. Whether `jawa/list_factions` on this minimal environment's generated
      world actually contains a non-hidden, non-permanentEnemy faction other
@@ -173,3 +179,62 @@ def settings_are_live_flippable(t):
     with t.component("goodwill_floor_flips", toggle="goodwillFloor"):
         t.set_setting(SETTINGS_TYPE, {"goodwillFloor": -50.0})
         t.set_setting(SETTINGS_TYPE, {"goodwillFloor": -70.0})
+
+
+# RESTRAININGBOLTS_COVERAGE_GAPS_1: the cap itself. RestrainingBoltsProof.ProofCap runs the SHIPPED
+# CeilingFor under fixed settings (so the numbers below are the formula's, not the live settings'), and
+# when the Free Droid Enclaves faction exists, the real worker's GetMaxGoodwill on it (on, and with
+# enabled off). Expected values are derived here from the documented formula, never read back from C#.
+_PROOF_TYPE = "RimMandrake.Utinni.RestrainingBolts.RestrainingBoltsProof"
+
+
+def expected_ceiling(n, enabled=True, penalty=2.5, floor=-70.0):
+    """max(round(floor), 100 - round(penalty*n)); Mathf.RoundToInt is banker's rounding, as is round()."""
+    if not enabled:
+        return 100
+    return max(int(round(floor)), 100 - int(round(penalty * n)))
+
+
+def _proof(t):
+    r = t.bridge_call("jawa/static_call", type=_PROOF_TYPE, method="ProofCap", args="")
+    if not isinstance(r, dict):
+        return {}, ""
+    text = r.get("result")
+    if text in (None, ""):
+        text = "(static_call returned no result: success=%s message=%s)" % (r.get("success"), r.get("message") or r.get("error"))
+    import re as _re
+    return dict(_re.findall(r"(\w+)=(\S+)", str(text))), str(text)
+
+
+@suite.chain("goodwill_cap_follows_bolted_count")
+def goodwill_cap_follows_bolted_count(t):
+    kv, text = {}, ""
+    with t.component("formula_caps_by_bolted_count_and_floors", beyond_toggle=True):
+        kv, text = _proof(t)
+        if t._guard():
+            if text.startswith("ERROR") or "n0" not in kv:
+                raise ExpectationFailed("ProofCap: %s" % text)
+            for key, n in (("n0", 0), ("n1", 1), ("n4", 4), ("n40", 40), ("n1000", 1000)):
+                if kv.get(key) != str(expected_ceiling(n)):
+                    raise ExpectationFailed("%s bolted: ceiling %s, formula says %s (%s)" % (n, kv.get(key), expected_ceiling(n), text))
+    with t.component("enabled_off_restores_vanilla_100", toggle="enabled"):
+        if t._guard() and kv.get("off4") != "100":
+            raise ExpectationFailed("enabled=false with 4 bolted: ceiling %s, want 100 (%s)" % (kv.get("off4"), text))
+    with t.component("penalty_setting_scales_the_cap", toggle="penaltyPerBoltedDroid"):
+        if t._guard() and kv.get("pen5n4") != str(expected_ceiling(4, penalty=5.0)):
+            raise ExpectationFailed("penalty 5 x 4 bolted: ceiling %s, want %s" % (kv.get("pen5n4"), expected_ceiling(4, penalty=5.0)))
+    with t.component("floor_setting_clamps_the_cap", toggle="goodwillFloor"):
+        if t._guard() and kv.get("floorm50n1000") != str(expected_ceiling(1000, floor=-50.0)):
+            raise ExpectationFailed("floor -50 x 1000 bolted: ceiling %s, want -50" % kv.get("floorm50n1000"))
+    with t.component("real_worker_caps_the_enclaves", beyond_toggle=True):
+        if t._guard():
+            if kv.get("fde") != "True":
+                why = "Free Droid Enclaves faction absent on this world (needs UtinniPatches + a generated FDE): %s" % text
+                t.upstream_reason, t.upstream_failed = why, True     # suite.py: upstream_failed -> UNMEASURED, never PASS
+                raise ExpectationFailed(why)
+            else:
+                n = int(kv.get("live_count", "-1"))
+                if kv.get("live_max") != str(expected_ceiling(n)) and kv.get("hediff") == "True":
+                    raise ExpectationFailed("real worker on the Enclaves with %d bolted: %s, want %s" % (n, kv.get("live_max"), expected_ceiling(n)))
+                if kv.get("live_off") != "100":
+                    raise ExpectationFailed("real worker with enabled off: %s, want 100" % kv.get("live_off"))

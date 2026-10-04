@@ -42,6 +42,7 @@
     <Compile Include="DefOfs.cs" />
     <Compile Include="GoodwillSituationWorker_RestrainingBolts.cs" />
     <Compile Include="RestrainingBoltsMod.cs" />
+    <Compile Include="RestrainingBoltsProof.cs" />
   </ItemGroup>
 
   <ItemGroup>
