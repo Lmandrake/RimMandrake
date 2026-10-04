@@ -362,6 +362,200 @@ def infestation_ban_problems(core_defs=_CORE_DEFS, mod_dir=None):
     return bad
 
 
+# ---- UTINNIPATCHES_COVERAGE_GAPS_1 (offline half, round 41) -----------------------------------------------------
+# (a) every non-held, non-inactive def this mod ships is IN the load-14 def dump and carries the label its XML authors;
+# (b) the greatbole harvest ladder's threshold state machine, mirrored from the C# and driven over fraction sequences.
+import json as _json
+_LADDER_CS = os.path.join("Source", "RUT_CompGreatboleHarvestLadder.cs")
+_SETTINGS_CS = os.path.join("Source", "UtinniPatchesSettings.cs")
+
+
+def held_globs(hold_file=None):
+    """Globs of UtinniPatches/... paths in src/DEPLOY_HOLD.txt (undeployed ON PURPOSE, so absent from any dump)."""
+    hold_file = hold_file or os.path.join(_MOD_DIR, "..", "..", "DEPLOY_HOLD.txt")
+    out = []
+    for ln in open(hold_file, encoding="utf-8"):
+        body = ln.split("#", 1)[0].strip()
+        if body.startswith("UtinniPatches/"):
+            out.append(body[len("UtinniPatches/"):])
+    return out
+
+
+def shipped_def_rows(mod_dir=None):
+    """[(defType, defName, label-or-None, guard-pkgs, relpath)] for every non-abstract top-level def under Defs/."""
+    import fnmatch  # noqa: F401
+    import xml.etree.ElementTree as ET
+    from modcheck import shipped_defs as SD
+    mod_dir = mod_dir or _MOD_DIR
+    out = []
+    for root, dirs, files in os.walk(os.path.join(mod_dir, "Defs")):
+        dirs.sort()
+        for fn in sorted(files):
+            if not fn.endswith(".xml"):
+                continue
+            rel = os.path.relpath(os.path.join(root, fn), mod_dir).replace(os.sep, "/")
+            for el in ET.parse(os.path.join(root, fn)).getroot():
+                if not isinstance(el.tag, str) or el.get("Abstract", "").lower() == "true":
+                    continue
+                name = (el.findtext("defName") or "").strip()
+                if name:
+                    g = SD.guard_of(el)
+                    pk = [x for x in g.replace("anyof:", "").replace(";", ",").split(",") if x]
+                    out.append((el.tag, name, (el.findtext("label") or "").strip() or None, pk, rel, g.startswith("anyof:") or ";anyof:" in g))
+    return out
+
+
+def dump_presence_findings(rows_defs, dump_by_type, active_pkgs, held):
+    """(checked, skipped dict, findings). A def is LOST when it is not held, its type is dumped, every non-DLC guard
+    package is active (an anyOf guard needs one), and it is absent from the dump. Label drift is a finding too."""
+    import fnmatch
+    checked, skipped, bad = 0, {"held": 0, "guard inactive": 0, "type not dumped": 0}, []
+    for ty, name, label, pk, rel, is_any in rows_defs:
+        if any(fnmatch.fnmatch(rel, g) for g in held):
+            skipped["held"] += 1
+            continue
+        d = dump_by_type.get(ty)
+        if d is None:
+            skipped["type not dumped"] += 1
+            continue
+        satisfied = (any(p in active_pkgs for p in pk) if is_any else all(p in active_pkgs for p in pk)) if pk else True
+        if not satisfied:
+            skipped["guard inactive"] += 1
+            continue
+        checked += 1
+        row = d.get(name)
+        if row is None:
+            bad.append("%s %s (%s) is not in the dump" % (ty, name, rel))
+        elif label is not None and str(row.get("label")) != label:
+            bad.append("%s %s label %r in the dump, %r in the XML" % (ty, name, row.get("label"), label))
+    return checked, skipped, bad
+
+
+def _dump_inputs():
+    import game_paths as GP
+    base = GP.DEF_DUMP
+    man = _json.load(open(os.path.join(base, "manifest.json")))
+    active = set((m.get("packageId") or "").lower() for m in man.get("mods", []))
+    return base, active
+
+
+def _dump_types(base, wanted):
+    out = {}
+    for ty in wanted:
+        p = os.path.join(base, "defs", ty + ".json")
+        out[ty] = dict((r["defName"], r) for r in _json.load(open(p))["defs"]) if os.path.isfile(p) else None
+    return out
+
+
+def ladder_parse(mod_dir=None):
+    """{threshold defaults, catastrophe toggle, hysteresis} parsed from the two C# files, plus the source with whitespace squeezed."""
+    mod_dir = mod_dir or _MOD_DIR
+    cs = re.sub(r"\s+", " ", open(os.path.join(mod_dir, _LADDER_CS), encoding="utf-8").read())
+    st = open(os.path.join(mod_dir, _SETTINGS_CS), encoding="utf-8").read()
+    d = dict((m.group(1), float(m.group(2))) for m in re.finditer(r"public static float (greatbole\w+Threshold) = ([0-9.]+)f;", st))
+    d["catastropheEnabled"] = bool(re.search(r"public static bool greatboleCatastropheEnabled = true;", st))
+    h = re.search(r"public float hysteresis = ([0-9.]+)f;", cs)
+    d["hysteresis"] = float(h.group(1)) if h else None
+    d["_cs"], d["_st"] = cs, st
+    return d
+
+
+def ladder_findings(p):
+    out, cs, st = [], p["_cs"], p["_st"]
+    t = (p.get("greatboleShakingThreshold"), p.get("greatboleHealingThreshold"), p.get("greatboleCatastropheThreshold"))
+    if None in t or p["hysteresis"] is None:
+        return ["ladder constants not parseable: %r hysteresis %r" % (t, p["hysteresis"])]
+    if t != (0.4, 0.6, 0.7):
+        out.append("shipped thresholds %s are not the ruled 0.40 / 0.60 / 0.70" % (t,))
+    if not t[0] < t[1] < t[2]:
+        out.append("shipped thresholds are not ordered shaking < healing < catastrophe")
+    for need in ("if (catastropheDone || !parent.Spawned) { return; }",
+                 "if (!shakingArmed && fraction >= UtinniPatchesSettings.greatboleShakingThreshold) { shakingArmed = true; GreatShaking(map); }",
+                 "else if (shakingArmed && fraction < UtinniPatchesSettings.greatboleShakingThreshold - h) { shakingArmed = false; }",
+                 "if (!healingAnnounced && fraction >= UtinniPatchesSettings.greatboleHealingThreshold) { healingAnnounced = true; AnnounceViolentHealing(); }",
+                 "else if (healingAnnounced && fraction < UtinniPatchesSettings.greatboleHealingThreshold - h) { healingAnnounced = false; }",
+                 "if (UtinniPatchesSettings.greatboleCatastropheEnabled && fraction >= UtinniPatchesSettings.greatboleCatastropheThreshold) { Catastrophe(map, marker, regrowth); }"):
+        if need not in cs:
+            out.append("ladder source lost: %s" % need[:90])
+    cat = re.search(r"private void Catastrophe\([^)]*\) \{ catastropheDone = true;", cs)
+    if not cat:
+        out.append("Catastrophe no longer sets catastropheDone first: it could fire every poll")
+    # slider ranges contain the defaults (a default the slider cannot reach is lost after one drag)
+    for name, lo, hi in re.findall(r"(greatbole\w+Threshold) = list\.Slider\(\1, ([0-9.]+)f, ([0-9.]+)f\)", st):
+        if not float(lo) <= p[name] <= float(hi):
+            out.append("%s default %s lies outside its slider %s..%s" % (name, p[name], lo, hi))
+    sim = ladder_sim(p, [i / 100.0 for i in range(0, 91)])
+    if [e[0] for e in sim] != ["shaking", "healing", "catastrophe"] or [e[1] for e in sim] != [0.4, 0.6, 0.7]:
+        out.append("a rising fraction fires %s, want shaking@0.40, healing@0.60, catastrophe@0.70 once each" % sim)
+    if [e[0] for e in ladder_sim(p, [0.0, 0.5, 0.39, 0.38, 0.5])] != ["shaking"]:
+        out.append("a dip of less than the hysteresis re-fires shaking")
+    if [e[0] for e in ladder_sim(p, [0.0, 0.5, 0.30, 0.5])] != ["shaking", "shaking"]:
+        out.append("falling below threshold minus hysteresis does not re-arm shaking")
+    if [e[0] for e in ladder_sim(dict(p, catastropheEnabled=False), [0.0, 0.95])] != ["shaking", "healing"]:
+        out.append("greatboleCatastropheEnabled=false still allows the catastrophe")
+    if [e[0] for e in ladder_sim(p, [0.0, 0.75, 0.2, 0.9])] != ["shaking", "healing", "catastrophe"]:
+        out.append("the catastrophe is not once-only and final (nothing may fire after it)")
+    return out
+
+
+def ladder_sim(p, fractions):
+    """Mirror of RUT_CompGreatboleHarvestLadder.CompTick's state machine: [(event, fraction)]."""
+    ts, th, tc, h = p["greatboleShakingThreshold"], p["greatboleHealingThreshold"], p["greatboleCatastropheThreshold"], p["hysteresis"]
+    armed = announced = done = False
+    ev = []
+    for f in fractions:
+        if done:
+            break
+        if not armed and f >= ts:
+            armed = True
+            ev.append(("shaking", f))
+        elif armed and f < ts - h:
+            armed = False
+        if not announced and f >= th:
+            announced = True
+            ev.append(("healing", f))
+        elif announced and f < th - h:
+            announced = False
+        if p["catastropheEnabled"] and f >= tc:
+            done = True
+            ev.append(("catastrophe", f))
+    return ev
+
+
+@suite.chain("defs_vs_dump_static")
+def defs_vs_dump_static(t):
+    """Offline: the ~430 defs this mod ships are in the load-14 def dump (held / guard-inactive ones named, not passed) and
+    carry their XML label. UNMEASURED without a readable dump."""
+    with t.component("shipped_defs_are_in_the_dump_with_their_labels", beyond_toggle=True):
+        try:
+            base, active = _dump_inputs()
+            rows_defs = shipped_def_rows()
+            dump = _dump_types(base, sorted(set(r[0] for r in rows_defs)))
+        except Exception as e:
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: no readable def dump (%s)" % e
+            return
+        held = held_globs()
+        if len(rows_defs) < 300 or len(held) < 5 or "mandrake.rut.patches" not in active or not dump.get("ThingDef"):
+            raise ExpectationFailed("blind parse: %d defs, %d hold globs, patches mod active=%s" % (len(rows_defs), len(held), "mandrake.rut.patches" in active))
+        checked, skipped, bad = dump_presence_findings(rows_defs, dump, active, held)
+        if checked < 300:
+            raise ExpectationFailed("only %d defs were checkable (skipped %s)" % (checked, skipped))
+        if bad:
+            raise ExpectationFailed("%d of %d checked defs lost or drifted (skipped %s): %s" % (len(bad), checked, skipped, "; ".join(bad[:5])))
+
+
+@suite.chain("greatbole_ladder_static")
+def greatbole_ladder_static(t):
+    """Offline: the greatbole harvest ladder (shaking 0.40 / violent healing 0.60 / catastrophe 0.70) mirrored from the C#:
+    thresholds ordered, hysteresis, each rung fires once, the catastrophe is final and respects its toggle."""
+    with t.component("harvest_ladder_fires_each_rung_once_and_catastrophe_is_final", toggle="greatboleCatastropheEnabled"):
+        bad = ladder_findings(ladder_parse())
+        if bad:
+            raise ExpectationFailed("; ".join(bad[:4]))
+
+
+
 @suite.chain("settings_gates_static")
 def settings_gates_static(t):
     """Static: settings-gated patch ops (PatchOperationSettingGate) all name a handled, Scribed toggle."""
