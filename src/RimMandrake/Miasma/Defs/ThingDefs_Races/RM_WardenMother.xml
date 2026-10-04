@@ -59,18 +59,14 @@
   mandrake.rm.environmentalhazards, matching this file's own hard
   About.xml dependency on that mod.
 
-  No art: texPath below does not resolve to anything yet (checked
-  infrastructure/artpipe/done/, _artsrc/, registry.jsonl and
-  art_status.json by subject first, per the owner's 2026-09-20 standing
-  rule — nothing found for "warden mother" under any spelling). A
-  fill_queue.py job is owed and not queued by this pass (the daemon does
-  not run on the Mac); same "advisory texPath warning, expected pre-art"
-  posture MIASMA_FLORA_ROSTER_1/MIASMA_FAUNA_FLOOR_ROSTER_1 already shipped
-  under.
+  ART: artpipe RM_WardenMother (south/east/north, 512px) wired at Things/Pawn/Animal/Miasma/WardenMother/WardenMother
+  (MIASMA_WARDEN_MOTHER_ART_1). The first aged set (RM_WardenMother_Aged) came back as a different creature (spindly
+  crab legs, no flippers) so it is NOT wired: the elder stage draws the same art until RM_WardenMother_Aged2 (a reskin
+  of this south view) lands.
 -->
 <Defs>
 
-  <!-- Her last season: age 38 of lifeExpectancy 45 (ART job RM_WardenMother_Aged). Visible-age swap only;
+  <!-- Her last season: age 38 of lifeExpectancy 45 (ART job RM_WardenMother_Aged2, pending). Visible-age swap only;
        whatever the succession code reads is WARDEN_MOTHER_SUCCESSION_1's. -->
   <LifeStageDef>
     <defName>RM_WardenMotherElder</defName>
@@ -196,7 +192,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMotherAged</texPath>
+          <texPath>Things/Pawn/Animal/Miasma/WardenMother/WardenMother</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>7.5</drawSize>
         </bodyGraphicData>
