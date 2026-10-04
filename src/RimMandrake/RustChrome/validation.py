@@ -28,19 +28,11 @@ MOD SETTINGS -- suite.toggles below:
   `jawa/mod_settings_field` (`t.set_setting`) can actually reach it -- no
   static-field refusal expected here.
 
-  It is still left UNCOVERED, and that is a genuine floor gap, not an
-  oversight: `RustChromeColors.Apply()` is called from exactly two places --
-  the static constructor at boot (reads the setting once) and
-  `RustChromeSettings.DoWindowContents`'s own `if (themeEnabled != before)`
-  branch, which only runs from inside the actual Mod Settings window's UI
-  code. Setting the field directly via `jawa/mod_settings_field` changes the
-  in-memory value but calls `Apply()` from neither path, so the live colours
-  and the boot log line would not move -- a component built on `set_setting`
-  here would either assert nothing real or assert against a value that
-  never took effect. Proving the `false` path needs a persisted-setting
-  restart (write `ModSettings.xml`, reload), which is a heavier op than this
-  smoke suite's single-session, no-restart shape affords; flag for a future
-  pass rather than fake it.
+  `set_setting` alone cannot drive it: `RustChromeColors.Apply()` runs only from the static ctor and
+  from the settings window's own checkbox branch, so writing the field changes the in-memory value but
+  moves no colour. RUSTCHROME_COVERAGE_GAPS_1 covers the toggle by calling the SHIPPED `Apply(true)` /
+  `Apply(false)` through `RustChromeColors.ProofTheme` (jawa/static_call) and reading the six Widgets
+  fields + the inspect-tab texture back: chain `theme_toggle_applies_and_restores` (bottom of this file).
 
 Still not proven / likely first-live-run corrections:
   1. Whether `jawa/drain_log` still holds this mod's boot-time line by the
@@ -53,6 +45,9 @@ Still not proven / likely first-live-run corrections:
      negative assertion below has never actually been proven to catch a
      real regression, only reasoned about from the source.
 """
+import os
+import re
+
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("RustChrome")
@@ -144,3 +139,108 @@ def override_textures_static(t):
         bad = override_texture_problems()
         if bad:
             raise ExpectationFailed("%d override problem(s): %s" % (len(bad), bad))
+
+
+# RUSTCHROME_COVERAGE_GAPS_1: the toggle and the colour values. RustChromeColors.ProofTheme (jawa/static_call) runs the
+# SHIPPED Apply(true) then Apply(false) -- the very call the Mod Settings checkbox makes -- reading the six Widgets colour
+# fields and the inspect-tab fill texture back after each, then re-applies the real setting. set_setting cannot drive
+# this (it never calls Apply), a direct call can. Expected palette is parsed from the C# constants here, never read back
+# from the live fields; the "off" arm must equal the vanilla values the mod captured BEFORE it overwrote them.
+_THEME_PROOF = "RimMandrake.RustChrome.RustChromeColors"
+FIELDS = (   # (short key, Widgets field, palette constant)
+    ("wfill", "WindowBGFillColor", "WindowFill"), ("wborder", "WindowBGBorderColor", "WindowBorder"),
+    ("sfill", "MenuSectionBGFillColor", "SectionFill"), ("sborder", "MenuSectionBGBorderColor", "SectionBorder"),
+    ("ounsel", "OptionUnselectedBGFillColor", "OptionUnselectedFill"), ("osel", "OptionSelectedBGFillColor", "OptionSelectedFill"),
+)
+
+
+def _src(name):
+    return open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", name), encoding="utf-8").read()
+
+
+def palette(src=None):
+    """{constant: 'r,g,b'} from `private static readonly Color X = new Color(a, b, c);` (each part `N f / 255f` or `0.42f`)."""
+    src = src if src is not None else _src("RustChromeColors.cs")
+    out = {}
+    for m in re.finditer(r"private static readonly Color (\w+)\s*=\s*new Color\(([^;]+)\);", re.sub(r"//[^\n]*", "", src)):
+        vals = []
+        for part in m.group(2).split(","):
+            nums = [float(x) for x in re.findall(r"[0-9.]+(?=f)", part)]
+            vals.append(nums[0] / nums[1] if len(nums) == 2 else nums[0])
+        out[m.group(1)] = ",".join(str(int(round(v * 255))) for v in vals[:3])
+    return out
+
+
+def theme_static_findings(src=None, mod_src=None):
+    """Pure: the six fields are all read, applied AND restored; the tab texture is applied and restored; the checkbox
+    re-applies on change; the palette parses (sanity probe: six constants)."""
+    src = src if src is not None else _src("RustChromeColors.cs")
+    mod_src = mod_src if mod_src is not None else _src("RustChromeMod.cs")
+    bad = []
+    if len(palette(src)) < 6:
+        bad.append("palette probe found %d constants, want >= 6 (sanity probe failed)" % len(palette(src)))
+    body = re.sub(r"//[^\n]*", "", src)
+    m = re.search(r"public static void Apply\(bool enabled\)\s*\{", body)
+    ap = body[m.end():] if m else ""
+    on, _, off = ap.partition("else")
+    for _k, field, const in FIELDS:
+        if 'SetColorField(typeof(Widgets), "%s", %s)' % (field, const) not in on:
+            bad.append("Apply(true) no longer sets %s to %s" % (field, const))
+        if 'GetColorField(typeof(Widgets), "%s")' % field not in body.split("static RustChromeColors")[1].split("Apply(enabled)")[0] + body.split("private static void CaptureVanilla")[1].split("captured = true")[0]:
+            bad.append("%s is never captured before being overwritten" % field)
+        if not re.search(r'SetColorField\(typeof\(Widgets\), "%s", vanilla\w+\)' % field, off):
+            bad.append("Apply(false) no longer restores %s to the captured vanilla value" % field)
+    if 'SetTexField(typeof(InspectPaneUtility), "InspectTabButtonFillTex", vanillaInspectTabTex)' not in off:
+        bad.append("Apply(false) no longer restores InspectTabButtonFillTex")
+    if "SolidColorMaterials.NewSolidColorTexture(WindowFill)" not in on:
+        bad.append("Apply(true) no longer sets the inspect-tab fill to the window fill")
+    if "RustChromeColors.Apply(themeEnabled)" not in mod_src or "themeEnabled != before" not in mod_src:
+        bad.append("the Mod Settings checkbox no longer re-applies on change")
+    return bad
+
+
+def _theme_kv(t):
+    r = t.bridge_call("jawa/static_call", type=_THEME_PROOF, method="ProofTheme", args="")
+    if not t._guard():
+        return None, ""
+    text = (r or {}).get("result") if isinstance(r, dict) else None
+    if text in (None, ""):
+        t.upstream_reason = "UNMEASURED: RustChromeColors.ProofTheme answered nothing (DLL not rebuilt/deployed yet?): %s" % (
+            str((r or {}).get("message") or (r or {}).get("error"))[:120])
+        t.upstream_failed = True
+        return None, ""
+    text = str(text)
+    if text.startswith("ERROR"):
+        raise ExpectationFailed("ProofTheme: %s" % text)
+    return dict(re.findall(r"(\w+)=(\S+)", text)), text
+
+
+@suite.chain("theme_toggle_applies_and_restores")
+def theme_toggle_applies_and_restores(t):
+    with t.component("static_apply_restore_symmetry", beyond_toggle=True):
+        bad = theme_static_findings()
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
+    with t.component("the_theme_actually_differs_from_vanilla", beyond_toggle=True):
+        kv, text = _theme_kv(t)
+        if kv:
+            same = [k for k, _f, _c in FIELDS if kv.get("on_" + k) == kv.get("van_" + k)]
+            if len(same) > 1:
+                raise ExpectationFailed("the theme leaves %d of 6 fields identical to vanilla (%s): it recolours nothing there: %s" % (len(same), same, text[:300]))
+    with t.component("theme_on_sets_the_six_fields_and_the_tab_fill_to_the_palette", beyond_toggle=True):
+        kv, text = _theme_kv(t)
+        if kv:
+            pal = palette()
+            for key, field, const in FIELDS:
+                if kv.get("on_" + key) != pal[const]:
+                    raise ExpectationFailed("Widgets.%s after Apply(true) = %s, palette says %s=%s: %s" % (field, kv.get("on_" + key), const, pal[const], text[:300]))
+            if kv.get("tex_on") != pal["WindowFill"]:
+                raise ExpectationFailed("InspectTabButtonFillTex pixel after Apply(true) = %s, want WindowFill %s" % (kv.get("tex_on"), pal["WindowFill"]))
+    with t.component("themeEnabled_off_restores_the_captured_vanilla_colours_and_texture", toggle="themeEnabled"):
+        kv, text = _theme_kv(t)
+        if kv:
+            for key, field, _c in FIELDS:
+                if kv.get("off_" + key) != kv.get("van_" + key):
+                    raise ExpectationFailed("Widgets.%s after Apply(false) = %s, captured vanilla was %s: %s" % (field, kv.get("off_" + key), kv.get("van_" + key), text[:300]))
+            if kv.get("tex_off_is_vanilla") not in ("True", "-"):
+                raise ExpectationFailed("InspectTabButtonFillTex after Apply(false) is not the vanilla texture object: %s" % text[:300])
