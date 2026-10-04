@@ -163,7 +163,9 @@ class FGame(MockGame):
             self.burst_end = 0
             self.last_voice = None
             self.c = dict(cycles=0, gasIgnitions=0, floods=0, cellsFrozen=0, cellsMelted=0, gardensSpawned=0,
-                          gardensDrifted=0, meltDestroyed=0, meltPawnsBurned=0, meltRelocated=0)
+                          gardensDrifted=0, meltDestroyed=0, meltPawnsBurned=0, meltRelocated=0,
+                          swarmErupted=0, swarmResealed=0)
+            self.swarm_live = 0
 
     def lava_cells(self):
         return [c for c, d in self.terrain.items() if d == "LavaDeep"]
@@ -329,7 +331,13 @@ class FGame(MockGame):
                 self.flash = (now, now + 5000)
             c.floods_left = 3
             c.next_flood = now + 1250
+            if self.active("dhuvvoxSwarmEnabled") and "swarm_never_erupts" not in self.brk:
+                c.swarm_live += 60
+                c.c["swarmErupted"] += 60
         elif nxt == "Freeze":
+            if "swarm_never_reseals" not in self.brk:
+                c.c["swarmResealed"] += c.swarm_live
+                c.swarm_live = 0
             if not c.frozen and (self.active("lavaFreezeEnabled") or "freeze_off_ignored" in self.brk) and self.lava_cells():
                 self.emit(V.LETTERS["Freeze"])
         elif nxt == "Growth":
@@ -375,10 +383,11 @@ class FGame(MockGame):
         k = c.c
         return ("phase=%s endsIn=%d inBurst=%s frozen=%d gardensLive=%d cycles=%d gasIgnitions=%d floods=%d "
                 "cellsFrozen=%d cellsMelted=%d gardensSpawned=%d gardensDrifted=%d meltDestroyed=%d "
-                "meltPawnsBurned=%d meltRelocated=%d" % (
+                "meltPawnsBurned=%d meltRelocated=%d swarmLive=%d swarmErupted=%d swarmResealed=%d" % (
                     c.phase, c.end - self.ticks, c.burst, len(c.frozen), self.live_gardens(), k["cycles"],
                     k["gasIgnitions"], k["floods"], k["cellsFrozen"], k["cellsMelted"], k["gardensSpawned"],
-                    k["gardensDrifted"], k["meltDestroyed"], k["meltPawnsBurned"], k["meltRelocated"]))
+                    k["gardensDrifted"], k["meltDestroyed"], k["meltPawnsBurned"], k["meltRelocated"],
+                    c.swarm_live, k["swarmErupted"], k["swarmResealed"]))
 
     # ------------------------------------------------------------ game conditions & weather
     def t_jawa_game_condition(self, p):
@@ -749,7 +758,7 @@ def main():
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("seven phases derived from the enum", V.PHASES == ["StillHeat", "GasWash", "Rain", "Freeze", "Growth",
                                                              "Cracks", "Melt"], V.PHASES)
-    check("33 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 33, sorted(V.SETTINGS_DEFAULTS))
+    check("34 settings fields derived from the C#", len(V.SETTINGS_DEFAULTS) == 34, sorted(V.SETTINGS_DEFAULTS))
     check("every wired toggle is a real settings field", set(V.WIRED) <= set(V.SETTINGS_DEFAULTS),
           sorted(set(V.WIRED) - set(V.SETTINGS_DEFAULTS)))
     check("the five scaffolding fields are exactly the unwired remainder", len(V.SCAFFOLDING) == 5, V.SCAFFOLDING)
@@ -803,6 +812,8 @@ def main():
         ("no_gas", {W + "gas_wash_ignites"}),
         ("no_flood", {W + "rain_forces_boiling_weather_and_floods"}),
         ("rain_wrong_weather", {W + "rain_forces_boiling_weather_and_floods"}),
+        ("swarm_never_erupts", {W + "rain_erupts_dhuvvox_swarm"}),   # the chain stops at the first red
+        ("swarm_never_reseals", {W + "rain_end_reseals_swarm_with_signs"}),
         ("freeze_partial", {W + "freeze_crusts_lava", A + "bloom_off_no_gardens"}),   # both read the crust count
         ("lava_touched", {W + "freeze_crusts_lava", A + "bloom_off_no_gardens"}),
         ("no_gardens", {W + "growth_blooms_floatstone"}),

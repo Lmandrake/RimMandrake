@@ -219,7 +219,7 @@ SETTINGS_DEFAULTS = _settings_defaults()
 WIRED = ["modEnabled", "weatherPulseEnabled", "grandCycleEnabled", "gasWashEnabled", "cycleFloodingEnabled",
          "lavaFreezeEnabled", "meltBackDestroys", "floatstoneBloomEnabled", "cycleDormancyEnabled",
          "cycleTelegraphLetters", "keelworkEnabled", "keelRingEnabled", "spunstoneStudyEnabled", "forgeVoicesEnabled",
-         "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled",
+         "forgeVoicesVisualCues", "dhuvvoxClockEnabled", "dhuvvoxRunSoundEnabled", "dhuvvoxSwarmEnabled",
          "plumeFrontsEnabled", "plumeObscureEnabled", "plumeSoakEnabled", "plumeHeatEnabled", "plumeAdaptedExempt",
          "plumeStrength",
          "skyColumnGridEnabled", "skyAshSpiralsEnabled", "skyColumnHuntEnabled", "jossurStoopEnabled", "skyColumnHighlightEnabled"]
@@ -1165,6 +1165,16 @@ def cycle_walk(t):
                     _fail("no FlowWorks flood was released in the first 1500 ticks of the Rain: floods %d -> %d"
                           % (box["base"]["floods"], rep["floods"]))
 
+            with _comp(t, "rain_erupts_dhuvvox_swarm", toggle="dhuvvoxSwarmEnabled"):
+                # FORGE_CYCLE_MECHANICS_1 mass eruption: entering the Rain spawns the swarm (PROVISIONAL 60).
+                rep = _report(t)
+                if _live(t):
+                    if "swarmErupted" not in rep:
+                        _unmeasured(t, "report line has no swarm tokens: the deployed TheForge DLL predates the swarm")
+                    erupted = rep["swarmErupted"] - (box["base"].get("swarmErupted") or 0)
+                    if rep["swarmLive"] < 1 or erupted < 1:
+                        _fail("the Rain woke no dhuvvox swarm: %s" % rep["_line"])
+
             with _comp(t, "freeze_crusts_lava", toggle="lavaFreezeEnabled"):
                 _advance(t)                # into Freeze
                 # A debug advance leaves the Rain's forced burst running (6-9 h), and the burst weather outranks the
@@ -1188,6 +1198,15 @@ def cycle_walk(t):
                         _fail("the lava under the crust was touched: top census %r" % tops)
                     if rep["phase"] != "Growth" or rep["frozen"] != LAVA * LAVA or rep["cellsFrozen"] < LAVA * LAVA:
                         _fail("report disagrees with the terrain read: %s" % rep["_line"])
+
+            with _comp(t, "rain_end_reseals_swarm_with_signs", toggle="dhuvvoxSwarmEnabled"):
+                # The rain is over: every surviving swarm member burrowed back (ash scar + one counted message).
+                rep = _report(t)
+                if _live(t):
+                    if "swarmResealed" not in rep:
+                        _unmeasured(t, "report line has no swarm tokens: the deployed TheForge DLL predates the swarm")
+                    if rep["swarmLive"] != 0 or rep["swarmResealed"] - (box["base"].get("swarmResealed") or 0) < 1:
+                        _fail("the swarm did not reseal when the rain ended: %s" % rep["_line"])
 
             with _comp(t, "crust_is_walkable", independent=True):
                 x, z = t.anchor

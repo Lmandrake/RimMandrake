@@ -54,6 +54,8 @@ namespace RimMandrake.TheForge
         public static bool forgeVoicesVisualCues = false;
         public static bool dhuvvoxClockEnabled = true;
         public static bool dhuvvoxRunSoundEnabled = true;
+        // FORGE_CYCLE_MECHANICS_1: the rain's dhuvvox mass eruption (swarm size PROVISIONAL, 60).
+        public static bool dhuvvoxSwarmEnabled = true;
 
         // FORGE_WHITE_PLUME_FRONTS_1 — quench-steam fronts off the new crust, each half separately switchable.
         public static bool plumeFrontsEnabled = true;
@@ -104,6 +106,7 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref forgeVoicesVisualCues, "forgeVoicesVisualCues", false);
             Scribe_Values.Look(ref dhuvvoxClockEnabled, "dhuvvoxClockEnabled", true);
             Scribe_Values.Look(ref dhuvvoxRunSoundEnabled, "dhuvvoxRunSoundEnabled", true);
+            Scribe_Values.Look(ref dhuvvoxSwarmEnabled, "dhuvvoxSwarmEnabled", true);
             Scribe_Values.Look(ref plumeFrontsEnabled, "plumeFrontsEnabled", true);
             Scribe_Values.Look(ref plumeObscureEnabled, "plumeObscureEnabled", true);
             Scribe_Values.Look(ref plumeSoakEnabled, "plumeSoakEnabled", true);
@@ -187,6 +190,10 @@ namespace RimMandrake.TheForge
             list.CheckboxLabeled("  Scuttling sound", ref dhuvvoxRunSoundEnabled,
                 "Awake dhuvvox tick and scuttle where they run; the ticks space out and fade as the "
               + "run's final quarter-hour passes. Needs the dhuvvox clock.");
+            list.CheckboxLabeled("The dhuvvox swarm", ref dhuvvoxSwarmEnabled,
+                "When the boiling rain starts, a swarm of dhuvvox (PROVISIONAL: 60, a first guess to be tuned "
+              + "live) erupts from the ash around the resident ones; when the rain ends they burrow back, "
+              + "leaving ash scars and a message. Off: only the map's own dhuvvox wake and seal.");
             list.GapLine();
 
             list.CheckboxLabeled("White plume fronts", ref plumeFrontsEnabled,
