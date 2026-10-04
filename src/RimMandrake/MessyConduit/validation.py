@@ -219,7 +219,7 @@ STYLE_FILES = {
 }
 SHARED_FILES = ["StrandShadow", "SparkGlow", "EndFrayed_Live", "PowerStrip", "Aerial/AerialMast", "Aerial/AerialMastTop",
                 "Aerial/AerialLampMast", "Aerial/AerialLampMastTop", "Aerial/WallBracket", "Aerial/TapClamp", "Aerial/SpanShadow"]
-STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap", "OpenEnd")]
+STAGED_HOSE = ["Hose/" + n for n in ("Strand_Flat", "Strand_Plump", "Strand_Shadow", "Coupling_Brass", "Nozzle", "Reel_PumpHookup", "EndCap", "Binding", "Mouth")]
 # owner review round 1 (2026-10-04): the margin-safe switch (B3) and the extension-cord pieces in every cord colour (B14)
 SHARED_FILES += ["PowerSwitch", "PowerSwitch_Off"]
 STYLE_FILES["ExtensionCord"] += ["Styles/ExtCord/%s/%s" % (c, n) for c in ("Green", "Brown", "Yellow", "Blue")
@@ -231,6 +231,10 @@ def _canvas_for(rel):
     n = rel.split("/")[-1]
     if rel.startswith("Hose/Strand"):
         return (256, 64)
+    if rel == "Hose/Binding":
+        return (82, 40)            # the cloth wrap cropped from the accepted render (make_hose_binding.py, B22)
+    if rel == "Hose/Mouth":
+        return (64, 64)
     if n.startswith("Strand") or n in ("SpanShadow", "SpanWire"):
         return (128, 32)
     if n in ("EndFrayed_Dead", "EndFrayed_Live", "SparkGlow", "TapClamp"):
@@ -357,7 +361,7 @@ def fire_hose_sweep_paths():
 
 def o6_review_round1(rows):
     """Owner review round 1 (2026-10-04), the offline half: one load-bearing measurement per art/def bar.
-    B3 switch art margin, B7 bracket is a vanilla wall attachment, B8 hose fittings match the hose band, B14 every
+    B3 switch art margin, B7 bracket is a vanilla wall attachment, B8 hose fittings match the hose band, B22 binding wrap wider than hose and fitting, B14 every
     extension-cord piece takes its cord colour, B6/B16/B19 per-look pole table current, B20 no visible 'fire hose'."""
     import colorsys
     import xml.etree.ElementTree as ET
@@ -391,12 +395,42 @@ def o6_review_round1(rows):
     hs = open(os.path.join(HERE, "Source", "Hose", "RM_MapComponent_Hoses.cs"), encoding="utf-8").read()
     import re
     pb = float(re.search(r"PieceBand = ([0-9.]+)f", hs).group(1))
-    ob = float(re.search(r"OpenBand = ([0-9.]+)f", hs).group(1))
-    for n, b in (("Coupling_Brass", pb), ("EndCap", pb), ("OpenEnd", ob)):
+    for n, b in (("Coupling_Brass", pb), ("EndCap", pb)):
         px = _band_px(os.path.join(tex, "Hose", n + ".png"))
         info.append("%s band %d px (code %.0f)" % (n, px, b * 128))
         if abs(px - b * 128) > 2:
             probs.append("B8 %s: hose band %d px, code sizes it as %.0f px" % (n, px, b * 128))
+    # B22: the binding wrap, measured from the PNGs and sized by the code's own formula: on a flat and a plump hose,
+    # every fitting's widest part <= the wrap's drawn width, and the wrap >= 1.3 x the hose; the open end draws the
+    # dark Mouth, never the old pale OpenEnd stub
+    hm = open(os.path.join(HERE, "Source", "Hose", "HoseMath.cs"), encoding="utf-8").read()
+    wk = float(re.search(r"WrapK = ([0-9.]+)", hm).group(1))
+    fv, pe = [float(x) for x in re.search(r"FlatVisible = ([0-9.]+), PlumpExtra = ([0-9.]+)", hm).groups()]
+    bind_code = float(re.search(r"BindBand = ([0-9.]+)f", hs).group(1))
+    bim = Image.open(os.path.join(tex, "Hose", "Binding.png")).convert("RGBA")
+    ba = bim.getchannel("A")
+    bind_px = max(sum(1 for y in range(bim.size[1]) if ba.getpixel((x, y)) > 128) for x in range(bim.size[0]))
+    bind_frac = bind_px / float(bim.size[1])
+    maxes = dict(zip(("Coupling_Brass", "Nozzle", "EndCap"), [float(x) for x in re.search(
+        r"CouplingMax = ([0-9.]+)f, NozzleMax = ([0-9.]+)f, EndCapMax = ([0-9.]+)f", hs).groups()]))
+    worst = []
+    for vis in (fv, fv + pe):
+        wrap_drawn = wk * vis / bind_code * bind_frac
+        if wrap_drawn < 1.3 * vis - 1e-6:
+            probs.append("B22 wrap %.3f < 1.3 x hose %.3f" % (wrap_drawn, vis))
+        for n, mx in maxes.items():
+            im = Image.open(os.path.join(tex, "Hose", n + ".png")).convert("RGBA").getchannel("A")
+            mpx = max(sum(1 for y in range(128) if im.getpixel((x, y)) > 128) for x in range(128)) / 128.0
+            if abs(mpx - mx) > 2 / 128.0:
+                probs.append("B22 %s widest band %.3f, code says %.3f" % (n, mpx, mx))
+            size = min(vis / pb, 0.95 * wk * vis / mx)
+            fit_w = size * mpx
+            worst.append(fit_w / wrap_drawn)
+            if fit_w > wrap_drawn + 1e-6:
+                probs.append("B22 %s on hose %.2f: fitting %.3f wider than wrap %.3f" % (n, vis, fit_w, wrap_drawn))
+    if os.path.exists(os.path.join(tex, "Hose", "OpenEnd.png")) or "HoseMaterials.Mouth" not in hs or "Wrap(" not in hs:
+        probs.append("B22: open end still the OpenEnd stub, or no wrap drawn")
+    info.append("B22 wrap band %d/%d px, wrap %.2f x hose, fitting/wrap max %.2f" % (bind_px, bim.size[1], wk * bind_frac / bind_code, max(worst)))
     if "public HoseEnd end = HoseEnd.Open;" not in open(os.path.join(HERE, "Source", "Hose", "CompHoseReel.cs"), encoding="utf-8").read():
         probs.append("B8: the free end does not default to Open")
     # B14: the recoloured pieces are current, and their cord pixels carry the cord colour (hue within 15 deg)
@@ -434,6 +468,12 @@ def o6_review_round1(rows):
         probs.append("B6: pole geometry table stale (re-run wire_pole_art.py)")
     wired = [ln.split(":")[0] for ln in rp.stdout.splitlines() if "crossarm row" in ln]
     info.append("real pole art: %s" % (wired or "none yet (tinted stand-ins)"))
+    # B7 round 2: the wall bracket's per-look, per-facing art and its measured insulator table are current
+    rb = subprocess.run([sys.executable, os.path.join(UTILS, "mockups", "messy_conduit", "wire_bracket_art.py"), "--check"],
+                        capture_output=True, text=True, timeout=600)
+    if rb.returncode != 0:
+        probs.append("B7: bracket art / geometry table stale (re-run wire_bracket_art.py): %s" % rb.stdout.strip()[-200:])
+    info.append("bracket art: %s" % [ln.split(":")[0] for ln in rb.stdout.splitlines() if ": wired" in ln])
     # B20: no visible 'fire hose' text, and the sweep can see one (sanity probe)
     hits = visible_fire_hose(fire_hose_sweep_paths())
     import tempfile

@@ -138,17 +138,21 @@ def station_list():
        ["unlink the second span: that lamp mast goes dark", "build one more lamp mast within range"],
        devs=[("Battery", (1, 4), 0, 1.0)],
        masts=[("RM_AerialMast", (2, 4)), ("RM_AerialLampMast", (14, 4)), ("RM_AerialLampMast", (26, 4))], links=[(0, 1), (1, 2)])
-    st(9, "B", B_X[2], ROW_B, 30, 11, "WALL BRACKET", "an overhead wire from a mast to a bracket bolted ON a shed wall; floor cord from the bracket to a lamp",
-       ["the bracket is drawn on the wall face, like a vanilla wall torch (it stands in the cell beside the wall, facing it)",
-        "the wire lands on the bracket's insulator", "a floor cord continues from the bracket to the lamp"],
+    st(9, "B", B_X[2], ROW_B, 30, 11, "WALL BRACKET", "an overhead wire from a mast to a bracket bolted ON a shed wall, feeding a lamp INSIDE the shed",
+       ["the bracket is drawn on the wall face, like a vanilla wall torch (it stands in the cell beside the wall, facing it); the look's own art per facing",
+        "three spare brackets show the other facings: on the shed's west wall (outside), east wall (outside) and north wall (inside)",
+        "the wire ENDS on the bracket's insulator; nothing lies on the ground outside",
+        "the power goes through the wall into the shed (a conduit under the wall) and lights the lamp inside"],
        ["build another: Architect > Power > scrap wall bracket, point it AT a wall (vanilla wall-attachment placement)",
         "deconstruct the wall behind the bracket", "unlink and re-link the span from the mast's gizmo"],
-       devs=[("Battery", (1, 4), 0, 1.0), ("StandingLamp", (21, 5), None, None)],
+       devs=[("Battery", (1, 4), 0, 1.0), ("StandingLamp", (14, 1), None, None)],
        walls=line(12, 16, 3) + [(12, z) for z in range(0, 3)] + [(16, z) for z in range(0, 3)] + line(13, 15, 0),
-       conduit=line(15, 20, 4),
-       masts=[("RM_AerialMast", (2, 4)), ("RM_AerialWallBracket", (14, 4))], links=[(0, 1)])   # bracket faces SOUTH, at the wall
+       conduit=[(14, 3), (14, 2)],    # round 2 (B21 join rule): bracket -> under its wall -> the lamp inside; no floor cord outside
+       masts=[("RM_AerialMast", (2, 4)), ("RM_AerialWallBracket", (14, 4), 2), ("RM_AerialWallBracket", (11, 1), 1),
+              ("RM_AerialWallBracket", (17, 1), 3), ("RM_AerialWallBracket", (13, 2), 0)],
+       links=[(0, 1)])   # (def, cell, rot): rot points AT the wall; the linked one faces SOUTH, three unlinked show E / W / N
     st(10, "B", B_X[3], ROW_B, 30, 11, "CUT + FALLEN SPAN", "the station-7 chain with the SECOND span cut (as if blown by an explosion)",
-       ["the cut wire still hangs from each mast TOP down to the ground, then lies on the ground, in the span's own cable",
+       ["each cut half is ONE wire in the span's own cable: from the mast's insulator down to the break, where both halves meet on the ground",
         "the live downed end sparks; the far lamp is dark",
         "the first span still hangs and still carries power"],
        ["select the middle mast > Re-string cut wires: the span goes back up and the lamp relights",
@@ -250,7 +254,7 @@ SHORT = {1: "full battery, cord to heater + a plugged lamp", 2: "same build, bat
          3: "one conduit cell missing: live end / dead end", 4: "9+ conduit cells = a tangle",
          5: "switch, generator, lamps: one plug each", 6: "cord stubs into a wall and through rock",
          7: "battery > mast > mast > mast > lamp, overhead", 8: "a power mast feeding two lamp masts",
-         9: "wire from a mast to a bracket on a shed wall", 10: "station 7 with the second span CUT",
+         9: "wire from a mast to a bracket on a shed wall, lamp inside", 10: "station 7 with the second span CUT",
          11: "clamp drains THEIR grid into our lamp", 12: "laid, nothing flowing", 13: "flow on, frozen half-filled",
          14: "flow on, fully filled", 15: "26 cells, bends round a wall stub", 16: "two hoses crossing: one cleanly over",
          17: "two hoses side by side", 18: "four hoses crossing in a 2 x 2 grid"}   # in-world sub line: one short clause
@@ -367,7 +371,7 @@ class Review(object):
                     bats.append((g(s, h[1]), h[3]))
             for m in s["masts"]:
                 # the bracket's rotation points AT its wall (vanilla Placeworker_AttachedToWall); station 9's wall is south
-                put(m[0], g(s, m[1]), rot=2 if m[0] == "RM_AerialWallBracket" else None)
+                put(m[0], g(s, m[1]), rot=m[2] if len(m) > 2 else None)
             for d, c, rot, ch in s["devs"]:
                 put(d, g(s, c), rot=rot)
                 if d == "Battery":

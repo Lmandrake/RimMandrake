@@ -176,10 +176,13 @@ namespace RimMandrake.MessyConduit.Aerial
 
         public bool? FallenLiveCached(CompAerialAnchor a) => anchorLive.TryGetValue(a.thingIDNumber, out bool v) ? v : (bool?)null;
 
+        /// <summary>The fallen / cut wire of <paramref name="f"/>: ONE cable from the anchor's middle insulator down to the
+        /// break point on the ground (B21); Tip is the break. Cached until the ground or the look changes.</summary>
         public FallenLay Lay(CompAerialAnchor a, FallenCord f)
         {
             if (lays.TryGetValue(f, out FallenLay l)) return l;
-            Vector3 b = a.BasePoint;
+            Vector3 b = a.BasePoint, t = a.AttachPoint;
+            double[] ins = AerialMaterials.InsulatorsFor(a);
             PathGrid pg = map.pathing.Normal.pathGrid;
             IntVec3 home = a.Position;
             Func<int, int, bool> walk = (x, z) =>
@@ -188,7 +191,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (!c.InBounds(map)) return false;
                 return c == home || pg.WalkableFast(c);
             };
-            l = AerialMath.LayFallen(new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, walk);
+            l = AerialMath.LayFallen(new P2(t.x + ins[ins.Length / 2], t.z), new P2(b.x, b.z), new P2(f.toward.x + 0.5, f.toward.z + 0.5), f.length, f.seed, walk);
             lays[f] = l;
             return l;
         }
@@ -267,12 +270,13 @@ namespace RimMandrake.MessyConduit.Aerial
                     Graphics.DrawMesh(m.mesh, Matrix4x4.identity, AerialMaterials.Span, 0);
                     lastSpanDraws++;
                 }
-                // B11: a cut / orphaned wire still hangs from the insulator down to where it lies on the ground
-                if (a.fallen.Count > 0 && AerialMaterials.Span != null && view.Contains(a.Position))
+                // B11/B21: a cut / orphaned wire is ONE cable from the insulator down to the break on the ground, in the
+                // span's own material and width (the ground layer prints only the frayed end at its tip)
+                if (a.fallen.Count > 0 && AerialMaterials.Span != null)
                     foreach (FallenCord f in a.fallen)
                     {
-                        Mesh dm = DropMesh(a, f, spanY);
-                        if (dm == null) continue;
+                        Mesh dm = WireMesh(a, f, spanY);
+                        if (dm == null || !dm.bounds.Intersects(new Bounds(view.CenterVector3, new Vector3(view.Width, 100f, view.Height)))) continue;
                         Graphics.DrawMesh(dm, Matrix4x4.identity, AerialMaterials.Span, 0);
                         lastDropDraws++;
                     }
@@ -308,13 +312,15 @@ namespace RimMandrake.MessyConduit.Aerial
 
         private readonly Dictionary<FallenCord, KeyValuePair<int, Mesh>> drops = new Dictionary<FallenCord, KeyValuePair<int, Mesh>>();
 
-        /// <summary>The hanging drop of a fallen cord (cached; rebuilt when the anchor moves or the look's width changes).</summary>
-        public Mesh DropMesh(CompAerialAnchor a, FallenCord f, float y)
+        /// <summary>The fallen wire's ribbon mesh: exactly <see cref="Lay"/>'s polyline at the span width (cached; rebuilt
+        /// when the anchor moves or the look's width changes).</summary>
+        public Mesh WireMesh(CompAerialAnchor a, FallenCord f, float y)
         {
             int sig = Gen.HashCombineInt(a.Position.GetHashCode(), Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f));
+            sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(a.Ext.attachZ * 1000f));
             if (drops.TryGetValue(f, out var kv) && kv.Key == sig) return kv.Value;
-            List<P2> pts = DropPoints(a, f);
-            if (pts == null) return null;
+            List<P2> pts = Lay(a, f).Pts;
+            if (pts.Count < 2) return null;
             var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
             float w = AerialMaterials.SpanWidth;
             double u = 0;
@@ -333,20 +339,11 @@ namespace RimMandrake.MessyConduit.Aerial
                 tris.Add(q); tris.Add(q + 2); tris.Add(q + 3);
                 tris.Add(q); tris.Add(q + 3); tris.Add(q + 1);
             }
-            var m = new Mesh { name = "RM_AerialDrop" };
+            var m = new Mesh { name = "RM_AerialFallenWire" };
             m.SetVertices(verts); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateBounds();
             if (drops.TryGetValue(f, out var old) && old.Value != null) UnityEngine.Object.Destroy(old.Value);
             drops[f] = new KeyValuePair<int, Mesh>(sig, m);
             return m;
-        }
-
-        /// <summary>Insulator -> ground point of a fallen cord (null when the cord has no laid length).</summary>
-        public List<P2> DropPoints(CompAerialAnchor a, FallenCord f)
-        {
-            FallenLay lay = Lay(a, f);
-            if (lay.Pts.Count < 2) return null;
-            Vector3 t = a.AttachPoint;
-            return AerialMath.FallenDrop(new P2(t.x, t.z), lay.Pts[AerialMath.GroundIndex(lay.Pts)], f.seed);
         }
 
         private SpanMesh MeshFor(CompAerialAnchor a, CompAerialAnchor b, float y)
@@ -356,6 +353,7 @@ namespace RimMandrake.MessyConduit.Aerial
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialSettings.sag * 1000f) * 7 + AerialSettings.maxStrands);
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f));
             sig = Gen.HashCombineInt(sig, Mathf.RoundToInt((a.Ext.attachZ + 7f * b.Ext.attachZ) * 1000f));
+            sig = Gen.HashCombineInt(sig, AerialMaterials.Look.GetHashCode());
             if (meshes.TryGetValue(key, out SpanMesh m) && m.sig == sig) return m;
             m = SpanMesh.Build(a, b, y, sig);
             meshes[key] = m;
@@ -390,12 +388,15 @@ namespace RimMandrake.MessyConduit.Aerial
             double len = Math.Max(0.01, Vector3.Distance(pa, pb));
             m.dir = new P2((pb.x - pa.x) / len, (pb.z - pa.z) / len);
             var n = new P2(-m.dir.Z, m.dir.X);
-            foreach (StrandSpec s in AerialMath.StrandsFor(m.seed, AerialSettings.maxStrands))
+            double[] ia = AerialMaterials.InsulatorsFor(a), ib = AerialMaterials.InsulatorsFor(b);
+            List<StrandSpec> specs = AerialMath.StrandsFor(m.seed, AerialSettings.maxStrands);
+            for (int si = 0; si < specs.Count; si++)
             {
-                double la = s.Lateral + (a.Ext.insulatorSpread * 0.5 * Math.Sign(s.Lateral));
-                double lb = s.Lateral + (b.Ext.insulatorSpread * 0.5 * Math.Sign(s.Lateral));
-                var A = new P2(pa.x + n.X * la, pa.z + n.Z * la);
-                var B = new P2(pb.x + n.X * lb, pb.z + n.Z * lb);
+                // each strand leaves its OWN insulator on the crossarm (fanned along the arm), plus its small lateral
+                StrandSpec s = specs[si];
+                double xa = ia[AerialMath.InsulatorIndex(si, specs.Count, ia.Length)], xb = ib[AerialMath.InsulatorIndex(si, specs.Count, ib.Length)];
+                var A = new P2(pa.x + xa + n.X * s.Lateral, pa.z + n.Z * s.Lateral);
+                var B = new P2(pb.x + xb + n.X * s.Lateral, pb.z + n.Z * s.Lateral);
                 m.strands.Add(AerialMath.SpanCurve(A, B, AerialSettings.sag * s.SagMul));
             }
             int total = m.strands.Sum(s => s.Count) * 2;

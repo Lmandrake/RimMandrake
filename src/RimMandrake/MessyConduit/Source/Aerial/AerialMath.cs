@@ -235,74 +235,66 @@ namespace RimMandrake.MessyConduit.Aerial
             return r;
         }
 
-        // ------------------------------------------------------------------ a fallen span on the floor (design 2.6)
+        /// <summary>Which of <paramref name="insulators"/> (left to right on the crossarm) strand <paramref name="strand"/> of
+        /// <paramref name="count"/> leaves from: one strand takes the middle, two take the outer pair, three take one
+        /// each; never out of range, and distinct strands take distinct insulators when there are enough.</summary>
+        public static int InsulatorIndex(int strand, int count, int insulators)
+        {
+            if (insulators <= 1 || count <= 0) return 0;
+            if (count == 1) return insulators / 2;
+            int i = (int)Math.Round(strand * (insulators - 1) / (double)(count - 1));
+            return Math.Max(0, Math.Min(insulators - 1, i));
+        }
+
+        // ------------------------------------------------------------------ a fallen / cut wire (design 2.6, owner review B11/B21)
         /// <summary>
-        /// The cable of a span whose far anchor died, lying on the floor from the survivor's base toward the dead
-        /// anchor's cell: <paramref name="length"/> of cord (span x 1.05) laid as a gentle seeded meander around the
-        /// straight line, every 0.25 cell, stopping at the first unwalkable cell (the rest "is over the wall" and is not
-        /// drawn). Spare length beyond the straight distance is spent as wider meander, not by passing the dead cell.
+        /// A cut or orphaned wire as ONE continuous cable (owner review 2026-10-04 B21: never a hanging drop joined to a
+        /// separate floor cord): it leaves the insulator at <paramref name="top"/> (screen z fakes height), hangs down
+        /// tangent-free to a touchdown point and lies on the ground the rest of the way to the break at
+        /// <paramref name="toward"/>, so the polyline's LAST point (Tip) is the break point. The ground path is the
+        /// straight line base -> break with one gentle seeded bow (at most 0.22 cell; no wiggle), checked cell by cell:
+        /// the first unwalkable cell stops it (Blocked; the rest "is over the wall"). Height above the ground path is
+        /// h (1 - s/s0)^2 up to the touchdown s0, then 0; the insulator's sideways offset on the crossarm fades out by s0.
+        /// <paramref name="length"/> (cable length, span x 1.05) caps the reach only when it is under 0.8 x the distance.
+        /// The first 0.75 cell is never checked: a wall bracket's base sits on its wall face.
         /// </summary>
-        public static FallenLay LayFallen(P2 from, P2 toward, double length, int seed, Func<int, int, bool> walkable)
+        public static FallenLay LayFallen(P2 top, P2 basePt, P2 toward, double length, int seed, Func<int, int, bool> walkable)
         {
             var lay = new FallenLay();
-            double dist = P2.Dist(from, toward);
-            lay.Pts.Add(from);
-            lay.Tip = from;
+            lay.Pts.Add(top);
+            lay.Tip = top;
+            double dist = P2.Dist(basePt, toward);
+            double h = top.Z - basePt.Z, ix = top.X - basePt.X;
             if (dist < 1e-6 || length <= 0) return lay;
-            double ux = (toward.X - from.X) / dist, uz = (toward.Z - from.Z) / dist;
-            double nx = -uz, nz = ux;
-            double reach = Math.Min(dist, length);
-            // meander amplitude chosen so the polyline length ~= length (small-slope approximation:
-            // L ~ reach * (1 + (A k)^2 / 4) for y = A sin(k s); clamp to a believable 0.05-0.9 cell)
-            double k = 2 * Math.PI / (3.0 + 2.0 * U(seed, 5));
-            double extra = Math.Max(0, length / reach - 1);
-            double amp = Math.Min(0.9, Math.Max(0.05, 2 * Math.Sqrt(extra) / k));
-            double phi = 2 * Math.PI * U(seed, 6);
-            const double step = 0.25;
-            double used = 0;
-            P2 prev = from;
-            for (double s = step; s <= reach + 1e-9; s += step)
+            double ux = (toward.X - basePt.X) / dist, uz = (toward.Z - basePt.Z) / dist, nx = -uz, nz = ux;
+            double want = length >= 0.8 * dist ? dist : length;   // the cable reaches the break unless it is far too short
+            double bow = (U(seed, 9) < 0.5 ? -1 : 1) * Math.Min(0.22, 0.06 + 0.02 * want) * (0.6 + 0.4 * U(seed, 10));
+            Func<double, double, P2> ground = (s, r) =>
             {
-                double fade = Math.Min(1, s / 1.0);                       // leaves the anchor base cleanly
-                double off = amp * fade * (Math.Sin(k * s + phi) - Math.Sin(phi) * (1 - fade));
-                var p = new P2(from.X + ux * s + nx * off, from.Z + uz * s + nz * off);
-                if (!walkable((int)Math.Floor(p.X), (int)Math.Floor(p.Z))) { lay.Blocked = true; break; }
-                double d = P2.Dist(prev, p);
-                if (used + d > length) break;
-                used += d;
-                lay.Pts.Add(p);
-                prev = p;
+                double off = bow * Math.Sin(Math.PI * Math.Min(1, s / r));
+                return new P2(basePt.X + ux * s + nx * off, basePt.Z + uz * s + nz * off);
+            };
+            // pass 1: how far the ground path is open
+            double reach = want;
+            for (double s = 0.25; s <= want + 1e-9; s += 0.25)
+            {
+                P2 g = ground(s, want);
+                if (s > 0.75 && !walkable((int)Math.Floor(g.X), (int)Math.Floor(g.Z))) { lay.Blocked = true; reach = Math.Max(0, s - 0.25); break; }
+            }
+            if (reach < 0.05) return lay;
+            double s0 = Math.Min(reach * 0.75, Math.Max(0.9, Math.Abs(h) * 0.85));
+            // pass 2: the one cable, insulator -> touchdown -> break (0.1 cell samples while hanging, 0.25 lying)
+            double sPos = 0;
+            while (true)
+            {
+                sPos = Math.Min(reach, sPos + (sPos < s0 ? 0.1 : 0.25));
+                double k = sPos < s0 ? 1 - sPos / s0 : 0;
+                P2 g = ground(sPos, reach);
+                lay.Pts.Add(new P2(g.X + ix * k, g.Z + h * k * k));
+                if (sPos >= reach - 1e-9) break;
             }
             lay.Tip = lay.Pts[lay.Pts.Count - 1];
             return lay;
-        }
-
-        /// <summary>
-        /// A cut or orphaned wire still hangs from the pole TOP down to the ground (owner review 2026-10-04 B11): the
-        /// drop runs from the insulator (top, screen z fakes height) to the point where the fallen cord meets the ground,
-        /// bowing a little to one side like a loose cable. Ends are exactly top and ground. Never shorter than the
-        /// straight drop.
-        /// </summary>
-        public static List<P2> FallenDrop(P2 top, P2 ground, int seed, double step = 0.1)
-        {
-            double len = P2.Dist(top, ground);
-            int n = Math.Max(4, (int)Math.Ceiling(len / Math.Max(0.02, step)));
-            double ux = len < 1e-9 ? 0 : (ground.X - top.X) / len, uz = len < 1e-9 ? -1 : (ground.Z - top.Z) / len;
-            double nx = -uz, nz = ux, bow = (U(seed, 9) < 0.5 ? -1 : 1) * (0.08 + 0.1 * U(seed, 10));
-            var pts = new List<P2>(n + 1);
-            for (int i = 0; i <= n; i++)
-            {
-                double t = i / (double)n, off = bow * Math.Sin(Math.PI * t) * Math.Min(1, len / 1.5);
-                pts.Add(new P2(top.X + (ground.X - top.X) * t + nx * off, top.Z + (ground.Z - top.Z) * t + nz * off));
-            }
-            return pts;
-        }
-
-        /// <summary>Where a fallen cord's drop meets the ground: the first laid point at least <paramref name="reach"/> from the base.</summary>
-        public static int GroundIndex(List<P2> lay, double reach = 0.35)
-        {
-            for (int i = 1; i < lay.Count; i++) if (P2.Dist(lay[0], lay[i]) >= reach) return i;
-            return lay.Count - 1;
         }
 
         // ------------------------------------------------------------------ explosion hit test (design 2.6)

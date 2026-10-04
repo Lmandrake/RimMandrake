@@ -9,8 +9,8 @@ namespace RimMandrake.MessyConduit.Aerial
     /// The aerial lines' static ground layer (design 2.5, 2.6): per section, for every anchor standing in it,
     ///  * the soft ground SHADOW of each UP span it owns (straight base-to-base, at AltitudeLayer.Shadows) -- what makes a
     ///    span read as overhead rather than as a cord on the floor;
-    ///  * every FALLEN cord lying at it (a span whose far anchor died, or a cut half), at conduit altitude like a floor
-    ///    cord, with a frayed end (live / dead art).
+    ///  * the frayed end (live / dead art) at the break of every FALLEN wire (a span whose far anchor died, or a cut
+    ///    half). The wire itself is ONE per-frame cable from the insulator to that break (RM_MapComponent_Aerial, B21).
     /// The span itself is drawn per frame from a cached mesh (RM_MapComponent_Aerial) so it can sway; this layer costs
     /// nothing per frame. GetBoundaryRect grows to the printed extent so long shadows/cords stay drawn.
     /// </summary>
@@ -19,8 +19,6 @@ namespace RimMandrake.MessyConduit.Aerial
         private CellRect bounds;
         public static int LastPrintedVerts, LastFallenPrinted, LastShadowsPrinted;
         public const float ShadowWidth = 0.12f;
-        /// <summary>A fallen cord is the span's own cable lying on the ground (B11), never the floor cord.</summary>
-        public static float FallenWidth => Mathf.Max(0.11f, AerialMaterials.SpanWidth);
 
         public SectionLayer_RM_AerialGround(Section section) : base(section)
         {
@@ -53,13 +51,12 @@ namespace RimMandrake.MessyConduit.Aerial
                             verts += Ribbon(AerialMaterials.Shadow, new List<P2> { new P2(pa.x, pa.z), new P2(pb.x, pb.z) }, ShadowWidth, shadowY);
                             shadowN++;
                         }
-                    if (a.fallen.Count == 0 || AerialMaterials.Fallen == null) continue;
+                    if (a.fallen.Count == 0) continue;
                     bool live = comp.FallenLiveCached(a) ?? comp.AnchorLive(a);
                     foreach (FallenCord f in a.fallen)
                     {
                         FallenLay lay = comp.Lay(a, f);
-                        if (lay.Pts.Count < 2) continue;
-                        verts += Ribbon(AerialMaterials.Fallen, lay.Pts, FallenWidth, cordY);
+                        if (lay.Pts.Count < 2) continue;      // the wire itself is drawn per frame (one piece, B21); only its frayed end here
                         Material fray = live ? AerialMaterials.FrayLive : AerialMaterials.FrayDead;
                         if (fray != null)
                         {

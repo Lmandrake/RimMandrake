@@ -157,33 +157,34 @@ namespace RimMandrake.MessyConduit.SelfTest
             C(rep.OrderBy(x => x).SequenceEqual(new[] { 1, 2, 4 }), "watchdog repairs UP spans with a net-less or split end, never a cut span (" + string.Join(",", rep) + ")");
         }
 
-        // ------------------------------------------------------------------ fallen span as a floor cord
+        // ------------------------------------------------------------------ a fallen / cut wire is ONE cable (B11/B21)
         private static void Fallen()
         {
             Func<int, int, bool> open = (x, z) => true;
-            FallenLay f = AerialMath.LayFallen(new P2(10.5, 10.5), new P2(22.5, 10.5), 12 * 1.05, 42, open);
-            C(f.Pts.Count >= 4, "fallen cord has a polyline");
-            if (f.Pts.Count < 4) return;
-            double len = 0;
-            for (int i = 1; i < f.Pts.Count; i++) len += P2.Dist(f.Pts[i - 1], f.Pts[i]);
-            C(Math.Abs(len - 12.6) < 0.8, "fallen cord length ~ span x 1.05 (" + len.ToString("0.00") + ")");
-            C(P2.Dist(f.Pts[0], new P2(10.5, 10.5)) < 1e-9, "fallen cord starts at the survivor's base");
-            C(f.Tip.X > 18 && !f.Blocked, "on open ground it reaches toward the dead pole (tip x " + f.Tip.X.ToString("0.0") + ")");
-            Func<int, int, bool> wall = (x, z) => x != 15;
-            FallenLay g = AerialMath.LayFallen(new P2(10.5, 10.5), new P2(22.5, 10.5), 12.6, 42, wall);
-            C(g.Blocked && g.Pts.All(p => (int)Math.Floor(p.X) != 15) && g.Tip.X < 15, "a wall stops the cord; the rest is 'over the wall' (no vertex in the wall)");
-            FallenLay h = AerialMath.LayFallen(new P2(10.5, 10.5), new P2(22.5, 10.5), 12.6, 42, open);
-            C(h.Pts.Count == f.Pts.Count && h.Pts.Zip(f.Pts, (p, q) => P2.Dist(p, q) < 1e-12).All(v => v), "fallen cord deterministic by seed");
-            // B11 (owner review 2026-10-04): a cut wire still hangs from the pole TOP to the ground before it lies down
-            var top = new P2(10.5, 10.5 + 2.66);
-            int gi = AerialMath.GroundIndex(f.Pts);
-            P2 ground = f.Pts[gi];
-            List<P2> drop = AerialMath.FallenDrop(top, ground, 42);
-            double dl = 0, maxZ = drop.Max(p => p.Z);
-            for (int i = 1; i < drop.Count; i++) dl += P2.Dist(drop[i - 1], drop[i]);
-            C(P2.Dist(drop[0], top) < 1e-9 && P2.Dist(drop[drop.Count - 1], ground) < 1e-9, "drop runs exactly from the insulator to the ground point");
-            C(P2.Dist(f.Pts[0], ground) >= 0.35 - 1e-9 && P2.Dist(f.Pts[0], ground) < 0.7, "drop meets the ground 0.35-0.7 cell from the base");
-            C(dl >= P2.Dist(top, ground) - 1e-9 && dl < P2.Dist(top, ground) * 1.2 && maxZ <= top.Z + 1e-9, "drop descends from the top, length " + dl.ToString("0.00"));
+            var basePt = new P2(10.5, 10.5);
+            var top = new P2(10.5 + 0.087, 10.5 + 3.22);                 // the middle insulator, 3.22 cells up
+            var brk = new P2(16.5, 10.5);                                 // the cut cell's centre (half of a 12-cell span)
+            FallenLay f = AerialMath.LayFallen(top, basePt, brk, 6.0 * 1.05, 42, open);
+            double maxSeg = 0, len = 0;
+            for (int i = 1; i < f.Pts.Count; i++) { double d = P2.Dist(f.Pts[i - 1], f.Pts[i]); len += d; maxSeg = Math.Max(maxSeg, d); }
+            // B21 (owner review 2026-10-04): the downed wire reaches down to the break, as one piece from the insulator
+            C(f.Pts.Count >= 10 && P2.Dist(f.Pts[0], top) < 1e-9 && P2.Dist(f.Tip, f.Pts[f.Pts.Count - 1]) < 1e-9 &&
+              P2.Dist(f.Tip, brk) < 1e-9 && maxSeg <= 0.3 && !f.Blocked,
+              "B21 cut wire is ONE polyline from the insulator to the break point (start " + f.Pts[0] + " tip " + f.Tip + " break " + brk + ", max gap " + maxSeg.ToString("0.00") + ")");
+            int touch = f.Pts.FindIndex(p => Math.Abs(p.Z - 10.5) <= 0.25);
+            C(f.Pts.All(p => p.Z <= top.Z + 1e-9) && touch > 0 && f.Pts.Skip(touch).All(p => Math.Abs(p.Z - 10.5) <= 0.25) && len < 1.4 * (P2.Dist(basePt, brk) + 3.22),
+              "it hangs down from the top, then lies on the ground (no wiggle wider than 0.25) to the break, length " + len.ToString("0.00"));
+            FallenLay g = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, (x, z) => x != 14);
+            C(g.Blocked && g.Tip.X < 14 && g.Pts.Skip(1).All(p => (int)Math.Floor(p.X) != 14 || p.Z > 11.2), "a wall stops the lying wire before the wall (tip " + g.Tip + ")");
+            FallenLay h = AerialMath.LayFallen(top, basePt, brk, 6.3, 42, open);
+            C(h.Pts.Count == f.Pts.Count && h.Pts.Zip(f.Pts, (p, q) => P2.Dist(p, q) < 1e-12).All(v => v), "fallen wire deterministic by seed");
+            FallenLay k = AerialMath.LayFallen(top, basePt, new P2(22.5, 10.5), 12.6, 7, open);
+            double kl = 0;
+            for (int i = 1; i < k.Pts.Count; i++) kl += P2.Dist(k.Pts[i - 1], k.Pts[i]);
+            C(P2.Dist(k.Tip, new P2(22.5, 10.5)) < 1e-9 && kl > 0.85 * 12.6, "a span whose far pole died lies all the way to the dead pole's cell (" + kl.ToString("0.0") + ")");
+            C(AerialMath.InsulatorIndex(0, 1, 3) == 1 && AerialMath.InsulatorIndex(0, 2, 3) == 0 && AerialMath.InsulatorIndex(1, 2, 3) == 2 &&
+              Enumerable.Range(0, 3).All(i => AerialMath.InsulatorIndex(i, 3, 3) == i) && AerialMath.InsulatorIndex(2, 3, 1) == 0,
+              "span strands fan to distinct insulators on the crossarm (1 -> middle, 2 -> outer pair, 3 -> one each)");
         }
 
         private static void Explosion()
