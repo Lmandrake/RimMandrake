@@ -21,9 +21,11 @@ DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTame
             "plantPredationEnabled": True, "pollinationGateEnabled": True,
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
             "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True,
-            "attarEnabled": True, "decayCellsEnabled": True, "decayCellPowerMultiplier": 1.0}
+            "attarEnabled": True, "decayCellsEnabled": True, "decayCellPowerMultiplier": 1.0,
+            "rottingBedCorpsesEnabled": True, "rottingBedRotDays": 3.0}
 NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
-       "ambushFrogHunts", "attarEnabled", "youngCallEnabled", "decayCellsEnabled", "decayCellPowerMultiplier"]
+       "ambushFrogHunts", "attarEnabled", "youngCallEnabled", "decayCellsEnabled", "decayCellPowerMultiplier",
+       "rottingBedCorpsesEnabled", "rottingBedRotDays"]
 
 
 def static_checks():
@@ -183,6 +185,28 @@ def static_checks():
         return 0.0 if full <= 0 else mn + (1 - mn) * min(1.0, full)
     if not (frac(0) == 0 and abs(frac(0.01) - 0.307) < 1e-3 and frac(1) == 1 and frac(0.5) < frac(1)):
         bad.append("decay output curve: empty must be 0 and output must fall as feed is spent")
+    # MIASMA_ROTTING_BED_CORPSES_1: the bed is a corpse store with the rot-down class; bones exist; skull is vanilla
+    bed = dc[dc.index("<defName>RM_RottingBed</defName>"):]
+    bed = bed[:bed.index("</ThingDef>")]
+    for needle in ("RimMandrake.Miasma.RM_Building_RottingBed", "<tickerType>Rare</tickerType>", "<li>Corpses</li>",
+                   "<li>CorpsesMechanoid</li>", "<maxItemsInCell>1</maxItemsInCell>", "ITab_Storage",
+                   "<bonesDef>RM_Bones</bonesDef>"):
+        if needle not in bed:
+            bad.append("RM_RottingBed lacks %s" % needle)
+    if dc.count("<defName>RM_Bones</defName>") != 1:
+        bad.append("RM_Bones ThingDef missing or duplicated")
+    rb = open(os.path.join(HERE, "Source", "RM_RottingBed.cs"), encoding="utf-8").read()
+    for needle in ("rottingBedCorpsesEnabled", "rottingBedRotDays", '"Skull"', "AddSource(inner.LabelShort)",
+                   "BodyPartDefOf.Head", "corpse.Strip(", "TickRare"):
+        if needle not in rb:
+            bad.append("RM_RottingBed.cs lacks %s" % needle)
+    if '<Compile Include="RM_RottingBed.cs" />' not in open(os.path.join(HERE, "Source", "RM_Miasma.csproj")).read():
+        bad.append("RM_RottingBed.cs is not in the csproj (it would compile into nothing)")
+    # bones curve, mirrored from RottingBedMath.BonesFor (round(size x 8), at least 1)
+    def bones(size, per=8.0):
+        return max(1, int(size * per + 0.5))
+    if not (bones(1.0) == 8 and bones(0.05) == 1 and bones(2.4) == 19):
+        bad.append("bones curve: a human must leave 8, a rat at least 1")
     return bad
 
 
@@ -260,6 +284,21 @@ def _build_suite():
             _unmeasured(t, "a fed RM_DecayCell lighting a lamp, output falling to 0 unfed, and a cell past "
                              "600 digested swapping to RM_RottingBed need a live map (spawn the cell, refuel, step ticks)")
             return
+
+    @suite.chain("rotting_bed_corpses")
+    def rotting_bed_corpses(t):
+        """MIASMA_ROTTING_BED_CORPSES_1. Runs on the CURRENT map. Not proven here: haulers choosing the bed (a
+        storage priority read, not a proof) and the timed rot-down over rottingBedRotDays -- first poke: build the
+        bed, drop a corpse beside it, step 2 days, read its inspect string."""
+        with t.component("corpse_leaves_bones_and_named_skull", toggle="rottingBedCorpsesEnabled"):
+            if t.session is None:
+                return
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Miasma.RM_RottingBedProof", method="ProofCorpse",
+                              args="current")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            for want in ("accepts=True", "corpseGone=True", "bones=8", "skull=True", "skullNamesSource=True"):
+                if want not in text:
+                    raise ExpectationFailed("rotting bed proof missing %s: %s" % (want, text[:200]))
 
     @suite.chain("young_call")
     def young_call(t):
