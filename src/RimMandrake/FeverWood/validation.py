@@ -44,6 +44,7 @@ stack-size key on list_things rows. A component that cannot read a shape it need
 """
 import contextlib
 import json
+import math
 import os
 import re
 import sys
@@ -211,6 +212,10 @@ def _limb(name):
                                     if comp is not None else 1800)}
 
 
+# Blunt's buildingDamageFactor (Core DamageDef Blunt, MEASURED via RimSage 2026-10-03): DamageWorker.Apply multiplies
+# every Blunt hit on a Building by it, so a raw amount is 1.5x on a limb. A severe hit sized without it KILLS the limb
+# (Kill runs before the comp's hook) instead of severing it -- the cause of run17's "severed, but no flesh".
+BLUNT_BUILDING_FACTOR = 1.5
 LIMB_FEELER, LIMB_LASH, LIMB_PORTER = _limb("RM_Sekkulaath_Feeler"), _limb("RM_Sekkulaath_Lash"), _limb("RM_Sekkulaath_Porter")
 PORTER_LOOT = ("Silver", "Gold", "RM_SeepOil", "RM_PottersClay", "RM_OssagrelSap")   # RM_TentacleLoot.Table
 
@@ -415,6 +420,17 @@ def _enter(t):
         x, z = t.anchor
         t.anchor = (x + PAD_OFFSET, z + PAD_OFFSET)
         t._fw_anchored = True
+
+
+def _proof_text(r):
+    """A static_call's result string; when the call itself failed (stale DLL without the method, an exception) the
+    bridge's own message, so a FAIL says WHY instead of printing an empty string (run17: 'did not stage the column: ')."""
+    if not isinstance(r, dict):
+        return ""
+    res = r.get("result")
+    if res not in (None, ""):
+        return str(res)
+    return "(static_call returned no result: success=%s message=%s)" % (r.get("success"), r.get("message") or r.get("error"))
 
 
 def _pad_rect(t):
@@ -1012,7 +1028,11 @@ def tentacle_ladder(t):
             limb = _spawn_building(t, "RM_Sekkulaath_Feeler", x, z)
             if _live(t) and _things(t, "RM_SeveredTentacleFlesh", _pad_rect(t)):
                 _fail("precondition: severed flesh already on the pad")
-            amount = int(fe["hp"] * fe["severe"]) + 5            # past the severe fraction, short of killing it outright
+            # past the severe fraction, short of killing it outright -- AFTER Blunt's building factor
+            amount = int(math.ceil(fe["hp"] * fe["severe"] / BLUNT_BUILDING_FACTOR)) + 2
+            if _live(t) and amount * BLUNT_BUILDING_FACTOR >= fe["hp"]:
+                _fail("cannot size a sever-not-kill hit: severe fraction %.2f leaves no room below %d hp" % (
+                    fe["severe"], fe["hp"]))
             _damage(t, limb, amount)
             t.wait_ticks(60)
             if _live(t):
@@ -1022,6 +1042,21 @@ def tentacle_ladder(t):
                 flesh = _things(t, "RM_SeveredTentacleFlesh", _pad_rect(t))
                 if not flesh:
                     _fail("severed, but no RM_SeveredTentacleFlesh dropped (harvestThing unwired?)")
+
+        with _comp(t, "a_killing_blow_still_drops_flesh", independent=True):
+            # one hit past full hp: DamageWorker.Apply Kills the limb before RM_CompTentacleLimb's hook runs, so
+            # the comp's own drop sees no map -- the def's killedLeavingsRanges is what must drop the flesh
+            x, z = t.anchor
+            t.bridge_call("jawa/destroy_batch", rects=_pad_rect(t), categories="All")
+            fe = LIMB_FEELER
+            limb = _spawn_building(t, "RM_Sekkulaath_Feeler", x, z)
+            _damage(t, limb, int(fe["hp"]) + 5)
+            t.wait_ticks(60)
+            if _live(t):
+                if _alive(t, limb, _pad_rect(t), "RM_Sekkulaath_Feeler"):
+                    _fail("the feeler survived %d damage on %d hp" % (int(fe["hp"]) + 5, fe["hp"]))
+                if not _things(t, "RM_SeveredTentacleFlesh", _pad_rect(t)):
+                    _fail("a killed limb dropped no RM_SeveredTentacleFlesh (killedLeavingsRanges unwired?)")
 
         with _comp(t, "mild_damage_retreats_without_dropping_anything", independent=True):
             x, z = t.anchor
@@ -1708,7 +1743,7 @@ def ant_theft(t):
     def proof(t, method):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.FeverWood.RM_KurrethTheftProof", method=method,
                           args="current")
-        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        return _proof_text(r)
 
     with _comp(t, "a_kurreth_column_carries_thornbugs_off_alive", toggle="antTheftEnabled"):
         raid = proof(t, "ProofRaid")
@@ -1766,7 +1801,7 @@ def kurreth_column(t):
 
     def proof(t, typ, method):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.FeverWood." + typ, method=method, args="current")
-        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        return _proof_text(r)
 
     def nums(text):
         return dict((k, v) for k, v in re.findall(r"(\w+)=([\w.,-]*)", text))
@@ -1828,7 +1863,7 @@ def oil_boil(t):
 
     def proof(t, method):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.FeverWood.RM_OilBoilProof", method=method, args="current")
-        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        return _proof_text(r)
 
     def nums(text):
         return dict((k, v) for k, v in re.findall(r"(\w+)=([\w.-]+)", text))
