@@ -78,6 +78,9 @@ namespace RimMandrake.Miasma
         // MIASMA_ROTTING_BED_CORPSES_1: a rotting bed rots stored corpses down to bones and skulls.
         public static bool rottingBedCorpsesEnabled = true;
         public static float rottingBedRotDays = 3f;
+        // MIASMA_MOTHERS_PRICE_1: a held stranded young is worth a fortune; a buyer comes; selling it betrays her.
+        public static bool mothersPriceEnabled = true;
+        public static float youngPriceOffset = 1500f;
 
         public override void ExposeData()
         {
@@ -89,6 +92,8 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref decayCellPowerMultiplier, "decayCellPowerMultiplier", 1f, true);
             Scribe_Values.Look(ref rottingBedCorpsesEnabled, "rottingBedCorpsesEnabled", true, true);
             Scribe_Values.Look(ref rottingBedRotDays, "rottingBedRotDays", 3f, true);
+            Scribe_Values.Look(ref mothersPriceEnabled, "mothersPriceEnabled", true, true);
+            Scribe_Values.Look(ref youngPriceOffset, "youngPriceOffset", 1500f, true);
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref wardenSuccessionEnabled, "wardenSuccessionEnabled", true, true);
             Scribe_Values.Look(ref selfTameChancePerCheck, "selfTameChancePerCheck", 0.12f, true);
@@ -216,6 +221,19 @@ namespace RimMandrake.Miasma
                 rottingBedRotDays = list.Slider(rottingBedRotDays, 0.5f, 10f);
             }
 
+            list.GapLine();
+            list.CheckboxLabeled("The mother's price: a held stranded young is worth a fortune",
+                ref mothersPriceEnabled,
+                "A stranded young your colony holds sells for a fortune to any trader, and a caravan comes for it a day or "
+                + "two after you take one in. Sell it and its crèche remembers: the warden mother never tolerates your "
+                + "colony again and none of her young will be yours. Carry it back into her water instead and she "
+                + "tolerates your whole colony from then on. Off: no price, no buyer, no betrayal, no return.");
+            if (mothersPriceEnabled)
+            {
+                list.Label("  Extra price for a stranded young: " + youngPriceOffset.ToString("0") + " silver");
+                youngPriceOffset = list.Slider(youngPriceOffset, 0f, 5000f);
+            }
+
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -254,6 +272,7 @@ namespace RimMandrake.Miasma
                 ApplyPollinationGate();
                 ApplyAttar();
                 ApplyYoungCall();
+                ApplyYoungPrice();
             }
             catch (System.Exception e)
             {
@@ -283,6 +302,14 @@ namespace RimMandrake.Miasma
                     f.SetValue(cp, null);
                 }
             }
+        }
+
+        // MIASMA_MOTHERS_PRICE_1: the young's fortune is the hediff's own priceOffset (PriceUtility.PawnQualityPriceOffset).
+        private static void ApplyYoungPrice()
+        {
+            HediffDef hd = DefDatabase<HediffDef>.GetNamedSilentFail("RUT_StrandedDeformation");
+            if (hd == null) return;
+            hd.priceOffset = RM_MiasmaSettings.mothersPriceEnabled ? RM_MiasmaSettings.youngPriceOffset : 0f;
         }
 
         // Hides/shows the attar recipe on its still. ThingDef.allRecipesCached is private, so reset by reflection.

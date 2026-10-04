@@ -84,6 +84,15 @@
         <checkIntervalTicksRange>2000~3200</checkIntervalTicksRange>
       </li>
     </comps>
+    <!-- MIASMA_MOTHERS_PRICE_1: priceOffset is written from Mod Settings (youngPriceOffset) at startup; the buyer names
+         are generic here and named by UtinniPatches (RUT_MothersPrice_Buyers.xml). -->
+    <priceOffset>1500</priceOffset>
+    <modExtensions>
+      <li Class="RimMandrake.Miasma.RM_MothersPriceExtension">
+        <buyerPen>a dealer in rare beasts</buyerPen>
+        <buyerSea>a sea-trader who knows what these are worth</buyerSea>
+      </li>
+    </modExtensions>
   </HediffDef>
 
 </Defs>

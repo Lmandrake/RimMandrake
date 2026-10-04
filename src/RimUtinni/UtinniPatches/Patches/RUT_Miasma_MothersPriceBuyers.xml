@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MIASMA_MOTHERS_PRICE_1, campaign tier: the buyers named (miasma_bedazzle_review_2026-10-02.md §3: "the Deepwater
+     vigil wants them for the sea; margin traders want them for the pens"). Replaces the free mod's generic labels on
+     RUT_StrandedDeformation's RM_MothersPriceExtension. Guarded by a Conditional on that node (never a top-level
+     MayRequire, which the engine ignores), so with the Miasma absent this does nothing. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/HediffDef[defName="RUT_StrandedDeformation"]/modExtensions/li[@Class="RimMandrake.Miasma.RM_MothersPriceExtension"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/HediffDef[defName="RUT_StrandedDeformation"]/modExtensions/li[@Class="RimMandrake.Miasma.RM_MothersPriceExtension"]/buyerSea</xpath>
+          <value>
+            <buyerSea>a keeper of the Deepwater vigil, who wants it for the sea</buyerSea>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/HediffDef[defName="RUT_StrandedDeformation"]/modExtensions/li[@Class="RimMandrake.Miasma.RM_MothersPriceExtension"]/buyerPen</xpath>
+          <value>
+            <buyerPen>a margin trader, who wants it for the pens</buyerPen>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

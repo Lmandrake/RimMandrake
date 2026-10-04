@@ -88,14 +88,33 @@ namespace RimMandrake.EnvironmentalHazards
             ApplyDuty();
         }
 
+        // MIASMA_MOTHERS_PRICE_1: the two colony-level states the befriending and the sale write (the Miasma reaches
+        // these by name through reflection; it holds no reference to this assembly). Returning a stranded young grants
+        // tolerance to the whole player colony, present and future; selling one revokes it forever, and nothing can
+        // grant it again. Both visible on her inspect pane.
+        private bool colonyTolerated;
+        private bool betrayed;
+
+        public bool ColonyTolerated => colonyTolerated && !betrayed;
+
+        public bool Betrayed => betrayed;
+
         public bool IsTolerated(Pawn p)
         {
-            return p != null && toleratedPawnIDs != null && toleratedPawnIDs.Contains(p.thingIDNumber);
+            if (p == null || betrayed)
+            {
+                return false;
+            }
+            if (colonyTolerated && p.Faction == Faction.OfPlayer)
+            {
+                return true;
+            }
+            return toleratedPawnIDs != null && toleratedPawnIDs.Contains(p.thingIDNumber);
         }
 
         public void GrantTolerance(Pawn p)
         {
-            if (p == null)
+            if (p == null || betrayed)
             {
                 return;
             }
@@ -106,6 +125,36 @@ namespace RimMandrake.EnvironmentalHazards
             }
 
             toleratedPawnIDs.Add(p.thingIDNumber);
+        }
+
+        public bool GrantColonyTolerance()
+        {
+            if (betrayed)
+            {
+                return false;
+            }
+            colonyTolerated = true;
+            return true;
+        }
+
+        public void RevokeForever()
+        {
+            betrayed = true;
+            colonyTolerated = false;
+            toleratedPawnIDs?.Clear();
+        }
+
+        public override string CompInspectStringExtra()
+        {
+            if (betrayed)
+            {
+                return "Remembers the young you sold. She will never tolerate your colony.";
+            }
+            if (colonyTolerated)
+            {
+                return "Tolerates your colony: you brought her young back.";
+            }
+            return null;
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -152,6 +201,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_TargetInfo.Look(ref anchor, "anchor", LocalTargetInfo.Invalid);
             Scribe_Values.Look(ref anchorSet, "anchorSet", false);
             Scribe_Collections.Look(ref toleratedPawnIDs, "toleratedPawnIDs", LookMode.Value);
+            Scribe_Values.Look(ref colonyTolerated, "colonyTolerated", false);
+            Scribe_Values.Look(ref betrayed, "betrayed", false);
         }
 
         // MIASMA_MECHANICS_1 M6 build, §8 "everything living remembers it":
