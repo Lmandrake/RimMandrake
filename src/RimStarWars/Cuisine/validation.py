@@ -115,7 +115,7 @@ def static_checks():
     return bad
 
 
-from modcheck import Suite, ExpectationFailed  # noqa: E402
+from modcheck import Suite, ExpectationFailed, shipped_defs  # noqa: E402
 
 suite = Suite("Cuisine")
 suite.toggles = []   # no Settings.cs / ModSettings anywhere in this mod's tree
@@ -401,3 +401,14 @@ if __name__ == "__main__":
     for p in problems:
         print("  - " + p)
     sys.exit(1 if problems else 0)
+
+
+# NORTHSTAR_PARTIAL_GAPS_FILL_1 (audit row: "salt-cured ration line ... 0 salt references; 8 meal defs / 14 recipes
+# only sampled"): every def in Defs/ (rations, cure recipes, the salt-cured thought, culture starters, all meals and
+# recipes) must be loaded live, labels and recipe work amounts equal to the XML. The cook-a-bill end to end stays
+# uncovered (it needs a stocked kitchen fixture).
+shipped_defs.add_chain(suite, __file__,
+                       fields_by_type={"RecipeDef": ("label", "workAmount"),
+                                       "ThingDef": ("label", "stackLimit")},
+                       sanity=("RSW_SaltCuredRation_White", "RSW_CureWithAmberSalt", "RSW_AteCrystalSaltCured"),
+                       min_count=30)
