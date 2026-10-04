@@ -885,6 +885,12 @@ def lane_a_live(B, rows, log):
                                           "stored": bs.get("storedEnergyAfter")}})
     row(rows, "P1B_plot_built", "PASS" if b3.get("survived") == len(FIELD + RUN2) and bs.get("storedEnergyAfter", 0) > 0 else "FAIL",
         "SITE", {"conduit": b3.get("survived"), "battery2": bat2, "stored": bs.get("storedEnergyAfter")})
+    # owner review 2026-10-04 B1: power strips are the Modern (ExtensionCord) look only; the default Scrapper look's
+    # pile is junction boxes. So the strip rows (B6, B6b) read the field in the Modern look; settle is look-agnostic.
+    B.probe("set:style=ExtensionCord")
+    B.ticks(2)
+    time.sleep(1.0)
+    m0 = motion(B)
     # B1 settle
     row(rows, "B1_rope_settle", "PASS" if m0.get("settledStrands", 0) > 0 and m0.get("settleMaxStretch", 1) < 0.03 and
         m0.get("settleMaxLenDev", 1) <= 0.05 else "FAIL", "MOD",
@@ -978,6 +984,8 @@ def lane_a_live(B, rows, log):
         {k: d1.get(k) for k in ("litStrips", "darkStrips", "liveWallEnds")})
     if bat2:
         B.call("jawa/battery_set", thing=bat2, mode="setPct", value=1.0)
+    B.probe("set:style=StarWarsJawa")              # back to the shipped default look for the rows after lane A
+    B.ticks(2)
     B.ticks(2)
     # M10 the messiness (tangle threshold) setting changes the census on the same field
     B.probe("set:tangleMin=20")
@@ -1083,7 +1091,10 @@ def style_live(B, rows, log, shots_prefix=None):
                   not any(t in (per[st].get("printedTex") or {}) for o in STYLES if o != st for t in strand_sets[o] if t not in strand_sets[st])
                   for st in STYLES}
     plug_ids = {st: ((per[st].get("slots") or {}).get("Plug") or {}).get("id") for st in STYLES}
-    span_ok = {st: per[st].get("aerialSpanTex") == (strand_sets[st][0] if strand_sets[st] else None) for st in STYLES}
+    # owner review 2026-10-04 B12: the Modern (ExtensionCord) look's overhead lines stay BLACK while its floor cords are
+    # multi-coloured, so its span cable is the black rubber strand, not its first floor strand
+    span_want = {st: ("Strand_BlackRubber" if st == "ExtensionCord" else (strand_sets[st][0] if strand_sets[st] else None)) for st in STYLES}
+    span_ok = {st: per[st].get("aerialSpanTex") == span_want[st] for st in STYLES}
     row(rows, "ST2_switch_changes_textures", "PASS" if distinct and all(printed_ok.values()) and len(set(plug_ids.values())) == len(STYLES)
         and all(span_ok.values()) else "FAIL", "MOD",
         {"strandTex": strand_sets, "printedOnlyOwnStrand": printed_ok, "plugTexIds": plug_ids, "aerialSpanFollows": span_ok,
