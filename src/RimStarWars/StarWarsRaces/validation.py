@@ -314,3 +314,50 @@ shipped_defs.add_chain(suite, __file__,
                                        "RecipeDef": ("label", "jobString")},
                        sanity=("RSW_RimMandrakeJawa", "RSW_MandrakeJawa", "Head_Bone", "Male_HeavyBoneNormal"),
                        min_count=500)
+
+
+# ---------------------------------------------------------------- name rulepacks (NORTHSTAR_PARTIAL_GAPS_FILL_1)
+# Audit row: "48 name rulepacks beyond Jawa produce words? (a pack without its word list resolves and produces
+# nothing)". Pure repo read, runs offline: every Rule_File path in every RulePackDef under Defs/ resolves to a
+# NON-EMPTY Languages/English/Strings/<path>.txt, and every [keyword] a rulesStrings line uses is defined in the
+# same pack (rule params like "(p=3)" stripped). First run 2026-10-04 found RSW_KoTOR_NamerAqualish's three lists
+# absent from every installed mod (AQUALISH_NAME_WORDLISTS_1) and SandP's Nick.txt empty (its nickname rule cut).
+def rulepack_findings(mod_dir=_MOD_DIR):
+    """([finding], packs_read, files_checked)."""
+    import glob as _glob
+    import re as _re
+    import xml.etree.ElementTree as _ET
+    bad, n_packs, n_files = [], 0, 0
+    strings = os.path.join(mod_dir, "Languages", "English", "Strings")
+    for f in sorted(_glob.glob(os.path.join(mod_dir, "Defs", "**", "*.xml"), recursive=True)):
+        for rp in _ET.parse(f).getroot().iter("RulePackDef"):
+            name, n_packs = rp.findtext("defName"), n_packs + 1
+            defined, used = set(), set()
+            for li in rp.findall("rulePack/rulesStrings/li"):
+                k, _sep, v = (li.text or "").partition("->")
+                defined.add(_re.sub(r"\(.*\)", "", k).strip())
+                used.update(_re.findall(r"\[(\w+)\]", v))
+            for r in rp.findall("rulePack/rulesRaw/li"):
+                kw, p = r.findtext("keyword"), r.findtext("path")
+                if kw:
+                    defined.add(kw.strip())
+                if p:
+                    n_files += 1
+                    fp = os.path.join(strings, *p.strip().split("/")) + ".txt"
+                    if not os.path.isfile(fp):
+                        bad.append("%s: word list %s missing" % (name, p.strip()))
+                    elif not any(l.strip() for l in open(fp, encoding="utf-8-sig")):
+                        bad.append("%s: word list %s empty" % (name, p.strip()))
+            bad.extend("%s: [%s] used but never defined" % (name, u) for u in sorted(used - defined))
+    return bad, n_packs, n_files
+
+
+@suite.chain("namer_wordlists_resolve")
+def namer_wordlists_resolve(t):
+    """Offline: every shipped name rulepack can produce a word (no live call)."""
+    with t.component("every_rulepack_word_list_exists_and_every_keyword_is_defined", beyond_toggle=True):
+        bad, packs, files = rulepack_findings()
+        if packs < 40 or files < 100:
+            raise ExpectationFailed("rulepack parse is blind: %d packs, %d Rule_File paths" % (packs, files))
+        if bad:
+            raise ExpectationFailed("%d rulepack defect(s): %s" % (len(bad), "; ".join(bad)))
