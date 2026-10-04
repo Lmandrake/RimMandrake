@@ -167,15 +167,9 @@
     values are authored here, not copied: the donor defs are not in this repo.
     Each keeps its old wildPlants weight in the biome def.
 
-    ART IS BLOCKED, NOT FAKED. The validated regenerated art for all seven
-    (artpipe ids crystalflower_v1, bloodbouquet_v1, ravennettle_v1,
-    redbugloss_v1, giantagaritox_v1, keeningcordax_v1, gianttoxicflower_v1)
-    exists as artpipe/done manifests only; the PNGs under
-    infrastructure/artpipe/_artsrc/ are gitignored and absent from this
-    checkout. The texPaths below are wired for the drop-in:
-    Textures/Things/Plant/RM_<Name>/RM_<Name>_a.png. Until then these seven
-    render with the engine's missing-texture placeholder. No donor art is
-    copied and no new art was queued.
+    Art: the artpipe v2 renders (bloodbouquet_v2 ... redbugloss_v2, regenerated
+    after the v1 PNGs were lost in the state migration; owner ruled the donor
+    art "replace" 2026-09-20) at Textures/Things/Plant/RM_<Name>/RM_<Name>_a.png.
   -->
 
   <ThingDef ParentName="PlantBase">

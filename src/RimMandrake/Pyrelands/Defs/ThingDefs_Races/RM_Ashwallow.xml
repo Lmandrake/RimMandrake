@@ -37,15 +37,8 @@
   of load order, and mandrake.rm.pyrelands is already a hard dependency of
   every Pyrelands creature cast here.
 
-  ART: none commissioned yet — checked infrastructure/artpipe/{done,pending}/
-  registry.jsonl and _artsrc for "burrow"/"pyrelands grazer"/"ashwallow" as of
-  this pass: clean, nothing pre-existing (the two "grazer" hits that DO exist,
-  rutslimegrazer_v1/v2 and desertportb_feralgrazer, are unrelated subjects —
-  the Slime biome's filter-feeder and a desert-port reskin, respectively).
-  texPath follows this biome's own convention
-  (Things/Pawn/Animal/Pyrelands/<Name>/<Name>) so the artpipe daemon has a
-  ready target once queued; owed as follow-up, not a build blocker (item
-  step 9).
+  ART: artpipe RM_Ashwallow_{east,north,south} (PYRELANDS_DEDICATED_GRAZER_1),
+  at Things/Pawn/Animal/Pyrelands/Ashwallow/Ashwallow_<facing>.
 
   Wired into RM_Pyrelands' live wildAnimals in
   Patches/WildAnimals_Pyrelands.xml at commonality 0.18 — see that file's own
