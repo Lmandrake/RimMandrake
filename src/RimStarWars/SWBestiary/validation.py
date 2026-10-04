@@ -349,6 +349,54 @@ def defs_resolve(t):
             raise ExpectationFailed("%d of %d defs resolved; notFound=%r" % (ok, len(names), missing[:8]))
 
 
+# ------------------------------------------------- beast mechanics behave (r28 left these as settings round-trips)
+# RSW_BeastMechanicsProof (BeastMechanics DLL) spawns the real creature on the current map beside its real food /
+# scrap + nest and asks the SHIPPED job giver what it would do: on, fed (metal) and with the toggle off. Everything
+# it spawns is destroyed before it returns. NOT proven: the job driver's eating/carrying to completion (ticks).
+_PROOF_TYPE = "RimMandrake.StarWars.SWBestiary.RSW_BeastMechanicsProof"
+
+
+def _proof(t, method):
+    r = t.bridge_call("jawa/static_call", type=_PROOF_TYPE, method=method, args="current")
+    if not isinstance(r, dict):
+        return {}, ""
+    text = r.get("result")
+    if text in (None, ""):
+        text = "(static_call returned no result: success=%s message=%s)" % (r.get("success"), r.get("message") or r.get("error"))
+    return dict(re.findall(r"(\w+)=(\S+)", str(text))), str(text)
+
+
+@suite.chain("metal_eater_seeks_its_metal")
+def metal_eater_seeks_its_metal(t):
+    with t.component("a_hungry_eater_is_sent_to_the_metal_beside_it", toggle="metalEatingEnabled"):
+        kv, text = _proof(t, "ProofMetalEat")
+        if t.session is not None and not t.upstream_failed:
+            if text.startswith("ERROR") or "eater" not in kv:
+                raise ExpectationFailed("ProofMetalEat: %s" % text)
+            want = "RSW_EatMetal|target=%s|" % kv.get("food")
+            if not kv.get("hungry", "").startswith(want):
+                raise ExpectationFailed("hungry %s beside %s got %s" % (kv.get("eater"), kv.get("food"), kv.get("hungry")))
+            if kv.get("fed") != "none":
+                raise ExpectationFailed("a fed eater still seeks metal: %s" % kv.get("fed"))
+            if kv.get("off") != "none":
+                raise ExpectationFailed("metalEatingEnabled off still seeks metal: %s" % kv.get("off"))
+
+
+@suite.chain("scrap_hoarder_carries_to_its_nest")
+def scrap_hoarder_carries_to_its_nest(t):
+    with t.component("a_rested_hoarder_takes_scrap_to_its_nest", toggle="scrapHoardingEnabled"):
+        kv, text = _proof(t, "ProofHoard")
+        if t.session is not None and not t.upstream_failed:
+            if text.startswith("ERROR") or "hoarder" not in kv:
+                raise ExpectationFailed("ProofHoard: %s" % text)
+            want = "RSW_HoardScrap|target=%s|targetB=%s" % (kv.get("scrap"), kv.get("nest"))
+            if kv.get("on") != want:
+                raise ExpectationFailed("%s with %s near its %s got %s (want %s)"
+                                        % (kv.get("hoarder"), kv.get("scrap"), kv.get("nest"), kv.get("on"), want))
+            if kv.get("off") != "none":
+                raise ExpectationFailed("scrapHoardingEnabled off still hoards: %s" % kv.get("off"))
+
+
 def _make_roundtrip(cls, field, ty, default):
     def chain(t):
         with t.component("%s_round_trips" % field, toggle=field):
