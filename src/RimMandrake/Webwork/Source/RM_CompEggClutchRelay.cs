@@ -156,6 +156,17 @@ namespace RimMandrake.Webwork
 			return false;
 		}
 
+		/// <summary>Proof hooks (RM_WebworkProof): ticks until the next relay check, a re-roll, and a check forced now.</summary>
+		public int TicksToNextRelay => nextRelayTick - Find.TickManager.TicksGame;
+
+		public void ProofReroll() => CalculateNextRelayTick();
+
+		public void ProofCheckNow()
+		{
+			nextRelayTick = Find.TickManager.TicksGame;
+			CompTickRare();
+		}
+
 		private void CalculateNextRelayTick()
 		{
 			float mult = Mathf.Max(0.01f, RM_WebworkSettings.eggRelayIntervalMultiplier);
