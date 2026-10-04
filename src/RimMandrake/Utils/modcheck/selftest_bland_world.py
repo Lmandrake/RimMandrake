@@ -108,6 +108,23 @@ except RB.RimBridgeError:
     ok = True
 check("control: an unknown id is still a desync error", ok)
 
+# retile / restore_tile (Miasma/TheRot/... suites declare suite.biome): applied, read back, restored, with controls
+w3 = dirty()
+s3 = S(w3)
+rec = BW.retile(s3, "RM_Miasma", temperature=-5)
+check("retile moves the map biome and tile temperature and says what it was",
+      w3.map_biome == "RM_Miasma" and rec["biome"] == "FakeBland" and w3.tile_overrides[4375]["temperature"] == -5, str(rec))
+check("reset() restores a pending retile (a crashed suite cannot leak its biome)",
+      BW.reset(s3)["steps"].get("tile_restored") == "ok" and w3.map_biome == "FakeBland")
+w4 = dirty()
+w4._t_jawa_world_tile_set = lambda **k: {"success": True}      # claims success, changes nothing
+try:
+    BW.retile(S(w4), "RM_Miasma")
+    ok = False
+except BW.BlandWorldError:
+    ok = True
+check("control: a retile that does not read back raises (UNMEASURED, never trusted)", ok)
+
 bad = [n for n, c in _results if not c]
 print("%d/%d passed" % (len(_results) - len(bad), len(_results)))
 sys.exit(1 if bad else 0)

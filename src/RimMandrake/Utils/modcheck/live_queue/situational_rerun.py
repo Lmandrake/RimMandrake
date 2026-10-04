@@ -144,7 +144,7 @@ def body(s, job):
         belt_heartbeat.step("suite %s" % m, budget_s=belt_heartbeat.DEFAULT_STEP_BUDGET_S)   # hang -> exit 4
         try:
             summ = runner.run_suite(suite, s, mod=None if job.dry_run else m, situational=True, policy="abort",
-                                    bland_world=use_world)
+                                    bland_world=use_world, retile="--retile" in argv)
         except Exception as e:                                  # noqa: BLE001
             crashed.append("%s: %s: %s" % (m, type(e).__name__, e))
             continue
