@@ -71,6 +71,7 @@ looked a wyyyschokk in its many eyes and walked away with proof.</description>
       <Insulation_Cold>0</Insulation_Cold>
       <Insulation_Heat>0</Insulation_Heat>
     </statBases>
+    <smeltable>false</smeltable>   <!-- ApparelBase smelts; a bone-and-cord trinket has no smeltProducts (load-log ConfigError) -->
     <thingCategories>
       <li>ApparelMisc</li>
     </thingCategories>
