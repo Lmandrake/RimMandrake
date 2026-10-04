@@ -114,6 +114,10 @@ namespace RimMandrake.Scarlands
         public static float snapArmingHours = 24f;           // hours between arming sweeps on a Warscar map
         public static float snapStageSpeed = 1f;             // scales the incubation climb (restart)
 
+        // WARSCAR_LOOSENED_PANEL_BUILD_1 -- the mark opens loosened panels
+        public static bool loosenedPanelsEnabled = true;     // panels generate on new maps and can be worked loose
+        public static float loosenedPanelsPerMap = 3f;       // up to this many per new map (0-8)
+
         public static bool crossBiomeEnabled = false;
         public static bool crossBiomeEverywhere = false;
         public static string crossBiomeBiomeList = "";
@@ -183,6 +187,8 @@ namespace RimMandrake.Scarlands
             Scribe_Values.Look(ref snapEnabled, "snapEnabled", true);
             Scribe_Values.Look(ref snapArmingHours, "snapArmingHours", 24f);
             Scribe_Values.Look(ref snapStageSpeed, "snapStageSpeed", 1f);
+            Scribe_Values.Look(ref loosenedPanelsEnabled, "loosenedPanelsEnabled", true);
+            Scribe_Values.Look(ref loosenedPanelsPerMap, "loosenedPanelsPerMap", 3f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -341,6 +347,17 @@ namespace RimMandrake.Scarlands
                 list.Label("Turning speed (restart to apply): x" + snapStageSpeed.ToString("0.00")
                     + " (default: about one to two weeks from armed to snap)");
                 snapStageSpeed = list.Slider(snapStageSpeed, 0.25f, 4f);
+            }
+            list.GapLine();
+
+            list.CheckboxLabeled("Loosened wall panels", ref loosenedPanelsEnabled,
+                "A few panels in each new Warscar map's ancient walls sit loose with a sealed crate behind them. Only "
+              + "someone carrying a deepening Warscar mark can work one loose; anyone else is refused. Off: no panels on "
+              + "new maps, and existing ones cannot be worked.");
+            if (loosenedPanelsEnabled)
+            {
+                list.Label("Up to " + loosenedPanelsPerMap.ToString("0") + " per new map");
+                loosenedPanelsPerMap = list.Slider(loosenedPanelsPerMap, 0f, 8f);
             }
             list.GapLine();
 

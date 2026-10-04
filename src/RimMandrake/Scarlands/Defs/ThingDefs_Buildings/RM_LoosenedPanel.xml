@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- WARSCAR_LOOSENED_PANEL_BUILD_1 (WARSCAR_SNAP_MARK_1 spec 6). Set into an ancient fortified wall in place of a
+       segment by RM_GenStep_LoosenedPanels, a sealed crate decided behind it at generation. Worked loose only by a
+       pawn at a deepening Warscar mark (RM_Building_LoosenedPanel). ART: artpipe RM_LoosenedPanel (validated 2026-09-30). -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LoosenedPanel</defName>
+    <label>loosened wall panel</label>
+    <description>A plate in an old fortified wall that sits a little proud of its frame, scored around the edges where something has been levered at it before. There is a space behind it. It won't give to just anyone; someone the Warscar has marked deeply knows where to push.</description>
+    <thingClass>RimMandrake.Scarlands.RM_Building_LoosenedPanel</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/RM_LoosenedPanel</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <fillPercent>1</fillPercent>
+    <coversFloor>true</coversFloor>
+    <castEdgeShadows>true</castEdgeShadows>
+    <staticSunShadowHeight>1.0</staticSunShadowHeight>
+    <useHitPoints>false</useHitPoints>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <size>(1,1)</size>
+    <drawerType>MapMeshOnly</drawerType>
+    <tickerType>Never</tickerType>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <building>
+      <claimable>false</claimable>
+      <deconstructible>false</deconstructible>
+      <isInert>true</isInert>
+      <isEdifice>true</isEdifice>
+    </building>
+    <holdsRoof>true</holdsRoof>
+  </ThingDef>
+</Defs>
