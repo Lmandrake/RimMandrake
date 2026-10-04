@@ -4,6 +4,10 @@ First script for this mod; covers SEABED_PER_SEA_FLOORS_1 only: each terminal se
 biome must carry RM_SeabedAccessExtension.floorBiome naming its own RM_SeabedFloor_<Sea>
 biome (Patches/RM_SeabedFloorBiomeWiring.xml). Pure def-state check; no live run recorded yet.
 """
+# DIVINGINTERACTION_COVERAGE_GAPS_1: the `toggle_gates` chain below asserts that each of the eleven
+# Mod Settings toggles gates its behaviour in source and flips live. UNCOVERED on purpose:
+# RM_SeaDiveHatch enter/descent (retired, SEA_DIVE_HATCH_RETIRE_1). UNMEASURED: live floor content and
+# floor animal count (needs a ship landed on a seabed layer; no tool lands one).
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("DivingInteraction")
@@ -308,6 +312,80 @@ def seabed_floor_ambient_carryover(t):
     # Not a component (it would record PASS with nothing asked): UNMEASURED until a Chill layer floor can be made
     # live (SEABED_DESCENT_ASCENT_1 or a debug map on a floor tile): OutdoorTemp ~ -110, Twilight floor plants > 0,
     # a cleared floor's animal count rising over ticks.
+
+SETTINGS_TYPE = "RimMandrake.DivingInteraction.RM_DivingSettings"
+
+# settings field -> the Source files whose behaviour it must gate (each must read masterEnabled beside it)
+TOGGLE_GATES = [
+    ("greyPoolDefenceEnabled", ["MapComponent_BrineCrystallisation.cs"], "grey_pool_defence_gates_encasement"),
+    ("greyPoolSentinelEnabled", ["RM_CompPoolSentinelSquirt.cs"], "grey_pool_sentinel_gates_squirt"),
+    ("greyElderDischargeEnabled", ["RM_Building_BrineElder.cs"], "grey_elder_discharge_gates_emp"),
+    ("greyElderTradeEnabled", ["RM_Building_BrineElder.cs"], "grey_elder_trade_gates_offer"),
+    ("chillFireBanEnabled", ["RM_ChillFireGate.cs"], "chill_fire_ban_gates_flame"),
+    ("chillBoilShroudEnabled", ["RM_MapComponent_ChillBoilShroud.cs"], "chill_boil_shroud_gates_flecks"),
+    ("chillHeatedSuitEnabled", ["RM_CompHeatedSuitBattery.cs"], "chill_heated_suit_gates_battery"),
+    ("chillGardenDefenseEnabled", ["RM_CompTarnnRoused.cs", "RM_MapComponent_ChillGardenDefense.cs"], "chill_garden_defense_gates_fightback"),
+    ("chillThermalFootprintsEnabled", ["RM_MapComponent_ChillFootprints.cs"], "chill_footprints_gate_deposits"),
+    ("chillDrownedAuroraEnabled", ["Patch_ChillDrownedAurora.cs", "RM_MapComponent_ChillDrownedAurora.cs"], "chill_drowned_aurora_gates_glow"),
+    ("chillAuroraSurgeEnabled", ["RM_MapComponent_ChillAuroraSurge.cs", "RM_CompPowerPlantAuroraSurge.cs"], "chill_aurora_surge_gates_storm"),
+]
+suite.toggles = [f for f, _, _ in TOGGLE_GATES]
+
+
+def _gated_source(here, fname, field):
+    """Every read of `field` in the file (comments stripped) must sit beside masterEnabled and either
+    early-return when off or be part of an && enable expression. Returns the number of gate sites."""
+    import os
+    text = open(os.path.join(here, "Source", fname), encoding="utf-8").read()
+    lines = [l for l in text.splitlines() if not l.strip().startswith("//")]
+    sites = 0
+    for i, l in enumerate(lines):
+        if "DivingSettings." + field not in l:
+            continue
+        sites += 1
+        near = "\n".join(lines[max(0, i - 1):i + 1])
+        if "masterEnabled" not in near:
+            raise ExpectationFailed("%s: %s read without masterEnabled beside it (line %d)" % (fname, field, i))
+        if "!RM_DivingSettings." + field in l:
+            win = "\n".join(lines[i:i + 4])
+            # an exit guard, or an expression the off arm short-circuits (IsCharged: off reads "always full")
+            if "return" not in win and "yield break" not in win and "||" not in l.split("!RM_DivingSettings." + field, 1)[1]:
+                raise ExpectationFailed("%s: !%s is not followed by an early exit" % (fname, field))
+        elif "&&" not in near:
+            raise ExpectationFailed("%s: %s read is neither an exit guard nor an && enable" % (fname, field))
+    return sites
+
+
+@suite.chain("toggle_gates")
+def toggle_gates(t):
+    """One component per Mod Settings toggle: the setting really gates its behaviour (source guard with an
+    off arm that exits) and the field can be flipped off and restored live. Behaviour under the off arm on a
+    live Chill/Grey floor is UNMEASURED: no bridge tool lands a ship on a seabed layer."""
+    import os
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=8)
+    for field, files, cname in TOGGLE_GATES:
+        with t.component(cname, toggle=field):
+            sites = sum(_gated_source(here, f, field) for f in files)
+            if sites < len(files):
+                raise ExpectationFailed("%s: expected a gate in each of %s, found %d site(s)" % (field, files, sites))
+            if _live(t):
+                t.set_setting(SETTINGS_TYPE, {field: "False"})
+                t.set_setting(SETTINGS_TYPE, {field: "True"})
+            t.screenshot()
+    with t.component("chill_fire_gate_is_wired_into_vanilla_fire", beyond_toggle=True):
+        pc = open(os.path.join(here, "Source", "Patch_ChillFireBan.cs"), encoding="utf-8").read()
+        if "HarmonyPatch" not in pc or "RM_ChillFireGate" not in pc:
+            raise ExpectationFailed("Patch_ChillFireBan no longer routes vanilla fire through RM_ChillFireGate")
+        t.screenshot()
+    with t.component("sentinel_and_pool_share_one_consequence", beyond_toggle=True):
+        sq = open(os.path.join(here, "Source", "RM_CompPoolSentinelSquirt.cs"), encoding="utf-8").read()
+        if "BrineEncasementUtility" not in sq:
+            raise ExpectationFailed("orruhmu squirt no longer encases through BrineEncasementUtility")
+        t.screenshot()
+    with t.component("live_floor_content_and_animal_count", beyond_toggle=True):
+        raise ExpectationFailed("UNMEASURED: no bridge tool lands a ship on a seabed layer to read live floor content or animal count")
+
 
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # sea-floor layer, biomes, map generators). The Defs/ parse is the list, so a def added later is covered with no edit here.

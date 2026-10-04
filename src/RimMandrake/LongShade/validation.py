@@ -12,7 +12,10 @@ CHAINS
   biome_wiring       RM_LongShade's animalDensity and plantDensity are > 0 (animalDensity 0 would make the whole roster dead
                      content) and both gen steps resolve.
   dewfringe_gate     the Harmony postfix on WildPlantSpawner.CalculatePlantsWhichCanGrowAt is attached by this mod.
-  map_mechanics      Crawler Road, Sun Graves, Shipfall Commons, mirrak ambush: UNMEASURED (each says what it needs).
+  dewfringe_gate     also: the gate's C# reads both toggles and removes the plant by ShadeAt.
+  map_mechanics      Crawler Road, Sun Graves, Shipfall Commons, mirrak ambush, vorrel cycle: each has an asserting wiring component
+                     (toggle gate in the C#, def graph, live resolve) plus an UNMEASURED behaviour component naming its missing tool.
+  roster_wiring      every shipped creature race / plant is in the biome roster; every PawnKindDef resolves live.
 
 STATIC: `python3 validation.py` -> `STATIC: PASS (0 findings)`; needs no game.
 """
@@ -91,6 +94,171 @@ def static_checks():
         bad.append("dewfringe gate no longer patches WildPlantSpawner")
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "LongShade.md")):
         bad.append("walk missing")
+    for fn in (crawler_road_problems, sun_graves_problems, shipfall_problems, mirrak_problems, vorrel_problems,
+               dewfringe_problems, roster_problems):
+        bad.extend(fn())
+    return bad
+
+
+def _cs(name):
+    return open(os.path.join(HERE, "Source", name), encoding="utf-8").read()
+
+
+def _xml(*rel):
+    return ET.parse(os.path.join(HERE, "Defs", *rel)).getroot()
+
+
+def _def(root, tag, name):
+    for el in root.iter(tag):
+        if el.findtext("defName") == name:
+            return el
+    return None
+
+
+def _shipped_names(ty):
+    return set(n for t, n in SHIPPED if t == ty)
+
+
+def crawler_road_defs():
+    gs = _def(_xml("MapGeneration", "RM_LongShade_GenSteps.xml"), "GenStepDef", "RM_GenStep_CrawlerRoad")
+    step = gs.find("genStep")
+    return [e.text.strip() for e in step.iter("li")] + [step.findtext("terminusMarker").strip()]
+
+
+def crawler_road_problems():
+    bad, mapgen = [], _cs("RM_LongShadeMapgen.cs")
+    gen = mapgen.split("class RM_GenStep_CrawlerRoad", 1)[1].split("class RM_CrawlerRoadLogic", 1)[0]
+    if "crawlerRoadEnabled" not in gen or "modEnabled" not in gen or "return;" not in gen.split("Lay(", 1)[0]:
+        bad.append("Crawler Road Generate() no longer returns early on modEnabled/crawlerRoadEnabled (off arm lays a road)")
+    if "RM_CrawlerRoadLogic.Lay(" not in gen:
+        bad.append("Crawler Road Generate() never calls Lay (the step does nothing when on)")
+    biome = _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME)
+    if "RM_GenStep_CrawlerRoad" not in [e.text for e in biome.find("extraGenSteps")]:
+        bad.append("RM_LongShade.extraGenSteps does not name RM_GenStep_CrawlerRoad (step never runs)")
+    for n in crawler_road_defs():
+        if n not in _shipped_names("ThingDef"):
+            bad.append("crawler road def %s is not a shipped ThingDef" % n)
+    return bad
+
+
+def sun_graves_problems():
+    bad, mapgen = [], _cs("RM_LongShadeMapgen.cs")
+    gen = mapgen.split("class RM_GenStep_SunGraves", 1)[1].split("class RM_SunGravesLogic", 1)[0]
+    if "sunGravesEnabled" not in gen or "modEnabled" not in gen or "return;" not in gen.split("Lay(", 1)[0]:
+        bad.append("Sun Graves Generate() no longer returns early on modEnabled/sunGravesEnabled (off arm lays graves)")
+    if "RM_SunGravesLogic.Lay(" not in gen:
+        bad.append("Sun Graves Generate() never calls Lay (the step does nothing when on)")
+    biome = _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME)
+    if "RM_GenStep_SunGraves" not in [e.text for e in biome.find("extraGenSteps")]:
+        bad.append("RM_LongShade.extraGenSteps does not name RM_GenStep_SunGraves (step never runs)")
+    step = _def(_xml("MapGeneration", "RM_LongShade_GenSteps.xml"), "GenStepDef", "RM_GenStep_SunGraves").find("genStep")
+    if not step.find("load") is not None or len(list(step.find("load"))) < 1:
+        bad.append("Sun Graves carries no load (a grave with nothing in it)")
+    if not step.findall("travellerKinds/li"):
+        bad.append("Sun Graves names no travellerKinds")
+    return bad
+
+
+def shipfall_problems():
+    bad, src = [], _cs("RM_ShipfallCommons.cs")
+    if "shipfallCommonsEnabled" not in src.split("class RM_JobGiver_ShipfallCommons", 1)[1].split("TryGiveJob", 1)[1][:400]:
+        bad.append("RM_JobGiver_ShipfallCommons.TryGiveJob no longer gates on shipfallCommonsEnabled (off arm still gathers)")
+    if "shipfallCommonsEnabled" not in src.split("bool Active", 1)[1].split(";", 1)[0]:
+        bad.append("RM_MapComponent_ShipfallCommons.Active no longer gates on shipfallCommonsEnabled")
+    tt = _def(_xml("ThinkTreeDefs", "RM_LongShade_ShipfallCommons.xml"), "ThinkTreeDef", "RM_ThinkTree_ShipfallCommons")
+    if tt is None or tt.findtext("insertTag") != "Animal_PreWander":
+        bad.append("think tree does not insert into Animal_PreWander (wildlife never consults it)")
+    elif "RimMandrake.LongShade.RM_JobGiver_ShipfallCommons" not in ET.tostring(tt, encoding="unicode"):
+        bad.append("think tree does not hold RM_JobGiver_ShipfallCommons")
+    biome = _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME)
+    ext = [e for e in biome.iter("li") if e.get("Class") == "RimMandrake.LongShade.RM_ShipfallCommonsExtension"]
+    if len(ext) != 1:
+        bad.append("RM_LongShade carries %d RM_ShipfallCommonsExtension (want 1)" % len(ext))
+        return bad
+    hours = [float(s.findtext("afterHours")) for s in ext[0].findall("stages/li")]
+    if len(hours) < 2 or hours != sorted(hours) or len(set(hours)) != len(hours):
+        bad.append("shipfall rungs are not strictly ascending by afterHours: %r" % hours)
+    if not float(ext[0].findtext("dispersalDistance") or 0) > 0:
+        bad.append("dispersalDistance is not > 0 (animals would never scatter)")
+    return bad
+
+
+def mirrak_problems():
+    bad = []
+    root = _xml("ThingDefs_Races", "RM_LongShade_Mirrak.xml")
+    race = _def(root, "ThingDef", "RM_Mirrak")
+    if race is None or _def(root, "PawnKindDef", "RM_Mirrak") is None:
+        return ["RM_Mirrak ThingDef or PawnKindDef missing"]
+    cls = [e.get("Class", "") for e in race.iter("li")]
+    if "RimMandrake.CreatureBehaviors.RM_FalseShadeExtension" not in cls:
+        bad.append("mirrak lost RM_FalseShadeExtension (its cells no longer read as shade)")
+    if "RimMandrake.CreatureBehaviors.CompProperties_FalseShadeAmbusher" not in cls:
+        bad.append("mirrak lost CompProperties_FalseShadeAmbusher (it never strikes)")
+    amb = [e for e in race.iter("li") if e.get("Class", "").endswith("CompProperties_FalseShadeAmbusher")]
+    if amb and not float(amb[0].findtext("strikeRangeCells") or 0) > 0:
+        bad.append("mirrak strikeRangeCells is not > 0")
+    if "RM_Mirrak" not in [e.tag for e in _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME).find("wildAnimals")]:
+        bad.append("mirrak is not in the biome roster")
+    return bad
+
+
+def vorrel_problems():
+    """The cycle as a graph: plant -> fruit (-> brood hediff) -> recipe -> seed dish (-> euphoria hediff) -> thought."""
+    bad = []
+    plant = _def(_xml("ThingDefs_Plants", "RM_Vorrel.xml"), "ThingDef", "RM_Vorrel")
+    items = _xml("ThingDefs_Items", "RM_Vorrel_Items.xml")
+    recipe = _def(_xml("RecipeDefs", "RM_Vorrel_Recipes.xml"), "RecipeDef", "RM_Cook_VorrelSeedDish")
+    thought = _def(_xml("ThoughtDefs", "RM_Vorrel_Thoughts.xml"), "ThoughtDef", "RM_VorrelEuphoriaThought")
+    if plant is None or recipe is None or thought is None:
+        return ["vorrel plant, recipe or thought def missing"]
+    if plant.findtext("plant/harvestedThingDef") != "RM_VorrelFruit":
+        bad.append("RM_Vorrel does not harvest RM_VorrelFruit")
+    for item, hediff in (("RM_VorrelFruit", "RM_VorrelBrood"), ("RM_VorrelSeedDish", "RM_VorrelEuphoria")):
+        d = _def(items, "ThingDef", item)
+        if d is None or hediff not in [e.text for e in d.iter("hediffDef")]:
+            bad.append("%s no longer gives %s when eaten" % (item, hediff))
+    if "RM_VorrelFruit" not in [e.text for e in recipe.findall("ingredients/li/filter/thingDefs/li")]:
+        bad.append("the recipe's ingredient is not RM_VorrelFruit")
+    if recipe.find("products/RM_VorrelSeedDish") is None:
+        bad.append("the recipe does not produce RM_VorrelSeedDish")
+    if thought.findtext("hediff") != "RM_VorrelEuphoria":
+        bad.append("the thought no longer reads RM_VorrelEuphoria")
+    hed = _def(_xml("HediffDefs", "RM_Vorrel_Hediffs.xml"), "HediffDef", "RM_VorrelEuphoria")
+    n_h, n_t = len(hed.findall("stages/li")), len(thought.findall("stages/li"))
+    if n_t < n_h - 1:
+        bad.append("thought has %d stages for a hediff of %d (a stage can index past the thought)" % (n_t, n_h))
+    return bad
+
+
+def dewfringe_problems():
+    src = _cs("RM_Patch_DewfringeWildSpawnGate.cs")
+    bad = []
+    if "dewfringeShadeLineGateEnabled" not in src or "modEnabled" not in src:
+        bad.append("dewfringe gate no longer reads its toggles")
+    if "ShadeAt" not in src or "RemoveAt" not in src:
+        bad.append("dewfringe gate no longer tests ShadeAt and removing the plant from the candidates")
+    if _def(_xml("ThingDefs_Plants", "RM_Dewfringe.xml"), "ThingDef", "RM_Dewfringe") is None:
+        bad.append("RM_Dewfringe ThingDef missing")
+    return bad
+
+
+def roster_problems():
+    """Every shipped creature race and plant is named in the biome's roster (a def nobody can spawn is dead content)."""
+    biome = _def(_xml("BiomeDefs", "RM_LongShade.xml"), "BiomeDef", BIOME)
+    animals = set(e.tag for e in biome.find("wildAnimals"))
+    plants = set(e.tag for e in biome.find("wildPlants"))
+    bad = []
+    for sub, tag, key, have in (("ThingDefs_Races", "race", "creature", animals), ("ThingDefs_Plants", "plant", "plant", plants)):
+        found = 0
+        for fn in sorted(os.listdir(os.path.join(HERE, "Defs", sub))):
+            for el in _xml(sub, fn):
+                nm = el.findtext("defName") if isinstance(el.tag, str) else None
+                if el.tag == "ThingDef" and el.find(tag) is not None and nm and el.get("Abstract", "").lower() != "true":
+                    found += 1
+                    if nm not in have:
+                        bad.append("%s %s is not in the biome roster" % (key, nm))
+        if found < 4:
+            bad.append("only %d %ss parsed (sanity probe failed)" % (found, key))
     return bad
 
 
@@ -218,33 +386,76 @@ def _build_suite():
                 if HARMONY_ID not in owners:
                     raise ExpectationFailed("WildPlantSpawner.CalculatePlantsWhichCanGrowAt carries no postfix from %s (owners: %s)"
                                             % (HARMONY_ID, sorted(set(o for o in owners if o))[:8]))
+        with t.component("rim_gate_logic_wired", toggle="dewfringeShadeLineGateEnabled"):
+            _fail_on(dewfringe_problems())
         with t.component("rim_only_growth_on_a_long_shade_map", toggle="modEnabled"):
             if _live(t):
                 _unmeasured(t, "wild dewfringe appearing only on shade-boundary cells needs a generated RM_LongShade map "
                                "with shade patches (CreatureBehaviors shade grid)")
 
+    def _resolve_live(t, names, what):
+        """Live: every 'DefType/Name' resolves (reads foundCount/notFound, never a substring)."""
+        r = t.bridge_call("jawa/get_defs", defs=";".join(names), fields="defName", limit=60)
+        if _live(t):
+            if not isinstance(r, dict) or r.get("success") is False:
+                raise ExpectationFailed("%s: get_defs failed: %r" % (what, r))
+            if r.get("notFound") or int(r.get("foundCount", 0)) != len(names):
+                raise ExpectationFailed("%s did not resolve: notFound=%r" % (what, r.get("notFound")))
+
+    def _fail_on(problems):
+        if problems:
+            raise ExpectationFailed("; ".join(problems))
+
     @suite.chain("map_mechanics")
     def map_mechanics(t):
-        for name, toggle, why in (
-            ("crawler_road_laid_at_mapgen", "crawlerRoadEnabled",
-             "a line of wrecks across the widest shade gap exists only on a map GENERATED as RM_LongShade with the toggle on, "
-             "and none with it off; the bridge cannot generate a map"),
-            ("sun_graves_laid_at_mapgen", "sunGravesEnabled",
-             "sun-grave corpses with their load exist only on a generated RM_LongShade map; needs map generation"),
-            ("shipfall_commons_draws_wildlife", "shipfallCommonsEnabled",
-             "wildlife gathering round a landed gravship in rungs, and scattering when a pilot takes the console, needs a "
-             "landed gravship on an RM_LongShade map (gravship_land) and game days of ticks"),
-        ):
-            with t.component(name, toggle=toggle):
-                if _live(t):
-                    _unmeasured(t, why)
+        with t.component("crawler_road_wiring_and_gate", toggle="crawlerRoadEnabled"):
+            _fail_on(crawler_road_problems())
+            _resolve_live(t, ["ThingDef/%s" % n for n in crawler_road_defs()], "crawler road link/terminus defs")
+        with t.component("crawler_road_laid_at_mapgen", toggle="crawlerRoadEnabled"):
+            if _live(t):
+                _unmeasured(t, "a line of wrecks across the widest shade gap exists only on a map GENERATED as RM_LongShade with the "
+                               "toggle on, and none with it off; jawa/run_genstep runs a gen step on the CURRENT map but no tool "
+                               "generates an RM_LongShade map to run it on")
+        with t.component("sun_graves_wiring_and_gate", toggle="sunGravesEnabled"):
+            _fail_on(sun_graves_problems())
+            _resolve_live(t, ["PawnKindDef/Drifter", "PawnKindDef/Dromedary", "ThingDef/Silver", "ThingDef/ComponentIndustrial",
+                              "ThingDef/MedicineHerbal", "ThingDef/Pemmican", "ThingDef/Novel"], "sun-grave kinds, load and readable")
+        with t.component("sun_graves_laid_at_mapgen", toggle="sunGravesEnabled"):
+            if _live(t):
+                _unmeasured(t, "sun-grave corpses with their load exist only on a generated RM_LongShade map; no tool generates one "
+                               "(same missing instrument as crawler_road_laid_at_mapgen)")
+        with t.component("shipfall_commons_wiring_and_gate", toggle="shipfallCommonsEnabled"):
+            _fail_on(shipfall_problems())
+            _resolve_live(t, ["ThinkTreeDef/RM_ThinkTree_ShipfallCommons", "BiomeDef/" + BIOME], "think tree and biome")
+        with t.component("shipfall_commons_draws_wildlife", toggle="shipfallCommonsEnabled"):
+            if _live(t):
+                _unmeasured(t, "wildlife gathering round a landed gravship in rungs, and scattering when a pilot takes the console, needs a "
+                               "landed gravship on an RM_LongShade map (jawa/gravship_land) and game hours of ticks (jawa/time_set_ticks); "
+                               "no tool reads a map component's admitted-animal state")
+        with t.component("mirrak_ambush_wiring", beyond_toggle=True):
+            _fail_on(mirrak_problems())
+            _resolve_live(t, ["ThingDef/RM_Mirrak", "PawnKindDef/RM_Mirrak", "ThingDef/RM_Filth_DragMark"], "mirrak defs and seize filth")
         with t.component("mirrak_false_shade_ambush", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, "the mirrak ambush is a CreatureBehaviors mechanism switched on that mod's screen; it needs a live "
-                               "shade patch, a mirrak and a passing pawn")
+                _unmeasured(t, "the mirrak ambush is a CreatureBehaviors mechanism (falseShadeAmbushEnabled there); no tool reads the "
+                               "false-shade state or a comp's strike; jawa/shadegrid_read needs a live shade patch, a mirrak and a passing pawn")
+        with t.component("vorrel_cycle_chain_wired", beyond_toggle=True):
+            _fail_on(vorrel_problems())
+            _resolve_live(t, ["ThingDef/RM_Vorrel", "ThingDef/RM_VorrelFruit", "ThingDef/RM_VorrelSeedDish", "RecipeDef/RM_Cook_VorrelSeedDish",
+                              "HediffDef/RM_VorrelBrood", "HediffDef/RM_VorrelEuphoria", "ThoughtDef/RM_VorrelEuphoriaThought"], "vorrel cycle defs")
         with t.component("vorrel_cycle", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, "the vorrel's seasonal cycle plant, items, recipe and thought need game days; defs resolve in defs_resolve")
+                _unmeasured(t, "the vorrel's seasonal growth, eating the fruit/dish and the thought firing need game days "
+                               "(jawa/time_set_ticks) and nothing drives a meal of the dish on a pawn")
+
+    @suite.chain("roster_wiring")
+    def roster_wiring(t):
+        with t.component("every_creature_and_plant_is_in_the_biome_roster", beyond_toggle=True):
+            _fail_on(roster_problems())
+        with t.component("every_pawnkind_resolves", beyond_toggle=True):
+            kinds = ["PawnKindDef/%s" % n for ty, n in SHIPPED if ty == "PawnKindDef"]
+            for i in range(0, len(kinds), 40):
+                _resolve_live(t, kinds[i:i + 40], "pawn kinds")
 
     return suite
 

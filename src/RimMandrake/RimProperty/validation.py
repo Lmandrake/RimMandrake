@@ -134,7 +134,64 @@ suite = Suite("RimProperty")
 suite.toggles = [
     "perceptionEnabled", "animalTheftEnabled", "theftHaulerEnabled",
     "salvageClaimFeeEnabled", "walkableCommerceEnabled",
+    "pickpocketEnabled", "hirePlacelessEnabled", "bribeEnabled",
+    "claimLifetimeMultiplier",
 ]
+
+SETTINGS_TYPE = "RimMandrake.Property.PropertySettings"
+TICKS_PER_DAY = 60000.0
+# PropertyTuning.cs consts, read from the C# (Min/MaxClaimLifetimeDays).
+MIN_LIFETIME_DAYS = 3.0
+MAX_LIFETIME_DAYS = 3650.0
+
+
+def _py_lifetime_ticks(recog, mult=1.0):
+    """Pure-python copy of ClaimDecay.LifetimeTicks (ClaimDecay.cs, read whole):
+    Lerp(Min, Max, Clamp01(recog)) days * claimLifetimeMultiplier * TicksPerDay."""
+    r = min(1.0, max(0.0, recog))
+    return (MIN_LIFETIME_DAYS + (MAX_LIFETIME_DAYS - MIN_LIFETIME_DAYS) * r) * mult * TICKS_PER_DAY
+
+
+def _py_effective_strength(initial, age, recog, mult=1.0):
+    """Pure-python copy of ClaimDecay.EffectiveStrength: linear to zero."""
+    if age <= 0:
+        return initial
+    life = _py_lifetime_ticks(recog, mult)
+    if age >= life:
+        return 0.0
+    return initial * (1.0 - age / life)
+
+
+def _static_float(t, method, args):
+    """jawa/static_call on a public static ClaimDecay/Utility method; reads the tool's own
+    `success`, never a payload substring. None under the offline declaration probe."""
+    if not t._guard():
+        return None
+    r = t.bridge_call("jawa/static_call", type=method[0], method=method[1], args=args)
+    if not (r or {}).get("success", True) or (r or {}).get("result") in (None, ""):
+        raise ExpectationFailed("static_call %s.%s(%s) failed: %r" % (method[0], method[1], args, r))
+    try:
+        return float(str((r or {}).get("result")).strip())
+    except ValueError:
+        raise ExpectationFailed("static_call %s.%s(%s) returned non-numeric %r" % (method[0], method[1], args, r))
+
+
+def _close(a, b, rel=1e-3):
+    return abs(a - b) <= rel * max(1.0, abs(a), abs(b))
+
+
+def _set_field(t, field, value):
+    r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action="set",
+                      field=field, value=str(value))
+    if t._guard() and not (r or {}).get("success"):
+        raise ExpectationFailed("mod_settings_field(set %s=%s) failed: %r" % (field, value, r))
+
+
+def _unmeasured(t, what):
+    """Honest floor-gap component body: raised only on a real run so the offline
+    declaration probe still enumerates the component's toggle tag."""
+    if t._guard():
+        raise ExpectationFailed("UNMEASURED: " + what)
 
 THEFT_BUILDING_DEF = "Turret_MiniTurret"   # category Building, Minifiable (minifiedDef set)
 STEAL_ITEM_DEF = "MealSimple"              # category Item, portable
@@ -305,6 +362,114 @@ def claim_erase_api(t):
         text = str((r or {}).get("result", ""))
         if not text.startswith("PASS"):
             raise ExpectationFailed("claim erase proof: %s (raw: %s)" % (text or "no result", r))
+
+@suite.chain("claim_decay_curve")
+def claim_decay_curve(t):
+    """Lazy claim decay (ClaimDecay.cs: pure functions of strength/age/recognizability, no tick).
+    The live C# is asked via jawa/static_call and compared with a pure-python copy of the formula
+    read from ClaimDecay.cs; then claimLifetimeMultiplier is doubled and the lifetime must double."""
+    CD = "RimMandrake.Property.ClaimDecay"
+    with t.component("decay_curve_matches_formula", beyond_toggle=True):
+        for recog in (0.0, 0.5, 1.0):
+            got = _static_float(t, (CD, "LifetimeTicks"), "%s" % recog)
+            want = _py_lifetime_ticks(recog)
+            if got is not None and not _close(got, want):
+                raise ExpectationFailed("LifetimeTicks(%s)=%s, formula says %s" % (recog, got, want))
+        life0 = _py_lifetime_ticks(0.0)
+        for age, recog in ((life0 / 2, 0.0), (life0, 0.0), (life0 * 2, 0.0), (0, 0.0), (1000000, 0.5)):
+            got = _static_float(t, (CD, "EffectiveStrength"), "0.9|%d|%s" % (age, recog))
+            want = _py_effective_strength(0.9, int(age), recog)
+            if got is not None and not _close(got, want):
+                raise ExpectationFailed("EffectiveStrength(0.9,%d,%s)=%s, formula says %s" % (age, recog, got, want))
+
+    with t.component("claim_lifetime_multiplier_scales", toggle="claimLifetimeMultiplier"):
+        base = _static_float(t, (CD, "LifetimeTicks"), "0.5")
+        try:
+            _set_field(t, "claimLifetimeMultiplier", 2.0)
+            doubled = _static_float(t, (CD, "LifetimeTicks"), "0.5")
+            half_age = _static_float(t, (CD, "EffectiveStrength"), "1.0|%d|0.0" % int(_py_lifetime_ticks(0.0)))
+        finally:
+            _set_field(t, "claimLifetimeMultiplier", 1.0)
+        if base is not None and not _close(doubled, 2.0 * base):
+            raise ExpectationFailed("multiplier 2 gave lifetime %s, expected 2 x %s" % (doubled, base))
+        # at x2 a recog-0 claim of age == old lifetime is exactly half strength, not expired
+        if half_age is not None and not _close(half_age, 0.5):
+            raise ExpectationFailed("at multiplier 2, age==1x lifetime gave strength %s, expected 0.5" % half_age)
+
+
+@suite.chain("settlement_fee_tuning")
+def settlement_fee_tuning(t):
+    """Hire/bribe advance prices follow their Mod Settings fields (HirePlacelessUtility.
+    ComputeHireFeeSilver / BribeUtility.ComputeBribeFeeSilver: Max(1, Round(field))). This is the
+    PRICE only -- the enabled toggles gate the float menu, see the *_unmeasured chains."""
+    HU = "RimMandrake.Property.HirePlacelessUtility"
+    BU = "RimMandrake.Property.BribeUtility"
+    with t.component("hire_and_bribe_fee_follow_settings", beyond_toggle=True):
+        try:
+            _set_field(t, "hirePlacelessFeeSilver", 37)
+            _set_field(t, "bribeFeeSilver", 41)
+            hire = _static_float(t, (HU, "ComputeHireFeeSilver"), "")
+            bribe = _static_float(t, (BU, "ComputeBribeFeeSilver"), "")
+        finally:
+            _set_field(t, "hirePlacelessFeeSilver", 20)
+            _set_field(t, "bribeFeeSilver", 15)
+        if hire is not None and hire != 37:
+            raise ExpectationFailed("ComputeHireFeeSilver with field=37 returned %s" % hire)
+        if bribe is not None and bribe != 41:
+            raise ExpectationFailed("ComputeBribeFeeSilver with field=41 returned %s" % bribe)
+
+
+# Each UNMEASURED component sits alone in its chain: a raised component marks every later one in
+# the same chain UNMEASURED too (upstream_failed), which would smear one gap across unrelated ones.
+@suite.chain("perception_unmeasured")
+def perception_unmeasured(t):
+    with t.component("witness_roll_and_faction_record_propagation", toggle="perceptionEnabled"):
+        _unmeasured(t, "no bridge tool reads GameComponent_PropertyLedger's private factionRecords or "
+                       "PerceptionUtility.RollWitnesses; needs a static RM_ proof (like RM_ClaimEraseProof) "
+                       "that fires a TakingEvent with perceptionEnabled on/off and reports witnesses/suspicion")
+
+
+@suite.chain("salvage_fee_unmeasured")
+def salvage_fee_unmeasured(t):
+    with t.component("salvage_claim_fee_float_menu", toggle="salvageClaimFeeEnabled"):
+        _unmeasured(t, "FloatMenuOptionProvider_PaySalvageClaim runs inside the float-menu delegate (no JobDef); "
+                       "no bridge tool lists or clicks float-menu options")
+
+
+@suite.chain("walkable_commerce_unmeasured")
+def walkable_commerce_unmeasured(t):
+    with t.component("walkable_commerce_float_menu", toggle="walkableCommerceEnabled"):
+        _unmeasured(t, "FloatMenuOptionProvider_BuyMerchandise runs inside the float-menu delegate (no JobDef); "
+                       "no bridge tool lists or clicks float-menu options")
+
+
+@suite.chain("pickpocket_unmeasured")
+def pickpocket_unmeasured(t):
+    with t.component("pickpocket_float_menu", toggle="pickpocketEnabled"):
+        _unmeasured(t, "FloatMenuOptionProvider_Pickpocket is float-menu only; no tool lists/clicks float-menu options "
+                       "(PickpocketUtility.TransferToActor takes Thing/Pawn objects static_call cannot pass)")
+
+
+@suite.chain("hire_placeless_unmeasured")
+def hire_placeless_unmeasured(t):
+    with t.component("hire_placeless_float_menu", toggle="hirePlacelessEnabled"):
+        _unmeasured(t, "FloatMenuOptionProvider_HirePlaceless is float-menu only; no tool lists/clicks float-menu options")
+
+
+@suite.chain("bribe_unmeasured")
+def bribe_unmeasured(t):
+    with t.component("bribe_float_menu_and_dampen", toggle="bribeEnabled"):
+        _unmeasured(t, "FloatMenuOptionProvider_Bribe is float-menu only and FactionRecord suspicion has no getter; "
+                       "no tool lists/clicks float-menu options or reads FactionRecord")
+
+
+@suite.chain("claim_recording_unmeasured")
+def claim_recording_unmeasured(t):
+    with t.component("stolen_purchased_gifted_inherited_basis_recorded", beyond_toggle=True):
+        _unmeasured(t, "PropertyEngine.RecordTransfer/RecordGift/RecordInheritance take Thing/ClaimantRef objects "
+                       "(jawa/static_call passes only primitives/IntVec3/Map) and the ledger has no read tool; "
+                       "needs an RM_ proof static returning the recorded ClaimBasis per exception")
+
 
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # theft jobs, think trees, trainable). The Defs/ parse is the list, so a def added later is covered with no edit here.
