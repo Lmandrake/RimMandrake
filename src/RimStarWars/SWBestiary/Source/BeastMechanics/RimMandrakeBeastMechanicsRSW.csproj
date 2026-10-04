@@ -67,6 +67,7 @@
     <Compile Include="RSW_BeastMechanicsDefOf.cs" />
     <Compile Include="RSW_BeastMechanicsSettings.cs" />
     <Compile Include="ToxinDependence.cs" />
+    <Compile Include="RSW_BeastMechanicsProof.cs" />
   </ItemGroup>
 
   <ItemGroup>
