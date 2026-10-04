@@ -247,6 +247,8 @@ def _build_suite():
                     new = "False" if str(old).lower() == "true" else "True"
                 elif ty == "string":
                     new = "zz_probe"
+                elif ty == "int":
+                    new = str(int(float(old)) + 1)       # an Int32 field refuses "25.0" (LIVE 2026-10-03)
                 else:
                     new = str(float(old) + 1.0)
                 try:
