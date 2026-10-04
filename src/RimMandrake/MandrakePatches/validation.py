@@ -112,6 +112,47 @@ suite = Suite("MandrakePatches")
 suite.toggles = []   # no Source/, no ModSettings -- every component beyond_toggle
 
 
+GUARDS = ("PatchOperationFindMod", "PatchOperationConditional")
+
+
+def unguarded_ops(patch_dir=None):
+    """[(file, index, why)] for every top-level <Operation> in Patches/ that is not wrapped in a guard.
+
+    Every file here fixes a THIRD-PARTY mod, so each op must be a FindMod or Conditional at the top: unguarded,
+    a fix whose donor is inactive logs a red patch error on every launch. A MayRequire on a top-level
+    <Operation> does not count -- the 1.6 engine ignores it (CLAUDE.md, PATCH_MAYREQUIRE_GUARD_INERT_1)."""
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    patch_dir = patch_dir or _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches")
+    out = []
+    for root, _dirs, files in sorted(_os.walk(patch_dir)):
+        for fn in sorted(files):
+            if not fn.endswith(".xml"):
+                continue
+            rel = _os.path.relpath(_os.path.join(root, fn), patch_dir)
+            for n, op in enumerate(_ET.parse(_os.path.join(root, fn)).getroot().findall("Operation")):
+                if op.get("MayRequire") or op.get("MayRequireAnyOf"):
+                    out.append((rel, n, "top-level MayRequire is inert"))
+                elif op.get("Class") not in GUARDS:
+                    out.append((rel, n, "unguarded %s" % op.get("Class")))
+    return out
+
+
+@suite.chain("every_fix_is_guarded_static")
+def every_fix_is_guarded_static(t):
+    """Static: every op in every Patches/ file sits under a FindMod/Conditional guard, so a fix for an inactive
+    donor is a no-op rather than a red error (the walk's 'no red error when the donor is absent' line)."""
+    with t.component("every_top_level_op_guarded", beyond_toggle=True):
+        import os as _os
+        pd = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches")
+        n_files = sum(1 for f in _os.listdir(pd) if f.endswith(".xml"))
+        if n_files < 8:
+            raise ExpectationFailed("the Patches/ parse is blind: %d files" % n_files)
+        bad = unguarded_ops(pd)
+        if bad:
+            raise ExpectationFailed("%d unguarded op(s): %s" % (len(bad), bad))
+
+
 @suite.chain("settlement_icon_size")
 def settlement_icon_size(t):
     """`WorldMapReadability_Ashkarr.xml`'s one unconditional patch: Core's
