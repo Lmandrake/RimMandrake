@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Patch>
-  <!-- Abyss_Rename.xml            RimUtinni Patches — new file 2026-09-24
+  <!-- Abyss_Rename.xml            mandrake.rm.abyss (ships in mandrake.rm.biomes)
+
+       Moved here from RimUtinni/UtinniPatches 2026-10-03 (ABYSS_FREE_TIER_BODY_1 step 1):
+       the invented labels are not IP (Q11a), so the free tier shows them too;
+       the campaign still gets them because it loads this mod.
 
        NONCANON_BEAST_RENAME_1 batch 3a — Abyss. Owner ruled batch 3
        applied 2026-09-24 (design/Jawa/worldbuilding/biomes/

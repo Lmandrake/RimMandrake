@@ -28,13 +28,12 @@ darkbeast Dark-halo behaviour, gust-wind variability are all unbuilt and land
 here later, at any point, with no dependency direction).
 
 ⚠️ Unlike most RimMandrake biome mods, this one is NOT donor-free: its
-terrain, texture and eight wildPlants entries name Alpha Biomes/Alpha
-Genetics defs with no MayRequire guard, inherited unchanged from the frozen
-campaign twin (the twin's own donor roster was ruled "wholesale" by its
-design sheet, and no fix to that gap was in this build's scope). Alpha
-Biomes and Alpha Genetics are therefore genuinely required for full function;
-the fourteen wildAnimals entries are individually MayRequire'd on Alpha
-Animals and degrade gracefully without it.
+terrain and texture name Alpha Biomes defs with no guard, inherited unchanged
+from the frozen campaign twin, so Alpha Biomes is genuinely required for full
+function. The eight wildPlants entries are individually MayRequire'd on Alpha
+Biomes/Alpha Genetics and the fourteen wildAnimals entries on Alpha Animals,
+so those degrade gracefully. Those donor creatures carry this biome's own
+invented names (vrakk, ulkhorr, kessik...) through Patches/Abyss_Rename.xml.
 
 Two invented predators, the cindermare (cold-drain grip) and the skarnix
 (flees firelight), hunt here as RM_Cindermare and RM_Skarnix. The six Forsaken vaults are campaign plot
