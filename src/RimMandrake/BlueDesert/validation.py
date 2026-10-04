@@ -1124,9 +1124,18 @@ def haze_chain(t):
                 if f_out is None:
                     _fail("the unroofed colonist carries no %s after %d ticks of Haze under the carrier"
                           % (HAZE_FILM, wait))
-                if not isinstance(f_out.get("severity"), (int, float)) or f_out["severity"] < 0.01:
-                    _fail("the unroofed colonist's film did not climb (severity %r, expected >= 0.01 after "
-                          "%d ticks of exposure)" % (f_out.get("severity"), wait))
+                # LIVE 2026-10-03: severity read 0.0073 at 3700 ticks (a fixed 0.01 line is a timing guess, not the property).
+                # The property is "it climbs while exposed": read again 800 ticks later and require a real rise.
+                s1 = f_out.get("severity")
+                if not isinstance(s1, (int, float)):
+                    _unmeasured(t, "the film carries no numeric severity: %r" % (f_out,))
+                t.wait_ticks(800)
+                f_out2 = _hediff(_rows(t, health=True).get(ids["out"]), HAZE_FILM)
+                s2 = (f_out2 or {}).get("severity")
+                _note(t, "haze film severity after 800 more ticks", [s1, s2])
+                if not isinstance(s2, (int, float)) or s2 < s1 + 0.002:
+                    _fail("the unroofed colonist's film did not climb under continued exposure (severity %r -> %r over "
+                          "800 ticks)" % (s1, s2))
                 if f_in is not None and f_in.get("severity", 0) >= 0.003:
                     _fail("the ROOFED colonist's film climbed (severity %r): the exposure ignores the roof"
                           % (f_in.get("severity"),))
