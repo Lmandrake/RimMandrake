@@ -379,7 +379,7 @@ def _default_anchor(session):
 
 
 def run_suite(suite, session, debug=False, anchor=None, mod=None,
-              judge_runner=None, situational=False, policy="abort", bland_world=False):
+              judge_runner=None, situational=False, policy="abort", bland_world=False, retile=False):
     """Run every chain in `suite` against an open `session`. Returns
     `{"chains": [...], "all_green": bool}`. Never raises on a component
     failure -- that is exactly what `suite.py`'s `component()` already
@@ -444,6 +444,15 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
         # and read back. A world that cannot be made bland records every chain UNMEASURED, never FAIL.
         import bland_world as _BW  # noqa: E402
         world_before = _BW.reset(session, expected_ids=sorted(fixtures))
+        suite_biome = getattr(suite, "biome", None) or (_BW.SUITE_BIOMES.get(mod) if retile else None)
+        if suite_biome:
+            # The suite's biome-keyed behaviour needs its biome on the map (the bland tile is Grasslands): re-tile for
+            # the suite's duration, restored after the chains (and by the next reset() if this suite crashes).
+            try:
+                retile_rec = _BW.retile(session, suite_biome, getattr(suite, "tile_temperature", None) or _BW.SUITE_TEMPS.get(mod))
+            except Exception as e:                              # noqa: BLE001
+                retile_rec = {"error": "%s: %s" % (type(e).__name__, e)}
+            world_before = dict(world_before or {}, retile=retile_rec)
     for name, fn in suite.chains:
         watch = None
         if situational:
@@ -552,6 +561,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             after = _BW.assert_world(session, expected_ids=sorted(fixtures))
         except Exception as e:                                  # noqa: BLE001
             after = ["UNMEASURED: assert_world raised %r" % (e,)]
+        try:
+            after = list(after) + _BW.restore_tile(session, None)
+        except Exception as e:                                  # noqa: BLE001
+            after = list(after) + ["UNMEASURED: restore_tile raised %r" % (e,)]
         summary["bland_world"] = {"before": world_before, "after_problems": after}
     if mod:
         import northstar  # noqa: E402

@@ -167,8 +167,20 @@ class FakeWorld(object):
                 "endTicksGame": self.ticks}
 
     def _t_jawa_map_info(self):
-        return {"success": True, "mapId": 0, "sizeX": self.size, "sizeZ": self.size,
-                "cellCount": self.size * self.size, "mapBiome": "FakeBland"}
+        return {"success": True, "mapId": 0, "sizeX": self.size, "sizeZ": self.size, "tile": 4375, "tileValid": True,
+                "cellCount": self.size * self.size, "mapBiome": getattr(self, "map_biome", "FakeBland")}
+
+    def _t_jawa_world_tile_set(self, tiles=None, biome=None, temperature=None, readBack=0, **_):
+        ov = self.__dict__.setdefault("tile_overrides", {}).setdefault(int(tiles), {})
+        if biome is not None:
+            ov["biome"] = biome
+            self.map_biome = biome
+        if temperature is not None:
+            ov["temperature"] = temperature
+        return {"success": True}
+
+    def _t_jawa_world_commit(self, **_):
+        return {"success": True}
 
     def _t_jawa_list_pawns(self, includeHealth=False, includeCorpses=False, limit=500, faction=None, rect=None):
         rows = [copy.deepcopy(p) for p in self.pawns.values() if includeCorpses or not p["dead"]]

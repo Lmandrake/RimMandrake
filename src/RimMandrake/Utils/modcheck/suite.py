@@ -644,6 +644,8 @@ class Suite(object):
         self.chains = []          # [(name, fn)]
         self.chain_caps = {}      # name -> situational session tick cap override (default: watch.DEFAULT_SESSION_CAP)
         self.toggles = []         # Mod Settings toggle names this mod has
+        self.biome = None         # bland-world runs: re-tile the map to this BiomeDef for the suite (bland_world.retile)
+        self.tile_temperature = None   # ... and optionally set the tile temperature (C), e.g. cold-only flora
 
     def chain(self, name, tick_cap=None):
         """`tick_cap`: a chain that legitimately needs more in-game time than the default situational session

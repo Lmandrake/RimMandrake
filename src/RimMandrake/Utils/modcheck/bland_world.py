@@ -169,6 +169,8 @@ def reset(session, expected_ids=(), resurrect=True):
     {"bland": bool, "problems": [...], "steps": {...}}. Does not touch settings (the Watch's
     SettingsTransaction owns storyteller/difficulty); it removes the CONSEQUENCES of the previous run."""
     steps = {}
+    if _PENDING:
+        steps["tile_restored"] = restore_tile(session, None) or "ok"
     steps["dialogs_closed"] = close_naming_dialogs(session)
     for h in (H.kill_hostiles, H.kill_wildlife, H.clear_strangers):
         r = h(session, expected_ids)
@@ -252,3 +254,66 @@ def setup(session, colonists=3, tmpdir=None, max_tiles=40, log=None):
         problems.append("only %d of %d colonists spawned" % (len(spawned), colonists))
     return {"tile": tile, "mapIndex": g["mapIndex"], "colonists": spawned, "ruins_destroyed": n_ruins,
             "wildlife_destroyed": d.get("matchedCount"), "ruins_left": len(left), "problems": problems}
+
+# --retile runs: the BiomeDef each suite's chains need on the map (a suite may also set suite.biome itself).
+SUITE_BIOMES = {"Miasma": "RM_Miasma", "TheRot": "RM_TheRot", "Webwork": "RM_Webwork", "NightsideIce": "RM_NightsideIce",
+                "BlueDesert": "RM_BlueDesert", "FeverWood": "RM_FeverWood", "Greentide": "RM_Greentide",
+                "TheSump": "RM_TheSump", "RustCathedral": "RM_RustCathedral", "LanternDeeps": "RM_LanternDeeps"}
+SUITE_TEMPS = {"BlueDesert": -5}      # cold-only flora refuse the temperate bland tile (BLUEDESERT_FLORA_HARNESS_1)
+_PENDING = None      # the un-restored retile() record: reset() and the runner restore it even after a crashed suite
+
+
+def retile(session, biome, temperature=None):
+    """Re-tile the CURRENT bland map's own world tile to `biome` (Map.Biome is a live passthrough to the tile, the
+    Contagion precedent) so biome-keyed comps/weather/wildlife act as in that biome. `temperature` (C) optionally
+    overrides the tile temperature too (cold-only plants refuse a temperate map). Returns a record for restore_tile();
+    raises BlandWorldError (caller records UNMEASURED) when the write did not read back. The map's terrain/plants stay
+    the bland map's: only biome-keyed behaviour changes."""
+    info = session.call("jawa/map_info")
+    tile = info.get("tile")
+    if tile is None or info.get("tileValid") is False:
+        raise BlandWorldError("map_info reports no usable world tile: %r" % (info,))
+    orig = {"tile": tile, "biome": info.get("mapBiome")}
+    g = (session.call("jawa/world_tile_get", tiles=str(tile)).get("tiles") or [{}])[0]
+    orig["temperature"] = g.get("temperature")
+    fields = {"biome": biome}
+    if temperature is not None:
+        fields["temperature"] = float(temperature)
+    r = session.call("jawa/world_tile_set", tiles=str(tile), readBack=1, **fields)
+    if not r.get("success"):
+        raise BlandWorldError("world_tile_set refused: %s" % (r.get("message") or r))
+    c = session.call("jawa/world_commit", redraw=False, recalcPaths=False)
+    if not c.get("success"):
+        raise BlandWorldError("world_commit refused: %s" % (c.get("message") or c))
+    now = session.call("jawa/map_info").get("mapBiome")
+    if now != biome:
+        raise BlandWorldError("after world_tile_set(%s) the map's own biome reads %r" % (biome, now))
+    if temperature is not None:
+        g2 = (session.call("jawa/world_tile_get", tiles=str(tile)).get("tiles") or [{}])[0]
+        if abs(float(g2.get("temperature") if g2.get("temperature") is not None else 1e9) - float(temperature)) > 0.5:
+            raise BlandWorldError("tile temperature reads %r after setting %s" % (g2.get("temperature"), temperature))
+    orig["applied"] = biome
+    global _PENDING
+    _PENDING = orig
+    return orig
+
+
+def restore_tile(session, rec):
+    """Undo retile(): put the tile's biome (and temperature) back and prove it. Returns [] or a list of problems."""
+    global _PENDING
+    rec = rec or _PENDING
+    if not rec:
+        return []
+    _PENDING = None
+    fields = {"biome": rec["biome"]} if rec.get("biome") else {}
+    if rec.get("temperature") is not None:
+        fields["temperature"] = rec["temperature"]
+    problems = []
+    r = session.call("jawa/world_tile_set", tiles=str(rec["tile"]), readBack=1, **fields)
+    if not r.get("success"):
+        problems.append("restore world_tile_set refused: %s" % (r.get("message") or r))
+    session.call("jawa/world_commit", redraw=False, recalcPaths=False)
+    now = session.call("jawa/map_info").get("mapBiome")
+    if rec.get("biome") and now != rec["biome"]:
+        problems.append("map biome reads %r after restore, expected %r" % (now, rec["biome"]))
+    return problems
