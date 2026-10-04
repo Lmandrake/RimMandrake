@@ -40,6 +40,9 @@ with tempfile.TemporaryDirectory() as d:
               open(os.path.join(ns, "M_1.json"), "w"))
     json.dump({"mod": "Mock", "mode": "mock", "started_utc": "2026-10-01T10:00:00Z", "timing": {"total_ms": 3600000}},
               open(os.path.join(ns, "Mock_1.json"), "w"))
+    sess = os.path.join(d, "sessions.jsonl")
+    with open(sess, "w") as fh:   # 10:55-10:58Z, overlaps nothing else; plus one junk line
+        fh.write(json.dumps({"started": "2026-10-01T10:55:00Z", "finished": "2026-10-01T10:58:00Z", "script": "s.py"}) + "\nnot json\n")
     from zoneinfo import ZoneInfo
     tz = ZoneInfo("America/Los_Angeles")
     e = U.read_events(led)
@@ -47,6 +50,9 @@ with tempfile.TemporaryDirectory() as d:
     act = U.active_intervals([mc], os.path.join(ns, "*.json"), tz)
     check("one hold read", len(held) == 1 and held[0][2] == "FOUNDRY", str(held))
     check("dry run and mock skipped", len(act) == 2, str(act))
+    act3 = U.active_intervals([mc], os.path.join(ns, "*.json"), tz, sess)
+    r3 = U.report(held, act3, [], U.dt.date(2026, 10, 1), 5)
+    check("session log adds 3 active min", r3["active_min"] == 28.0, str(r3["active_min"]))
     r = U.report(held, act, [x for x in e if x["event"] == "game"], U.dt.date(2026, 10, 1), 5)
     check("held 60 min", r["held_min"] == 60.0, str(r["held_min"]))
     check("active 25 min (20 modcheck + 5 northstar)", r["active_min"] == 25.0, str(r["active_min"]))
@@ -57,5 +63,5 @@ with tempfile.TemporaryDirectory() as d:
     r2 = U.report(held, act, [], U.dt.date(2026, 10, 2), 5)
     check("other day is empty", r2["held_min"] == 0 and r2["utilization"] is None, str(r2))
 
-print("%d/%d" % (8 - len(fails), 8))
+print("%d/%d" % (9 - len(fails), 9))
 sys.exit(1 if fails else 0)

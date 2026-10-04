@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Live bridge utilization: active driving time over time the bridge was held.
+r"""Live bridge utilization: active driving time over time the bridge was held.
 
     python3 src/RimMandrake/Utils/northstar_driver/bridge_utilization.py [--day 2026-10-01] [--gap-min 5]
 
@@ -9,7 +9,10 @@ ACTIVE = union of driver run intervals:
          - modcheck live-queue rows (`Transient/modcheck/*.jsonl`, `started`/`finished`; these are
            naive Windows-local stamps written by python.exe, read as --local-tz)
          - north-star driver results (`Transient/northstar/*.json`, `started_utc` + timing.total_ms;
-           mock runs skipped). Tick advance is a bridge call (`step_game_ticks`), so the call log's
+           mock runs skipped).
+         - every RimBridge session (connect -> close) any script opened, from rimbridge_client.py's
+           session log (`D:\Luke\dev\_rmscratch\bridge_sessions.jsonl`, UTC; ADHOC_BRIDGE_CALL_LOG_1,
+           rows only exist from 2026-10-04). Tick advance is a bridge call (`step_game_ticks`), so the call log's
            total already includes it — a lower bound, since gaps between calls are not counted.
 Utilization = |ACTIVE ∩ HELD| / |HELD|. Idle gaps over --gap-min inside a hold are listed with the
 holder, the hold's stated purpose, and any `game` state event inside the gap (LOADING/DOWN = a cold
@@ -76,8 +79,18 @@ def held_intervals(evs, now):
     return out
 
 
-def active_intervals(modcheck_globs, northstar_glob, tz):
+def active_intervals(modcheck_globs, northstar_glob, tz, session_log=None):
     out = []
+    if session_log and os.path.isfile(session_log):
+        with open(session_log, encoding="utf-8") as fh:
+            for line in fh:
+                try:
+                    r = json.loads(line)
+                    a, b = _utc(r["started"]), _utc(r["finished"])
+                except (ValueError, KeyError):
+                    continue
+                if b > a:
+                    out.append((a, b, "session:%s" % r.get("script", "?")))
     for pat in modcheck_globs:
         for f in sorted(glob.glob(pat)):
             with open(f, encoding="utf-8") as fh:
@@ -93,7 +106,8 @@ def active_intervals(modcheck_globs, northstar_glob, tz):
                         out.append((a, b, "modcheck:%s" % r.get("job", "?")))
     for f in sorted(glob.glob(northstar_glob)):
         try:
-            d = json.load(open(f, encoding="utf-8"))
+            with open(f, encoding="utf-8") as fh:
+                d = json.load(fh)
         except (ValueError, OSError):
             continue
         if d.get("mode") == "mock" or not d.get("started_utc"):
@@ -159,6 +173,8 @@ def main(argv=None):
     ap.add_argument("--modcheck", action="append",
                     default=None, help="glob of modcheck live-queue jsonl (repeatable)")
     ap.add_argument("--northstar", default=os.path.join(REPO, "Transient", "northstar", "*.json"))
+    ap.add_argument("--sessions", default="/mnt/d/Luke/dev/_rmscratch/bridge_sessions.jsonl",
+                    help="rimbridge_client.py session log")
     ap.add_argument("--local-tz", default="America/Los_Angeles",
                     help="zone of the naive modcheck stamps (python.exe on the Windows host)")
     ap.add_argument("--json", action="store_true")
@@ -169,7 +185,7 @@ def main(argv=None):
     evs = read_events(a.ledger)
     now = dt.datetime.now(UTC)
     held = held_intervals(evs, now)
-    active = active_intervals(mc, a.northstar, tz)
+    active = active_intervals(mc, a.northstar, tz, a.sessions)
     day = dt.date.fromisoformat(a.day) if a.day else None
     r = report(held, active, [e for e in evs if e["event"] == "game"], day, a.gap_min)
     if a.json:

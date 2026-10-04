@@ -93,6 +93,7 @@ import os
 import re
 import socket
 import sys
+import time
 import uuid
 
 __all__ = ["RimBridge", "RimBridgeError", "discover_from_log", "DEFAULT_PLAYER_LOG"]
@@ -116,6 +117,29 @@ DEFAULT_PLAYER_LOG = os.path.join(
 # instead of a false one that sends you looking at the game. Reported by a retired seat,
 # 2026-08-12, after it cost them the hunt twice.
 WSL = sys.platform.startswith("linux") and os.path.isdir("/mnt/c")
+
+# ADHOC_BRIDGE_CALL_LOG_1: every session (connect -> close) appends one row here so
+# northstar_driver/bridge_utilization.py can count ad-hoc python.exe scripts as ACTIVE
+# bridge time. Outside git (a program reads it). RIMBRIDGE_SESSION_LOG overrides; "" disables.
+SESSION_LOG = os.environ.get(
+    "RIMBRIDGE_SESSION_LOG",
+    r"D:\Luke\dev\_rmscratch\bridge_sessions.jsonl" if os.name == "nt"
+    else "/mnt/d/Luke/dev/_rmscratch/bridge_sessions.jsonl")
+
+
+def _log_session(started, calls, client):
+    """Best effort: a logging failure must never break a bridge script."""
+    if not SESSION_LOG or started is None:
+        return
+    try:
+        row = {"started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(started)),
+               "finished": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+               "seconds": round(time.time() - started, 3), "calls": calls, "client": client,
+               "script": os.path.basename(sys.argv[0]) if sys.argv else ""}
+        with open(SESSION_LOG, "a", encoding="utf-8") as fh:
+            fh.write(json.dumps(row) + "\n")
+    except Exception:
+        pass
 
 
 def _player_log_candidates():
@@ -269,6 +293,8 @@ class RimBridge:
         self._param_index = None
         self.welcome = None
         self.events = []          # unsolicited event envelopes seen while reading
+        self._session_started = None
+        self._session_calls = 0
 
     # -- lifecycle ---------------------------------------------------------
 
@@ -297,9 +323,14 @@ class RimBridge:
                 "with RimBridgeServer enabled?" % (self.host, self.port, ex)) from ex
         self.sock.settimeout(self.timeout)
         self.welcome = self._hello()
+        self._session_started = time.time()
+        self._session_calls = 0
         return self
 
     def close(self):
+        if self._session_started is not None:
+            _log_session(self._session_started, self._session_calls, self.client_name)
+            self._session_started = None
         if self.sock is not None:
             try:
                 self.sock.shutdown(socket.SHUT_RDWR)
@@ -514,6 +545,7 @@ class RimBridge:
             unchecked = self.check_params(tool, params)
             if unchecked:
                 print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
+        self._session_calls += 1
         return self._request("tools/call", {"name": tool, "arguments": params or {}})
 
     def looks_read_only(self, tool):
