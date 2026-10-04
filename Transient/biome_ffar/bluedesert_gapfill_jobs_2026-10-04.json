@@ -1,0 +1,36 @@
+[
+ {
+  "id": "bluedesert_AA_Thunderbeast_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld creature sprite: the thunderbeast, a stocky swine-like electric mammal (body size 1.5) from the Alpha Animals donor, native name yuddra. Heavy barrel body, short thick legs, blunt snout with tusks, coarse dark hide with faint crackling blue-white static arcs along the spine and tusk tips, conveying it jolts at range. Owner ruled replace of the existing art 2026-09-20. Not Star Wars IP.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings. Blue-desert palette is applied by the biome, so keep lighting neutral.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ },
+ {
+  "id": "bluedesert_Vapaad_v1",
+  "rimflow_item_id": "BIOME_FLORAFAUNA_ART_REVIEW_1",
+  "prompt": "RimWorld creature sprite: the Vaapad (Legends canon, Wookieepedia Vaapad/Legends): a brown ball-shaped, multi-tentacled invertebrate with two yellow eyes, native to the energy-world Sarapin. Round brown central body, many writhing tentacles radiating around it, two yellow eyes. Do not invent canon beyond this description.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "east",
+   "south",
+   "north"
+  ],
+  "style_notes": "Painted RimWorld creature sprite, top-down three-quarter game view, one centred subject on a transparent background, no ground shadow. Same individual in all three facings. Blue-desert palette is applied by the biome, so keep lighting neutral.",
+  "priority": 10,
+  "background": "transparent",
+  "channel": "codex",
+  "biome_neutral": true
+ }
+]
