@@ -1,0 +1,1668 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/RM_MovingDunesNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_MovingDunesNoSuchDef_ZZ",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RM_MovingDunesNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_fc1c368e90bc4257887b59f74ab45358",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:00.1644932+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:00.2154742+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_shipped_def_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: 1 of 3 defs resolved; notFound=['RM_DuneGlobalsDef/RM_Dunes_Globals', 'RM_DuneMaterialDef/RM_Dunes_Sand']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 3 def(s) resolved; 2 not found",
+        "requested": 3,
+        "foundCount": 1,
+        "notFound": [
+         "RM_DuneGlobalsDef/RM_Dunes_Globals",
+         "RM_DuneMaterialDef/RM_Dunes_Sand"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "RM_DuneGlobalsDef/RM_Dunes_Globals",
+          "found": false,
+          "defType": "RM_DuneGlobalsDef",
+          "defName": "RM_Dunes_Globals",
+          "error": "No def TYPE named 'RM_DuneGlobalsDef'."
+         },
+         {
+          "requested": "RM_DuneMaterialDef/RM_Dunes_Sand",
+          "found": false,
+          "defType": "RM_DuneMaterialDef",
+          "defName": "RM_Dunes_Sand",
+          "error": "No def TYPE named 'RM_DuneMaterialDef'."
+         },
+         {
+          "requested": "ThingDef/RM_Dunes_BuriedCache",
+          "found": true,
+          "defName": "RM_Dunes_BuriedCache",
+          "defType": "ThingDef",
+          "label": "buried cache",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Dunes_BuriedCache"
+          }
+         }
+        ],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_b2d6a784961640a386e15205ef20c69f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:00.2646713+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:00.3316887+00:00",
+         "DurationMs": 67,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burialEnabled_round_trips",
+     "toggle": "burialEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clearYieldEnabled_round_trips",
+     "toggle": "clearYieldEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clearYieldMultiplier_round_trips",
+     "toggle": "clearYieldMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "duneEngineEnabled_round_trips",
+     "toggle": "duneEngineEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plantChokeEnabled_round_trips",
+     "toggle": "plantChokeEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "transportRateMultiplier_round_trips",
+     "toggle": "transportRateMultiplier",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "windLockEnabled_round_trips",
+     "toggle": "windLockEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "harmony_rules",
+   "components": [
+    {
+     "name": "control_method_carries_no_patch_of_ours",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Thing",
+        "methodName": "SpawnSetup",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "SpawnSetup",
+          "declaringType": "Verse.Thing",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 2,
+          "transpilerCount": 2,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "WorldbuilderMod",
+            "priority": 400,
+            "patchMethod": "Worldbuilder.Thing_SpawnSetup_Patch.Postfix",
+            "patchAssembly": "Worldbuilder"
+           },
+           {
+            "owner": "ChezhouLib.lib",
+            "priority": 400,
+            "patchMethod": "ChezhouLib.CustomMission.Levels.Patch_ClLevelThingSpawn.Postfix",
+            "patchAssembly": "ChezhouLib"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "SmashPhil.VehicleFramework",
+            "priority": 400,
+            "patchMethod": "Vehicles.Patch_VehiclePathing.SpawnAndUpdateVehicleRegionsTranspiler",
+            "patchAssembly": "Vehicles"
+           },
+           {
+            "owner": "Kikohi.PipeSystem",
+            "priority": 400,
+            "patchMethod": "PipeSystem.PipeSystem_Thing_SpawnSetup_Patch.Transpiler",
+            "patchAssembly": "PipeSystem"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 426242,
+        "note": null,
+        "operation": {
+         "OperationId": "op_d21cf4c40a00403f99c3af2be412dd37",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:36.319021+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:36.3450528+00:00",
+         "DurationMs": 26,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_sand_holds_on_sand_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "SandGrid",
+        "methodName": "CanHaveSand",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "CanHaveSand",
+          "declaringType": "Verse.SandGrid",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_SandGrid_CanHaveSand.Prefix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 426242,
+        "note": null,
+        "operation": {
+         "OperationId": "op_2f8c2d58a61e401aac9fe3fb7d100979",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:36.3867237+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:36.4112503+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_ambient_decay_suppression_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "SandGrid",
+        "methodName": "AddDepth",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "AddDepth",
+          "declaringType": "Verse.SandGrid",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_SandGrid_AddDepth.Prefix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 426242,
+        "note": null,
+        "operation": {
+         "OperationId": "op_e263067cb4974a8f99d2b8210f0502b2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:36.4519717+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:36.477659+00:00",
+         "DurationMs": 25,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_vanilla_sand_layer_suppression_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "SectionLayer_Sand",
+        "methodName": "Regenerate",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Regenerate",
+          "declaringType": "Verse.SectionLayer_Sand",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_SectionLayerSand_Regenerate.Prefix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 426242,
+        "note": null,
+        "operation": {
+         "OperationId": "op_7a586a84dca140d9ada9f926944f74d7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:36.5211146+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:36.5431374+00:00",
+         "DurationMs": 22,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rule_clear_sand_yield_attached",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobDriver_ClearSnowAndSand",
+        "methodName": "MakeNewToils",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "MakeNewToils",
+          "declaringType": "RimWorld.JobDriver_ClearSnowAndSand",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.movingdunes",
+            "priority": 400,
+            "patchMethod": "RimMandrake.MovingDunes.Patch_ClearSand_Yield.Postfix",
+            "patchAssembly": "RimMandrakeMovingDunes"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 426242,
+        "note": null,
+        "operation": {
+         "OperationId": "op_8a4b99e3c9b14aaaa90048512a00a3eb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:36.5858551+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:36.6104165+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "biome_bindings",
+   "components": [
+    {
+     "name": "Desert_carries_dune_field_extension",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: Desert has no DuneFieldExtension (the binding patch matched nothing, and a patch that matches nothing logs nothing): ['DryingBiomeExtension']",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "modExtensions"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/Desert",
+          "found": true,
+          "defName": "Desert",
+          "defType": "BiomeDef",
+          "label": "the Desert",
+          "modName": "GRiNDTerra Terrain Retexture",
+          "packageId": "grimterra.terrainretexturemod",
+          "fields": {
+           "modExtensions": [
+            "DryingBiomeExtension"
+           ]
+          }
+         }
+        ],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_0e2afcc427384dcc921327b5a121b859",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:42.4194291+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:42.4674517+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ExtremeDesert_carries_dune_field_extension",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "dune_field_report",
+   "components": [
+    {
+     "name": "map_is_a_dune_field_and_rules_armed",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the current map's biome carries no DuneFieldExtension (needs a Desert/ExtremeDesert map or featureInOtherBiomes-style binding): [RimMandrake.MovingDunes] this map is not a dune field. Biome Desert carries no DuneFieldExtension.",
+     "evidence": [
+      {
+       "call": "bridge_call rimworld/execute_debug_action",
+       "result": {
+        "success": true,
+        "path": "Actions\\Dune field: report",
+        "node": {
+         "path": "Actions\\Dune field: report",
+         "parentPath": "Actions",
+         "label": "Dune field: report",
+         "category": "Moving Dunes",
+         "actionType": "Action",
+         "isRoot": false,
+         "visible": true,
+         "active": true,
+         "on": false,
+         "displayPriority": 0,
+         "tabId": "actions",
+         "tabTitle": "Actions/tools",
+         "tabRootPath": "Actions",
+         "tabDefName": null,
+         "hasChildren": false,
+         "childCount": 0,
+         "visibleChildCount": 0,
+         "hasDirectAction": true,
+         "hasPawnAction": false,
+         "hasSettingsToggle": false,
+         "execution": {
+          "kind": "Direct",
+          "supported": true,
+          "reason": null,
+          "requiredTargetKind": null
+         },
+         "source": {
+          "name": "Dune field: report",
+          "category": "Moving Dunes",
+          "allowedGameStates": "PlayingOnMap",
+          "hideInSubMenu": false,
+          "requiresRoyalty": false,
+          "requiresIdeology": false,
+          "requiresBiotech": false,
+          "requiresAnomaly": false,
+          "requiresOdyssey": false
+         }
+        },
+        "targetPawn": null,
+        "mapTarget": null,
+        "stateBefore": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_4",
+         "currentMapIndex": 4,
+         "mapCount": 5,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "stateAfter": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_4",
+         "currentMapIndex": 4,
+         "mapCount": 5,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "effects": {
+         "logCount": 1,
+         "logs": [
+          {
+           "sequence": 72294,
+           "level": "info",
+           "message": "[RimMandrake.MovingDunes] this map is not a dune field. Biome Desert carries no DuneFieldExtension.",
+           "source": "unity",
+           "repeatCount": 1,
+           "timestampUtc": "2026-10-04T11:15:47.5959548+00:00"
+          }
+         ],
+         "windowCountDelta": 0,
+         "openedWindowTypes": [],
+         "closedWindowTypes": [],
+         "debugToolActiveBefore": false,
+         "debugToolActiveAfter": false,
+         "debugToolChanged": false
+        },
+        "followUp": null,
+        "operation": {
+         "OperationId": "op_149e3bad78704e1a865848cde239c21f",
+         "CapabilityId": "rimbridge.core/debug_actions/execute-debug-action",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:47.5784485+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:47.6014747+00:00",
+         "DurationMs": 23,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "slow_crests_hop_downwind_and_bank_in_shelter",
+   "components": [
+    {
+     "name": "transport_attempts_scale_with_the_drift_slider",
+     "toggle": "transportRateMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_06d579bedb3f41f8af44a195a13c92e2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:52.8635705+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:52.9009028+00:00",
+         "DurationMs": 37,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sand_actually_moves_on_a_dune_field",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "banking_in_a_wall_lee_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "slow_upwind_influx_and_downwind_loss",
+   "components": [
+    {
+     "name": "influx_baseline_scales_with_the_drift_slider_once",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_85202a317e3d4cf89fc300a656b2468f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:15:57.9940202+00:00",
+         "CompletedAtUtc": "2026-10-04T11:15:58.0425489+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "loss_term_is_not_squared_by_the_slider",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "engine_off_gate_reads_duneEngineEnabled",
+     "toggle": "duneEngineEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "edge_loss_and_influx_over_days_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "slow_loose_gear_buried_and_returns",
+   "components": [
+    {
+     "name": "burial_api_caches_the_thing_and_removes_it_from_the_map",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofBury with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofBury(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_30e7e59c2eb44733bf8eaad6b6015895",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:16:03.2016437+00:00",
+         "CompletedAtUtc": "2026-10-04T11:16:03.2502742+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "only_wild_unforbidden_loot_is_a_burial_candidate",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burialEnabled_off_arm_buries_nothing",
+     "toggle": "burialEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "burial_by_advancing_drift_and_wind_turn_return_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofBury answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofBury with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "slow_deep_drift_kills_plants",
+   "components": [
+    {
+     "name": "choke_sample_rate_scales_with_the_drift_slider",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_5950adad7c354205a6b653b69f5e683a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:16:08.6768105+00:00",
+         "CompletedAtUtc": "2026-10-04T11:16:08.726126+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "choke_damage_kills_a_buried_plant_in_plantChokeDays",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plant_choke_gate_reads_plantChokeEnabled",
+     "toggle": "plantChokeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plants_dying_over_game_days_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "slow_wind_locked_to_the_sun_on_stillsand",
+   "components": [
+    {
+     "name": "lock_applies_only_with_setting_and_a_locking_biome",
+     "toggle": "windLockEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_5bb3de5dfe234fc4bb99ffac51db6463",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:16:13.9450921+00:00",
+         "CompletedAtUtc": "2026-10-04T11:16:13.9833804+00:00",
+         "DurationMs": 38,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "locked_wind_follows_the_sun_bearing",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "stillsand_map_wind_is_locked_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "slow_shovelled_drift_yields_sand",
+   "components": [
+    {
+     "name": "yield_scales_with_depth_removed_and_multiplier",
+     "toggle": "clearYieldMultiplier",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofMath with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofMath(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_a6357e7f2c7347ebaaccd9bcc24a4994",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:16:19.1639922+00:00",
+         "CompletedAtUtc": "2026-10-04T11:16:19.2076376+00:00",
+         "DurationMs": 43,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "clearYieldEnabled_off_arm_yields_nothing",
+     "toggle": "clearYieldEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "colonist_shovel_job_pays_the_yield_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: MovingDunesProof.ProofMath answered nothing (DLL not rebuilt/deployed yet?): success=False No public static ProofMath with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000013DC9D539D0>",
+  "<suite.Component object at 0x0000013DC9E43890>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\MovingDunes.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T041418-situational_rerun-21944",
+  "git": {
+   "source": "git",
+   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+  },
+  "deploy_start": {
+   "mod": "MovingDunes",
+   "at": "2026-10-04T04:14:26",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/MovingDunes",
+   "src_hash": "5f94ec0ba042a620",
+   "deployed_hash": "5f94ec0ba042a620",
+   "n_src": 6,
+   "n_deployed": 6,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/MovingDunes/Assemblies/RimMandrakeMovingDunes.dll",
+     "sha": "5eba48c1832d24a8",
+     "srchash": "# project: RimMandrake/MovingDunes/Source/RimMandrake_MovingDune"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "MovingDunes",
+   "at": "2026-10-04T04:16:20",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/MovingDunes",
+   "src_hash": "5f94ec0ba042a620",
+   "deployed_hash": "5f94ec0ba042a620",
+   "n_src": 6,
+   "n_deployed": 6,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/MovingDunes/Assemblies/RimMandrakeMovingDunes.dll",
+     "sha": "5eba48c1832d24a8",
+     "srchash": "# project: RimMandrake/MovingDunes/Source/RimMandrake_MovingDune"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

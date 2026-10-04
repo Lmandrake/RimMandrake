@@ -1,0 +1,554 @@
+{
+ "chains": [
+  {
+   "name": "boot_patch_count",
+   "components": [
+    {
+     "name": "patch_count_matches_active_hooks",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: expected '[RimMandrake.RaidRedesigner] ready: 6 capture-hook patches.' (mandrake.rm.property active per the skip-line check), but it was not found. Recent lines: []",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "0 message(s) of 1000 in the buffer.",
+        "totalInBuffer": 1000,
+        "messages": [],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_a043bf6322ca47e2bd357461cee187c7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:17:59.4120195+00:00",
+         "CompletedAtUtc": "2026-10-04T11:17:59.4612444+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "settings_toggles_flip",
+   "components": [
+    {
+     "name": "roster_tracking_enabled_flips",
+     "toggle": "rosterTrackingEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.RaidRedesigner.RaidRedesignerSettings, {'rosterTrackingEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.RaidRedesigner.RaidRedesignerSettings, {'rosterTrackingEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\roster_tracking_enabled_flips_1791112687.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pin_encountered_pawns_flips",
+     "toggle": "pinEncounteredPawns",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.RaidRedesigner.RaidRedesignerSettings, {'pinEncounteredPawns': False})",
+       "result": true
+      },
+      {
+       "call": "set_setting(RimMandrake.RaidRedesigner.RaidRedesignerSettings, {'pinEncounteredPawns': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pin_encountered_pawns_flips_1791112690.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "roster_rules_on_a_scratch_roster",
+   "components": [
+    {
+     "name": "static_hooks_gates_and_scribe_coverage",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "one_entry_per_pawn_and_role_only_upgrades",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofRoster with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofRoster(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_f6e1ba1ecc9046d29f4a0ded1ec7d2dd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:18:17.0299323+00:00",
+         "CompletedAtUtc": "2026-10-04T11:18:17.0709194+00:00",
+         "DurationMs": 40,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cap_evicts_the_lowest_notability_living_entry",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "multiplier_scales_deltas_and_both_clamp",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rosterTrackingEnabled_off_records_nothing_and_pins_nothing",
+     "toggle": "rosterTrackingEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "dead_entry_collapses_once_stays_and_does_not_count_against_the_cap",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pinEncounteredPawns_pins_only_when_both_the_hook_and_the_setting_say_so",
+     "toggle": "pinEncounteredPawns",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "scribe_round_trip_and_death_sweep_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofRoster answered nothing (DLL not rebuilt/deployed yet?): No public static ProofRoster with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "hook_bodies_record_the_right_role",
+   "components": [
+    {
+     "name": "flee_hook_records_hostile_raiders_pins_them_and_ignores_friends",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofHooks answered nothing (DLL not rebuilt/deployed yet?): No public static ProofHooks with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofHooks with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofHooks(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_91e14c9329db4b0c96b10854b37d9166",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:18:22.1778854+00:00",
+         "CompletedAtUtc": "2026-10-04T11:18:22.2275094+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "escaped_and_kidnapper_hooks_write_their_role_and_deltas",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofHooks answered nothing (DLL not rebuilt/deployed yet?): No public static ProofHooks with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "release_and_capture_hooks_split_blackstar_from_everyone_else",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofHooks answered nothing (DLL not rebuilt/deployed yet?): No public static ProofHooks with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "a_real_hook_records_nothing_with_rosterTrackingEnabled_off",
+     "toggle": "rosterTrackingEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofHooks answered nothing (DLL not rebuilt/deployed yet?): No public static ProofHooks with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "engine_events_firing_each_hook_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RaidRedesignerProof.ProofHooks answered nothing (DLL not rebuilt/deployed yet?): No public static ProofHooks with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001E73764D010>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\RaidRedesigner.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T041742-situational_rerun-36080",
+  "git": {
+   "source": "git",
+   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+  },
+  "deploy_start": {
+   "mod": "RaidRedesigner",
+   "at": "2026-10-04T04:17:50",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/RaidRedesigner",
+   "src_hash": "a3ebac0b57c63c6c",
+   "deployed_hash": "a3ebac0b57c63c6c",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeRaidRedesigner.dll",
+     "sha": "f672e94ec0f76396",
+     "srchash": "# project: RimMandrake/RaidRedesigner/Source/RM_RaidRedesigner.c"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "RaidRedesigner",
+   "at": "2026-10-04T04:18:23",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/RaidRedesigner",
+   "src_hash": "a3ebac0b57c63c6c",
+   "deployed_hash": "a3ebac0b57c63c6c",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeRaidRedesigner.dll",
+     "sha": "f672e94ec0f76396",
+     "srchash": "# project: RimMandrake/RaidRedesigner/Source/RM_RaidRedesigner.c"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

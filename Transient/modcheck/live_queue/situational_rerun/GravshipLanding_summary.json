@@ -1,0 +1,537 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "mod_ships_no_defs",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/RM_GravshipLandingNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_GravshipLandingNoSuchDef_ZZ",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RM_GravshipLandingNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_dc21f99157b948268d81d3a425354461",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:21:03.9976735+00:00",
+         "CompletedAtUtc": "2026-10-04T11:21:04.0459072+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "revealOutdoorsBeforeLanding_round_trips",
+     "toggle": "revealOutdoorsBeforeLanding",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "reveal_gate_armed",
+   "components": [
+    {
+     "name": "control_nonexistent_method_has_no_owner",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "GenStep_GravshipMarker",
+        "methodName": "NoSuchMethodZZ",
+        "methodCount": 0,
+        "methods": [],
+        "ticksGame": 426242,
+        "note": "No patched method matched this type name. Either nothing patches it, or the type name did not resolve - check spelling and that the type is loaded.",
+        "operation": {
+         "OperationId": "op_2cf9a4dc2eef4aa2a8ec72f9f10ae306",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:21:19.2589363+00:00",
+         "CompletedAtUtc": "2026-10-04T11:21:19.2799522+00:00",
+         "DurationMs": 21,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "postfix_attached_to_gravship_marker_generate",
+     "toggle": "revealOutdoorsBeforeLanding",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "GenStep_GravshipMarker",
+        "methodName": "Generate",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Generate",
+          "declaringType": "RimWorld.GenStep_GravshipMarker",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 3,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "vanillaexpanded.gravship",
+            "priority": 400,
+            "patchMethod": "VanillaGravshipExpanded.GenStep_GravshipMarker_Generate_Patch.Prefix",
+            "patchAssembly": "VanillaGravshipExpanded"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.gravshiplanding",
+            "priority": 400,
+            "patchMethod": "RimMandrake.GravshipLanding.Patch_GenStep_GravshipMarker_Generate.Postfix",
+            "patchAssembly": "RimMandrakeGravshipLanding"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_GravshipLanded_ReckonFront.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.environmentalhazards",
+            "priority": 400,
+            "patchMethod": "RimMandrake.EnvironmentalHazards.RM_Patch_GravshipArrivalLetter.Generate_Postfix",
+            "patchAssembly": "RimMandrake.EnvironmentalHazards"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 426242,
+        "note": null,
+        "operation": {
+         "OperationId": "op_6052c2980dc4406bb6b06cd846b27f47",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:21:19.3251956+00:00",
+         "CompletedAtUtc": "2026-10-04T11:21:19.351208+00:00",
+         "DurationMs": 26,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "arrival_map_reveal",
+   "components": [
+    {
+     "name": "outdoor_cells_unfogged_on_arrival_map",
+     "toggle": "revealOutdoorsBeforeLanding",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: ProofReveal: (no result: {'success': False, 'message': 'No public static ProofReveal with 0 params.', 'details': {'available': ['System.String ProofReveal(System.String)']}, 'operation')",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofReveal with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofReveal(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_62413580bd154c7bb36e481d220dfded",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:21:25.0740829+00:00",
+         "CompletedAtUtc": "2026-10-04T11:21:25.123387+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "roofed_interiors_stay_fogged",
+     "toggle": "revealOutdoorsBeforeLanding",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "toggle_off_leaves_vanilla_fog",
+     "toggle": "revealOutdoorsBeforeLanding",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "non_arrival_map_is_a_no_op",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001E7376019C0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\GravshipLanding.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T041742-situational_rerun-36080",
+  "git": {
+   "source": "git",
+   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+  },
+  "deploy_start": {
+   "mod": "GravshipLanding",
+   "at": "2026-10-04T04:20:55",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/GravshipLanding",
+   "src_hash": "ad63b80479385765",
+   "deployed_hash": "ad63b80479385765",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeGravshipLanding.dll",
+     "sha": "886c337187caef8c",
+     "srchash": "# project: RimMandrake/GravshipLanding/Source/RM_GravshipLanding"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "GravshipLanding",
+   "at": "2026-10-04T04:21:26",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/GravshipLanding",
+   "src_hash": "ad63b80479385765",
+   "deployed_hash": "ad63b80479385765",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeGravshipLanding.dll",
+     "sha": "886c337187caef8c",
+     "srchash": "# project: RimMandrake/GravshipLanding/Source/RM_GravshipLanding"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

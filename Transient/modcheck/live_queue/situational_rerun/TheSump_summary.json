@@ -32,14 +32,14 @@
           "defName": "TheSumpNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_13519154e771455fa471e29363b8a936",
+         "OperationId": "op_1845e097dc8b4c58a5c41f7307958937",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:44:57.8431778+00:00",
-         "CompletedAtUtc": "2026-10-04T03:44:57.8924809+00:00",
+         "StartedAtUtc": "2026-10-04T11:22:08.3930341+00:00",
+         "CompletedAtUtc": "2026-10-04T11:22:08.4422287+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -61,17 +61,19 @@
      "name": "every_deployed_def_resolves",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "PASS",
-     "detail": "",
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: 79 of 81 defs resolved; notFound=['ThingDef/RM_CapstanTurret_PitRigged', 'ThingDef/RUT_PreservedDrawJoint']",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "40 of 40 def(s) resolved",
+        "message": "39 of 40 def(s) resolved; 1 not found",
         "requested": 40,
-        "foundCount": 40,
-        "notFound": [],
+        "foundCount": 39,
+        "notFound": [
+         "ThingDef/RM_CapstanTurret_PitRigged"
+        ],
         "malformed": [],
         "fieldsAsked": [
          "defName"
@@ -498,6 +500,12 @@
           }
          },
          {
+          "requested": "ThingDef/RM_CapstanTurret_PitRigged",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RM_CapstanTurret_PitRigged"
+         },
+         {
           "requested": "ThingDef/RM_Dorvel",
           "found": true,
           "defName": "RM_Dorvel",
@@ -544,29 +552,17 @@
           "fields": {
            "defName": "RM_GaslightLamp"
           }
-         },
-         {
-          "requested": "ThingDef/RM_Gulveth",
-          "found": true,
-          "defName": "RM_Gulveth",
-          "defType": "ThingDef",
-          "label": "gulveth",
-          "modName": "RimMandrake: Baroque Biomes",
-          "packageId": "mandrake.rm.biomes",
-          "fields": {
-           "defName": "RM_Gulveth"
-          }
          }
         ],
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_ced2b7632f4c4659848b5f1a22147a76",
+         "OperationId": "op_3a9ee779364e402b96b895f6a15f3522",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:44:57.9432336+00:00",
-         "CompletedAtUtc": "2026-10-04T03:44:57.9923889+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T11:22:08.4937937+00:00",
+         "CompletedAtUtc": "2026-10-04T11:22:08.544334+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -580,15 +576,29 @@
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "39 of 39 def(s) resolved",
-        "requested": 39,
+        "message": "39 of 40 def(s) resolved; 1 not found",
+        "requested": 40,
         "foundCount": 39,
-        "notFound": [],
+        "notFound": [
+         "ThingDef/RUT_PreservedDrawJoint"
+        ],
         "malformed": [],
         "fieldsAsked": [
          "defName"
         ],
         "defs": [
+         {
+          "requested": "ThingDef/RM_Gulveth",
+          "found": true,
+          "defName": "RM_Gulveth",
+          "defType": "ThingDef",
+          "label": "gulveth",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Gulveth"
+          }
+         },
          {
           "requested": "ThingDef/RM_Kethrel",
           "found": true,
@@ -998,6 +1008,12 @@
           }
          },
          {
+          "requested": "ThingDef/RUT_PreservedDrawJoint",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RUT_PreservedDrawJoint"
+         },
+         {
           "requested": "ThingDef/RUT_WickStem",
           "found": true,
           "defName": "RUT_WickStem",
@@ -1044,7 +1060,39 @@
           "fields": {
            "defName": "RM_TarredThought"
           }
-         },
+         }
+        ],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_10ad5a32ccd14813931e49aa6a8eceed",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:22:08.5928749+00:00",
+         "CompletedAtUtc": "2026-10-04T11:22:08.6430415+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
          {
           "requested": "WeatherDef/RUT_SumpWeather",
           "found": true,
@@ -1058,15 +1106,15 @@
           }
          }
         ],
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_9af447ee489a4a3d8ca0acf50e648f68",
+         "OperationId": "op_1ddfc7731f884701a9837779142a3713",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:44:58.0435171+00:00",
-         "CompletedAtUtc": "2026-10-04T03:44:58.0932808+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T11:22:08.6922881+00:00",
+         "CompletedAtUtc": "2026-10-04T11:22:08.7429093+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1087,8 +1135,8 @@
      "name": "held_defs_are_unmeasured_by_hold",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "PASS",
-     "detail": "",
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1106,12 +1154,21 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 1,
+    "sweeps": 0,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1380,6 +1437,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1414,6 +1480,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1432,15 +1507,15 @@
         "success": true,
         "method": "System.String ProofVault(Verse.Map)",
         "result": "sealed=True rotFrozen=True forbidden=True ruinedOut=True cleanOut=True solventLeft=1",
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_7240f868b75645349118dda83b5e10b9",
+         "OperationId": "op_25b090ee7a574078bf8a789a8ff5e5c1",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:46:25.3749828+00:00",
-         "CompletedAtUtc": "2026-10-04T03:46:25.4575756+00:00",
-         "DurationMs": 82,
+         "StartedAtUtc": "2026-10-04T11:23:29.0539903+00:00",
+         "CompletedAtUtc": "2026-10-04T11:23:29.1156158+00:00",
+         "DurationMs": 61,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1499,6 +1574,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1517,15 +1601,15 @@
         "success": true,
         "method": "System.String ProofKethrel(Verse.Map)",
         "result": "s0=0 kg1=15 s1=2 hediff1=3.01 s2=3 dropped=1 sAfter=0 hediffGone=True steelOnMap=60",
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_51a5b89821d0412e9c2d0770410a98f8",
+         "OperationId": "op_d185be5d2ecb4327b6e097b0245fa8dc",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:46:31.1497404+00:00",
-         "CompletedAtUtc": "2026-10-04T03:46:31.2045111+00:00",
-         "DurationMs": 54,
+         "StartedAtUtc": "2026-10-04T11:23:34.8696927+00:00",
+         "CompletedAtUtc": "2026-10-04T11:23:34.9192801+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1584,6 +1668,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1722,6 +1815,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -1740,15 +1842,15 @@
         "success": true,
         "method": "System.String ProofPull(System.String)",
         "result": "PULL kind=Villager roped=True start=9.0 end=5.0 steps=5 snaps=1 turretHp=190/220",
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_57f155f3ba9e4bb2bd8d6f399dc659e2",
+         "OperationId": "op_218bfda621a145d0ab09f4a6866d1196",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:46:41.1498522+00:00",
-         "CompletedAtUtc": "2026-10-04T03:46:41.2735998+00:00",
-         "DurationMs": 123,
+         "StartedAtUtc": "2026-10-04T11:23:45.3080524+00:00",
+         "CompletedAtUtc": "2026-10-04T11:23:45.3980071+00:00",
+         "DurationMs": 89,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1778,15 +1880,15 @@
         "success": true,
         "method": "System.String ProofPull(System.String)",
         "result": "PULL kind=heavy roped=False start=9.0 end=9.0 steps=0 snaps=1 turretHp=190/220",
-        "ticksGame": 4403,
+        "ticksGame": 426242,
         "operation": {
-         "OperationId": "op_57e179541e074b209d42ca1d45cdaab9",
+         "OperationId": "op_4649db24edc640d4a8671ca2f0f4db9d",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T03:46:41.2993967+00:00",
-         "CompletedAtUtc": "2026-10-04T03:46:41.3534475+00:00",
-         "DurationMs": 54,
+         "StartedAtUtc": "2026-10-04T11:23:45.4331307+00:00",
+         "CompletedAtUtc": "2026-10-04T11:23:45.467624+00:00",
+         "DurationMs": 34,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1819,20 +1921,40 @@
     "surprises": [],
     "hits_seen": [
      {
-      "tick": 4403,
+      "tick": 426242,
       "detector": "log_errors",
       "severity": "WARN",
       "summary": "1 new error message(s) in the log"
      }
     ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   }
  ],
  "all_green": false,
- "findings": [],
+ "findings": [
+  "<suite.Component object at 0x000001E7302828E0>"
+ ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\TheSump.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
  "bland_world": {
   "before": {
    "bland": true,
@@ -1876,5 +1998,78 @@
  },
  "visual": [],
  "visual_all_green": true,
- "state_all_green": false
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T041742-situational_rerun-36080",
+  "git": {
+   "source": "git",
+   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+  },
+  "deploy_start": {
+   "mod": "TheSump",
+   "at": "2026-10-04T04:21:35",
+   "state": "drift",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/TheSump",
+   "src_hash": "1e453848abd07e79",
+   "deployed_hash": "f097e5eb3f16cd10",
+   "n_src": 119,
+   "n_deployed": 117,
+   "n_held": 0,
+   "drift": {
+    "new": 2,
+    "changed": 3,
+    "gone": 0,
+    "sample": [
+     "Biomes\\TheSump\\Defs\\ThingDefs_Items\\RUT_PreservedDrawJoint.xml",
+     "Biomes\\TheSump\\Textures\\Things\\Item\\RUT_PreservedDrawJoint\\RUT_PreservedDrawJoint.png",
+     "Biomes\\TheSump\\Defs\\LotteryTableDefs\\RUT_DigStratumTable.xml",
+     "Biomes\\TheSump\\Defs\\ResearchProjectDefs\\RM_CapstanTurret.xml",
+     "Biomes\\TheSump\\Defs\\ThingDefs_Buildings\\RM_CapstanTurret.xml"
+    ]
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/TheSump/Assemblies/RimMandrake.TheSump.dll",
+     "sha": "03698326fc5c5ece",
+     "srchash": "# project: RimMandrake/TheSump/Source/RM_TheSump.csproj\n# dll: 0"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "TheSump",
+   "at": "2026-10-04T04:23:47",
+   "state": "drift",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/TheSump",
+   "src_hash": "1e453848abd07e79",
+   "deployed_hash": "f097e5eb3f16cd10",
+   "n_src": 119,
+   "n_deployed": 117,
+   "n_held": 0,
+   "drift": {
+    "new": 2,
+    "changed": 3,
+    "gone": 0,
+    "sample": [
+     "Biomes\\TheSump\\Defs\\ThingDefs_Items\\RUT_PreservedDrawJoint.xml",
+     "Biomes\\TheSump\\Textures\\Things\\Item\\RUT_PreservedDrawJoint\\RUT_PreservedDrawJoint.png",
+     "Biomes\\TheSump\\Defs\\LotteryTableDefs\\RUT_DigStratumTable.xml",
+     "Biomes\\TheSump\\Defs\\ResearchProjectDefs\\RM_CapstanTurret.xml",
+     "Biomes\\TheSump\\Defs\\ThingDefs_Buildings\\RM_CapstanTurret.xml"
+    ]
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/TheSump/Assemblies/RimMandrake.TheSump.dll",
+     "sha": "03698326fc5c5ece",
+     "srchash": "# project: RimMandrake/TheSump/Source/RM_TheSump.csproj\n# dll: 0"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
 }
