@@ -302,3 +302,7 @@ strongest instrument, conclusions only committed. Superseded by the owner: the 2
 exploration window (now no clock), never-owner-approved non-bar checks (now
 agent-approved functional scripts), and the pilot (now a full stop and a new way of
 working).
+
+## Every debug set carries the camera-zoom mod — owner, 2026-10-04
+
+*"We need the extra camera zoom mod to be in ALL DEBUG SETS for testing … make that policy change right now for Rimworld Debugging and Northstar."* `modset_builder.resolve_tier` appends `ray1203.simplecamerasetting` (SimpleCameraSetting) to every tier, so no tier can omit it; a tier needing Camera+ instead sets `no_zoom`.
