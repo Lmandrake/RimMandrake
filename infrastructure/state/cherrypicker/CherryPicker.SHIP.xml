@@ -1298,6 +1298,10 @@
 			<li>BiomeDef/AG_NereidPocketPlane</li>
 			<li>BiomeDef/AG_PocketPlane</li>
 			<li>ThingDef/AM_LassoDevilstrand</li>
+			<li>ThingDef/AM_LassoCloth</li>
+			<li>RecipeDef/Make_AM_LassoCloth</li>
+			<li>RecipeDef/Make_AM_LassoDevilstrand</li>
+			<li>RecipeDef/Make_AM_LassoHyperwave</li>
 			<li>BiomeDef/BorealForest</li>
 			<li>BiomeDef/COMIGO_GreaterSwamp_Cold</li>
 			<li>BiomeDef/COMIGO_GreaterSwamp_Temperate</li>
