@@ -32,9 +32,8 @@
     <label>ruqqal cloth</label>
     <description>A coarse coral-coloured cloth spun from ruqqal stalks. Rough on the skin and warm for its weight.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Cloth</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(222, 124, 104)</color>
+      <texPath>Things/Item/RM_RuqqalFibre</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>
@@ -76,9 +75,8 @@
     <label>zennaq filament</label>
     <description>A bundle of springy verdigris-copper wires pulled from a zennaq. They conduct well enough to bind a coil and are brittle enough to snap at the second bend.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Silver</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(110, 170, 150)</color>
+      <texPath>Things/Item/RM_ZennaqFilament</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>75</stackLimit>
     <statBases>

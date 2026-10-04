@@ -6,9 +6,8 @@
     <label>titanoslime chunk</label>
     <description>A fist-sized lump cut from a titanoslime, still hungry and still moving. It reads whatever it touches and eats what the Assailant made. Laid against an Assailant seal it dissolves the seal and drenches the doorway in slime. Nothing else opens one.\n\nThrown, it bursts: everyone near the landing is drenched to a late stage of slimification and the ground turns to slime for a day. No armour stops it; only dry ground and the antidote undo it.\n\nIt keeps only a little while.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(70, 140, 60)</color>
+      <texPath>Things/Item/RM_TitanoslimeChunk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>

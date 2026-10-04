@@ -50,9 +50,8 @@
       <li>Manufactured</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Special/SubpersonaCoreTechprof</texPath>
+      <texPath>Things/Item/RM_GeneSeeker</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(140, 190, 120)</color>
     </graphicData>
     <statBases>
       <MaxHitPoints>60</MaxHitPoints>

@@ -7,8 +7,8 @@
     <description>Starchy, filling pulp from a tsevrix bladder, sulfur-yellow and sweating condensate. The bladder holds dissolved vent volatiles, so eaten raw it poisons. Roast it at a stove or campfire and the volatiles drive off.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
-      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
-      <color>(222, 196, 58)</color>
+      <texPath>Things/Item/RM_TsevrixPulp</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>1.4</MarketValue>
@@ -39,8 +39,8 @@
     <description>Tsevrix pulp roasted until the volatiles are gone. Plain, dense and safe: the only plant food in a forest whose meat is all poison.</description>
     <possessionCount>10</possessionCount>
     <graphicData>
-      <texPath>Things/Item/Resource/PlantFoodRaw/Potatoes</texPath>
-      <color>(196, 150, 60)</color>
+      <texPath>Things/Item/RM_TsevrixRoasted</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MarketValue>2.2</MarketValue>
@@ -68,9 +68,8 @@
       <li>ResourcesRaw</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(40, 80, 190)</color>
+      <texPath>Things/Item/RM_FexxilShard</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>40</MaxHitPoints>

@@ -43,9 +43,8 @@
       <li>Foods</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/MeatFoodRaw/Meat_Big</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(110, 172, 88)</color>
+      <texPath>Things/Item/RM_RawSlime</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
@@ -90,9 +89,8 @@
       <li>StoneBlocks</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Resource/StoneBlocks</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(160, 186, 140)</color>
+      <texPath>Things/Item/RM_SlimeBlock</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stuffProps>
       <categories>
@@ -149,9 +147,8 @@
       <li>Drugs</li>
     </thingCategories>
     <graphicData>
-      <texPath>Things/Item/Drug/Penoxycyline</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(150, 196, 120)</color>
+      <texPath>Things/Item/RM_SlimeAntidote</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <statBases>
       <MaxHitPoints>50</MaxHitPoints>
