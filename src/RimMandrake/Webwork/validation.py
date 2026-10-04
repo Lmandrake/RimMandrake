@@ -299,15 +299,18 @@ def _build_suite():
                     raise ExpectationFailed("plantDensity %s: the flora would never spawn" % pd)
         with t.component("roster_rows_present", beyond_toggle=True):
             want = [c.tag for c in b.find("wildAnimals")]
-            f = _deep(t, "BiomeDef/" + BIOME, "wildAnimals")
-            if f is not None:
-                blob = "|".join(_flat(f.get("wildAnimals")))
-                if not blob:
-                    _unmeasured(t, "get_defs did not serialise wildAnimals")
+            # LIVE 2026-10-03: get_defs renders a BiomeAnimalRecord without the animal's name (the live roster was complete and the
+            # check still read 6 rows missing); jawa/biome_probe lists the resolved roster by defName.
+            r = t.bridge_call("jawa/biome_probe", biomes=BIOME, animals=True, limit=100)
+            if _live(t):
+                brows = (((r or {}).get("biomes") or [{}])[0].get("animals") or []) if isinstance(r, dict) else []
+                names = set(a.get("defName") for a in brows)
+                if not names:
+                    _unmeasured(t, "biome_probe returned no roster for %s: %s" % (BIOME, str(r)[:140]))
                     return
-                missing = [n for n in want if n not in blob]
+                missing = [n for n in want if n not in names]
                 if missing:
-                    raise ExpectationFailed("biome lacks roster rows the XML ships: %s" % missing)
+                    raise ExpectationFailed("biome lacks roster rows the XML ships: %s (live roster: %s)" % (missing, sorted(names)))
         with t.component("nest_scatter_step_on_map_common_base", toggle="nestEnabled"):
             r = t.bridge_call("jawa/get_defs", defs="MapGeneratorDef/MapCommonBase", fields="genSteps", deep=True, limit=2)
             if _live(t):
@@ -341,7 +344,10 @@ def _build_suite():
         with t.component("egg_is_inert_contraband_with_no_hatcher", beyond_toggle=True):
             f = _deep(t, "ThingDef/RM_OllathrixEgg", "tradeability,tradeTags,comps")
             if f is not None:
-                if "Hatcher" in "|".join(_flat(f.get("comps"))):
+                # LIVE 2026-10-03: a substring over the whole comps dump matched CompRottable's own field name `disableIfHatcher`;
+                # only a comp CLASS named Hatcher is a hatcher.
+                classes = [str(c.get("compClass")) for c in (f.get("comps") or []) if isinstance(c, dict)]
+                if any("Hatcher" in c for c in classes):
                     raise ExpectationFailed("the egg carries a hatcher comp: ban 1 (inert cargo, it must never hatch)")
                 if "RM_Contraband" not in "|".join(_flat(f.get("tradeTags"))):
                     raise ExpectationFailed("the egg lost its RM_Contraband trade tag: %r" % (f.get("tradeTags"),))
@@ -371,7 +377,10 @@ def _build_suite():
                 raise ExpectationFailed("Hyperweave tradeability reads %r with the strip on, expected Sellable" % (f.get("tradeability"),))
         with t.component("front_creep_extension_on_biome", toggle="frontCreepEnabled"):
             f = _deep(t, "BiomeDef/" + BIOME, "modExtensions")
-            if f is not None and "RM_FrontCreepExtension" not in "|".join(_flat(f.get("modExtensions"))):
+            # LIVE 2026-10-03: get_defs renders a modExtension as its fields without the class name; the front-creep extension is the
+            # one carrying frontThingDefNames.
+            exts = [e for e in (f.get("modExtensions") or []) if isinstance(e, dict)] if f is not None else []
+            if f is not None and not any("frontThingDefNames" in e for e in exts):
                 raise ExpectationFailed("RM_Webwork carries no RM_FrontCreepExtension with the toggle on: %r" % (f.get("modExtensions"),))
         with t.component("structures_resolve", beyond_toggle=True):
             for n in ("Anchor", "Web", "Gutter"):

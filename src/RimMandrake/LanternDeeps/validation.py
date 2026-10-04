@@ -393,11 +393,16 @@ def fauna_residents_loaded(t):
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                 raise ExpectationFailed("PawnKindDef/RM_%s did not load: %r" % (k, r))
     with t.component("biome_roster_inline", beyond_toggle=True):
-        r = t.bridge_call("jawa/get_defs", defs="BiomeDef/RM_LanternDeeps", fields="wildAnimals", deep=True)
-        blob = str(r)
-        miss = [k for k in kinds if "RM_" + k not in blob]
+        # LIVE 2026-10-03: get_defs renders a BiomeAnimalRecord WITHOUT the animal's name, so a name search over it reads every
+        # row missing. jawa/biome_probe lists the resolved roster by defName.
+        r = t.bridge_call("jawa/biome_probe", biomes="RM_LanternDeeps", animals=True, limit=100)
+        brows = (((r or {}).get("biomes") or [{}])[0].get("animals") or []) if isinstance(r, dict) else []
+        names = set(a.get("defName") for a in brows)
+        miss = [k for k in kinds if "RM_" + k not in names]
+        if t._guard() and not names:
+            raise ExpectationFailed("biome_probe returned no roster for RM_LanternDeeps: %r" % (r,))
         if t._guard() and miss:
-            raise ExpectationFailed("RM_LanternDeeps.wildAnimals missing %r: %r" % (miss, r))
+            raise ExpectationFailed("RM_LanternDeeps roster missing %r (live roster: %s)" % (miss, sorted(names)))
 
 
 @suite.chain("lanternstone_deep_gate_toggle")
