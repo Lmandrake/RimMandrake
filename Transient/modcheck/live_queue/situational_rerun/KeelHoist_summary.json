@@ -11,7 +11,7 @@
      "detail": "",
      "evidence": [],
      "screenshots": [
-      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\hoist_is_a_researched_ship_part_1791104615.png"
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\hoist_is_a_researched_ship_part_1791107983.png"
      ],
      "sequences": [],
      "checkpoints": [],
@@ -495,15 +495,15 @@
           }
          }
         ],
-        "ticksGame": 355545,
+        "ticksGame": 380114,
         "operation": {
-         "OperationId": "op_808befd999574c6e933ad07e4f93ec45",
+         "OperationId": "op_216275c92bd34fdfafecfbae93b8f0fe",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T09:03:35.5890032+00:00",
-         "CompletedAtUtc": "2026-10-04T09:03:35.6369606+00:00",
-         "DurationMs": 47,
+         "StartedAtUtc": "2026-10-04T09:59:43.7777593+00:00",
+         "CompletedAtUtc": "2026-10-04T09:59:43.8268649+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -515,7 +515,7 @@
       }
      ],
      "screenshots": [
-      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\defs_resolve_live_1791104615.png"
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\defs_resolve_live_1791107983.png"
      ],
      "sequences": [],
      "checkpoints": [],
@@ -528,7 +528,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 36 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -610,7 +610,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 36 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1258,15 +1258,15 @@
           }
          }
         ],
-        "ticksGame": 355545,
+        "ticksGame": 380114,
         "operation": {
-         "OperationId": "op_90f9912252b840beb911fafbf2b1aeb9",
+         "OperationId": "op_a42581ba5a104243ae7bbd2fb7ce9551",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T09:03:47.3846064+00:00",
-         "CompletedAtUtc": "2026-10-04T09:03:47.426388+00:00",
-         "DurationMs": 41,
+         "StartedAtUtc": "2026-10-04T10:00:02.3779238+00:00",
+         "CompletedAtUtc": "2026-10-04T10:00:02.4140254+00:00",
+         "DurationMs": 36,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1289,7 +1289,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 36 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1351,16 +1351,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofLayOut(System.String)",
-        "result": "LAIDOUT holder=RUT_HuttSlavePitShaft218587 held=3 frame=RM_HoistFrame218602 keepers=3 faction=Hutt Cartel gate=True chute=RM_ChanceChute218603",
-        "ticksGame": 355545,
+        "result": "LAIDOUT holder=RUT_HuttSlavePitShaft282352 held=6 frame=RM_HoistFrame282378 keepers=3 faction=Hutt Cartel gate=True chute=RM_ChanceChute218603",
+        "ticksGame": 380114,
         "operation": {
-         "OperationId": "op_810732509dad40cd89fb82c3d0119904",
+         "OperationId": "op_61e299f781964fe4a9dcaa1cf27447a7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T09:03:53.1686564+00:00",
-         "CompletedAtUtc": "2026-10-04T09:03:54.4877314+00:00",
-         "DurationMs": 1319,
+         "StartedAtUtc": "2026-10-04T10:00:11.8701619+00:00",
+         "CompletedAtUtc": "2026-10-04T10:00:12.5875358+00:00",
+         "DurationMs": 717,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1372,7 +1372,7 @@
       }
      ],
      "screenshots": [
-      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pit_laid_out_with_frame_and_keepers_1791104634.png"
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pit_laid_out_with_frame_and_keepers_1791108012.png"
      ],
      "sequences": [],
      "checkpoints": [],
@@ -1384,23 +1384,23 @@
      "toggle": "pitSales",
      "beyond_toggle": false,
      "verdict": "FAIL",
-     "detail": "ExpectationFailed: sale: NOTSOLD pawn=Odile price=952 silverOnMap=226 held=3->4 faction=none/host=NorthstarBland sales=0",
+     "detail": "ExpectationFailed: sale: NOTSOLD pawn=Tiffy price=123 silverOnMap=431 held=4->5 faction=none/host=NorthstarBland sales=0",
      "evidence": [
       {
        "call": "bridge_call jawa/static_call",
        "result": {
         "success": true,
         "method": "System.String ProofSell(System.String)",
-        "result": "NOTSOLD pawn=Odile price=952 silverOnMap=226 held=3->4 faction=none/host=NorthstarBland sales=0",
-        "ticksGame": 355545,
+        "result": "NOTSOLD pawn=Tiffy price=123 silverOnMap=431 held=4->5 faction=none/host=NorthstarBland sales=0",
+        "ticksGame": 380114,
         "operation": {
-         "OperationId": "op_033a4fdf79804b13aa98ed68c6a7773c",
+         "OperationId": "op_d937a6a6110743f98034a6aacc5958e7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T09:03:54.7299958+00:00",
-         "CompletedAtUtc": "2026-10-04T09:03:54.8278262+00:00",
-         "DurationMs": 97,
+         "StartedAtUtc": "2026-10-04T10:00:12.8843533+00:00",
+         "CompletedAtUtc": "2026-10-04T10:00:12.957402+00:00",
+         "DurationMs": 73,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1436,7 +1436,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 36 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1485,16 +1485,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofOdds(System.String)",
-        "result": "ODDS rolls=5000 meanPayout=868 stake=1000 jackpots=423 busts=485 cut=0.15",
-        "ticksGame": 355545,
+        "result": "ODDS rolls=5000 meanPayout=851 stake=1000 jackpots=383 busts=479 cut=0.15",
+        "ticksGame": 380114,
         "operation": {
-         "OperationId": "op_36f2a0fe7dee44c2876de157761c96bd",
+         "OperationId": "op_ca5ca7e1e1ea4f1faefdcd2d0ed20bd0",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T09:03:59.9054966+00:00",
-         "CompletedAtUtc": "2026-10-04T09:03:59.9410531+00:00",
-         "DurationMs": 35,
+         "StartedAtUtc": "2026-10-04T10:00:21.3103334+00:00",
+         "CompletedAtUtc": "2026-10-04T10:00:21.3504801+00:00",
+         "DurationMs": 40,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1523,16 +1523,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofStake(System.String)",
-        "result": "STAKED stake=740 timerSet=True payout=605 mult=0.96 stakedPawnFaction=Hutt Cartel stakedPawnWorld=True manifest=4",
-        "ticksGame": 355545,
+        "result": "STAKED stake=750 timerSet=True payout=484 mult=0.76 stakedPawnFaction=Hutt Cartel stakedPawnWorld=True manifest=8",
+        "ticksGame": 380114,
         "operation": {
-         "OperationId": "op_62e704346aa04044850acfef014f40ec",
+         "OperationId": "op_11bfff7994374630a06377e51925d542",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T09:04:00.0006336+00:00",
-         "CompletedAtUtc": "2026-10-04T09:04:00.0967434+00:00",
-         "DurationMs": 96,
+         "StartedAtUtc": "2026-10-04T10:00:21.4092986+00:00",
+         "CompletedAtUtc": "2026-10-04T10:00:21.4890095+00:00",
+         "DurationMs": 79,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1555,7 +1555,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 36 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1565,10 +1565,10 @@
     "surprises": [],
     "hits_seen": [
      {
-      "tick": 355545,
+      "tick": 380114,
       "detector": "letter_unexpected",
       "severity": "INFO",
-      "summary": "new letter [NeutralEvent] Chance chute: 605 for 740"
+      "summary": "new letter [NeutralEvent] Chance chute: 484 for 750"
      }
     ],
     "close_problems": []
@@ -1670,7 +1670,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 36 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1694,7 +1694,7 @@
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x00000142D6088BB0>"
+  "<suite.Component object at 0x0000017306F4E5F0>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\KeelHoist.md",
@@ -1736,12 +1736,12 @@
      "verified": true
     },
     "restore_colonists": {
-     "acted": 9,
+     "acted": 36,
      "verified": true,
      "residue": []
     },
     "restore_needs": {
-     "acted": 9,
+     "acted": 36,
      "verified": true
     }
    }
@@ -1752,14 +1752,14 @@
  "visual_all_green": true,
  "state_all_green": false,
  "run_identity": {
-  "run_id": "20261004T020318-situational_rerun-19916",
+  "run_id": "20261004T025907-situational_rerun-28804",
   "git": {
    "source": "git",
-   "sha": "c94d935274f07d7b1067eddbbb9a8296d748aa97"
+   "sha": "df2efc796a65852af570accdda65b24abcb8d0e5"
   },
   "deploy_start": {
    "mod": "KeelHoist",
-   "at": "2026-10-04T02:03:27",
+   "at": "2026-10-04T02:59:26",
    "state": "in-sync",
    "reason": null,
    "src_dir": "src/RimMandrake/KeelHoist",
@@ -1785,7 +1785,7 @@
   },
   "deploy_end": {
    "mod": "KeelHoist",
-   "at": "2026-10-04T02:04:07",
+   "at": "2026-10-04T03:00:31",
    "state": "in-sync",
    "reason": null,
    "src_dir": "src/RimMandrake/KeelHoist",
