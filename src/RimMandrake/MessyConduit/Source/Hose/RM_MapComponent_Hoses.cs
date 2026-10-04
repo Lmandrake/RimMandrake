@@ -87,9 +87,9 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         // ------------------------------------------------------------------ lay
-        /// <summary>Round 3 (2x2 reel): the hose leaves the reel at its CENTRE, under the sprite, so it shows emerging from
-        /// beneath the reel; the deployed art draws the hose running down off the drum into the base there.</summary>
-        public static V2 Start(CompHoseReel r) => r.Rect.Centre;
+        /// <summary>The hose leaves the reel under its drum (HoseReelRect.Mouth, round 4), hidden by the sprite, so it shows
+        /// coming off the drum; the round-4 deployed art paints no hose of its own.</summary>
+        public static V2 Start(CompHoseReel r) => r.Rect.Mouth;
 
         public HoseLay EnsureLay(CompHoseReel r)
         {
@@ -98,7 +98,9 @@ namespace RimMandrake.MessyConduit.Hose
             if (r.layKey == key) return r.lay; // a failed lay is cached too (lay null); the 250-tick check clears layKey to retry
             var sw = System.Diagnostics.Stopwatch.StartNew();
             CordWorld w = World();
-            HoseLay lay = HoseMath.Lay(w, Start(r), new V2(r.far.x + 0.5, r.far.z + 0.5), HoseSettings.Shape(), r.Seed);
+            HoseShapeParams sp = HoseSettings.Shape();
+            sp.MaxLength = r.MaxLength;
+            HoseLay lay = HoseMath.Lay(w, Start(r), new V2(r.far.x + 0.5, r.far.z + 0.5), sp, r.Seed);
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
@@ -285,12 +287,12 @@ namespace RimMandrake.MessyConduit.Hose
         /// <summary>RE-MEASURED 2026-10-04 (owner review B8, "mismatched hose width"): the opaque hose band where the hose
         /// enters Coupling_Brass/EndCap is 32 px of 128 (0.25), not the 0.31 first assumed, so every fitting was drawn ~20%
         /// narrower than the hose. validation.py O6 re-measures these from the PNGs.</summary>
-        public const float PieceBand = 0.25f;
+        public const float PieceBand = (float)HoseMath.PieceBand;
         /// <summary>The coupling's brass face, canvas units along +X (measured 2026-10-02: 0.46).</summary>
-        public const double JoinerFace = 0.46;
+        public const double JoinerFace = HoseMath.JoinerFace;
         /// <summary>Widest opaque band of each fitting (canvas fraction of 128 px; measured 2026-10-04, validation.py O6
         /// re-measures): Coupling_Brass 65, Nozzle 48, EndCap 44.</summary>
-        public const float CouplingMax = 0.508f, NozzleMax = 0.375f, EndCapMax = 0.344f;
+        public const float CouplingMax = (float)HoseMath.CouplingMax, NozzleMax = 0.375f, EndCapMax = 0.344f;
         /// <summary>Binding.png (make_hose_binding.py, 82x40, wrap along +X): the wrap's widest band, 38 px of 40.</summary>
         public const float BindBand = 0.95f;
 
@@ -313,10 +315,14 @@ namespace RimMandrake.MessyConduit.Hose
             Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
+            // round 4: the lay drew the hose dead straight over each joiner's run (HoseMath.StraightenAt), so the joiner's
+            // axis is that run's chord, not the tangent at one sample
+            double step = n > 1 ? Geo.Length(pts) / (n - 1) : 1;
+            int m = Math.Max(1, (int)Math.Round(0.8 * HoseMath.JoinerHalf(vis) / Math.Max(1e-6, step)));
             foreach (int j0 in lay.Joints)
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
-                V2 d = (pts[Math.Min(n - 1, j + 1)] - pts[j - 1]).Norm();
+                V2 d = (pts[Math.Min(n - 1, j + m)] - pts[Math.Max(0, j - m)]).Norm();
                 Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], d, vis, y, wrapTint);
                 Fitting(HoseMaterials.CouplingBare, CouplingMax, -JoinerFace, -0.03, pts[j], -d, vis, y, wrapTint);
             }
@@ -567,7 +573,10 @@ namespace RimMandrake.MessyConduit.Hose
         {
             var sb = new System.Text.StringBuilder("An obstacle cut these hoses' routes and no other route fits within the hose's length, so they were wound back onto the reel:\n");
             foreach (Thing t in culprits)
-                sb.Append("\n  - ").Append(t.LabelShort).Append(": ").Append(t.TryGetComp<CompHoseReel>()?.lastRetractReason);
+            {
+                CompHoseReel rc = t.TryGetComp<CompHoseReel>();
+                sb.Append("\n  - ").Append(t.LabelShort).Append(": ").Append(rc?.Explain(rc.lastRetractReason, rc.lastRetractNeed));
+            }
             sb.Append("\n\nClear the way or lay the hose to a nearer cell.");
             return sb.ToString();
         }

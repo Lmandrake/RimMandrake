@@ -137,7 +137,7 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"portSide\":[").Append(r.portSide.X).Append(',').Append(r.portSide.Z).Append(']')
                   .Append(",\"portContact\":[").Append(r.portContact.X).Append(',').Append(r.portContact.Z).Append(']')
                   .Append(",\"footprint\":[").Append(r.Rect.X0).Append(',').Append(r.Rect.Z0).Append(',').Append(r.Rect.W).Append(',').Append(r.Rect.H).Append(']')
-                  .Append(",\"start\":[").Append(D(r.Rect.Centre.X)).Append(',').Append(D(r.Rect.Centre.Z)).Append(']')
+                  .Append(",\"start\":[").Append(D(r.Rect.Mouth.X)).Append(',').Append(D(r.Rect.Mouth.Z)).Append(']')
                   .Append(",\"retractReason\":").Append(S(r.lastRetractReason))
                   .Append(",\"retractTick\":").Append(r.lastRetractTick)
                   .Append(",\"history\":[").Append(string.Join(",", r.history.Select(h => "[" + h.Key + "," + S(h.Value.ToString()) + "]"))).Append(']');

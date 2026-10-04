@@ -37,6 +37,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             Maze();
             Reel2x2();
             Replan();
+            Round4();
             Console.WriteLine($"hose: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -383,10 +384,129 @@ namespace RimMandrake.MessyConduit.SelfTest
             C(HoseMath.CheckInstall(w, reel, new Cell(11, 10), 30) == "same cell", "2x2: laying onto any reel cell is refused");
             C(HoseMath.CheckInstall(w, reel, new Cell(20, 11), 30) == null, "2x2: an open target in range is valid");
             C(reel.StartCellToward(new Cell(20, 10)) == new Cell(11, 10), "2x2: the planner starts from the reel cell nearest the target");
-            C(HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 10) == "route too long" && HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 11) == null,
-                "2x2: route length counts the hop from the reel centre");
+            // round 4: the route is measured pulled taut from the hose's mouth under the drum (9.11 cells to (20.5, 11.5))
+            // x RouteMargin = 9.56; "too far" still measures from the centre (9.51)
+            C(HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 9.53) == "route too long" && HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 9.6) == null,
+                "2x2: route length counts the run from the drum mouth (" + HoseMath.RouteLength(w, reel, new Cell(20, 11)).ToString("0.000") + ")");
             HoseLay l = HoseMath.Lay(w, reel.Centre, new Cell(20, 11).Centre, new HoseShapeParams(), 5);
             C(l.Ok && V2.Dist(l.Flat[0], reel.Centre) < 1e-6, "2x2: the laid hose starts exactly at the reel centre");
+        }
+
+        // ------------------------------------------------------------------ round 4 (owner review 2026-10-04 16:19-16:32)
+        /// <summary>Stations 22/23 of human_review.py, cell for cell (keep in step with `maze` there): perimeter(0,0,12,10)
+        /// with gaps (12,1),(12,2),(12,8),(12,9); the chamber perimeter(4,3,8,7) with its west door (4,5); the spur 9..11 at
+        /// z=5. 2x2 reel at (6,5), free end (16,2). Offset into a 30x20 world.</summary>
+        public const int SX = 3, SZ = 3;
+        public static CordWorld StationMaze(IEnumerable<Cell> extraWalls)
+        {
+            var w = Open(30, 20);
+            var walls = new List<Cell>();
+            for (int x = 0; x <= 12; x++) for (int z = 0; z <= 10; z++)
+                    if (x == 0 || x == 12 || z == 0 || z == 10) walls.Add(new Cell(x, z));
+            walls.RemoveAll(c => c.X == 12 && (c.Z == 1 || c.Z == 2 || c.Z == 8 || c.Z == 9));
+            for (int x = 4; x <= 8; x++) for (int z = 3; z <= 7; z++)
+                    if ((x == 4 || x == 8 || z == 3 || z == 7) && !(x == 4 && z == 5)) walls.Add(new Cell(x, z));
+            for (int x = 9; x <= 11; x++) walls.Add(new Cell(x, 5));
+            foreach (Cell c in walls.Concat(extraWalls ?? Enumerable.Empty<Cell>())) w.SetBlocked(new Cell(c.X + SX, c.Z + SZ), BlockKind.Wall);
+            return w;
+        }
+
+        /// <summary>Fine-sampled (0.02 cell) count of hose centreline samples inside a blocked cell, ends excluded.</summary>
+        public static int WallHits(CordWorld w, IList<V2> pts)
+        {
+            int hits = 0;
+            for (int i = 1; i < pts.Count; i++)
+            {
+                double d = V2.Dist(pts[i - 1], pts[i]);
+                int k = Math.Max(1, (int)Math.Ceiling(d / 0.02));
+                for (int j = 0; j < k; j++)
+                {
+                    V2 q = pts[i - 1] + (pts[i] - pts[i - 1]) * (j / (double)k);
+                    if ((i > 1 || j > 0) && HoseMath.WallDepth(w, q) > HoseMath.ClipTolerance) hits++;
+                }
+            }
+            return hits;
+        }
+
+        /// <summary>Largest distance of the pose points within half of sample j (by arc) from that run's chord.</summary>
+        public static double RunDeviation(IList<V2> P, int j, double half)
+        {
+            double[] s = Geo.CumLen(P);
+            var run = Enumerable.Range(0, P.Count).Where(i => Math.Abs(s[i] - s[j]) <= half - 0.05).ToList();
+            if (run.Count < 2) return 0;
+            V2 a = P[run[0]], b = P[run[run.Count - 1]], d = (b - a).Norm();
+            return run.Max(i => Math.Abs((P[i].X - a.X) * d.Z - (P[i].Z - a.Z) * d.X));
+        }
+
+        private static void Round4()
+        {
+            var reel = new HoseReelRect(6 + SX, 5 + SZ, 2, 2);
+            var far = new Cell(16 + SX, 2 + SZ);
+            var block = new[] { new Cell(12, 1), new Cell(12, 2) };
+            // the owner's own walls in station 23 (read off his screenshot 20261004163103_1.jpg on a cell grid): stubs in
+            // the north corridor and a wall closing the chamber's west corridor, so the only way out runs south, up the far
+            // west side and zig-zags along the top
+            var owner = new List<Cell> { new Cell(2, 9), new Cell(6, 9), new Cell(11, 9), new Cell(4, 8), new Cell(8, 8), new Cell(10, 8),
+                new Cell(10, 7), new Cell(3, 7) };
+            for (int z = 2; z <= 7; z++) owner.Add(new Cell(2, z));
+            var sp = new HoseShapeParams { MaxLength = 30 };
+            // the hose leaves the 2x2 reel under its drum (east half, front), inside the footprint, not at the pump-side centre
+            V2 m0 = reel.Mouth, c0 = reel.Centre;
+            C(reel.Contains(m0.Floor) && m0.X > c0.X + 0.3 && m0.Z < c0.Z - 0.2 && new HoseReelRect(4, 4, 1, 1).Mouth.X == 4.5,
+                "r4 reel: the hose leaves the 2x2 reel under its drum (" + (m0.X - c0.X).ToString("0.00") + ", " + (m0.Z - c0.Z).ToString("0.00") + " from the centre); a 1x1 reel keeps its centre");
+            // station 22: the short way out fits a 30-cell hose and is laid clear of every wall
+            CordWorld w = StationMaze(null);
+            double r22 = HoseMath.RouteLength(w, reel, far);
+            HoseLay l22 = HoseMath.Lay(w, reel.Mouth, far.Centre, sp, 7);
+            C(HoseMath.CheckInstall(w, reel, far, 30) == null && l22.Ok && WallHits(w, l22.Flat) == 0 && WallHits(w, l22.Plump) == 0,
+                "r4 st22: the short route (" + r22.ToString("0.0") + " cells) is laid clear of every wall");
+            // station 23 as designed: the short gap walled -> the north-east way still fits (re-route, stays laid)
+            w = StationMaze(block);
+            double r23 = HoseMath.RouteLength(w, reel, far);
+            HoseLay l23 = HoseMath.Lay(w, reel.Mouth, far.Centre, sp, 7);
+            C(HoseMath.CheckReplan(w, reel, far, 30, false, null) == null && r23 * HoseMath.RouteMargin <= 27 && l23.Ok && WallHits(w, l23.Flat) == 0
+                && l23.FlatLen <= 30 && l23.PlumpLen <= 30,
+                "r4 st23 designed: walled short way -> the long way (" + r23.ToString("0.0") + " cells, laid " + l23.FlatLen.ToString("0.0") + ") re-routes inside a 30-cell hose with margin");
+            // station 23 with the owner's walls: completable as a maze, but the way out is longer than the hose
+            w = StationMaze(block.Concat(owner));
+            double ro = HoseMath.RouteLength(w, reel, far);
+            C(ro > 32 && ro < 40, "r4 owner maze: the only way out pulls taut at " + ro.ToString("0.0") + " cells (the round-3 staircase sum read 44.9 x1.08 = 48.5)");
+            C(HoseMath.CheckReplan(w, reel, far, 30, false, null) == "route too long", "r4 owner maze: a 30-cell hose cannot reach -> retract, 'route too long'");
+            C(HoseMath.CheckInstall(w, reel, far, 40) == null, "r4 owner maze: a 40-cell hose (Mod Settings) takes it");
+            HoseLay lo = HoseMath.Lay(w, reel.Mouth, far.Centre, new HoseShapeParams { MaxLength = 40 }, 7);
+            C(lo.Ok && WallHits(w, lo.Flat) == 0 && WallHits(w, lo.Plump) == 0 && HoseMath.Clear(w, lo.Flat),
+                "r4 owner maze: laid with a 40-cell hose, the hose never crosses a wall stub (round 3 cut 28 fine samples through walls)");
+            C(lo.FlatLen <= 40 + 1e-6 && lo.PlumpLen <= 40 + 1e-6, "r4 owner maze: the laid hose (" + lo.FlatLen.ToString("0.0") + ") is never longer than the hose");
+            // the clear test itself: a pinched diagonal (two wall cells corner to corner) is not a gap
+            var pw = Open(10, 10);
+            pw.SetBlocked(new Cell(5, 5), BlockKind.Wall);
+            pw.SetBlocked(new Cell(4, 4), BlockKind.Wall);
+            C(!HoseMath.SegmentClear(pw, new V2(3.5, 5.5), new V2(5.5, 3.5)) && HoseMath.SegmentClear(pw, new V2(3.5, 6.5), new V2(6.5, 6.5)),
+                "r4 clear: a line through two walls' touching corners is blocked; an open line is clear");
+            // slack never makes a hose longer than its reel: a route of ~19.6 under a 21-cell hose
+            w = StationMaze(null);
+            HoseLay tight = HoseMath.Lay(w, reel.Mouth, far.Centre, new HoseShapeParams { MaxLength = 21, Slack = 2 }, 3);
+            // station 22's joiner: every joiner sits on a straight run of the drawn hose (flat and plump), its axis the run's
+            // chord, so the two couplings line up with both hose lengths (owner: "improper connectivity of two pipe segments")
+            double half = HoseMath.JoinerHalf(HoseMath.VisibleWidth(1, 1));
+            int joints = 0;
+            double worst = 0;
+            foreach (HoseLay lj in new[] { l22, l23, lo })
+                foreach (int j in lj.Joints)
+                {
+                    joints++;
+                    worst = Math.Max(worst, Math.Max(RunDeviation(lj.Flat, j, half), RunDeviation(lj.Plump, j, half)));
+                }
+            C(joints > 0 && worst < 0.02, "r4 joiners: " + joints + " joiners on stations 22/23 + the owner maze, each on a straight run (worst off-axis " + worst.ToString("0.000") + " cell)");
+            // an L bend in the open: the joiner leaves the apex for the straight run beside it
+            var lw = Open(30, 30);
+            for (int x = 0; x < 30; x++) for (int z = 0; z < 30; z++) if (!(x >= 4 && x <= 6 && z >= 4 && z <= 22) && !(z >= 20 && z <= 22 && x >= 4 && x <= 25)) lw.SetBlocked(new Cell(x, z), BlockKind.Wall);
+            HoseLay ll = HoseMath.Lay(lw, new V2(5.5, 4.5), new V2(24.5, 21.5), new HoseShapeParams(), 9);
+            var apex = new V2(5.5, 21.5);
+            C(ll.Ok && ll.Joints.Count == 1 && V2.Dist(ll.Centre[ll.Joints[0]], apex) > half && RunDeviation(ll.Flat, ll.Joints[0], half) < 0.02,
+                "r4 joiners: an L-bend's joiner sits on the straight beside the corner (" + (ll.Joints.Count > 0 ? V2.Dist(ll.Centre[ll.Joints[0]], apex).ToString("0.0") : "none") + " cells from the apex), not across it");
+            Console.WriteLine($"  hose r4: st22 route {r22:0.0} laid {l22.FlatLen:0.0}; st23 route {r23:0.0} laid {l23.FlatLen:0.0}; owner maze route {ro:0.0} (40-cell lay {lo.FlatLen:0.0}); slack cap {tight.FlatLen:0.0}/21; joiners st22 {l22.Joints.Count} st23 {l23.Joints.Count} owner {lo.Joints.Count} (bends {HoseMath.Joints(l22.Centre, 8).Count}/{HoseMath.Joints(l23.Centre, 8).Count}/{HoseMath.Joints(lo.Centre, 8).Count})");
+            C(tight.Ok && tight.FlatLen <= 21 + 1e-6 && tight.PlumpLen <= 21 + 1e-6, "r4 slack cap: a 21-cell hose on a " + r22.ToString("0.0") + "-cell route lays " + tight.FlatLen.ToString("0.0"));
         }
 
         // ------------------------------------------------------------------ HOSE_BLOCKED_REROUTE_RETRACT_1 (owner card 2026-10-04)
