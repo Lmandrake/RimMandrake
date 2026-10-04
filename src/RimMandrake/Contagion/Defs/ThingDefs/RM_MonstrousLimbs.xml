@@ -7,8 +7,8 @@
     (artificial-part shape, installed by Recipe_InstallArtificialBodyPart :
     RM_InstallMonstrousLimbs.xml), NOT the natural RM_GrownArm/RM_GrownLeg.
     Deliberately carries no CompGenomeMatched: a monstrous limb is unmatched
-    to anyone. Icon is vanilla's HealthItem, tinted; a dedicated icon is
-    owed to CONTAGION_GROWN_LIMBS_ART_1.
+    to anyone. Each item has its own artpipe icon (Textures/Things/Item/Health
+    for the pillar arm and lash, Textures/Things/Item for the other three).
   -->
 
   <ThingDef ParentName="BodyPartBase">
