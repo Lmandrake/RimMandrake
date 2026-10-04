@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -164,6 +165,48 @@ def main():
         check(chk.returncode == 0, "generated sheet passes check_sheet.py")
         r2 = art_sheet.generate(art_sheet.doubles(idx), out, "t", "t_sheet", "<p>t</p>")
         check(not r2["wrote_decisions"], "regenerating the sheet never overwrites the decisions file")
+
+        # the per-biome sheet (BIOME_FLORAFAUNA_ART_REVIEW_1): canon row + linked stand-in, sit1 prefill, NO ART row
+        canon_key = next((d.name for d in sorted(art_sheet.CANON.iterdir()) if d.is_dir()
+                          and any(p.suffix in (".png", ".jpg", ".webp") for p in d.iterdir())), None)
+        row_a = {"key": "RSW_Beast", "kind": "fauna", "label": "beast", "defNames": ["RSW_Beast"], "port": "RSW_Beast",
+                 "placements": [{"layer": "patch", "patch_mod": "mandrake.rut.patches"}], "commonality_max": 0.5,
+                 "canon": {"entry": f"design/RimStarWars/canon_references/{canon_key}" if canon_key else None},
+                 "twins": [{"defName": "RM_Beast", "relation": "tier_twin_same_stem", "in_this_biome": True}],
+                 "art": {"resources": [{"res": "Things/Beast/Beast", "role": "body", "prior_selection": {
+                     "decision": "B", "note": "", "picked_label": "x", "picked_faces": {"south": sgreen}}}]},
+                 "artpipe_state_jobs": []}
+        row_b = {"key": "RM_Beast", "kind": "fauna", "label": "beast", "defNames": ["RM_Beast"], "placements": [],
+                 "canon": {"entry": None}, "twins": [], "art": {"resources": []}, "artpipe_state_jobs": []}
+        cen = tmp / "census.json"
+        cen.write_text(json.dumps({"biome_order": ["RM_Test"], "git_head": "x",
+                                   "biomes": {"RM_Test": {"label": "Test", "rows": [row_a, row_b]}}}))
+        bout = tmp / "sheet" / "test_sheet.html"
+        rb = art_sheet.generate_biome("RM_Test", cen, bout, "T")
+        bh = bout.read_text()
+        bitems = json.loads(re.search(r'<script id="ITEMS" type="application/json">(.*?)</script>', bh, re.S).group(1))
+        byid = {i["id"]: i for i in bitems}
+        check(rb["rows"] == 2 == rb["census_rows"], f"biome sheet: one item per census row ({rb['rows']})")
+        check([r["id"] for r in byid["RSW_Beast"]["related"]] == ["RM_Beast"]
+              and [r["id"] for r in byid["RM_Beast"]["related"]] == ["RSW_Beast"]
+              and byid["RSW_Beast"]["group"] == byid["RM_Beast"]["group"] and byid["RM_Beast"].get("band"),
+              "biome sheet: twins linked both ways, same group + colour band")
+        check(byid["RM_Beast"]["noArt"] and rb["no_art"] == ["RM_Beast"], "biome sheet: a row with no pictures is NO ART YET")
+        bdec = json.loads((tmp / "sheet" / "test_sheet.decisions.json").read_text())
+        green_letter = next(c["letter"] for g in byid["RSW_Beast"]["graphics"] for c in g["cols"] if c["faces"].get("south") == sgreen)
+        check(byid["RSW_Beast"]["prefillSource"] == "sit1" and bdec["decisions"]["RSW_Beast"]["decision"] == green_letter,
+              "biome sheet: desert sitting 1 pick prefills the matching column")
+        if canon_key:
+            check(bool(byid["RSW_Beast"]["canon"] and byid["RSW_Beast"]["canon"]["imgs"]), "biome sheet: canon row carries reference images")
+        chk = subprocess.run([sys.executable, str(art_sheet.SKILL / "check_sheet.py"), str(bout), "--decisions",
+                              str(tmp / "sheet" / "test_sheet.decisions.json")], capture_output=True, text=True)
+        check(chk.returncode == 0, "biome sheet passes check_sheet.py")
+        rb2 = art_sheet.generate_biome("RM_Test", cen, bout, "T")
+        check(rb2["wrote_decisions"] and rb2["snapshotId"] == rb["snapshotId"], "biome rebuild: untouched prefill regenerated, letters stable")
+        bdec["savedBy"], bdec["writeCount"] = "serve_sheet.py", 1
+        (tmp / "sheet" / "test_sheet.decisions.json").write_text(json.dumps(bdec))
+        check(not art_sheet.generate_biome("RM_Test", cen, bout, "T")["wrote_decisions"],
+              "biome rebuild never overwrites a decisions file the sidecar wrote")
     else:
         print("review-sheets template absent — sheet checks UNMEASURED, not a pass or a fail")
 
