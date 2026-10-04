@@ -265,6 +265,40 @@ def _hediff_row(snap, name):
     return "absent", None
 
 
+GAME_DATA = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
+_SIMPLE_XPATH = re.compile(r'^/Defs/(\w+)\[defName="([^"]+)"\]/([\w/]+)$')
+
+
+def patch_target_resolves(xpath, roots):
+    """True/False when `/Defs/<Type>[defName="N"]/a/b` names a def found under `roots` (and that def carries a/b);
+    None when no root is reachable or the xpath is not of that simple shape (UNMEASURED, never a pass).
+    A patch that matches nothing logs nothing, so this is the only way to learn it offline."""
+    m = _SIMPLE_XPATH.match(xpath.strip())
+    roots = [r for r in roots if os.path.isdir(r)]
+    if not m or not roots:
+        return None
+    ty, name, rest = m.groups()
+    for root in roots:
+        for dirpath, _d, files in os.walk(root):
+            if "/Languages" in dirpath or "/Patches" in dirpath:
+                continue
+            for fn in files:
+                if not fn.endswith(".xml"):
+                    continue
+                path = os.path.join(dirpath, fn)
+                try:
+                    with open(path, encoding="utf-8", errors="replace") as fh:
+                        if name not in fh.read():
+                            continue
+                    top = ET.parse(path).getroot()
+                except (ET.ParseError, OSError):
+                    continue
+                for el in top:
+                    if el.tag == ty and (el.findtext("defName") or "").strip() == name:
+                        return el.find(rest) is not None
+    return False
+
+
 def _build_suite():
     suite = Suite("BrainWorms")
     suite.toggles = sorted(settings_fields())
@@ -432,6 +466,30 @@ def _build_suite():
                 _unmeasured(t, "the ON arm also reads canFireNow=False, so the toggle's effect cannot be told from the "
                                "site refusing (colony-age / map gates): %r" % (on.get("note") or on.get("reason")))
 
+    @suite.chain("ruin_loot_patch_target")
+    def ruin_loot_patch_target(t):
+        """Offline half of the ruin-loot vector: the PatchOperationAdd's xpath must land on a real
+        ThingSetMakerDef carrying root/options in the installed game Data, or the eggs never enter any ruin and
+        nothing logs it."""
+        with _comp(t, "ruin_loot_patch_target_exists", beyond_toggle=True):
+            if t.session is None:
+                return
+            ops = [op for op in ET.parse(os.path.join(HERE, "Patches", "BrainWormEggs_RuinLoot.xml")).getroot()
+                   if op.tag == "Operation"]
+            if len(ops) != 1:
+                _fail("expected one Operation in the ruin-loot patch, found %d" % len(ops))
+            if os.path.isdir(GAME_DATA) and (
+                    patch_target_resolves('/Defs/ThingDef[defName="Steel"]/statBases', [GAME_DATA]) is not True
+                    or patch_target_resolves('/Defs/ThingDef[defName="Steel"]/noSuchChild', [GAME_DATA]) is not False):
+                _fail("SANITY: the resolver cannot tell Core's Steel/statBases (present) from a missing child")
+            got = patch_target_resolves(ops[0].findtext("xpath") or "", [GAME_DATA])
+            if got is None:
+                _unmeasured(t, "game Data unreachable (or the xpath is not a simple defName path): cannot resolve %r"
+                            % ops[0].findtext("xpath"))
+            elif not got:
+                _fail("the ruin-loot patch xpath %r matches no def in the game Data: the eggs never spawn"
+                      % ops[0].findtext("xpath"))
+
     @suite.chain("mechanics_unmeasured")
     def mechanics_unmeasured(t):
         for name, toggle, why in (
@@ -445,7 +503,7 @@ def _build_suite():
             ("egg_shell_bursts_into_worms", "eggProjectileEnabled",
              "a fired mortar shell is needed; a spawned projectile does not impact on its own"),
             ("ruin_loot_can_hold_egg_cluster", None,
-             "needs a generated ancient complex (map generation); the patch target is vanilla's ThingSetMakerDef"),
+             "needs a generated ancient complex (map generation); the static half is ruin_loot_patch_target_exists"),
             ("dead_host_is_never_puppeted", None,
              "needs a killed infected pawn and ticks past death (static check covers the Dead refusals in source)"),
         ):
