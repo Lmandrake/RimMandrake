@@ -452,6 +452,18 @@ namespace RimMandrake.MessyConduit.Hose
             return o;
         }
 
+        /// <summary>Hose ends (owner review 2026-10-04 B22): every end and every joiner piece sits behind a dense cloth
+        /// BINDING WRAP, wider than the hose, that hides the hose-to-fitting transition for any hose type. The wrap is
+        /// <see cref="WrapK"/> x the hose's visible width across and <see cref="WrapLength"/> cell along it.</summary>
+        public const double WrapK = 1.4, WrapLength = 0.6;
+        public static double WrapWidth(double visible) => WrapK * visible;
+
+        /// <summary>Draw size of a fitting (canvas cells) on a hose of <paramref name="visible"/> width: matched to the hose
+        /// by its hose band, but never so big that its widest part (<paramref name="maxBand"/>, canvas fraction) reads
+        /// wider than 0.95 x the wrap (B22: "the fitting must not look wider than the wrap").</summary>
+        public static double FittingSize(double visible, double hoseBand, double maxBand) =>
+            Math.Min(visible / hoseBand, 0.95 * WrapWidth(visible) / maxBand);
+
         /// <summary>A joiner is TWO couplings face to face, each on its own length, so it reads as two lengths screwed
         /// tightly together (B9), never as one hose end lying across another. Centres of the forward piece (pointing
         /// along +d) and the backward piece (pointing along -d) for a joint at J; the brass faces meet at J.</summary>

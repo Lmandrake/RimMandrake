@@ -196,6 +196,7 @@ namespace RimMandrake.MessyConduit.Hose
         private void DrawAll()
         {
             float y0 = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
+            lastWrapDraws = 0;
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
@@ -282,13 +283,13 @@ namespace RimMandrake.MessyConduit.Hose
         /// enters Coupling_Brass/EndCap is 32 px of 128 (0.25), not the 0.31 first assumed, so every fitting was drawn ~20%
         /// narrower than the hose. validation.py O6 re-measures these from the PNGs.</summary>
         public const float PieceBand = 0.25f;
-        /// <summary>OpenEnd.png's hose band: 35 px of 128.</summary>
-        public const float OpenBand = 0.273f;
         /// <summary>The coupling's brass face, canvas units along +X (measured 2026-10-02: 0.46).</summary>
         public const double JoinerFace = 0.46;
-        /// <summary>OpenEnd.png (made from Strand_Flat by make_hose_open_end.py): the mouth, the hose's plain cut end, sits
-        /// at +0.30 canvas along +X; the hose enters from -X.</summary>
-        public const double OpenMouth = 0.30;
+        /// <summary>Widest opaque band of each fitting (canvas fraction of 128 px; measured 2026-10-04, validation.py O6
+        /// re-measures): Coupling_Brass 65, Nozzle 48, EndCap 44.</summary>
+        public const float CouplingMax = 0.508f, NozzleMax = 0.375f, EndCapMax = 0.344f;
+        /// <summary>Binding.png (make_hose_binding.py, 82x40, wrap along +X): the wrap's widest band, 38 px of 40.</summary>
+        public const float BindBand = 0.95f;
 
         private int RankOf(CompHoseReel r)
         {
@@ -297,32 +298,64 @@ namespace RimMandrake.MessyConduit.Hose
             return k;
         }
 
+        /// <summary>Both ends of every hose and both halves of every joiner (B22): a cloth binding wrap ~1.4 x the hose
+        /// wide and 0.6 cell long covers the hose-to-fitting transition, then the fitting (sized never to read wider than
+        /// the wrap) or, at an open free end, a plain dark mouth. The wrap is drawn over the fitting's hose stub.</summary>
         private void DrawEnds(CompHoseReel r, HoseLay lay, List<V2> pts, float vis, float y)
         {
-            float size = vis / PieceBand;
             int n = pts.Count;
+            Color wrapTint = Color.Lerp(Color.white, Tint(r), 0.5f);
             // reel end: a brass coupling whose face meets the reel, pointing into it
             V2 d0 = (pts[0] - pts[Math.Min(3, n - 1)]).Norm();
-            Piece(HoseMaterials.Coupling, pts[0] - d0 * (0.40 * size), d0, size, y);
+            Fitting(HoseMaterials.Coupling, CouplingMax, -JoinerFace, 0.125, pts[0], d0, vis, y, wrapTint);
             // joiners: only at real bends (B17), each two couplings face to face, screwed together (B9). Pose samples share
             // the lay's sample indices (equal-arc resamples of the same count).
             foreach (int j0 in lay.Joints)
             {
                 int j = Math.Min(n - 2, Math.Max(1, j0));
                 V2 d = (pts[Math.Min(n - 1, j + 1)] - pts[j - 1]).Norm();
-                HoseMath.JoinerPoses(pts[j], d, size, JoinerFace, out V2 fw, out V2 bw);
-                Piece(HoseMaterials.Coupling, fw, d, size, y);
-                Piece(HoseMaterials.Coupling, bw, -d, size, y);
+                Fitting(HoseMaterials.Coupling, CouplingMax, -JoinerFace, 0.125, pts[j], d, vis, y, wrapTint);
+                Fitting(HoseMaterials.Coupling, CouplingMax, -JoinerFace, 0.125, pts[j], -d, vis, y, wrapTint);
             }
             // free end: open (default), nozzle or cap, pointing out along the hose
             V2 d1 = (pts[n - 1] - pts[Math.Max(0, n - 4)]).Norm();
-            if (r.end == HoseEnd.Nozzle) Piece(HoseMaterials.Nozzle, pts[n - 1] + d1 * (0.05 * size), d1, size, y);
-            else if (r.end == HoseEnd.EndCap) Piece(HoseMaterials.EndCap, pts[n - 1] - d1 * (0.10 * size), d1, size, y);
+            if (r.end == HoseEnd.Nozzle) Fitting(HoseMaterials.Nozzle, NozzleMax, 0.05, -0.12, pts[n - 1], d1, vis, y, wrapTint);
+            else if (r.end == HoseEnd.EndCap) Fitting(HoseMaterials.EndCap, EndCapMax, -0.10, -0.06, pts[n - 1], d1, vis, y, wrapTint);
             else
             {
-                float so = vis / OpenBand;
-                Piece(HoseMaterials.OpenEnd, pts[n - 1] - d1 * (OpenMouth * so), d1, so, y);
+                V2 e = pts[n - 1];
+                Wrap(e - d1 * (HoseMath.WrapLength / 2 + 0.06), d1, vis, y + 0.0002f, wrapTint);
+                PieceXZ(HoseMaterials.Mouth, e - d1 * (0.16 * vis), d1, 0.32f * vis, 0.86f * vis, y + 0.0003f, Color.white);
             }
+        }
+
+        public int lastWrapDraws;
+
+        /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre
+        /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
+        /// centre; the wrap ends 0.05 cell over the brass start and runs back along the hose.</summary>
+        private void Fitting(Material m, float maxBand, double centreOff, double brassFrom, V2 end, V2 d, float vis, float y, Color wrapTint)
+        {
+            float size = (float)HoseMath.FittingSize(vis, PieceBand, maxBand);
+            V2 c = end + d * (centreOff * size);
+            Piece(m, c, d, size, y);
+            V2 brass = c + d * (brassFrom * size);
+            Wrap(brass + d * (0.05 - HoseMath.WrapLength / 2), d, vis, y + 0.0002f, wrapTint);
+        }
+
+        private void Wrap(V2 centre, V2 d, float vis, float y, Color tint)
+        {
+            PieceXZ(HoseMaterials.Binding, centre, d, (float)HoseMath.WrapLength, (float)HoseMath.WrapWidth(vis) / BindBand, y, tint);
+            lastWrapDraws++;
+        }
+
+        private static void PieceXZ(Material m, V2 c, V2 dir, float sx, float sz, float y, Color tint)
+        {
+            if (m == null) return;
+            float ang = Mathf.Atan2((float)dir.Z, (float)dir.X);
+            if (tint != Color.white) m = HoseMaterials.Tinted(m, tint);
+            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(new Vector3((float)c.X, y, (float)c.Z), Quaternion.Euler(0f, -ang * Mathf.Rad2Deg, 0f),
+                new Vector3(sx, 1f, sz)), m, 0);
         }
 
         private static void Piece(Material m, V2 c, V2 dir, float size, float y)
@@ -370,7 +403,7 @@ namespace RimMandrake.MessyConduit.Hose
     {
         private const string Dir = "RimMandrake/MessyConduit/Hose/";
         private static readonly Texture2D flatTex, plumpTex, shadowTex;
-        public static readonly Material Coupling, Nozzle, EndCap, OpenEnd;
+        public static readonly Material Coupling, Nozzle, EndCap, Binding, Mouth;
         private static readonly Dictionary<long, Material> pool = new Dictionary<long, Material>();
         public static readonly int Queue;
 
@@ -383,7 +416,8 @@ namespace RimMandrake.MessyConduit.Hose
             Coupling = Piece("Coupling_Brass");
             Nozzle = Piece("Nozzle");
             EndCap = Piece("EndCap");
-            OpenEnd = Piece("OpenEnd");
+            Binding = Piece("Binding");
+            Mouth = Piece("Mouth");
         }
 
         public static bool Installed => flatTex != null && plumpTex != null;
@@ -399,6 +433,19 @@ namespace RimMandrake.MessyConduit.Hose
         {
             Texture2D t = ContentFinder<Texture2D>.Get(Dir + n, reportFailure: true);
             return t == null ? null : MaterialPool.MatFrom(new MaterialRequest(t, ShaderDatabase.Transparent) { renderQueue = Queue });
+        }
+
+        private static readonly Dictionary<Material, Dictionary<int, Material>> tinted = new Dictionary<Material, Dictionary<int, Material>>();
+
+        /// <summary>A piece material tinted (the binding takes half the hose's wet tint so it sits on any hose); pooled.</summary>
+        public static Material Tinted(Material m, Color c)
+        {
+            int k = ((int)(c.r * 63) << 12) | ((int)(c.g * 63) << 6) | (int)(c.b * 63);
+            if (!tinted.TryGetValue(m, out var byTint)) tinted[m] = byTint = new Dictionary<int, Material>();
+            if (byTint.TryGetValue(k, out Material t)) return t;
+            t = MaterialPool.MatFrom(new MaterialRequest((Texture2D)m.mainTexture, ShaderDatabase.Transparent, new Color(c.r, c.g, c.b, 1f)) { renderQueue = Queue });
+            byTint[k] = t;
+            return t;
         }
 
         /// <summary>Alpha quantised to 1/20 so the cross-fade reuses a handful of pooled materials.</summary>

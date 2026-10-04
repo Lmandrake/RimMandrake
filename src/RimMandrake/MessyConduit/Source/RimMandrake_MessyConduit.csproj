@@ -64,6 +64,7 @@
     <Compile Include="Aerial\AerialSettings.cs" />
     <Compile Include="Aerial\AerialMaterials.cs" />
     <Compile Include="Aerial\PoleGeometryTable.cs" />
+    <Compile Include="Aerial\BracketGeometryTable.cs" />
     <Compile Include="Aerial\AerialPowerPatch.cs" />
     <Compile Include="Aerial\CompAerialAnchor.cs" />
     <Compile Include="Aerial\CompPowerTap.cs" />

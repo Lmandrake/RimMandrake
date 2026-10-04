@@ -112,7 +112,8 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (pc == null) continue;
                 things.Add("{\"id\":" + t.thingIDNumber + ",\"def\":" + S(t.def.defName) + ",\"faction\":" + S(t.Faction?.Name) +
                            ",\"net\":" + RM_MapComponent_Aerial.NetId(RM_MapComponent_Aerial.Registered(map, pc.PowerNet)) + ",\"compNet\":" + RM_MapComponent_Aerial.NetId(pc.PowerNet) +
-                           (tr != null ? ",\"powerOn\":" + B(tr.PowerOn) + ",\"outputW\":" + F(tr.PowerOutput) : "") +
+                           (tr != null ? ",\"powerOn\":" + B(tr.PowerOn) + ",\"outputW\":" + F(tr.PowerOutput) + ",\"wantsOn\":" + B(FlickUtility.WantsToBeOn(tw)) +
+                                         ",\"needsPowerOverlay\":" + B(NeedsPowerOverlay(tr)) + ",\"connectParent\":" + (tr.connectParent?.parent?.thingIDNumber ?? -1) : "") +
                            (bat != null ? ",\"storedWd\":" + F(bat.StoredEnergy) : "") + "}");
             }
             sb.Append("{\"success\":true,\"cmd\":\"net\",\"x\":" + c.x + ",\"z\":" + c.z + ",\"net\":" + RM_MapComponent_Aerial.NetId(n));
@@ -121,6 +122,14 @@ namespace RimMandrake.MessyConduit.Aerial
                           ",\"storedWd\":" + F(n.CurrentStoredEnergy()) + ",\"transmitters\":" + n.transmitters.Count + ",\"powerComps\":" + n.powerComps.Count);
             sb.Append(",\"things\":[" + string.Join(",", things) + "]}");
             return sb.ToString();
+        }
+
+        private static readonly FieldInfo overlayNeedsPowerField = typeof(CompPowerTrader).GetField("overlayNeedsPower", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        /// <summary>State read (T4): is the vanilla NeedsPower bolt currently enabled on this trader (its private overlay handle)?</summary>
+        private static bool NeedsPowerOverlay(CompPowerTrader tr)
+        {
+            return overlayNeedsPowerField?.GetValue(tr) != null;      // a boxed empty Nullable is null
         }
 
         private static string Census(Map map, RM_MapComponent_Aerial comp)
@@ -145,7 +154,7 @@ namespace RimMandrake.MessyConduit.Aerial
                     double len = 0;
                     for (int i = 1; i < lay.Pts.Count; i++) len += P2.Dist(lay.Pts[i - 1], lay.Pts[i]);
                     fl.Add("{\"toward\":[" + f.toward.x + "," + f.toward.z + "],\"cutPartner\":" + f.cutPartner + ",\"pts\":" + lay.Pts.Count +
-                           ",\"dropPts\":" + (comp.DropPoints(a, f)?.Count ?? 0) + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + "}");
+                           ",\"wireStart\":[" + F((float)lay.Pts[0].X) + "," + F((float)lay.Pts[0].Z) + "],\"breakAt\":[" + F(f.toward.x + 0.5f) + "," + F(f.toward.z + 0.5f) + "]" + ",\"laidLen\":" + F((float)len) + ",\"tip\":[" + F((float)lay.Tip.X) + "," + F((float)lay.Tip.Z) + "],\"blocked\":" + B(lay.Blocked) + "}");
                     fallenN++;
                 }
                 PowerNet raw = a.PowerComp?.PowerNet;

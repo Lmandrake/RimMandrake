@@ -124,6 +124,33 @@ namespace RimMandrake.MessyConduit.Aerial
 
         private static readonly Dictionary<ThingDef, Vector2> origGeom = new Dictionary<ThingDef, Vector2>();
 
+        /// <summary>Insulator centres across each look's crossarm (cells from the pole centre, left to right), measured from
+        /// the look's own art (PoleGeometryTable, generated). Spans fan out to these instead of meeting at the pole centre.</summary>
+        public static readonly Dictionary<string, float[]> InsulatorTable = PoleGeometryTable.Insulators();
+        private static readonly HashSet<ThingDef> realArt = new HashSet<ThingDef>();
+        private static readonly string[] RotNames = { "North", "East", "South", "West" };
+        public static readonly Dictionary<string, Vector2> BracketTable = BracketGeometryTable.Build();
+
+        /// <summary>A wall bracket drawing its look's own per-facing art: where its insulator is, as an offset from the
+        /// graphic centre (BracketGeometryTable, measured per Look/rotation). Null = the stand-in (the def's attachZ).</summary>
+        public static Vector2? BracketInsulator(CompAerialAnchor a)
+        {
+            ThingDef d = a?.parent?.def;
+            if (d == null || d != AerialDefOf.RM_AerialWallBracket || !realArt.Contains(d)) return null;
+            return BracketTable.TryGetValue(Look + "/" + RotNames[a.parent.Rotation.AsInt & 3], out Vector2 v) ? v : (Vector2?)null;
+        }
+
+        /// <summary>The anchor's insulator x offsets now: the look's measured crossarm when its own art is drawn, else
+        /// the def's insulatorSpread (-s/2, 0, +s/2), else one insulator at the centre (the wall bracket).</summary>
+        public static double[] InsulatorsFor(CompAerialAnchor a)
+        {
+            ThingDef d = a?.parent?.def;
+            if (d != null && realArt.Contains(d) && InsulatorTable.TryGetValue(Look + "/" + d.defName, out float[] xs) && xs.Length > 0)
+                return System.Array.ConvertAll(xs, x => (double)x);
+            float s = a?.Ext?.insulatorSpread ?? 0f;
+            return s > 0.001f ? new double[] { -s / 2, 0, s / 2 } : new double[] { 0 };
+        }
+
         private static void ApplyGeometry(ThingDef d, bool real)
         {
             AerialAnchorExtension ext = d.GetModExtension<AerialAnchorExtension>();
@@ -153,8 +180,11 @@ namespace RimMandrake.MessyConduit.Aerial
                 string own = AerialStyleDir + Look + "/" + baseName;
                 var use = new GraphicData();
                 use.CopyFrom(orig);
-                bool real = Exists(own);
-                if (real) { use.texPath = own; use.color = Color.white; }
+                // the wall bracket's own art is one image per facing (Graphic_Multi: _north/_east/_south; west mirrors east)
+                bool multi = d == AerialDefOf.RM_AerialWallBracket;
+                bool real = multi ? Exists(own + "_north") && Exists(own + "_east") && Exists(own + "_south") : Exists(own);
+                if (real) realArt.Add(d); else realArt.Remove(d);
+                if (real) { use.texPath = own; use.color = Color.white; if (multi) use.graphicClass = typeof(Graphic_Multi); }
                 else
                 {
                     use.color = PoleTint;

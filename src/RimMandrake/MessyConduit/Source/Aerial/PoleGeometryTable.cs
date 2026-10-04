@@ -20,5 +20,20 @@ namespace RimMandrake.MessyConduit.Aerial
             d["Futuristic/RM_AerialLampMast"] = new Vector2(3.242f, 3.000f);   // insulator tip row 33.0 of 512
             return d;
         }
+
+        /// <summary>Insulator centres across the crossarm, left to right (cells from the pole centre), per look/def.</summary>
+        public static Dictionary<string, float[]> Insulators()
+        {
+            var d = new Dictionary<string, float[]>();
+            d["Scrapper/RM_AerialMast"] = new[] { -0.538f, 0.087f, 0.617f };
+            d["Scrapper/RM_AerialLampMast"] = new[] { -0.684f, 0.012f, 0.736f };
+            d["Industrial/RM_AerialMast"] = new[] { -0.735f, -0.001f, 0.722f };
+            d["Industrial/RM_AerialLampMast"] = new[] { -0.652f, -0.003f, 0.654f };
+            d["Modern/RM_AerialMast"] = new[] { -0.632f, 0.001f, 0.635f };
+            d["Modern/RM_AerialLampMast"] = new[] { -0.609f, -0.007f, 0.602f };
+            d["Futuristic/RM_AerialMast"] = new[] { -0.680f, -0.001f, 0.682f };
+            d["Futuristic/RM_AerialLampMast"] = new[] { -0.722f, 0.000f, 0.721f };
+            return d;
+        }
     }
 }
