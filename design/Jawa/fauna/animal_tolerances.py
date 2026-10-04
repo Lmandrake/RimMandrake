@@ -223,8 +223,13 @@ def emit(rows):
         else:
             comment = (f'  <!-- {lab} ({a}) - {n} tiles, home demands {nlo:g} … {nhi:g} °C  '
                        f'{cur[MIN]:g}..{cur[MAX]:g} -> {new[MIN]:g}..{new[MAX]:g} -->')
+        # ANIMAL_TOLERANCES_DONOR_NOMATCH_1: the outer existence guard has NO nomatch, so a
+        # donor creature absent from the live list no-ops silently instead of running the
+        # inner "add a statBases block" nomatch against a def that is not there (Log.Error).
         o += [comment,
               '  <Operation Class="PatchOperationConditional">',
+              f'    <xpath>/Defs/ThingDef[defName="{a}"]</xpath>',
+              '    <match Class="PatchOperationConditional">',
               f'    <xpath>/Defs/ThingDef[defName="{a}"]/statBases</xpath>',
               '    <match Class="PatchOperationSequence">',
               '      <operations>']
@@ -249,6 +254,7 @@ def emit(rows):
               f'          <{MAX}>{new[MAX]:g}</{MAX}>',
               '        </statBases>', '      </value>',
               '    </nomatch>',
+              '    </match>',
               '  </Operation>', '']
     o.append('</Patch>')
     os.makedirs(os.path.dirname(PATCH), exist_ok=True)
