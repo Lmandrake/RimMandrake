@@ -25,7 +25,7 @@ TOOLS_NEEDED = (
     "jawa/designate_batch", "jawa/set_thing_props", "jawa/comp_read", "jawa/map_fire",
     "jawa/set_pawn_skill", "jawa/set_plants", "jawa/set_terrain_batch", "jawa/spawn_batch",
     "jawa/spawn_pawn", "jawa/weather_get", "jawa/weather_set", "jawa/window_list_close",
-    "rimworld/open_mod_settings", "rimworld/set_time_speed")
+    "jawa/static_call", "rimworld/open_mod_settings", "rimworld/set_time_speed")
 
 
 def _defaults():

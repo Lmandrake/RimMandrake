@@ -64,6 +64,7 @@
     <Compile Include="RM_ColdSink.cs" />
     <Compile Include="RM_AblationSalvage.cs" />
     <Compile Include="RM_VhaulkRoad.cs" />
+    <Compile Include="RM_BlueDesertSoundscape.cs" />
   </ItemGroup>
 
   <ItemGroup>

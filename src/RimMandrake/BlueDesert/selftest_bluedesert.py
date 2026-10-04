@@ -646,6 +646,44 @@ class FakeGame(MockGame):
         can = "incident_fires_anywhere" in self.bugs
         return {"success": can, "canFireNow": can, "fired": False}
 
+    def t_jawa_static_call(self, p):
+        """RM_BlueDesertSoundProof: a mini-model of RM_MapComponent_BlueDesertSoundscape.Rescan, judged with the
+        same rules as the C# proof (which builds this answer live)."""
+        b, mode, m = self.bugs, p.get("args"), p.get("method")
+        if p.get("type") != "RimMandrake.BlueDesert.RM_BlueDesertSoundProof" or "proof_unanswered" in b:
+            return {"success": False, "error": "no such type"}
+        on = mode != "off"
+        if m == "ProofChoir":
+            gate = on or "choir_ignores_toggle" in b
+            sing = gate and "choir_never_sings" not in b
+            silenced = sing and "choir_not_silenced" not in b
+            echo = sing and "choir_no_echo" in b
+            st = "alone=%s silenced=%s echo=%s" % (sing, silenced, echo)
+            if on:
+                if not sing:
+                    return {"success": True, "result": "FAIL: a lone pack of 4 does not sing " + st}
+                if not silenced:
+                    return {"success": True, "result": "FAIL: a muffalo 5 cells away did not silence the choir " + st}
+                if echo:
+                    return {"success": True, "result": "FAIL: no echo hold " + st}
+                return {"success": True, "result": "PASS " + st}
+            return {"success": True, "result": ("FAIL: off but sang " if sing else "PASS off ") + st}
+        if m == "ProofVirr":
+            if self.weather_now != "RM_IceSandDrift":
+                return {"success": True, "result": "UNMEASURED: wind 0.10 below the singing threshold"}
+            gate = on or "virr_ignores_toggle" in b
+            sing = gate and "virr_never" not in b
+            young, ripe = 0.85 + 0.0, (0.85 if "virr_pitch_flat" in b else 1.35)
+            st = "young=%s@%.2f ripe=%s@%.2f" % (sing, young, sing, ripe)
+            if on:
+                if not sing:
+                    return {"success": True, "result": "FAIL: does not sing " + st}
+                if ripe <= young:
+                    return {"success": True, "result": "FAIL: pitch does not climb with ripeness " + st}
+                return {"success": True, "result": "PASS " + st}
+            return {"success": True, "result": ("FAIL: off but sang " if sing else "PASS off ") + st}
+        return {"success": False, "error": "no such method"}
+
     def t_jawa_letter_list(self, p):
         return {"success": True, "count": len(self.letters), "letters": list(self.letters)}
 
@@ -734,10 +772,19 @@ MUTANTS = {
     "apply_noop": "weather_apply/ruled_weathers_toggle_applies",
     "incident_fires_anywhere": "ablation_gate/ablation_only_in_blue_desert",
     "log_error": "log/log_clean",
+    "choir_never_sings": "soundscape/choir_sings_and_falls_silent",
+    "choir_not_silenced": "soundscape/choir_sings_and_falls_silent",
+    "choir_no_echo": "soundscape/choir_sings_and_falls_silent",
+    "choir_ignores_toggle": "soundscape/choir_toggle_off_silent",
+    "virr_never": "soundscape/virr_sings_in_wind_pitch_climbs",
+    "virr_pitch_flat": "soundscape/virr_sings_in_wind_pitch_climbs",
+    "virr_ignores_toggle": "soundscape/virr_toggle_off_silent",
 }
 
 # bug -> {component: expected non-PASS verdict} for cases that must read UNMEASURED (never a pass or a fail)
 UNMEASURED_CASES = {
+    "proof_unanswered": {"soundscape/choir_sings_and_falls_silent": "UNMEASURED",
+                         "soundscape/virr_toggle_off_silent": "UNMEASURED"},
     "dialog_unreachable": {"weather_apply/ruled_weathers_toggle_applies": "UNMEASURED"},
     "no_ordered_job": {"butane/foreign_grazer_takes_butane_gut": "UNMEASURED",
                        "cold_rack/rack_site_ready": "UNMEASURED", "thaw/thaw_toggle_off_mines_cleanly": "UNMEASURED",

@@ -70,6 +70,13 @@ The vhaulk
 - The `vhaulkStayDaysFactor` field exists and is writable (it is also driven by the walk-off run). → settings.vhaulkStayDaysFactor_roundtrip
 - Its seams boom at long intervals and frost hangs in its wake. → UNCOVERED: an audio one-shot and a dust fleck have no state read
 
+Soundscape (vanilla clips, audio ruling 2026-10-03)
+- Three or more ossivels on the map sing (choir sustainer state on); a pawn bigger than body size 1.0 within 15 cells silences them at once; the silence outlasts the intruder by the hold (900 ticks, PROVISIONAL), then the song resumes. → soundscape.choir_sings_and_falls_silent
+- With `ossivelChoirEnabled` off the ossivels never sing. → soundscape.choir_toggle_off_silent
+- In wind of at least 0.5 the virr nearest the camera sings, and its pitch is higher at full growth than as a seedling. → soundscape.virr_sings_in_wind_pitch_climbs
+- With `virrSongEnabled` off the virr never sings. → soundscape.virr_toggle_off_silent
+- The audible sound itself (the vanilla choir loop, the desolate-wind loop, the murrek's Fleshbeast-dig burst on surfacing, the drift's storm wind as Odyssey's own sandstorm uses). → UNCOVERED: audio has no state read; only the driving state above is read, and the wiring is a static check (validation.py static_checks)
+
 Weather
 - An unroofed colonist under the Haze carrier takes `RM_HazeFilm` and its severity climbs; a roofed one's does not. → haze.haze_film_on_outdoor_colonist
 - The ten natives are immune. → haze.haze_spares_natives
