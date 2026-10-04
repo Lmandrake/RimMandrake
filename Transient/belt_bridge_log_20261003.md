@@ -100,3 +100,21 @@
 - 19:02:20 run17c done: TheSump 3P/3F/32U (STALE: builder committed SUMP_FREE_TIER_MOVE 18:35 after my 18:13 deploy; 18 defs not live), RustCathedral recorded; run17d (WS,Forge,LeaningScrub,Cauldron,Bacta,BrainWorms,BlueDesert) started 19:02 and keeps running after I return (setsid)
 - 19:09:23 handoff FOUNDRY_HANDOFF_202610040201 published; run17d WS stage healthy (7m)
 - 19:16:44 FINAL: handoff published; run17d WS stage will hit budget ~19:27 (exit kills later suites); returning to parent
+- 19:17:23 round4 bridge agent up; run17d WS healthy (watchdog OK); waiting for WS budget exit ~19:27 then record + redeploy
+- 19:25:42 run17d: WS finished within budget, runner now on TheForge (healthy). deploy dry-run plan shows drift (all stale DLLs); heldscan.py does not exist in repo
+- 19:36:36 harness: bland_world.retile/restore_tile + Suite.biome/tile_temperature wired into runner (selftest 14/14), uncommitted until live-proven; run17d on LeaningScrub healthy
+- 19:42:29 run17d on Cauldron (LS done); wiring --retile (SUITE_BIOMES map) for next run
+- 19:54:26 run17d on Bacta (Cauldron done), healthy
+- 20:06:39 run17d Bacta 16m in, healthy; committed 833793fa5 retile harness
+- 20:18:33 run17d killed during BlueDesert (stale DLL, partial); WS/Forge/LS/Cauldron/Bacta/BrainWorms recorded RED; game closed, deployed biomes(94)+plain(153); launching load 12
+- 20:36:45 load 12 token seen; preflight next
+- 20:38:58 load 12 UP (RunInBackground already True); run18a (no retile) KeelHoist,AcousticScanner,AssailantSalvage,FallLineArrivals,TheSump launched; then 18b --retile Miasma,TheRot,Webwork,RustCathedral,Greentide,LanternDeeps,NightsideIce
+- 20:42:59 run18a: KeelHoist 15P/1F/2U (fixed script: gate=True is by-design on player-parent map), Acoustic 17P/1U, AssailantSalvage 5P/6U/1F (2 textures owed: RUT_AncientBlackBox); FallLine running
+- 20:48:27 run18a done; run18b --retile launched (Webwork,Miasma,TheRot,RustCathedral,Greentide,LanternDeeps,NightsideIce)
+- 20:52:25 run18b --retile PROVEN live: Webwork 17P/3F/10U -> 21P/1F/3U (remaining F was script: fixed). bland_world now reuses current map when candidates spent (second run after a load died UNMEASURED). TheSump 29P/11U (was 3P/3F/32U); KeelHoist/Acoustic/Assailant/FallLine/TheSump recorded. Miasma running
+- 21:00:05 18b: Miasma 23P/1F/8U (was 13/2/10; F needs water cell), TheRot 59P/1F/17U (was 30/3/44; F swallow cut-out dealt 134 not released), RustCathedral 28P/4F/11U (4 F = get_defs instrument on custom type/roster/thinktree, fixing after run), Greentide running
+- 21:09:09 18b: Greentide 26P/2F/16U (F: churnmud swallow didn't fire 3200t; vurrak refused 'not bank: needs water within 2.9' = harness gap: no water on bland map); LanternDeeps running; RustCathedral roster script fixed via biome_probe (uncommitted)
+- 21:12:49 18b recorded (Nightside 22P/3F/3U, LanternDeeps 27P/5F/8U: Deep-layer proofs need Deep map). RustCathedral probed live: attitude def OK via FULL type name (script fix), think tree depth-limited (UNMEASURED). run18c launched --retile RustCathedral,BlueDesert,FeverWood
+- 21:22:00 18c: RustCathedral 32P/11U (all F gone; calm_bands_reachable UNMEASURED needs a living bolt); BlueDesert 6m in healthy
+- 21:32:26 BlueDesert 37P/3F/20U (flora still refused at -5C; thaw 184 ice/23 blocks; cold wax). Filed BELT_WATER_HARNESS_1, BLUEDESERT_FLORA_PLANT_REFUSAL_1, DEEP_LAYER_BELT_HARNESS_1. FeverWood running
+- 21:54:21 FeverWood 83P/2F/15U (F: ProofRaid NullReferenceException staging column = real/or no raider faction on bland map). Live work for this round done; writing handoff. game UP load 12 (current), no runner
