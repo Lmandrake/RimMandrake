@@ -18,6 +18,6 @@ status-hint: phase 1a of design/RimMandrake/messy_conduit_design_2026-10-02.md �
 ## the walk
 1. [O] `python3 src/RimMandrake/MessyConduit/validation.py` — O1 files/csproj/textures, O2 settings defaults, O3 C# core SelfTest against the Python oracle (+ --probe must fail every scene), O4 the oracle's own selftest
 2. [B] `python3 src/RimMandrake/Utils/modset_builder.py --tier messyconduit --apply`, launch via Steam, then `python.exe src/RimMandrake/MessyConduit/validation.py --live --fresh-map` (~270 ticks; state read through `MessyConduitProbe` via `jawa/mod_settings_field`)
-3. [B] `python.exe src/RimMandrake/MessyConduit/validation.py --save-load <NEW_NAME>` on the same map (M4), then ONE cold load onto a tier without the mod (`--tier flowworks`) and `python.exe src/RimMandrake/MessyConduit/validation.py --removal-check <NEW_NAME>` (M9)
+3. [B] `python.exe src/RimMandrake/MessyConduit/validation.py --save-load <NEW_NAME>` on the same map (M4) (the removal check is PAUSED, owner 2026-10-04: *"I don't want to do removal checks regularly"* — it stays UNCOVERED by design until he re-enables it; the commented-out step was: cold load onto `--tier flowworks`, then `validation.py --removal-check <NEW_NAME>` (M9))
 4. [B] record: `python3 -m modcheck.cli record MessyConduit --result <validation_result_*.json> --tier messyconduit` (REFUSED while UNBUILT/UNCOVERED bars remain — honest by design)
 X. [S] (human pass) the look: screenshots under Transient/messy_conduit_live_20261002/ or a keeper save; never a pass bar
