@@ -1,0 +1,866 @@
+{
+"sheetId": "junk_reskin_review_2026-10-04",
+"reviewStatus": {
+"state": "prefill",
+"by": null,
+"at": null,
+"evidence": "generator pre-fill by FOUNDRY belt builder 2026-10-04; nobody has opened it"
+},
+"decisions": {
+"RSW_Junk_AncientAPC_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientAPC_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientAPC_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientAPC_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientAPC_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientAPC_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientAPC_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientDropshipEngine_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientGiantWheel_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientJetEngine_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientLargeRustedEngineBlock_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonBarrel_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonBarrel_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonBarrel_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonBarrel_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonBarrel_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonTripod_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonTripod_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonTripod_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonTripod_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonTripod_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMegaCannonTripod_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientMiniWarwalkerRemains_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_01": {
+"decision": "cut",
+"prefill": "cut",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientPodCar_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCarFrame_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_09": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedCar_10": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_09": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_10": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_11": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedDropship_12": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedEngineBlock_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedJeep_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientRustedTruck_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTankTrap_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientTank_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarspiderRemains_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerClaw_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerFoot_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerFoot_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerFoot_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerFoot_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerFoot_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerLeg_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerShell_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerShell_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerShell_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerShell_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerShell_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWarwalkerTorso_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_01": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_02": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_03": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_04": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_05": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_06": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_07": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+},
+"RSW_Junk_AncientWheel_08": {
+"decision": "keep",
+"prefill": "keep",
+"note": ""
+}
+}
+}
