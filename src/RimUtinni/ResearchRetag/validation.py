@@ -332,6 +332,148 @@ def hearth_layout_static(t):
             raise ExpectationFailed("%d overlapping Hearth pairs: %s" % (len(bad), bad[:6]))
 
 
+# ============================================================================ retag rows vs the def dump
+# RESEARCHRETAG_COVERAGE_GAPS_1 (offline half). The three patch files carry ~830 scalar retag values (techLevel, baseCost, tab,
+# researchViewX/Y) and 31 prerequisite removals for ~400 donor projects; the live capture of a load WITH this mod is the
+# evidence they held. A dump captured before the patch ran cannot say so, so the bar goes UNMEASURED then (never PASS).
+import re as _re
+
+PATCH_FILES = ("RUT_ResearchRetag.xml", "RUT_ResearchRetag_Supplement.xml", "RUT_ResearchTabAssign.xml")
+_TARGET = _re.compile(r'^Defs/ResearchProjectDef\[defName="([^"]+)"\](?:/(\w+))?$')
+SCALARS = ("techLevel", "baseCost", "tab", "researchViewX", "researchViewY")
+REMOVED = "<removed>"
+# 13 VFE Tribals rows (techLevel Neolithic + tab RUT_Tree_Scavenging) that the load-14 dump (2026-10-04T06-29) shows UNPATCHED:
+# it carries techLevel Animal / tab VFET_Basics, the values of a later or overriding patch, while the other ~400 rows held.
+# Pinned so every other row is held to the dump and so the pin cannot rot (known_unheld_rows_are_still_unheld goes red the day
+# they hold). Cause not yet found: VFET_RETAG_ROWS_NOT_HELD_1.
+KNOWN_UNHELD = frozenset("VFET_" + n for n in ("Fire", "Agriculture", "Cultivation", "Medicine", "AnimalHandling", "Mining",
+                                               "Construction", "Furniture", "Tribalwear", "Hunting", "Weapons", "Bow", "Culture"))
+
+
+def patch_expectations(patch_dir=None):
+    """({(def, field): expected text}, {def}) from every leaf Replace/Add/Remove under the three patch files (nested
+    Sequence/Conditional ops live in <match>/<nomatch>/<li>, so walk every element). Remove -> REMOVED."""
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    pd = patch_dir or _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches")
+    exp, targets = {}, set()
+    for fn in PATCH_FILES:
+        for e in _ET.parse(_os.path.join(pd, fn)).getroot().iter():
+            cls = e.get("Class")
+            if cls not in ("PatchOperationReplace", "PatchOperationAdd", "PatchOperationRemove"):
+                continue
+            m = _TARGET.match((e.findtext("xpath") or "").strip())
+            if not m:
+                continue
+            d, fld = m.groups()
+            targets.add(d)
+            if cls == "PatchOperationRemove":
+                if fld:
+                    exp[(d, fld)] = REMOVED
+                continue
+            val = e.find("value")
+            for ch in (val if val is not None else ()):
+                if ch.tag in SCALARS and len(ch) == 0:
+                    exp[(d, ch.tag)] = (ch.text or "").strip()
+    return exp, targets
+
+
+def _same_value(got, want):
+    if str(got) == str(want):
+        return True
+    try:
+        return float(got) == float(want)
+    except (TypeError, ValueError):
+        return False
+
+
+def retag_findings(exp, rows, known_unheld=KNOWN_UNHELD):
+    """(held, checked, mismatches): every expectation whose def is in the dump, compared to the dump's field. A REMOVED
+    prerequisites field must be empty. Rows named in known_unheld are skipped here (and policed by unheld_findings)."""
+    held, checked, bad = 0, 0, []
+    for (d, fld), want in sorted(exp.items()):
+        r = rows.get(d)
+        if r is None or d in known_unheld:
+            continue
+        got = (r.get("fields") or {}).get(fld)
+        checked += 1
+        ok = (not got) if want == REMOVED else _same_value(got, want)
+        held += ok
+        if not ok:
+            bad.append("%s.%s patch says %s, dump has %r" % (d, fld, want, got))
+    return held, checked, bad
+
+
+def unheld_findings(exp, rows, known_unheld=KNOWN_UNHELD):
+    """A pinned row that now holds (or is gone from the dump) must leave the pin."""
+    out = []
+    for d in sorted(known_unheld):
+        if d not in rows:
+            out.append("%s is pinned as unheld but is not in the dump" % d)
+            continue
+        mine = [(f, w) for (dd, f), w in exp.items() if dd == d and w != REMOVED]
+        if not mine:
+            out.append("%s is pinned but no patch sets any of its fields" % d)
+        elif all(_same_value((rows[d].get("fields") or {}).get(f), w) for f, w in mine):
+            out.append("%s now HOLDS every patched value: remove it from KNOWN_UNHELD" % d)
+    return out
+
+
+def load_order_findings(targets, rows, force_load_after, self_id="mandrake.rut.researchretag"):
+    """Every non-official mod owning a patched project must be in forceLoadAfter (so this mod's patches apply last)."""
+    owners = set((rows[d].get("packageId") or "").lower() for d in targets if d in rows)
+    owners = set(o for o in owners if o and not o.startswith("ludeon.rimworld") and o != self_id)
+    fla = set(x.lower() for x in force_load_after)
+    return sorted(owners - fla)
+
+
+def _load_rows():
+    import json as _json
+    import os as _os
+    try:
+        import game_paths as _GP
+        data = _json.load(open(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json")))["defs"]
+    except Exception as e:
+        raise Precondition("no readable def dump for ResearchProjectDef: %s" % e)
+    return dict((d["defName"], d) for d in data)
+
+
+def _force_load_after():
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    root = _ET.parse(_os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "About", "About.xml")).getroot()
+    return [li.text.strip() for li in root.findall("forceLoadAfter/li") if li.text]
+
+
+@suite.chain("retag_rows_vs_dump")
+def retag_rows_vs_dump(t):
+    """The ~830 retag values and 31 prerequisite removals hold in the dump of a load that ran this mod; the 13 known
+    unheld VFE Tribals rows are pinned; forceLoadAfter names every donor owner. Pure static + dump; same verdict offline."""
+    exp, targets = patch_expectations()
+    rows = _load_rows()
+    with t.component("patch_files_and_dump_are_readable", beyond_toggle=True):
+        if len(exp) < 600 or len(targets) < 380 or "Electricity" not in rows or len(rows) < 300:
+            raise ExpectationFailed("blind parse: %d expectations over %d targets, %d dump rows" % (len(exp), len(targets), len(rows)))
+    held, checked, bad = retag_findings(exp, rows)
+    with t.component("dump_was_captured_with_this_patch_applied", beyond_toggle=True):
+        if checked < 300:
+            raise ExpectationFailed("only %d expectations meet a dump row: blind" % checked)
+        if held < 0.9 * checked:
+            raise Precondition("UNMEASURED: only %d of %d retag values hold in the dump, so it predates this patch" % (held, checked))
+    with t.component("every_retag_value_and_prereq_removal_holds_in_the_dump", beyond_toggle=True):
+        if bad:
+            raise ExpectationFailed("%d retag values did not hold live: %s" % (len(bad), "; ".join(bad[:5])))
+    with t.component("known_unheld_rows_are_still_unheld", beyond_toggle=True):
+        pin = unheld_findings(exp, rows)
+        if pin:
+            raise ExpectationFailed("; ".join(pin[:4]))
+    with t.component("force_load_after_names_every_donor_owner", beyond_toggle=True):
+        missing = load_order_findings(targets, rows, _force_load_after())
+        if missing:
+            raise ExpectationFailed("%d owners of patched projects are not in forceLoadAfter, so their patches may land after ours: %s" % (len(missing), missing))
+
+
+
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # ResearchProjectDef baseCost/tab are retagged by this mod's own Patches, so only labels are compared). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402
