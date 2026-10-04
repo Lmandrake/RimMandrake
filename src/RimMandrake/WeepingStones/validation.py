@@ -1296,7 +1296,7 @@ def job_stock(t):
                 box["stock"] = stock[0].get("id")
         with _comp(t, "stock_releases_species_pawn_into_pen"):
             x, z = t.anchor
-            _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x, z)
+            _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x, z, count=1)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 left = len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t)))
@@ -1326,7 +1326,7 @@ def job_stock_outside_pen(t):
                 box["stock"] = stock[0].get("id")
         with _comp(t, "stock_outside_pen_releases_nothing"):
             x, z = t.anchor
-            _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x + 8, z + 8)
+            _run_job(t, box["handler"], "RM_StockPoolPen", box["stock"], 1500, x + 8, z + 8, count=1)
             if _live(t):
                 n = len(_pawns(t, _pad_rect(t), "RM_Skarrin"))
                 on_ground = len(_things(t, "RM_SkarrinBreedingStock", _pad_rect(t)))
