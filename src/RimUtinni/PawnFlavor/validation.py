@@ -202,3 +202,9 @@ def empire_pawn_generation(t):
                 "none of %d spawned Empire pawns drew a RUT_Jawa_* backstory: %s"
                 % (len(hits), hits))
         t.screenshot()
+
+# Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
+# 77 BackstoryDefs + 13 TraitDefs; a backstory has a title, not a label, and a trait's label sits in degreeDatas). The Defs/ parse is the list, so a def added later is covered with no edit here.
+from modcheck import shipped_defs  # noqa: E402
+shipped_defs.add_chain(suite, __file__, fields_by_type={"BackstoryDef": ("title", "titleShort", "slot")},
+                       sanity=('RUT_Jawa_CisternHatched', 'RUT_Jawa_WaterWarden'), min_count=85)

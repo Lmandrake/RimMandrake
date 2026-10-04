@@ -10,3 +10,6 @@ Add a component per uncovered behaviour that asserts it DOES its job (not spawn-
 
 ## criteria
 Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.
+
+## progress 2026-10-03 (r34)
+- Static-free readback wired: `every_shipped_def_reads_back` (shared shipped_defs) covers all 46 shipped defs incl. the 18 ported ResearchProjectDefs and GravForge (loaded + label). baseCost/tab are not compared: this mod retags them on purpose. Still open: the ~264 donor retag rows, prereq cycle/dangling check, forceLoadAfter.

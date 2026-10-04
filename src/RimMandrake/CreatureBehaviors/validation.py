@@ -224,3 +224,8 @@ def track_grid(t):
                 _unmeasured(t, "eraser proof could not run: %r" % (r,))
             if res != "printed=True erased=True":
                 raise ExpectationFailed("moving sand did not bury the print: %r" % res)
+
+# Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
+# the shared engine's own defs). The Defs/ parse is the list, so a def added later is covered with no edit here.
+from modcheck import shipped_defs  # noqa: E402
+shipped_defs.add_chain(suite, __file__, sanity=('RM_PincerCrush', 'RM_Mirage'), min_count=35)

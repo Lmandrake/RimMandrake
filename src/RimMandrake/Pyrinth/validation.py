@@ -234,6 +234,9 @@ def _build_suite():
                 if _live(t):
                     _unmeasured(t, why)
 
+    # Every def this pack ships is loaded and labelled as its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1).
+    from modcheck import shipped_defs
+    shipped_defs.add_chain(suite, __file__, sanity=("DV_PyrinthHeater", "DV_Mote_PyrinthSpark"), min_count=12)
     return suite
 
 

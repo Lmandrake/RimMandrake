@@ -308,3 +308,8 @@ def seabed_floor_ambient_carryover(t):
     # Not a component (it would record PASS with nothing asked): UNMEASURED until a Chill layer floor can be made
     # live (SEABED_DESCENT_ASCENT_1 or a debug map on a floor tile): OutdoorTemp ~ -110, Twilight floor plants > 0,
     # a cleared floor's animal count rising over ticks.
+
+# Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
+# sea-floor layer, biomes, map generators). The Defs/ parse is the list, so a def added later is covered with no edit here.
+from modcheck import shipped_defs  # noqa: E402
+shipped_defs.add_chain(suite, __file__, sanity=('RM_SeaFloorTerrain', 'RM_ProbeGalleryOutlet'), min_count=50)

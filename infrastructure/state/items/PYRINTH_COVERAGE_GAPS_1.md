@@ -10,3 +10,6 @@ Add a component per uncovered behaviour that asserts it DOES its job (not spawn-
 
 ## criteria
 Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.
+
+## progress 2026-10-03 (r34)
+- `every_shipped_def_reads_back` wired: all 13 DV_ defs loaded and labelled as this pack says (a donor det.epochspyrinth copy with other labels would read as drift). Still open: lamp/brazier glow/heat/meditation, blade stats, spark motes, throne-room patch.
