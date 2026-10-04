@@ -234,7 +234,7 @@ def _build_suite():
         # the old def (RUT_TarVault, RUT_Tarred, terrain by short hash...) loads as the new one.
         with t.component("saved_old_names_load_as_new_defs", beyond_toggle=True):
             r = t.bridge_call("jawa/static_call", type="RimMandrake.EnvironmentalHazards.RM_DefAliasProof",
-                              method="ProofAliases", args="")
+                              method="ProofAliases", args="all")
             if not _live(t):
                 return
             text = str((r or {}).get("result") or (r or {}).get("value") or r)
