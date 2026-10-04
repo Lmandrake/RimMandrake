@@ -186,9 +186,17 @@ def hutt_slave_pit(t):
             # LIVE 2026-10-03: gate=True beside keepers=3 on the bland map. GateOpen() is open BY DESIGN on a map whose
             # parent faction is the player (Map.ParentFaction == OfPlayer), and the bland colony IS that map, so the
             # sealed-while-keepers-stand half is not measurable here (ProofGate below says so for itself).
+            t._pit_gate_open = "gate=True" in text
             t.screenshot()
     with t.component("lowered_prisoner_sold_for_silver", toggle="pitSales"):
         text = _proof(t, "ProofSell", "Slave")
+        if text is not None and text.startswith("NOTSOLD") and "sales=0" in text and getattr(t, "_pit_gate_open", False):
+            # MEASURED 2026-10-04 (rerun 2): RM_HoistFrame.KeepersBuying needs !GateOpen, and GateOpen is true on any map whose
+            # ParentFaction is the player (the bland colony). Not a missing buyer faction -- the pawn's faction=none is just a captive.
+            # A sale needs a site map whose parent is the Hutt faction with keepers standing: not buildable on the bland map.
+            t.upstream_reason = "UNMEASURED: the bland map's parent faction is the player, so the pit gate is open and keepers never buy (needs a hostile-parent site map): " + text[:160]
+            t.upstream_failed = True
+            text = None
         if text is not None:
             m = re.search(r"silverOnMap=(\d+)", text)
             if not text.startswith("SOLD") or not m or int(m.group(1)) < 1:
