@@ -656,15 +656,15 @@
 
   <!-- VFET_Agriculture -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Agriculture"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Agriculture"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -672,15 +672,15 @@
 
   <!-- VFET_AnimalHandling -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_AnimalHandling"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -688,15 +688,15 @@
 
   <!-- VFET_Bow -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Bow"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Bow"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -704,15 +704,15 @@
 
   <!-- VFET_Construction -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Construction"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Construction"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -720,15 +720,15 @@
 
   <!-- VFET_Cultivation -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Cultivation"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Cultivation"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -736,15 +736,15 @@
 
   <!-- VFET_Fire -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Fire"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Fire"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -752,15 +752,15 @@
 
   <!-- VFET_Hunting -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Hunting"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Hunting"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -768,15 +768,15 @@
 
   <!-- VFET_Medicine -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Medicine"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Medicine"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -784,15 +784,15 @@
 
   <!-- VFET_Mining -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Mining"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Mining"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -800,15 +800,15 @@
 
   <!-- VFET_Tribalwear -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Tribalwear"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -816,15 +816,15 @@
 
   <!-- VFET_Weapons -> Jawa Scavenging (RUT_Tree_Scavenging) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]/tab</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Weapons"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Weapons"]</xpath>
         <value><tab>RUT_Tree_Scavenging</tab></value>
       </nomatch>
     </match>
@@ -3129,15 +3129,15 @@
 
   <!-- VFET_Culture -> The Hearth (RUT_Tree_Hearth) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]/tab</xpath>
         <value><tab>RUT_Tree_Hearth</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Culture"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Culture"]</xpath>
         <value><tab>RUT_Tree_Hearth</tab></value>
       </nomatch>
     </match>
@@ -3145,15 +3145,15 @@
 
   <!-- VFET_Furniture -> The Hearth (RUT_Tree_Hearth) -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]</xpath>
+    <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]</xpath>
     <match Class="PatchOperationConditional">
-      <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]/tab</xpath>
+      <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]/tab</xpath>
       <match Class="PatchOperationReplace">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]/tab</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]/tab</xpath>
         <value><tab>RUT_Tree_Hearth</tab></value>
       </match>
       <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ResearchProjectDef[defName="VFET_Furniture"]</xpath>
+        <xpath>Defs/VFETribals.TribalResearchProjectDef[defName="VFET_Furniture"]</xpath>
         <value><tab>RUT_Tree_Hearth</tab></value>
       </nomatch>
     </match>
