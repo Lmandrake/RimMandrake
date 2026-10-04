@@ -42,7 +42,10 @@ def main():
     check("interval mirror: cap 0 means full, rate 0 means 1x", V.replicate_interval_days(4, 8, 3, 0, 1) == 32.0 and V.replicate_interval_days(4, 8, 0, 22, 0.0) == 4.0)
     check("discovery chance: 0.35 x1 = .35, x3 clamps to 1, x0 = 0", [V.discovery_chance(0.35, f) for f in (1, 3, 0)] == [0.35, 1.0, 0.0] or V.discovery_chance(0.35, 3) == 1.0)
     check("stage mirror at cap 22: 0,1,3,7,16 -> 0,1,2,3,4", [V.stage_for(srcs, n, 22) for n in (0, 1, 3, 7, 16)] == [0, 1, 2, 3, 4])
-    check("MEASURED: Plague unreachable at caps 4 and 5 only", V.plague_unreachable_caps(srcs) == [4, 5], V.plague_unreachable_caps(srcs))
+    check("Plague reachable at every cap 4..80 (was [4, 5] before the clamp)", V.plague_unreachable_caps(srcs) == [], V.plague_unreachable_caps(srcs))
+    check("no stage skipped at any cap 4..80", V.skipped_stage_caps(srcs) == [], V.skipped_stage_caps(srcs))
+    check("stage mirror at cap 4: counts 0..4 -> 0,1,2,3,4; cap 5 -> 0,1,1,2,3,4", [V.stage_for(srcs, n, 4) for n in range(5)] == [0, 1, 2, 3, 4]
+          and [V.stage_for(srcs, n, 5) for n in range(6)] == [0, 1, 1, 2, 3, 4], ([V.stage_for(srcs, n, 4) for n in range(5)], [V.stage_for(srcs, n, 5) for n in range(6)]))
     check("method_body: expression member and missing method", V.method_body("x public bool A => b && c; y", r"public bool A") is not None
           and V.method_body("nothing", r"zzz") is None)
 
@@ -85,6 +88,8 @@ def main():
     ib("chewing at any stage", I, "stage >= GizkaStage.Infestation)", "stage >= GizkaStage.Cute)", "chewing is not gated")
     ib("announce on the way down", I, "if (stage > lastStage) AnnounceStage", "if (stage != lastStage) AnnounceStage", "steps DOWN")
     ib("plague band at 95 percent", I, "cap * 0.72f", "cap * 0.95f", "stage bands")
+    ib("plague cap clamp lost", I, "Mathf.Min(cap, Mathf.Max(6,", "(Mathf.Max(6,", "Plague is unreachable")
+    ib("infestation clamp lost", I, "Mathf.Min(plague - 1, Mathf.Max(4,", "(Mathf.Max(4,", "stage is skipped")
     ib("band floor lost", I, "Mathf.Max(3, Mathf.RoundToInt(cap * 0.14f))", "Mathf.RoundToInt(cap * 0.14f)", "StageFor")
     ib("outdoor gizka chew", I, "r.UsesOutdoorTemperature) continue", "false) continue", "outdoors")
     ib("unpowered buildings chew", I, "!power.PowerOn) continue", "false) continue", "DoChewing")
