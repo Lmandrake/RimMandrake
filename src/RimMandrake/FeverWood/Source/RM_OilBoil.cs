@@ -27,6 +27,15 @@ namespace RimMandrake.FeverWood
         public const string BiomeName = "RM_FeverWood";
         private static float? baseCommonality;
 
+        // FEVERWOOD_OIL_FLASH_BARE_GROUND_1: the haze IS the fuel. Vanilla FireUtility.ChanceToStartFireIn evaluates
+        // this curve BEFORE its num > 0 gate, so a hazed cell of bare soil or stone (flammability 0) still catches;
+        // a cell already holding a fire, an impassable edifice interior and no-fire filth still refuse.
+        public static readonly SimpleCurve HazeFlashChance = new SimpleCurve
+        {
+            new CurvePoint(0f, 0.5f),
+            new CurvePoint(1f, 1f)
+        };
+
         private static readonly HashSet<string> RaisedTerrain = new HashSet<string>
         {
             "RUT_Boughway", "RUT_BoughSoil", "RUT_StiltPlatform", "RM_Boughway", "RM_BoughSoil", "RM_StiltPlatform",
@@ -190,7 +199,7 @@ namespace RimMandrake.FeverWood
             int lit = 0;
             foreach (IntVec3 c in cells)
             {
-                if (FireUtility.TryStartFireIn(c, map, Rand.Range(0.25f, 0.6f), null))
+                if (FireUtility.TryStartFireIn(c, map, Rand.Range(0.25f, 0.6f), null, RM_OilBoil.HazeFlashChance))
                 {
                     lit++;
                 }
@@ -211,8 +220,9 @@ namespace RimMandrake.FeverWood
                 }
             }
             Find.LetterStack.ReceiveLetter("The oil haze flashed",
-                "The boiled oil hanging over the ground caught: " + cause + " set it off, and fire ran along the haze ("
-                + lit + " cells). The haze has burned off." + (woke > 0 ? "\n\nThe fire reached a pool's edge, and something below has woken." : ""),
+                "The boiled oil hanging over the ground caught: " + cause + " set it off, and "
+                + (lit > 0 ? "fire ran along the haze (" + lit + " cells)." : "it burned off without catching anything.")
+                + " The haze has burned off." + (woke > 0 ? "\n\nThe fire reached a pool's edge, and something below has woken." : ""),
                 LetterDefOf.ThreatSmall, new TargetInfo(spark, map));
             map.weatherManager.TransitionTo(WeatherDefOf.Clear);
             End();

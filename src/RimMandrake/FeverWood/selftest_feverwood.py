@@ -40,6 +40,35 @@ SWARM = "RM_FactionDef_KurrethSwarm"
 PHRASE = "The pool's water %s - no tentacles" % V.SUPPRESSED_PHRASE
 
 
+OILBOIL_CS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", "RM_OilBoil.cs")
+
+
+def flash_chance_on_bare_ground(cs_path):
+    """FireUtility.ChanceToStartFireIn (RimSage, 1.6) for a hazed cell with terrain flammability 0 and nothing on it,
+    using the curve RM_OilBoil.Flash actually passes to TryStartFireIn. No curve -> 0 (vanilla refuses the cell)."""
+    import re
+    src = open(cs_path, encoding="utf-8").read()
+    call = re.search(r"FireUtility\.TryStartFireIn\(([^;]*)\);?", src[src.find("public bool Flash("):])
+    if not call:
+        return 0.0
+    args = [a.strip() for a in call.group(1).split(",")]
+    name = args[-1].split(".")[-1].rstrip(")")  # the optional flammabilityChanceCurve is the last argument
+    body = re.search(r"SimpleCurve\s+" + re.escape(name) + r"\s*=\s*new\s+SimpleCurve\s*\{(.*?)\};", src, re.S)
+    if not body:
+        return 0.0
+    pts = sorted((float(x.rstrip("f")), float(y.rstrip("f")))
+                 for x, y in re.findall(r"CurvePoint\(\s*([-\d.]+f?)\s*,\s*([-\d.]+f?)\s*\)", body.group(1)))
+    if not pts:
+        return 0.0
+    x = 0.0
+    if x <= pts[0][0]:
+        return pts[0][1]
+    for (x0, y0), (x1, y1) in zip(pts, pts[1:]):
+        if x0 <= x <= x1:
+            return y0 + (y1 - y0) * (x - x0) / (x1 - x0)
+    return pts[-1][1]
+
+
 def check(name, cond, detail=""):
     print("%s  %s %s" % ("ok  " if cond else "FAIL", name, ("" if cond else detail)))
     if not cond:
@@ -107,9 +136,12 @@ class FWGame(MockGame):
             if m == "ProofYield":
                 return {"success": True, "result": "yieldOff=8 yieldOn=%d" % (8 if "yield_flat" in self.brk else 16)}
             if m == "ProofSpark":
+                # fires come from the SHIPPED C#: the proof's haze lies on bare ground (terrain flammability 0), so
+                # vanilla's gate starts a fire only if Flash passes a curve whose value at 0 is > 0
                 cold = "haze_inert" in self.brk
+                lit = 0 if cold else sum(1 for _ in range(23) if flash_chance_on_bare_ground(OILBOIL_CS) > 0)
                 return {"success": True, "result": "flashed=%s firesBefore=0 firesAfter=%d conditionEnded=%s" % (
-                    not cold, 0 if cold else 23, not cold)}
+                    not cold, lit, not cold)}
         if p.get("type") == "RimMandrake.FeverWood.RM_KurrethColumnProof":
             if not getattr(self, "theft_raid", False) or not self.sb("kurrethColumnEnabled") or "column_never" in self.brk:
                 return {"success": True, "result": "quest=0"}
@@ -707,6 +739,19 @@ def main():
           reds(bad) == ["log_clean.player_log_names_no_feverwood_error"], reds(bad))
     other = run(log_lines=["Config error in SomeOtherMod_Thing: unrelated"])
     check("an error naming only another mod does not", not reds(other), reds(other))
+
+    # FEVERWOOD_OIL_FLASH_BARE_GROUND_1: the shipped Flash lights bare ground; a source without the curve would not
+    import tempfile
+    check("shipped Flash lights a bare-ground hazed cell", flash_chance_on_bare_ground(OILBOIL_CS) > 0,
+          flash_chance_on_bare_ground(OILBOIL_CS))
+    src = open(OILBOIL_CS, encoding="utf-8").read()
+    for label, text in [("no curve argument", src.replace(", null, RM_OilBoil.HazeFlashChance)", ", null)")),
+                        ("curve zero at 0", src.replace("new CurvePoint(0f, 0.5f)", "new CurvePoint(0f, 0f)"))]:
+        with tempfile.NamedTemporaryFile("w", suffix=".cs", delete=False, encoding="utf-8") as tf:
+            tf.write(text)
+        check("break %s -> bare ground never catches" % label, flash_chance_on_bare_ground(tf.name) == 0,
+              flash_chance_on_bare_ground(tf.name))
+        os.unlink(tf.name)
 
     # the two source guards, over a synthetic tree
     clean = guards_with({})
