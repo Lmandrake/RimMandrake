@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  HUTT_SLAVE_PIT_SITE_BUILD_1 (design/RimMandrake/ship_cargo_hoist_design_2026-10-01.md §3a, RULED). The Hutt slave
+  pit at a small stand-alone test site (not Gorga's Palace). Every mechanism is KeelHoist's generic buyer pit
+  (RimMandrake.KeelHoist.RM_PitBuyer.cs); this file is the campaign's names, cast and faction only.
+  Each def is MayRequire'd on the keel hoist: without it the classes do not exist and the whole site is absent.
+
+  QUEST SPEC (rimworld-quests skill section 2):
+    ask       come to the Hutt pit and sell slaves, prisoners and downed beasts for silver
+    reason    a Hutt Cartel pit-keeper has set up a few tiles away and is buying
+    choice    sell there peacefully, or attack the place and lift its oubliette's slaves out with the head-frame
+    failure   none: it is an opportunity; it lapses after 60 days unvisited
+    reward    silver per sale (Keel Hoist Mod Settings: price share, arena weeks)
+    deadline  60 days to reach it
+  Firing route: storyteller root (weight 0.15), gated in code on the Keel Hoist "buyer pit sites" setting and on
+  a non-hostile, undefeated Hutt Cartel. Peaceful GRAVSHIP landing is GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1;
+  a caravan reaches it without one.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.keelhoist">
+    <defName>RUT_HuttSlavePitShaft</defName>
+    <label>Hutt slave pit</label>
+    <description>A Hutt Cartel oubliette: a grated shaft with people kept at the bottom of it. Nobody goes in. The keepers buy what is lowered to them: slaves, prisoners, beasts knocked senseless, tame or not. The fighters go to the arena, the rest to the work gangs. While the Hutts hold this place no hoist will lift anyone out; if the place were taken, its head-frame could bring them all up.</description>
+    <thingClass>RimMandrake.KeelHoist.RM_SealedHolder</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(140,110,80)</color>
+    </graphicData>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>0</fillPercent>
+    <useHitPoints>false</useHitPoints>
+    <destroyable>false</destroyable>
+    <building>
+      <isEdifice>true</isEdifice>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <modExtensions>
+      <li Class="RimMandrake.KeelHoist.RM_PitBuyerExtension">
+        <buyerLabel>the Hutt pit-keepers</buyerLabel>
+        <arenaLabel>the Hutt arena</arenaLabel>
+        <workLabel>the Cartel's work gangs</workLabel>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <SitePartDef MayRequire="mandrake.rm.keelhoist">
+    <defName>RUT_HuttSlavePit</defName>
+    <label>Hutt slave pit</label>
+    <description>A Hutt Cartel pit-keeper's camp over an oubliette, with a fixed head-frame for lowering what they buy.</description>
+    <workerClass>RimMandrake.KeelHoist.RM_SitePartWorker_BuyerPit</workerClass>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/Prisoner</expandingIconTexture>
+    <requiresFaction>true</requiresFaction>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <modExtensions>
+      <li Class="RimMandrake.KeelHoist.RM_BuyerPitSiteExtension">
+        <holderDef>RUT_HuttSlavePitShaft</holderDef>
+        <frameDef>RM_HoistFrame</frameDef>
+        <factionDef>RUT_Jawa_HuttCartel</factionDef>
+        <keeperKind>RUT_Jawa_Hutt_Leader</keeperKind>
+        <guardKind>RUT_Jawa_Hutt_Grunt</guardKind>
+        <guardCount>2~4</guardCount>
+        <heldKinds>
+          <li>Slave</li>
+        </heldKinds>
+        <heldCount>3~6</heldCount>
+        <tileDistance>2~8</tileDistance>
+      </li>
+    </modExtensions>
+  </SitePartDef>
+
+  <QuestScriptDef MayRequire="mandrake.rm.keelhoist">
+    <defName>RUT_Quest_HuttSlavePit</defName>
+    <rootSelectionWeight>0.15</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <autoAccept>true</autoAccept>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Hutt Pit</li>
+        <li>questName->The Pit-Keeper</li>
+        <li>questName->Down the Shaft</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->A Hutt Cartel pit-keeper has set up over an oubliette a few days' walk away, and is buying. Bring slaves, prisoners or beasts knocked senseless, tame or not; your own people lower them down the keepers' head-frame and the silver comes up the cable. Fighters fetch more in the weeks the arena is short.\n\nThe pit holds people already. While the Hutts hold the place nobody lifts them out. If the place were taken, the head-frame could bring them all up.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>false</canBeSpace>
+        </li>
+        <li Class="RimMandrake.KeelHoist.RM_QuestNode_BuyerPitSite">
+          <sitePart>RUT_HuttSlavePit</sitePart>
+          <storeSiteAs>site</storeSiteAs>
+          <storeFactionAs>keepers</storeFactionAs>
+        </li>
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+        <li Class="QuestNode_WorldObjectTimeout">
+          <worldObject>$site</worldObject>
+          <isQuestTimeout>true</isQuestTimeout>
+          <delayTicks>3600000</delayTicks>
+          <inSignalDisable>site.MapGenerated</inSignalDisable>
+          <node Class="QuestNode_End">
+            <outcome>Unknown</outcome>
+          </node>
+        </li>
+        <li Class="QuestNode_NoWorldObject">
+          <worldObject>$site</worldObject>
+          <node Class="QuestNode_End" />
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+</Defs>

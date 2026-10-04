@@ -41,6 +41,7 @@
     <Compile Include="RM_KeelHoist.cs" />
     <Compile Include="KeelHoistPatches.cs" />
     <Compile Include="RM_HoistFrame.cs" />
+    <Compile Include="RM_PitBuyer.cs" />
   </ItemGroup>
 
   <ItemGroup>
