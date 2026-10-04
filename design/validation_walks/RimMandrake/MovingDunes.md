@@ -12,12 +12,12 @@ Sources: `src/RimMandrake/MovingDunes/About/About.xml` description, `Defs/**`, `
 - Vanilla Desert and ExtremeDesert carry the DuneFieldExtension. → biome_bindings.Desert_carries_dune_field_extension, biome_bindings.ExtremeDesert_carries_dune_field_extension
 - A dune-field map has a wind that shifts, and the engine reports its rules armed. → dune_field_report.map_is_a_dune_field_and_rules_armed, dune_field_report.shift_wind_changes_the_wind (UNMEASURED unless the current map is a dune-field biome)
 - Drift can be run and the sand total stays readable. → dune_field_report.batches_run_and_report_stays_readable
-- Sand erodes off crests, hops downwind and banks behind shelter. → slow_crests_hop_downwind_and_bank_in_shelter.state_read (UNMEASURED: seed drift is a mouse tool; many game hours)
-- Sand blowing off the downwind edge is gone and fresh sand arrives upwind. → slow_upwind_influx_and_downwind_loss.state_read (UNMEASURED: day-scale accumulator)
-- Loose gear is buried, stops deteriorating, and comes back out when the drift erodes. → slow_loose_gear_buried_and_returns.state_read (UNMEASURED: game days)
-- Plants under deep drift choke and die. → slow_deep_drift_kills_plants.state_read (UNMEASURED: game days)
-- On the Stillsand the wind is locked to the sun bearing. → slow_wind_locked_to_the_sun_on_stillsand.state_read (UNMEASURED: needs an RM_Stillsand map)
-- Shovelled drift yields the biome's sand item. → slow_shovelled_drift_yields_sand.state_read (UNMEASURED: needs a colonist job on an RM_Stillsand map)
+- Drift speed scales transport attempts; sand actually moves on a dune-field map under wind (UNMEASURED off one / in calm); banking in a wall lee stays UNMEASURED (no seed tool). → slow_crests_hop_downwind_and_bank_in_shelter.transport_attempts_scale_with_the_drift_slider, .sand_actually_moves_on_a_dune_field, .banking_in_a_wall_lee_state_read
+- Influx baseline scales with the drift slider once and the loss term is not squared by it; engine-off gate reads duneEngineEnabled; day-scale edge loss UNMEASURED. → slow_upwind_influx_and_downwind_loss.influx_baseline_scales_with_the_drift_slider_once, .loss_term_is_not_squared_by_the_slider, .engine_off_gate_reads_duneEngineEnabled
+- Loose gear is buried by the real burial API, only wild unforbidden items qualify, burialEnabled off buries nothing (dune map). → slow_loose_gear_buried_and_returns.burial_api_caches_the_thing_and_removes_it_from_the_map, .only_wild_unforbidden_loot_is_a_burial_candidate, .burialEnabled_off_arm_buries_nothing; advancing-drift burial and wind-turn return stay UNMEASURED (game days)
+- Plant choke sizing kills a buried plant in plantChokeDays and the gate reads plantChokeEnabled. → slow_deep_drift_kills_plants.choke_sample_rate_scales_with_the_drift_slider, .choke_damage_kills_a_buried_plant_in_plantChokeDays, .plant_choke_gate_reads_plantChokeEnabled
+- The wind-lock gate (setting AND a locking biome) and the sun-bearing wind index. → slow_wind_locked_to_the_sun_on_stillsand.lock_applies_only_with_setting_and_a_locking_biome, .locked_wind_follows_the_sun_bearing; the live Stillsand wind read stays UNMEASURED
+- Shovelled drift yields depth x per-depth x slider, nothing when off. → slow_shovelled_drift_yields_sand.yield_scales_with_depth_removed_and_multiplier, .clearYieldEnabled_off_arm_yields_nothing; the colonist job stays UNMEASURED
 - The vanilla ambient-decay and sandstorm constants the patches ride have not drifted. → UNCOVERED: `Source/selftest_moving_dunes_constants.py` reads the decompiled source offline
 
 ## the walk
