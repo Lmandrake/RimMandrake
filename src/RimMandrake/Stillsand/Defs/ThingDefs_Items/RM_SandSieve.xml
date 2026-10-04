@@ -13,7 +13,6 @@
     <thingClass>ThingWithComps</thingClass>
     <category>Item</category>
     <graphicData>
-      <!-- art pending: artpipe RM_SandSieve -->
       <texPath>Things/Item/RM_SandSieve</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
