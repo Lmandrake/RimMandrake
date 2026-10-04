@@ -20,6 +20,12 @@ required checks produced supported evidence on this artifact), **findings** (new
 deduplicated by root cause) and **where the bridge-ownership time went**. The three requested numbers
 (checks/sec, bridge commands/min, checks passed) are diagnostics *within a fixed workload*, never targets.
 
+## Owner ruling 2026-10-03
+
+Decision taken by question card (~21:20 PDT). A bridge run report **leads with REQUIRED CHECKS PROVEN**: the
+per-mod must-have checks, each with a trustworthy pass/fail. Checks/sec, commands/min and checks passed are
+**diagnostics underneath it, never targets**. This answers §8 Q1.
+
 ---
 
 ## 1. Baseline measured from tonight's runs (2026-10-03)
@@ -420,9 +426,7 @@ at all today.
 
 ## 8. Open questions
 
-1. **Owner:** is the three-part headline (supported coverage of a required-check manifest, findings by state,
-   where the ownership time went) acceptable, with checks/sec, commands/min and checks-passed shown as
-   diagnostics within a fixed workload? Or does he want checks/sec itself on top?
+1. *(Answered 2026-10-03, see "Owner ruling 2026-10-03" above: required checks proven leads; the rest are diagnostics.)*
 2. **Owner:** should north-star coverage gate the queue order (uncovered bound bars first), given only three
    mods bind bars today?
 3. Can two RimWorld instances run concurrently on Archmagi (a minimal-list game for static/companion checks

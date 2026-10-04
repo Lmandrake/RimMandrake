@@ -26,8 +26,6 @@ dust warning, and their Mod Settings ("Stillsand: skeletons and horizon"). Code:
 6. **Wandering giants on the horizon** — herd migrations and thrumbo-style passes choose their own
    cells and ignore `parms.spawnCenter`, so the horizon warning covers raids and neutral groups
    only. Giants need their own hook.
-7. **Harp clip** — `RM_BoneHarp` uses vanilla `Amb_Wind_Altitude1_Loop` pitched down as a
-   placeholder grain.
 8. **Live proof** (game-up, the parent's criteria): a Stillsand quicktest map carries 0–2
    skeletons; `RM_MapComponent_ShadeGrid.ShadeAt` reads 1 inside a skull; a dev-killed oommok
    becomes its skeleton (`RM_MapComponent_SkeletonRemains.Scan(ignoreDelay: true)` returns 1);

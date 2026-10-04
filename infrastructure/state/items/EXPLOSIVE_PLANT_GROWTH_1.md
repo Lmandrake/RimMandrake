@@ -117,7 +117,7 @@ before and after), bridge released.
 **Not re-verified this pass, still owed**: the ×10 wet-ambient band (needs a
 wet-biome map specifically, this quicktest's biome wasn't checked for it); the
 perf gate; cut-vs-harvest; salted ground; Fever Wood's inside-the-giant
-presentation; roster micro-questions; bespoke sounds. See `## Owed` below —
+presentation; roster micro-questions. See `## Owed` below —
 **this item stays `doing`**, the live-verify gate on the charge-clock fix itself
 is the only thing this pass closes.
 
@@ -143,7 +143,6 @@ is the only thing this pass closes.
 7. Roster micro-questions, INVENTED defaults used (roster "UNMEASURED"): hoarders are
    `NONE`; the extract overriding CHURN→BURST is unbuilt (no extract); irrigation in a
    ×10 biome soaks and stacks (§0/ruling 8 reading).
-8. Bespoke sounds — the creak/split/pop/rupture are vanilla tree clips re-pitched.
 9. Pre-existing, not this item's: PlantGrowth's terminator list names only
    `PoisonForest`, not `RUT_PoisonForest`/`RM_PoisonForest`, and it does not exempt
    `RUT_ExtremeDesert` from ×4 (deep_desert HARD BAN 4). The engine's soak carve-out

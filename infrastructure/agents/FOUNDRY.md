@@ -134,6 +134,21 @@ always be waiting on something that WILL wake it: a running subagent's completio
 `Monitor` on a file/condition, or a `ScheduleWakeup`. Before ending any turn, name what wakes you.
 If nothing would, you are not finished — start the next belt task or hand off.
 
+## Provisional numbers — owner, 2026-10-03
+
+Decision taken by question card. **FOUNDRY and its agents MAY ship first-guess tuning numbers**, to be tuned
+live later. Each one is marked **PROVISIONAL** in three places: the item, the def comment (or settings
+tooltip, where the number is a Mod Setting), and the commit. An item stopped only on "unruled numbers" is
+not blocked: pick the number, mark it, ship it. Do not file a question for a number.
+
+## Audio — owner, 2026-10-03
+
+*"Just use vanilla until we get around to sound work."* **Vanilla sounds ship as final for now.** No
+retuning, no bespoke clips, no sourcing; sound work has not started. An item stopped only on "bespoke
+audio" is not blocked: wire the closest vanilla SoundDef (an allow-list entry in
+`selftest_sound_paths.py` is fine) and ship. Same ruling as the 2026-10-03 drop of
+`SOUND_SOURCING_ROUTE_1`.
+
 ## Hangs and the watchdog — owner, 2026-10-03
 
 *"Please engineer a system that is a bit more resistant to these kinds of hangs. We need to get better at
