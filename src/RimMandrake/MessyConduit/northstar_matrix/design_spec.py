@@ -316,6 +316,10 @@ def hose_spec(r, k):
         ops.append({"op": "terrain", "def": "WaterShallow", "cells": [gc(p) for p in water]})
     if walls:
         ops.append({"op": "build", "def": "Wall", "stuff": "Steel", "cells": [gc(p) for p in walls]})
+    # RM_HoseReel is 2x2: Position gc(a) is its SW game cell, so the footprint is design (a.x..a.x+1, a.y-1..a.y)
+    foot = {(a[0] + i, a[1] - j) for i in (0, 1) for j in (0, 1)}
+    assert not foot & {tuple(p) for p in walls + water}, "hose reel footprint overlaps a wall/water cell"
+    assert tuple(b) not in foot, "hose free end inside the reel footprint"
     ops.append({"op": "debug_hose", "a": gc(a), "b": gc(b), "maxLength": int(math.ceil(L * 1.3)),
                 "fluid": {"water": "RM_Liquid_FreshWater", "tar": None, "chemfuel": None}[r["Fl"]], "fluid_key": r["Fl"],
                 "force_state": "Filling" if r["St"] == "Filling50" else r["St"]})

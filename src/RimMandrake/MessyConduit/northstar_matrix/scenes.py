@@ -529,7 +529,11 @@ def _add_strips(sc, aerial, hose):
         extra = 3
     if hose != "none":
         y = a + extra
-        sc["hose"] = {"cells": [[x, y] for x in range(3, 15)], "inflation": hose}
+        # RM_HoseReel is 2x2 (Position = SW cell = design (3, y); design y grows south, so the footprint is
+        # (3,y) (4,y) (3,y-1) (4,y-1)); the hose leaves its centre. `cells` stays the 12-cell strip (cells[0] = the reel's
+        # Position, cells[-1] = the free end); (4,y) is under the reel, so the strip's planned cells are only 5..14.
+        sc["hose"] = {"cells": [[x, y] for x in range(3, 15)], "inflation": hose,
+                      "footprint": [[3, y], [4, y], [3, y - 1], [4, y - 1]]}
         extra += 2
     sc["w"] = W
     sc["h"] = a + extra + 2
@@ -660,7 +664,8 @@ def lint(sc):
             if tuple(p) in cs or tuple(p) in occ:
                 probs.append("pole on occupied cell %s" % (p,))
     if sc.get("hose"):
-        for p in sc["hose"]["cells"]:
+        fp = sc["hose"].get("footprint") or [sc["hose"]["cells"][0]]
+        for p in list(sc["hose"]["cells"]) + list(fp):
             if tuple(p) in cs or tuple(p) in occ:
                 probs.append("hose on occupied cell %s" % (p,))
     return probs

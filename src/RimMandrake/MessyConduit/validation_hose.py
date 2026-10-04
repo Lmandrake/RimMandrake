@@ -18,10 +18,13 @@ with two options, then 'build' a wall to block the obvious solution so we can se
 or what happens)"). One scene, six rows, each a state read; the SAME maze is solved offline by HoseSelfTest.Maze
 (MAZE below must stay identical to HoseSelfTest.MazeRows). Predictions from the code, to be confirmed or killed live:
   * M2: walling the gap re-plans from scratch at the reel's next 250-tick corridor check -> the 3/4 spiral, ~2x longer.
-  * M3: the length cap lives ONLY in the install check. A laid hose re-routed past its own length is still drawn
-    (RECORD row: if the owner wants the hose to refuse/sag/unplug instead, that is a rule to add, not a bug to hide).
-  * M4: no route left -> the lay fails, the hose is NOT DRAWN while the reel still says laid (retried every 250 ticks).
-  * M5: walls removed -> it comes back by the short route.
+  * M3: the length cap is enforced on a re-plan too (HOSE_BLOCKED_REROUTE_RETRACT_1): an obstacle change across a laid hose
+    whose remaining route is longer than the cap RETRACTS it (laid false, retractReason "route too long"). The cap itself
+    changing does not move the corridor hash, so M3b adds a harmless filler wall inside the corridor box to trigger the check.
+  * M4: no route left -> the hose is RETRACTED (laid false, retractReason "no route"), never a laid-but-invisible ghost.
+  * M5: the hose was reeled in, so it is laid again first; with the walls removed it takes the short route.
+The reel is 2x2 (round 3): Position = its south-west cell, footprint x..x+1 / z..z+1, the hose leaves its centre. Every
+reel below is placed so that footprint holds no wall, pipe, tank, other reel or free end.
 
 The flow signal here is the DEBUG provider (HoseProbe "flow:"): FlowWorks has no pump yet, so its adapter
 (FlowWorksPumpFlow, design 3.3 fields lastMovedUnits/lastMovedTick read by reflection) answers null and H5 asserts
@@ -260,7 +263,12 @@ MAZE = [
 ]
 MX0, MZ0 = 40, 84
 MSITE = (MX0 - 3, MZ0 - 3, 26, 22)
-PREEL, PTANK, PLONE = (MX0 + 2, MZ0 + 12), (MX0 + 3, MZ0 + 12), (MX0 + 12, MZ0 + 12)   # tank 2x2 east of PREEL
+# 2x2 reel at PREEL (cells x..x+1, z..z+1) and a 2x2 tank at PTANK: PTANK = PREEL + (2, 0) shares the reel's EAST edge (two cells).
+# PLONE is a second 2x2 reel 10 cells from the tank, touching nothing. The maze reel R (marker 'R') is a 2x2 at its marker
+# cell + (0..1, 0..1): (MX0+4..5, MZ0+2..3) lies wholly on '.' chamber cells (rows MZ0+2 and MZ0+3, x 4 and 5).
+PREEL, PTANK, PLONE = (MX0 + 2, MZ0 + 12), (MX0 + 4, MZ0 + 12), (MX0 + 12, MZ0 + 12)
+FILLER = (MX0 + 9, MZ0 + 3)   # a chamber cell clear of both routes (M3b obstacle change that triggers the 250-tick check)
+MAZE_LEN = 40                 # hose length used for M1/M2/M4/M5: the spiral is ~30 with the 1.08 slack, right on the default cap
 RELAY_TICKS = 300  # > the 250-tick corridor check
 
 
@@ -291,6 +299,7 @@ def run_maze(args):
         V.row(rows, "M0_probe_channel", "FAIL", "HARNESS", d)
         res["aborted"] = "hose probe dead"
         return res
+    B.hp("set:maxLength=%d" % MAZE_LEN)
     walls, m = maze_cells()
     R, T, g, b = m["R"], m["T"], m["g"], m["b"]
     B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
@@ -324,36 +333,45 @@ def run_maze(args):
                relays=(c2.get("relays") or 0) - (c.get("relays") or 0), before=h1.get("pathLen")))
     res["screenshots"].append(B.shot_rect("maze_02_gap_walled", MSITE))
 
-    # M3: length cap. Install refuses the spiral for a 20-cell hose; the already-laid hose is RECORDED, not judged
+    # M3: length cap. Install refuses the spiral for a 20-cell hose; a filler wall inside the corridor box then makes the
+    # reel re-check the laid hose (the corridor hash moved, the route is unchanged but now over the cap) -> it retracts
     B.hp("set:maxLength=20")
     chk = B.hp("check:%d,%d,%d,%d" % (R + T))
+    B.call("jawa/build_batch", ops=V.ops("Wall", [FILLER]), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
     B.ticks(RELAY_TICKS)
-    h3, _ = B.hose(R)
+    h3, c3 = B.hose(R)
     V.row(rows, "M3_length_cap_install", "PASS" if chk.get("reason") == "route too long" else "FAIL", "MOD",
           {"reason": chk.get("reason"), "maxLength": h3.get("maxLength")})
-    V.row(rows, "M3b_laid_hose_over_cap", "RECORD", "MOD",
-          dict(_pick(h3, "laid", "layOk", "pathLen", "maxLength"), note="code: Lay() has no length cap; expected still drawn at pathLen > maxLength"))
-    B.hp("defaults")
+    V.row(rows, "M3b_laid_hose_over_cap_retracts", "PASS" if h3.get("laid") is False and h3.get("retractReason") == "route too long" else "FAIL", "MOD",
+          dict(_pick(h3, "laid", "layOk", "pathLen", "maxLength", "retractReason", "retractTick"), retracts=c3.get("retracts"),
+               note="HOSE_BLOCKED_REROUTE_RETRACT_1: a re-plan enforces the cap; expected reeled in, reason 'route too long'"))
+    B.hp("set:maxLength=%d" % MAZE_LEN)
+    lr = B.hp("lay:%d,%d,%d,%d" % (R + T))      # M3b reeled it in: lay it again (the spiral, gap still walled)
+    B.ticks(2)
 
-    # M4: wall the spiral too -> unreachable
+    # M4: wall the spiral too -> unreachable -> the hose is reeled in with a reason (no ghost hose)
     B.call("jawa/build_batch", ops=V.ops("Wall", [b]), stuff="Steel", faction="player", wipeExisting=False)
     B.call("jawa/map_commit")
     B.ticks(RELAY_TICKS)
-    h4, _ = B.hose(R)
+    h4, c4 = B.hose(R)
     chk4 = B.hp("check:%d,%d,%d,%d" % (R + T))
-    V.row(rows, "M4_unreachable", "PASS" if h4.get("laid") and not h4.get("layOk") and chk4.get("reason") == "no route" else "FAIL", "MOD",
-          dict(_pick(h4, "laid", "layOk", "state", "reelGraphic"), check=chk4.get("reason"),
-               note="expected: reel stays laid, hose not drawn, retried every 250 ticks"))
+    V.row(rows, "M4_unreachable_retracts", "PASS" if lr.get("success") and h4.get("laid") is False and h4.get("retractReason") == "no route"
+          and chk4.get("reason") == "no route" else "FAIL", "MOD",
+          dict(_pick(h4, "laid", "layOk", "state", "reelGraphic", "retractReason", "retractTick"), check=chk4.get("reason"),
+               relay=lr.get("reason"), retracts=c4.get("retracts"),
+               note="expected: reeled in at the next 250-tick check, retractReason 'no route'"))
     res["screenshots"].append(B.shot_rect("maze_04_unreachable", MSITE))
 
-    # M5: walls removed -> back by the short route
-    for cell in (g, b):
+    # M5: walls removed -> lay it again; it takes the short route
+    for cell in (g, b, FILLER):
         B.call("jawa/destroy_batch", rects="%d,%d,1,1" % cell, categories="Buildings")
     B.call("jawa/map_commit")
+    l5 = B.hp("lay:%d,%d,%d,%d" % (R + T))
     B.ticks(RELAY_TICKS)
     h5, _ = B.hose(R)
-    V.row(rows, "M5_walls_removed_recovers", "PASS" if h5.get("layOk") and _via(h5, g) else "FAIL", "MOD",
-          _pick(h5, "layOk", "pathLen", "bbox"))
+    V.row(rows, "M5_walls_removed_recovers", "PASS" if l5.get("success") and h5.get("laid") and h5.get("layOk") and _via(h5, g) else "FAIL", "MOD",
+          dict(_pick(h5, "laid", "layOk", "pathLen", "bbox"), lay=l5.get("reason")))
 
     # P1/P2: reel ports (owner, round 2: "the Hose Reel can also connect to ... pipe-friendly buildings (like tanks)")
     hp_, _ = B.hose(PREEL)
@@ -365,7 +383,8 @@ def run_maze(args):
               and hp_.get("portSide") == [1, 0] and (c.get("feedDraws") or 0) >= 1 else "FAIL", "MOD",
               dict(_pick(hp_, "port", "portKind", "portSide"), feedDraws=c.get("feedDraws")))
     V.row(rows, "P2_lone_reel_not_coupled", "PASS" if hl and hl.get("port") is None else "FAIL", "MOD", _pick(hl, "port", "portKind"))
-    res["screenshots"].append(B.shot_rect("ports_01_reel_tank", (PREEL[0] - 2, PREEL[1] - 2, 8, 6)))
+    res["screenshots"].append(B.shot_rect("ports_01_reel_tank", (PREEL[0] - 2, PREEL[1] - 2, 10, 6)))
+    B.hp("defaults")
     res["log"] = log
     return res
 

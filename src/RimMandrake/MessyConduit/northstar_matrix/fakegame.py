@@ -22,6 +22,9 @@ CONDUITS = ("PowerConduit", "WaterproofConduit")
 REEL = "RM_HoseReel"
 WIRE_VISIBLE = 0.11 * 25.0 / 32.0          # HoseMath.WireVisibleWidth
 FLAT_VISIBLE, PLUMP_EXTRA, MIN_BEND, MAX_LENGTH, TRANSITION = 0.38, 0.085, 1.2, 30.0, 30   # HoseMath / HoseSettings defaults
+REEL_W = REEL_H = 2                         # RM_HoseReel is 2x2 (round 3), never rotated: footprint x..x+1, z..z+1 from Position
+ROUTE_SLACK = 1.08                          # HoseMath.CheckInstall: (hop + path) * 1.08 must fit the hose length
+CORRIDOR_TICKS = 250                        # RM_MapComponent_Hoses: the laid hose's corridor is re-checked this often
 
 
 class FakeMap(object):
@@ -31,7 +34,9 @@ class FakeMap(object):
         self.edifice = {}            # cell -> ("Wall"|"Door"|"Granite")
         self.things = []             # devices: dict(def, pos, rot, id, footprint, hookup, charged)
         self.plants = set()
-        self.reels = {}              # (x, z) -> hose state (a crude stand-in for CompHoseReel + HoseProbe)
+        self.reels = {}              # Position (x, z) = the 2x2's SW cell -> hose state (a crude stand-in for CompHoseReel + HoseProbe)
+        self.retracts = 0
+        self.reel_refused = []       # reels the fake refused to build because the 2x2 footprint overlapped something
         self.next_id = 1
         self.log = []
 
@@ -89,7 +94,7 @@ class FakeMap(object):
             self.edifice = {c: v for c, v in self.edifice.items() if not inside(c)}
             self.things = [t for t in self.things if not inside(t["pos"])]
             self.plants = {c for c in self.plants if not inside(c)}
-            self.reels = {c: r for c, r in self.reels.items() if not inside(c)}
+            self.reels = {c: r for c, r in self.reels.items() if not any(inside(f) for f in self.footprint(c))}
         elif name == "jawa/set_terrain_batch":
             for d, n in self._ops(a["ops"]):
                 x, z, w, h = n
@@ -104,7 +109,13 @@ class FakeMap(object):
                 elif d in ("Wall", "Door", "Granite"):
                     self.edifice[c] = d
                 elif d == REEL:
-                    self.reels[c] = {"far": None, "laid": False, "flow": False, "on_ticks": 0, "lay": None}
+                    bad = self._reel_overlap(c)
+                    if bad:
+                        self.reel_refused.append({"reel": list(c), "footprint": self.footprint(c), "hits": bad})
+                        self.log.append("RM_HoseReel at %s refused: 2x2 footprint overlaps %s" % (c, bad))
+                    else:
+                        self.reels[c] = {"far": None, "laid": False, "flow": False, "on_ticks": 0, "lay": None, "since_check": 0,
+                                         "corridor": None, "retractReason": None, "retractTick": -1}
                 else:
                     self.spawn(d, c, n[2] if len(n) > 2 else 0)
         elif name == "rimworld/step_game_ticks":
@@ -123,8 +134,39 @@ class FakeMap(object):
     def _blocked(self, c):
         return self.edifice.get(c) in ("Wall", "Door", "Granite")
 
-    def _route(self, a, b):
-        """Shortest 8-connected route length round walls (no diagonal squeeze past a blocked corner), or None."""
+    @staticmethod
+    def footprint(pos):
+        """The 2x2's four cells: Position is the SW cell, rot North."""
+        return [(pos[0] + i, pos[1] + j) for i in range(REEL_W) for j in range(REEL_H)]
+
+    @staticmethod
+    def centre(pos):
+        """Where the hose leaves the reel: a cell CORNER, (x+1, z+1)."""
+        return (pos[0] + REEL_W / 2.0, pos[1] + REEL_H / 2.0)
+
+    def _reel_at(self, cell):
+        """The reel whose 2x2 footprint holds `cell` (HoseProbe finds a reel by ANY of its 4 cells), else None."""
+        for pos in self.reels:
+            if cell in self.footprint(pos):
+                return pos
+        return None
+
+    def _reel_overlap(self, pos):
+        fp = set(self.footprint(pos))
+        hits = []
+        hits += [("edifice", c) for c in sorted(fp) if c in self.edifice]
+        hits += [("conduit", c) for c in sorted(fp) if c in self.conduit]
+        hits += [("reel", p) for p in self.reels if fp & set(self.footprint(p))]
+        for t in self.things:
+            tf = {(t["x0"] + i, t["z0"] + j) for i in range(t["w"]) for j in range(t["h"])}
+            if fp & tf:
+                hits.append((t["def"], t["pos"]))
+        return hits
+
+    def _route(self, a, b, extra=frozenset()):
+        """Shortest 8-connected route length round walls (no diagonal squeeze past a blocked corner), or None.
+        `extra` = more blocked cells (the reel's other footprint cells); the start and goal are always allowed."""
+        blocked = lambda c: c != a and c != b and (self._blocked(c) or c in extra)  # noqa: E731
         dist, pq = {a: 0.0}, [(0.0, a)]
         lim = 80
         while pq:
@@ -136,9 +178,9 @@ class FakeMap(object):
             for dx in (-1, 0, 1):
                 for dz in (-1, 0, 1):
                     n = (c[0] + dx, c[1] + dz)
-                    if (dx, dz) == (0, 0) or self._blocked(n) or abs(n[0] - a[0]) > lim or abs(n[1] - a[1]) > lim:
+                    if (dx, dz) == (0, 0) or blocked(n) or abs(n[0] - a[0]) > lim or abs(n[1] - a[1]) > lim:
                         continue
-                    if dx and dz and (self._blocked((c[0] + dx, c[1])) or self._blocked((c[0], c[1] + dz))):
+                    if dx and dz and (blocked((c[0] + dx, c[1])) or blocked((c[0], c[1] + dz))):
                         continue
                     nd = d + math.hypot(dx, dz)
                     if nd < dist.get(n, 1e18):
@@ -146,20 +188,75 @@ class FakeMap(object):
                         heapq.heappush(pq, (nd, n))
         return None
 
-    def hose_check(self, reel, far):
+    def _start_cell(self, pos, far):
+        """The reel cell nearest the target (the planner's start); ties to the lowest x, then z."""
+        best, bd = None, 1e18
+        for c in self.footprint(pos):                      # x outer, z inner = ascending x then z
+            d = math.hypot(c[0] - far[0], c[1] - far[1])
+            if d < bd - 1e-9:
+                best, bd = c, d
+        return best
+
+    def _plan(self, pos, far):
+        """(reason or None, route length from the centre incl. the hop to the start cell)."""
         if not (0 <= far[0] < 250 and 0 <= far[1] < 250):
-            return "out of bounds"
-        if math.hypot(far[0] - reel[0], far[1] - reel[1]) > MAX_LENGTH:
-            return "too far"
-        if self._blocked(far):
-            return "target blocked"
-        r = self._route(tuple(reel), tuple(far))
-        return None if r is not None and r <= MAX_LENGTH else "no route"
+            return "out of bounds", None
+        fp = self.footprint(pos)
+        if tuple(far) in fp:
+            return "same cell", None
+        cen = self.centre(pos)
+        if math.hypot(far[0] + 0.5 - cen[0], far[1] + 0.5 - cen[1]) > MAX_LENGTH:
+            return "too far", None
+        if self._blocked(tuple(far)):
+            return "target blocked", None
+        st = self._start_cell(pos, far)
+        r = self._route(st, tuple(far), frozenset(fp) - {st})
+        if r is None:
+            return "no route", None
+        ln = math.hypot(st[0] + 0.5 - cen[0], st[1] + 0.5 - cen[1]) + r
+        if ln * ROUTE_SLACK > MAX_LENGTH:
+            return "route too long", ln
+        return None, ln
+
+    def hose_check(self, reel, far):
+        return self._plan(self._reel_at(tuple(reel)) or tuple(reel), tuple(far))[0]
+
+    def _corridor(self, pos, far):
+        """Stand-in for CorridorHash: the blocked/unblocked pattern of the box round the reel and the free end (+-2)."""
+        cells = self.footprint(pos) + [tuple(far)]
+        x0, x1 = min(c[0] for c in cells) - 2, max(c[0] for c in cells) + 2
+        z0, z1 = min(c[1] for c in cells) - 2, max(c[1] for c in cells) + 2
+        return tuple(self._blocked((x, z)) for z in range(z0, z1 + 1) for x in range(x0, x1 + 1))
+
+    def _lay(self, pos, far, r):
+        why, ln = self._plan(pos, far)
+        if why is None:
+            cen = self.centre(pos)
+            flat = max(ln, math.hypot(far[0] + 0.5 - cen[0], far[1] + 0.5 - cen[1])) * 1.02
+            r.update(far=tuple(far), laid=True, lay={"path": ln, "flat": flat}, corridor=self._corridor(pos, far), retractReason=None)
+        return why
+
+    def _retract_check(self, pos, r):
+        """HOSE_BLOCKED_REROUTE_RETRACT_1: when the corridor changed, re-route if a route within the hose length remains,
+        else reel the hose in (laid false, retractReason set)."""
+        if not r["laid"] or r["corridor"] == self._corridor(pos, r["far"]):
+            return
+        why = self._lay(pos, r["far"], r)
+        if why is not None:
+            r.update(laid=False, lay=None, retractReason=why, retractTick=self.tick, on_ticks=0, flow=False)
+            self.retracts += 1
+
+    tick = 0
 
     def hose_tick(self, n):
-        for r in self.reels.values():
+        self.tick += n
+        for pos, r in self.reels.items():
             if r["flow"]:
                 r["on_ticks"] += n
+            r["since_check"] += n
+            if r["since_check"] >= CORRIDOR_TICKS:
+                r["since_check"] %= CORRIDOR_TICKS
+                self._retract_check(pos, r)
 
     def hose_probe(self, cmd):
         verb, _, arg = cmd.partition(":")
@@ -169,17 +266,14 @@ class FakeMap(object):
         if "=" in arg:
             arg, val = arg.split("=", 1)
         a = [int(v) for v in arg.split(",")]
-        r = self.reels.get((a[0], a[1]))
-        if r is None:
+        pos = self._reel_at((a[0], a[1]))
+        if pos is None:
             return {"success": False, "error": "no hose reel at %d,%d" % (a[0], a[1])}
+        r = self.reels[pos]
         if verb == "check":
-            return {"success": True, "reason": self.hose_check((a[0], a[1]), (a[2], a[3]))}
+            return {"success": True, "reason": self._plan(pos, (a[2], a[3]))[0]}
         if verb == "lay":
-            why = self.hose_check((a[0], a[1]), (a[2], a[3]))
-            if why is None:
-                path = self._route((a[0], a[1]), (a[2], a[3]))
-                flat = max(path, math.hypot(a[2] - a[0], a[3] - a[1])) * 1.02
-                r.update(far=(a[2], a[3]), laid=True, lay={"path": path, "flat": flat})
+            why = self._lay(pos, (a[2], a[3]), r)
             return {"success": why is None, "reason": why, "layOk": r["lay"] is not None}
         if verb == "flow":
             r["flow"] = val in ("on", "true", "1")
@@ -195,19 +289,22 @@ class FakeMap(object):
             eased = blend * blend * (3 - 2 * blend)
             state = "Plump" if blend >= 1 else ("Filling" if blend > 0 else "Flat")
             vis = FLAT_VISIBLE + PLUMP_EXTRA * eased
-            h = {"id": 1, "kind": "Hose", "reel": list(c), "far": list(r["far"] or c), "laid": r["laid"], "layOk": r["lay"] is not None,
+            cen = self.centre(c)
+            h = {"id": 1, "kind": "Hose", "reel": list(c), "footprint": [c[0], c[1], REEL_W, REEL_H], "start": [cen[0], cen[1]],
+                 "far": list(r["far"] or c), "laid": r["laid"], "layOk": r["lay"] is not None,
+                 "port": None, "portKind": None, "portContact": None, "retractReason": r["retractReason"], "retractTick": r["retractTick"],
                  "end": "Nozzle", "state": state, "transitions": 0 if state == "Flat" else 1, "blend": round(blend, 4),
                  "eased": round(eased, 4), "visibleWidth": round(vis, 4), "widthOverWire": round(vis / WIRE_VISIBLE, 4),
                  "provider": "debug", "signal": r["flow"], "debugFlowing": r["flow"], "history": []}
             if r["lay"]:
                 f = r["lay"]["flat"]
                 h.update(pathLen=round(f, 3), flatLen=round(f, 3), plumpLen=round(f * 0.98, 3), poseLen=round(f * (1 - 0.02 * eased), 3),
-                         straight=round(math.hypot(r["far"][0] - c[0], r["far"][1] - c[1]), 3), minBendFlat=MIN_BEND, minBendPlump=MIN_BEND,
+                         straight=round(math.hypot(r["far"][0] + 0.5 - cen[0], r["far"][1] + 0.5 - cen[1]), 3), minBendFlat=MIN_BEND, minBendPlump=MIN_BEND,
                          selfIntersects=False, couplings=2, joints=0, points=int(f) + 2,
                          fellBack=False, geometryHash="%016x" % (hash((c, r["far"])) & (2 ** 64 - 1)), unwalkablePoints=0)
             hoses.append(h)
         return {"success": True, "cmd": "census", "transitionTicks": TRANSITION, "minBendSetting": MIN_BEND,
-                "wireVisibleWidth": round(WIRE_VISIBLE, 4), "texturesInstalled": True, "hoses": hoses}
+                "wireVisibleWidth": round(WIRE_VISIBLE, 4), "texturesInstalled": True, "retracts": self.retracts, "hoses": hoses}
 
     def spawn(self, d, pos, rot):
         role = DEF_ROLE[d]
