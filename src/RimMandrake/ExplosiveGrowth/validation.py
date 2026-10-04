@@ -931,6 +931,108 @@ for _f, _d, _a in FLIPS:
     suite.chain("flip_%s" % _f)(_make_flip(_f, _d, _a))
 
 
+# --------------------------------------------------------------------------- probes (EXPLOSIVE_GROWTH_PROBE_TOOL_1)
+# State reads through RM_ExplosiveGrowthProof (jawa/static_call, this mod's own assembly): each stages its own plant or
+# pawn near the map centre. An "ERROR" answer (no plantable cell, no Muffalo) is a SITE fault: UNMEASURED.
+
+def _probe(t, method):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthProof", method=method,
+                      args="current")
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    _note(t, method, text)
+    if _live(t) and (not text or text.startswith("ERROR")):
+        _unmeasured(t, "%s could not stage: %s" % (method, text[:160] or r))
+    return dict(re.findall(r"(\w+(?:\.\d+)?)=([\w.\-/]+)", text)), text
+
+
+@suite.chain("probe_jackpot_on")
+def probe_jackpot_on(t):
+    """Harvesting a swollen plant pays up to double at full charge: mean YieldNow at charge 1 vs uncharged."""
+    with _comp(t, "harvest_jackpot_doubles_at_full_charge", toggle="harvestJackpotEnabled"):
+        v, raw = _probe(t, "ProofJackpot")
+        if _live(t):
+            ratio = float(v.get("ratio", 0))
+            if float(v.get("base", 0)) <= 0 or not 1.7 <= ratio <= 2.3:
+                _fail("jackpot ratio %.2f, expected about 2 at full charge: %s" % (ratio, raw))
+
+
+@suite.chain("probe_jackpot_off")
+def probe_jackpot_off(t):
+    with _comp(t, "jackpot_off_pays_plain", toggle="harvestJackpotEnabled"):
+        with _arm(t, harvestJackpotEnabled=False):
+            v, raw = _probe(t, "ProofJackpot")
+        if _live(t) and not 0.85 <= float(v.get("ratio", 0)) <= 1.15:
+            _fail("harvestJackpotEnabled=false but a charged plant still pays extra: %s" % raw)
+
+
+@suite.chain("probe_gamble_on")
+def probe_gamble_on(t):
+    """Cutting a charging plant below the tremble defuses it; past the tremble the last swing is a 15-60% gamble."""
+    with _comp(t, "cut_defuses_and_last_swing_is_a_gamble", toggle="lastSwingGambleEnabled"):
+        v, raw = _probe(t, "ProofGamble")
+        if _live(t):
+            if v.get("cutBelowTrembleDefused") != "True" or v.get("plantCollected") != "True":
+                _fail("a cut below the tremble did not defuse and collect: %s" % raw)
+            c5, c7, c1 = (float(v.get(k, -1)) for k in ("chanceAt0.5", "chanceAt0.7", "chanceAt1"))
+            if c5 != 0 or abs(c7 - 0.15) > 0.02 or abs(c1 - 0.6) > 0.02:
+                _fail("gamble curve wrong (want 0 / 0.15 / 0.60): %s" % raw)
+
+
+@suite.chain("probe_gamble_off")
+def probe_gamble_off(t):
+    with _comp(t, "gamble_off_never_fires", toggle="lastSwingGambleEnabled"):
+        with _arm(t, lastSwingGambleEnabled=False):
+            v, raw = _probe(t, "ProofGamble")
+        if _live(t) and float(v.get("chanceAt1", -1)) != 0:
+            _fail("lastSwingGambleEnabled=false but the top swing can still fire: %s" % raw)
+
+
+@suite.chain("probe_rupture_on")
+def probe_rupture_on(t):
+    """Anyone in a rupture cloud without a vacuum seal can mutate: 200 pulses on a muffalo in the cloud."""
+    with _comp(t, "rupture_cloud_mutates_the_unsealed"):
+        v, raw = _probe(t, "ProofRupture")
+        if _live(t):
+            if int(v.get("pool", 0)) == 0:
+                _unmeasured(t, "no rupture mutation hediff resolved on this list (the Contagion pool is empty): %s" % raw)
+            if v.get("inZone") != "True" or int(v.get("mutations", 0)) < 1:
+                _fail("a pawn in the cloud took no mutation in 200 pulses: %s" % raw)
+
+
+@suite.chain("probe_rupture_off")
+def probe_rupture_off(t):
+    with _comp(t, "rupture_chance_zero_mutates_nobody"):
+        with _arm(t, ruptureMutationChance=0.0):
+            v, raw = _probe(t, "ProofRupture")
+        if _live(t) and int(v.get("mutations", -1)) != 0:
+            _fail("ruptureMutationChance=0 but the cloud still mutated: %s" % raw)
+
+
+@suite.chain("probe_tell_ladder")
+def probe_tell_ladder(t):
+    """The tell ladder in order (Ground, Swell, Hue, Tremble, Creak, Silence), the swell growing toward
+    maxOvergrowthScale and the hue going fully wrong at the top."""
+    with _comp(t, "tell_ladder_stages_swell_and_hue"):
+        v, raw = _probe(t, "ProofTell")
+        if _live(t):
+            want = ["Ground", "Swell", "Hue", "Tremble", "Creak", "Silence"]
+            got = [v.get(k, "?/?/?").split("/")[0] for k in ("c0.10", "c0.20", "c0.50", "c0.75", "c0.90", "c0.97")]
+            if got != want:
+                _fail("tell stages %s, expected %s: %s" % (got, want, raw))
+            top = v.get("c0.97", "?/0/0").split("/")
+            if not (1.9 <= float(top[1]) <= 2.0 and float(top[2]) == 1.0):
+                _fail("at charge 0.97 the plant should be ~1.96x and fully hued: %s" % raw)
+
+
+@suite.chain("probe_tell_scale_off")
+def probe_tell_scale_off(t):
+    with _comp(t, "max_scale_one_never_swells"):
+        with _arm(t, maxOvergrowthScale=1.0):
+            v, raw = _probe(t, "ProofTell")
+        if _live(t) and abs(float(v.get("c0.97", "?/0/0").split("/")[1]) - 1.0) > 0.001:
+            _fail("maxOvergrowthScale=1 but the silent plant is still drawn swollen: %s" % raw)
+
+
 @suite.chain("settings_restored")
 def settings_restored(t):
     """LAST: every field is back at its shipped default (a leaked arm would corrupt the next run)."""
