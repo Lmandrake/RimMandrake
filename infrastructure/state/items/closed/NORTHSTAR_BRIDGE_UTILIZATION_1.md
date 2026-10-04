@@ -10,3 +10,14 @@ Selftest over a fixture ledger plus two fake results JSONs; one live day's repor
 
 ## criteria
 The report runs, utilization for 2026-10-01 is computed and recorded in the item, and the idle gaps are attributable to a stated cause (cold load, site build, waiting for a script, owner away).
+
+## result 2026-10-04 (FOUNDRY builder)
+- Built `src/RimMandrake/Utils/northstar_driver/bridge_utilization.py` + `selftest_bridge_utilization.py` (8/8). No
+  transport change: tick advance is itself a bridge call (`step_game_ticks`), so `CallLog` already times it.
+- **2026-10-01: held 674.2 min, active 21.2 min, utilization 3.1% — a LOWER BOUND (PROVISIONAL).** ACTIVE counts only
+  the two drivers that leave a timed record (modcheck live-queue rows, north-star results JSONs). That day's live
+  passes were mostly ad-hoc `python.exe` bridge scripts (`Transient/northstar_live_pass*_2026-10-01.md`), which
+  leave no timing, so 6 of 7 idle gaps (80-297 min) read "unattributed"; one (09:37, 81 min) is a cold load.
+  All-time: 6162.8 held / 655.1 active = 10.6%.
+- The real cause of the unattributed gaps is unlogged activity, not proven idleness. To make the metric honest,
+  ad-hoc bridge drivers must append to a call log too — follow-up, not this item.
