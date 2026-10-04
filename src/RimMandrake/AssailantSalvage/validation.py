@@ -175,7 +175,15 @@ def _build_suite():
             rows = {d.get("defName"): (d.get("fields") or {}) for d in (r.get("defs") or [])}
             wrong, seen = [], 0
             for d in DEFS:
-                f = rows.get(d["name"], {})
+                # LIVE run17 2026-10-03: get_defs answers '(no such field)' for System.Type (thingClass) and IntVec2
+                # (size) -- an instrument gap, not a difference. thingClass is re-read from jawa/get_def's extra;
+                # size has no other reader and is left unread (never compared against the placeholder).
+                f = {k: v for k, v in rows.get(d["name"], {}).items() if "no such field" not in str(v)}
+                if d["thingClass"] and f.get("thingClass") is None:
+                    g = t.bridge_call("jawa/get_def", defType="ThingDef", defName=d["name"])
+                    tc = ((g or {}).get("extra") or {}).get("thingClass") if isinstance(g, dict) else None
+                    if tc:
+                        f["thingClass"] = tc
                 if d["thingClass"] and f.get("thingClass") is not None:
                     seen += 1
                     if str(f["thingClass"]).split(".")[-1] != d["thingClass"].split(".")[-1]:
