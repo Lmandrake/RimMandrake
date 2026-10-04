@@ -1432,26 +1432,23 @@ class _StaleRefreshGuard:
 
 
 # Downscale-legibility direction baked into EVERY in-game (transparent-bg)
-# sprite prompt, so a creature reads at play size without depending on each
-# job author to remember it. Earned from the frostmite zoom pilot, 2026-09-12
-# (src/RimMandrake/Utils/art_zoom_sim.py, Transient/art_zoom_review_2026-09-12/):
-# a thin/absent outline plus fine surface detail turns to grey mud by normal
-# play zoom (~32 on-screen px), while vanilla art survives on a thick keyline,
-# a few bold shapes, and body/ground value contrast. The frostmite's 32px
-# legibility went 30.8 -> 49.3 once these three were applied. Phrased as
-# positive states, never "no ..." (AGENTS.md rule 2) — negated tokens still
-# describe the picture to the model.
+# sprite prompt, so a subject reads at play size without depending on each
+# job author to remember it (frostmite zoom pilot, 2026-09-12: a few bold
+# shapes and body/ground value contrast are what survive ~32 on-screen px).
+# The pilot's "thick darker keyline" is GONE: the owner ruled outlines out
+# 2026-10-04 (ART_VERSION_WRANGLING_1) — silhouette comes from value
+# contrast, and the house register (common.HOUSE_ART_REGISTER) is appended
+# unless the job already states it.
+# Phrased as positive states where possible (AGENTS.md rule 2).
 _SPRITE_ART_DIRECTION = (
     "Readability at small size (the game shrinks this sprite to a few dozen "
-    "on-screen pixels): trace the whole creature in a bold, clearly darker "
-    "keyline about 2-3% of the body width so its silhouette reads as one clean "
-    "shape when small; carry the creature's identity in a few large distinct "
+    "on-screen pixels): carry the subject's identity in a few large distinct "
     "shapes, keeping surface detail broad, because anything finer than a few "
     "percent of the body dissolves at play size; hold the overall body "
     "value clearly lighter or darker than a mid-tone ground so it stands out "
-    "against terrain; and leave a clear transparent margin of about three "
-    "percent of the canvas on every side of the creature, so the whole "
-    "silhouette sits free of the canvas edges."
+    "against terrain without any drawn outline; and leave a clear transparent "
+    "margin of about three percent of the canvas on every side of the subject, "
+    "so the whole silhouette sits free of the canvas edges."
 )
 
 
@@ -1462,7 +1459,13 @@ def build_job_prompt(job: dict) -> str:
     file's parent, so out_png living inside _artsrc/<job_id>/ IS that
     per-job cwd, not the shared _artsrc/ root every job used to collide in."""
     canvas = job["canvas"]
-    parts = [f"[artpipe job {job['id']}] {job['prompt']}",
+    # ART_VERSION_WRANGLING_1 (owner, 2026-10-04): the retired "Heavy, clean
+    # black outline" clause is scrubbed at render time too, so a job filed
+    # by hand (bypassing fill_queue) or re-run from failed/ still renders in
+    # the current register.
+    prompt, _n = common.scrub_stale_outline(job["prompt"])
+    style, _m = common.scrub_stale_outline(job.get("style_notes") or "")
+    parts = [f"[artpipe job {job['id']}] {prompt}",
              f"Canvas: exactly {canvas['width']}x{canvas['height']} pixels."]
     bg = job.get("background") or "transparent"
     if bg == "transparent":
@@ -1470,22 +1473,21 @@ def build_job_prompt(job: dict) -> str:
                       "no backdrop, floor, shadow or gradient.")
         # In-game sprites are the ones that get downsampled onto the map;
         # a black-backdrop reference shot does not, so it skips this.
-        # Style-conditional (ART_PAINTERLY_RESTORATION_1, owner, 2026-09-14):
-        # this block used to be appended unconditionally so every candidate
-        # would clear the (now advisory-only, never-a-rejector) legibility
-        # gate — that reason is gone. The restored wave-4/5 painterly prompt
-        # family already states its own outline/readability direction
-        # inline ("Heavy, clean black outline... thick enough to read
-        # clearly at standard RimWorld zoom and below"), so only bolt this
-        # generic direction onto a job that ISN'T already asking for the
-        # painterly style, instead of duplicating and diluting it.
-        if "painterly" not in job["prompt"].lower():
-            parts.append(_SPRITE_ART_DIRECTION)
+        # Every in-game sprite gets the readability direction plus the house
+        # register (ART_VERSION_WRANGLING_1, 2026-10-04). It used to be
+        # skipped for "painterly" prompts because those carried their own
+        # heavy-black-outline clause; that clause is retired and scrubbed
+        # above, so nothing else states the register any more.
+        parts.append(_SPRITE_ART_DIRECTION)
+        # fill_queue already bakes the register into style_notes (so a daemon
+        # running older code still renders it); add it only when absent.
+        if "no outlines" not in f"{prompt} {style}".lower():
+            parts.append(common.HOUSE_ART_REGISTER)
     else:
         parts.append(f"Background: one perfectly flat solid field of {bg}, "
                       f"used nowhere in the subject.")
-    if job.get("style_notes"):
-        parts.append(f"Style: {job['style_notes']}")
+    if style:
+        parts.append(f"Style: {style}")
     if job.get("facing"):
         # A bare "Facing: north." leaves the image model to guess RimWorld's
         # top-down camera convention, and it guessed wrong often enough to

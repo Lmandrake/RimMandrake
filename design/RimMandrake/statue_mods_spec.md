@@ -338,8 +338,9 @@ desert sandstone and bone-pale stone reading as CARVED — a statue of the figur
 figure. Hooded and robed Jawa figure, hood up, face a black void with two inlaid amber-glass
 eyes as the only lit feature, over-sized gnarled five-fingered hands from deep sleeves. [MOTIF].
 [ACCENT] as a mineral vein or inlaid metal, never paint. No fire, no glow, no ground shadow, no
-background scenery. Heavy, clean black outline around the whole silhouette and all major
-internal linework, thick enough to read clearly at standard RimWorld zoom and below."*
+background scenery. Realistic painted natural-history register, matte carved-stone surface,
+soft painted edges, the silhouette carried by value contrast; never cartoonish, no outlines."*
+(Outline clause retired by the owner 2026-10-04, ART_VERSION_WRANGLING_1.)
 Votives and the Crawler drop the hooded-figure clause. Art is authored grey-warm and
 desaturated so stuff colour can tint it (`useIngredientsForColor`).
 
