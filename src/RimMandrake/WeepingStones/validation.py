@@ -1447,7 +1447,7 @@ def _flora_chain(plant, product):
             with _comp(t, "harvest_yields_%s" % product):
                 for pid in box.get("plants") or []:
                     t.bridge_call("jawa/ordered_job", pawnId=box["handler"], jobDef="Harvest",
-                                  targetAId=pid, queue=True, waitTicks=60)
+                                  targetAId=pid, queue=True, waitTicks=0)   # waitTicks>0 on a paused clock burns ~17 s per order (LIVE 2026-10-03)
                 t.wait_ticks(2500)
                 if _live(t):
                     made = _things(t, product, _pad_rect(t))
