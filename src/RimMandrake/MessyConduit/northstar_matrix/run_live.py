@@ -15,7 +15,7 @@ render, 2-3 MB PNG copy). Split the run in two; the state pass carries every ver
                section regeneration (RM_MapComponent_CordGraph: Rebuild runs from an on-screen SectionLayer regenerate or the
                StaleOffscreen flag) and a first cut that also dropped the camera moves failed scenes the full run passed (live,
                2026-10-04: F17_T4_S1, F49_T12_S1, F34_T8_S2, D12_n1000_S0, highlight rows). Screenshot-dependent checks are the single
-               row I0_screenshots = UNMEASURED with the reason. Prove equivalence by --compare against a full run on the same spec.
+               row I0_screenshots = SKIP with the reason (a deliberate choice, not a failure to measure). Prove equivalence by --compare against a full run on the same spec.
   --sweep-shots <result.json>  second pass on a live 250x250 map with the site pinned (same --catalog; do NOT pass --fresh-map unless a
                fresh map is intended). Every board is laid out from the SAME origin and destroyed after its census, so nothing from the
                state pass is still standing: the sweep rebuilds each board (same builds, same ticks, so the same geometry), then takes
@@ -1238,8 +1238,8 @@ def run(args, B, mock=False):
     aborted = None
     t_start = None
     if getattr(args, "no_shots", False) and not sweep_src:
-        R.row("I0_screenshots", "UNMEASURED", "HARNESS",
-              "--no-shots: no screenshot was taken, so image sanity (census mask, frame_ok, blank/magenta), the on/off pair shots and "
+        R.row("I0_screenshots", "SKIP", "HARNESS",
+              "--no-shots (deliberate; the walk rules screenshots are the human look and never a pass bar): no screenshot was taken, so image sanity (census mask, frame_ok, blank/magenta), the on/off pair shots and "
               "the net-selected/power-overlay frames are UNMEASURED; run --sweep-shots <this result> for them. State verdicts are unaffected.")
     try:
         R.switch("site_setup")
