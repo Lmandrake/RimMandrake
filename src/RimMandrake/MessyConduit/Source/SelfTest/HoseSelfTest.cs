@@ -33,6 +33,8 @@ namespace RimMandrake.MessyConduit.SelfTest
             LayAroundWall();
             Install();
             Signals();
+            Ports();
+            Maze();
             Console.WriteLine($"hose: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -248,6 +250,104 @@ namespace RimMandrake.MessyConduit.SelfTest
             int[] w = HoseTint.Rgb("RM_Fluid_Water"), t = HoseTint.Rgb("RM_Fluid_Tar"), u = HoseTint.Rgb("no_such_fluid");
             C(w != null && t != null && !w.SequenceEqual(t), "per-fluid tint: water and tar differ");
             C(u.SequenceEqual(w), "per-fluid tint: an unknown fluid reads as water");
+        }
+
+        // ------------------------------------------------------------------ reel ports (owner review round 2, 2026-10-04)
+        private static void Ports()
+        {
+            var reel = new Cell(10, 10);
+            var tankE = new HosePortCandidate(11, 9, 2, 2, HosePortKind.Tank);   // 2x2 tank whose west edge touches the reel
+            var pipeN = new HosePortCandidate(10, 11, 1, 1, HosePortKind.Pipe);
+            var corner = new HosePortCandidate(11, 11, 1, 1, HosePortKind.Pipe); // diagonal only
+            var far = new HosePortCandidate(12, 10, 1, 1, HosePortKind.Pipe);    // one cell away
+            int i = HosePortRule.Pick(reel, new List<HosePortCandidate> { tankE }, out Cell s);
+            C(i == 0 && s == new Cell(1, 0), "ports: a 2x2 tank sharing an edge couples, on the east side");
+            i = HosePortRule.Pick(reel, new List<HosePortCandidate> { tankE, pipeN }, out s);
+            C(i == 1 && s == new Cell(0, 1), "ports: a pipe is preferred over a tank");
+            i = HosePortRule.Pick(reel, new List<HosePortCandidate> { pipeN, tankE }, out s);
+            C(i == 0, "ports: the choice does not depend on candidate order");
+            C(HosePortRule.Pick(reel, new List<HosePortCandidate> { corner, far }, out s) == -1, "ports: a corner touch or a gap of one cell does not couple");
+            var pipeW = new HosePortCandidate(9, 10, 1, 1, HosePortKind.Pipe);
+            i = HosePortRule.Pick(reel, new List<HosePortCandidate> { pipeW, pipeN }, out s);
+            C(i == 1 && s == new Cell(0, 1), "ports: two pipes tie-break by side (east, north, west, south)");
+            C(HosePortRule.Pick(reel, new List<HosePortCandidate> { new HosePortCandidate(9, 9, 3, 3, HosePortKind.Tank) }, out s) == -1,
+                "ports: a candidate covering the reel's own cell is ignored");
+            HosePortRule.Feed(reel, new Cell(1, 0), out V2 from, out V2 to, out V2 cp);
+            C(Math.Abs(to.X - 11.5) < 1e-9 && Math.Abs(to.Z - 10.5) < 1e-9 && Math.Abs(cp.X - 11.0) < 1e-9 && from.X > 10.5 && from.X < cp.X,
+                "ports: the feed runs from under the reel, across the coupling on the shared edge, to the port cell's centre");
+        }
+
+        // ------------------------------------------------------------------ maze / spiral path solving (round 2)
+        /// <summary>The same maze validation_hose.py builds live (MAZE there; keep the two in step). Rows run from high z
+        /// to low z. R reel, T target, g the short route's gap (walled in step 2), b a cell of the long route (walled in
+        /// step 3). The long route is a 3/4 spiral round the chamber: out west, up, along the top, down the east side.</summary>
+        public static readonly string[] MazeRows =
+        {
+            "###############  ",
+            "#.............#  ",
+            "#.###########.#  ",
+            "#b#.........#.#  ",
+            "#...R.......g...T",
+            "###.........###  ",
+            "  ###########    ",
+        };
+
+        private static CordWorld MazeWorld(int ox, int oz, out Cell R, out Cell T, out Cell g, out Cell b)
+        {
+            var w = Open(ox + 24, oz + 14);
+            R = T = g = b = new Cell(0, 0);
+            int h = MazeRows.Length;
+            for (int i = 0; i < h; i++)
+                for (int x = 0; x < MazeRows[i].Length; x++)
+                {
+                    var c = new Cell(ox + x, oz + h - 1 - i);
+                    switch (MazeRows[i][x])
+                    {
+                        case '#': w.SetBlocked(c, BlockKind.Wall); break;
+                        case 'R': R = c; break;
+                        case 'T': T = c; break;
+                        case 'g': g = c; break;
+                        case 'b': b = c; break;
+                    }
+                }
+            return w;
+        }
+
+        private static void Maze()
+        {
+            CordWorld w = MazeWorld(3, 3, out Cell R, out Cell T, out Cell g, out Cell b);
+            var p = new HoseShapeParams();
+            V2 a = R.Centre + (T.Centre - R.Centre).Norm() * 0.45;
+            // 1. both routes open: the obvious (short) one through the gap
+            List<Cell> path = CordPlanner.AStar(w, R, T);
+            C(path != null && path.Contains(g) && path.Max(c => c.Z) <= R.Z + 1, "maze 1: open maze takes the short route through the gap");
+            HoseLay l1 = HoseMath.Lay(w, a, T.Centre, p, 11);
+            C(l1.Ok && l1.Flat.All(q => w.IsWalkable(q.Floor)), "maze 1: hose laid, no point inside a wall");
+            C(HoseMath.CheckInstall(w, R, T, 20) == null, "maze 1: installable with a 20-cell hose");
+            // 2. wall the gap: re-planned from scratch, the hose spirals round the other way
+            w.SetBlocked(g, BlockKind.Wall);
+            path = CordPlanner.AStar(w, R, T);
+            C(path != null && !path.Contains(g) && path.Max(c => c.Z) >= R.Z + 3, "maze 2: gap walled -> the long spiral route over the top");
+            HoseLay l2 = HoseMath.Lay(w, a, T.Centre, p, 11);
+            C(l2.Ok && l2.PathLen > l1.PathLen * 1.6 && l2.Flat.All(q => w.IsWalkable(q.Floor)) && !HoseMath.SelfIntersects(l2.Flat),
+                "maze 2: re-laid along the spiral (" + l2.PathLen.ToString("0.0") + " vs " + l1.PathLen.ToString("0.0") + "), clear of walls, no loops");
+            // MEASURED 2026-10-04: a 1-cell corridor cannot hold the hose's 1.2-cell minimum bend -- the stiffened sprawl
+            // touches a wall, the lay falls back to the corridor's rounded centreline and the corners bend at ~0.42. That
+            // is the corridor's geometric limit (half a cell), not a planner fault; the floor asserted is that limit.
+            C(l2.MinBendFlat >= 0.35, "maze 2: corners bend no tighter than a 1-cell corridor allows (" + l2.MinBendFlat.ToString("0.00") + ", fellBack " + l2.FellBack + ")");
+            // 3. the length cap: the spiral fits a 30-cell hose but not a 20-cell one (install refuses; the LAY itself has
+            //    no cap -- a laid hose re-routed past its length is still drawn; validation_hose.py M3 records that live)
+            C(HoseMath.CheckInstall(w, R, T, 30) == null, "maze 3: the spiral fits a 30-cell hose");
+            C(HoseMath.CheckInstall(w, R, T, 20) == "route too long", "maze 3: a 20-cell hose refuses the spiral (route too long)");
+            // 4. wall the spiral too: unreachable
+            w.SetBlocked(b, BlockKind.Wall);
+            C(CordPlanner.AStar(w, R, T) == null, "maze 4: both routes walled -> no path");
+            C(HoseMath.CheckInstall(w, R, T, 30) == "no route", "maze 4: install refuses (no route)");
+            HoseLay l4 = HoseMath.Lay(w, a, T.Centre, p, 11);
+            C(!l4.Ok && l4.Reason == "no route", "maze 4: lay fails with 'no route' (live: the hose is not drawn, the reel stays laid)");
+            // 5. the A* expansion cap answers 'no route' rather than hanging (a cap of 10 cannot reach T)
+            w.SetBlocked(b, BlockKind.None);
+            C(CordPlanner.AStar(w, R, T, 10) == null && CordPlanner.AStar(w, R, T) != null, "maze 5: the A* expansion cap gives up cleanly");
         }
     }
 }

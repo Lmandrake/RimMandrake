@@ -82,6 +82,8 @@
     <Compile Include="Hose\HoseFlow.cs" />
     <Compile Include="Hose\RM_MapComponent_Hoses.cs" />
     <Compile Include="Hose\HoseProbe.cs" />
+    <Compile Include="Hose\HosePorts.cs" />
+    <Compile Include="Hose\Graphic_HoseReel.cs" />
   </ItemGroup>
 
   <ItemGroup>

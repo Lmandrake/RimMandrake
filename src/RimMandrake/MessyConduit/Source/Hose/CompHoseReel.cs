@@ -45,6 +45,21 @@ namespace RimMandrake.MessyConduit.Hose
         public string lastProvider = "none";
         public bool lastSignal;
         public readonly List<KeyValuePair<int, HoseVis>> history = new List<KeyValuePair<int, HoseVis>>();
+        /// <summary>Runtime only: the coupled pipe/tank (owner review round 2), refreshed by Port() at most every 60 ticks.</summary>
+        public Thing port;
+        public Core.Cell portSide;
+        public HosePortKind portKind = HosePortKind.None;
+        private int portTick = int.MinValue;
+
+        /// <summary>The coupled neighbour (null = not connected), re-read at most every 60 ticks or when forced.</summary>
+        public Thing Port(bool force = false)
+        {
+            int now = Find.TickManager?.TicksGame ?? 0;
+            if (!force && now - portTick < 60 && (port == null || port.Spawned)) return port;
+            portTick = now;
+            port = HosePorts.Find(this, out portSide, out portKind);
+            return port;
+        }
 
         private static readonly Texture2D IconLay = ContentFinder<Texture2D>.Get("RimMandrake/MessyConduit/Hose/Nozzle", false);
         private static readonly Texture2D IconReel = ContentFinder<Texture2D>.Get("RimMandrake/MessyConduit/Hose/Reel_PumpHookup", false);
@@ -66,6 +81,7 @@ namespace RimMandrake.MessyConduit.Hose
             // packed up (minified, destroyed): the hose comes back onto the reel
             laid = false;
             lay = null;
+            port = null;
             sm.ResetFlat();
         }
 
@@ -101,6 +117,7 @@ namespace RimMandrake.MessyConduit.Hose
             layKey = null;
             sm.ResetFlat();
             history.Clear();
+            RefreshLook();
             return null;
         }
 
@@ -110,6 +127,13 @@ namespace RimMandrake.MessyConduit.Hose
             lay = null;
             sm.ResetFlat();
             history.Clear();
+            RefreshLook();
+        }
+
+        /// <summary>Graphic_HoseReel picks stored vs deployed art at print time: reprint the reel's map mesh.</summary>
+        private void RefreshLook()
+        {
+            if (parent.Spawned) parent.DirtyMapMesh(parent.Map);
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -166,8 +190,10 @@ namespace RimMandrake.MessyConduit.Hose
 
         public override string CompInspectStringExtra()
         {
-            if (!laid) return "Hose reeled in.";
-            return "Hose laid to " + far + " (" + sm.State.ToString().ToLower() + ").";
+            Thing p = parent.Spawned ? Port() : null;
+            string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")." : "Not connected: build it beside a pipe or tank.";
+            if (!laid) return conn + "\nHose reeled in.";
+            return conn + "\nHose laid to " + far + " (" + sm.State.ToString().ToLower() + ").";
         }
     }
 }

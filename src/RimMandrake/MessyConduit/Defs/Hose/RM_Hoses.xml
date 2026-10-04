@@ -10,7 +10,7 @@
     <thingClass>Building</thingClass>
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Hose/Reel_PumpHookup</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>RimMandrake.MessyConduit.Hose.Graphic_HoseReel</graphicClass>
       <drawSize>(1.4,1.4)</drawSize>
       <shadowData><volume>(0.6, 0.35, 0.5)</volume></shadowData>
       <damageData><rect>(0.1,0.1,0.8,0.8)</rect></damageData>

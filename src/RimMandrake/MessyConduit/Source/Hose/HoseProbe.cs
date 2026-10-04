@@ -101,6 +101,7 @@ namespace RimMandrake.MessyConduit.Hose
               .Append(",\"minPlumpDwell\":").Append(HoseSettings.minPlumpDwell)
               .Append(",\"relays\":").Append(RM_MapComponent_Hoses.Relays)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
+              .Append(",\"feedDraws\":").Append(comp.lastFeedDraws)
               .Append(",\"hoses\":[");
             bool first = true;
             foreach (CompHoseReel r in comp.Reels)
@@ -129,6 +130,10 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"provider\":").Append(S(r.lastProvider))
                   .Append(",\"signal\":").Append(B(r.lastSignal))
                   .Append(",\"debugFlowing\":").Append(B(r.debugFlowing))
+                  .Append(",\"maxLength\":").Append(D(r.MaxLength))
+                  .Append(",\"port\":").Append(S(r.Port(true)?.def.defName))
+                  .Append(",\"portKind\":").Append(S(r.portKind.ToString()))
+                  .Append(",\"portSide\":[").Append(r.portSide.X).Append(',').Append(r.portSide.Z).Append(']')
                   .Append(",\"history\":[").Append(string.Join(",", r.history.Select(h => "[" + h.Key + "," + S(h.Value.ToString()) + "]"))).Append(']');
                 if (lay != null)
                 {
@@ -147,6 +152,9 @@ namespace RimMandrake.MessyConduit.Hose
                       .Append(",\"joints\":").Append(lay.Joints.Count)
                       .Append(",\"points\":").Append(lay.Flat.Count)
                       .Append(",\"fellBack\":").Append(B(lay.FellBack))
+                      .Append(",\"bbox\":[").Append(D(lay.Flat.Min(q => q.X))).Append(',').Append(D(lay.Flat.Min(q => q.Z))).Append(',')
+                      .Append(D(lay.Flat.Max(q => q.X))).Append(',').Append(D(lay.Flat.Max(q => q.Z))).Append(']')
+                      .Append(",\"centreCells\":[").Append(string.Join(",", lay.Centre.Select(q => "[" + q.Floor.X + "," + q.Floor.Z + "]").Distinct())).Append(']')
                       .Append(",\"geometryHash\":").Append(S(RM_MapComponent_Hoses.GeometryHash(lay).ToString("x16")))
                       .Append(",\"unwalkablePoints\":").Append(lay.Flat.Count(p => !comp.World().IsWalkable(p.Floor)));
                 }

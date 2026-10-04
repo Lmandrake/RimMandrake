@@ -196,13 +196,14 @@ namespace RimMandrake.MessyConduit.Hose
         private void DrawAll()
         {
             float y0 = AltitudeLayer.Conduits.AltitudeFor() + 0.004f;
-            lastWrapDraws = lastDeployedReelDraws = 0;
+            lastWrapDraws = lastFeedDraws = 0;
             for (int i = 0; i < reels.Count; i++)
             {
                 CompHoseReel r = reels[i];
                 // B18: where hoses cross, one passes cleanly over the other, the same way every frame: each hose (and its
                 // fittings) sits in its own altitude band, ordered by when the reel was built
                 float y = y0 + HoseMath.CrossLift(RankOf(r));
+                DrawFeed(r, y0);
                 HoseLay lay = EnsureLay(r);
                 if (lay == null) continue;
                 PoseInfo pi = Info(r);
@@ -236,7 +237,6 @@ namespace RimMandrake.MessyConduit.Hose
                 if (fm != null) Graphics.DrawMesh(fm, Matrix4x4.identity, HoseMaterials.Flat(1f - e), 0);
                 if (pm != null) Graphics.DrawMesh(pm, Matrix4x4.identity, HoseMaterials.Plump(e, tint), 0);
                 DrawEnds(r, lay, pts, vis, y + 0.001f);
-                DrawDeployedReel(r);
             }
             // a transitioning hose's meshes live one frame
             for (int k = 0; k < oldFrame.Count; k++) if (oldFrame[k] != null) UnityEngine.Object.Destroy(oldFrame[k]);
@@ -331,24 +331,37 @@ namespace RimMandrake.MessyConduit.Hose
             }
         }
 
-        public int lastWrapDraws, lastDeployedReelDraws;
+        public int lastWrapDraws, lastFeedDraws;
 
-        /// <summary>Owner review 2026-10-04 B26: a reel with its hose OUT shows a deployed-reel graphic (the hose visibly
-        /// running INTO the reel) over the stored one. Until that art exists (Hose/Reel_Deployed) the stored art stands in
-        /// and nothing extra is drawn; ReelGraphic(r) names which one shows (state read).</summary>
-        private void DrawDeployedReel(CompHoseReel r)
+        /// <summary>Owner review round 2 (2026-10-04, station 16: "the crappy hose reel disconnected from the pipe"): a reel
+        /// beside a pipe or tank (HosePorts / HosePortRule) shows a short flat feed hose from under the reel to the port,
+        /// with a brass coupling on the shared edge. Drawn in the hose band, below buildings, so under a tank it vanishes
+        /// beneath the sprite instead of stopping at its outline; on a pipe it ends on the pipe's centreline.</summary>
+        private void DrawFeed(CompHoseReel r, float y)
         {
-            if (HoseMaterials.ReelDeployed == null || !r.laid) return;
-            Thing t = r.parent;
-            Vector2 ds = t.def.graphicData?.drawSize ?? Vector2.one;
-            Vector3 pos = t.DrawPos;
-            pos.y = AltitudeLayer.BuildingOnTop.AltitudeFor();
-            Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(ds.x, 1f, ds.y)), HoseMaterials.ReelDeployed, 0);
-            lastDeployedReelDraws++;
+            if (r.Port() == null) return;
+            IntVec3 p = r.parent.Position;
+            HosePortRule.Feed(new Cell(p.x, p.z), r.portSide, out V2 from, out V2 to, out V2 coupling);
+            float vis = (float)HoseMath.VisibleWidth(0, HoseSettings.plumpAmount);
+            Material m = HoseMaterials.Flat(1f);
+            if (m == null) return;
+            V2 d = (to - from).Norm();
+            Mesh feed = Ribbon(new List<V2> { from, (from + to) * 0.5, to }, (float)HoseMath.MeshWidthFlat(vis), y - 0.0008f, 0.37);
+            frameMeshes.Add(feed);
+            Graphics.DrawMesh(feed, Matrix4x4.identity, m, 0);
+            if (HoseMaterials.CouplingBare != null)
+                Piece(HoseMaterials.CouplingBare, coupling, d, (float)HoseMath.FittingSize(vis, PieceBand, CouplingMax), y - 0.0006f);
+            lastFeedDraws++;
         }
 
-        public static string ReelGraphic(CompHoseReel r) =>
-            !r.laid ? "stored" : HoseMaterials.ReelDeployed != null ? "deployed" : "stored (stand-in: Reel_Deployed art not made yet)";
+        /// <summary>Which reel art prints (B26, round 2): Graphic_HoseReel swaps stored/deployed on the map mesh (state read).</summary>
+        public static string ReelGraphic(CompHoseReel r)
+        {
+            Graphic g = r.parent.Graphic;
+            if (!(g is Graphic_HoseReel gr)) return "stored (graphic class is " + (g?.GetType().Name ?? "null") + ", not Graphic_HoseReel)";
+            if (!r.laid) return "stored";
+            return gr.HasDeployed && gr.MatAt(Rot4.North, r.parent) != gr.MatSingle ? "deployed" : "stored (stand-in: Reel_Deployed art missing)";
+        }
 
         /// <summary>A fitting whose working end is at <paramref name="end"/> pointing along <paramref name="d"/>: its centre
         /// sits <paramref name="centreOff"/> sizes from the end, its brass starts <paramref name="brassFrom"/> sizes from the
@@ -422,7 +435,7 @@ namespace RimMandrake.MessyConduit.Hose
     {
         private const string Dir = "RimMandrake/MessyConduit/Hose/";
         private static readonly Texture2D flatTex, plumpTex, shadowTex;
-        public static readonly Material Binding, Mouth, CouplingBare, NozzleBare, EndCapBare, ReelDeployed;
+        public static readonly Material Binding, Mouth, CouplingBare, NozzleBare, EndCapBare;
         private static readonly Dictionary<long, Material> pool = new Dictionary<long, Material>();
         public static readonly int Queue;
 
@@ -433,8 +446,6 @@ namespace RimMandrake.MessyConduit.Hose
             shadowTex = Tiled("Strand_Shadow");
             Queue = CordMaterials.StrandQueue + 3;
             Binding = Piece("Binding");
-            Texture2D rd = ContentFinder<Texture2D>.Get(Dir + "Reel_Deployed", reportFailure: false);
-            ReelDeployed = rd == null ? null : MaterialPool.MatFrom(new MaterialRequest(rd, ShaderDatabase.Transparent));
             CouplingBare = Piece("Coupling_Bare");
             NozzleBare = Piece("Nozzle_Bare");
             EndCapBare = Piece("EndCap_Bare");
