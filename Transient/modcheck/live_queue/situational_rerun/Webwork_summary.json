@@ -32,14 +32,14 @@
           "defName": "RM_WebworkNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_6a3b8f287a1a42a0842e4cfc3ab596bf",
+         "OperationId": "op_b83fd45ec3ed4430ae286b461a0ad5e3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:38:36.9126413+00:00",
-         "CompletedAtUtc": "2026-10-04T01:38:36.9613847+00:00",
+         "StartedAtUtc": "2026-10-04T03:50:31.7487839+00:00",
+         "CompletedAtUtc": "2026-10-04T03:50:31.7970232+00:00",
          "DurationMs": 48,
          "Result": null,
          "HasResult": true,
@@ -558,14 +558,14 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_82b4aabf1d4848f0b4f106c35ce4c020",
+         "OperationId": "op_51befcf6d5d74a08af336c4cce026821",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:38:37.0137787+00:00",
-         "CompletedAtUtc": "2026-10-04T01:38:37.0629157+00:00",
+         "StartedAtUtc": "2026-10-04T03:50:31.8473506+00:00",
+         "CompletedAtUtc": "2026-10-04T03:50:31.896749+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -698,14 +698,14 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_5ebb39795b1c42f599d451ef7a34729b",
+         "OperationId": "op_1452cef53d2247fa8bcdb16c8a8a22d7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:38:37.1132268+00:00",
-         "CompletedAtUtc": "2026-10-04T01:38:37.1626695+00:00",
+         "StartedAtUtc": "2026-10-04T03:50:31.9479142+00:00",
+         "CompletedAtUtc": "2026-10-04T03:50:31.9969776+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -917,15 +917,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_0f7590b420f44816b340fe7b86770779",
+         "OperationId": "op_8d30bf6286be4e5f93beb1992920f756",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:20.863766+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:20.9038098+00:00",
-         "DurationMs": 40,
+         "StartedAtUtc": "2026-10-04T03:51:14.3546259+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:14.3971757+00:00",
+         "DurationMs": 42,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -946,44 +946,79 @@
      "name": "roster_rows_present",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: biome lacks roster rows the XML ships: ['RM_Ollathrix', 'RM_Quarrok', 'RM_Vennick', 'RM_Skennet', 'RM_Cravvet', 'RM_Sivvern']",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
-       "call": "bridge_call jawa/get_defs",
+       "call": "bridge_call jawa/biome_probe",
        "result": {
         "success": true,
-        "message": "1 of 1 def(s) resolved",
-        "requested": 1,
-        "foundCount": 1,
+        "message": "1 biome(s) probed",
+        "biomesProbed": 1,
         "notFound": [],
-        "malformed": [],
-        "fieldsAsked": [
-         "wildAnimals"
-        ],
-        "defs": [
+        "searched": [],
+        "absentFromEveryProbedBiome": [],
+        "biomes": [
          {
-          "requested": "BiomeDef/RM_Webwork",
-          "found": true,
           "defName": "RM_Webwork",
-          "defType": "BiomeDef",
           "label": "the Webwork",
           "modName": "RimMandrake: Baroque Biomes",
-          "packageId": "mandrake.rm.biomes",
-          "fields": {
-           "wildAnimals": "(non-public field 'wildAnimals' on BiomeDef; type List`1 not serialised)"
-          }
+          "implemented": true,
+          "generatesNaturally": true,
+          "canBuildBase": true,
+          "canAutoChoose": true,
+          "isExtremeBiome": false,
+          "isWaterBiome": false,
+          "impassable": false,
+          "animalDensity": 1.0,
+          "plantDensity": 0.9,
+          "diseaseMtbDays": 35.0,
+          "forageability": 1.0,
+          "foragedFood": "RawBerries",
+          "settlementSelectionWeight": 1.0,
+          "wildAnimalCount": 6,
+          "wildPlantCount": 17,
+          "animalsListed": 6,
+          "plantsListed": 0,
+          "animals": [
+           {
+            "defName": "RM_Vennick",
+            "commonality": 0.6
+           },
+           {
+            "defName": "RM_Skennet",
+            "commonality": 0.4
+           },
+           {
+            "defName": "RM_Quarrok",
+            "commonality": 0.3
+           },
+           {
+            "defName": "RM_Cravvet",
+            "commonality": 0.25
+           },
+           {
+            "defName": "RM_Sivvern",
+            "commonality": 0.2
+           },
+           {
+            "defName": "RM_Ollathrix",
+            "commonality": 0.15
+           }
+          ],
+          "plants": null,
+          "findResults": null
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_0fb2bb8c34204e01beb80b41be382104",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "OperationId": "op_af3310cc332f4d249b29a28ba649ebb9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:20.9548364+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:21.0038727+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T03:51:14.4467637+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:14.5023308+00:00",
+         "DurationMs": 55,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1005,8 +1040,49 @@
      "toggle": "nestEnabled",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "detail": "UNMEASURED: get_defs did not serialise MapCommonBase.genSteps: {'success': True, 'message': '0 of 1 def(s) resolved; 1 not found', 'requested': 1, 'foundCount': 0, 'notFound': ['MapGeneratorDef/MapCommon",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "MapGeneratorDef/MapCommonBase"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "genSteps"
+        ],
+        "defs": [
+         {
+          "requested": "MapGeneratorDef/MapCommonBase",
+          "found": false,
+          "defType": "MapGeneratorDef",
+          "defName": "MapCommonBase"
+         }
+        ],
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_452c4425f7ef45b29da25fa43f64a5b5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:14.5799758+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:14.6287364+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -1194,14 +1270,14 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_52d76b00c4fe4408885ae61a917bc518",
+         "OperationId": "op_a051805661f142fc8f27deb1d01cc2e0",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:26.0276961+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:26.0775149+00:00",
+         "StartedAtUtc": "2026-10-04T03:51:19.6300438+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:19.6792862+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1536,15 +1612,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_6427c7a602544178be200bc7c4a17fd5",
+         "OperationId": "op_5c709789d89541b088b4ca37b4b87962",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:26.1267499+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:26.1754002+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T03:51:19.7296199+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:19.7791749+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1566,7 +1642,7 @@
      "toggle": null,
      "beyond_toggle": true,
      "verdict": "FAIL",
-     "detail": "ExpectationFailed: the egg carries a hatcher comp: ban 1 (inert cargo, it must never hatch)",
+     "detail": "ExpectationFailed: the egg tradeability is 'All', not Sellable",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
@@ -1615,14 +1691,14 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_b012b3740b4b40a09c4129747d1b41fe",
+         "OperationId": "op_b7257a74ee2143e4bc6c98862e8a7b1a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:26.2265419+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:26.2756593+00:00",
+         "StartedAtUtc": "2026-10-04T03:51:19.8297375+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:19.8790249+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1707,15 +1783,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_2f29e854669749a78d63c0ff4e2e4723",
+         "OperationId": "op_7a52aa5a9f4b451b85b8fd753d7d1512",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:31.2834112+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:31.3312341+00:00",
-         "DurationMs": 47,
+         "StartedAtUtc": "2026-10-04T03:51:24.8796245+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:24.9291775+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1765,15 +1841,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_447bc8b8ea9c434aad19aae87f55e22e",
+         "OperationId": "op_6550fc67d18a4c8cbecbfe49dc4dffb5",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:31.3821796+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:31.4305425+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T03:51:24.9797497+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:25.0297925+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1794,8 +1870,8 @@
      "name": "front_creep_extension_on_biome",
      "toggle": "frontCreepEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: RM_Webwork carries no RM_FrontCreepExtension with the toggle on: [{'frontThingDefNames': ['RM_Webwork_Anchor', 'RM_Webwork_Web', 'RM_Webwork_Gutter'], 'advanceIntervalTicks': 60000, 'maxBandDepth': 10, 'spawnDensity': 0.15}, {'heatKind': 'overhead', 'heatOffsetC': 10.0, 'maxHeatOffsetC': 70.0, 'bodySizeExponent': 0.5, 'minBodySizeFactor': 0.25, 'maxBodySizeFactor': 2.5, 'sunPathCostPerCell': 20.0, 'substellarLatitude': 0.0, 'substellarLongitude': 0.0, 'minElevationDegrees': 5.0, 'maxElevationDegrees': 60.0, 'overheadAboveElevationDegrees': 55.0, 'heatScalesWithElevation': True, 'minScaledHeatOffsetC': 4.0, 'sandGlareExposureFloor': 0.0, 'glareBlindHediff': None, 'glareBlindExposureMin': 0.6, 'glareBlindSeverityPerDay': 4.0, 'mirageCondition': None, 'mirageMinElevationDegrees': 45.0, 'mirageMentalState': None, 'mirageHeatstrokeMin': 0.2, 'mirageBreakMtbDays': 1.5, 'mirageFullSunExposureMin': 0.6, 'shadeExposureMax': 0.35, 'minPatchCells': 2, 'dashHeatstrokeBudget': 0.008, 'minDashCells': 3.0, 'maxDashCells': 24.0, 'hopChance': 0.35, 'restTicks': {'min': 600, 'max': 1500}, 'rimPauseTicks': {'min': 45, 'max': 120}, 'ringHeatstrokeBudget': 0.035, 'ringMaxCells': 60.0}]",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
@@ -1876,15 +1952,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_45ec979b9c424d3c80577732b94c0395",
+         "OperationId": "op_7b1d4e18b17b4540ac231903c83a2069",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:31.4816083+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:31.5308949+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T03:51:25.0799473+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:25.1288655+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1905,9 +1981,169 @@
      "name": "structures_resolve",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "killedLeavings"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Webwork_Anchor",
+          "found": true,
+          "defName": "RM_Webwork_Anchor",
+          "defType": "ThingDef",
+          "label": "web anchor line",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "killedLeavings": [
+            {
+             "thingDef": "Hyperweave",
+             "count": 3,
+             "color": null,
+             "chance": null,
+             "stuff": null,
+             "quality": "Normal"
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_c8e8ea8e77274e9dbc6bc2784ba66cd5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:25.1796071+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:25.2289742+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "killedLeavings"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Webwork_Web",
+          "found": true,
+          "defName": "RM_Webwork_Web",
+          "defType": "ThingDef",
+          "label": "sheet web",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "killedLeavings": [
+            {
+             "thingDef": "Hyperweave",
+             "count": 2,
+             "color": null,
+             "chance": null,
+             "stuff": null,
+             "quality": "Normal"
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_e53abd95008e419997e8afd03f669152",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:25.2800518+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:25.3292175+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "killedLeavings"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_Webwork_Gutter",
+          "found": true,
+          "defName": "RM_Webwork_Gutter",
+          "defType": "ThingDef",
+          "label": "silk irrigation gutter",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "killedLeavings": [
+            {
+             "thingDef": "Hyperweave",
+             "count": 5,
+             "color": null,
+             "chance": null,
+             "stuff": null,
+             "quality": "Normal"
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_1e7915405bbe4eefa81cc4423fb1063d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:25.3795303+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:25.4290825+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -1924,7 +2160,7 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -1968,15 +2204,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_0d743353b6ed452eab239f7786351cb1",
+         "OperationId": "op_3f22d553defa47cc8f815d8666729d88",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:36.5488799+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:36.5989414+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T03:51:31.079893+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:31.1289794+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2015,12 +2251,61 @@
    "name": "map_mechanics",
    "components": [
     {
-     "name": "nest_placed_at_mapgen",
+     "name": "nest_placed_by_the_genstep",
      "toggle": "nestEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNest(System.String)",
+        "result": "NEST biomeGateRefuses n/a | placed 2 | walls 0->1 | clutches 0->2",
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_0d5e08d8d9c8457d92813218633ac4cf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:36.7794403+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:36.846768+00:00",
+         "DurationMs": 67,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNest(System.String)",
+        "result": "NEST biomeGateRefuses n/a | placed -1 | walls 1->1 | clutches 2->2",
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_1f1138da121c4eb0abbed4d659375bd3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:36.8801348+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:36.9284825+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -2030,75 +2315,38 @@
     {
      "name": "clutch_relays_every_20_to_30_days",
      "toggle": "eggRelayIntervalMultiplier",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "emergent_spawn_on_destroy",
-     "toggle": "emergentSpawnEnabled",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "emergent_spawn_chance_scales",
-     "toggle": "emergentSpawnChanceMultiplier",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "webwork_competes_for_tiles",
-     "toggle": "generateOnWorldgen",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "sun_scald_in_open_sun",
-     "toggle": null,
      "beyond_toggle": true,
      "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "loom_spit_fires",
-     "toggle": null,
-     "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: one nest wall and 2-3 clutches exist only on a map GENERATED as RM_Webwork with the toggle on, none with it off; the bridge cannot generate a map",
-     "evidence": [],
+     "detail": "UNMEASURED: ProofRelay gave no answer: ''",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofRelay with 2 params.",
+        "details": {
+         "available": [
+          "System.String ProofRelay(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_3bbe45d0d7a24eedba5f954e26e9dcc2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:51:36.9795445+00:00",
+         "CompletedAtUtc": "2026-10-04T03:51:37.0285924+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -2126,9 +2374,7 @@
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x0000019A379673F0>",
-  "<suite.Component object at 0x0000019A3791B950>",
-  "<suite.Component object at 0x0000019A378AF280>"
+  "<suite.Component object at 0x000001404CB1A8D0>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Webwork.md",
@@ -2161,7 +2407,7 @@
      "verified": true
     },
     "restore_colonists": {
-     "acted": 11,
+     "acted": 9,
      "verified": true,
      "residue": []
     },
@@ -2169,6 +2415,12 @@
      "acted": 9,
      "verified": true
     }
+   },
+   "retile": {
+    "tile": 16419,
+    "biome": "ZBiome_Grasslands",
+    "temperature": 15.5066452,
+    "applied": "RM_Webwork"
    }
   },
   "after_problems": []

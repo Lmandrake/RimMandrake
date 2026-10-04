@@ -32,14 +32,14 @@
           "defName": "RM_NightsideIceNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 4038,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_e9a36f33863d4ce8a0f93557bb5a6e14",
+         "OperationId": "op_626876483b6149e8b0d1a9bc5fc3b2f2",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:28:30.5644416+00:00",
-         "CompletedAtUtc": "2026-10-04T01:28:30.6139855+00:00",
+         "StartedAtUtc": "2026-10-04T04:09:51.2020868+00:00",
+         "CompletedAtUtc": "2026-10-04T04:09:51.2517942+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -174,15 +174,15 @@
           }
          }
         ],
-        "ticksGame": 4038,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_53036b9c9a9e4f94ad8843a5fa2eae86",
+         "OperationId": "op_3067f9abcc5e466cb2a27a7a4714a9fd",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:28:30.6650287+00:00",
-         "CompletedAtUtc": "2026-10-04T01:28:30.715318+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T04:09:51.30251+00:00",
+         "CompletedAtUtc": "2026-10-04T04:09:51.3510891+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -205,7 +205,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -250,8 +250,8 @@
      "name": "breachFirstCountdownHours_round_trips",
      "toggle": "breachFirstCountdownHours",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: breachFirstCountdownHours: set failed",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -263,8 +263,8 @@
      "name": "breachFrequencyScale_round_trips",
      "toggle": "breachFrequencyScale",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -276,8 +276,8 @@
      "name": "breachWarnings_round_trips",
      "toggle": "breachWarnings",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -289,8 +289,8 @@
      "name": "heatDialAlert_round_trips",
      "toggle": "heatDialAlert",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -302,8 +302,8 @@
      "name": "heatDialAlertThreshold_round_trips",
      "toggle": "heatDialAlertThreshold",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -315,8 +315,8 @@
      "name": "heatDialEnabled_round_trips",
      "toggle": "heatDialEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -328,8 +328,8 @@
      "name": "heatDialScale_round_trips",
      "toggle": "heatDialScale",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -341,8 +341,8 @@
      "name": "masterEnabled_round_trips",
      "toggle": "masterEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -354,8 +354,8 @@
      "name": "shivvenHeatSeek_round_trips",
      "toggle": "shivvenHeatSeek",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -367,8 +367,8 @@
      "name": "shivvenIceOnly_round_trips",
      "toggle": "shivvenIceOnly",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -380,8 +380,8 @@
      "name": "shivvenSenseRange_round_trips",
      "toggle": "shivvenSenseRange",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -393,8 +393,8 @@
      "name": "shivvenStrikeHeaters_round_trips",
      "toggle": "shivvenStrikeHeaters",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -408,11 +408,11 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -427,8 +427,8 @@
      "name": "flags_and_worker_match_the_sheet",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: workerClass live '(no such field)' != BiomeWorker_IceSheet",
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: get_defs cannot read BiomeDef.workerClass (Type-valued fields read '(no such field)'); the density and flag checks above passed",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
@@ -468,14 +468,14 @@
           }
          }
         ],
-        "ticksGame": 4038,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_54fbb360523f4ef2b6dbf191838e99a1",
+         "OperationId": "op_ed384ba2814743b8958c00f543b4963f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:28:46.9961361+00:00",
-         "CompletedAtUtc": "2026-10-04T01:28:47.0367444+00:00",
+         "StartedAtUtc": "2026-10-04T04:10:54.0279322+00:00",
+         "CompletedAtUtc": "2026-10-04T04:10:54.0680617+00:00",
          "DurationMs": 40,
          "Result": null,
          "HasResult": true,
@@ -492,19 +492,6 @@
      "checkpoints": [],
      "shows": [],
      "surprises": null
-    },
-    {
-     "name": "only_clear_weather_has_weight",
-     "toggle": null,
-     "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
     }
    ],
    "situational": {
@@ -512,7 +499,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -601,15 +588,15 @@
           ]
          }
         ],
-        "ticksGame": 4038,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_a57ac1817ed840f29d07f71c081631c5",
+         "OperationId": "op_11510b2bbbbd4d6cb7e4be15ae8fd762",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:28:52.0461048+00:00",
-         "CompletedAtUtc": "2026-10-04T01:28:52.0874366+00:00",
-         "DurationMs": 41,
+         "StartedAtUtc": "2026-10-04T04:11:00.5278618+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:00.5679439+00:00",
+         "DurationMs": 40,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -658,7 +645,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -685,15 +672,15 @@
        "result": {
         "success": true,
         "method": "System.String ProofDial(Verse.Map)",
-        "result": "DIAL 0.00 raw 0.0 heaters 0.0 fires 0.0 power 0.0 rooms 0.0 applies=False biome=Desert",
-        "ticksGame": 4038,
+        "result": "DIAL 0.00 raw 0.0 heaters 0.0 fires 0.0 power 0.0 rooms 0.0 applies=True biome=RM_NightsideIce",
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_2b2867fadfca4edaba122448c3b12c85",
+         "OperationId": "op_78b45d27617c43b4b20a351c124d95a8",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:28:57.1040646+00:00",
-         "CompletedAtUtc": "2026-10-04T01:28:57.1536127+00:00",
+         "StartedAtUtc": "2026-10-04T04:11:06.9671823+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:07.0167645+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -724,15 +711,15 @@
         "success": true,
         "method": "System.String ProofFireRaisesDial(Verse.Map)",
         "result": "BEFORE raw 0.0 AFTER raw 20.0 rose=True",
-        "ticksGame": 4038,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_8c28bb885f7e46f9ad1fa5e5c00a7f3e",
+         "OperationId": "op_931cb320fb064dac8779bab2a0c5eb34",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:28:57.2044977+00:00",
-         "CompletedAtUtc": "2026-10-04T01:28:57.253791+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T04:11:07.0668235+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:07.1251014+00:00",
+         "DurationMs": 58,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -755,7 +742,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -783,15 +770,15 @@
         "success": true,
         "method": "System.String ProofSeek(Verse.Map)",
         "result": "REFUSED: no working player heater on this map (build and power one first)",
-        "ticksGame": 4038,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_0722cbf6a05e4a9a9c26731e8f530d03",
+         "OperationId": "op_3984b7e38d6448468dd91da25c2560b9",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:29:02.8877686+00:00",
-         "CompletedAtUtc": "2026-10-04T01:29:02.9367063+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T04:11:14.1674542+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:14.216515+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -827,7 +814,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -846,24 +833,24 @@
      "name": "first_crack_on_open_ice_taught",
      "toggle": "breachEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: first crack not on open ice or not taught: REFUSED: no open ice 3-12 cells from the base",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/static_call",
        "result": {
         "success": true,
         "method": "System.String ProofOpen(Verse.Map)",
-        "result": "REFUSED: no open ice 3-12 cells from the base",
-        "ticksGame": 4038,
+        "result": "OPEN cell=(60, 0, 200) terrain=Ice roofed=False floor=False taught=True hours=24 shivven=6",
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_f8ad4b8ae84149b7a46472ffc6f6dd7c",
+         "OperationId": "op_ea55f979806a40c8ae63664307e2ecdf",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:29:08.0666875+00:00",
-         "CompletedAtUtc": "2026-10-04T01:29:08.116438+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T04:11:20.6489764+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:20.9308295+00:00",
+         "DurationMs": 281,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -884,9 +871,34 @@
      "name": "crack_releases_shivven",
      "toggle": "breachEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofRelease(Verse.Map)",
+        "result": "RELEASED 6 crackGone=True",
+        "ticksGame": 8427,
+        "operation": {
+         "OperationId": "op_08ad082f48f246139593fa61e56642c2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T04:11:20.978962+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:21.041298+00:00",
+         "DurationMs": 62,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -897,9 +909,34 @@
      "name": "destroyed_crack_stops_breach",
      "toggle": "breachEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: destroying the crack did not stop it, or a later crack was taught: STOPPED shivvenBefore=6 after=6 secondTaught=True",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDestroyStops(Verse.Map)",
+        "result": "STOPPED shivvenBefore=6 after=6 secondTaught=True",
+        "ticksGame": 8427,
+        "operation": {
+         "OperationId": "op_6c260ec2b00e4874aa5109873be75d23",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T04:11:21.0761892+00:00",
+         "CompletedAtUtc": "2026-10-04T04:11:21.126252+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -912,7 +949,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -946,7 +983,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -961,11 +998,9 @@
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x0000027081B5B3E0>",
-  "<suite.Component object at 0x0000027081B5AFC0>",
-  "<suite.Component object at 0x0000027081B5AF10>",
-  "<suite.Component object at 0x0000027081B5AC50>",
-  "<suite.Component object at 0x0000027081B5ADB0>"
+  "<suite.Component object at 0x000001404CBC7490>",
+  "<suite.Component object at 0x000001404CBC76A0>",
+  "<suite.Component object at 0x000001404CCBC1B0>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\NightsideIce.md",
@@ -991,24 +1026,32 @@
      "residue": []
     },
     "incident_queue_cleared": 0,
-    "corpses_destroyed": 6,
+    "corpses_destroyed": 10,
     "corpses_left": 0,
     "extinguish": {
      "acted": 0,
      "verified": true
     },
     "restore_colonists": {
-     "acted": 9,
+     "acted": 21,
      "verified": true,
      "residue": []
     },
     "restore_needs": {
-     "acted": 9,
+     "acted": 21,
      "verified": true
     }
+   },
+   "retile": {
+    "tile": 16419,
+    "biome": "ZBiome_Grasslands",
+    "temperature": 15.5066452,
+    "applied": "RM_NightsideIce"
    }
   },
-  "after_problems": []
+  "after_problems": [
+   "corpses present: 6"
+  ]
  },
  "visual": [],
  "visual_all_green": true,

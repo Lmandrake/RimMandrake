@@ -14,1048 +14,13 @@
        "call": "bridge_call jawa/drain_log",
        "result": {
         "success": true,
-        "message": "250 message(s) of 1000 in the buffer.",
+        "message": "24 message(s) of 1000 in the buffer.",
         "totalInBuffer": 1000,
         "messages": [
          {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Glowtail",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Maligoat",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Screecher",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_TaintedTurtle",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_TripleSnapper",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Varmot",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_WasteHound",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BiomesIslands_Coconuts",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_CryingWolfBerries",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_PoxSorghumHarvested",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_ClawhandCitron",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_RegalMilk",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BiomesIslands_EggFlamingoUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggLandOctopusUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMaxolotlUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggBiliousVarogUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggBloodletterPetrelUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggCarrionVultureUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggFamineLocustUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggGastroToadUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggGlowtailUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegakrillUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegaroachUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMucklurkerCatfishUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggNorpheaUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMutatingTumorfishUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggSacapillarUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggScreecherUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggSludgeCrawlerUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_SmogMothEggUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggSwarmcallerUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggTaintedTurtleUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggTripleSnapperUnfertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BiomesIslands_EggFlamingoFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggLandOctopusFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMaxolotlFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggBiliousVarogFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggBloodletterPetrelFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggCarrionVultureFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggFamineLocustFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggGastroToadFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggGlowtailFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegakrillFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegaroachFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMucklurkerCatfishFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggNorpheaFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggMutatingTumorfishFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggPustuleHornetQueenFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggSacapillarFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggScreecherFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggSludgeCrawlerFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_SmogMothEggFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggSwarmcallerFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggTaintedTurtleFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_EggTripleSnapperFertilized",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_BufoBile",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_MutapoxVial",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_ToxClear",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named BMT_HagbloomNectar",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BiomesIslands_Flamingo",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_LandOctopus",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Maxolotl",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_HotfootRat",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_KangarooRat",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_Lemming",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_Mouse",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_MousePoison",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_MO_AbominationRace",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BarbedPangolin",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BiliousVarog",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BloodletterPetrel",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_CarrionVulture",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_FenridStoat",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Polluwog",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_GastroToad",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Glowtail",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Maligoat",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Creature_Mantrap",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MegaphoridLarva",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MucklurkerCatfish",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishSpawn",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishFry",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishAdult",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Screecher",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SludgeCrawler",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_TaintedTurtle",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_ToxSheep",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_TripleSnapper",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Varmot",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_WasteHound",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_VQE_IceCrawler",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_VQE_Megamidge",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BunkerBug",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_FamineLocust",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Megakrill",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Megaphorid",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Megaroach",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutagenicNorphea",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornet",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornetSpawned",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_ColonyPustuleHornet",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornetQueen",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_ColonyPustuleHornetQueen",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Sacapillar",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SmogMothLarvae",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SmogPupa",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SmogMoth",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Swarmcaller",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Error during patching RimWorld.PregnancyUtility :: Verse.AcceptanceReport CanEverProduceChild(Verse.Pawn, Verse.Pawn) with: pre  | post: Void CanEverProduceChildPostfix(Verse.Pawn, Verse.Pawn, Verse.AcceptanceReport ByRef) | trans: System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction] CanEverProduceChildTranspiler(System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction])\nSystem.Exception: Wrong null argument: brtrue NULL\r\n[Ref A3C4372C]\n  at HarmonyLib.MethodCreatorTools+<>c__DisplayClass12_0.<EmitCodes>b__0 (HarmonyLib.CodeInstruction codeInstruction) [0x00155] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.CollectionExtensions.Do[T] (System.Collections.Generic.IEnumerable`1[T] sequence, System.Action`1[T] action) [0x00014] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.MethodCreatorTools.EmitCodes (HarmonyLib.MethodCreator _, HarmonyLib.Emitter emitter, System.Collections.Generic.List`1[T] codeInstructions) [0x0000d] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.MethodCreator.CreateReplacement () [0x008ca] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchFunctions.UpdateWrapper (System.Reflection.MethodBase original, HarmonyLib.PatchInfo patchInfo) [0x0007c] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchProcessor.Patch () [0x0013c] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.Harmony.Patch (System.Reflection.MethodBase original, HarmonyLib.HarmonyMethod prefix, HarmonyLib.HarmonyMethod postfix, HarmonyLib.HarmonyMethod transpiler, HarmonyLib.HarmonyMethod finalizer) [0x0002a] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at AlienRace.AlienHarmony.Patch (System.Reflection.MethodBase original, HarmonyLib.HarmonyMethod prefix, HarmonyLib.HarmonyMethod postfix, HarmonyLib.HarmonyMethod transpiler, HarmonyLib.HarmonyMethod finalizer) [0x000ab] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AlienRaces\\Source\\AlienRace\\AlienRace\\AlienHarmony.cs:42 ",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Error in static constructor of JumppackForMeleeAI.JumppackForMeleeAI: System.TypeInitializationException: The type initializer for 'JumppackForMeleeAI.JumppackForMeleeAI' threw an exception. ---> HarmonyLib.HarmonyException: Patching exception in method virtual Verse.AI.Job RimWorld.JobGiver_AIFightEnemy::TryGiveJob(Verse.Pawn pawn) ---> System.InvalidProgramException: Invalid IL code in (wrapper dynamic-method) MonoMod.Utils.DynamicMethodDefinition:RimWorld.JobGiver_AIFightEnemy.TryGiveJob_Patch4 (RimWorld.JobGiver_AIFightEnemy,Verse.Pawn): IL_01f0: br        IL_0356\n\n\r\n[Ref 1548B61A]\n  at HarmonyLib.PatchFunctions.UpdateWrapper (System.Reflection.MethodBase original, HarmonyLib.PatchInfo patchInfo) [0x000c2] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchClassProcessor.ProcessPatchJob (HarmonyLib.PatchJobs`1+Job[T] job) [0x000f8] in <024a0e6ec8c2437ead047b6279389c23>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref B334752]\n  at HarmonyLib.PatchClassProcessor.ReportException (System.Exception exception, System.Reflection.MethodBase original) [0x0013c] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchClassProcessor.Patch () [0x00096] in <024a0e6ec8c2437ead047b6279389c23>:0 \nJumppackForMeleeAI.JumppackForMeleeAI..cctor()\r\n   --- End of inner exception stack trace ---\r\n[Ref 8F3E133E]\n(wrapper managed-to-native) System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(intptr)\n  at System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor (System.RuntimeTypeHandle type) [0x0004e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n    - PREFIX rimworld.aRandomKiwi.RimTheme: Boolean aRandomKiwi.RimThemes.RuntimeHelpers_RunClassConstructor_Patch:Prefix(RuntimeTypeHandle type)\n  at RimMandrake.LoadTracer.LoadTracerPatches.CallAllPrefix () [0x000f4] in <20a5b707b8db4a4eb995edbc83a1554a>:0 ",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 AbilityDef: RimWorld.AbilityDef=540->AbilityDef.json, VEF.Abilities.AbilityDef=17->VEF.Abilities.AbilityDef.json, AbilityUser.AbilityDef=0->AbilityUser.AbilityDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 CustomMapDataDef: AncientMarket_Libraray.CustomMapDataDef=42->CustomMapDataDef.json, QuestEditor_Library.CustomMapDataDef=12->QuestEditor_Library.CustomMapDataDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 DefExtensions: DubRoss.DefExtensions=1->DefExtensions.json, DubsBadHygiene.DefExtensions=1->DubsBadHygiene.DefExtensions.json, Rimefeller.DefExtensions=1->Rimefeller.DefExtensions.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 DialogTreeDef: AncientMarket_Libraray.DialogTreeDef=1->DialogTreeDef.json, QuestEditor_Library.DialogTreeDef=0->QuestEditor_Library.DialogTreeDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 DubsModOptions: DubsBadHygiene.DubsModOptions=15->DubsModOptions.json, Rimefeller.DubsModOptions=4->Rimefeller.DubsModOptions.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 ExpansionDef: RimWorld.ExpansionDef=6->ExpansionDef.json, CaravanAdventures.Expansions.ExpansionDef=1->CaravanAdventures.Expansions.ExpansionDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 FaceTypeDef: FacialAnimation.FaceTypeDef=150->FaceTypeDef.json, FaceAddon.FaceTypeDef=0->FaceAddon.FaceTypeDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 ModDef: VEF.OptionalFeatures.ModDef=6->ModDef.json, MVCF.ModDef=5->MVCF.ModDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 QuestGiverDef: RimQuest.QuestGiverDef=5->QuestGiverDef.json, VEF.Storyteller.QuestGiverDef=1->VEF.Storyteller.QuestGiverDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 StructureLayoutDef: KCSG.StructureLayoutDef=272->StructureLayoutDef.json, Fortified.Structures.StructureLayoutDef=0->Fortified.Structures.StructureLayoutDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 StructureSetDef: VanillaQuestsExpandedAncients.StructureSetDef=14->StructureSetDef.json, VEF.Storyteller.StructureSetDef=0->VEF.Storyteller.StructureSetDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 SymbolDef: KCSG.SymbolDef=8999->SymbolDef.json, Fortified.Structures.SymbolDef=0->Fortified.Structures.SymbolDef.json",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "[RimMandrake.TitanicCreatures] No RM_TitanicTierDef found - Defs/TitanicTierDefs/RM_TitanicTierDef.xml is missing or failed to load. Falling back to hardcoded defaults (4/8/20); fix the XML.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[Map Preview v1.12.26.1] Detected potential conflict: The mod \"Custom Quest Framework\" (QF_Patch) adds a destructive patch that will likely override or break some functionality of Map Preview.\nPatch method: static System.Boolean QuestEditor_Library.Patch_MapGenerate::prefix(Verse.IntVec3& mapSize, RimWorld.Planet.MapParent parent, Verse.MapGeneratorDef mapGenerator)\nTarget method: static Verse.Map Verse.MapGenerator::GenerateMap(Verse.IntVec3 mapSize, RimWorld.Planet.MapParent parent, Verse.MapGeneratorDef mapGenerator, System.Collections.Generic.IEnumerable`1<Verse.GenStepWithParams> extraGenStepDefs, System.Action`1<Verse.Map> extraInitBeforeContentGen, System.Boolean isPocketMap, System.Boolean stepDebugger)",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[Geological Landforms v1.7.13.1] Detected potential conflict: The mod \"GravTide\" (gravtide.mod) adds a destructive patch that will likely override or break some functionality of Geological Landforms.\nPatch method: static System.Boolean GravTide.BuildFor_Patch::Prefix(Verse.MapPlantGrowthRateCalculator __instance, Verse.Map map)\nTarget method: System.Void Verse.MapPlantGrowthRateCalculator::BuildFor(Verse.Map map)",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[Geological Landforms v1.7.13.1] Detected potential conflict: The mod \"RimMandrake: Baroque Biomes\" (mandrake.rm.lanterndeeps) adds a destructive patch that will likely override or break some functionality of Geological Landforms.\nPatch method: static System.Boolean RimMandrake.LanternDeeps.Patch_MapPlantGrowthRateCalculator_BuildFor::Prefix(Verse.MapPlantGrowthRateCalculator __instance, Verse.Map map)\nTarget method: System.Void Verse.MapPlantGrowthRateCalculator::BuildFor(Verse.Map map)",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[Geological Landforms v1.7.13.1] Detected potential conflict: The mod \"GravTide\" (gravtide.mod) adds a destructive patch that will likely override or break some functionality of Geological Landforms.\nPatch method: static System.Boolean GravTide.WeatherEvent_LightningStrike_FireEvent_Patch::Prefix(Verse.Map ___map, Verse.IntVec3& ___strikeLoc)\nTarget method: virtual System.Void RimWorld.WeatherEvent_LightningStrike::FireEvent()",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type GrabUtility probably needs a StaticConstructorOnStartup attribute, because it has a field mpb of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type GrappleFlyer probably needs a StaticConstructorOnStartup attribute, because it has a field mpb of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Building_DuelSpot probably needs a StaticConstructorOnStartup attribute, because it has a field invisible of type Graphic. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type CompVehicleHover probably needs a StaticConstructorOnStartup attribute, because it has a field s_ThrusterFlameBlock of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type MarkerCache probably needs a StaticConstructorOnStartup attribute, because it has a field outlineGeneratorMaterial of type Material. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type OreHighlightRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field sharedStripeTexture of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type TransparentObject probably needs a StaticConstructorOnStartup attribute, because it has a field copyToDepthMaterial of type Material. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type QuestBookNodeCanvas probably needs a StaticConstructorOnStartup attribute, because it has a field nodeFrame of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type TransparentObject_Atmosphere probably needs a StaticConstructorOnStartup attribute, because it has a field AtmosphereLUT of type Shader. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Dialog_QuestBookStepInfo probably needs a StaticConstructorOnStartup attribute, because it has a field nodeFrame of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type TransparentObject_Cloud probably needs a StaticConstructorOnStartup attribute, because it has a field SkyBoxCloud of type Shader. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Patch_GravEngine_GetGizmos probably needs a StaticConstructorOnStartup attribute, because it has a field SaveTex of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Dialog_EditQuestBookStep probably needs a StaticConstructorOnStartup attribute, because it has a field nodeFrame of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type TransparentObject_Ring probably needs a StaticConstructorOnStartup attribute, because it has a field BasicRing of type Shader. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type PlaySettings_ToggleIcons_Patch probably needs a StaticConstructorOnStartup attribute, because it has a field Icon of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type DoExtraIconsTweak probably needs a StaticConstructorOnStartup attribute, because it has a field TechprintIcon_Missing of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Apparel_HumanSkinSuit probably needs a StaticConstructorOnStartup attribute, because it has a field skinBoltGraphic of type Graphic. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type BTD_DesignRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field vgeTileMaterial of type Material. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Patches_WorldLayer_MapMode_OnGUI_Invasions probably needs a StaticConstructorOnStartup attribute, because it has a field DraftIcon of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Dialog_WorkbenchImageBrowser probably needs a StaticConstructorOnStartup attribute, because it has a field checkerTexture of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type AnimationTextureLayerRuntime probably needs a StaticConstructorOnStartup attribute, because it has a field DrawBlock of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Patches_ExpandableWorldObjectsOnGUI probably needs a StaticConstructorOnStartup attribute, because it has a field DraftIcon of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type SandHammerThing probably needs a StaticConstructorOnStartup attribute, because it has a field bottomGraphic of type Graphic. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type BGRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field layers of type Texture2D[]. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Invasion probably needs a StaticConstructorOnStartup attribute, because it has a field AttackSettlementIcon of type Texture2D. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type VideoPlayerUtil probably needs a StaticConstructorOnStartup attribute, because it has a field go of type GameObject. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type AnimRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field DefaultCutout of type Material. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Type Dialog_AnimationDebugger probably needs a StaticConstructorOnStartup attribute, because it has a field mpb of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[makeitso.configurabletechprints] Patches on methods annotated as Obsolete were detected by HugsLib: RimWorld.TechprintUtility.TryGetTechprintDefToGenerate",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "RSW_Pawn_SandP_Death SubSound RSW_Pawn_SandP_Death_0 has no resolvedGrains.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "RSW_Pawn_SandP_Wounded SubSound RSW_Pawn_SandP_Wounded_0 has no resolvedGrains.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "RSW_Biomes_GiantSnail_Death SubSound RSW_Biomes_GiantSnail_Death_0 has no resolvedGrains.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "RSW_Biomes_GiantSnail_Wounded SubSound RSW_Biomes_GiantSnail_Wounded_0 has no resolvedGrains.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><value><RSW_Gizka>1.0</RSW_Gizka><RSW_Clodhopper>0.7</RSW_Clodhopper><RSW_Whisperbird>0.7</RSW_Whisperbird><RSW_Worrt>0.7</RSW_Worrt><RSW_Shiro>0.5</RSW_Shiro><RSW_ShiroTrap>0.5</RSW_ShiroTrap><RSW_Diggerpede>0.4</RSW_Diggerpede><RSW_Klorslug>0.4</RSW_Klorslug><RSW_Mott>0.4</RSW_Mott><RSW_Nuna>0.4</RSW_Nuna><RSW_Convor>0.3</RSW_Convor><RSW_Falumpaset>0.3</RSW_Falumpaset><RSW_Gelagrub>0.3</RSW_Gelagrub><RSW_Kinrath>0.3</RSW_Kinrath><RSW_Fambaa>0.25</RSW_Fambaa><RSW_PekoPeko>0.2</RSW_PekoPeko><RSW_Dalgo>0.18</RSW_Dalgo><RSW_Hawkbat>0.18</RSW_Hawkbat><RSW_Hssiss>0.18</RSW_Hssiss><RSW_Dragonsnake>0.12</RSW_Dragonsnake><RSW_Lylek>0.05</RSW_Lylek><RSW_Beldon>0.008</RSW_Beldon></value></match></Operation></operations>",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><value><AA_Needlepost MayRequire=\"sarg.alphaanimals\">0.3</AA_Needlepost><AA_BloodShrimp MayRequire=\"sarg.alphaanimals\">0.2</AA_BloodShrimp></value></match></Operation></operations>",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><value><VFEI2_Swarmling MayRequire=\"oskarpotocki.vfe.insectoid2\">0.4</VFEI2_Swarmling></value></match></Operation></operations>",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Common</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Common</xpath><value><RSW_MeeCatch>0.4</RSW_MeeCatch></value></match></Operation></operations>",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Uncommon</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Uncommon</xpath><value><RSW_FaaCatch>0.3</RSW_FaaCatch><RSW_LaaCatch>0.3</RSW_LaaCatch></value></match></Operation></operations>",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimHUD v1.17.5] Prisoner Realism Prisoner Realism is does not contain a version check.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> Potential patch conflicts (56):",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> \r\nVerse.PreRenderResults Verse.PawnRenderer::ParallelGetPreRenderResults(UnityEngine.Vector3 drawLoc, System.Nullable`1<Verse.Rot4> rotOverride, System.Boolean neverAimWeapon, System.Boolean disableCache)\r\nPrefixes:\r\n  [SmashPhil.VehicleFramework] DisableCachingPawnOverlays\r\n  [OskarPotocki.VEF] Prefix\r\n  [Font.Rimesis] Prefix\r\n  [RedMattis.BetterPrerequisites] Prefix\r\n  [rimworld.Nals.FacialAnimation] PrefixParallelGetPreRenderResults\r\n  [GiddyUp] Prefix\r\nTranspilers:\r\n  [net.pardeike.rimworld.lib.harmony] ParallelGetPreRenderResults_Transpiler\r\n  [rimworld.erdelf.alien_race.main] PostureTranspiler\r\nPostfixes:\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n\r\nstatic System.Void Verse.PawnRenderUtility::DrawEquipmentAiming(Verse.Thing eq, UnityEngine.Vector3 drawLoc, System.Single aimAngle)\r\nPrefixes:\r\n  [OskarPotocki.VEF] Prefix\r\n  [OskarPotocki.VEF] Prefix\r\n  [OskarPotocki.VEF] DrawEquipmentAimingPrefix\r\n  [VFEPirates.Mod] Prefix\r\n  [ChezhouLib.lib] Prefix\r\n  [Neronix17.TabulaRasa.RimWorld] Prefix\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [Lightsabers_ForceThe] DrawEquipmentAimingPreFix\r\n  [OskarPotocki.VEF] DrawDuplicate\r\n  [Mlie.BetterProjectileOrigin] Prefix\r\n  [rimworld.carnysenpai.enableoversizedweapons] Prefix_Drawloc\r\n  [jecstools.jecrell.comps.installedpart] DrawEquipmentAiming_PreFix\r\n  [jecstools.jecrell.comps.oversized] DrawEquipmentAimingPreFix\r\n  [XMB.AncientMall.MO] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [jecstools.jecrell.comps.activator] DrawEquipmentAimingPostFix\r\n  [jecstools.jecrell.comps.deflector] DrawEquipmentAimingPostFix\r\n\r\nSystem.Void Verse.PawnRenderer::RenderPawnAt(UnityEngine.Vector3 drawLoc, System.Nullable`1<Verse.Rot4> rotOverride, System.Boolean neverAimWeapon)\r\nPrefixes:\r\n  [net.pardeike.rimworld.mod.camera+] Prefix\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [vlvop.tormentmaster.expansion] Prefix\r\n  [Krkr.Rule56] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [Rimworld.Alite.EBSG.main] RenderPawnAtPostfix\r\n  [jecstools.chjees.shields] Patch_PawnRenderer_RenderPawnAt\r\n  [meathax.JobEffects] Postfix\r\n\r\nstatic System.Collections.Generic.List`1<Verse.FloatMenuOption> RimWorld.FloatMenuMakerMap::GetOptions(System.Collections.Generic.List`1<Verse.Pawn> selectedPawns, UnityEngine.Vector3 clickPos, RimWorld.FloatMenuContext& context)\r\nPrefixes:\r\n  [sensiblebedownership.1trickPwnyta] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [rimtek.patch] Postfix\r\n  [alt4s.visitsettlements] Postfix\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [RedMattis.BetterPrerequisites] Postfix\r\n  [rimtek.giveability] Postfix\r\n  [sensiblebedownership.1trickPwnyta] Postfix\r\n  [amoruch.RimWorldStealingMod] Postfix\r\n  [net.pardeike.rimworld.mods.achtung] Postfix\r\n\r\nstatic System.Void Verse.PawnGenerator::GenerateGearFor(Verse.Pawn pawn, Verse.PawnGenerationRequest request)\r\nPrefixes:\r\nTranspilers:\r\nPostfixes:\r\n  [Mlie.YayosCombat3] Postfix\r\n  [PeteTimesSix.SimpleSidearms] GenerateGearFor\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [jecstools.chjees.shields] Patch_PawnGenerator_GenerateGearFor\r\n  [rimworld.erdelf.alien_race.main] GenerateGearForPostfix\r\n\r\nstatic Verse.Pawn RimWorld.PawnUtility::PawnBlockingPathAt(Verse.IntVec3 c, Verse.Pawn forPawn, System.Boolean actAsIfHadCollideWithPawnsJob, System.Boolean collideOnlyWithStandingPawns, System.Boolean forPathFinder, System.Boolean useId)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [neku.largepawns] Postfix\r\n\r\nvirtual System.Boolean RimWorld.Verb_MeleeAttack::TryCastShot()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [Krkr.Rule56] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [PeteTimesSix.SimpleSidearms] TryCastShot\r\n  [mandrake.rm.warscar.totchak] Postfix\r\n  [mandrake.rm.warscar.chotrix] Postfix\r\n  [Krkr.Rule56] Postfix\r\n\r\nSystem.Boolean Verse.HediffSet::get_HasHead()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [rimworld.erdelf.alien_race.main] HasHeadPrefix\r\nTranspilers:\r\nPostfixes:\r\n\r\nSystem.Void Verse.PawnRenderer::DrawShadowInternal(UnityEngine.Vector3 drawLoc)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [gravtide.mod] Postfix\r\n\r\nSystem.Void Verse.PawnRenderTree::ParallelPreDraw(Verse.PawnDrawParms parms)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [astryl.sleepingbuddies] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [rimworld.Nals.FacialAnimation] PostfixParallelPreDraw\r\n\r\nSystem.Void RimWorld.Pawn_ApparelTracker::Notify_ApparelChanged()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [Fortified] Postfix\r\n  [costel.layeredapparel] Postfix_NotifyApparelChanged\r\n  [Krkr.Rule56] Postfix\r\n\r\nvirtual System.Void Verse.Pawn::DrawGUIOverlay()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [Krkr.Rule56] Prefix\r\nTranspilers:\r\nPostfixes:\r\n\r\nSystem.Void Verse.Pawn_DrawTracker::Notify_MeleeAttackOn(Verse.Thing Target)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [meathax.JobEffects] Prefix\r\nTranspilers:\r\nPostfixes:\r\n",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> Error generating texture report []: Failed to find texture path i.e. graphicData.texPath 'Things/Plant/RM_Slackwax/RM_Slackwax' (Verse.Graphic_StackCount) pass 0",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> Failed to get texture report for RM_SlackwaxTimber: Failed to find texture path i.e. graphicData.texPath 'Things/Plant/RM_Slackwax/RM_Slackwax' (Verse.Graphic_StackCount) pass 0",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.beliar 'Beliar Xenotype' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> van.beasts 'Dark Ages : Beasts and Monsters' has 2 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> det.keshig 'Det's Xenotypes - Keshig' has 3 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.highborn 'Highborn Xenotype' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.horrors 'Horrors (Continued)' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> sihv.rombonesport 'Rim of Madness - Bones Unofficial Fix' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.starwarsanimalcollection 'Star Wars Animal Collection (Continued)' has 13 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.swbestiary 'RimMandrake: SW \u2014 Bestiary' has 11 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> jellypowered.survivaltools 'Survival Tools Reborn' has 22 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> ludeon.rimworld 'Core' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> vanillaquestsexpanded.ancients 'Vanilla Quests Expanded - Ancients' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.dungeonpack 'Dungeon Pack (Continued)' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> lee.theforce.lightsaber 'Star Wars : The Force - Lightsaber' has 5 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.armoury 'Jawa Armoury Rebalance' has 40 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.biomes 'RimMandrake: Baroque Biomes' has 6 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.pyrinth 'RimMandrake: Pyrinth' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "<color=#66ffb5>[MeleeAnim]</color> det.epochspyrinth 'Epochs - Pyrinth' has 1 missing weapon tweak data.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=38 elapsedMs=978498",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1972 elapsedMs=980471",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=980472",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=980474",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=980475",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=980475",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=980476",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=980477",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=980481",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=980482",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=980483",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=980487",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=14 elapsedMs=980502",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=2004 elapsedMs=980503",
-          "repeats": 1
-         },
-         {
           "type": "Warning",
-          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=15 elapsedMs=980503",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
           "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not find player faction.",
-          "repeats": 6
          },
          {
           "type": "Warning",
@@ -1064,72 +29,27 @@
          },
          {
           "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_2287) A = Thing_Human85432 B = Thing_RM_LureStake85427 Giver = ThinkNode_QueuedJob [workGiverDef: null]",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 2
+         },
+         {
+          "type": "Warning",
           "text": "Tried to calculate chance for mother with gender \"Male\".",
-          "repeats": 6
-         },
-         {
-          "type": "Warning",
-          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12122,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Tried to calculate chance for mother with gender \"Male\".",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Failed to find Verse.ResearchProjectDef named RimFridge_PowerFactorSetting. There are 413 defs of this type loaded.\n\nPossible Matches:\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ResearchProjectDefs\\ResearchProjects.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\Fridge_Building.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\WallFridge_Building.xml]\n",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1C964610]\n  at RimFridge.RimFridgeComponent.StartedOrLoadedGame () [0x0001a] in <948532676ba340059cc9093181148128>:0 \n    - TRANSPILER PerformanceOptimizer.Main: IEnumerable`1 PerformanceOptimizer.Optimization_FasterGetCompReplacement:Transpiler(IEnumerable`1 instructions, MethodBase method)\n  at RimFridge.RimFridgeComponent.StartedNewGame () [0x00000] in <948532676ba340059cc9093181148128>:0 \n  at Verse.GameComponentUtility.StartedNewGame () [0x0001a] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void SmashTools.GameEvent:RaiseOnNewGame()\n    - POSTFIX SmashPhil.VehicleFramework: Void UpdateLogTool.Patches:UpdateOnNewGame()\n    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_GameComponentUtility_LoadedGame_Patch+StartedNewGame:Postfix()",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Faction leader for Ascendant Helix is null.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Faction leader for Deepwater Compact is null.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Faction leader for Free Droid Enclaves is null.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Faction leader for Geonosian Foundry Hive is null.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Faction leader for Hutt Cartel is null.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Faction leader for Wildsteam Clan is null.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Texture for _DistortionTex is not yet loaded; file may be invalid, or main thread may not have loaded it yet",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 22,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
           "repeats": 1
          },
          {
@@ -1138,6 +58,41 @@
           "repeats": 3
          },
          {
+          "type": "Error",
+          "text": "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_2686) A = Thing_Human87391 B = Thing_RM_LureStake87390 Giver = ThinkNode_QueuedJob [workGiverDef: null]",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[KindRelationEnforcer] \u5728 Pawn \u6b7b\u4ea1\u524d\u6e05\u7406\u4e86 2 \u6761\u5931\u6548\u76f4\u63a5\u5173\u7cfb\uff0c\u5df2\u963b\u6b62\u635f\u574f\u5173\u7cfb\u8fdb\u5165\u539f\u7248\u6b7b\u4ea1\u901a\u77e5\u3002",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Invalid count: -1, setting to 1. Job was RM_HaulToStake (Job_2781) A = Thing_Human88477 B = Thing_RM_LureStake88476 Giver = ThinkNode_QueuedJob [workGiverDef: null]",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "SetForbiddenIfOutsideHomeArea unspawned thing Corpse_RSW_Reefback92096",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Error while killing RSW_Reefback92088 during phase 5: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 518EF901]\n  at RimWorld.ForbidUtility.SetForbiddenIfOutsideHomeArea (Verse.Thing t) [0x00030] in <61e4173561894da49d210260257b5097>:0 \n  at Verse.Pawn.Kill (System.Nullable`1[T] dinfo, Verse.Hediff exactCulprit) [0x0048c] in <61e4173561894da49d210260257b5097>:0 \n    - TRANSPILER net.avilmask.rimworld.mod.NonUnoPinata: IEnumerable`1 NonUnoPinata.Patches.Pawn_Kill_NonUnoPinataPatch:Transpiler(IEnumerable`1 instructions, ILGenerator il, MethodBase mb)\n    - PREFIX SmashPhil.VehicleFramework: Void Vehicles.Patch_Misc:MoveOnDeath(Pawn __instance)\n    - PREFIX OskarPotocki.VEF: Void VEF.Storyteller.VanillaExpandedFramework_Pawn_Kill_Patch:Prefix(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit)\n    - PREFIX OskarPotocki.VEF: Boolean VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch:Prefix(Pawn __instance, List`1& __state)\n    - PREFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelPawnDeath:Prefix(Pawn __instance, ValueTuple`3& __state)\n    - PREFIX Font.Rimesis: Void Rimesis.Patch_Pawn_Kill:Prefix(Pawn __instance, KillState& __state)\n    - PREFIX RedMattis.BetterPrerequisites: Void BigAndSmall.NotifyEvents:PawnKillPrefix(Pawn __instance)\n    - PREFIX llunak.MorePrecepts: Void MorePrecepts.Pawn2_Patch:Kill(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit)\n    - PREFIX VanillaApparelExpanded.Accessories: Boolean VAE_Accessories.HarmonyPatches:BeltsOnDeath(Nullable`1 dinfo, Hediff exactCulprit, Pawn __instance)\n    - PREFIX lordfelix.rimcontrol: Void ItemControl.Patch_Pawn_Kill_PinataWindow:Prefix(Pawn __instance)\n    - PREFIX mandrake.rsw.gizkastowaway: Void RimMandrake.StarWars.GizkaStowaway.Patch_Pawn_Kill_CullGuilt:Prefix(Pawn __instance)\n    - PREFIX mandrake.rut.rustcathedralhum: Void RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_Kill:Prefix(Pawn __instance, Nullable`1 dinfo)\n    - POSTFIX UnlimitedHugs.AllowTool: Void AllowTool.Patches.Pawn_Kill_Patch:UnforbidDraftedHuntBody(Pawn __instance, Nullable`1 dinfo)\n    - POSTFIX OskarPotocki.VEF: Void VEF.Pawns.VanillaExpandedFramework_Pawn_Kill:Postfix(Pawn __instance)\n    - POSTFIX OskarPotocki.VEF: Void VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch:Postfix(Pawn __instance, List`1 __state)\n    - POSTFIX iforgotmysocks.CaravanAdventures: Void CaravanAdventures.Patches.KillBountyPatches:PawnKillPostfix(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit)\n    - POSTFIX com.alphagenes: Void AlphaGenes.AlphaGenes_Pawn_Kill_Patch:RemovePocketPlanes(Pawn __instance)\n    - POSTFIX ChezhouLib.lib: Void ChezhouLib.CustomMission.Levels.Patch_ClLevelPawnDeath:Postfix(Pawn __instance, Nullable`1 dinfo, ValueTuple`3 __state)\n    - POSTFIX Font.Rimesis: Void Rimesis.Patch_Pawn_Kill:Postfix(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit, KillState __state)\n    - POSTFIX RedMattis.BetterPrerequisites: Void BigAndSmall.OnKillPatch:OnKillPostfix(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit)\n    - POSTFIX llunak.MorePrecepts: Void MorePrecepts.Pawn3_Patch:Kill(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit)\n    - POSTFIX mandrake.rm.ninefold: Void RimMandrake.Ninefold.Patch_BattleResolved:Postfix(Pawn __instance, Nullable`1 dinfo)\n    - POSTFIX mandrake.rm.ninefold: Void RimMandrake.Ninefold.Patch_KillManner:Postfix(Nullable`1 dinfo)\n    - POSTFIX mandrake.rm.aftermath: Void RimMandrake.Aftermath.Patch_ColonistCasualty:Postfix(Pawn __instance)\n    - POSTFIX vlvop.tormentmaster.expansion: Void TormentMaster.Patches.Pawn_Kill_DropSkinSuit_Patch:Postfix(Pawn __instance)\n    - POSTFIX VRF.VehicleRaidFramework: Void VehicleRaidFramework.Patch_CrewCasualty:Postfix(Pawn __instance)\n    - POSTFIX mandrake.jawabench.eventrecorder: Void JawaBench.BridgeTools.JawaBenchEventRecorder:KillPostfix(Pawn __instance, Nullable`1 dinfo, Hediff exactCulprit)\n    - POSTFIX lordfelix.rimcontrol: Void ItemControl.Patch_Pawn_Kill_UnforbidCorpse:Postfix(Pawn __instance)\n    - FINALIZER Font.Rimesis: Exception Rimesis.Patch_Pawn_Kill:Finalizer(Exception __exception, KillState __state)\n    - FINALIZER lordfelix.rimcontrol: Void ItemControl.Patch_Pawn_Kill_PinataWindow:Finalizer(Pawn __instance)",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser72161",
+          "repeats": 4
+         },
+         {
           "type": "Warning",
           "text": "Tried to calculate chance for father with gender \"Female\".",
           "repeats": 1
@@ -1145,91 +100,6 @@
          {
           "type": "Warning",
           "text": "Tried to calculate chance for mother with gender \"Male\".",
-          "repeats": 2
-         },
-         {
-          "type": "Error",
-          "text": "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DF9ACD49]\n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>g__RecolorMineables|4 () [0x00062] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>b__0 () [0x00000] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at Verse.LongEventHandler.UpdateCurrentSynchronousEvent (System.Boolean& sceneChanged) [0x0001d] in <61e4173561894da49d210260257b5097>:0 ",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
-          "repeats": 1
-         },
-         {
-          "type": "Warning",
-          "text": "Tried to calculate chance for father with gender \"Female\".",
           "repeats": 1
          },
          {
@@ -1238,45 +108,45 @@
           "repeats": 2
          },
          {
-          "type": "Error",
-          "text": "Could not load Texture2D at 'ResourceSys_Rhydonium/RhydoniumPipes_Deconstruct' in any active mod or in base resources.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Could not load Texture2D at 'ResourceSys_Plasma/TibannaPipes_Deconstruct' in any active mod or in base resources.",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing SteamGeyser36748",
-          "repeats": 4
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock43437",
-          "repeats": 1
-         },
-         {
-          "type": "Error",
-          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock_Large43438",
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
           "repeats": 2
          },
          {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 2
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
           "type": "Error",
-          "text": "Tried to destroy non-destroyable thing RUT_ForcedAncientAirlock43439",
+          "text": "Attempted to set guest exclusive interaction to a non-exclusive interaction type: PrisonLabor_workOption, use ToggleNonExclusiveInteraction to change non-exclusive interaction type.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
           "repeats": 1
          }
         ],
-        "ticksGame": 478,
+        "ticksGame": 6463,
         "operation": {
-         "OperationId": "op_c2fef0340d934f108060a8ff4f47b2b4",
+         "OperationId": "op_3800265a9b834a7abf56c83041896184",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:20:55.5749958+00:00",
-         "CompletedAtUtc": "2026-10-04T01:20:55.6250072+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T05:49:41.3020457+00:00",
+         "CompletedAtUtc": "2026-10-04T05:49:41.3510698+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1309,6 +179,17 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": null,
+     "Dialog_ModSettings": null
+    },
+    "errors": [
+     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+    ]
    }
   },
   {
@@ -1491,14 +372,14 @@
           }
          }
         ],
-        "ticksGame": 478,
+        "ticksGame": 6463,
         "operation": {
-         "OperationId": "op_7a533482b04b4dcb8f68dd63607ef5cf",
+         "OperationId": "op_47422116634e42d1a6eb62b806b12adf",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:01.2754676+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:01.3246102+00:00",
+         "StartedAtUtc": "2026-10-04T05:49:47.0021082+00:00",
+         "CompletedAtUtc": "2026-10-04T05:49:47.0516248+00:00",
          "DurationMs": 49,
          "Result": null,
          "HasResult": true,
@@ -1532,6 +413,17 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": null,
+     "Dialog_ModSettings": null
+    },
+    "errors": [
+     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+    ]
    }
   },
   {
@@ -1541,8 +433,8 @@
      "name": "off_fall_line_refused",
      "toggle": "onlyOnFallLine",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: fire_incident dryRun RUT_FallArrival failed: {'success': False, 'message': 'RUT_FallArrival canFireNow=False (dry run, nothing fired).', 'incident': 'RUT_FallArrival', 'category': 'Misc', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 35.0, 'faction': None, 'ticksGame': 478, 'operation': {'OperationId': 'op_741b457cc3504c4d9ecc4dbd6f55694d', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:21:08.4883463+00:00', 'CompletedAtUtc': '2026-10-04T01:21:08.53542+00:00', 'DurationMs': 47, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': True})",
@@ -1561,15 +453,46 @@
         "blockedByDialog": false,
         "points": 35.0,
         "faction": null,
-        "ticksGame": 478,
+        "ticksGame": 6463,
         "operation": {
-         "OperationId": "op_741b457cc3504c4d9ecc4dbd6f55694d",
+         "OperationId": "op_f79f7a2988f34793868caad8523cb378",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:08.4883463+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:08.53542+00:00",
-         "DurationMs": 47,
+         "StartedAtUtc": "2026-10-04T05:49:54.3646286+00:00",
+         "CompletedAtUtc": "2026-10-04T05:49:54.41038+00:00",
+         "DurationMs": 45,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_LabRatFalls canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 6463,
+        "operation": {
+         "OperationId": "op_11eb4417ffd34cd1817e4d3eb7c5c5d8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T05:49:54.4424974+00:00",
+         "CompletedAtUtc": "2026-10-04T05:49:54.4802826+00:00",
+         "DurationMs": 37,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1590,9 +513,45 @@
      "name": "anywhere_allows",
      "toggle": "onlyOnFallLine",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: onlyOnFallLine OFF but RUT_FallArrival cannot fire (no skyfaller cell?)",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallArrival canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 6463,
+        "operation": {
+         "OperationId": "op_c46d4e2253b440cb9f389e5e14401f7b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T05:49:56.0164232+00:00",
+         "CompletedAtUtc": "2026-10-04T05:49:56.0666028+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -1628,6 +587,17 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": null,
+     "Dialog_ModSettings": null
+    },
+    "errors": [
+     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+    ]
    }
   },
   {
@@ -1637,31 +607,31 @@
      "name": "wreck_lands",
      "toggle": "wreckFallsEnabled",
      "beyond_toggle": false,
-     "verdict": "PASS",
-     "detail": "",
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_died: colonist Chiyo died (death_letter); colonist_died: colonist Human683 died (damage_log_kill); colonist_damaged: colonist Human683 took 4 damage event(s): Cut by nobody [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001.json]",
      "evidence": [
       {
        "call": "bridge_call jawa/list_things",
        "result": {
         "success": true,
         "things": [],
-        "scanned": 7510,
+        "scanned": 15525,
         "countReturned": 0,
         "countMatched": 0,
         "isCompleteList": true,
         "truncated": 0,
-        "pawnsSkipped": 3,
+        "pawnsSkipped": 24,
         "perDef": {},
-        "ticksGame": 478,
-        "message": "NOTHING MATCHED. 7510 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "ticksGame": 6463,
+        "message": "NOTHING MATCHED. 15525 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
         "operation": {
-         "OperationId": "op_d680771d5c554f48ae6683827b2c119d",
+         "OperationId": "op_b4c6702eec4a482db05de3006ff40e82",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:15.0090516+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:15.0698378+00:00",
-         "DurationMs": 60,
+         "StartedAtUtc": "2026-10-04T05:50:02.503829+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:02.5440168+00:00",
+         "DurationMs": 40,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1676,23 +646,23 @@
        "result": {
         "success": true,
         "things": [],
-        "scanned": 7510,
+        "scanned": 15525,
         "countReturned": 0,
         "countMatched": 0,
         "isCompleteList": true,
         "truncated": 0,
-        "pawnsSkipped": 3,
+        "pawnsSkipped": 24,
         "perDef": {},
-        "ticksGame": 478,
-        "message": "NOTHING MATCHED. 7510 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "ticksGame": 6463,
+        "message": "NOTHING MATCHED. 15525 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
         "operation": {
-         "OperationId": "op_98751fc58301438d9819a9661e8d88a0",
+         "OperationId": "op_6ef8e3d4728648099275ff1bde95d019",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:15.0888932+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:15.1090452+00:00",
-         "DurationMs": 20,
+         "StartedAtUtc": "2026-10-04T05:50:02.5781145+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:02.6157963+00:00",
+         "DurationMs": 37,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1707,23 +677,23 @@
        "result": {
         "success": true,
         "things": [],
-        "scanned": 7510,
+        "scanned": 15525,
         "countReturned": 0,
         "countMatched": 0,
         "isCompleteList": true,
         "truncated": 0,
-        "pawnsSkipped": 3,
+        "pawnsSkipped": 24,
         "perDef": {},
-        "ticksGame": 478,
-        "message": "NOTHING MATCHED. 7510 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "ticksGame": 6463,
+        "message": "NOTHING MATCHED. 15525 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
         "operation": {
-         "OperationId": "op_11e518d1ba1e4624b3e7fd05c6f2448d",
+         "OperationId": "op_5b03a5eede22472eb799b84aa0bb8fb9",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:15.1312361+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:15.1498333+00:00",
-         "DurationMs": 18,
+         "StartedAtUtc": "2026-10-04T05:50:02.6444898+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:02.6941058+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1746,135 +716,15 @@
         "blockedByDialog": false,
         "points": 35.0,
         "faction": null,
-        "ticksGame": 478,
+        "ticksGame": 6463,
         "operation": {
-         "OperationId": "op_65be96bfeba74c2280bf765804c0ef86",
+         "OperationId": "op_1317daf226ea4a04a81113b7bff65d99",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:15.1701124+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:15.2114125+00:00",
-         "DurationMs": 41,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
-       "result": {
-        "success": true,
-        "advanced": 600,
-        "requested": 600
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7515,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {},
-        "ticksGame": 1078,
-        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_224fc8ad112c4ae7ad1e806fa0500a8c",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:27.5880399+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:27.636976+00:00",
-         "DurationMs": 48,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [
-         {
-          "id": "RUT_FallWreck_Cargo43473",
-          "def": "RUT_FallWreck_Cargo",
-          "label": "Wrecked cargo section",
-          "x": 50,
-          "z": 19,
-          "spawned": true,
-          "rot": 0,
-          "stackCount": 1,
-          "hitPoints": 300,
-          "maxHitPoints": 300,
-          "faction": null,
-          "factionName": null,
-          "stuff": null,
-          "quality": null
-         }
-        ],
-        "scanned": 7515,
-        "countReturned": 1,
-        "countMatched": 1,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {
-         "RUT_FallWreck_Cargo": 1
-        },
-        "ticksGame": 1078,
-        "message": "1 of 1 matching thing(s) returned, 7515 examined.",
-        "operation": {
-         "OperationId": "op_66c417589a1d43b69340ead6fdb8c9c6",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:27.6874755+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:27.7364336+00:00",
-         "DurationMs": 48,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7515,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {},
-        "ticksGame": 1078,
-        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_97957452ca5446d0bed05821dfefe46f",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:27.7873388+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:27.8372665+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T05:50:02.7440082+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:02.8237658+00:00",
+         "DurationMs": 79,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1889,272 +739,41 @@
      "sequences": [],
      "checkpoints": [],
      "shows": [],
-     "surprises": null
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_died: colonist Chiyo died (death_letter); colonist_died: colonist Human683 died (damage_log_kill); colonist_damaged: colonist Human683 took 4 damage event(s): Cut by nobody",
+      "hits": [
+       {
+        "detector": "colonist_died",
+        "severity": "FATAL",
+        "summary": "colonist Chiyo died (death_letter)"
+       },
+       {
+        "detector": "colonist_died",
+        "severity": "FATAL",
+        "summary": "colonist Human683 died (damage_log_kill)"
+       },
+       {
+        "detector": "colonist_damaged",
+        "severity": "SURPRISE",
+        "summary": "colonist Human683 took 4 damage event(s): Cut by nobody"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001.png"
+      ]
+     }
     },
     {
      "name": "vermin_burst_from_wreck",
      "toggle": "wreckFallsEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: no ship-vermin came out of the wreck within 2600 ticks (0 -> 0)",
-     "evidence": [
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7515,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {},
-        "ticksGame": 1078,
-        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_f2e8da91f9e74c0aa7267221df09797c",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:27.8874802+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:27.9365941+00:00",
-         "DurationMs": 49,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7515,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {},
-        "ticksGame": 1078,
-        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_723405bfa7f642c0950cd395544680f1",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:27.9880122+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:28.0369497+00:00",
-         "DurationMs": 48,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7515,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {},
-        "ticksGame": 1078,
-        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_44dd3967912147a381e7e944693e1eaf",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:28.0875992+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:28.1366662+00:00",
-         "DurationMs": 49,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7515,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 3,
-        "perDef": {},
-        "ticksGame": 1078,
-        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_a242acae6eb146868dccb3ed35829599",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:21:28.1882068+00:00",
-         "CompletedAtUtc": "2026-10-04T01:21:28.2368959+00:00",
-         "DurationMs": 48,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "wait_ticks(2600) [watched] -> 2600 tick(s)",
-       "result": {
-        "success": true,
-        "advanced": 2600,
-        "requested": 2600
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7520,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 7,
-        "perDef": {},
-        "ticksGame": 3678,
-        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_315669ac7cd04602924287ea5ff277db",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:22:17.1206828+00:00",
-         "CompletedAtUtc": "2026-10-04T01:22:17.1700026+00:00",
-         "DurationMs": 49,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7520,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 7,
-        "perDef": {},
-        "ticksGame": 3678,
-        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_302f8fff927e45a2b6279062e1d01381",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:22:17.2205874+00:00",
-         "CompletedAtUtc": "2026-10-04T01:22:17.2691396+00:00",
-         "DurationMs": 48,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7520,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 7,
-        "perDef": {},
-        "ticksGame": 3678,
-        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_256f0db2ac914db6a7ec70d8074af2e0",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:22:17.320828+00:00",
-         "CompletedAtUtc": "2026-10-04T01:22:17.3689374+00:00",
-         "DurationMs": 48,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/list_things",
-       "result": {
-        "success": true,
-        "things": [],
-        "scanned": 7520,
-        "countReturned": 0,
-        "countMatched": 0,
-        "isCompleteList": true,
-        "truncated": 0,
-        "pawnsSkipped": 7,
-        "perDef": {},
-        "ticksGame": 3678,
-        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
-        "operation": {
-         "OperationId": "op_56ffd38ad5fa43d9a6bf0d7860fa0d30",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:22:17.421156+00:00",
-         "CompletedAtUtc": "2026-10-04T01:22:17.4687064+00:00",
-         "DurationMs": 47,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      }
-     ],
+     "verdict": "UNMEASURED",
+     "detail": "a surprise ended this chain earlier: surprise: colonist_died: colonist Chiyo died (death_letter); colonist_died: colonist Human683 died (damage_log_kill); colonist_damaged: colonist Human683 took 4 damage event(s): Cut by nobody [evidenc",
+     "evidence": [],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -2171,79 +790,54 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 7,
+    "sweeps": 1,
     "fed": 0,
-    "ticks_spent": 3200,
-    "surprises": [],
+    "ticks_spent": 571,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001.png",
+      "notes": []
+     }
+    ],
     "hits_seen": [
      {
-      "tick": 1077,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "1 new error message(s) in the log"
+      "tick": 7034,
+      "detector": "colonist_died",
+      "severity": "FATAL",
+      "summary": "colonist Chiyo died (death_letter)"
      },
      {
-      "tick": 1078,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "1 new error message(s) in the log"
+      "tick": 7034,
+      "detector": "colonist_died",
+      "severity": "FATAL",
+      "summary": "colonist Human683 died (damage_log_kill)"
      },
      {
-      "tick": 1667,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "1 new error message(s) in the log"
+      "tick": 7034,
+      "detector": "colonist_damaged",
+      "severity": "SURPRISE",
+      "summary": "colonist Human683 took 4 damage event(s): Cut by nobody"
      },
      {
-      "tick": 2261,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "2 new error message(s) in the log"
-     },
-     {
-      "tick": 2857,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "3 new error message(s) in the log"
-     },
-     {
-      "tick": 3457,
-      "detector": "strangers_near_anchor",
-      "severity": "WARN",
-      "summary": "2 non-player pawn(s) within 30 cells of the anchor"
-     },
-     {
-      "tick": 3457,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "4 new error message(s) in the log"
-     },
-     {
-      "tick": 3457,
+      "tick": 7034,
       "detector": "letter_unexpected",
       "severity": "INFO",
-      "summary": "new letter [NeutralEvent] Wreck: cargo section"
-     },
-     {
-      "tick": 3678,
-      "detector": "strangers_near_anchor",
-      "severity": "WARN",
-      "summary": "1 non-player pawn(s) within 30 cells of the anchor"
-     },
-     {
-      "tick": 3678,
-      "detector": "log_errors",
-      "severity": "WARN",
-      "summary": "4 new error message(s) in the log"
-     },
-     {
-      "tick": 3678,
-      "detector": "letter_unexpected",
-      "severity": "INFO",
-      "summary": "new letter [NeutralEvent] Wreck: cargo section"
+      "summary": "new letter [NeutralEvent] Interment of Isolation opportunity"
      }
     ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": null,
+     "Dialog_ModSettings": null
+    },
+    "errors": [
+     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+    ]
    }
   },
   {
@@ -2253,8 +847,8 @@
      "name": "lab_rat_toggle_off_refuses",
      "toggle": "labRatEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: fire_incident dryRun RUT_LabRatFalls failed: {'success': False, 'message': 'RUT_LabRatFalls canFireNow=False (dry run, nothing fired).', 'incident': 'RUT_LabRatFalls', 'category': 'Misc', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 35.0, 'faction': None, 'ticksGame': 3678, 'operation': {'OperationId': 'op_3609c435688347289971b0cbfaf4e608', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:22:25.7275044+00:00', 'CompletedAtUtc': '2026-10-04T01:22:25.7465228+00:00', 'DurationMs': 19, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': False})",
@@ -2273,15 +867,64 @@
         "blockedByDialog": false,
         "points": 35.0,
         "faction": null,
-        "ticksGame": 3678,
+        "ticksGame": 7034,
         "operation": {
-         "OperationId": "op_3609c435688347289971b0cbfaf4e608",
+         "OperationId": "op_1134664b11c34800bb9648ded7b2b652",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:22:25.7275044+00:00",
-         "CompletedAtUtc": "2026-10-04T01:22:25.7465228+00:00",
-         "DurationMs": 19,
+         "StartedAtUtc": "2026-10-04T05:50:23.62297+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:23.6610115+00:00",
+         "DurationMs": 38,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "lab_rat_arrives_in_pod",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "surprise: colonist_died: colonist Human686 died (damage_log_kill); colonist_died: colonist Sheppy died (death_letter); colonist_damaged: colonist Human686 took 2 damage event(s): Cut by nobody [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__specimen__colonist_died__t7623__001.json]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_LabRatFalls fired with 35 points.",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 7034,
+        "operation": {
+         "OperationId": "op_64fb45e12f0349c1ac3b222c188d308b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T05:50:25.1889618+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:25.2289849+00:00",
+         "DurationMs": 40,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2296,20 +939,33 @@
      "sequences": [],
      "checkpoints": [],
      "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "lab_rat_arrives_in_pod",
-     "toggle": "labRatEnabled",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
+     "surprises": {
+      "kind": "surprise",
+      "message": "colonist_died: colonist Human686 died (damage_log_kill); colonist_died: colonist Sheppy died (death_letter); colonist_damaged: colonist Human686 took 2 damage event(s): Cut by nobody",
+      "hits": [
+       {
+        "detector": "colonist_died",
+        "severity": "FATAL",
+        "summary": "colonist Human686 died (damage_log_kill)"
+       },
+       {
+        "detector": "colonist_died",
+        "severity": "FATAL",
+        "summary": "colonist Sheppy died (death_letter)"
+       },
+       {
+        "detector": "colonist_damaged",
+        "severity": "SURPRISE",
+        "summary": "colonist Human686 took 2 damage event(s): Cut by nobody"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__specimen__colonist_died__t7623__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__specimen__colonist_died__t7623__001.png"
+      ]
+     }
     }
    ],
    "situational": {
@@ -2321,12 +977,60 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
-    "ticks_spent": 0,
-    "surprises": [],
-    "hits_seen": [],
+    "ticks_spent": 589,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__specimen__colonist_died__t7623__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__specimen__colonist_died__t7623__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 7623,
+      "detector": "colonist_died",
+      "severity": "FATAL",
+      "summary": "colonist Human686 died (damage_log_kill)"
+     },
+     {
+      "tick": 7623,
+      "detector": "colonist_died",
+      "severity": "FATAL",
+      "summary": "colonist Sheppy died (death_letter)"
+     },
+     {
+      "tick": 7623,
+      "detector": "colonist_damaged",
+      "severity": "SURPRISE",
+      "summary": "colonist Human686 took 2 damage event(s): Cut by nobody"
+     },
+     {
+      "tick": 7623,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Specimen"
+     },
+     {
+      "tick": 7623,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Interment of Isolation opportunity"
+     }
+    ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": null,
+     "Dialog_ModSettings": null
+    },
+    "errors": [
+     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+    ]
    }
   },
   {
@@ -2336,8 +1040,8 @@
      "name": "survivor_toggle_off_refuses",
      "toggle": "survivorsEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: fire_incident dryRun RUT_FallSurvivor failed: {'success': False, 'message': 'RUT_FallSurvivor canFireNow=False (dry run, nothing fired).', 'incident': 'RUT_FallSurvivor', 'category': 'Misc', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 35.0, 'faction': None, 'ticksGame': 3678, 'operation': {'OperationId': 'op_4432059217ef458e9183e8427e9d40b6', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:22:33.8853498+00:00', 'CompletedAtUtc': '2026-10-04T01:22:33.9171108+00:00', 'DurationMs': 31, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': False})",
@@ -2356,15 +1060,15 @@
         "blockedByDialog": false,
         "points": 35.0,
         "faction": null,
-        "ticksGame": 3678,
+        "ticksGame": 7623,
         "operation": {
-         "OperationId": "op_4432059217ef458e9183e8427e9d40b6",
+         "OperationId": "op_9ce07b1bc48c4e8891e216e02f76e2f1",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:22:33.8853498+00:00",
-         "CompletedAtUtc": "2026-10-04T01:22:33.9171108+00:00",
-         "DurationMs": 31,
+         "StartedAtUtc": "2026-10-04T05:50:46.1353775+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:46.1739101+00:00",
+         "DurationMs": 38,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2373,6 +1077,10 @@
          "Metadata": {}
         }
        }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': True})",
+       "result": true
       }
      ],
      "screenshots": [],
@@ -2385,9 +1093,2293 @@
      "name": "survivor_drifts_in_feral",
      "toggle": "survivorsEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_FallSurvivor fired with 35 points.",
+        "incident": "RUT_FallSurvivor",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 7623,
+        "operation": {
+         "OperationId": "op_47c1d6ea516342db9d8f77458278b804",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T05:50:47.7220165+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:48.044748+00:00",
+         "DurationMs": 322,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(120) [watched] -> 120 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 120,
+        "requested": 120
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "25 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human72164",
+          "name": "Chance",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 98,
+          "z": 99,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_NomadicPassion",
+             "label": "nomadic passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "DrillArm",
+             "label": "drill arm",
+             "severity": 0.5,
+             "part": "Shoulder",
+             "partLabel": "left shoulder"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Clavicle",
+             "partLabel": "left clavicle"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Humerus",
+             "partLabel": "left humerus"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Radius",
+             "partLabel": "left radius"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Hand",
+             "partLabel": "left hand"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left pinky"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left ring finger"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left middle finger"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left index finger"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Removed",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left thumb"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.99,
+            "Moving": 0.91,
+            "Manipulation": 0.99,
+            "Talking": 0.99,
+            "Eating": 0.99,
+            "Sight": 0.97,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.125,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human72168",
+          "name": "Cooley",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 143,
+          "z": 56,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_VengefulPassion_Hediff",
+             "label": "vengeful passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human72172",
+          "name": "Kem",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 113,
+          "z": 79,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_DuncePassion",
+             "label": "dunce passion",
+             "severity": 0.1,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.112500004,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human77839",
+          "name": "Nose",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 108,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 10.8947544,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.151079774,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 12.8559332,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise (kurreth mandibles)",
+             "severity": 7.0,
+             "part": "Shoulder",
+             "partLabel": "right shoulder"
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 12.7807264,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off (fresh)",
+             "severity": 0.5,
+             "part": "Hand",
+             "partLabel": "left hand"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left pinky"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left ring finger"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left middle finger"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left index finger"
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off",
+             "severity": 0.5,
+             "part": "Finger",
+             "partLabel": "left thumb"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.56,
+            "Moving": 0.43,
+            "Manipulation": 0.21,
+            "Talking": 0.56,
+            "Eating": 0.56,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.8691427,
+           "bleedRate": 4.59188461
+          }
+         },
+         {
+          "id": "Human80637",
+          "name": "Dan",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 113,
+          "z": 75,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Eye",
+             "partLabel": "right eye"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.99,
+            "Moving": 0.97,
+            "Manipulation": 0.99,
+            "Talking": 0.99,
+            "Eating": 0.99,
+            "Sight": 0.97,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.125,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Vaulm82136",
+          "name": "Vaulm",
+          "kind": "RM_Vaulm",
+          "kindDef": "RM_Vaulm",
+          "def": "RM_Vaulm",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 112,
+          "z": 84,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.25,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.8679999,
+             "part": "Pronotum",
+             "partLabel": "pronotum"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.779999852,
+             "part": "Shell",
+             "partLabel": "shell"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.98,
+            "Moving": 0.96,
+            "Manipulation": 0.98,
+            "Talking": 0.88,
+            "Eating": 0.88,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.9,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0299636312,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Drommath83674",
+          "name": "Drommath",
+          "kind": "RM_Drommath",
+          "kindDef": "RM_Drommath",
+          "def": "RM_Drommath",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 111,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.25,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.779999852,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 0.8080425,
+             "part": "Shell",
+             "partLabel": "shell"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0288734958,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human85428",
+          "name": "BB",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 156,
+          "z": 75,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_DuncePassion",
+             "label": "dunce passion",
+             "severity": 0.1,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_NomadicPassion",
+             "label": "nomadic passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_RainyDayPassion",
+             "label": "rainy day passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch scar",
+             "severity": 5.0,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 10.839098,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.0163642522,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.98,
+            "Moving": 0.98,
+            "Manipulation": 0.89,
+            "Talking": 0.98,
+            "Eating": 0.98,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.135488734,
+           "bleedRate": 0.650345862
+          }
+         },
+         {
+          "id": "Human85432",
+          "name": "Schobi",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 95,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IntimatePassion_Hediff",
+             "label": "intimate passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise",
+             "severity": 33.6400032,
+             "part": "Torso",
+             "partLabel": "torso"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 17.6399975,
+             "part": "Pelvis",
+             "partLabel": "pelvis"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise",
+             "severity": 26.0,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.63,
+            "Manipulation": 0.63,
+            "Talking": 0.63,
+            "Eating": 0.63,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.921900034,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human85530",
+          "name": "Bellerose",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 142,
+          "z": 56,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 0.98,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.112500004,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human87396",
+          "name": "Cover",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 107,
+          "z": 109,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Scratch",
+             "label": "scratch scar (painful)",
+             "severity": 4.0,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.91,
+            "Moving": 0.82,
+            "Manipulation": 0.91,
+            "Talking": 0.91,
+            "Eating": 0.91,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.291666657,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human87391",
+          "name": "Nobu",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 94,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_TraumaticPassion",
+             "label": "traumatic passion",
+             "severity": 0.1,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Alzheimers",
+             "label": "alzheimer's (major)",
+             "severity": 1.75273645,
+             "part": "Brain",
+             "partLabel": "brain"
+            },
+            {
+             "def": "Dementia",
+             "label": "dementia",
+             "severity": 0.001,
+             "part": "Brain",
+             "partLabel": "brain"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise",
+             "severity": 30.3979568,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 26.5859928,
+             "part": "Tibia",
+             "partLabel": "right tibia"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise",
+             "severity": 34.0633049,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.3,
+            "Manipulation": 0.3,
+            "Talking": 0.05,
+            "Eating": 0.3,
+            "Sight": 1.0,
+            "Hearing": 0.75,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.8771,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human88482",
+          "name": "Lev",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 99,
+          "z": 78,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_PsychicPassion",
+             "label": "psychic passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Gunshot",
+             "label": "old gunshot (aching)",
+             "severity": 4.0,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Bite",
+             "label": "bite scar (itchy)",
+             "severity": 5.0,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (aching)",
+             "severity": 0.5,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (aching)",
+             "severity": 0.5,
+             "part": "Nose",
+             "partLabel": "nose"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.88,
+            "Moving": 0.73,
+            "Manipulation": 0.88,
+            "Talking": 0.88,
+            "Eating": 0.88,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.36875,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human88477",
+          "name": "Fy",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "DV_Brawnum",
+          "xenotypeLabel": "brawnum",
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 95,
+          "z": 94,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_MoodyPassion",
+             "label": "moody passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scratch",
+             "label": "scratch scar (aching)",
+             "severity": 5.0,
+             "part": "Arm",
+             "partLabel": "left arm"
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 22.0,
+             "part": "Clavicle",
+             "partLabel": "left clavicle"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 12.76,
+             "part": "Radius",
+             "partLabel": "left radius"
+            },
+            {
+             "def": "Crack",
+             "label": "crack",
+             "severity": 16.6399975,
+             "part": "Tibia",
+             "partLabel": "right tibia"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise",
+             "severity": 20.0,
+             "part": "Arm",
+             "partLabel": "right arm"
+            },
+            {
+             "def": "Bruise",
+             "label": "bruise",
+             "severity": 27.0,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.78,
+            "Manipulation": 0.11,
+            "Talking": 0.78,
+            "Eating": 0.78,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.597624958,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Kurreth88844",
+          "name": "Kurreth",
+          "kind": "RM_Kurreth",
+          "kindDef": "RM_Kurreth",
+          "def": "RM_Kurreth",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 106,
+          "z": 91,
+          "spawned": true,
+          "dead": false,
+          "downed": true,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.55,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Bite",
+             "label": "bite (glomvar hooked mouthparts)",
+             "severity": 13.0397511,
+             "part": "InsectLeg",
+             "partLabel": "front right leg"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.0248522237,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "MissingBodyPart",
+             "label": "Bitten off (fresh)",
+             "severity": 0.5,
+             "part": "Elytra",
+             "partLabel": "right elytra"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (glomvar hooked mouthparts)",
+             "severity": 15.9867144,
+             "part": "Pronotum",
+             "partLabel": "pronotum"
+            },
+            {
+             "def": "ClinicalDeathAsphyxiation",
+             "label": "oxygen deprivation",
+             "severity": 0.134333342,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.1,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.762192965,
+           "bleedRate": 0.920452952
+          }
+         },
+         {
+          "id": "RM_Kurreth88845",
+          "name": "Kurreth",
+          "kind": "RM_Kurreth",
+          "kindDef": "RM_Kurreth",
+          "def": "RM_Kurreth",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 104,
+          "z": 94,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.55,
+          "health": {
+           "hediffs": [],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Kurreth88846",
+          "name": "Kurreth",
+          "kind": "RM_Kurreth",
+          "kindDef": "RM_Kurreth",
+          "def": "RM_Kurreth",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 104,
+          "z": 94,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.55,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack (glomvar hooked mouthparts)",
+             "severity": 16.081955,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Bite",
+             "label": "bite (glomvar hooked mouthparts)",
+             "severity": 13.4165926,
+             "part": "InsectLeg",
+             "partLabel": "front left leg"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.00662937528,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.87,
+            "Moving": 0.75,
+            "Manipulation": 0.76,
+            "Talking": 0.87,
+            "Eating": 0.87,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.3865023,
+           "bleedRate": 0.947053552
+          }
+         },
+         {
+          "id": "Human88847",
+          "name": "Mie",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 91,
+          "z": 75,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IntimatePassion_Hediff",
+             "label": "intimate passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Head",
+             "partLabel": "head"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Arm",
+             "partLabel": "right arm"
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.075,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RM_Glomvar90245",
+          "name": "Glomvar",
+          "kind": "RM_Glomvar",
+          "kindDef": "RM_Glomvar",
+          "def": "RM_Glomvar",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 104,
+          "z": 95,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.9,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Crack",
+             "label": "crack (kurreth mandibles)",
+             "severity": 12.7281008,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Crack",
+             "label": "crack (kurreth mandibles)",
+             "severity": 11.7272444,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 8.956186,
+             "part": "InsectLeg",
+             "partLabel": "middle right leg"
+            },
+            {
+             "def": "BloodLoss",
+             "label": "blood loss (minor)",
+             "severity": 0.0140060056,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Crack",
+             "label": "crack (kurreth mandibles)",
+             "severity": 10.5304766,
+             "part": "Shell",
+             "partLabel": "shell"
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 11.3730307,
+             "part": "InsectLeg",
+             "partLabel": "front right leg"
+            },
+            {
+             "def": "Bite",
+             "label": "bite (kurreth mandibles)",
+             "severity": 9.271377,
+             "part": "Elytra",
+             "partLabel": "right elytra"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.78,
+            "Moving": 0.66,
+            "Manipulation": 0.68,
+            "Talking": 0.78,
+            "Eating": 0.78,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.599887967,
+           "bleedRate": 1.01646078
+          }
+         },
+         {
+          "id": "RM_Kurreth90246",
+          "name": "Kurreth",
+          "kind": "RM_Kurreth",
+          "kindDef": "RM_Kurreth",
+          "def": "RM_Kurreth",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 98,
+          "z": 103,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Insectoid",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Animal",
+          "bodySize": 0.55,
+          "health": {
+           "hediffs": [
+            {
+             "def": "Gunshot",
+             "label": "permanent gunshot injury (itchy)",
+             "severity": 4.0,
+             "part": "Eye",
+             "partLabel": "left eye"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 0.88,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0294117648,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human90247",
+          "name": "Laila",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 63,
+          "z": 72,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IntimatePassion_Hediff",
+             "label": "intimate passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Eye",
+             "partLabel": "left eye"
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.075,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human92145",
+          "name": "Jambo",
+          "kind": "RUT_Jawa_Hutt_Leader",
+          "kindDef": "RUT_Jawa_Hutt_Leader",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "RSW_RimMandrakeKlatoonian",
+          "xenotypeLabel": "Klatoonian",
+          "uniqueXenotype": false,
+          "faction": "RUT_Jawa_HuttCartel",
+          "factionName": "Hutt Cartel",
+          "isPlayer": false,
+          "hostile": false,
+          "x": 120,
+          "z": 127,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_VengefulPassion_Hediff",
+             "label": "vengeful passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_ForbiddenPassion",
+             "label": "forbidden passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Asthma",
+             "label": "asthma (minor)",
+             "severity": 0.00328715,
+             "part": "Lung",
+             "partLabel": "right lung"
+            },
+            {
+             "def": "Asthma",
+             "label": "asthma (minor)",
+             "severity": 0.001,
+             "part": "Lung",
+             "partLabel": "left lung"
+            },
+            {
+             "def": "SEX_Ovipositor",
+             "label": "ovipositor",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.98,
+            "Moving": 0.96,
+            "Manipulation": 0.98,
+            "Talking": 0.98,
+            "Eating": 0.98,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 0.9,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human693",
+          "name": "Char",
+          "kind": "RUT_Jawa_Hutt_Grunt",
+          "kindDef": "RUT_Jawa_Hutt_Grunt",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "RSW_RimMandrakeFalleen",
+          "xenotypeLabel": "Falleen",
+          "uniqueXenotype": false,
+          "faction": "RUT_Jawa_HuttCartel",
+          "factionName": "Hutt Cartel",
+          "isPlayer": false,
+          "hostile": false,
+          "x": 113,
+          "z": 123,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Arm",
+             "partLabel": "right arm"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "right leg"
+            },
+            {
+             "def": "Scarification",
+             "label": "scarification (itchy)",
+             "severity": 0.5,
+             "part": "Leg",
+             "partLabel": "left leg"
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0562500022,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human92163",
+          "name": "Chad",
+          "kind": "RUT_Jawa_Hutt_Grunt",
+          "kindDef": "RUT_Jawa_Hutt_Grunt",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "RUT_Jawa_HuttCartel",
+          "factionName": "Hutt Cartel",
+          "isPlayer": false,
+          "hostile": false,
+          "x": 122,
+          "z": 124,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_MoodyPassion",
+             "label": "moody passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_RainyDayPassion",
+             "label": "rainy day passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "RSW_DW_Race_OuterRim_MSEDroid95553",
+          "name": "Guillermo",
+          "kind": "RSW_DW_OuterRim_MSEDroid",
+          "kindDef": "RSW_DW_OuterRim_MSEDroid",
+          "def": "RSW_DW_Race_OuterRim_MSEDroid",
+          "hasGenes": true,
+          "xenotype": "Neanderthal",
+          "xenotypeLabel": "Neanderthal",
+          "uniqueXenotype": false,
+          "faction": null,
+          "factionName": null,
+          "isPlayer": false,
+          "hostile": false,
+          "x": 132,
+          "z": 10,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "RSW_DW_FleshType_Droid",
+          "isMechanoid": false,
+          "isFlesh": false,
+          "intelligence": "Humanlike",
+          "bodySize": 0.5,
+          "health": {
+           "hediffs": [
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "RSW_DW_FormatTier",
+             "label": "format (programmable)",
+             "severity": 3.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "RUT_Hediff_Feral",
+             "label": "feral",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "MCR_MoodChainWatcher",
+             "label": "mood chain watcher (mood chain watcher)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 25,
+        "truncated": 0,
+        "totalOnMap": 25,
+        "ticksGame": 7743,
+        "operation": {
+         "OperationId": "op_1793a3bf9c0d4c4b976a686a20a407f4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T05:50:52.3134067+00:00",
+         "CompletedAtUtc": "2026-10-04T05:50:52.3622273+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -2404,24 +3396,68 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 2,
     "fed": 0,
-    "ticks_spent": 0,
+    "ticks_spent": 120,
     "surprises": [],
-    "hits_seen": [],
+    "hits_seen": [
+     {
+      "tick": 7743,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Guillermo (RSW_DW_Race_OuterRim_MSEDroid95553) joined the roster"
+     },
+     {
+      "tick": 7743,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Feral droid"
+     },
+     {
+      "tick": 7743,
+      "detector": "pawn_roster_transition",
+      "severity": "WARN",
+      "summary": "pawn Guillermo (RSW_DW_Race_OuterRim_MSEDroid95553) joined the roster"
+     },
+     {
+      "tick": 7743,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Feral droid"
+     }
+    ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": null,
+     "Dialog_ModSettings": null
+    },
+    "errors": [
+     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+    ]
    }
   }
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x000001C597505E90>",
-  "<suite.Component object at 0x000001C597506C50>",
-  "<suite.Component object at 0x000001C597506AF0>",
-  "<suite.Component object at 0x000001C597506D00>"
+  "<suite.Component object at 0x0000021D3AB9A150>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\FallLineArrivals.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": null,
+   "Dialog_ModSettings": null
+  },
+  "errors": [
+   "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
+   "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
+  ]
+ },
  "bland_world": {
   "before": {
    "bland": true,
@@ -2461,9 +3497,71 @@
     }
    }
   },
-  "after_problems": []
+  "after_problems": [
+   "strangers present: ['RSW_DW_Race_OuterRim_MSEDroid95553']",
+   "corpses present: 1"
+  ]
  },
  "visual": [],
  "visual_all_green": true,
- "state_all_green": false
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261003T222638-situational_rerun-36568",
+  "git": {
+   "source": "unknown",
+   "sha": null
+  },
+  "deploy_start": {
+   "mod": "FallLineArrivals",
+   "at": "2026-10-03T22:49:33",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimUtinni/FallLineArrivals",
+   "src_hash": "c70e2c6c433a223e",
+   "deployed_hash": "c70e2c6c433a223e",
+   "n_src": 9,
+   "n_deployed": 9,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrake.Utinni.FallLineArrivals.dll",
+     "sha": "c8c93f70e0598b2f",
+     "srchash": "# project: RimUtinni/FallLineArrivals/Source/RimMandrake.Utinni."
+    }
+   ],
+   "src_dirty": null
+  },
+  "deploy_end": {
+   "mod": "FallLineArrivals",
+   "at": "2026-10-03T22:50:54",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimUtinni/FallLineArrivals",
+   "src_hash": "c70e2c6c433a223e",
+   "deployed_hash": "c70e2c6c433a223e",
+   "n_src": 9,
+   "n_deployed": 9,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrake.Utinni.FallLineArrivals.dll",
+     "sha": "c8c93f70e0598b2f",
+     "srchash": "# project: RimUtinni/FallLineArrivals/Source/RimMandrake.Utinni."
+    }
+   ],
+   "src_dirty": null
+  }
+ }
 }
