@@ -337,6 +337,14 @@ def canon_index():
         if m:
             for dn in re.findall(r"[A-Za-z0-9_]+", m.group(2)):
                 out.setdefault(dn, m.group(1))
+    # entries newer than the generated INDEX.md: their own "**defName**: `X`" line
+    for d in sorted(CANON.iterdir()):
+        f = d / "description.md"
+        if d.is_dir() and f.exists():
+            for line in f.read_text(errors="replace").splitlines()[:12]:
+                if line.lower().startswith("**defname"):
+                    for dn in re.findall(r"`([A-Za-z0-9_]+)`", line):
+                        out.setdefault(dn, d.name)
     return out
 
 
@@ -431,8 +439,7 @@ def artpipe_jobs(terms):
             name = re.sub(r"^(_artsrc|done|pending|failed|running|[a-z_]+)/", "", name).rstrip("/")
             name = re.sub(r"(\.manifest)?\.json$|\.png$", "", name)
             fam = re.sub(r"_(north|east|south|west)(_r\d+)?$", "", name)
-            if re.search(rf"(^|_){re.escape(cur)}(_|$)", fam.lower()) or re.search(
-                    rf"(^|_){re.escape(cur)}", fam.lower()):
+            if re.search(rf"(^|_){re.escape(cur)}(_|$)", fam.lower()):   # word-bounded both sides (B2: fuzz≠Fuzzrunner)
                 if ":" not in fam:
                     res[cur].add(fam)
     return {k: sorted(v) for k, v in res.items()}, head
@@ -521,6 +528,18 @@ def main(argv=None):
         e = A.canon_entry(*(list(defnames) + ([label] if label else [])))
         if e:
             return canon_info(REPO / e["dir"], "dir_name")
+        # A1: a Star Wars row whose name carries a variant word (WraidAlpha, FaaJuv) -> the base species' entry
+        for dn in defnames:
+            e, base = A.canon_base(dn, label or "", {k: str(CANON / v) for k, v in cidx.items()})
+            if e:
+                return dict(canon_info(REPO / e["dir"], "variant_stripped"), base=base)
+        # A1: a Star Wars row drawn with a canon creature's texture -> that creature's entry
+        for dn in defnames:
+            if not dn.startswith("RSW_"):
+                continue
+            for y, ev in sorted(tex_twins.get(dn, ())):
+                if y in cidx and (CANON / cidx[y]).is_dir():
+                    return dict(canon_info(CANON / cidx[y], "texpath_twin"), base=f"{cidx[y]} (shares its texture)")
         return None
 
     # shared-texpath twins
@@ -585,6 +604,20 @@ def main(argv=None):
                       "defs": [{"defName": d, "ours": R.get(d, {}).get("ours", False),
                                 "file": R.get(d, {}).get("file"), "rows_here": len(R.get(d, {}).get("entries", {}))}
                                for d in defs], "rows": sorted(rows.values(), key=lambda r: (r["kind"], r["key"].lower()))}
+        # Star Wars twins (owner, 2026-10-04, by card): an RM_/RUT_ stand-in's RSW_ twin is a full LINKED row of
+        # the same biome even though the biome never casts it — judged in the same sitting, never skipped as
+        # "related, not in this biome". Flagged twin_row_of; carries no placement.
+        have = {r["key"] for r in biomes[bk]["rows"]}
+        for r in list(biomes[bk]["rows"]):
+            if not (r["port"] and re.match(r"^(RM_|RUT_|rut_)", r["port"])):
+                continue
+            c = "RSW_" + stem(r["port"])
+            if c in D and c not in have:
+                have.add(c)
+                biomes[bk]["rows"].append({"key": c, "kind": r["kind"], "port": c, "donors": [], "pairing": {},
+                                           "placements": [], "twin_row_of": r["key"],
+                                           "layer": f"Star Wars twin of {r['key']} (not cast in this biome)"})
+        biomes[bk]["rows"].sort(key=lambda r: (r["kind"], r["key"].lower()))
         all_rows += biomes[bk]["rows"]
     log(f"{len(all_rows)} biome rows across {len(order)} biomes")
 
@@ -678,10 +711,12 @@ def main(argv=None):
                                  "joined_by": joined, "in_ledger": res in all_res, "subjects": br["subjects"], "live": live,
                                  "versions": vers, "prior_selection": prior.get(res)})
             nv = sum(len(x["versions"]) for x in res_list)
-            r["art"] = {"resources": res_list, "n_versions": nv, "has_art": nv > 0,
-                        "live_res": sum(1 for x in res_list if x["live"])}
             st = stem(k).lower()
             r["artpipe_state_jobs"] = sorted(set(ajobs.get(st, [])) | {j for d in r["donors"] for j in ajobs.get(stem(d).lower(), [])})
+            # A2a/A2b: renders found by name are art (name-matched), never NO ART
+            basis = "ledger" if nv else ("name-matched" if r["artpipe_state_jobs"] else "none")
+            r["art"] = {"resources": res_list, "n_versions": nv, "has_art": basis != "none", "basis": basis,
+                        "live_res": sum(1 for x in res_list if x["live"])}
             keys = {L.subject_key(x) for x in r["defNames"]}
             r["ledger_rulings"] = [{"verdict": x.get("verdict"), "by": x.get("by"), "trust": x.get("trust"),
                                     "ts": x.get("ts"), "via": x.get("via"),
@@ -696,8 +731,8 @@ def main(argv=None):
             else:
                 r["noncanon_twin"] = [t["defName"] for t in tw_tier if t["defName"] in canon_keys
                                       or canon_for([t["defName"]], None)]
-        rs = B["rows"]
-        S = {"rows": len(rs), "fauna": sum(r["kind"] == "fauna" for r in rs),
+        rs = [x for x in B["rows"] if not x.get("twin_row_of")]
+        S = {"twin_rows": len(B["rows"]) - len(rs), "rows": len(rs), "fauna": sum(r["kind"] == "fauna" for r in rs),
              "flora": sum(r["kind"] == "flora" for r in rs), "fish": sum(r["kind"] == "fish" for r in rs),
              "with_art": sum(r["art"]["has_art"] for r in rs), "no_art": sum(not r["art"]["has_art"] for r in rs),
              "canon_entry": sum(bool(r["canon"]["entry"]) for r in rs),

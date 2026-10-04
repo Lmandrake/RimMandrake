@@ -46,15 +46,30 @@ NEAR = 10   # dHash bits: at or under this on every facing = near-duplicate (sho
 
 # ─────────────────────────────────────────────────────────── load order ──
 
+FULL_LIST = L.REPO_ROOT / "infrastructure" / "state" / "modlists" / "ModsConfig.FULL.LATEST.xml"
+MIN_REAL_LIST = 200   # a live list shorter than this is a swapped-in test list, not what the owner plays
+
+
+def _active(path: Path) -> list[str]:
+    root = ET.parse(path).getroot()
+    return [li.text.strip().lower() for li in root.find("activeMods") if (li.text or "").strip()]
+
+
 def load_order():
-    """packageId(lower) -> index in the LIVE ModsConfig.xml, plus a fingerprint line."""
-    if not MODSCONFIG.is_file():
-        return {}, "ModsConfig.xml unreachable — runtime winner UNMEASURED"
-    root = ET.parse(MODSCONFIG).getroot()
-    act = [li.text.strip().lower() for li in root.find("activeMods") if (li.text or "").strip()]
-    st = MODSCONFIG.stat()
-    fp = f"ModsConfig.xml {len(act)} active, modified {time.strftime('%Y-%m-%d %H:%M', time.localtime(st.st_mtime))}"
-    return {p: i for i, p in enumerate(act)}, fp
+    """packageId(lower) -> load index, plus a fingerprint line. The LIVE ModsConfig.xml when it is the
+    owner's real list; when a small test list is swapped in (it decides nothing about what he plays),
+    the captured FULL.LATEST list instead — otherwise every one of our mods reads 'not loaded' and no
+    column can be IN GAME."""
+    act, src = [], None
+    if MODSCONFIG.is_file():
+        act, src = _active(MODSCONFIG), "live ModsConfig.xml"
+    if len(act) < MIN_REAL_LIST and FULL_LIST.is_file():
+        live_n = len(act)
+        act = _active(FULL_LIST)
+        src = f"ModsConfig.FULL.LATEST.xml (live list has {live_n} mods — a test list)"
+    if not act:
+        return {}, "no mod list readable — runtime winner UNMEASURED"
+    return {p: i for i, p in enumerate(act)}, f"{src}: {len(act)} active"
 
 
 def package_id(mod: str) -> str:
@@ -97,6 +112,58 @@ def canon_entry(*names: str) -> dict:
             "key": d.name}
 
 
+VARIANT_WORDS = {"alpha", "juv", "juvenile", "feral", "mature", "elder", "young", "adult", "baby", "calf", "pup", "wild"}
+
+
+NO_SOURCE = CANON / "NO_SOURCE.json"
+
+
+def _no_source() -> tuple[set, dict]:
+    try:
+        d = json.loads(NO_SOURCE.read_text())
+    except (OSError, ValueError):
+        return set(), {}
+    return {n.lower() for n in d.get("no_source", [])}, {k.lower(): v for k, v in (d.get("not_canon_linked") or {}).items()}
+
+
+def canon_state(key: str) -> str:
+    """The row tag when no canon entry matched. Only Star Wars-tier rows get one; our own RM_/RUT_ inventions
+    get nothing (they are not meant to be canon)."""
+    if not key.startswith("RSW_"):
+        return ""
+    stem = TIER_RE.sub("", key).lower()
+    stem2 = re.sub(r"^plant_|_wild$", "", stem)
+    nos, unlinked = _no_source()
+    for s_ in (stem, stem2):
+        if s_ in unlinked:
+            return "not canon-linked — " + unlinked[s_]
+        if s_ in nos:
+            return "invented creature — searched Wookieepedia + SWTOR wiki, no canon source exists; judge on its own"
+    return "canon not yet checked"
+
+
+def canon_base(key: str, label: str = "", census_entries: dict | None = None) -> tuple[dict, str]:
+    """For a Star Wars (RSW_) row with no exact canon entry: drop life-stage/variant words (WraidAlpha,
+    FeralNerf, 'young faa scalefish') and match the remainder EXACTLY to an entry dir, or to the entry of
+    the census row for that base defName. Never a substring/prefix match (AA_Lockjaw must not find jawa,
+    RM_ShaleGorgerJuv must not find gorg). Returns (entry, base name) or ({}, '')."""
+    if not key.startswith("RSW_"):
+        return {}, ""
+    stem = TIER_RE.sub("", key)
+    cands = [re.findall(r"[A-Z][a-z0-9]*|[a-z0-9]+", stem.replace("_", " ")), (label or "").split()]
+    for words in cands:
+        base = [w for w in words if w.lower() not in VARIANT_WORDS]
+        if not base or len(base) == len(words):
+            continue
+        name = "".join(base).lower()
+        if (CANON / name).is_dir():
+            return canon_entry(name), name
+        e = (census_entries or {}).get("RSW_" + "".join(w[:1].upper() + w[1:] for w in base))
+        if e:
+            return canon_entry(Path(e).name), Path(e).name
+    return {}, ""
+
+
 # ───────────────────────────────────────────────────────────── thumbs ──
 
 def thumb(sha: str, imgdir: Path, src_bytes: bytes | None = None, size: int = 200) -> str:
@@ -113,12 +180,19 @@ def thumb(sha: str, imgdir: Path, src_bytes: bytes | None = None, size: int = 20
 
 # ──────────────────────────────────────────────────────────── columns ──
 
+GENERIC_DIRS = {"plant", "plants", "things", "thing", "item", "items", "building", "buildings", "animal", "animals",
+                "pawn", "pawns", "terrain", "filth", "mote", "motes", "projectile", "weapon", "weapons", "apparel"}
 FAM_RE = re.compile(r"_(north|east|south|west)(_r\d+)?$")
 
 
 def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
-    word = res.split("/")[-2] if "/" in res else res
-    wl = word.lower()
+    parts = res.split("/")
+    # the creature word is the folder (swanimals/Wraid/Wraid_j -> Wraid) unless that folder is a generic
+    # category (Things/Plant/RM_Shadespire): then the file name. A generic word like "plant" joined every
+    # *_plant_* render to every plant row (49 foreign renders on RM_Shadespire, 2026-10-04).
+    word = parts[-2] if len(parts) > 1 and parts[-2].lower() not in GENERIC_DIRS else parts[-1]
+    # render alias: the FILE STEM minus tier prefix, never the folder (art_resolution_rootcause §5.4 / B0)
+    wl = TIER_RE.sub("", parts[-1]).lower()
     cols = []          # {kind, label, detail, faces:{facing: sha}, date, live, winner}
 
     # 1. every mod shipping it today
@@ -140,7 +214,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
         g.sort(key=lambda v: v.get("date", ""))
         lastg = g[-1] if g else {}
         cols.append({"kind": "live", "mod": mod, "faces": dict(f), "date": lastg.get("date", ""),
-                     "label": f"{'IN GAME — ' if mod == winner else 'shipped, shadowed — '}{mod.split('/')[-1]}",
+                     "label": f"{'IN GAME — ' if mod == winner else 'shipped, shadowed — ' if ranks[mod] >= 0 else 'shipped, not loaded — '}{mod.split('/')[-1]}",
                      "detail": (f"load index {ranks[mod]}" + (" (last loaded, wins)" if mod == winner else "")
                                 + (f" · bytes from {lastg.get('commit')} {lastg.get('date')}: {lastg.get('subject', '')}" if lastg else "")),
                      "commit_subjects": [v.get("subject", "") for v in g],
@@ -155,7 +229,7 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
                 continue
             job = v.get("job", "")
             bound = v.get("res") == res
-            alias = re.search(rf"(^|_){re.escape(wl)}(_|$)", job.lower()) is not None
+            alias = len(wl) >= 4 and re.search(rf"(^|_){re.escape(wl)}(_|$)", job.lower()) is not None
             if not (bound or alias):
                 continue
             fam = FAM_RE.sub("", job)
@@ -167,6 +241,8 @@ def build_row(idx: L.Index, res: str, order: dict, slots: dict) -> dict:
             fam_meta[fam] = {"bound": bound or fam_meta.get(fam, {}).get("bound", False), "date": v.get("date", ""),
                              "prompt": v.get("prompt", ""), "derive": v.get("derive_from"), "item": v.get("item")}
     for fam, faces in sorted(fams.items(), key=lambda kv: fam_meta[kv[0]]["date"], reverse=True):
+        if not fam_meta[fam]["bound"] and NOT_BODY_JOB.search(fam):
+            continue
         m = fam_meta[fam]
         cols.append({"kind": "artpipe", "faces": faces, "date": m["date"], "label": f"render {fam}",
                      "detail": (f"{m['date']} · {'collected to this texPath' if m['bound'] else 'joined by creature name only (not bound to this graphic)'}"
@@ -333,17 +409,8 @@ addEventListener('DOMContentLoaded', () => {
   const origPatch = window.patchRow;
   if (typeof origPatch === 'function') window.patchRow = function (id) { origPatch(id); window.artRepaint(id); };
 });
-/* Options are global; grey out a column letter this row does not have (never hide). */
-new MutationObserver(() => { try {
-  document.querySelectorAll('.row[data-id]').forEach(r => {
-    const it = byId.get(r.dataset.id); if (!it) return;
-    r.querySelectorAll('[data-set]').forEach(b => {
-      const k = b.dataset.set;
-      const has = !(k.length === 1 && /[A-Za-z]/.test(k)) || it.letters.includes(k);
-      b.disabled = !has; b.style.opacity = has ? '' : '0.25';
-    });
-  });
-} catch (e) { /* main script not initialised yet: the next mutation retries */ } }).observe(document.documentElement, { childList: true, subtree: true });
+/* Column letters are per row: the pick buttons show only the letters this row has (template hook). */
+window.itemOptions = it => OPTS.filter(o => !(o.key.length === 1 && /[A-Za-z]/.test(o.key)) || (it.letters || []).includes(o.key));
 """
 
 STYLE = r"""
@@ -382,6 +449,16 @@ STYLE = r"""
 """
 
 RENDER = '<script id="RENDER">' + DOUBLES_BODY + COMMON_JS + "</script>" + STYLE
+
+
+def pick_options(n: int) -> list[dict]:
+    """Column letters (per row: the same letter is a different picture on every row, so no group bulk),
+    then redo / hold. Only 'hold' gets an all-rows button."""
+    opts = [{"key": LETTERS[i], "label": LETTERS[i], "hotkey": str(i + 1) if i < 9 else "",
+             "color": "#5ac37f", "counts": "in", "bulk": False} for i in range(n)]
+    return opts + [{"key": "redo", "label": "redo (note why)", "hotkey": "r", "color": "#e8b64c",
+                    "counts": "out", "bulk": False},
+                   {"key": "hold", "label": "hold", "hotkey": "h", "color": "#98a2b3", "counts": "out"}]
 
 
 def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, brief: str,
@@ -476,10 +553,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
     snap_path.parent.mkdir(parents=True, exist_ok=True)
     snap_path.write_text(json.dumps(snapshot, indent=1, sort_keys=True))
 
-    opts = [{"key": LETTERS[i], "label": LETTERS[i], "hotkey": str(i + 1) if i < 9 else "",
-             "color": "#5ac37f", "counts": "in"} for i in range(maxcols)]
-    opts += [{"key": "redo", "label": "none — redo (say what in the note)", "hotkey": "r", "color": "#e8b64c", "counts": "out"},
-             {"key": "hold", "label": "hold", "hotkey": "h", "color": "#98a2b3", "counts": "out"}]
+    opts = pick_options(maxcols)
     decisions_path = out_html.parent / (out_html.stem + ".decisions.json")
     cfg = {
         "sheetId": sheet_id, "title": title,
@@ -618,6 +692,32 @@ def _layer(row: dict) -> str:
     return " + ".join(dict.fromkeys(parts))
 
 
+def _short(c: dict) -> str:
+    """One readable line for a set's header; the full provenance is its tooltip."""
+    lab = c.get("label", "")
+    if c.get("kind") == "live":
+        return ("IN GAME · " if c.get("winner") else "not loaded · " if "not loaded" in lab else "shadowed copy · ") + lab.split("— ")[-1]
+    if c.get("kind") == "artpipe":
+        return f"render {(c.get('date') or '')[:10]} · {lab.removeprefix('render ')}"
+    if c.get("kind") == "git":
+        return f"history {(c.get('date') or '')[:10]} · {lab.removeprefix('history ').rsplit(' ', 1)[0]}"
+    if c.get("kind") == "donor":
+        return "donor original · " + lab.removeprefix("donor original ")
+    return lab
+
+
+def _prefill_short(source: str, why: str) -> str:
+    if source == "inferred" and why.startswith("inferred: newest render"):
+        return "newest render found by name"
+    if "no resolvable keep" in why:
+        return "what the game shows now (no pick of yours)"
+    if why.startswith("inferred"):
+        return "a commit says you approved it"
+    if source == "none":
+        return "hold — no art yet" if "no art" in why else why
+    return why[:80]
+
+
 def _fkey(c: dict) -> tuple:
     return tuple(sorted(c["faces"].items()))
 
@@ -688,48 +788,54 @@ def _graphic_prefill(g: dict, rulings: list[dict]):
 
 
 BIOME_BODY = r"""
+/* Layout (owner complaint 2026-10-04, "poorly constructed"): one compact strip per graphic. Each picture
+   set is a card whose facings sit SIDE BY SIDE; cards wrap across the width, so a row is about one
+   thumbnail tall. Provenance is a tooltip, never wallpaper. Letters are row-local; the pick buttons on
+   the right show only this row's letters. */
+const FACE_ABBR = { south: 'S', east: 'E', north: 'N', west: 'W', single: '' };
 window.itemBody = it => {
   const d = (typeof DEC !== 'undefined' && DEC[it.id]) || {};
   const purge = new Set(d.purge || []);
   const picks = Object.assign({}, it.prefillPicks || {}, d.picks || {});
   const cell = (c, f) => {
     const s = c.faces[f];
-    if (!s) return `<div class="ac-cell ac-gap" title="no ${f} in this set">—</div>`;
+    if (!s) return `<div class="bs-cell bs-gap" title="no ${f} picture in this set">—</div>`;
     const t = it.thumbs[s];
-    if (!t) return `<div class="ac-cell ac-gap" title="picture not archived">?</div>`;
+    if (!t) return `<div class="bs-cell bs-gap" title="picture not archived">?</div>`;
     const p = purge.has(s);
     const btn = c.purgeable ? `<button class="ac-purge${p ? ' on' : ''}" title="reject + PURGE: delete this picture from the art store so it never appears again" onclick="event.stopPropagation();artTogglePurge('${it.id}','${s}')">${p ? '✕ purging' : '✕'}</button>` : '';
-    return `<div class="ac-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${btn}</div>`;
+    return `<div class="bs-cell${p ? ' ac-purged' : ''}"><div class="thumb ac-thumb" data-zoom="${t}" data-cap="${esc(it.label)} · ${c.letter} · ${f}"><img src="${t}" loading="lazy" alt=""></div>${FACE_ABBR[f] ? `<span class="bs-face">${FACE_ABBR[f]}</span>` : ''}${btn}</div>`;
   };
   const col = (c, g) => {
     const picked = g.primary ? d.decision === c.letter : picks[g.key] === c.letter;
-    return `<div class="ac-col ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}">
-      <div class="ac-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="pick this set for the ${esc(g.role)}"><b>${c.letter}</b> ${esc(c.label)}</div>
-      ${g.facings.map(f => cell(c, f)).join('')}
-      <div class="ac-detail" title="${esc(c.detail)}${c.prompt ? '\n\nprompt: ' + esc(c.prompt) : ''}">${esc(c.detail)}</div>
-      ${c.also ? `<details class="ac-also"><summary>${c.also.length} identical elsewhere</summary>${c.also.map(a => `<div>${esc(a)}</div>`).join('')}</details>` : ''}
+    const tip = `${c.label}\n${c.detail}${c.also ? '\n\nidentical copies:\n' + c.also.join('\n') : ''}${c.prompt ? '\n\nprompt: ' + c.prompt : ''}`;
+    return `<div class="bs-set ac-${c.kind}${c.winner ? ' ac-win' : ''}${picked ? ' ac-picked' : ''}">
+      <div class="bs-head bs-pick" data-pick-id="${esc(it.id)}" data-pick-g="${esc(g.key)}" data-pick-l="${c.letter}" data-pick-primary="${g.primary ? 1 : 0}" title="${esc(tip)}\n\nclick to pick this set"><b>${c.letter}</b><span>${esc(c.short)}</span>${c.also ? `<i class="sub">+${c.also.length}</i>` : ''}</div>
+      <div class="bs-faces">${g.facings.map(f => cell(c, f)).join('')}</div>
     </div>`;
   };
-  const canon = it.canon ? `<div class="ac-col ac-canoncol"><div class="ac-head"><b>canon</b> reference — not pickable</div>
-      <div class="ac-canon-imgs">${it.canon.imgs.map(u => `<div class="thumb ac-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
-      <div class="ac-brief"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre><b>Visual brief</b><pre class="ac-vb">${esc(it.canon.brief)}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<span class="sub">${esc(it.canon.dir)}</span></div></div>`
-    : `<div class="ac-col ac-canoncol ac-nocanon"><div class="ac-head"><b>canon</b></div><div class="sub">No canon-library entry for this ${esc(it.kind === 'flora' ? 'plant' : 'creature')} — judge it on its own.</div></div>`;
+  const canon = it.canon ? `<div class="bs-canonp"><div class="bs-head bs-chead"><b>canon</b><span>${it.canon.base ? 'entry for the base species: ' + esc(it.canon.base) : 'reference — not pickable'}</span></div>
+      <div class="bs-cimgs">${it.canon.imgs.map(u => `<div class="thumb bs-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
+      <div class="bs-must"><b>Must show</b><pre>${esc(it.canon.must || '(this entry lists no Must show)')}</pre>${it.canon.ruling ? `<b>Your ruling on the entry</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<details><summary>visual brief</summary><pre>${esc(it.canon.brief)}</pre></details></div></div>` : '';
   const sec = (g, i) => {
     const main = g.cols.filter(c => !c.near_of), near = g.cols.filter(c => c.near_of);
     const many = it.graphics.length > 1;
-    return `<div class="bs-g">${many ? `<div class="bs-gh">${esc(g.role)}${g.res ? ` <span class="sub">${esc(g.res)}</span>` : ''} — ${g.primary ? 'the letter buttons pick here' : 'click a column header to pick for this graphic'}</div>` : ''}
-      ${g.prior ? `<div class="bs-prior">your earlier pick (${esc(g.prior.sheet)}): <b>${esc(g.prior.text)}</b>${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : ''}
-      <div class="ac-grid"><div class="ac-col ac-facings"><div class="ac-head">&nbsp;</div>${g.facings.map(f => `<div class="ac-cell ac-flabel">${f}</div>`).join('')}</div>${main.map(c => col(c, g)).join('')}${i === 0 ? canon : ''}</div>
-      ${near.length ? `<details class="ac-near"><summary>${near.length} near-duplicate set(s) — folded, not hidden</summary><div class="ac-grid">${near.map(c => col(c, g)).join('')}</div></details>` : ''}</div>`;
+    const cur = g.primary ? d.decision : picks[g.key];
+    const head = many ? `<div class="bs-gh" title="${esc(g.res || 'renders matched by name, not bound to a texture path')}"><b>${esc(g.role)}</b>${g.res ? ` <span class="sub">${esc(g.res.split('/').pop())}</span>` : ''} · ${g.primary ? 'buttons on the right' : `click a set · picked <b>${esc(cur || 'nothing')}</b>`}</div>` : '';
+    const prior = g.prior ? `<div class="bs-prior" title="${esc(g.prior.was)}">${esc(g.prior.text)}${g.prior.note ? ' — “' + esc(g.prior.note) + '”' : ''}</div>` : '';
+    return `<div class="bs-g">${head}${prior}
+      <div class="bs-strip">${main.map(c => col(c, g)).join('')}${near.length ? `<details class="bs-near"><summary>+${near.length} near-duplicate</summary><div class="bs-strip">${near.map(c => col(c, g)).join('')}</div></details>` : ''}</div></div>`;
   };
   const links = it.related.length ? `<div class="bs-links">related (judged separately): ${it.related.map(r => `<a href="#" data-jump="${esc(r.id)}">${esc(r.label)} <span class="sub">${esc(r.id)}</span></a> <span class="sub">${esc(r.why)}</span>`).join(' · ')}</div>` : '';
   const elsewhere = it.elsewhere.length ? `<div class="sub">also related, not in this biome: ${it.elsewhere.map(esc).join(', ')}</div>` : '';
-  const noart = it.noArt ? `<div class="bs-noart">NO ART YET — the art ledger holds no picture for this row. ${esc(it.noArtWhy)}</div>${canon}` : '';
+  const noart = it.noArt ? `<div class="bs-noart" title="${esc(it.noArtWhy)}">NO ART YET — the art ledger holds no picture for this row</div>` : '';
   const rul = it.rulings.length ? `<div class="ac-rulings">${it.rulings.map(r => `<div class="ac-r ac-t-${r.trust}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`).join('')}</div>` : '';
+  const pf = it.prefillSource === 'sit1' ? '' : it.contested ? '<span class="mark inferred" title="' + esc(it.prefillWhy) + '">⚠ agent prefill: ' + esc(it.prefillShort) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillShort) + '</span>';
   return `<div class="ac-body bs-body" style="${it.band ? 'border-left:6px solid ' + it.band + ';padding-left:8px' : ''}">
     <div class="effect">${esc(it.effect)}</div>
-    <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.flags.map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${it.prefillSource === 'sit1' ? '<span class="mark bs-sit1">✓ ' + esc(it.prefillWhy) + '</span>' : it.contested ? '<span class="mark inferred">⚠ prefill ' + esc(it.prefillWhy) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillWhy) + '</span>'}</div>
-    ${links}${elsewhere}${rul}${noart}${it.graphics.map(sec).join('')}</div>`;
+    <div class="marks"><span class="mark bs-tier bs-${it.tier}">${esc(it.tierText)}</span>${it.canonTag ? `<span class="mark bs-nocanon">${esc(it.canonTag)}</span>` : ''}${it.flags.filter(f => f !== 'NO ART YET').map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${pf}</div>
+    ${links}${elsewhere}${rul}${noart}
+    <div class="bs-content"><div class="bs-graphics">${it.graphics.map(sec).join('')}</div>${canon}</div></div>`;
 };
 window.artPick = (id, g, letter) => {
   if (frozen) return;
@@ -740,6 +846,7 @@ window.artPick = (id, g, letter) => {
   queue(id); patchRow(id); paintCounts();
 };
 document.addEventListener('click', e => {
+  if (e.target.closest('.ac-purge')) return;
   const p = e.target.closest('[data-pick-l]');
   if (p) {
     e.preventDefault(); e.stopPropagation();
@@ -759,16 +866,51 @@ document.addEventListener('click', e => {
 
 BIOME_STYLE = """
 <style>
-.bs-g{margin-top:6px}
-.bs-gh{font-size:12px;color:#d8c7a8;margin:4px 0 0}
-.bs-pick{cursor:pointer}.bs-pick:hover{text-decoration:underline}
-.bs-prior{font-size:12px;color:#9fe0a8;margin:2px 0}
-.bs-links{font-size:12.5px;margin:4px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
-.bs-noart{font-size:15px;font-weight:700;color:#000;background:#e06c6c;padding:10px 12px;border-radius:6px;margin:6px 0}
-.bs-sit1{background:#1f3a24;color:#9fe0a8;border-color:#3a6a44}
+.bs-content{display:flex;gap:10px;align-items:flex-start;margin-top:5px}
+.bs-graphics{flex:1;min-width:0;display:flex;flex-wrap:wrap;gap:6px 16px;align-items:flex-start}
+.bs-g{max-width:100%;min-width:0}
+.bs-gh{font-size:12px;color:#d8c7a8;margin:2px 0}
+.bs-strip{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start}
+.bs-set{border:1px solid var(--line);border-radius:6px;padding:3px;background:#0f1216;max-width:100%}
+.bs-set.ac-win{border-color:var(--info)}
+.bs-set.ac-picked{border-color:var(--ok);box-shadow:0 0 0 2px #5ac37f66}
+.bs-head{display:flex;gap:5px;align-items:baseline;font-size:11px;line-height:1.3;height:1.35em;overflow:hidden;color:var(--ink);width:0;min-width:100%;box-sizing:border-box;padding:0 2px}
+.bs-head span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.bs-head b{font-size:13px;color:var(--accent)}
+.bs-head i{font-style:normal;flex:none}
+.bs-set.ac-artpipe .bs-head span{color:#d9b8ff}.bs-set.ac-git .bs-head span{color:#9fb3c8}.bs-set.ac-donor .bs-head span{color:#e8b64c}
+.bs-set.ac-win .bs-head span{color:#8ac3e8;font-weight:600}
+.bs-pick{cursor:pointer}.bs-set:hover{border-color:#3d4653}.bs-set.ac-picked:hover{border-color:var(--ok)}
+.bs-faces{display:flex;gap:3px;cursor:default}
+.bs-cell{position:relative;width:86px;height:86px;display:flex;align-items:center;justify-content:center}
+.bs-cell .ac-thumb{width:86px;height:86px;flex:0 0 86px}
+.bs-gap{color:#3a4250;font-size:18px;border:1px dashed #222a33;border-radius:5px}
+.bs-face{position:absolute;left:3px;bottom:2px;font-size:9.5px;color:#8a95a5;background:#0b0d10cc;border-radius:2px;padding:0 3px;pointer-events:none}
+.bs-near{font-size:11px;color:var(--dim);align-self:center}
+.bs-near[open]{flex-basis:100%}
+.bs-canonp{flex:0 0 300px;border:1px solid #5a4a2a;background:#14110c;border-radius:6px;padding:3px 5px}
+.bs-chead span{color:#e8b64c}.bs-chead b{color:#e8b64c}
+.bs-cimgs{display:flex;gap:4px;flex-wrap:wrap;margin:3px 0}
+.bs-cthumb{width:92px;height:92px;flex:0 0 92px}
+.bs-must{font-size:11.5px;color:#c3cad6;max-height:150px;overflow:auto}
+.bs-must pre{white-space:pre-wrap;font:inherit;margin:1px 0 4px}
+.bs-must summary{cursor:pointer;color:var(--dim)}
+.bs-prior{font-size:11.5px;color:#9fe0a8;margin:1px 0 2px}
+.bs-links{font-size:12px;margin:3px 0;color:#d8c7a8}.bs-links a{color:#e8b64c}
+.bs-noart{display:inline-block;font-size:12.5px;font-weight:700;color:#000;background:#e06c6c;padding:4px 10px;border-radius:5px;margin:5px 0 0}
 .bs-tier{border-color:#5a4a2a}.bs-canon{background:#3a2c10;color:#e8b64c}.bs-ours{background:#10283a;color:#8ac3e8}
 .bs-sw{background:#2a1a3a;color:#c38ae8}.bs-donor{background:#222;color:#aaa}
+.mark.bs-nocanon{color:#b9a27a;border-color:#4a3f2a;background:#15120c}
 .row.bs-flash{outline:3px solid #e8b64c}
+/* right-hand pick column: only this row's letters, readable redo/hold */
+.row .ctrl{width:200px}
+.row .opts{flex-wrap:wrap}
+.row .opts button{flex:0 0 auto;min-width:30px;padding:3px 0}
+.row .opts button[data-set="redo"]{margin-left:auto}
+.row .opts button[data-set="redo"],.row .opts button[data-set="hold"]{flex:1 1 40%;padding:4px 6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.row .opts button[data-set="redo"]{order:98}.row .opts button[data-set="hold"]{order:99}
+.row .opts::after{content:"";order:97;flex-basis:100%;height:0}
+@media (max-width:1400px){.bs-canonp{flex-basis:240px}.bs-cthumb{width:72px;height:72px;flex-basis:72px}}
 </style>
 """
 
@@ -816,14 +958,17 @@ def _clusters(rows: list[dict]):
 BIOME_BRIEF = """<p><b>{label}</b> — every flora and fauna row of this biome ({n} rows), one row per species. Each row shows
 <b>every picture we hold</b> for it: <b>IN GAME</b> (blue frame) is what the game draws now; <b>shipped, shadowed</b> is a copy losing
 the load-order race; <b>render</b> columns are artpipe outputs (newest first); <b>history</b> columns are earlier states of our files
-from git; <b>donor original</b> is the donor mod's own sprite. Facings are stacked south / east / north.</p>
+from git; <b>donor original</b> is the donor mod's own sprite. Each set shows its facings side by side (S, E, N);
+hover a set's header for where it came from.</p>
 <p><b>Pick, per row, the column the game should show</b> (letter buttons, or click a column's header). A row with a second graphic
 (swimming, flying) shows it as its own strip — click a column header there to pick for it. <b>✕</b> on a non-live picture rejects and
 purges it for good. The note box is the most useful control on the row: say what is wrong, and a redo is written from it.</p>
 <p><b>Canon rows</b> show the canon-library reference images and the entry's <b>Must show</b> list beside the pictures. A canon creature and
 our own (franchise-free) stand-in for it are <b>separate rows</b>, each judged on its own, but grouped together under one coloured band
-with a <b>related</b> link both ways. Rows you already ruled on in <b>desert sitting 1</b> are prefilled with that pick and say so
-(green ✓). Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.</p>"""
+with a <b>related</b> link both ways. A stand-in's Star Wars twin (RSW_) is always its own full row in the band, even where the biome
+never casts it. Rows you already ruled on in <b>desert sitting 1</b> are prefilled with that pick and say so
+(green line naming the set). The counter separates rows <b>you</b> decided from rows still holding the agent's
+prefill. Nothing installs from this sheet: your picks become ledger rulings, then you see an install plan.</p>"""
 
 
 def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None = None,
@@ -840,6 +985,13 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     snap_path = L.ledger_dir() / "sheets" / f"{sheet_id}.snapshot.json"
     prev = json.loads(snap_path.read_text()) if snap_path.is_file() else {}
     prev_rows = prev.get("rows") or {}
+    decisions_path = out_html.parent / (out_html.stem + ".decisions.json")
+    old = json.loads(decisions_path.read_text()) if decisions_path.is_file() else None
+    untouched = old is not None and not old.get("savedBy") and not old.get("writeCount") and \
+        (old.get("reviewStatus") or {}).get("state") == "prefill"
+    # letters are kept stable only once a human has written to the decisions file; until then every row
+    # is lettered A, B, C … afresh, with no gaps left by columns that have since disappeared
+    letter_memory = prev_rows if (old is not None and not untouched) else {}
     idx = L.Index()
     slots = L.scan_def_slots()
     order, fp = load_order()
@@ -847,6 +999,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     rel, elsewhere, find = _clusters(rows)
     labels = {r["key"]: _human(r) for r in rows}
 
+    census_canon = {cr["key"]: (cr.get("canon") or {}).get("entry") for bb in census["biomes"].values()
+                    for cr in bb["rows"] if (cr.get("canon") or {}).get("entry")}
     built = []
     for r in rows:
         graphics, seen = [], set()
@@ -871,7 +1025,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             graphics.remove(prim)
             graphics.insert(0, prim)
         allcols = [c for g in graphics for c in g["cols"]]
-        _assign_letters(allcols, (prev_rows.get(r["key"]) or {}).get("columns"))
+        _assign_letters(allcols, (letter_memory.get(r["key"]) or {}).get("columns"))
         for c in allcols:
             c["purgeable"] = c["kind"] != "live"
         for g in graphics:
@@ -908,13 +1062,25 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                         continue
                     thumbs[s] = thumb(s, imgdir, size=thumb_size)
             pr = g["prior"]
+            prior = None
+            if pr:
+                was = f"{SIT1} recorded: {pr.get('decision')} — {pr.get('picked_label') or ''}".strip(" —")
+                pf_shas = set((pr.get("picked_faces") or {}).values())
+                hit = next((c for c in g["cols"] if pf_shas and pf_shas & set(c["faces"].values())), None)
+                dec = (pr.get("decision") or "").strip()
+                if hit:
+                    text = f"your {SIT1} pick is set {hit['letter']} here ({_short(hit)})"
+                elif dec in ("redo", "hold"):
+                    text = f"your {SIT1} ruling: {dec}"
+                else:
+                    text = f"your {SIT1} pick is not among these pictures any more"
+                prior = {"text": text, "note": pr.get("note", ""), "was": was}
             gitems.append({
                 "key": gkey, "res": g["res"], "role": g["role"], "primary": gi == 0, "facings": facings,
-                "prior": ({"sheet": SIT1, "text": f"{pr.get('decision')} — {pr.get('picked_label') or ''}".strip(" —"),
-                           "note": pr.get("note", "")} if pr else None),
+                "prior": prior,
                 "cols": [{k: (v if k != "near_of" else v["letter"]) for k, v in c.items()
                           if k in ("letter", "kind", "label", "detail", "faces", "winner", "also", "prompt", "purgeable", "near_of")}
-                         for c in g["cols"]]})
+                         | {"short": _short(c)} for c in g["cols"]]})
         letter, why, source = prim_pf
         no_art = not graphics
         if no_art:
@@ -922,19 +1088,25 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         if source == "sit1":
             n_sit1 += 1
         ce = canon_entry(Path(r["canon"]["entry"]).name) if (r.get("canon") or {}).get("entry") else {}
+        base = (r["canon"].get("base") or "") if ce else ""
+        if not ce:
+            ce, base = canon_base(key, r.get("label") or "", census_canon)
         canon = None
         if ce:
             seen_c = {}
             for p in ce["images"]:
                 seen_c.setdefault(L.sha256_file(p), p.read_bytes())
             canon = {"dir": ce["dir"], "brief": ce["brief"][:2500], "must": ce["must"][:1500],
-                     "ruling": ce["ruling"][:800] if "(empty" not in ce["ruling"] else "",
+                     "ruling": ce["ruling"][:800] if "(empty" not in ce["ruling"] else "", "base": base,
                      "imgs": [thumb(sh, imgdir, bb, 260) for sh, bb in seen_c.items()]}
         root = find(key)
         clustered = bool(rel.get(key))
         if clustered and root not in cluster_ids:
             cluster_ids[root] = len(cluster_ids)
         tier, tier_text = _tier(r)
+        if base:
+            tier, tier_text = "canon", f"canon Star Wars creature (entry for the base species: {base})"
+        canon_tag = canon_state(key) if not canon else ""
         flags = []
         if no_art:
             flags.append("NO ART YET")
@@ -948,7 +1120,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             "effect": (f"{r['kind']} · {_layer(r)} · commonality {r.get('commonality_max')} · "
                        + (f"{n_sets} picture set(s)" + (f" across {len(gitems)} graphics" if len(gitems) > 1 else "")
                           if gitems else "no pictures")),
-            "tier": tier, "tierText": tier_text, "flags": flags,
+            "tier": tier, "tierText": tier_text, "canonTag": canon_tag, "flags": flags,
+            "prefillShort": _prefill_short(source, why),
             "prefill": letter, "prefillWhy": why, "prefillSource": source,
             "contested": source in ("inferred", "none"), "inferred": source == "inferred",
             "prefillPicks": picks, "graphics": gitems, "thumbs": thumbs, "canon": canon,
@@ -1008,18 +1181,14 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
     snap_path.parent.mkdir(parents=True, exist_ok=True)
     snap_path.write_text(json.dumps(snap, indent=1, sort_keys=True))
 
-    opts = [{"key": LETTERS[i], "label": LETTERS[i], "hotkey": str(i + 1) if i < 9 else "",
-             "color": "#5ac37f", "counts": "in"} for i in range(maxl)]
-    opts += [{"key": "redo", "label": "none — redo (say what in the note)", "hotkey": "r", "color": "#e8b64c", "counts": "out"},
-             {"key": "hold", "label": "hold", "hotkey": "h", "color": "#98a2b3", "counts": "out"}]
-    decisions_path = out_html.parent / (out_html.stem + ".decisions.json")
+    opts = pick_options(maxl)
     n_canon = sum(1 for it in ordered if it["canon"])
     n_link = sum(1 for it in ordered if it["related"])
     n_noart = [it["id"] for it in ordered if it["noArt"]]
     cfg = {
         "sheetId": sheet_id, "title": f"{b.get('label', biome)} — flora & fauna art",
         "subtitle": (f"{len(ordered)} rows · {n_canon} canon · {n_link} linked · {n_sit1} prefilled from {SIT1} · "
-                     f"{len(n_noart)} NO ART YET · {fp}"),
+                     f"{len(n_noart)} NO ART YET" + (f" · IN GAME judged on {fp.split(':')[0]}" if "FULL.LATEST" in fp else "")),
         "briefHtml": BIOME_BRIEF.format(label=b.get("label", biome), n=len(ordered)),
         "criterion": ("Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows "
                       "now first, then shadowed copies, renders newest first, history oldest first, donor last. "
@@ -1044,9 +1213,6 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
 
     # decisions: written when absent, or regenerated while it is still the untouched prefill
     wrote = False
-    old = json.loads(decisions_path.read_text()) if decisions_path.is_file() else None
-    untouched = old is not None and not old.get("savedBy") and not old.get("writeCount") and \
-        (old.get("reviewStatus") or {}).get("state") == "prefill"
     if old is None or untouched:
         decisions_path.write_text(json.dumps({
             "sheetId": sheet_id, "posture": "pick-one", "snapshot": _rel(snap_path), "snapshotId": snap["snapshotId"],
