@@ -20,12 +20,15 @@
      1.6/Defs/ThingDefs_Signs/Buildings_Signs.xml) that none of the 9 already declares this
      field, so PatchOperationAdd cannot collide with an existing value.
 
-     MayRequire Dark.Signs (this mod's own packageId) - the whole file is a no-op, not an
-     error, if that mod is inactive.
+     Guarded by PatchOperationFindMod on the mod's name ("Signs and Comments", packageId
+     Dark.Signs), so the file is a no-op, not an error, when that mod is inactive. A
+     MayRequire on a top-level Operation is ignored by the 1.6 engine.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationSequence" MayRequire="Dark.Signs">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Signs and Comments</li></mods>
+    <match Class="PatchOperationSequence">
     <operations>
 
       <li Class="PatchOperationAdd">
@@ -66,6 +69,7 @@
       </li>
 
     </operations>
+    </match>
   </Operation>
 
 </Patch>

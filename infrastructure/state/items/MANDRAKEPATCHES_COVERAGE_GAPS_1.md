@@ -10,3 +10,6 @@ Add a component per uncovered behaviour that asserts it DOES its job (not spawn-
 
 ## criteria
 Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.
+
+## progress 2026-10-03 (r34)
+- Gap (2) closed statically: chain `every_fix_is_guarded_static` asserts every top-level op in Patches/ is under FindMod/Conditional and carries no (inert) top-level MayRequire. It found one: `ThirdPartySignConfigErrors_Fix.xml` was guarded only by `<Operation MayRequire="Dark.Signs">`, which the engine ignores; now `PatchOperationFindMod` "Signs and Comments". selftest_mandrakepatches reds both break shapes. Still open: effect read-back of the 8 donor fixes on a list that loads the donors.
