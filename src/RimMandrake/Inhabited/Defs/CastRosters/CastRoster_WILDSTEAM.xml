@@ -202,7 +202,7 @@
     <label>Bo Kesh</label>
     <faction>WILDSTEAM</faction>
     <place>GREENMOUTH — the river-town, where the Scald's trunk enters the vicious jungle</place>
-    <race>Yttakin</race>
+    <race>Wookiee</race>
     <age>44</age>
     <ageText>44</ageText>
     <genderText>m</genderText>
@@ -362,7 +362,7 @@
     <label>Hakko Vurr</label>
     <faction>WILDSTEAM</faction>
     <place>KETTLE STATION — a boiler-house on stilts in the meridian's poison marsh</place>
-    <race>Yttakin</race>
+    <race>Ortolan</race>
     <age>38</age>
     <ageText>38</ageText>
     <genderText>m</genderText>
@@ -735,7 +735,7 @@
     <label>Pell Yoon</label>
     <faction>WILDSTEAM</faction>
     <place>THE STAIRS OF VAR ULLU — nine hundred cut steps, terrace gardens, and the hot spring at the top</place>
-    <race>Yttakin</race>
+    <race>Sullustan</race>
     <age>33</age>
     <ageText>33</ageText>
     <genderText>f</genderText>
@@ -764,7 +764,7 @@
     <label>Yorrum Pell</label>
     <faction>WILDSTEAM</faction>
     <place>THE STAIRS OF VAR ULLU — nine hundred cut steps, terrace gardens, and the hot spring at the top</place>
-    <race>Yttakin</race>
+    <race>Chadra-Fan</race>
     <age>35</age>
     <ageText>35</ageText>
     <genderText>m</genderText>

@@ -18,3 +18,21 @@ Slice 1 (`ff934d915`) already removed every xenotypeSet reference, so a def cut 
 - A check that reds if any `XenotypeDef/<X>` of the eleven is absent from the Cherry Picker settings, if
   any src file still names one as a race/xenotype, or if a PawnFlavor block for a cut def remains.
 - Next harvest: no Scribe/cross-reference lines naming the eleven.
+
+## done (FOUNDRY belt builder, 2026-10-04)
+1. **Canonical save read** (python iterparse of `CANONICAL_ASHKARR_START_2026-09-12.rws`, `genes/xenotype` under each
+   pawn): 3 pawns carry a cut xenotype — Hussar `Human62211` "Teresa" (Salvager_Elite, Faction_24, **pawnsMothballed**),
+   Neanderthal `Human658908` "Anita" and `Human663663` "Lucia" (Villagers, **pawnsDead**). None is on a map or a founder;
+   on load each falls back with a Scribe "Could not load reference" line, expected and harmless.
+2. **Inhabited repoints** (race is prose, `CharacterDef.race`): Hesk Varo Hussar→**Echani** (combat-loving warrior
+   culture whose sparring is conversation — the rib-breaking apologiser); Bo Kesh Yttakin→**Wookiee** (enormous, Hutt
+   slave-hold childhood, animals as kin); Hakko Vurr→**Ortolan** (eats anything, appetite as vocation); Pell Yoon→
+   **Sullustan** (warm, sociable, can't keep a secret); Yorrum Pell→**Chadra-Fan** (big-family chatter). All in the
+   canon library.
+3. **PawnFlavor**: the 11 `PatchOperationSequence` blocks deleted; the Odyssey and VRE-Saurid FindMod wrappers left
+   empty were removed with them.
+4. **Cherry Picker SHIP**: typed `XenotypeDef/<X>` for all 11 (no bare keys). The tag→surviving-item index rebuild does
+   not apply (xenotypes carry no weapon/apparel tags). Live config NOT applied (it diverges from SHIP; game-down work).
+5. **Sanguophage**: filed `SANGUOPHAGE_KEPT_UNREACHABLE_1` (needs owner).
+Check: `src/RimUtinni/UtinniPatches/selftest_xenotype_defcut.py` (sanity probes + 4 mutants). Live half: next harvest
+must show no cross-reference lines naming the eleven beyond the 3 save pawns above.

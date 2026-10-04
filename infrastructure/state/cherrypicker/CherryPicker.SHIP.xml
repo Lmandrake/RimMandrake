@@ -1299,6 +1299,17 @@
 			<li>BiomeDef/AG_PocketPlane</li>
 			<li>ThingDef/AM_LassoDevilstrand</li>
 			<li>ThingDef/AM_LassoCloth</li>
+			<li>XenotypeDef/Dirtmole</li>
+			<li>XenotypeDef/Genie</li>
+			<li>XenotypeDef/Highmate</li>
+			<li>XenotypeDef/Hussar</li>
+			<li>XenotypeDef/Impid</li>
+			<li>XenotypeDef/Neanderthal</li>
+			<li>XenotypeDef/Pigskin</li>
+			<li>XenotypeDef/Starjack</li>
+			<li>XenotypeDef/VRESaurids_Saurid</li>
+			<li>XenotypeDef/Waster</li>
+			<li>XenotypeDef/Yttakin</li>
 			<li>RecipeDef/Make_AM_LassoCloth</li>
 			<li>RecipeDef/Make_AM_LassoDevilstrand</li>
 			<li>RecipeDef/Make_AM_LassoHyperwave</li>
