@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_Quest_KurrethColumn. FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1 (part B of FEVERWOOD_ANT_THEFT_RAIDBACK_1).
+  SPEC (rimworld-quests skill section 2):
+    ask       raid the kurreth column's camp before it reaches its hive, and cut the stolen animals free
+    reason    the column carried your animals off alive; the camp holds them bound, a few tiles away
+    choice    go now and fight the guards at the camp, or let them reach the hive under your own ground and
+              go in after them there (a second, harder chance) - or let them go
+    failure   every animal dead, the camp left with any still bound, or the hive hold timer runs out
+    reward    the animals themselves (no reward roll: nobody is paying you)
+    deadline  kurrethColumnDays to enter the camp; then kurrethHiveHoldDays in the hive (shown in the quest)
+  Firing route: code only (route 2's sibling): RM_MapComponent_KurrethTheft sends the theft letter and calls
+  RM_KurrethColumnUtility.TryStartColumnQuest with slate map + victims. rootSelectionWeight 0 + isRootSpecial, so
+  the storyteller never rolls it. autoAccept: it is news, not an offer. The C# node owns the site and the part that
+  runs camp/hive/freeing; the ends stay here.
+-->
+<Defs>
+  <QuestScriptDef>
+    <defName>RM_Quest_KurrethColumn</defName>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <isRootSpecial>true</isRootSpecial>
+    <autoAccept>true</autoAccept>
+    <defaultHidden>false</defaultHidden>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Kurreth Column</li>
+        <li>questName->Carried Off</li>
+        <li>questName->Before the Hive</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The kurreth did not kill [victimsLabel]. They carried them off alive, and the column has made camp a few days' walk away, the animals bound in drying paste among the guards.\n\nGet a colonist to each animal while no kurreth stands guard close by and it can be cut free. If nobody reaches the camp within [columnTicks_duration], the column goes on to its hive: if the hive is under your own ground they will be carried down into it, still alive, for a while.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="RimMandrake.FeverWood.RM_QuestNode_KurrethColumn">
+          <storeSiteAs>site</storeSiteAs>
+          <outSignalRecovered>ColumnRecovered</outSignalRecovered>
+          <outSignalLost>ColumnLost</outSignalLost>
+        </li>
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+        </li>
+        <li Class="QuestNode_Letter">
+          <inSignal>ColumnRecovered</inSignal>
+          <label TKey="LetterLabelKurrethColumnRecovered">Cut free</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextKurrethColumnRecovered">Every animal the kurreth carried off that still lives has been cut free. Bring them home.</text>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>ColumnRecovered</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>ColumnLost</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+</Defs>

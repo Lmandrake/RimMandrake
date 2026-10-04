@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: a stolen animal held by the kurreth column (camp or hive). Moving capped at 0
+     = downed, so the guards never treat it as a threat. Removed in code (RM_KurrethColumnUtility.Free) when a colonist
+     stands within 2 cells and no awake hostile kurreth is within 6. -->
+<Defs>
+  <HediffDef>
+    <defName>RM_KurrethBound</defName>
+    <label>bound in kurreth paste</label>
+    <description>Wrapped tight in a drying paste the kurreth spit, legs folded under. It is alive and unhurt, and cannot move until someone cuts it free.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.75, 0.7, 0.45)</defaultLabelColor>
+    <isBad>true</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <stages>
+      <li>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <setMax>0</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+</Defs>

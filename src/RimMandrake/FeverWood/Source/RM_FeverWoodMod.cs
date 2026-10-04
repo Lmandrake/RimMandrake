@@ -198,6 +198,11 @@ namespace RimMandrake.FeverWood
         /// carries them off alive (letter + slime trail). Off: the lure's kurreth wave is a plain assault.</summary>
         public static bool antTheftEnabled = true;
 
+        /// <summary>FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: the raid-back quest after a theft (camp site, then the hive).</summary>
+        public static bool kurrethColumnEnabled = true;
+        public static float kurrethColumnDays = 4f;
+        public static float kurrethHiveHoldDays = 15f;
+
         /// <summary>FEVERWOOD_OIL_BOIL_WEATHER_1: hot still days boil the seep oil into a flammable haze.</summary>
         public static bool oilBoilEnabled = true;
         public static float oilBoilMinTempC = 35f;
@@ -245,6 +250,9 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
             Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
+            Scribe_Values.Look(ref kurrethColumnEnabled, "kurrethColumnEnabled", true);
+            Scribe_Values.Look(ref kurrethColumnDays, "kurrethColumnDays", 4f);
+            Scribe_Values.Look(ref kurrethHiveHoldDays, "kurrethHiveHoldDays", 15f);
             Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
             Scribe_Values.Look(ref oilBoilMinTempC, "oilBoilMinTempC", 35f);
             Scribe_Values.Look(ref oilBoilCommonalityMultiplier, "oilBoilCommonalityMultiplier", 1f);
@@ -371,6 +379,15 @@ namespace RimMandrake.FeverWood
               + "tamed vaulm, ollareth or drommath) down without killing it and carries it off the map alive; once "
               + "nothing is left to take, the rest leave. A letter names every animal taken and the way the column "
               + "went, and a slime trail leads off the edge there. Off: the kurreth wave is a plain assault.");
+            list.CheckboxLabeled("Stolen animals can be taken back", ref kurrethColumnEnabled,
+                "On: after a theft the column makes camp a few tiles away with the animals bound alive; a colonist who "
+              + "reaches one while no kurreth stands guard close by cuts it free. Not reached in time, the column goes "
+              + "on to its hive: if a hive lies under the map they were taken from, they are carried bound into its "
+              + "deepest chamber for a while, then lost. Off: a stolen animal is simply gone with the column.");
+            list.Label("Days before the column reaches its hive: " + kurrethColumnDays.ToString("0.0"));
+            kurrethColumnDays = list.Slider(kurrethColumnDays, 1f, 15f);
+            list.Label("Days the animals last bound in the hive: " + kurrethHiveHoldDays.ToString("0.0"));
+            kurrethHiveHoldDays = list.Slider(kurrethHiveHoldDays, 2f, 60f);
 
             list.GapLine();
             list.CheckboxLabeled("Oil boil weather", ref oilBoilEnabled,
