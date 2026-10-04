@@ -921,7 +921,8 @@ def _mode_of(path: Path) -> str:
     does (see process_codex_job's `attach_image`)."""
     try:
         j = json.loads(path.read_text())
-        return "edit" if (j.get("reference") or j.get("derive_from")) else "generate"
+        return "edit" if (j.get("reference") or j.get("derive_from")
+                          or common.canon_attachment(j)) else "generate"
     except (OSError, ValueError, TypeError):
         return "generate"
 
@@ -2079,7 +2080,7 @@ def process_codex_job(job: dict, job_id: str, reference, out_png: Path, ctx: Run
     validate's same-pose bbox/aspect/origin checks would false-reject a
     correctly rotated view (recon §4), so a derive_from job must never
     trigger it."""
-    attach_image = reference or derive_master_png
+    attach_image = reference or derive_master_png or common.canon_attachment(job)
     is_edit = bool(attach_image)
     subcmd = "edit" if is_edit else "generate"
     timeout = ctx.timeout_edit if is_edit else ctx.timeout_generate
@@ -2257,7 +2258,7 @@ def process_gemini_job(job: dict, job_id: str, reference, out_png: Path, ctx: Ru
     # See process_codex_job's identical `attach_image` — `reference` itself
     # stays None for a derive_from job and is what still reaches
     # `_check_size_and_validate` below for (skipped) reskin-validate.
-    attach_image = reference or derive_master_png
+    attach_image = reference or derive_master_png or common.canon_attachment(job)
     model = job.get("model") or DEFAULT_GEMINI_MODEL
 
     # Written BEFORE the subprocess spawns, deliberately — this is the
@@ -2714,7 +2715,7 @@ def run_dry_run(args: argparse.Namespace) -> int:
             print(f"would FAIL to claim {p.name}: {exc}")
             continue
         channel = job.get("channel") or "codex"
-        is_edit = bool(job.get("reference"))
+        is_edit = bool(job.get("reference") or job.get("derive_from") or common.canon_attachment(job))
         subcmd = "edit" if is_edit else "generate"
         out_png = args.artsrc_dir / job["id"] / f"{job['id']}.png"
         print(f"would claim {p.name} [{channel}]: {subcmd} -> {out_png}")

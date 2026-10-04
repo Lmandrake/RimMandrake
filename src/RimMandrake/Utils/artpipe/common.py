@@ -402,9 +402,31 @@ def load_job(path: Path) -> dict:
                             f"(derive_from) are different contracts and never both apply "
                             f"to one job")
 
+    # ART_SUBJECT_RESOLVER_1: binding fields are optional here (jobs filed before
+    # 2026-10-04 carry none; fill_queue is where a missing target is refused),
+    # but when present their SHAPE is checked like every other field.
+    for k in ("target_def", "target_texpath", "target_canon", "no_subject", "install_to"):
+        v = job.get(k)
+        if v is not None and (not isinstance(v, str) or not v.strip()):
+            raise JobError(f"{path}: {k!r} must be a non-empty string or absent")
+    for k in ("target_original", "canon_reference"):
+        v = job.get(k)
+        if v is not None and (not isinstance(v, list) or not all(isinstance(x, str) and x for x in v)):
+            raise JobError(f"{path}: {k!r} must be a list of non-empty strings or absent")
+
     _refuse_contradicted_facing(path, job)
 
     return job
+
+
+def canon_attachment(job: dict) -> Path | None:
+    """The canon-library image to attach as anatomy guidance (ART_SUBJECT_RESOLVER_1): the first existing
+    `canon_reference` path. Callers use it only when the job has no `reference` and no `derive_from`, and it
+    never reaches reskin-validate (that is keyed on `reference` alone)."""
+    for p in job.get("canon_reference") or []:
+        if Path(p).is_file():
+            return Path(p)
+    return None
 
 
 # Viewpoint phrases that CONTRADICT the per-facing direction build_job_prompt()
