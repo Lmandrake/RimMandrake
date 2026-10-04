@@ -116,9 +116,8 @@
       <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
       <gestationPeriodDays>10</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
-      <wildBiomes>
-        <RUT_Cauldron>0.05</RUT_Cauldron>  <!-- CAULDRON_FULL_RENAME_1 (2026-09-30): renamed from RUT_PoisonForest -->
-      </wildBiomes>
+      <!-- No <wildBiomes>: RUT_Cauldron's wildAnimals already lists this kind, and a kind
+           registered both ways makes BiomeDef.CommonalityOfAnimal throw "same key" (Player.log). -->
       <lifeStageAges>
         <li>
           <def>AnimalBaby</def>
