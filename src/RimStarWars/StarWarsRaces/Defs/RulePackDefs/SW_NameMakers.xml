@@ -112,15 +112,15 @@
       <rulesRaw>
         <li Class="Rule_File">
           <keyword>LastNameAqualish</keyword>
-          <path>Aqualish/Last</path>
+          <path>RimMandrakeSWNames/SWX/Aqualish/Last</path>
         </li>
         <li Class="Rule_File">
           <keyword>NameAqualish</keyword>
-          <path>Aqualish/First</path>
+          <path>RimMandrakeSWNames/SWX/Aqualish/First</path>
         </li>
         <li Class="Rule_File">
           <keyword>NicknameAqualish</keyword>
-          <path>Aqualish/Nick</path>
+          <path>RimMandrakeSWNames/SWX/Aqualish/Nick</path>
         </li>
       </rulesRaw>
     </rulePack>
