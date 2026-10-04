@@ -19,6 +19,10 @@ namespace RimMandrake.MessyConduit.Aerial
             d["Industrial/West"] = new Vector2(0.335f, 0.092f);
             d["Industrial/North"] = new Vector2(0.000f, -0.237f);
             d["Industrial/South"] = new Vector2(0.007f, 0.222f);
+            d["Modern/East"] = new Vector2(-0.309f, 0.098f);
+            d["Modern/West"] = new Vector2(0.309f, 0.098f);
+            d["Modern/North"] = new Vector2(-0.000f, -0.218f);
+            d["Modern/South"] = new Vector2(0.000f, 0.175f);
             d["Futuristic/East"] = new Vector2(-0.234f, 0.049f);
             d["Futuristic/West"] = new Vector2(0.234f, 0.049f);
             d["Futuristic/North"] = new Vector2(0.000f, -0.128f);
