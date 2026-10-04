@@ -392,8 +392,8 @@ rostered; no incident spawns it elsewhere in v1.
   half-dissolved: a curved rib, a shell, the haft of something — two or three "entries", drawn at
   maybe 20 % opacity so they read at the stage-3 size and vanish at stage 1. Amber lights in the
   thick parts; a membrane-pink glow at the very core.
-- **Outline**: heavy clean black outline on the whole silhouette and the major interior lines
-  (the standing outline ruling from the wave-10 art item), painterly vanilla animal style.
+- **Register**: realistic painted natural-history illustration, matte, no outlines, never
+  cartoonish (owner, 2026-10-04, ART_VERSION_WRANGLING_1); the silhouette reads by value contrast.
 - **Not in v1**: per-stage variant art (a colossus with more entries inside would be lovely; it is
   three more sheets and the drawSize ladder already sells the growth), a dessicated set (point
   `dessicatedBodyGraphicData` at the same texture with a pale tint — a dried titanoslime is a

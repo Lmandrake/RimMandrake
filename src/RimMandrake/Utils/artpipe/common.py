@@ -73,6 +73,79 @@ DEFAULT_FAILED = QUEUE_ROOT / "failed"
 DEFAULT_ARTSRC = QUEUE_ROOT / "_artsrc"
 DEFAULT_THROUGHPUT_LOG = QUEUE_ROOT / "throughput.jsonl"
 
+# ---------------------------------------------------------------------------
+# House art register (ART_VERSION_WRANGLING_1, owner ruling 2026-10-04).
+# The "Heavy, clean black outline ... thick enough to read" clause of the
+# 2026-09-14 painterly family is RETIRED: it is the measured source of the
+# cartoon look, and the art he kept on 2026-10-02 (Long Shade: tazzok,
+# skarrok, vrekka ...) asks for the opposite. Every in-game sprite now carries
+# this register instead, and the old clause is scrubbed wherever it appears.
+HOUSE_ART_REGISTER = (
+    "Realistic painted natural-history illustration: grounded, believable "
+    "form and anatomy, matte surface texture, soft painted edges, the "
+    "silhouette carried by value and colour contrast against a mid-tone "
+    "ground rather than by a drawn line; never cartoonish, never cute, "
+    "no outlines."
+)
+
+import re as _re  # noqa: E402
+
+# Sentence-initial form ("Heavy, clean black outline around ... zoom.") is
+# removed whole; the inline form (", heavy clean black outline,") only loses
+# its own clause so the rest of the sentence survives.
+_STALE_OUTLINE_SENTENCE = _re.compile(
+    r"(?:(?<=^)|(?<=[.!?]\s))(?:Heavy|Bold|Thick),?\s+clean\s+black\s+outline[^.]*\.\s*",
+    _re.I)
+_STALE_OUTLINE_INLINE = _re.compile(
+    r",\s*(?:heavy|bold|thick),?\s+clean\s+black\s+outline", _re.I)
+STALE_OUTLINE_MARKERS = ("black outline", "keyline")
+
+
+def scrub_stale_outline(text: str) -> tuple[str, int]:
+    """Remove the retired outline clause. Returns (clean_text, n_removed).
+    Anything still carrying a STALE_OUTLINE_MARKERS phrase afterwards is a
+    variant this does not know — callers refuse or log it, never ignore it."""
+    if not text:
+        return text or "", 0
+    out, n1 = _STALE_OUTLINE_SENTENCE.subn("", text)
+    out, n2 = _STALE_OUTLINE_INLINE.subn("", out)
+    return out.strip(), n1 + n2
+
+
+def has_stale_outline(text: str) -> bool:
+    low = (text or "").lower()
+    return any(m in low for m in STALE_OUTLINE_MARKERS)
+
+
+CANON_ROOT = REPO_ROOT / "design" / "RimStarWars" / "canon_references"
+
+
+def canon_brief(name: str, root: Path | None = None) -> str:
+    """The `## Visual brief` and `## Must show` sections of a canon-library
+    entry, as one string for style_notes. Raises FileNotFoundError when the
+    entry or its brief is missing — a named canon subject with no brief is a
+    filing error, never a silent omission."""
+    p = (root or CANON_ROOT) / name / "description.md"
+    text = p.read_text()
+    secs: dict[str, list[str]] = {}
+    cur = None
+    for line in text.splitlines():
+        if line.startswith("## "):
+            cur = line[3:].strip().lower()
+            secs[cur] = []
+        elif cur is not None:
+            secs[cur].append(line)
+    brief = " ".join(" ".join(secs.get("visual brief", [])).split())
+    if not brief:
+        raise FileNotFoundError(f"{p} has no '## Visual brief' section")
+    must = " ".join(" ".join(secs.get("must show", [])).split())
+    rel = p.relative_to(REPO_ROOT) if p.is_relative_to(REPO_ROOT) else p
+    out = f"Canon visual brief ({rel}): {brief}"
+    if must:
+        out += f" Must show: {must}"
+    return out
+
+
 HERE = Path(__file__).resolve().parent
 DEFAULT_WORKER_SCRIPT = (REPO_ROOT / "skills" / "generating-images" / "scripts"
                           / "codex_image.py")

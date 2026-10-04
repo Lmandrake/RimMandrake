@@ -28,6 +28,20 @@ CSV columns (JSON: same keys; `facings` may be a JSON list there):
     channel            optional per-row override — "codex" or "gemini".
                        Every row otherwise gets --channel's value
                        (default "codex"); see GEMINI_WORKER_BACKEND_1.
+    canon              optional — canon-library entry name under
+                       design/RimStarWars/canon_references/; its
+                       `## Visual brief` + `## Must show` are appended to
+                       style_notes. A named entry with no brief is REFUSED.
+    biome_register     optional — the subject's biome light/palette register
+                       (from its biome sheet), prepended to style_notes.
+                       A row with neither this nor `biome_neutral: true`
+                       gets a warning.
+
+ART_VERSION_WRANGLING_1 (owner, 2026-10-04): the retired "Heavy, clean black
+outline" clause is scrubbed from prompt and style_notes with a warning, and a
+row still mentioning "black outline"/"keyline" afterwards is REFUSED. The
+house register (common.HOUSE_ART_REGISTER) is appended to style_notes of every
+transparent-background job that does not already say "no outlines".
 
 ARTPIPE_FACING_COHERENCE_1 §2 — DEFAULT ON, `--no-derive-facings` to disable:
 a row whose `facings` include "east" files east as the fresh-generated
@@ -66,14 +80,14 @@ REQUIRED_ROW_FIELDS = ("id", "rimflow_item_id", "prompt", "canvas_w", "canvas_h"
 
 # ARTPIPE_FACING_COHERENCE_1 §2: north/south are derivations of the accepted
 # east master, not fresh prompts — "same individual, same palette, same
-# keyline weight, same painterly style, same scale, rotated to the view
+# edge treatment, same painted style, same scale, rotated to the view
 # described below." Prepended to a derived job's own prompt; the per-facing
 # view direction itself still comes from artpiped.build_job_prompt()'s
 # existing stamp, unchanged.
 DERIVE_PROMPT_PREFIX = (
     "Derive this facing from the attached accepted master render of the SAME "
-    "creature: same individual, same palette, same keyline weight, same "
-    "painterly style, same scale — rotated to the view described below. Do "
+    "creature: same individual, same palette, same edge treatment, same "
+    "painted style, same scale — rotated to the view described below. Do "
     "not restyle. "
 )
 
@@ -189,6 +203,35 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
     master_facing_present = derive_facings and _MASTER_FACING in facings and not reference
     master_job_id = f"{base_id}_{_MASTER_FACING}" if master_facing_present else None
 
+    # ART_VERSION_WRANGLING_1: scrub the retired outline clause, fold in the
+    # biome register and the canon-library brief.
+    prompt, n_p = common.scrub_stale_outline(str(row["prompt"]))
+    style, n_s = common.scrub_stale_outline(str(row.get("style_notes") or ""))
+    if n_p or n_s:
+        print(f"  ⚠️  {base_id}: removed {n_p + n_s} retired black-outline clause(s) "
+              f"(ART_VERSION_WRANGLING_1)", file=sys.stderr)
+    if common.has_stale_outline(prompt) or common.has_stale_outline(style):
+        raise ValueError(f"row {base_id!r} still asks for an outline/keyline — outlines "
+                          f"are retired (owner 2026-10-04, ART_VERSION_WRANGLING_1)")
+    register = str(row.get("biome_register") or "").strip()
+    if register:
+        style = f"Biome register: {register}" + (f" {style}" if style else "")
+    elif str(row.get("biome_neutral") or "").strip().lower() not in ("1", "true", "yes"):
+        print(f"  ⚠️  {base_id}: no biome_register (and not biome_neutral) — the "
+              f"subject will render without its biome's light and palette", file=sys.stderr)
+    canon = str(row.get("canon") or "").strip()
+    if canon:
+        try:
+            brief = common.canon_brief(canon)
+        except (FileNotFoundError, OSError) as exc:
+            raise ValueError(f"row {base_id!r} canon {canon!r}: {exc}")
+        style = f"{style} {brief}".strip()
+    # The house register rides in the job itself, not only in the daemon's
+    # render-time prompt, so it holds whichever clone's daemon renders it.
+    if (row.get("background") or "transparent") == "transparent" and \
+            "no outlines" not in f"{prompt} {style}".lower():
+        style = f"{style} {common.HOUSE_ART_REGISTER}".strip()
+
     jobs = []
     for facing in (facings or [None]):
         job_id = f"{base_id}_{facing}" if facing else base_id
@@ -198,8 +241,8 @@ def row_to_jobs(row: dict, default_channel: str = "codex",
             "reference": reference,
             "canvas": canvas,
             "drawsize": ds,
-            "prompt": row["prompt"],
-            "style_notes": row.get("style_notes") or "",
+            "prompt": prompt,
+            "style_notes": style,
             "priority": priority,
             "background": row.get("background") or "transparent",
             "channel": channel,
