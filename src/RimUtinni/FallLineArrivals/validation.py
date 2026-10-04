@@ -32,7 +32,9 @@ FERAL_POOL = ("RSW_DW_OuterRim_MSEDroid", "RSW_DW_OuterRim_SalvageAssistDroid", 
 
 def _dry(t, incident):
     r = t.bridge_call("jawa/fire_incident", incidentDef=incident, dryRun=True)
-    if t._guard() and not (r or {}).get("success"):
+    # LIVE 2026-10-03: a dry run that answers "cannot fire" comes back with success=False AND canFireNow=False; success is not
+    # the question, the canFireNow key is. Only a reply without it is a failed ask.
+    if t._guard() and "canFireNow" not in (r or {}):
         raise ExpectationFailed("fire_incident dryRun %s failed: %r" % (incident, r))
     return (r or {}).get("canFireNow")
 
