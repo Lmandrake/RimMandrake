@@ -156,3 +156,59 @@ question, because the wiring is nearly uniform:
   the canon library, per xenotype, once he has picked cut-vs-spawn-block.
 - If he picks spawn-block: the list of faction xenotype sets to patch is in the raw
   output, faction by faction.
+
+
+---
+
+# FOUNDRY cut plan, 2026-10-03 (after the owner's ruling: CUT the twelve entirely)
+
+MEASURED against the load-13 def dump (637 mods, captured 2026-10-04T05:22:20Z) by a python
+walk over every def's fields, excluding description/label and `modExtensions` (the Outland
+artifact above). 211 defs carry a structural reference; the ones that decide the cut:
+
+## What the cut has to get past
+
+1. **xenotypeSets — 17 FactionDefs, ~45 PawnKindDefs** (Core/Royalty/Ideology/Biotech/Anomaly/
+   Odyssey + VFE Empire/Pirates, BigSmall, OrcClan, VRE Saurid). ✅ **DONE as slice 1,
+   `ff934d915`** (`UtinniPatches/Patches/XenotypeCut_SpawnSets.xml`): one Conditional>Remove per
+   xenotype at `Defs/*/xenotypeSet/xenotypeChances/<X>` (XenotypeChance loads by NODE NAME). The
+   unassigned chance falls to Baseliner, so no faction or pawnkind is left unable to make a pawn.
+   Five factions become all-baseliner (OutlanderRoughPig, PirateYttakin, TribeRoughNeanderthal,
+   TribeSavageImpid, VRESaurids_OutlanderRoughSaurid); all five are already zeroed out of world
+   creation by `FactionSlate/OnlyOurFactions.xml`. Whether any of them sits on the FROZEN world is
+   UNMEASURED here (needs the canonical .rws read through `savemap.py`, never a grep). Check:
+   `selftest_xenotype_cut_spawnsets.py` (217 dump references, 0 uncovered, 4 mutants red).
+2. 🔴 **Sanguophage cannot simply be deleted.** `XenotypeDefOf.Sanguophage` is a
+   `[MayRequireBiotech]` DefOf binding (RimSage): with Biotech active (always, per the all-DLC
+   ruling) a missing def is a startup error and every engine path that compares against it reads
+   null. It also owns the `Sanguophages` faction (`basicMemberKind` Sanguophage), the
+   `Sanguophage`/`Sanguophage_Player` pawnkinds, the `Sanguophage` ScenarioDef, the AbilityCategoryDef
+   of the same name and 46 own gene/ability defs. Slice 1 removed it only from the VFE Empire noble
+   sets. ⇒ the honest shape is "unreachable, def kept": suppress the faction/scenario/quest routes,
+   keep the XenotypeDef. That is a variance from "remove the definition" and goes back to him.
+3. 🔴 **Our own content uses two of them.** Inhabited CharacterDefs: `Inhabited_Empire_DrillInstructorHeskVaro`
+   (race Hussar) and four Wildsteam crew `Inhabited_Wildsteam_{BoKesh,HakkoVurr,PellYoon,YorrumPell}`
+   (race Yttakin). Cutting the defs breaks them; each needs a Star Wars species chosen (design call).
+4. **Name collision:** `Neanderthal` is ALSO a Beasts-of-the-Rim animal (ThingDef + PawnKindDef +
+   Corpse/Meat, 80 RecipeDef recipeUsers). Any cut must be typed `XenotypeDef/Neanderthal`; a
+   type-agnostic `cut_name` would take the animal too.
+5. `lazyfridaystudio.genesexpandedeyes` ships 12 `GeneGroups` defs named after these xenotypes;
+   `PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml` re-flavours them (delete each whole
+   `PatchOperationSequence` block when its def goes — the patch would otherwise fail red).
+6. **The canonical save:** any saved pawn carrying one of the twelve loses its xenotype on load
+   once the def is gone (Scribe "Could not load reference"). UNMEASURED; read the save first.
+
+## 🔑 The ruling's own premise is wider than the list
+
+*"Only Star Wars xenotypes are supposed to be here."* The load holds **115 XenotypeDefs**:
+70 ours (`mandrake.rsw.starwarsraces`) + 1 `RSW_Jawa_Xeno_Gamorrean`, the 12, Baseliner — and
+**32 more non-Star-Wars xenotypes nobody listed**: AlphaGenes 15 (`AG_*`, `VRE_Ocularkin`),
+Phytokin 3, the det.* singles (Avaloi, Bogleg, Brawnum, Buzzer, Keshig, Venator), BX_Beliar,
+HBX_Highborn, KAR_Orc, VRE_Archon, VRE_Fungoid, XylTitan, BS_FrostJotunInBlue. `DV_Buzzer`
+alone is 12.4% of PirateWaster. Filed for him as one question, not 32.
+
+## Split
+- `VANILLA_XENOTYPE_CUT_SPAWNSETS_1` — slice 1, closed `ff934d915`.
+- `VANILLA_XENOTYPE_DEFCUT_1` — slice 2: Cherry Picker typed cuts of the eleven, PawnFlavor block
+  deletion, Inhabited repoint, save read; Sanguophage as "unreachable, def kept" pending his word.
+- `NONSW_XENOTYPES_SCOPE_1` (BENCH, needs owner) — do the other 32 go the same way?
