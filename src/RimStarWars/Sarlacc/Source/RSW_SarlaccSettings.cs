@@ -58,6 +58,9 @@ namespace RimMandrake.StarWars.Sarlacc
         /// patch of shade breaks from it at once.</summary>
         public static bool rootingEvacuatesPatch = true;
 
+        /// <summary>The road/seep swimmer's under-sand grinding (vanilla FleshbeastDigging) while it moves.</summary>
+        public static bool swimmerGrindSoundEnabled = true;
+
         /// <summary>STILLSAND_EVENT_CREATURES_REMAINDER_1: the once-per-map incident (Stillsand maps)
         /// in which one swimmer swims for the largest buried seep and roots there.</summary>
         public static bool swimmerSeepEnabled = true;
@@ -75,6 +78,7 @@ namespace RimMandrake.StarWars.Sarlacc
             Scribe_Values.Look(ref takeSignsEnabled, "takeSignsEnabled", true);
             Scribe_Values.Look(ref swimmerRoadEnabled, "swimmerRoadEnabled", true);
             Scribe_Values.Look(ref rootingEvacuatesPatch, "rootingEvacuatesPatch", true);
+            Scribe_Values.Look(ref swimmerGrindSoundEnabled, "swimmerGrindSoundEnabled", true);
             Scribe_Values.Look(ref swimmerSeepEnabled, "swimmerSeepEnabled", true);
         }
 
@@ -119,6 +123,9 @@ namespace RimMandrake.StarWars.Sarlacc
             list.CheckboxLabeled("Rooting empties the patch", ref rootingEvacuatesPatch,
                 "When the road swimmer roots, every wild animal sheltering in that shade breaks from "
               + "it at once. Off: they stay until the mouth takes one.");
+            list.CheckboxLabeled("Swimmer grinds under the sand", ref swimmerGrindSoundEnabled,
+                "While the road or seep swimmer is moving you hear it grinding under the sand. Off: it "
+              + "moves silently. Sound only; no effect on play.");
             list.GapLine();
 
             list.Label("The swimmer comes to root (Stillsand)");

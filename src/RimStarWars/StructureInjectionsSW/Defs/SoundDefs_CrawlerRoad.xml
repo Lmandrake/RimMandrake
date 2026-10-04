@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SoundDefs_CrawlerRoad.xml     LONGSHADE_BEDAZZLE_MECHANICS_1 (§6.4 "What you hear": the wrecks' ticking metal)
+
+  Owner ruling 2026-10-03 (FOUNDRY.md 'Audio'): vanilla sounds ship as final. This is vanilla Tick_Tiny's own
+  grain folder (UI/TickTiny, Core), played as a sparse irregular sustainer on each metal wreck of the Crawler Road
+  via vanilla CompAmbientSound: hot plate ticking in the low sun. Interval and volume are PROVISIONAL.
+  The wrecks need tickerType Normal: CompAmbientSound maintains its sustainer from CompTick.
+-->
+<Defs>
+
+  <SoundDef>
+    <defName>RSW_WreckMetalTick</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <maxSimultaneous>2</maxSimultaneous>
+    <subSounds>
+      <li>
+        <muteWhenPaused>True</muteWhenPaused>
+        <grains>
+          <li Class="AudioGrain_Folder">
+            <clipFolderPath>UI/TickTiny</clipFolderPath>
+          </li>
+        </grains>
+        <volumeRange>6~10</volumeRange>          <!-- PROVISIONAL -->
+        <pitchRange>0.55~0.8</pitchRange>        <!-- PROVISIONAL: lower than the UI tick, reads as plate -->
+        <distRange>6~28</distRange>              <!-- PROVISIONAL -->
+        <sustainLoop>False</sustainLoop>
+        <sustainIntervalRange>1.5~6</sustainIntervalRange>  <!-- PROVISIONAL: seconds between ticks -->
+      </li>
+    </subSounds>
+  </SoundDef>
+
+</Defs>

@@ -67,7 +67,13 @@
     </statBases>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
-    <tickerType>Never</tickerType>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <!-- the wreck's ticking metal (SoundDefs_CrawlerRoad.xml; vanilla clip, PROVISIONAL pacing) -->
+      <li Class="CompProperties_AmbientSound">
+        <sound>RSW_WreckMetalTick</sound>
+      </li>
+    </comps>
   </ThingDef>
 
   <ThingDef>
@@ -118,7 +124,13 @@
     </statBases>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
-    <tickerType>Never</tickerType>
+    <tickerType>Normal</tickerType>
+    <comps>
+      <!-- the wreck's ticking metal (SoundDefs_CrawlerRoad.xml; vanilla clip, PROVISIONAL pacing) -->
+      <li Class="CompProperties_AmbientSound">
+        <sound>RSW_WreckMetalTick</sound>
+      </li>
+    </comps>
   </ThingDef>
 
   <!-- The road's terminus: the shipped dead sandcrawler plan, centred on the

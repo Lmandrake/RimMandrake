@@ -39,3 +39,17 @@ smaller ideas are deferred to `LONGSHADE_SHADE_EXTRAS_1`.
   toggle.
 - Every swimmer or mirrak kill leaves a visible sign; the test checks for it.
 - The swimmer is proven one-per-map.
+
+## tuning + audio pass (2026-10-03, round 36)
+
+Owner rulings 2026-10-03: vanilla audio ships as final; first-guess numbers ship marked PROVISIONAL.
+
+- **PROVISIONAL numbers** (def comments say so): mirrak wildAnimals weight 0.05; `RSW_SwimmerRoad`
+  baseChance 0.6, earliestDay 20; Crawler Road spacingFactor 0.8 (spacingCells 6~24, minGapSpacings 1.5,
+  maxGapCells 160); sun graves count 1~3, load silver 80 / components 2 / herbal medicine 4 / pemmican 20,
+  readableChance 0.5; wreck tick interval 1.5~6 s, volume 6~10, pitch 0.55~0.8.
+- **Audio (vanilla):** the swimmer's under-sand grinding is Anomaly `FleshbeastDigging` as a sustainer while
+  the road/seep swimmer moves (setting `swimmerGrindSoundEnabled`); the metal wrecks (skiff, crawler tread)
+  tick via vanilla `CompAmbientSound` + `RSW_WreckMetalTick` (vanilla Tick_Tiny grain folder; wrecks now
+  tickerType Normal). First script: `src/RimStarWars/Sarlacc/selftest_longshade_audio.py`.
+- Still owed: the quicktests (game-up) and the mirrak haze (smoke calendar, unbuilt).

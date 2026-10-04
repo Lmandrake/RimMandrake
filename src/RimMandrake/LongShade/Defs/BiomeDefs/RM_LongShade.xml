@@ -210,7 +210,8 @@
       <RM_Pirrik>0.2</RM_Pirrik>
       <!-- LONGSHADE_BEDAZZLE_MECHANICS_1 tranche 2: the mirrak, the false-shadow
            ambusher (RM_LongShade_Mirrak.xml), wired once its art landed. 0.05 is
-           the dakkra's weight, the other rare ambusher; a first value. -->
+           the dakkra's weight, the other rare ambusher. PROVISIONAL (owner ruling
+           2026-10-03: first-guess numbers ship, tuned live later). -->
       <RM_Mirrak>0.05</RM_Mirrak>
       <!-- LONGSHADE_BEDAZZLE_CONTENT_1 point 8: the four owner-kept animal fills
            (RM_LongShade_Fills.xml). Weights are first values: rare ambusher, common
