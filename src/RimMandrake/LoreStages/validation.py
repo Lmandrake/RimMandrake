@@ -70,6 +70,64 @@ def static_checks():
     return bad
 
 
+# LORESTAGES_COVERAGE_GAPS_1: the Source/SelfTest exe (run by Utils/selftest_lore_stages.py against the real
+# Assembly-CSharp.dll) is the offline proof of the stage mechanism; these are the cases a chain demands from it.
+SELFTEST_REQUIRED = (
+    "stage change busts ThingDef.descriptionDetailedCached",
+    "stage change busts HediffDef.descriptionCached",
+    "highest rung at or below the current stage wins",
+    "a non-description field on a non-ThingDef stages too (settleWarning)",
+    "RESET: a lower stage does not inherit a higher stage's text",
+    "RESET: stage 0 restores the shipped strings byte for byte",
+    "NEGATIVE CONTROL: ThingDef.DescriptionDetailed really is memoized",
+)
+
+
+def offline_selftest_proof(runner=None):
+    """None when dotnet.exe is unreachable (UNMEASURED; a missing SelfTest project is a FAIL), else a list of problems: the run must
+    pass N/N with N >= the required cases, and every required case must print `ok`."""
+    import subprocess
+    runner = runner or os.path.join(HERE, "..", "Utils", "selftest_lore_stages.py")
+    try:
+        r = subprocess.run([sys.executable, runner], capture_output=True, text=True, timeout=300)
+    except (OSError, subprocess.TimeoutExpired) as e:
+        return ["SelfTest runner did not finish: %s" % e]
+    out = (r.stdout or "") + (r.stderr or "")
+    if "dotnet.exe not found" in out and r.returncode != 0:
+        return None
+    bad = []
+    m = re.search(r"(\d+)/(\d+) passed", out)
+    if not m or m.group(1) != m.group(2) or int(m.group(2)) < len(SELFTEST_REQUIRED) or r.returncode != 0:
+        bad.append("SelfTest not clean (rc=%s, tally %r)" % (r.returncode, m.group(0) if m else None))
+    for case in SELFTEST_REQUIRED:
+        if not re.search(r"^ok\s+%s" % re.escape(case), out, re.M):
+            bad.append("SelfTest case missing or not ok: %s" % case)
+    return bad
+
+
+def mechanism_static_problems(read=None):
+    """The two behaviours a live session cannot reach, read from the C#: master toggle off -> every ladder reads
+    stage 0 through the same reset-and-apply the SelfTest proves restores shipped text; and per-ladder stage is
+    Scribed and re-applied on every load (FinalizeInit), so a save carries it."""
+    read = read or _read
+    gc = re.sub(r"//[^\n]*", "", read("GameComponent_LoreStage.cs"))
+    mod = read("RM_LoreStagesMod.cs")
+    bad = []
+    if not re.search(r"EffectiveStage\s*\(string\s+\w+\)\s*\{\s*return\s+RM_LoreStagesSettings\.stagedTextEnabled\s*\?\s*GetStage\(\w+\)\s*:\s*0\s*;", gc):
+        bad.append("EffectiveStage no longer returns 0 when stagedTextEnabled is off")
+    if not re.search(r"ResetAndApply\(\s*tables\s*,\s*EffectiveStage\s*,", gc):
+        bad.append("Apply does not feed EffectiveStage to ResetAndApply (the toggle would gate nothing)")
+    if "Reapply()" not in mod:
+        bad.append("the settings checkbox no longer calls Reapply (flipping the toggle changes nothing until a load)")
+    if not re.search(r'Scribe_Collections\.Look\(ref\s+stages\s*,\s*"loreStages"\s*,\s*LookMode\.Value\s*,\s*LookMode\.Value\)', gc):
+        bad.append("per-ladder stages are not Scribed as loreStages (Value/Value): a save loses progress")
+    if not re.search(r"if\s*\(\s*stages\s*==\s*null\s*\)\s*\{?\s*stages\s*=\s*new", gc):
+        bad.append("no null guard after Scribe: an old save with no loreStages NREs every read")
+    if not re.search(r"FinalizeInit\(\)\s*\{\s*base\.FinalizeInit\(\);\s*Apply\(\);", gc):
+        bad.append("FinalizeInit no longer re-applies: a loaded save would show the previous game's stage text")
+    return bad
+
+
 try:
     _UTILS = os.path.join(HERE, "..", "Utils")
     if os.path.isdir(_UTILS) and _UTILS not in sys.path:
@@ -181,6 +239,22 @@ def _build_suite():
                 f = (rows[0].get("fields") or {}) if rows else {}
                 if not str(f.get("description") or "").strip():
                     raise ExpectationFailed("staged target has an empty description: the reset-to-baseline snapshot would be blank")
+
+    @suite.chain("offline_mechanism")
+    def offline_mechanism(t):
+        """Static/offline (no bridge): the stage mechanism through the real-DLL SelfTest, and the toggle-off and
+        save/load paths read from the C#. Live save/load readback stays UNMEASURED (no bridge save-reload verb
+        in this suite); the live rung walk is stage_walk below."""
+        with t.component("selftest_proves_stage_rewrite_and_reset", toggle="stagedTextEnabled"):
+            bad = offline_selftest_proof()
+            if bad is None:
+                _unmeasured(t, "dotnet.exe is unreachable from this machine (Windows-side .NET SDK)")
+            elif bad:
+                raise ExpectationFailed("; ".join(bad))
+        with t.component("toggle_off_and_scribe_paths_wired", toggle="stagedTextEnabled"):
+            bad = mechanism_static_problems()
+            if bad:
+                raise ExpectationFailed("; ".join(bad))
 
     @suite.chain("stage_walk")
     def stage_walk(t):
