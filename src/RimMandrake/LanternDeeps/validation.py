@@ -136,9 +136,9 @@ def defs_resolve_as_documented(t):
     """Walk steps 2-5: every field the module docstring/walk doc claims,
     read back live rather than assumed from the XML on disk."""
     with t.component("emergence_thingdef_fields", beyond_toggle=True):
-        r = t.bridge_call("jawa/get_defs", defs="ThingDef/%s" % EMERGENCE_THING,
-                          fields="thingClass")
-        if not r or "MapPortal" not in str(r):
+        # jawa/get_defs cannot read System.Type fields ('(no such field)'); jawa/get_def carries thingClass under extra.
+        r = t.bridge_call("jawa/get_def", defType="ThingDef", defName=EMERGENCE_THING)
+        if not r or "MapPortal" not in str(((r or {}).get("extra") or {}).get("thingClass")):
             raise ExpectationFailed(
                 "ThingDef/%s thingClass did not read back as MapPortal: %r"
                 % (EMERGENCE_THING, r))
@@ -454,7 +454,7 @@ def orun_ghal(t):
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
     with t.component("orun_ghal_placed", toggle="orunGhalEnabled"):
-        r = t.bridge_call("jawa/static_call", type=OG, method="ProofPlace", args="")
+        r = t.bridge_call("jawa/static_call", type=OG, method="ProofPlace", args="current")
         res = str((r or {}).get("result", ""))
         if t._guard() and not res.startswith("placed"):
             raise ExpectationFailed("Orun-Ghal not placed: %r" % (r,))
@@ -484,7 +484,7 @@ def hydrocarbon_wave1(t):
         if t._guard() and ("killedHot=False" not in cold or "killedHot=True" not in hot):
             raise ExpectationFailed("ignition gate wrong: cold=%r hot=%r" % (cold, hot))
     with t.component("galuush_hung_in_a_deep", toggle="galuushEnabled"):
-        r = t.bridge_call("jawa/static_call", type=HP, method="ProofGaluush", args="")
+        r = t.bridge_call("jawa/static_call", type=HP, method="ProofGaluush", args="current")
         res = str((r or {}).get("result", ""))
         if t._guard() and not res.startswith("placed"):
             raise ExpectationFailed("galuush not placed: %r" % (r,))
