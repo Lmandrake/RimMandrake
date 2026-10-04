@@ -10,7 +10,9 @@
 
 Drop the cable onto a cave mouth or dungeon entrance within reach, or onto a cell nobody can walk to from the hoist (a pit floor, a cliff shelf), then load it like any portal: items, colonists awake, prisoners, slaves, tame animals, the downed. Downed strangers arrive as your prisoners and downed wild beasts arrive bound in the restraint cradle. Transit is a timer, heavier loads longer. Raise the cradle to bring up what waits below. Every arrival is written to the hoist's Manifest tab. The ship will not launch while a cable is down (tether lock), and an Open Line count rises on the map while it is.
 
-Mod Settings: master switch, ship-only placement, tether lock, colonists may ride, downed strangers and beasts, Open Line meter, cycle time, cable reach, restraint hours.</description>
+Buyer pits: a sealed pit whose keepers buy what a hoist lowers in (slaves, prisoners, beasts) and send the silver back up the cable, sealed against lifting until the place is taken. The Hutt slave pit site uses it.
+
+Mod Settings: master switch, ship-only placement, tether lock, colonists may ride, downed strangers and beasts, Open Line meter, cycle time, cable reach, restraint hours, buyer pit sales, pit price share, arena weeks, arena fighter bonus, buyer pit sites.</description>
   <modDependencies>
     <li>
       <packageId>brrainz.harmony</packageId>

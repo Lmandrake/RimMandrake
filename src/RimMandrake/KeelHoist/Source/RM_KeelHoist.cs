@@ -254,7 +254,7 @@ namespace RimMandrake.KeelHoist
             if (intoHolder)
             {
                 transit.Remove(t);
-                if (targetHolder.Accept((Pawn)t))
+                if (targetHolder.Accept((Pawn)t, this))
                 {
                     dropped = t;
                 }
@@ -385,6 +385,22 @@ namespace RimMandrake.KeelHoist
             else
             {
                 targetCell = target.Cell;
+            }
+        }
+
+        /// <summary>Proof hook (RM_PitBuyerProof): everything now in transit arrives at once.</summary>
+        public void DebugArriveAllNow()
+        {
+            for (int i = 0; i < arriveAt.Count; i++)
+            {
+                arriveAt[i] = 0;
+            }
+            for (int i = transit.Count - 1; i >= 0; i--)
+            {
+                if (i < transit.Count)
+                {
+                    Arrive(i);
+                }
             }
         }
 

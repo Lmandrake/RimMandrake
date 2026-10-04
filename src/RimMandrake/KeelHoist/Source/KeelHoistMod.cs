@@ -19,6 +19,12 @@ namespace RimMandrake.KeelHoist
         public static float cycleTimeMultiplier = 1f;
         public static float cableRange = 14f;
         public static float restraintHours = 24f;
+        // HUTT_SLAVE_PIT_SITE_BUILD_1: buyer pits (the Hutt slave pit is the first).
+        public static bool pitSales = true;
+        public static float pitPriceMultiplier = 0.6f;
+        public static bool pitArenaHints = true;
+        public static float arenaFighterBonus = 1.3f;
+        public static bool pitSites = true;
 
         public override void ExposeData()
         {
@@ -32,6 +38,11 @@ namespace RimMandrake.KeelHoist
             Scribe_Values.Look(ref cycleTimeMultiplier, "cycleTimeMultiplier", 1f);
             Scribe_Values.Look(ref cableRange, "cableRange", 14f);
             Scribe_Values.Look(ref restraintHours, "restraintHours", 24f);
+            Scribe_Values.Look(ref pitSales, "pitSales", true);
+            Scribe_Values.Look(ref pitPriceMultiplier, "pitPriceMultiplier", 0.6f);
+            Scribe_Values.Look(ref pitArenaHints, "pitArenaHints", true);
+            Scribe_Values.Look(ref arenaFighterBonus, "arenaFighterBonus", 1.3f);
+            Scribe_Values.Look(ref pitSites, "pitSites", true);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -62,6 +73,20 @@ namespace RimMandrake.KeelHoist
             cableRange = Mathf.Round(list.Slider(cableRange, 4f, 40f));
             list.Label("Restraint cradle holds a wild beast for (hours): " + Mathf.RoundToInt(restraintHours));
             restraintHours = Mathf.Round(list.Slider(restraintHours, 1f, 72f));
+            list.GapLine();
+            list.CheckboxLabeled("Buyer pits pay for what is lowered in", ref pitSales,
+                "Shipped default: ON. At a pit whose keepers buy (the Hutt slave pit), a slave, prisoner or beast "
+              + "lowered in is sold and the silver comes up the cable. Off: the pit takes them and pays nothing.");
+            list.Label("Pit price, share of market value: " + pitPriceMultiplier.ToStringPercent());
+            pitPriceMultiplier = list.Slider(pitPriceMultiplier, 0.1f, 2f);
+            list.CheckboxLabeled("Arena weeks (fighters fetch more)", ref pitArenaHints,
+                "Shipped default: ON. One week in two the pit's arena is short of fighters, and a fighter (melee 8+, "
+              + "or a beast of combat power 100+) sells for the bonus below.");
+            list.Label("Arena fighter bonus: x" + arenaFighterBonus.ToString("0.00"));
+            arenaFighterBonus = list.Slider(arenaFighterBonus, 1f, 3f);
+            list.CheckboxLabeled("Buyer pit sites may be offered", ref pitSites,
+                "Shipped default: ON. Quests may offer a buyer pit site (the Hutt slave pit) a few tiles away. "
+              + "Off: no new site is offered; existing ones stay.");
             list.End();
         }
     }

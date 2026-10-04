@@ -46,6 +46,11 @@ namespace RimMandrake.KeelHoist
             {
                 ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.Downed);
             }
+            if (((RM_KeelHoist)___portal).targetHolder?.Buyer != null)
+            {
+                // HUTT_SLAVE_PIT_SITE_BUILD_1: a buyer pit never takes a free colonist, downed or not.
+                ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.IsSlave);
+            }
 
             if (!KeelHoistSettings.downedStrangersAndBeasts)
             {

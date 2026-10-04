@@ -22,7 +22,8 @@ from modcheck import Suite, ExpectationFailed
 suite = Suite("KeelHoist")
 suite.toggles = ["masterEnabled", "requireGravEngine", "tetherLock", "colonistsMayRide",
                  "downedStrangersAndBeasts", "openLineMeter", "cycleTimeMultiplier", "cableRange",
-                 "restraintHours"]
+                 "restraintHours", "pitSales", "pitPriceMultiplier", "pitArenaHints", "arenaFighterBonus",
+                 "pitSites"]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -125,6 +126,80 @@ def fixed_site_frames(t):
             raise ExpectationFailed("frame defs missing live: %r" % r)
 
 
+HUTT_XML = os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Defs", "HuttSlavePit", "RUT_HuttSlavePit.xml")
+PROOF = "RimMandrake.KeelHoist.RM_PitBuyerProof"
+
+
+def _proof(t, method, arg):
+    """jawa/static_call into RM_PitBuyerProof. No session -> UNMEASURED (never a silent PASS)."""
+    if t.session is None:
+        t.upstream_reason = "UNMEASURED: no bridge session for %s" % method
+        t.upstream_failed = True
+        return None
+    r = t.bridge_call("jawa/static_call", type=PROOF, method=method, args=arg)
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    if text.startswith("UNMEASURED"):
+        t.upstream_reason = text
+        t.upstream_failed = True
+        return None
+    return text
+
+
+@suite.chain("hutt_slave_pit")
+def hutt_slave_pit(t):
+    """HUTT_SLAVE_PIT_SITE_BUILD_1: the generic buyer pit (RM_PitBuyer.cs) and the Hutt site that uses it (RUT XML).
+    Live: ProofLayOut lays the RUT_HuttSlavePit site part out on the CURRENT map (needs the Hutt Cartel faction in
+    the world for keepers), ProofSell lowers a fresh colony prisoner through the head-frame and runs both trips,
+    ProofGate raises the cradle while keepers stand (refused) then after killing them (lifted, arriving prisoners)."""
+    t.clear_area(size=8)
+    with t.component("hutt_site_defs_are_data_on_generic_classes", beyond_toggle=True):
+        root = ET.parse(HUTT_XML).getroot()
+        names = {(d.tag, d.findtext("defName")) for d in root}
+        want = {("ThingDef", "RUT_HuttSlavePitShaft"), ("SitePartDef", "RUT_HuttSlavePit"), ("QuestScriptDef", "RUT_Quest_HuttSlavePit")}
+        if names != want:   # sanity probe: the instrument reads exactly the three defs
+            raise ExpectationFailed("read %s" % sorted(names))
+        for d in root:
+            if d.get("MayRequire") != "mandrake.rm.keelhoist":
+                raise ExpectationFailed("%s is not MayRequire'd on the keel hoist" % d.findtext("defName"))
+        shaft = root.find("ThingDef")
+        if shaft.findtext("thingClass") != "RimMandrake.KeelHoist.RM_SealedHolder" or \
+                shaft.find("modExtensions/li[@Class='RimMandrake.KeelHoist.RM_PitBuyerExtension']") is None:
+            raise ExpectationFailed("the shaft is not a buyer holder")
+        ext = root.find("SitePartDef/modExtensions/li")
+        if ext is None or ext.findtext("holderDef") != "RUT_HuttSlavePitShaft" or ext.findtext("factionDef") != "RUT_Jawa_HuttCartel":
+            raise ExpectationFailed("site part does not lay out the shaft for the Hutt Cartel")
+        if "RimMandrake.KeelHoist.RM_QuestNode_BuyerPitSite" not in [li.get("Class") for li in root.iter("li")]:
+            raise ExpectationFailed("the quest never makes the site")
+    with t.component("no_free_colonist_is_ever_sold", beyond_toggle=True):
+        holder, patches = _src("RM_HoistFrame.cs"), _src("KeelHoistPatches.cs")
+        can = holder[holder.index("public virtual bool CanAccept"):holder.index("public bool Accept(")]
+        acc = holder[holder.index("public bool Accept("):holder.index("public List<Pawn> TakeAll()")]
+        if "p.IsColonist && !p.IsSlave" not in can or acc.find("CanAccept") < 0 or acc.find("CanAccept") > acc.find("DeSpawn"):
+            raise ExpectationFailed("a colonist can reach the pit before the refusal")
+        if "IsColonist && !p.IsSlave" not in patches:
+            raise ExpectationFailed("the lowering dialog still lists free colonists for a buyer pit")
+    with t.component("pit_laid_out_with_frame_and_keepers", toggle="pitSites"):
+        text = _proof(t, "ProofLayOut", "RUT_HuttSlavePit")
+        if text is not None:
+            if not text.startswith("LAIDOUT") or "frame=none" in text or "keepers=0" in text or "gate=False" not in text:
+                raise ExpectationFailed("layout: %s" % text[:240])
+            t.screenshot()
+    with t.component("lowered_prisoner_sold_for_silver", toggle="pitSales"):
+        text = _proof(t, "ProofSell", "Slave")
+        if text is not None:
+            m = re.search(r"silverOnMap=(\d+)", text)
+            if not text.startswith("SOLD") or not m or int(m.group(1)) < 1:
+                raise ExpectationFailed("sale: %s" % text[:240])
+    with t.component("oubliette_sealed_until_taken", beyond_toggle=True):
+        sealed = _proof(t, "ProofGate", "hold")
+        if sealed is not None:
+            if "open=False" not in sealed or not re.search(r"heldBefore=(\d+) heldAfter=\1\b", sealed):
+                raise ExpectationFailed("pit opened while its keepers stand: %s" % sealed[:240])
+            taken = _proof(t, "ProofGate", "conquer")
+            if taken is not None and ("open=True" not in taken or "heldAfter=0" not in taken):
+                raise ExpectationFailed("taken pit did not give up its slaves: %s" % taken[:240])
+
+
 # Live mechanics are NOT components here: a component with nothing to ask would record PASS. They are walk lines
 # marked UNCOVERED until a drive exists (walk: design/validation_walks/RimMandrake/KeelHoist.md):
 #   items + a downed wild animal down RM_LanternDeepMineshaft and back up, manifest 2 DOWN + 2 UP, beast restrained;
@@ -132,3 +207,5 @@ def fixed_site_frames(t):
 #   a downed hostile humanlike lowered to a cell target arrives IsPrisonerOfColony;
 #   a Forge home map with a foundry tower door gets a paired RM_HoistFrame beside it (RM_HoistFrames genstep);
 #   RM_SealedPit owned by a faction with able members on the map refuses Raise cradle, and lifts once they are gone.
+#   (Hutt pit) a caravan or a peacefully landed gravship reaches RUT_HuttSlavePit (GRAVSHIP_PEACEFUL_SETTLEMENT_LANDING_1)
+#   and sells a downed WILD beast through the dialog; the arena-week price bonus is read off the inspect string.

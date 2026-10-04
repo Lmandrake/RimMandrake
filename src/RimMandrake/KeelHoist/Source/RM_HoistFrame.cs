@@ -44,20 +44,83 @@ namespace RimMandrake.KeelHoist
         {
             base.ExposeData();
             Scribe_Deep.Look(ref held, "held", this);
+            Scribe_Collections.Look(ref sales, "sales", LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && held == null)
             {
                 held = new ThingOwner<Pawn>(this, oneStackOnly: false);
             }
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && sales == null)
+            {
+                sales = new List<RM_PitSaleRecord>();
+            }
         }
 
-        public bool Accept(Pawn p)
+        // HUTT_SLAVE_PIT_SITE_BUILD_1: a holder whose def carries RM_PitBuyerExtension is a buyer pit. Its keepers
+        // pay for what a hoist lowers into it while they hold the place and are not at war with the player.
+        public List<RM_PitSaleRecord> sales = new List<RM_PitSaleRecord>();
+
+        public RM_PitBuyerExtension Buyer => def.GetModExtension<RM_PitBuyerExtension>();
+
+        public bool KeepersBuying => Buyer != null && KeelHoistSettings.pitSales && Faction != null && Faction != Faction.OfPlayer
+                                     && !Faction.HostileTo(Faction.OfPlayer) && !GateOpen(out _);
+
+        public virtual bool CanAccept(Pawn p, out string reason)
         {
+            reason = null;
+            if (Buyer == null)
+            {
+                return true;
+            }
+            if (p.IsColonist && !p.IsSlave)
+            {
+                reason = Buyer.buyerLabel.CapitalizeFirst() + " will not take one of your own colonists, and you would not get them back.";
+                return false;
+            }
+            if (Faction != null && Faction != Faction.OfPlayer && Faction.HostileTo(Faction.OfPlayer) && !GateOpen(out _))
+            {
+                reason = Buyer.buyerLabel.CapitalizeFirst() + " do not deal with enemies.";
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>Takes the pawn in. `via` is the hoist that lowered it (the silver goes back up its cable).</summary>
+        public bool Accept(Pawn p, RM_KeelHoist via = null, bool sale = true)
+        {
+            if (!CanAccept(p, out string reason))
+            {
+                if (via != null && reason != null)
+                {
+                    Messages.Message(reason, this, MessageTypeDefOf.RejectInput, historical: false);
+                }
+                return false;
+            }
+            bool paying = sale && via != null && KeepersBuying;
+            int price = paying ? RM_PitBuyerUtility.PriceFor(p, this) : 0;
+            bool fighter = paying && RM_PitBuyerUtility.IsFighter(p) && RM_PitBuyerUtility.ArenaWantsFightersNow(this);
             if (p.Spawned)
             {
                 p.DeSpawnOrDeselect();
             }
             p.holdingOwner?.Remove(p);
-            return held.TryAdd(p, canMergeWithExistingStacks: false);
+            if (!held.TryAdd(p, canMergeWithExistingStacks: false))
+            {
+                return false;
+            }
+            if (paying)
+            {
+                string label = p.LabelShortCap;
+                RM_PitBuyerUtility.TransferToBuyer(p, Faction);
+                RM_PitBuyerUtility.SendSilverUp(via, price, LabelCap);
+                sales.Add(new RM_PitSaleRecord { tick = Find.TickManager.TicksGame, label = label, silver = price, fighter = fighter });
+                string where = fighter
+                    ? "Fighters fetch more this week: " + label + " is bound for " + Buyer.arenaLabel + "."
+                    : label + " goes to " + Buyer.workLabel + ".";
+                Find.LetterStack.ReceiveLetter("Sold to the pit: " + label,
+                    Buyer.buyerLabel.CapitalizeFirst() + " paid " + price + " silver for " + label + ". The silver is coming up the cable.\n\n" + where,
+                    LetterDefOf.NeutralEvent, new LookTargets(via));
+            }
+            return true;
         }
 
         public List<Pawn> TakeAll()
@@ -92,6 +155,11 @@ namespace RimMandrake.KeelHoist
         {
             string s = base.GetInspectString();
             string mine = "Holds " + held.Count + ". " + (GateOpen(out string why) ? "Its keepers are gone: a hoist can lift them out." : "Sealed.");
+            if (KeepersBuying)
+            {
+                mine += "\n" + Buyer.buyerLabel.CapitalizeFirst() + " buy what a hoist lowers in (" + sales.Count + " sold here)."
+                        + (RM_PitBuyerUtility.ArenaWantsFightersNow(this) ? " Fighters fetch more this week." : "");
+            }
             return s.NullOrEmpty() ? mine : s + "\n" + mine;
         }
 
