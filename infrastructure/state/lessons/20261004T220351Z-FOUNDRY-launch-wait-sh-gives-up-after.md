@@ -1,0 +1,1 @@
+launch_and_wait.sh gives up after ~5 min but a cold load of the full 638-mod list takes ~13 min: wait for the 'Bridge token' line in Player.log (truncation-checked), do not read its timeout as a failed launch. The 9-mod messyconduit tier is up in ~20 s.

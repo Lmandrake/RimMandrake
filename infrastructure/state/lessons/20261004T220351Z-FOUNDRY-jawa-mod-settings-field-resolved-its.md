@@ -1,0 +1,1 @@
+jawa/mod_settings_field resolved its settings type by scanning every type in every loaded assembly on EVERY call (0.74 s on 638 mods); 88% of a 2,640 s MessyConduit matrix run was that one call. Cached the resolved type in the companion (commit 2ca399bde): 0.050 s per call, matrix 610 s then 338 s. Profile per-call time before optimising anything else.

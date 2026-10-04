@@ -1,0 +1,1 @@
+A powershell Stop-Process matched on CommandLine '*run_live*' silently matched nothing for python.exe processes launched from a UNC path, so 'stopped' matrix runs kept driving the same game and corrupted results (2026-10-04, 3 concurrent runs). Count Get-Process python* after every kill and kill by PID.
