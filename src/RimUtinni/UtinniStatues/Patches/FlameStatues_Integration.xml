@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FlameStatues_Integration.xml   UtinniStatues — FLAME_STATUES_MOD_BUILD_1, statue_mods_spec.md §2.3 + §2.5
+
+  Only when Mandrake Flame Statues (mandrake.rm.flamestatues) is loaded. PatchOperationFindMod matches the mod
+  NAME (ModLister.HasActiveModWithName), never the packageId, so the name below must track its About.xml.
+
+  1. Sh'kaar's burning idol swaps its single vanilla crown flame for the full palms+crown set (§2.5).
+     Offsets PROVISIONAL until rut_idol_shkaar_grand_v1 lands and the vents are measured from the PNG.
+  2. In the campaign the three flame statues burn Sumpgas (RM_TarGas, the def UtinniStatuesStartup.ApplyIdolFuel
+     uses) instead of chemfuel. Guarded on the def existing: a fuel filter naming an absent def errors at load.
+     Not gated by the "Sumpgas fuels the idol" setting (that is C# in this mod's DLL; XML cannot read it).
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Mandrake Flame Statues</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RUT_StatueGrand_Shkaar"]/comps/li[@Class="CompProperties_FireOverlay"]</xpath>
+          <value>
+            <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
+              <points>
+                <li><offset>(0.9,0,0.95)</offset><size>0.5</size></li>    <!-- right palm -->
+                <li><offset>(-0.9,0,0.95)</offset><size>0.5</size></li>   <!-- left palm -->
+                <li><offset>(0,0,1.8)</offset><size>0.8</size></li>       <!-- sun-disc crown bowl -->
+              </points>
+              <qualityScalingEnabled>true</qualityScalingEnabled>
+              <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RM_TarGas"]</xpath>
+          <match Class="PatchOperationSequence">
+            <operations>
+              <li Class="PatchOperationReplace">
+                <xpath>Defs/ThingDef[starts-with(defName,"RM_FlameStatue_")]/comps/li[@Class="CompProperties_Refuelable"]/fuelFilter</xpath>
+                <value>
+                  <fuelFilter><thingDefs><li>RM_TarGas</li></thingDefs></fuelFilter>
+                </value>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>Defs/ThingDef[starts-with(defName,"RM_FlameStatue_")]/comps/li[@Class="CompProperties_Refuelable"]/fuelLabel</xpath>
+                <value><fuelLabel>Sumpgas</fuelLabel></value>
+              </li>
+              <li Class="PatchOperationReplace">
+                <xpath>Defs/ThingDef[starts-with(defName,"RM_FlameStatue_")]/comps/li[@Class="CompProperties_Refuelable"]/fuelGizmoLabel</xpath>
+                <value><fuelGizmoLabel>Sumpgas</fuelGizmoLabel></value>
+              </li>
+            </operations>
+          </match>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
