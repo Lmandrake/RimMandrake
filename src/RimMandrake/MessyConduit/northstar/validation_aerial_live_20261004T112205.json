@@ -1,0 +1,399 @@
+{
+ "mod": "MessyConduit",
+ "mode": "live",
+ "script": "validation_aerial.py",
+ "tier": "messyconduit",
+ "started": "2026-10-04T11:21:46",
+ "rows": [
+  {
+   "id": "A0_scene_built",
+   "status": "PASS",
+   "class": "SITE",
+   "detail": {
+    "walls": 20,
+    "roof": true,
+    "battery": "Battery14086",
+    "stored": 600.0,
+    "masts": 3,
+    "lamp": 1,
+    "hostileMast": 1,
+    "anchors": [
+     [
+      92,
+      185
+     ],
+     [
+      104,
+      185
+     ],
+     [
+      110,
+      195
+     ],
+     [
+      116,
+      185
+     ]
+    ]
+   }
+  },
+  {
+   "id": "M13a_linked_one_net_across_gap",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nets": {
+     "m1": 2067637816,
+     "m2": 2067637816,
+     "m3": 2067637816
+    },
+    "gapCells": 12,
+    "spansUp": 2,
+    "autoLinks": 2,
+    "postfixAppends": 544,
+    "m1Live": true
+   }
+  },
+  {
+   "id": "M13b_far_consumer_powered",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "lamp": [
+     {
+      "id": 14090,
+      "def": "StandingLamp",
+      "faction": "New Arrivals",
+      "net": 2067637816,
+      "compNet": 2067637816,
+      "powerOn": true,
+      "outputW": -30
+     }
+    ],
+    "net": -1,
+    "live": null,
+    "note": "the lamp hooks to M3, 24 cells from the battery, across a walled ROOFED room (spans may pass over roofs)"
+   }
+  },
+  {
+   "id": "M13c_unlink_two_nets_relink_one",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "afterUnlink": {
+     "m1": 987467380,
+     "m2": 987467380,
+     "m3": 212913546
+    },
+    "lampOffAfterUnlink": true,
+    "afterRelink": {
+     "m1": 1654082690,
+     "m2": 1654082690,
+     "m3": 1654082690
+    }
+   }
+  },
+  {
+   "id": "M13d_refusals",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "m1->m3 (24 cells)": "OutOfRange",
+    "m3->hostile mast": "Foreign",
+    "m1->battery": "NotAnchor"
+   }
+  },
+  {
+   "id": "M13e_hostile_mast_not_autolinked",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "hostileMastLinks": []
+   }
+  },
+  {
+   "id": "R1_span_altitude_above_pawns_below_blueprints",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "pawn": 8.4146,
+    "pawnState": 9.1463,
+    "span": 9.3293,
+    "top": 9.2927,
+    "blueprint": 9.5122,
+    "weather": 11.3415
+   }
+  },
+  {
+   "id": "R2_spans_and_heads_drawn",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "spanDraws": 2,
+    "topDraws": 4,
+    "spanMeshes": 2,
+    "groundVerts": 4
+   }
+  },
+  {
+   "id": "M14_gap_control_without_fix",
+   "status": "PASS",
+   "class": "HARNESS",
+   "detail": {
+    "registeredNets": {
+     "m1": -1,
+     "m2": null,
+     "m3": -1
+    },
+    "compNets(stale pointer)": {
+     "m1": 1654082690,
+     "m3": 1654082690
+    },
+    "meaning": "PASS = the despawn gap is real: with the re-seed OFF both sides are left on NO registered net (their CompPower.transNet still points at the same deleted net: a same-net read alone looks healthy)"
+   }
+  },
+  {
+   "id": "M14a_remove_middle_both_ends_resolve",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nets": {
+     "m1": 377486744,
+     "m2": null,
+     "m3": 1750416558
+    },
+    "fallenCords(dismantle coils)": 0,
+    "netRepairs": [
+     0,
+     0
+    ],
+    "watchdogRuns": 2
+   }
+  },
+  {
+   "id": "M14b_dead_pole_drops_live_and_dead_cords",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "m1Fallen": [
+     {
+      "toward": [
+       104,
+       185
+      ],
+      "cutPartner": -1,
+      "pts": 14,
+      "laidLen": 3.4003,
+      "tip": [
+       95.75,
+       185.7862
+      ],
+      "blocked": true
+     }
+    ],
+    "m1Live": true,
+    "m3Fallen": [
+     {
+      "toward": [
+       104,
+       185
+      ],
+      "cutPartner": -1,
+      "pts": 48,
+      "laidLen": 12.3347,
+      "tip": [
+       104.75,
+       185.4583
+      ],
+      "blocked": false
+     }
+    ],
+    "m3Live": false,
+    "nets": {
+     "m1": 697601520,
+     "m2": null,
+     "m3": 2070531334
+    }
+   }
+  },
+  {
+   "id": "M14c_live_tip_glows",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": "look only (owner 2026-10-02): no shock; glow per frame at the live tip"
+  },
+  {
+   "id": "M15_explosion_cuts_span",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "cuts": 1,
+    "spansCut": 1,
+    "halves": [
+     {
+      "toward": [
+       110,
+       185
+      ],
+      "cutPartner": 14089,
+      "pts": 25,
+      "laidLen": 6.2635,
+      "tip": [
+       110.5,
+       185.6208
+      ],
+      "blocked": false
+     },
+     {
+      "toward": [
+       110,
+       185
+      ],
+      "cutPartner": 14101,
+      "pts": 25,
+      "laidLen": 6.284,
+      "tip": [
+       110.5,
+       185.3375
+      ],
+      "blocked": false
+     }
+    ],
+    "nets": {
+     "m1": 2114924454,
+     "m2": 2114924454,
+     "m3": 1868904182
+    },
+    "m2Live": true,
+    "m3Live": false
+   }
+  },
+  {
+   "id": "M15b_restring_rejoins",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "nets": {
+     "m1": 2120231568,
+     "m2": 2120231568,
+     "m3": 2120231568
+    }
+   }
+  },
+  {
+   "id": "R3_sway_proxy",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "on": {
+     "swayReason": "cpu",
+     "swayDraws": 2,
+     "wind": 0.4372,
+     "plantSwayPref": true
+    },
+    "off": {
+     "swayReason": "setting off",
+     "swayDraws": 0
+    }
+   }
+  },
+  {
+   "id": "M19_tap_drains_one_way",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "built": [
+     1,
+     2,
+     2,
+     1,
+     1
+    ],
+    "victimStoredSet": 600.0,
+    "tap": {
+     "id": 14109,
+     "ourNet": 98183036,
+     "victimNet": 99189130,
+     "victimFaction": "League of Ludweg",
+     "outputW": 500,
+     "powerOn": true,
+     "lastStolenW": 500,
+     "stolenTotalWd": 6.7916,
+     "connected": true,
+     "connectFaction": "New Arrivals"
+    },
+    "ourLamp": [
+     {
+      "id": 14108,
+      "def": "StandingLamp",
+      "faction": "New Arrivals",
+      "net": 98183036,
+      "compNet": 98183036,
+      "powerOn": true,
+      "outputW": -30
+     }
+    ],
+    "victimStored": [
+     599.9579,
+     598.1891,
+     593.1354
+    ],
+    "victimDrop600": 5.054,
+    "expectedDrop600~": 5.0,
+    "victimNet": 99189130,
+    "ourNet": 98183036,
+    "guardRefused": 0,
+    "tapEvents": 20
+   }
+  },
+  {
+   "id": "M19n_taps_off_control",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "ourLampDark": true,
+    "victimDrop600": 0.037,
+    "note": "battery self-discharge only (5 W ~ 0.05 Wd/600 ticks)"
+   }
+  },
+  {
+   "id": "AZ_log_budget",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "errors": [],
+    "newWarnings": 0,
+    "siteClearErrorsExcluded": 0
+   }
+  }
+ ],
+ "screenshots": [
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\aerial_01_lines_up.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\aerial_02_dead_pole_fallen_cords.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\aerial_03_explosion_cut_halves.png",
+  "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\messy_conduit_live_20261002\\aerial_04_power_tap_clamp.png"
+ ],
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "mandrake.rm.messyconduit"
+  ],
+  "running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623"
+ },
+ "mod_hash": "85c64359353674b33689d80e0b3792d583f8e8a08178363c921495c8dc7e8825",
+ "log": [],
+ "sceneIds": {
+  "m1": 14087,
+  "m3": 14089,
+  "hostileMast": 14091,
+  "battery": "Battery14086",
+  "hostileBattery": "Battery14103"
+ }
+}
