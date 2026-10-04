@@ -1,0 +1,479 @@
+{
+ "name": "Cauldron__fire__fire_on_map__t1029__001",
+ "when_utc": "2026-10-03T17:45:28Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "9 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 172,
+      "z": 169
+     },
+     {
+      "x": 173,
+      "z": 169
+     },
+     {
+      "x": 174,
+      "z": 169
+     },
+     {
+      "x": 172,
+      "z": 170
+     },
+     {
+      "x": 173,
+      "z": 170
+     },
+     {
+      "x": 174,
+      "z": 170
+     },
+     {
+      "x": 172,
+      "z": 171
+     },
+     {
+      "x": 173,
+      "z": 171
+     },
+     {
+      "x": 174,
+      "z": 171
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    172,
+    169
+   ],
+   "fingerprint": "fire_on_map:9"
+  }
+ ],
+ "snapshot": {
+  "tick": 1029,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Santos",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Santos",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thompson",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thompson",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Viktor",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Viktor",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Samantha",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Samantha",
+     979
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 4,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1029
+  },
+  "fires": 9,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "IntimacyGiver_Sex: Davis Jr cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Santos cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Schmitt is not generally well."
+  ],
+  [
+   "Message",
+   "Davis Jr failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser32762"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Thompson"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckledCheek to Thompson"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Viktor"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Viktor"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VHGE_GasGeyser39279"
+  ],
+  [
+   "Warning",
+   "[KindRelationEnforcer] \u5728 Pawn \u6b7b\u4ea1\u524d\u6e05\u7406\u4e86 1 \u6761\u5931\u6548\u76f4\u63a5\u5173\u7cfb\uff0c\u5df2\u963b\u6b62\u635f\u574f\u5173\u7cfb\u8fdb\u5165\u539f\u7248\u6b7b\u4ea1\u901a\u77e5\u3002"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Samantha"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Samantha"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 9.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 45.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] Message_Prefix called: 'A roof has collapsed because it was too far from any support.'"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] AcceptsMessage: True"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] Has Thing: False"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] No thing, allowing message through"
+  ],
+  [
+   "Warning",
+   "[RimAI.Core][P3][Scheduler] Long task 'GetPoweredAiServerThingIds' took 6 ms; origin=AIServerPart.GetPoweredAiServerThingIdsAsync <= WorldDataService.GetPoweredAiServerThingIdsAsync"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956985,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957055,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 50,
+  "overhead_spent": 0,
+  "total_spent": 50,
+  "epoch": 0,
+  "last_seen_tick": 1029,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 662,
+    "spent": 50
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 979,
+    "tick_to": 1029,
+    "ticks": 50,
+    "requested": 50
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "fire",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T104256\\Cauldron__fire__fire_on_map__t1029__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2556048,
+  "width": 1810,
+  "height": 1183,
+  "md5": "0aa9c7b97963b2ad12c996af7e860060",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,253 @@
+{
+ "name": "GelatinousSlime__exposure_and_ladder__raid_arrived__t587__001",
+ "when_utc": "2026-10-03T10:16:54Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): Half absorbed; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      101,
+      "Half absorbed"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@101"
+  }
+ ],
+ "snapshot": {
+  "tick": 587,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 88,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     88
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 101,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     101
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 112,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     112
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 115,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     115
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 121,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     121
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 587
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=24689"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=24689"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=0 elapsedMs=24690"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=2 elapsedMs=24693"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=24694"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=24694"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=24697"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=19 elapsedMs=24716"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=982 elapsedMs=24716"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=19 elapsedMs=24716"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: dab229e2df2e4239b1a3ee40943d7e7c"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 368 tools, build 8b156e606b93"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 13/927a774a, toolSet 621ec0dd, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 21487,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 586,
+  "overhead_spent": 0,
+  "total_spent": 586,
+  "epoch": 0,
+  "last_seen_tick": 587,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 2100,
+    "spent": 586
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 587,
+    "ticks": 586,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "GelatinousSlime",
+  "chain": "exposure_and_ladder",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T031622\\GelatinousSlime__exposure_and_ladder__raid_arrived__t587__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3567435,
+  "width": 1810,
+  "height": 1183,
+  "md5": "7f5d10b2683a1d6bd2b8f385f0074ffd",
+  "why": ""
+ },
+ "notes": []
+}

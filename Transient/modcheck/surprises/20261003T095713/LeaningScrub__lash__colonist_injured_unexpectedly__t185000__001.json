@@ -1,0 +1,1841 @@
+{
+ "name": "LeaningScrub__lash__colonist_injured_unexpectedly__t185000__001",
+ "when_utc": "2026-10-03T16:59:01Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human354",
+    "name": "Kinsei",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    183,
+    193
+   ],
+   "fingerprint": "colonist_injured:Human354:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Fernand gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human357",
+    "name": "Fernand",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    79,
+    248
+   ],
+   "fingerprint": "colonist_injured:Human357:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Ferrell gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human360",
+    "name": "Ferrell",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    34,
+    239
+   ],
+   "fingerprint": "colonist_injured:Human360:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Ingrid gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human39537",
+    "name": "Ingrid",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    157,
+    203
+   ],
+   "fingerprint": "colonist_injured:Human39537:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Crabby gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human42234",
+    "name": "Crabby",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    169,
+    208
+   ],
+   "fingerprint": "colonist_injured:Human42234:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Artemis gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46747",
+    "name": "Artemis",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    222,
+    161
+   ],
+   "fingerprint": "colonist_injured:Human46747:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Godders gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human51449",
+    "name": "Godders",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    223,
+    162
+   ],
+   "fingerprint": "colonist_injured:Human51449:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Timofei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human53152",
+    "name": "Timofei",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    216,
+    206
+   ],
+   "fingerprint": "colonist_injured:Human53152:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Fjellsmel gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human54827",
+    "name": "Fjellsmel",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    215,
+    206
+   ],
+   "fingerprint": "colonist_injured:Human54827:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Redfields gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human59450",
+    "name": "Redfields",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    208,
+    202
+   ],
+   "fingerprint": "colonist_injured:Human59450:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Susy gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human61171",
+    "name": "Susy",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    184,
+    196
+   ],
+   "fingerprint": "colonist_injured:Human61171:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Braz gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human63689",
+    "name": "Braz",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    166,
+    191
+   ],
+   "fingerprint": "colonist_injured:Human63689:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Vasilisa gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human78986",
+    "name": "Vasilisa",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    95,
+    74
+   ],
+   "fingerprint": "colonist_injured:Human78986:RM_SheenCoating@None"
+  },
+  {
+   "detector": "modal_open",
+   "severity": "SURPRISE",
+   "summary": "1 force-pause modal(s) open: RimWorld.Dialog_ModSettings",
+   "evidence": {
+    "windows": [
+     {
+      "type": "RimWorld.Dialog_ModSettings",
+      "title": null,
+      "isDebug": false,
+      "forcePause": true
+     }
+    ]
+   },
+   "suggest": [
+    "close_modals"
+   ],
+   "focus": null,
+   "fingerprint": "modal_open:RimWorld.Dialog_ModSettings"
+  }
+ ],
+ "snapshot": {
+  "tick": 185000,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human354",
+    "name": "Kinsei",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 183,
+    "z": 193,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_MaintainPosture",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human357",
+    "name": "Fernand",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 79,
+    "z": 248,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_YouthPassion",
+      "label": "youth passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_TraumaticPassion",
+      "label": "traumatic passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Clean",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human360",
+    "name": "Ferrell",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 34,
+    "z": 239,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_CompetitivePassion",
+      "label": "competitive passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Clean",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human39537",
+    "name": "Ingrid",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 157,
+    "z": 203,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_MoodyPassion",
+      "label": "moody passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_PaintGraffitiJob",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human42234",
+    "name": "Crabby",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 169,
+    "z": 208,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_VengefulPassion_Hediff",
+      "label": "vengeful passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Skygaze",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46747",
+    "name": "Artemis",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 222,
+    "z": 161,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 0.4603163
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.046772
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.04637677
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0299991239
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Liver",
+      "severity": 0.706772149
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.706772149
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.143428072,
+    "painTotal": 0.0298808478,
+    "census": true,
+    "job": "JobDateLead",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human51449",
+    "name": "Godders",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 223,
+    "z": 162,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (aching)",
+      "part": "Leg",
+      "severity": 3.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0562500022,
+    "census": true,
+    "job": "JobDateFollow",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human53152",
+    "name": "Timofei",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 216,
+    "z": 206,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "ScuttlebugInfection",
+      "label": "Parasitic Infection",
+      "part": "Torso",
+      "severity": 0.001
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_PaintGraffitiJob",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human54827",
+    "name": "Fjellsmel",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 215,
+    "z": 206,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_NightPassion",
+      "label": "night passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_RainyDayPassion",
+      "label": "rainy day passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_PaintGraffitiJob",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human59450",
+    "name": "Redfields",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 208,
+    "z": 202,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_PsychicPassion",
+      "label": "psychic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Skygaze",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human61171",
+    "name": "Susy",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 184,
+    "z": 196,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_RainyDayPassion",
+      "label": "rainy day passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_TraumaticPassion",
+      "label": "traumatic passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "AS_MoodyPassion",
+      "label": "moody passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_IdeologicalPassion_Hediff",
+      "label": "ideological passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Skygaze",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human63689",
+    "name": "Braz",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 166,
+    "z": 191,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "VTE_SlowWorkSpeed",
+      "label": "slow work (inactive)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "AS_DuncePassion",
+      "label": "dunce passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "AS_PsychicPassion",
+      "label": "psychic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_PaintGraffitiJob",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human78986",
+    "name": "Vasilisa",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 95,
+    "z": 74,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar",
+      "part": "Torso",
+      "severity": 3.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Skygaze",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 10825,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     10825
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 10825,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     10825
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11425
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     11425
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     11425
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11425
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     11555
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     11555
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11555
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     11555
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     11555
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11555
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 182696,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     182696
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     183825
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Don",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Don",
+     183825
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Area revealed",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Area revealed",
+     183825
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     183825
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 184535,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     184535
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Moon",
+    "arrivalTick": 184535,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Moon",
+     184535
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     184785
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bowman",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bowman",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bowman",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bowman",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     184785
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Xandy",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Xandy",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Xandy",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Xandy",
+     184785
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 4,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 185000
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Redfields: Eval Vasilisa: opinion=-10, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Redfields: Eval Reiku: opinion=0, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Redfields: Scan finished. NewlyAddedMemories=3"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Starting scan. Candidates=14, CurrentMood=0.33"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Kinsei: opinion=5, mood=0.61, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Fernand: opinion=-10, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Ferrell: opinion=-9, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Ingrid: opinion=6, mood=0.35, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Artemis: opinion=22, mood=0.27, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Godders: opinion=-10, mood=0.33, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Timofei: opinion=41, mood=0.36, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Fjellsmel: opinion=6, mood=0.41, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Redfields: opinion=5, mood=0.39, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Susy: opinion=-10, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Braz: opinion=6, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Vasilisa: opinion=-10, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Eval Reiku: opinion=0, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Crabby: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Warning",
+   "Trying to save reference to a discarded thing AA_Eyeling39488 with saveDestroyedThings=true. This means that it's not deep-saved anywhere and is no longer managed by anything in the code, so saving its reference will always fail. , label=pawn"
+  ],
+  [
+   "Message",
+   "[RimAI.Core][P6.Persistence] op=save, nodes=12, elapsed=17ms"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.Dialog_ModSettings",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 11,
+   "isDebug": false,
+   "forcePause": true
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955949,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955886,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 215,
+  "overhead_spent": 0,
+  "total_spent": 215,
+  "epoch": 0,
+  "last_seen_tick": 185000,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 975,
+    "spent": 215
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 184785,
+    "tick_to": 185000,
+    "ticks": 215,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "lash",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T095713\\LeaningScrub__lash__colonist_injured_unexpectedly__t185000__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2909628,
+  "width": 1810,
+  "height": 1183,
+  "md5": "8ae927c314072abac5ad0cb315891fdf",
+  "why": ""
+ },
+ "notes": []
+}

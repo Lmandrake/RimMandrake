@@ -1,0 +1,963 @@
+{
+ "name": "LeaningScrub__bloom__colonist_injured_unexpectedly__t20014__001",
+ "when_utc": "2026-10-03T17:52:36Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    126,
+    87
+   ],
+   "fingerprint": "colonist_injured:Human549:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Charlzie gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human552",
+    "name": "Charlzie",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    121,
+    106
+   ],
+   "fingerprint": "colonist_injured:Human552:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Schmitt gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human555",
+    "name": "Schmitt",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    130,
+    88
+   ],
+   "fingerprint": "colonist_injured:Human555:RM_SheenCoating@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 20014,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 126,
+    "z": 87,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0254665948
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human552",
+    "name": "Charlzie",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 121,
+    "z": 106,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human555",
+    "name": "Schmitt",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 130,
+    "z": 88,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "HeartArteryBlockage",
+      "label": "artery blockage (minor)",
+      "part": "Heart",
+      "severity": 0.285224229
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0241332576
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Santos",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Santos",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thompson",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thompson",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Viktor",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Viktor",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Samantha",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Samantha",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 3299,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     3299
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Estrada",
+    "arrivalTick": 3299,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Estrada",
+     3299
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 5049,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     5049
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jude",
+    "arrivalTick": 5049,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jude",
+     5049
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 5049,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     5049
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gecko",
+    "arrivalTick": 5049,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gecko",
+     5049
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 5349,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     5349
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Halek",
+    "arrivalTick": 5349,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Halek",
+     5349
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 5349,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     5349
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 15662,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     15662
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Yuzuki",
+    "arrivalTick": 15662,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Yuzuki",
+     15662
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 16862,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     16862
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Nelson",
+    "arrivalTick": 16862,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Nelson",
+     16862
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 16862,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     16862
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 10,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 20014
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Schmitt: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Davis Jr cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Davis Jr failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Patty"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Patty"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Davis Jr cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Davis Jr failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Starting scan. Candidates=4, CurrentMood=0.31"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Davis Jr: opinion=39, mood=0.06, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Schmitt: opinion=59, mood=0.18, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Patty: opinion=0, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Schmitt cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Davis Jr cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Patty cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Charlzie"
+  ],
+  [
+   "Message",
+   "Patty is drafted."
+  ],
+  [
+   "Message",
+   "Charlzie failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Schmitt cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Schmitt failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955886,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 152,
+  "overhead_spent": 0,
+  "total_spent": 152,
+  "epoch": 0,
+  "last_seen_tick": 20014,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 637,
+    "spent": 30
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/order_pawn",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 19862,
+    "tick_to": 19924,
+    "ticks": 62
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 19924,
+    "tick_to": 19954,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 19954,
+    "tick_to": 19984,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 19984,
+    "tick_to": 20014,
+    "ticks": 30,
+    "requested": 30
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "bloom",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T104624\\LeaningScrub__bloom__colonist_injured_unexpectedly__t20014__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3277882,
+  "width": 1810,
+  "height": 1183,
+  "md5": "c904b4d7691cbcd4916391c8c9c73c7c",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,642 @@
+{
+ "name": "FeverWood__lure_raid__colonist_damaged__t20237__001",
+ "when_utc": "2026-10-04T01:56:30Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human61434 took 2 damage event(s): Bite by RM_Vurrak",
+   "evidence": {
+    "id": "Human61434",
+    "events": [
+     {
+      "seq": 243,
+      "tick": 20076,
+      "damageDef": "Bite",
+      "amount": 22.573555,
+      "instigatorId": "RM_Vurrak61616",
+      "instigatorDef": "RM_Vurrak",
+      "weapon": "RM_Vurrak",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 245,
+      "tick": 20226,
+      "damageDef": "Bite",
+      "amount": 16.0889549,
+      "instigatorId": "RM_Vurrak61616",
+      "instigatorDef": "RM_Vurrak",
+      "weapon": "RM_Vurrak",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human61434:243,245"
+  }
+ ],
+ "snapshot": {
+  "tick": 20237,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NewQuest",
+    "label": "Quest available: The Count",
+    "arrivalTick": 3678,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest available: The Count",
+     3678
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The Count: Three of the fallen",
+    "arrivalTick": 3678,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The Count: Three of the fallen",
+     3678
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest available: The Envoy",
+    "arrivalTick": 3678,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest available: The Envoy",
+     3678
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The Envoy arrives",
+    "arrivalTick": 3678,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The Envoy arrives",
+     3678
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest available: The Pattern Cores",
+    "arrivalTick": 3678,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest available: The Pattern Cores",
+     3678
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Nothing they freed comes back",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Nothing they freed comes back",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Hostile: Geonosian Foundry Hive",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Hostile: Geonosian Foundry Hive",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Quest failed",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Quest failed",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Quest failed",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Quest failed",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Hostile: Free Droid Enclaves",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Hostile: Free Droid Enclaves",
+     3978
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "The bank moved",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "The bank moved",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7929
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     7929
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Cache in the Log",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Cache in the Log",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     7929
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Sissy",
+    "arrivalTick": 8236,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Sissy",
+     8236
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sissy",
+    "arrivalTick": 8236,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sissy",
+     8236
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 2,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 20237
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Kaiser is drafted."
+  ],
+  [
+   "Message",
+   "Hardin cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Max is not generally well."
+  ],
+  [
+   "Message",
+   "Lorall failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Starting scan. Candidates=6, CurrentMood=0.56"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Eval Jim: opinion=20, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Eval Bambi: opinion=20, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Eval Danny: opinion=-10, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Eval Kili: opinion=-10, mood=0.62, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Eval Karlsen: opinion=-10, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Vladlena: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Starting scan. Candidates=8, CurrentMood=0.26"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Rebecca: opinion=-14, mood=0.43, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Alo: opinion=-9, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Zamora: opinion=10, mood=0.67, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Juliette: opinion=-12, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Ahmadush: opinion=-10, mood=0.33, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Snake: opinion=-9, mood=0.23, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Eval Jebo: opinion=-10, mood=0.30, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Helene: Scan finished. NewlyAddedMemories=3"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954457,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 200,
+  "overhead_spent": 0,
+  "total_spent": 200,
+  "epoch": 0,
+  "last_seen_tick": 20237,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 850,
+    "spent": 200
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 20037,
+    "tick_to": 20237,
+    "ticks": 200,
+    "requested": 200
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "lure_raid",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T184150\\FeverWood__lure_raid__colonist_damaged__t20237__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3046301,
+  "width": 1810,
+  "height": 1183,
+  "md5": "bb4aa9c8f45a77bf6e6de177a3c0241b",
+  "why": ""
+ },
+ "notes": []
+}

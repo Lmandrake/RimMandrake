@@ -1,0 +1,821 @@
+{
+ "name": "LeaningScrub__sweetline__wildlife_near_colonist__t333712__001",
+ "when_utc": "2026-10-04T06:47:44Z",
+ "hits": [
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "RM_Barkwarden77273",
+      "kindDef": "RM_Barkwarden",
+      "x": 135,
+      "z": 130,
+      "dist": 12,
+      "new": true,
+      "hunting": false
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    135,
+    130
+   ],
+   "fingerprint": "wildlife_near_colonist:RM_Barkwarden77273"
+  }
+ ],
+ "snapshot": {
+  "tick": 333712,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "RM_Barkwarden77273",
+    "name": "Bark-warden",
+    "kindDef": "RM_Barkwarden",
+    "def": "RM_Barkwarden",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 135,
+    "z": 130,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_AsleepDormancy",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     1
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Cache in the Log",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Cache in the Log",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Paola",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Paola",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Paola",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Paola",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kelly",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kelly",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Kelly",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Kelly",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1751
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Giggles",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Giggles",
+     1751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Giggles",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Giggles",
+     1751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 2001,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     2001
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Brown",
+    "arrivalTick": 2001,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Brown",
+     2001
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 2601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     2601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sora",
+    "arrivalTick": 2601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sora",
+     2601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     3201
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Whisper",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Whisper",
+     3201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Whisper",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Whisper",
+     3201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Summer",
+    "arrivalTick": 333202,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Summer",
+     333202
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 333712
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Pundins cannot converse with Bowman."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Starting scan. Candidates=7, CurrentMood=0.41"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Gillespie: opinion=0, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Bowman: opinion=1, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Nordgren: opinion=1, mood=0.61, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval McNeil: opinion=0, mood=0.38, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Pundins: opinion=0, mood=0.38, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Oflus: opinion=0, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 2"
+  ],
+  [
+   "Message",
+   "Gillespie is already in conversation."
+  ],
+  [
+   "Message",
+   "Gillespie cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Bowman cannot converse with Gillespie."
+  ],
+  [
+   "Message",
+   "Nordgren is already in conversation."
+  ],
+  [
+   "Message",
+   "Gillespie cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Marjot cannot converse with Gillespie."
+  ],
+  [
+   "Message",
+   "Gillespie cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "McNeil cannot converse with Gillespie."
+  ],
+  [
+   "Message",
+   "Gillespie cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Pundins cannot converse with Gillespie."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956278,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956341,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956408,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 5,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956471,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 6,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956202,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 511,
+  "overhead_spent": 0,
+  "total_spent": 511,
+  "epoch": 1,
+  "last_seen_tick": 333712,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3225,
+    "spent": 511
+   }
+  ],
+  "entries": [
+   {
+    "kind": "epoch",
+    "reason": "verb:bridge_call:jawa/time_set_ticks",
+    "epoch": 1,
+    "tick_from": 3201,
+    "tick_to": 333201,
+    "ticks": 0,
+    "cause": "flagged"
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 1,
+    "tick_from": 333201,
+    "tick_to": 333712,
+    "ticks": 511,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "sweetline",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T234333\\LeaningScrub__sweetline__wildlife_near_colonist__t333712__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2162379,
+  "width": 1810,
+  "height": 1183,
+  "md5": "73d4651e3ba60daa070934e3708b9d64",
+  "why": ""
+ },
+ "notes": []
+}

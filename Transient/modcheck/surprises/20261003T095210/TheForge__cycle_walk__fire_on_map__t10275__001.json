@@ -1,0 +1,324 @@
+{
+ "name": "TheForge__cycle_walk__fire_on_map__t10275__001",
+ "when_utc": "2026-10-03T16:53:00Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "17 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 223,
+      "z": 122
+     },
+     {
+      "x": 220,
+      "z": 124
+     },
+     {
+      "x": 220,
+      "z": 119
+     },
+     {
+      "x": 223,
+      "z": 125
+     },
+     {
+      "x": 220,
+      "z": 118
+     },
+     {
+      "x": 225,
+      "z": 124
+     },
+     {
+      "x": 225,
+      "z": 120
+     },
+     {
+      "x": 221,
+      "z": 127
+     },
+     {
+      "x": 217,
+      "z": 119
+     },
+     {
+      "x": 225,
+      "z": 118
+     },
+     {
+      "x": 224,
+      "z": 117
+     },
+     {
+      "x": 224,
+      "z": 127
+     },
+     {
+      "x": 218,
+      "z": 127
+     },
+     {
+      "x": 221,
+      "z": 116
+     },
+     {
+      "x": 222,
+      "z": 128
+     },
+     {
+      "x": 227,
+      "z": 124
+     },
+     {
+      "x": 217,
+      "z": 127
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    223,
+    122
+   ],
+   "fingerprint": "fire_on_map:17"
+  }
+ ],
+ "snapshot": {
+  "tick": 10275,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 10015,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     10015
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 12,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 10275
+  },
+  "fires": 17,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_ForgePulse",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Braz and Redfields cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Braz and Susy cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Braz"
+  ],
+  [
+   "Message",
+   "Ferrell cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Fernand cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Artemis is not generally well."
+  ],
+  [
+   "Message",
+   "Braz failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Starting scan. Candidates=12, CurrentMood=0.50"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Fernand: opinion=37, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Ferrell: opinion=38, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Ingrid: opinion=38, mood=0.32, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Crabby: opinion=10, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Artemis: opinion=11, mood=0.29, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Godders: opinion=10, mood=0.30, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Timofei: opinion=10, mood=0.32, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Fjellsmel: opinion=-10, mood=0.43, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Redfields: opinion=-10, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Susy: opinion=-10, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Eval Braz: opinion=-10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kinsei: Scan finished. NewlyAddedMemories=3"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957246,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 260,
+  "overhead_spent": 0,
+  "total_spent": 260,
+  "epoch": 0,
+  "last_seen_tick": 10275,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 762,
+    "spent": 130
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10015,
+    "tick_to": 10145,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10145,
+    "tick_to": 10275,
+    "ticks": 130,
+    "requested": 130
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "cycle_walk",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T095210\\TheForge__cycle_walk__fire_on_map__t10275__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2028414,
+  "width": 1810,
+  "height": 1183,
+  "md5": "e05fc10f1ef090b40c2c9bf732083244",
+  "why": ""
+ },
+ "notes": []
+}

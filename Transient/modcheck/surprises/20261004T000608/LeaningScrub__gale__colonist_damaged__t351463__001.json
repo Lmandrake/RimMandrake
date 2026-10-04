@@ -1,0 +1,710 @@
+{
+ "name": "LeaningScrub__gale__colonist_damaged__t351463__001",
+ "when_utc": "2026-10-04T07:10:10Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human677 took 1 damage event(s): RM_ToxicSpores by RM_ChokingSpores",
+   "evidence": {
+    "id": "Human677",
+    "events": [
+     {
+      "seq": 218,
+      "tick": 351077,
+      "damageDef": "RM_ToxicSpores",
+      "amount": 2.0,
+      "instigatorId": "RM_ChokingSpores184660",
+      "instigatorDef": "RM_ChokingSpores",
+      "weapon": null,
+      "hediffsAdded": null
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human677:218"
+  }
+ ],
+ "snapshot": {
+  "tick": 351463,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Kelly",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kelly",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Kelly",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Kelly",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1751
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Giggles",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Giggles",
+     1751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Giggles",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Giggles",
+     1751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 2001,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     2001
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Brown",
+    "arrivalTick": 2001,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Brown",
+     2001
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 2601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     2601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sora",
+    "arrivalTick": 2601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sora",
+     2601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     3201
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Whisper",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Whisper",
+     3201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Whisper",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Whisper",
+     3201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Summer",
+    "arrivalTick": 333202,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Summer",
+     333202
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Brown",
+    "arrivalTick": 333712,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Brown",
+     333712
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Sora",
+    "arrivalTick": 333712,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Sora",
+     333712
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Ancient danger",
+    "arrivalTick": 334221,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Ancient danger",
+     334221
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 335000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     335000
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 344438,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     344438
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 344698,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     344698
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 344698,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     344698
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 344698,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     344698
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 345248,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     345248
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 345248,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     345248
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 345248,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     345248
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 345822,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     345822
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 351463
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Starting scan. Candidates=8, CurrentMood=0.45"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Lines: opinion=-10, mood=0.61, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Hanh: opinion=-10, mood=0.44, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Kaori: opinion=-40, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Andrew: opinion=-10, mood=0.37, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Harri: opinion=-10, mood=0.37, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Escobar: opinion=-10, mood=0.43, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Eval Hugh: opinion=-10, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Panda: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Kitt cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Bundy cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Michal"
+  ],
+  [
+   "Message",
+   "Kitt is not generally well."
+  ],
+  [
+   "Message",
+   "Bundy is not generally well."
+  ],
+  [
+   "Message",
+   "Michal failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Kaori cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Escobar is not generally well."
+  ],
+  [
+   "Message",
+   "Hugh is drafted."
+  ],
+  [
+   "Message",
+   "Panda is drafted."
+  ],
+  [
+   "Message",
+   "Kaori failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -39132663,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1692,
+  "overhead_spent": 0,
+  "total_spent": 1692,
+  "epoch": 0,
+  "last_seen_tick": 351463,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 5725,
+    "spent": 492
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 349771,
+    "tick_to": 350322,
+    "ticks": 551,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 350322,
+    "tick_to": 350371,
+    "ticks": 49,
+    "requested": 49
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 350371,
+    "tick_to": 350848,
+    "ticks": 477,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 350848,
+    "tick_to": 350971,
+    "ticks": 123,
+    "requested": 123
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 350971,
+    "tick_to": 351463,
+    "ticks": 492,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "gale",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T000608\\LeaningScrub__gale__colonist_damaged__t351463__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3096171,
+  "width": 1810,
+  "height": 1183,
+  "md5": "3ab2e21bfd5a629258ac805c9a6bd876",
+  "why": ""
+ },
+ "notes": []
+}

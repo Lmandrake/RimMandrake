@@ -1,0 +1,707 @@
+{
+ "name": "TheForge__voices__fire_on_map__t183086__001",
+ "when_utc": "2026-10-04T02:22:21Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "23 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 156,
+      "z": 48
+     },
+     {
+      "x": 155,
+      "z": 46
+     },
+     {
+      "x": 154,
+      "z": 47
+     },
+     {
+      "x": 156,
+      "z": 45
+     },
+     {
+      "x": 155,
+      "z": 49
+     },
+     {
+      "x": 153,
+      "z": 47
+     },
+     {
+      "x": 155,
+      "z": 50
+     },
+     {
+      "x": 159,
+      "z": 46
+     },
+     {
+      "x": 159,
+      "z": 49
+     },
+     {
+      "x": 153,
+      "z": 45
+     },
+     {
+      "x": 152,
+      "z": 46
+     },
+     {
+      "x": 152,
+      "z": 45
+     },
+     {
+      "x": 160,
+      "z": 44
+     },
+     {
+      "x": 153,
+      "z": 43
+     },
+     {
+      "x": 154,
+      "z": 42
+     },
+     {
+      "x": 160,
+      "z": 43
+     },
+     {
+      "x": 161,
+      "z": 44
+     },
+     {
+      "x": 153,
+      "z": 42
+     },
+     {
+      "x": 157,
+      "z": 53
+     },
+     {
+      "x": 150,
+      "z": 48
+     },
+     {
+      "x": 158,
+      "z": 41
+     },
+     {
+      "x": 161,
+      "z": 43
+     },
+     {
+      "x": 156,
+      "z": 40
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    156,
+    48
+   ],
+   "fingerprint": "fire_on_map:23"
+  }
+ ],
+ "snapshot": {
+  "tick": 183086,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 21417,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     21417
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Kaiser",
+    "arrivalTick": 34374,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Kaiser",
+     34374
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kaiser",
+    "arrivalTick": 34374,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kaiser",
+     34374
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 34487,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     34487
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 34877,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     34877
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 34877,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     34877
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 34877,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     34877
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 35427,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     35427
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 35427,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     35427
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 35427,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     35427
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Ahmadush",
+    "arrivalTick": 35434,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Ahmadush",
+     35434
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ahmadush",
+    "arrivalTick": 35434,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ahmadush",
+     35434
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 36006,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     36006
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 36006,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     36006
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 36006,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     36006
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 36006,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     36006
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 36136,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     36136
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 36136,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     36136
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 36136,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     36136
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 36136,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     36136
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 36136,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     36136
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 36136,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     36136
+    ]
+   },
+   {
+    "defName": "HumanPregnancy",
+    "label": "(*Name)Lady(/Name) pregnant",
+    "arrivalTick": 36168,
+    "mapId": null,
+    "fingerprint": [
+     "HumanPregnancy",
+     "(*Name)Lady(/Name) pregnant",
+     36168
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ohm the All-Current",
+    "arrivalTick": 182447,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ohm the All-Current",
+     182447
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A hiss in the vents",
+    "arrivalTick": 182621,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A hiss in the vents",
+     182621
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 39,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 183086
+  },
+  "fires": 23,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_ForgePulse",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Violet: Scan finished. NewlyAddedMemories=6"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Rebecca: Starting scan. Candidates=5, CurrentMood=0.23"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Rebecca: Eval Alo: opinion=3, mood=0.20, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Rebecca: Eval Juliette: opinion=-3, mood=0.22, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Rebecca: Eval Snake: opinion=-9, mood=0.11, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Rebecca: Eval Helene: opinion=-9, mood=0.24, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Rebecca: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Starting scan. Candidates=12, CurrentMood=0.35"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Zug: opinion=17, mood=0.67, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Kimmy: opinion=-10, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Sarai: opinion=-10, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Vlad: opinion=-10, mood=0.24, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Sam: opinion=-9, mood=0.66, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Nemea: opinion=-10, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Violet: opinion=-10, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Chigg: opinion=-10, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Dotty: opinion=-10, mood=0.40, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Villa: opinion=-10, mood=0.34, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Eval Freddie: opinion=30, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Lady: Scan finished. NewlyAddedMemories=5"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594950917,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 380,
+  "overhead_spent": 0,
+  "total_spent": 380,
+  "epoch": 0,
+  "last_seen_tick": 183086,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 762,
+    "spent": 130
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 182706,
+    "tick_to": 182826,
+    "ticks": 120,
+    "requested": 120
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 182826,
+    "tick_to": 182956,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 182956,
+    "tick_to": 183086,
+    "ticks": 130,
+    "requested": 130
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "voices",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T191839\\TheForge__voices__fire_on_map__t183086__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4295464,
+  "width": 1810,
+  "height": 1183,
+  "md5": "dba218e95dd799c468dd8ac63e170eac",
+  "why": ""
+ },
+ "notes": []
+}

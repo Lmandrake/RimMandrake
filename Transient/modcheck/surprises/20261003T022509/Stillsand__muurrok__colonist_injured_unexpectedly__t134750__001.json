@@ -1,0 +1,822 @@
+{
+ "name": "Stillsand__muurrok__colonist_injured_unexpectedly__t134750__001",
+ "when_utc": "2026-10-03T09:29:29Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Hannah gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human113459",
+    "name": "Hannah",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.0271261185
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    103,
+    109
+   ],
+   "fingerprint": "colonist_injured:Human113459:Heatstroke@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Fugly gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human113462",
+    "name": "Fugly",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.0279081613
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    113
+   ],
+   "fingerprint": "colonist_injured:Human113462:Heatstroke@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Yaros gained 1 new hediff(s) (Heatstroke); cause_hint=heat",
+   "evidence": {
+    "id": "Human113466",
+    "name": "Yaros",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.0268423147
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    115,
+    123
+   ],
+   "fingerprint": "colonist_injured:Human113466:Heatstroke@None"
+  },
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): A line of glare; window passed, no hostiles seen",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      134150,
+      "A line of glare"
+     ]
+    ],
+    "open": false,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@134150"
+  }
+ ],
+ "snapshot": {
+  "tick": 134750,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human113459",
+    "name": "Hannah",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 103,
+    "z": 109,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 1h)",
+      "part": null,
+      "severity": 0.119999982
+     },
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.0271261185
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human113462",
+    "name": "Fugly",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 125,
+    "z": 113,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 1h)",
+      "part": null,
+      "severity": 0.119999975
+     },
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.0279081613
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human113466",
+    "name": "Yaros",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 115,
+    "z": 123,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 1h)",
+      "part": null,
+      "severity": 0.119999982
+     },
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.0268423147
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Belle",
+    "arrivalTick": 101205,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Belle",
+     101205
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Belle",
+    "arrivalTick": 101205,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Belle",
+     101205
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Vance",
+    "arrivalTick": 101265,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Vance",
+     101265
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Vance",
+    "arrivalTick": 101265,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Vance",
+     101265
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Monk role deactivated",
+    "arrivalTick": 101265,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Monk role deactivated",
+     101265
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Inhabitants abandoned",
+    "arrivalTick": 101265,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Inhabitants abandoned",
+     101265
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Monk role activated",
+    "arrivalTick": 101265,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Monk role activated",
+     101265
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rock island",
+    "arrivalTick": 131280,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rock island",
+     131280
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 132165,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     132165
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 132765,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     132765
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133265,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133265
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133265,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133265
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Rosa",
+    "arrivalTick": 133865,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Rosa",
+     133865
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Rosa",
+    "arrivalTick": 133865,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Rosa",
+     133865
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Lara",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Lara",
+     133895
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lara",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lara",
+     133895
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 133895,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     133895
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A line of glare",
+    "arrivalTick": 134150,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A line of glare",
+     134150
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 27,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 134750
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "AB_ExtremeTemperatureFluctuations",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 34246,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith48941"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser46331"
+  ],
+  [
+   "Warning",
+   "Vance on unwalkable cell (50, 0, 200). Teleporting to (49, 0, 200)"
+  ],
+  [
+   "Error",
+   "Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources."
+  ],
+  [
+   "Message",
+   "[Stillsand] precious cave: slate yardang south (26563 cells, as generated), chamber r=6 at (151, 0, 44), mouth (130, 0, 102) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun)."
+  ],
+  [
+   "Message",
+   "[Stillsand] precious cave roll: RM_PreciousCave_SealedCache (RM) in the slate yardang at (151, 0, 44) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  [
+   "Message",
+   "[Stillsand] cave place: drip source at (155, 0, 40)"
+  ],
+  [
+   "Message",
+   "[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind N, K=2005 attempts/batch over 62500 cells."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser111691"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith113442"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955631,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955305,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 134750,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3850,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 134150,
+    "tick_to": 134750,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Stillsand",
+  "chain": "muurrok",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T022509\\Stillsand__muurrok__colonist_injured_unexpectedly__t134750__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2491256,
+  "width": 1810,
+  "height": 1183,
+  "md5": "60d6e948d88fee2b3284d74562025284",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,627 @@
+{
+ "name": "Contagion__burn_natural__colonist_injured_unexpectedly__t100970__001",
+ "when_utc": "2026-10-03T08:54:58Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mel gained 1 new hediff(s) (RM_Slimification); cause_hint=unknown",
+   "evidence": {
+    "id": "Human52153",
+    "name": "Mel",
+    "new_hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.00714285672
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_Slimification"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    190,
+    176
+   ],
+   "fingerprint": "colonist_injured:Human52153:RM_Slimification@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Riss gained 1 new hediff(s) (RM_Slimification); cause_hint=unknown",
+   "evidence": {
+    "id": "Human52165",
+    "name": "Riss",
+    "new_hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.0109523814
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_Slimification"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    189,
+    200
+   ],
+   "fingerprint": "colonist_injured:Human52165:RM_Slimification@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 100970,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human52153",
+    "name": "Mel",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 190,
+    "z": 176,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Gunshot",
+      "label": "old gunshot (aching)",
+      "part": "Arm",
+      "severity": 4.0
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.00714285672
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.075,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human52165",
+    "name": "Riss",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 189,
+    "z": 200,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar (itchy)",
+      "part": "Arm",
+      "severity": 2.0
+     },
+     {
+      "def": "AlcoholAddiction",
+      "label": "alcohol addiction (9%)",
+      "part": null,
+      "severity": 0.910547256
+     },
+     {
+      "def": "AlcoholTolerance",
+      "label": "alcohol tolerance (large)",
+      "part": null,
+      "severity": 0.566444
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.0109523814
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0125,
+    "census": true,
+    "job": "Ingest",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 2645,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     2645
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2811,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2811
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2817,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2817
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2928,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2928
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2940,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2940
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2944,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2944
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2973,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2973
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2981,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2981
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2983,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2983
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 4519,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     4519
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5013,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5013
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5578,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5578
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8569,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8569
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 99470,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     99470
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 99619,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     99619
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 99674,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     99674
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 100140,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     100140
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 100167,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     100167
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Humanity opportunity for Ryan",
+    "arrivalTick": 100372,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Humanity opportunity for Ryan",
+     100372
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ryan",
+    "arrivalTick": 100372,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ryan",
+     100372
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Humanity opportunity for Karina",
+    "arrivalTick": 100372,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Humanity opportunity for Karina",
+     100372
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Karina",
+    "arrivalTick": 100372,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Karina",
+     100372
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 100515,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     100515
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 100677,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     100677
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 3,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 37,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 100970
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=19 elapsedMs=24607"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=969 elapsedMs=24607"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=20 elapsedMs=24608"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: c3c084b2bd924364870bfcca0a51a6b9"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 368 tools, build 8b156e606b93"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 13/927a774a, toolSet 621ec0dd, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 109410,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #6 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith51969"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 598,
+  "overhead_spent": 0,
+  "total_spent": 598,
+  "epoch": 0,
+  "last_seen_tick": 100970,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1350,
+    "spent": 598
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 100372,
+    "tick_to": 100970,
+    "ticks": 598,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Contagion",
+  "chain": "burn_natural",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T015159\\Contagion__burn_natural__colonist_injured_unexpectedly__t100970__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3153962,
+  "width": 1810,
+  "height": 1183,
+  "md5": "b52580ed878b10aba2a07a5bc4238ad2",
+  "why": ""
+ },
+ "notes": []
+}

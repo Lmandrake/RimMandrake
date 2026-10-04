@@ -1,0 +1,1554 @@
+{
+ "name": "LeaningScrub__patches__colonist_injured_unexpectedly__t1952600__001",
+ "when_utc": "2026-10-03T18:39:34Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    53,
+    201
+   ],
+   "fingerprint": "colonist_injured:Human549:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Santos gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human40167",
+    "name": "Santos",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    148,
+    58
+   ],
+   "fingerprint": "colonist_injured:Human40167:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Trofim gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human97100",
+    "name": "Trofim",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    107,
+    167
+   ],
+   "fingerprint": "colonist_injured:Human97100:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Ryro gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human97105",
+    "name": "Ryro",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    147,
+    58
+   ],
+   "fingerprint": "colonist_injured:Human97105:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mintys gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human97112",
+    "name": "Mintys",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    136,
+    141
+   ],
+   "fingerprint": "colonist_injured:Human97112:RM_SheenCoating@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 1952600,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 53,
+    "z": 201,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_HazeFilm",
+      "label": "haze film (trace)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human40167",
+    "name": "Santos",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 148,
+    "z": 58,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0118542491
+     },
+     {
+      "def": "RM_HazeFilm",
+      "label": "haze film (trace)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97100",
+    "name": "Trofim",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 107,
+    "z": 167,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_TraumaticPassion",
+      "label": "traumatic passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "VRE_AntibioticsAddiction",
+      "label": "antibiotics addiction (7%)",
+      "part": null,
+      "severity": 0.9311651
+     },
+     {
+      "def": "VRE_AntibioticsTolerance",
+      "label": "antibiotics tolerance (large)",
+      "part": null,
+      "severity": 0.513227463
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "RM_HazeFilm",
+      "label": "haze film (trace)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97105",
+    "name": "Ryro",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 147,
+    "z": 58,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.07197796
+     },
+     {
+      "def": "RM_HazeFilm",
+      "label": "haze film (trace)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97112",
+    "name": "Mintys",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 136,
+    "z": 141,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_CompetitivePassion",
+      "label": "competitive passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0158021525
+     },
+     {
+      "def": "RM_HazeFilm",
+      "label": "haze film (trace)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1937190,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1937190
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Stench",
+    "arrivalTick": 1937190,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Stench",
+     1937190
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1940190,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1940190
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Elwyn",
+    "arrivalTick": 1940190,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Elwyn",
+     1940190
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1940190,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1940190
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Samantha",
+    "arrivalTick": 1940190,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Samantha",
+     1940190
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1940190,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1940190
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1944190,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1944190
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1949190,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1949190
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Chantal",
+    "arrivalTick": 1949190,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Chantal",
+     1949190
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1950000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Toni",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Toni",
+     1950000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1950000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Shaper",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Shaper",
+     1950000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1950000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Deva",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Deva",
+     1950000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1950000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheet",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheet",
+     1950000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     1950000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 1950000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     1950000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1950200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1950200
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fitz",
+    "arrivalTick": 1950200,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fitz",
+     1950200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1950200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1950200
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fitz",
+    "arrivalTick": 1950200,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fitz",
+     1950200
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Fallen monolith",
+    "arrivalTick": 1950317,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Fallen monolith",
+     1950317
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 48,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1952600
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Charlzie: opinion=-5, mood=0.14, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Schmitt: opinion=-9, mood=0.06, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Russell: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Pertum: opinion=0, mood=0.50, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Newton: opinion=0, mood=0.59, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Santos: opinion=-10, mood=0.34, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Estrada: opinion=-9, mood=0.31, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Trofim: opinion=30, mood=0.29, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Ryro: opinion=-10, mood=0.29, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Eval Mintys: opinion=-10, mood=0.38, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nevil: Scan finished. NewlyAddedMemories=4"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Starting scan. Candidates=12, CurrentMood=0.14"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Davis Jr: opinion=15, mood=0.10, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Schmitt: opinion=39, mood=0.06, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Russell: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Pertum: opinion=0, mood=0.50, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Newton: opinion=0, mood=0.59, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Santos: opinion=-10, mood=0.34, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Estrada: opinion=-10, mood=0.31, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Warning",
+   "Reached max messages limit. Stopping logging to avoid spam."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 46,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 2400,
+  "overhead_spent": 0,
+  "total_spent": 2400,
+  "epoch": 0,
+  "last_seen_tick": 1952600,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4350,
+    "spent": 2400
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1950200,
+    "tick_to": 1950800,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1950800,
+    "tick_to": 1951400,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1951400,
+    "tick_to": 1952000,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1952000,
+    "tick_to": 1952600,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "patches",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T113847\\LeaningScrub__patches__colonist_injured_unexpectedly__t1952600__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2637663,
+  "width": 1810,
+  "height": 1183,
+  "md5": "d23e0c98b8ffd408f4de7141484f260f",
+  "why": ""
+ },
+ "notes": []
+}

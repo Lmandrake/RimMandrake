@@ -1,0 +1,348 @@
+{
+ "name": "Armoury__ion_damage_mechanism__modal_open__t1__001",
+ "when_utc": "2026-10-04T06:42:32Z",
+ "hits": [
+  {
+   "detector": "modal_open",
+   "severity": "SURPRISE",
+   "summary": "1 force-pause modal(s) open: Verse.Dialog_NodeTree",
+   "evidence": {
+    "windows": [
+     {
+      "type": "Verse.Dialog_NodeTree",
+      "title": null,
+      "isDebug": false,
+      "forcePause": true
+     }
+    ]
+   },
+   "suggest": [
+    "close_modals"
+   ],
+   "focus": null,
+   "fingerprint": "modal_open:Verse.Dialog_NodeTree"
+  }
+ ],
+ "snapshot": {
+  "tick": 1,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     1
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Cache in the Log",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Cache in the Log",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 9,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 1
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Bowman"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Bowman"
+  ],
+  [
+   "Message",
+   "[Ninefold] Oomo satiation +8.0 (a marriage, the family grows) -> 8.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] MobUnloo satiation +3.0 (a marriage, a contract struck) -> 3.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation +3.0 (a marriage, an act of statecraft) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Nordgren"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Nordgren"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VHGE_GasGeyser66045"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Visibility] IncidentWorker_RaidEnemy points 120 -> 78 (visibility 10.0, factor 0.65)"
+  ],
+  [
+   "Message",
+   "[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'Colonist' instead of the requested 'Drifter' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) \u2014 corrected in place."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Mikey<color=#999999FF>, Teacher</color>) -> 9.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Mikey"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Mikey"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Marjot"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinForeheadScar to Marjot"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to McNeil"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to McNeil"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Pundins<color=#999999FF>, Geologist</color>) -> 12.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Pundins"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Pundins"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.Dialog_NodeTree",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 10,
+   "isDebug": false,
+   "forcePause": true
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 1,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "Armoury",
+  "chain": "ion_damage_mechanism",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T234227\\Armoury__ion_damage_mechanism__modal_open__t1__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2092024,
+  "width": 1810,
+  "height": 1183,
+  "md5": "0581517497fd7150c5ee1f08fb64925e",
+  "why": ""
+ },
+ "notes": []
+}

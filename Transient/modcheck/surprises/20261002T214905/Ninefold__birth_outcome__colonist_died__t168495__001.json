@@ -1,0 +1,539 @@
+{
+ "name": "Ninefold__birth_outcome__colonist_died__t168495__001",
+ "when_utc": "2026-10-03T04:51:23Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist BD died (death_letter)",
+   "evidence": {
+    "name": "BD",
+    "ticks": [
+     168235
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:BD"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human147 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human147",
+    "ticks": [
+     168235
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human147"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human147"
+  }
+ ],
+ "snapshot": {
+  "tick": 168495,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Vicky",
+    "arrivalTick": 8942,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Vicky",
+     8942
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Vicky",
+    "arrivalTick": 8942,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Vicky",
+     8942
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Combat supplier from Northwest Heentinor",
+    "arrivalTick": 8942,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Combat supplier from Northwest Heentinor",
+     8942
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Kees",
+    "arrivalTick": 9062,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Kees",
+     9062
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kees",
+    "arrivalTick": 9062,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kees",
+     9062
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Kees",
+    "arrivalTick": 9062,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Kees",
+     9062
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 121033,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     121033
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Max",
+    "arrivalTick": 122536,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Max",
+     122536
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Max",
+    "arrivalTick": 122536,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Max",
+     122536
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Max",
+    "arrivalTick": 122536,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Max",
+     122536
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 122536,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     122536
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Kanata",
+    "arrivalTick": 124042,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Kanata",
+     124042
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kanata",
+    "arrivalTick": 124042,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kanata",
+     124042
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Kanata",
+    "arrivalTick": 124042,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Kanata",
+     124042
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 124042,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     124042
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Carter",
+    "arrivalTick": 162295,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Carter",
+     162295
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Carter",
+    "arrivalTick": 162295,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Carter",
+     162295
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Carter",
+    "arrivalTick": 162295,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Carter",
+     162295
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Carter",
+    "arrivalTick": 162295,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Carter",
+     162295
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Emily",
+    "arrivalTick": 167295,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Emily",
+     167295
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Emily",
+    "arrivalTick": 167295,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Emily",
+     167295
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Emily",
+    "arrivalTick": 167295,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Emily",
+     167295
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "(*Name)Bishop(/Name) in labor!",
+    "arrivalTick": 167298,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "(*Name)Bishop(/Name) in labor!",
+     167298
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for BD",
+    "arrivalTick": 168235,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for BD",
+     168235
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: BD",
+    "arrivalTick": 168235,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: BD",
+     168235
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 12,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 168495
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 29C3653] Duplicate stacktrace, see ref for original\nSubnode:\n<thing Class=\"Building\"><def>RM_HoseReel</def><id>RM_HoseReel21550</id><map>0</map><pos>(42, 0, 66)</pos><health>80</heal"
+  ],
+  [
+   "Error",
+   "Could not load reference to Verse.ThingDef named RM_HoseReel"
+  ],
+  [
+   "Error",
+   "SaveableFromNode exception: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 29C3653] Duplicate stacktrace, see ref for original\nSubnode:\n<thing Class=\"Building\"><def>RM_HoseReel</def><id>RM_HoseReel21551</id><map>0</map><pos>(42, 0, 74)</pos><health>80</heal"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Building Verse.Building in loaded object directory with unique load ID [excepted]: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref A461AFC4] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception registering Verse.Building Verse.Building in loaded object directory with unique thing ID -1: System.ArgumentException: An item with the same key has already been added. Key: -1\r\n[Ref FF0803AD] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Could not resolve cross refs: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 6D8A39CC] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Error",
+   "Exception spawning loaded thing null: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 21719DB] Duplicate stacktrace, see ref for original"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 requesting tile=40,0 BEFORE GetOrGenerateMap"
+  ],
+  [
+   "Message",
+   "[TILEGEN_SILENT_REUSE_1] call #1 thread=1 AFTER GetOrGenerateMap requested=40,0 got map.Tile=40,0 map.uniqueID=1 map.Index=1"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #1: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #2: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #3: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #4: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #5: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 1.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 2.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 3.0."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #6: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "MakeThing error: Wall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Error",
+   "Exception in SetupToils for pawn Emily driver=JobDriver_Repair (toilIndex=-1) driver.job=(Repair (Job_21047) A = (200, 0, 50) Giver = ThinkNode_QueuedJob [workGiverDef: null])\nSystem.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref B2C3B7FA]\n  at RimWorld.JobDriver_"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1200,
+  "overhead_spent": 0,
+  "total_spent": 1200,
+  "epoch": 0,
+  "last_seen_tick": 168495,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 39350,
+    "spent": 1200
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 167295,
+    "tick_to": 167895,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 167895,
+    "tick_to": 168495,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Ninefold",
+  "chain": "birth_outcome",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T214905\\Ninefold__birth_outcome__colonist_died__t168495__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2542938,
+  "width": 1810,
+  "height": 1183,
+  "md5": "09809c7c6bb7e6c8fa4bd23c9be0e19e",
+  "why": ""
+ },
+ "notes": []
+}

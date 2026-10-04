@@ -1,0 +1,583 @@
+{
+ "name": "Cauldron__suush__colonist_injured_unexpectedly__t401__001",
+ "when_utc": "2026-10-03T20:23:21Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Emmie gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown",
+   "evidence": {
+    "id": "Human64482",
+    "name": "Emmie",
+    "new_hediffs": [
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "MCR_MoodChainWatcher"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    123,
+    123
+   ],
+   "fingerprint": "colonist_injured:Human64482:MCR_MoodChainWatcher@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Perkins gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown",
+   "evidence": {
+    "id": "Human64486",
+    "name": "Perkins",
+    "new_hediffs": [
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "MCR_MoodChainWatcher"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    125
+   ],
+   "fingerprint": "colonist_injured:Human64486:MCR_MoodChainWatcher@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Zippy gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown",
+   "evidence": {
+    "id": "Human64489",
+    "name": "Zippy",
+    "new_hediffs": [
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "MCR_MoodChainWatcher"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    128,
+    125
+   ],
+   "fingerprint": "colonist_injured:Human64489:MCR_MoodChainWatcher@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 401,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human64482",
+    "name": "Emmie",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 123,
+    "z": 123,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_CompetitivePassion",
+      "label": "competitive passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PsychicPassion",
+      "label": "psychic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human64486",
+    "name": "Perkins",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 127,
+    "z": 125,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_NomadicPassion",
+      "label": "nomadic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PainDrivenPassion",
+      "label": "pain-driven passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human64489",
+    "name": "Zippy",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 128,
+    "z": 125,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_IntimatePassion_Hediff",
+      "label": "intimate passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PainDrivenPassion",
+      "label": "pain-driven passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_VengefulPassion_Hediff",
+      "label": "vengeful passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 401
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Toni is already in conversation."
+  ],
+  [
+   "Message",
+   "Toni cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Sonia cannot converse with Toni."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Emmie: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Starting scan. Candidates=3, CurrentMood=0.51"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Emmie: opinion=50, mood=0.51, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Zippy: opinion=11, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "Zippy cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 2"
+  ],
+  [
+   "Message",
+   "Zippy cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Emmie cannot converse with Zippy."
+  ],
+  [
+   "Message",
+   "Perkins is already in conversation."
+  ],
+  [
+   "Message",
+   "Zippy is already in conversation."
+  ],
+  [
+   "Message",
+   "Toni cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 2"
+  ],
+  [
+   "Message",
+   "Braddock is already in conversation."
+  ],
+  [
+   "Message",
+   "Toni is already in conversation."
+  ],
+  [
+   "Message",
+   "Toni cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Sonia cannot converse with Toni."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 1,
+   "isDebug": true,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957246,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 400,
+  "overhead_spent": 0,
+  "total_spent": 400,
+  "epoch": 0,
+  "last_seen_tick": 401,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1100,
+    "spent": 400
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 401,
+    "ticks": 400,
+    "requested": 400
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "suush",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T132212\\Cauldron__suush__colonist_injured_unexpectedly__t401__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3532101,
+  "width": 1810,
+  "height": 1183,
+  "md5": "ad0d27f5621cbc44bcaaca3b01ab308c",
+  "why": ""
+ },
+ "notes": []
+}

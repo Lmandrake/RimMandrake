@@ -1,0 +1,531 @@
+{
+ "name": "Contagion__repulsor_clear__colonist_injured_unexpectedly__t12846__001",
+ "when_utc": "2026-10-03T09:59:30Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Squint gained 1 new hediff(s) (RM_Slimification); cause_hint=unknown",
+   "evidence": {
+    "id": "Human37137",
+    "name": "Squint",
+    "new_hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.0104761906
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_Slimification"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    191,
+    46
+   ],
+   "fingerprint": "colonist_injured:Human37137:RM_Slimification@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 12846,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human37137",
+    "name": "Squint",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 191,
+    "z": 46,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.0104761906
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Slick",
+    "arrivalTick": 710,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Slick",
+     710
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Returned to the flow",
+    "arrivalTick": 710,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Returned to the flow",
+     710
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1370,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1370
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1375,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1375
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1428,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1428
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 2696,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     2696
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2811,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2811
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2846,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2846
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2876,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2876
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2901,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2901
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2920,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2920
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2928,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2928
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2965,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2965
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2967,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2967
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 3661,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     3661
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5604,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5604
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5677,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5677
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 7023,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     7023
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8077,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8077
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8662,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8662
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 10623,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     10623
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 11504,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     11504
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 12094,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     12094
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 12145,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     12145
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 12672,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     12672
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 36,
+   "adaptDays": -30.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 12846
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: 8d3865932531494ca6d0a04decc37e41"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 368 tools, build 8b156e606b93"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 13/927a774a, toolSet 621ec0dd, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 38552,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_263) A = Thing_RM_SkarrinBreedingStock37301 B = (170, 0, 170) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Hayden started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_278) A = Thing_RM_SkarrinBreedingStock37301 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_268) A = Thing_RM_SkarrinBreedingStock37301 B = (172, 0, 172)) (RM_StockPoolPen (Job_269) A = Thing_RM_SkarrinBr"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_301) A = Thing_RM_SkarrinBreedingStock37317 B = (178, 0, 178) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Nina started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_317) A = Thing_RM_SkarrinBreedingStock37317 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_307) A = Thing_RM_SkarrinBreedingStock37317 B = (172, 0, 172)) (RM_StockPoolPen (Job_308) A = Thing_RM_SkarrinBree"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #6 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 12846,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4725,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 12246,
+    "tick_to": 12846,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Contagion",
+  "chain": "repulsor_clear",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T025756\\Contagion__repulsor_clear__colonist_injured_unexpectedly__t12846__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3439548,
+  "width": 1810,
+  "height": 1183,
+  "md5": "c2c5861c7c7943964f08975c9ab7aef9",
+  "why": ""
+ },
+ "notes": []
+}

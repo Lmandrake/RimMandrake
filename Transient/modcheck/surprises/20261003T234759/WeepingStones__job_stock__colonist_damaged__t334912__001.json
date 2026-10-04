@@ -1,0 +1,866 @@
+{
+ "name": "WeepingStones__job_stock__colonist_damaged__t334912__001",
+ "when_utc": "2026-10-04T06:51:40Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human670 took 1 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human670",
+    "events": [
+     {
+      "seq": 110,
+      "tick": 334465,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human670:110"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human674 took 1 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human674",
+    "events": [
+     {
+      "seq": 111,
+      "tick": 334465,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human674:111"
+  }
+ ],
+ "snapshot": {
+  "tick": 334912,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     1
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Cache in the Log",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Cache in the Log",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     1
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Paola",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Paola",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Paola",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Paola",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kelly",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kelly",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Kelly",
+    "arrivalTick": 1451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Kelly",
+     1451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     1751
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Giggles",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Giggles",
+     1751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Giggles",
+    "arrivalTick": 1751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Giggles",
+     1751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 2001,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     2001
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Brown",
+    "arrivalTick": 2001,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Brown",
+     2001
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 2601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     2601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sora",
+    "arrivalTick": 2601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sora",
+     2601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     3201
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Whisper",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Whisper",
+     3201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Whisper",
+    "arrivalTick": 3201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Whisper",
+     3201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Summer",
+    "arrivalTick": 333202,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Summer",
+     333202
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Brown",
+    "arrivalTick": 333712,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Brown",
+     333712
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Sora",
+    "arrivalTick": 333712,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Sora",
+     333712
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Ancient danger",
+    "arrivalTick": 334221,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Ancient danger",
+     334221
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 334912
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Pundins: Eval Marjot: opinion=0, mood=0.37, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Pundins: Eval McNeil: opinion=-10, mood=0.35, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Pundins: Eval Linda: opinion=-15, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Pundins: Eval Drake: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Pundins: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Error",
+   "Nordgren started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_2049) A = Thing_RM_SkarrinBreedingStock81512 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_2029) A = Thing_RM_SkarrinBreedingStock81512 B = (172, 0, 172)) (RM_StockPoolPen (Job_2031) A = Thing_RM_Skar"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nordgren: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kitt: Starting scan. Candidates=3, CurrentMood=0.35"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kitt: Eval Michal: opinion=22, mood=0.34, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kitt: Eval Bundy: opinion=45, mood=0.35, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Kitt: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Starting scan. Candidates=8, CurrentMood=0.37"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Gillespie: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Bowman: opinion=3, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Nordgren: opinion=1, mood=0.59, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval McNeil: opinion=0, mood=0.34, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Pundins: opinion=0, mood=0.35, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Linda: opinion=-15, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Eval Drake: opinion=0, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Marjot: Scan finished. NewlyAddedMemories=0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.MainTabWindow_Inspect",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 12,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956076,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 334912,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 2475,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 334312,
+    "tick_to": 334912,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "job_stock",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T234759\\WeepingStones__job_stock__colonist_damaged__t334912__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1981368,
+  "width": 1810,
+  "height": 1183,
+  "md5": "4fcb14b8a45d6b4a572c3e5234a28cf3",
+  "why": ""
+ },
+ "notes": []
+}

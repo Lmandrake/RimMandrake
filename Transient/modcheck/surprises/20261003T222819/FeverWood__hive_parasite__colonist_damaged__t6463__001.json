@@ -1,0 +1,636 @@
+{
+ "name": "FeverWood__hive_parasite__colonist_damaged__t6463__001",
+ "when_utc": "2026-10-04T05:41:23Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human683 took 2 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human683",
+    "events": [
+     {
+      "seq": 267,
+      "tick": 6004,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 277,
+      "tick": 6364,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human683:267,277"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Nose gained 6 new hediff(s) (MissingBodyPart); cause_hint=unknown",
+   "evidence": {
+    "id": "Human77839",
+    "name": "Nose",
+    "new_hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off (fresh)",
+      "part": "Hand",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "MissingBodyPart"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    108,
+    95
+   ],
+   "fingerprint": "colonist_injured:Human77839:MissingBodyPart@Finger,MissingBodyPart@Finger,MissingBodyPart@Finger,MissingBodyPart@Finger,MissingBodyPart@Finger,MissingBodyPart@Hand"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist BB gained 2 new hediff(s) (Bite,BloodLoss); cause_hint=animal",
+   "evidence": {
+    "id": "Human85428",
+    "name": "BB",
+    "new_hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Torso",
+      "severity": 10.9990978
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00263978355
+     }
+    ],
+    "cause_hint": "animal",
+    "causes": [
+     "animal",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    149,
+    105
+   ],
+   "fingerprint": "colonist_injured:Human85428:Bite@Torso,BloodLoss@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 6463,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human77839",
+    "name": "Nose",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 108,
+    "z": 95,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Nose",
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 10.8947544
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.054549396
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 12.8559332
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (kurreth mandibles)",
+      "part": "Shoulder",
+      "severity": 7.0
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Leg",
+      "severity": 13.0207262
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off (fresh)",
+      "part": "Hand",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Finger",
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 4.60628462,
+    "painTotal": 0.872142732,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human85428",
+    "name": "BB",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 149,
+    "z": 105,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_DuncePassion",
+      "label": "dunce passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "AS_NomadicPassion",
+      "label": "nomadic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_RainyDayPassion",
+      "label": "rainy day passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Arm",
+      "severity": 5.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Torso",
+      "severity": 10.9990978
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00263978355
+     }
+    ],
+    "bleedRate": 0.659945846,
+    "painTotal": 0.137488723,
+    "census": true,
+    "job": "FleeAndCower",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Entering the Terminator Front",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Entering the Terminator Front",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 4465,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     4465
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hans",
+    "arrivalTick": 4465,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hans",
+     4465
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kaytoo (vulptex) (bonded)",
+    "arrivalTick": 5251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kaytoo (vulptex) (bonded)",
+     5251
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 13,
+   "adaptDays": -34.6666679,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 6463
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Chance: Eval Lev: opinion=0, mood=0.56, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Chance: Eval Fy: opinion=-5, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Chance: Eval Mie: opinion=-13, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Chance: Eval Laila: opinion=-8, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Chance: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Starting scan. Candidates=14, CurrentMood=0.57"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Chance: opinion=-28, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Cooley: opinion=37, mood=0.66, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Kem: opinion=12, mood=0.64, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Nose: opinion=4, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Dan: opinion=12, mood=0.60, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval BB: opinion=5, mood=0.60, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Schobi: opinion=-5, mood=0.44, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Cover: opinion=-5, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Nobu: opinion=-5, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Lev: opinion=-8, mood=0.56, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Fy: opinion=-5, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Mie: opinion=-13, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Eval Laila: opinion=-16, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bellerose: Scan finished. NewlyAddedMemories=1"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956076,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956011,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 555,
+  "overhead_spent": 0,
+  "total_spent": 555,
+  "epoch": 0,
+  "last_seen_tick": 6463,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 555
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 5908,
+    "tick_to": 6463,
+    "ticks": 555,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "hive_parasite",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T222819\\FeverWood__hive_parasite__colonist_damaged__t6463__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2689314,
+  "width": 1810,
+  "height": 1183,
+  "md5": "ea6667e5cfc28641f5df2ee3e0ce1869",
+  "why": ""
+ },
+ "notes": []
+}

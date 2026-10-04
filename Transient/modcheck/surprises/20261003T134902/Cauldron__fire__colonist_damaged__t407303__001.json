@@ -1,0 +1,869 @@
+{
+ "name": "Cauldron__fire__colonist_damaged__t407303__001",
+ "when_utc": "2026-10-03T20:52:41Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Sonia took 1 damage event(s): Crush by nobody",
+   "evidence": {
+    "id": "Human707",
+    "events": [
+     {
+      "seq": 364,
+      "tick": 407253,
+      "damageDef": "Crush",
+      "amount": 28.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    76,
+    165
+   ],
+   "fingerprint": "colonist_damaged:Human707:364"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Sonia is bleeding",
+   "evidence": {
+    "id": "Human707",
+    "name": "Sonia",
+    "downed": false,
+    "bleedRate": 2.87999988,
+    "painTotal": 0.3
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    76,
+    165
+   ],
+   "fingerprint": "colonist_downed:Human707:False"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Sonia gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human707",
+    "name": "Sonia",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00288
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    76,
+    165
+   ],
+   "fingerprint": "colonist_injured:Human707:BloodLoss@None"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "9 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 172,
+      "z": 169
+     },
+     {
+      "x": 173,
+      "z": 169
+     },
+     {
+      "x": 174,
+      "z": 169
+     },
+     {
+      "x": 172,
+      "z": 170
+     },
+     {
+      "x": 173,
+      "z": 170
+     },
+     {
+      "x": 174,
+      "z": 170
+     },
+     {
+      "x": 172,
+      "z": 171
+     },
+     {
+      "x": 173,
+      "z": 171
+     },
+     {
+      "x": 174,
+      "z": 171
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    172,
+    169
+   ],
+   "fingerprint": "fire_on_map:9"
+  }
+ ],
+ "snapshot": {
+  "tick": 407303,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human707",
+    "name": "Sonia",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 76,
+    "z": 165,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Asthma",
+      "label": "asthma (minor)",
+      "part": "Lung",
+      "severity": 0.2743331
+     },
+     {
+      "def": "Asthma",
+      "label": "asthma (minor)",
+      "part": "Lung",
+      "severity": 0.2743331
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Head",
+      "severity": 24.0
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00288
+     }
+    ],
+    "bleedRate": 2.87999988,
+    "painTotal": 0.3,
+    "census": true,
+    "job": "Ingest",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     393445
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lynx",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lynx",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     393445
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Flex",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Flex",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Lynx",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Lynx",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Flex",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Flex",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     393445
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Harrison",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Harrison",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     393445
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Al-Khalid",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Al-Khalid",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     393445
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Vitaly (suush)",
+    "arrivalTick": 393445,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Vitaly (suush)",
+     393445
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 393845,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     393845
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 394845,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     394845
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mazon",
+    "arrivalTick": 394845,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mazon",
+     394845
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     407253
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Noodles",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Noodles",
+     407253
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     407253
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Morgan",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Morgan",
+     407253
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     407253
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fiona",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fiona",
+     407253
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Fiona",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Fiona",
+     407253
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 407253,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     407253
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 31,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 14,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 407303
+  },
+  "fires": 9,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Zippy: opinion=15, mood=0.11, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Marjot and Pug cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Marjot and Iosif cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Marjot and Vadim cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Marjot"
+  ],
+  [
+   "Message",
+   "Marjot failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Pug and Marjot cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Pug and Iosif cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Pug and Vadim cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Pug"
+  ],
+  [
+   "Message",
+   "Pug failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Starting scan. Candidates=5, CurrentMood=0.21"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Marjot: opinion=12, mood=0.18, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Pug: opinion=6, mood=0.19, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Georgette: opinion=0, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Vadim: opinion=-17, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "Iosif and Marjot cannot do lovin' due to low disposition"
+  ],
+  [
+   "Warning",
+   "Reached max messages limit. Stopping logging to avoid spam."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953300,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 50,
+  "overhead_spent": 0,
+  "total_spent": 50,
+  "epoch": 0,
+  "last_seen_tick": 407303,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 662,
+    "spent": 50
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 407253,
+    "tick_to": 407303,
+    "ticks": 50,
+    "requested": 50
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "fire",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T134902\\Cauldron__fire__colonist_damaged__t407303__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2078525,
+  "width": 1810,
+  "height": 1183,
+  "md5": "809020824946b35a3df3d675b4fa865f",
+  "why": ""
+ },
+ "notes": []
+}

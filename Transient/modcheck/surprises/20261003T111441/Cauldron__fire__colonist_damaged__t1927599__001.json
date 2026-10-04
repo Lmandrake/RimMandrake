@@ -1,0 +1,1250 @@
+{
+ "name": "Cauldron__fire__colonist_damaged__t1927599__001",
+ "when_utc": "2026-10-03T18:17:50Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr took 1 damage event(s): Crush by nobody",
+   "evidence": {
+    "id": "Human549",
+    "events": [
+     {
+      "seq": 305,
+      "tick": 1927549,
+      "damageDef": "Crush",
+      "amount": 20.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    77,
+    169
+   ],
+   "fingerprint": "colonist_damaged:Human549:305"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Ryro took 1 damage event(s): Crush by nobody",
+   "evidence": {
+    "id": "Human97105",
+    "events": [
+     {
+      "seq": 306,
+      "tick": 1927549,
+      "damageDef": "Crush",
+      "amount": 25.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    79,
+    163
+   ],
+   "fingerprint": "colonist_damaged:Human97105:306"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr is bleeding",
+   "evidence": {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "downed": false,
+    "bleedRate": 2.66666651,
+    "painTotal": 0.2777778
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    77,
+    169
+   ],
+   "fingerprint": "colonist_downed:Human549:False"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Ryro is bleeding",
+   "evidence": {
+    "id": "Human97105",
+    "name": "Ryro",
+    "downed": false,
+    "bleedRate": 2.87999988,
+    "painTotal": 0.3
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    79,
+    163
+   ],
+   "fingerprint": "colonist_downed:Human97105:False"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00266666664
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    77,
+    169
+   ],
+   "fingerprint": "colonist_injured:Human549:BloodLoss@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Ryro gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human97105",
+    "name": "Ryro",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00288
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    79,
+    163
+   ],
+   "fingerprint": "colonist_injured:Human97105:BloodLoss@None"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "9 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 172,
+      "z": 169
+     },
+     {
+      "x": 173,
+      "z": 169
+     },
+     {
+      "x": 174,
+      "z": 169
+     },
+     {
+      "x": 172,
+      "z": 170
+     },
+     {
+      "x": 173,
+      "z": 170
+     },
+     {
+      "x": 174,
+      "z": 170
+     },
+     {
+      "x": 172,
+      "z": 171
+     },
+     {
+      "x": 173,
+      "z": 171
+     },
+     {
+      "x": 174,
+      "z": 171
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    172,
+    169
+   ],
+   "fingerprint": "fire_on_map:9"
+  }
+ ],
+ "snapshot": {
+  "tick": 1927599,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 77,
+    "z": 169,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.002266572
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Head",
+      "severity": 20.0
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00266666664
+     }
+    ],
+    "bleedRate": 2.66666651,
+    "painTotal": 0.2777778,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97105",
+    "name": "Ryro",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 79,
+    "z": 163,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.105577588
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Head",
+      "severity": 24.0
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00288
+     }
+    ],
+    "bleedRate": 2.87999988,
+    "painTotal": 0.3,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tater",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tater",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tater",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tater",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Val",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Val",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Keith",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Keith",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hans",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hans",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tycoon (suush)",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tycoon (suush)",
+     1924055
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1924055
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jezebel (suush)",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jezebel (suush)",
+     1924055
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1924055
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1924655,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1924655
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gerald",
+    "arrivalTick": 1924655,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gerald",
+     1924655
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1927549
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fisher",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fisher",
+     1927549
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1927549
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Yu",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Yu",
+     1927549
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1927549
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hughes",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hughes",
+     1927549
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1927549,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1927549
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 31,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1927599
+  },
+  "fires": 9,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Trofim and Schmitt are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Trofim and Santos are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Estrada cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Trofim already recently tried to seduce Mintys"
+  ],
+  [
+   "Message",
+   "Fisher cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Yu cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Nevil cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Trofim"
+  ],
+  [
+   "Message",
+   "Trofim failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Error",
+   "Failed to find any textures at Things/Building/Ancient/RUT_RuinedHospitalBed while constructing Multi(initPath=Things/Building/Ancient/RUT_RuinedHospitalBed, color=RGBA(0.631, 0.835, 0.706, 1.000), colorTwo=RGBA(0.631, 0.835, 0.706, 1.000))"
+  ],
+  [
+   "Error",
+   "Failed to find any textures at Things/Building/Ancient/RUT_AncientAirlock_Top while constructing Multi(initPath=Things/Building/Ancient/RUT_AncientAirlock_Top, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VHGE_GasGeyser39279"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing RUT_ForcedAncientAirlock102470"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing RUT_ForcedAncientAirlock_Large102471"
+  ],
+  [
+   "Warning",
+   "[KindRelationEnforcer] \u5728 Pawn \u6b7b\u4ea1\u524d\u6e05\u7406\u4e86 10 \u6761\u5931\u6548\u76f4\u63a5\u5173\u7cfb\uff0c\u5df2\u963b\u6b62\u635f\u574f\u5173\u7cfb\u8fdb\u5165\u539f\u7248\u6b7b\u4ea1\u901a\u77e5\u3002"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for father with gender \"Female\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadPointy to Hughes"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFurrows to Hughes"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 69.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 100.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953005,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 50,
+  "overhead_spent": 0,
+  "total_spent": 50,
+  "epoch": 0,
+  "last_seen_tick": 1927599,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 662,
+    "spent": 50
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1927549,
+    "tick_to": 1927599,
+    "ticks": 50,
+    "requested": 50
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "fire",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T111441\\Cauldron__fire__colonist_damaged__t1927599__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3049272,
+  "width": 1810,
+  "height": 1183,
+  "md5": "7fb49a52e09d2b1a5fe22ae06d420bfd",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,615 @@
+{
+ "name": "GelatinousSlime__antidote__colonist_injured_unexpectedly__t2608__001",
+ "when_utc": "2026-10-03T09:14:08Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Tidy gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human476",
+    "name": "Tidy",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    84,
+    99
+   ],
+   "fingerprint": "colonist_injured:Human476:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Skater gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human48970",
+    "name": "Skater",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    60,
+    35
+   ],
+   "fingerprint": "colonist_injured:Human48970:RM_SheenCoating@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 2608,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human476",
+    "name": "Tidy",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 84,
+    "z": 99,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human48970",
+    "name": "Skater",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 60,
+    "z": 35,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (aching)",
+      "part": "Torso",
+      "severity": 2.0
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0375,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Markie",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Markie",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Dickson",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Dickson",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dickson",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dickson",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Bullerdiek",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Bullerdiek",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bullerdiek",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bullerdiek",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Sadie",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Sadie",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sadie",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sadie",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Herman",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Herman",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Herman",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Herman",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Kay",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Kay",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kay",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kay",
+     1
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 576,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     576
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Park",
+    "arrivalTick": 1321,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Park",
+     1321
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Park",
+    "arrivalTick": 1321,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Park",
+     1321
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1321,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1321
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Carnahan",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Carnahan",
+     2021
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Carnahan",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Carnahan",
+     2021
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Han",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Han",
+     2021
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Han",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Han",
+     2021
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Immanuil",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Immanuil",
+     2021
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Immanuil",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Immanuil",
+     2021
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Agu",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Agu",
+     2021
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Agu",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Agu",
+     2021
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 2021,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     2021
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 11,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 2608
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "AB_ExtremeTemperatureFluctuations",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=24697"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=0 elapsedMs=24698"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=24699"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=2 elapsedMs=24701"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=1 elapsedMs=24702"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=24702"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=24705"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=19 elapsedMs=24724"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=939 elapsedMs=24724"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=19 elapsedMs=24724"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: f8553525bf63410197afc3a31770b219"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 368 tools, build 8b156e606b93"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 13/927a774a, toolSet 621ec0dd, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 34246,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957055,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956985,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 587,
+  "overhead_spent": 0,
+  "total_spent": 587,
+  "epoch": 0,
+  "last_seen_tick": 2608,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 2100,
+    "spent": 587
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2021,
+    "tick_to": 2608,
+    "ticks": 587,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "GelatinousSlime",
+  "chain": "antidote",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T021239\\GelatinousSlime__antidote__colonist_injured_unexpectedly__t2608__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3328473,
+  "width": 1810,
+  "height": 1183,
+  "md5": "53b1f67f6eb59b88831b82c87cae0a00",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,334 @@
+{
+ "name": "FeverWood__flora_harvest__colonist_damaged__t5108__001",
+ "when_utc": "2026-10-04T05:39:16Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human686 took 3 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human686",
+    "events": [
+     {
+      "seq": 212,
+      "tick": 4858,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut",
+       "Cut"
+      ]
+     },
+     {
+      "seq": 215,
+      "tick": 4978,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 217,
+      "tick": 5098,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human686:212,215,217"
+  }
+ ],
+ "snapshot": {
+  "tick": 5108,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Entering the Terminator Front",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Entering the Terminator Front",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 4465,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     4465
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hans",
+    "arrivalTick": 4465,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hans",
+     4465
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 9,
+   "adaptDays": -30.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 5108
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Bellerose cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Dan cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Nose cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Kem already recently tried to seduce Cooley"
+  ],
+  [
+   "Message",
+   "Chance cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 8"
+  ],
+  [
+   "Message",
+   "Chance is already in conversation."
+  ],
+  [
+   "Message",
+   "Dan cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Cooley cannot converse with Dan."
+  ],
+  [
+   "Message",
+   "Kem is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Dan cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Nose cannot converse with Dan."
+  ],
+  [
+   "Message",
+   "Dan is already in conversation."
+  ],
+  [
+   "Message",
+   "BB is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Bellerose is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Cooley: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Message",
+   "Graeme 'Kem' Bowers tried to seduce Basil 'BB' Batter: Acceptance chance = 31.24 %"
+  ],
+  [
+   "Message",
+   "Added Kem and Kem to the seduction rejection tracker"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Kem cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Kem failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956408,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 575,
+  "overhead_spent": 0,
+  "total_spent": 575,
+  "epoch": 0,
+  "last_seen_tick": 5108,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 5600,
+    "spent": 575
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 4533,
+    "tick_to": 5108,
+    "ticks": 575,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "flora_harvest",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T222819\\FeverWood__flora_harvest__colonist_damaged__t5108__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2557046,
+  "width": 1810,
+  "height": 1183,
+  "md5": "90efd30d08adebf48f775f02053f6f87",
+  "why": ""
+ },
+ "notes": []
+}

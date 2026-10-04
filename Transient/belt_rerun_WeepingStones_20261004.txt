@@ -1,0 +1,88 @@
+[ws-note] Player.log scan: {"lines": 27269, "hits": [], "game-wide config/xref lines (instrument probe)": 34}
+[ws] 02:04:33 player_log_names_no_weepingstones_error PASS 
+[ws] 02:04:39 resolve_probe_sees_absence PASS 
+[ws] 02:04:39 defs_resolve_race_things PASS 
+[ws] 02:04:39 defs_resolve_pawnkinds PASS 
+[ws] 02:04:39 defs_resolve_items PASS 
+[ws] 02:04:39 defs_resolve_plants PASS 
+[ws] 02:04:39 defs_resolve_recipes PASS 
+[ws] 02:04:39 defs_resolve_thoughts PASS 
+[ws] 02:04:39 defs_resolve_jobs PASS 
+[ws] 02:04:39 defs_resolve_workgivers PASS 
+[ws] 02:04:39 defs_resolve_set_makers PASS 
+[ws] 02:04:40 defs_resolve_biome PASS 
+[ws] 02:04:40 defs_resolve_buildings PASS 
+[ws] 02:04:40 defs_resolve_letters PASS 
+[ws] 02:04:40 defs_pair_up_by_convention PASS 
+[ws] 02:04:46 biome_probe_ready PASS 
+[ws] 02:04:46 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): []
+[ws] 02:04:46 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 02:04:46 wild_plants_wired PASS 
+[ws] 02:04:46 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 02:04:46 stocked_catch_has_living_counterpart PASS 
+[ws] 02:04:46 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "heatKind", "lowSun", "heatOffsetC", "14.0", "maxHeatOffsetC", "70.0", "bodySizeExponent", "0.5", "minBodySizeFactor", "0.25"]
+[ws] 02:04:46 water_truce_extension_present PASS 
+[ws] 02:04:46 sun_heat_extension_present PASS 
+[ws] 02:04:46 no_dead_windhour_text PASS 
+[ws] 02:04:52 recipes_on_both_stoves PASS 
+[ws] 02:04:52 rottable_items_tick PASS 
+[ws] 02:04:59 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}
+[ws] 02:04:59 designator_listed_when_on PASS 
+[ws] 02:05:02 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=True) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 02:05:11 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 02:05:14 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 02:05:17 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 02:05:20 waterTruceRadius_slider_roundtrip PASS 
+[ws] 02:05:25 suppression_source_wired PASS 
+[ws] 02:05:28 suppression_toggle_default_and_roundtrip PASS 
+[ws] 02:05:34 condenser_defs_wired PASS 
+[ws] 02:05:40 dewsilk_defs_wired PASS 
+[ws] 02:05:43 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 02:05:43 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 02:05:49 oasis_source_wired PASS 
+[ws-note] Oasis.workerClass not serialisable by get_defs (instrument limit): true
+[ws] 02:05:49 oasis_def_accepts_our_biome PASS 
+[ws] 02:05:52 oasis_toggle_default_and_roundtrip PASS 
+[ws] 02:05:52 oasis_map_census UNMEASURED UNMEASURED: needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing pal
+[ws] 02:05:59 site_ready_pen_zone PASS 
+[ws-note] designating dry floor: {"success": false, "dryRun": false, "designator": {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}, "requestedCellCount": 16, "a
+[ws] 02:05:59 pen_refuses_dry_floor PASS 
+[ws] 02:05:59 pen_covers_exactly_the_water PASS 
+[ws] 02:06:07 site_ready_net PASS 
+[ws] 02:07:28 net_turns_wild_pawn_into_breeding_stock UNMEASURED surprise: colonist_damaged: colonist Human189739 took 2 damage event(s): Cut by Metalhorror; colonist_damaged: colonist Human327 took 1 damage event(s): Blunt by RM_Illoth [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T020425\WeepingStones__job_net__
+[ws] 02:07:35 site_ready_stock PASS 
+[ws] 02:09:07 stock_releases_species_pawn_into_pen UNMEASURED surprise: colonist_damaged: colonist Human327 took 2 damage event(s): Blunt by RM_Illoth; Stun by RM_Illoth [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T020425\WeepingStones__job_stock__colonist_damaged__t357193__001.json]
+[ws] 02:09:15 site_ready_stock_dry PASS 
+[ws] 02:10:36 stock_outside_pen_releases_nothing UNMEASURED surprise: colonist_damaged: colonist Human327 took 1 damage event(s): Cut by nobody [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T020425\WeepingStones__job_stock_outside_pen__colonist_damaged__t357768__001.json]
+[ws] 02:10:43 site_ready_feed PASS 
+[ws] 02:12:18 feed_consumes_food_at_the_pen FAIL ExpectationFailed: the meal is still on the ground after FEED (1): the job never delivered it
+[ws] 02:12:25 site_ready_harvest PASS 
+[ws] 02:14:01 harvest_yields_species_meat UNMEASURED surprise: colonist_injured_unexpectedly: colonist Starry gained 2 new hediff(s) (Bruise); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T020425\WeepingStones__job_harvest__colonist_injured_unexpectedly__t360000__001.json]
+[ws] 02:14:09 site_ready_cull PASS 
+[ws] 02:15:40 cull_yields_enormous_harvest UNMEASURED surprise: colonist_died: colonist Human189805 died (damage_log_kill); colonist_died: colonist Human73229 died (damage_log_kill); colonist_died: colonist Merandil died (death_letter); colonist_died: colonist Stanislav died (death_letter) [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Tran
+[ws] 02:15:47 site_ready_RM_Bladderquill PASS 
+[ws-note] RM_BladderFruit stacks: []
+[ws] 02:16:42 harvest_yields_RM_BladderFruit FAIL ExpectationFailed: no RM_BladderFruit after a forced harvest of 3 RM_Bladderquill (harvestedThingDef is wired in the def; the yield never arrived)
+[ws] 02:16:49 site_ready_RM_Steamfrond PASS 
+[ws-note] RM_SeepSalt stacks: [9]
+[ws] 02:17:54 harvest_yields_RM_SeepSalt PASS 
+[ws] 02:18:02 site_ready_RM_Dewgourd PASS 
+[ws-note] RM_DewgourdFruit stacks: []
+[ws] 02:19:03 harvest_yields_RM_DewgourdFruit FAIL ExpectationFailed: no RM_DewgourdFruit after a forced harvest of 3 RM_Dewgourd (harvestedThingDef is wired in the def; the yield never arrived)
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 2282
+     bland_world: reusing the bland map already current (tile 1694, 3 colonists)
+  ok   bland world established (tile 1694, map 4)
+  -- WeepingStones
+     !! WeepingStones: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 54, 'UNMEASURED': 8, 'FAIL': 3} surprises=5 serious=['colonist_damaged:SURPRISE', 'colonist_died:FATAL', 'colonist_injured_unexpectedly:SURPRISE']
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 5/5 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

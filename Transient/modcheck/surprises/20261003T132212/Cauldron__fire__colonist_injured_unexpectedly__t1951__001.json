@@ -1,0 +1,665 @@
+{
+ "name": "Cauldron__fire__colonist_injured_unexpectedly__t1951__001",
+ "when_utc": "2026-10-03T20:24:28Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Perkins gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human64486",
+    "name": "Perkins",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.000960000034
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    126,
+    126
+   ],
+   "fingerprint": "colonist_injured:Human64486:BloodLoss@None"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "9 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 172,
+      "z": 169
+     },
+     {
+      "x": 173,
+      "z": 169
+     },
+     {
+      "x": 174,
+      "z": 169
+     },
+     {
+      "x": 172,
+      "z": 170
+     },
+     {
+      "x": 173,
+      "z": 170
+     },
+     {
+      "x": 174,
+      "z": 170
+     },
+     {
+      "x": 172,
+      "z": 171
+     },
+     {
+      "x": 173,
+      "z": 171
+     },
+     {
+      "x": 174,
+      "z": 171
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    172,
+    169
+   ],
+   "fingerprint": "fire_on_map:9"
+  }
+ ],
+ "snapshot": {
+  "tick": 1951,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human64486",
+    "name": "Perkins",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 126,
+    "z": 126,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_NomadicPassion",
+      "label": "nomadic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PainDrivenPassion",
+      "label": "pain-driven passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off (fresh)",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.09076747
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.000960000034
+     }
+    ],
+    "bleedRate": 0.96,
+    "painTotal": 0.1,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ulysses (suush)",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ulysses (suush)",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 1001,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     1001
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hall",
+    "arrivalTick": 1001,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hall",
+     1001
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     1601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Giddy",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Giddy",
+     1601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Giddy",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Giddy",
+     1601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     1601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Skye",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Skye",
+     1601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Skye",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Skye",
+     1601
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1601,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1601
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Vexxiss poisoning water",
+    "arrivalTick": 1607,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Vexxiss poisoning water",
+     1607
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 1901,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     1901
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lyle",
+    "arrivalTick": 1901,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lyle",
+     1901
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 4,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1951
+  },
+  "fires": 9,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Zippy: Eval Lyle: opinion=0, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zippy: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Braddock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Braddock failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Toni cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Toni failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Toni cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Toni failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Toni: Starting scan. Candidates=3, CurrentMood=0.59"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Toni: Eval Braddock: opinion=45, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Toni: Eval Sonia: opinion=70, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Toni: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Braddock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Braddock failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VHGE_GasGeyser64479"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 12.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 12.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "Conversation ended due to not having enough members."
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Braddock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Braddock failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956796,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 50,
+  "overhead_spent": 0,
+  "total_spent": 50,
+  "epoch": 0,
+  "last_seen_tick": 1951,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 662,
+    "spent": 50
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1901,
+    "tick_to": 1951,
+    "ticks": 50,
+    "requested": 50
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "fire",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T132212\\Cauldron__fire__colonist_injured_unexpectedly__t1951__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3276659,
+  "width": 1810,
+  "height": 1183,
+  "md5": "e933318bf176cf6b3ecca654b70952aa",
+  "why": ""
+ },
+ "notes": []
+}

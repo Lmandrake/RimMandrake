@@ -1,0 +1,462 @@
+{
+ "name": "Bacta__tank_heals__colonist_injured_unexpectedly__t5726__001",
+ "when_utc": "2026-10-03T22:32:45Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Maxim gained 1 new hediff(s) (SEX_Birthday); cause_hint=unknown",
+   "evidence": {
+    "id": "Human58423",
+    "name": "Maxim",
+    "new_hediffs": [
+     {
+      "def": "SEX_Birthday",
+      "label": "birthday",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "SEX_Birthday"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    126,
+    119
+   ],
+   "fingerprint": "colonist_injured:Human58423:SEX_Birthday@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 5726,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human58423",
+    "name": "Maxim",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 126,
+    "z": 119,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Birthday",
+      "label": "birthday",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 26,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     26
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 26,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     26
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 7,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 5726
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Greyhound: Eval Lindsey: opinion=5, mood=0.77, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Greyhound: Eval Petty: opinion=0, mood=0.60, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Greyhound: Eval Maxim: opinion=5, mood=0.68, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Greyhound: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Min cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Greyhound and Gecko are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Lindsey cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Greyhound and Maxim cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Petty cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Greyhound"
+  ],
+  [
+   "Message",
+   "Greyhound failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Min cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Maxim and Gecko are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Lindsey cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Maxim and Greyhound cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Petty cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Maxim"
+  ],
+  [
+   "Message",
+   "Maxim failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Lindsey cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Lindsey failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 3,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.MainTabWindow_Inspect",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 5,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 2,
+   "isDebug": true,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956922,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 5700,
+  "overhead_spent": 0,
+  "total_spent": 5700,
+  "epoch": 0,
+  "last_seen_tick": 5726,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 1800
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 26,
+    "tick_to": 528,
+    "ticks": 502,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 528,
+    "tick_to": 726,
+    "ticks": 198,
+    "requested": 198
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 726,
+    "tick_to": 1326,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1326,
+    "tick_to": 1426,
+    "ticks": 100,
+    "requested": 100
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1426,
+    "tick_to": 2026,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2026,
+    "tick_to": 2626,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2626,
+    "tick_to": 3226,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3226,
+    "tick_to": 3826,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3826,
+    "tick_to": 3926,
+    "ticks": 100,
+    "requested": 100
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3926,
+    "tick_to": 4526,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 4526,
+    "tick_to": 5126,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 5126,
+    "tick_to": 5726,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Bacta",
+  "chain": "tank_heals",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T152945\\Bacta__tank_heals__colonist_injured_unexpectedly__t5726__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4135851,
+  "width": 1810,
+  "height": 1183,
+  "md5": "c5840f0a582c9e99681c4cec3a92851e",
+  "why": ""
+ },
+ "notes": []
+}

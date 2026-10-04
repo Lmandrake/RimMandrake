@@ -1,0 +1,495 @@
+{
+ "name": "TheRot__unjoining__colonist_damaged__t21199__001",
+ "when_utc": "2026-10-04T08:55:03Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Stanislav took 3 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human189805",
+    "events": [
+     {
+      "seq": 259,
+      "tick": 21199,
+      "damageDef": "Cut",
+      "amount": 27.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch16 < DynamicMethodDefinition.Verse.HealthUtility.DamageUntilDowned_Patch1 < Hediff_MetalhorrorImplant.Emerge < DynamicMethodDefinition.RimMandrake.TheRot.RM_Unjoining.Purge_Patch1 < IngestionOutcomeDoer_RM_Unjoining.DoIngestionOutcomeSpecial < IngestionOutcomeDoer.DoIngestionOutcome < RM_UnjoiningProof.ProofDraught",
+      "hediffsAdded": [
+       "Cut"
+      ]
+     },
+     {
+      "seq": 260,
+      "tick": 21199,
+      "damageDef": "Cut",
+      "amount": 13.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch16 < DynamicMethodDefinition.Verse.HealthUtility.DamageUntilDowned_Patch1 < Hediff_MetalhorrorImplant.Emerge < DynamicMethodDefinition.RimMandrake.TheRot.RM_Unjoining.Purge_Patch1 < IngestionOutcomeDoer_RM_Unjoining.DoIngestionOutcomeSpecial < IngestionOutcomeDoer.DoIngestionOutcome < RM_UnjoiningProof.ProofDraught",
+      "hediffsAdded": [
+       "Crack"
+      ]
+     },
+     {
+      "seq": 261,
+      "tick": 21199,
+      "damageDef": "Cut",
+      "amount": 17.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch16 < DynamicMethodDefinition.Verse.HealthUtility.DamageUntilDowned_Patch1 < Hediff_MetalhorrorImplant.Emerge < DynamicMethodDefinition.RimMandrake.TheRot.RM_Unjoining.Purge_Patch1 < IngestionOutcomeDoer_RM_Unjoining.DoIngestionOutcomeSpecial < IngestionOutcomeDoer.DoIngestionOutcome < RM_UnjoiningProof.ProofDraught",
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    120,
+    119
+   ],
+   "fingerprint": "colonist_damaged:Human189805:259,260,261"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Stanislav is downed",
+   "evidence": {
+    "id": "Human189805",
+    "name": "Stanislav",
+    "downed": true,
+    "bleedRate": 6.27,
+    "painTotal": 1.0
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    120,
+    119
+   ],
+   "fingerprint": "colonist_downed:Human189805:True"
+  },
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): Metalhorror emerging; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      21199,
+      "Metalhorror emerging"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@21199"
+  }
+ ],
+ "snapshot": {
+  "tick": 21199,
+  "epoch": 0,
+  "map_id": 3,
+  "pawns": [
+   {
+    "id": "Human189805",
+    "name": "Stanislav",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 120,
+    "z": 119,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar (painful)",
+      "part": "Head",
+      "severity": 2.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MetalhorrorImplant",
+      "label": "metalhorror implantation",
+      "part": "Brain",
+      "severity": 0.5
+     },
+     {
+      "def": "Cut",
+      "label": "cut ( blade)",
+      "part": "Torso",
+      "severity": 29.7
+     },
+     {
+      "def": "Crack",
+      "label": "crack ( blade)",
+      "part": "Jaw",
+      "severity": 14.3
+     },
+     {
+      "def": "Cut",
+      "label": "cut ( blade)",
+      "part": "Neck",
+      "severity": 18.7
+     },
+     {
+      "def": "RM_UnjoiningPurge",
+      "label": "unjoining purge (1d)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ChemicalBurn",
+      "label": "chemical burn scar (painful)",
+      "part": "Kidney",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 6.27,
+    "painTotal": 1.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 20899,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     20899
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 20899,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     20899
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 21199,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     21199
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 21199,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     21199
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Crew's Cache in the Log",
+    "arrivalTick": 21199,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Crew's Cache in the Log",
+     21199
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 21199,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     21199
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 21199,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     21199
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 21199,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     21199
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 24,
+   "adaptDays": -4.33333349,
+   "totalThreatPointsFactor": 0.74222225,
+   "ticksGame": 21199
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadPointy to Patches"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Patches"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for father with gender \"Female\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Salomon"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckles to Salomon"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for father with gender \"Female\"."
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for mother with gender \"Male\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Frankie"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Frankie"
+  ],
+  [
+   "Message",
+   "[RimMandrake.StarWars.JawaRules] pawnkind-redress-fix: a recycled world pawn came back as 'Colonist' instead of the requested 'Drifter' (KCSG_PAWNKIND_COLONIST_FALLBACK_1) \u2014 corrected in place."
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Min<color=#999999FF>, Pop idol</color>) -> 57.0 [Content]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Min"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Min"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Odette"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Odette"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Sadako"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckles to Sadako"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Stanislav<color=#999999FF>, Researcher</color>) -> 60.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Stanislav"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Stanislav"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955305,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955242,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 21199,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "TheRot",
+  "chain": "unjoining",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T015124\\TheRot__unjoining__colonist_damaged__t21199__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2340630,
+  "width": 1810,
+  "height": 1183,
+  "md5": "bf48b8e35be7289b7d94429a796c9ecf",
+  "why": ""
+ },
+ "notes": []
+}

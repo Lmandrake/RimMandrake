@@ -1,0 +1,890 @@
+{
+ "name": "LeaningScrub__sweetline__fire_on_map__t392965__001",
+ "when_utc": "2026-10-03T20:45:19Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "4 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 249,
+      "z": 108
+     },
+     {
+      "x": 247,
+      "z": 107
+     },
+     {
+      "x": 245,
+      "z": 106
+     },
+     {
+      "x": 244,
+      "z": 106
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    249,
+    108
+   ],
+   "fingerprint": "fire_on_map:4"
+  }
+ ],
+ "snapshot": {
+  "tick": 392965,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Pixel",
+    "arrivalTick": 27643,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Pixel",
+     27643
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 31543,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     31543
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Poopy",
+    "arrivalTick": 31543,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Poopy",
+     31543
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     46558
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Fisher",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Fisher",
+     46558
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     46558
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Pete",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Pete",
+     46558
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     46558
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     46558
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 46558,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     46558
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 46858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     46858
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Baker",
+    "arrivalTick": 46858,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Baker",
+     46858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Baker",
+    "arrivalTick": 46858,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Baker",
+     46858
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 57079,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     57079
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Vadim",
+    "arrivalTick": 57079,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Vadim",
+     57079
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 58279,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     58279
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Priscilla",
+    "arrivalTick": 58279,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Priscilla",
+     58279
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 62365,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     62365
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ramesh",
+    "arrivalTick": 62365,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ramesh",
+     62365
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of Pacifism opportunity",
+    "arrivalTick": 62365,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of Pacifism opportunity",
+     62365
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Haku",
+    "arrivalTick": 62365,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Haku",
+     62365
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "The grass has gone up",
+    "arrivalTick": 392398,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "The grass has gone up",
+     392398
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The fire rite",
+    "arrivalTick": 392399,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The fire rite",
+     392399
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 392500,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     392500
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "New lovers",
+    "arrivalTick": 392571,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "New lovers",
+     392571
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 23,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 11,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 392965
+  },
+  "fires": 4,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Zippy: opinion=15, mood=0.11, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Marjot and Pug cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Marjot and Iosif cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Marjot and Vadim cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Marjot"
+  ],
+  [
+   "Message",
+   "Marjot failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Pug and Marjot cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Pug and Iosif cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Pug and Vadim cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Pug"
+  ],
+  [
+   "Message",
+   "Pug failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Starting scan. Candidates=5, CurrentMood=0.21"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Marjot: opinion=12, mood=0.18, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Pug: opinion=6, mood=0.19, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Georgette: opinion=0, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Eval Vadim: opinion=-17, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Iosif: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "Iosif and Marjot cannot do lovin' due to low disposition"
+  ],
+  [
+   "Warning",
+   "Reached max messages limit. Stopping logging to avoid spam."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954269,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954336,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954399,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 5,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954114,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 6,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954206,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 1,
+  "last_seen_tick": 392965,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3225,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "epoch",
+    "reason": "verb:bridge_call:jawa/time_set_ticks",
+    "epoch": 1,
+    "tick_from": 62365,
+    "tick_to": 392365,
+    "ticks": 0,
+    "cause": "flagged"
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 1,
+    "tick_from": 392365,
+    "tick_to": 392965,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "sweetline",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T133606\\LeaningScrub__sweetline__fire_on_map__t392965__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1857361,
+  "width": 1810,
+  "height": 1183,
+  "md5": "40495dbf0579b074315f95729ee4a57e",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,673 @@
+{
+ "name": "LeaningScrub__smother__modal_open__t185250__001",
+ "when_utc": "2026-10-03T16:59:30Z",
+ "hits": [
+  {
+   "detector": "modal_open",
+   "severity": "SURPRISE",
+   "summary": "1 force-pause modal(s) open: RimWorld.Dialog_ModSettings",
+   "evidence": {
+    "windows": [
+     {
+      "type": "RimWorld.Dialog_ModSettings",
+      "title": null,
+      "isDebug": false,
+      "forcePause": true
+     }
+    ]
+   },
+   "suggest": [
+    "close_modals"
+   ],
+   "focus": null,
+   "fingerprint": "modal_open:RimWorld.Dialog_ModSettings"
+  }
+ ],
+ "snapshot": {
+  "tick": 185250,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     11425
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     11425
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11425,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11425
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     11555
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     11555
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11555
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     11555
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     11555
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 11555,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     11555
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 182696,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     182696
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     183825
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Don",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Don",
+     183825
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Area revealed",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Area revealed",
+     183825
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 183825,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     183825
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 184535,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     184535
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Moon",
+    "arrivalTick": 184535,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Moon",
+     184535
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     184785
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bowman",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bowman",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bowman",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bowman",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     184785
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Xandy",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Xandy",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Xandy",
+    "arrivalTick": 184785,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Xandy",
+     184785
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Burial of Mutation opportunity",
+    "arrivalTick": 185000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Burial of Mutation opportunity",
+     185000
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Reiku",
+    "arrivalTick": 185000,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Reiku",
+     185000
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Reiku",
+    "arrivalTick": 185000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Reiku",
+     185000
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 5,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 185250
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Godders: Eval Susy: opinion=-10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Godders: Eval Braz: opinion=-10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Godders: Eval Vasilisa: opinion=-10, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Godders: Eval Moody: opinion=0, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Godders: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Starting scan. Candidates=14, CurrentMood=0.41"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Kinsei: opinion=-10, mood=0.62, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Fernand: opinion=-10, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Ferrell: opinion=-10, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Ingrid: opinion=-10, mood=0.36, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Crabby: opinion=-9, mood=0.34, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Artemis: opinion=-10, mood=0.25, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Godders: opinion=-10, mood=0.34, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Timofei: opinion=-10, mood=0.37, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Redfields: opinion=6, mood=0.39, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Susy: opinion=-10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Braz: opinion=-10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Vasilisa: opinion=-10, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Eval Moody: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Fjellsmel: Scan finished. NewlyAddedMemories=2"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.Dialog_ModSettings",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 11,
+   "isDebug": false,
+   "forcePause": true
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955760,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 250,
+  "overhead_spent": 0,
+  "total_spent": 250,
+  "epoch": 0,
+  "last_seen_tick": 185250,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 912,
+    "spent": 250
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 185000,
+    "tick_to": 185250,
+    "ticks": 250,
+    "requested": 250
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "smother",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T095713\\LeaningScrub__smother__modal_open__t185250__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2017439,
+  "width": 1810,
+  "height": 1183,
+  "md5": "f4859d1b15adafd198546f68511cedbe",
+  "why": ""
+ },
+ "notes": []
+}

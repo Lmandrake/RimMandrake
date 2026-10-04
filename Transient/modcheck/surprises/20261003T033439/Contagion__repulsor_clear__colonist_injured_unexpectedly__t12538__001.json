@@ -1,0 +1,2385 @@
+{
+ "name": "Contagion__repulsor_clear__colonist_injured_unexpectedly__t12538__001",
+ "when_utc": "2026-10-03T10:36:13Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Gray gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human973",
+    "name": "Gray",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    128,
+    142
+   ],
+   "fingerprint": "colonist_injured:Human973:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Loser gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human36491",
+    "name": "Loser",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    33,
+    39
+   ],
+   "fingerprint": "colonist_injured:Human36491:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Troll gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human36494",
+    "name": "Troll",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    72,
+    85
+   ],
+   "fingerprint": "colonist_injured:Human36494:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Adams gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human36497",
+    "name": "Adams",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    67,
+    51
+   ],
+   "fingerprint": "colonist_injured:Human36497:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Rash gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human36507",
+    "name": "Rash",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    98,
+    87
+   ],
+   "fingerprint": "colonist_injured:Human36507:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Schlitzer gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human36510",
+    "name": "Schlitzer",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    75,
+    88
+   ],
+   "fingerprint": "colonist_injured:Human36510:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Cole gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human41206",
+    "name": "Cole",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    59,
+    59
+   ],
+   "fingerprint": "colonist_injured:Human41206:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Lips gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human41212",
+    "name": "Lips",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    59,
+    62
+   ],
+   "fingerprint": "colonist_injured:Human41212:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Sparkles gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human41215",
+    "name": "Sparkles",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    60,
+    44
+   ],
+   "fingerprint": "colonist_injured:Human41215:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Vix gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human42994",
+    "name": "Vix",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    137,
+    112
+   ],
+   "fingerprint": "colonist_injured:Human42994:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Steinbach gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46441",
+    "name": "Steinbach",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    39,
+    35
+   ],
+   "fingerprint": "colonist_injured:Human46441:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Ellis gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46444",
+    "name": "Ellis",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    36,
+    38
+   ],
+   "fingerprint": "colonist_injured:Human46444:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Gracie gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46447",
+    "name": "Gracie",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    40,
+    41
+   ],
+   "fingerprint": "colonist_injured:Human46447:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Miyazaki gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46450",
+    "name": "Miyazaki",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    36,
+    44
+   ],
+   "fingerprint": "colonist_injured:Human46450:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Fern gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46453",
+    "name": "Fern",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    39,
+    47
+   ],
+   "fingerprint": "colonist_injured:Human46453:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mugs gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46456",
+    "name": "Mugs",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    36,
+    50
+   ],
+   "fingerprint": "colonist_injured:Human46456:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Wyn gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human46459",
+    "name": "Wyn",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    40,
+    53
+   ],
+   "fingerprint": "colonist_injured:Human46459:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Jones gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human54860",
+    "name": "Jones",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    59,
+    35
+   ],
+   "fingerprint": "colonist_injured:Human54860:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Rubber gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human57251",
+    "name": "Rubber",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    68,
+    80
+   ],
+   "fingerprint": "colonist_injured:Human57251:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Dennis gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human67548",
+    "name": "Dennis",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    139,
+    113
+   ],
+   "fingerprint": "colonist_injured:Human67548:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mash gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human69330",
+    "name": "Mash",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    142
+   ],
+   "fingerprint": "colonist_injured:Human69330:RM_SheenCoating@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Jubal gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown",
+   "evidence": {
+    "id": "Human75960",
+    "name": "Jubal",
+    "new_hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_SheenCoating"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    160,
+    168
+   ],
+   "fingerprint": "colonist_injured:Human75960:RM_SheenCoating@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 12538,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human973",
+    "name": "Gray",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 128,
+    "z": 142,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.03806666
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human36491",
+    "name": "Loser",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 33,
+    "z": 39,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Stab",
+      "label": "stab scar",
+      "part": "Torso",
+      "severity": 2.0
+     },
+     {
+      "def": "Asthma",
+      "label": "asthma (minor)",
+      "part": "Lung",
+      "severity": 0.0534999669
+     },
+     {
+      "def": "Asthma",
+      "label": "asthma (minor)",
+      "part": "Lung",
+      "severity": 0.0534999669
+     },
+     {
+      "def": "HeartArteryBlockage",
+      "label": "artery blockage (major)",
+      "part": "Heart",
+      "severity": 0.656345248
+     },
+     {
+      "def": "Cataract",
+      "label": "cataract",
+      "part": "Eye",
+      "severity": 0.001
+     },
+     {
+      "def": "Cataract",
+      "label": "cataract",
+      "part": "Eye",
+      "severity": 0.001
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.03857142
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human36494",
+    "name": "Troll",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 72,
+    "z": 85,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar (itchy)",
+      "part": "Arm",
+      "severity": 5.0
+     },
+     {
+      "def": "Bite",
+      "label": "bite scar",
+      "part": "Foot",
+      "severity": 4.0
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.03125,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human36497",
+    "name": "Adams",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 67,
+    "z": 51,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human36507",
+    "name": "Rash",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 98,
+    "z": 87,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.35
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human36510",
+    "name": "Schlitzer",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 75,
+    "z": 88,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (half-absorbed)",
+      "part": null,
+      "severity": 0.6
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human41206",
+    "name": "Cole",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 59,
+    "z": 59,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Leg",
+      "severity": 4.0
+     },
+     {
+      "def": "Stab",
+      "label": "stab scar (itchy)",
+      "part": "Torso",
+      "severity": 3.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.18
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 1.0999999
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0361999869
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.007665604
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.136799991,
+    "painTotal": 0.04725,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human41212",
+    "name": "Lips",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 59,
+    "z": 62,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (half-absorbed)",
+      "part": null,
+      "severity": 0.55
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human41215",
+    "name": "Sparkles",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 60,
+    "z": 44,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar (aching)",
+      "part": "Leg",
+      "severity": 5.0
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (half-absorbed)",
+      "part": null,
+      "severity": 0.55
+     },
+     {
+      "def": "XenogerminationComa",
+      "label": "xenogermination coma (1.8d)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human42994",
+    "name": "Vix",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 137,
+    "z": 112,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar",
+      "part": "Torso",
+      "severity": 5.0
+     },
+     {
+      "def": "PegLeg",
+      "label": "peg leg",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Femur",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Tibia",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Foot",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.0740476549
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.590000033
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 0.67
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.05496665
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 0.67
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.430000067
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0141420038
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Arm",
+      "severity": 0.430000067
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Hand",
+      "severity": 0.67
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.2076,
+    "painTotal": 0.043250002,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46441",
+    "name": "Steinbach",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 39,
+    "z": 35,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "MissingBodyPart",
+      "label": "Cut off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "Alzheimers",
+      "label": "alzheimer's (major)",
+      "part": "Brain",
+      "severity": 1.875736
+     },
+     {
+      "def": "BadBack",
+      "label": "bad back",
+      "part": "Spine",
+      "severity": 0.001
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.3233329
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46444",
+    "name": "Ellis",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 36,
+    "z": 38,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Stab",
+      "label": "stab scar",
+      "part": "Torso",
+      "severity": 4.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch scar (itchy)",
+      "part": "Arm",
+      "severity": 4.0
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.322856724
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.025,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46447",
+    "name": "Gracie",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 40,
+    "z": 41,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Eye",
+      "severity": 5.0
+     },
+     {
+      "def": "WoodenHand",
+      "label": "wooden hand",
+      "part": "Hand",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.322856724
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46450",
+    "name": "Miyazaki",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 36,
+    "z": 44,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.3233329
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46453",
+    "name": "Fern",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 39,
+    "z": 47,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.3233329
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46456",
+    "name": "Mugs",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 36,
+    "z": 50,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.3233329
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46459",
+    "name": "Wyn",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 40,
+    "z": 53,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Torso",
+      "severity": 5.0
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.322856724
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human54860",
+    "name": "Jones",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 59,
+    "z": 35,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Torso",
+      "severity": 4.0
+     },
+     {
+      "def": "RM_SlimeMarked",
+      "label": "slime-marked (one entry)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human57251",
+    "name": "Rubber",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 68,
+    "z": 80,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Eye",
+      "severity": 1.26
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Ear",
+      "severity": 1.34
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.117933363
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.18
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.34
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.013555198
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Hand",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Arm",
+      "severity": 1.34
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.467999965,
+    "painTotal": 0.0975,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human67548",
+    "name": "Dennis",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 139,
+    "z": 113,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Gunshot",
+      "label": "old gunshot",
+      "part": "Shoulder",
+      "severity": 3.0
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Jaw",
+      "severity": 1.26
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Eye",
+      "severity": 1.34
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.03886666
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0126,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human69330",
+    "name": "Mash",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 127,
+    "z": 142,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (itchy)",
+      "part": "Eye",
+      "severity": 4.0
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.025,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human75960",
+    "name": "Jubal",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 160,
+    "z": 168,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar (itchy)",
+      "part": "Arm",
+      "severity": 3.0
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.0001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.01875,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 112,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     112
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 115,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     115
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 121,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     121
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Jimmy",
+    "arrivalTick": 603,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Jimmy",
+     603
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jimmy",
+    "arrivalTick": 603,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jimmy",
+     603
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Returned to the flow",
+    "arrivalTick": 603,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Returned to the flow",
+     603
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 651,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     651
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1348,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1348
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1414,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1414
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1421,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1421
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2793,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2793
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 2814,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     2814
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2825,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2825
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2862,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2862
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2884,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2884
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2887,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2887
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2931,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2931
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2944,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2944
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2954,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2954
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5133,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5133
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5547,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5547
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Fallen monolith",
+    "arrivalTick": 5685,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Fallen monolith",
+     5685
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 7126,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     7126
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8133,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8133
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8139,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8139
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 36,
+   "adaptDays": -30.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 12538
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 21487,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_154) A = Thing_RM_SkarrinBreedingStock57254 B = (170, 0, 170) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Rubber started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_166) A = Thing_RM_SkarrinBreedingStock57254 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_156) A = Thing_RM_SkarrinBreedingStock57254 B = (172, 0, 172)) (RM_StockPoolPen (Job_157) A = Thing_RM_SkarrinBr"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_182) A = Thing_RM_SkarrinBreedingStock61901 B = (178, 0, 178) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Tara started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_199) A = Thing_RM_SkarrinBreedingStock61901 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_189) A = Thing_RM_SkarrinBreedingStock61901 B = (172, 0, 172)) (RM_StockPoolPen (Job_190) A = Thing_RM_SkarrinBree"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #6 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith36443"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 589,
+  "overhead_spent": 0,
+  "total_spent": 589,
+  "epoch": 0,
+  "last_seen_tick": 12538,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4725,
+    "spent": 589
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 11949,
+    "tick_to": 12538,
+    "ticks": 589,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Contagion",
+  "chain": "repulsor_clear",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T033439\\Contagion__repulsor_clear__colonist_injured_unexpectedly__t12538__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4107717,
+  "width": 1810,
+  "height": 1183,
+  "md5": "19367ae3d62c3282ae0ec8971cd0395a",
+  "why": ""
+ },
+ "notes": []
+}

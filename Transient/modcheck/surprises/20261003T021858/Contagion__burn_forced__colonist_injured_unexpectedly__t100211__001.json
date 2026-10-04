@@ -1,0 +1,623 @@
+{
+ "name": "Contagion__burn_forced__colonist_injured_unexpectedly__t100211__001",
+ "when_utc": "2026-10-03T09:21:49Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Skater gained 3 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic",
+   "evidence": {
+    "id": "Human48970",
+    "name": "Skater",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.541
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0456966646
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00163548
+     }
+    ],
+    "cause_hint": "mixed:animal,toxic",
+    "causes": [
+     "animal",
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    158,
+    118
+   ],
+   "fingerprint": "colonist_injured:Human48970:BloodLoss@None,Scratch@Leg,ToxicBuildup@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 100211,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human48970",
+    "name": "Skater",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 158,
+    "z": 118,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (aching)",
+      "part": "Torso",
+      "severity": 2.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.541
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.461
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0456966646
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00163548
+     }
+    ],
+    "bleedRate": 0.180119991,
+    "painTotal": 0.075025,
+    "census": true,
+    "job": "Clean",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Cray",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cray",
+     3508
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Strick",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Strick",
+     3508
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Strick",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Strick",
+     3508
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Ali",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Ali",
+     3508
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ali",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ali",
+     3508
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Harvey",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Harvey",
+     3508
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Harvey",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Harvey",
+     3508
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 3508,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     3508
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 3689,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     3689
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 7023,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     7023
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7069,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7069
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Cardenas",
+    "arrivalTick": 7069,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Cardenas",
+     7069
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cardenas",
+    "arrivalTick": 7069,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cardenas",
+     7069
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 7069,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     7069
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 7180,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     7180
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7666,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7666
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 97666,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     97666
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 98116,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     98116
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Tamara",
+    "arrivalTick": 98116,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Tamara",
+     98116
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tamara",
+    "arrivalTick": 98116,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tamara",
+     98116
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Womanly Mourning opportunity for Sins",
+    "arrivalTick": 98116,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Womanly Mourning opportunity for Sins",
+     98116
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sins",
+    "arrivalTick": 98116,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sins",
+     98116
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 98116,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     98116
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 98143,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     98143
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Fallen monolith",
+    "arrivalTick": 98596,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Fallen monolith",
+     98596
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 21,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 100211
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "AB_ExtremeTemperatureFluctuations",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=19 elapsedMs=24724"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=939 elapsedMs=24724"
+  ],
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=19 elapsedMs=24724"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: f8553525bf63410197afc3a31770b219"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 368 tools, build 8b156e606b93"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 13/927a774a, toolSet 621ec0dd, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 34246,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith48941"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 2095,
+  "overhead_spent": 0,
+  "total_spent": 2095,
+  "epoch": 0,
+  "last_seen_tick": 100211,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 4725,
+    "spent": 1788
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/order_pawn",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 98116,
+    "tick_to": 98423,
+    "ticks": 307
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 98423,
+    "tick_to": 99019,
+    "ticks": 596,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 99019,
+    "tick_to": 99615,
+    "ticks": 596,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 99615,
+    "tick_to": 100211,
+    "ticks": 596,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Contagion",
+  "chain": "burn_forced",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T021858\\Contagion__burn_forced__colonist_injured_unexpectedly__t100211__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3629363,
+  "width": 1810,
+  "height": 1183,
+  "md5": "1b1062a495c030c1979b5bb26be70214",
+  "why": ""
+ },
+ "notes": []
+}

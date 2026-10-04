@@ -1,0 +1,858 @@
+{
+ "name": "Cauldron__yield__colonist_damaged__t1001__001",
+ "when_utc": "2026-10-03T20:24:02Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Perkins took 1 damage event(s): Bomb by RM_Suush",
+   "evidence": {
+    "id": "Human64486",
+    "events": [
+     {
+      "seq": 12,
+      "tick": 404,
+      "damageDef": "Bomb",
+      "amount": 50.0,
+      "instigatorId": "RM_Suush64501",
+      "instigatorDef": "RM_Suush",
+      "weapon": null,
+      "hediffsAdded": [
+       "MissingBodyPart",
+       "Shredded",
+       "Crack",
+       "Shredded",
+       "Shredded"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    125
+   ],
+   "fingerprint": "colonist_damaged:Human64486:12"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Zippy took 1 damage event(s): Bomb by RM_Suush",
+   "evidence": {
+    "id": "Human64489",
+    "events": [
+     {
+      "seq": 19,
+      "tick": 404,
+      "damageDef": "Bomb",
+      "amount": 50.0,
+      "instigatorId": "RM_Suush64501",
+      "instigatorDef": "RM_Suush",
+      "weapon": null,
+      "hediffsAdded": [
+       "Shredded",
+       "Bruise",
+       "Crack",
+       "Shredded",
+       "Shredded"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    131,
+    130
+   ],
+   "fingerprint": "colonist_damaged:Human64489:19"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Perkins is downed",
+   "evidence": {
+    "id": "Human64486",
+    "name": "Perkins",
+    "downed": true,
+    "bleedRate": 2.9528,
+    "painTotal": 0.831833363
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    125
+   ],
+   "fingerprint": "colonist_downed:Human64486:True"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Zippy is bleeding",
+   "evidence": {
+    "id": "Human64489",
+    "name": "Zippy",
+    "downed": false,
+    "bleedRate": 2.2452,
+    "painTotal": 0.64275
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    131,
+    130
+   ],
+   "fingerprint": "colonist_downed:Human64489:False"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Emmie gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human64482",
+    "name": "Emmie",
+    "new_hediffs": [
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.007139599
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    132,
+    130
+   ],
+   "fingerprint": "colonist_injured:Human64482:ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Perkins gained 3 new hediff(s) (BloodLoss,ToxGasExposure,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human64486",
+    "name": "Perkins",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0295856
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (moderate)",
+      "part": null,
+      "severity": 2.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0858080462
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss",
+     "ToxGasExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    127,
+    125
+   ],
+   "fingerprint": "colonist_injured:Human64486:BloodLoss@None,ToxGasExposure@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Zippy gained 2 new hediff(s) (BloodLoss,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human64489",
+    "name": "Zippy",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0224568024
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0295139253
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    131,
+    130
+   ],
+   "fingerprint": "colonist_injured:Human64489:BloodLoss@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "1 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 127,
+      "z": 127
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    127,
+    127
+   ],
+   "fingerprint": "fire_on_map:1"
+  }
+ ],
+ "snapshot": {
+  "tick": 1001,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human64482",
+    "name": "Emmie",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 132,
+    "z": 130,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_CompetitivePassion",
+      "label": "competitive passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PsychicPassion",
+      "label": "psychic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.007139599
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human64486",
+    "name": "Perkins",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 127,
+    "z": 125,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_NomadicPassion",
+      "label": "nomadic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PainDrivenPassion",
+      "label": "pain-driven passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Torn off (fresh)",
+      "part": "Finger",
+      "severity": 0.5
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Pelvis",
+      "severity": 16.666666
+     },
+     {
+      "def": "Shredded",
+      "label": "shredded",
+      "part": "Torso",
+      "severity": 33.2133331
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0295856
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (moderate)",
+      "part": null,
+      "severity": 2.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0858080462
+     }
+    ],
+    "bleedRate": 2.9528,
+    "painTotal": 0.831833363,
+    "census": true,
+    "job": "Wait_Downed",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human64489",
+    "name": "Zippy",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 131,
+    "z": 130,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_IntimatePassion_Hediff",
+      "label": "intimate passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_PainDrivenPassion",
+      "label": "pain-driven passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_VengefulPassion_Hediff",
+      "label": "vengeful passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Shredded",
+      "label": "shredded",
+      "part": "Leg",
+      "severity": 12.5
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Leg",
+      "severity": 4.0
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Clavicle",
+      "severity": 12.5
+     },
+     {
+      "def": "Shredded",
+      "label": "shredded",
+      "part": "Shoulder",
+      "severity": 12.5
+     },
+     {
+      "def": "Shredded",
+      "label": "shredded",
+      "part": "Torso",
+      "severity": 12.42
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0224568024
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0295139253
+     }
+    ],
+    "bleedRate": 2.2452,
+    "painTotal": 0.64275,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ulysses (suush)",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ulysses (suush)",
+     401
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 7,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 1001
+  },
+  "fires": 1,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Braddock: Eval Toni: opinion=47, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Braddock: Eval Sonia: opinion=50, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Braddock: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "Toni cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 5"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Toni cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Toni failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Braddock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Braddock failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Emmie: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Toni cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Toni failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Starting scan. Candidates=4, CurrentMood=0.54"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Emmie: opinion=50, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Zippy: opinion=24, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Eval Hall: opinion=0, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Perkins: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Braddock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Braddock failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Warning",
+   "[RimAI.Core][P3][Scheduler] Long task 'GetPoweredAiServerThingIds' took 9 ms; origin=AIServerPart.GetPoweredAiServerThingIdsAsync <= WorldDataService.GetPoweredAiServerThingIdsAsync"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957055,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957120,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956985,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 1001,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1850,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 401,
+    "tick_to": 1001,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "yield",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T132212\\Cauldron__yield__colonist_damaged__t1001__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3361798,
+  "width": 1810,
+  "height": 1183,
+  "md5": "65c1d4a18a4a1ec0897d4b5204f65bd0",
+  "why": ""
+ },
+ "notes": []
+}

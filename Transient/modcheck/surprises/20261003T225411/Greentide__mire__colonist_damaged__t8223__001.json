@@ -1,0 +1,706 @@
+{
+ "name": "Greentide__mire__colonist_damaged__t8223__001",
+ "when_utc": "2026-10-04T05:57:47Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human72164 took 1 damage event(s): Bite by RM_Kurreth",
+   "evidence": {
+    "id": "Human72164",
+    "events": [
+     {
+      "seq": 332,
+      "tick": 8128,
+      "damageDef": "Bite",
+      "amount": 12.36519,
+      "instigatorId": "RM_Kurreth88845",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "hediffsAdded": [
+       "Crack"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human72164:332"
+  }
+ ],
+ "snapshot": {
+  "tick": 8223,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Nexu (blarth)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Nexu (blarth)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Skocha (blixus)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Skocha (blixus)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Eopie (bogwing)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eopie (bogwing)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Restocking Fee (marsh haunt)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Restocking Fee (marsh haunt)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gnome (ikee)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gnome (ikee)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ian",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ian",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Scurrier (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Scurrier (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Voorpak (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Voorpak (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Treadwell (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Treadwell (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 1184 for 1410",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 1184 for 1410",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6910
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Chiyo",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Chiyo",
+     6910
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Specimen",
+    "arrivalTick": 7034,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Specimen",
+     7034
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 7423,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     7423
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheppy",
+    "arrivalTick": 7423,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheppy",
+     7423
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Feral droid",
+    "arrivalTick": 7623,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Feral droid",
+     7623
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7743
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     7743
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dimitri",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dimitri",
+     7743
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She takes it back",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She takes it back",
+     7743
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sold: Scoundrel",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sold: Scoundrel",
+     7743
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 5,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 18,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 8223
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Guillermo: opinion=-15, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Taras cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 2"
+  ],
+  [
+   "Message",
+   "Taras cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Chen cannot converse with Taras."
+  ],
+  [
+   "Message",
+   "Schlitzer is already in conversation."
+  ],
+  [
+   "Message",
+   "Taras is already in conversation."
+  ],
+  [
+   "Message",
+   "Brows is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Guo is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Orca is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Rynyk is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Starting scan. Candidates=7, CurrentMood=0.52"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Eval Chen: opinion=-3, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Eval Taras: opinion=7, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Eval Brows: opinion=10, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Eval Guo: opinion=5, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Eval Orca: opinion=10, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Eval Rynyk: opinion=2, mood=0.51, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schlitzer: Scan finished. NewlyAddedMemories=0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955501,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955435,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 480,
+  "overhead_spent": 0,
+  "total_spent": 480,
+  "epoch": 0,
+  "last_seen_tick": 8223,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 900,
+    "spent": 240
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 7743,
+    "tick_to": 7983,
+    "ticks": 240,
+    "requested": 240
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 7983,
+    "tick_to": 8223,
+    "ticks": 240,
+    "requested": 240
+   }
+  ]
+ },
+ "context": {
+  "mod": "Greentide",
+  "chain": "mire",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T225411\\Greentide__mire__colonist_damaged__t8223__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2523234,
+  "width": 1810,
+  "height": 1183,
+  "md5": "96d4983b790f82d5e7f9b4ea751025c6",
+  "why": ""
+ },
+ "notes": []
+}

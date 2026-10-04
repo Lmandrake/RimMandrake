@@ -1,0 +1,1380 @@
+{
+ "name": "Cauldron__yield__colonist_injured_unexpectedly__t1924655__001",
+ "when_utc": "2026-10-03T18:16:43Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Santos gained 2 new hediff(s) (ToxGasExposure,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human40167",
+    "name": "Santos",
+    "new_hediffs": [
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.038220387
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "ToxGasExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    134,
+    140
+   ],
+   "fingerprint": "colonist_injured:Human40167:ToxGasExposure@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Estrada gained 2 new hediff(s) (ToxGasExposure,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human45040",
+    "name": "Estrada",
+    "new_hediffs": [
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0565004051
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "ToxGasExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    108,
+    130
+   ],
+   "fingerprint": "colonist_injured:Human45040:ToxGasExposure@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Ryro gained 2 new hediff(s) (ToxGasExposure,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human97105",
+    "name": "Ryro",
+    "new_hediffs": [
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.06368688
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "ToxGasExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    133,
+    140
+   ],
+   "fingerprint": "colonist_injured:Human97105:ToxGasExposure@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Nevil gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human97109",
+    "name": "Nevil",
+    "new_hediffs": [
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.03733935
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    144
+   ],
+   "fingerprint": "colonist_injured:Human97109:ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mintys gained 2 new hediff(s) (ToxGasExposure,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human97112",
+    "name": "Mintys",
+    "new_hediffs": [
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.04168381
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "ToxGasExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    107,
+    130
+   ],
+   "fingerprint": "colonist_injured:Human97112:ToxGasExposure@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "2 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 110,
+      "z": 133
+     },
+     {
+      "x": 109,
+      "z": 132
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    110,
+    133
+   ],
+   "fingerprint": "fire_on_map:2"
+  }
+ ],
+ "snapshot": {
+  "tick": 1924655,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human40167",
+    "name": "Santos",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 134,
+    "z": 140,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.038220387
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.1,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human45040",
+    "name": "Estrada",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 108,
+    "z": 130,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0565004051
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.1,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97105",
+    "name": "Ryro",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 133,
+    "z": 140,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.06368688
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.1,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97109",
+    "name": "Nevil",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 125,
+    "z": 144,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.03733935
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human97112",
+    "name": "Mintys",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 107,
+    "z": 130,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_CompetitivePassion",
+      "label": "competitive passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.04168381
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.1,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923200
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Trofim",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Trofim",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923200
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ryro",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ryro",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923200
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Nevil",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Nevil",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923200
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mintys",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mintys",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1923200,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1923200
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tater",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tater",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tater",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tater",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Val",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Val",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Keith",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Keith",
+     1923255
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hans",
+    "arrivalTick": 1923255,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hans",
+     1923255
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Tycoon (suush)",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Tycoon (suush)",
+     1924055
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1924055
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jezebel (suush)",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jezebel (suush)",
+     1924055
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 1924055,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     1924055
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 27,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 10,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1924655
+  },
+  "fires": 2,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Schmitt is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Santos is already in conversation."
+  ],
+  [
+   "Message",
+   "Estrada is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Trofim is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Ryro is already in conversation."
+  ],
+  [
+   "Message",
+   "Nevil is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Mintys is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Gerald is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Mintys cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 8"
+  ],
+  [
+   "Message",
+   "Davis Jr is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Charlzie is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Schmitt is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Santos is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Estrada is already in conversation."
+  ],
+  [
+   "Message",
+   "Trofim is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Ryro is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Nevil is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Mintys is already in conversation."
+  ],
+  [
+   "Message",
+   "Gerald is too far to join the conversation."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.Dialog_NamePlayerFactionAndSettlement",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 18,
+   "isDebug": false,
+   "forcePause": true
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953429,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953363,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 5,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953233,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 6,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953300,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 1924655,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1850,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1924055,
+    "tick_to": 1924655,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "yield",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T111441\\Cauldron__yield__colonist_injured_unexpectedly__t1924655__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2575819,
+  "width": 1810,
+  "height": 1183,
+  "md5": "62917733e63f4285241261c6d0d2379f",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,800 @@
+{
+ "name": "LeaningScrub__crown__colonist_damaged__t356863__001",
+ "when_utc": "2026-10-04T07:13:14Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human677 took 3 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human677",
+    "events": [
+     {
+      "seq": 284,
+      "tick": 356644,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut",
+       "Cut"
+      ]
+     },
+     {
+      "seq": 286,
+      "tick": 356698,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 288,
+      "tick": 356818,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human677:284,286,288"
+  }
+ ],
+ "snapshot": {
+  "tick": 356863,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Brown",
+    "arrivalTick": 333712,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Brown",
+     333712
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Sora",
+    "arrivalTick": 333712,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Sora",
+     333712
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Ancient danger",
+    "arrivalTick": 334221,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Ancient danger",
+     334221
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 335000,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     335000
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 344438,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     344438
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 344698,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     344698
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 344698,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     344698
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 344698,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     344698
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 345248,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     345248
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 345248,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     345248
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 345248,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     345248
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 345822,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     345822
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 351463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     351463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hugh",
+    "arrivalTick": 351463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hugh",
+     351463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Hugh",
+    "arrivalTick": 351463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Hugh",
+     351463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 351463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     351463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Panda",
+    "arrivalTick": 351463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Panda",
+     351463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Panda",
+    "arrivalTick": 351463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Panda",
+     351463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 351763,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     351763
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jova",
+    "arrivalTick": 351763,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jova",
+     351763
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Jova",
+    "arrivalTick": 351763,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Jova",
+     351763
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 353263,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     353263
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Slovacek",
+    "arrivalTick": 353263,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Slovacek",
+     353263
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Auriel's Eulogy opportunity",
+    "arrivalTick": 353863,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Auriel's Eulogy opportunity",
+     353863
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ernesto",
+    "arrivalTick": 353863,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ernesto",
+     353863
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 11,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 26,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 356863
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "IntimacyGiver_Sex: Hanh cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Andrew cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Escobar is not generally well."
+  ],
+  [
+   "Message",
+   "Lines cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Hanh failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Kaori cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Andrew cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Lines cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Escobar is not generally well."
+  ],
+  [
+   "Message",
+   "Kaori failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Harri and Lines cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Hanh cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Harri and Andrew are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Escobar cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Kaori cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Harri"
+  ],
+  [
+   "Message",
+   "Escobar is not generally well."
+  ],
+  [
+   "Message",
+   "Lines cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Andrew cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Harri failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -39132663,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 3000,
+  "overhead_spent": 0,
+  "total_spent": 3000,
+  "epoch": 0,
+  "last_seen_tick": 356863,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 2475,
+    "spent": 1500
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 353863,
+    "tick_to": 354463,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 354463,
+    "tick_to": 355063,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 355063,
+    "tick_to": 355363,
+    "ticks": 300,
+    "requested": 300
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 355363,
+    "tick_to": 355963,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 355963,
+    "tick_to": 356563,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 356563,
+    "tick_to": 356863,
+    "ticks": 300,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "crown",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T000608\\LeaningScrub__crown__colonist_damaged__t356863__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3243300,
+  "width": 1810,
+  "height": 1183,
+  "md5": "329534f9f37521afc018f06ea4fcbf58",
+  "why": ""
+ },
+ "notes": []
+}

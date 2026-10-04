@@ -1,0 +1,606 @@
+{
+ "name": "Cauldron__vents__colonist_damaged__t2399__001",
+ "when_utc": "2026-10-03T17:46:07Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr took 1 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human549",
+    "events": [
+     {
+      "seq": 70,
+      "tick": 1867,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    75,
+    167
+   ],
+   "fingerprint": "colonist_damaged:Human549:70"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr is bleeding",
+   "evidence": {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "downed": false,
+    "bleedRate": 0.08888889,
+    "painTotal": 0.0121629648
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    75,
+    167
+   ],
+   "fingerprint": "colonist_downed:Human549:False"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Davis Jr gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "new_hediffs": [
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.04893333
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    75,
+    167
+   ],
+   "fingerprint": "colonist_injured:Human549:ToxicBuildup@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 2399,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human549",
+    "name": "Davis Jr",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 75,
+    "z": 167,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Skull",
+      "severity": 0.261333346
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Head",
+      "severity": 0.6666667
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.04893333
+     }
+    ],
+    "bleedRate": 0.08888889,
+    "painTotal": 0.0121629648,
+    "census": true,
+    "job": "Clean",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Santos",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Santos",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thompson",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thompson",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Viktor",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Viktor",
+     979
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Roadraging Funeral opportunity",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Roadraging Funeral opportunity",
+     979
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Samantha",
+    "arrivalTick": 979,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Samantha",
+     979
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 4,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 2399
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Eval Schmitt: opinion=37, mood=0.53, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Charlzie: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Charlzie cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Charlzie failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Charlzie cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Charlzie failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Schmitt cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Schmitt failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Schmitt cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Schmitt failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Charlzie cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Charlzie failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Davis Jr: Starting scan. Candidates=3, CurrentMood=0.52"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Davis Jr: Eval Charlzie: opinion=35, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Davis Jr: Eval Schmitt: opinion=35, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Davis Jr: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schmitt: Starting scan. Candidates=3, CurrentMood=0.52"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schmitt: Eval Davis Jr: opinion=35, mood=0.52, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schmitt: Eval Charlzie: opinion=38, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Schmitt: Scan finished. NewlyAddedMemories=1"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1370,
+  "overhead_spent": 0,
+  "total_spent": 1370,
+  "epoch": 0,
+  "last_seen_tick": 2399,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 5725,
+    "spent": 1190
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1029,
+    "tick_to": 1089,
+    "ticks": 60,
+    "requested": 60
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1089,
+    "tick_to": 1209,
+    "ticks": 120,
+    "requested": 120
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1209,
+    "tick_to": 1804,
+    "ticks": 595,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1804,
+    "tick_to": 2399,
+    "ticks": 595,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "vents",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T104256\\Cauldron__vents__colonist_damaged__t2399__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2765500,
+  "width": 1810,
+  "height": 1183,
+  "md5": "8b1209065ab562670ad8b0657de56609",
+  "why": ""
+ },
+ "notes": []
+}

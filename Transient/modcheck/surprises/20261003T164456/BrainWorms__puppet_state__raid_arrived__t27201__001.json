@@ -1,0 +1,529 @@
+{
+ "name": "BrainWorms__puppet_state__raid_arrived__t27201__001",
+ "when_utc": "2026-10-03T23:45:31Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      26951,
+      "Brain worm: Bullock"
+     ],
+     [
+      "letter",
+      26982,
+      "Puppeted: Bullock"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@26951|letter@26982"
+  }
+ ],
+ "snapshot": {
+  "tick": 27201,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Koa",
+    "arrivalTick": 11701,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Koa",
+     11701
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Arigitine",
+    "arrivalTick": 18301,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Arigitine",
+     18301
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Arigitine",
+    "arrivalTick": 18301,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Arigitine",
+     18301
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Arigitine",
+    "arrivalTick": 18301,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Arigitine",
+     18301
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Hammer",
+    "arrivalTick": 19951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Hammer",
+     19951
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hammer",
+    "arrivalTick": 19951,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hammer",
+     19951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Hammer",
+    "arrivalTick": 19951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Hammer",
+     19951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Mitsuya",
+    "arrivalTick": 21751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Mitsuya",
+     21751
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mitsuya",
+    "arrivalTick": 21751,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mitsuya",
+     21751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Mitsuya",
+    "arrivalTick": 21751,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Mitsuya",
+     21751
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Latch",
+    "arrivalTick": 22451,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Latch",
+     22451
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Latch",
+    "arrivalTick": 22451,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Latch",
+     22451
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Mahoney",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Mahoney",
+     26951
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Mahoney",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Mahoney",
+     26951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Latch",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Latch",
+     26951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Mahoney",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Mahoney",
+     26951
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Brain worm: Engie",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Brain worm: Engie",
+     26951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Engie",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Engie",
+     26951
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Engie",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Engie",
+     26951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Engie",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Engie",
+     26951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Ozzy",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Ozzy",
+     26951
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ozzy",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ozzy",
+     26951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Ozzy",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Ozzy",
+     26951
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Brain worm: Bullock",
+    "arrivalTick": 26951,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Brain worm: Bullock",
+     26951
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Puppeted: Bullock",
+    "arrivalTick": 26982,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Puppeted: Bullock",
+     26982
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 11,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 27201
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Lynx failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Bebe and Morrison are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Lynx cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Bullock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Bebe"
+  ],
+  [
+   "Message",
+   "Bebe failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Ivan: Starting scan. Candidates=3, CurrentMood=0.45"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Ivan: Eval Alyas: opinion=68, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Ivan: Eval Kell: opinion=75, mood=0.39, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Ivan: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Starting scan. Candidates=4, CurrentMood=0.53"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Lynx: opinion=11, mood=0.28, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Morrison: opinion=15, mood=0.40, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Bullock: opinion=0, mood=0.50, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "Lynx cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison and Bebe are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Bullock cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Morrison"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956471,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956408,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 250,
+  "overhead_spent": 0,
+  "total_spent": 250,
+  "epoch": 0,
+  "last_seen_tick": 27201,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 912,
+    "spent": 250
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 26951,
+    "tick_to": 27201,
+    "ticks": 250,
+    "requested": 250
+   }
+  ]
+ },
+ "context": {
+  "mod": "BrainWorms",
+  "chain": "puppet_state",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4331549,
+  "width": 1810,
+  "height": 1183,
+  "md5": "0a8adefc6780030f5370d73647433e55",
+  "why": ""
+ },
+ "notes": []
+}

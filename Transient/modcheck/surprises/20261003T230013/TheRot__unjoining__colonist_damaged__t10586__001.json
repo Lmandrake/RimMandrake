@@ -1,0 +1,1073 @@
+{
+ "name": "TheRot__unjoining__colonist_damaged__t10586__001",
+ "when_utc": "2026-10-04T06:03:55Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Libby took 2 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human136624",
+    "events": [
+     {
+      "seq": 375,
+      "tick": 10586,
+      "damageDef": "Cut",
+      "amount": 21.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     },
+     {
+      "seq": 378,
+      "tick": 10586,
+      "damageDef": "Cut",
+      "amount": 33.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    126,
+    118
+   ],
+   "fingerprint": "colonist_damaged:Human136624:375,378"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Nate is downed",
+   "evidence": {
+    "id": "Human136615",
+    "name": "Nate",
+    "downed": true,
+    "bleedRate": 0.0,
+    "painTotal": 0.5611111
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    124,
+    121
+   ],
+   "fingerprint": "colonist_downed:Human136615:True"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Delacruz is downed",
+   "evidence": {
+    "id": "Human136620",
+    "name": "Delacruz",
+    "downed": true,
+    "bleedRate": 0.0,
+    "painTotal": 0.658333361
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    122,
+    119
+   ],
+   "fingerprint": "colonist_downed:Human136620:True"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Libby is downed",
+   "evidence": {
+    "id": "Human136624",
+    "name": "Libby",
+    "downed": true,
+    "bleedRate": 3.6,
+    "painTotal": 1.0
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    126,
+    118
+   ],
+   "fingerprint": "colonist_downed:Human136624:True"
+  },
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): Metalhorror emerging; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      10586,
+      "Metalhorror emerging"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@10586"
+  }
+ ],
+ "snapshot": {
+  "tick": 10586,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [
+   {
+    "id": "Human136615",
+    "name": "Nate",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 124,
+    "z": 121,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_MoodyPassion",
+      "label": "moody passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_UnjoiningPurge",
+      "label": "unjoining purge (1d)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ChemicalBurn",
+      "label": "chemical burn scar (itchy)",
+      "part": "Kidney",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.5611111,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human136620",
+    "name": "Delacruz",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 122,
+    "z": 119,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_YouthPassion",
+      "label": "youth passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (aching)",
+      "part": "Torso",
+      "severity": 0.5
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Arm",
+      "severity": 0.5
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_UnjoiningPurge",
+      "label": "unjoining purge (1d)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ChemicalBurn",
+      "label": "chemical burn scar",
+      "part": "Liver",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.658333361,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human136624",
+    "name": "Libby",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": true,
+    "spawned": true,
+    "x": 126,
+    "z": 118,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (itchy)",
+      "part": "Eye",
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MetalhorrorImplant",
+      "label": "metalhorror implantation",
+      "part": "Brain",
+      "severity": 0.5
+     },
+     {
+      "def": "Cut",
+      "label": "cut ( blade)",
+      "part": "Leg",
+      "severity": 21.0
+     },
+     {
+      "def": "Cut",
+      "label": "cut ( blade)",
+      "part": "Torso",
+      "severity": 33.0
+     },
+     {
+      "def": "RM_UnjoiningPurge",
+      "label": "unjoining purge (1d)",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "ChemicalBurn",
+      "label": "chemical burn scar (aching)",
+      "part": "Liver",
+      "severity": 4.0
+     }
+    ],
+    "bleedRate": 3.6,
+    "painTotal": 1.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Scurrier (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Scurrier (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Voorpak (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Voorpak (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Treadwell (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Treadwell (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 1184 for 1410",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 1184 for 1410",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6910
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Chiyo",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Chiyo",
+     6910
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Specimen",
+    "arrivalTick": 7034,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Specimen",
+     7034
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 7423,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     7423
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheppy",
+    "arrivalTick": 7423,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheppy",
+     7423
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Feral droid",
+    "arrivalTick": 7623,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Feral droid",
+     7623
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7743
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     7743
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dimitri",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dimitri",
+     7743
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She takes it back",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She takes it back",
+     7743
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sold: Scoundrel",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sold: Scoundrel",
+     7743
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Wreck: fuel tank",
+    "arrivalTick": 8889,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Wreck: fuel tank",
+     8889
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "The bank moved",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "The bank moved",
+     10586
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     10586
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     10586
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Ship's Stores in the Log",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Ship's Stores in the Log",
+     10586
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     10586
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     10586
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     10586
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 5,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 25,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 10586
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Laila: opinion=-8, mood=0.70, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Jambo: opinion=-5, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Char: opinion=2, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Chad: opinion=-5, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Guillermo: opinion=-15, mood=0.64, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for mother with gender \"Male\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Prissy"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Prissy"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Webster<color=#999999FF>, Technician</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Webster"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Webster"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for mother with gender \"Male\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Nate"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinDecrepit to Nate"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Delacruz"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinFreckled to Delacruz"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (downed in battle: Libby<color=#999999FF>, Colonist</color>) -> 100.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Libby"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Libby"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954771,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 10586,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "TheRot",
+  "chain": "unjoining",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T230013\\TheRot__unjoining__colonist_damaged__t10586__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2965363,
+  "width": 1810,
+  "height": 1183,
+  "md5": "22ce53c03b1d55673292193790901f19",
+  "why": ""
+ },
+ "notes": []
+}

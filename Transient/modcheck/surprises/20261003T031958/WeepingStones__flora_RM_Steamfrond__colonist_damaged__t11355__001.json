@@ -1,0 +1,718 @@
+{
+ "name": "WeepingStones__flora_RM_Steamfrond__colonist_damaged__t11355__001",
+ "when_utc": "2026-10-03T10:32:41Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Gray took 1 damage event(s): RM_ToxicSpores by RM_ChokingSpores",
+   "evidence": {
+    "id": "Human973",
+    "events": [
+     {
+      "seq": 34,
+      "tick": 10914,
+      "damageDef": "RM_ToxicSpores",
+      "amount": 2.0,
+      "instigatorId": "RM_ChokingSpores69371",
+      "instigatorDef": "RM_ChokingSpores",
+      "weapon": null,
+      "hediffsAdded": [
+       "Scratch",
+       "Scratch"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    110,
+    122
+   ],
+   "fingerprint": "colonist_damaged:Human973:34"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Gray is bleeding",
+   "evidence": {
+    "id": "Human973",
+    "name": "Gray",
+    "downed": false,
+    "bleedRate": 0.155999988,
+    "painTotal": 0.0325
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    110,
+    122
+   ],
+   "fingerprint": "colonist_downed:Human973:False"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Gray gained 2 new hediff(s) (BloodLoss,ToxicBuildup); cause_hint=toxic",
+   "evidence": {
+    "id": "Human973",
+    "name": "Gray",
+    "new_hediffs": [
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0393999964
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0011064
+     }
+    ],
+    "cause_hint": "toxic",
+    "causes": [
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    110,
+    122
+   ],
+   "fingerprint": "colonist_injured:Human973:BloodLoss@None,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Hairy gained 4 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic",
+   "evidence": {
+    "id": "Human65653",
+    "name": "Hairy",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Toe",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Toe",
+      "severity": 1.268
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0497166626
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.000888533366
+     }
+    ],
+    "cause_hint": "mixed:animal,toxic",
+    "causes": [
+     "animal",
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    145,
+    124
+   ],
+   "fingerprint": "colonist_injured:Human65653:BloodLoss@None,Scratch@Toe,Scratch@Toe,ToxicBuildup@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 11355,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human973",
+    "name": "Gray",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 110,
+    "z": 122,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.26
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0393999964
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0011064
+     }
+    ],
+    "bleedRate": 0.155999988,
+    "painTotal": 0.0325,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human65653",
+    "name": "Hairy",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 145,
+    "z": 124,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Toe",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Toe",
+      "severity": 1.268
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0497166626
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.000888533366
+     }
+    ],
+    "bleedRate": 0.173866674,
+    "painTotal": 0.0362222269,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 112,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     112
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 115,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     115
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 121,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     121
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Jimmy",
+    "arrivalTick": 603,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Jimmy",
+     603
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jimmy",
+    "arrivalTick": 603,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jimmy",
+     603
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Returned to the flow",
+    "arrivalTick": 603,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Returned to the flow",
+     603
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 651,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     651
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1348,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1348
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1414,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1414
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1421,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1421
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2793,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2793
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 2814,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     2814
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2825,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2825
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2862,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2862
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2884,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2884
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2887,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2887
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2931,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2931
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2944,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2944
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2954,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2954
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5133,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5133
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5547,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5547
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Fallen monolith",
+    "arrivalTick": 5685,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Fallen monolith",
+     5685
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 7126,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     7126
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8133,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8133
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8139,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8139
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 35,
+   "adaptDays": -30.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 11355
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 21487,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_154) A = Thing_RM_SkarrinBreedingStock57254 B = (170, 0, 170) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Rubber started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_166) A = Thing_RM_SkarrinBreedingStock57254 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_156) A = Thing_RM_SkarrinBreedingStock57254 B = (172, 0, 172)) (RM_StockPoolPen (Job_157) A = Thing_RM_SkarrinBr"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_182) A = Thing_RM_SkarrinBreedingStock61901 B = (178, 0, 178) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Tara started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_199) A = Thing_RM_SkarrinBreedingStock61901 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_189) A = Thing_RM_SkarrinBreedingStock61901 B = (172, 0, 172)) (RM_StockPoolPen (Job_190) A = Thing_RM_SkarrinBree"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #6 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 587,
+  "overhead_spent": 0,
+  "total_spent": 587,
+  "epoch": 0,
+  "last_seen_tick": 11355,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 587
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10768,
+    "tick_to": 11355,
+    "ticks": 587,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "flora_RM_Steamfrond",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T031958\\WeepingStones__flora_RM_Steamfrond__colonist_damaged__t11355__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 4296947,
+  "width": 1810,
+  "height": 1183,
+  "md5": "b78e2c0cfe2b3195f46531d011f310fd",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,959 @@
+{
+ "name": "LeaningScrub__sweetline__colonist_died__t713543__001",
+ "when_utc": "2026-10-04T02:39:49Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human61427 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human61427",
+    "ticks": [
+     713326
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human61427"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human61427"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Rebecca died (death_letter)",
+   "evidence": {
+    "name": "Rebecca",
+    "ticks": [
+     713326
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Rebecca"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human61427 took 2 damage event(s): Bite by RM_Vurrak",
+   "evidence": {
+    "id": "Human61427",
+    "events": [
+     {
+      "seq": 541,
+      "tick": 713146,
+      "damageDef": "Bite",
+      "amount": 23.4510269,
+      "instigatorId": "RM_Vurrak61618",
+      "instigatorDef": "RM_Vurrak",
+      "weapon": "RM_Vurrak",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     },
+     {
+      "seq": 567,
+      "tick": 713326,
+      "damageDef": "Bite",
+      "amount": 19.3804722,
+      "instigatorId": "RM_Vurrak61618",
+      "instigatorDef": "RM_Vurrak",
+      "weapon": "RM_Vurrak",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human61427:541,567"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human83690 took 1 damage event(s): Bite by RM_Kurreth",
+   "evidence": {
+    "id": "Human83690",
+    "events": [
+     {
+      "seq": 569,
+      "tick": 713522,
+      "damageDef": "Bite",
+      "amount": 12.90245,
+      "instigatorId": "RM_Kurreth84150",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human83690:569"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "6 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 192,
+      "z": 247
+     },
+     {
+      "x": 191,
+      "z": 246
+     },
+     {
+      "x": 190,
+      "z": 244
+     },
+     {
+      "x": 189,
+      "z": 243
+     },
+     {
+      "x": 189,
+      "z": 242
+     },
+     {
+      "x": 188,
+      "z": 241
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    192,
+    247
+   ],
+   "fingerprint": "fire_on_map:6"
+  }
+ ],
+ "snapshot": {
+  "tick": 713543,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 355118,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     355118
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Kiyomi",
+    "arrivalTick": 359018,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Kiyomi",
+     359018
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kiyomi",
+    "arrivalTick": 359018,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kiyomi",
+     359018
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Taras",
+    "arrivalTick": 364977,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Taras",
+     364977
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Taras",
+    "arrivalTick": 364977,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Taras",
+     364977
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Sapper",
+    "arrivalTick": 365301,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Sapper",
+     365301
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sapper",
+    "arrivalTick": 365301,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sapper",
+     365301
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Sapper",
+    "arrivalTick": 365301,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Sapper",
+     365301
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Schurke",
+    "arrivalTick": 365301,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Schurke",
+     365301
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Schurke",
+    "arrivalTick": 365301,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Schurke",
+     365301
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Schurke",
+    "arrivalTick": 365301,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Schurke",
+     365301
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Cosme",
+    "arrivalTick": 365601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Cosme",
+     365601
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cosme",
+    "arrivalTick": 365601,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cosme",
+     365601
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Cosme",
+    "arrivalTick": 365601,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Cosme",
+     365601
+    ]
+   },
+   {
+    "defName": "HumanPregnancy",
+    "label": "(*Name)Kimmy(/Name) pregnant",
+    "arrivalTick": 369174,
+    "mapId": null,
+    "fingerprint": [
+     "HumanPregnancy",
+     "(*Name)Kimmy(/Name) pregnant",
+     369174
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Anna",
+    "arrivalTick": 379051,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Anna",
+     379051
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Anna",
+    "arrivalTick": 379051,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Anna",
+     379051
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Taryn",
+    "arrivalTick": 380251,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Taryn",
+     380251
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Taryn",
+    "arrivalTick": 380251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Taryn",
+     380251
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Naoki",
+    "arrivalTick": 383019,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Naoki",
+     383019
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Naoki",
+    "arrivalTick": 383019,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Naoki",
+     383019
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ta'Baa the Unrooted",
+    "arrivalTick": 713020,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ta'Baa the Unrooted",
+     713020
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "The grass has gone up",
+    "arrivalTick": 713036,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "The grass has gone up",
+     713036
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Rebecca",
+    "arrivalTick": 713326,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Rebecca",
+     713326
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Rebecca",
+    "arrivalTick": 713326,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Rebecca",
+     713326
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 15,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 40,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 713543
+  },
+  "fires": 6,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "McNeil cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 1"
+  ],
+  [
+   "Message",
+   "Nina is already in conversation."
+  ],
+  [
+   "Message",
+   "Preston is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Lorall is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Intsu is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Linder is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Max is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Peter is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Gay is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Edmund is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "McNeil is already in conversation."
+  ],
+  [
+   "Message",
+   "Hardin is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Skissor is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Gabriela is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Snake: Starting scan. Candidates=4, CurrentMood=0.02"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Snake: Eval Alo: opinion=-5, mood=0.10, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Snake: Eval Juliette: opinion=-12, mood=0.07, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Snake: Eval Helene: opinion=-9, mood=0.24, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Snake: Scan finished. NewlyAddedMemories=1"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948177,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948498,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948563,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 5,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948119,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 6,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948312,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 7,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594947850,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 8,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594947926,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 9,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594948245,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 524,
+  "overhead_spent": 0,
+  "total_spent": 524,
+  "epoch": 1,
+  "last_seen_tick": 713543,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3225,
+    "spent": 524
+   }
+  ],
+  "entries": [
+   {
+    "kind": "epoch",
+    "reason": "verb:bridge_call:jawa/time_set_ticks",
+    "epoch": 1,
+    "tick_from": 383019,
+    "tick_to": 713019,
+    "ticks": 0,
+    "cause": "flagged"
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 1,
+    "tick_from": 713019,
+    "tick_to": 713543,
+    "ticks": 524,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "LeaningScrub",
+  "chain": "sweetline",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T192451\\LeaningScrub__sweetline__colonist_died__t713543__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2086837,
+  "width": 1810,
+  "height": 1183,
+  "md5": "8af42ca80579cb6a66ff61eb3cbc87ff",
+  "why": ""
+ },
+ "notes": []
+}

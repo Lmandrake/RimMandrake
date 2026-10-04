@@ -1,0 +1,900 @@
+{
+ "name": "Cauldron__water__colonist_died__t1732__001",
+ "when_utc": "2026-10-03T19:31:06Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Maro died (damage_log_kill+death_letter+pawn_row_dead)",
+   "evidence": {
+    "name": "Maro",
+    "ticks": [
+     1432
+    ],
+    "sources": [
+     "damage_log_kill",
+     "death_letter",
+     "pawn_row_dead"
+    ],
+    "ids": [
+     "Human74441"
+    ],
+    "colonistsKilled_delta": 2
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    54,
+    200
+   ],
+   "fingerprint": "colonist_died:Maro"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Madden gained 1 new hediff(s) (ToxGasExposure); cause_hint=unknown",
+   "evidence": {
+    "id": "Human501",
+    "name": "Madden",
+    "new_hediffs": [
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "ToxGasExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    133,
+    124
+   ],
+   "fingerprint": "colonist_injured:Human501:ToxGasExposure@None"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "5 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 108,
+      "z": 37
+     },
+     {
+      "x": 109,
+      "z": 39
+     },
+     {
+      "x": 109,
+      "z": 37
+     },
+     {
+      "x": 107,
+      "z": 39
+     },
+     {
+      "x": 107,
+      "z": 37
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    108,
+    37
+   ],
+   "fingerprint": "fire_on_map:5"
+  }
+ ],
+ "snapshot": {
+  "tick": 1732,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human501",
+    "name": "Madden",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 133,
+    "z": 124,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_NightPassion",
+      "label": "night passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0319878981
+     },
+     {
+      "def": "ToxGasExposure",
+      "label": "tox gas (mild)",
+      "part": null,
+      "severity": 1.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.1,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human74441",
+    "name": "Maro",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": true,
+    "downed": false,
+    "spawned": false,
+    "x": 54,
+    "z": 200,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erick (suush)",
+    "arrivalTick": 468,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erick (suush)",
+     468
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Pain (suush)",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Pain (suush)",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     544
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Keller",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Keller",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     544
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sonia",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sonia",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Sonia",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Sonia",
+     544
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Keller",
+    "arrivalTick": 611,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Keller",
+     611
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     1144
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lynx",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lynx",
+     1144
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Lynx",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Lynx",
+     1144
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1144
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1196,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1196
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     1432
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Graves",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Graves",
+     1432
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Graves",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Graves",
+     1432
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     1432
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Maro",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Maro",
+     1432
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     1432
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Josh",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Josh",
+     1432
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Josh",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Josh",
+     1432
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1432,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1432
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1732
+  },
+  "fires": 5,
+  "conditions": [
+   {
+    "def": "RM_WS_TerminatorFront",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "IntimacyGiver_Sex: Wilma cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Wilma failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for father with gender \"Female\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadSquare to Josh"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Josh"
+  ],
+  [
+   "Warning",
+   "[KindRelationEnforcer] \u5728 Pawn \u6b7b\u4ea1\u524d\u6e05\u7406\u4e86 4 \u6761\u5931\u6548\u76f4\u63a5\u5173\u7cfb\uff0c\u5df2\u963b\u6b62\u635f\u574f\u5173\u7cfb\u8fdb\u5165\u539f\u7248\u6b7b\u4ea1\u901a\u77e5\u3002"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Vexxiss) -> 56.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +8.0 (violent death: Josh<color=#999999FF>, Rancher</color>) -> 64.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Wilma cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Wilma failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Daneels cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Daneels failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Daneels cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Daneels failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Madden cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Madden failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> 18.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 67.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 27.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 82.0 [Exalted]"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956011,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 300,
+  "overhead_spent": 0,
+  "total_spent": 300,
+  "epoch": 0,
+  "last_seen_tick": 1732,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 975,
+    "spent": 300
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1432,
+    "tick_to": 1732,
+    "ticks": 300,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "water",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T122746\\Cauldron__water__colonist_died__t1732__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1892268,
+  "width": 1810,
+  "height": 1183,
+  "md5": "afe925b71c095cec6a88f3fe22c94423",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,369 @@
+{
+ "name": "FeverWood__sap_RM_Drommath__colonist_damaged__t4333__001",
+ "when_utc": "2026-10-04T05:34:48Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human683 took 2 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human683",
+    "events": [
+     {
+      "seq": 179,
+      "tick": 3886,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     },
+     {
+      "seq": 189,
+      "tick": 4279,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human683:179,189"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human689 took 4 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human689",
+    "events": [
+     {
+      "seq": 174,
+      "tick": 3799,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 176,
+      "tick": 3886,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     },
+     {
+      "seq": 183,
+      "tick": 4006,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 187,
+      "tick": 4225,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human689:174,176,183,187"
+  }
+ ],
+ "snapshot": {
+  "tick": 4333,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Entering the Terminator Front",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Entering the Terminator Front",
+     0
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 4333
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Kem already recently tried to seduce Cooley"
+  ],
+  [
+   "Message",
+   "Chance cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Kem"
+  ],
+  [
+   "Message",
+   "Kem failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Starting scan. Candidates=5, CurrentMood=0.55"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Chance: opinion=-5, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Cooley: opinion=10, mood=0.67, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Kem: opinion=15, mood=0.64, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Dan: opinion=15, mood=0.57, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "Dan cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 3"
+  ],
+  [
+   "Message",
+   "Chance is already in conversation."
+  ],
+  [
+   "Message",
+   "Dan cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Cooley cannot converse with Dan."
+  ],
+  [
+   "Message",
+   "Dan cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Kem cannot converse with Dan."
+  ],
+  [
+   "Message",
+   "Dan cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Nose cannot converse with Dan."
+  ],
+  [
+   "Message",
+   "Dan is already in conversation."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956594,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956529,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 575,
+  "overhead_spent": 0,
+  "total_spent": 575,
+  "epoch": 0,
+  "last_seen_tick": 4333,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3850,
+    "spent": 575
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 3758,
+    "tick_to": 4333,
+    "ticks": 575,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "sap_RM_Drommath",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T222819\\FeverWood__sap_RM_Drommath__colonist_damaged__t4333__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2356158,
+  "width": 1810,
+  "height": 1183,
+  "md5": "816681380c9a399038ef22adb1725eb7",
+  "why": ""
+ },
+ "notes": []
+}

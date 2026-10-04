@@ -1,0 +1,538 @@
+{
+ "name": "TheForge__cycle_arms__colonist_injured_unexpectedly__t212188__001",
+ "when_utc": "2026-10-03T10:47:18Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Kirja gained 2 new hediff(s) (Heatstroke,RM_GlareBlind); cause_hint=heat",
+   "evidence": {
+    "id": "Human104360",
+    "name": "Kirja",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00350387953
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0100000007
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_GlareBlind"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    129,
+    123
+   ],
+   "fingerprint": "colonist_injured:Human104360:Heatstroke@None,RM_GlareBlind@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 212188,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [
+   {
+    "id": "Human104360",
+    "name": "Kirja",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 129,
+    "z": 123,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00350387953
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0100000007
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Thorn",
+    "arrivalTick": 105360,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Thorn",
+     105360
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Thorn",
+    "arrivalTick": 105360,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Thorn",
+     105360
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Aditiic Pujari role deactivated",
+    "arrivalTick": 105360,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Aditiic Pujari role deactivated",
+     105360
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Inhabitants abandoned",
+    "arrivalTick": 105360,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Inhabitants abandoned",
+     105360
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Aditiic Pujari role activated",
+    "arrivalTick": 105360,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Aditiic Pujari role activated",
+     105360
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rock island",
+    "arrivalTick": 135480,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rock island",
+     135480
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 135660,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     135660
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Cahuella",
+    "arrivalTick": 137960,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Cahuella",
+     137960
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cahuella",
+    "arrivalTick": 137960,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cahuella",
+     137960
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Cassie",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Cassie",
+     210583
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cassie",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cassie",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Erika",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Erika",
+     210583
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erika",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erika",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     210583
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Lynx",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Lynx",
+     210583
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lynx",
+    "arrivalTick": 210583,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lynx",
+     210583
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A line of glare",
+    "arrivalTick": 210838,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A line of glare",
+     210838
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Dust on the horizon: north",
+    "arrivalTick": 211438,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Dust on the horizon: north",
+     211438
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Aditiic Pujari role deactivated",
+    "arrivalTick": 211938,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Aditiic Pujari role deactivated",
+     211938
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Inhabitants abandoned",
+    "arrivalTick": 211938,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Inhabitants abandoned",
+     211938
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 211938,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     211938
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 11,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 38,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 212188
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_Mirage",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchotechTower91801"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchonexusCore91802"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchotechTower91801"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchonexusCore91802"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchotechTower91801"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchonexusCore91802"
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser92244"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser92236"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing AB_DerelictArchotechTower91793"
+  ],
+  [
+   "Message",
+   "[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind NE, K=2005 attempts/batch over 62500 cells."
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] spunstone points=0 revealed=False projectHidden=True canStart=False"
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] spunstone points=0 revealed=True projectHidden=False canStart=False"
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Message",
+   "[RMTheForgeDebug] phase=StillHeat endsIn=171188 inBurst=False frozen=0 gardensLive=0 cycles=0 gasIgnitions=0 floods=0 cellsFrozen=0 cellsMelted=0 gardensSpawned=0 gardensDrifted=0 meltDestroyed=0 meltPawnsBurned=0 meltRelocated=0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 120,
+  "overhead_spent": 0,
+  "total_spent": 120,
+  "epoch": 0,
+  "last_seen_tick": 212188,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 750,
+    "spent": 120
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 212068,
+    "tick_to": 212188,
+    "ticks": 120,
+    "requested": 120
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "cycle_arms",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T034626\\TheForge__cycle_arms__colonist_injured_unexpectedly__t212188__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2722910,
+  "width": 1810,
+  "height": 1183,
+  "md5": "30942a6abf7bae87b21e757c68f96fdf",
+  "why": ""
+ },
+ "notes": []
+}

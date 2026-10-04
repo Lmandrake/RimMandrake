@@ -1,0 +1,511 @@
+{
+ "name": "Cauldron__suush__fire_on_map__t544__001",
+ "when_utc": "2026-10-03T19:29:16Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "3 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 132,
+      "z": 119
+     },
+     {
+      "x": 134,
+      "z": 119
+     },
+     {
+      "x": 134,
+      "z": 121
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    132,
+    119
+   ],
+   "fingerprint": "fire_on_map:3"
+  }
+ ],
+ "snapshot": {
+  "tick": 544,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Entering the Terminator Front",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Entering the Terminator Front",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erick (suush)",
+    "arrivalTick": 468,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erick (suush)",
+     468
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 3,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 544
+  },
+  "fires": 3,
+  "conditions": [
+   {
+    "def": "RM_WS_TerminatorFront",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Wilma cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Madden cannot converse with Wilma."
+  ],
+  [
+   "Message",
+   "Daneels is already in conversation."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith66905"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] Message_Prefix called: 'A roof has collapsed because it was too far from any support.'"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] AcceptsMessage: True"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] Has Thing: False"
+  ],
+  [
+   "Message",
+   "[Real Fog of War] No thing, allowing message through"
+  ],
+  [
+   "Message",
+   "[Ninefold] TaBaa satiation +3.0 (an explosion opened a door) -> 6.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (an explosion, destruction) -> 6.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (an explosion, the wrong spark) -> 6.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Ozzik satiation -3.0 (an explosion, the ego-weapon's folly) -> 94.0 [Exalted]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 9.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 9.0 [Neutral]"
+  ],
+  [
+   "Message",
+   "Daneels cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 3"
+  ],
+  [
+   "Message",
+   "Wilma is already in conversation."
+  ],
+  [
+   "Message",
+   "Wilma cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Madden cannot converse with Wilma."
+  ],
+  [
+   "Message",
+   "Daneels is already in conversation."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "LudeonTK.Dialog_DevPalette",
+   "optionalTitle": null,
+   "layer": "Dialog",
+   "id": 1,
+   "isDebug": true,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957181,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956922,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 543,
+  "overhead_spent": 0,
+  "total_spent": 543,
+  "epoch": 0,
+  "last_seen_tick": 544,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1100,
+    "spent": 401
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "baseline",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1,
+    "tick_to": 129,
+    "ticks": 128
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/weather_set",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 129,
+    "tick_to": 133,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/set_terrain_batch",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 133,
+    "tick_to": 138,
+    "ticks": 5
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/spawn_pawn",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 138,
+    "tick_to": 140,
+    "ticks": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/damage",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 140,
+    "tick_to": 143,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "pre-step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 143,
+    "tick_to": 144,
+    "ticks": 1
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 144,
+    "tick_to": 401,
+    "ticks": 257,
+    "requested": 400
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 401,
+    "tick_to": 544,
+    "ticks": 143,
+    "requested": 143
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "suush",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T122744\\Cauldron__suush__fire_on_map__t544__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2358217,
+  "width": 1810,
+  "height": 1183,
+  "md5": "97e70e8d619acf7857d6669013c83317",
+  "why": ""
+ },
+ "notes": []
+}

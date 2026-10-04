@@ -1,0 +1,897 @@
+{
+ "chains": [
+  {
+   "name": "harmony_patches_registered",
+   "components": [
+    {
+     "name": "patches_applied",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "IncidentWorker_Raid",
+        "methodName": "TryGenerateRaidInfo",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGenerateRaidInfo",
+          "declaringType": "RimWorld.IncidentWorker_Raid",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 2,
+          "transpilerCount": 1,
+          "finalizerCount": 1,
+          "prefixes": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 800,
+            "patchMethod": "Rimesis.Patch_IncidentWorker_Raid_TryGenerateRaidInfo.Prefix",
+            "patchAssembly": "Rimesis"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 0,
+            "patchMethod": "Rimesis.Patch_IncidentWorker_Raid_TryGenerateRaidInfo.Postfix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_RaidGenerated.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "GiddyUp",
+            "priority": 400,
+            "patchMethod": "BattleMounts.Harmony.Patch_TryGenerateRaidInfo.Transpiler",
+            "patchAssembly": "GiddyUpCore"
+           }
+          ],
+          "finalizers": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_IncidentWorker_Raid_TryGenerateRaidInfo.Finalizer",
+            "patchAssembly": "Rimesis"
+           }
+          ]
+         }
+        ],
+        "ticksGame": 20899,
+        "note": null,
+        "operation": {
+         "OperationId": "op_b4c2d3ef98ea46a8b8fd129682f5f22d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:37.9711807+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:37.999522+00:00",
+         "DurationMs": 28,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "LordMaker",
+        "methodName": "MakeNewLord",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "MakeNewLord",
+          "declaringType": "Verse.AI.Group.LordMaker",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_LordMaker_MakeNewLord_CommanderMorale.Postfix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_LordCreated.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 20899,
+        "note": null,
+        "operation": {
+         "OperationId": "op_d7bb3fac4c5a4eaca449ba54e4236cf0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:38.0382176+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:38.0627824+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "LordManager",
+        "methodName": "RemoveLord",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "RemoveLord",
+          "declaringType": "Verse.AI.Group.LordManager",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_LordRemoved.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 20899,
+        "note": null,
+        "operation": {
+         "OperationId": "op_a350500c5e564069ba0970958f150ded",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:38.1038436+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:38.1270154+00:00",
+         "DurationMs": 23,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Pawn",
+        "methodName": "Kill",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "Kill",
+          "declaringType": "Verse.Pawn",
+          "patchInfoError": null,
+          "prefixCount": 11,
+          "postfixCount": 16,
+          "transpilerCount": 1,
+          "finalizerCount": 2,
+          "prefixes": [
+           {
+            "owner": "SmashPhil.VehicleFramework",
+            "priority": 400,
+            "patchMethod": "Vehicles.Patch_Misc.MoveOnDeath",
+            "patchAssembly": "Vehicles"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Storyteller.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "ChezhouLib.lib",
+            "priority": 400,
+            "patchMethod": "ChezhouLib.CustomMission.Levels.Patch_ClLevelPawnDeath.Prefix",
+            "patchAssembly": "ChezhouLib"
+           },
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_Pawn_Kill.Prefix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "RedMattis.BetterPrerequisites",
+            "priority": 400,
+            "patchMethod": "BigAndSmall.NotifyEvents.PawnKillPrefix",
+            "patchAssembly": "BigAndSmall"
+           },
+           {
+            "owner": "llunak.MorePrecepts",
+            "priority": 400,
+            "patchMethod": "MorePrecepts.Pawn2_Patch.Kill",
+            "patchAssembly": "MorePrecepts"
+           },
+           {
+            "owner": "VanillaApparelExpanded.Accessories",
+            "priority": 400,
+            "patchMethod": "VAE_Accessories.HarmonyPatches.BeltsOnDeath",
+            "patchAssembly": "VAE Accessories"
+           },
+           {
+            "owner": "lordfelix.rimcontrol",
+            "priority": 400,
+            "patchMethod": "ItemControl.Patch_Pawn_Kill_PinataWindow.Prefix",
+            "patchAssembly": "ItemControl"
+           },
+           {
+            "owner": "mandrake.rsw.gizkastowaway",
+            "priority": 400,
+            "patchMethod": "RimMandrake.StarWars.GizkaStowaway.Patch_Pawn_Kill_CullGuilt.Prefix",
+            "patchAssembly": "RimMandrakeGizkaStowaway"
+           },
+           {
+            "owner": "mandrake.rut.rustcathedralhum",
+            "priority": 400,
+            "patchMethod": "RimMandrake.RustCathedral.Hum.HarmonyPatch_WatchedBolts_Kill.Prefix",
+            "patchAssembly": "RimMandrake.RustCathedral.Hum"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "UnlimitedHugs.AllowTool",
+            "priority": 400,
+            "patchMethod": "AllowTool.Patches.Pawn_Kill_Patch.UnforbidDraftedHuntBody",
+            "patchAssembly": "AllowTool"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Pawns.VanillaExpandedFramework_Pawn_Kill.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Apparels.VanillaExpandedFramework_Pawn_Kill_Patch.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "iforgotmysocks.CaravanAdventures",
+            "priority": 400,
+            "patchMethod": "CaravanAdventures.Patches.KillBountyPatches.PawnKillPostfix",
+            "patchAssembly": "CaravanAdventures"
+           },
+           {
+            "owner": "com.alphagenes",
+            "priority": 400,
+            "patchMethod": "AlphaGenes.AlphaGenes_Pawn_Kill_Patch.RemovePocketPlanes",
+            "patchAssembly": "AlphaGenes"
+           },
+           {
+            "owner": "ChezhouLib.lib",
+            "priority": 400,
+            "patchMethod": "ChezhouLib.CustomMission.Levels.Patch_ClLevelPawnDeath.Postfix",
+            "patchAssembly": "ChezhouLib"
+           },
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_Pawn_Kill.Postfix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "RedMattis.BetterPrerequisites",
+            "priority": 400,
+            "patchMethod": "BigAndSmall.OnKillPatch.OnKillPostfix",
+            "patchAssembly": "BigAndSmall"
+           },
+           {
+            "owner": "llunak.MorePrecepts",
+            "priority": 400,
+            "patchMethod": "MorePrecepts.Pawn3_Patch.Kill",
+            "patchAssembly": "MorePrecepts"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_BattleResolved.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_KillManner.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_ColonistCasualty.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           },
+           {
+            "owner": "vlvop.tormentmaster.expansion",
+            "priority": 400,
+            "patchMethod": "TormentMaster.Patches.Pawn_Kill_DropSkinSuit_Patch.Postfix",
+            "patchAssembly": "TormentMaster"
+           },
+           {
+            "owner": "VRF.VehicleRaidFramework",
+            "priority": 400,
+            "patchMethod": "VehicleRaidFramework.Patch_CrewCasualty.Postfix",
+            "patchAssembly": "VehicleRaidFramework"
+           },
+           {
+            "owner": "lordfelix.rimcontrol",
+            "priority": 0,
+            "patchMethod": "ItemControl.Patch_Pawn_Kill_UnforbidCorpse.Postfix",
+            "patchAssembly": "ItemControl"
+           },
+           {
+            "owner": "mandrake.jawabench.eventrecorder",
+            "priority": 400,
+            "patchMethod": "JawaBench.BridgeTools.JawaBenchEventRecorder.KillPostfix",
+            "patchAssembly": "JawaBench.BridgeTools"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "net.avilmask.rimworld.mod.NonUnoPinata",
+            "priority": 400,
+            "patchMethod": "NonUnoPinata.Patches.Pawn_Kill_NonUnoPinataPatch.Transpiler",
+            "patchAssembly": "NonUnoPinata"
+           }
+          ],
+          "finalizers": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_Pawn_Kill.Finalizer",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "lordfelix.rimcontrol",
+            "priority": 400,
+            "patchMethod": "ItemControl.Patch_Pawn_Kill_PinataWindow.Finalizer",
+            "patchAssembly": "ItemControl"
+           }
+          ]
+         }
+        ],
+        "ticksGame": 20899,
+        "note": null,
+        "operation": {
+         "OperationId": "op_eec633350ccc489f94cace8bf6da41e0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:38.1724639+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:38.2175045+00:00",
+         "DurationMs": 45,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "MentalStateHandler",
+        "methodName": "TryStartMentalState",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryStartMentalState",
+          "declaringType": "Verse.AI.MentalStateHandler",
+          "patchInfoError": null,
+          "prefixCount": 7,
+          "postfixCount": 5,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "SmashPhil.VehicleFramework",
+            "priority": 400,
+            "patchMethod": "Vehicles.Patch_PawnAi.EjectPawnForMentalState",
+            "patchAssembly": "Vehicles"
+           },
+           {
+            "owner": "VFEPirates.Mod",
+            "priority": 400,
+            "patchMethod": "VFEPirates.MentalStateHandler_TryStartMentalState_Patch.Prefix",
+            "patchAssembly": "VFEPirates"
+           },
+           {
+            "owner": "vlvop.tormentmaster.expansion",
+            "priority": 400,
+            "patchMethod": "TormentMaster.Patches.MentalStateHandler_TryStartMentalState_TortureContainedPatch.Prefix",
+            "patchAssembly": "TormentMaster"
+           },
+           {
+            "owner": "OskarPotocki.VanillaTraitsExpanded",
+            "priority": 400,
+            "patchMethod": "VanillaTraitsExpanded.Patch_TryStartMentalState.Prefix",
+            "patchAssembly": "VanillaTraitsExpanded"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.TryStartMentalBreak_Patch.Prefix",
+            "patchAssembly": "Toddlers"
+           },
+           {
+            "owner": "Harmony_PrisonLabor",
+            "priority": 400,
+            "patchMethod": "PrisonLabor.HarmonyPatches.Patches_TreatmentTinkering.Patch_ReduceChanceForMentalBreak.Prefix",
+            "patchAssembly": "PrisonLabor"
+           },
+           {
+            "owner": "kaitorisenkou.MentalBreakBlocker",
+            "priority": 400,
+            "patchMethod": "MentalBreakBlocker.MentalBreakBlocker.Patch_TryStartMentalState",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "RunAndGun",
+            "priority": 400,
+            "patchMethod": "RunAndGun.Harmony.MentalStateHandler_TryStartMentalState.Postfix",
+            "patchAssembly": "RunAndGun"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_MentalBreakStarted.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_MentalBreakNearBattle.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           },
+           {
+            "owner": "com.VEFungoid",
+            "priority": 400,
+            "patchMethod": "VanillaRacesExpandedFungoid.VanillaRacesExpandedFungoid_MentalStateHandler_TryStartMentalState_Patch.CauseCoalescentMentalBreaks",
+            "patchAssembly": "VanillaRacesExpanded-Fungoid"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.TryStartMentalBreak_Patch.Postfix",
+            "patchAssembly": "Toddlers"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.TryStartMentalBreak_Patch.Transpiler",
+            "patchAssembly": "Toddlers"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 20899,
+        "note": null,
+        "operation": {
+         "OperationId": "op_7bd5b08175dd481d87173af0f8152940",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:38.2375298+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:38.2719815+00:00",
+         "DurationMs": 34,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\patches_applied_1791103838.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "battle_lifecycle_repelled",
+   "components": [
+    {
+     "name": "devmode_and_raid_fire",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[RimMandrake.Aftermath] battle opened' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/prefs",
+       "result": {
+        "success": true,
+        "before": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "after": {
+         "devMode": true,
+         "logVerbose": false,
+         "autosaveIntervalDays": 0.25,
+         "autosavesCount": 10,
+         "pauseOnLoad": true
+        },
+        "saved": true,
+        "ticksGame": 20899,
+        "operation": {
+         "OperationId": "op_a3c0f97d1d5f4ca389b48714cf9438f8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/prefs-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:44.7801446+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:44.8104999+00:00",
+         "DurationMs": 30,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "ensure_faction(Pirate)",
+       "result": {
+        "success": false,
+        "message": "'Pirate' already exists in this world as 'Blackstar Company'. Pass allowDuplicate to add another.",
+        "details": {
+         "existingCount": 1,
+         "existingName": "Blackstar Company"
+        },
+        "operation": {
+         "OperationId": "op_9955b48329e242d1bae96593a1299c81",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/faction-create",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:44.8560497+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:44.9059793+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "\ud83d\udd34 A DIALOG SWALLOWED THIS FIRING. 1 window(s) opened during the call (Verse.Dialog_NodeTree) and the incident produced nothing. A Harmony prefix - Leo.RaidProtectionFee is the known one - can replace the incident with a modal and still set __result = true, so 'executed' is NOT evidence the incident happened. Nothing on the bridge clicks a button, so the modal will never be answered and it will block later calls. Clear it with jawa/window_list_close {action:'close', typeName:'<the type above>', closeAll:true}, then either disable the intercepting mod or fire at a faction it exempts.",
+        "incident": "RaidEnemy",
+        "category": "ThreatBig",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [
+         {
+          "type": "Verse.Dialog_NodeTree",
+          "optionalTitle": null,
+          "forcePause": true,
+          "isDebug": false,
+          "id": 3
+         }
+        ],
+        "blockedByDialog": true,
+        "points": 260.0,
+        "faction": "Pirate",
+        "ticksGame": 20899,
+        "operation": {
+         "OperationId": "op_8a72625c16244e488e2c4074b2925c07",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:44.9134849+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:44.9809993+00:00",
+         "DurationMs": 67,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/window_list_close",
+       "result": {
+        "success": true,
+        "action": "close",
+        "closedCount": 1,
+        "closed": [
+         {
+          "type": "Verse.Dialog_NodeTree",
+          "optionalTitle": null
+         }
+        ],
+        "refusedCount": 0,
+        "refused": [],
+        "refusedNote": null,
+        "stillOpenCount": 2,
+        "ticksGame": 20899,
+        "operation": {
+         "OperationId": "op_cc7bff6e67664a029f0dbb1a8cd9c2e2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/window-list-close",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:50:45.0441917+00:00",
+         "CompletedAtUtc": "2026-10-04T08:50:45.0932661+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(300) [watched] -> 300 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 300,
+        "requested": 300
+       }
+      },
+      {
+       "call": "expect_log_contains([RimMandrake.Aftermath] battle opened, None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "kill_all_raiders_closes_repelled",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 300,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000019FEB2CAE90>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\Aftermath.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T015014-situational_rerun-43676",
+  "git": {
+   "source": "git",
+   "sha": "0b8adddf0aab141f85b04a8a17810d002b1a7c00"
+  },
+  "deploy_start": {
+   "mod": "Aftermath",
+   "at": "2026-10-04T01:50:30",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/Aftermath",
+   "src_hash": "d4f436dda040e596",
+   "deployed_hash": "d4f436dda040e596",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeAftermath.dll",
+     "sha": "3f2a41c22a09fc49",
+     "srchash": "# project: RimMandrake/Aftermath/Source/RM_Aftermath.csproj\n# dl"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "Aftermath",
+   "at": "2026-10-04T01:50:53",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/Aftermath",
+   "src_hash": "d4f436dda040e596",
+   "deployed_hash": "d4f436dda040e596",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeAftermath.dll",
+     "sha": "3f2a41c22a09fc49",
+     "srchash": "# project: RimMandrake/Aftermath/Source/RM_Aftermath.csproj\n# dl"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

@@ -1,0 +1,583 @@
+{
+ "name": "WeepingStones__job_cull__colonist_damaged__t28537__001",
+ "when_utc": "2026-10-04T02:13:25Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human83740 took 1 damage event(s): Bite by RM_Kurreth",
+   "evidence": {
+    "id": "Human83740",
+    "events": [
+     {
+      "seq": 312,
+      "tick": 28127,
+      "damageDef": "Bite",
+      "amount": 11.8011675,
+      "instigatorId": "RM_Kurreth84150",
+      "instigatorDef": "RM_Kurreth",
+      "weapon": "RM_Kurreth",
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human83740:312"
+  }
+ ],
+ "snapshot": {
+  "tick": 28537,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "ThreatBig",
+    "label": "Nothing they freed comes back",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Nothing they freed comes back",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Hostile: Geonosian Foundry Hive",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Hostile: Geonosian Foundry Hive",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Quest failed",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Quest failed",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Quest failed",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Quest failed",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Hostile: Free Droid Enclaves",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Hostile: Free Droid Enclaves",
+     3978
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "The bank moved",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "The bank moved",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7929
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     7929
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Cache in the Log",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Cache in the Log",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     7929
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Sissy",
+    "arrivalTick": 8236,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Sissy",
+     8236
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sissy",
+    "arrivalTick": 8236,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sissy",
+     8236
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Zamora",
+    "arrivalTick": 20376,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Zamora",
+     20376
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Zamora",
+    "arrivalTick": 20376,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zamora",
+     20376
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Jebo",
+    "arrivalTick": 21033,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Jebo",
+     21033
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jebo",
+    "arrivalTick": 21033,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jebo",
+     21033
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 21417,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     21417
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 4,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 36,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 28537
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Chigg failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Starting scan. Candidates=6, CurrentMood=0.31"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Eval Rebecca: opinion=20, mood=0.25, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Eval Juliette: opinion=8, mood=0.38, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Eval Ahmadush: opinion=3, mood=0.11, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Eval Snake: opinion=10, mood=0.27, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Eval Helene: opinion=-9, mood=0.24, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alo: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Dotty cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Dotty failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Sarai and Violet are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Sam is already doing lovin'"
+  ],
+  [
+   "Message",
+   "Sarai and Zug are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Sarai already recently tried to seduce Kimmy"
+  ],
+  [
+   "Message",
+   "Vlad cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Nemea cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Sarai and Chigg cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Dotty cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Sarai"
+  ],
+  [
+   "Message",
+   "Sarai failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "RimWorld.MainTabWindow_Inspect",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 9,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953300,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 4,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594953233,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1168,
+  "overhead_spent": 0,
+  "total_spent": 1168,
+  "epoch": 0,
+  "last_seen_tick": 28537,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 2475,
+    "spent": 1168
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 27369,
+    "tick_to": 27955,
+    "ticks": 586,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 27955,
+    "tick_to": 28537,
+    "ticks": 582,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "job_cull",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T190148\\WeepingStones__job_cull__colonist_damaged__t28537__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3413603,
+  "width": 1810,
+  "height": 1183,
+  "md5": "490c30c29912516e27d33eb5079d1b05",
+  "why": ""
+ },
+ "notes": []
+}

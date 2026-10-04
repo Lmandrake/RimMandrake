@@ -1,0 +1,375 @@
+{
+ "name": "FeverWood__tank__wildlife_near_colonist__t2663__001",
+ "when_utc": "2026-10-04T05:32:27Z",
+ "hits": [
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "RSW_Dianoga80387",
+      "kindDef": "RSW_Dianoga",
+      "x": 104,
+      "z": 89,
+      "dist": 2,
+      "new": true,
+      "hunting": false
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    104,
+    89
+   ],
+   "fingerprint": "wildlife_near_colonist:RSW_Dianoga80387"
+  },
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Dianoga entered mental state Manhunter (aggro)",
+   "evidence": {
+    "id": "RSW_Dianoga80387",
+    "mentalState": "Manhunter",
+    "isAggro": true,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    104,
+    89
+   ],
+   "fingerprint": "mental_break:RSW_Dianoga80387:Manhunter"
+  }
+ ],
+ "snapshot": {
+  "tick": 2663,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "RSW_Dianoga80387",
+    "name": "Dianoga",
+    "kindDef": "RSW_Dianoga",
+    "def": "RSW_Dianoga",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 104,
+    "z": 89,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "Manhunter",
+     "isAggro": true,
+     "ageTicks": 60,
+     "causedByMood": false,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "RM_CaptivityMemory",
+      "label": "captivity memory",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise (human fist)",
+      "part": "RSW_SW_LeftTentacle",
+      "severity": 7.04426527
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.022013329,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Entering the Terminator Front",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Entering the Terminator Front",
+     0
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 7,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 2663
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Hans: Starting scan. Candidates=3, CurrentMood=0.55"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hans: Eval Chiyo: opinion=32, mood=0.57, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hans: Eval Sheppy: opinion=24, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hans: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Starting scan. Candidates=4, CurrentMood=0.52"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Chance: opinion=-15, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Cooley: opinion=0, mood=0.62, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Eval Kem: opinion=5, mood=0.62, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nose: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Chance cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Nose is drafted."
+  ],
+  [
+   "Message",
+   "Chance failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Kem already recently tried to seduce Cooley"
+  ],
+  [
+   "Message",
+   "Nose cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Chance cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Kem"
+  ],
+  [
+   "Message",
+   "Kem failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Chance cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Nose is drafted."
+  ],
+  [
+   "Message",
+   "Chance failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956922,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956859,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 120,
+  "overhead_spent": 0,
+  "total_spent": 120,
+  "epoch": 0,
+  "last_seen_tick": 2663,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 675,
+    "spent": 60
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2543,
+    "tick_to": 2603,
+    "ticks": 60,
+    "requested": 60
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 2603,
+    "tick_to": 2663,
+    "ticks": 60,
+    "requested": 60
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "tank",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T222819\\FeverWood__tank__wildlife_near_colonist__t2663__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2284540,
+  "width": 1810,
+  "height": 1183,
+  "md5": "9538791ba0a808435f932a0a1fcf4739",
+  "why": ""
+ },
+ "notes": []
+}

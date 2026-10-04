@@ -11,7 +11,7 @@
      "detail": "",
      "evidence": [],
      "screenshots": [
-      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\hoist_is_a_researched_ship_part_1791092936.png"
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\hoist_is_a_researched_ship_part_1791104615.png"
      ],
      "sequences": [],
      "checkpoints": [],
@@ -322,11 +322,11 @@
             "Offsetter"
            ],
            "shortHash": 20347,
-           "index": 13491,
+           "index": 13502,
            "fileName": "RM_KeelHoist.xml",
            "defNameHash": -79079652,
            "generated": false,
-           "debugRandomId": 61549
+           "debugRandomId": 6779
           }
          },
          {
@@ -385,7 +385,7 @@
            "fileName": "RM_KeelHoist.xml",
            "defNameHash": -79079652,
            "generated": false,
-           "debugRandomId": 43325
+           "debugRandomId": 49082
           }
          },
          {
@@ -491,19 +491,19 @@
            "fileName": "RM_HoistRestraint.xml",
            "defNameHash": -200346135,
            "generated": false,
-           "debugRandomId": 16228
+           "debugRandomId": 23973
           }
          }
         ],
-        "ticksGame": 6463,
+        "ticksGame": 355545,
         "operation": {
-         "OperationId": "op_d39949ad48d64c6b9c05d02ec41643e9",
+         "OperationId": "op_808befd999574c6e933ad07e4f93ec45",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:48:56.2779831+00:00",
-         "CompletedAtUtc": "2026-10-04T05:48:56.3270368+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T09:03:35.5890032+00:00",
+         "CompletedAtUtc": "2026-10-04T09:03:35.6369606+00:00",
+         "DurationMs": 47,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -515,7 +515,7 @@
       }
      ],
      "screenshots": [
-      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\defs_resolve_live_1791092936.png"
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\defs_resolve_live_1791104615.png"
      ],
      "sequences": [],
      "checkpoints": [],
@@ -542,13 +542,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -626,13 +624,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -960,11 +956,11 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 34888,
-           "index": 13489,
+           "index": 13500,
            "fileName": "RM_HoistFrame.xml",
            "defNameHash": -119405728,
            "generated": false,
-           "debugRandomId": 33670
+           "debugRandomId": 13955
           }
          },
          {
@@ -1227,11 +1223,11 @@
            "ignoreIllegalLabelCharacterConfigError": false,
            "modExtensions": null,
            "shortHash": 62741,
-           "index": 13490,
+           "index": 13501,
            "fileName": "RM_HoistFrame.xml",
            "defNameHash": -1604673741,
            "generated": false,
-           "debugRandomId": 3072
+           "debugRandomId": 8292
           }
          },
          {
@@ -1258,19 +1254,19 @@
            "fileName": "RM_HoistFrames.xml",
            "defNameHash": 1155437931,
            "generated": false,
-           "debugRandomId": 47114
+           "debugRandomId": 16302
           }
          }
         ],
-        "ticksGame": 6463,
+        "ticksGame": 355545,
         "operation": {
-         "OperationId": "op_a64b2000b8474716855c75e58f7bd2e9",
+         "OperationId": "op_90f9912252b840beb911fafbf2b1aeb9",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:49:08.0048716+00:00",
-         "CompletedAtUtc": "2026-10-04T05:49:08.0439164+00:00",
-         "DurationMs": 39,
+         "StartedAtUtc": "2026-10-04T09:03:47.3846064+00:00",
+         "CompletedAtUtc": "2026-10-04T09:03:47.426388+00:00",
+         "DurationMs": 41,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1307,13 +1303,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -1357,16 +1351,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofLayOut(System.String)",
-        "result": "LAIDOUT holder=RUT_HuttSlavePitShaft92123 held=5 frame=RM_HoistFrame92143 keepers=3 faction=Hutt Cartel gate=True chute=RM_ChanceChute92144",
-        "ticksGame": 6463,
+        "result": "LAIDOUT holder=RUT_HuttSlavePitShaft218587 held=3 frame=RM_HoistFrame218602 keepers=3 faction=Hutt Cartel gate=True chute=RM_ChanceChute218603",
+        "ticksGame": 355545,
         "operation": {
-         "OperationId": "op_56b845777ebc42edb25ab7601650dbdf",
+         "OperationId": "op_810732509dad40cd89fb82c3d0119904",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:49:13.756462+00:00",
-         "CompletedAtUtc": "2026-10-04T05:49:15.1702713+00:00",
-         "DurationMs": 1413,
+         "StartedAtUtc": "2026-10-04T09:03:53.1686564+00:00",
+         "CompletedAtUtc": "2026-10-04T09:03:54.4877314+00:00",
+         "DurationMs": 1319,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1378,7 +1372,7 @@
       }
      ],
      "screenshots": [
-      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pit_laid_out_with_frame_and_keepers_1791092955.png"
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\pit_laid_out_with_frame_and_keepers_1791104634.png"
      ],
      "sequences": [],
      "checkpoints": [],
@@ -1390,23 +1384,23 @@
      "toggle": "pitSales",
      "beyond_toggle": false,
      "verdict": "FAIL",
-     "detail": "ExpectationFailed: sale: NOTSOLD pawn=Tanya price=987 silverOnMap=0 held=5->6 faction=none sales=0",
+     "detail": "ExpectationFailed: sale: NOTSOLD pawn=Odile price=952 silverOnMap=226 held=3->4 faction=none/host=NorthstarBland sales=0",
      "evidence": [
       {
        "call": "bridge_call jawa/static_call",
        "result": {
         "success": true,
         "method": "System.String ProofSell(System.String)",
-        "result": "NOTSOLD pawn=Tanya price=987 silverOnMap=0 held=5->6 faction=none sales=0",
-        "ticksGame": 6463,
+        "result": "NOTSOLD pawn=Odile price=952 silverOnMap=226 held=3->4 faction=none/host=NorthstarBland sales=0",
+        "ticksGame": 355545,
         "operation": {
-         "OperationId": "op_c7bb23b799e04c01a8b51daafc853add",
+         "OperationId": "op_033a4fdf79804b13aa98ed68c6a7773c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:49:15.4787758+00:00",
-         "CompletedAtUtc": "2026-10-04T05:49:15.5830197+00:00",
-         "DurationMs": 104,
+         "StartedAtUtc": "2026-10-04T09:03:54.7299958+00:00",
+         "CompletedAtUtc": "2026-10-04T09:03:54.8278262+00:00",
+         "DurationMs": 97,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1456,13 +1450,11 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
    }
   },
   {
@@ -1493,16 +1485,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofOdds(System.String)",
-        "result": "ODDS rolls=5000 meanPayout=848 stake=1000 jackpots=386 busts=542 cut=0.15",
-        "ticksGame": 6463,
+        "result": "ODDS rolls=5000 meanPayout=868 stake=1000 jackpots=423 busts=485 cut=0.15",
+        "ticksGame": 355545,
         "operation": {
-         "OperationId": "op_e8d0861066244a6989ac4df6120eacab",
+         "OperationId": "op_36f2a0fe7dee44c2876de157761c96bd",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:49:20.6168923+00:00",
-         "CompletedAtUtc": "2026-10-04T05:49:20.6590263+00:00",
-         "DurationMs": 42,
+         "StartedAtUtc": "2026-10-04T09:03:59.9054966+00:00",
+         "CompletedAtUtc": "2026-10-04T09:03:59.9410531+00:00",
+         "DurationMs": 35,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1531,16 +1523,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofStake(System.String)",
-        "result": "STAKED stake=1410 timerSet=True payout=1184 mult=0.99 stakedPawnFaction=Hutt Cartel stakedPawnWorld=True manifest=6",
-        "ticksGame": 6463,
+        "result": "STAKED stake=740 timerSet=True payout=605 mult=0.96 stakedPawnFaction=Hutt Cartel stakedPawnWorld=True manifest=4",
+        "ticksGame": 355545,
         "operation": {
-         "OperationId": "op_6b15db02de0e4fcbb9945d604d5d2f05",
+         "OperationId": "op_62e704346aa04044850acfef014f40ec",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T05:49:20.7168736+00:00",
-         "CompletedAtUtc": "2026-10-04T05:49:22.2487494+00:00",
-         "DurationMs": 1531,
+         "StartedAtUtc": "2026-10-04T09:04:00.0006336+00:00",
+         "CompletedAtUtc": "2026-10-04T09:04:00.0967434+00:00",
+         "DurationMs": 96,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1573,16 +1565,10 @@
     "surprises": [],
     "hits_seen": [
      {
-      "tick": 6463,
+      "tick": 355545,
       "detector": "letter_unexpected",
       "severity": "INFO",
-      "summary": "new letter [NeutralEvent] Unwavering prisoner"
-     },
-     {
-      "tick": 6463,
-      "detector": "letter_unexpected",
-      "severity": "INFO",
-      "summary": "new letter [NeutralEvent] Chance chute: 1184 for 1410"
+      "summary": "new letter [NeutralEvent] Chance chute: 605 for 740"
      }
     ],
     "close_problems": []
@@ -1590,32 +1576,136 @@
    "modal_check": {
     "found_open": false,
     "dialogs": {
-     "Dialog_NamePlayerFactionAndSettlement": null,
-     "Dialog_ModSettings": null
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
     },
-    "errors": [
-     "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-     "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-    ]
+    "errors": []
+   }
+  },
+  {
+   "name": "static_gates_and_formulas",
+   "components": [
+    {
+     "name": "settings_are_saved_declared_and_reachable",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_gate_reads_its_toggle_where_it_must",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cycle_time_open_line_and_restraint_formulas_hold",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hoist_cycle_moves_cargo_down_and_up",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a live gravship, a powered hoist and a target (instrument: a proof hook driving LowerCableTo/BeginTransit)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "tether_lock_refuses_a_real_launch",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a live gravship, a powered hoist and a target (instrument: a proof hook driving LowerCableTo/BeginTransit)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "beast_arrives_restrained_live",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a live gravship, a powered hoist and a target (instrument: a proof hook driving LowerCableTo/BeginTransit)",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   }
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x0000021D3AB9A2B0>"
+  "<suite.Component object at 0x00000142D6088BB0>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\KeelHoist.md",
  "modal_check_final": {
   "found_open": false,
   "dialogs": {
-   "Dialog_NamePlayerFactionAndSettlement": null,
-   "Dialog_ModSettings": null
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
   },
-  "errors": [
-   "Dialog_NamePlayerFactionAndSettlement: No open window's type name contains 'Dialog_NamePlayerFactionAndSettlement'.",
-   "Dialog_ModSettings: No open window's type name contains 'Dialog_ModSettings'."
-  ]
+  "errors": []
  },
  "bland_world": {
   "before": {
@@ -1662,19 +1752,19 @@
  "visual_all_green": true,
  "state_all_green": false,
  "run_identity": {
-  "run_id": "20261003T222638-situational_rerun-36568",
+  "run_id": "20261004T020318-situational_rerun-19916",
   "git": {
-   "source": "unknown",
-   "sha": null
+   "source": "git",
+   "sha": "c94d935274f07d7b1067eddbbb9a8296d748aa97"
   },
   "deploy_start": {
    "mod": "KeelHoist",
-   "at": "2026-10-03T22:48:48",
+   "at": "2026-10-04T02:03:27",
    "state": "in-sync",
    "reason": null,
    "src_dir": "src/RimMandrake/KeelHoist",
-   "src_hash": "4b754d4b94a04512",
-   "deployed_hash": "4b754d4b94a04512",
+   "src_hash": "ffe2408fbc42d731",
+   "deployed_hash": "ffe2408fbc42d731",
    "n_src": 11,
    "n_deployed": 11,
    "n_held": 0,
@@ -1687,20 +1777,20 @@
    "dlls": [
     {
      "dll": "Assemblies/RimMandrakeKeelHoist.dll",
-     "sha": "3b4a95474eb5a31a",
+     "sha": "3b546ab0d6173ff5",
      "srchash": "# project: RimMandrake/KeelHoist/Source/RM_KeelHoist.csproj\n# dl"
     }
    ],
-   "src_dirty": null
+   "src_dirty": false
   },
   "deploy_end": {
    "mod": "KeelHoist",
-   "at": "2026-10-03T22:49:24",
+   "at": "2026-10-04T02:04:07",
    "state": "in-sync",
    "reason": null,
    "src_dir": "src/RimMandrake/KeelHoist",
-   "src_hash": "4b754d4b94a04512",
-   "deployed_hash": "4b754d4b94a04512",
+   "src_hash": "ffe2408fbc42d731",
+   "deployed_hash": "ffe2408fbc42d731",
    "n_src": 11,
    "n_deployed": 11,
    "n_held": 0,
@@ -1713,11 +1803,11 @@
    "dlls": [
     {
      "dll": "Assemblies/RimMandrakeKeelHoist.dll",
-     "sha": "3b4a95474eb5a31a",
+     "sha": "3b546ab0d6173ff5",
      "srchash": "# project: RimMandrake/KeelHoist/Source/RM_KeelHoist.csproj\n# dl"
     }
    ],
-   "src_dirty": null
+   "src_dirty": false
   }
  }
 }
