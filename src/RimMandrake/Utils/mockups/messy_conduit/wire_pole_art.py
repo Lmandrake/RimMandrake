@@ -11,7 +11,7 @@ z = 3.5 - r/128 cells above the cell centre. For each landed render this
     which the code draws as a 1x1 plane centred at topOffsetZ = 3.5 - 64/128 = 3.0,
   * MEASURES the crossarm: the widest opaque row in the top 30% of the canvas -> attachZ = 3.5 - row/128,
   * regenerates Source/Aerial/PoleGeometryTable.cs (AerialMaterials.PoleGeometry) with those numbers.
-A render is refused (left unwired) unless it is 128x512 with real alpha (>= 5% and <= 70% opaque). The judging by
+A render is refused (left unwired) unless it is 128x512 with real alpha, at least 3 cells tall and >= 4% opaque once fitted. The judging by
 eye happens before this runs; this is the mechanical wiring only.
 """
 import glob
@@ -52,6 +52,21 @@ def find_render(job):
     return hits[-1] if hits else None
 
 
+def fit(im):
+    """Renders come back with the pole drawn small in the tall canvas (the generator works square, then fits). Crop to
+    the alpha bbox and scale UNIFORMLY to fill the 128x512 canvas (2 px side margin), base on the bottom row, centred.
+    Returns (fitted image, scale, fitted height px)."""
+    bb = im.getchannel("A").getbbox()
+    if bb is None:
+        return im, 1.0, 0
+    c = im.crop(bb)
+    k = min((W - 4) / float(c.size[0]), (H - 2) / float(c.size[1]))
+    c = c.resize((max(1, int(round(c.size[0] * k))), max(1, int(round(c.size[1] * k)))), Image.LANCZOS)
+    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    out.alpha_composite(c, ((W - c.size[0]) // 2, H - c.size[1]))
+    return out, k, c.size[1]
+
+
 def measure(im):
     a = im.getchannel("A")
     best, row = -1, None
@@ -67,7 +82,7 @@ def sane(im):
         return "size %s, want %dx%d" % (im.size, W, H)
     a = list(im.getchannel("A").getdata())
     frac = sum(1 for v in a if v > 128) / float(len(a))
-    if not 0.05 <= frac <= 0.70:
+    if not 0.01 <= frac <= 0.70:
         return "opaque fraction %.2f outside 0.05-0.70 (no real alpha?)" % frac
     return None
 
@@ -104,6 +119,14 @@ def main(argv):
             if src:
                 im = Image.open(src).convert("RGBA")
                 why = sane(im)
+                if not why:
+                    im, k, fh = fit(im)
+                    notes.append("%s/%s: fitted x%.2f to %d px tall (%.1f cells)" % (look, base, k, fh, fh / 128.0))
+                    fr = sum(1 for v in im.getchannel("A").getdata() if v > 128) / float(W * H)
+                    if fr < 0.04:
+                        why = "only %.0f%% of the fitted canvas opaque: too thin to read" % (fr * 100)
+                    if fh < 0.75 * H:
+                        why = "pole only %.1f cells tall after fitting (want ~4): requeue" % (fh / 128.0)
                 if why:
                     notes.append("REFUSED %s/%s: %s (%s)" % (look, base, why, src))
                     src = None
