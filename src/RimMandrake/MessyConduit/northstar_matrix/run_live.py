@@ -1293,9 +1293,13 @@ def run(args, B, mock=False):
         # ("Tried to destroy non-destroyable thing SteamGeyser...") -- the runner's own clear, not the mod
         site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
         errs = [e for e in errs if e not in site]
+        # LEARNED 2026-10-04: a donor mod's map-creation patch (ReGrowthCore.Map_FinalizeInit_Patch NREs on the fresh
+        # quicktest map) is the SITE's noise, not ours -- excluded only when no MessyConduit frame is in the message.
+        donor = [e for e in errs if "Map_FinalizeInit" in str(e.get("Message", "")) and "MessyConduit" not in str(e.get("Message", ""))]
+        errs = [e for e in errs if e not in donor]
         R.row("Z_log_budget", "PASS" if not errs else "FAIL", "MOD",
               {"errors": [str(e.get("Message", ""))[:200] for e in errs[:8]], "newWarnings": len(new),
-               "siteClearErrorsExcluded": len(site)})
+               "siteClearErrorsExcluded": len(site), "donorMapInitErrorsExcluded": len(donor)})
     t_end = R.eng_ticks() if not aborted else None
     res["env"] = getattr(R, "env", {})
     res["map"] = getattr(R, "map_info", None)
