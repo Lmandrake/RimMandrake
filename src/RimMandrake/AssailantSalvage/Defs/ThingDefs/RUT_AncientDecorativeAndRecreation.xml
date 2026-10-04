@@ -196,8 +196,10 @@
     <defaultPlacingRot>South</defaultPlacingRot>
     <uiOrder>2020</uiOrder>
     <graphicData>
+      <!-- one top-down sprite (artpipe RUT_RuinedHospitalBed_south), rotated by the
+           engine: the landed east render is a side elevation, wrong for a bed -->
       <texPath>Things/Building/Ancient/RUT_RuinedHospitalBed</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutComplex</shaderType>
       <drawSize>(2,2)</drawSize>
     </graphicData>
