@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rm.flamestatues</packageId>
+  <name>Mandrake Flame Statues</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>Sculptures that burn (FLAME_STATUES_MOD_BUILD_1, design/RimMandrake/statue_mods_spec.md, Mod 2).
+
+The sculptor's table can carve three flame statues in stone or metal: the ember idol (small), the flame
+dancer (person-sized) and the pyre colossus (2x2). Fed with chemfuel, each carries a flame and lights the
+room; left dry it is an ordinary sculpture.
+
+Not here yet (filed): flames on every vent (palms, shoulders) with quality scaling and Mod Settings, the
+carved art itself (a shared placeholder sprite stands in), and the Helixien gas pipe link.</description>
+</ModMetaData>
