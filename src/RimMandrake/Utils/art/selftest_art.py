@@ -133,6 +133,40 @@ def main():
     r_again = ingest.ingest(dec)
     check(r_again["rulings"] == 0, "ingest is idempotent")
 
+    # purge-only touch never turns a prefill into a ruling
+    dec.write_text(json.dumps({"snapshot": str(sp), "savedBy": "serve_sheet.py", "writeCount": 3,
+                               "decisions": {"Beast": {"decision": "B", "prefill": "B", "at": "2026-10-04T01:00:00Z",
+                                                       "purgeTouched": True, "purge": []}}}))
+    check(ingest.ingest(dec)["rulings"] == 0, "a row touched only to purge records no keep ruling")
+
+    # the compare-sheet generator on a doubled texPath
+    import art_sheet
+    if (art_sheet.SKILL / "sheet_template.html").exists():
+        mod2 = tmp / "src" / "FixtureOverride" / "Textures" / "Things" / "Beast"
+        mod2.mkdir(parents=True)
+        (mod2 / "Beast_south.png").write_bytes(green)
+        backfill.step_disk(budget=60)
+        idx = L.Index()
+        check(art_sheet.doubles(idx) == ["Things/Beast/Beast"], "doubles() finds the texPath two mods ship differently")
+        out = tmp / "sheet" / "t_sheet.html"
+        out.parent.mkdir()
+        r = art_sheet.generate(art_sheet.doubles(idx), out, "t", "t_sheet", "<p>t</p>")
+        d = json.loads((tmp / "sheet" / "t_sheet.decisions.json").read_text())
+        snapd = json.loads(Path(r["snapshot"]).read_text())
+        check(r["rows"] == 1 and d["reviewStatus"]["state"] == "prefill" and d["decisions"]["Things/Beast/Beast"]["decision"],
+              "sheet + prefilled decisions written, reviewStatus=prefill")
+        check(set(snapd["rows"]["Things/Beast/Beast"]["columns"]) >= {"A", "B"}, "snapshot names every column's pictures")
+        html = out.read_text()
+        check('<script id="RENDER">' in html and html.index('<script id="RENDER">') < html.index("FILL IN #3"),
+              "row renderer is live, not inside the template's comment")
+        chk = subprocess.run([sys.executable, str(art_sheet.SKILL / "check_sheet.py"), str(out), "--decisions",
+                              str(tmp / "sheet" / "t_sheet.decisions.json")], capture_output=True, text=True)
+        check(chk.returncode == 0, "generated sheet passes check_sheet.py")
+        r2 = art_sheet.generate(art_sheet.doubles(idx), out, "t", "t_sheet", "<p>t</p>")
+        check(not r2["wrote_decisions"], "regenerating the sheet never overwrites the decisions file")
+    else:
+        print("review-sheets template absent — sheet checks UNMEASURED, not a pass or a fail")
+
     # selftest the CLI entry point end to end (subprocess, not import)
     out = subprocess.run([sys.executable, str(HERE / "art.py"), "status", "Things/Beast/Beast"],
                          capture_output=True, text=True, env=os.environ)
