@@ -544,4 +544,57 @@ namespace RimMandrake.MessyConduit.Hose
 
         public static IEnumerable<string> Known => table.Keys;
     }
+    // ==================================================================== reel ports (owner review round 2, 2026-10-04)
+    /// <summary>What a reel's inlet may couple to. Pipe = a static pipe cell (the universal pipe carries any liquid);
+    /// Tank = any liquid store (the universal tank, RM_LiquidTank, a VE PipeSystem storage); Other = any other
+    /// pipe-friendly building that opted in. Rank order is the preference order.</summary>
+    public enum HosePortKind { Pipe, Tank, Other, None }
+
+    public struct HosePortCandidate
+    {
+        public int X0, Z0, W, H;
+        public HosePortKind Kind;
+        public HosePortCandidate(int x0, int z0, int w, int h, HosePortKind kind) { X0 = x0; Z0 = z0; W = w; H = h; Kind = kind; }
+        public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
+    }
+
+    /// <summary>The Verse-free connection rule (SelfTest: HoseSelfTest.Ports). A reel couples to a neighbour only across
+    /// a shared cell EDGE (a corner touch would draw a feed through empty air); among those it prefers a pipe, then a
+    /// tank, then anything else, and breaks ties by side in the fixed order east, north, west, south, so the answer
+    /// never depends on thing-list order.</summary>
+    public static class HosePortRule
+    {
+        public static readonly Cell[] SideOrder = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
+
+        /// <summary>Index of the chosen candidate, or -1. side = the unit step from the reel to the contact cell.</summary>
+        public static int Pick(Cell reel, IList<HosePortCandidate> cands, out Cell side)
+        {
+            side = new Cell(0, 0);
+            int best = -1, bestRank = int.MaxValue;
+            for (int i = 0; i < cands.Count; i++)
+            {
+                HosePortCandidate c = cands[i];
+                if (c.Kind == HosePortKind.None || c.Contains(reel)) continue;
+                for (int s = 0; s < SideOrder.Length; s++)
+                {
+                    if (!c.Contains(reel + SideOrder[s])) continue;
+                    int rank = (int)c.Kind * 8 + s;
+                    if (rank < bestRank) { bestRank = rank; best = i; side = SideOrder[s]; }
+                }
+            }
+            return best;
+        }
+
+        /// <summary>The feed hose from the reel's inlet to the port: it starts 0.25 cell out from the reel centre (under
+        /// the reel sprite) and ends at the contact cell's centre, i.e. at the pipe's own centreline, or under the tank's
+        /// sprite (drawn below buildings, so it disappears beneath it instead of stopping short at its outline).
+        /// coupling = where the brass coupling sits: on the shared edge.</summary>
+        public static void Feed(Cell reel, Cell side, out V2 from, out V2 to, out V2 coupling)
+        {
+            V2 d = new V2(side.X, side.Z), c = reel.Centre;
+            from = c + d * 0.25;
+            to = (reel + side).Centre;
+            coupling = c + d * 0.5;
+        }
+    }
 }

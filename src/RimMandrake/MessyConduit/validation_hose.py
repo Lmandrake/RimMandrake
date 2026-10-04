@@ -11,6 +11,17 @@ RimMandrake.MessyConduit.Hose.HoseProbe (jawa/mod_settings_field), never from sc
     python.exe validation_hose.py --live                   # on the current map (after validation.py --live)
     python.exe validation_hose.py --save-load NAME         # H10: hose, its end and its state survive save/load
     python.exe validation_hose.py --removal-check NAME     # H11: a save WITH a laid hose on a tier WITHOUT the mod
+    python.exe validation_hose.py --maze                   # M1-M6 + P1-P2: path solving in a spiral maze, reel ports
+
+The maze walk (owner, round 2, 2026-10-04: "make the hose solve a complex path (like a spiral through a simple maze
+with two options, then 'build' a wall to block the obvious solution so we can see if it changes to go the other way...
+or what happens)"). One scene, six rows, each a state read; the SAME maze is solved offline by HoseSelfTest.Maze
+(MAZE below must stay identical to HoseSelfTest.MazeRows). Predictions from the code, to be confirmed or killed live:
+  * M2: walling the gap re-plans from scratch at the reel's next 250-tick corridor check -> the 3/4 spiral, ~2x longer.
+  * M3: the length cap lives ONLY in the install check. A laid hose re-routed past its own length is still drawn
+    (RECORD row: if the owner wants the hose to refuse/sag/unplug instead, that is a rule to add, not a bug to hide).
+  * M4: no route left -> the lay fails, the hose is NOT DRAWN while the reel still says laid (retried every 250 ticks).
+  * M5: walls removed -> it comes back by the short route.
 
 The flow signal here is the DEBUG provider (HoseProbe "flow:"): FlowWorks has no pump yet, so its adapter
 (FlowWorksPumpFlow, design 3.3 fields lastMovedUnits/lastMovedTick read by reflection) answers null and H5 asserts
@@ -60,6 +71,14 @@ class H(V.Bridge):
                     return {"success": False, "raw": res}
             time.sleep(0.25)
         return {"success": False, "error": "hose probe timed out (no frame serviced it)"}
+
+    def shot_rect(self, name, rect):
+        global SHOT
+        keep, SHOT = SHOT, rect
+        try:
+            return self.shot(name)
+        finally:
+            SHOT = keep
 
     def hose(self, reel):
         c = self.hp("census")
@@ -228,6 +247,129 @@ def run_live(args):
     return res
 
 
+# ============================================================================ M / P: maze path solving and reel ports
+# Rows from high z to low z; R reel, T free end, g the short route's gap, b a cell on the long spiral route.
+MAZE = [
+    "###############  ",
+    "#.............#  ",
+    "#.###########.#  ",
+    "#b#.........#.#  ",
+    "#...R.......g...T",
+    "###.........###  ",
+    "  ###########    ",
+]
+MX0, MZ0 = 40, 84
+MSITE = (MX0 - 3, MZ0 - 3, 26, 22)
+PREEL, PTANK, PLONE = (MX0 + 2, MZ0 + 12), (MX0 + 3, MZ0 + 12), (MX0 + 12, MZ0 + 12)   # tank 2x2 east of PREEL
+RELAY_TICKS = 300  # > the 250-tick corridor check
+
+
+def maze_cells():
+    walls, mark = [], {}
+    for i, rowtxt in enumerate(MAZE):
+        z = MZ0 + len(MAZE) - 1 - i
+        for x, ch in enumerate(rowtxt):
+            c = (MX0 + x, z)
+            if ch == "#":
+                walls.append(c)
+            elif ch in "RTgb":
+                mark[ch] = c
+    return walls, mark
+
+
+def _via(h, cell):
+    return list(cell) in (h.get("centreCells") or [])
+
+
+def run_maze(args):
+    B = H()
+    rows, log = [], []
+    res = {"mod": V.MOD, "mode": "maze", "script": "validation_hose.py", "tier": V.TIER,
+           "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": rows, "screenshots": []}
+    d = B.hp("defaults")
+    if not d.get("success"):
+        V.row(rows, "M0_probe_channel", "FAIL", "HARNESS", d)
+        res["aborted"] = "hose probe dead"
+        return res
+    walls, m = maze_cells()
+    R, T, g, b = m["R"], m["T"], m["g"], m["b"]
+    B.call("jawa/destroy_batch", rects="%d,%d,%d,%d" % MSITE, categories="All")
+    B.call("jawa/set_terrain_batch", ops="Soil:%d,%d,%d,%d" % MSITE)
+    B.call("jawa/set_fog", action="unfog", rect="%d,%d,%d,%d" % MSITE)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % MSITE)
+    bw = B.call("jawa/build_batch", ops=V.ops("Wall", walls), stuff="Steel", faction="player")
+    br = B.call("jawa/build_batch", ops=V.ops("RM_HoseReel", [R, PREEL, PLONE]), faction="player", wipeExisting=False)
+    bt = B.call("jawa/build_batch", ops=V.ops("RM_LiquidTank", [PTANK]), faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(2)
+
+    # M1: both routes open -> the obvious one, through the gap
+    l1 = B.hp("lay:%d,%d,%d,%d" % (R + T))
+    B.ticks(2)
+    h1, c = B.hose(R)
+    ok1 = l1.get("success") and h1.get("layOk") and _via(h1, g) and (h1.get("unwalkablePoints") == 0)
+    V.row(rows, "M1_open_maze_short_route", "PASS" if ok1 else "FAIL", "MOD" if bw.get("success") and br.get("success") else "SITE",
+          dict(_pick(h1, "layOk", "pathLen", "bbox", "fellBack", "minBendFlat", "unwalkablePoints"), lay=l1.get("reason"), viaGap=_via(h1, g)))
+    res["screenshots"].append(B.shot_rect("maze_01_open", MSITE))
+
+    # M2: wall the gap -> does it go the other way?
+    B.call("jawa/build_batch", ops=V.ops("Wall", [g]), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(RELAY_TICKS)
+    h2, c2 = B.hose(R)
+    top = MZ0 + len(MAZE) - 2
+    rerouted = h2.get("layOk") and not _via(h2, g) and (h2.get("bbox") or [0, 0, 0, 0])[3] >= top
+    V.row(rows, "M2_gap_walled_reroutes", "PASS" if rerouted and (h2.get("pathLen") or 0) > 1.6 * (h1.get("pathLen") or 99) else "FAIL", "MOD",
+          dict(_pick(h2, "laid", "layOk", "pathLen", "bbox", "fellBack", "minBendFlat", "unwalkablePoints", "selfIntersects"),
+               relays=(c2.get("relays") or 0) - (c.get("relays") or 0), before=h1.get("pathLen")))
+    res["screenshots"].append(B.shot_rect("maze_02_gap_walled", MSITE))
+
+    # M3: length cap. Install refuses the spiral for a 20-cell hose; the already-laid hose is RECORDED, not judged
+    B.hp("set:maxLength=20")
+    chk = B.hp("check:%d,%d,%d,%d" % (R + T))
+    B.ticks(RELAY_TICKS)
+    h3, _ = B.hose(R)
+    V.row(rows, "M3_length_cap_install", "PASS" if chk.get("reason") == "route too long" else "FAIL", "MOD",
+          {"reason": chk.get("reason"), "maxLength": h3.get("maxLength")})
+    V.row(rows, "M3b_laid_hose_over_cap", "RECORD", "MOD",
+          dict(_pick(h3, "laid", "layOk", "pathLen", "maxLength"), note="code: Lay() has no length cap; expected still drawn at pathLen > maxLength"))
+    B.hp("defaults")
+
+    # M4: wall the spiral too -> unreachable
+    B.call("jawa/build_batch", ops=V.ops("Wall", [b]), stuff="Steel", faction="player", wipeExisting=False)
+    B.call("jawa/map_commit")
+    B.ticks(RELAY_TICKS)
+    h4, _ = B.hose(R)
+    chk4 = B.hp("check:%d,%d,%d,%d" % (R + T))
+    V.row(rows, "M4_unreachable", "PASS" if h4.get("laid") and not h4.get("layOk") and chk4.get("reason") == "no route" else "FAIL", "MOD",
+          dict(_pick(h4, "laid", "layOk", "state", "reelGraphic"), check=chk4.get("reason"),
+               note="expected: reel stays laid, hose not drawn, retried every 250 ticks"))
+    res["screenshots"].append(B.shot_rect("maze_04_unreachable", MSITE))
+
+    # M5: walls removed -> back by the short route
+    for cell in (g, b):
+        B.call("jawa/destroy_batch", rects="%d,%d,1,1" % cell, categories="Buildings")
+    B.call("jawa/map_commit")
+    B.ticks(RELAY_TICKS)
+    h5, _ = B.hose(R)
+    V.row(rows, "M5_walls_removed_recovers", "PASS" if h5.get("layOk") and _via(h5, g) else "FAIL", "MOD",
+          _pick(h5, "layOk", "pathLen", "bbox"))
+
+    # P1/P2: reel ports (owner, round 2: "the Hose Reel can also connect to ... pipe-friendly buildings (like tanks)")
+    hp_, _ = B.hose(PREEL)
+    hl, _ = B.hose(PLONE)
+    if not bt.get("success"):
+        V.row(rows, "P1_reel_couples_to_tank", "RECORD", "SITE", {"tankBuild": bt, "note": "RM_LiquidTank not buildable here (FlowWorks not loaded?)"})
+    else:
+        V.row(rows, "P1_reel_couples_to_tank", "PASS" if hp_.get("port") == "RM_LiquidTank" and hp_.get("portKind") == "Tank"
+              and hp_.get("portSide") == [1, 0] and (c.get("feedDraws") or 0) >= 1 else "FAIL", "MOD",
+              dict(_pick(hp_, "port", "portKind", "portSide"), feedDraws=c.get("feedDraws")))
+    V.row(rows, "P2_lone_reel_not_coupled", "PASS" if hl and hl.get("port") is None else "FAIL", "MOD", _pick(hl, "port", "portKind"))
+    res["screenshots"].append(B.shot_rect("ports_01_reel_tank", (PREEL[0] - 2, PREEL[1] - 2, 8, 6)))
+    res["log"] = log
+    return res
+
+
 # ============================================================================ H10 / H11
 def _hose_set(c):
     return sorted((tuple(h["reel"]), tuple(h["far"]), h.get("end"), h.get("state"), h.get("laid"), h.get("debugFlowing"),
@@ -316,12 +458,15 @@ def main(argv=None):
     ap.add_argument("--live", action="store_true")
     ap.add_argument("--save-load", default=None, metavar="NAME")
     ap.add_argument("--removal-check", default=None, metavar="NAME")
+    ap.add_argument("--maze", action="store_true")
     ap.add_argument("--out", default=None)
     a = ap.parse_args(argv)
     if a.save_load:
         res = run_save_load(a)
     elif a.removal_check:
         res = run_removal_check(a)
+    elif a.maze:
+        res = run_maze(a)
     elif a.live:
         res = run_live(a)
     else:
