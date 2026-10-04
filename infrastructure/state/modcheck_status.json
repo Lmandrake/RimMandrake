@@ -27,17 +27,17 @@
     "ts": 1791053428.3111982
   },
   "Cauldron": {
-    "hash": "4175af27f8851a8372fb4e4aae968c8c25c698b7fe1923d7f39f2653bdfac2ed",
+    "hash": "b09e52407ed9ec1df34167b8d08d7ad2071fc699cebe3ba8610f739c6c49c76d",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Cauldron@1791053428",
+    "run_id": "Cauldron@1791064828",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Cauldron_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791053428.2221417
+    "ts": 1791064828.3333304
   },
   "Droidworks": {
     "hash": "3a8fa5f03fb5c8871d0ba0f075ad8e5e547a3e05459becf040e2d2aa28c17d7f",
