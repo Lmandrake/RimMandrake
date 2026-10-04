@@ -264,3 +264,39 @@ def cereanmanefix_texture(t):
         err = _check_png(path, (512, 512))
         if err:
             raise ExpectationFailed(err)
+
+
+@suite.chain("patch_xpaths_land")
+def patch_xpaths_land(t):
+    """STARWARSPATCHES_COVERAGE_GAPS_1 static bar. A patch whose xpath matches nothing logs NOTHING in game,
+    so every Patches/*.xml op is REPLAYED offline (modcheck.patch_targets: Add/Replace/Remove applied in load
+    order against Core+DLC Data, every src/ mod, the declared donors and any installed mod found to own a
+    named def). Sanity-probed first (Core Steel/statBases seen; a missing child and a bogus def are not).
+    FindMod branches for uninstalled mods are SKIP (never a pass); an unmodelled op class is UNMEASURED.
+    MayRequire on a whole <Operation> is inert in 1.6, so such an op is replayed unconditionally."""
+    with t.component("every_patch_op_matches_a_target", beyond_toggle=True):
+        import sys as _sys
+        _utils = _os.path.join(_MOD_DIR, "..", "..", "RimMandrake", "Utils")
+        if _utils not in _sys.path:
+            _sys.path.insert(0, _utils)
+        from modcheck import patch_targets as PT
+        if not PT.GAME_DATA.is_dir():
+            t._why = "game Data unreachable from this machine: cannot index vanilla targets"
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: " + t._why
+            return
+        results, meta = PT.check_mod(_MOD_DIR)
+        bad = PT.sanity(meta["index"])
+        if bad:
+            raise ExpectationFailed("SANITY: the def index cannot see: " + "; ".join(bad))
+        if meta["files"] == 0 or not results:
+            raise ExpectationFailed("blind parse: no patch files or no operations found under %s" % _MOD_DIR)
+        fails = [r for r in results if r["status"] == "FAIL"]
+        unm = [r for r in results if r["status"] == "UNMEASURED"]
+        if fails:
+            raise ExpectationFailed("%d of %d patch ops match nothing (silent no-ops): %s" % (
+                len(fails), len(results), "; ".join("%s %s (%s)" % (r["where"], r["xpath"], r["why"]) for r in fails[:8])))
+        if unm:
+            t._why = "%d ops of an unmodelled class: %s" % (len(unm), sorted({r["class"] for r in unm}))
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: " + t._why
