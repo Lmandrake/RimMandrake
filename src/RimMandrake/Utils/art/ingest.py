@@ -51,8 +51,8 @@ def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
         srow = (snap.get("rows") or {}).get(row)
         dec = (v.get("decision") or "").strip()
         note = (v.get("note") or "").strip()
+        cols = (srow or {}).get("columns") or {}
         if dec and srow and decided:
-            cols = srow.get("columns") or {}
             if dec in cols:
                 shas = sorted({s for s in cols[dec].values() if s})
                 ev = {"type": "ruling", "id": L.det_id("ruling-sheet", via, row, dec, v.get("at")),
@@ -68,6 +68,15 @@ def ingest(decisions_path: Path, dry_run: bool = False) -> dict:
                       "subject_key": srow.get("subject_key", ""), "source_file": via}
             if not dry_run and w.add(ev):
                 out["rulings"] += 1
+            # per-biome sheets: a row's extra graphics (swimming, flying …) carry their own pick
+            for g, pl in sorted((v.get("picks") or {}).items()):
+                if pl in cols and pl != dec:
+                    pev = {**ev, "id": L.det_id("ruling-sheet", via, row, pl, v.get("at")), "verdict": "keep",
+                           "target": {"shas": sorted({s for s in cols[pl].values() if s}), "column": pl,
+                                      "row": row, "graphic": g}}
+                    pev.pop("raw_verdict", None)
+                    if not dry_run and w.add(pev):
+                        out["rulings"] += 1
         elif dec and decided:
             out["unresolved"].append(row)
         for sha in v.get("purge") or []:
