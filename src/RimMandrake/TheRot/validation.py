@@ -517,6 +517,15 @@ def _build_suite():
         player home map: pings are added straight to the world component (no engine). The landing ping is not proven
         here -- first poke: stand a carrier on a map, land a gravship there, read ProofClaim's pings before/after."""
         with t.component("entry_every_n_pings", toggle="navigatorPingsPerEntry"):
+            # The log is WORLD state and ProofPings ADDS pings, so a second TheRot run in the same game read 'pings 20 |
+            # entries 2' and FAILED a working mechanic (load 14): a non-empty log is a precondition, not a verdict.
+            r0 = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_NavigatorLogProof", method="ProofPings", args="0")
+            t0 = str((r0 or {}).get("result", "")) if isinstance(r0, dict) else ""
+            import re as _re
+            m0 = _re.search(r"pings (\d+)", t0)
+            if _live(t) and (not m0 or int(m0.group(1)) != 0):
+                _unmeasured(t, "precondition: the world's navigator log already holds pings (%s); needs a fresh world or a game "
+                               "with no earlier TheRot run" % (t0 or "unreadable"))
             r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_NavigatorLogProof", method="ProofPings", args="4")
             text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
             if _live(t) and "entries 1 " not in text + " ":
