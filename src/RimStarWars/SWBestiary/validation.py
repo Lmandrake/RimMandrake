@@ -194,7 +194,7 @@ NEWLY_ABSORBED_SPECIES = [
     "RSW_Karrask",        # Livestock
     "RSW_Onnik",          # LIVESTOCK_STARTER_TRIO_1 -- CompKilnBelly
     "RSW_Reefback",       # SeaBeasts / Colossi
-    "RSW_TelluroxShell",  # HelixTellurox
+    "RSW_Tellurox",       # HelixTellurox (the PawnKindDef; RSW_TelluroxShell is its leather ITEM -- a spawn of it never lists as a pawn, load 13)
     "RSW_Mynock",         # ShipVermin
     "RSW_Blarth",         # MIASMA_ROUND2_IMPORTS_1 (live: UNMEASURED)
     "RSW_Blixus",
