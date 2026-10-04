@@ -1,0 +1,38 @@
+{"cards":[
+{"title":"Solar Mirrors: the frozen mirror field on the Long Shade",
+ "questions":[
+ {"question":"The Long Shade's ancient mirror field is a lock: 4-6 seized sun-tracking mirrors, each with three visible brass aim-pins on the ground, plus sun-stones that glow when lit. The map's generator solves the puzzle before placing it, so every field has at least one solution needing 3 or more re-aims, and each re-aim costs a repair and a work job. What should solving it open?",
+  "header":"Lock prize",
+  "multiSelect":false,
+  "options":[
+   {"label":"A sealed vault (Recommended)","description":"Light every sun-stone and a buried vault opens with loot and a repaired heliostat. Buys the clearest goal and reward. Costs one vault building and a loot table. Recommended: a readable target is what makes a puzzle fair."},
+   {"label":"A shade road","description":"The right aim kills light other mirrors throw and carves a chain of shade across an impassable sun gap. Buys a route across the map. Costs a goal players may not notice they wanted until late."},
+   {"label":"A herd gate","description":"The aim decides which way the giant herds migrate: past the colony, through it, or into the hunter's canyon. Buys the live re-route he liked most. Costs a goal that is hard to read as solved or unsolved."},
+   {"label":"Vary it per map","description":"Each Long Shade map rolls one of the three. Buys replay variety. Costs three objectives to author, test and explain instead of one, roughly doubling the puzzle phase."}]},
+ {"question":"A real mirror cannot track the sun unless powered. On the Long Shade the sun is pinned, so every mirror's beam holds still. Everywhere else the sun moves through the day, so an unpowered static mirror's spot would sweep across the ground. Should static mirrors sweep on biomes with a moving sun?",
+  "header":"Sweep",
+  "multiSelect":false,
+  "options":[
+   {"label":"Yes, they sweep (Recommended)","description":"Static mirrors drift with the sun and only powered heliostats hold a target. Buys the honest reason to build heliostats. Costs extra shade rebuilds (the spot steps every few seconds rather than gliding). Recommended: it makes power matter."},
+   {"label":"No, they hold still","description":"Every mirror holds its spot all day on every biome. Buys simplicity and no extra rebuilds. Costs the heliostat its main purpose outside the Long Shade; it becomes only the instant-aim version."},
+   {"label":"Setting, default sweep","description":"Ship sweeping with a Mod Settings toggle to freeze them. Buys player choice. Costs one more toggle to test in the first script, which is cheap; same as the first option otherwise."}]},
+ {"question":"A lit patch must read as light inside a shadow the game still draws over it. That is the one thing that cannot be checked without you watching. How visible should the beam itself be?",
+  "header":"Beam look",
+  "multiSelect":false,
+  "options":[
+   {"label":"Spot plus faint beam (Recommended)","description":"A warm glow on the lit cells and a faint shaft from mirror to target. Buys a readable puzzle where you see which mirror lights what. Costs some realism. Recommended: readability is the puzzle."},
+   {"label":"Spot only","description":"Only the lit patch glows; no shaft through the air. Buys a cleaner, more realistic look. Costs readability: with many mirrors you cannot tell which one makes which patch without selecting it."},
+   {"label":"Beam only on selection","description":"Spots always glow, shafts appear only for the selected mirror or with an overlay toggle. Buys a clean screen plus a way to read it. Costs one more overlay button and its UI work."}]}
+ ]},
+{"title":"Solar Mirrors: what to add beyond the core",
+ "questions":[
+ {"question":"The core mod is three mirrors (hand signal mirror, static framed mirror, powered heliostat), sun-stones, and the Long Shade puzzle field. Mirrors un-shade and heat a patch through the existing one-kind-of-heat system and brighten it for crops on dim biomes. Which extension should be built first after the core?",
+  "header":"First extra",
+  "multiSelect":false,
+  "options":[
+   {"label":"Solar furnace (Recommended)","description":"Several beams on one receiver run smelting and glass bills with no fuel and heat its room. Buys the reason to build a whole mirror field. Costs balance work vs fuel. Recommended: it turns mirrors into an economy."},
+   {"label":"Blinding defence","description":"Raiders standing in a beam go glare-blind and shoot worse; goggles protect. Reuses the existing glare-blind mechanic. Buys a cheap non-lethal defence. Costs raid balance; risk of a free kill-box."},
+   {"label":"Heliograph signals","description":"A colonist flashes a mirror to summon traders or allies from nearby settlements by day. Buys sun-gated communication for early colonies. Costs world-map range rules and overlap with the comms console."},
+   {"label":"Mirror greenhouse","description":"Beams into a glazed room light and warm crops inside. Buys farming in dim and cold biomes. Costs the one real engine change: a glazed roof that lets a beam into a roofed room."}]}
+ ]}
+]}
