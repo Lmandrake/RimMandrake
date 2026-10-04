@@ -84,7 +84,7 @@ namespace RimMandrake.DivingInteraction
 
         // CHILL_DIVE_DENSITY_SAMPLER_1. The Chill's animalDensity (0.08) rounds the legacy path to one of nearly
         // every species. Here the dive instead meets chillDiveAnimalCount animals, each drawn by commonality
-        // weight with replacement. The count is a provisional setting owed to a live walk with the owner.
+        // weight with replacement. The count is a PROVISIONAL setting (default 3), tuned later on a live walk.
         // Mirrored offline by density_sampler.py.
         private static void GenerateWeightedDraw(Map map, BiomeDef biome)
         {

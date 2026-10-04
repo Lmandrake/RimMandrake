@@ -182,7 +182,8 @@ namespace RimMandrake.DivingInteraction
         public static bool chillReturnCombEnabled = true;
         // CHILL_DIVE_DENSITY_SAMPLER_1. WORLDGEN-AFFECTING: the Chill floor seeds a fixed number of animals drawn by
         // commonality weight (repeats allowed) instead of one of nearly every species. The number is owed to a live
-        // walk with the owner (leaning 2-4); 3 is a provisional default.
+        // walk with the owner (leaning 2-4). PROVISIONAL (owner ruling 2026-10-03: first-guess numbers ship, tuned live):
+        // default 3, the middle of the Q6 lean.
         public static bool chillDensityDrawEnabled = true;
         public static int chillDiveAnimalCount = 3;
         // SEABED_FLOOR_GENERATORS_1. WORLDGEN-AFFECTING: a ship landing on the sea-floor layer under one of
@@ -322,10 +323,11 @@ namespace RimMandrake.DivingInteraction
                     "Shipped default: ON. WORLD-GENERATION setting. A new Chill floor seeds the number of animals "
                   + "set below, each drawn by its commonality (so common species may repeat and rare ones are "
                   + "usually absent), instead of one of nearly every species. Floors already generated keep what "
-                  + "they have. Off: the old one-of-each sampler.");
+                  + "they have. Off: the old one-of-each sampler. The count (default 3) is PROVISIONAL: a first "
+                  + "guess, to be tuned on a live dive.");
                 if (chillDensityDrawEnabled)
                 {
-                    list.Label("Animals met on a Chill dive: " + chillDiveAnimalCount);
+                    list.Label("Animals met on a Chill dive (PROVISIONAL, default 3): " + chillDiveAnimalCount);
                     chillDiveAnimalCount = Mathf.RoundToInt(list.Slider(chillDiveAnimalCount, 1f, 8f));
                 }
 
