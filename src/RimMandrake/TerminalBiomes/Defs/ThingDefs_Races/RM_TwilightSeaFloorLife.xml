@@ -29,8 +29,9 @@
   hollu's contact sting as a hediff. Murrol carries RM_ChannelNativeExtension
   (the channel current's ruled exemption) and kellu butchers to lamp-black.
 
-  PLACEHOLDER ART: flat dark silhouette PNGs (the RM_TwilightSeaFauna.xml
-  posture); real art queued to artpipe (twilightsea_<name>_v1).
+  ART: three-view artpipe renders (twilightsea_<name>_v1) on Graphic_Multi for
+  every body here except RM_Aluun, which keeps its flat silhouette placeholder
+  on Graphic_Single until twilightsea_aluun_v1_south lands (requeued 2026-10-04).
 -->
 <Defs>
   <!-- ================================================================== RM_Niim -->
@@ -185,9 +186,9 @@
     <wildGroupSize>1~2</wildGroupSize>
     <ecoSystemWeight>0.12</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.55</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.7</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.55</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.7</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
