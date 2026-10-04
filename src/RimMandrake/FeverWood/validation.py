@@ -54,6 +54,7 @@ import xml.etree.ElementTree as ET
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("FeverWood")
+suite.anchor_margin = 67      # situational runs pick safe_anchor() then _anchor_pad adds PAD_OFFSET (45): keep anchor+45+pad inside the 250 map (MEASURED 2026-10-04: anchor 200 -> "Cell is outside the map")
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 SETTINGS = "RimMandrake.FeverWood.RM_FeverWoodSettings"
