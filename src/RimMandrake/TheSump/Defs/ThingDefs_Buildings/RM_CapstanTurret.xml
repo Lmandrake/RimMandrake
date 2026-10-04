@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SUMP_CAPSTAN_TURRET_BUILD_1 (sump_bedazzle_review_2026-10-01.md §5). Free tier. Base and top art from artpipe
      (RM_CapstanTurret_Base / _Top, 256px, drawsize 2); the top is drawn by RM_CapstanTurret.DrawAt, turned toward the
-     roped pawn. The learned recipe: steel, components, cloth. -->
+     roped pawn.
+     SUMP_CAPSTAN_LOCAL_RECIPE_1: a building has one costList, so the spec's two recipes are two defs on one abstract
+     parent (same class, art, stats and research row). RM_CapstanTurret is the learned recipe (steel, components,
+     cloth); RM_CapstanTurret_PitRigged is the tar-pit crews' build from local Sump materials (tar-glass bearings
+     poured from bitumen, seepwax-packed cable), light on steel and components. Both unlock with the same research.
+     Costs PROVISIONAL. -->
 <Defs>
-  <ThingDef ParentName="BuildingBase">
-    <defName>RM_CapstanTurret</defName>
-    <label>capstan turret</label>
+  <ThingDef Name="RM_CapstanTurretBase" ParentName="BuildingBase" Abstract="True">
     <description>A powered capstan on a turret ring. It throws a barbed grapple at a visible enemy within range and reels them in along the ground toward itself, cell by cell, through anything they could walk through. With no enemy in sight it ropes a downed colonist in the open and hauls them to safety. A heavy beast, or a fighter who struggles hard enough, parts the line, and the snap strains the turret.</description>
     <thingClass>RimMandrake.TheSump.RM_CapstanTurret</thingClass>
     <graphicData>
@@ -29,11 +32,6 @@
       <Mass>60</Mass>
       <Beauty>-10</Beauty>
     </statBases>
-    <costList>
-      <Steel>120</Steel>
-      <ComponentIndustrial>4</ComponentIndustrial>
-      <Cloth>30</Cloth>
-    </costList>
     <comps>
       <li Class="CompProperties_Power">
         <compClass>CompPowerTrader</compClass>
@@ -51,5 +49,30 @@
     <building>
       <ai_combatDangerous>true</ai_combatDangerous>
     </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CapstanTurretBase">
+    <defName>RM_CapstanTurret</defName>
+    <label>capstan turret</label>
+    <costList>
+      <Steel>120</Steel>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <Cloth>30</Cloth>
+    </costList>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_CapstanTurretBase">
+    <defName>RM_CapstanTurret_PitRigged</defName>
+    <label>pit-rigged capstan turret</label>
+    <description>A capstan turret built the way the tar-pit crews built them: bearings poured from bitumen and cooled to glass, cable packed in seepwax so the tar never bites it, and only a little steel where nothing else would hold. It throws a barbed grapple at a visible enemy within range and reels them in along the ground toward itself, cell by cell. With no enemy in sight it ropes a downed colonist in the open and hauls them to safety. A heavy beast, or a fighter who struggles hard enough, parts the line, and the snap strains the turret.</description>
+    <statBases>
+      <WorkToBuild>4200</WorkToBuild>
+    </statBases>
+    <costList>
+      <RM_Bitumen>60</RM_Bitumen>
+      <RM_Seepwax>25</RM_Seepwax>
+      <Steel>40</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
   </ThingDef>
 </Defs>
