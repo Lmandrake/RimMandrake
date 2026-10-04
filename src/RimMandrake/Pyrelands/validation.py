@@ -56,7 +56,8 @@ from modcheck import Suite, ExpectationFailed
 suite = Suite("Pyrelands")
 suite.toggles = ["fulguriteEnabled", "ashDustingEnabled", "scorchFruitEnabled",
                  "ashfallAccumulationEnabled", "biomeGenerationEnabled",
-                 "ullaiEnabled", "ullaiHerdSizeMultiplier", "furnaceBeastGiant"]
+                 "ullaiEnabled", "ullaiHerdSizeMultiplier", "furnaceBeastGiant",
+                 "lightningBreakerEnabled", "breakerPyrelandsOnly", "breakerTripCost", "breakerRecipeCostFactor"]
 
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 SOIL = "RM_FE_Ground_Soil"
@@ -1303,4 +1304,67 @@ def ullai_and_giant(t):
             _unmeasured(t, "needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; "
                            "no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)")
         t.screenshot()
+
+
+@suite.chain("lightning_breaker")
+def lightning_breaker(t):
+    """PYRELANDS_LIGHTNING_BREAKER_BUILD_1 (RM_LightningBreaker.cs). Live proofs need no Pyrelands site: ProofTrip
+    builds battery-conduit-breaker-conduit-battery on the current map and forces a short circuit on A's side."""
+    import re
+    import xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    t.clear_area(size=12)
+    proof = "RimMandrake.Pyrelands.RM_LightningBreakerProof"
+
+    def call(method, arg):
+        if t.session is None:
+            t.upstream_reason = "UNMEASURED: no bridge session for %s" % method
+            t.upstream_failed = True
+            return None
+        r = t.bridge_call("jawa/static_call", type=proof, method=method, args=arg)
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if text.startswith("UNMEASURED"):
+            t.upstream_reason = text
+            t.upstream_failed = True
+            return None
+        return text
+
+    with t.component("metal_and_sand_at_the_forge", beyond_toggle=True):
+        root = ET.parse(os.path.join(here, "Defs", "LightningBreaker", "RM_LightningBreaker.xml")).getroot()
+        defs = {(d.tag, d.findtext("defName")): d for d in root}
+        if len(defs) != 4:   # sanity probe: research, core, recipe, building
+            _fail("read %s" % sorted(defs))
+        recipe = defs[("RecipeDef", "RM_Make_LightningBreakerCore")]
+        users = [li.text for li in recipe.findall("recipeUsers/li")]
+        ings = [li.findtext("filter/thingDefs/li") for li in recipe.findall("ingredients/li")]
+        if not set(users) & {"FueledSmithy", "ElectricSmithy"} or sorted(ings) != ["RM_GlassSand", "Steel"]:
+            _fail("recipe is not metal and sand at the smithy: users %r ingredients %r" % (users, ings))
+        b = defs[("ThingDef", "RM_LightningBreaker")]
+        if b.findtext("thingClass") != "RimMandrake.Pyrelands.RM_LightningBreaker" or \
+                b.find("comps/li[@Class='CompProperties_Power']/transmitsPower") is None:
+            _fail("breaker is not a power-transmitting RM_LightningBreaker")
+    with t.component("research_only_in_the_pyrelands", toggle="breakerPyrelandsOnly"):
+        root = ET.parse(os.path.join(here, "Defs", "LightningBreaker", "RM_LightningBreaker.xml")).getroot()
+        rp = root.find("ResearchProjectDef")
+        if rp.find("modExtensions/li[@Class='RimMandrake.Pyrelands.RM_PyrelandsOnlyResearch']") is None:
+            _fail("the research carries no Pyrelands-only gate")
+        with open(os.path.join(here, "Source", "RM_LightningBreaker.cs"), encoding="utf-8") as f:
+            src = f.read()
+        if "PropertyGetter(typeof(ResearchProjectDef), nameof(ResearchProjectDef.CanStartNow))" not in src:
+            _fail("CanStartNow is not gated")
+        text = call("ProofGate", "RM_LightningBreakers")
+        if text is not None:
+            m = re.search(r"canStart=(\w+) holdsPyrelands=(\w+) gated=True prereqsDone=(\w+) finished=False", text)
+            if not m:
+                _fail("gate: %s" % text[:200])
+            can, holds, pre = m.groups()
+            if pre == "True" and can != holds:
+                _fail("research can start=%s while holding a Pyrelands home=%s" % (can, holds))
+    with t.component("short_circuit_trips_and_spares_the_far_side", toggle="lightningBreakerEnabled"):
+        text = call("ProofTrip", "x")
+        if text is not None:
+            m = re.search(r"oneNetBefore=True tripped=True storedA=(\d+) storedB=(\d+) splitAfter=True", text)
+            if not m or int(m.group(1)) > 1 or int(m.group(2)) < 500:
+                _fail("trip: %s" % text[:240])
+            t.screenshot()
 
