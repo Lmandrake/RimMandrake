@@ -1,0 +1,313 @@
+{
+ "name": "WeepingStones__flora_RM_Bladderquill__colonist_injured_unexpectedly__t7174__001",
+ "when_utc": "2026-10-03T16:49:20Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Artemis gained 2 new hediff(s) (Scratch); cause_hint=animal",
+   "evidence": {
+    "id": "Human46747",
+    "name": "Artemis",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Liver",
+      "severity": 1.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.0
+     }
+    ],
+    "cause_hint": "animal",
+    "causes": [
+     "animal"
+    ],
+    "unmapped_defs": []
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    168,
+    167
+   ],
+   "fingerprint": "colonist_injured:Human46747:Scratch@Liver,Scratch@Torso"
+  }
+ ],
+ "snapshot": {
+  "tick": 7174,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human46747",
+    "name": "Artemis",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 168,
+    "z": 167,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 0.9490294
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.24225736
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0567768
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00731193
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Liver",
+      "severity": 1.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.0
+     }
+    ],
+    "bleedRate": 0.205828086,
+    "painTotal": 0.0428808481,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 10,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 7174
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Crabby and Ingrid are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Kinsei cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Redfields cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Fernand cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Crabby and Ferrell cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby and Godders cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby already recently tried to seduce Fjellsmel"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Crabby"
+  ],
+  [
+   "Message",
+   "Crabby failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Fernand cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Kinsei cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Ferrell and Ingrid cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Ferrell and Crabby cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Artemis cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Ferrell and Godders cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Ferrell and Timofei cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Redfields cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Ferrell and Fjellsmel cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Ferrell"
+  ],
+  [
+   "Message",
+   "Ferrell failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1522912937,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 7174,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 6574,
+    "tick_to": 7174,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "flora_RM_Bladderquill",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T093854\\WeepingStones__flora_RM_Bladderquill__colonist_injured_unexpectedly__t7174__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3393748,
+  "width": 1810,
+  "height": 1183,
+  "md5": "233d9b8db89c8f75d69a58a00f5f8c4e",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,844 @@
+{
+ "name": "Greentide__vurrak__colonist_damaged__t10586__001",
+ "when_utc": "2026-10-04T05:59:24Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Prissy took 1 damage event(s): Bite by RM_Vurrak",
+   "evidence": {
+    "id": "Human136567",
+    "events": [
+     {
+      "seq": 359,
+      "tick": 10586,
+      "damageDef": "Bite",
+      "amount": 22.3627949,
+      "instigatorId": "RM_Vurrak136566",
+      "instigatorDef": "RM_Vurrak",
+      "weapon": null,
+      "hediffsAdded": [
+       "Bite"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    47,
+    50
+   ],
+   "fingerprint": "colonist_damaged:Human136567:359"
+  },
+  {
+   "detector": "colonist_downed",
+   "severity": "SURPRISE",
+   "summary": "colonist Prissy is bleeding",
+   "evidence": {
+    "id": "Human136567",
+    "name": "Prissy",
+    "downed": false,
+    "bleedRate": 1.34176767,
+    "painTotal": 0.392034948
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    47,
+    50
+   ],
+   "fingerprint": "colonist_downed:Human136567:False"
+  },
+  {
+   "detector": "wildlife_near_colonist",
+   "severity": "SURPRISE",
+   "summary": "1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured",
+   "evidence": {
+    "animals": [
+     {
+      "id": "Hare136573",
+      "kindDef": "Hare",
+      "x": 50,
+      "z": 50,
+      "dist": 3,
+      "new": true,
+      "hunting": false
+     }
+    ]
+   },
+   "suggest": [
+    "kill_wildlife"
+   ],
+   "focus": [
+    50,
+    50
+   ],
+   "fingerprint": "wildlife_near_colonist:Hare136573"
+  },
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): The bank moved; open, awaiting arrivals",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      10586,
+      "The bank moved"
+     ]
+    ],
+    "open": true,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@10586"
+  }
+ ],
+ "snapshot": {
+  "tick": 10586,
+  "epoch": 0,
+  "map_id": 2,
+  "pawns": [
+   {
+    "id": "Human136567",
+    "name": "Prissy",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 47,
+    "z": 50,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_IdeologicalPassion_Hediff",
+      "label": "ideological passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "Scarification",
+      "label": "scarification (aching)",
+      "part": "Arm",
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "Bite",
+      "label": "bite",
+      "part": "Torso",
+      "severity": 22.3627949
+     }
+    ],
+    "bleedRate": 1.34176767,
+    "painTotal": 0.392034948,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Hare136573",
+    "name": "Hare",
+    "kindDef": "Hare",
+    "def": "Hare",
+    "faction": null,
+    "isPlayer": false,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 50,
+    "z": 50,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": null,
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Eopie (bogwing)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eopie (bogwing)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Restocking Fee (marsh haunt)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Restocking Fee (marsh haunt)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gnome (ikee)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gnome (ikee)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ian",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ian",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Scurrier (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Scurrier (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Voorpak (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Voorpak (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Treadwell (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Treadwell (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 1184 for 1410",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 1184 for 1410",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6910
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Chiyo",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Chiyo",
+     6910
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Specimen",
+    "arrivalTick": 7034,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Specimen",
+     7034
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 7423,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     7423
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sheppy",
+    "arrivalTick": 7423,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sheppy",
+     7423
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Feral droid",
+    "arrivalTick": 7623,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Feral droid",
+     7623
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7743
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     7743
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dimitri",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dimitri",
+     7743
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "She takes it back",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "She takes it back",
+     7743
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sold: Scoundrel",
+    "arrivalTick": 7743,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sold: Scoundrel",
+     7743
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Wreck: fuel tank",
+    "arrivalTick": 8889,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Wreck: fuel tank",
+     8889
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "The bank moved",
+    "arrivalTick": 10586,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "The bank moved",
+     10586
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 5,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 22,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 10586
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": false
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Cooley: opinion=5, mood=0.69, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Kem: opinion=20, mood=0.83, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Nose: opinion=12, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval BB: opinion=5, mood=0.69, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Schobi: opinion=-5, mood=0.33, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Bellerose: opinion=15, mood=0.74, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Cover: opinion=-5, mood=0.68, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Nobu: opinion=-5, mood=0.33, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Lev: opinion=0, mood=0.57, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Fy: opinion=-5, mood=0.34, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Mie: opinion=-13, mood=0.44, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Laila: opinion=-8, mood=0.70, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Jambo: opinion=-5, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Char: opinion=2, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Chad: opinion=-5, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Guillermo: opinion=-15, mood=0.64, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Warning",
+   "Tried to calculate chance for mother with gender \"Male\"."
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] HeadTypeDef: assigned HeadNormal to Prissy"
+  ],
+  [
+   "Message",
+   "[FA Genetic Heads] SkinTypeDef: assigned SkinNormal to Prissy"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954897,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 0,
+  "overhead_spent": 0,
+  "total_spent": 0,
+  "epoch": 0,
+  "last_seen_tick": 10586,
+  "open_frames": [],
+  "entries": []
+ },
+ "context": {
+  "mod": "Greentide",
+  "chain": "vurrak",
+  "policy": "record"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T225411\\Greentide__vurrak__colonist_damaged__t10586__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2614381,
+  "width": 1810,
+  "height": 1183,
+  "md5": "af2e099b5540140ca2f029e999d71312",
+  "why": ""
+ },
+ "notes": []
+}

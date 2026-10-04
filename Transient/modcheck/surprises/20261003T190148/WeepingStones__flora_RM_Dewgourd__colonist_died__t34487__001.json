@@ -1,0 +1,575 @@
+{
+ "name": "WeepingStones__flora_RM_Dewgourd__colonist_died__t34487__001",
+ "when_utc": "2026-10-04T02:18:27Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Kaiser died (death_letter)",
+   "evidence": {
+    "name": "Kaiser",
+    "ticks": [
+     34374
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Kaiser"
+  }
+ ],
+ "snapshot": {
+  "tick": 34487,
+  "epoch": 0,
+  "map_id": 4,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NegativeEvent",
+    "label": "Quest failed",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Quest failed",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Quest failed",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Quest failed",
+     3978
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Hostile: Free Droid Enclaves",
+    "arrivalTick": 3978,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Hostile: Free Droid Enclaves",
+     3978
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Erika",
+    "arrivalTick": 4038,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Erika",
+     4038
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "The bank moved",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "The bank moved",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     7929
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The gut-mother gives back",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The gut-mother gives back",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 1",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 1",
+     7929
+    ]
+   },
+   {
+    "defName": "NewQuest",
+    "label": "Quest active: The Cache in the Log",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NewQuest",
+     "Quest active: The Cache in the Log",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Ship's log, entry 2",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ship's log, entry 2",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The log stops",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The log stops",
+     7929
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Metalhorror emerging",
+    "arrivalTick": 7929,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Metalhorror emerging",
+     7929
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Sissy",
+    "arrivalTick": 8236,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Sissy",
+     8236
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sissy",
+    "arrivalTick": 8236,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sissy",
+     8236
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Zamora",
+    "arrivalTick": 20376,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Zamora",
+     20376
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Zamora",
+    "arrivalTick": 20376,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zamora",
+     20376
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Jebo",
+    "arrivalTick": 21033,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Jebo",
+     21033
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jebo",
+    "arrivalTick": 21033,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jebo",
+     21033
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 21417,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     21417
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Fruitful Interment opportunity for Kaiser",
+    "arrivalTick": 34374,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Fruitful Interment opportunity for Kaiser",
+     34374
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kaiser",
+    "arrivalTick": 34374,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kaiser",
+     34374
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 5,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 39,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 34487
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Nina: Eval Taras: opinion=-10, mood=0.69, happy=True, sad=False, thought=MCR_ADislikableGuyIsHappy, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Nina: Scan finished. NewlyAddedMemories=7"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Vlad cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Lady is currently doing lovin'."
+  ],
+  [
+   "Message",
+   "Freddie cannot engage in social activities due to their current job."
+  ],
+  [
+   "Message",
+   "Zug is currently doing lovin'."
+  ],
+  [
+   "Message",
+   "Vlad failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Starting scan. Candidates=12, CurrentMood=0.57"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Kimmy: opinion=-4, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Sarai: opinion=-9, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Vlad: opinion=-10, mood=0.24, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Sam: opinion=20, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Nemea: opinion=-10, mood=0.33, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Violet: opinion=-2, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Chigg: opinion=-10, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Dotty: opinion=-10, mood=0.36, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Lady: opinion=-28, mood=0.31, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Villa: opinion=-10, mood=0.44, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Eval Freddie: opinion=30, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Zug: Scan finished. NewlyAddedMemories=4"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 2307,
+  "overhead_spent": 0,
+  "total_spent": 2307,
+  "epoch": 0,
+  "last_seen_tick": 34487,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3725,
+    "spent": 2307
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 32180,
+    "tick_to": 32774,
+    "ticks": 594,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 32774,
+    "tick_to": 33351,
+    "ticks": 577,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 33351,
+    "tick_to": 33944,
+    "ticks": 593,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 33944,
+    "tick_to": 34487,
+    "ticks": 543,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "WeepingStones",
+  "chain": "flora_RM_Dewgourd",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T190148\\WeepingStones__flora_RM_Dewgourd__colonist_died__t34487__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3096096,
+  "width": 1810,
+  "height": 1183,
+  "md5": "3313abdc98d29039b050affbad9db752",
+  "why": ""
+ },
+ "notes": []
+}

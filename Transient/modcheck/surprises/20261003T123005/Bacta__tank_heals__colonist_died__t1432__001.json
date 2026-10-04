@@ -1,0 +1,1270 @@
+{
+ "name": "Bacta__tank_heals__colonist_died__t1432__001",
+ "when_utc": "2026-10-03T19:30:48Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human72371 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human72371",
+    "ticks": [
+     1144
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human72371"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human72371"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Lynx died (death_letter)",
+   "evidence": {
+    "name": "Lynx",
+    "ticks": [
+     1144
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Lynx"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human72371 took 1 damage event(s): Crush by nobody",
+   "evidence": {
+    "id": "Human72371",
+    "events": [
+     {
+      "seq": 125,
+      "tick": 1144,
+      "damageDef": "Crush",
+      "amount": 99999.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "MissingBodyPart",
+       "Crush",
+       "Crack",
+       "MissingBodyPart",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human72371:125"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Graves took 1 damage event(s): Crush by nobody",
+   "evidence": {
+    "id": "Human72374",
+    "events": [
+     {
+      "seq": 104,
+      "tick": 1144,
+      "damageDef": "Crush",
+      "amount": 30.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "MissingBodyPart",
+       "Crack"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    73,
+    170
+   ],
+   "fingerprint": "colonist_damaged:Human72374:104"
+  },
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "4 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Spelopede74411",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 45,
+      "z": 185
+     },
+     {
+      "id": "Megascarab74412",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 44,
+      "z": 185
+     },
+     {
+      "id": "Spelopede74413",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 38,
+      "z": 179
+     },
+     {
+      "id": "Spelopede74414",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 42,
+      "z": 181
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    45,
+    185
+   ],
+   "fingerprint": "hostile_pawns:Megascarab74412,Spelopede74411,Spelopede74413,Spelopede74414"
+  },
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "5 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 135,
+      "z": 19
+     },
+     {
+      "x": 134,
+      "z": 18
+     },
+     {
+      "x": 133,
+      "z": 19
+     },
+     {
+      "x": 135,
+      "z": 18
+     },
+     {
+      "x": 133,
+      "z": 20
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    135,
+    19
+   ],
+   "fingerprint": "fire_on_map:5"
+  }
+ ],
+ "snapshot": {
+  "tick": 1432,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human72374",
+    "name": "Graves",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 73,
+    "z": 170,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_TraumaticPassion",
+      "label": "traumatic passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Jaw",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Destroyed",
+      "part": "Tongue",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Combat",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede74411",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 45,
+    "z": 185,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_MaintainPosture",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab74412",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 44,
+    "z": 185,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede74413",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 38,
+    "z": 179,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Mine",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede74414",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 42,
+    "z": 181,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Entering the Terminator Front",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Entering the Terminator Front",
+     0
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Erick (suush)",
+    "arrivalTick": 468,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Erick (suush)",
+     468
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Pain (suush)",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Pain (suush)",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     544
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Keller",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Keller",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     544
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sonia",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sonia",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Sonia",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Sonia",
+     544
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 544,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     544
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Keller",
+    "arrivalTick": 611,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Keller",
+     611
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Our Supreme Leader opportunity",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Our Supreme Leader opportunity",
+     1144
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lynx",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lynx",
+     1144
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Lynx",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Lynx",
+     1144
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Roof collapse",
+    "arrivalTick": 1144,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Roof collapse",
+     1144
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 1196,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     1196
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 3,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 5,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 1432
+  },
+  "fires": 5,
+  "conditions": [
+   {
+    "def": "RM_WS_TerminatorFront",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[Ninefold] Zizzik satiation +3.0 (the wrong spark catches) -> 24.0 [Content]"
+  ],
+  [
+   "Message",
+   "[Ninefold] Shkaar satiation +3.0 (fire and burning, the Searer's work) -> 48.0 [Content]"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Daneels cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Daneels failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Graves: Starting scan. Candidates=5, CurrentMood=0.50"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Graves: Eval Wilma: opinion=0, mood=0.56, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Graves: Eval Madden: opinion=40, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Graves: Eval Daneels: opinion=0, mood=0.51, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Graves: Eval Maro: opinion=0, mood=0.51, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Graves: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Daneels cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Daneels failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Madden: Starting scan. Candidates=5, CurrentMood=0.55"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Madden: Eval Wilma: opinion=47, mood=0.56, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Madden: Eval Daneels: opinion=35, mood=0.51, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Madden: Eval Graves: opinion=-3, mood=0.49, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Madden: Eval Maro: opinion=0, mood=0.51, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Madden: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Wilma cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Wilma failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956076,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 288,
+  "overhead_spent": 0,
+  "total_spent": 288,
+  "epoch": 0,
+  "last_seen_tick": 1432,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1475,
+    "spent": 123
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1144,
+    "tick_to": 1145,
+    "ticks": 1
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1145,
+    "tick_to": 1148,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1148,
+    "tick_to": 1151,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1151,
+    "tick_to": 1155,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1155,
+    "tick_to": 1158,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1158,
+    "tick_to": 1162,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1162,
+    "tick_to": 1166,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1166,
+    "tick_to": 1169,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1169,
+    "tick_to": 1172,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1172,
+    "tick_to": 1176,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1176,
+    "tick_to": 1179,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1179,
+    "tick_to": 1181,
+    "ticks": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1181,
+    "tick_to": 1182,
+    "ticks": 1
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1182,
+    "tick_to": 1185,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1185,
+    "tick_to": 1188,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1188,
+    "tick_to": 1191,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/mod_settings_field",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1191,
+    "tick_to": 1194,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/set_terrain_batch",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1194,
+    "tick_to": 1199,
+    "ticks": 5
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/log_autoopen_suppress",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1199,
+    "tick_to": 1202,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/build_batch",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1202,
+    "tick_to": 1206,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/map_commit",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1206,
+    "tick_to": 1210,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/list_things",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1210,
+    "tick_to": 1214,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/power_net",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1214,
+    "tick_to": 1219,
+    "ticks": 5
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/set_draft",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1219,
+    "tick_to": 1225,
+    "ticks": 6
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/pawn_need",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1225,
+    "tick_to": 1229,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/pawn_need",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1229,
+    "tick_to": 1233,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:rimworld/spawn_thing",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1233,
+    "tick_to": 1236,
+    "ticks": 3
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/list_things",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1236,
+    "tick_to": 1240,
+    "ticks": 4
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "verb:bridge_call:jawa/ordered_job",
+    "scope": [],
+    "epoch": 0,
+    "tick_from": 1240,
+    "tick_to": 1309,
+    "ticks": 69
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "pre-step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1309,
+    "tick_to": 1311,
+    "ticks": 2
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1311,
+    "tick_to": 1432,
+    "ticks": 121,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Bacta",
+  "chain": "tank_heals",
+  "policy": "abort"
+ },
+ "png": null,
+ "png_info": null,
+ "notes": [
+  "take_screenshot returned no path: {'success': False, 'message': 'Timed out waiting for RimWorld to finish writing the screenshot file.', 'path': None, 'sourcePath': None, 'fileName': None, 'requestedFileName': 'Bacta__tank_heals__colo"
+ ]
+}

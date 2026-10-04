@@ -1,0 +1,696 @@
+{
+ "name": "BlueDesert__krissek_blast__fire_on_map__t404660__001",
+ "when_utc": "2026-10-04T00:02:22Z",
+ "hits": [
+  {
+   "detector": "fire_on_map",
+   "severity": "SURPRISE",
+   "summary": "26 fire(s) on the map outside the expected set",
+   "evidence": {
+    "fires": [
+     {
+      "x": 156,
+      "z": 55
+     },
+     {
+      "x": 156,
+      "z": 57
+     },
+     {
+      "x": 157,
+      "z": 56
+     },
+     {
+      "x": 152,
+      "z": 53
+     },
+     {
+      "x": 154,
+      "z": 53
+     },
+     {
+      "x": 157,
+      "z": 57
+     },
+     {
+      "x": 154,
+      "z": 54
+     },
+     {
+      "x": 157,
+      "z": 58
+     },
+     {
+      "x": 158,
+      "z": 55
+     },
+     {
+      "x": 155,
+      "z": 54
+     },
+     {
+      "x": 156,
+      "z": 54
+     },
+     {
+      "x": 154,
+      "z": 57
+     },
+     {
+      "x": 151,
+      "z": 54
+     },
+     {
+      "x": 151,
+      "z": 53
+     },
+     {
+      "x": 152,
+      "z": 55
+     },
+     {
+      "x": 158,
+      "z": 137
+     },
+     {
+      "x": 159,
+      "z": 57
+     },
+     {
+      "x": 157,
+      "z": 59
+     },
+     {
+      "x": 155,
+      "z": 59
+     },
+     {
+      "x": 159,
+      "z": 56
+     },
+     {
+      "x": 152,
+      "z": 56
+     },
+     {
+      "x": 159,
+      "z": 54
+     },
+     {
+      "x": 154,
+      "z": 59
+     },
+     {
+      "x": 158,
+      "z": 59
+     },
+     {
+      "x": 153,
+      "z": 58
+     },
+     {
+      "x": 150,
+      "z": 55
+     }
+    ]
+   },
+   "suggest": [
+    "extinguish"
+   ],
+   "focus": [
+    156,
+    55
+   ],
+   "fingerprint": "fire_on_map:26"
+  }
+ ],
+ "snapshot": {
+  "tick": 404660,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Trumpet",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Trumpet",
+     31101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 34101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     34101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Veronica",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Veronica",
+     44616
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Veronica",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Veronica",
+     44616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Ty",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Ty",
+     44616
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ty",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ty",
+     44616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Coyote",
+    "arrivalTick": 58116,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Coyote",
+     58116
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Coyote",
+    "arrivalTick": 58116,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Coyote",
+     58116
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Sprinter",
+    "arrivalTick": 59316,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Sprinter",
+     59316
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sprinter",
+    "arrivalTick": 59316,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sprinter",
+     59316
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Meef",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Meef",
+     63403
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Meef",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Meef",
+     63403
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Malvina",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Malvina",
+     63403
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Malvina",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Malvina",
+     63403
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The fire rite",
+    "arrivalTick": 393419,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The fire rite",
+     393419
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 394036,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     394036
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 404240,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     404240
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 404510,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     404510
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 20,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 404660
+  },
+  "fires": 26,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Lynx: opinion=12, mood=0.22, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Morrison: opinion=39, mood=0.39, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Coyote: opinion=-10, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Scan finished. NewlyAddedMemories=3"
+  ],
+  [
+   "Message",
+   "Morrison cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 12"
+  ],
+  [
+   "Message",
+   "Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Lynx cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Bebe and Coyote cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Bebe"
+  ],
+  [
+   "Message",
+   "Bebe failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Starting scan. Candidates=3, CurrentMood=0.38"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Eval Kell: opinion=58, mood=0.11, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Eval Ivan: opinion=80, mood=0.22, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Warning",
+   "Reached max messages limit. Stopping logging to avoid spam."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954587,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594954522,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 150,
+  "overhead_spent": 0,
+  "total_spent": 150,
+  "epoch": 0,
+  "last_seen_tick": 404660,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 787,
+    "spent": 150
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404510,
+    "tick_to": 404660,
+    "ticks": 150,
+    "requested": 150
+   }
+  ]
+ },
+ "context": {
+  "mod": "BlueDesert",
+  "chain": "krissek_blast",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T165757\\BlueDesert__krissek_blast__fire_on_map__t404660__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2455733,
+  "width": 1810,
+  "height": 1183,
+  "md5": "9d4d6ca129ab8d12b40c6512f8584196",
+  "why": ""
+ },
+ "notes": []
+}

@@ -1,0 +1,357 @@
+{
+ "name": "TheForge__cycle_arms__raid_arrived__t11425__001",
+ "when_utc": "2026-10-03T16:53:34Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): Glowing cracks; The melt; window passed, no hostiles seen",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      10825,
+      "Glowing cracks"
+     ],
+     [
+      "letter",
+      10825,
+      "The melt"
+     ]
+    ],
+    "open": false,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@10825|letter@10825"
+  }
+ ],
+ "snapshot": {
+  "tick": 11425,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Spunstone bonding",
+    "arrivalTick": 10015,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Spunstone bonding",
+     10015
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 10275,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     10275
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 10275,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     10275
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 10275,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     10275
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "The freeze",
+    "arrivalTick": 10825,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "The freeze",
+     10825
+    ]
+   },
+   {
+    "defName": "ThreatBig",
+    "label": "Glowing cracks",
+    "arrivalTick": 10825,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatBig",
+     "Glowing cracks",
+     10825
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The melt",
+    "arrivalTick": 10825,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The melt",
+     10825
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 12,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 11425
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "RM_ForgePulse",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Fjellsmel and Susy cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Fjellsmel and Braz cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Fjellsmel"
+  ],
+  [
+   "Message",
+   "Fjellsmel failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "Artemis cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Crabby and Timofei cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby and Ingrid are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Kinsei cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Fernand cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Crabby and Ferrell cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby and Godders cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby and Braz cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby already recently tried to seduce Fjellsmel"
+  ],
+  [
+   "Message",
+   "Crabby and Redfields cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Crabby and Susy are not mutually attracted"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Crabby"
+  ],
+  [
+   "Message",
+   "Artemis is not generally well."
+  ],
+  [
+   "Message",
+   "Ingrid cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Kinsei cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Crabby failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956922,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956859,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 1150,
+  "overhead_spent": 0,
+  "total_spent": 1150,
+  "epoch": 0,
+  "last_seen_tick": 11425,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 2600,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10275,
+    "tick_to": 10395,
+    "ticks": 120,
+    "requested": 120
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10395,
+    "tick_to": 10525,
+    "ticks": 130,
+    "requested": 130
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10525,
+    "tick_to": 10825,
+    "ticks": 300,
+    "requested": 300
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 10825,
+    "tick_to": 11425,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "TheForge",
+  "chain": "cycle_arms",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T095210\\TheForge__cycle_arms__raid_arrived__t11425__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 1668786,
+  "width": 1810,
+  "height": 1183,
+  "md5": "a14d72d59a27ac83e24b368e268607f4",
+  "why": ""
+ },
+ "notes": []
+}

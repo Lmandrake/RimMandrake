@@ -9,3 +9,12 @@
 - 01:49 wait
 - 01:49 FeverWood recorded: 87 PASS/13 UNMEAS/1 FAIL(harvest Seepril/GiantLeaf yields nothing). Cut origin = Gas_Mycotic.Tick (mycotic gas, no src def in repo -> donor). kurreth faction fix PASS (hidden_raider_factions_have_a_name_source), lure->theft lordjob PASS
 - 01:50 INSTRUMENT DEFECT: run_identity.mod_fingerprint uses deploy_custom_mods.mod_dirs() which EXCLUDES biome mods folded into Biomes.compose.json -> FeverWood deploy state 'unknown: no source dir' -> all 87 PASS stay unproven. Fix: fingerprint the composed target (RimMandrake.Biomes) for folded mods. NEXT for next seat.
+- 01:50 pushed; starting Aftermath
+- 01:51 Aftermath recorded
+- 01:55 TheRot recorded
+- 01:57 Armoury recorded
+- 02:03 LeaningScrub recorded
+- 02:04 KeelHoist recorded
+- 02:19 WeepingStones recorded
+- 02:19 waiting
+- 02:19 KeelHoist: NOTSOLD price=952 silverOnMap=226 sales=0 (silver present but < price; sale needs 952). WeepingStones: feed FAIL 'meal still on ground, job never delivered'; no first-exception read (log not inspected). Proven 28->46 of 1690. Bridge released.

@@ -1,0 +1,741 @@
+{
+ "name": "Stillsand__sandswim__colonist_injured_unexpectedly__t136211__001",
+ "when_utc": "2026-10-03T10:07:05Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Veli gained 2 new hediff(s) (Heatstroke,RM_GlareBlind); cause_hint=heat",
+   "evidence": {
+    "id": "Human45065",
+    "name": "Veli",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00264063734
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0166666675
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_GlareBlind"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    125,
+    125
+   ],
+   "fingerprint": "colonist_injured:Human45065:Heatstroke@None,RM_GlareBlind@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mullen gained 2 new hediff(s) (Heatstroke,RM_GlareBlind); cause_hint=heat",
+   "evidence": {
+    "id": "Human45069",
+    "name": "Mullen",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.004160192
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0100000007
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_GlareBlind"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    123,
+    126
+   ],
+   "fingerprint": "colonist_injured:Human45069:Heatstroke@None,RM_GlareBlind@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Flebe gained 2 new hediff(s) (Heatstroke,RM_GlareBlind); cause_hint=heat",
+   "evidence": {
+    "id": "Human45073",
+    "name": "Flebe",
+    "new_hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00276963785
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0100000007
+     }
+    ],
+    "cause_hint": "heat",
+    "causes": [
+     "heat",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "RM_GlareBlind"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    118,
+    127
+   ],
+   "fingerprint": "colonist_injured:Human45073:Heatstroke@None,RM_GlareBlind@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 136211,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human45065",
+    "name": "Veli",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 125,
+    "z": 125,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00264063734
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0166666675
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human45069",
+    "name": "Mullen",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 123,
+    "z": 126,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.004160192
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0100000007
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human45073",
+    "name": "Flebe",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 118,
+    "z": 127,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Heatstroke",
+      "label": "heatstroke (initial)",
+      "part": null,
+      "severity": 0.00276963785
+     },
+     {
+      "def": "RM_GlareBlind",
+      "label": "glare-blind (squinting, 0h)",
+      "part": null,
+      "severity": 0.0100000007
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 10623,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     10623
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 11504,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     11504
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 12094,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     12094
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 12145,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     12145
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 12672,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     12672
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 103002,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     103002
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 103046,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     103046
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archist Eulogy opportunity for Jerbear",
+    "arrivalTick": 103951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archist Eulogy opportunity for Jerbear",
+     103951
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jerbear",
+    "arrivalTick": 103951,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jerbear",
+     103951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archist Eulogy opportunity for Cami",
+    "arrivalTick": 103951,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archist Eulogy opportunity for Cami",
+     103951
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Cami",
+    "arrivalTick": 103951,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Cami",
+     103951
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 104022,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     104022
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archist Eulogy opportunity for Bryn",
+    "arrivalTick": 104551,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archist Eulogy opportunity for Bryn",
+     104551
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bryn",
+    "arrivalTick": 104551,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bryn",
+     104551
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 105674,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     105674
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archist Eulogy opportunity for Buchanan",
+    "arrivalTick": 105851,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archist Eulogy opportunity for Buchanan",
+     105851
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Buchanan",
+    "arrivalTick": 105851,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Buchanan",
+     105851
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archist Eulogy opportunity for Lincoln",
+    "arrivalTick": 105851,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archist Eulogy opportunity for Lincoln",
+     105851
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lincoln",
+    "arrivalTick": 105851,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lincoln",
+     105851
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Archist Eulogy opportunity for Chris",
+    "arrivalTick": 105911,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Archist Eulogy opportunity for Chris",
+     105911
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Chris",
+    "arrivalTick": 105911,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Chris",
+     105911
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Cleric role deactivated",
+    "arrivalTick": 105911,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Cleric role deactivated",
+     105911
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Inhabitants abandoned",
+    "arrivalTick": 105911,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Inhabitants abandoned",
+     105911
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Cleric role activated",
+    "arrivalTick": 105911,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Cleric role activated",
+     105911
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rock island",
+    "arrivalTick": 135960,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rock island",
+     135960
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 7,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 38,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 136211
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_263) A = Thing_RM_SkarrinBreedingStock37301 B = (170, 0, 170) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Hayden started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_278) A = Thing_RM_SkarrinBreedingStock37301 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_268) A = Thing_RM_SkarrinBreedingStock37301 B = (172, 0, 172)) (RM_StockPoolPen (Job_269) A = Thing_RM_SkarrinBr"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_301) A = Thing_RM_SkarrinBreedingStock37317 B = (178, 0, 178) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Nina started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_317) A = Thing_RM_SkarrinBreedingStock37317 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_307) A = Thing_RM_SkarrinBreedingStock37317 B = (172, 0, 172)) (RM_StockPoolPen (Job_308) A = Thing_RM_SkarrinBree"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #6 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith37117"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith37117"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser30006"
+  ],
+  [
+   "Warning",
+   "Chris on unwalkable cell (50, 0, 200). Teleporting to (49, 0, 200)"
+  ],
+  [
+   "Error",
+   "Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources."
+  ],
+  [
+   "Message",
+   "[Stillsand] precious cave: marble yardang west (413 cells, yardang-shaped), chamber r=4 at (51, 0, 121), mouth (58, 0, 123) (0 deg off the shadow line, facing-away dot 1.00, sun from pinned sun)."
+  ],
+  [
+   "Message",
+   "[Stillsand] precious cave roll: RM_PreciousCave_Seep (RM) in the marble yardang at (51, 0, 121) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  [
+   "Message",
+   "[Stillsand] cave place: drip source at (49, 0, 122)"
+  ],
+  [
+   "Message",
+   "[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind E, K=2005 attempts/batch over 62500 cells."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandHiss on camera, but it has sub-sounds in the world."
+  ],
+  [
+   "Error",
+   "Playing sound RM_SandSaltation on camera, but it has sub-sounds in the world."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956408,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 300,
+  "overhead_spent": 0,
+  "total_spent": 300,
+  "epoch": 0,
+  "last_seen_tick": 136211,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 975,
+    "spent": 300
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 135911,
+    "tick_to": 136211,
+    "ticks": 300,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "Stillsand",
+  "chain": "sandswim",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T030536\\Stillsand__sandswim__colonist_injured_unexpectedly__t136211__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2675335,
+  "width": 1810,
+  "height": 1183,
+  "md5": "6ce407fcd10e496dd2b55d385605ab76",
+  "why": ""
+ },
+ "notes": []
+}

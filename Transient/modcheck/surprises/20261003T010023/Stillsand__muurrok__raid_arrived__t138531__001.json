@@ -1,0 +1,611 @@
+{
+ "name": "Stillsand__muurrok__raid_arrived__t138531__001",
+ "when_utc": "2026-10-03T08:16:26Z",
+ "hits": [
+  {
+   "detector": "raid_arrived",
+   "severity": "SURPRISE",
+   "summary": "raid signal(s): A line of glare; window passed, no hostiles seen",
+   "evidence": {
+    "signals": [
+     [
+      "letter",
+      137931,
+      "A line of glare"
+     ]
+    ],
+    "open": false,
+    "hostiles_seen": 0
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": null,
+   "fingerprint": "raid_arrived:letter@137931"
+  }
+ ],
+ "snapshot": {
+  "tick": 138531,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Nindra's Pujari role deactivated",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Nindra's Pujari role deactivated",
+     1
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Inhabitants abandoned",
+    "arrivalTick": 1,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Inhabitants abandoned",
+     1
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rock island",
+    "arrivalTick": 30120,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rock island",
+     30120
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Taken under: Hen 1",
+    "arrivalTick": 30721,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Taken under: Hen 1",
+     30721
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Hen 1",
+    "arrivalTick": 30721,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hen 1",
+     30721
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     31101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     31101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 42801,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     42801
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rural Interment opportunity for Jewels",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rural Interment opportunity for Jewels",
+     49401
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Jewels",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Jewels",
+     49401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rural Interment opportunity for Reis",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rural Interment opportunity for Reis",
+     49401
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Reis",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Reis",
+     49401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rural Interment opportunity for Wiki",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rural Interment opportunity for Wiki",
+     49401
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Wiki",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Wiki",
+     49401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     49401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 49401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     49401
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rural Interment opportunity for Lance",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rural Interment opportunity for Lance",
+     122931
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lance",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lance",
+     122931
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rural Interment opportunity for Koke",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rural Interment opportunity for Koke",
+     122931
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Koke",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Koke",
+     122931
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     122931
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Rural Interment opportunity for Gransier",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Rural Interment opportunity for Gransier",
+     122931
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gransier",
+    "arrivalTick": 122931,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gransier",
+     122931
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Bones in the drift",
+    "arrivalTick": 128932,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Bones in the drift",
+     128932
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "A line of glare",
+    "arrivalTick": 137931,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "A line of glare",
+     137931
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 6,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 6,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 138531
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_Mirage",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Warning",
+   "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=19 elapsedMs=24751"
+  ],
+  [
+   "Message",
+   "[RimBridge] GABP server running standalone on port 5174"
+  ],
+  [
+   "Message",
+   "[RimBridge] Bridge token: b5c99a7039eb472b98a73a7c2dbf2d03"
+  ],
+  [
+   "Message",
+   "[JawaBench] ready: 368 tools, build 8b156e606b93"
+  ],
+  [
+   "Message",
+   "[JawaBench] argument guard installed on RimBridgeServer.AnnotatedExtensionCapabilityProvider.BindArguments - a tool argument matching no declared parameter is now RECORDED (not refused; strict mode is opt-in)."
+  ],
+  [
+   "Message",
+   "[JawaBench] log auto-open suppressor installed on Verse.Log.TryOpenLogWindow - suppressed=True. The debug menu's manual log window is a separate code path and is unaffected."
+  ],
+  [
+   "Message",
+   "[JawaBench] event recorder: damage=True kill=True lineage=True"
+  ],
+  [
+   "Message",
+   "[JawaBench] context: modSet 13/927a774a, toolSet 621ec0dd, defDump ARMED, engine 1.6.4871 rev591"
+  ],
+  [
+   "Message",
+   "[RimMandrake.Pyrelands] no PawnKindDef carries CompFurnaceThermalCharge (the creature layer is not in this mod list) \u2014 no furnace-beast herd seeded."
+  ],
+  [
+   "Message",
+   "Initializing new game with mods:\n  - brrainz.harmony\n  - Ludeon.RimWorld\n  - Ludeon.RimWorld.Royalty\n  - Ludeon.RimWorld.Ideology\n  - Ludeon.RimWorld.Biotech\n  - Ludeon.RimWorld.Anomaly\n  - Ludeon.RimWorld.Odyssey\n  - brrainz.rimbridgeserver\n  - OskarPotocki.VanillaFactionsExpanded.Core\n  - sarg.alp"
+  ],
+  [
+   "Warning",
+   "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 9524,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles."
+  ],
+  [
+   "Error",
+   "Could not load Texture2D at 'Biomes/PoisonForest' in any active mod or in base resources."
+  ],
+  [
+   "Message",
+   "[Stillsand] precious cave: limestone yardang north-east (29470 cells, as generated), chamber r=6 at (201, 0, 177), mouth (57, 0, 201) (75 deg off the shadow line, facing-away dot 0.26, sun from pinned sun)."
+  ],
+  [
+   "Warning",
+   "Scatterer RimWorld.GenStep_ScatterGeysers from def SteamGeysers could not find cell to generate at."
+  ],
+  [
+   "Message",
+   "[Stillsand] precious cave roll: RM_PreciousCave_SealedCache (RM) in the limestone yardang at (201, 0, 177) [RM_PreciousCave_Seep=5, RM_PreciousCave_GuzzkaLair=2, RM_PreciousCave_LensGrotto=1.5, RM_PreciousCave_SealedCache=1.5, RM_PreciousCave_Taken=0.5]"
+  ],
+  [
+   "Message",
+   "[RimMandrake.MovingDunes] dune field armed on RM_Stillsand with material RM_Dunes_Sand; wind N, K=2005 attempts/batch over 62500 cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser86556"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith88584"
+  ],
+  [
+   "Message",
+   "[Stillsand] dune gale ended on Map-1-PlayerHome: dune field mass 12.5 -> 18.4 (delta +5.9); cells moved past 0.20: 0; carried 0, abraded 0, stunned 0"
+  ],
+  [
+   "Message",
+   "[Stillsand] dune gale ended on Map-1-PlayerHome: dune field mass 19.3 -> 29.5 (delta +10.3); cells moved past 0.20: 0; carried 0, abraded 0, stunned 0"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955435,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955501,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 138531,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 3850,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 137931,
+    "tick_to": 138531,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Stillsand",
+  "chain": "muurrok",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T010023\\Stillsand__muurrok__raid_arrived__t138531__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2315787,
+  "width": 1810,
+  "height": 1183,
+  "md5": "5e9838ab0edf3211d7298330b3b9fd56",
+  "why": ""
+ },
+ "notes": []
+}

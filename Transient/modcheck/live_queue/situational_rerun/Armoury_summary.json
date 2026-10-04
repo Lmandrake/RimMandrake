@@ -1,0 +1,5844 @@
+{
+ "chains": [
+  {
+   "name": "ion_damage_mechanism",
+   "components": [
+    {
+     "name": "ion_damage_adds_buildup_hediff",
+     "toggle": "ionDamageEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with guy762_InternalDamage_ion 8.",
+        "damageDef": "guy762_InternalDamage_ion",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Mech_Scyther207401",
+          "def": "Mech_Scyther",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Mech_Scyther207401",
+          "def": "Mech_Scyther",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 0,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_1c09923a59634611a156a64f871efef3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:21.3753351+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:21.4150367+00:00",
+         "DurationMs": 39,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human207388",
+          "name": "Jimmy",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "VTE_SlowWorkSpeed",
+             "label": "slow work (inactive)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_RainyDayPassion",
+             "label": "rainy day passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human207392",
+          "name": "Howard",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 127,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human207397",
+          "name": "Lawson",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Mech_Scyther207401",
+          "name": "Scyther",
+          "kind": "Mech_Scyther",
+          "kindDef": "Mech_Scyther",
+          "def": "Mech_Scyther",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 50,
+          "z": 50,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Mechanoid",
+          "isMechanoid": true,
+          "isFlesh": false,
+          "intelligence": "ToolUser",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "guy762_IonizationBuildup",
+             "label": "ionization buildup (initial)",
+             "severity": 0.03,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_0cb69e6673b24b0d8dc796d9a4324040",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:21.4658927+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:21.5151642+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\ion_damage_adds_buildup_hediff_1791104181.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ion_severity_matches_default_rate",
+     "toggle": "ionSeverity",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/damage",
+       "result": {
+        "success": true,
+        "message": "Damaged 1 thing(s) with guy762_InternalDamage_ion 8.",
+        "damageDef": "guy762_InternalDamage_ion",
+        "harmsHealth": false,
+        "targetsHit": 1,
+        "colonistsSkipped": 0,
+        "bodyPartRequested": null,
+        "bodyPartNotOnTarget": 0,
+        "results": [
+         {
+          "id": "Mech_Scyther207401",
+          "def": "Mech_Scyther",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "targets": [
+         {
+          "id": "Mech_Scyther207401",
+          "def": "Mech_Scyther",
+          "isPawn": true,
+          "bodyPartRequested": null,
+          "bodyPartHit": null,
+          "bodyPartTargeted": true,
+          "hitPointsBefore": -1,
+          "hitPointsAfter": -1,
+          "destroyed": false,
+          "totalDamageDealt": 0.0,
+          "hediffsBefore": 1,
+          "hediffsAfter": 1,
+          "downed": false,
+          "dead": false,
+          "stunTicksLeft": 0
+         }
+        ],
+        "resultCount": 1,
+        "verdictFields": [
+         "downed",
+         "dead",
+         "destroyed"
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_774f2d1b3845450da832431a64207a12",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:21.8675489+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:21.9156553+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "4 pawn(s).",
+        "pawns": [
+         {
+          "id": "Human207388",
+          "name": "Jimmy",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "VTE_SlowWorkSpeed",
+             "label": "slow work (inactive)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "AS_RainyDayPassion",
+             "label": "rainy day passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human207392",
+          "name": "Howard",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 127,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_CompetitivePassion",
+             "label": "competitive passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human207397",
+          "name": "Lawson",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Penis",
+             "label": "phallus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Mech_Scyther207401",
+          "name": "Scyther",
+          "kind": "Mech_Scyther",
+          "kindDef": "Mech_Scyther",
+          "def": "Mech_Scyther",
+          "hasGenes": false,
+          "xenotype": null,
+          "xenotypeLabel": null,
+          "uniqueXenotype": false,
+          "faction": "Insect",
+          "factionName": "Hive",
+          "isPlayer": false,
+          "hostile": true,
+          "x": 50,
+          "z": 50,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Mechanoid",
+          "isMechanoid": true,
+          "isFlesh": false,
+          "intelligence": "ToolUser",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "guy762_IonizationBuildup",
+             "label": "ionization buildup (initial)",
+             "severity": 0.06,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.95,
+            "Moving": 0.95,
+            "Manipulation": 0.95,
+            "Talking": 0.95,
+            "Eating": 0.95,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 4,
+        "truncated": 0,
+        "totalOnMap": 4,
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_2b9dd8867b3b410abbda082a1f580590",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:21.9656666+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:22.0147631+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "harmony_wiring",
+   "components": [
+    {
+     "name": "extra_sounds_patches_melee_verb",
+     "toggle": "extraSoundsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Verb_MeleeAttack",
+        "methodName": "SoundHitPawn",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "SoundHitPawn",
+          "declaringType": "RimWorld.Verb_MeleeAttack",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 3,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_MeleeAttack_SoundHitPawn_Patch.ChangeMeleeSound",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "jecstools.jecrell.comps.sounds",
+            "priority": 400,
+            "patchMethod": "CompExtraSounds.HarmonyCompExtraSounds.SoundHitPawnPostfix",
+            "patchAssembly": "CompExtraSounds"
+           },
+           {
+            "owner": "jecstools.jecrell.comps.sounds",
+            "priority": 400,
+            "patchMethod": "CompExtraSounds.HarmonyCompExtraSounds.SoundHitPawnPostfix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_f029f8bb88f74629be9bb569cd40a097",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:27.9159108+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:27.9409402+00:00",
+         "DurationMs": 25,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "instant_heal_patches_combat_drug_ai",
+     "toggle": "instantHealEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobGiver_TakeCombatEnhancingDrug",
+        "methodName": "TryGiveJob",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGiveJob",
+          "declaringType": "RimWorld.JobGiver_TakeCombatEnhancingDrug",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "kaitorisenkou.InstantHealingDrug",
+            "priority": 400,
+            "patchMethod": "InstantHealingDrug.TCED_TryGiveJob_Patch.Prefix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "kaitorisenkou.InstantHealingDrug",
+            "priority": 400,
+            "patchMethod": "InstantHealingDrug.TCED_TryGiveJob_Patch.Postfix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_8b0ffc08d9584c55b36a8a4c3d40376b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:27.9818709+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.0084079+00:00",
+         "DurationMs": 26,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "instant_heal_reuse_hours_floor",
+     "toggle": "instantHealReuseHours",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobGiver_TakeCombatEnhancingDrug",
+        "methodName": "TryGiveJob",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGiveJob",
+          "declaringType": "RimWorld.JobGiver_TakeCombatEnhancingDrug",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "kaitorisenkou.InstantHealingDrug",
+            "priority": 400,
+            "patchMethod": "InstantHealingDrug.TCED_TryGiveJob_Patch.Prefix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "kaitorisenkou.InstantHealingDrug",
+            "priority": 400,
+            "patchMethod": "InstantHealingDrug.TCED_TryGiveJob_Patch.Postfix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_8fb6ed650c9b44a0b712ac66b58591db",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.0494356+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.0754629+00:00",
+         "DurationMs": 26,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "instant_heal_recent_harm_floor",
+     "toggle": "instantHealRecentHarmHours",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobGiver_TakeCombatEnhancingDrug",
+        "methodName": "TryGiveJob",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGiveJob",
+          "declaringType": "RimWorld.JobGiver_TakeCombatEnhancingDrug",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "kaitorisenkou.InstantHealingDrug",
+            "priority": 400,
+            "patchMethod": "InstantHealingDrug.TCED_TryGiveJob_Patch.Prefix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "kaitorisenkou.InstantHealingDrug",
+            "priority": 400,
+            "patchMethod": "InstantHealingDrug.TCED_TryGiveJob_Patch.Postfix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_a063c7a11bf14a788b82931d53e47fe6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.1175041+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.1415265+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "jumppack_patches_ai_fight_enemy",
+     "toggle": "jumppackEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no Harmony patch owned by 'kaitorisenkou.JumppackForMeleeAI' found on JobGiver_AIFightEnemy.TryGiveJob -- methods seen: [{'method': 'TryGiveJob', 'declaringType': 'RimWorld.JobGiver_AIFightEnemy', 'patchInfoError': None, 'prefixCount': 1, 'postfixCount': 4, 'transpilerCount': 0, 'finalizerCount': 0, 'prefixes': [{'owner': 'Font.Rimesis', 'priority': 0, 'patchMethod': 'Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Prefix', 'patchAssembly': 'Rimesis'}], 'postfixes': [{'owner': 'neku.largepawns', 'priority': 400, 'patchMethod': 'LargePawns.Patches.JobGiver_AIFightEnemy_PathClearingPatch.Postfix', 'patchAssembly': 'LargePawns'}, {'owner': 'Font.Rimesis', 'priority': 400, 'patchMethod': 'Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Postfix', 'patchAssembly': 'Rimesis'}, {'owner': 'cyanobot.toddlers', 'priority': 400, 'patchMethod': 'Toddlers.CombatJobGiver_MultiPatch.Postfix', 'patchAssembly': 'Toddlers'}, {'owner': 'sk.gravshipraids', 'priority': 400, 'patchMethod': 'Gravship_Raids.EnemyGravshipInvalidRepairPatch.Postfix', 'patchAssembly': 'Gravship Raids'}], 'transpilers': [], 'finalizers': []}]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobGiver_AIFightEnemy",
+        "methodName": "TryGiveJob",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGiveJob",
+          "declaringType": "RimWorld.JobGiver_AIFightEnemy",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 4,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 0,
+            "patchMethod": "Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Prefix",
+            "patchAssembly": "Rimesis"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.JobGiver_AIFightEnemy_PathClearingPatch.Postfix",
+            "patchAssembly": "LargePawns"
+           },
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Postfix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.CombatJobGiver_MultiPatch.Postfix",
+            "patchAssembly": "Toddlers"
+           },
+           {
+            "owner": "sk.gravshipraids",
+            "priority": 400,
+            "patchMethod": "Gravship_Raids.EnemyGravshipInvalidRepairPatch.Postfix",
+            "patchAssembly": "Gravship Raids"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_30738ede861c4f01bbb8a9b7886f724f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.1815837+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.2111205+00:00",
+         "DurationMs": 29,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "jumppack_flank_ranged_floor",
+     "toggle": "jumppackFlankRanged",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no Harmony patch owned by 'kaitorisenkou.JumppackForMeleeAI' found on JobGiver_AIFightEnemy.TryGiveJob -- methods seen: [{'method': 'TryGiveJob', 'declaringType': 'RimWorld.JobGiver_AIFightEnemy', 'patchInfoError': None, 'prefixCount': 1, 'postfixCount': 4, 'transpilerCount': 0, 'finalizerCount': 0, 'prefixes': [{'owner': 'Font.Rimesis', 'priority': 0, 'patchMethod': 'Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Prefix', 'patchAssembly': 'Rimesis'}], 'postfixes': [{'owner': 'neku.largepawns', 'priority': 400, 'patchMethod': 'LargePawns.Patches.JobGiver_AIFightEnemy_PathClearingPatch.Postfix', 'patchAssembly': 'LargePawns'}, {'owner': 'Font.Rimesis', 'priority': 400, 'patchMethod': 'Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Postfix', 'patchAssembly': 'Rimesis'}, {'owner': 'cyanobot.toddlers', 'priority': 400, 'patchMethod': 'Toddlers.CombatJobGiver_MultiPatch.Postfix', 'patchAssembly': 'Toddlers'}, {'owner': 'sk.gravshipraids', 'priority': 400, 'patchMethod': 'Gravship_Raids.EnemyGravshipInvalidRepairPatch.Postfix', 'patchAssembly': 'Gravship Raids'}], 'transpilers': [], 'finalizers': []}]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobGiver_AIFightEnemy",
+        "methodName": "TryGiveJob",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGiveJob",
+          "declaringType": "RimWorld.JobGiver_AIFightEnemy",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 4,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 0,
+            "patchMethod": "Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Prefix",
+            "patchAssembly": "Rimesis"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.JobGiver_AIFightEnemy_PathClearingPatch.Postfix",
+            "patchAssembly": "LargePawns"
+           },
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Postfix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.CombatJobGiver_MultiPatch.Postfix",
+            "patchAssembly": "Toddlers"
+           },
+           {
+            "owner": "sk.gravshipraids",
+            "priority": 400,
+            "patchMethod": "Gravship_Raids.EnemyGravshipInvalidRepairPatch.Postfix",
+            "patchAssembly": "Gravship Raids"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_08cfb48ec9ac4c558b776b2f3cc0bd3b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.2494527+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.2790399+00:00",
+         "DurationMs": 29,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "jumppack_distance_factor_floor",
+     "toggle": "jumppackDistanceFactor",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no Harmony patch owned by 'kaitorisenkou.JumppackForMeleeAI' found on JobGiver_AIFightEnemy.TryGiveJob -- methods seen: [{'method': 'TryGiveJob', 'declaringType': 'RimWorld.JobGiver_AIFightEnemy', 'patchInfoError': None, 'prefixCount': 1, 'postfixCount': 4, 'transpilerCount': 0, 'finalizerCount': 0, 'prefixes': [{'owner': 'Font.Rimesis', 'priority': 0, 'patchMethod': 'Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Prefix', 'patchAssembly': 'Rimesis'}], 'postfixes': [{'owner': 'neku.largepawns', 'priority': 400, 'patchMethod': 'LargePawns.Patches.JobGiver_AIFightEnemy_PathClearingPatch.Postfix', 'patchAssembly': 'LargePawns'}, {'owner': 'Font.Rimesis', 'priority': 400, 'patchMethod': 'Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Postfix', 'patchAssembly': 'Rimesis'}, {'owner': 'cyanobot.toddlers', 'priority': 400, 'patchMethod': 'Toddlers.CombatJobGiver_MultiPatch.Postfix', 'patchAssembly': 'Toddlers'}, {'owner': 'sk.gravshipraids', 'priority': 400, 'patchMethod': 'Gravship_Raids.EnemyGravshipInvalidRepairPatch.Postfix', 'patchAssembly': 'Gravship Raids'}], 'transpilers': [], 'finalizers': []}]",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "JobGiver_AIFightEnemy",
+        "methodName": "TryGiveJob",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryGiveJob",
+          "declaringType": "RimWorld.JobGiver_AIFightEnemy",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 4,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "Font.Rimesis",
+            "priority": 0,
+            "patchMethod": "Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Prefix",
+            "patchAssembly": "Rimesis"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.JobGiver_AIFightEnemy_PathClearingPatch.Postfix",
+            "patchAssembly": "LargePawns"
+           },
+           {
+            "owner": "Font.Rimesis",
+            "priority": 400,
+            "patchMethod": "Rimesis.Patch_JobGiver_AIFightEnemy_TryGiveJob.Postfix",
+            "patchAssembly": "Rimesis"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.CombatJobGiver_MultiPatch.Postfix",
+            "patchAssembly": "Toddlers"
+           },
+           {
+            "owner": "sk.gravshipraids",
+            "priority": 400,
+            "patchMethod": "Gravship_Raids.EnemyGravshipInvalidRepairPatch.Postfix",
+            "patchAssembly": "Gravship Raids"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_7ce1f8aa0e6f49be9146791272fb75a6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.3155882+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.3441235+00:00",
+         "DurationMs": 28,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mental_break_blocker_patches_try_start",
+     "toggle": "mentalBreakBlockerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "MentalStateHandler",
+        "methodName": "TryStartMentalState",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TryStartMentalState",
+          "declaringType": "Verse.AI.MentalStateHandler",
+          "patchInfoError": null,
+          "prefixCount": 7,
+          "postfixCount": 5,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "SmashPhil.VehicleFramework",
+            "priority": 400,
+            "patchMethod": "Vehicles.Patch_PawnAi.EjectPawnForMentalState",
+            "patchAssembly": "Vehicles"
+           },
+           {
+            "owner": "VFEPirates.Mod",
+            "priority": 400,
+            "patchMethod": "VFEPirates.MentalStateHandler_TryStartMentalState_Patch.Prefix",
+            "patchAssembly": "VFEPirates"
+           },
+           {
+            "owner": "vlvop.tormentmaster.expansion",
+            "priority": 400,
+            "patchMethod": "TormentMaster.Patches.MentalStateHandler_TryStartMentalState_TortureContainedPatch.Prefix",
+            "patchAssembly": "TormentMaster"
+           },
+           {
+            "owner": "OskarPotocki.VanillaTraitsExpanded",
+            "priority": 400,
+            "patchMethod": "VanillaTraitsExpanded.Patch_TryStartMentalState.Prefix",
+            "patchAssembly": "VanillaTraitsExpanded"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.TryStartMentalBreak_Patch.Prefix",
+            "patchAssembly": "Toddlers"
+           },
+           {
+            "owner": "Harmony_PrisonLabor",
+            "priority": 400,
+            "patchMethod": "PrisonLabor.HarmonyPatches.Patches_TreatmentTinkering.Patch_ReduceChanceForMentalBreak.Prefix",
+            "patchAssembly": "PrisonLabor"
+           },
+           {
+            "owner": "kaitorisenkou.MentalBreakBlocker",
+            "priority": 400,
+            "patchMethod": "MentalBreakBlocker.MentalBreakBlocker.Patch_TryStartMentalState",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "RunAndGun",
+            "priority": 400,
+            "patchMethod": "RunAndGun.Harmony.MentalStateHandler_TryStartMentalState.Postfix",
+            "patchAssembly": "RunAndGun"
+           },
+           {
+            "owner": "mandrake.rm.ninefold",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Ninefold.Patch_MentalBreakStarted.Postfix",
+            "patchAssembly": "RimMandrakeNinefold"
+           },
+           {
+            "owner": "mandrake.rm.aftermath",
+            "priority": 400,
+            "patchMethod": "RimMandrake.Aftermath.Patch_MentalBreakNearBattle.Postfix",
+            "patchAssembly": "RimMandrakeAftermath"
+           },
+           {
+            "owner": "com.VEFungoid",
+            "priority": 400,
+            "patchMethod": "VanillaRacesExpandedFungoid.VanillaRacesExpandedFungoid_MentalStateHandler_TryStartMentalState_Patch.CauseCoalescentMentalBreaks",
+            "patchAssembly": "VanillaRacesExpanded-Fungoid"
+           },
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.TryStartMentalBreak_Patch.Postfix",
+            "patchAssembly": "Toddlers"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "cyanobot.toddlers",
+            "priority": 400,
+            "patchMethod": "Toddlers.TryStartMentalBreak_Patch.Transpiler",
+            "patchAssembly": "Toddlers"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_c0d8064e8cb947f8a166e048c2cfd55f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.3821586+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.4171384+00:00",
+         "DurationMs": 34,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "secondary_yield_patches_mineable",
+     "toggle": "secondaryYieldEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Mineable",
+        "methodName": "TrySpawnYield",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TrySpawnYield",
+          "declaringType": "RimWorld.Mineable",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 6,
+          "transpilerCount": 2,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "com.alphamemes",
+            "priority": 400,
+            "patchMethod": "AlphaMemes.AlphaMemes_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaMemes"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+Patch_Thing_TrySpawnYield.Postfix",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "com.alphabiomes",
+            "priority": 400,
+            "patchMethod": "AlphaBiomes.AlphaBiomes_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaBiomes"
+           },
+           {
+            "owner": "Helixien.ReGrowthCore",
+            "priority": 400,
+            "patchMethod": "ReGrowthCore.Mineable_TrySpawnYield.Postfix",
+            "patchAssembly": "ReGrowthCore"
+           },
+           {
+            "owner": "com.alphaskills",
+            "priority": 400,
+            "patchMethod": "AlphaSkills.AlphaSkills_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaSkills"
+           },
+           {
+            "owner": "kaitorisenkou.SecondaryMineableYield",
+            "priority": 400,
+            "patchMethod": "SecondaryMineableYield.SecondaryMineableYield.Patch_TrySpawnYield",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "Uuugggg.rimworld.Replace_Stuff.main",
+            "priority": 400,
+            "patchMethod": "Replace_Stuff.OverMineable.DropOnPawn.Transpiler",
+            "patchAssembly": "Replace_Stuff"
+           },
+           {
+            "owner": "vanillaexpanded.skills",
+            "priority": 400,
+            "patchMethod": "VSE.Stats.StatPatches.RockChunkChanceTranspiler",
+            "patchAssembly": "VSE"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_6cd93f28d7e44d3c84a019b799972db2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.448658+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.4796862+00:00",
+         "DurationMs": 31,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "secondary_yield_chance_floor",
+     "toggle": "secondaryYieldChance",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Mineable",
+        "methodName": "TrySpawnYield",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TrySpawnYield",
+          "declaringType": "RimWorld.Mineable",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 6,
+          "transpilerCount": 2,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "com.alphamemes",
+            "priority": 400,
+            "patchMethod": "AlphaMemes.AlphaMemes_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaMemes"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+Patch_Thing_TrySpawnYield.Postfix",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "com.alphabiomes",
+            "priority": 400,
+            "patchMethod": "AlphaBiomes.AlphaBiomes_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaBiomes"
+           },
+           {
+            "owner": "Helixien.ReGrowthCore",
+            "priority": 400,
+            "patchMethod": "ReGrowthCore.Mineable_TrySpawnYield.Postfix",
+            "patchAssembly": "ReGrowthCore"
+           },
+           {
+            "owner": "com.alphaskills",
+            "priority": 400,
+            "patchMethod": "AlphaSkills.AlphaSkills_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaSkills"
+           },
+           {
+            "owner": "kaitorisenkou.SecondaryMineableYield",
+            "priority": 400,
+            "patchMethod": "SecondaryMineableYield.SecondaryMineableYield.Patch_TrySpawnYield",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "Uuugggg.rimworld.Replace_Stuff.main",
+            "priority": 400,
+            "patchMethod": "Replace_Stuff.OverMineable.DropOnPawn.Transpiler",
+            "patchAssembly": "Replace_Stuff"
+           },
+           {
+            "owner": "vanillaexpanded.skills",
+            "priority": 400,
+            "patchMethod": "VSE.Stats.StatPatches.RockChunkChanceTranspiler",
+            "patchAssembly": "VSE"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_1240035009384d1ba93ba68e260a85f1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.5177173+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.5459357+00:00",
+         "DurationMs": 28,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "secondary_yield_amount_floor",
+     "toggle": "secondaryYieldAmount",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Mineable",
+        "methodName": "TrySpawnYield",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "TrySpawnYield",
+          "declaringType": "RimWorld.Mineable",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 6,
+          "transpilerCount": 2,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "com.alphamemes",
+            "priority": 400,
+            "patchMethod": "AlphaMemes.AlphaMemes_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaMemes"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+Patch_Thing_TrySpawnYield.Postfix",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "com.alphabiomes",
+            "priority": 400,
+            "patchMethod": "AlphaBiomes.AlphaBiomes_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaBiomes"
+           },
+           {
+            "owner": "Helixien.ReGrowthCore",
+            "priority": 400,
+            "patchMethod": "ReGrowthCore.Mineable_TrySpawnYield.Postfix",
+            "patchAssembly": "ReGrowthCore"
+           },
+           {
+            "owner": "com.alphaskills",
+            "priority": 400,
+            "patchMethod": "AlphaSkills.AlphaSkills_Mineable_TrySpawnYield_Patch.ExtraYields",
+            "patchAssembly": "AlphaSkills"
+           },
+           {
+            "owner": "kaitorisenkou.SecondaryMineableYield",
+            "priority": 400,
+            "patchMethod": "SecondaryMineableYield.SecondaryMineableYield.Patch_TrySpawnYield",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "Uuugggg.rimworld.Replace_Stuff.main",
+            "priority": 400,
+            "patchMethod": "Replace_Stuff.OverMineable.DropOnPawn.Transpiler",
+            "patchAssembly": "Replace_Stuff"
+           },
+           {
+            "owner": "vanillaexpanded.skills",
+            "priority": 400,
+            "patchMethod": "VSE.Stats.StatPatches.RockChunkChanceTranspiler",
+            "patchAssembly": "VSE"
+           }
+          ],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_c64118b9d07749abb2792bfa2fdd39c5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.5822792+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.6132075+00:00",
+         "DurationMs": 30,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "self_hediff_verb_patches_equipment_source",
+     "toggle": "selfHediffVerbEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Verb",
+        "methodName": null,
+        "methodCount": 18,
+        "methods": [
+         {
+          "method": "TryStartCastOn",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 5,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 100,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryStartCastOn_Lasers_Patch.TryStartCastOn_RapidFire_Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "jecstools.jecrell.abilityuser",
+            "priority": 400,
+            "patchMethod": "AbilityUser.AbilityUserMod.TryStartCastOn_Prefix",
+            "patchAssembly": "AbilityUser"
+           },
+           {
+            "owner": "RunAndGun",
+            "priority": 400,
+            "patchMethod": "RunAndGun.Harmony.Verb_TryStartCastOn.Prefix",
+            "patchAssembly": "RunAndGun"
+           },
+           {
+            "owner": "jecstools.jecrell.comps.activator",
+            "priority": 400,
+            "patchMethod": "CompActivatableEffect.HarmonyCompActivatableEffect.TryStartCastOnPrefix",
+            "patchAssembly": "CompActivatableEffect"
+           },
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Prefix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 401,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryStartCastOn_Lasers_Patch.TryStartCastOn_RapidFire_Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Postfix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "Available",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 3,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_Available_Patch.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Buildings.Verb_Available_Patch.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_VerbComps.Available_Postfix",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "TryFindShootLineFromTo",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 1,
+          "prefixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryFindShootLineFromTo_Patch.Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.Verb_TryFindShootLineFromTo_LargeMeleePatch.Prefix",
+            "patchAssembly": "LargePawns"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.Verb_TryFindShootLineFromTo_LargeMeleePatch.Postfix",
+            "patchAssembly": "LargePawns"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryFindShootLineFromTo_Patch.Finalizer",
+            "patchAssembly": "VEF"
+           }
+          ]
+         },
+         {
+          "method": "WarmupComplete",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "Dubwise.DubsMintMinimap",
+            "priority": 400,
+            "patchMethod": "DubsMintMinimap.Harmony_WarmupComplete.Postfix",
+            "patchAssembly": "DubsMintMinimap"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "get_UIIcon",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "jecstools.jecrell.abilityuser",
+            "priority": 400,
+            "patchMethod": "AbilityUser.AbilityUserMod.get_UIIcon",
+            "patchAssembly": "AbilityUser"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "get_DirectOwner",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "jecstools.jecrell.abilityuser",
+            "priority": 400,
+            "patchMethod": "AbilityUser.AbilityUserMod.get_DirectOwner_Prefix",
+            "patchAssembly": "AbilityUser"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "TryCastNextBurstShot",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 4,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_VerbComps.TryCastNextBurstShot_Postfix",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "RunAndGun",
+            "priority": 400,
+            "patchMethod": "RunAndGun.Harmony.Verb_TryCastNextBurstShot.Transpiler",
+            "patchAssembly": "RunAndGun"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryCastNextBurstShot_Patch.ChangeSoundProduced",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_VerbComps.TryCastNextBurstShot_Transpiler",
+            "patchAssembly": "MVCF"
+           },
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryCastNextBurstShot_Patch.Transpiler",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "finalizers": []
+         },
+         {
+          "method": "CanHitTarget",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "VFESecurityMod",
+            "priority": 400,
+            "patchMethod": "VFESecurity.Verb_CanHitTarget_Patch.Postfix",
+            "patchAssembly": "VFESecurity"
+           },
+           {
+            "owner": "Rimworld.Alite.EBSG.main",
+            "priority": 400,
+            "patchMethod": "EBSGFramework.HarmonyPatches.CanHitTargetFromPostfix",
+            "patchAssembly": "EBSGFramework"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "CanHitTargetFrom",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.CaiCompatPatch+Verb_CanHitTargetFrom_LargeTargetPatch.Prefix",
+            "patchAssembly": "LargePawns"
+           },
+           {
+            "owner": "mandrake.rm.flowworks",
+            "priority": 400,
+            "patchMethod": "RimMandrake.FlowWorks.RM_Patch_Verb_CanHitTargetFrom.Prefix",
+            "patchAssembly": "RimMandrakeFlowWorks"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "VRF.VehicleRaidFramework",
+            "priority": 400,
+            "patchMethod": "VehicleRaid.VehicleHover_VerbCanHitTargetFrom_Patch.Postfix",
+            "patchAssembly": "VehicleRaidFramework"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "OutOfRange",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.CaiCompatPatch+Verb_OutOfRange_LargeTargetPatch.Prefix",
+            "patchAssembly": "LargePawns"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "Notify_EquipmentLost",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 0,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [],
+          "transpilers": [
+           {
+            "owner": "PeteTimesSix.SimpleSidearms",
+            "priority": 400,
+            "patchMethod": "PeteTimesSix.SimpleSidearms.Intercepts.Verb_Notify_EquipmentLost_Patches.Verb_Notify_EquipmentLost_Transpiler",
+            "patchAssembly": "SimpleSidearms"
+           }
+          ],
+          "finalizers": []
+         },
+         {
+          "method": "get_BurstShotCount",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 0,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [],
+          "transpilers": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_BurstShotCount_Patch.RandomizeBurstCount",
+            "patchAssembly": "VEF"
+           }
+          ],
+          "finalizers": []
+         },
+         {
+          "method": "get_EffectiveRange",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "gravtide.mod",
+            "priority": 400,
+            "patchMethod": "GravTide.Verb_EffectiveRange_Patch.Postfix",
+            "patchAssembly": "GravTide"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "CanHitCellFromCellIgnoringRange",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 1,
+          "prefixes": [
+           {
+            "owner": "jecstools.jecrell.main",
+            "priority": 400,
+            "patchMethod": "JecsTools.HarmonyPatches.CanHitCellFromCellIgnoringRange_Prefix",
+            "patchAssembly": "0JecsTools"
+           },
+           {
+            "owner": "mandrake.rm.creaturebehaviors.sightblock",
+            "priority": 400,
+            "patchMethod": "RimMandrake.CreatureBehaviors.RM_SightBlockPatches.Prefix_EnterCombatSight",
+            "patchAssembly": "RimMandrake.CreatureBehaviors"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": [
+           {
+            "owner": "mandrake.rm.creaturebehaviors.sightblock",
+            "priority": 400,
+            "patchMethod": "RimMandrake.CreatureBehaviors.RM_SightBlockPatches.Finalizer_ExitSight",
+            "patchAssembly": "RimMandrake.CreatureBehaviors"
+           }
+          ]
+         },
+         {
+          "method": "get_EquipmentSource",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_MultiVerb.Prefix_EquipmentSource",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "VanillaVehiclesExpanded.Mod",
+            "priority": 400,
+            "patchMethod": "VanillaVehiclesExpanded.Verb_EquipmentSource_Patch.Postfix",
+            "patchAssembly": "VanillaVehiclesExpanded"
+           },
+           {
+            "owner": "kaitorisenkou.SelfHediffVerb",
+            "priority": 400,
+            "patchMethod": "SelfHediffVerb.Patch_VerbEquipmentSource.Postfix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "ExposeData",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_Base.PostExposeDataVerb",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "OrderForceTarget",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_MultiVerb.Prefix_OrderForceTarget",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "TryStartCastOn",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Prefix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Postfix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_52207f496381428083856b6d20f9364e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.6506107+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.6986478+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "self_hediff_cooldown_floor",
+     "toggle": "selfHediffCooldown",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "Verb",
+        "methodName": null,
+        "methodCount": 18,
+        "methods": [
+         {
+          "method": "TryStartCastOn",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 5,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 100,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryStartCastOn_Lasers_Patch.TryStartCastOn_RapidFire_Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "jecstools.jecrell.abilityuser",
+            "priority": 400,
+            "patchMethod": "AbilityUser.AbilityUserMod.TryStartCastOn_Prefix",
+            "patchAssembly": "AbilityUser"
+           },
+           {
+            "owner": "RunAndGun",
+            "priority": 400,
+            "patchMethod": "RunAndGun.Harmony.Verb_TryStartCastOn.Prefix",
+            "patchAssembly": "RunAndGun"
+           },
+           {
+            "owner": "jecstools.jecrell.comps.activator",
+            "priority": 400,
+            "patchMethod": "CompActivatableEffect.HarmonyCompActivatableEffect.TryStartCastOnPrefix",
+            "patchAssembly": "CompActivatableEffect"
+           },
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Prefix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 401,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryStartCastOn_Lasers_Patch.TryStartCastOn_RapidFire_Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Postfix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "Available",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 3,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_Available_Patch.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Buildings.Verb_Available_Patch.Postfix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_VerbComps.Available_Postfix",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "TryFindShootLineFromTo",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 1,
+          "prefixes": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryFindShootLineFromTo_Patch.Prefix",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.Verb_TryFindShootLineFromTo_LargeMeleePatch.Prefix",
+            "patchAssembly": "LargePawns"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.Verb_TryFindShootLineFromTo_LargeMeleePatch.Postfix",
+            "patchAssembly": "LargePawns"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryFindShootLineFromTo_Patch.Finalizer",
+            "patchAssembly": "VEF"
+           }
+          ]
+         },
+         {
+          "method": "WarmupComplete",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "Dubwise.DubsMintMinimap",
+            "priority": 400,
+            "patchMethod": "DubsMintMinimap.Harmony_WarmupComplete.Postfix",
+            "patchAssembly": "DubsMintMinimap"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "get_UIIcon",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "jecstools.jecrell.abilityuser",
+            "priority": 400,
+            "patchMethod": "AbilityUser.AbilityUserMod.get_UIIcon",
+            "patchAssembly": "AbilityUser"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "get_DirectOwner",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "jecstools.jecrell.abilityuser",
+            "priority": 400,
+            "patchMethod": "AbilityUser.AbilityUserMod.get_DirectOwner_Prefix",
+            "patchAssembly": "AbilityUser"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "TryCastNextBurstShot",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 4,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_VerbComps.TryCastNextBurstShot_Postfix",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "transpilers": [
+           {
+            "owner": "RunAndGun",
+            "priority": 400,
+            "patchMethod": "RunAndGun.Harmony.Verb_TryCastNextBurstShot.Transpiler",
+            "patchAssembly": "RunAndGun"
+           },
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_TryCastNextBurstShot_Patch.ChangeSoundProduced",
+            "patchAssembly": "VEF"
+           },
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_VerbComps.TryCastNextBurstShot_Transpiler",
+            "patchAssembly": "MVCF"
+           },
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryCastNextBurstShot_Patch.Transpiler",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "finalizers": []
+         },
+         {
+          "method": "CanHitTarget",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "VFESecurityMod",
+            "priority": 400,
+            "patchMethod": "VFESecurity.Verb_CanHitTarget_Patch.Postfix",
+            "patchAssembly": "VFESecurity"
+           },
+           {
+            "owner": "Rimworld.Alite.EBSG.main",
+            "priority": 400,
+            "patchMethod": "EBSGFramework.HarmonyPatches.CanHitTargetFromPostfix",
+            "patchAssembly": "EBSGFramework"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "CanHitTargetFrom",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.CaiCompatPatch+Verb_CanHitTargetFrom_LargeTargetPatch.Prefix",
+            "patchAssembly": "LargePawns"
+           },
+           {
+            "owner": "mandrake.rm.flowworks",
+            "priority": 400,
+            "patchMethod": "RimMandrake.FlowWorks.RM_Patch_Verb_CanHitTargetFrom.Prefix",
+            "patchAssembly": "RimMandrakeFlowWorks"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "VRF.VehicleRaidFramework",
+            "priority": 400,
+            "patchMethod": "VehicleRaid.VehicleHover_VerbCanHitTargetFrom_Patch.Postfix",
+            "patchAssembly": "VehicleRaidFramework"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "OutOfRange",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "neku.largepawns",
+            "priority": 400,
+            "patchMethod": "LargePawns.Patches.CaiCompatPatch+Verb_OutOfRange_LargeTargetPatch.Prefix",
+            "patchAssembly": "LargePawns"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "Notify_EquipmentLost",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 0,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [],
+          "transpilers": [
+           {
+            "owner": "PeteTimesSix.SimpleSidearms",
+            "priority": 400,
+            "patchMethod": "PeteTimesSix.SimpleSidearms.Intercepts.Verb_Notify_EquipmentLost_Patches.Verb_Notify_EquipmentLost_Transpiler",
+            "patchAssembly": "SimpleSidearms"
+           }
+          ],
+          "finalizers": []
+         },
+         {
+          "method": "get_BurstShotCount",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 0,
+          "transpilerCount": 1,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [],
+          "transpilers": [
+           {
+            "owner": "OskarPotocki.VEF",
+            "priority": 400,
+            "patchMethod": "VEF.Weapons.VanillaExpandedFramework_Verb_BurstShotCount_Patch.RandomizeBurstCount",
+            "patchAssembly": "VEF"
+           }
+          ],
+          "finalizers": []
+         },
+         {
+          "method": "get_EffectiveRange",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "gravtide.mod",
+            "priority": 400,
+            "patchMethod": "GravTide.Verb_EffectiveRange_Patch.Postfix",
+            "patchAssembly": "GravTide"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "CanHitCellFromCellIgnoringRange",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 2,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 1,
+          "prefixes": [
+           {
+            "owner": "jecstools.jecrell.main",
+            "priority": 400,
+            "patchMethod": "JecsTools.HarmonyPatches.CanHitCellFromCellIgnoringRange_Prefix",
+            "patchAssembly": "0JecsTools"
+           },
+           {
+            "owner": "mandrake.rm.creaturebehaviors.sightblock",
+            "priority": 400,
+            "patchMethod": "RimMandrake.CreatureBehaviors.RM_SightBlockPatches.Prefix_EnterCombatSight",
+            "patchAssembly": "RimMandrake.CreatureBehaviors"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": [
+           {
+            "owner": "mandrake.rm.creaturebehaviors.sightblock",
+            "priority": 400,
+            "patchMethod": "RimMandrake.CreatureBehaviors.RM_SightBlockPatches.Finalizer_ExitSight",
+            "patchAssembly": "RimMandrake.CreatureBehaviors"
+           }
+          ]
+         },
+         {
+          "method": "get_EquipmentSource",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 2,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_MultiVerb.Prefix_EquipmentSource",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "VanillaVehiclesExpanded.Mod",
+            "priority": 400,
+            "patchMethod": "VanillaVehiclesExpanded.Verb_EquipmentSource_Patch.Postfix",
+            "patchAssembly": "VanillaVehiclesExpanded"
+           },
+           {
+            "owner": "kaitorisenkou.SelfHediffVerb",
+            "priority": 400,
+            "patchMethod": "SelfHediffVerb.Patch_VerbEquipmentSource.Postfix",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "ExposeData",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_Base.PostExposeDataVerb",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "OrderForceTarget",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 0,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "legodude17.mvcf",
+            "priority": 400,
+            "patchMethod": "MVCF.PatchSets.PatchSet_MultiVerb.Prefix_OrderForceTarget",
+            "patchAssembly": "MVCF"
+           }
+          ],
+          "postfixes": [],
+          "transpilers": [],
+          "finalizers": []
+         },
+         {
+          "method": "TryStartCastOn",
+          "declaringType": "Verse.Verb",
+          "patchInfoError": null,
+          "prefixCount": 1,
+          "postfixCount": 1,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Prefix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "postfixes": [
+           {
+            "owner": "Krkr.Rule56",
+            "priority": 400,
+            "patchMethod": "CombatAI.Patches.Verb_Patch+Verb_TryStartCast_Patch.Postfix",
+            "patchAssembly": "CombatAI"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_42c52b788bb84102b6ef83c2a6d73903",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.7323896+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.7812252+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "returning_weapon_patches_carry_openly",
+     "toggle": "returningWeaponEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "PawnRenderUtility",
+        "methodName": "CarryWeaponOpenly",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "CarryWeaponOpenly",
+          "declaringType": "Verse.PawnRenderUtility",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 4,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "PeteTimesSix.SimpleSidearms",
+            "priority": 400,
+            "patchMethod": "PeteTimesSix.SimpleSidearms.Intercepts.PawnRenderUtility_CarryWeaponOpenly.PawnRenderUtility_CarryWeaponOpenly_Postfix",
+            "patchAssembly": "SimpleSidearms"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+PawnRenderUtility_CarryWeaponOpenly_Postfix.HideLightsaberWhenThrown",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+PawnRenderUtility_CarryWeaponOpenly_PostfixIgnition.IgniteLightsaberWhenDeflecting",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "Weapon_Spinning_Projectile",
+            "priority": 400,
+            "patchMethod": "Spinning_Projectile.HarmonyPatches+PawnRenderUtility_CarryWeaponOpenly_Postfix.HideLightsaberWhenThrown",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_0baf3853553b4237b8b04bef89648aa0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.8069847+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.8300033+00:00",
+         "DurationMs": 23,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "returning_weapon_speed_floor",
+     "toggle": "returningWeaponSpeed",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/harmony_patches",
+       "result": {
+        "success": true,
+        "typeName": "PawnRenderUtility",
+        "methodName": "CarryWeaponOpenly",
+        "methodCount": 1,
+        "methods": [
+         {
+          "method": "CarryWeaponOpenly",
+          "declaringType": "Verse.PawnRenderUtility",
+          "patchInfoError": null,
+          "prefixCount": 0,
+          "postfixCount": 4,
+          "transpilerCount": 0,
+          "finalizerCount": 0,
+          "prefixes": [],
+          "postfixes": [
+           {
+            "owner": "PeteTimesSix.SimpleSidearms",
+            "priority": 400,
+            "patchMethod": "PeteTimesSix.SimpleSidearms.Intercepts.PawnRenderUtility_CarryWeaponOpenly.PawnRenderUtility_CarryWeaponOpenly_Postfix",
+            "patchAssembly": "SimpleSidearms"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+PawnRenderUtility_CarryWeaponOpenly_Postfix.HideLightsaberWhenThrown",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "Lightsabers_ForceThe",
+            "priority": 400,
+            "patchMethod": "Lightsaber.HarmonyPatches+PawnRenderUtility_CarryWeaponOpenly_PostfixIgnition.IgniteLightsaberWhenDeflecting",
+            "patchAssembly": "Lightsaber"
+           },
+           {
+            "owner": "Weapon_Spinning_Projectile",
+            "priority": 400,
+            "patchMethod": "Spinning_Projectile.HarmonyPatches+PawnRenderUtility_CarryWeaponOpenly_Postfix.HideLightsaberWhenThrown",
+            "patchAssembly": "JawaArmoury"
+           }
+          ],
+          "transpilers": [],
+          "finalizers": []
+         }
+        ],
+        "ticksGame": 21199,
+        "note": null,
+        "operation": {
+         "OperationId": "op_1386467ab1534709a50b7044b5ce95ec",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:28.8687745+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:28.8979879+00:00",
+         "DurationMs": 29,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "def_and_spawn_wiring",
+   "components": [
+    {
+     "name": "crystal_genstep_wired",
+     "toggle": "crystalFormationsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "GenStepDef/KOTOR_CrystalFormation",
+          "found": true,
+          "defName": "KOTOR_CrystalFormation",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "linkWithSite": null,
+           "order": 1100.0,
+           "genStep": {
+            "groups": [
+             {
+              "things": [
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+               "(ThingWeight, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+              ],
+              "stackSizeRange": "(IntRange, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "spawnForbidden": false,
+              "weight": 1.0,
+              "spawnAtCenter": null,
+              "spawnAtCenterFilthDef": null,
+              "indoorRuin": false,
+              "coveredCellsPer10Cells": "(FloatRange, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)",
+              "filthDef": null,
+              "filthExpandBy": 0,
+              "filthChance": 0.5,
+              "clusterRectRadius": "(IntRange, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+             }
+            ],
+            "count": -1,
+            "countPer10kCellsRange": {
+             "min": 15.0,
+             "max": 30.0
+            },
+            "nearPlayerStart": false,
+            "nearMapCenter": false,
+            "minSpacing": 5.0,
+            "spotMustBeStandable": true,
+            "minDistToPlayerStart": 0,
+            "minDistToPlayerStartPct": 0.0,
+            "minEdgeDist": 0,
+            "minEdgeDistPct": 0.0,
+            "extraNoBuildEdgeDist": 0,
+            "validators": [
+             {
+              "radius": 5,
+              "affordance": "Heavy"
+             }
+            ],
+            "fallbackValidators": [],
+            "allowInWaterBiome": false,
+            "allowFoggedPositions": true,
+            "allowRoofed": true,
+            "onlyOnStartingMap": false,
+            "minPollution": 0.0,
+            "allowMechanoidDatacoreReadOrLost": true,
+            "isJunk": false,
+            "warnOnFail": true,
+            "def": "KOTOR_CrystalFormation"
+           },
+           "preventsGenSteps": null,
+           "defName": "KOTOR_CrystalFormation",
+           "label": null,
+           "description": null,
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 20200,
+           "index": 364,
+           "modContentPack": {
+            "loadOrder": 539,
+            "assetBundles": {
+             "loadedAssetBundles": []
+            },
+            "assemblies": {
+             "loadedAssemblies": [
+              "(RuntimeAssembly, depth limit reached \u2014 ask for this field by name on its own def/type if it needs to go deeper)"
+             ]
+            },
+            "foldersToLoadDescendingOrder": [
+             "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\Armoury"
+            ]
+           },
+           "fileName": "Absorbed_KotorCore_CrystalMapGenerator.xml",
+           "defNameHash": -1497672805,
+           "generated": false,
+           "debugRandomId": 17566
+          }
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_bb9598ae10f94307b9f5236ab074baa0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:34.640749+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:34.6876993+00:00",
+         "DurationMs": 46,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "crystal_abundance_floor",
+     "toggle": "crystalAbundance",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "genStep"
+        ],
+        "defs": [
+         {
+          "requested": "GenStepDef/KOTOR_CrystalFormation",
+          "found": true,
+          "defName": "KOTOR_CrystalFormation",
+          "defType": "GenStepDef",
+          "label": null,
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "genStep": "(no such field)"
+          }
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_fd22adfc7983441e8a61cfccf649b544",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:34.7366119+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:34.7853201+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mine_pocket_job_wired",
+     "toggle": "minePocketEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "JobDef/MinePocket_Job",
+          "found": true,
+          "defName": "MinePocket_Job",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "reportString": "defusing mine.",
+           "playerInterruptible": true,
+           "forceCompleteBeforeNextJob": false,
+           "checkOverrideOnDamage": "Always",
+           "alwaysShowWeapon": false,
+           "neverShowWeapon": false,
+           "suspendable": false,
+           "casualInterruptible": true,
+           "allowOpportunisticPrefix": true,
+           "collideWithPawns": false,
+           "isIdle": false,
+           "taleOnCompletion": null,
+           "neverFleeFromEnemies": false,
+           "sleepCanInterrupt": true,
+           "makeTargetPrisoner": false,
+           "waitAfterArriving": 0,
+           "carryThingAfterJob": false,
+           "dropThingBeforeJob": true,
+           "isCrawlingIfDowned": true,
+           "alwaysShowReport": false,
+           "abilityCasting": false,
+           "tryStartFlying": false,
+           "ifFlyingKeepFlying": false,
+           "overrideFlyChance": -1.0,
+           "displayAsAreaInFloatMenu": true,
+           "ignoreFenceBlocked": false,
+           "joyDuration": 4000,
+           "joyMaxParticipants": 1,
+           "joyGainRate": 1.0,
+           "joySkill": null,
+           "joyXpPerTick": 0.0,
+           "joyKind": null,
+           "learningDuration": 20000,
+           "containerReservationLayer": null,
+           "boardingGravship": false,
+           "defName": "MinePocket_Job",
+           "label": null,
+           "description": null,
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 63662,
+           "index": 827,
+           "fileName": "Absorbed_KotorCore_JobDefs_misc.xml",
+           "defNameHash": -1231597259,
+           "generated": false,
+           "debugRandomId": 52886
+          }
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_5c870362df9b41fda9ba4f677860ccdd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:34.8400107+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:34.8850709+00:00",
+         "DurationMs": 45,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "mine_pocket_defuse_time_floor",
+     "toggle": "minePocketDefuseTime",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "JobDef/MinePocket_Job",
+          "found": true,
+          "defName": "MinePocket_Job",
+          "defType": "JobDef",
+          "label": null,
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "reportString": "defusing mine.",
+           "playerInterruptible": true,
+           "forceCompleteBeforeNextJob": false,
+           "checkOverrideOnDamage": "Always",
+           "alwaysShowWeapon": false,
+           "neverShowWeapon": false,
+           "suspendable": false,
+           "casualInterruptible": true,
+           "allowOpportunisticPrefix": true,
+           "collideWithPawns": false,
+           "isIdle": false,
+           "taleOnCompletion": null,
+           "neverFleeFromEnemies": false,
+           "sleepCanInterrupt": true,
+           "makeTargetPrisoner": false,
+           "waitAfterArriving": 0,
+           "carryThingAfterJob": false,
+           "dropThingBeforeJob": true,
+           "isCrawlingIfDowned": true,
+           "alwaysShowReport": false,
+           "abilityCasting": false,
+           "tryStartFlying": false,
+           "ifFlyingKeepFlying": false,
+           "overrideFlyChance": -1.0,
+           "displayAsAreaInFloatMenu": true,
+           "ignoreFenceBlocked": false,
+           "joyDuration": 4000,
+           "joyMaxParticipants": 1,
+           "joyGainRate": 1.0,
+           "joySkill": null,
+           "joyXpPerTick": 0.0,
+           "joyKind": null,
+           "learningDuration": 20000,
+           "containerReservationLayer": null,
+           "boardingGravship": false,
+           "defName": "MinePocket_Job",
+           "label": null,
+           "description": null,
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 63662,
+           "index": 827,
+           "fileName": "Absorbed_KotorCore_JobDefs_misc.xml",
+           "defNameHash": -1231597259,
+           "generated": false,
+           "debugRandomId": 52886
+          }
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_7d3b7f1068f841f49bd20d9fbed11383",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:34.9418881+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:34.9863959+00:00",
+         "DurationMs": 44,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "kolto_tank_spawns_with_comp",
+     "toggle": "koltoHealEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "spawn KoltoTank x1 at line",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "KoltoTank": 1
+        },
+        "errors": [],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_bb972849a9e447dcaf665ea9857332d3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:35.0359339+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:35.1069961+00:00",
+         "DurationMs": 71,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\kolto_tank_spawns_with_comp_1791104195.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "kolto_heal_speed_floor",
+     "toggle": "koltoHealSpeed",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "plasma_grenade_damagedef_wired",
+     "toggle": "plasmaGrenadeFires",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "DamageDef/guy762_GrenadeDamage_plasma",
+          "found": true,
+          "defName": "guy762_GrenadeDamage_plasma",
+          "defType": "DamageDef",
+          "label": "flame",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "hasForcefulImpact": false,
+           "harmsHealth": true,
+           "makesBlood": false,
+           "canInterruptJobs": false,
+           "isRanged": false,
+           "makesAnimalsFlee": false,
+           "execution": false,
+           "combatLogRules": "Damage_Flame",
+           "buildingDamageFactor": 1.0,
+           "buildingDamageFactorPassable": 1.0,
+           "buildingDamageFactorImpassable": 1.0,
+           "plantDamageFactor": 1.0,
+           "corpseDamageFactor": 1.0,
+           "causeStun": false,
+           "stunAdaptationTicks": 0,
+           "constantStunDurationTicks": null,
+           "stunResistStat": null,
+           "displayAdaptedTextMote": true,
+           "adaptedText": null,
+           "canUseDeflectMetalEffect": false,
+           "impactSoundType": null,
+           "deathMessage": "{0} has burned to death.",
+           "damageEffecter": null,
+           "defaultDamage": 36,
+           "defaultArmorPenetration": 0.0,
+           "defaultStoppingPower": 0.0,
+           "additionalHediffs": null,
+           "additionalHediffsThisPart": null,
+           "applyAdditionalHediffsIfHuntingForFood": true,
+           "armorCategory": "Heat",
+           "minDamageToFragment": 15,
+           "consideredHelpful": false,
+           "igniteChanceByTargetFlammability": null,
+           "igniteCellChance": 0.0,
+           "ignoreShields": false,
+           "harmAllLayersUntilOutside": false,
+           "hediff": "Burn",
+           "hediffSkin": null,
+           "hediffSolid": null,
+           "isExplosive": false,
+           "explosionSnowMeltAmount": 1.0,
+           "explosionAffectOutsidePartsOnly": true,
+           "explosionCellMote": null,
+           "explosionCellFleck": "BlastFlame",
+           "explosionInteriorEffecter": null,
+           "explosionInteriorMote": null,
+           "explosionInteriorFleck": "SubMote_AdvParticle2",
+           "explosionCenterMote": null,
+           "explosionCenterFleck": null,
+           "explosionCenterEffecter": null,
+           "explosionCellEffecter": null,
+           "explosionCellEffecterChance": 0.0,
+           "explosionCellEffecterMaxRadius": 0.0,
+           "explosionHeatEnergyPerCell": 15.0,
+           "expolosionPropagationSpeed": 1.0,
+           "soundExplosion": "kotorsound_plasmagrenade",
+           "explosionInteriorCellCountMultiplier": 1.0,
+           "explosionInteriorCellDistanceMultiplier": 0.7,
+           "stabChanceOfForcedInternal": 0.0,
+           "cutExtraTargetsCurve": null,
+           "cutCleaveBonus": 0.0,
+           "bluntInnerHitChance": 0.0,
+           "bluntStunDuration": 1.0,
+           "bluntStunChancePerDamagePctOfCorePartToHeadCurve": null,
+           "bluntStunChancePerDamagePctOfCorePartToBodyCurve": null,
+           "scratchSplitPercentage": 0.5,
+           "scaleDamageToBuildingsBasedOnFlammability": true,
+           "defName": "guy762_GrenadeDamage_plasma",
+           "label": "flame",
+           "description": null,
+           "descriptionHyperlinks": null,
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 3911,
+           "index": 220,
+           "fileName": "Absorbed_KotorCore_GrenadeDamages.xml",
+           "defNameHash": -847371465,
+           "generated": false,
+           "debugRandomId": 49157
+          }
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_74d33099c1c84eecb1b46615e88ff671",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:35.4966464+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:35.5356731+00:00",
+         "DurationMs": 39,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "melee_ladder_landed",
+   "components": [
+    {
+     "name": "melee_patch_powers_are_live",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "18 of 18 def(s) resolved",
+        "requested": 18,
+        "foundCount": 18,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "tools"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/OuterRim_VibroAxe",
+          "found": true,
+          "defName": "OuterRim_VibroAxe",
+          "defType": "ThingDef",
+          "label": "vibro-axe",
+          "modName": "Outer Rim - Core",
+          "packageId": "neronix17.outerrim.core",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 12.0,
+             "armorPenetration": 0.93,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 22.0,
+             "armorPenetration": 0.93,
+             "cooldownTime": 1.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 27.0,
+             "armorPenetration": 0.93,
+             "cooldownTime": 1.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/OuterRim_VibroBlade",
+          "found": true,
+          "defName": "OuterRim_VibroBlade",
+          "defType": "ThingDef",
+          "label": "vibro-blade",
+          "modName": "Outer Rim - Core",
+          "packageId": "neronix17.outerrim.core",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 12.0,
+             "armorPenetration": 0.91,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 22.0,
+             "armorPenetration": 0.91,
+             "cooldownTime": 1.2,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 27.0,
+             "armorPenetration": 0.91,
+             "cooldownTime": 1.2,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/OuterRim_VibroCleaver",
+          "found": true,
+          "defName": "OuterRim_VibroCleaver",
+          "defType": "ThingDef",
+          "label": "vibro-cleaver",
+          "modName": "Outer Rim - Core",
+          "packageId": "neronix17.outerrim.core",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 11.0,
+             "armorPenetration": 0.95,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 4.0,
+             "armorPenetration": 0.95,
+             "cooldownTime": 2.1,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 35.0,
+             "armorPenetration": 0.95,
+             "cooldownTime": 2.1,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/OuterRim_VibroDagger",
+          "found": true,
+          "defName": "OuterRim_VibroDagger",
+          "defType": "ThingDef",
+          "label": "vibro-dagger",
+          "modName": "Outer Rim - Core",
+          "packageId": "neronix17.outerrim.core",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 13.0,
+             "armorPenetration": 0.9,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 20.0,
+             "armorPenetration": 0.9,
+             "cooldownTime": 1.2,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 22.0,
+             "armorPenetration": 0.9,
+             "cooldownTime": 1.2,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/OuterRim_VibroDoubleBlade",
+          "found": true,
+          "defName": "OuterRim_VibroDoubleBlade",
+          "defType": "ThingDef",
+          "label": "vibro-doubleblade",
+          "modName": "Outer Rim - Core",
+          "packageId": "neronix17.outerrim.core",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 12.0,
+             "armorPenetration": 0.91,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 20.0,
+             "armorPenetration": 0.91,
+             "cooldownTime": 1.1,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 24.0,
+             "armorPenetration": 0.91,
+             "cooldownTime": 1.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/OuterRim_VibroGlaive",
+          "found": true,
+          "defName": "OuterRim_VibroGlaive",
+          "defType": "ThingDef",
+          "label": "vibro-glaive",
+          "modName": "Outer Rim - Core",
+          "packageId": "neronix17.outerrim.core",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 11.0,
+             "armorPenetration": 0.93,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 24.0,
+             "armorPenetration": 0.93,
+             "cooldownTime": 1.5,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 30.0,
+             "armorPenetration": 0.93,
+             "cooldownTime": 1.5,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_JDSA_Vibroaxe",
+          "found": true,
+          "defName": "RSW_JDSA_Vibroaxe",
+          "defType": "ThingDef",
+          "label": "Vibroaxe",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 5.0,
+             "armorPenetration": 0.96,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 52.0,
+             "armorPenetration": 0.96,
+             "cooldownTime": 1.9,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_JDSA_Vibroblade",
+          "found": true,
+          "defName": "RSW_JDSA_Vibroblade",
+          "defType": "ThingDef",
+          "label": "Vibroblade",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 52.0,
+             "armorPenetration": 0.96,
+             "cooldownTime": 1.9,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/RSW_JDSA_Vibrosword",
+          "found": true,
+          "defName": "RSW_JDSA_Vibrosword",
+          "defType": "ThingDef",
+          "label": "Vibrosword",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 5.0,
+             "armorPenetration": 0.96,
+             "cooldownTime": 2.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 52.0,
+             "armorPenetration": 0.96,
+             "cooldownTime": 1.9,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vaxe",
+          "found": true,
+          "defName": "guy762_vaxe",
+          "defType": "ThingDef",
+          "label": "Vibroaxe",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 14.0,
+             "armorPenetration": 1.6,
+             "cooldownTime": 2.5,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.25,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": [
+              {
+               "def": "Stun",
+               "amount": 2.0,
+               "armorPenetration": -1.0,
+               "chance": 1.0
+              }
+             ],
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 35.0,
+             "armorPenetration": 1.6,
+             "cooldownTime": 4.5,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vblade",
+          "found": true,
+          "defName": "guy762_vblade",
+          "defType": "ThingDef",
+          "label": "Vibroblade",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 8.0,
+             "armorPenetration": 1.05,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.05,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 29.0,
+             "armorPenetration": 1.05,
+             "cooldownTime": 1.8,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.25,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 24.0,
+             "armorPenetration": 1.05,
+             "cooldownTime": 1.8,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.75,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vblade_echani",
+          "found": true,
+          "defName": "guy762_vblade_echani",
+          "defType": "ThingDef",
+          "label": "Echani Vibroblade",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 8.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.05,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 29.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 1.8,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.25,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": [
+              {
+               "def": "Frostbite",
+               "amount": 2.0,
+               "armorPenetration": -1.0,
+               "chance": 1.0
+              }
+             ],
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 24.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 1.8,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.75,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": [
+              {
+               "def": "Frostbite",
+               "amount": 2.0,
+               "armorPenetration": -1.0,
+               "chance": 1.0
+              }
+             ],
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vblade_prototype",
+          "found": true,
+          "defName": "guy762_vblade_prototype",
+          "defType": "ThingDef",
+          "label": "Prototype Vibroblade",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 8.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.05,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 29.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 1.8,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.25,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 25.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 1.8,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.75,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vdubblade",
+          "found": true,
+          "defName": "guy762_vdubblade",
+          "defType": "ThingDef",
+          "label": "Vibro Double-Blade",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 8.0,
+             "armorPenetration": 1.42,
+             "cooldownTime": 1.5,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.1,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 27.0,
+             "armorPenetration": 1.42,
+             "cooldownTime": 2.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 29.0,
+             "armorPenetration": 1.42,
+             "cooldownTime": 1.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 2.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vglaive",
+          "found": true,
+          "defName": "guy762_vglaive",
+          "defType": "ThingDef",
+          "label": "Vibroglaive",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 10.0,
+             "armorPenetration": 1.51,
+             "cooldownTime": 4.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.1,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 30.0,
+             "armorPenetration": 1.51,
+             "cooldownTime": 1.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.5,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 25.0,
+             "armorPenetration": 1.51,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vglaive_echani",
+          "found": true,
+          "defName": "guy762_vglaive_echani",
+          "defType": "ThingDef",
+          "label": "Echani Vibroglaive",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 10.0,
+             "armorPenetration": 1.51,
+             "cooldownTime": 4.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.1,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 30.0,
+             "armorPenetration": 1.51,
+             "cooldownTime": 1.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.5,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 25.0,
+             "armorPenetration": 1.51,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.0,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vsword",
+          "found": true,
+          "defName": "guy762_vsword",
+          "defType": "ThingDef",
+          "label": "Vibrosword",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 10.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.05,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 25.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 2.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.75,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 30.0,
+             "armorPenetration": 1.23,
+             "cooldownTime": 2.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.25,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         },
+         {
+          "requested": "ThingDef/guy762_vsword_echani",
+          "found": true,
+          "defName": "guy762_vsword_echani",
+          "defType": "ThingDef",
+          "label": "Echani Foil",
+          "modName": "Jawa Armoury Rebalance",
+          "packageId": "mandrake.rsw.armoury",
+          "fields": {
+           "tools": [
+            {
+             "id": "0",
+             "label": "handle",
+             "labelNoLocation": null,
+             "untranslatedLabel": "handle",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Blunt"
+             ],
+             "power": 12.0,
+             "armorPenetration": 1.33,
+             "cooldownTime": 3.0,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.05,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "1",
+             "label": "point",
+             "labelNoLocation": null,
+             "untranslatedLabel": "point",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Stab"
+             ],
+             "power": 30.0,
+             "armorPenetration": 1.33,
+             "cooldownTime": 2.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 0.75,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            },
+            {
+             "id": "2",
+             "label": "edge",
+             "labelNoLocation": null,
+             "untranslatedLabel": "edge",
+             "labelUsedInLogging": true,
+             "capacities": [
+              "Cut"
+             ],
+             "power": 36.0,
+             "armorPenetration": 1.33,
+             "cooldownTime": 2.4,
+             "surpriseAttack": null,
+             "hediff": null,
+             "chanceFactor": 1.25,
+             "alwaysTreatAsWeapon": false,
+             "extraMeleeDamages": null,
+             "soundMeleeHit": null,
+             "soundMeleeMiss": null,
+             "linkedBodyPartsGroup": null,
+             "ensureLinkedBodyPartsGroupAlwaysUsable": false
+            }
+           ]
+          }
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_a8de55b367584dfb89ff68b947429961",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:41.2962374+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:41.336455+00:00",
+         "DurationMs": 40,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "ranged_ladder_landed",
+   "components": [
+    {
+     "name": "own_ranged_ops_carry_no_donor_guard",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ranged_patch_damage_is_live",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/projectile_damage",
+       "result": {
+        "success": true,
+        "message": "41 found, 2 not found.",
+        "foundCount": 41,
+        "notFound": [
+         "VQE_AncientShieldedTurret_Bullet",
+         "VQE_AncientSpacerAutocannon_Bullet"
+        ],
+        "rows": [
+         {
+          "requested": "AM_Bullet_Shell_Explosive",
+          "defName": "AM_Bullet_Shell_Explosive",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bomb",
+          "damageAmountBase": 133,
+          "damageAmount": 133,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.995,
+          "effectiveError": null
+         },
+         {
+          "requested": "AM_Bullet_SniperTurret",
+          "defName": "AM_Bullet_SniperTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 200,
+          "damageAmount": 200,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 3.0,
+          "effectiveError": null
+         },
+         {
+          "requested": "AM_Bullet_SoulDrain",
+          "defName": "AM_Bullet_SoulDrain",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "AM_SoulDrain",
+          "damageAmountBase": 94,
+          "damageAmount": 94,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.41,
+          "effectiveError": null
+         },
+         {
+          "requested": "BreadMoAM_Bullet_LargeShotgunTurret",
+          "defName": "BreadMoAM_Bullet_LargeShotgunTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 161,
+          "damageAmount": 161,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 2.415,
+          "effectiveError": null
+         },
+         {
+          "requested": "BreadMoAM_Bullet_ShotgunTurret",
+          "defName": "BreadMoAM_Bullet_ShotgunTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 102,
+          "damageAmount": 102,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.53,
+          "effectiveError": null
+         },
+         {
+          "requested": "Bullet_AncientArmoredTurret",
+          "defName": "Bullet_AncientArmoredTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 86,
+          "damageAmount": 86,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.29,
+          "effectiveError": null
+         },
+         {
+          "requested": "Bullet_AutocannonTurret",
+          "defName": "Bullet_AutocannonTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 200,
+          "damageAmount": 200,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 3.0,
+          "effectiveError": null
+         },
+         {
+          "requested": "Bullet_MiniSlug",
+          "defName": "Bullet_MiniSlug",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 86,
+          "damageAmount": 86,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.29,
+          "effectiveError": null
+         },
+         {
+          "requested": "Bullet_TacticalTurret",
+          "defName": "Bullet_TacticalTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 86,
+          "damageAmount": 86,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.29,
+          "effectiveError": null
+         },
+         {
+          "requested": "Bullet_VulcanTurret",
+          "defName": "Bullet_VulcanTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 94,
+          "damageAmount": 94,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.41,
+          "effectiveError": null
+         },
+         {
+          "requested": "FT_Bullet_AAShell",
+          "defName": "FT_Bullet_AAShell",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 102,
+          "damageAmount": 102,
+          "armorPenetrationBase": 0.45,
+          "armorPenetration": 0.45,
+          "effectiveError": null
+         },
+         {
+          "requested": "FT_Bullet_ATShell",
+          "defName": "FT_Bullet_ATShell",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 187,
+          "damageAmount": 187,
+          "armorPenetrationBase": 0.75,
+          "armorPenetration": 0.75,
+          "effectiveError": null
+         },
+         {
+          "requested": "HMC_Wall_FireShotgun_Turret_Bullet",
+          "defName": "HMC_Wall_FireShotgun_Turret_Bullet",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Burn",
+          "damageAmountBase": 102,
+          "damageAmount": 102,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.53,
+          "effectiveError": null
+         },
+         {
+          "requested": "HMC_Wall_LightMachinegun_Turret_Bullet",
+          "defName": "HMC_Wall_LightMachinegun_Turret_Bullet",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 91,
+          "damageAmount": 91,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.365,
+          "effectiveError": null
+         },
+         {
+          "requested": "HMC_Wall_MachineCannon_Turret_Bullet_Ship",
+          "defName": "HMC_Wall_MachineCannon_Turret_Bullet_Ship",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 187,
+          "damageAmount": 187,
+          "armorPenetrationBase": 0.6,
+          "armorPenetration": 0.6,
+          "effectiveError": null
+         },
+         {
+          "requested": "HMC_Wall_MinigunTurret_Turret_Bullet",
+          "defName": "HMC_Wall_MinigunTurret_Turret_Bullet",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 86,
+          "damageAmount": 86,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 1.29,
+          "effectiveError": null
+         },
+         {
+          "requested": "HMC_Wall_Rocket_Turret_Bullet",
+          "defName": "HMC_Wall_Rocket_Turret_Bullet",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bomb",
+          "damageAmountBase": 161,
+          "damageAmount": 161,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 2.415,
+          "effectiveError": null
+         },
+         {
+          "requested": "KotORBlasterBolt_default",
+          "defName": "KotORBlasterBolt_default",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "guy762_RangedDamage_energy",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.2,
+          "armorPenetration": 0.2,
+          "effectiveError": null
+         },
+         {
+          "requested": "KotORBlasterBolt_nadd",
+          "defName": "KotORBlasterBolt_nadd",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "guy762_RangedDamage_energy",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.2,
+          "armorPenetration": 0.2,
+          "effectiveError": null
+         },
+         {
+          "requested": "KotORBlasterBolt_plasma",
+          "defName": "KotORBlasterBolt_plasma",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Flame",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.05,
+          "armorPenetration": 0.05,
+          "effectiveError": null
+         },
+         {
+          "requested": "KotORBowcasterBolt_default",
+          "defName": "KotORBowcasterBolt_default",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "guy762_RangedDamage_energy",
+          "damageAmountBase": 36,
+          "damageAmount": 36,
+          "armorPenetrationBase": 0.4,
+          "armorPenetration": 0.4,
+          "effectiveError": null
+         },
+         {
+          "requested": "KotORSlugBolt",
+          "defName": "KotORSlugBolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 36,
+          "damageAmount": 36,
+          "armorPenetrationBase": 0.5,
+          "armorPenetration": 0.5,
+          "effectiveError": null
+         },
+         {
+          "requested": "OuterRim_Bullet_PistolRed",
+          "defName": "OuterRim_Bullet_PistolRed",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "OuterRim_Blaster",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.25,
+          "armorPenetration": 0.25,
+          "effectiveError": null
+         },
+         {
+          "requested": "OuterRim_Bullet_RifleRed",
+          "defName": "OuterRim_Bullet_RifleRed",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "OuterRim_Blaster",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.15,
+          "armorPenetration": 0.15,
+          "effectiveError": null
+         },
+         {
+          "requested": "OuterRim_Bullet_ScattergunRed",
+          "defName": "OuterRim_Bullet_ScattergunRed",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "OuterRim_Blaster",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.25,
+          "armorPenetration": 0.25,
+          "effectiveError": null
+         },
+         {
+          "requested": "OuterRim_Bullet_SniperRed",
+          "defName": "OuterRim_Bullet_SniperRed",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "OuterRim_Blaster",
+          "damageAmountBase": 33,
+          "damageAmount": 33,
+          "armorPenetrationBase": 0.25,
+          "armorPenetration": 0.25,
+          "effectiveError": null
+         },
+         {
+          "requested": "OuterRim_CyclerRifleProjectile",
+          "defName": "OuterRim_CyclerRifleProjectile",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 36,
+          "damageAmount": 36,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.539999962,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_B2-HA_Droid_Wrist_Canno_shot",
+          "defName": "RSW_B2-HA_Droid_Wrist_Canno_shot",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 28,
+          "damageAmount": 28,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.42,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_Bullet_ArchotechChargeBlasterHeavy",
+          "defName": "RSW_Bullet_ArchotechChargeBlasterHeavy",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 60,
+          "damageAmount": 60,
+          "armorPenetrationBase": 999.0,
+          "armorPenetration": 999.0,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_High_Blue_Blaster_Bolt",
+          "defName": "RSW_High_Blue_Blaster_Bolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 30,
+          "damageAmount": 30,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.45,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_High_Red_Blaster_Bolt",
+          "defName": "RSW_High_Red_Blaster_Bolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 29,
+          "damageAmount": 29,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.435,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_Low_Blue_Blaster_Bolt",
+          "defName": "RSW_Low_Blue_Blaster_Bolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 25,
+          "damageAmount": 25,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.375,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_Low_Red_Blaster_Bolt",
+          "defName": "RSW_Low_Red_Blaster_Bolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 24,
+          "damageAmount": 24,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.359999985,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_Mid_Blue_Blaster_Bolt",
+          "defName": "RSW_Mid_Blue_Blaster_Bolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 26,
+          "damageAmount": 26,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.39,
+          "effectiveError": null
+         },
+         {
+          "requested": "RSW_Mid_Red_Blaster_Bolt",
+          "defName": "RSW_Mid_Red_Blaster_Bolt",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "RSW_Blaster_Damage",
+          "damageAmountBase": 26,
+          "damageAmount": 26,
+          "armorPenetrationBase": -1.0,
+          "armorPenetration": 0.39,
+          "effectiveError": null
+         },
+         {
+          "requested": "VFEP_Bullet_GauntletChargeCanon",
+          "defName": "VFEP_Bullet_GauntletChargeCanon",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 102,
+          "damageAmount": 102,
+          "armorPenetrationBase": 0.45,
+          "armorPenetration": 0.45,
+          "effectiveError": null
+         },
+         {
+          "requested": "VFES_Bullet_Catapult",
+          "defName": "VFES_Bullet_Catapult",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Blunt",
+          "damageAmountBase": 278,
+          "damageAmount": 278,
+          "armorPenetrationBase": 0.14,
+          "armorPenetration": 0.14,
+          "effectiveError": null
+         },
+         {
+          "requested": "VFES_Bullet_ChargeComplex",
+          "defName": "VFES_Bullet_ChargeComplex",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 94,
+          "damageAmount": 94,
+          "armorPenetrationBase": 0.22,
+          "armorPenetration": 0.22,
+          "effectiveError": null
+         },
+         {
+          "requested": "VFES_Bullet_ChargeTurretShot",
+          "defName": "VFES_Bullet_ChargeTurretShot",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 91,
+          "damageAmount": 91,
+          "armorPenetrationBase": 0.35,
+          "armorPenetration": 0.35,
+          "effectiveError": null
+         },
+         {
+          "requested": "VFES_Bullet_ConcealedTurret",
+          "defName": "VFES_Bullet_ConcealedTurret",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 200,
+          "damageAmount": 200,
+          "armorPenetrationBase": 0.18,
+          "armorPenetration": 0.18,
+          "effectiveError": null
+         },
+         {
+          "requested": "VFES_Bullet_HMG",
+          "defName": "VFES_Bullet_HMG",
+          "found": true,
+          "isProjectile": true,
+          "viaWeapon": null,
+          "damageDef": "Bullet",
+          "damageAmountBase": 200,
+          "damageAmount": 200,
+          "armorPenetrationBase": 0.22,
+          "armorPenetration": 0.22,
+          "effectiveError": null
+         },
+         {
+          "requested": "VQE_AncientShieldedTurret_Bullet",
+          "defName": "VQE_AncientShieldedTurret_Bullet",
+          "found": false
+         },
+         {
+          "requested": "VQE_AncientSpacerAutocannon_Bullet",
+          "defName": "VQE_AncientSpacerAutocannon_Bullet",
+          "found": false
+         }
+        ],
+        "ticksGame": 21199,
+        "operation": {
+         "OperationId": "op_7401fb5977d047d4ac889e75e13ba693",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/projectile-damage",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T08:56:48.5367649+00:00",
+         "CompletedAtUtc": "2026-10-04T08:56:48.5819021+00:00",
+         "DurationMs": 45,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001D0966027A0>",
+  "<suite.Component object at 0x000001D0966038A0>",
+  "<suite.Component object at 0x000001D09659D450>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\Armoury.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T015519-situational_rerun-22796",
+  "git": {
+   "source": "git",
+   "sha": "44b48f97be22648d24e8483c472c9ee5f52a21b2"
+  },
+  "deploy_start": {
+   "mod": "Armoury",
+   "at": "2026-10-04T01:55:36",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimStarWars/Armoury",
+   "src_hash": "f92c53acfa41e946",
+   "deployed_hash": "f92c53acfa41e946",
+   "n_src": 3369,
+   "n_deployed": 3369,
+   "n_held": 2,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/JawaArmoury.dll",
+     "sha": "041254b01f0e62bf",
+     "srchash": null
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "Armoury",
+   "at": "2026-10-04T01:56:50",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimStarWars/Armoury",
+   "src_hash": "f92c53acfa41e946",
+   "deployed_hash": "f92c53acfa41e946",
+   "n_src": 3369,
+   "n_deployed": 3369,
+   "n_held": 2,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/JawaArmoury.dll",
+     "sha": "041254b01f0e62bf",
+     "srchash": null
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

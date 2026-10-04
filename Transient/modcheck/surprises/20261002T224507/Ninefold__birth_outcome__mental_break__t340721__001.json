@@ -1,0 +1,924 @@
+{
+ "name": "Ninefold__birth_outcome__mental_break__t340721__001",
+ "when_utc": "2026-10-03T05:46:31Z",
+ "hits": [
+  {
+   "detector": "mental_break",
+   "severity": "SURPRISE",
+   "summary": "Rhae entered mental state WanderConfused",
+   "evidence": {
+    "id": "Human47253",
+    "mentalState": "WanderConfused",
+    "isAggro": false,
+    "via": "pawn_census"
+   },
+   "suggest": [
+    "calm_colonists"
+   ],
+   "focus": [
+    159,
+    66
+   ],
+   "fingerprint": "mental_break:Human47253:WanderConfused"
+  }
+ ],
+ "snapshot": {
+  "tick": 340721,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human47253",
+    "name": "Rhae",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 159,
+    "z": 66,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": {
+     "def": "WanderConfused",
+     "isAggro": false,
+     "ageTicks": 30,
+     "causedByMood": false,
+     "causedByDamage": false,
+     "causedByPawn": null,
+     "forceRecoverAfterTicks": -1
+    },
+    "hediffs": [
+     {
+      "def": "Dementia",
+      "label": "dementia",
+      "part": "Brain",
+      "severity": 0.001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Oli",
+    "arrivalTick": 170170,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Oli",
+     170170
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Oli",
+    "arrivalTick": 170170,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Oli",
+     170170
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Zack",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Zack",
+     171490
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Zack",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Zack",
+     171490
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Kennedy",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Kennedy",
+     171490
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kennedy",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kennedy",
+     171490
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Unay",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Unay",
+     171490
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Unay",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Unay",
+     171490
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Unay",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Unay",
+     171490
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "War merchant from The Bico Kinship",
+    "arrivalTick": 171490,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "War merchant from The Bico Kinship",
+     171490
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Debby",
+    "arrivalTick": 171610,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Debby",
+     171610
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Debby",
+    "arrivalTick": 171610,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Debby",
+     171610
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Debby",
+    "arrivalTick": 171610,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Debby",
+     171610
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Dex",
+    "arrivalTick": 195639,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Dex",
+     195639
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dex",
+    "arrivalTick": 195639,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dex",
+     195639
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Bishop",
+    "arrivalTick": 320091,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Bishop",
+     320091
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Sad wander: Rangel",
+    "arrivalTick": 320091,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Sad wander: Rangel",
+     320091
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Rangel",
+    "arrivalTick": 320091,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Rangel",
+     320091
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Rangel",
+    "arrivalTick": 320091,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Rangel",
+     320091
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Rangel",
+    "arrivalTick": 320091,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Rangel",
+     320091
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Lane",
+    "arrivalTick": 325091,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Lane",
+     325091
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Lane",
+    "arrivalTick": 325091,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Lane",
+     325091
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Eulogy of As-Salam opportunity for Lane",
+    "arrivalTick": 325091,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Eulogy of As-Salam opportunity for Lane",
+     325091
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "(*Name)Tsuki(/Name) in labor!",
+    "arrivalTick": 325093,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "(*Name)Tsuki(/Name) in labor!",
+     325093
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Confusion: Rhae",
+    "arrivalTick": 340702,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Confusion: Rhae",
+     340702
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 23,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -57.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 340721
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40932"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #7: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40934"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #8: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40933"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #9: 25 cells, LIMITED (125 / 125 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #10: 54 cells, LIMITED (270 / 270 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #11: 48 cells, LIMITED (240 / 240 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40932"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40934"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40933"
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 4.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 5.0."
+  ],
+  [
+   "Warning",
+   "[RimMandrake.FlowWorks] conservation exception: 1.0 fill-units overflowed with nowhere to go and were destroyed (spec \u00a75 \u2014 the only sanctioned case). Map total now 6.0."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40934"
+  ],
+  [
+   "Message",
+   "[RimMandrake.FlowWorks] classified liquid body #12: 60 cells, LIMITED (300 / 300 fill-units). Classification is sticky \u2014 this never runs again for these cells."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40934"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser40933"
+  ],
+  [
+   "Error",
+   "MakeThing error: Wall is madeFromStuff but stuff=null. Assigning default."
+  ],
+  [
+   "Error",
+   "Exception in SetupToils for pawn Lane driver=JobDriver_Repair (toilIndex=-1) driver.job=(Repair (Job_40216) A = (200, 0, 50) Giver = ThinkNode_QueuedJob [workGiverDef: null])\nSystem.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref B2C3B7FA] Duplicate stacktrace, see"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 15630,
+  "overhead_spent": 0,
+  "total_spent": 15630,
+  "epoch": 0,
+  "last_seen_tick": 340721,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 39350,
+    "spent": 15630
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 325091,
+    "tick_to": 325691,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 325691,
+    "tick_to": 326291,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 326291,
+    "tick_to": 326891,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 326891,
+    "tick_to": 327491,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 327491,
+    "tick_to": 328091,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 328091,
+    "tick_to": 328691,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 328691,
+    "tick_to": 329291,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 329291,
+    "tick_to": 329891,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 329891,
+    "tick_to": 330491,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 330491,
+    "tick_to": 331091,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 331091,
+    "tick_to": 331691,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 331691,
+    "tick_to": 332291,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 332291,
+    "tick_to": 332891,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 332891,
+    "tick_to": 333491,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 333491,
+    "tick_to": 333521,
+    "ticks": 30,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 333521,
+    "tick_to": 334121,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 334121,
+    "tick_to": 334721,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 334721,
+    "tick_to": 335321,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 335321,
+    "tick_to": 335921,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 335921,
+    "tick_to": 336521,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 336521,
+    "tick_to": 337121,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 337121,
+    "tick_to": 337721,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 337721,
+    "tick_to": 338321,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 338321,
+    "tick_to": 338921,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 338921,
+    "tick_to": 339521,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 339521,
+    "tick_to": 340121,
+    "ticks": 600,
+    "requested": 600
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 340121,
+    "tick_to": 340721,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Ninefold",
+  "chain": "birth_outcome",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261002T224507\\Ninefold__birth_outcome__mental_break__t340721__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2950716,
+  "width": 1810,
+  "height": 1183,
+  "md5": "d02e1f8c1fe6ac343c6537b1d4d71b7a",
+  "why": ""
+ },
+ "notes": []
+}

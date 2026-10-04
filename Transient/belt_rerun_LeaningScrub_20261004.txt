@@ -1,0 +1,78 @@
+[lscrub-note] shipped defs resolved: 59
+[lscrub] 01:57:48 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 01:57:49 biome_weather_table PASS 
+[lscrub] 01:57:49 biome_density_and_flora PASS 
+[lscrub] 01:57:49 biome_lean_extension PASS 
+[lscrub] 01:57:55 rules_armed PASS 
+[lscrub] 01:57:55 thicket_smotherable PASS 
+[lscrub] 01:57:55 vissler_arm_is_rotting_meat PASS 
+[lscrub] 01:58:19 dead_venomvine_fuels_fire UNMEASURED surprise: colonist_damaged: colonist Human189794 took 1 damage event(s): Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__patches__colonist_damaged__t22191__001.json]
+[lscrub] 01:59:03 defaults PASS 
+[lscrub] 01:59:08 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 01:59:12 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 01:59:17 leanEnabled_roundtrip PASS 
+[lscrub] 01:59:21 leanScentEnabled_roundtrip PASS 
+[lscrub] 01:59:25 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 01:59:32 fauna_spawns PASS 
+[lscrub] 01:59:32 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 01:59:42 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub] 01:59:56 stall_freezes_small UNMEASURED surprise: colonist_damaged: colonist Human189800 took 1 damage event(s): Stab by Metalhorror; colonist_damaged: colonist Human73229 took 3 damage event(s): Bite by RM_Kurreth [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__stall__
+[lscrub] 01:59:56 stall_toggle_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189800 took 1 damage event(s): Stab by Metalhorror; colonist_damaged: colonist Human73229 took 3 damage event(s): Bite by RM_Kurreth [evidence: \\wsl.localhos
+[lscrub] 01:59:56 stall_master_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189800 took 1 damage event(s): Stab by Metalhorror; colonist_damaged: colonist Human73229 took 3 damage event(s): Bite by RM_Kurreth [evidence: \\wsl.localhos
+[lscrub] 02:00:02 gale_site_ready PASS 
+[lscrub] 02:00:15 gale_deafens_outdoors UNMEASURED surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror; colonist_damaged: colonist Human73229 took 1 damage event(s): Bite by RM_Kurreth [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\L
+[lscrub] 02:00:15 gale_spares_roofed UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror; colonist_damaged: colonist Human73229 took 1 damage event(s): Bite by RM_Kurreth [evid
+[lscrub] 02:00:15 gale_deafen_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror; colonist_damaged: colonist Human73229 took 1 damage event(s): Bite by RM_Kurreth [evid
+[lscrub] 02:00:15 gale_turbine_surge UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror; colonist_damaged: colonist Human73229 took 1 damage event(s): Bite by RM_Kurreth [evid
+[lscrub] 02:00:15 gale_turbine_breakdown UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror; colonist_damaged: colonist Human73229 took 1 damage event(s): Bite by RM_Kurreth [evid
+[lscrub] 02:00:22 lash_site_ready PASS 
+[lscrub] 02:00:32 lash_toggle_off_quiet UNMEASURED surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__lash__colonist_damaged__t23310__001.json]
+[lscrub] 02:00:32 lash_strikes_once UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 02:00:40 smother_site_ready PASS 
+[lscrub] 02:01:10 smother_claims_stands UNMEASURED surprise: colonist_damaged: colonist Human189730 took 1 damage event(s): Cut by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__smother__colonist_damaged__t23810__001.json]
+[lscrub] 02:01:10 smother_off_holds_claims UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 1 damage event(s): Cut by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\Lean
+[lscrub] 02:01:10 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 1 damage event(s): Cut by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\Lean
+[lscrub] 02:01:49 dripping_survives_harvest UNMEASURED surprise: colonist_damaged: colonist Human189730 took 1 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__
+[lscrub] 02:01:55 crown_site_ready PASS 
+[lscrub] 02:02:12 crown_toggle_off_stays_away UNMEASURED surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__crown__colonist_damaged__t24979__001.json]
+[lscrub] 02:02:12 crown_mob_gathers UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189730 took 2 damage event(s): Cut by Metalhorror; Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises
+[lscrub] 02:02:27 bloom_toggle_off_quiet UNMEASURED surprise: colonist_damaged: colonist Human189739 took 1 damage event(s): Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__bloom__colonist_damaged__t25074__001.json]
+[lscrub] 02:02:27 bloom_answers_a_walker UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 1 damage event(s): Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\Lea
+[lscrub] 02:02:27 bloom_sway_and_exit_hole UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 1 damage event(s): Stab by Metalhorror [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\Lea
+[lscrub-note] fire stamp proof (on): "PASS kind=RSW_ShrublandGiant small:sent=0/goto=False big:sent=1/toBlaze=True stamped=3 fires 6->3"
+[lscrub] 02:02:34 stamp_answers_a_blaze PASS 
+[lscrub-note] fire stamp proof (off): "PASS off kind=RSW_ShrublandGiant small:sent=0/goto=False big:sent=0/toBlaze=False stamped=0 fires 6->6"
+[lscrub] 02:02:34 stamp_toggle_off_ignores_fire PASS 
+[lscrub] 02:02:40 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden216915", "RM_Barkwarden216916"]
+[lscrub] 02:02:40 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Gomol (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 1.9 days.", "Bark-wardens roost here (2). Calm."]]
+[lscrub] 02:02:40 station_named_and_timed PASS 
+[lscrub] 02:02:43 station_toggle_off_plain PASS 
+[lscrub] 02:02:56 station_sheds_wool UNMEASURED surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261004T015741\LeaningScrub__
+[lscrub] 02:02:56 scratch_toggle_off_refused UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 scratch_drops_coat UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 visitors_toggle_off_quiet UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 visitors_come_and_leave_marks UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 felt_comfort_toggle_off_plain UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 felt_furniture_comfort UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 map_step_chance_zero_plants_none UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub] 02:02:56 map_step_plants_one_or_two UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human189739 took 3 damage event(s): Cut by Metalhorror; raid_arrived: raid signal(s): Illoth hunting (*Name)Iris(/Name); open, awaiting arrivals [evidence: \\wsl.l
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[lscrub] 02:03:01 log_clean PASS 
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 2282
+     bland_world: reusing the bland map already current (tile 1694, 3 colonists)
+  ok   bland world established (tile 1694, map 4)
+  -- LeaningScrub
+     !! LeaningScrub: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 26, 'UNMEASURED': 29, 'FAIL': 1} surprises=9 serious=['colonist_damaged:SURPRISE', 'raid_arrived:SURPRISE']
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 5/5 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

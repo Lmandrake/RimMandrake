@@ -1,0 +1,858 @@
+{
+ "name": "FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001",
+ "when_utc": "2026-10-04T05:50:14Z",
+ "hits": [
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Chiyo died (death_letter)",
+   "evidence": {
+    "name": "Chiyo",
+    "ticks": [
+     6910
+    ],
+    "sources": [
+     "death_letter"
+    ],
+    "ids": [],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Chiyo"
+  },
+  {
+   "detector": "colonist_died",
+   "severity": "FATAL",
+   "summary": "colonist Human683 died (damage_log_kill)",
+   "evidence": {
+    "name": "Human683",
+    "ticks": [
+     6910
+    ],
+    "sources": [
+     "damage_log_kill"
+    ],
+    "ids": [
+     "Human683"
+    ],
+    "colonistsKilled_delta": 1
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_died:Human683"
+  },
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human683 took 4 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human683",
+    "events": [
+     {
+      "seq": 298,
+      "tick": 6484,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": null
+     },
+     {
+      "seq": 301,
+      "tick": 6604,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut",
+       "Cut",
+       "Cut"
+      ]
+     },
+     {
+      "seq": 304,
+      "tick": 6790,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut"
+      ]
+     },
+     {
+      "seq": 312,
+      "tick": 6910,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "hediffsAdded": [
+       "Cut",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human683:298,301,304,312"
+  }
+ ],
+ "snapshot": {
+  "tick": 7034,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [],
+  "letters": [
+   {
+    "defName": "Death",
+    "label": "Death: Hans",
+    "arrivalTick": 4465,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Hans",
+     4465
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Kaytoo (vulptex) (bonded)",
+    "arrivalTick": 5251,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Kaytoo (vulptex) (bonded)",
+     5251
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "The oil haze flashed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "The oil haze flashed",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Varactyl (bantha cow)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Varactyl (bantha cow)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Bambino (jerba buck)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Bambino (jerba buck)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Martin (Baseopsis)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Martin (Baseopsis)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Stormy (karrask)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Stormy (karrask)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Warlock (onnik)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Warlock (onnik)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Dasher (mynock)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Dasher (mynock)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Nexu (blarth)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Nexu (blarth)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Skocha (blixus)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Skocha (blixus)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Eopie (bogwing)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Eopie (bogwing)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Restocking Fee (marsh haunt)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Restocking Fee (marsh haunt)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gnome (ikee)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gnome (ikee)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ian",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ian",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Scurrier (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Scurrier (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Voorpak (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Voorpak (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Treadwell (gizka)",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Treadwell (gizka)",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Unwavering prisoner",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Unwavering prisoner",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Chance chute: 1184 for 1410",
+    "arrivalTick": 6463,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Chance chute: 1184 for 1410",
+     6463
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Interment of Isolation opportunity",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Interment of Isolation opportunity",
+     6910
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Chiyo",
+    "arrivalTick": 6910,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Chiyo",
+     6910
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 3,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 14,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 7034
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Cooley: Skipped because pawn is Psychopath."
+  ],
+  [
+   "Warning",
+   "[KindRelationEnforcer] \u5728 Pawn \u6b7b\u4ea1\u524d\u6e05\u7406\u4e86 3 \u6761\u5931\u6548\u76f4\u63a5\u5173\u7cfb\uff0c\u5df2\u963b\u6b62\u635f\u574f\u5173\u7cfb\u8fdb\u5165\u539f\u7248\u6b7b\u4ea1\u901a\u77e5\u3002"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Starting scan. Candidates=17, CurrentMood=0.62"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Chance: opinion=5, mood=0.47, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Cooley: opinion=5, mood=0.67, happy=True, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Kem: opinion=20, mood=0.65, happy=True, sad=False, thought=MCR_MyFriendIsHappy, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Nose: opinion=12, mood=0.51, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval BB: opinion=5, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Schobi: opinion=-5, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Bellerose: opinion=15, mood=0.60, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Cover: opinion=-5, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Nobu: opinion=-5, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Lev: opinion=0, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Fy: opinion=-5, mood=0.45, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Mie: opinion=-13, mood=0.54, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Laila: opinion=-8, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Jambo: opinion=-5, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Char: opinion=2, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Eval Chad: opinion=-5, mood=0.52, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Dan: Scan finished. NewlyAddedMemories=1"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955949,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955886,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 571,
+  "overhead_spent": 0,
+  "total_spent": 571,
+  "epoch": 0,
+  "last_seen_tick": 7034,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1350,
+    "spent": 571
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 6463,
+    "tick_to": 7034,
+    "ticks": 571,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FallLineArrivals",
+  "chain": "wreck_falls_and_nests",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T224934\\FallLineArrivals__wreck_falls_and_nests__colonist_died__t7034__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2203919,
+  "width": 1810,
+  "height": 1183,
+  "md5": "36a4ffded0dcbc0fce0b4d25d5bb8068",
+  "why": ""
+ },
+ "notes": []
+}

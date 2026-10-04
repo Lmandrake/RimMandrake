@@ -1,0 +1,470 @@
+{
+ "name": "Cauldron__bloom__colonist_injured_unexpectedly__t2001__001",
+ "when_utc": "2026-10-03T21:45:29Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Natsuki gained 1 new hediff(s) (PregnantHuman); cause_hint=unknown",
+   "evidence": {
+    "id": "Human90091",
+    "name": "Natsuki",
+    "new_hediffs": [
+     {
+      "def": "PregnantHuman",
+      "label": "pregnant (first trimester)",
+      "part": null,
+      "severity": 0.00145372411
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "PregnantHuman"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    109,
+    130
+   ],
+   "fingerprint": "colonist_injured:Human90091:PregnantHuman@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 2001,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human90091",
+    "name": "Natsuki",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 109,
+    "z": 130,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_TraumaticPassion",
+      "label": "traumatic passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "AS_RainyDayPassion",
+      "label": "rainy day passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Womb",
+      "label": "uterus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.008506987
+     },
+     {
+      "def": "PregnantHuman",
+      "label": "pregnant (first trimester)",
+      "part": null,
+      "severity": 0.00145372411
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "SEX_Converse",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Haley (suush)",
+    "arrivalTick": 401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Haley (suush)",
+     401
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Iselle (suush)",
+    "arrivalTick": 801,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Iselle (suush)",
+     801
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Mourning of Scrounging opportunity for Harrell",
+    "arrivalTick": 1401,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Mourning of Scrounging opportunity for Harrell",
+     1401
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Harrell",
+    "arrivalTick": 1401,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Harrell",
+     1401
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 1,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -30.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 2001
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Zeiph is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Natsuki is already in conversation."
+  ],
+  [
+   "Message",
+   "Nicholas is already in conversation."
+  ],
+  [
+   "Message",
+   "Dom is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Mitsuya is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Griff: Starting scan. Candidates=3, CurrentMood=0.59"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Griff: Eval Ryo: opinion=38, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Griff: Eval Li: opinion=48, mood=0.55, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Griff: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Li: Starting scan. Candidates=3, CurrentMood=0.55"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Li: Eval Griff: opinion=46, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Li: Eval Ryo: opinion=38, mood=0.58, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Li: Scan finished. NewlyAddedMemories=0"
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 3"
+  ],
+  [
+   "Message",
+   "Zeiph is not accepted by the conversation group."
+  ],
+  [
+   "Message",
+   "Natsuki is already in conversation."
+  ],
+  [
+   "Message",
+   "Nicholas is already in conversation."
+  ],
+  [
+   "Message",
+   "Dom is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "Mitsuya is too far to join the conversation."
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Natsuki: Skipped because pawn is Psychopath."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1595028616,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594957120,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 600,
+  "overhead_spent": 0,
+  "total_spent": 600,
+  "epoch": 0,
+  "last_seen_tick": 2001,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 5725,
+    "spent": 600
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 1401,
+    "tick_to": 2001,
+    "ticks": 600,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Cauldron",
+  "chain": "bloom",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T144326\\Cauldron__bloom__colonist_injured_unexpectedly__t2001__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3053692,
+  "width": 1810,
+  "height": 1183,
+  "md5": "e6cd6a1bc18de5d2b952896401c2c96c",
+  "why": ""
+ },
+ "notes": []
+}

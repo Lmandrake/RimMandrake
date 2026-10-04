@@ -1,0 +1,1303 @@
+{
+ "name": "Contagion__burn_natural__colonist_injured_unexpectedly__t104601__001",
+ "when_utc": "2026-10-03T10:37:39Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Troll gained 4 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic",
+   "evidence": {
+    "id": "Human36494",
+    "name": "Troll",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Arm",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Hand",
+      "severity": 1.34
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.03993333
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0006432
+     }
+    ],
+    "cause_hint": "mixed:animal,toxic",
+    "causes": [
+     "animal",
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    112,
+    108
+   ],
+   "fingerprint": "colonist_injured:Human36494:BloodLoss@None,Scratch@Arm,Scratch@Hand,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Schlitzer gained 8 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic",
+   "evidence": {
+    "id": "Human36510",
+    "name": "Schlitzer",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.26
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.120333329
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0004728
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 1.34
+     }
+    ],
+    "cause_hint": "mixed:animal,toxic",
+    "causes": [
+     "animal",
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    101,
+    118
+   ],
+   "fingerprint": "colonist_injured:Human36510:BloodLoss@None,Scratch@Foot,Scratch@Leg,Scratch@Leg,Scratch@Shoulder,Scratch@Torso,Scratch@Torso,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Vix gained 2 new hediff(s) (Crack,Scratch); cause_hint=animal",
+   "evidence": {
+    "id": "Human42994",
+    "name": "Vix",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (aching)",
+      "part": "Eye",
+      "severity": 0.67
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Leg",
+      "severity": 0.67
+     }
+    ],
+    "cause_hint": "animal",
+    "causes": [
+     "animal",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "Crack"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    163,
+    141
+   ],
+   "fingerprint": "colonist_injured:Human42994:Crack@Leg,Scratch@Eye"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Fern gained 3 new hediff(s) (Crack,Cut,ToxicBuildup); cause_hint=mixed:toxic,weapon",
+   "evidence": {
+    "id": "Human46453",
+    "name": "Fern",
+    "new_hediffs": [
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Spine",
+      "severity": 0.7058824
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Torso",
+      "severity": 0.6258824
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0497333333
+     }
+    ],
+    "cause_hint": "mixed:toxic,weapon",
+    "causes": [
+     "toxic",
+     "unknown",
+     "weapon"
+    ],
+    "unmapped_defs": [
+     "Crack"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    54,
+    15
+   ],
+   "fingerprint": "colonist_injured:Human46453:Crack@Spine,Cut@Torso,ToxicBuildup@None"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Wyn gained 3 new hediff(s) (BloodLoss,Scratch); cause_hint=animal",
+   "evidence": {
+    "id": "Human46459",
+    "name": "Wyn",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00144720008
+     }
+    ],
+    "cause_hint": "animal",
+    "causes": [
+     "animal",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    24,
+    71
+   ],
+   "fingerprint": "colonist_injured:Human46459:BloodLoss@None,Scratch@Foot,Scratch@Leg"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Mash gained 4 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic",
+   "evidence": {
+    "id": "Human69330",
+    "name": "Mash",
+    "new_hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.34
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0396666639
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0011256
+     }
+    ],
+    "cause_hint": "mixed:animal,toxic",
+    "causes": [
+     "animal",
+     "toxic",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    110,
+    111
+   ],
+   "fingerprint": "colonist_injured:Human69330:BloodLoss@None,Scratch@Shoulder,Scratch@Torso,ToxicBuildup@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 104601,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human36494",
+    "name": "Troll",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 112,
+    "z": 108,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar (itchy)",
+      "part": "Arm",
+      "severity": 5.0
+     },
+     {
+      "def": "Bite",
+      "label": "bite scar",
+      "part": "Foot",
+      "severity": 4.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Arm",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Hand",
+      "severity": 1.34
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.03993333
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0006432
+     }
+    ],
+    "bleedRate": 0.1608,
+    "painTotal": 0.06475,
+    "census": true,
+    "job": "Skygaze",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human36510",
+    "name": "Schlitzer",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 101,
+    "z": 118,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (half-absorbed)",
+      "part": null,
+      "severity": 0.6
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.26
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.120333329
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0004728
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 1.34
+     }
+    ],
+    "bleedRate": 0.477599949,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GoForWalk",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human42994",
+    "name": "Vix",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 163,
+    "z": 141,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite scar",
+      "part": "Torso",
+      "severity": 5.0
+     },
+     {
+      "def": "PegLeg",
+      "label": "peg leg",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Femur",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Tibia",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Foot",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Removed",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (touched)",
+      "part": null,
+      "severity": 0.0573810041
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.590000033
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 0.67
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.132699966
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 0.67
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.430000067
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.02288219
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Arm",
+      "severity": 0.430000067
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Hand",
+      "severity": 0.51000005
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Jaw",
+      "severity": 0.67
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Ear",
+      "severity": 0.67
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 0.67
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.590000033
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch scar (aching)",
+      "part": "Eye",
+      "severity": 0.67
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Jaw",
+      "severity": 0.67
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Leg",
+      "severity": 0.67
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 0.67
+     }
+    ],
+    "bleedRate": 0.354,
+    "painTotal": 0.0997125059,
+    "census": true,
+    "job": "Skygaze",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46453",
+    "name": "Fern",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 54,
+    "z": 15,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.3257138
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Spine",
+      "severity": 0.7058824
+     },
+     {
+      "def": "Cut",
+      "label": "cut",
+      "part": "Torso",
+      "severity": 0.6258824
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0497333333
+     }
+    ],
+    "bleedRate": 0.03755294,
+    "painTotal": 0.0148823531,
+    "census": true,
+    "job": "GoForWalk",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human46459",
+    "name": "Wyn",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 24,
+    "z": 71,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar",
+      "part": "Torso",
+      "severity": 5.0
+     },
+     {
+      "def": "RM_Slimification",
+      "label": "slimification (slicked)",
+      "part": null,
+      "severity": 0.327142358
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Leg",
+      "severity": 0.67
+     },
+     {
+      "def": "Bruise",
+      "label": "bruise",
+      "part": "Foot",
+      "severity": 0.590000033
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0592333265
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Foot",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Leg",
+      "severity": 1.34
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.00144720008
+     }
+    ],
+    "bleedRate": 0.1608,
+    "painTotal": 0.04925,
+    "census": true,
+    "job": "GoForWalk",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Human69330",
+    "name": "Mash",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 110,
+    "z": 111,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Scratch",
+      "label": "scratch scar (itchy)",
+      "part": "Eye",
+      "severity": 4.0
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Shoulder",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "Torso",
+      "severity": 1.34
+     },
+     {
+      "def": "ToxicBuildup",
+      "label": "toxic buildup (initial)",
+      "part": null,
+      "severity": 0.0396666639
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0011256
+     }
+    ],
+    "bleedRate": 0.1608,
+    "painTotal": 0.0585,
+    "census": true,
+    "job": "GoForWalk",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1414,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1414
+    ]
+   },
+   {
+    "defName": "ThreatSmall",
+    "label": "Half absorbed",
+    "arrivalTick": 1421,
+    "mapId": null,
+    "fingerprint": [
+     "ThreatSmall",
+     "Half absorbed",
+     1421
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2793,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2793
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 2814,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     2814
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2825,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2825
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2862,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2862
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2884,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2884
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2887,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2887
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2931,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2931
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2944,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2944
+    ]
+   },
+   {
+    "defName": "NegativeEvent",
+    "label": "Slicked",
+    "arrivalTick": 2954,
+    "mapId": null,
+    "fingerprint": [
+     "NegativeEvent",
+     "Slicked",
+     2954
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5133,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5133
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 5547,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     5547
+    ]
+   },
+   {
+    "defName": "PositiveEvent",
+    "label": "Fallen monolith",
+    "arrivalTick": 5685,
+    "mapId": null,
+    "fingerprint": [
+     "PositiveEvent",
+     "Fallen monolith",
+     5685
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 7126,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     7126
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8133,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8133
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 8139,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     8139
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 103108,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     103108
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 103650,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     103650
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Yuuta",
+    "arrivalTick": 104006,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Yuuta",
+     104006
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Yuuta",
+    "arrivalTick": 104006,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Yuuta",
+     104006
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Harmony Funeral opportunity for Gizmo",
+    "arrivalTick": 104006,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Harmony Funeral opportunity for Gizmo",
+     104006
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Gizmo",
+    "arrivalTick": 104006,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Gizmo",
+     104006
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 104017,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     104017
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Touched by the slime",
+    "arrivalTick": 104129,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Touched by the slime",
+     104129
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 3,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 38,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 104601
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #1 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #2 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_154) A = Thing_RM_SkarrinBreedingStock57254 B = (170, 0, 170) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Rubber started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_166) A = Thing_RM_SkarrinBreedingStock57254 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_156) A = Thing_RM_SkarrinBreedingStock57254 B = (172, 0, 172)) (RM_StockPoolPen (Job_157) A = Thing_RM_SkarrinBr"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #3 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Invalid count: -1, setting to 1. Job was RM_StockPoolPen (Job_182) A = Thing_RM_SkarrinBreedingStock61901 B = (178, 0, 178) Giver = ThinkNode_QueuedJob [workGiverDef: null]"
+  ],
+  [
+   "Error",
+   "Tara started 10 jobs in one tick. newJob=RM_StockPoolPen (Job_199) A = Thing_RM_SkarrinBreedingStock61901 B = (172, 0, 172) jobGiver=RimWorld.JobGiver_Work jobList=(RM_StockPoolPen (Job_189) A = Thing_RM_SkarrinBreedingStock61901 B = (172, 0, 172)) (RM_StockPoolPen (Job_190) A = Thing_RM_SkarrinBree"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #4 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #5 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Message",
+   "[RimMandrake.WeepingStones] classified pool body #6 for zone 'Pool pen 1' (1 cells). Sticky \u2014 this never runs again for this zone id."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29618"
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing VoidMonolith36443"
+  ],
+  [
+   "Message",
+   "Geyser spray sustainer still playing after 1000 ticks. Force-ending."
+  ],
+  [
+   "Error",
+   "Tried to destroy non-destroyable thing SteamGeyser29622"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 595,
+  "overhead_spent": 0,
+  "total_spent": 595,
+  "epoch": 0,
+  "last_seen_tick": 104601,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1350,
+    "spent": 595
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 104006,
+    "tick_to": 104601,
+    "ticks": 595,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "Contagion",
+  "chain": "burn_natural",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T033439\\Contagion__burn_natural__colonist_injured_unexpectedly__t104601__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3720751,
+  "width": 1810,
+  "height": 1183,
+  "md5": "08e0a37ecd4bfd1dac6541e33bec17e9",
+  "why": ""
+ },
+ "notes": []
+}

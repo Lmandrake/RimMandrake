@@ -1,0 +1,1345 @@
+{
+ "name": "BlueDesert__flora_chain__hostile_pawns__t395803__001",
+ "when_utc": "2026-10-03T23:59:15Z",
+ "hits": [
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "22 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "Megaspider207268",
+      "kindDef": "Megaspider",
+      "faction": "Insect",
+      "x": 219,
+      "z": 109
+     },
+     {
+      "id": "Locust207269",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 224,
+      "z": 114
+     },
+     {
+      "id": "Spelopede207270",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 227,
+      "z": 109
+     },
+     {
+      "id": "Megascarab207271",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 224,
+      "z": 118
+     },
+     {
+      "id": "Locust207272",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 226,
+      "z": 111
+     },
+     {
+      "id": "Larva207273",
+      "kindDef": "Larva",
+      "faction": "Insect",
+      "x": 197,
+      "z": 107
+     },
+     {
+      "id": "Spelopede207274",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 180,
+      "z": 97
+     },
+     {
+      "id": "Megaspider207275",
+      "kindDef": "Megaspider",
+      "faction": "Insect",
+      "x": 184,
+      "z": 99
+     },
+     {
+      "id": "Megascarab207276",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 182,
+      "z": 99
+     },
+     {
+      "id": "Megaspider207277",
+      "kindDef": "Megaspider",
+      "faction": "Insect",
+      "x": 182,
+      "z": 99
+     },
+     {
+      "id": "Locust207278",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 165,
+      "z": 81
+     },
+     {
+      "id": "Spelopede207279",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 165,
+      "z": 81
+     },
+     {
+      "id": "Megascarab207280",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 161,
+      "z": 81
+     },
+     {
+      "id": "Locust207281",
+      "kindDef": "Locust",
+      "faction": "Insect",
+      "x": 161,
+      "z": 80
+     },
+     {
+      "id": "Spelopede207282",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 162,
+      "z": 81
+     },
+     {
+      "id": "Megascarab207283",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 171,
+      "z": 82
+     },
+     {
+      "id": "Megascarab207284",
+      "kindDef": "Megascarab",
+      "faction": "Insect",
+      "x": 170,
+      "z": 82
+     },
+     {
+      "id": "Spelopede207285",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 143,
+      "z": 72
+     },
+     {
+      "id": "Spelopede207286",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 144,
+      "z": 83
+     },
+     {
+      "id": "Larva207287",
+      "kindDef": "Larva",
+      "faction": "Insect",
+      "x": 145,
+      "z": 81
+     },
+     {
+      "id": "Megaspider207288",
+      "kindDef": "Megaspider",
+      "faction": "Insect",
+      "x": 145,
+      "z": 83
+     },
+     {
+      "id": "Spelopede207289",
+      "kindDef": "Spelopede",
+      "faction": "Insect",
+      "x": 146,
+      "z": 81
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    219,
+    109
+   ],
+   "fingerprint": "hostile_pawns:Larva207273,Larva207287,Locust207269,Locust207272,Locust207278,Locust207281,Megascarab207271,Megascarab207276,Megascarab207280,Megascarab207283,Megascarab207284,Megaspider207268,Megaspider207275,Megaspider207277,Megaspider207288,Spelopede207270,Spelopede207274,Spelopede207279,Spelopede207282,Spelopede207285,Spelopede207286,Spelopede207289"
+  }
+ ],
+ "snapshot": {
+  "tick": 395803,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Megaspider207268",
+    "name": "Megaspider",
+    "kindDef": "Megaspider",
+    "def": "Megaspider",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 219,
+    "z": 109,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_MaintainPosture",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Locust207269",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 224,
+    "z": 114,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207270",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 227,
+    "z": 109,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab207271",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 224,
+    "z": 118,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Gunshot",
+      "label": "permanent gunshot injury (itchy)",
+      "part": "Eye",
+      "severity": 3.0
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.046875,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Locust207272",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 226,
+    "z": 111,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Larva207273",
+    "name": "Larva",
+    "kindDef": "Larva",
+    "def": "Larva",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 197,
+    "z": 107,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "BI_GotoPatrol",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207274",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 180,
+    "z": 97,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "BI_GotoPatrol",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megaspider207275",
+    "name": "Megaspider",
+    "kindDef": "Megaspider",
+    "def": "Megaspider",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 184,
+    "z": 99,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "BI_GotoPatrol",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab207276",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 182,
+    "z": 99,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "BI_GotoPatrol",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megaspider207277",
+    "name": "Megaspider",
+    "kindDef": "Megaspider",
+    "def": "Megaspider",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 182,
+    "z": 99,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "BI_GotoPatrol",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Locust207278",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 165,
+    "z": 81,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_MaintainPosture",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207279",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 165,
+    "z": 81,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab207280",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 161,
+    "z": 81,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Locust207281",
+    "name": "Locust",
+    "kindDef": "Locust",
+    "def": "Locust",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 161,
+    "z": 80,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207282",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 162,
+    "z": 81,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab207283",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 171,
+    "z": 82,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_MaintainPosture",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megascarab207284",
+    "name": "Megascarab",
+    "kindDef": "Megascarab",
+    "def": "Megascarab",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 170,
+    "z": 82,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207285",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 143,
+    "z": 72,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207286",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 144,
+    "z": 83,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Shell",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "InsectLeg",
+      "severity": 1.34
+     }
+    ],
+    "bleedRate": 0.0472941138,
+    "painTotal": 0.017735295,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Larva207287",
+    "name": "Larva",
+    "kindDef": "Larva",
+    "def": "Larva",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 145,
+    "z": 81,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Megaspider207288",
+    "name": "Megaspider",
+    "kindDef": "Megaspider",
+    "def": "Megaspider",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 145,
+    "z": 83,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "Gunshot",
+      "label": "permanent gunshot injury",
+      "part": "Eye",
+      "severity": 4.0
+     },
+     {
+      "def": "Crack",
+      "label": "crack",
+      "part": "Pronotum",
+      "severity": 1.34
+     },
+     {
+      "def": "Scratch",
+      "label": "scratch",
+      "part": "InsectHead",
+      "severity": 1.34
+     }
+    ],
+    "bleedRate": 0.03216,
+    "painTotal": 0.01206,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "Spelopede207289",
+    "name": "Spelopede",
+    "kindDef": "Spelopede",
+    "def": "Spelopede",
+    "faction": "Insect",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 146,
+    "z": 81,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Bullock",
+    "arrivalTick": 27201,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Bullock",
+     27201
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Trumpet",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Trumpet",
+     31101
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Trumpet",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Trumpet",
+     31101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 34101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     34101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Veronica",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Veronica",
+     44616
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Veronica",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Veronica",
+     44616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Ty",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Ty",
+     44616
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ty",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ty",
+     44616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Coyote",
+    "arrivalTick": 58116,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Coyote",
+     58116
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Coyote",
+    "arrivalTick": 58116,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Coyote",
+     58116
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Sprinter",
+    "arrivalTick": 59316,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Sprinter",
+     59316
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sprinter",
+    "arrivalTick": 59316,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sprinter",
+     59316
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Meef",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Meef",
+     63403
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Meef",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Meef",
+     63403
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Malvina",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Malvina",
+     63403
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Malvina",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Malvina",
+     63403
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The fire rite",
+    "arrivalTick": 393419,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The fire rite",
+     393419
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 394036,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     394036
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 20,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 395803
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Lynx: opinion=12, mood=0.22, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Morrison: opinion=39, mood=0.39, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Coyote: opinion=-10, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Scan finished. NewlyAddedMemories=3"
+  ],
+  [
+   "Message",
+   "Morrison cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 12"
+  ],
+  [
+   "Message",
+   "Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Lynx cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Bebe and Coyote cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Bebe"
+  ],
+  [
+   "Message",
+   "Bebe failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Starting scan. Candidates=3, CurrentMood=0.38"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Eval Kell: opinion=58, mood=0.11, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Eval Ivan: opinion=80, mood=0.22, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Warning",
+   "Reached max messages limit. Stopping logging to avoid spam."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955032,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955093,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 300,
+  "overhead_spent": 0,
+  "total_spent": 300,
+  "epoch": 0,
+  "last_seen_tick": 395803,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 975,
+    "spent": 300
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 395503,
+    "tick_to": 395803,
+    "ticks": 300,
+    "requested": 300
+   }
+  ]
+ },
+ "context": {
+  "mod": "BlueDesert",
+  "chain": "flora_chain",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T165757\\BlueDesert__flora_chain__hostile_pawns__t395803__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2171453,
+  "width": 1810,
+  "height": 1183,
+  "md5": "cd9361f166cd2bd16c6adf3c112bf6ac",
+  "why": ""
+ },
+ "notes": []
+}

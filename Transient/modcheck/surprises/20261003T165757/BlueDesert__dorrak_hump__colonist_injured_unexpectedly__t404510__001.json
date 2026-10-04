@@ -1,0 +1,746 @@
+{
+ "name": "BlueDesert__dorrak_hump__colonist_injured_unexpectedly__t404510__001",
+ "when_utc": "2026-10-04T00:02:10Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Kell gained 1 new hediff(s) (LungRotExposure); cause_hint=unknown",
+   "evidence": {
+    "id": "Human661",
+    "name": "Kell",
+    "new_hediffs": [
+     {
+      "def": "LungRotExposure",
+      "label": "rot stink exposure",
+      "part": null,
+      "severity": 0.001
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "LungRotExposure"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    185,
+    100
+   ],
+   "fingerprint": "colonist_injured:Human661:LungRotExposure@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 404510,
+  "epoch": 0,
+  "map_id": 0,
+  "pawns": [
+   {
+    "id": "Human661",
+    "name": "Kell",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 185,
+    "z": 100,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "VTE_SlowerBleedingRate",
+      "label": "hyper-coagulant",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "DBHDehydration",
+      "label": "dehydration (minor)",
+      "part": null,
+      "severity": 0.257854372
+     },
+     {
+      "def": "RM_SheenCoating",
+      "label": "Sheen coating (sheened)",
+      "part": null,
+      "severity": 0.237463608
+     },
+     {
+      "def": "LungRotExposure",
+      "label": "rot stink exposure",
+      "part": null,
+      "severity": 0.001
+     }
+    ],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "GotoWander",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Trumpet",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Trumpet",
+     31101
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Trumpet",
+    "arrivalTick": 31101,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Trumpet",
+     31101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 34101,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     34101
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Veronica",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Veronica",
+     44616
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Veronica",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Veronica",
+     44616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Ty",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Ty",
+     44616
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Ty",
+    "arrivalTick": 44616,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Ty",
+     44616
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funeral (no corpse) opportunity for Conner",
+    "arrivalTick": 44916,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funeral (no corpse) opportunity for Conner",
+     44916
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Coyote",
+    "arrivalTick": 58116,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Coyote",
+     58116
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Coyote",
+    "arrivalTick": 58116,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Coyote",
+     58116
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Sprinter",
+    "arrivalTick": 59316,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Sprinter",
+     59316
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Sprinter",
+    "arrivalTick": 59316,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Sprinter",
+     59316
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Meef",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Meef",
+     63403
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Meef",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Meef",
+     63403
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Funerals for Malvina",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Funerals for Malvina",
+     63403
+    ]
+   },
+   {
+    "defName": "Death",
+    "label": "Death: Malvina",
+    "arrivalTick": 63403,
+    "mapId": null,
+    "fingerprint": [
+     "Death",
+     "Death: Malvina",
+     63403
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The fire rite",
+    "arrivalTick": 393419,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The fire rite",
+     393419
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Sh'kaar the All-Searing",
+    "arrivalTick": 394036,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Sh'kaar the All-Searing",
+     394036
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "The mountain walks in",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "The mountain walks in",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 395503,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     395503
+    ]
+   },
+   {
+    "defName": "NeutralEvent",
+    "label": "Area revealed",
+    "arrivalTick": 404240,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Area revealed",
+     404240
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 20,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 8,
+   "adaptDays": -60.0,
+   "totalThreatPointsFactor": 0.4,
+   "ticksGame": 404510
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "RM_SheenExposureLock",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Lynx: opinion=12, mood=0.22, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Morrison: opinion=39, mood=0.39, happy=False, sad=True, thought=MCR_MyFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Eval Coyote: opinion=-10, mood=0.32, happy=False, sad=True, thought=MCR_ADislikableGuyIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Bebe: Scan finished. NewlyAddedMemories=3"
+  ],
+  [
+   "Message",
+   "Morrison cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Interaction count for current active conversation: 12"
+  ],
+  [
+   "Message",
+   "Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Lynx cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Bebe and Coyote cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Bebe"
+  ],
+  [
+   "Message",
+   "Bebe failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: Morrison cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Morrison failed to get a job from any IntimacyGivers"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Starting scan. Candidates=3, CurrentMood=0.38"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Eval Kell: opinion=58, mood=0.11, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Eval Ivan: opinion=80, mood=0.22, happy=False, sad=True, thought=MCR_MyGoodFriendIsSad, result=REFRESHED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Alyas: Scan finished. NewlyAddedMemories=2"
+  ],
+  [
+   "Warning",
+   "Reached max messages limit. Stopping logging to avoid spam."
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 270,
+  "overhead_spent": 0,
+  "total_spent": 270,
+  "epoch": 0,
+  "last_seen_tick": 404510,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 637,
+    "spent": 30
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404240,
+    "tick_to": 404270,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404270,
+    "tick_to": 404300,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404300,
+    "tick_to": 404330,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404330,
+    "tick_to": 404360,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404360,
+    "tick_to": 404390,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404390,
+    "tick_to": 404420,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404420,
+    "tick_to": 404450,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404450,
+    "tick_to": 404480,
+    "ticks": 30,
+    "requested": 30
+   },
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 404480,
+    "tick_to": 404510,
+    "ticks": 30,
+    "requested": 30
+   }
+  ]
+ },
+ "context": {
+  "mod": "BlueDesert",
+  "chain": "dorrak_hump",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T165757\\BlueDesert__dorrak_hump__colonist_injured_unexpectedly__t404510__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 2675440,
+  "width": 1810,
+  "height": 1183,
+  "md5": "3fa557a38e24d0e550c636b655f7979f",
+  "why": ""
+ },
+ "notes": []
+}
