@@ -75,6 +75,63 @@
     </placeWorkers>
   </ThingDef>
 
+  <!-- RM_Swale — CRACKEDLANDS_MECHANICS_BUILD_1 §1 (owner sitting 2026-09-28). A graded,
+       perforated liner laid in a dug channel: while its cell carries water it walks the ground
+       within two cells up the fertility ladder below, one rung at a time, capped at the top rung,
+       never while dry (Source/Swale/RM_Swale.cs). RM_ tier, a normal buildable; the Utinni
+       campaign lock is CRACKEDLANDS_SWALE_CAMPAIGN_LOCK_1 (blocked on the survey loop).
+       PROVISIONAL numbers (owner ruling 2026-10-03: first guesses, tuned live): radius 2.9,
+       one rung per fed day. PLACEHOLDER ART: vanilla's empty-grave sheet (a dug, lined trench). -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_Swale</defName>
+    <label>swale</label>
+    <description>A graded, perforated liner laid in a dug channel. While water stands in it, it seeps into the ground around it, and over days the sand within a couple of paces turns to soil and the soil to rich soil. It does nothing dry, and it never makes ground richer than rich soil.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <!-- Vanilla ships this sheet as Graphic_Multi (Buildings_Misc.xml GraveEmpty). -->
+      <texPath>Things/Building/Misc/GraveEmpty</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>FloorEmplacement</altitudeLayer>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>0</pathCost>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <useHitPoints>true</useHitPoints>
+    <tickerType>Rare</tickerType>
+    <designationCategory>Structure</designationCategory>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <costList>
+      <WoodLog>15</WoodLog>
+    </costList>
+    <building>
+      <!-- Not an edifice, same as the ladder: liquid and the fill-in designator still reach the cell. -->
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="RimMandrake.FlowWorks.CompProperties_Swale">
+        <ladder>
+          <li>Sand</li>
+          <li>Soil</li>
+          <li>SoilRich</li>
+        </ladder>
+        <radius>2.9</radius>
+        <ticksPerStep>60000</ticksPerStep>
+      </li>
+    </comps>
+    <placeWorkers>
+      <li>RimMandrake.FlowWorks.PlaceWorker_SwaleOnExcavation</li>
+    </placeWorkers>
+  </ThingDef>
+
   <!-- CANAL_BOTTOM_SPIKES_1 — spikes are per-cell hardware on a superdeep (D = 4) canal floor, the
        ladder's shape: a Thing in the cell + placeworker + RM_SpikeUtility.HasSpikes. Owner Q2
        2026-10-02 (by card): D = 4 only. Fire on descent only (RM_SuperdeepTrap.PitDescent), three

@@ -61,6 +61,7 @@ SETTINGS = {
         "tankLoopEnabled": True, "tankCapacityMultiplier": 1.0,
         "liquidDrillingEnabled": True, "drillYieldChanceMultiplier": 1.0, "drillUnitsPerCycle": 1.0,
         "typedLiquidShoresEnabled": True,
+        "swaleEnabled": True, "swaleRateMultiplier": 1.0,     # CRACKEDLANDS_MECHANICS_BUILD_1 swale
     },
     "RimMandrake.FlowWorks.ManyWaters.RiverSteamSettings": {
         "riverSteamEnabled": True, "puffRateMultiplier": 1.0,

@@ -62,6 +62,7 @@ FW_TOGGLES = [
     "flowDoorsSealedFromPitEnabled", "sluiceLetsBigThroughEnabled",
     "bottleLoopEnabled", "bottleDirtyStageEnabled", "tankLoopEnabled",
     "liquidDrillingEnabled", "typedLiquidShoresEnabled",
+    "swaleEnabled",
 ]
 PITS_TOGGLES = ["trapTriggerEnabled", "fallDamageEnabled"]
 RIVER_TOGGLES = ["riverSteamEnabled"]
@@ -1294,3 +1295,42 @@ def fluid_identity_recorded(t):
             t.upstream_failed = True
             return
         _expect("unrecorded 0 |" in text and ":null" not in text, "a wet cell or a body has no recorded fluid: %s" % text)
+
+
+def _swale_proof(t, x, z):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.FlowWorks.RM_SwaleRules", method="ProofStep",
+                      args="current|%d,%d" % (x, z))
+    return str((r or {}).get("result", "")) or "no result: %r" % (r,)
+
+
+@suite.chain("swale_enrichment")
+def swale_enrichment(t):
+    """CRACKEDLANDS_MECHANICS_BUILD_1 §1, the swale: in a dug cell on sand it does nothing dry, one step fed
+    turns the nearest sand to soil, a ring already at rich soil is CAPPED, and the switch off makes it inert.
+    ProofStep fires one step through the tick's own gates (switch, then fed) so no fed day has to pass.
+    Not proven here: the real CompTickRare pace (one rung per fed day, PROVISIONAL), a seasonal flood feeding
+    it (water terrain on the cell reads as fed by the same rule), the Utinni campaign lock (unbuilt)."""
+    x0, z0 = _prep_plot(t, "H", terrain="Sand")
+    x, z = x0 + 8, z0 + 6
+    _dig(t, x, z, 1)
+    t.bridge_call("jawa/spawn_batch", ops="RM_Swale:%d,%d" % (x, z))
+    with t.component("dry_swale_does_nothing", toggle="swaleEnabled"):
+        txt = _swale_proof(t, x, z)
+        if t._guard():
+            _expect(txt == "DRY", "an unfilled swale did not read DRY: %s" % txt)
+    _fill(t, x, z, 1)
+    with t.component("fed_swale_turns_sand_to_soil", toggle="swaleEnabled"):
+        txt = _swale_proof(t, x, z)
+        if t._guard():
+            _expect(txt.startswith("STEP") and "Sand->Soil" in txt, "a fed swale on sand did not step sand->soil: %s" % txt)
+    with t.component("swale_capped_at_rich_soil", toggle="swaleEnabled"):
+        ring = [_rect(x - 3, z + 1, 7, 3), _rect(x - 3, z - 3, 7, 3), _rect(x - 3, z, 3, 1), _rect(x + 1, z, 3, 1)]
+        t.bridge_call("jawa/set_terrain_batch", ops=";".join("SoilRich:%s" % r for r in ring))  # the swale's own cell untouched
+        txt = _swale_proof(t, x, z)
+        if t._guard():
+            _expect(txt.startswith("CAPPED"), "a swale ringed by rich soil still stepped: %s" % txt)
+    with t.component("swale_off_is_inert", toggle="swaleEnabled"):
+        with _setting(t, "swaleEnabled", False):
+            txt = _swale_proof(t, x, z)
+            if t._guard():
+                _expect(txt == "OFF", "swaleEnabled OFF but the swale still answered: %s" % txt)

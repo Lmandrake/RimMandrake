@@ -64,6 +64,7 @@
     <Compile Include="RimMandrakeFlowWorks_DefOf.cs" />
     <Compile Include="RimMandrakeFlowWorksMod.cs" />
     <Compile Include="FluidDef.cs" />
+    <Compile Include="Swale\RM_Swale.cs" />
     <Compile Include="RM_ExcavationDepth.cs" />
     <Compile Include="RM_MapComponent_Excavation.cs" />
     <!-- The §5 stock arithmetic, Verse-free on purpose so Source/SelfTest/

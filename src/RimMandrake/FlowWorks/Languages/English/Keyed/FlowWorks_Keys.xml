@@ -8,6 +8,7 @@
   <RMFlow_JumpIntoPitDesc>Jump down into the adjacent superdeep pit. The fall hurts, and there is no climbing out without a ladder.</RMFlow_JumpIntoPitDesc>
   <RMFlow_JumpIntoPitConfirm>{0} will jump into the pit, take the fall and be stranded down there until a ladder is placed. Jump?</RMFlow_JumpIntoPitConfirm>
   <RMFlow_LadderNeedsExcavation>Must be placed in an excavated cell.</RMFlow_LadderNeedsExcavation>
+  <RMFlow_SwaleNeedsExcavation>A swale is laid in a dug channel.</RMFlow_SwaleNeedsExcavation>
   <!-- CANAL_BOTTOM_SPIKES_1, owner Q2: spikes only in the deepest pits. -->
   <RMFlow_SpikesNeedSuperdeep>Spikes go only on the floor of a superdeep pit (depth 4). This cell is depth {0}.</RMFlow_SpikesNeedSuperdeep>
 
