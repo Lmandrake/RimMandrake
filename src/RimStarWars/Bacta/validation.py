@@ -360,6 +360,12 @@ def content(t):
                         pool.remove(tup)
                     else:
                         missing.append(tup)
+                if missing and len(sg) >= 64:
+                    # LIVE 2026-10-03: jawa/get_defs serialises at most 64 list items (Base_Outlander_Standard reads exactly 64
+                    # although Better Traders' own def has 69 rows, + AlphaAnimals' 8 + ours), so our APPENDED rows fall off
+                    # the end of the read. A truncated read cannot say the rows are absent.
+                    _unmeasured(t, "%s stockGenerators read is capped at %d rows (the tool's list cap): the patch's rows %s are "
+                                   "past the end of the read, not proven absent" % (row.get("defName"), len(sg), missing))
                 if missing:
                     _fail("%s stockGenerators lack the patch's rows %s: the patch matched nothing, or another mod "
                           "rewrote the list" % (row.get("defName"), missing))
