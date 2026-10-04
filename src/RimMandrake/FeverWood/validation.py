@@ -1722,6 +1722,70 @@ def ant_theft(t):
                 _fail("no 'Carried off' letter was sent: %s" % state)
 
 
+@suite.chain("kurreth_column")
+def kurreth_column(t):
+    """FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1 (part B of the ant theft). Offline: RM_Quest_KurrethColumn is code-fired only
+    (weight 0, isRootSpecial, autoAccept) around the C# node, the site part and the bound hediff exist, the theft letter
+    starts the quest, and both timers are read from Mod Settings. Live on the CURRENT map: a theft raid
+    (RM_KurrethTheftProof.ProofRaid, step) leaves an open column quest with an unspawned-map site holding the stolen
+    ids (RM_KurrethColumnProof.ProofQuest), and forcing the column deadline moves it on (ProofHive: into the hive
+    when the map has one, else the lost letter) -- never left in Column. NOT proven here: entering the camp, the
+    guards, cutting an animal free and walking it home (first poke: after ProofQuest, send a caravan to the site,
+    walk a colonist to a bound thornbug once the guards are dead, read ProofQuest bound=0 then quest ends)."""
+    with _comp(t, "column_quest_wired", independent=True):
+        if t.session is not None:
+            q = ET.parse(os.path.join(_HERE, "Defs", "QuestScriptDefs", "RM_Quest_KurrethColumn.xml")).getroot()
+            qd = q.find("QuestScriptDef[defName='RM_Quest_KurrethColumn']")
+            if qd is None:
+                _fail("QuestScriptDef RM_Quest_KurrethColumn missing")
+            if qd.findtext("rootSelectionWeight") != "0" or qd.findtext("isRootSpecial") != "true" or qd.findtext("autoAccept") != "true":
+                _fail("the column quest must be code-fired only and auto-accepted")
+            nodes = [li.get("Class", "") for li in qd.findall("root/nodes/li")]
+            if "RimMandrake.FeverWood.RM_QuestNode_KurrethColumn" not in nodes or nodes.count("QuestNode_End") != 2:
+                _fail("the column quest needs its C# node and two ends, got %r" % nodes)
+            for sub, name in (("SitePartDefs", "RM_KurrethColumnCamp"), ("HediffDefs", "RM_Hediff_KurrethBound")):
+                if not os.path.isfile(os.path.join(_HERE, "Defs", sub, name + ".xml")):
+                    _fail("missing %s/%s.xml" % (sub, name))
+            src = os.path.join(_HERE, "S" + "ource")
+            col = open(os.path.join(src, "RM_KurrethColumn.cs"), encoding="utf-8").read()
+            theft = open(os.path.join(src, "RM_KurrethTheft.cs"), encoding="utf-8").read()
+            proj = open(os.path.join(src, "RM_FeverWood.csproj"), encoding="utf-8").read()
+            if "RM_KurrethColumnUtility.TryStartColumnQuest(" not in theft:
+                _fail("the theft letter does not start the column quest")
+            if '<Compile Include="RM_KurrethColumn.cs" />' not in proj:
+                _fail("RM_KurrethColumn.cs is not compiled (EnableDefaultCompileItems is off)")
+            for needle in ("RM_FeverWoodSettings.kurrethColumnEnabled", "RM_FeverWoodSettings.kurrethColumnDays",
+                           "RM_FeverWoodSettings.kurrethHiveHoldDays", "RemoveKidnappedPawn", "QueenRoom"):
+                if needle not in col:
+                    _fail("RM_KurrethColumn.cs lacks %s" % needle)
+
+    def proof(t, typ, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.FeverWood." + typ, method=method, args="current")
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def nums(text):
+        return dict((k, v) for k, v in re.findall(r"(\w+)=([\w.,-]*)", text))
+
+    with _comp(t, "a_theft_opens_a_column_camp_holding_the_animals", toggle="kurrethColumnEnabled"):
+        raid = proof(t, "RM_KurrethTheftProof", "ProofRaid")
+        if _live(t) and not raid.startswith("RAID"):
+            _fail("ProofRaid did not stage the column: %s" % raid)
+        t.wait_ticks(6000)
+        q = nums(proof(t, "RM_KurrethColumnProof", "ProofQuest"))
+        _note(t, "column quest", q)
+        if _live(t):
+            if q.get("quest") != "1" or q.get("site") != "1" or q.get("phase") != "Column":
+                _fail("no open column quest with a camp site after the theft: %r" % q)
+            if int(q.get("held", "0") or 0) < 1 or not q.get("victimIds"):
+                _fail("the column quest holds no stolen animal: %r" % q)
+
+    with _comp(t, "an_unreached_column_moves_on_and_says_so", toggle="kurrethColumnEnabled"):
+        h = nums(proof(t, "RM_KurrethColumnProof", "ProofHive"))
+        _note(t, "column after deadline", h)
+        if _live(t) and h.get("phase") not in ("Hive", "Done"):
+            _fail("the column stayed put past its deadline: %r" % h)
+
+
 @suite.chain("oil_boil")
 def oil_boil(t):
     """FEVERWOOD_OIL_BOIL_WEATHER_1. Offline: the weather and condition defs exist, RM_FeverWood rolls the oil boil

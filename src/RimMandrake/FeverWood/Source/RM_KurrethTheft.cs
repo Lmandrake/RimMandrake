@@ -322,8 +322,14 @@ namespace RimMandrake.FeverWood
             string text = "The kurreth did not come to kill. They have carried off " + names + ", alive, and the column "
                           + "left the map to the " + dir + ". A trail of slime leads off the edge there.\n\n"
                           + "A stolen animal is not dead: the kurreth keep what they take.";
+            // FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: the raid-back quest (camp site, then the hive).
+            Quest column = RM_KurrethColumnUtility.TryStartColumnQuest(map, pending.Select(t => t.victim).ToList());
+            if (column != null)
+            {
+                text += " This column has made camp a few tiles off; the quest marks it.";
+            }
             Find.LetterStack.ReceiveLetter("Carried off: " + pending.Count + (pending.Count == 1 ? " animal" : " animals"),
-                text, LetterDefOf.NegativeEvent, new LookTargets(pending[pending.Count - 1].exitCell, map));
+                text, LetterDefOf.NegativeEvent, new LookTargets(pending[pending.Count - 1].exitCell, map), null, column);
             pending.Clear();
         }
 

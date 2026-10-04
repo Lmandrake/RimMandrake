@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1: the column's camp. Made only by RM_QuestNode_KurrethColumn (no tags, so no
+     other quest can draw it). The worker spawns the held animals bound and the guards on map generation. -->
+<Defs>
+  <SitePartDef>
+    <defName>RM_KurrethColumnCamp</defName>
+    <label>kurreth column camp</label>
+    <description>A kurreth column halted on its way home, holding the animals it carried off. They are alive.</description>
+    <workerClass>RimMandrake.FeverWood.RM_SitePartWorker_KurrethColumnCamp</workerClass>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/Prisoner</expandingIconTexture>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <requiresFaction>false</requiresFaction>
+    <handlesWorldObjectTimeoutInspectString>true</handlesWorldObjectTimeoutInspectString>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+  </SitePartDef>
+</Defs>
