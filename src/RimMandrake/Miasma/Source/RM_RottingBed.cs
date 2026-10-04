@@ -25,7 +25,7 @@ namespace RimMandrake.Miasma
         private Corpse rotting;
         private int rotTicks;
 
-        private RM_RottingBedExtension Ext => def.GetModExtension<RM_RottingBedExtension>() ?? new RM_RottingBedExtension();
+        public RM_RottingBedExtension Ext => def.GetModExtension<RM_RottingBedExtension>() ?? new RM_RottingBedExtension();
 
         public static int RotDownTicks => Mathf.Max(2500, Mathf.RoundToInt(RM_MiasmaSettings.rottingBedRotDays * GenDate.TicksPerDay));
 
@@ -157,18 +157,23 @@ namespace RimMandrake.Miasma
             }
             var bed = (RM_Building_RottingBed)GenSpawn.Spawn(ThingMaker.MakeThing(bedDef), cell, map);
             bed.SetFaction(Faction.OfPlayer);
-            Pawn p = PawnGenerator.GeneratePawn(PawnKindDefOf.Colonist, Faction.OfPlayer);
+            // An ADULT baseliner: a generated colonist can be a child or teen (Biotech life stages scale BodySize
+            // below 1), which left 6 bones where the proof wanted 8 (run17 Miasma, 2026-10-03). The curve was right.
+            Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(PawnKindDefOf.Colonist, Faction.OfPlayer,
+                fixedBiologicalAge: 30f, fixedChronologicalAge: 30f, forceBaselinerChance: 1f));
             GenSpawn.Spawn(p, cell, map);
             p.Kill(null);
             Corpse corpse = p.Corpse;
             bool accepts = corpse != null && bed.Accepts(corpse);
             string name = p.LabelShort;
+            float size = p.BodySize;
             List<Thing> made = corpse != null ? bed.RotDown(corpse) : new List<Thing>();
             Thing skull = made.FirstOrDefault(t => t.def.defName == "Skull");
             string src = skull == null ? "" : skull.Label + " " + skull.TryGetComp<CompHasSources>()?.CompInspectStringExtra();
             return "accepts=" + accepts + " corpseGone=" + (corpse == null || corpse.Destroyed)
                    + " bones=" + made.Where(t => t.def.defName == "RM_Bones").Sum(t => t.stackCount)
-                   + " skull=" + (skull != null) + " skullNamesSource=" + (skull != null && src.Contains(name));
+                   + " skull=" + (skull != null) + " skullNamesSource=" + (skull != null && src.Contains(name))
+                   + " bodySize=" + size.ToString("0.00") + " expectBones=" + RottingBedMath.BonesFor(size, bed.Ext.bonesPerBodySize);
         }
     }
 }

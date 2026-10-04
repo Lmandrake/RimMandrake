@@ -370,9 +370,19 @@ def _build_suite():
             r = t.bridge_call("jawa/static_call", type="RimMandrake.Miasma.RM_RottingBedProof", method="ProofCorpse",
                               args="current")
             text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
-            for want in ("accepts=True", "corpseGone=True", "bones=8", "skull=True", "skullNamesSource=True"):
+            for want in ("accepts=True", "corpseGone=True", "skull=True", "skullNamesSource=True"):
                 if want not in text:
                     raise ExpectationFailed("rotting bed proof missing %s: %s" % (want, text[:200]))
+            # bones follow BODY SIZE (round(size x 8)); the proof now kills an adult baseliner (size 1.00 -> 8). LIVE
+            # run17 read 6: the generated colonist was a teen, the curve was right and the proof's victim was not.
+            import re as _re
+            got = _re.search(r"bones=(\d+)", text)
+            exp = _re.search(r"expectBones=(\d+)", text)
+            size = _re.search(r"bodySize=([\d.]+)", text)
+            if not (got and exp and got.group(1) == exp.group(1)):
+                raise ExpectationFailed("bones do not follow the body-size curve: %s" % text[:240])
+            if size and size.group(1) == "1.00" and got.group(1) != "8":
+                raise ExpectationFailed("an adult human (size 1.00) must leave 8 bones: %s" % text[:240])
 
     @suite.chain("mothers_price")
     def mothers_price(t):

@@ -69,4 +69,16 @@ namespace RimMandrake.TheRot
 				 + (r.rainfall.max - tile.rainfall) / divisor;
 		}
 	}
+
+	/// <summary>static_call read of the live BiomeDef's worker type (jawa/get_defs cannot serialise System.Type
+	/// fields). "WORKER RimMandrake.TheRot.RM_BiomeWorker_TheRot | instance RM_BiomeWorker_TheRot" or "WORKER missing".</summary>
+	public static class RM_TheRotBiomeProof
+	{
+		public static string ProofWorker()
+		{
+			BiomeDef def = DefDatabase<BiomeDef>.GetNamedSilentFail("RM_TheRot");
+			if (def == null) return "WORKER missing (no BiomeDef RM_TheRot)";
+			return "WORKER " + (def.workerClass?.FullName ?? "null") + " | instance " + (def.Worker?.GetType().Name ?? "null");
+		}
+	}
 }

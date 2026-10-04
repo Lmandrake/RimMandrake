@@ -368,19 +368,16 @@ def _build_suite():
                 if not pd > 0:
                     raise ExpectationFailed("plantDensity %s: the flora would never spawn" % pd)
         with t.component("biome_worker_class_loaded", beyond_toggle=True):
-            r = t.bridge_call("jawa/get_defs", defs="BiomeDef/" + BIOME, fields="workerClass", limit=2)
+            # jawa/get_defs cannot serialise System.Type fields (LIVE 2026-10-03: '(no such field)'), so the
+            # worker is read by static_call on the live BiomeDef instead.
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.TheRot.RM_TheRotBiomeProof", method="ProofWorker")
             if _live(t):
-                rows = (r or {}).get("defs") or []
-                wc = str(((rows[0].get("fields") if rows else None) or {}).get("workerClass") or "")
-                if not wc:
-                    _unmeasured(t, "get_defs returned no workerClass field: %r" % (r,))
+                wc = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+                if not wc.startswith("WORKER "):
+                    _unmeasured(t, "static_call ProofWorker gave no answer: %r" % (r,))
                     return
-                if "no such field" in wc:
-                    # LIVE 2026-10-03: jawa/get_defs cannot read System.Type fields on any def; not an answer about the worker.
-                    _unmeasured(t, "get_defs cannot read BiomeDef.workerClass ('(no such field)'); the worker class is unproven here")
-                    return
-                if WORKER not in wc:
-                    raise ExpectationFailed("workerClass reads %r, expected a type containing %s" % (wc, WORKER))
+                if WORKER not in wc.split("|")[0] or ("instance " + WORKER) not in wc:
+                    raise ExpectationFailed("workerClass reads %r, expected %s" % (wc, WORKER))
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
@@ -452,6 +449,7 @@ def _build_suite():
             text = _hp_s(t, "ProofSwallow")
             if _live(t) and not (text.startswith("SWALLOW held") and "spawned False" in text and "still alive in there" in text):
                 raise ExpectationFailed("a downed drifter was not swallowed with a naming inspect line: %s" % text)
+            # ProofCut hits the BELLY (core part), never a random part: a leg hit capped the dealt damage and flaked.
             text = _hp_s(t, "ProofCut", "200")
             if _live(t) and not ("released True" in text and "spawned True" in text):
                 raise ExpectationFailed("200 damage did not cut the swallowed pawn out alive: %s" % text)
