@@ -32,7 +32,7 @@
     <graphicData>
       <texPath>Things/Building/RM_AttarStill/RM_AttarStill</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(2,1)</drawSize>
+      <drawSize>(2,2)</drawSize>
     </graphicData>
     <size>(2,1)</size>
     <costList>
