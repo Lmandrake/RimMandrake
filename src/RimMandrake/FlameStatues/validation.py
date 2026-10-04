@@ -1,12 +1,12 @@
 """validation.py -- first script for Mandrake Flame Statues (mandrake.rm.flamestatues).
 
-FLAME_STATUES_MOD_BUILD_1, statue_mods_spec.md §3 step 4 (skeleton: three fuelled sculptures, one vanilla
-flame each, Chemfuel only). Run:
+FLAME_STATUES_MOD_BUILD_1, statue_mods_spec.md §3 step 4 + step 5 (three fuelled sculptures, a set of
+flames each via RM_CompFlamePoints, Chemfuel only). Run:
 
     python.exe src/RimMandrake/Utils/modcheck/cli.py run FlameStatues
 
-Environment: minimal + every DLC + this mod. No toggles yet: Mod Settings (§2.4) arrive with the C# flame-point
-comp at step 5. Not proven here: the flame drawing and the glow going dark without fuel (first poke: spawn a
+Environment: minimal + every DLC + this mod. Toggles are Mod Settings §2.4 (RM_CompFlamePoints, step 5).
+Not proven here: the flame drawing and the glow going dark without fuel (first poke: spawn a
 colossus, refuel it, screenshot, then empty it).
 """
 import os
@@ -17,9 +17,10 @@ from modcheck import Suite, ExpectationFailed, shipped_defs
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 suite = Suite("FlameStatues")
-suite.toggles = []
+suite.toggles = ["flamePoints", "flecks", "consumeFuel", "qualityScaling", "glow"]
 
 STATUES = ("RM_FlameStatue_Ember", "RM_FlameStatue_Dancer", "RM_FlameStatue_Colossus")
+POINTS = {"RM_FlameStatue_Ember": 1, "RM_FlameStatue_Dancer": 3, "RM_FlameStatue_Colossus": 5}
 NEEDLES = ("mandrake.rm.flamestatues", "RM_FlameStatue", "FlameStatues")
 TEX = os.path.join(HERE, "Textures", "Things", "Building", "Art", "RM_FlameStatues", "RM_FlameStatue_Placeholder.png")
 
@@ -63,6 +64,8 @@ def static_checks():
             bad.append("base must inherit SculptureBase (carving, art comp, quality)")
         if b.findtext("tickerType") != "Normal":
             bad.append("base tickerType must be Normal or CompRefuelable never burns fuel")
+        if b.findtext("drawerType") != "MapMeshAndRealTime":
+            bad.append("base drawerType must be MapMeshAndRealTime or comp PostDraw (the flames) never runs")
         cats = [li.text for li in b.findall("stuffCategories/li")]
         if sorted(cats) != ["Metallic", "Stony"]:
             bad.append("stuff must be Stony+Metallic, no Woody (spec §2.1): %s" % cats)
@@ -70,10 +73,24 @@ def static_checks():
         fuel = [li.text for li in e.findall(".//li[@Class='CompProperties_Refuelable']/fuelFilter/thingDefs/li")]
         if fuel != ["Chemfuel"]:
             bad.append("%s fuel must be Chemfuel only (ruling R4): %s" % (dn, fuel))
-        if len(e.findall(".//li[@Class='CompProperties_FireOverlay']")) != 1:
-            bad.append("%s must carry exactly one vanilla fire overlay (Graphic_Flicker reads only the first)" % dn)
+        if e.findall(".//li[@Class='CompProperties_FireOverlay']"):
+            bad.append("%s carries a vanilla fire overlay; flames come from RM_CompFlamePoints only" % dn)
+        npts = len(e.findall(".//li[@Class='RimMandrake.FlameStatues.RM_CompProperties_FlamePoints']/points/li"))
+        if npts != POINTS[dn]:
+            bad.append("%s has %d flame points, spec §2.1 says %d" % (dn, npts, POINTS[dn]))
         if e.find(".//li[@Class='CompProperties_Glower']") is None:
             bad.append("%s has no glower" % dn)
+    src = open(os.path.join(HERE, "Source", "RimMandrake.FlameStatues.csproj"), encoding="utf-8").read()
+    for f in os.listdir(os.path.join(HERE, "Source")):
+        if f.endswith(".cs") and ('Compile Include="%s"' % f) not in src:
+            bad.append("%s is not in the csproj (compiles into nothing)" % f)
+    mod = open(os.path.join(HERE, "Source", "FlameStatuesMod.cs"), encoding="utf-8").read()
+    for f in suite.toggles:
+        if '"%s"' % f not in mod:
+            bad.append("toggle %s is not Scribed" % f)
+    asm = os.path.join(HERE, "Assemblies")
+    if not os.path.isdir(asm) or not any(f.endswith(".dll") for f in os.listdir(asm)):
+        bad.append("no DLL in Assemblies")
     if not os.path.isfile(TEX):
         bad.append("placeholder texture missing: %s" % TEX)
     return bad

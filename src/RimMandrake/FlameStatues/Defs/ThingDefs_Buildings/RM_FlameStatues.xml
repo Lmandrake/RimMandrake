@@ -2,12 +2,12 @@
 <!--
   RM_FlameStatues.xml        FlameStatues (mandrake.rm.flamestatues) — FLAME_STATUES_MOD_BUILD_1
 
-  design/RimMandrake/statue_mods_spec.md §3 step 4: three fuelled sculptures, each burning ONE vanilla
-  CompProperties_FireOverlay flame (Graphic_Flicker reads only the first overlay comp, §2.2, so a flame SET
-  waits for RM_CompFlamePoints, step 5). Chemfuel only, no wood (ruling R4). Woody stuff dropped (§2.1).
+  design/RimMandrake/statue_mods_spec.md §3 steps 4-5: three fuelled sculptures, each burning a SET of flames
+  through RM_CompFlamePoints (vanilla Graphic_Flicker reads only the first fire-overlay comp, §2.2). Chemfuel
+  only, no wood (ruling R4). Woody stuff dropped (§2.1).
   Statbases/footprints copy vanilla SculptureSmall / SculptureLarge / SculptureGrand (Buildings_Art.xml).
 
-  PROVISIONAL: fuel capacity, glow radius, fire size and the crown offsets are placeholders until the
+  PROVISIONAL: fuel capacity, glow radius, flame sizes and every point offset are placeholders until the
   step-6 art lands and the vent positions are measured from the PNGs (§2.6). Consumption is the spec's
   (Ember 0.12/day, Dancer 0.28, Colossus 0.5). The placeholder sprite is the retired RM_FlameStatuary's.
 -->
@@ -15,6 +15,8 @@
 
   <ThingDef Name="RM_FlameStatueBase" ParentName="SculptureBase" Abstract="True">
     <tickerType>Normal</tickerType>   <!-- CompRefuelable burns fuel in CompTick -->
+    <!-- BuildingBase is MapMeshOnly, and comp PostDraw (the flames) only runs for realtime drawers -->
+    <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
       <texPath>Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Placeholder</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -65,9 +67,12 @@
         <glowColor>(255,120,40,0)</glowColor>
         <colorPickerEnabled>false</colorPickerEnabled>
       </li>
-      <li Class="CompProperties_FireOverlay">
-        <fireSize>0.35</fireSize>
-        <offset>(0,0,0.5)</offset>
+      <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
+        <points>
+          <li><offset>(0,0,0.5)</offset><size>0.35</size></li>   <!-- crown -->
+        </points>
+        <qualityScalingEnabled>true</qualityScalingEnabled>
+        <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
       </li>
     </comps>
   </ThingDef>
@@ -75,7 +80,7 @@
   <ThingDef ParentName="RM_FlameStatueBase">
     <defName>RM_FlameStatue_Dancer</defName>
     <label>flame dancer</label>
-    <description>A lithe abstract figure with arms raised and palms cupped upward as vents, a third vent in its crown. Fed with chemfuel it burns; until the flame-point work lands only the crown is lit.</description>
+    <description>A lithe abstract figure with arms raised and palms cupped upward as vents, a third vent in its crown. Fed with chemfuel, all three vents burn.</description>
     <graphicData>
       <drawSize>(3,3)</drawSize>
     </graphicData>
@@ -108,9 +113,14 @@
         <glowColor>(255,120,40,0)</glowColor>
         <colorPickerEnabled>false</colorPickerEnabled>
       </li>
-      <li Class="CompProperties_FireOverlay">
-        <fireSize>0.55</fireSize>
-        <offset>(0,0,1.15)</offset>
+      <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
+        <points>
+          <li><offset>(0.32,0,0.61)</offset><size>0.35</size></li>   <!-- right palm -->
+          <li><offset>(-0.30,0,0.63)</offset><size>0.35</size></li>   <!-- left palm -->
+          <li><offset>(0,0,1.15)</offset><size>0.55</size></li>   <!-- crown -->
+        </points>
+        <qualityScalingEnabled>true</qualityScalingEnabled>
+        <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
       </li>
     </comps>
   </ThingDef>
@@ -118,7 +128,7 @@
   <ThingDef ParentName="RM_FlameStatueBase">
     <defName>RM_FlameStatue_Colossus</defName>
     <label>pyre colossus</label>
-    <description>A seated giant on a carved fire-pit ring, palms up, with vents in its crown and shoulders. Fed with chemfuel it burns and lights a wide room; until the flame-point work lands only the crown is lit.</description>
+    <description>A seated giant on a carved fire-pit ring, palms up, with vents in its crown and shoulders. Fed with chemfuel, all five vents burn and light a wide room.</description>
     <size>(2,2)</size>
     <graphicData>
       <drawSize>(4,4)</drawSize>
@@ -152,9 +162,16 @@
         <glowColor>(255,120,40,0)</glowColor>
         <colorPickerEnabled>false</colorPickerEnabled>
       </li>
-      <li Class="CompProperties_FireOverlay">
-        <fireSize>0.8</fireSize>
-        <offset>(0,0,1.6)</offset>
+      <li Class="RimMandrake.FlameStatues.RM_CompProperties_FlamePoints">
+        <points>
+          <li><offset>(0.62,0,0.5)</offset><size>0.45</size></li>   <!-- right palm -->
+          <li><offset>(-0.62,0,0.5)</offset><size>0.45</size></li>   <!-- left palm -->
+          <li><offset>(0,0,1.6)</offset><size>0.7</size></li>   <!-- crown -->
+          <li><offset>(0.72,0,1.05)</offset><size>0.35</size></li>   <!-- right shoulder vent -->
+          <li><offset>(-0.72,0,1.05)</offset><size>0.35</size></li>   <!-- left shoulder vent -->
+        </points>
+        <qualityScalingEnabled>true</qualityScalingEnabled>
+        <fireGlowFleckIntervalTicks>90</fireGlowFleckIntervalTicks>
       </li>
     </comps>
   </ThingDef>
