@@ -1,16 +1,16 @@
 {
   "Abyss": {
-    "hash": "0a1fe07035ac1e3591006c331f21429be7bdb01ca9aa4cd1d089ac84ebafe71f",
+    "hash": "d1e3137db73961cf234b4b1228e5ebbd333fd47474db00281d1f5f4fb5831349",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Abyss@1791077976",
+    "run_id": "Abyss@1791125629",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Abyss_summary.json",
       "verb": "situational_rerun"
     },
     "status": "GREEN",
-    "ts": 1791077976.9547238
+    "ts": 1791125629.7883842
   },
   "AcousticScanner": {
     "hash": "24b913507223431a8c073c7b6ee4d9592ba69041cb2524e40c940a72d6b94b76",
@@ -26,17 +26,17 @@
     "ts": 1791085709.6554186
   },
   "Aftermath": {
-    "hash": "96ee3ab3ef180ed53330e2fe9c021e18b761d710b3d1c9da8e1b3d281e68530b",
+    "hash": "deb4733fc9ff1eabcb9c935ce54ab2ebd70812fee7764b8bd49fab4354c244a3",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Aftermath@1791103866",
+    "run_id": "Aftermath@1791120149",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Aftermath_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791103866.4896104
+    "ts": 1791120149.2054167
   },
   "Antiquities": {
     "hash": "108948cea6337e40d68e9d97eca6308f5d5e929688e26352ab3be97523b40ac9",
@@ -50,13 +50,13 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Armoury@1791104252",
+    "run_id": "Armoury@1791120149",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Armoury_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791104252.703639
+    "ts": 1791120150.0413709
   },
   "AssailantSalvage": {
     "hash": "721d9d95bf8afe665c7ece968c08205c6a52e5f39624c7c85b11a5eb1c3c99b2",
@@ -76,52 +76,65 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Bacta@1791083670",
+    "run_id": "Bacta@1791123933",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Bacta_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791083670.475501
+    "ts": 1791123933.9343452
   },
   "BlueDesert": {
-    "hash": "0a6692dca5b81546eff7e4d0ad5f86becc8e5f18473e1642e97b82addb35574e",
+    "hash": "899f6c5501651ab33d313b34f6adefeda7afd93de02c4f1c3890218ee176cd73",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "BlueDesert@1791088324",
+    "run_id": "BlueDesert@1791123933",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/BlueDesert_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791088324.6795745
+    "ts": 1791123933.9469278
   },
   "BrainWorms": {
     "hash": "bcafae96ff0efa6a591b1f0a6bd5a51685fa49b0dc0b310d08419f15b3d19135",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "BrainWorms@1791083670",
+    "run_id": "BrainWorms@1791123933",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/BrainWorms_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791083670.4791374
+    "ts": 1791123933.9206636
   },
   "Cauldron": {
-    "hash": "21a3cf2ceb3aebc6935662fc61848e45fbc65a8fc001a75d557b42e758f24df5",
+    "hash": "b11d5285786132b28d1aa611f5990cc23dcee387037317e75cb7436e9ae8ac1d",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "Cauldron@1791083670",
+    "run_id": "Cauldron@1791121746",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Cauldron_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791083670.4688084
+    "ts": 1791121746.7946475
+  },
+  "Contagion": {
+    "hash": "32c91175b0db9bbfae5186ea23eac2a5c011af722e238a940a08be6efe9583a2",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "Contagion@1791125629",
+    "source": {
+      "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/Contagion_summary.json",
+      "verb": "situational_rerun"
+    },
+    "status": "RED",
+    "ts": 1791125629.734139
   },
   "Droidworks": {
     "hash": "3a8fa5f03fb5c8871d0ba0f075ad8e5e547a3e05459becf040e2d2aa28c17d7f",
@@ -148,13 +161,26 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "FeverWood@1791110273",
+    "run_id": "FeverWood@1791117259",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/FeverWood_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791110273.7269735
+    "ts": 1791117259.9255311
+  },
+  "FlameStatues": {
+    "hash": "f2036c872349f13782ec59e225134f590c994d8a21937265c24d2fe40245cef3",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "FlameStatues@1791117480",
+    "source": {
+      "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/FlameStatues_summary.json",
+      "verb": "situational_rerun"
+    },
+    "status": "GREEN",
+    "ts": 1791117480.900658
   },
   "FlowWorks": {
     "components": {
@@ -198,17 +224,17 @@
     "ts": 1790978033.4199028
   },
   "GizkaStowaway": {
-    "hash": "c220581b3ab2b9ab3194cc103316876895f69c1a6049182e52cb0101a47fcdb9",
+    "hash": "d4b64ec4ccf124e60142b5bf862549017790fd056cb5371d344347974090a692",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "GizkaStowaway@1791093100",
+    "run_id": "GizkaStowaway@1791117259",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/GizkaStowaway_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791093100.796594
+    "ts": 1791117259.9327092
   },
   "GravshipLanding": {
     "hash": "af1e087f6b46c63e6f0c70de580e6106000f3a1b5a1b27e9575a1b2d2d6bb22e",
@@ -281,51 +307,41 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "LeaningScrub@1791104593",
+    "run_id": "LeaningScrub@1791120150",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/LeaningScrub_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791104593.7709432
+    "ts": 1791120150.0919027
   },
   "MessyConduit": {
     "components": {
       "counts": {
-        "PASS": 111,
-        "UNBUILT": 9
+        "PASS": 121,
+        "SKIP": 1
       },
       "not_ok": [],
-      "unbuilt": [
-        "MX_H00_Flat_straight_L6",
-        "MX_H01_Flat_corner_L14",
-        "MX_H02_Flat_water_L24",
-        "MX_H03_Plump_straight_L14",
-        "MX_H04_Plump_corner_L24",
-        "MX_H05_Plump_water_L6",
-        "MX_H06_Filling50_straight_L24",
-        "MX_H07_Filling50_corner_L6",
-        "MX_H08_Filling50_water_L14"
-      ],
+      "unbuilt": [],
       "uncovered": []
     },
-    "hash": "de203d7634bae8c457072a1811d198a6eed46bb443d95ee2a21baf7b88484256",
+    "hash": "85c64359353674b33689d80e0b3792d583f8e8a08178363c921495c8dc7e8825",
     "minor": null,
     "owner_review": null,
-    "refused": "111 live rows PASS but 9 bars UNBUILT, 0 UNCOVERED: MX_H00_Flat_straight_L6, MX_H01_Flat_corner_L14, MX_H02_Flat_water_L24, MX_H03_Plump_straight_L14, MX_H04_Plump_corner_L24, MX_H05_Plump_water_L6, MX_H06_Filling50_straight_L24, MX_H07_Filling50_corner_L6, MX_H08_Filling50_water_L14",
-    "run_id": "MessyConduit/northstar_matrix/run_live.py@matrix_live_20261002T202406.json",
+    "refused": null,
+    "run_id": "MessyConduit/northstar_matrix/run_live.py@matrix_live_20261004T112800.json",
     "source": {
-      "assembly_sha256": "2e4f0ca892cc854cefcb9c478fce7e1e1e315931ce10342d48c903369b7a7117",
+      "assembly_sha256": "fef496c14e4d557aa2bd366759512d46f55b420c564239482f09c18f02f2e809",
       "env_running_count": 9,
       "env_running_sha256": "4eb5d3d25c784e0fdc8486ed9a8b10907d970282ccd280454efb39348fc21623",
-      "result": "src/RimMandrake/MessyConduit/northstar/matrix_live_20261002T202406.json",
-      "started": "2026-10-02T19:57:37",
-      "ticks_spent": 71,
+      "result": "src/RimMandrake/MessyConduit/northstar/matrix_live_20261004T112800.json",
+      "started": "2026-10-04T11:22:37",
+      "ticks_spent": 1157,
       "tier": "messyconduit",
       "verb": "modcheck record"
     },
-    "status": "REFUSED",
-    "ts": 1790998016.6434824
+    "status": "GREEN",
+    "ts": 1791138512.8950384
   },
   "Miasma": {
     "hash": "5e1e3d8b8202ef48e832ee6f24c363894eb9ce8de3b3fe8ce3a1be5356749785",
@@ -345,26 +361,26 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "MovingDunes@1791112662",
+    "run_id": "MovingDunes@1791117732",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/MovingDunes_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791112662.0731318
+    "ts": 1791117732.942584
   },
   "NightsideIce": {
     "hash": "a6df89243b87b3e78b50ff77b4266c4d787c3cd5d759520b98f5c1c6a3565b73",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "NightsideIce@1791087146",
+    "run_id": "NightsideIce@1791125629",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/NightsideIce_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791087146.2129416
+    "ts": 1791125629.7812278
   },
   "Ninefold": {
     "hash": "a259fa805551aaff10924d6897e95fedd138d698854ce58f086cbd053533fce3",
@@ -401,11 +417,17 @@
     "ts": 1791113113.0904295
   },
   "ResearchRetag": {
-    "hash": "33a9dfffdf765fee8c82020fe8af4092e4ad13120dcfc8affba61585ef61242c",
+    "hash": "3dfa0a5b3a1ffd9c5a9ef5a692e715b4287c3c0852f6aeb5b8ebadfe95f5a8f9",
     "minor": null,
-    "run_id": "ResearchRetag@1789295374",
+    "owner_review": null,
+    "refused": null,
+    "run_id": "ResearchRetag@1791117480",
+    "source": {
+      "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/ResearchRetag_summary.json",
+      "verb": "situational_rerun"
+    },
     "status": "RED",
-    "ts": 1789295375.0829787
+    "ts": 1791117480.89754
   },
   "RestrainingBolts": {
     "hash": "c6de1e4e348501f5f65e64d57852fb0274edfdbdc77b95f7d383889871036889",
@@ -493,57 +515,70 @@
     "status": "RED",
     "ts": 1789295369.928148
   },
-  "TheForge": {
-    "hash": "bb340ac016f595d7bca886578db9361673c7f859800c42085d5e270c8d9862c6",
+  "TerminalBiomes": {
+    "hash": "8babd37a4638b08b8681bd56d654939f77f7ccd0aafa12b9266f5cd073082ce7",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "TheForge@1791083670",
+    "run_id": "TerminalBiomes@1791125629",
+    "source": {
+      "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/TerminalBiomes_summary.json",
+      "verb": "situational_rerun"
+    },
+    "status": "RED",
+    "ts": 1791125629.774534
+  },
+  "TheForge": {
+    "hash": "7c833909171901d1e8405f8f4b5c173ca04866ce21c2cfcb5c53c095b4140128",
+    "minor": null,
+    "owner_review": null,
+    "refused": null,
+    "run_id": "TheForge@1791121746",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/TheForge_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791083670.4133747
+    "ts": 1791121746.7574506
   },
   "TheRot": {
     "hash": "f2610eba5ed445f3456ff49b682c5f1869bdb87d6fad6e220d85e2f2071de0fe",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "TheRot@1791104115",
+    "run_id": "TheRot@1791120149",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/TheRot_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791104115.4235175
+    "ts": 1791120149.2846787
   },
   "TheSump": {
     "hash": "a69c723f262a07a5a0f4cebf7e29c5be9972b84b074fa2293745b3413973fad9",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "TheSump@1791113113",
+    "run_id": "TheSump@1791115556",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/TheSump_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791113113.1868896
+    "ts": 1791115556.9602406
   },
   "UnfinishedLine": {
     "hash": "f60fd9c7c4f522ba186460bead65b5f0d08514dba4388fcc1384babea3a1c08e",
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "UnfinishedLine@1791077208",
+    "run_id": "UnfinishedLine@1791125629",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/UnfinishedLine_summary.json",
       "verb": "situational_rerun"
     },
     "status": "GREEN",
-    "ts": 1791077208.8307397
+    "ts": 1791125629.7783227
   },
   "UtinniStatues": {
     "hash": "f1cec7e098247bbd51f64d70962f716dad44b09f5421bb8250a4f541618ef457",
@@ -576,12 +611,12 @@
     "minor": null,
     "owner_review": null,
     "refused": null,
-    "run_id": "WeepingStones@1791112451",
+    "run_id": "WeepingStones@1791118554",
     "source": {
       "summary": "/home/mandrake/rm/foundry/Transient/modcheck/live_queue/situational_rerun/WeepingStones_summary.json",
       "verb": "situational_rerun"
     },
     "status": "RED",
-    "ts": 1791112451.2745554
+    "ts": 1791118554.520124
   }
 }
