@@ -454,6 +454,7 @@ Droidworks/ArtIncoming/misrouted_droid_from_mycoidcolossus_north.png   # BENCH: 
 # Held defs are removed from the game copy only by hand (a hold never deletes), and their REFERRERS must be held with them.
 UtinniPatches/Defs/MapGeneration/RUT_FoundryFloor.xml            # genSteps names held RUT_FoundryFloor_SalvageCache; the pocket map is entered only via held RUT_FoundryTowerEntrance
 UtinniPatches/Patches/RUT_FoundryTowerScatter_Register.xml       # adds held RUT_FoundryTowerScatter onto Base_Player genSteps (MayRequire mandrake.rm.biomes is satisfied, so it dangled)
+UtinniPatches/Patches/RUT_FoundryTowerHoistFrame.xml          # 2026-10-03 belt r5: patches the held RUT_FoundryTowerEntrance; deployed alone it logged '[RimUtinni Patches] Patch operation PatchOperationConditional(RM_HoistFrame) failed' every load. Un-hold with the entrance.
 
 
 # --- TheSump hold LIFTED 2026-10-03 (FOUNDRY belt): every TheSump art file now exists under TheSump/Textures/ (flora x8, Dredgel stand-in facings,
