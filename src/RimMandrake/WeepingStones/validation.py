@@ -333,6 +333,18 @@ def _enter(t):
                 pass
         t.anchor = (x + PAD_OFFSET, z + PAD_OFFSET)
         t._ws_anchored = True
+    if _live(t):
+        # The map's own idle colonists run JobGiver_Work and contend for the proof's stock/meal/carcass ("Howard started 10 jobs in
+        # one tick. newJob=RM_StockPoolPen", LIVE 2026-10-04; 7 chains read job-never-ran). Draft them; the chain's own
+        # handler is spawned after this and stays undrafted. Housekeeping: a failure here never gates a verdict.
+        try:
+            rows = (t.bridge_call("jawa/list_pawns", includeHealth=False, limit=500) or {}).get("pawns") or []
+            for r in rows:
+                if r.get("isPlayer") and r.get("intelligence") == "Humanlike" and not r.get("dead") and r.get("spawned", True) \
+                        and not r.get("drafted"):
+                    t.bridge_call("jawa/set_draft", pawnId=r["id"], drafted=True)
+        except Exception:
+            pass
 
 
 def _pad_rect(t):
