@@ -154,6 +154,50 @@ def ekkel_lore_checks():
     return bad
 
 
+SEAS = ("RM_TheScald", "RM_GreySea", "RM_TwilightSea", "RM_TheChill")
+# catch -> floor resident when the names differ on purpose (SCALD_SAAL_ONE_NAME_1: the saal's body is RM_Noohm)
+CATCH_BODY_ALIAS = {"RM_Saal": "RM_Noohm"}
+
+
+def sea_catch_alive_checks(defs_dir=None):
+    """SEA_FISHABLES_ALIVE_IN_DEPTHS_1 (owner 2026-09-26: "All the fishables should also be alive and moving
+    around in the depths (this is true for ALL seas)."): every fishTypes row of the four seas names a catch
+    whose living body (RM_<X> for RM_<X>Catch, or the alias) is in that sea's wildAnimals AND is a real
+    ThingDef in this mod. Parsed as XML elements (node name = def), never by counting <li>."""
+    defs_dir = defs_dir or os.path.join(HERE, "Defs")
+    bad, biomes, races = [], {}, set()
+    for dp, _, fns in os.walk(defs_dir):
+        for fn in fns:
+            if fn.endswith(".xml"):
+                root = ET.parse(os.path.join(dp, fn)).getroot()
+                for d in root:
+                    if d.tag == "BiomeDef" and d.findtext("defName") in SEAS:
+                        biomes[d.findtext("defName")] = d
+                    if d.tag == "ThingDef" and d.find("race") is not None:
+                        races.add(d.findtext("defName"))
+    if len(races) < 20:
+        bad.append("sanity probe: only %d race ThingDefs parsed" % len(races))
+    for sea in SEAS:
+        b = biomes.get(sea)
+        if b is None:
+            bad.append("%s BiomeDef not found" % sea)
+            continue
+        wa = {c.tag for c in (b.find("wildAnimals") if b.find("wildAnimals") is not None else [])}
+        ft = b.find("fishTypes")
+        rows = [c.tag for g in (ft if ft is not None else []) if g.tag != "rareCatchesSetMaker" for c in g]
+        if not rows:
+            bad.append("%s: no fishTypes rows parsed (probe blind or table lost)" % sea)
+        for r in rows:
+            body = CATCH_BODY_ALIAS.get(r) or ("RM_" + r[3:-5] if r.startswith("RM_") and r.endswith("Catch") else None)
+            if body is None:
+                bad.append("%s: catch %s does not follow the RM_<X>Catch pairing (no living body derivable)" % (sea, r))
+            elif body not in wa:
+                bad.append("%s: catch %s has no living %s in wildAnimals" % (sea, r, body))
+            elif body not in races:
+                bad.append("%s: %s is in wildAnimals but no race ThingDef defines it" % (sea, body))
+    return bad
+
+
 def saal_name_checks():
     """SCALD_SAAL_ONE_NAME_1: creature and catch are both labelled saal; no label says noohm."""
     bad = []
@@ -523,6 +567,11 @@ if Suite is not None:
     def catch_free_tier(t):
         with _comp(t, "chill_catch_is_free_tier_and_alive_on_the_floor", beyond_toggle=True):
             _static(catch_checks())
+
+    @suite.chain("seas_catch_alive")
+    def seas_catch_alive(t):
+        with _comp(t, "every_sea_catch_has_a_living_floor_body", beyond_toggle=True):
+            _static(sea_catch_alive_checks())
 
     @suite.chain("settings_wiring")
     def settings_wiring(t):

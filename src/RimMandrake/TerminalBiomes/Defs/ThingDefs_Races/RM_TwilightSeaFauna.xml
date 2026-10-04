@@ -26,7 +26,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Noolim</defName>
     <label>noolim</label>
-    <description>A darting cloud of dull silver slivers, working the water far beneath the Twilight Sea's waveglass — the one place on this sea where schooling is legal at all, where the lid's shade turns the murk green and the light comes down in gold. Seen as a shoal, never as an individual.</description>
+    <description>A darting cloud of dull silver slivers, the dark shoal of the Twilight floor: it works the green murk between the light columns, where the waveglass lets nothing through, and leaves the lit columns to the niim. Seen as a shoal, never as an individual.</description>
     <statBases>
       <MoveSpeed>4.0</MoveSpeed>
       <MarketValue>6</MarketValue>

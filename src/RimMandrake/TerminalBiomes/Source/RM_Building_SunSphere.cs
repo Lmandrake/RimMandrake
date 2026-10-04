@@ -22,7 +22,7 @@ namespace RimMandrake.TerminalBiomes
 
     public class RM_Building_SunSphere : Building
     {
-        private CompRefuelable seedComp; // one wild seed (RM_Pallu or RM_LampBladder) — consumed once
+        private CompRefuelable seedComp; // one wild seed (RM_PalluCatch or RM_LampBladder) — consumed once
         private CompRefuelable foodComp; // ongoing feed: any raw floor food
         private CompGlower glowerComp;
 

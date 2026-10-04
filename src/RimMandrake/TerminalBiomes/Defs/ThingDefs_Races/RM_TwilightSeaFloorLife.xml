@@ -1,0 +1,581 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_TwilightSeaFloorLife.xml          TerminalBiomes · authored 2026-10-03 (belt r37)
+  SEA_FISHABLES_ALIVE_IN_DEPTHS_1 — the TWILIGHT SEA portion.
+
+  Owner, at the bench 2026-09-26, typed: "All the fishables should also be
+  alive and moving around in the depths (this is true for ALL seas)."
+  Ten of the Twilight's twelve catches had no living body. The design is the
+  BENCH table in the_twilight_deep_content_2026-09-26.md §5 ("the body specs
+  below are those descriptions turned into race fields, not new invention"):
+  speed, size, groups, diet and predation are read off it. Every number that
+  table does not give (health, hunger, combat power, life expectancy,
+  wildness, tool power) is a PROVISIONAL first guess (owner ruling
+  2026-10-03), sized against the Grey's RM_GreySeaFloorLife.xml siblings.
+
+  Pairing: the catch items were renamed RM_<X> -> RM_<X>Catch in the same
+  change (GREYSEA_CATCH_TIER_RENAME_1's shape), so RM_Niim is now the fish
+  and RM_NiimCatch what a shore net brings up.
+
+  Schooling: legal only under the waveglass, i.e. this floor (the_twilight_deep.md
+  "the solitary law's boundary"). Niim alone carries herdAnimal, the lit shoal
+  of the columns; noolim is the dark shoal of the between (Q3, ruled TWO,
+  2026-09-26 card). Pallu and nuudal come in groups without herd behaviour.
+
+  Not built here (the table's own notes, each its own mechanism): the glows
+  (niim dot-line, aluun gold, liiru line, hollu faint) -> living-light work;
+  pallu spawning only on skylight cells and counting as the skylight price;
+  aluun placed per kelp stem; tikkarr climbing oruvell; oobo's drop ambush;
+  hollu's contact sting as a hediff. Murrol carries RM_ChannelNativeExtension
+  (the channel current's ruled exemption) and kellu butchers to lamp-black.
+
+  PLACEHOLDER ART: flat dark silhouette PNGs (the RM_TwilightSeaFauna.xml
+  posture); real art queued to artpipe (twilightsea_<name>_v1).
+-->
+<Defs>
+  <!-- ================================================================== RM_Niim -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Niim</defName>
+    <label>niim</label>
+    <description>The lit shoal of the light columns: blue-white, hand-long, a dot-line of cold light along each flank, schooling under the skylights in crowds that make a whole column flash when they turn. Where the noolim keeps the dark between the columns, the niim keeps the light. The Compact's under-lid economy is a net of them.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>snap</label>
+        <capacities><li>Bite</li></capacities>
+        <power>2</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>Snake</body>
+      <baseBodySize>0.06</baseBodySize>
+      <baseHealthScale>0.25</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>3</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.15</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.3</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Niim</defName>
+    <label>niim</label>
+    <race>RM_Niim</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>6~14</wildGroupSize>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Pallu -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Pallu</defName>
+    <label>pallu</label>
+    <description>A saucer-sized floater that keeps to the light columns, a green symbiont film on its upper skin turned up to the skylight like a face to the sun. A bright column is stacked with them at every depth the light reaches; a column that closes goes dark and the pallu sink out of it in a slow rain.</description>
+    <statBases>
+      <MoveSpeed>0.6</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>rim</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>1</power>
+        <cooldownTime>3.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.12</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.12</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>4</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.2</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.4</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Pallu</defName>
+    <label>pallu</label>
+    <race>RM_Pallu</race>
+    <combatPower>4</combatPower>
+    <wildGroupSize>3~8</wildGroupSize>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.25</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.33</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.42</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Tikkarr -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Tikkarr</defName>
+    <label>tikkarr</label>
+    <description>A long-legged, kelp-coloured crab-thing that lives up in the kelp forest more than on the floor, clinging, cutting and carrying fronds down to its holes. The sea-farm's pest and its pollinator both. Armored, a good meal in the legs, and fond of nets.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.6</Wildness>
+      <ArmorRating_Sharp>0.3</ArmorRating_Sharp>
+    </statBases>
+    <tools>
+      <li>
+        <label>claw</label>
+        <capacities><li>Cut</li></capacities>
+        <power>5</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.25</baseBodySize>
+      <baseHealthScale>0.6</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Tikkarr</defName>
+    <label>tikkarr</label>
+    <race>RM_Tikkarr</race>
+    <combatPower>12</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.12</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.55</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Tikkarr/RM_Tikkarr</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.7</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Nuudal -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Nuudal</defName>
+    <label>nuudal</label>
+    <description>Long, soft and mottled, moving through the constant fall of detritus from the ceiling gardens like cattle through a snowfall and eating it as it lands. The richest mud in the sea is under a busy skylight, and nuudal are what turn it over.</description>
+    <statBases>
+      <MoveSpeed>1.0</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.3</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>3</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.5</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.4</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Nuudal</defName>
+    <label>nuudal</label>
+    <race>RM_Nuudal</race>
+    <combatPower>10</combatPower>
+    <wildGroupSize>2~5</wildGroupSize>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>1.0</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Aluun -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Aluun</defName>
+    <label>aluun</label>
+    <description>A fan-shaped shell-thing grown onto a kelp stem in the light columns, two translucent valves held open to whatever falls from the lid and inside them a mantle that lights a steady pale gold. A kelp tower hung with aluun reads from the bank as a column of small windows. It barely moves; it is gathered, not hunted.</description>
+    <statBases>
+      <MoveSpeed>0.1</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.2</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>valve</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>1</power>
+        <cooldownTime>3.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.4</baseHealthScale>
+      <baseHungerRate>0.05</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>10</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.5</minAge></li>
+        <li><def>AnimalAdult</def><minAge>1.0</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Aluun</defName>
+    <label>aluun</label>
+    <race>RM_Aluun</race>
+    <combatPower>2</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.04</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.2</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.27</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Aluun/RM_Aluun</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.35</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Kellu -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Kellu</defName>
+    <label>kellu</label>
+    <description>The kelp squid: arm-long and forest-dark, hiding in the fronds by day and hunting the shoals in the dark between the columns by night. Its ink is thick, lightfast and black as the Grey; the Compact's charts are drawn in it.</description>
+    <statBases>
+      <MoveSpeed>4.0</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>beak</label>
+        <capacities><li>Bite</li></capacities>
+        <power>6</power>
+        <cooldownTime>2.0</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>arms</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>4</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.35</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.35</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.3</maxPreyBodySize>
+      <trainability>None</trainability>
+      <lifeExpectancy>6</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.3</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.6</minAge></li>
+      </lifeStageAges>
+    </race>
+    <butcherProducts>
+      <RUT_LampBlack>2</RUT_LampBlack>
+    </butcherProducts>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Kellu</defName>
+    <label>kellu</label>
+    <race>RM_Kellu</race>
+    <combatPower>30</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.45</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Murrol -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Murrol</defName>
+    <label>murrol</label>
+    <description>A thick, blunt, near-blind eel that rides the invisible current along the channel banks, mouth open, fat on the nutrient-fed silt, so slow that bank-harvesters pick them up by hand. Nothing about it is difficult.</description>
+    <statBases>
+      <MoveSpeed>0.8</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.05</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities><li>Bite</li></capacities>
+        <power>3</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.4</baseBodySize>
+      <baseHealthScale>0.7</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.4</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.8</minAge></li>
+      </lifeStageAges>
+    </race>
+    <modExtensions>
+      <!-- TWILIGHT_CHANNEL_CURRENT_1 §1.3: channel natives ride the current, are not carried by it -->
+      <li Class="RimMandrake.TerminalBiomes.RM_ChannelNativeExtension" />
+    </modExtensions>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Murrol</defName>
+    <label>murrol</label>
+    <race>RM_Murrol</race>
+    <combatPower>6</combatPower>
+    <wildGroupSize>1~3</wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.45</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Hollu -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Hollu</defName>
+    <label>hollu</label>
+    <description>A bell that forms on the underside of the waveglass up in the ceiling gardens and lets go, falling slowly the whole height of the column, pulsing, stinging what it passes, to lie on the floor and be eaten by nuudal. A big garden sheds them all night; divers learn their skylight's fall pattern the way farmers learn rain.</description>
+    <statBases>
+      <MoveSpeed>0.5</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.4</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>sting</label>
+        <capacities><li>Stab</li></capacities>
+        <power>4</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.15</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.1</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>2</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.1</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.2</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Hollu</defName>
+    <label>hollu</label>
+    <race>RM_Hollu</race>
+    <combatPower>8</combatPower>
+    <wildGroupSize>1~4</wildGroupSize>
+    <ecoSystemWeight>0.08</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.46</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Oobo -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Oobo</defName>
+    <label>oobo</label>
+    <description>A soft, wide-armed thing of the ceiling gardens and the kelp crowns that hunts by letting go: a silent drop through the dark onto whatever is below, then a long slow climb back up a kelp stem. Divers hate it with the specific hatred of people who have had one land on them. Very good eating.</description>
+    <statBases>
+      <MoveSpeed>2.5</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>arms</label>
+        <capacities><li>Blunt</li></capacities>
+        <power>6</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>beak</label>
+        <capacities><li>Bite</li></capacities>
+        <power>7</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.45</baseBodySize>
+      <baseHealthScale>0.8</baseHealthScale>
+      <baseHungerRate>0.3</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <predator>true</predator>
+      <maxPreyBodySize>0.5</maxPreyBodySize>
+      <trainability>None</trainability>
+      <lifeExpectancy>8</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.4</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.8</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Oobo</defName>
+    <label>oobo</label>
+    <race>RM_Oobo</race>
+    <combatPower>35</combatPower>
+    <wildGroupSize>1</wildGroupSize>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.7</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.9</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <!-- ================================================================== RM_Liiru -->
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Liiru</defName>
+    <label>liiru</label>
+    <description>A ribbon-eel as long as an arm and no wider than a finger that swims upright through the light columns in slow vertical S-curves, carrying a single unbroken line of blue-white light along its whole length. A column with liiru in it looks from the bank as if someone had drawn on the water.</description>
+    <statBases>
+      <MoveSpeed>1.2</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <Wildness>0.5</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>mouth</label>
+        <capacities><li>Bite</li></capacities>
+        <power>1</power>
+        <cooldownTime>2.5</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>Snake</body>
+      <baseBodySize>0.1</baseBodySize>
+      <baseHealthScale>0.3</baseHealthScale>
+      <baseHungerRate>0.15</baseHungerRate>
+      <foodType>OmnivoreAnimal</foodType>
+      <predator>false</predator>
+      <trainability>None</trainability>
+      <lifeExpectancy>5</lifeExpectancy>
+      <lifeStageAges>
+        <li><def>AnimalBaby</def><minAge>0</minAge></li>
+        <li><def>AnimalJuvenile</def><minAge>0.25</minAge></li>
+        <li><def>AnimalAdult</def><minAge>0.5</minAge></li>
+      </lifeStageAges>
+    </race>
+    <tradeTags><li>AnimalCommon</li></tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Liiru</defName>
+    <label>liiru</label>
+    <race>RM_Liiru</race>
+    <combatPower>3</combatPower>
+    <wildGroupSize>1~2</wildGroupSize>
+    <ecoSystemWeight>0.06</ecoSystemWeight>
+    <lifeStages>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>
