@@ -15,10 +15,9 @@
 
   Kept as its OWN file, separate from RUT_TarShallow_FilthAcceptance.xml
   (SUMP_MECHANICS_1 S4, already shipped/undheld) that this op DEPENDS on
-  (TerrainDef.ConfigErrors requires filthAcceptanceMask & Terrain wherever
-  generatedFilth is set, TerrainDef.cs:538 — that sibling file's own
-  Operation already satisfies it) — so that THIS file's own DEPLOY_HOLD
-  (below) never touches the already-working mouse-track fix.
+  (TerrainDef.ConfigErrors FORBIDS filthAcceptanceMask & Terrain wherever
+  generatedFilth is set, TerrainDef.cs:538 — so the sibling's mask is
+  [Natural, Unnatural, Pawn], never Terrain).
 
   DEPLOY_HOLD LIFTED, SUMP_TAR_NASTINESS_1 (2026-09-24): RM_Filth_Tar now
   ships placeholder art (three blob sprites, that def's own header) and is

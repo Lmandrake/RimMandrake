@@ -25,6 +25,13 @@
     <size>(1,1)</size>
     <tickerType>Never</tickerType>
     <staticSunShadowHeight>0</staticSunShadowHeight>
+    <!-- thingClass Thing with category Building: ThingDef.ConfigErrors
+         (ThingDef.cs:1687) rejects a deconstructible Building-category def
+         whose class is not a Building (load 13, LOAD13_CONFIGERRORS_TRIAGE_1).
+         An invisible marker is never deconstructed anyway. -->
+    <building>
+      <deconstructible>false</deconstructible>
+    </building>
   </ThingDef>
 
 </Defs>

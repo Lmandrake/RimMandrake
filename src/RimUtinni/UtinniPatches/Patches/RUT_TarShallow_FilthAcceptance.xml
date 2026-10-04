@@ -36,11 +36,15 @@
   an Impassable cell — patching it would have no observable effect on this
   mechanic, so it is left alone rather than "fixed" for its own sake.
 
-  🔑 SUMP_WALKWAYS_1 (2026-09-24) reuses this same filthAcceptanceMask fix to
-  wire a SECOND foot-tracking mechanism (RM_TarShallow -> RM_Filth_Tar) — see
-  the sibling file RUT_TarShallow_GeneratedFilth.xml, kept separate and
-  DEPLOY_HOLD'd (RM_Filth_Tar has no art yet) so that hold never risks this
-  already-shipped, unheld fix.
+  🔴 The mask must NOT contain Terrain (LOAD13_CONFIGERRORS_TRIAGE_1).
+  The sibling RUT_TarShallow_GeneratedFilth.xml sets generatedFilth, and
+  TerrainDef.ConfigErrors (Verse/TerrainDef.cs:538) REJECTS
+  `generatedFilth != null && (filthAcceptanceMask & Terrain) != 0` ("makes
+  terrain filth and also accepts it", load 13). So the mask is
+  [Natural, Unnatural, Pawn] and RUT_Filth_MouseTrack is placed under the
+  Pawn flag (its placementMask is [Pawn]); FilthMaker.TerrainAcceptsFilth
+  requires (mask & placementMask) == placementMask, so Pawn alone suffices.
+  Guarded by src/RimMandrake/TheSump/selftest_tar_filth_flags.py.
 -->
 <Patch>
 
@@ -48,7 +52,9 @@
     <xpath>/Defs/TerrainDef[defName="RM_TarShallow"]</xpath>
     <value>
       <filthAcceptanceMask>
-        <li>Terrain</li>
+        <li>Natural</li>
+        <li>Unnatural</li>
+        <li>Pawn</li>
       </filthAcceptanceMask>
     </value>
   </Operation>

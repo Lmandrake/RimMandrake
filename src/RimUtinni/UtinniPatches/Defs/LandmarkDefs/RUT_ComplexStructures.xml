@@ -31,11 +31,12 @@
        entirely from the density rule, and a randomly-placed one would be a lie. It is
        placed only by ashkarr_place_complex_structures.py.
 
-       ⛔ NO mutatorChances, also on purpose. A landmark's mutatorChances rolls go
+       ⛔ NO REAL mutatorChances, also on purpose. A landmark's mutatorChances rolls go
        through AddMutator and can displace what is already on the tile — and these
        tiles are chosen precisely because they are already the busiest on the planet.
        Adding more would both risk the displacement and corrupt the very count the
-       icon reports.
+       icon reports. The one entry it carries, RUT_LandmarkIconOnly, is inert: it
+       only satisfies LandmarkDef.ConfigErrors and can never land on a tile.
 
        Icon: four variants at 512px in a 1024 sheet (atlasSize 2,2), drawn by
        AshkarrLandmarkArt/make_complex_structures_icon.py in the house style —
@@ -55,6 +56,11 @@
          for one landmark — same call IshkoDarkLandmarks made. -->
     <category>structure</category>
     <nameMaker>NamerLandmark_Ruins</nameMaker>
+    <!-- Inert: satisfies LandmarkDef.ConfigErrors' chance>=1 rule and is
+         never added to the tile (RUT_LandmarkIconOnly.xml says why). -->
+    <mutatorChances>
+      <RUT_LandmarkIconOnly>1</RUT_LandmarkIconOnly>
+    </mutatorChances>
   </LandmarkDef>
 
 </Defs>

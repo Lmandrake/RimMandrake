@@ -81,7 +81,9 @@ namespace RimMandrake.EnvironmentalHazards
     //     instead). Fixed this pass by
     //     RUT_TarShallow_FilthAcceptance.xml (a patch, not an edit to
     //     LIQUID_TYPES_MOD_1's own generated RM_Tar.xml) adding
-    //     `filthAcceptanceMask: [Terrain]` directly onto RM_TarShallow —
+    //     `filthAcceptanceMask: [Natural, Unnatural, Pawn]` onto RM_TarShallow
+    //     (never Terrain: the tar has generatedFilth, TerrainDef.cs:538), with
+    //     RUT_Filth_MouseTrack placed under placementMask [Pawn] —
     //     RM_TarDeep was left untouched (WaterDeepBase-derived, Impassable,
     //     never a cell a wandering pawn's own path can cross, so patching
     //     it would have no observable effect).

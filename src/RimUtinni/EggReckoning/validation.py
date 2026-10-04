@@ -104,7 +104,7 @@ def route_values():
     for e in root.findall("QuestScriptDef"):
         n = e.findtext("defName")
         if n:
-            out[n] = {k: e.findtext(k) for k in ("rootSelectionWeight", "rootMinPoints", "randomlySelectable")}
+            out[n] = {k: e.findtext(k) for k in ("rootSelectionWeight", "rootMinPoints", "randomlySelectable", "isRootSpecial")}
             out[n]["givenBy"] = [li.text for li in e.findall("givenBy/li")]
     return out
 
@@ -290,8 +290,12 @@ if Suite is not None:
                 if str(f["randomlySelectable"]).lower() != "false":
                     _fail("%s is randomly selectable (%r): the Cartel offer must come only from a trader"
                           % (OFFER, f["randomlySelectable"]))
-                if "rootSelectionWeight" in f and _same(f["rootSelectionWeight"], 0) is False:
-                    _fail("%s carries a random-pool weight %r although it is trader-given only" % (OFFER, f["rootSelectionWeight"]))
+                # FALSE THEORY retired (LOAD13_CONFIGERRORS_TRIAGE_1): "a trader-given quest carries weight 0".
+                # TradeUtility.ReceiveQuestFromTrader picks by RandomElementByWeight(rootSelectionWeight), so
+                # weight 0 means a trader NEVER offers it; randomlySelectable false is what keeps it off the
+                # storyteller pool.
+                if "rootSelectionWeight" in f and _same(f["rootSelectionWeight"], 0) is not False:
+                    _fail("%s has trader weight %r: TradeUtility never picks a weight-0 giver quest" % (OFFER, f["rootSelectionWeight"]))
         with _comp(t, "toggle_off_removes_both_routes", toggle="reckoningEnabled"):
             _unmeasured(t, "EggReckoningPatcher.Apply runs only from the mod's WriteSettings and at startup; jawa/mod_settings_field "
                            "writes the static field without calling either, and rimworld/update_mod_settings cannot reach a static "
@@ -416,6 +420,16 @@ def static_checks():
     if rv.get(RUMOR, {}).get("rootSelectionWeight") != "0.15" or rv.get(OFFER, {}).get("givenBy") != ["Traders"] \
             or rv.get(OFFER, {}).get("randomlySelectable") != "false":
         bad.append("route facts the script asserts live (rumor 0.15, offer given by Traders, not random) differ from the XML: %r" % rv)
+    # the offer: trader weight > 0 (else never picked) and root-special (else the inherited
+    # defaultChallengeRating is a ConfigError: QuestScriptDef.cs:273)
+    try:
+        offer_w = float(rv.get(OFFER, {}).get("rootSelectionWeight") or 0)
+    except ValueError:
+        offer_w = 0.0
+    if offer_w <= 0:
+        bad.append("%s rootSelectionWeight %r: TradeUtility.ReceiveQuestFromTrader never picks it" % (OFFER, rv.get(OFFER, {}).get("rootSelectionWeight")))
+    if (rv.get(OFFER, {}).get("isRootSpecial") or "").lower() != "true":
+        bad.append("%s is not isRootSpecial but inherits defaultChallengeRating: 'non-root quest has defaultChallengeRating'" % OFFER)
     # every history event the quest names is shipped
     qtxt = open(QUEST_XML, encoding="utf-8").read()
     for ev in set(re.findall(r"<(?:goodwillChangeReason|successHistoryEvent|failedOrExpiredHistoryEvent)>(\w+)<", qtxt)):

@@ -260,6 +260,78 @@ def own_prereq_graph_static(t):
         if cycles or dangling:
             raise ExpectationFailed("prerequisite cycles %s; prerequisites naming no loaded project %s" % (cycles, dangling))
 
+def patched_view_coords(patch_xml=None):
+    """{defName: {"researchViewX"|"researchViewY": float}} set by this mod's Patches (last op wins, file order)."""
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    import re as _re
+    here = _os.path.dirname(_os.path.abspath(__file__))
+    out = {}
+    paths = [patch_xml] if patch_xml else [_os.path.join(here, "Patches", f) for f in sorted(_os.listdir(_os.path.join(here, "Patches")))
+                                          if f.endswith(".xml")]
+    for p in paths:
+        for op in _ET.parse(p).getroot().iter():
+            if op.tag not in ("match", "nomatch", "li", "Operation"):
+                continue
+            xp = op.findtext("xpath") or ""
+            m = _re.search(r'defName="([^"]+)"', xp)
+            val = op.find("value")
+            if not m or val is None:
+                continue
+            for fld in ("researchViewX", "researchViewY"):
+                e = val.find(fld)
+                if e is not None and (e.text or "").strip():
+                    out.setdefault(m.group(1), {})[fld] = float(e.text)
+    return out
+
+
+def tab_overlaps(nodes):
+    """Pairs inside the engine's relaxation box (ResearchProjectDef.GenerateNonOverlappingCoordinates:
+    |dx| < 0.5 and |dy| < 0.25, same tab). Any such pair is relaxed apart at load and can land two nodes on
+    identical coordinates -> 'same research view coords and tab' ConfigError. nodes: [(defName, x, y)]."""
+    out = []
+    for i, a in enumerate(nodes):
+        for b in nodes[i + 1:]:
+            if abs(a[1] - b[1]) < 0.5 and abs(a[2] - b[2]) < 0.25 + 1e-6:
+                out.append("%s(%g,%g) ~ %s(%g,%g)" % (a[0], a[1], a[2], b[0], b[1], b[2]))
+    return out
+
+
+def effective_tab_nodes(dump_rows, tab, overrides):
+    nodes = []
+    for d in dump_rows:
+        f = d.get("fields") or {}
+        if str(f.get("tab")) != tab:
+            continue
+        n = d.get("defName")
+        x = f.get("researchViewX")
+        y = f.get("researchViewY")
+        o = overrides.get(n, {})
+        nodes.append((n, float(o.get("researchViewX", 1.0 if x is None else x)), float(o.get("researchViewY", 1.0 if y is None else y))))
+    return nodes
+
+
+@suite.chain("hearth_layout_static")
+def hearth_layout_static(t):
+    """RUT_Tree_Hearth (44 projects from six mods; load 13 logged two coordinate collisions there): no two nodes
+    inside the engine's relaxation box, using the def dump's coordinates overridden by this mod's own
+    researchViewX/Y patch values. Pure static."""
+    with t.component("hearth_no_overlapping_nodes", beyond_toggle=True):
+        try:
+            import game_paths as _GP
+            import json as _json
+            import os as _os
+            rows = _json.load(open(_os.path.join(_GP.DEF_DUMP, "defs", "ResearchProjectDef.json")))["defs"]
+        except Exception as e:
+            raise Precondition("no readable def dump for ResearchProjectDef: %s" % e)
+        nodes = effective_tab_nodes(rows, "RUT_Tree_Hearth", patched_view_coords())
+        if len(nodes) < 20 or "CarpetMaking" not in [n[0] for n in nodes]:
+            raise Precondition("the dump's Hearth tab is blind: %d nodes" % len(nodes))
+        bad = tab_overlaps(nodes)
+        if bad:
+            raise ExpectationFailed("%d overlapping Hearth pairs: %s" % (len(bad), bad[:6]))
+
+
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # ResearchProjectDef baseCost/tab are retagged by this mod's own Patches, so only labels are compared). The Defs/ parse is the list, so a def added later is covered with no edit here.
 from modcheck import shipped_defs  # noqa: E402

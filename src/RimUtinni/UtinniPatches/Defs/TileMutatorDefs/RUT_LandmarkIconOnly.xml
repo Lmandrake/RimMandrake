@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_LandmarkIconOnly — an INERT mutator, LOAD13_CONFIGERRORS_TRIAGE_1.
+
+  LandmarkDef.ConfigErrors (RimWorld/LandmarkDef.cs:175) demands at least one
+  mutatorChances entry with chance >= 1. RUT_ComplexStructures and
+  RUT_Slough_GelatinousBreach are icon-only, hand-placed landmarks that must
+  NOT add mutators (ComplexStructures would corrupt the very mutator count its
+  icon reports). This def satisfies the rule and is never added to any tile:
+
+  * WorldLandmarks.AddLandmark sets `this[tile] = landmark` BEFORE rolling
+    mutatorChances, and adds a non-Required entry only if
+    TileMutatorDef.IsValidTile — which returns false when
+    `tile.Landmark != null && !canSpawnOnLandmark`. So canSpawnOnLandmark
+    false makes it invalid on every landmark tile, forced or not (forced only
+    bypasses validity for Required entries; landmarks list it non-Required).
+  * chanceOnNonLandmarkTile stays 0, so worldgen never rolls it either.
+
+  Guarded by src/RimUtinni/UtinniPatches/selftest_landmark_mutator_rule.py.
+-->
+<Defs>
+  <TileMutatorDef>
+    <defName>RUT_LandmarkIconOnly</defName>
+    <label>landmark marker</label>
+    <description>Marks a hand-placed landmark. Has no effect on the map.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <canSpawnOnLandmark>false</canSpawnOnLandmark>
+  </TileMutatorDef>
+</Defs>
