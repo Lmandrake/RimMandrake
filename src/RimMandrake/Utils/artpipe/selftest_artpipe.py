@@ -687,6 +687,20 @@ def test_load_job_validates_value_shapes_not_just_key_presence():
            (q.done / "healthy.json").is_file())
 
 
+def test_building_facing_gets_the_top_down_building_clause():
+    """A 'building sprite' job with a facing must not be handed the creature
+    eye-level side-profile clause (RUT_AncientBlackBox_east failed twice on it,
+    2026-10-03); a creature job still is."""
+    b = artpiped.build_job_prompt({"id": "b", "prompt": "RimWorld game building sprite: a crate",
+                                   "canvas": {"width": 256, "height": 256}, "facing": "east"})
+    c = artpiped.build_job_prompt({"id": "c", "prompt": "a six-legged beast",
+                                   "canvas": {"width": 256, "height": 256}, "facing": "east"})
+    ok("build_job_prompt: building facing is the top-down building clause",
+       "top-down building camera" in b and "eye level" not in b, b[-200:])
+    ok("build_job_prompt: creature facing keeps the side-profile clause",
+       "eye level" in c and "building camera" not in c, c[-200:])
+
+
 def test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp():
     """ARTPIPE_FACING_COHERENCE_1 §1's refusal half.
 
@@ -3602,6 +3616,7 @@ def main() -> int:
         test_fill_queue_refuses_duplicate_id,
         test_load_job_validates_value_shapes_not_just_key_presence,
         test_load_job_refuses_a_facing_job_whose_prompt_contradicts_the_stamp,
+        test_building_facing_gets_the_top_down_building_clause,
         test_load_job_accepts_and_validates_derive_from,
         test_claim_next_holds_derived_job_until_master_resolves,
         test_claim_next_releases_derived_job_when_master_failed,
