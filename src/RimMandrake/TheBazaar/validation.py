@@ -160,7 +160,7 @@ def _build_suite():
                 old = _raw(t, "get", field).get("value")
                 if old is None:
                     raise ExpectationFailed("%s: get returned no value" % field)
-                new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else str(float(old) + 1.0)
+                new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else (str(int(float(old)) + 1) if ty == "int" else str(float(old) + 1.0))
                 try:
                     if not _raw(t, "set", field, new).get("success"):
                         raise ExpectationFailed("%s: set failed" % field)
