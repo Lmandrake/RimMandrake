@@ -163,7 +163,11 @@ namespace RimMandrake.FeverWood
 
         private void SpawnEncounter(List<IntVec3> pools)
         {
-            IntVec3 seed = pools[Rand.Range(0, pools.Count)];
+            SpawnEncounterAt(pools[Rand.Range(0, pools.Count)], pools);
+        }
+
+        private void SpawnEncounterAt(IntVec3 seed, List<IntVec3> pools)
+        {
             int limbCount = Rand.Chance(0.3f) ? 2 : 1; // INVENTED: "one or two tentacles emerge"
 
             for (int i = 0; i < limbCount; i++)
@@ -320,6 +324,49 @@ namespace RimMandrake.FeverWood
             {
                 blockedUntilTick = until;
             }
+        }
+
+        /// <summary>FEVERWOOD_OIL_BOIL_WEATHER_1: a burning pool edge wakes the deep. An ORDINARY emergence at the
+        /// registered pool cell nearest `near` (never the plot-reserved Great Emergence), plus one extra encounter
+        /// pressure. Respects the bestiary switch and a permanent kill; ignores the ambient cooldown (the fire is the
+        /// trigger). Returns the number of limbs spawned.</summary>
+        public int ForceEmergenceNear(IntVec3 near)
+        {
+            if (!RM_FeverWoodSettings.tentacleBestiaryEnabled || permanentlyKilled)
+            {
+                return 0;
+            }
+            List<IntVec3> pools = PoolCells();
+            if (pools.Count == 0)
+            {
+                return 0;
+            }
+            IntVec3 seed = pools[0];
+            for (int i = 1; i < pools.Count; i++)
+            {
+                if ((pools[i] - near).LengthHorizontalSquared < (seed - near).LengthHorizontalSquared)
+                {
+                    seed = pools[i];
+                }
+            }
+            int before = CountLimbs();
+            SpawnEncounterAt(seed, pools);
+            encounterPressure++;
+            return CountLimbs() - before;
+        }
+
+        private int CountLimbs()
+        {
+            int n = 0;
+            foreach (string d in AllLimbDefNames)
+            {
+                ThingDef def = DefDatabase<ThingDef>.GetNamedSilentFail(d);
+                if (def != null)
+                {
+                    n += map.listerThings.ThingsOfDef(def).Count;
+                }
+            }
+            return n;
         }
 
         public void OnPorterAttacked()

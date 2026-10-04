@@ -1720,3 +1720,75 @@ def ant_theft(t):
                 _fail("no thornbug was carried off and held alive: %s" % state)
             if nums.get("letters", 0) < 1:
                 _fail("no 'Carried off' letter was sent: %s" % state)
+
+
+@suite.chain("oil_boil")
+def oil_boil(t):
+    """FEVERWOOD_OIL_BOIL_WEATHER_1. Offline: the weather and condition defs exist, RM_FeverWood rolls the oil boil
+    and still has Rain 0, the gate is the weather's temperatureRange written from Mod Settings. Live on the CURRENT
+    map (RM_OilBoilProof): the gate's answer, seepril yield doubled under the condition, and a spark in a hazed
+    ground cell flashes fire and ends the condition. NOT proven here: a shot from a boughway cell staying cold, a
+    melee hit staying cold, the pool-edge wake (needs a registered pool: no quicktest carries one) -- first poke on a
+    Fever Wood map: ProofSpark beside a pool, then count RM_Sekkulaath_* within the cluster."""
+    with _comp(t, "weather_and_condition_wired", independent=True):
+        if t.session is not None:
+            wx = ET.parse(os.path.join(_HERE, "Defs", "WeatherDefs", "RM_FeverWood_OilBoil.xml")).getroot()
+            if wx.find("WeatherDef[defName='RM_FeverWood_OilBoil']") is None:
+                _fail("WeatherDef RM_FeverWood_OilBoil missing")
+            if "RM_WeatherOverlay_OilBoilHaze" not in ET.tostring(wx, encoding="unicode"):
+                _fail("the oil boil weather lacks its haze overlay")
+            cx = ET.parse(os.path.join(_HERE, "Defs", "GameConditionDefs", "RM_OilBoilCondition.xml")).getroot()
+            if (cx.findtext("GameConditionDef/conditionClass") or "").strip() != "RimMandrake.FeverWood.RM_GameCondition_OilBoil":
+                _fail("RM_OilBoilCondition does not use RM_GameCondition_OilBoil")
+            weathers = _BIOME_EL.find("baseWeatherCommonalities") if _BIOME_EL is not None else None
+            names = dict((ch.tag, (ch.text or "").strip()) for ch in (weathers if weathers is not None else []) if isinstance(ch.tag, str))
+            if len(names) < 4:
+                _fail("read only %d weather rows from RM_FeverWood: parse failure" % len(names))
+            if float(names.get("RM_FeverWood_OilBoil", 0) or 0) <= 0:
+                _fail("RM_FeverWood does not roll RM_FeverWood_OilBoil")
+            if names.get("Rain") != "0":
+                _fail("RM_FeverWood Rain must stay 0, reads %r" % names.get("Rain"))
+            src = open(os.path.join(_HERE, "S" + "ource", "RM_OilBoil.cs"), encoding="utf-8").read()
+            for needle in ("w.temperatureRange = new FloatRange(RM_FeverWoodSettings.oilBoilMinTempC",
+                           "oilBoilCommonalityMultiplier", "oilBoilYieldMultiplier", "oilBoilFlashRadius",
+                           "oilBoilWakesDeep", "ForceEmergenceNear", "RaisedTerrain", "IsWater"):
+                if needle not in src:
+                    _fail("RM_OilBoil.cs lacks %s" % needle)
+            if not os.path.isfile(os.path.join(_HERE, "Textures", "Weather", "RM_FeverWood_OilBoilHaze.png")):
+                _fail("haze overlay texture missing")
+
+    def proof(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.FeverWood.RM_OilBoilProof", method=method, args="current")
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def nums(text):
+        return dict((k, v) for k, v in re.findall(r"(\w+)=([\w.-]+)", text))
+
+    with _comp(t, "gate_follows_the_temperature_setting", independent=True, toggle="oilBoilEnabled"):
+        g = nums(proof(t, "ProofGate"))
+        if _live(t):
+            try:
+                want = g.get("enabled") == "True" and float(g["temp"]) >= float(g["min"])
+            except (KeyError, ValueError):
+                _fail("ProofGate unreadable: %r" % g)
+            if (g.get("canOccur") == "True") != want:
+                _fail("gate says canOccur=%s at %s C against min %s" % (g.get("canOccur"), g.get("temp"), g.get("min")))
+
+    with _comp(t, "seepril_yield_doubles_while_boiling", independent=True):
+        y = nums(proof(t, "ProofYield"))
+        if _live(t):
+            try:
+                off, on = int(y["yieldOff"]), int(y["yieldOn"])
+            except (KeyError, ValueError):
+                _fail("ProofYield unreadable: %r" % y)
+            want = int(round(off * float(SETTING_FIELDS["oilBoilYieldMultiplier"][1])))
+            if off <= 0 or on != want:
+                _fail("seepril yield %d off, %d on; expected %d" % (off, on, want))
+
+    with _comp(t, "a_spark_in_the_haze_flashes_and_burns_it_off", independent=True):
+        s = nums(proof(t, "ProofSpark"))
+        if _live(t):
+            if s.get("flashed") != "True" or s.get("conditionEnded") != "True":
+                _fail("spark did not flash and end the condition: %r" % s)
+            if int(s.get("firesAfter", 0)) <= int(s.get("firesBefore", 0)):
+                _fail("the flash started no fire: %r" % s)

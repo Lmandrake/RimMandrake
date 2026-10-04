@@ -82,6 +82,7 @@
     <Compile Include="RM_WorkGiver_FoulPool.cs" />
     <Compile Include="RM_JobDriver_FoulPool.cs" />
     <Compile Include="RM_KurrethTheft.cs" />
+    <Compile Include="RM_OilBoil.cs" />
   </ItemGroup>
 
   <ItemGroup>

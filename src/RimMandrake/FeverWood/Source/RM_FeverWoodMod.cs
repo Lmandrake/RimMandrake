@@ -198,6 +198,14 @@ namespace RimMandrake.FeverWood
         /// carries them off alive (letter + slime trail). Off: the lure's kurreth wave is a plain assault.</summary>
         public static bool antTheftEnabled = true;
 
+        /// <summary>FEVERWOOD_OIL_BOIL_WEATHER_1: hot still days boil the seep oil into a flammable haze.</summary>
+        public static bool oilBoilEnabled = true;
+        public static float oilBoilMinTempC = 35f;
+        public static float oilBoilCommonalityMultiplier = 1f;
+        public static float oilBoilYieldMultiplier = 2f;
+        public static float oilBoilFlashRadius = 8f;
+        public static bool oilBoilWakesDeep = true;
+
         /// <summary>FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 toggle. On: a
         /// failed taming attempt on a vaulm, drommath or ollareth triggers
         /// its refusal (seal / swell / scream) exactly as taking damage does.
@@ -237,6 +245,12 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
             Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
+            Scribe_Values.Look(ref oilBoilEnabled, "oilBoilEnabled", true);
+            Scribe_Values.Look(ref oilBoilMinTempC, "oilBoilMinTempC", 35f);
+            Scribe_Values.Look(ref oilBoilCommonalityMultiplier, "oilBoilCommonalityMultiplier", 1f);
+            Scribe_Values.Look(ref oilBoilYieldMultiplier, "oilBoilYieldMultiplier", 2f);
+            Scribe_Values.Look(ref oilBoilFlashRadius, "oilBoilFlashRadius", 8f);
+            Scribe_Values.Look(ref oilBoilWakesDeep, "oilBoilWakesDeep", true);
         }
 
         private static Vector2 scroll;
@@ -358,6 +372,24 @@ namespace RimMandrake.FeverWood
               + "nothing is left to take, the rest leave. A letter names every animal taken and the way the column "
               + "went, and a slime trail leads off the edge there. Off: the kurreth wave is a plain assault.");
 
+            list.GapLine();
+            list.CheckboxLabeled("Oil boil weather", ref oilBoilEnabled,
+                "On hot, still days the seep oil boils off the ground into a low haze. While it lasts seepril yield "
+              + "more seep oil, and the haze is fuel: a shot fired from or landing in it, a fire or a burning creature in "
+              + "it, or a dry-lightning strike flashes fire along the haze, which then burns off. The crown (boughway, "
+              + "bough-soil, stilt platforms) and roofed ground stay clear. Melee never sparks it. Off: the weather never comes.");
+            list.Label("Only at or above this outdoor temperature: " + oilBoilMinTempC.ToString("0") + " C");
+            oilBoilMinTempC = list.Slider(oilBoilMinTempC, 20f, 60f);
+            list.Label("How often, against the biome's other weather: " + oilBoilCommonalityMultiplier.ToString("0.0") + "x");
+            oilBoilCommonalityMultiplier = list.Slider(oilBoilCommonalityMultiplier, 0f, 5f);
+            list.Label("Seepril yield while boiling: " + oilBoilYieldMultiplier.ToString("0.0") + "x");
+            oilBoilYieldMultiplier = list.Slider(oilBoilYieldMultiplier, 1f, 4f);
+            list.Label("How far a flash runs along the haze: " + oilBoilFlashRadius.ToString("0") + " cells");
+            oilBoilFlashRadius = list.Slider(oilBoilFlashRadius, 2f, 20f);
+            list.CheckboxLabeled("A flash at a pool's edge wakes the deep", ref oilBoilWakesDeep,
+                "On: if the fire reaches a cell beside a pool, tentacles rise there (an ordinary emergence, never the "
+              + "Great Emergence). Off: the fire burns and the deep sleeps on.");
+
             viewHeight = list.CurHeight + 20f;
             list.End();
             Widgets.EndScrollView();
@@ -378,6 +410,12 @@ namespace RimMandrake.FeverWood
             RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_HiveSealing.OnAlarm;
             // FEVERWOOD_HIVE_PARASITE_CHAMBER_1: an alarm sends the glomvar into a feeding frenzy.
             RimMandrake.CreatureBehaviors.RM_ReactionEvents.AlarmAnnounced += RM_CompHiveParasite.OnAlarm;
+        }
+
+        public override void WriteSettings()
+        {
+            base.WriteSettings();
+            RM_OilBoil.ApplySettings();
         }
 
         public override string SettingsCategory()
