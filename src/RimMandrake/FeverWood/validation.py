@@ -1711,7 +1711,34 @@ def hive_parasite(t):
         _teardown(t)
 
 
+def _clear_ant_raid(t):
+    """After a chain that stages the kurreth column (RM_KurrethTheftProof.ProofRaid spawns its ants at the MAP EDGE, far
+    outside the pad that _teardown clears): kill every swarm pawn. Left alive they bit colonists in the NEXT suites'
+    chains (load 13: kurreth bites in Greentide's mire/swallow chains = surprise taints). Best-effort, never masks a verdict."""
+    if t.session is None:
+        return
+    try:
+        for p in (t.session.call("jawa/list_pawns", faction="RM_FactionDef_KurrethSwarm", limit=200) or {}).get("pawns") or []:
+            t.session.call("jawa/damage", damageDef="Bullet", amount=9999.0, thingId=p.get("id"),
+                           armorPenetration=1.0, allowColonists=False)
+    except Exception as ex:                                    # noqa: BLE001
+        print("[fw] ant raid cleanup failed: %s" % ex, file=sys.stderr, flush=True)
+
+
+def _with_ant_raid_cleanup(fn):
+    import functools
+
+    @functools.wraps(fn)
+    def run(t):
+        try:
+            return fn(t)
+        finally:
+            _clear_ant_raid(t)
+    return run
+
+
 @suite.chain("ant_theft")
+@_with_ant_raid_cleanup
 def ant_theft(t):
     """FEVERWOOD_ANT_THEFT_RAIDBACK_1 part A: the kurreth lure wave steals. Source read: the lure routes the
     kurreth faction to RM_LordJob_KurrethTheft behind antTheftEnabled (the old plain assault is the off-route
@@ -1763,6 +1790,7 @@ def ant_theft(t):
 
 
 @suite.chain("kurreth_column")
+@_with_ant_raid_cleanup
 def kurreth_column(t):
     """FEVERWOOD_KURRETH_COLUMN_RAIDBACK_1 (part B of the ant theft). Offline: RM_Quest_KurrethColumn is code-fired only
     (weight 0, isRootSpecial, autoAccept) around the C# node, the site part and the bound hediff exist, the theft letter
