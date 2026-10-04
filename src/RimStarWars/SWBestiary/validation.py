@@ -84,12 +84,103 @@ Still not proven / likely first-live-run corrections:
      defect, that is the likely cause and is a spawn-tool limitation, not
      a mod defect.
 """
-from modcheck import Suite, ExpectationFailed
+import os
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+CONTROL_ABSENT = "ThingDef/RSW_BestiaryNoSuchDef_ZZ"
+BEAST_SETTINGS = "RimMandrake.StarWars.SWBestiary.RSW_BeastMechanicsSettings"
+# SWBESTIARY_COVERAGE_GAPS_1: every Mod Settings class this assembly ships, and its source file.
+SETTINGS_SOURCES = (
+    ("RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings", "JawaIkee/RSW_JawaIkeeSettings.cs"),
+    ("RimMandrake.StarWars.Livestock.RSW_LivestockSettings", "Livestock/RSW_LivestockSettings.cs"),
+    (BEAST_SETTINGS, "BeastMechanics/RSW_BeastMechanicsSettings.cs"),
+)
+_FIELD = re.compile(r"public\s+static\s+(bool|int|float)\s+(\w+)\s*=\s*([^;]+);")
+
+
+def shipped_defs():
+    """[(DefType, defName)] for every non-abstract, unconditional top-level def under Defs/ (a def carrying its own
+    MayRequire is skipped: it legitimately stays out when its donor is absent)."""
+    out = []
+    for dp, _d, files in os.walk(os.path.join(HERE, "Defs")):
+        for fn in sorted(files):
+            if fn.endswith(".xml"):
+                for el in ET.parse(os.path.join(dp, fn)).getroot():
+                    nm = el.find("defName") if isinstance(el.tag, str) else None
+                    if (nm is not None and nm.text and el.get("Abstract", "").lower() != "true"
+                            and not el.get("MayRequire") and not el.get("MayRequireAnyOf")):
+                        out.append((el.tag, nm.text.strip()))
+    return sorted(set(out))
+
+
+def settings_fields():
+    """{(class, field): (type, default)} for every scalar public static field of every settings class."""
+    out = {}
+    for cls, rel in SETTINGS_SOURCES:
+        src = open(os.path.join(HERE, "Source", rel), encoding="utf-8").read()
+        body = re.sub(r"//[^\n]*", "", src.split("ExposeData", 1)[0])
+        for m in _FIELD.finditer(body):
+            out[(cls, m.group(2))] = (m.group(1), m.group(3).strip())
+    return out
+
+
+SHIPPED = shipped_defs()
+PLAIN = [p for p in SHIPPED if "." not in p[0]]
+
+
+def static_checks():
+    bad = []
+    if len(SHIPPED) < 200:
+        return ["only %d defs parsed from Defs/ (sanity probe failed)" % len(SHIPPED)]
+    fields = settings_fields()
+    if len(fields) < 9:
+        return ["only %d settings fields parsed (sanity probe failed)" % len(fields)]
+    for cls, rel in SETTINGS_SOURCES:
+        src = open(os.path.join(HERE, "Source", rel), encoding="utf-8").read()
+        after = src.split("ExposeData", 1)[1] if "ExposeData" in src else ""
+        for (c, f), _v in fields.items():
+            if c != cls:
+                continue
+            if '"%s"' % f not in after:
+                bad.append("%s.%s is not Scribed" % (cls.rsplit(".", 1)[1], f))
+            ui = src.split("void DoWindowContents", 1)[-1] if "void DoWindowContents" in src else ""
+            if not re.search(r"\b%s\b" % f, ui):
+                bad.append("%s.%s has no settings-window control" % (cls.rsplit(".", 1)[1], f))
+    toggled = set(suite.toggles) if "suite" in globals() and suite is not None else set()
+    if toggled:
+        for (_c, f) in fields:
+            if f not in toggled:
+                bad.append("settings field %s is not in suite.toggles (never asserted)" % f)
+    return bad
+
+
+try:
+    from modcheck import Suite, ExpectationFailed
+except ImportError:
+    sys.path.insert(0, os.path.join(HERE, "..", "..", "RimMandrake", "Utils"))
+    try:
+        from modcheck import Suite, ExpectationFailed
+    except ImportError:
+        Suite = None
+
+if Suite is None:
+    if __name__ == "__main__":
+        problems = static_checks()
+        print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+        for p in problems:
+            print("  - " + p)
+        sys.exit(1 if problems else 0)
+    raise SystemExit("modcheck not importable")
 
 suite = Suite("SWBestiary")
 suite.toggles = [
     "ikeeThoughtEnabled",
     "kilnBellyEnabled", "kilnCooldownMultiplier",
+    "moornakGriefEnabled", "moornakReleaseDelayMultiplier",
+    "metalEatingEnabled", "innateAbilitiesEnabled", "scrapHoardingEnabled", "toxinDependenceEnabled",
 ]
 
 IKEE_SETTINGS = "RimMandrake.StarWars.JawaIkee.RSW_JawaIkeeSettings"
@@ -225,3 +316,71 @@ def livestock_settings_are_live_flippable(t):
         t.set_setting(LIVESTOCK_SETTINGS, {"kilnCooldownMultiplier": 2.0})
         t.set_setting(LIVESTOCK_SETTINGS, {"kilnCooldownMultiplier": 1.0})
 
+
+def _unmeasured(t, why):
+    t.upstream_reason = "UNMEASURED: " + why
+    t.upstream_failed = True
+
+
+@suite.chain("defs_resolve")
+def defs_resolve(t):
+    """SWBESTIARY_COVERAGE_GAPS_1: every unconditional def parsed from Defs/ survives the loader live (a def can
+    parse and still be discarded: a missing type, an inactive donor class). A control name must read notFound."""
+    with t.component("control_probe_can_say_absent", beyond_toggle=True):
+        r = t.bridge_call("jawa/get_defs", defs=CONTROL_ABSENT, fields="defName", limit=2)
+        if t.session is not None:
+            if not isinstance(r, dict) or r.get("success") is False:
+                raise ExpectationFailed("get_defs failed outright on the control: %r" % r)
+            if int(r.get("foundCount", 0)) != 0 or not r.get("notFound"):
+                raise ExpectationFailed("control def reads as present: %r" % r)
+    with t.component("every_shipped_def_resolves", beyond_toggle=True):
+        names = ["%s/%s" % p for p in PLAIN]
+        missing, ok = [], 0
+        for i in range(0, len(names), 20):
+            chunk = names[i:i + 20]
+            r = t.bridge_call("jawa/get_defs", defs=";".join(chunk), fields="defName", limit=40)
+            if t.session is None:
+                continue
+            if not isinstance(r, dict) or r.get("success") is False:
+                raise ExpectationFailed("get_defs failed: %r" % r)
+            missing.extend(r.get("notFound") or [])
+            ok += int(r.get("foundCount", 0))
+        if t.session is not None and (missing or ok != len(names)):
+            raise ExpectationFailed("%d of %d defs resolved; notFound=%r" % (ok, len(names), missing[:8]))
+
+
+def _make_roundtrip(cls, field, ty, default):
+    def chain(t):
+        with t.component("%s_round_trips" % field, toggle=field):
+            if t.session is None:
+                return
+            r = t.bridge_call("jawa/mod_settings_field", typeName=cls, action="get", field=field)
+            old = (r or {}).get("value") if isinstance(r, dict) else None
+            if old is None:
+                _unmeasured(t, "mod_settings_field could not read %s: %s" % (field, str(r)[:120]))
+                return
+            if ty == "bool":
+                new = "False" if str(old).lower() == "true" else "True"
+            else:
+                new = str(float(old) + 1.0)
+            try:
+                t.set_setting(cls, {field: new})   # set_setting verifies by an independent read-back
+            finally:
+                t.set_setting(cls, {field: old})
+    chain.__name__ = "settings_%s" % field
+    return chain
+
+
+# The five toggles the audit found never touched (the three older ones keep their own chains above).
+for (_cls, _f), (_ty, _dv) in sorted(settings_fields().items()):
+    if _f in ("ikeeThoughtEnabled", "kilnBellyEnabled", "kilnCooldownMultiplier"):
+        continue
+    suite.chain("settings_%s_round_trips" % _f)(_make_roundtrip(_cls, _f, _ty, _dv))
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)
