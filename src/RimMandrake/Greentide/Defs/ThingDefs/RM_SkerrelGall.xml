@@ -51,7 +51,7 @@
     <pathCost>15</pathCost>
     <fillPercent>0.15</fillPercent>
     <graphicData>
-      <texPath>RotSporeKit/Things/Plant/RegenerantVeil</texPath>
+      <texPath>RotSporeKit/Things/Plant/RegenerantVeil/RegenerantVeil_A</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.85</drawSize>
     </graphicData>

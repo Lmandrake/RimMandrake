@@ -43,7 +43,7 @@
     <description>A shaft capped with a grate nobody opens, and voices under it. People are kept down there. Nobody goes in, and nobody comes out unless a hoist lifts them, and no hoist will while the keepers still hold this place.</description>
     <thingClass>RimMandrake.KeelHoist.RM_SealedHolder</thingClass>
     <graphicData>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
     </graphicData>

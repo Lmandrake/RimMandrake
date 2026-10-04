@@ -23,7 +23,7 @@
     <description>A Hutt Cartel oubliette: a grated shaft with people kept at the bottom of it. Nobody goes in. The keepers buy what is lowered to them: slaves, prisoners, beasts knocked senseless, tame or not. The fighters go to the arena, the rest to the work gangs. While the Hutts hold this place no hoist will lift anyone out; if the place were taken, its head-frame could bring them all up.</description>
     <thingClass>RimMandrake.KeelHoist.RM_SealedHolder</thingClass>
     <graphicData>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
       <color>(140,110,80)</color>

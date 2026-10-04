@@ -28,7 +28,7 @@
     <tickerType>Normal</tickerType>
     <graphicData>
       <texPath>Things/Building/RubblePile</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Random</graphicClass>
       <color>(232,224,204)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>

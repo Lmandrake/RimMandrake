@@ -18,7 +18,8 @@
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>Things/Item/Special/Genepack</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <!-- Graphic_Genepack (a folder of gene-count variants); a non-Genepack thing draws variant 0 (RimSage SubGraphicFor) -->
+      <graphicClass>Graphic_Genepack</graphicClass>
       <drawSize>(0.75, 0.75)</drawSize>
     </graphicData>
     <stackLimit>1</stackLimit>

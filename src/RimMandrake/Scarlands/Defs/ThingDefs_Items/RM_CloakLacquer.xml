@@ -11,7 +11,7 @@
     <description>A shimmering film scraped from a chotrix's hide. It bends light. Worked into a cloak at a tailoring bench, it makes the wearer vanish while they stand still and unseen. The effect never wears off.</description>
     <graphicData>
       <texPath>Things/Item/Resource/Chemfuel</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(0.45,0.35,0.75)</color>
     </graphicData>
     <thingCategories>

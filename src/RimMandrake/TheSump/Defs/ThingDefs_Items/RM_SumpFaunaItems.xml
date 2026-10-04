@@ -173,7 +173,7 @@
     </thingCategories>
     <graphicData>
       <texPath>Things/Item/Resource/Chemfuel</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <color>(196, 156, 64)</color>
     </graphicData>
     <statBases>

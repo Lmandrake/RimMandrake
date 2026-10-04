@@ -93,7 +93,7 @@
     <description>A fist-sized bladder pulled whole off a hoolimbre stand, still glowing the same soft green it glowed on the plant. It doesn't need clipping to anything or fed anything — set it down and it lights the ground around it until it rots, a few days on, or until you fix it properly to a chain instead.</description>
     <graphicData>
       <texPath>Things/Mote/BeamGlow</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>MoteGlow</shaderType>
       <drawSize>0.6</drawSize>
       <color>(170,225,180,220)</color>
@@ -133,7 +133,7 @@
     <description>A sealed golden bulb harvested off a noothelm stand. Unlit and inert until it is clipped whole to a tether-chain, at which point it wakes and never needs anything again.</description>
     <graphicData>
       <texPath>Things/Mote/BeamGlow</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <drawSize>0.6</drawSize>
       <color>(255,220,150,255)</color>
     </graphicData>

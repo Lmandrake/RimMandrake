@@ -16,7 +16,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(3,3)</drawSize>
       <color>(120,110,100)</color>
     </graphicData>
@@ -43,7 +43,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(150,120,90)</color>
     </graphicData>
@@ -71,7 +71,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(110,100,95)</color>
     </graphicData>
@@ -96,7 +96,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(170,90,60)</color>
     </graphicData>
@@ -121,7 +121,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(1,1)</drawSize>
       <color>(90,110,120)</color>
     </graphicData>

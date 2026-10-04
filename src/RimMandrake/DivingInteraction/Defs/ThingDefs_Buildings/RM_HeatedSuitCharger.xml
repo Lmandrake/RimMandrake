@@ -42,7 +42,7 @@
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
       <texPath>Things/Building/Power/Battery</texPath>
-      <graphicClass>Graphic_Single</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(1,2)</drawSize>
       <color>(214, 108, 48)</color>
     </graphicData>

@@ -13,7 +13,7 @@
     <category>Building</category>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <drawSize>(1,1)</drawSize>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
@@ -31,7 +31,7 @@
     <label>comb ice-rock</label>
     <description>Water-ice bedrock, pale and squared by something that was not weather. It is one tine of a horseshoe wider than a village, and the horseshoe is only the part of a larger thing that stands above the floor.</description>
     <graphicData>
-      <texPath>Things/Building/Misc/CaveEntranceA</texPath>
+      <texPath>Things/Building/CaveEntranceA</texPath>
       <color>(170,195,205)</color>
     </graphicData>
   </ThingDef>
