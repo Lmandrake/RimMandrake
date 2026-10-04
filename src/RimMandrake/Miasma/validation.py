@@ -22,10 +22,11 @@ DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTame
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
             "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True,
             "attarEnabled": True, "decayCellsEnabled": True, "decayCellPowerMultiplier": 1.0,
-            "rottingBedCorpsesEnabled": True, "rottingBedRotDays": 3.0}
+            "rottingBedCorpsesEnabled": True, "rottingBedRotDays": 3.0,
+            "mothersPriceEnabled": True, "youngPriceOffset": 1500.0}
 NEW = ["plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "strandedDeformationChance",
        "ambushFrogHunts", "attarEnabled", "youngCallEnabled", "decayCellsEnabled", "decayCellPowerMultiplier",
-       "rottingBedCorpsesEnabled", "rottingBedRotDays"]
+       "rottingBedCorpsesEnabled", "rottingBedRotDays", "mothersPriceEnabled", "youngPriceOffset"]
 
 
 def static_checks():
@@ -207,13 +208,43 @@ def static_checks():
         return max(1, int(size * per + 0.5))
     if not (bones(1.0) == 8 and bones(0.05) == 1 and bones(2.4) == 19):
         bad.append("bones curve: a human must leave 8, a rat at least 1")
+    # MIASMA_MOTHERS_PRICE_1 + MIASMA_WARDEN_MOTHER_ART_1
+    mp = open(os.path.join(HERE, "Source", "RM_MothersPrice.cs"), encoding="utf-8").read()
+    for needle in ("TradeAction.PlayerSells", "nameof(Pawn.PreTraded)", "nameof(Tradeable.TraderWillTrade)",
+                   '"RevokeForever"', '"GrantColonyTolerance"', ".Betray(", "IncidentDefOf.TraderCaravanArrival",
+                   "RM_MiasmaSettings.mothersPriceEnabled", "IsWater"):
+        if needle not in mp:
+            bad.append("RM_MothersPrice.cs lacks %s" % needle)
+    if '<Compile Include="RM_MothersPrice.cs" />' not in open(os.path.join(HERE, "Source", "RM_Miasma.csproj")).read():
+        bad.append("RM_MothersPrice.cs is not in the csproj (it would compile into nothing)")
+    anchor = open(os.path.join(HERE, "..", "EnvironmentalHazards", "Source", "RM_CompTerritorialAnchor.cs"), encoding="utf-8").read()
+    for m in ("public void RevokeForever()", "public bool GrantColonyTolerance()", "public bool Betrayed", "public bool ColonyTolerated"):
+        if m not in anchor:
+            bad.append("the reflection target %r is missing from RM_CompTerritorialAnchor" % m)
+    if "if (p == null || betrayed)" not in anchor:
+        bad.append("a betrayed mother must tolerate nobody (IsTolerated)")
+    sd = open(os.path.join(HERE, "Defs", "HediffDefs", "RUT_StrandedDeformation.xml"), encoding="utf-8").read()
+    if "RimMandrake.Miasma.RM_MothersPriceExtension" not in sd or "<priceOffset>" not in sd:
+        bad.append("RUT_StrandedDeformation lacks the mother's price extension or its priceOffset")
+    if "hd.priceOffset = RM_MiasmaSettings.mothersPriceEnabled" not in open(os.path.join(HERE, "Source", "RM_MiasmaMod.cs"), encoding="utf-8").read():
+        bad.append("youngPriceOffset is not written to the hediff's priceOffset")
+    led = open(os.path.join(HERE, "Source", "RM_WardenMotherSuccession.cs"), encoding="utf-8").read()
+    if "successionDone = true;" not in led[led.index("public void Betray("):]:
+        bad.append("Betray must void succession")
+    for f in ("south", "east", "north"):
+        if not os.path.exists(os.path.join(HERE, "Textures", "Things", "Pawn", "Animal", "Miasma", "WardenMother", "WardenMother_%s.png" % f)):
+            bad.append("warden mother art missing: %s" % f)
+    wm = open(os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_WardenMother.xml"), encoding="utf-8").read()
+    for tp in re.findall(r"<texPath>([^<]+)</texPath>", wm):
+        if not os.path.exists(os.path.join(HERE, "Textures", *(tp + "_south.png").split("/"))):
+            bad.append("RM_WardenMother texPath %s resolves to nothing" % tp)
     return bad
 
 
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Miasma")
-    suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled"]
+    suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled", "mothersPriceEnabled"]
 
     def _unmeasured(t, why):
         """Record the component UNMEASURED (never FAIL) via the harness's upstream_failed route."""
@@ -299,6 +330,40 @@ def _build_suite():
             for want in ("accepts=True", "corpseGone=True", "bones=8", "skull=True", "skullNamesSource=True"):
                 if want not in text:
                     raise ExpectationFailed("rotting bed proof missing %s: %s" % (want, text[:200]))
+
+    @suite.chain("mothers_price")
+    def mothers_price(t):
+        """MIASMA_MOTHERS_PRICE_1. Runs on the CURRENT map (RM_MothersPriceProof spawns a warden mother on any water
+        cell if none is there, and stages its own held young). Return first, then sale: a held young in her water is
+        taken back (goes wild, loses the deformation) and the colony is tolerated; a sold young revokes it for good and
+        reprices at the fortune. NOT proven here: the buyer caravan (step 2 days on a home map holding a young), the
+        trade dialog itself, and succession void on a real crèche (no RUT_CrecheMarker on a quicktest) -- first poke
+        on a Miasma map: ProofSell, then read the crèche marker's inspect string."""
+        def proof(t, method):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Miasma.RM_MothersPriceProof", method=method, args="current")
+            return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+        with t.component("returning_a_young_wins_her_tolerance", toggle="mothersPriceEnabled"):
+            if t.session is None:
+                return
+            text = proof(t, "ProofReturn")
+            for want in ("taken=1", "youngWild=True", "stillStranded=False", "tolerated=True", "betrayed=False"):
+                if want not in text:
+                    raise ExpectationFailed("return proof missing %s: %s" % (want, text[:240]))
+
+        with t.component("selling_a_young_betrays_her_forever", toggle="mothersPriceEnabled"):
+            if t.session is None:
+                return
+            text = proof(t, "ProofSell")
+            after = text[text.find("after["):]
+            for want in ("betrayed=True", "tolerated=False"):
+                if want not in after:
+                    raise ExpectationFailed("sale proof missing %s after the sale: %s" % (want, text[:300]))
+            m = re.search(r"price=(\d+)", after)
+            if not m or int(m.group(1)) < 1000:
+                raise ExpectationFailed("a held stranded young is not priced at a fortune: %s" % after[:200])
+            if "ledger=True" in after and "successionVoid=True" not in after:
+                raise ExpectationFailed("the crèche ledger was found but succession is not void: %s" % after[:200])
 
     @suite.chain("young_call")
     def young_call(t):

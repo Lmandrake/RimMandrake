@@ -59,6 +59,9 @@ namespace RimMandrake.Miasma
         public RM_HediffCompProperties_SelfTameOnRecord Props =>
             (RM_HediffCompProperties_SelfTameOnRecord)props;
 
+        /// <summary>MIASMA_MOTHERS_PRICE_1: the crèche this young registered with (null until it found one).</summary>
+        public Thing CrecheMarker => crecheMarker;
+
         public override void CompPostTick(ref float severityAdjustment)
         {
             base.CompPostTick(ref severityAdjustment);
@@ -284,10 +287,63 @@ namespace RimMandrake.Miasma
         private Pawn motherPawn;
         private Pawn heirPawn;
         private bool successionDone;
+        private bool betrayed;
+        private int returnedCount;
+        private string soldLabel;
 
         public CompProperties_CrecheYoungLedger Props => (CompProperties_CrecheYoungLedger)props;
 
         public bool RecordClean => recordClean;
+
+        /// <summary>MIASMA_MOTHERS_PRICE_1: one of this crèche's young was sold.</summary>
+        public bool Betrayed => betrayed;
+
+        public int ReturnedCount => returnedCount;
+
+        public bool SuccessionVoid => betrayed;
+
+        /// <summary>A sale: self-taming barred for good, succession void, the mother's tolerance revoked (the caller
+        /// does that through RM_MothersPrice, which reaches the shared assembly's anchor comp).</summary>
+        public void Betray(Pawn sold)
+        {
+            betrayed = true;
+            recordClean = false;
+            successionDone = true;
+            heirPawn = null;
+            soldLabel = sold?.LabelShort ?? soldLabel;
+        }
+
+        public void NoteReturned(Pawn young)
+        {
+            returnedCount++;
+            registeredYoung.Remove(young);
+        }
+
+        public int YoungOwed
+        {
+            get
+            {
+                int n = 0;
+                for (int i = 0; i < registeredYoung.Count; i++)
+                {
+                    Pawn p = registeredYoung[i];
+                    if (p != null && !p.Dead && !p.Destroyed && p.Faction != Faction.OfPlayer)
+                    {
+                        n++;
+                    }
+                }
+                return n;
+            }
+        }
+
+        public Pawn MotherNow()
+        {
+            if (motherPawn == null || motherPawn.Destroyed)
+            {
+                motherPawn = FindNearestWardenMother();
+            }
+            return motherPawn;
+        }
 
         public void RegisterYoung(Pawn p)
         {
@@ -386,12 +442,18 @@ namespace RimMandrake.Miasma
 
         public override string CompInspectStringExtra()
         {
+            // MIASMA_MOTHERS_PRICE_1: her ledger, readable.
+            var lines = new List<string>();
             if (heirPawn != null && !heirPawn.Destroyed)
             {
-                return "RUT_CrecheMarkerHeir".Translate(heirPawn.LabelShort);
+                lines.Add("RUT_CrecheMarkerHeir".Translate(heirPawn.LabelShort));
             }
-
-            return null;
+            lines.Add("Young she is owed: " + YoungOwed + (returnedCount > 0 ? "; brought back to her: " + returnedCount : ""));
+            if (betrayed)
+            {
+                lines.Add("Sold" + (soldLabel.NullOrEmpty() ? "" : ": " + soldLabel) + ". The crèche remembers: she will never tolerate you, and none of her young will be yours.");
+            }
+            return string.Join("\n", lines);
         }
 
         public override void PostExposeData()
@@ -402,6 +464,9 @@ namespace RimMandrake.Miasma
             Scribe_References.Look(ref motherPawn, "motherPawn");
             Scribe_References.Look(ref heirPawn, "heirPawn");
             Scribe_Values.Look(ref successionDone, "successionDone", false);
+            Scribe_Values.Look(ref betrayed, "betrayed", false);
+            Scribe_Values.Look(ref returnedCount, "returnedCount", 0);
+            Scribe_Values.Look(ref soldLabel, "soldLabel");
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit && registeredYoung == null)
             {
