@@ -492,11 +492,17 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
                 pass
             # Gas left by a previous chain (a suush's ToxGas, a vent) poisons the next chain's colonists (ToxicBuildup surprise).
-            for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust", "AB_MycoticSpores"):   # AB_MycoticSpores = Alpha Biomes' AlphaBiomes.Gas_Mycotic (Cut by nobody, 1.0/120t, FeverWood/TheRot)
+            for _gas in ("ToxGas", "BlindSmoke", "RotStink", "DeadlifeDust"):
                 try:
                     session.call("jawa/set_gas", action="clear", rect="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), gasType=_gas)
                 except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
                     pass
+            # Alpha Biomes' AB_MycoticSpores (AlphaBiomes.Gas_Mycotic, FeverWood/TheRot) is a Gas THING, not a GasGrid gas:
+            # jawa/set_gas refuses its name (MEASURED 2026-10-04: 'Bad gasType'), destroy_batch Gas removes it (pawns never touched).
+            try:
+                session.call("jawa/destroy_batch", rects="0,0,%d,%d" % (int(mi.get("sizeX", 250)), int(mi.get("sizeZ", mi.get("sizeX", 250)))), categories="Gas")
+            except Exception:                                      # noqa: BLE001 - housekeeping, never a verdict
+                pass
             from watch import Watch  # noqa: E402
             cap_kw = ({"session_cap": suite.chain_caps[name]}
                       if name in getattr(suite, "chain_caps", {}) else {})
