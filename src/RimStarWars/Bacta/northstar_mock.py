@@ -266,10 +266,20 @@ def mock_extension(game, tool, p):
         if q and p.get("need") == "Food" and p.get("action") == "need":
             q["food"] = float(p["level"])
         return ok
+    if tool == "jawa/comp_read":
+        # companion tool the suite reads tank fuel with (CompRefuelable.fuel, exact)
+        t = bm.things.get(p["thing"])
+        if t and t["def"] == "RSW_BactaTank" and "Refuelable" in str(p.get("comp")):
+            return {"success": True, "values": {"fuel": str(bm.fuel.get(t["id"], 0))}}
+        return {"success": False, "message": "mock: no such comp"}
     if tool == "jawa/pawn_health":
         q = bm.pawns.get(p["pawn"])
         if not q:
             return {"success": False}
+        if p.get("action") == "permanent":
+            for h in q["hediffs"]:
+                h["perm"] = True
+            return {"success": True, "hediffs": []}
         sev = float(p.get("severity", -1))
         q["hediffs"].append({"def": p["hediff"], "part": p.get("bodyPart"), "severity": 0.5 if sev < 0 else sev})
         return {"success": True, "hediffs": []}

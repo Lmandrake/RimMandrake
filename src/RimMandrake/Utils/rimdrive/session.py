@@ -197,8 +197,23 @@ class Session(object):
         self._lock_taken = False
 
     # ---------------------------------------------------------- raw calls
+    def _keep_log_alive(self, tool):
+        """Verse.Log stops writing after 1000 messages until Log.ResetMessageCount (called only at data load): a chain that
+        spams (MCR/Ninefold loggers) silences Player.log AND jawa/drain_log mid-run, so every later log check reads clean
+        for the wrong reason (MEASURED live 2026-10-03: log dead 8+ min under a healthy run). Reset it at most every 40 s,
+        on a real bridge only; failure is never a verdict."""
+        now = time.time()
+        if tool == "jawa/static_call" or now - getattr(self, "_log_reset_at", 0.0) < 40.0:
+            return
+        self._log_reset_at = now
+        try:
+            self._rb.call("jawa/static_call", {"type": "Verse.Log", "method": "ResetMessageCount"})
+        except Exception:                                          # noqa: BLE001
+            pass
+
     def call(self, tool, **params):
         self.calls += 1
+        self._keep_log_alive(tool)
         try:
             return self._rb.call(tool, params)
         except _RECONNECTABLE:
