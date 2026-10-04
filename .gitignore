@@ -318,3 +318,8 @@ infrastructure/state/LESSONS_INBOX.md
 
 # belt_heartbeat.py: runner heartbeats a program reads (belt_watchdog.py), never committed
 /.belt_state/
+
+# Art ledger projections and caches — rebuilt from events/ on read (ART_VERSION_WRANGLING_1).
+infrastructure/state/art/index.json
+infrastructure/state/art/phash_cache.json
+infrastructure/state/art/git_backfill_done.txt

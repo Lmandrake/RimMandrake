@@ -6,3 +6,6 @@ infrastructure/state/ledger/events/*.jsonl merge=union
 *.dll.srchash -merge
 # Phase 5: code-review records are append-only per-seat shards (code_review_status.py).
 infrastructure/state/code_review/*.jsonl merge=union
+
+# Art ledger shards (ART_VERSION_WRANGLING_1): append-only per seat, like the rimflow ledger.
+infrastructure/state/art/events/*.jsonl merge=union
