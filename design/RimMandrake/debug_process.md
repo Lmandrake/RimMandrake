@@ -241,6 +241,31 @@ A rung closes only against that evidence, never against prose. A rung that regre
 reopens as a finding, not a silent edit. MEASURED 2026-10-03: 3 of 110 tracked
 `validation.py` files carry `shows=` (FlowWorks, Graffiti, Pyrelands); re-measure, the number moves.
 
+### 6b. Basic checkout vs extended concerns (owner, 2026-10-04)
+
+Owner, typed: *"there are the 'basic checkout' requirements for a mod to be functional, and then there are the
+'extended' aspects such as mod-mod compatibility, ensuring non compatible mods have been declared, game removal
+consequences, and other such 'extended concerns' that are not part of typical Utinni play. These are NOT checked in a
+typical checkout process but can be requested."*
+
+- **Basic checkout** is what every run checks: the walk's `## must be true` lines and their chains, the hash-bound
+  `## north star` bars, and the floor. This is the evidence for "the mod works in Utinni play", and it is what
+  `modcheck record` and the §6a ladder stand on.
+- **Extended concerns** are listed in a separate **`## extended`** section of the mod's walk. That section covers:
+  mod-mod compatibility, declared incompatibilities (`incompatibleWith` / `loadAfter` in `About.xml`), what happens when
+  the mod is removed from a save, and any other concern that ordinary Utinni play never meets. **They never run by
+  default and never block a basic checkout.** An extended item that is not covered is not a gap in the basic checkout.
+- **They run only on request.** A script runs them only behind an explicit flag (for example
+  `validation.py --removal-check NAME`), and the walk names that flag on the item. The planned modcheck verb is
+  `modcheck run <Mod> --extended`. It is not built yet, so until it exists the walk's flags are the interface.
+- Each item in `## extended` is written as `- E<n>. <what> -> <flag or UNBUILT>; <state>`.
+
+### 6c. The human review map
+
+A third layer next to the script and the bars: a staged, labelled map the owner can look at and play with. It
+records no verdict. Draft principles from the first one (MessyConduit), pending his approval:
+`design/RimMandrake/northstar_human_review.md`.
+
 ## 7. Briefing a bridge-driving subagent
 
 - **One driver at a time.** The holder takes the bridge lock; the subagent drives through
