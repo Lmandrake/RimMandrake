@@ -46,6 +46,12 @@ CASES = {
     "noclamp": ["stage_roll_spreads"],
     "noshed": ["sheds_when_cut"],
     "shedignore": ["does_not_shed_when_setting_off"],
+    "noload": ["seeker_loads_without_the_dialog"],
+    "noswap": ["extract_job_swaps_to_a_loaded_seeker"],
+    "slowclock": ["injection_marks_starts_fast_clock_and_antidote_wins_the_race"],
+    "noreek": ["injection_marks_starts_fast_clock_and_antidote_wins_the_race"],
+    "nocharm": ["injection_marks_starts_fast_clock_and_antidote_wins_the_race"],
+    "offignored": ["slimification_off_reverses_the_injected_clock"],
 }
 
 

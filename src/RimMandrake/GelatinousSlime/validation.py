@@ -1072,6 +1072,68 @@ def seeker_and_weather(t):
                 t.bridge_call("jawa/weather_set", weather="Clear", lockWeather=True)
 
 
+# --------------------------------------------------------------------------- seeker proofs (SLIME_SEEKER_LOAD_TOOL_1)
+# RM_SlimeSeekerProof (jawa/static_call, this mod's assembly) stands in for the never-built jawa/slime_seeker_load:
+# it loads a seeker with SetLoad (no archive dialog), runs the real extract job, the real injection target effect
+# and the real antidote target effect. Any map; the extract job needs a colonist who can walk.
+
+def _seeker(t, method):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.GelatinousSlime.RM_SlimeSeekerProof", method=method,
+                      args="current")
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    if not text or text.startswith("ERROR"):
+        _unmeasured(t, "%s could not stage: %s" % (method, text[:160] or str(r)[:160]))
+    return text
+
+
+def _kv(text):
+    return dict(re.findall(r"(\w+)=([\w.\-]+)", text))
+
+
+@suite.chain("seeker_proofs")
+def seeker_proofs(t):
+    with _comp(t, "seeker_loads_without_the_dialog"):
+        if t._guard():
+            v = _kv(_seeker(t, "ProofLoad"))
+            if v.get("primed") != "True" or not v.get("target") or v.get("rider") != "RM_Gene_B25_TheReek":
+                _fail("SetLoad did not prime the seeker with target + rider: %r" % v)
+    with _comp(t, "extract_job_swaps_to_a_loaded_seeker"):
+        if t._guard():
+            v = _kv(_seeker(t, "ProofExtractStart"))
+            if v.get("took") != "True":
+                _unmeasured(t, "the colonist did not take the extract job: %r" % v)
+            t.wait_ticks(int(v.get("workTicks", "4500")) + 1500)
+            st = _kv(_seeker(t, "ProofExtractState"))
+            if int(st.get("loadedWithLoad", "0")) < 1:
+                _fail("after the extract job no RM_GeneSeeker_Loaded carries the load: %r" % st)
+    with _comp(t, "injection_marks_starts_fast_clock_and_antidote_wins_the_race", toggle="slimificationEnabled"):
+        if t._guard():
+            text = _seeker(t, "ProofInject")
+            a = _kv(text[text.find("A["):text.find("] B[")])
+            b = _kv(text[text.find("B["):])
+            for k in ("target", "rider", "coma", "fastClock"):
+                if a.get(k) != "True":
+                    _fail("injection did not land %s: %s" % (k, text[:300]))
+            if float(a.get("slim", 0)) < 0.4 or abs(float(a.get("ratePerDay", 0)) - 1.0 / 3.0) > 0.02:
+                _fail("injected clock is not stage 2 at ~1/3 a day (about 3 days): %s" % text[:300])
+            if float(a.get("mark", 0)) != 2.0:
+                _fail("The Reek rider must double the Slime-marked increment (want 2.0): %s" % text[:300])
+            if float(b.get("mark", -1)) != 0.0:
+                _fail("a pheromone-charm carrier must take no mark (want 0.0): %s" % text[:300])
+            if b.get("antidoteCuredA") != "True":
+                _fail("the antidote did not end the injected slimification: %s" % text[:300])
+    with _comp(t, "slimification_off_reverses_the_injected_clock", toggle="slimificationEnabled"):
+        if t._guard():
+            try:
+                t.set_setting(SETTINGS, {"slimificationEnabled": False})
+                text = _seeker(t, "ProofInject")
+            finally:
+                t.set_setting(SETTINGS, {"slimificationEnabled": FIELDS["slimificationEnabled"]})
+            a = _kv(text[text.find("A["):text.find("] B[")])
+            if float(a.get("ratePerDay", 0)) >= 0:
+                _fail("slimificationEnabled=false but the injected clock still grows: %s" % text[:300])
+
+
 # --------------------------------------------------------------------------- chain 9: titanoslime
 
 def _stage(t, pid):
