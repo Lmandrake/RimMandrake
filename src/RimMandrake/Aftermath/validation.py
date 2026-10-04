@@ -189,7 +189,7 @@ def battle_lifecycle_repelled(t):
         # IncidentWorker_Raid.TryGenerateRaidInfo, which TryExecute reaches without the CanFireNow gate;
         # jawa/fire_incident calls TryExecute directly (and reports canFireNow separately).
         r = t.bridge_call("jawa/fire_incident", incidentDef="RaidEnemy",
-                          points=120, faction="Pirate")
+                          points=400, faction="Pirate")   # 120 came back as 78 on a late-tick bland map and the raid refused to fire (load 14)
         if not (r or {}).get("fired"):
             raise ExpectationFailed(
                 "jawa/fire_incident did not report fired=true: %r" % r)
