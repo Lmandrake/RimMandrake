@@ -96,6 +96,22 @@ class FWGame(MockGame):
             return fn(p)
         return MockGame.handle(self, tool, p)
 
+    def t_jawa_static_call(self, p):
+        """RM_KurrethTheftProof (FEVERWOOD_ANT_THEFT_RAIDBACK_1): ProofRaid stages the column; ProofState reads
+        the outcome the C# would leave -- a healthy theft takes one thornbug alive and sends the letter."""
+        if p.get("type") != "RimMandrake.FeverWood.RM_KurrethTheftProof":
+            raise RuntimeError("mock: unknown static_call type %s" % p.get("type"))
+        if p.get("method") == "ProofRaid":
+            self.theft_raid = True
+            return {"success": True, "result": "RAID ants=6 thornbugs=3 edge=(0,0,5) faction=Faction_9"}
+        if not getattr(self, "theft_raid", False) or not self.sb("antTheftEnabled"):
+            return {"success": True, "result": "thefts=0 heldByKurreth=0 thornbugsOnMap=3 thornbugCorpses=0 stolenIds= letters=0"}
+        if "theft_kills" in self.brk:
+            return {"success": True, "result": "thefts=0 heldByKurreth=0 thornbugsOnMap=1 thornbugCorpses=2 stolenIds= letters=0"}
+        letters = 0 if "theft_silent" in self.brk else 1
+        return {"success": True, "result": "thefts=1 heldByKurreth=1 thornbugsOnMap=2 thornbugCorpses=0 "
+                                           "stolenIds=4242 letters=%d" % letters}
+
     def _obj(self, tid):
         return next((o for o in self.objs if o["id"] == tid), None)
 
@@ -570,7 +586,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 12, V.BOOL_TOGGLES)
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 13, V.BOOL_TOGGLES)
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
@@ -640,6 +656,8 @@ def main():
         ("parasite_bites_colonist", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
         ("parasite_rings_alarm", {"hive_parasite.a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist"}),
         ("parasite_ignores_toggle", {"hive_parasite.with_the_parasite_toggle_off_the_kurreth_lives"}),
+        ("theft_kills", {"ant_theft.a_kurreth_column_carries_thornbugs_off_alive"}),
+        ("theft_silent", {"ant_theft.a_kurreth_column_carries_thornbugs_off_alive"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))

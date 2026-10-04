@@ -44,14 +44,17 @@ namespace RimMandrake.EnvironmentalHazards
         /// hauler - the same shape KidnapAIUtility.TryFindGoodKidnapVictim
         /// uses for a colonist, generalized so the caller decides what
         /// counts as a valid species/kind (a thornbug PawnKindDef check,
-        /// once that def exists).</summary>
-        public static bool TryFindGoodHaulVictim(Pawn hauler, float maxDist, Predicate<Pawn> victimFilter, out Pawn victim, List<Thing> disallowed = null)
+        /// once that def exists).
+        /// requireManipulation: KidnapAIUtility's humanlike gate. An animal hauler has no manipulation limb
+        /// (no vanilla animal body carries ManipulationLimbCore), so FEVERWOOD_ANT_THEFT_RAIDBACK_1's kurreth
+        /// pass false; animals carry things in vanilla regardless.</summary>
+        public static bool TryFindGoodHaulVictim(Pawn hauler, float maxDist, Predicate<Pawn> victimFilter, out Pawn victim, List<Thing> disallowed = null, bool requireManipulation = true)
         {
             if (victimFilter == null)
             {
                 throw new ArgumentNullException(nameof(victimFilter));
             }
-            if (!hauler.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation) || !hauler.Map.reachability.CanReachMapEdge(hauler.Position, TraverseParms.For(hauler, Danger.Some)))
+            if ((requireManipulation && !hauler.health.capacities.CapableOf(PawnCapacityDefOf.Manipulation)) || !hauler.Map.reachability.CanReachMapEdge(hauler.Position, TraverseParms.For(hauler, Danger.Some)))
             {
                 victim = null;
                 return false;

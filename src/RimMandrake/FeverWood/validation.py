@@ -1615,3 +1615,54 @@ def hive_parasite(t):
                     _fail("antHiveParasiteChamberEnabled=false and the glomvar still killed the kurreth")
     finally:
         _teardown(t)
+
+
+@suite.chain("ant_theft")
+def ant_theft(t):
+    """FEVERWOOD_ANT_THEFT_RAIDBACK_1 part A: the kurreth lure wave steals. Source read: the lure routes the
+    kurreth faction to RM_LordJob_KurrethTheft behind antTheftEnabled (the old plain assault is the off-route
+    only) and the theft toil finds downed victims through RM_HaulVictimAIUtility. Live: a 6-ant column under the
+    theft LordJob against 3 tamed thornbugs on the CURRENT map (RM_KurrethTheftProof.ProofRaid); after the window
+    no thornbug corpse, at least one theft recorded, held alive by the kurreth faction, and the column letter
+    sent. NOT proven here: the raid-back (part B, its own item), the trail by eye, and the off arm (a plain
+    assault may still kill a thornbug; asserting 'never removed' needs a long window -- first poke: set
+    antTheftEnabled false, ProofRaid, step 6000, ProofState thefts=0)."""
+    with _comp(t, "lure_routes_kurreth_to_the_theft_lordjob", independent=True):
+        if t.session is not None:
+            src = os.path.join(_HERE, "S" + "ource")
+            lure = open(os.path.join(src, "RM_MapComponent_TwoFrontLure.cs"), encoding="utf-8").read()
+            theft = open(os.path.join(src, "RM_KurrethTheft.cs"), encoding="utf-8").read()
+            if not re.search(r"AntFactionDefName\s*&&\s*RM_FeverWoodSettings\.antTheftEnabled\s*\?\s*new RM_LordJob_KurrethTheft\(\)",
+                             lure):
+                _fail("the lure does not route the kurreth faction to RM_LordJob_KurrethTheft behind antTheftEnabled")
+            if lure.count("new LordJob_AssaultColony(") != 1:
+                _fail("expected exactly one plain-assault route (the off/brood branch) in the lure")
+            for needle in ("RM_HaulVictimAIUtility.TryFindGoodHaulVictim", "requireManipulation: false",
+                           "PawnLostCondition.ExitedMap", "Filth_Slime", "LetterStack.ReceiveLetter"):
+                if needle not in theft:
+                    _fail("RM_KurrethTheft.cs lacks %s" % needle)
+            jd = open(os.path.join(_HERE, "Defs", "JobDefs", "RM_FeverWood_KurrethTheftJobDefs.xml"), encoding="utf-8").read()
+            for d in ("RM_KurrethStun", "RM_KurrethCarryOff"):
+                if "<defName>%s</defName>" % d not in jd:
+                    _fail("JobDef %s missing" % d)
+
+    def proof(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.FeverWood.RM_KurrethTheftProof", method=method,
+                          args="current")
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    with _comp(t, "a_kurreth_column_carries_thornbugs_off_alive", toggle="antTheftEnabled"):
+        raid = proof(t, "ProofRaid")
+        if _live(t) and not raid.startswith("RAID"):
+            _fail("ProofRaid did not stage the column: %s" % raid)
+        t.wait_ticks(6000)
+        state = proof(t, "ProofState")
+        _note(t, "ant theft state", state)
+        if _live(t):
+            nums = dict((k, int(v)) for k, v in re.findall(r"(\w+)=(-?\d+)\b", state))
+            if nums.get("thornbugCorpses", 1) != 0:
+                _fail("a thornbug died in the theft raid: %s" % state)
+            if nums.get("thefts", 0) < 1 or nums.get("heldByKurreth", 0) < 1:
+                _fail("no thornbug was carried off and held alive: %s" % state)
+            if nums.get("letters", 0) < 1:
+                _fail("no 'Carried off' letter was sent: %s" % state)

@@ -199,9 +199,12 @@ namespace RimMandrake.FeverWood
                 GenSpawn.Spawn(p, cell, map, spawnRot);
             }
 
-            LordMaker.MakeNewLord(faction,
-                new LordJob_AssaultColony(faction, canKidnap: false, canTimeoutOrFlee: false, canSteal: false),
-                map, pawns);
+            // FEVERWOOD_ANT_THEFT_RAIDBACK_1: the kurreth steal (stun, carry off alive); the brood still kills --
+            // the sheet's contrast. antTheftEnabled off = the old plain assault.
+            LordJob lordJob = factionDef.defName == AntFactionDefName && RM_FeverWoodSettings.antTheftEnabled
+                ? new RM_LordJob_KurrethTheft()
+                : (LordJob)new LordJob_AssaultColony(faction, canKidnap: false, canTimeoutOrFlee: false, canSteal: false);
+            LordMaker.MakeNewLord(faction, lordJob, map, pawns);
 
             Messages.Message(
                 isSecondWave

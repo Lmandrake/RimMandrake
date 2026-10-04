@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FeverWood_KurrethTheftJobDefs.xml        FEVERWOOD_ANT_THEFT_RAIDBACK_1 (part A)
+  The kurreth theft's two jobs, assigned by RM_LordToil_KurrethTheft (Source/RM_KurrethTheft.cs): the kit's
+  generic non-lethal stun and its kidnap-shaped carry-and-exit, both from mandrake.rm.environmentalhazards.
+-->
+<Defs>
+
+  <JobDef>
+    <defName>RM_KurrethStun</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.RM_JobDriver_StunVictim</driverClass>
+    <reportString>pinning TargetA down to carry it off.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+  <JobDef>
+    <defName>RM_KurrethCarryOff</defName>
+    <driverClass>RimMandrake.EnvironmentalHazards.RUT_HaulPawnAndExit</driverClass>
+    <reportString>carrying TargetA off, alive.</reportString>
+    <casualInterruptible>false</casualInterruptible>
+  </JobDef>
+
+</Defs>
