@@ -220,7 +220,12 @@ def _build_suite():
                 old = _raw(t, "get", field).get("value")
                 if old is None:
                     raise ExpectationFailed("%s: get returned no value" % field)
-                new = ("False" if str(old).lower() == "true" else "True") if ty == "bool" else str(float(old) + 1.0)
+                if ty == "bool":
+                    new = "False" if str(old).lower() == "true" else "True"
+                elif ty == "int":
+                    new = str(int(float(old)) + 1)       # LIVE 2026-10-03: "25.0" is refused by an Int32 field (breachFirstCountdownHours)
+                else:
+                    new = str(float(old) + 1.0)
                 try:
                     if not _raw(t, "set", field, new).get("success"):
                         raise ExpectationFailed("%s: set failed" % field)
@@ -251,6 +256,12 @@ def _build_suite():
                 for k in ("allowRoads", "allowRivers", "allowFarmingCamps", "isExtremeBiome"):
                     if str(f.get(k)).lower() != str(facts[k]).lower():
                         raise ExpectationFailed("%s live %r != source %r" % (k, f.get(k), facts[k]))
+                if "no such field" in str(f.get("workerClass")):
+                    # LIVE 2026-10-03: jawa/get_defs cannot read System.Type fields (workerClass, thingClass) on any def, Steel included.
+                    # The other flags above were read and matched; the worker class is not answerable by this instrument.
+                    _unmeasured(t, "get_defs cannot read BiomeDef.workerClass (Type-valued fields read '(no such field)'); "
+                                   "the density and flag checks above passed")
+                    return
                 if facts["workerClass"] not in str(f.get("workerClass")):
                     raise ExpectationFailed("workerClass live %r != %s" % (f.get("workerClass"), facts["workerClass"]))
         with t.component("only_clear_weather_has_weight", beyond_toggle=True):
