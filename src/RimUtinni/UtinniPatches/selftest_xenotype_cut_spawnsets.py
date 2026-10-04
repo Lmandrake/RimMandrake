@@ -96,14 +96,34 @@ def main():
         print("UNMEASURED: no readable def dump: %s" % e)
         return 2
     refs = dump_refs(rows)
-    if not any(n == "PirateWaster" and x == "Waster" for _, n, _, x in refs):
-        print("UNMEASURED: sanity probe failed (PirateWaster->Waster not seen in dump)")
+    # Sanity probe (can fail): the dump must show xenotypeSets at all -- PirateWaster with a non-empty set, and a
+    # populated population of such rows. A dump captured AFTER our patch (load 14 onward) no longer names Waster there.
+    waster_rows = [r for r in rows["FactionDef"] if r["defName"] == "PirateWaster"]
+    sets = (((waster_rows[0].get("fields") or {}).get("xenotypeSet") or {}).get("xenotypeChances") or []) if waster_rows else []
+    n_sets = sum(1 for rs in rows.values() for r in rs
+                 if ((r.get("fields") or {}).get("xenotypeSet") or {}).get("xenotypeChances"))
+    if not sets or n_sets < 100:
+        print("UNMEASURED: sanity probe failed (PirateWaster xenotypeSet empty=%s, %d defs with a set; dump cannot see xenotypeSets)"
+              % (not sets, n_sets))
         return 2
+    post_patch = not any(x == "Waster" for _, n, _, x in refs if n == "PirateWaster")
+    print("dump is %s our patch (PirateWaster %s Waster; %d xenotypeSet defs read)"
+          % ("AFTER" if post_patch else "BEFORE", "no longer names" if post_patch else "still names", n_sets))
     bad = uncovered(refs, rules)
     print("%d cut-xenotype references in the dump; %d uncovered" % (len(refs), len(bad)))
     fails += bad
+    if post_patch:
+        # the dump is post-patch: any remaining reference (other than the two Sanguophage-keep kinds) means the patch
+        # did not apply live -- stronger than the static coverage above
+        leaks = [r for r in refs if not (r[3] == "Sanguophage" and r[1] in SANG_KEEP)]
+        fails += ["live leak (patch did not remove): %s %s %s" % (r[0], r[1], r[3]) for r in leaks]
+        mleak = [r for r in refs + [("PawnKindDef", "Pirate_Boss", "xenotypeSet", "Genie")] if not (r[3] == "Sanguophage" and r[1] in SANG_KEEP)]
+        print("mutant leaked Genie in a post-patch dump: %s" % ("red" if mleak else "STAYED GREEN"))
+        if not mleak:
+            fails.append("mutant stayed green: post-patch leak")
     # mutants
-    m1 = uncovered(refs, {k: v for k, v in rules.items() if k != "Hussar"})
+    # injected Hussar reference: a post-patch dump no longer carries real ones, so the mutant brings its own
+    m1 = uncovered(refs + [("PawnKindDef", "Pirate_X", "xenotypeSet", "Hussar")], {k: v for k, v in rules.items() if k != "Hussar"})
     m2 = uncovered(refs + [("PawnKindDef", "X", "someOtherSet", "Genie")], rules)
     m3 = patch_rules(text.replace('<match Class="PatchOperationRemove">', '<match Class="PatchOperationAdd">', 1))[1]
     m4 = uncovered(refs + [("PawnKindDef", "Pirate_Boss", "xenotypeSet", "Sanguophage")], rules)
