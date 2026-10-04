@@ -51,29 +51,35 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="who.vfee.isopodageneline">
-    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Insectoids 2 - Isopoda geneline</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-      <value>
-        <SW_Electrictick MayRequire="Who.VFEE.IsopodaGeneline">0.3</SW_Electrictick>
-        <SW_Electricgryllotalpa MayRequire="Who.VFEE.IsopodaGeneline">0.15</SW_Electricgryllotalpa>
-        <SW_Juggernautbeetles MayRequire="Who.VFEE.IsopodaGeneline">0.05</SW_Juggernautbeetles>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+        <value>
+          <SW_Electrictick MayRequire="Who.VFEE.IsopodaGeneline">0.3</SW_Electrictick>
+          <SW_Electricgryllotalpa MayRequire="Who.VFEE.IsopodaGeneline">0.15</SW_Electricgryllotalpa>
+          <SW_Juggernautbeetles MayRequire="Who.VFEE.IsopodaGeneline">0.05</SW_Juggernautbeetles>
+        </value>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
-      <value>
-        <RSW_Mynock>0.5</RSW_Mynock>
-        <RSW_CrystalFairyMole>0.5</RSW_CrystalFairyMole>
-        <RSW_MegaphoridLarva>0.5</RSW_MegaphoridLarva>
-        <RSW_FoundryBeetle>0.18</RSW_FoundryBeetle>
-        <RSW_Korrum>0.05</RSW_Korrum>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Warscar"]/wildAnimals</xpath>
+        <value>
+          <RSW_Mynock>0.5</RSW_Mynock>
+          <RSW_CrystalFairyMole>0.5</RSW_CrystalFairyMole>
+          <RSW_MegaphoridLarva>0.5</RSW_MegaphoridLarva>
+          <RSW_FoundryBeetle>0.18</RSW_FoundryBeetle>
+          <RSW_Korrum>0.05</RSW_Korrum>
+        </value>
+      </match>
     </match>
   </Operation>
 

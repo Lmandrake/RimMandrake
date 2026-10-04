@@ -26,14 +26,17 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
-      <value>
-        <RSW_CaveLemming>0.03</RSW_CaveLemming>
-        <RSW_Wampa MayRequire="mandrake.rsw.swbestiary">0.03</RSW_Wampa>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_NightsideIce"]/wildAnimals</xpath>
+        <value>
+          <RSW_CaveLemming>0.03</RSW_CaveLemming>
+          <RSW_Wampa MayRequire="mandrake.rsw.swbestiary">0.03</RSW_Wampa>
+        </value>
+      </match>
     </match>
   </Operation>
 

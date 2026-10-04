@@ -36,13 +36,16 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars Animal Collection (Continued)</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
-      <value>
-        <Vapaad MayRequire="mlie.starwarsanimalcollection">0.5</Vapaad>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_BlueDesert"]/wildAnimals</xpath>
+        <value>
+          <Vapaad MayRequire="mlie.starwarsanimalcollection">0.5</Vapaad>
+        </value>
+      </match>
     </match>
   </Operation>
 

@@ -25,15 +25,18 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Anomaly">
-    <xpath>Defs/MemeDef[defName="Ritualist"]/requireOne</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Anomaly</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/MemeDef[defName="Ritualist"]/requireOne</xpath>
-      <value>
-        <li>
-          <li MayRequire="Ludeon.RimWorld.Ideology">RUT_HolyFlame_Revered</li>
-        </li>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/MemeDef[defName="Ritualist"]/requireOne</xpath>
+        <value>
+          <li>
+            <li MayRequire="Ludeon.RimWorld.Ideology">RUT_HolyFlame_Revered</li>
+          </li>
+        </value>
+      </match>
     </match>
   </Operation>
 

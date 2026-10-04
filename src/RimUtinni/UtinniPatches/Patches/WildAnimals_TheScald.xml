@@ -26,11 +26,14 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationAdd" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/wildAnimals</xpath>
-    <value>
-      <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
-    </value>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="RM_TheScald"]/wildAnimals</xpath>
+      <value>
+        <RSW_SandoAquaMonster MayRequire="mandrake.rsw.swbestiary">0.03</RSW_SandoAquaMonster>
+      </value>
+    </match>
   </Operation>
 
 </Patch>

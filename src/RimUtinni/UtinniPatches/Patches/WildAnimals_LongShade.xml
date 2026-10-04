@@ -87,59 +87,62 @@
        native/tier-moved rows, guarded on the target node rather than on a
        donor so this is a silent no-op if mandrake.rm.longshade is ever not
        loaded. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildAnimals</xpath>
-      <value>
-        <RSW_Bantha>0.8</RSW_Bantha>
-        <RSW_Shyrack>0.6</RSW_Shyrack>
-        <RSW_Gorg>0.4</RSW_Gorg>
-        <RSW_Gutkurr>0.4</RSW_Gutkurr>
-        <RSW_Jamel>0.4</RSW_Jamel>
-        <RSW_LongtailGorg>0.4</RSW_LongtailGorg>
-        <RSW_Ronto>0.4</RSW_Ronto>
-        <RSW_Sketto>0.8</RSW_Sketto>
-        <RSW_Wraid>0.4</RSW_Wraid>
-        <RSW_WraidAlpha>0.15</RSW_WraidAlpha>
-        <RSW_Eopie>0.3</RSW_Eopie>
-        <RSW_Hrumph>0.3</RSW_Hrumph>
-        <RSW_IridonianReek>0.3</RSW_IridonianReek>
-        <RSW_Jimvu>0.3</RSW_Jimvu>
-        <RSW_Kwi>0.3</RSW_Kwi>
-        <RSW_Skalder>0.3</RSW_Skalder>
-        <RSW_Uvak>0.3</RSW_Uvak>
-        <RSW_Varactyl>0.3</RSW_Varactyl>
-        <RSW_Zeer>0.3</RSW_Zeer>
-        <RSW_Falumpaset>0.2</RSW_Falumpaset>
-        <RSW_FrilledGorg>0.2</RSW_FrilledGorg>
-        <RSW_Jakobeast>0.2</RSW_Jakobeast>
-        <RSW_Nerf>0.2</RSW_Nerf>
-        <RSW_Nuna>0.2</RSW_Nuna>
-        <RSW_Shaak>0.2</RSW_Shaak>
-        <RSW_TeeMuss>0.2</RSW_TeeMuss>
-        <RSW_Worrt>0.2</RSW_Worrt>
-        <RSW_Bolotaur>0.1</RSW_Bolotaur>
-        <RSW_Clodhopper>0.1</RSW_Clodhopper>
-        <RSW_FeralGrazer>0.1</RSW_FeralGrazer>
-        <RSW_Iriaz>0.1</RSW_Iriaz>
-        <RSW_Krykna>0.1</RSW_Krykna>
-        <RSW_Runyip>0.1</RSW_Runyip>
-        <RSW_Voorpak>0.05</RSW_Voorpak>
-        <RSW_Horax>0.01</RSW_Horax>
-        <!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 4: RSW_GlitterBird REMOVED from
-             this Add block — it and the sitting's own "pirrik" filler were one
-             creature (Q11a: "glitter-bird" is descriptive English, not canon
-             Star Wars IP, so it belongs in the RM_ tier, not here). Merged
-             into RM_Pirrik, now inline on RM_LongShade itself alongside the
-             biome's other invented-name rows, carrying the same
-             RM_ShadowFollowerExtension wiring. See RM_LongShade_Fillers.xml. -->
-        <!-- LONGSHADE_RULED_CONTENT_1 Q8: Dewback IN as herd/mount stock.
-             moveSpeed slowed 4.7->4.4 via rosters/desert.json
-             stat_adjustments (BiomeFaunaStatAdjustments_Generated.xml), not
-             here — this weight is unaffected by that separate patch. -->
-        <RSW_Dewback>0.3</RSW_Dewback>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildAnimals</xpath>
+        <value>
+          <RSW_Bantha>0.8</RSW_Bantha>
+          <RSW_Shyrack>0.6</RSW_Shyrack>
+          <RSW_Gorg>0.4</RSW_Gorg>
+          <RSW_Gutkurr>0.4</RSW_Gutkurr>
+          <RSW_Jamel>0.4</RSW_Jamel>
+          <RSW_LongtailGorg>0.4</RSW_LongtailGorg>
+          <RSW_Ronto>0.4</RSW_Ronto>
+          <RSW_Sketto>0.8</RSW_Sketto>
+          <RSW_Wraid>0.4</RSW_Wraid>
+          <RSW_WraidAlpha>0.15</RSW_WraidAlpha>
+          <RSW_Eopie>0.3</RSW_Eopie>
+          <RSW_Hrumph>0.3</RSW_Hrumph>
+          <RSW_IridonianReek>0.3</RSW_IridonianReek>
+          <RSW_Jimvu>0.3</RSW_Jimvu>
+          <RSW_Kwi>0.3</RSW_Kwi>
+          <RSW_Skalder>0.3</RSW_Skalder>
+          <RSW_Uvak>0.3</RSW_Uvak>
+          <RSW_Varactyl>0.3</RSW_Varactyl>
+          <RSW_Zeer>0.3</RSW_Zeer>
+          <RSW_Falumpaset>0.2</RSW_Falumpaset>
+          <RSW_FrilledGorg>0.2</RSW_FrilledGorg>
+          <RSW_Jakobeast>0.2</RSW_Jakobeast>
+          <RSW_Nerf>0.2</RSW_Nerf>
+          <RSW_Nuna>0.2</RSW_Nuna>
+          <RSW_Shaak>0.2</RSW_Shaak>
+          <RSW_TeeMuss>0.2</RSW_TeeMuss>
+          <RSW_Worrt>0.2</RSW_Worrt>
+          <RSW_Bolotaur>0.1</RSW_Bolotaur>
+          <RSW_Clodhopper>0.1</RSW_Clodhopper>
+          <RSW_FeralGrazer>0.1</RSW_FeralGrazer>
+          <RSW_Iriaz>0.1</RSW_Iriaz>
+          <RSW_Krykna>0.1</RSW_Krykna>
+          <RSW_Runyip>0.1</RSW_Runyip>
+          <RSW_Voorpak>0.05</RSW_Voorpak>
+          <RSW_Horax>0.01</RSW_Horax>
+          <!-- LONGSHADE_BEDAZZLE_CONTENT_1 part 4: RSW_GlitterBird REMOVED from
+               this Add block — it and the sitting's own "pirrik" filler were one
+               creature (Q11a: "glitter-bird" is descriptive English, not canon
+               Star Wars IP, so it belongs in the RM_ tier, not here). Merged
+               into RM_Pirrik, now inline on RM_LongShade itself alongside the
+               biome's other invented-name rows, carrying the same
+               RM_ShadowFollowerExtension wiring. See RM_LongShade_Fillers.xml. -->
+          <!-- LONGSHADE_RULED_CONTENT_1 Q8: Dewback IN as herd/mount stock.
+               moveSpeed slowed 4.7->4.4 via rosters/desert.json
+               stat_adjustments (BiomeFaunaStatAdjustments_Generated.xml), not
+               here — this weight is unaffected by that separate patch. -->
+          <RSW_Dewback>0.3</RSW_Dewback>
+        </value>
+      </match>
     </match>
   </Operation>
 
@@ -150,17 +153,20 @@
        (Q2: "not canon, I made it"). Add-only: RM_LongShade's own wildPlants
        node already carries its 5 native/tier-moved rows, same shape as Op 1
        above. Weights unchanged from what this file carried before. -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildPlants</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildPlants</xpath>
-      <value>
-        <RSW_SurraGrass>0.6</RSW_SurraGrass>
-        <RSW_Plant_Chakroot_Wild>0.3</RSW_Plant_Chakroot_Wild>
-        <RSW_Plant_HubbaGourd_Wild>0.2</RSW_Plant_HubbaGourd_Wild>
-        <RSW_VellaraBloom>0.12</RSW_VellaraBloom>
-        <RSW_DommoTree>0.06</RSW_DommoTree>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_LongShade"]/wildPlants</xpath>
+        <value>
+          <RSW_SurraGrass>0.6</RSW_SurraGrass>
+          <RSW_Plant_Chakroot_Wild>0.3</RSW_Plant_Chakroot_Wild>
+          <RSW_Plant_HubbaGourd_Wild>0.2</RSW_Plant_HubbaGourd_Wild>
+          <RSW_VellaraBloom>0.12</RSW_VellaraBloom>
+          <RSW_DommoTree>0.06</RSW_DommoTree>
+        </value>
+      </match>
     </match>
   </Operation>
 

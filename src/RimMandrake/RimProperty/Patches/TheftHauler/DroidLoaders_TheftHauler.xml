@@ -24,14 +24,14 @@
   override, inherits DW_Family_Labour's default 1.0), included so the
   KotOR-absorbed half of Droidworks isn't left with zero loaders.
 
-  Same MayRequire-gated no-op shape as the Muckraker file: absent
+  Same FindMod-gated no-op shape as the Muckraker file: absent
   Droidworks, every Operation below is a silent no-op and the engine mod
   (TrainableDef/JobDef/JobDriver/FloatMenuOptionProvider/marker class)
   stays fully functional for any other pawnkind marked directly.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Droidworks</li>
     </mods>
@@ -45,7 +45,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Droidworks</li>
     </mods>
@@ -59,7 +59,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Droidworks</li>
     </mods>
@@ -73,7 +73,7 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Droidworks</li>
     </mods>

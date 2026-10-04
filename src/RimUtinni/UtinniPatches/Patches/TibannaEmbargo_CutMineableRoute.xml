@@ -24,13 +24,13 @@
      defect inside a kept def: a scoped ordinary patch, not a Cherry Picker
      entry.
 
-     Gate: OUTER MayRequire tests both ingredients — Ludeon.RimWorld.Odyssey
+     Gate: two nested PatchOperationFindMods test both ingredients — Ludeon.RimWorld.Odyssey
      is NOT required here (OuterRim_Tibanna is neronix17.outerrim.core's own
      item, not Odyssey's) — the real gate is that BOTH
      neronix17.outerrim.core (owns OuterRim_Tibanna) and
      leutiankane.mines2patchouterrim (the mod that actually adds the
-     offending extension) are active; if either is absent this Operation is
-     dropped at load and nothing dangles. INNER PatchOperationConditional
+     offending extension) are active; if either is absent this Operation is a
+     silent no-op and nothing dangles. INNER PatchOperationConditional
      confirms the specific <li> is still there before removing it — same
      discipline as every other patch in this folder, and load-bearing here
      because the owner's own ruling explicitly warns "LK's patches can no-op
@@ -50,12 +50,18 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="neronix17.outerrim.core,leutiankane.mines2patchouterrim">
-    <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions</xpath>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions/li[@Class="MinesAutomatedExtension.MineableSettings"]</xpath>
-      <match Class="PatchOperationRemove">
-        <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions/li[@Class="MinesAutomatedExtension.MineableSettings"]</xpath>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Outer Rim - Core</li></mods>
+    <match Class="PatchOperationFindMod">
+      <mods><li>LK Mines 2.0 Compatability[Outer Rim Core]</li></mods>
+      <match Class="PatchOperationConditional">
+        <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions</xpath>
+        <match Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions/li[@Class="MinesAutomatedExtension.MineableSettings"]</xpath>
+          <match Class="PatchOperationRemove">
+            <xpath>/Defs/ThingDef[defName="OuterRim_Tibanna"]/modExtensions/li[@Class="MinesAutomatedExtension.MineableSettings"]</xpath>
+          </match>
+        </match>
       </match>
     </match>
   </Operation>

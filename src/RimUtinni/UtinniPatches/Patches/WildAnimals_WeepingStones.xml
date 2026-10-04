@@ -34,20 +34,23 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_WeepingStones"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_WeepingStones"]/wildAnimals</xpath>
-      <value>
-        <RSW_Ollopom>1.3</RSW_Ollopom>
-        <RSW_Fanback>0.5</RSW_Fanback>
-        <RSW_Dewback>0.4</RSW_Dewback>
-        <RSW_Boma>0.15</RSW_Boma>
-        <RSW_Dactillion>0.15</RSW_Dactillion>
-        <RSW_Bantha>0.1</RSW_Bantha>
-        <RSW_Eopie>0.1</RSW_Eopie>
-        <RSW_Jamel>0.1</RSW_Jamel>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_WeepingStones"]/wildAnimals</xpath>
+        <value>
+          <RSW_Ollopom>1.3</RSW_Ollopom>
+          <RSW_Fanback>0.5</RSW_Fanback>
+          <RSW_Dewback>0.4</RSW_Dewback>
+          <RSW_Boma>0.15</RSW_Boma>
+          <RSW_Dactillion>0.15</RSW_Dactillion>
+          <RSW_Bantha>0.1</RSW_Bantha>
+          <RSW_Eopie>0.1</RSW_Eopie>
+          <RSW_Jamel>0.1</RSW_Jamel>
+        </value>
+      </match>
     </match>
   </Operation>
 

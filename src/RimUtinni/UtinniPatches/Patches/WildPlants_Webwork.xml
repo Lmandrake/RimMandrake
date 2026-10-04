@@ -35,13 +35,16 @@
 
   <!-- Star Wars Animal Collection (Continued)'s own bare defName — same donor
        mod as the Webwork's canon fauna cast (WildAnimals_Webwork.xml). -->
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">
-    <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Star Wars Animal Collection (Continued)</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
-      <value>
-        <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.3</Plant_TookeTrap_Wild>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Webwork"]/wildPlants</xpath>
+        <value>
+          <Plant_TookeTrap_Wild MayRequire="mlie.starwarsanimalcollection">0.3</Plant_TookeTrap_Wild>
+        </value>
+      </match>
     </match>
   </Operation>
 

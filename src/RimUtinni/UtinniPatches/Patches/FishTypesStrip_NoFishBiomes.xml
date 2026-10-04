@@ -326,67 +326,79 @@
 
   <!-- Vanilla/Odyssey core — no donor mod to gate on, only the DLC field itself. -->
 
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/BiomeDef[defName="Desert"]/fishTypes</xpath>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/BiomeDef[defName="Desert"]/fishTypes</xpath>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/BiomeDef[defName="Desert"]/maxFishPopulation</xpath>
-          <value><maxFishPopulation>0</maxFishPopulation></value>
-        </li>
-      </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Odyssey</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="Desert"]/fishTypes</xpath>
+      <match Class="PatchOperationSequence">
+        <success>Always</success>
+        <operations>
+          <li Class="PatchOperationRemove">
+            <xpath>/Defs/BiomeDef[defName="Desert"]/fishTypes</xpath>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/BiomeDef[defName="Desert"]/maxFishPopulation</xpath>
+            <value><maxFishPopulation>0</maxFishPopulation></value>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/fishTypes</xpath>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/fishTypes</xpath>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/maxFishPopulation</xpath>
-          <value><maxFishPopulation>0</maxFishPopulation></value>
-        </li>
-      </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Odyssey</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/fishTypes</xpath>
+      <match Class="PatchOperationSequence">
+        <success>Always</success>
+        <operations>
+          <li Class="PatchOperationRemove">
+            <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/fishTypes</xpath>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/BiomeDef[defName="ExtremeDesert"]/maxFishPopulation</xpath>
+            <value><maxFishPopulation>0</maxFishPopulation></value>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/fishTypes</xpath>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/BiomeDef[defName="AridShrubland"]/fishTypes</xpath>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/BiomeDef[defName="AridShrubland"]/maxFishPopulation</xpath>
-          <value><maxFishPopulation>0</maxFishPopulation></value>
-        </li>
-      </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Odyssey</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/fishTypes</xpath>
+      <match Class="PatchOperationSequence">
+        <success>Always</success>
+        <operations>
+          <li Class="PatchOperationRemove">
+            <xpath>/Defs/BiomeDef[defName="AridShrubland"]/fishTypes</xpath>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/BiomeDef[defName="AridShrubland"]/maxFishPopulation</xpath>
+            <value><maxFishPopulation>0</maxFishPopulation></value>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-    <xpath>/Defs/BiomeDef[defName="LavaField"]/fishTypes</xpath>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-        <li Class="PatchOperationRemove">
-          <xpath>/Defs/BiomeDef[defName="LavaField"]/fishTypes</xpath>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/BiomeDef[defName="LavaField"]/maxFishPopulation</xpath>
-          <value><maxFishPopulation>0</maxFishPopulation></value>
-        </li>
-      </operations>
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Odyssey</li></mods>
+    <match Class="PatchOperationConditional">
+      <xpath>/Defs/BiomeDef[defName="LavaField"]/fishTypes</xpath>
+      <match Class="PatchOperationSequence">
+        <success>Always</success>
+        <operations>
+          <li Class="PatchOperationRemove">
+            <xpath>/Defs/BiomeDef[defName="LavaField"]/fishTypes</xpath>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>/Defs/BiomeDef[defName="LavaField"]/maxFishPopulation</xpath>
+            <value><maxFishPopulation>0</maxFishPopulation></value>
+          </li>
+        </operations>
+      </match>
     </match>
   </Operation>
 

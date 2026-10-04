@@ -21,17 +21,23 @@
        inert state until such an entry ever exists (CLAUDE.md: "a patch that
        matches nothing logs nothing" is expected here, not a bug). -->
 
-  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
-    <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RUT_SweetlineTree"]</xpath>
-    <match Class="PatchOperationRemove">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Better Trees</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RUT_SweetlineTree"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RUT_SweetlineTree"]</xpath>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
-    <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RUT_SweetlineTree"]</xpath>
-    <match Class="PatchOperationRemove">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Better Trees</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RUT_SweetlineTree"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RUT_SweetlineTree"]</xpath>
+      </match>
     </match>
   </Operation>
 
