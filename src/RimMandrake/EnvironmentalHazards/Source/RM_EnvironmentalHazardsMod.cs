@@ -245,7 +245,7 @@ namespace RimMandrake.EnvironmentalHazards
     //      blocked.
     //  42. glasswalkSlipEnabled — RM_MapComponent_GlasswalkSlip
     //      (SUMP_WALKWAYS_1). Off: a floor tagged RM_SlipperyWalkway (the
-    //      Sump's RUT_Glasswalk) never stuns a hurrying/hauling pawn; the
+    //      Sump's RM_Glasswalk) never stuns a hurrying/hauling pawn; the
     //      terrain's own permanent speed cap (its pathCost) is untouched
     //      either way — that half needs no toggle since it is a plain
     //      TerrainDef field, not a mechanism this kit runs.

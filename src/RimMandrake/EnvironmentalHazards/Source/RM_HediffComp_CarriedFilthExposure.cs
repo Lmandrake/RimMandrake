@@ -24,7 +24,7 @@ namespace RimMandrake.EnvironmentalHazards
     // there.
     //
     //   <HediffDef>
-    //     <defName>RUT_Tarred</defName>
+    //     <defName>RM_Tarred</defName>
     //     ...
     //     <comps>
     //       <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_CarriedFilthExposure">
@@ -48,7 +48,7 @@ namespace RimMandrake.EnvironmentalHazards
         // Heals off once the pawn's boots are clean again — plain avoidance
         // (never stepping in tar) already gets someone clean eventually.
         // This is deliberately NOT the only route off: a weak solvent
-        // (RUT_ScrubTarredSolvent, this item's piece 3) removes the hediff
+        // (RM_ScrubTarred, this item's piece 3) removes the hediff
         // outright via a real Recipe_RemoveHediff bill, same shape
         // RSW_RemoveBrainWorm already uses in this repo — solvent is the
         // fast, deliberate cure; walking clean is the slow, free one.

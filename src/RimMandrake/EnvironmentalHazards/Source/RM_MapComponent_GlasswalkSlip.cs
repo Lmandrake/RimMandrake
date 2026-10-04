@@ -9,10 +9,10 @@ namespace RimMandrake.EnvironmentalHazards
     // hauling sometimes goes prone, no real damage, just indignity" (his
     // spec, question-card ruling 2026-09-24).
     //
-    // Generic, not RUT_Glasswalk-specific — any TerrainDef tagged with
+    // Generic, not RM_Glasswalk-specific — any TerrainDef tagged with
     // SlipperyTag opts in, the same HasTag idiom vanilla's own
     // TerrainDef.IsRoad/IsFloor/IsWater already use (Source/Verse/
-    // TerrainDef.cs, HasTag(string)). RUT_Glasswalk.xml (Sump kit) carries
+    // TerrainDef.cs, HasTag(string)). RM_Glasswalk.xml (Sump kit) carries
     // the tag; nothing else does yet, so this is a harmless no-op everywhere
     // else, same posture as every other mechanism in this assembly.
     //
@@ -40,7 +40,7 @@ namespace RimMandrake.EnvironmentalHazards
     public class RM_MapComponent_GlasswalkSlip : MapComponent
     {
         // TerrainDef.tags carries this to opt a floor into the slip check —
-        // RUT_Glasswalk.xml's own <tags> list.
+        // RM_Glasswalk.xml's own <tags> list.
         public const string SlipperyTag = "RM_SlipperyWalkway";
 
         // Vanilla's "normal" tick-rare-adjacent cadence. Frequent enough that

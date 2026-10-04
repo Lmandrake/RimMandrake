@@ -76,7 +76,7 @@ namespace RimMandrake.TheSump
             // Thing is registered on no tick list at all, so Tick()/CompTick() never
             // fires. StorageShelfBase (and its own parents ShelfBase/FurnitureBase/
             // BuildingBase) set no tickerType anywhere in the chain, so any ThingDef
-            // built on it (e.g. RUT_TarVault) that does not explicitly override
+            // built on it (e.g. RM_TarVault) that does not explicitly override
             // <tickerType>Normal</tickerType> silently ships this comp's whole
             // seal/rot-freeze/solvent-extraction mechanism as dead code — the same
             // "CompTick never called" trap RM_LuminousPigment's Building_GlowTank hit
@@ -284,10 +284,10 @@ namespace RimMandrake.TheSump
         }
 
         // Public: consumes 1 solvent (weak or strong, either accepted —
-        // same "either cures it" posture RUT_Tarred_Surgery.xml already
+        // same "either cures it" posture RM_Tarred_Surgery.xml already
         // uses for the pawn-hediff cure) if the map has any, and unseals
         // the target unchanged. With none in stock, the target is
-        // destroyed and replaced with RUT_TarRuinedGoods at the same
+        // destroyed and replaced with RM_TarRuinedGoods at the same
         // stack count in the same spot — "the tarred variant comes out"
         // (item spec's own words), a single uniform ruined stand-in rather
         // than per-category spoilage, since food/corpse/hide each ruin
@@ -333,7 +333,7 @@ namespace RimMandrake.TheSump
                 new TargetInfo(pos, map), MessageTypeDefOf.NegativeEvent, historical: false);
         }
 
-        // Administrative consumption, same posture RUT_Tarred_Surgery.xml's
+        // Administrative consumption, same posture RM_Tarred_Surgery.xml's
         // recipe ingredient search already uses (a bill's ingredients are
         // consumed once hauled to the bench, not walked-for mid-job): the
         // nearest available solvent stack anywhere on the map is spent, not
@@ -372,19 +372,11 @@ namespace RimMandrake.TheSump
             return null;
         }
 
-        // Deliberately NOT a [DefOf] class. RUT_WeakTarSolvent/
-        // RUT_StrongTarSolvent/RUT_TarRuinedGoods are RUT-tier (this
-        // campaign's own UtinniPatches, SUMP_TAR_NASTINESS_1's own build) —
-        // this comp's own assembly is RM-tier (mandrake.rm.thesump, no
-        // Utinni dependency in About.xml, same "no hard campaign
-        // dependency" posture every RM_ mod in this repo keeps). A
-        // [DefOf]'s static ctor logs a startup error for every defName it
-        // cannot resolve; GetNamedSilentFail degrades silently instead —
-        // with UtinniPatches absent, solvent is simply never found (every
-        // extraction ruins, no crash, no log spam). Re-tiering these three
-        // defs into an RM_-tier def so a standalone RM_TheSump install has
-        // a real solvent of its own is SUMP_UTINNI_LAYER_1's retier, not
-        // this pass's — flagged in this item's own build note.
+        // Deliberately NOT a [DefOf] class. RM_WeakTarSolvent/
+        // RM_StrongTarSolvent/RM_TarRuinedGoods ship in this same mod
+        // (SUMP_FREE_TIER_MOVE_BUILD_1 moved them down from UtinniPatches),
+        // but GetNamedSilentFail keeps a missing def a silent degrade (every
+        // extraction ruins, no crash) instead of a [DefOf] startup error.
         private static ThingDef weakSolventDef;
         private static ThingDef strongSolventDef;
         private static ThingDef ruinedGoodsDef;
@@ -401,9 +393,9 @@ namespace RimMandrake.TheSump
                 return;
             }
 
-            weakSolventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_WeakTarSolvent");
-            strongSolventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_StrongTarSolvent");
-            ruinedGoodsDef = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_TarRuinedGoods");
+            weakSolventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_WeakTarSolvent");
+            strongSolventDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_StrongTarSolvent");
+            ruinedGoodsDef = DefDatabase<ThingDef>.GetNamedSilentFail("RM_TarRuinedGoods");
             resolvedDefs = true;
         }
     }

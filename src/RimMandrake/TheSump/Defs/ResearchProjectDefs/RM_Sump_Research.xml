@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Sump_Research.xml                 UtinniPatches — SUMP_GASLIGHT_1
+  RM_Sump_Research.xml                 TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_GASLIGHT_1
 
   Item spec §6, the discovery pilot, owner's own verbatim: "some specific
   tech will unlock when meeting tar... often it will just be specific
@@ -20,8 +20,8 @@
   So, honestly partial: both projects below are ORDINARY researchable
   ResearchProjectDefs, manually completable from the research tab like any
   other tech — NOT yet hidden, and NOT yet auto-completed by any
-  discovery/encounter comp. RUT_GaslightChemistry already gates
-  RUT_Sumpgas's own recipeMaker (RUT_Sumpgas.xml, this same item) for real,
+  discovery/encounter comp. RM_GaslightChemistry already gates
+  RM_TarGas's own recipeMaker (RM_TarGas.xml, this same item) for real,
   so it is meaningful now even without the discovery trigger. RUT_
   TarRendering is defined but deliberately left UNWIRED to anything (no
   recipe/building references it) — SUMP_TAR_NASTINESS_1's tar-solvent
@@ -36,9 +36,9 @@
 <Defs>
 
   <ResearchProjectDef>
-    <defName>RUT_GaslightChemistry</defName>
+    <defName>RM_GaslightChemistry</defName>
     <label>gaslight chemistry</label>
-    <description>Working acid into tar until it lets go of a warm green vapor — the same reaction the Sump's own geysers do on their own, wherever a flame dances above the black. Renders Sumpgas from tar and acid, the fuel for the warbling lamps.</description>
+    <description>Working acid into tar until it lets go of a warm green vapor — the same reaction the Sump's own geysers do on their own, wherever a flame dances above the black. Renders tar gas from tar and acid, the fuel for the warbling lamps.</description>
     <baseCost>200</baseCost>
     <techLevel>Neolithic</techLevel>
     <researchViewX>2.0</researchViewX>
@@ -46,7 +46,7 @@
   </ResearchProjectDef>
 
   <ResearchProjectDef>
-    <defName>RUT_TarRendering</defName>
+    <defName>RM_TarRendering</defName>
     <label>tar rendering</label>
     <description>The Sump's tar gives up more than it takes, once someone works out how to handle it — waterproofing, adhesive, road-metal, fuel. Unwired flavor tech for now, placed here for whichever pass wires "first meeting tar" as a discovery trigger (item spec SUMP_GASLIGHT_1 §6).</description>
     <baseCost>150</baseCost>

@@ -28,7 +28,7 @@ namespace RimMandrake.Utinni.UtinniPatches
 	// The "gather crack-wax off the flats after a wake" job: RUT_CrackWax
 	// (ParentName="ResourceBase", ThingDefs_Items/RUT_CrackedLandsItems.xml)
 	// is already alwaysHaulable by inheritance from ResourceBase like every
-	// other raw resource in this mod (RUT_Bitumen etc.) — dropping it on the
+	// other raw resource in this mod (RM_Bitumen etc.) — dropping it on the
 	// ground next to the wakened sleeper is enough for the vanilla hauling
 	// WorkGiver to pick it up as an ordinary "gather" job. No bespoke
 	// WorkGiver/JobDriver is authored here: that would duplicate the stock

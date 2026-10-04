@@ -57,7 +57,7 @@
 
     modExtensions: unchanged in shape from the twin - BiomeGlowMultiplierExtension
     and RM_CarriedFilthHediffExtension both already live in the shared
-    mandrake.rm.environmentalhazards and reference RUT_Tarred/RM_Filth_Tar, which
+    mandrake.rm.environmentalhazards and reference RM_Tarred/RM_Filth_Tar, which
     stay exactly where they are (UtinniPatches / shared EnvironmentalHazards
     respectively) - nothing here needed retargeting.
 
@@ -189,7 +189,7 @@
       </li>
       <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension">
         <filthDef>RM_Filth_Tar</filthDef>
-        <hediffDef>RUT_Tarred</hediffDef>
+        <hediffDef>RM_Tarred</hediffDef>
       </li>
       <!-- BIOME_ARRIVAL_NARRATION_1: RM tier, plain reads, no character. The
            Utinni layer (src/RimUtinni/UtinniPatches/Patches/

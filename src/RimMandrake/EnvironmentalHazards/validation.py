@@ -46,6 +46,9 @@ RULES = (
     ("JobGiver_OptimizeApparel", "ApparelScoreRaw", "postfixes", "ApparelScoreRaw_Postfix", "hazardApparelAIAwarenessEnabled"),
     ("TradeDeal", "TryExecute", "prefixes", "TryExecute_Prefix", "treasureConscienceEnabled"),
     ("TradeDeal", "TryExecute", "postfixes", "TryExecute_Postfix", "treasureConscienceEnabled"),
+    # SUMP_FREE_TIER_MOVE_BUILD_1: save back-compat for renamed defs; always armed, no toggle by design
+    ("BackCompatibility", "BackCompatibleDefName", "postfixes", "BackCompatibleDefName_Postfix", None),
+    ("BackCompatibility", "BackCompatibleTerrainWithShortHash", "postfixes", "BackCompatibleTerrainWithShortHash_Postfix", None),
     ("Plant", "IngestedCalculateAmounts", "postfixes", "IngestedCalculateAmounts_Postfix", "grazingSuppressionHookEnabled"),
 )
 
@@ -212,7 +215,7 @@ def _build_suite():
                         if any(p.get("owner") == HARMONY_ID for p in (m.get(kind) or [])):
                             raise ExpectationFailed("a nonexistent method reads as patched by %s" % HARMONY_ID)
         for typ, meth, kind, patch, toggle in RULES:
-            with t.component("%s_%s_%s_armed" % (typ, meth, kind[:-2]), toggle=toggle):
+            with t.component("%s_%s_%s_armed" % (typ, meth, kind[:-2]), toggle=toggle, beyond_toggle=toggle is None):
                 r = t.bridge_call("jawa/harmony_patches", typeName=typ, methodName=meth)
                 if not _live(t):
                     continue
@@ -224,6 +227,21 @@ def _build_suite():
                 if not mine:
                     raise ExpectationFailed("%s.%s lacks %s %s from %s (target moved? see the 'rule NOT armed' log line)"
                                             % (typ, meth, kind[:-2], patch, HARMONY_ID))
+
+    @suite.chain("def_aliases_resolve")
+    def def_aliases_resolve(t):
+        # Every RM_DefAliasDef row, through the real patched engine entry points: a save naming
+        # the old def (RUT_TarVault, RUT_Tarred, terrain by short hash...) loads as the new one.
+        with t.component("saved_old_names_load_as_new_defs", beyond_toggle=True):
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.EnvironmentalHazards.RM_DefAliasProof",
+                              method="ProofAliases", args="")
+            if not _live(t):
+                return
+            text = str((r or {}).get("result") or (r or {}).get("value") or r)
+            if not text.startswith("PASS"):
+                if "FAIL" in text[:4]:
+                    raise ExpectationFailed("alias proof: %s" % text[:400])
+                _unmeasured(t, "static_call did not answer: %s" % text[:200])
 
     @suite.chain("contact_venom_wiring")
     def contact_venom_wiring(t):

@@ -106,7 +106,7 @@ namespace RimMandrake.Utinni.UtinniStatues
         private static void ApplyIdolFuel()
         {
             ThingDef idol = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_StatueGrand_Shkaar");
-            ThingDef sumpgas = DefDatabase<ThingDef>.GetNamedSilentFail("RUT_Sumpgas");
+            ThingDef sumpgas = DefDatabase<ThingDef>.GetNamedSilentFail("RM_TarGas");
             CompProperties_Refuelable fuel = idol?.GetCompProperties<CompProperties_Refuelable>();
             if (fuel == null || sumpgas == null || !UtinniStatuesSettings.sumpgasFuelsIdol)
             {

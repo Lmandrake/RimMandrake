@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_TarGas_SumpgasLabel.xml          UtinniPatches, SUMP_FREE_TIER_MOVE_BUILD_1
+
+  The gas ships in the free mod as RM_TarGas, "tar gas" (mandrake.rm.thesump,
+  composed into Baroque Biomes). The owner named the campaign's form of it:
+  "the utinni layer should rename it to our own form of gas. Let's call it
+  Sumpgas". This file is that rename and nothing else: the gas's label and the
+  gaslight lamp's fuel strings. Each operation is a Conditional, a no-op when
+  the free mod is absent.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_TarGas"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ThingDef[defName="RM_TarGas"]/label</xpath>
+      <value>
+        <label>Sumpgas</label>
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_GaslightLamp"]/comps/li[@Class="CompProperties_Refuelable"]/fuelLabel</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RM_GaslightLamp"]/comps/li[@Class="CompProperties_Refuelable"]/fuelLabel</xpath>
+          <value>
+            <fuelLabel>Sumpgas</fuelLabel>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RM_GaslightLamp"]/comps/li[@Class="CompProperties_Refuelable"]/fuelGizmoLabel</xpath>
+          <value>
+            <fuelGizmoLabel>Sumpgas</fuelGizmoLabel>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/ThingDef[defName="RM_GaslightLamp"]/comps/li[@Class="CompProperties_Refuelable"]/outOfFuelMessage</xpath>
+          <value>
+            <outOfFuelMessage>Gaslight lamp out of Sumpgas</outOfFuelMessage>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

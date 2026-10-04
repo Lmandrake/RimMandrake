@@ -9,7 +9,7 @@
   ledger:the_cracked_lands:sealed-signature-sleeper-wax-lined-burrow-
   water-wake-sheds-c).
 
-  Waterproofing/adhesive material, same ResourceBase shape RUT_Bitumen.xml
+  Waterproofing/adhesive material, same ResourceBase shape RM_Bitumen.xml
   (this mod, the_sump kit) already used for an analogous "biome's signature
   substance" resource.
 
@@ -25,7 +25,7 @@
   Texture: real bedazzle-commissioned render at
   Textures/Things/Item/Resource/RUT_CrackWax/RUT_CrackWax.png
   (FLOODEDCANYON_BEDAZZLE_SITTING_1 job, wired 2026-09-28; Graphic_StackCount
-  folder form, same class as RUT_Bitumen). Review sheet:
+  folder form, same class as RM_Bitumen). Review sheet:
   Transient/bedazzle_art_sheets_2026-09-28/cracked_lands/sheet.html.
 -->
 <Defs>

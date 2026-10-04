@@ -100,6 +100,16 @@ namespace RimMandrake.EnvironmentalHazards
                   AccessTools.Method(typeof(RimWorld.JobDriver_PredatorHunt), "MakeNewToils"),
                   AccessTools.Method(typeof(RM_WaterTruceHuntSuppression), nameof(RM_WaterTruceHuntSuppression.MakeNewToils_Postfix)),
                   "water-truce-hunt-abandon");
+
+            // SUMP_FREE_TIER_MOVE_BUILD_1: saved def names follow RM_DefAliasDef renames (see RM_DefAliases.cs).
+            Apply(harmony,
+                  AccessTools.Method(typeof(BackCompatibility), nameof(BackCompatibility.BackCompatibleDefName)),
+                  AccessTools.Method(typeof(RM_DefAliasPatches), nameof(RM_DefAliasPatches.BackCompatibleDefName_Postfix)),
+                  "def-alias-names");
+            Apply(harmony,
+                  AccessTools.Method(typeof(BackCompatibility), nameof(BackCompatibility.BackCompatibleTerrainWithShortHash)),
+                  AccessTools.Method(typeof(RM_DefAliasPatches), nameof(RM_DefAliasPatches.BackCompatibleTerrainWithShortHash_Postfix)),
+                  "def-alias-terrain");
         }
 
         private static void Apply(Harmony harmony, MethodBase target, MethodInfo patch, string rule, bool asPrefix = false)

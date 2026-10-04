@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  RUT_Tarred_Thoughts.xml               UtinniPatches — SUMP_TAR_NASTINESS_1
+  RM_Tarred_Thoughts.xml               TheSump (moved from UtinniPatches by SUMP_FREE_TIER_MOVE_BUILD_1) — SUMP_TAR_NASTINESS_1
 
   The mood half of item spec §2. Situational (ThoughtWorker_Hediff), not a
   memory — a tarred colonist's mood should track how tarred they currently
@@ -12,7 +12,7 @@
   own header already carries: ThoughtWorker_Hediff indexes THIS def's stage
   list by the HEDIFF's current stage index (RimWorld/ThoughtWorker_Hediff.cs:
   ActiveAtStage(min(hediff stage, hediff stages-1, thought stages-1))).
-  RUT_Tarred has three stages; this has three, same order. Add a stage to
+  RM_Tarred has three stages; this has three, same order. Add a stage to
   one and you must add it to the other.
 
   Mood values deliberately small and all negative — this is squalor, not a
@@ -23,9 +23,9 @@
 <Defs>
 
   <ThoughtDef>
-    <defName>RUT_TarredThought</defName>
+    <defName>RM_TarredThought</defName>
     <workerClass>ThoughtWorker_Hediff</workerClass>
-    <hediff>RUT_Tarred</hediff>
+    <hediff>RM_Tarred</hediff>
     <validWhileDespawned>true</validWhileDespawned>
     <stages>
       <li>

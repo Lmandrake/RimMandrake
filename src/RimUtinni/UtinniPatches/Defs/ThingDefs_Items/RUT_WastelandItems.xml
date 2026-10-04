@@ -14,7 +14,7 @@
   wave) already used for a biome's own "harvested-off-the-animal signature
   material" resource.
 
-  Texture: placeholder only, same class as RUT_Bitumen/RUT_CrackWax
+  Texture: placeholder only, same class as RM_Bitumen/RUT_CrackWax
   (UtinniPatches already claims Textures/Things/Item/Resource/ as its own
   namespace, so a borrowed vanilla icon would hard-error validate_patch.py)
   — pointed to a new RUT_MetalSaltBezoar/ folder, expected pending texPath.

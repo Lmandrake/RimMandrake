@@ -6,10 +6,10 @@ namespace RimMandrake.EnvironmentalHazards
 {
     // SUMP_GASLIGHT_1 (item spec §1, "the SAME reaction... is how the
     // cleaner works [cleaning tar converts it to gas]"). This is the wiring
-    // SUMP_TAR_NASTINESS_1 explicitly deferred to this item: RUT_ScrubTarred
-    // (Defs/RecipeDefs/RUT_Tarred_Surgery.xml, UtinniPatches) is repointed
+    // SUMP_TAR_NASTINESS_1 explicitly deferred to this item: RM_ScrubTarred
+    // (Defs/RecipeDefs/RM_Tarred_Surgery.xml, UtinniPatches) is repointed
     // from plain Recipe_RemoveHediff to this subclass in the same commit,
-    // gaining a RUT_Sumpgas byproduct with no change to its own cure logic
+    // gaining a RM_TarGas byproduct with no change to its own cure logic
     // (base.ApplyOnPawn, read in full — RimWorld/Recipe_RemoveHediff.cs —
     // is untouched, just called first).
     //

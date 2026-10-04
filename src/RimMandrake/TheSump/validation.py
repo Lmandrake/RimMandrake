@@ -138,7 +138,7 @@ def static_checks():
     if "CompProperties_BulgeSolventPour" not in bx:
         bad.append("RUT_BeastBulge carries no CompProperties_BulgeSolventPour")
     else:
-        for sd in re.findall(r"<li>(RUT_\w*TarSolvent)</li>", bx):
+        for sd in re.findall(r"<li>(RM_\w*TarSolvent)</li>", bx):
             found = False
             for dp, _dn, fs in os.walk(os.path.join(HERE, "..", "..")):
                 if any(f.endswith(".xml") and "<defName>%s</defName>" % sd in open(os.path.join(dp, f), encoding="utf-8", errors="ignore").read() for f in fs):
@@ -183,6 +183,49 @@ def static_checks():
             bad.append("RM_CapstanTurret.cs lacks %s" % need)
     if "HarmonyLib" in ccs:
         bad.append("RM_CapstanTurret.cs uses Harmony: this assembly has no Harmony reference")
+    # SUMP_FREE_TIER_MOVE_BUILD_1: the tar kit ships in this free mod, never in the campaign tier
+    moved = ("RM_Tarred", "RM_TarredThought", "RM_WeakTarSolvent", "RM_StrongTarSolvent", "RM_ThrummelSeepwax",
+             "RM_TarRuinedGoods", "RM_TarVault", "RM_GaslightLamp", "RM_TarGas", "RM_Duckboards", "RM_Glasswalk",
+             "RM_GaslightChemistry", "RM_TarRendering", "RM_ScrubTarred", "RM_Bitumen")
+    for need in moved:
+        if need not in names:
+            bad.append("moved tar-kit def %s is not defined in this mod" % need)
+    alltext = ""
+    for dp, _dn, fs in os.walk(os.path.join(HERE, "Defs")):
+        for f in fs:
+            if f.endswith(".xml"):
+                alltext += open(os.path.join(dp, f), encoding="utf-8").read()
+    for dp, _dn, fs in os.walk(os.path.join(HERE, "Patches")):
+        for f in fs:
+            if f.endswith(".xml"):
+                alltext += open(os.path.join(dp, f), encoding="utf-8").read()
+    body = re.sub(r"<from>\w+</from>", "", re.sub(r"<!--.*?-->", "", alltext, flags=re.S))
+    for leak in sorted(set(re.findall(r">(RUT_(?:Tarred|Sumpgas|TarVault|GaslightLamp|Duckboards|Glasswalk|Bitumen|\w*TarSolvent|ThrummelSeepwax|TarRuinedGoods|GaslightChemistry|TarRendering|ScrubTarred)\w*)<", body))):
+        bad.append("free mod still references campaign def %s" % leak)
+    if re.search(r'MayRequire="mandrake\.rut', body):
+        bad.append("free mod carries a campaign-tier MayRequire")
+    if "<hediffDef>RM_Tarred</hediffDef>" not in body:
+        bad.append("RM_TheSump's carried-filth extension does not name RM_Tarred")
+    if "RimMandrake.TheSump.CompProperties_TarVaultSeal" not in body:
+        bad.append("no def carries the tar vault seal comp")
+    for tex in ("Building/RM_TarVault/RM_TarVault", "Building/Furniture/RM_GaslightLamp/RM_GaslightLamp",
+                "Item/Resource/RM_TarGas/RM_TarGas", "Item/Resource/RM_Bitumen/RM_Bitumen",
+                "Item/Resource/RM_WeakTarSolvent/RM_WeakTarSolvent", "Item/Resource/RM_StrongTarSolvent/RM_StrongTarSolvent",
+                "Item/Resource/RM_ThrummelSeepwax/RM_ThrummelSeepwax", "Item/Resource/RM_TarRuinedGoods/RM_TarRuinedGoods"):
+        if not os.path.isfile(os.path.join(HERE, "Textures", "Things", tex + ".png")):
+            bad.append("moved texture Things/%s.png missing" % tex)
+    ab = open(os.path.join(HERE, "About", "About.xml"), encoding="utf-8").read()
+    deps = re.search(r"<modDependencies>(.*?)</modDependencies>", ab, re.S)
+    if deps and "helixien" in deps.group(1).lower():
+        bad.append("TheSump About.xml depends on Helixien (unioned into all of Baroque Biomes)")
+    alias = os.path.join(HERE, "Defs", "Misc", "RM_SumpTierMove_Aliases.xml")
+    if not os.path.isfile(alias):
+        bad.append("back-compat alias def missing")
+    else:
+        al = open(alias, encoding="utf-8").read()
+        for old in ("RUT_Tarred", "RUT_TarVault", "RUT_GaslightLamp", "RUT_Sumpgas", "RUT_Glasswalk", "RUT_Duckboards", "RUT_Bitumen"):
+            if "<from>%s</from>" % old not in al:
+                bad.append("no back-compat alias from %s" % old)
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", MOD + ".md")):
         bad.append("walk missing")
     return bad
@@ -307,7 +350,7 @@ def _build_suite():
                 _unmeasured(t, "needs a home area, a weapon inside it and a kethrel beside it, with the toggle off then on")
         with t.component("tar_vault_seals_contents", toggle="tarVaultEnabled"):
             if _live(t):
-                _unmeasured(t, "RM_Comp_TarVaultSeal lives in this assembly but the vault def RUT_TarVault ships in UtinniPatches, not in this mod's Defs/ (MEASURED: no def of this mod names the comp), so a read needs the campaign tier loaded plus a vault with a stored item and ticks")
+                _unmeasured(t, "needs a spawned RM_TarVault with a stored perishable and ticks, then a rot-progress read on the stored item; the def wiring (comp, filter, research gate) is asserted statically by moved_tar_content_static")
         with t.component("biome_rarity_worldgen", toggle="biomeRarityFactor"):
             if _live(t):
                 _unmeasured(t, 'rarity changes only planets generated afterwards; the world is frozen and the bridge cannot generate one')
@@ -322,7 +365,7 @@ def _build_suite():
                 _unmeasured(t, 'bulge -> wake (damage, construction, dig shaft, running deep drill) -> RM_TarBeast crawls to the densest building cluster, swallows one (mound + letter), lays tar, sinks into a new bulge: needs a Sump map and a wake; FIRST LIVE POKE: hit the bulge, step ticks, read RM_CompTarBeast/RM_CompStationEater via jawa/comp_read')
         with t.component("tar_solvent_pour_wakes_beast", beyond_toggle=True):
             if _live(t):
-                _unmeasured(t, 'pour order on a dormant bulge: carry RUT_WeakTarSolvent (min count in settings) to the edge, pour -> bulge gone, one RM_TarBeast spawned in ManhunterPermanent, solvent consumed, Shkaar+Zizzik delta tagged "the tar woken by solvent"; control: no order offered without solvent; manhunter setting off -> ordinary eating beast. FIRST LIVE POKE: spawn bulge + solvent on a Sump map, issue the pour job, step ticks, read mental state (jawa/comp_read RM_CompTarBeast) and Ninefold satiation'.replace(chr(39), chr(34)))
+                _unmeasured(t, 'pour order on a dormant bulge: carry RM_WeakTarSolvent (min count in settings) to the edge, pour -> bulge gone, one RM_TarBeast spawned in ManhunterPermanent, solvent consumed, Shkaar+Zizzik delta tagged "the tar woken by solvent"; control: no order offered without solvent; manhunter setting off -> ordinary eating beast. FIRST LIVE POKE: spawn bulge + solvent on a Sump map, issue the pour job, step ticks, read mental state (jawa/comp_read RM_CompTarBeast) and Ninefold satiation'.replace(chr(39), chr(34)))
         with t.component("sump_mouse_filth_trail", beyond_toggle=True):
             if _live(t):
                 _unmeasured(t, 'RUT_Filth_MouseTrack needs a sump mouse walking on tar (not yet measured live)')

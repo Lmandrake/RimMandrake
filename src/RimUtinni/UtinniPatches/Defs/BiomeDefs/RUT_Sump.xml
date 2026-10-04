@@ -18,16 +18,15 @@
     RUT_DigStratumTable, RUT_Filth_MouseTrack, RUT_Placeholder_SumpMouseRace/
     RUT_Placeholder_SumpMouse, RUT_ThinkTree_SumpMouseWander, RUT_Plant_Wick,
     RUT_WickStem) moved with their defNames UNCHANGED into mandrake.rm.thesump's
-    own Defs/ and Patches/ trees — this def's own references below (RUT_Tarred
+    own Defs/ and Patches/ trees — this def's own references below (RM_Tarred
     via the shared EnvironmentalHazards modExtension, and the dusk lock wired
     externally) keep resolving exactly as before, since RUT_SumpDuskLock/
     RUT_SumpWeather are read by BOTH biome instances under the same defNames.
-    RUT_Tarred (the hediff) and its surgery/solvents/thoughts content, plus the
-    newer Walkways/Bitumen/Sumpgas/Gaslight kit content (SUMP_WALKWAYS_1,
-    SUMP_TAR_NASTINESS_1, SUMP_GASLIGHT_1, all 2026-09-24), are NOT biome-gated
-    and were left in UtinniPatches — not this pass's scope to relocate; the
-    Sumpgas rename and flame-statue ideoligion meaning are explicitly
-    SUMP_UTINNI_LAYER_1's campaign-tier work, not this mod's.
+    The tar kit (RM_Tarred and its surgery/solvents/thoughts, walkways,
+    bitumen, tar gas, gaslight, tar vault, both research projects) moved into
+    mandrake.rm.thesump too (SUMP_FREE_TIER_MOVE_BUILD_1, 2026-10-03); the
+    campaign keeps only the Sumpgas label (Patches/RUT_TarGas_SumpgasLabel.xml)
+    and the flame-statue ideoligion meaning.
 
     ORIGINAL HEADER, preserved below for provenance:
 
@@ -173,7 +172,7 @@
            active. -->
       <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.biomes">
         <filthDef>RM_Filth_Tar</filthDef>
-        <hediffDef>RUT_Tarred</hediffDef>
+        <hediffDef>RM_Tarred</hediffDef>
       </li>
     </modExtensions>
   </BiomeDef>

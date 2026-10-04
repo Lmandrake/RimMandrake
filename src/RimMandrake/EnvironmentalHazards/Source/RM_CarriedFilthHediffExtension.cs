@@ -19,7 +19,7 @@ namespace RimMandrake.EnvironmentalHazards
     //     <modExtensions>
     //       <li Class="RimMandrake.EnvironmentalHazards.RM_CarriedFilthHediffExtension" MayRequire="mandrake.rm.environmentalhazards">
     //         <filthDef>RM_Filth_Tar</filthDef>
-    //         <hediffDef>RUT_Tarred</hediffDef>
+    //         <hediffDef>RM_Tarred</hediffDef>
     //       </li>
     //     </modExtensions>
     //   </BiomeDef>

@@ -18,30 +18,30 @@
   (biome_mod_architecture.md §7 Q11a's "the free mod looks the same" law,
   generalised from naming to mechanism here). The Utinni layer already ships
   a hand-built, lore-flavoured twin for the player-BUILT case —
-  src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RUT_SumpWalkways.xml's own
-  RUT_Glasswalk, whose header explicitly deferred "crossing the liquid tar
+  src/RimUtinni/UtinniPatches/Defs/TerrainDefs/RM_SumpWalkways.xml's own
+  RM_Glasswalk, whose header explicitly deferred "crossing the liquid tar
   itself" to this item — and
-  Patches/RUT_Tar_GlasswalkCooling.xml (this same pass) repoints
+  Patches/RM_Tar_GlasswalkCooling.xml (this same pass) repoints
   coolsToGlassEdge at that terrain instead when UtinniPatches is active, so
   the campaign gets the bespoke art/slip mechanic and everyone else still
   gets a real, working glass front.
 
-  Modelled directly on RUT_Glasswalk's own stats (read in full before writing
+  Modelled directly on RM_Glasswalk's own stats (read in full before writing
   this) rather than invented fresh: no ParentName (a solid floor, not a water
   terrain — IsWater must read false here or Designator_DigCanal would refuse
   to ever dig near it and RM_MapComponent_Excavation.IsSourceCell would
   wrongly treat cooled glass as a natural liquid source), pathCost 3 for the
   same "13/16 ~= 81%, never full speed, ADDS to base cost so this is a
-  structural floor not a tuned average" reasoning RUT_SumpWalkways.xml's own
+  structural floor not a tuned average" reasoning RM_SumpWalkways.xml's own
   header derives from GenPath.SpeedPercentString, filthAcceptanceMask None
   (nothing sticks to cooled glass), Flammability 0 (spent/cooled bitumen does
   not reignite — ruling 3 again, and RUT_TarSpent's own "burnt tar is spent"
-  precedent). No costList/designationCategory: unlike RUT_Glasswalk this is
+  precedent). No costList/designationCategory: unlike RM_Glasswalk this is
   never player-designated, only ever written by code, so it needs no build
   recipe.
 
   tags carries RM_SlipperyWalkway, the SAME literal tag string
-  RUT_SumpWalkways.xml's own header names as the generic hook
+  RM_SumpWalkways.xml's own header names as the generic hook
   RM_MapComponent_GlasswalkSlip (mandrake.rm.environmentalhazards) already
   watches on ANY terrain — a string tag, not a hard reference, so a cooled
   glass front gets the existing rare-pratfall mechanic for free when that kit

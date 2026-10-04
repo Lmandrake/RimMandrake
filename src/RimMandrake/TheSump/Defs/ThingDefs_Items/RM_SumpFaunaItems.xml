@@ -8,8 +8,8 @@
   (sheet §7), dredgel's chitin, skarrid's prized black leather, and
   skellarn's spine-leg chitin.
 
-  🔑 RM_Seepwax is a SEPARATE def from the pre-existing RUT_ThrummelSeepwax
-  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RUT_Tarred_Solvents.xml,
+  🔑 RM_Seepwax is a SEPARATE def from the pre-existing RM_ThrummelSeepwax
+  (src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/RM_Tarred_Solvents.xml,
   built under SUMP_TAR_NASTINESS_1, "doing" as of this pass). That def's own
   header explicitly defers "the thrummel creature/hive itself... awaiting its
   real source, the hive raid" to this roster — but it lives in the Utinni
@@ -17,7 +17,7 @@
   mod must stand rich alone (Q11a), and RM tier never depends on RUT tier.
   So the thrummel family's own butcherProducts here reference this file's own
   RM_Seepwax/RM_ThrummelChitin instead. Reconciling the two economies (e.g. a
-  campaign-side raid-loot PatchOperation that also awards RUT_ThrummelSeepwax)
+  campaign-side raid-loot PatchOperation that also awards RM_ThrummelSeepwax)
   is follow-on work for whoever next picks up SUMP_TAR_NASTINESS_1 or the
   Utinni layer wiring — not this item's scope.
 
