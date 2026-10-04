@@ -73,6 +73,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             // determinism: same world, same pile
             List<LaidPiece> pj2 = new CordBuilder().Build(PileWorld(), new BuildOptions { Pile = PileArt.Junctions }, c => true);
             Check(pj2.First(p => p.Key.StartsWith("tangle:")).GeometryHash() == tj.GeometryHash(), "pile geometry not deterministic");
+            if (Program.dumpDir != null) { Program.Dump("review1_pile_junctions", w, pj); Program.Dump("review1_pile_strips", w, ps); }
             Console.WriteLine($"  review1 piles: junction look {rj.PileJunctions} boxes / {tj.Strands.Count} cables / {rj.Strips} strips; modern {rs.Strips} strips / {plugs} plugs");
 
             // ---- B4: rock-entry holes foreshortened like the rock face

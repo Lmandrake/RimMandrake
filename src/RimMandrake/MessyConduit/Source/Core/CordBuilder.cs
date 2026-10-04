@@ -621,7 +621,7 @@ namespace RimMandrake.MessyConduit.Core
             CordRng rc = CordRng.Of(opt.Seed, "pilecon", nd.Cell.X, nd.Cell.Z);
             var cells = new List<Cell>(comp);
             for (int i = cells.Count - 1; i > 0; i--) { int j = rc.Int(0, i); Cell t = cells[i]; cells[i] = cells[j]; cells[j] = t; }
-            int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(2, 1 + comp.Count / 3);
+            int want = strips ? Math.Max(1, 1 + comp.Count / 7) : Math.Max(3, 1 + comp.Count / 2);
             var cons = new List<CordDecal>();
             foreach (Cell c in cells)
             {
@@ -635,13 +635,14 @@ namespace RimMandrake.MessyConduit.Core
                 cons.Add(d);
             }
             List<PilePort> ports = PortsOf(cons);
-            // ---- cables: each runs port to port (round robin, two different connectors when there are two)
+            // ---- cables: each runs port to port; cable i pairs port i with the port half the list away (another connector),
+            // so the first ports/2 cables already fill every port: no socket or arm is left empty
             int n = Math.Min(24, Math.Max(Math.Min(14, 4 + comp.Count / 3), (ports.Count + 1) / 2));
             var used = new HashSet<int>();
             for (int i = 0; i < n && ports.Count >= 2; i++)
             {
                 CordRng r = CordRng.Of(opt.Seed, "tangle", nd.Cell.X, nd.Cell.Z, i);
-                int a = (2 * i) % ports.Count, b = (2 * i + 1) % ports.Count;
+                int a = i % ports.Count, b = (i + ports.Count / 2) % ports.Count;
                 for (int k = 0; k < ports.Count && cons.Count > 1 && ports[b].Connector == ports[a].Connector; k++) b = (b + 1) % ports.Count;
                 if (a == b) continue;
                 PilePort pa = ports[a], pb = ports[b];
