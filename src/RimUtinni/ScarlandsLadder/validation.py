@@ -69,7 +69,35 @@ def static_checks():
             bad.append("setting %s has no control" % f)
     if 'Compile Include="PilgrimCamps.cs"' not in open(os.path.join(HERE, "Source", "RimMandrake.Utinni.ScarlandsLadder.csproj")).read():
         bad.append("PilgrimCamps.cs missing from the csproj")
+    bad.extend(r25_findings())
     return bad
+
+
+# R25 (_freeze_rulings_2026-09-07.md; cast bible 6B's "Rules the text keeps"): the player may INFER the
+# Assailants' authorship, never be TOLD it -- no Rakata, Assailants or scaria authorship in any text the
+# player reads. Scans every element text under Defs/ and Patches/ (rung texts, journal pages, labels,
+# descriptions, letters), never comments, so a design note in an XML comment does not trip it.
+R25_BANNED = re.compile(r"\b(rakatan?s?|assailants?|infinite empire)\b", re.I)
+
+
+def r25_findings(root=HERE):
+    hits, scanned = [], 0
+    for sub in ("Defs", "Patches"):
+        for dp, _dirs, files in os.walk(os.path.join(root, sub)):
+            for fn in files:
+                if not fn.endswith(".xml"):
+                    continue
+                for el in ET.parse(os.path.join(dp, fn)).getroot().iter():
+                    txt = (el.text or "").strip()
+                    if not isinstance(el.tag, str) or not txt:
+                        continue
+                    scanned += 1
+                    m = R25_BANNED.search(txt)
+                    if m:
+                        hits.append("R25: %s <%s> names %r" % (fn, el.tag, m.group(0)))
+    if scanned < 10:
+        return ["R25 scan read only %d text nodes -- instrument blind, not clean" % scanned]
+    return hits
 
 
 def _build_suite():
