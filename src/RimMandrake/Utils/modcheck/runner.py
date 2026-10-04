@@ -453,6 +453,12 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             except Exception as e:                              # noqa: BLE001
                 retile_rec = {"error": "%s: %s" % (type(e).__name__, e)}
             world_before = dict(world_before or {}, retile=retile_rec)
+        if getattr(suite, "water", False) or (retile and _BW.SUITE_WATER.get(mod)):
+            # open water on the bland map (BELT_WATER_HARNESS_1); restored after the chains and by the next reset()
+            try:
+                world_before = dict(world_before or {}, pond=_BW.paint_pond(session))
+            except Exception as e:                              # noqa: BLE001
+                world_before = dict(world_before or {}, pond={"error": "%s: %s" % (type(e).__name__, e)})
     for name, fn in suite.chains:
         watch = None
         _modal = None
@@ -571,6 +577,10 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             after = list(after) + _BW.restore_tile(session, None)
         except Exception as e:                                  # noqa: BLE001
             after = list(after) + ["UNMEASURED: restore_tile raised %r" % (e,)]
+        try:
+            after = list(after) + _BW.restore_pond(session, None)
+        except Exception as e:                                  # noqa: BLE001
+            after = list(after) + ["UNMEASURED: restore_pond raised %r" % (e,)]
         summary["bland_world"] = {"before": world_before, "after_problems": after}
     if mod:
         import northstar  # noqa: E402
