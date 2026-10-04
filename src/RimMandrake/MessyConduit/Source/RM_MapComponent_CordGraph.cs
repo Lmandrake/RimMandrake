@@ -282,14 +282,15 @@ namespace RimMandrake.MessyConduit
         private readonly Dictionary<Cell, DownedWireSchedule> downed = new Dictionary<Cell, DownedWireSchedule>();
         private Mesh hiMesh;
         /// <summary>Per strand variant (lane C): one whip mesh and one sway mesh each, drawn with that variant's material.</summary>
-        private readonly Mesh[] floorMeshes = new Mesh[8], faceMeshes = new Mesh[8];
+        private readonly Mesh[] floorMeshes = new Mesh[8], faceMeshes = new Mesh[8], rippleMeshes = new Mesh[8];
         private readonly List<Vector3> mv = new List<Vector3>();
         private readonly List<Vector2> mu = new List<Vector2>();
         private readonly List<int> mt = new List<int>();
         private PowerNet hiNet;
         private int hiBuilds = -1;
         public static int WhipDraws, SwayDraws, SwayVerts, HighlightCords, HighlightStubs, SparksThrown, DripEvents;
-        public static ulong SwayHash;
+        public static ulong SwayHash, RippleHash;
+        public static int RippleDraws, RippleVerts;
         public static float LastWind;
         public static readonly int[] DownedHist = new int[4];
         public static string HighlightNetId;
@@ -298,9 +299,56 @@ namespace RimMandrake.MessyConduit
         /// strength > 0, vanilla's plant-sway preference on, and not under a roof (design §8.4: 0 under a roof).</summary>
         public static bool SwaysNow(Map map, CordStrand s)
         {
-            if (!MessyConduitSettings.sway || MessyConduitSettings.swayAmplitude <= 0.01f || !Prefs.PlantWindSway) return false;
+            if (!SwayOn || EffectiveSwayMode(out _) != SwayMode.CPU) return false;
             if (s.Pts == null || s.Pts.Count < 2 || s.SwayW == null) return false;
+            return !PinRoofed(map, s);
+        }
+
+        /// <summary>Sway is wanted at all: setting on, strength > 0, vanilla's plant-sway preference on.</summary>
+        public static bool SwayOn => MessyConduitSettings.sway && MessyConduitSettings.swayAmplitude > 0.01f && Prefs.PlantWindSway;
+
+        /// <summary>A lifted strand's pin cell (where it leaves the wall) is roofed, or off the map.</summary>
+        public static bool PinRoofed(Map map, CordStrand s)
+        {
             IntVec3 c = CordWorldAdapter.I(s.Pts[0].Floor);
+            return !c.InBounds(map) || map.roofGrid.Roofed(c);
+        }
+
+        private static System.Reflection.FieldInfo plantMatsField;
+        /// <summary>WindManager's private static plant material list (reflection): the shader route only moves a
+        /// material that is in it, because WindManagerTick writes _SwayHead to exactly that list.</summary>
+        public static bool RegisteredWithWind(Material m)
+        {
+            if (m == null) return false;
+            if (plantMatsField == null)
+                plantMatsField = typeof(WindManager).GetField("plantMaterials", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
+            return plantMatsField?.GetValue(null) is List<Material> l && l.Contains(m);
+        }
+
+        /// <summary>The sway route actually used: Shader only when chosen AND the CutoutPlant strand material exists, uses
+        /// that shader and is registered with WindManager; otherwise CPU (the safe fallback). reason says why.</summary>
+        public static SwayMode EffectiveSwayMode(out string reason)
+        {
+            if (MessyConduitSettings.swayMode != SwayMode.Shader) { reason = "cpu (setting)"; return SwayMode.CPU; }
+            Material m = CordMaterials.StrandPlant;
+            if (ShaderDatabase.CutoutPlant == null || m == null) { reason = "fallback: no CutoutPlant strand material"; return SwayMode.CPU; }
+            if (m.shader != ShaderDatabase.CutoutPlant) { reason = "fallback: strand material shader is " + m.shader?.name; return SwayMode.CPU; }
+            if (!RegisteredWithWind(m)) { reason = "fallback: material not registered with WindManager"; return SwayMode.CPU; }
+            reason = "shader";
+            return SwayMode.Shader;
+        }
+
+        /// <summary>The section layer prints this lifted strand with the plant shader (vertex alpha = sway weight).</summary>
+        public static bool ShaderSwayPrints(CordStrand s) =>
+            s.Lifted && s.SwayW != null && s.Pts != null && s.Pts.Count >= 2 && SwayOn && EffectiveSwayMode(out _) == SwayMode.Shader;
+
+        /// <summary>Optional floor ripple: a plain floor strand (not lifted, not over a face, no whip tail) whose middle
+        /// cell is unroofed ripples per frame while the setting (default OFF) and the game's plant sway are on.</summary>
+        public static bool RipplesNow(Map map, CordStrand s)
+        {
+            if (!MessyConduitSettings.floorRipple || MessyConduitSettings.swayAmplitude <= 0.01f || !Prefs.PlantWindSway) return false;
+            if (s.Lifted || s.OverFace || s.WhipA > 0 || s.WhipB > 0 || s.Pts == null || s.Pts.Count < 3) return false;
+            IntVec3 c = CordWorldAdapter.I(s.Pts[s.Pts.Count / 2].Floor);
             return c.InBounds(map) && !map.roofGrid.Roofed(c);
         }
 
@@ -324,7 +372,7 @@ namespace RimMandrake.MessyConduit
 
         private void DrawMotion()
         {
-            WhipDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0;
+            WhipDraws = 0; SwayDraws = 0; SwayVerts = 0; HighlightCords = 0; HighlightStubs = 0; RippleDraws = 0; RippleVerts = 0;
             if (!MessyConduitSettings.enabled || Find.CurrentMap != map || RimWorld.Planet.WorldRendererUtility.WorldSelected) return;
             if (SectionLayer_RM_MessyCords.CutsceneHides) return;
             if (SectionLayer_RM_MessyCords.FarNow) return;            // far zoom: LOD only, no motion
@@ -401,6 +449,35 @@ namespace RimMandrake.MessyConduit
             Flush(ref faceMeshes[v], CordMaterials.StrandFaceFor(v) ?? CordMaterials.StrandFor(v));
             }
             SwayHash = h;
+            // ---- optional floor ripple (default off): unroofed plain floor strands on screen, game-time clock
+            ulong rh = 1469598103934665603UL;
+            if (MessyConduitSettings.floorRipple)
+                for (int v = 0; v < nv; v++)
+                {
+                    mv.Clear(); mu.Clear(); mt.Clear();
+                    foreach (LaidPiece p in pieces)
+                    {
+                        if (nv > 1 && VariantOf(p) != v) continue;
+                        int si = 0;
+                        foreach (CordStrand s in p.Strands)
+                        {
+                            si++;
+                            if (!RipplesNow(map, s)) continue;
+                            if (!view.Contains(CordWorldAdapter.I(s.Pts[s.Pts.Count / 2].Floor))) continue;
+                            List<V2> rp = CordMotion.Ripple(s.Pts, gt, CordRng.Hash("ripple", p.Key, si), CordMotion.RippleAmp * MessyConduitSettings.swayAmplitude, wind);
+                            SectionLayer_RM_MessyCords.RibbonInto(mv, mu, mt, rp, SectionLayer_RM_MessyCords.StrandWidth, baseY, s.S0);
+                            foreach (V2 q in rp)
+                            {
+                                rh = (rh ^ unchecked((ulong)(long)Math.Round(q.X * 10000))) * 1099511628211UL;
+                                rh = (rh ^ unchecked((ulong)(long)Math.Round(q.Z * 10000))) * 1099511628211UL;
+                            }
+                            RippleDraws++;
+                        }
+                    }
+                    RippleVerts += mv.Count;
+                    Flush(ref rippleMeshes[v], CordMaterials.StrandFor(v));
+                }
+            RippleHash = rh;
             // ---- B4 downed-wire bursts at live wall terminals (real-time schedule; flecks only while time runs)
             if (MessyConduitSettings.downedWire && SparksAllowed) DownedWires(now);
             // ---- B5 selection highlight

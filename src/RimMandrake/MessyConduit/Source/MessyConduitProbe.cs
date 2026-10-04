@@ -274,7 +274,23 @@ namespace RimMandrake.MessyConduit
             int deadFloorEnds = comp.Pieces.Sum(p => p.Ends.Count(e => !e.Wall && !(comp.EndLive(e.NetCell) ?? false)));
             F("liveFloorEnds", liveFloorEnds.ToString());
             F("deadFloorEnds", deadFloorEnds.ToString());
-            F("swayMode", J.S("CPU"));
+            SwayMode eff = RM_MapComponent_CordGraph.EffectiveSwayMode(out string effWhy);
+            F("swayMode", J.S(eff.ToString()));
+            F("swayModeSetting", J.S(MessyConduitSettings.swayMode.ToString()));
+            F("swayModeReason", J.S(effWhy));
+            UnityEngine.Material pm = CordMaterials.StrandPlant;
+            F("plantShader", J.S(pm?.shader?.name));
+            F("cutoutPlantShader", J.S(ShaderDatabase.CutoutPlant?.name));
+            F("plantRegistered", J.B(RM_MapComponent_CordGraph.RegisteredWithWind(pm)));
+            F("plantSwayHead", pm != null && pm.HasProperty("_SwayHead") ? J.D(pm.GetFloat("_SwayHead")) : "null");
+            F("floorRipple", J.B(MessyConduitSettings.floorRipple));
+            var plain = comp.Pieces.SelectMany(p => p.Strands).Where(x => !x.Lifted && !x.OverFace && x.WhipA == 0 && x.WhipB == 0 && x.Pts != null && x.Pts.Count >= 3).ToList();
+            F("floorStrands", plain.Count.ToString());
+            F("floorStrandsOpen", plain.Count(x => { IntVec3 c = CordWorldAdapter.I(x.Pts[x.Pts.Count / 2].Floor); return c.InBounds(map) && !map.roofGrid.Roofed(c); }).ToString());
+            F("rippling", plain.Count(x => RM_MapComponent_CordGraph.RipplesNow(map, x)).ToString());
+            F("rippleDraws", RM_MapComponent_CordGraph.RippleDraws.ToString());
+            F("rippleVerts", RM_MapComponent_CordGraph.RippleVerts.ToString());
+            F("rippleHash", J.S(RM_MapComponent_CordGraph.RippleHash.ToString("x16")));
             F("plantWindSway", J.B(Prefs.PlantWindSway));
             F("windSpeed", J.D(map.windManager.WindSpeed));
             F("swayAmplitude", J.D(MessyConduitSettings.swayAmplitude));
@@ -301,19 +317,26 @@ namespace RimMandrake.MessyConduit
             F("zoom", J.S(Find.CameraDriver.CurrentZoom.ToString()));
             F("lodFarNow", J.B(SectionLayer_RM_MessyCords.FarNow));
             F("lastDrawFar", J.B(SectionLayer_RM_MessyCords.LastDrawFar));
-            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0;
+            int lodSm = 0, lodOn = 0, fullSm = 0, fullOn = 0, plantSm = 0, plantV = 0, plantOpen = 0, plantRoofed = 0, aOpen = 0, aRoofed = 0, ripSkip = 0;
             var sections = Traverse.Create(map.mapDrawer).Field("sections").GetValue<Section[,]>();
             if (sections != null)
                 foreach (Section sec in sections)
                     foreach (SectionLayer l in Traverse.Create(sec).Field("layers").GetValue<List<SectionLayer>>())
                     {
-                        if (!(l is SectionLayer_RM_MessyCords)) continue;
+                        if (!(l is SectionLayer_RM_MessyCords cl)) continue;
+                        plantV += cl.plantVerts; plantOpen += cl.plantOpenStrands; plantRoofed += cl.plantRoofedStrands;
+                        aOpen = Math.Max(aOpen, cl.alphaMaxOpen); aRoofed = Math.Max(aRoofed, cl.alphaMaxRoofed); ripSkip += cl.rippleSkipped;
                         foreach (LayerSubMesh m in l.subMeshes.Where(m => m.finalized && m.verts.Count > 0))
                         {
+                            if (CordMaterials.IsPlant(m.material)) plantSm++;
                             if (CordMaterials.IsLod(m.material)) { lodSm++; if (!m.disabled) lodOn++; }
                             else { fullSm++; if (!m.disabled) fullOn++; }
                         }
                     }
+            F("shaderSubMeshes", plantSm.ToString()); F("shaderVerts", plantV.ToString());
+            F("shaderLiftedOpen", plantOpen.ToString()); F("shaderLiftedRoofed", plantRoofed.ToString());
+            F("shaderAlphaMaxOpen", aOpen.ToString()); F("shaderAlphaMaxRoofed", aRoofed.ToString());
+            F("rippleSkippedStatic", ripSkip.ToString());
             F("lodSubMeshes", lodSm.ToString()); F("lodEnabled", lodOn.ToString());
             F("fullSubMeshes", fullSm.ToString()); F("fullEnabled", fullOn.ToString());
             F("cutsceneInProgress", J.B(WorldComponent_GravshipController.CutsceneInProgress));

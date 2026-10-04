@@ -115,13 +115,12 @@ SHIPPED = {"enabled": "true", "style": "CordStyle.StarWarsJawa", "slack": "1f", 
            # phase 1b lane A
            "tangleMin": "9", "whip": "true", "downedWire": "true", "sparksOnlyOverlay": "false",
            "maxSparkingEnds": "24", "highlight": "true", "sway": "true", "swayAmplitude": "1f", "lod": "true",
+           "swayMode": "SwayMode.CPU", "floorRipple": "false",
            # lane C art styles
            "extCordColorMode": "ExtCordColorMode.Mixed", "extCordColor": "0"}
 
 # Bars this phase does not build or this short tier does not reach. Honest, named, never PASS.
 UNBUILT = [
-    ("U_sway_shader_path", "UNBUILT", "CutoutPlant vertex-shader sway (phase-2 doc 1.5 option 1); the CPU path is what ships"),
-    ("U_floor_ripple", "UNBUILT", "optional outdoor floor-cord ripple (phase-2 doc 1.3, default off)"),
     ("U_motion_look", "UNCOVERED", "whip / drip rhythm / sway LOOK: motion is not a Northstar bar (owner); state proxies above"),
     ("U_style_missing_art", "UNBUILT", "per-family EndFrayed_Live / PowerStrip / StrandShadow art does not exist; those slots "
                                        "fall back to the Jawa pieces (ST1 asserts the fallback list is exactly that)"),
@@ -751,6 +750,7 @@ def lane_a_live(B, rows, log):
         {"mode": a.get("swayMode"), "plantWindSway": a.get("plantWindSway"), "wind": a.get("windSpeed"), "amp": a.get("swayAmplitude"),
          "lifted": a.get("liftedStrands"), "swaying": a.get("liftedSwaying"), "swayDraws": a.get("swayDraws"), "swayVerts": a.get("swayVerts"),
          "hashA": a.get("swayHash"), "hashB_30ticks": b.get("swayHash"), "off_swayDraws": c.get("swayDraws"), "off_swaying": c.get("liftedSwaying")})
+    optional_motion_live(B, rows, a)
     # B5 selection highlight
     sa = B.probe("select:%d,%d" % (X0 + 5, Z0 + 3))
     h1 = motion(B, 3)
@@ -808,6 +808,66 @@ def lane_a_live(B, rows, log):
         {"tangleMin20": t20.get("tangles"), "tangleMin6": t6.get("tangles")})
     row(rows, "P1B_perf_rebuild", "PASS" if (m0.get("lastRebuildMs") or 0) > 0 else "UNMEASURED", "MOD",
         {"lastRebuildMs": m0.get("lastRebuildMs"), "laidPoints": m0.get("laidPoints"), "note": "first C# rebuild timing; no bar set"})
+
+
+def optional_motion_live(B, rows, cpu):
+    """The two OPTIONAL motion features (owner card 2026-10-04: build both, prove both), one roof toggle each side
+    so a single pass covers on / off / roofed / fallback for both. All state reads, never pixels.
+      B7b shader sway: swayMode=Shader prints the lifted tails ONCE with the CutoutPlant strand -- shader name ==
+        ShaderDatabase.CutoutPlant, the material is in WindManager.plantMaterials (reflection), _SwayHead advances
+        over 30 ticks, open vertex alpha max > 0, the CPU route draws nothing (no double draw); roofing the WALL2
+        terminal makes its alpha 0; back to CPU, the CPU route draws again (the fallback/default path).
+      B7c floor ripple: default OFF draws nothing; ON, the unroofed plain floor strands ripple (draws > 0, pose hash
+        changes over 30 ticks, the static layer leaves exactly those out); the roof over RUN2 takes them out; OFF
+        again draws nothing."""
+    roof = (X0 + 23, Z0 + 7, 5, 5)                      # over the WALL2 terminal and the east end of RUN2
+    B.probe("set:swayMode=Shader")
+    s1 = motion(B, 3)
+    B.ticks(30)
+    s2 = motion(B)
+    B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,%d,%d" % roof)
+    B.ticks(2)
+    s3 = motion(B, 3)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % roof)
+    B.ticks(2)
+    B.probe("set:swayMode=CPU")
+    s4 = motion(B, 3)
+    head1, head2 = s1.get("plantSwayHead"), s2.get("plantSwayHead")
+    wind = s1.get("windSpeed") or 0
+    sh_ok = (s1.get("swayMode") == "Shader" and s1.get("plantShader") and s1.get("plantShader") == s1.get("cutoutPlantShader") and
+             s1.get("plantRegistered") is True and s1.get("shaderSubMeshes", 0) > 0 and s1.get("shaderLiftedOpen", 0) > 0 and
+             s1.get("shaderAlphaMaxOpen", 0) > 0 and s1.get("shaderAlphaMaxRoofed", 0) == 0 and s1.get("swayDraws") == 0 and
+             isinstance(head1, (int, float)) and isinstance(head2, (int, float)) and (head2 > head1 or wind < 0.01) and
+             s3.get("shaderLiftedRoofed", 0) > 0 and s3.get("shaderAlphaMaxRoofed") == 0 and
+             s4.get("swayMode") == "CPU" and s4.get("shaderSubMeshes") == 0 and s4.get("swayDraws", 0) > 0)
+    keys = ("swayMode", "swayModeReason", "plantShader", "cutoutPlantShader", "plantRegistered", "plantSwayHead", "shaderSubMeshes",
+            "shaderVerts", "shaderLiftedOpen", "shaderLiftedRoofed", "shaderAlphaMaxOpen", "shaderAlphaMaxRoofed", "swayDraws", "windSpeed")
+    row(rows, "B7b_sway_shader_path", ("PASS" if sh_ok else "FAIL") if cpu.get("plantWindSway") else "UNMEASURED", "MOD",
+        {"shader": {k: s1.get(k) for k in keys}, "after30": {k: s2.get(k) for k in ("plantSwayHead", "ticksGame")},
+         "roofed": {k: s3.get(k) for k in keys}, "backToCpu": {k: s4.get(k) for k in keys}})
+    # ---- B7c floor ripple
+    r0 = motion(B)
+    B.probe("set:floorRipple=True")
+    r1 = motion(B, 3)
+    B.ticks(30)
+    r2 = motion(B)
+    B.call("jawa/set_roof_batch", ops="RoofConstructed:%d,%d,%d,%d" % roof)
+    B.ticks(2)
+    r3 = motion(B, 3)
+    B.call("jawa/set_roof_batch", ops="None:%d,%d,%d,%d" % roof)
+    B.ticks(2)
+    B.probe("set:floorRipple=False")
+    r4 = motion(B, 3)
+    rp_ok = (r0.get("floorRipple") is False and r0.get("rippleDraws") == 0 and r0.get("rippling") == 0 and r0.get("floorStrandsOpen", 0) > 0 and
+             r1.get("rippling") == r1.get("floorStrandsOpen") and r1.get("rippleDraws", 0) > 0 and
+             r1.get("rippleSkippedStatic") == r1.get("rippling") and
+             (r1.get("rippleHash") != r2.get("rippleHash") or (r1.get("windSpeed") or 0) < 0.01) and
+             r3.get("rippling", 0) < r1.get("rippling", 0) and r3.get("rippling") == r3.get("floorStrandsOpen") and
+             r4.get("rippleDraws") == 0 and r4.get("rippling") == 0 and r4.get("rippleSkippedStatic") == 0)
+    rk = ("floorRipple", "floorStrands", "floorStrandsOpen", "rippling", "rippleDraws", "rippleVerts", "rippleHash", "rippleSkippedStatic", "windSpeed")
+    row(rows, "B7c_floor_ripple", ("PASS" if rp_ok else "FAIL") if cpu.get("plantWindSway") else "UNMEASURED", "MOD",
+        {"default_off": {k: r0.get(k) for k in rk}, "on": {k: r1.get(k) for k in rk}, "on_30ticks": {k: r2.get(k) for k in rk},
+         "roofed": {k: r3.get(k) for k in rk}, "off_again": {k: r4.get(k) for k in rk}})
 
 
 # ============================================================================ lane C: art styles (live)
@@ -1049,7 +1109,7 @@ suite.toggles = list(SHIPPED)          # every Mod Settings field; floor.uncover
 
 # rows whose check flips a Mod Settings field (the component's `toggle`)
 ROW_TOGGLES = {"M7_off_restores_vanilla": "enabled", "M7b_on_again_invisible": "enabled",
-               "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "M10_tangle_threshold_setting": "tangleMin",
+               "B3_whip_live_ends": "whip", "B7_sway_cpu_two_frame": "sway", "B7b_sway_shader_path": "swayMode", "B7c_floor_ripple": "floorRipple", "M10_tangle_threshold_setting": "tangleMin",
                "ST2_switch_changes_textures": "style", "ST3_extcord_colour_modes": "extCordColorMode"}
 ROW_TOGGLES.update({"ST1_%s_textures_load" % s: "style" for s in ["StarWarsJawa", "StarWars", "ExtensionCord", "Cybertek"]})
 NOT_MEASURED = ("UNMEASURED", "UNBUILT", "UNCOVERED")

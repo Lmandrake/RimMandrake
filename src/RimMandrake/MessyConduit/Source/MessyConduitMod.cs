@@ -13,6 +13,11 @@ namespace RimMandrake.MessyConduit
     /// <summary>Extension-cord colours: a different colour per power net (seeded per net), or one colour everywhere.</summary>
     public enum ExtCordColorMode { Mixed, Single }
 
+    /// <summary>How lifted pieces sway (phase-2 doc 1.5): CPU (shipping default, per-frame deformed mesh) or Shader
+    /// (the engine's CutoutPlant vertex shader, vertex alpha = sway weight). Shader falls back to CPU by itself when
+    /// the plant shader or its wind registration is unavailable (see RM_MapComponent_CordGraph.EffectiveSwayMode).</summary>
+    public enum SwayMode { CPU, Shader }
+
     // ════════════════════════════════════════════════════════════════════
     // Mod Settings (owner, 2026-09-12: every mod ships a real settings screen; defaults = shipped
     // behaviour; all-off degrades to vanilla). Static fields so jawa/mod_settings_field can read and
@@ -59,6 +64,10 @@ namespace RimMandrake.MessyConduit
         public static bool sway = true;
         /// <summary>Sway strength multiplier (0-2).</summary>
         public static float swayAmplitude = 1f;
+        /// <summary>Sway route for lifted pieces: CPU (default) or the plant vertex shader (optional).</summary>
+        public static SwayMode swayMode = SwayMode.CPU;
+        /// <summary>Optional: outdoor floor cords ripple slightly in the wind. Off by default (floor cords lie still).</summary>
+        public static bool floorRipple = false;
         /// <summary>Far-zoom simplification: one thin strand per cord, no decals.</summary>
         public static bool lod = true;
         // ---- art styles (lane C, 2026-10-02)
@@ -89,6 +98,8 @@ namespace RimMandrake.MessyConduit
             Scribe_Values.Look(ref highlight, "highlight", true);
             Scribe_Values.Look(ref sway, "sway", true);
             Scribe_Values.Look(ref swayAmplitude, "swayAmplitude", 1f);
+            Scribe_Values.Look(ref swayMode, "swayMode", SwayMode.CPU);
+            Scribe_Values.Look(ref floorRipple, "floorRipple", false);
             Scribe_Values.Look(ref lod, "lod", true);
             Scribe_Values.Look(ref extCordColorMode, "extCordColorMode", ExtCordColorMode.Mixed);
             Scribe_Values.Look(ref extCordColor, "extCordColor", 0);
@@ -115,6 +126,8 @@ namespace RimMandrake.MessyConduit
             highlight = true;
             sway = true;
             swayAmplitude = 1f;
+            swayMode = SwayMode.CPU;
+            floorRipple = false;
             lod = true;
             extCordColorMode = ExtCordColorMode.Mixed;
             extCordColor = 0;
@@ -235,6 +248,16 @@ namespace RimMandrake.MessyConduit
             l.CheckboxLabeled("Hanging cords sway in the wind (obeys the game's plant-sway option)", ref MessyConduitSettings.sway);
             l.Label("Sway strength: " + MessyConduitSettings.swayAmplitude.ToString("0.0") + "x");
             MessyConduitSettings.swayAmplitude = l.Slider(MessyConduitSettings.swayAmplitude, 0f, 2f);
+            if (l.RadioButton("   Sway drawn on the CPU (default, always works)", MessyConduitSettings.swayMode == SwayMode.CPU,
+                              tooltip: "Each hanging cord on screen is bent every frame. Costs a little CPU; this is the shipping behaviour."))
+                MessyConduitSettings.swayMode = SwayMode.CPU;
+            if (l.RadioButton("   Sway drawn by the plant wind shader (experimental, zero CPU)", MessyConduitSettings.swayMode == SwayMode.Shader,
+                              tooltip: "Hanging cords use the same wind shader as plants and move with them. Falls back to the CPU route " +
+                                       "by itself if the shader is unavailable. Under a roof hanging cords never sway."))
+                MessyConduitSettings.swayMode = SwayMode.Shader;
+            l.CheckboxLabeled("Outdoor floor cords ripple slightly in the wind (off by default)", ref MessyConduitSettings.floorRipple,
+                "Off: cords on the floor lie still, as shipped. On: unroofed floor cords on screen ripple gently with the wind " +
+                "(uses the sway strength above; obeys the game's plant-sway option).");
             l.CheckboxLabeled("Far zoom: simplify cords (one thin strand, no pieces)", ref MessyConduitSettings.lod);
             l.CheckboxLabeled("Hide vanilla's thin machine hookup wires (power overlay lines always stay)", ref MessyConduitSettings.hideHookupWires);
             l.CheckboxLabeled("Debug: draw the node graph", ref MessyConduitSettings.debugDraw);
