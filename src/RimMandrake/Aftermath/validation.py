@@ -193,6 +193,9 @@ def battle_lifecycle_repelled(t):
         if not (r or {}).get("fired"):
             raise ExpectationFailed(
                 "jawa/fire_incident did not report fired=true: %r" % r)
+        # A hostile raid's letter opens a forcePause Dialog_NodeTree (load 14: modal_open surprise ended the chain and held
+        # the game paused). A player closes it; so does the suite, before any tick passes.
+        t.bridge_call("jawa/window_list_close", action="close", typeName="Dialog_NodeTree", closeAll=True)
         t.wait_ticks(300)  # the recorder opens a battle on its next poll (FallbackPollIntervalTicks 250), not at the fire (load 14)
         t.expect_log_contains("[RimMandrake.Aftermath] battle opened")
         t.screenshot()
