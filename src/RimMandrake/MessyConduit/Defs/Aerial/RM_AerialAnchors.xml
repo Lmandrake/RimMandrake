@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Messy Conduit aerial power lines (design/RimMandrake/messy_conduit_phase2_design_2026-10-02.md section 2).
-     AerialMast / AerialMastTop / WallBracket are real artpipe art (wire_style_art.py, lane C 2026-10-02): the mast
-     is the unfaced side-view pole, its top graphic is the upper half of the same image (drawn above pawns at
-     topOffsetZ 1.0, so it covers rows 0-127 exactly), attachZ/insulatorSpread measured on that art (insulator
-     heads at row ~22 of 256 -> 1.5 - 22/128 = 1.33; outer insulators at x ~38 and ~90 of 128 -> +-0.2).
-     AerialLampMast, AerialLampMastTop and TapClamp are still procedural placeholders (export_aerial_textures.py). -->
+     Pole art is per look (Textures/.../Aerial/Styles/<Look>/): 256x512 stout renders drawn 2x4 cells, base on the cell.
+     The Top overlay is the cropped top 128 rows (drawn 2x1 above pawns). attachZ/topOffsetZ come from the per-look
+     PoleGeometryTable, measured from each PNG's insulator tips by Utils/mockups/messy_conduit/wire_pole_art.py;
+     the attachZ/topOffsetZ below apply only when a look has no art of its own.
+     AerialLampMast glow is the lamp; WallBracket and TapClamp are separate art. -->
 <Defs>
 
   <MapMeshFlagDef>
@@ -56,7 +56,7 @@
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Aerial/AerialMast</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,4)</drawSize>
+      <drawSize>(2,4)</drawSize>
       <drawOffset>(0,0,1.5)</drawOffset>
       <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
       <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
@@ -88,7 +88,7 @@
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Aerial/AerialLampMast</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,4)</drawSize>
+      <drawSize>(2,4)</drawSize>
       <drawOffset>(0,0,1.5)</drawOffset>
       <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
       <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>

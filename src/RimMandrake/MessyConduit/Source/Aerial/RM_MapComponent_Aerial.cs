@@ -254,7 +254,7 @@ namespace RimMandrake.MessyConduit.Aerial
                 if (top != null && view.Contains(a.Position))
                 {
                     var pos = new Vector3(a.Position.x + 0.5f, TopAltitude, a.Position.z + 0.5f + a.Ext.topOffsetZ);
-                    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, Vector3.one), top, 0);
+                    Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(pos, Quaternion.identity, new Vector3(top.mainTexture != null ? top.mainTexture.width / 128f : 1f, 1f, 1f)), top, 0);
                     lastTopDraws++;
                 }
                 foreach (SpanLink l in a.links)
