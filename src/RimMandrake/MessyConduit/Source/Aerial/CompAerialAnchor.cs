@@ -124,6 +124,15 @@ namespace RimMandrake.MessyConduit.Aerial
         /// <summary>The insulator point the wire hangs from (ground-plane coordinates; z is the fake height).</summary>
         public Vector3 AttachPoint => AerialMaterials.BracketInsulator(this) is Vector2 bi ? BasePoint + new Vector3(bi.x, 0f, bi.y) : BasePoint + new Vector3(0f, 0f, Ext.attachZ);
 
+        /// <summary>The insulator tips the span wires end on (B23), in ground-plane coordinates (z fakes height).</summary>
+        public List<P2> InsulatorTips()
+        {
+            Vector3 b = BasePoint;
+            var r = new List<P2>();
+            foreach (P2 o in AerialMaterials.InsulatorsFor(this)) r.Add(new P2(b.x + o.X, b.z + o.Z));
+            return r;
+        }
+
         /// <summary>The anchor's foot. A wall-attached anchor (building.isAttachment, the bracket: owner review 2026-10-04 B7)
         /// is drawn ON the wall by its graphic's per-rotation draw offset, so its foot and insulator move with it.</summary>
         public Vector3 BasePoint

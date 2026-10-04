@@ -182,7 +182,7 @@ namespace RimMandrake.MessyConduit.Aerial
             sb.Append(",\"spanDraws\":" + comp.lastSpanDraws + ",\"swayDraws\":" + comp.lastSwayDraws + ",\"swayReason\":" + S(comp.lastSwayReason) +
                       ",\"topDraws\":" + comp.lastTopDraws + ",\"dropDraws\":" + comp.lastDropDraws + ",\"look\":" + S(AerialMaterials.Look) +
                       ",\"spanPath\":" + S(AerialMaterials.SpanPath) + ",\"spanWidth\":" + F(AerialMaterials.SpanWidth) +
-                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);
+                      ",\"poleTex\":{" + string.Join(",", AerialMaterials.PoleTex.Select(kv => S(kv.Key) + ":" + S(kv.Value))) + "}" + ",\"hookupCablesPrinted\":" + ConduitVisuals.HookupCablesPrinted + ",\"glowDraws\":" + comp.lastGlowDraws + ",\"spanMeshes\":" + comp.SpanMeshCount);
             sb.Append(",\"groundVerts\":" + SectionLayer_RM_AerialGround.LastPrintedVerts + ",\"groundFallenPrinted\":" + SectionLayer_RM_AerialGround.LastFallenPrinted +
                       ",\"groundShadowsPrinted\":" + SectionLayer_RM_AerialGround.LastShadowsPrinted);
             sb.Append(",\"altitudes\":{\"pawn\":" + F(AltitudeLayer.Pawn.AltitudeFor()) + ",\"pawnState\":" + F(AltitudeLayer.PawnState.AltitudeFor()) +

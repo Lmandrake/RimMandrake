@@ -91,7 +91,8 @@ namespace RimMandrake.MessyConduit.Aerial
         // the aerial ones included. Patching again here would double every patch.
         public AerialLinesMod(ModContentPack content) : base(content) => Settings = GetSettings<AerialSettings>();
 
-        public override string SettingsCategory() => "RimMandrake: Messy Conduit - aerial power lines";
+        /// <summary>B27: empty, so RimWorld lists no separate entry; drawn as a tab of MessyConduitMod's one window.</summary>
+        public override string SettingsCategory() => "";
 
         public override void WriteSettings()
         {
@@ -111,7 +112,7 @@ namespace RimMandrake.MessyConduit.Aerial
             l.Label("Sag: " + (AerialSettings.sag * 100f).ToString("0") + "% of the span length");
             AerialSettings.sag = l.Slider(AerialSettings.sag, 0f, 0.15f);
             l.CheckboxLabeled("Link new anchors automatically to the nearest one in range", ref AerialSettings.autoLink);
-            l.Label("Wires per span: 1 to " + AerialSettings.maxStrands);
+            l.Label("Wires per span: one per insulator, at most " + AerialSettings.maxStrands);
             AerialSettings.maxStrands = Mathf.RoundToInt(l.Slider(AerialSettings.maxStrands, 1f, 3f));
             l.GapLine();
             l.Label("Wire sway in the wind (also obeys the game's own plant sway preference)");

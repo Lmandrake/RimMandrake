@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using RimMandrake.MessyConduit.Core;
 using UnityEngine;
@@ -175,16 +176,49 @@ namespace RimMandrake.MessyConduit
 
         public override string SettingsCategory() => "RimMandrake: Messy Conduit";
 
+        /// <summary>Owner review 2026-10-04 B27, his words: the one header line of the one settings entry.</summary>
+        public const string Header = "Drawn flexible pipes and wires to better display simple circuit-like plans underneath.";
+
+        /// <summary>B27: ONE Mod Settings entry for the one mod. The overhead-line and flexible-hose settings keep their own
+        /// ModSettings classes and saved files (no settings lost on upgrade), but their Mods return an empty category so
+        /// RimWorld does not list them; this window draws all three as tabs and writes all three when it closes.</summary>
         public override void WriteSettings()
         {
             base.WriteSettings();
             MessyConduitSettings.Apply();
+            LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.WriteSettings();
+            LoadedModManager.GetMod<Hose.FireHosesMod>()?.WriteSettings();
+        }
+
+        public enum SettingsTab { Cables, OverheadLines, FlexibleHoses }
+        private static SettingsTab tab = SettingsTab.Cables;
+
+        public override void DoSettingsWindowContents(Rect inRect)
+        {
+            Text.Font = GameFont.Small;
+            Widgets.Label(new Rect(inRect.x, inRect.y, inRect.width, 26f), Header);
+            var tabs = new List<TabRecord>
+            {
+                new TabRecord("Cables", () => tab = SettingsTab.Cables, tab == SettingsTab.Cables),
+                new TabRecord("Overhead lines", () => tab = SettingsTab.OverheadLines, tab == SettingsTab.OverheadLines),
+                new TabRecord("Flexible hoses", () => tab = SettingsTab.FlexibleHoses, tab == SettingsTab.FlexibleHoses),
+            };
+            Rect body = new Rect(inRect.x, inRect.y + 26f + TabDrawer.TabHeight + 6f, inRect.width, inRect.height - 32f - TabDrawer.TabHeight);
+            Widgets.DrawMenuSection(body);
+            TabDrawer.DrawTabs(new Rect(body.x, body.y, body.width, TabDrawer.TabHeight), tabs);
+            Rect inner = body.ContractedBy(10f);
+            switch (tab)
+            {
+                case SettingsTab.OverheadLines: LoadedModManager.GetMod<Aerial.AerialLinesMod>()?.DoSettingsWindowContents(inner); break;
+                case SettingsTab.FlexibleHoses: LoadedModManager.GetMod<Hose.FireHosesMod>()?.DoSettingsWindowContents(inner); break;
+                default: DrawCables(inner); break;
+            }
         }
 
         private static Vector2 scroll;
         private static float viewHeight = 1200f;
 
-        public override void DoSettingsWindowContents(Rect inRect)
+        private void DrawCables(Rect inRect)
         {
             var view = new Rect(0f, 0f, inRect.width - 20f, viewHeight);
             Widgets.BeginScrollView(inRect, ref scroll, view);

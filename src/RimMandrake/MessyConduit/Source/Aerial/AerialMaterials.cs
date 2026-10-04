@@ -101,13 +101,16 @@ namespace RimMandrake.MessyConduit.Aerial
             SpanPath = Exists(own) ? own : SpanFallback(Look);
             Span = Tiled(SpanPath) ?? Tiled(Dir + "Strand_Jawa");
             Fallen = Span;
-            Shadow = Tiled(AerialDir + "SpanShadow", new Color(1f, 1f, 1f, 0.7f)) ?? Tiled(Dir + "StrandShadow", new Color(1f, 1f, 1f, 0.45f));
+            Shadow = Tiled(AerialDir + "SpanShadow", new Color(1f, 1f, 1f, 0.32f)) ?? Tiled(Dir + "StrandShadow", new Color(1f, 1f, 1f, 0.45f));
             Texture2D glow = ContentFinder<Texture2D>.Get(Dir + "SparkGlow", false);
             Glow = glow != null ? MaterialPool.MatFrom(new MaterialRequest(glow, ShaderDatabase.MoteGlow)) : null;
             FrayLive = CordMaterials.Decal(RimMandrake.MessyConduit.Core.DecalKind.FrayLive) ?? Plain(Dir + "EndFrayed_Live", Color.white);
             FrayDead = CordMaterials.Decal(RimMandrake.MessyConduit.Core.DecalKind.FrayDead) ?? Plain(Dir + "EndFrayed_Dead", new Color(0.62f, 0.58f, 0.55f, 1f));
             ApplyPoles();
             BuiltKey = CordMaterials.BuiltKey;
+            // B24: machine hookups to masts / brackets / switches print in the look's cable (ConduitVisuals.PrintCable)
+            if (Current.ProgramState == ProgramState.Playing && Find.Maps != null)
+                foreach (Map map in Find.Maps) map.mapDrawer.WholeMapChanged((ulong)MapMeshFlagDefOf.Things);
         }
 
         // ------------------------------------------------------------------ poles follow the look (B6/B16)
@@ -124,10 +127,31 @@ namespace RimMandrake.MessyConduit.Aerial
 
         private static readonly Dictionary<ThingDef, Vector2> origGeom = new Dictionary<ThingDef, Vector2>();
 
-        /// <summary>Insulator centres across each look's crossarm (cells from the pole centre, left to right), measured from
-        /// the look's own art (PoleGeometryTable, generated). Spans fan out to these instead of meeting at the pole centre.</summary>
-        public static readonly Dictionary<string, float[]> InsulatorTable = PoleGeometryTable.Insulators();
+        /// <summary>Insulator TIPS on each look's crossarm, measured from the look's own art (PoleGeometryTable, generated):
+        /// (x across the arm, z height) in cells from the cell centre. Spans end exactly on these (B23).</summary>
+        public static readonly Dictionary<string, Vector2[]> InsulatorTable = PoleGeometryTable.Insulators();
         private static readonly HashSet<ThingDef> realArt = new HashSet<ThingDef>();
+
+        /// <summary>The anchor's insulator tips now, as offsets from its BasePoint: the look's measured crossarm when its
+        /// own art is drawn; a wall bracket's measured insulator; else the def's attachZ with its insulatorSpread
+        /// (-s/2, 0, +s/2), or one insulator at the centre.</summary>
+        public static List<P2> InsulatorsFor(CompAerialAnchor a)
+        {
+            var r = new List<P2>();
+            ThingDef d = a?.parent?.def;
+            if (d == null) return r;
+            if (BracketInsulator(a) is Vector2 bi) { r.Add(new P2(bi.x, bi.y)); return r; }
+            if (realArt.Contains(d) && InsulatorTable.TryGetValue(Look + "/" + d.defName, out Vector2[] xs) && xs.Length > 0)
+            {
+                foreach (Vector2 v in xs) r.Add(new P2(v.x, v.y));
+                return r;
+            }
+            float s = a.Ext?.insulatorSpread ?? 0f, z = a.Ext?.attachZ ?? 0f;
+            if (s > 0.001f) { r.Add(new P2(-s / 2, z)); r.Add(new P2(0, z)); r.Add(new P2(s / 2, z)); }
+            else r.Add(new P2(0, z));
+            return r;
+        }
+
         private static readonly string[] RotNames = { "North", "East", "South", "West" };
         public static readonly Dictionary<string, Vector2> BracketTable = BracketGeometryTable.Build();
 
@@ -138,17 +162,6 @@ namespace RimMandrake.MessyConduit.Aerial
             ThingDef d = a?.parent?.def;
             if (d == null || d != AerialDefOf.RM_AerialWallBracket || !realArt.Contains(d)) return null;
             return BracketTable.TryGetValue(Look + "/" + RotNames[a.parent.Rotation.AsInt & 3], out Vector2 v) ? v : (Vector2?)null;
-        }
-
-        /// <summary>The anchor's insulator x offsets now: the look's measured crossarm when its own art is drawn, else
-        /// the def's insulatorSpread (-s/2, 0, +s/2), else one insulator at the centre (the wall bracket).</summary>
-        public static double[] InsulatorsFor(CompAerialAnchor a)
-        {
-            ThingDef d = a?.parent?.def;
-            if (d != null && realArt.Contains(d) && InsulatorTable.TryGetValue(Look + "/" + d.defName, out float[] xs) && xs.Length > 0)
-                return System.Array.ConvertAll(xs, x => (double)x);
-            float s = a?.Ext?.insulatorSpread ?? 0f;
-            return s > 0.001f ? new double[] { -s / 2, 0, s / 2 } : new double[] { 0 };
         }
 
         private static void ApplyGeometry(ThingDef d, bool real)

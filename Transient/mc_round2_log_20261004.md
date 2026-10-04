@@ -15,3 +15,10 @@
 - 14:22 live st.10 Industrial: each cut half ONE wire from middle insulator down to the break, halves meet at the spark; spans fan to outer insulators
 - 14:24 T4 MEASURED: st.8 SECOND lamp mast powerOn=false + needsPowerOverlay=true on a live net (first one on): vanilla PowerNetTick turns consumers on one per 200/n ticks; build paused too early -> human_review steps 600 ticks before freezing (staging defect, not mod). Hose fixes: bare fittings (stub cut), aged wrap tint, open-end wrap to the cut
 - 14:25 live 4 looks st.9/10: brackets on walls in each look, wire lands on insulator; fallen wire one piece in each look. Rebuilding with hose+staging fixes
+- 14:27 rebuilt map; T4 verified live: both st.8 lamp masts powerOn true, no bolt. Shooting 6 stations x 4 looks
+- 14:28 coordinator added T5-T8 (B23-B26); 24 shots taken
+- 14:28 owner: no window maximize/foreground; switching captures to the game's own screenshot_cell_rect
+- 14:29 found game UNPAUSED after the 4-look pass (pawns roaming; likely my window-focus helper); paused. A grey striped block appeared over the shed's north wall (no Thing there): suspect auto-roof; T5-T8 code next, then fresh map
+- 14:30 coordinator added T9 (B27: one Mod Settings entry). Diagnosing grey stripes over st.9 bracket (persists with cords off)
+- 14:36 T5 done (one wire per insulator tip, measured x,z per insulator, selftest B23); T6: span shadow now a cast shadow (SpanShadow, wide/faint, selftest B24), non-conduit hookups printed as the look's cable
+- 14:38 T7 pending live probe; T8 deployed-reel switch (stand-in, state read reelGraphic); T9 one Mod Settings entry w/ 3 tabs + header, About rewritten, settingscats probe. Offline 7/7, selftest 420/420, matrix 54/54

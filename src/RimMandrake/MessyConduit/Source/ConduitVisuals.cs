@@ -120,6 +120,7 @@ namespace RimMandrake.MessyConduit
 
         public static int HookupWiresSuppressed;
         public static int OverlayWiresPrinted;
+        public static int HookupCablesPrinted;
     }
 
     /// <summary>
@@ -131,7 +132,7 @@ namespace RimMandrake.MessyConduit
     [HarmonyPatch(typeof(PowerNetGraphics), nameof(PowerNetGraphics.PrintWirePieceConnecting))]
     public static class Patch_PrintWirePieceConnecting
     {
-        public static bool Prefix(Thing A, Thing B, bool forPowerOverlay)
+        public static bool Prefix(SectionLayer layer, Thing A, Thing B, bool forPowerOverlay)
         {
             if (forPowerOverlay)
             {
@@ -144,7 +145,26 @@ namespace RimMandrake.MessyConduit
                 ConduitVisuals.HookupWiresSuppressed++;
                 return false;
             }
-            return true;
+            // B24 (owner review 2026-10-04): a hookup to anything that is not our conduit (a mast, a lamp mast, a wall
+            // bracket, a power switch) was vanilla's hair-thin grey wire, invisible to him. Print it as the look's own
+            // cable instead (the span cable: thick dark Industrial/Scrapper, black Modern, sleek steel Futuristic).
+            if (A == null || B == null || Aerial.AerialMaterials.Span == null) return true;
+            ConduitVisuals.HookupCablesPrinted++;
+            PrintCable(layer, A, B);
+            return false;
+        }
+
+        public static void PrintCable(SectionLayer layer, Thing A, Thing B)
+        {
+            Vector3 a = A.TrueCenter() + A.Graphic.DrawOffset(A.Rotation), b = B.TrueCenter() + B.Graphic.DrawOffset(B.Rotation);
+            Vector3 center = (a + b) / 2f;
+            center.y = AltitudeLayer.SmallWire.AltitudeFor();
+            Vector3 v = b - a;
+            float len = v.MagnitudeHorizontal(), w = Mathf.Max(0.1f, Aerial.AerialMaterials.SpanWidth * 0.85f);
+            float u = len / (w * 4f);
+            // plane corners (-x,-z) (-x,+z) (+x,+z) (+x,-z): the strand tile's u runs ALONG the cable (plane z), v across
+            var uvs = new[] { new Vector2(0f, 0f), new Vector2(u, 0f), new Vector2(u, 1f), new Vector2(0f, 1f) };
+            Printer_Plane.PrintPlane(layer, center, new Vector2(w, len), Aerial.AerialMaterials.Span, v.AngleFlat(), false, uvs);
         }
     }
 }
