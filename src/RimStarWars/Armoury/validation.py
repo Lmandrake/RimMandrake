@@ -373,3 +373,76 @@ def def_and_spawn_wiring(t):
             raise ExpectationFailed(
                 "DamageDef/guy762_GrenadeDamage_plasma.workerClass read %r, expected "
                 "guy762_Ionization.DamageWorker_KotORPlasmaGrenade" % cls)
+
+
+# ------------------------------------------------- the melee ladder landed (NORTHSTAR_PARTIAL_GAPS_FILL_1)
+# The audit's headline gap: "the weapon-ladder rebalance has no component asserting any weapon damage value".
+# Armoury_MeleePower.xml is GENERATED (gen_armoury_patch.py): every `tools/li[label=L]/power` it writes is read
+# here and compared to the live tool power of each patched def that is loaded (`get_defs fields=tools deep` --
+# Tool.power is public). Our absorbed weapons (guy762_*, RSW_JDSA_*) must ALL be loaded and patched; a donor's
+# defs (OuterRim_*) count only when that donor is active. RANGED damage is NOT readable this way:
+# ProjectileProperties.damageAmountBase is PRIVATE (RimSage 2026-10-03) and DeepSerializeValue reflects public
+# fields only, so Armoury_RangedDamage.xml's ladder stays unasserted live until a [Tool] reads GetDamageAmount.
+import os as _os
+import re as _re
+import xml.etree.ElementTree as _ET
+
+_MELEE_PATCH = _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches", "Armoury_MeleePower.xml")
+_TOOL_XPATH = _re.compile(r'^/Defs/ThingDef\[defName="([^"]+)"\]/tools/li\[label="([^"]+)"\]/power$')
+
+
+def melee_targets(path=_MELEE_PATCH):
+    """{defName: {toolLabel: power}} from every PatchOperationReplace on a tool's power in the melee patch."""
+    out = {}
+    for op in _ET.parse(path).getroot().iter("li"):
+        if not op.get("Class", "").endswith("PatchOperationReplace"):
+            continue
+        m = _TOOL_XPATH.match((op.findtext("xpath") or "").strip())
+        val = op.find("value/power")
+        if m and val is not None and (val.text or "").strip():
+            out.setdefault(m.group(1), {})[m.group(2)] = float(val.text)
+    return out
+
+
+def _ours(name):
+    return name.startswith(("guy762_", "RSW_"))
+
+
+@suite.chain("melee_ladder_landed")
+def melee_ladder_landed(t):
+    """Every generated melee power value is the live value on every loaded patched weapon."""
+    with t.component("melee_patch_powers_are_live", beyond_toggle=True):
+        targets = melee_targets()
+        ours = sorted(n for n in targets if _ours(n))
+        if len(ours) < 10 or "guy762_vsword" not in ours:
+            raise ExpectationFailed("the melee patch parse is blind: %d of our own defs (%s)" % (len(ours), ours))
+        r = t.bridge_call("jawa/get_defs", defs=";".join("ThingDef/%s" % n for n in sorted(targets)),
+                          fields="tools", deep=True)
+        if t.session is not None and not t.upstream_failed:
+            if not (r or {}).get("success"):
+                raise ExpectationFailed("get_defs failed: %r" % r)
+            missing = set(r.get("notFound") or [])
+            lost = [n for n in ours if n in missing]
+            if lost:
+                raise ExpectationFailed("our own absorbed weapons are not loaded: %s" % lost)
+            rows = dict((row.get("defName"), row) for row in (r.get("defs") or []))
+            bad, checked = [], 0
+            for name, want in sorted(targets.items()):
+                if name not in rows:
+                    continue                                   # a donor def whose mod is not active
+                tools = ((rows[name].get("fields") or {}).get("tools")) or []
+                live = dict((str(tl.get("label")), tl.get("power")) for tl in tools if isinstance(tl, dict))
+                for label, power in sorted(want.items()):
+                    checked += 1
+                    got = live.get(label)
+                    try:
+                        ok = got is not None and abs(float(got) - power) < 1e-3
+                    except (TypeError, ValueError):
+                        ok = False
+                    if not ok:
+                        bad.append("%s/%s: patch %g, live %r" % (name, label, power, got))
+            if checked == 0:
+                raise ExpectationFailed("compared no tool power at all")
+            if bad:
+                raise ExpectationFailed("%d of %d patched melee powers are not live (patch did not apply, or a "
+                                        "later patch overrides): %s" % (len(bad), checked, "; ".join(bad[:12])))
