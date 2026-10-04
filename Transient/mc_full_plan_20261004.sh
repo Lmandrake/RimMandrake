@@ -8,5 +8,5 @@ T aerial python.exe $M/validation_aerial.py --live
 T aerial_sl python.exe $M/validation_aerial.py --save-load MC_REC_AERIAL_D_20261004
 T hose python.exe $M/validation_hose.py --live
 T hose_sl python.exe $M/validation_hose.py --save-load MC_REC_HOSE_D_20261004
-T matrix python.exe $M/northstar_matrix/run_live.py --live --fresh-map --no-shots --profile --catalog Transient/mc_scenes_20261004.json --out Transient/mc_matrix_rec4_20261004.json
+T matrix python.exe $M/northstar_matrix/run_live.py --live --fresh-map --no-shots --profile --catalog Transient/mc_scenes_D_20261004.json --out Transient/mc_matrix_rec5_20261004.json
 echo ENDPLAN
