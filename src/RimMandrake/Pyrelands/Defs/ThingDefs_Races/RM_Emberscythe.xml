@@ -48,11 +48,8 @@
   chitin, reduced Flammability vs. the insect baseline (0.7 on Megaspider/
   Megascarab) and a raised ComfyTemperatureMax.
 
-  Art: PLACEHOLDER texPath reusing Megascarab's own shipped vanilla
-  Things/Pawn/Animal/Megascarab/Megascarab art (MEASURED via
-  get_def_details on the Megascarab PawnKindDef) with an ember-red tint, the
-  same "recolored placeholder, no new art" idiom RUT_Placeholder_SumpMouse
-  already uses on Squirrel. Bespoke Emberscythe art is OWED.
+  Art: emberscythe_v1 (artpipe ART_REGEN_WAVE7_QUEUE_1, kept on the 2026-09-12 art review sheet), wired
+  2026-10-04 for PYRELANDS_SHIP_READINESS_1. The dessicated graphic still borrows vanilla Megascarab's.
 
   Mod Settings: RotSporeKit has no settings infrastructure at all (no
   Settings/*.cs, checked this pass) — a spawn toggle is not cheap here.
@@ -176,10 +173,9 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.1</drawSize>
-          <color>(140,45,25)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
@@ -188,10 +184,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.7</drawSize>
-          <color>(140,45,25)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
@@ -200,10 +195,9 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/Megascarab/Megascarab</texPath>
+          <texPath>Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe</texPath>
           <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.2</drawSize>
-          <color>(140,45,25)</color>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
           <texPath>Things/Pawn/Animal/Megascarab/Dessicated_Megascarab</texPath>
