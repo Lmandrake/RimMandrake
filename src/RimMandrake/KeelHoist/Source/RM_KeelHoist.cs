@@ -63,10 +63,18 @@ namespace RimMandrake.KeelHoist
 
         public CompPowerTrader Power => GetComp<CompPowerTrader>();
         public bool Powered => Power == null || Power.PowerOn;
-        public bool CableDown => targetPortal != null || targetHolder != null || targetCell.IsValid;
+        public virtual bool CableDown => targetPortal != null || targetHolder != null || targetCell.IsValid;
 
         /// <summary>A site's fixed head-frame: its cable is set by the genstep and never moved or reeled.</summary>
         public virtual bool FixedCable => false;
+
+        /// <summary>HUTT_LOTTERY_CHUTE_BUILD_1: a hoist that keeps what reaches the bottom itself (the chance chute).</summary>
+        protected virtual bool HandlesBelow => false;
+
+        /// <summary>Takes a thing that reached the bottom; returns where the manifest says it went.</summary>
+        protected virtual string ReceiveBelow(Thing t) => null;
+
+        public virtual bool ShowsRaiseCradle => true;
         public int InTransitCount => transit.Count;
         public IEnumerable<Thing> InTransit => transit;
 
@@ -248,6 +256,24 @@ namespace RimMandrake.KeelHoist
                 }
             }
 
+            if (!up && HandlesBelow)
+            {
+                string label = t.LabelCap;
+                transit.Remove(t);
+                arriveAt.RemoveAt(i);
+                goingUp.RemoveAt(i);
+                fromLabel.RemoveAt(i);
+                manifest.Add(new RM_HoistManifestEntry
+                {
+                    tick = Find.TickManager.TicksGame, label = label, up = false, from = from, to = ReceiveBelow(t) ?? "below",
+                });
+                if (manifest.Count > 200)
+                {
+                    manifest.RemoveAt(0);
+                }
+                return;
+            }
+
             Thing dropped = null;
             bool intoHolder = !up && targetHolder != null && targetHolder.Spawned && t is Pawn sunk
                               && !(sunk.IsColonist && !sunk.Downed);
@@ -411,7 +437,7 @@ namespace RimMandrake.KeelHoist
             targetCell = IntVec3.Invalid;
         }
 
-        public void RaiseCradle()
+        public virtual void RaiseCradle()
         {
             if (targetHolder != null && targetHolder.Spawned)
             {
@@ -522,6 +548,10 @@ namespace RimMandrake.KeelHoist
                 yield return reel;
                 }
 
+                if (!ShowsRaiseCradle)
+                {
+                    yield break;
+                }
                 var raise = new Command_Action
                 {
                     defaultLabel = "Raise cradle",

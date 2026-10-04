@@ -107,6 +107,7 @@ namespace RimMandrake.KeelHoist
     {
         public ThingDef holderDef;
         public ThingDef frameDef;
+        public ThingDef chuteDef;   // HUTT_LOTTERY_CHUTE_BUILD_1: the house's chance chute, if any
         public PawnKindDef keeperKind;
         public PawnKindDef guardKind;
         public IntRange guardCount = new IntRange(2, 4);
@@ -172,6 +173,17 @@ namespace RimMandrake.KeelHoist
                 {
                     frame.LowerCableTo(new LocalTargetInfo(holder));
                 }
+            }
+
+            if (ext.chuteDef != null && RM_GenStep_HoistFrames.TryFindFrameCell(map, holder, ext.chuteDef,
+                    new RM_HoistFrameSiteExtension { maxDistance = 11f }, out IntVec3 chuteCell))
+            {
+                Thing chute = ThingMaker.MakeThing(ext.chuteDef);
+                if (faction != null)
+                {
+                    chute.SetFaction(faction);
+                }
+                GenSpawn.Spawn(chute, chuteCell, map);
             }
 
             if (faction != null)
@@ -297,8 +309,10 @@ namespace RimMandrake.KeelHoist
             }
             RM_KeelHoist frame = map.listerThings.AllThings.OfType<RM_KeelHoist>().FirstOrDefault(h => h.targetHolder == holder);
             int keepers = faction == null ? 0 : map.mapPawns.SpawnedPawnsInFaction(faction).Count;
-            return string.Format("LAIDOUT holder={0} held={1} frame={2} keepers={3} faction={4} gate={5}",
-                holder.ThingID, holder.HeldCount, frame?.ThingID ?? "none", keepers, faction?.Name ?? "none", holder.GateOpen(out _));
+            RM_ChanceChute chute = map.listerThings.AllThings.OfType<RM_ChanceChute>().FirstOrDefault(c => c.Faction == faction);
+            return string.Format("LAIDOUT holder={0} held={1} frame={2} keepers={3} faction={4} gate={5} chute={6}",
+                holder.ThingID, holder.HeldCount, frame?.ThingID ?? "none", keepers, faction?.Name ?? "none", holder.GateOpen(out _),
+                chute?.ThingID ?? "none");
         }
 
         /// <summary>

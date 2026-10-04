@@ -23,7 +23,7 @@ suite = Suite("KeelHoist")
 suite.toggles = ["masterEnabled", "requireGravEngine", "tetherLock", "colonistsMayRide",
                  "downedStrangersAndBeasts", "openLineMeter", "cycleTimeMultiplier", "cableRange",
                  "restraintHours", "pitSales", "pitPriceMultiplier", "pitArenaHints", "arenaFighterBonus",
-                 "pitSites"]
+                 "pitSites", "chuteEnabled", "chuteHouseCut", "chuteJackpotChance", "chuteBustChance", "chuteHours"]
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -181,7 +181,7 @@ def hutt_slave_pit(t):
     with t.component("pit_laid_out_with_frame_and_keepers", toggle="pitSites"):
         text = _proof(t, "ProofLayOut", "RUT_HuttSlavePit")
         if text is not None:
-            if not text.startswith("LAIDOUT") or "frame=none" in text or "keepers=0" in text or "gate=False" not in text:
+            if not text.startswith("LAIDOUT") or "frame=none" in text or "keepers=0" in text or "gate=False" not in text or "chute=none" in text:
                 raise ExpectationFailed("layout: %s" % text[:240])
             t.screenshot()
     with t.component("lowered_prisoner_sold_for_silver", toggle="pitSales"):
@@ -198,6 +198,72 @@ def hutt_slave_pit(t):
             taken = _proof(t, "ProofGate", "conquer")
             if taken is not None and ("open=True" not in taken or "heldAfter=0" not in taken):
                 raise ExpectationFailed("taken pit did not give up its slaves: %s" % taken[:240])
+
+
+CHUTE_PROOF = "RimMandrake.KeelHoist.RM_ChanceChuteProof"
+
+
+def _setting_default(src, name):
+    m = re.search(r"public static (?:float|bool) %s = ([0-9.]+|true|false)f?;" % name, src)
+    if not m:
+        raise ExpectationFailed("default of %s not read from KeelHoistMod.cs" % name)
+    return float(m.group(1)) if m.group(1)[0].isdigit() else m.group(1) == "true"
+
+
+@suite.chain("chance_chute")
+def chance_chute(t):
+    """HUTT_LOTTERY_CHUTE_BUILD_1: the chance chute at a house's site (RM_ChanceChute.cs). Live needs the Hutt pit
+    laid out on the current map first (hutt_slave_pit chain's ProofLayOut places the chute with the house's faction)."""
+    t.clear_area(size=8)
+    with t.component("chute_placed_by_the_site_only", beyond_toggle=True):
+        d = _xml("Defs", "ThingDefs_Buildings", "RM_ChanceChute.xml").find("ThingDef")
+        if d is None or d.findtext("defName") != "RM_ChanceChute":   # sanity probe
+            raise ExpectationFailed("RM_ChanceChute not read")
+        for field in ("designationCategory", "researchPrerequisites", "costList"):
+            if d.find(field) is not None:
+                raise ExpectationFailed("the chute carries %s, so a player could build it" % field)
+        if ET.parse(HUTT_XML).getroot().find("SitePartDef/modExtensions/li").findtext("chuteDef") != "RM_ChanceChute":
+            raise ExpectationFailed("the Hutt site does not lay out a chute")
+    with t.component("house_edge_at_shipped_odds", toggle="chuteEnabled"):
+        src = _src("KeelHoistMod.cs")
+        cut, jack, bust = (_setting_default(src, n) for n in ("chuteHouseCut", "chuteJackpotChance", "chuteBustChance"))
+        ev = (1 - cut) * (jack * 3 + bust * 0.3 + (1 - jack - bust) * 0.9)
+        chute = _src("RM_ChanceChute.cs")
+        if "return 3f;" not in chute or "return 0.3f;" not in chute or "Rand.Range(0.7f, 1.1f)" not in chute:
+            raise ExpectationFailed("the roll is not the ruled 3x / 0.3x / 0.7-1.1x shape")
+        if not (0 < cut < 1) or ev >= 1:
+            raise ExpectationFailed("shipped odds return %.3f of a stake; the house must keep an edge" % ev)
+        text = None
+        if t.session is not None:
+            r = t.bridge_call("jawa/static_call", type=CHUTE_PROOF, method="ProofOdds", args="5000")
+            text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+            m = re.search(r"meanPayout=(\d+)", text)
+            if not m or int(m.group(1)) >= 1000:
+                raise ExpectationFailed("live odds do not favour the house: %s" % text[:200])
+    with t.component("staked_pawns_are_recorded_never_vanished", beyond_toggle=True):
+        chute = _src("RM_ChanceChute.cs")
+        body = chute[chute.index("protected override string ReceiveBelow"):chute.index("protected override void Tick()")]
+        if "PassToWorld" not in body or "stakedLabels.Add" not in body or "Destroy" in body.split("else")[0]:
+            raise ExpectationFailed("a staked pawn is not passed to the world and named")
+        text = _proof_cls(t, CHUTE_PROOF, "ProofStake", "Slave")
+        if text is not None:
+            if not text.startswith("STAKED") or "timerSet=True" not in text or "stakedPawnWorld=True" not in text \
+                    or "stakedPawnFaction=none" in text:
+                raise ExpectationFailed("stake: %s" % text[:240])
+
+
+def _proof_cls(t, cls, method, arg):
+    if t.session is None:
+        t.upstream_reason = "UNMEASURED: no bridge session for %s" % method
+        t.upstream_failed = True
+        return None
+    r = t.bridge_call("jawa/static_call", type=cls, method=method, args=arg)
+    text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+    if text.startswith("UNMEASURED"):
+        t.upstream_reason = text
+        t.upstream_failed = True
+        return None
+    return text
 
 
 # Live mechanics are NOT components here: a component with nothing to ask would record PASS. They are walk lines

@@ -42,6 +42,7 @@
     <Compile Include="KeelHoistPatches.cs" />
     <Compile Include="RM_HoistFrame.cs" />
     <Compile Include="RM_PitBuyer.cs" />
+    <Compile Include="RM_ChanceChute.cs" />
   </ItemGroup>
 
   <ItemGroup>

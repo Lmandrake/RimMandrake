@@ -25,6 +25,12 @@ namespace RimMandrake.KeelHoist
         public static bool pitArenaHints = true;
         public static float arenaFighterBonus = 1.3f;
         public static bool pitSites = true;
+        // HUTT_LOTTERY_CHUTE_BUILD_1: the chance chute.
+        public static bool chuteEnabled = true;
+        public static float chuteHouseCut = 0.15f;
+        public static float chuteJackpotChance = 0.08f;
+        public static float chuteBustChance = 0.1f;
+        public static float chuteHours = 6f;
 
         public override void ExposeData()
         {
@@ -43,6 +49,11 @@ namespace RimMandrake.KeelHoist
             Scribe_Values.Look(ref pitArenaHints, "pitArenaHints", true);
             Scribe_Values.Look(ref arenaFighterBonus, "arenaFighterBonus", 1.3f);
             Scribe_Values.Look(ref pitSites, "pitSites", true);
+            Scribe_Values.Look(ref chuteEnabled, "chuteEnabled", true);
+            Scribe_Values.Look(ref chuteHouseCut, "chuteHouseCut", 0.15f);
+            Scribe_Values.Look(ref chuteJackpotChance, "chuteJackpotChance", 0.08f);
+            Scribe_Values.Look(ref chuteBustChance, "chuteBustChance", 0.1f);
+            Scribe_Values.Look(ref chuteHours, "chuteHours", 6f);
         }
 
         public void DoWindowContents(Rect inRect)
@@ -87,6 +98,19 @@ namespace RimMandrake.KeelHoist
             list.CheckboxLabeled("Buyer pit sites may be offered", ref pitSites,
                 "Shipped default: ON. Quests may offer a buyer pit site (the Hutt slave pit) a few tiles away. "
               + "Off: no new site is offered; existing ones stay.");
+            list.GapLine();
+            list.CheckboxLabeled("Chance chute takes stakes", ref chuteEnabled,
+                "Shipped default: ON. At a house's chance chute (the Hutt slave pit site) you lower a stake (goods, "
+              + "slaves or beasts); hours later a crate of similar value comes up. Off: the chute refuses stakes.");
+            list.Label("House cut of every stake: " + chuteHouseCut.ToStringPercent()
+                       + "  (shipped odds return about 86% of a stake on average; a low cut with a high jackpot chance can tip it past 100%)");
+            chuteHouseCut = list.Slider(chuteHouseCut, 0.02f, 0.5f);
+            list.Label("Jackpot chance (crate x3): " + chuteJackpotChance.ToStringPercent());
+            chuteJackpotChance = list.Slider(chuteJackpotChance, 0f, 0.3f);
+            list.Label("Bust chance (crate x0.3): " + chuteBustChance.ToStringPercent());
+            chuteBustChance = list.Slider(chuteBustChance, 0f, 0.5f);
+            list.Label("Hours until the crate comes up: " + Mathf.RoundToInt(chuteHours));
+            chuteHours = Mathf.Round(list.Slider(chuteHours, 1f, 24f));
             list.End();
         }
     }

@@ -46,9 +46,9 @@ namespace RimMandrake.KeelHoist
             {
                 ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.Downed);
             }
-            if (((RM_KeelHoist)___portal).targetHolder?.Buyer != null)
+            if (((RM_KeelHoist)___portal).targetHolder?.Buyer != null || ___portal is RM_ChanceChute)
             {
-                // HUTT_SLAVE_PIT_SITE_BUILD_1: a buyer pit never takes a free colonist, downed or not.
+                // HUTT_SLAVE_PIT_SITE_BUILD_1 / HUTT_LOTTERY_CHUTE_BUILD_1: a buyer pit or chance chute never takes a free colonist.
                 ___transferables.RemoveAll(tr => tr.AnyThing is Pawn p && p.IsColonist && !p.IsSlave);
             }
 
