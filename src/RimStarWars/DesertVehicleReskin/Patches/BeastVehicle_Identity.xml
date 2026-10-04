@@ -47,13 +47,13 @@
   reskin art, so renaming them would put our words on someone else's picture,
   which is the same defect pointing the other way.
 
-  Each operation carries `MayRequire` for Alpha Vehicles, so an absent mod makes
+  Each operation is a PatchOperationFindMod on Alpha Vehicles, so an absent mod makes
   the whole file a silent no-op rather than a red error on a def that is not there.
   ============================================================================
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod" MayRequire="sarg.alphavehiclesneolithic">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Alpha Vehicles - Neolithic</li>
     </mods>

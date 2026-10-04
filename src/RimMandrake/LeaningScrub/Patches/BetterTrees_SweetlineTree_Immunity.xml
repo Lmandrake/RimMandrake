@@ -13,17 +13,23 @@
        mandrake.rut.ashkarrflora targeting RUT_SweetlineTree, since that
        defName is still live on the frozen twin. -->
 
-  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
-    <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RM_SweetlineTree"]</xpath>
-    <match Class="PatchOperationRemove">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Better Trees</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RM_SweetlineTree"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RM_SweetlineTree"]</xpath>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
-    <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RM_SweetlineTree"]</xpath>
-    <match Class="PatchOperationRemove">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Better Trees</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RM_SweetlineTree"]</xpath>
+      <match Class="PatchOperationRemove">
+        <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RM_SweetlineTree"]</xpath>
+      </match>
     </match>
   </Operation>
 

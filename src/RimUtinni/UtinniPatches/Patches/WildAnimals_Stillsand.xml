@@ -84,43 +84,52 @@
 -->
 <Patch>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
-      <value>
-        <RSW_Kreetle>0.2</RSW_Kreetle>
-        <RSW_WarWyrm>0.2</RSW_WarWyrm>
-        <RSW_KraytDragon>0.15</RSW_KraytDragon>
-        <RSW_GraniteSlug>0.1</RSW_GraniteSlug>
-        <RSW_Scurrier>0.1</RSW_Scurrier>
-        <RSW_Gizka>0.01</RSW_Gizka>
-        <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildAnimals</xpath>
+        <value>
+          <RSW_Kreetle>0.2</RSW_Kreetle>
+          <RSW_WarWyrm>0.2</RSW_WarWyrm>
+          <RSW_KraytDragon>0.15</RSW_KraytDragon>
+          <RSW_GraniteSlug>0.1</RSW_GraniteSlug>
+          <RSW_Scurrier>0.1</RSW_Scurrier>
+          <RSW_Gizka>0.01</RSW_Gizka>
+          <RSW_GreaterKraytDragon>0.001</RSW_GreaterKraytDragon>
+        </value>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildPlants</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildPlants</xpath>
-      <value>
-        <RSW_Plant_Bloddle>0.05</RSW_Plant_Bloddle>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/wildPlants</xpath>
+        <value>
+          <RSW_Plant_Bloddle>0.05</RSW_Plant_Bloddle>
+        </value>
+      </match>
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/allowedPackAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/allowedPackAnimals</xpath>
-      <value>
-        <li>RSW_Bantha</li>
-        <li>RSW_Ronto</li>
-        <li>RSW_Eopie</li>
-        <li>RSW_Jamel</li>
-        <li>RSW_Falumpaset</li>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_Stillsand"]/allowedPackAnimals</xpath>
+        <value>
+          <li>RSW_Bantha</li>
+          <li>RSW_Ronto</li>
+          <li>RSW_Eopie</li>
+          <li>RSW_Jamel</li>
+          <li>RSW_Falumpaset</li>
+        </value>
+      </match>
     </match>
   </Operation>
 

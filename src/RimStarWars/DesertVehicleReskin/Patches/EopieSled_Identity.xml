@@ -20,14 +20,14 @@
   ⇒ Art by PATH is inherited by every def naming that path; COLOUR is per-def and
   is not. Retexturing a shared path means auditing every def that names it.
 
-  Each operation carries a `MayRequire` for its own mod, so an absent mod makes
+  Each operation is a PatchOperationFindMod on its own mod, so an absent mod makes
   its half a silent no-op rather than a red error on a def that is not there.
   ============================================================================
 -->
 <Patch>
 
   <!-- ================= the vehicle: Alpha Vehicles - Neolithic ============= -->
-  <Operation Class="PatchOperationFindMod" MayRequire="sarg.alphavehiclesneolithic">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Alpha Vehicles - Neolithic</li>
     </mods>
@@ -51,7 +51,7 @@
   </Operation>
 
   <!-- ================= the prop: VFE Props and Decor ======================= -->
-  <Operation Class="PatchOperationFindMod" MayRequire="VanillaExpanded.VFEPropsandDecor">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Vanilla Furniture Expanded - Props and Decor</li>
     </mods>

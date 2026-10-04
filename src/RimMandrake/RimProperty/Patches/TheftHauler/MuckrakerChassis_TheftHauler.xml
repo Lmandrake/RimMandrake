@@ -18,14 +18,14 @@
   parent) — this patch's own li joins that list rather than replacing it,
   so DroidworksExtension's power/energy tuning survives untouched.
 
-  MayRequire-gated: absent Droidworks, this file is a silent no-op and the
+  FindMod-gated: absent Droidworks, this file is a silent no-op and the
   engine mod (JobDef/JobDriver/FloatMenuOptionProvider/marker class) stays
   fully functional for any OTHER pawnkind a player or another content mod
   marks directly with the extension.
 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+  <Operation Class="PatchOperationFindMod">
     <mods>
       <li>Droidworks</li>
     </mods>

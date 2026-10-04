@@ -48,52 +48,55 @@
        merge 2026-09-23, plus the 31 further rows MLIE_ABSORPTION_BIOME_WIRING_1
        retargeted 2026-09-25 (all already shipped as real RSW_ ports; the donor
        gate was a wiring bug, not a real dependency). -->
-  <Operation Class="PatchOperationConditional" MayRequire="mandrake.rsw.swbestiary">
-    <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake: SW — Bestiary</li></mods>
+    <match Class="PatchOperationConditional">
       <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
-      <value>
-        <RSW_FrilledGorg>1.0</RSW_FrilledGorg>
-        <RSW_Gorg>1.0</RSW_Gorg>
-        <RSW_Iriaz>1.0</RSW_Iriaz>
-        <RSW_LongtailGorg>1.0</RSW_LongtailGorg>
-        <RSW_Eopie>0.8</RSW_Eopie>
-        <RSW_Lothcat>0.8</RSW_Lothcat>
-        <RSW_Mudhorn>0.8</RSW_Mudhorn>
-        <RSW_Ronto>0.8</RSW_Ronto>
-        <RSW_Scurrier>0.8</RSW_Scurrier>
-        <RSW_Sketto>0.8</RSW_Sketto>
-        <RSW_Igitz>0.7</RSW_Igitz>
-        <RSW_Urusai>0.7</RSW_Urusai>
-        <RSW_Kybuck>0.6</RSW_Kybuck>
-        <RSW_Massiff>0.6</RSW_Massiff>
-        <RSW_Bantha>0.5</RSW_Bantha>
-        <RSW_Pufferpig>0.5</RSW_Pufferpig>
-        <RSW_Anooba>0.4</RSW_Anooba>
-        <RSW_Corinathoth>0.4</RSW_Corinathoth>
-        <RSW_Grank>0.2</RSW_Grank>
-        <RSW_Qormot>0.2</RSW_Qormot>
-        <RSW_Strill>0.2</RSW_Strill>
-        <RSW_Cannok>0.16</RSW_Cannok>
-        <RSW_Whisperbird>0.15</RSW_Whisperbird>
-        <RSW_Pikobis>0.1</RSW_Pikobis>
-        <RSW_Convor>0.08</RSW_Convor>
-        <RSW_Skalder>0.08</RSW_Skalder>
-        <RSW_Vulptex>0.08</RSW_Vulptex>
-        <RSW_FeralNerf>0.04</RSW_FeralNerf>
-        <RSW_Porg>0.04</RSW_Porg>
-        <RSW_Voorpak>0.02</RSW_Voorpak>
-        <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard>
-        <RSW_Kreetle>0.8</RSW_Kreetle>
-        <RSW_ShrublandGiant>0.35</RSW_ShrublandGiant>
-        <RSW_TunnelSnake>0.5</RSW_TunnelSnake>
-        <RSW_ScrapNestBird>0.45</RSW_ScrapNestBird>
-        <RSW_ImperialToad>0.7</RSW_ImperialToad>
-        <RSW_Gizka>0.4</RSW_Gizka>
-        <RSW_Nuna>0.4</RSW_Nuna>
-        <RSW_Worrt>0.4</RSW_Worrt>
-        <RSW_MossBeetle>0.3</RSW_MossBeetle>
-      </value>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/BiomeDef[defName="RM_LeaningScrub"]/wildAnimals</xpath>
+        <value>
+          <RSW_FrilledGorg>1.0</RSW_FrilledGorg>
+          <RSW_Gorg>1.0</RSW_Gorg>
+          <RSW_Iriaz>1.0</RSW_Iriaz>
+          <RSW_LongtailGorg>1.0</RSW_LongtailGorg>
+          <RSW_Eopie>0.8</RSW_Eopie>
+          <RSW_Lothcat>0.8</RSW_Lothcat>
+          <RSW_Mudhorn>0.8</RSW_Mudhorn>
+          <RSW_Ronto>0.8</RSW_Ronto>
+          <RSW_Scurrier>0.8</RSW_Scurrier>
+          <RSW_Sketto>0.8</RSW_Sketto>
+          <RSW_Igitz>0.7</RSW_Igitz>
+          <RSW_Urusai>0.7</RSW_Urusai>
+          <RSW_Kybuck>0.6</RSW_Kybuck>
+          <RSW_Massiff>0.6</RSW_Massiff>
+          <RSW_Bantha>0.5</RSW_Bantha>
+          <RSW_Pufferpig>0.5</RSW_Pufferpig>
+          <RSW_Anooba>0.4</RSW_Anooba>
+          <RSW_Corinathoth>0.4</RSW_Corinathoth>
+          <RSW_Grank>0.2</RSW_Grank>
+          <RSW_Qormot>0.2</RSW_Qormot>
+          <RSW_Strill>0.2</RSW_Strill>
+          <RSW_Cannok>0.16</RSW_Cannok>
+          <RSW_Whisperbird>0.15</RSW_Whisperbird>
+          <RSW_Pikobis>0.1</RSW_Pikobis>
+          <RSW_Convor>0.08</RSW_Convor>
+          <RSW_Skalder>0.08</RSW_Skalder>
+          <RSW_Vulptex>0.08</RSW_Vulptex>
+          <RSW_FeralNerf>0.04</RSW_FeralNerf>
+          <RSW_Porg>0.04</RSW_Porg>
+          <RSW_Voorpak>0.02</RSW_Voorpak>
+          <RSW_KowakianMonkeyLizard>0.01</RSW_KowakianMonkeyLizard>
+          <RSW_Kreetle>0.8</RSW_Kreetle>
+          <RSW_ShrublandGiant>0.35</RSW_ShrublandGiant>
+          <RSW_TunnelSnake>0.5</RSW_TunnelSnake>
+          <RSW_ScrapNestBird>0.45</RSW_ScrapNestBird>
+          <RSW_ImperialToad>0.7</RSW_ImperialToad>
+          <RSW_Gizka>0.4</RSW_Gizka>
+          <RSW_Nuna>0.4</RSW_Nuna>
+          <RSW_Worrt>0.4</RSW_Worrt>
+          <RSW_MossBeetle>0.3</RSW_MossBeetle>
+        </value>
+      </match>
     </match>
   </Operation>
 
