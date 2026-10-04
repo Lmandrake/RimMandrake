@@ -26,7 +26,7 @@ import helpers as H
 # is the plainest Flat 15-30 C biome there (260 tiles) and carries none of our hazards (TheRot Sheen, Terminator fronts).
 DRY_BIOMES = ("AridShrubland", "Desert", "ZBiome_Grasslands")
 NAMING_DIALOG = "Dialog_NamePlayer"       # colony-naming prompts: re-raised every ~600 ticks until named, harmless
-NATURAL_SCENERY = ("SteamGeyser",)         # in the BuildingArtificial group but indestructible and not a ruin
+NATURAL_SCENERY = ("SteamGeyser", "VHGE_GasGeyser")   # BuildingArtificial group but indestructible natural features, not ruins (VHGE_GasGeyser: MEASURED 2026-10-04, 3 on every retiled map)
 HINT_TILE = 4375
 
 
