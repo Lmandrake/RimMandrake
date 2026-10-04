@@ -199,6 +199,9 @@
       </shadowData>
     </graphicData>
     <fillPercent>0.35</fillPercent>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>

@@ -21,11 +21,12 @@
       <Mass>0.05</Mass>
       <Flammability>2</Flammability>
       <DeteriorationRate>1</DeteriorationRate>
+      <Nutrition>0.25</Nutrition>
     </statBases>
     <ingestible>
       <foodType>Plant</foodType>
       <preferability>RawBad</preferability>
-      <nutrition>0.25</nutrition>
+      <socialPropernessMatters>true</socialPropernessMatters>
       <optimalityOffsetHumanlikes>-100</optimalityOffsetHumanlikes>
     </ingestible>
     <thingCategories>

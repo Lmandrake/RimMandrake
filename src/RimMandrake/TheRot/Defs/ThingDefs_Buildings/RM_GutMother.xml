@@ -26,6 +26,7 @@
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.1</drawSize>
     </graphicData>
+    <tickerType>Rare</tickerType>   <!-- CompRottable needs Rare or Normal; ResourceBase ships Never -->
     <stackLimit>1</stackLimit>
     <useHitPoints>true</useHitPoints>
     <healthAffectsPrice>false</healthAffectsPrice>
@@ -180,7 +181,6 @@
     <researchPrerequisites>
       <li>RM_GutMotherCulture</li>
     </researchPrerequisites>
-    <constructEffect>ConstructDirt</constructEffect>
     <filthLeaving>Filth_RubbleBuilding</filthLeaving>
     <inspectorTabs>
       <li>ITab_Bills</li>
@@ -198,6 +198,7 @@
     </building>
     <comps>
       <li Class="CompProperties_Refuelable">
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>   <!-- the vat is Rare-ticked and burns its own nutrition in RM_GutMother.cs; vanilla per-tick burn needs Normal -->
         <fuelConsumptionRate>2</fuelConsumptionRate>
         <fuelCapacity>20</fuelCapacity>
         <initialFuelPercent>0</initialFuelPercent>

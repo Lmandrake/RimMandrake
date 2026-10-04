@@ -35,7 +35,7 @@
         </capacities>
         <power>18</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>SWTentacleAttackTool</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
       </li>
       <li>
         <label>central tentacle</label>
@@ -44,7 +44,7 @@
         </capacities>
         <power>18</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>SWTentacleAttackTool</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
       </li>
       <li>
         <label>right tentacle</label>
@@ -53,7 +53,7 @@
         </capacities>
         <power>18</power>
         <cooldownTime>2</cooldownTime>
-        <linkedBodyPartsGroup>SWTentacleAttackTool</linkedBodyPartsGroup>
+        <linkedBodyPartsGroup>RSW_SWTentacleAttackTool</linkedBodyPartsGroup>
       </li>
       <li>
         <capacities>

@@ -89,6 +89,9 @@
       <Flammability>0.8</Flammability>
     </statBases>
     <ingestible/>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>1</growOptimalGlow>
@@ -136,6 +139,9 @@
       <Flammability>0.7</Flammability>
     </statBases>
     <ingestible/>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>1</growOptimalGlow>
@@ -172,6 +178,9 @@
       <MaxHitPoints>90</MaxHitPoints>
       <Flammability>0.6</Flammability>
     </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>1</growOptimalGlow>
@@ -205,6 +214,9 @@
       <MaxHitPoints>80</MaxHitPoints>
       <Flammability>1.4</Flammability>
     </statBases>
+    <ingestible>
+      <preferability>NeverForNutrition</preferability>
+    </ingestible>
     <plant>
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>1</growOptimalGlow>
