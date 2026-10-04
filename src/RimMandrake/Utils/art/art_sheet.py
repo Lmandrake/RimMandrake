@@ -40,7 +40,7 @@ from game_paths import MODS_CONFIG as _MC  # noqa: E402
 MODSCONFIG = Path(_MC)
 CANON = L.REPO_ROOT / "design" / "RimStarWars" / "canon_references"
 FACINGS = ("south", "east", "north", "west", "single")
-LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"   # >26 sets: lowercase continues
 NEAR = 10   # dHash bits: at or under this on every facing = near-duplicate (shown folded, never hidden)
 
 
@@ -68,17 +68,33 @@ def package_id(mod: str) -> str:
 
 # ─────────────────────────────────────────────────────────────── canon ──
 
-def canon_entry(word: str) -> dict:
-    d = CANON / word.lower()
-    if not d.is_dir():
+def _canon_dirname(name: str) -> str:
+    return re.sub(r"[^a-z0-9_]", "", re.sub(r"^(rsw|rut|rm|aa|a)_", "", name.strip().lower()).replace(" ", ""))
+
+
+def canon_entry(*names: str) -> dict:
+    """The canon-library entry for the first of NAMES that has one ({} if none). Default on every
+    sheet (owner rule 2026-10-04): reference images + Must show are shown on each row."""
+    d = None
+    for n in names:
+        for cand in (n.lower(), _canon_dirname(n), _canon_dirname(n).replace("_", "")):
+            if cand and (CANON / cand).is_dir():
+                d = CANON / cand
+                break
+        if d:
+            break
+    if d is None:
         return {}
     txt = (d / "description.md").read_text(errors="replace") if (d / "description.md").exists() else ""
     secs = {}
     for m in re.finditer(r"^## (.+?)\n(.*?)(?=^## |\Z)", txt, re.S | re.M):
         secs[m.group(1).strip().lower()] = m.group(2).strip()
-    imgs = sorted(p for p in d.iterdir() if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp"))
+    # the donor's sprite kept in the entry is not a canon reference (it is the donor column)
+    imgs = sorted(p for p in d.iterdir() if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp")
+                  and not p.name.startswith("donor_"))
     return {"brief": secs.get("visual brief", ""), "must": secs.get("must show", ""),
-            "ruling": secs.get("ruling", ""), "images": imgs, "dir": str(d.relative_to(L.REPO_ROOT))}
+            "ruling": secs.get("ruling", ""), "images": imgs, "dir": str(d.relative_to(L.REPO_ROOT)),
+            "key": d.name}
 
 
 # ───────────────────────────────────────────────────────────── thumbs ──
@@ -271,17 +287,22 @@ window.itemBody = it => {
       ${c.also ? `<details class="ac-also"><summary>${c.also.length} identical elsewhere</summary>${c.also.map(a => `<div>${esc(a)}</div>`).join('')}</details>` : ''}
     </div>`;
   const main = it.cols.filter(c => !c.near_of), near = it.cols.filter(c => c.near_of);
-  const canon = it.canon ? `<details class="ac-canon"><summary>canon brief (${esc(it.canon.dir)})</summary>
-      <div class="ac-canon-imgs">${it.canon.imgs.map(u => `<div class="thumb ac-thumb" data-zoom="${u}" data-cap="canon reference"><img src="${u}" loading="lazy" alt=""></div>`).join('')}</div>
-      <div class="ac-brief"><b>Visual brief</b><pre>${esc(it.canon.brief)}</pre><b>Must show</b><pre>${esc(it.canon.must)}</pre>${it.canon.ruling ? `<b>Ruling</b><pre>${esc(it.canon.ruling)}</pre>` : ''}</div></details>` : '';
+  /* Canon reference beside the variants on EVERY row (owner rule 2026-10-04): images + Must show
+     always visible; the visual brief scrolls in place; no entry = said on the row. */
+  const canon = it.canon ? `<div class="ac-col ac-canoncol"><div class="ac-head"><b>canon</b> reference — not pickable</div>
+      <div class="ac-canon-imgs">${it.canon.imgs.map(u => `<div class="thumb ac-cthumb" data-zoom="${u}" data-cap="canon reference · ${esc(it.canon.dir)}"><img src="${u}" loading="lazy" alt=""></div>`).join('') || '<span class="sub">entry has no images</span>'}</div>
+      <div class="ac-brief"><b>Must show</b><pre>${esc(it.canon.must || '(entry lists none)')}</pre><b>Visual brief</b><pre class="ac-vb">${esc(it.canon.brief)}</pre>${it.canon.ruling ? `<b>Ruling</b><pre>${esc(it.canon.ruling)}</pre>` : ''}<span class="sub">${esc(it.canon.dir)}</span></div></div>`
+    : `<div class="ac-col ac-canoncol ac-nocanon"><div class="ac-head"><b>canon</b></div><div class="sub">${esc(it.noCanon || 'no canon-library entry')}</div></div>`;
+  const flawed = it.flawed ? `<div class="ac-flawed"><b>Your 2026-10-03 desert sheet:</b> ${esc(it.flawed.decision || '(no decision)')}${it.flawed.note ? ' — “' + esc(it.flawed.note) + '”' : ''} <span class="sub">⚠ made against a flawed sheet (its “current” column showed corpse textures for 65 of 109 rows) — shown, authorises nothing</span></div>` : '';
+  const ctx = it.context ? `<div class="ac-ctx">${esc(it.context)}</div>` : '';
   const rul = it.rulings.length ? `<div class="ac-rulings">${it.rulings.map(r => `<div class="ac-r ac-t-${r.trust}" title="${esc(r.why || '')}">${esc(r.at)} <b>${esc(r.verdict)}</b> <span class="sub">${esc(r.trust)} · ${esc(r.sheet)}</span> ${r.note ? '“' + esc(r.note) + '”' : ''}</div>`).join('')}</div>` : '';
   const masks = it.masks.length ? `<details class="ac-masks"><summary>masks (not judged here — they follow the body pick)</summary><div class="ac-canon-imgs">${it.masks.map(m => `<div class="thumb ac-thumb" data-zoom="${m.t}" data-cap="mask ${esc(m.mod)} ${m.f}"><img src="${m.t}" loading="lazy" alt=""></div>`).join('')}</div></details>` : '';
   return `<div class="ac-body"><div class="effect">${esc(it.effect)}</div>
     <div class="marks">${it.flags.map(f => `<span class="mark contested">${esc(f)}</span>`).join('')}${it.contested ? '<span class="mark inferred">⚠ prefill inferred — ' + esc(it.prefillWhy) + '</span>' : '<span class="mark absent">prefill: ' + esc(it.prefillWhy) + '</span>'}</div>
-    ${rul}
-    <div class="ac-grid"><div class="ac-col ac-facings"><div class="ac-head">&nbsp;</div>${facings.map(f => `<div class="ac-cell ac-flabel">${f}</div>`).join('')}</div>${main.map(col).join('')}</div>
+    ${ctx}${flawed}${rul}
+    <div class="ac-grid"><div class="ac-col ac-facings"><div class="ac-head">&nbsp;</div>${facings.map(f => `<div class="ac-cell ac-flabel">${f}</div>`).join('')}</div>${main.map(col).join('')}${canon}</div>
     ${near.length ? `<details class="ac-near"><summary>${near.length} near-duplicate set(s) (dHash ≤ ${it.near} on every facing) — folded, not hidden</summary><div class="ac-grid">${near.map(c => col(c)).join('')}</div></details>` : ''}
-    ${masks}${canon}</div>`;
+    ${masks}</div>`;
 };
 window.artRepaint = id => {
   const node = document.querySelector(`.row[data-id="${cssEsc(id)}"] .ac-body`);
@@ -316,7 +337,7 @@ new MutationObserver(() => { try {
     const it = byId.get(r.dataset.id); if (!it) return;
     r.querySelectorAll('[data-set]').forEach(b => {
       const k = b.dataset.set;
-      const has = !(k.length === 1 && /[A-Z]/.test(k)) || it.letters.includes(k);
+      const has = !(k.length === 1 && /[A-Za-z]/.test(k)) || it.letters.includes(k);
       b.disabled = !has; b.style.opacity = has ? '' : '0.25';
     });
   });
@@ -346,11 +367,23 @@ new MutationObserver(() => { try {
 .ac-rulings{font-size:11.5px;margin:4px 0}
 .ac-r{color:#c3cad6}.ac-t-flawed-sheet{text-decoration:line-through;color:#8a7070}
 .ac-t-prefill{color:#5f6b7a}
+.ac-canoncol{width:300px;background:#14110c;border-color:#5a4a2a}
+.ac-canoncol .ac-head{color:#e8b64c}
+.ac-cthumb{width:136px;height:136px;flex:0 0 136px}
+.ac-vb{max-height:9em!important}
+.ac-nocanon{width:170px;font-size:11.5px}
+.ac-flawed{font-size:12px;margin:4px 0;padding:3px 6px;border-left:3px solid #b07a3a;background:#1a140c;color:#d8c7a8}
+.ac-ctx{font-size:11.5px;color:var(--dim);margin:2px 0}
 </style>
 """
 
 
-def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, brief: str) -> dict:
+def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, brief: str,
+             meta: dict | None = None, invented_extra: list[str] | None = None) -> dict:
+    """META (optional) per texPath: group, subject_keys, canon_names, flags, flawed (the 10-03
+    verdict), context (one line). Canon reference images + Must show are shown on EVERY row by
+    default (owner rule 2026-10-04); a row without a canon entry says so."""
+    meta = meta or {}
     idx = L.Index()
     slots = L.scan_def_slots()
     order, fp = load_order()
@@ -366,7 +399,9 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
         maxcols = max(maxcols, len(row["cols"]))
     for row in rows:
         word = row["word"]
-        rul = idx.subject_rulings({word.lower()})
+        m = meta.get(row["res"], {})
+        keys = {word.lower(), L.subject_key(word)} | {L.subject_key(k) for k in m.get("subject_keys", [])}
+        rul = idx.subject_rulings(keys)
         letter, why, contested = prefill_for(row, rul)
         facings = [f for f in FACINGS if any(f in c["faces"] for c in row["cols"])]
         thumbs = {}
@@ -379,15 +414,25 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
         for mod, faces in row["masks"].items():
             for f, s in sorted(faces.items()):
                 masks.append({"mod": mod, "f": f, "t": thumb(s, imgdir)})
-        ce = canon_entry(word)
+        cnames = list(m.get("canon_names", [])) + [word] + list(row["subjects"])
+        ce = canon_entry(*cnames)
         canon = None
         if ce:
+            seen_c = {}
+            for p in ce["images"]:
+                seen_c.setdefault(L.sha256_file(p), p.read_bytes())
+            # the ledger's canon images for the same entry (same files normally; union by sha)
+            for s_, vs in idx.variants.items():
+                for v in vs:
+                    if (v.get("kind") == "canon" and (v.get("subject_key") or "").lower() == ce["key"]
+                            and not v.get("is_donor_sprite") and s_ not in seen_c and L.store_has(s_)):
+                        seen_c[s_] = None
             canon = {"dir": ce["dir"], "brief": ce["brief"][:2500], "must": ce["must"][:1500],
                      "ruling": ce["ruling"][:800] if "(empty" not in ce["ruling"] else "",
-                     "imgs": [thumb(L.sha256_file(p), imgdir, p.read_bytes(), 260) for p in ce["images"]]}
+                     "imgs": [thumb(sh, imgdir, b, 260) for sh, b in seen_c.items()]}
         rid = row["res"]
         shadow = [c for c in row["cols"] if c["kind"] == "live"]
-        flags = []
+        flags = list(m.get("flags", []))
         if len(shadow) > 1:
             flags.append(f"SHADOWED: {len(shadow)} of our mods ship this texPath")
         nonwin_mixed = [c for c in row["cols"] if c["kind"] == "live" and len({c["faces"].get(f) is None for f in facings}) > 1]
@@ -396,7 +441,9 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
         n_hist = sum(1 for c in row["cols"] if c["kind"] == "git")
         n_rend = sum(1 for c in row["cols"] if c["kind"] == "artpipe")
         item = {
-            "id": rid, "group": word, "label": f"{word} — {rid.split('/')[-1]}",
+            "id": rid, "group": m.get("group", word), "label": f"{m.get('name', word)} — {rid.split('/')[-1]}",
+            "context": m.get("context", ""), "flawed": m.get("flawed"),
+            "noCanon": None if canon else ("no canon-library entry (looked for: " + ", ".join(dict.fromkeys(c for c in cnames if c)) + ")"),
             "effect": (f"{', '.join(row['subjects']) or 'no def of ours names this texPath'} · "
                        f"{len(row['cols'])} distinct sets: {len(shadow)} shipped now, {n_rend} renders, "
                        f"{n_hist} history states — pick the column the game should show"),
@@ -409,7 +456,8 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
             "rulings": [{"at": (r.get("at") or "")[:10], "verdict": r.get("raw_verdict") or r.get("verdict"),
                          "trust": r.get("trust"), "sheet": Path(r.get("source_file") or "").name.replace(".decisions.json", ""),
                          "note": (r.get("note") or r.get("blanket_said") or "")[:240], "why": r.get("why_not_protecting", "")}
-                        for r in sorted(rul, key=lambda r: r.get("at") or "") if r.get("trust") != "prefill"],
+                        for r in sorted(rul, key=lambda r: r.get("at") or "") if r.get("trust") != "prefill"
+                        and not (m.get("flawed") and r.get("trust") == "flawed-sheet")],
         }
         items.append(item)
         snap_rows[rid] = {"subject_key": word.lower(), "res": rid,
@@ -424,7 +472,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
 
     opts = [{"key": LETTERS[i], "label": LETTERS[i], "hotkey": str(i + 1) if i < 9 else "",
              "color": "#5ac37f", "counts": "in"} for i in range(maxcols)]
-    opts += [{"key": "redo", "label": "none — redo", "hotkey": "r", "color": "#e8b64c", "counts": "out"},
+    opts += [{"key": "redo", "label": "none — redo (say what in the note)", "hotkey": "r", "color": "#e8b64c", "counts": "out"},
              {"key": "hold", "label": "hold", "hotkey": "h", "color": "#98a2b3", "counts": "out"}]
     decisions_path = out_html.parent / (out_html.stem + ".decisions.json")
     cfg = {
@@ -433,7 +481,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
         "briefHtml": brief,
         "criterion": ("Columns ordered: what the game shows now first (by live load order), then the other shipped copy, "
                       "renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, not quality."),
-        "invented": [
+        "invented": list(invented_extra or []) + [
             "Renders are joined to a creature by its NAME in the job id when no collect record binds them to a texPath; "
             "such columns say 'joined by creature name only' and may belong to a different graphic of the same creature.",
             "Where no ruling of yours names exact pictures, the prefill trusts a COMMIT MESSAGE that says the art was approved "
