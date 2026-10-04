@@ -32,15 +32,15 @@
           "defName": "RM_RustCathedralNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_646057836247420294c72e2f5eb8ee4c",
+         "OperationId": "op_f4c73a1c421249a4a41382825f641004",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:59:29.6834593+00:00",
-         "CompletedAtUtc": "2026-10-04T01:59:29.7321215+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T04:13:11.8444084+00:00",
+         "CompletedAtUtc": "2026-10-04T04:13:11.8935651+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -402,14 +402,14 @@
           }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_12e965dffcee417091bcc050ccf4d02f",
+         "OperationId": "op_e2a6052752a5445e82e85b1d49c7d53c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:59:29.7831954+00:00",
-         "CompletedAtUtc": "2026-10-04T01:59:29.8320069+00:00",
+         "StartedAtUtc": "2026-10-04T04:13:11.9450847+00:00",
+         "CompletedAtUtc": "2026-10-04T04:13:11.993822+00:00",
          "DurationMs": 48,
          "Result": null,
          "HasResult": true,
@@ -431,41 +431,44 @@
      "name": "namespaced_attitude_def_resolves",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: RM_BiomeAttitudeDef/RM_RustCathedralAttitude did not resolve: {'success': True, 'message': '0 of 1 def(s) resolved; 1 not found', 'requested': 1, 'foundCount': 0, 'notFound': ['RM_BiomeAttitudeDef/RM_RustCathedralAttitude'], 'malformed': [], 'fieldsAsked': ['defName'], 'defs': [{'requested': 'RM_BiomeAttitudeDef/RM_RustCathedralAttitude', 'found': False, 'defType': 'RM_BiomeAttitudeDef', 'defName': 'RM_RustCathedralAttitude', 'error': \"No def TYPE named 'RM_BiomeAttitudeDef'.\"}], 'ticksGame': 21417, 'operation': {'OperationId': 'op_9ac98e961b504ff283711e6612a36b03', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:59:29.8823478+00:00', 'CompletedAtUtc': '2026-10-04T01:59:29.9356202+00:00', 'DurationMs': 53, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "0 of 1 def(s) resolved; 1 not found",
+        "message": "1 of 1 def(s) resolved",
         "requested": 1,
-        "foundCount": 0,
-        "notFound": [
-         "RM_BiomeAttitudeDef/RM_RustCathedralAttitude"
-        ],
+        "foundCount": 1,
+        "notFound": [],
         "malformed": [],
         "fieldsAsked": [
          "defName"
         ],
         "defs": [
          {
-          "requested": "RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
-          "found": false,
-          "defType": "RM_BiomeAttitudeDef",
+          "requested": "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
+          "found": true,
           "defName": "RM_RustCathedralAttitude",
-          "error": "No def TYPE named 'RM_BiomeAttitudeDef'."
+          "defType": "RM_BiomeAttitudeDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_RustCathedralAttitude"
+          }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_9ac98e961b504ff283711e6612a36b03",
+         "OperationId": "op_c0a9381804d143c78a66356e4c4bca2a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:59:29.8823478+00:00",
-         "CompletedAtUtc": "2026-10-04T01:59:29.9356202+00:00",
-         "DurationMs": 53,
+         "StartedAtUtc": "2026-10-04T04:13:12.0449513+00:00",
+         "CompletedAtUtc": "2026-10-04T04:13:12.0937307+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -488,11 +491,11 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -769,7 +772,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -777,14 +780,7 @@
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [
-     {
-      "tick": 21417,
-      "detector": "health_progression",
-      "severity": "WARN",
-      "summary": "colonist Kaiser: 3 existing hediff(s) worsened"
-     }
-    ],
+    "hits_seen": [],
     "close_problems": []
    }
   },
@@ -830,14 +826,14 @@
           }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_9d57d4ba6708450793372bc97c22834e",
+         "OperationId": "op_5ace58ab823b4196b78bd438988fcbce",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:00:51.2183182+00:00",
-         "CompletedAtUtc": "2026-10-04T02:00:51.2627454+00:00",
+         "StartedAtUtc": "2026-10-04T04:14:37.1359754+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:37.1801153+00:00",
          "DurationMs": 44,
          "Result": null,
          "HasResult": true,
@@ -859,8 +855,8 @@
      "name": "roster_fish_and_rock_rows_present",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: biome lacks rows the XML ships: ['RM_CathedralRoach', 'GR_Mecharat', 'RM_LivingBolt']",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
@@ -908,15 +904,82 @@
           }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_e68a4380a60740e7a5a46c6e21451134",
+         "OperationId": "op_284c54c1c2f24fa78483ee0f476c8b36",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:00:51.3130415+00:00",
-         "CompletedAtUtc": "2026-10-04T02:00:51.3627581+00:00",
+         "StartedAtUtc": "2026-10-04T04:14:37.2305038+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:37.2803202+00:00",
          "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/biome_probe",
+       "result": {
+        "success": true,
+        "message": "1 biome(s) probed",
+        "biomesProbed": 1,
+        "notFound": [],
+        "searched": [],
+        "absentFromEveryProbedBiome": [],
+        "biomes": [
+         {
+          "defName": "RM_RustCathedral",
+          "label": "the Rust Cathedral",
+          "modName": "RimMandrake: Baroque Biomes",
+          "implemented": true,
+          "generatesNaturally": true,
+          "canBuildBase": true,
+          "canAutoChoose": true,
+          "isExtremeBiome": false,
+          "isWaterBiome": false,
+          "impassable": false,
+          "animalDensity": 0.1,
+          "plantDensity": 0.0,
+          "diseaseMtbDays": 90.0,
+          "forageability": 0.0,
+          "foragedFood": null,
+          "settlementSelectionWeight": 1.0,
+          "wildAnimalCount": 3,
+          "wildPlantCount": 0,
+          "animalsListed": 3,
+          "plantsListed": 0,
+          "animals": [
+           {
+            "defName": "GR_Mecharat",
+            "commonality": 0.5
+           },
+           {
+            "defName": "RM_CathedralRoach",
+            "commonality": 0.12
+           },
+           {
+            "defName": "RM_LivingBolt",
+            "commonality": 0.06
+           }
+          ],
+          "plants": null,
+          "findResults": null
+         }
+        ],
+        "ticksGame": 8427,
+        "operation": {
+         "OperationId": "op_313e549645b944d49767a5e20eec85af",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T04:14:37.3309192+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:37.3810653+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -937,9 +1000,77 @@
      "name": "wild_plants_stay_empty_ruled_zero",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/biome_probe",
+       "result": {
+        "success": true,
+        "message": "1 biome(s) probed",
+        "biomesProbed": 1,
+        "notFound": [],
+        "searched": [],
+        "absentFromEveryProbedBiome": [],
+        "biomes": [
+         {
+          "defName": "RM_RustCathedral",
+          "label": "the Rust Cathedral",
+          "modName": "RimMandrake: Baroque Biomes",
+          "implemented": true,
+          "generatesNaturally": true,
+          "canBuildBase": true,
+          "canAutoChoose": true,
+          "isExtremeBiome": false,
+          "isWaterBiome": false,
+          "impassable": false,
+          "animalDensity": 0.1,
+          "plantDensity": 0.0,
+          "diseaseMtbDays": 90.0,
+          "forageability": 0.0,
+          "foragedFood": null,
+          "settlementSelectionWeight": 1.0,
+          "wildAnimalCount": 3,
+          "wildPlantCount": 0,
+          "animalsListed": 3,
+          "plantsListed": 0,
+          "animals": [
+           {
+            "defName": "GR_Mecharat",
+            "commonality": 0.5
+           },
+           {
+            "defName": "RM_CathedralRoach",
+            "commonality": 0.12
+           },
+           {
+            "defName": "RM_LivingBolt",
+            "commonality": 0.06
+           }
+          ],
+          "plants": null,
+          "findResults": null
+         }
+        ],
+        "ticksGame": 8427,
+        "operation": {
+         "OperationId": "op_08f54e6a92c44c0d8b412c19de750524",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T04:14:37.43134+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:37.4795805+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -951,41 +1082,7 @@
      "toggle": null,
      "beyond_toggle": true,
      "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    }
-   ],
-   "situational": {
-    "bland": true,
-    "companion": true,
-    "bland_problems": [],
-    "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
-    ],
-    "policy": "abort",
-    "chunk": 600,
-    "sweeps": 0,
-    "fed": 0,
-    "ticks_spent": 0,
-    "surprises": [],
-    "hits_seen": [],
-    "close_problems": []
-   }
-  },
-  {
-   "name": "hum_attitude",
-   "components": [
-    {
-     "name": "attitude_def_targets_this_biome",
-     "toggle": null,
-     "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: attitude def targetBiome is None, not RM_RustCathedral",
+     "detail": "UNMEASURED: get_defs did not serialise MapCommonBase.genSteps (the patch is a plain PatchOperationAdd): {'success': True, 'message': '0 of 1 def(s) resolved; 1 not found', 'requested': 1, 'foundCount': 0, 'notFound': ['MapGeneratorDef/MapCommon",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
@@ -995,31 +1092,29 @@
         "requested": 1,
         "foundCount": 0,
         "notFound": [
-         "RM_BiomeAttitudeDef/RM_RustCathedralAttitude"
+         "MapGeneratorDef/MapCommonBase"
         ],
         "malformed": [],
         "fieldsAsked": [
-         "targetBiome",
-         "bandThresholds"
+         "genSteps"
         ],
         "defs": [
          {
-          "requested": "RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
+          "requested": "MapGeneratorDef/MapCommonBase",
           "found": false,
-          "defType": "RM_BiomeAttitudeDef",
-          "defName": "RM_RustCathedralAttitude",
-          "error": "No def TYPE named 'RM_BiomeAttitudeDef'."
+          "defType": "MapGeneratorDef",
+          "defName": "MapCommonBase"
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_3f2011e79dbb4b08b367196c0fa4d6ae",
+         "OperationId": "op_d88aea9e446a4de6b09fbdb0d54acc0c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:00:57.4217195+00:00",
-         "CompletedAtUtc": "2026-10-04T02:00:57.4717879+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T04:14:37.5321336+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:37.5802267+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1042,11 +1137,97 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
     "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "hum_attitude",
+   "components": [
+    {
+     "name": "attitude_def_targets_this_biome",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "targetBiome",
+         "bandThresholds"
+        ],
+        "defs": [
+         {
+          "requested": "RimMandrake.RustCathedral.Hum.RM_BiomeAttitudeDef/RM_RustCathedralAttitude",
+          "found": true,
+          "defName": "RM_RustCathedralAttitude",
+          "defType": "RM_BiomeAttitudeDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "targetBiome": "RM_RustCathedral",
+           "bandThresholds": [
+            10.0,
+            30.0,
+            55.0,
+            80.0
+           ]
+          }
+         }
+        ],
+        "ticksGame": 8427,
+        "operation": {
+         "OperationId": "op_884a0eefc8f8425ab3068fc8311353d7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T04:14:43.9805145+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:44.0300693+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -1099,15 +1280,15 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "note": null,
         "operation": {
-         "OperationId": "op_cf83232137694964b45e00b11f7eec37",
+         "OperationId": "op_09a0eee9a71149f8a7d14783bb72deb0",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:01:03.4864596+00:00",
-         "CompletedAtUtc": "2026-10-04T02:01:03.5132201+00:00",
+         "StartedAtUtc": "2026-10-04T04:14:51.3830614+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:51.4095983+00:00",
          "DurationMs": 26,
          "Result": null,
          "HasResult": true,
@@ -1338,16 +1519,16 @@
           ]
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "note": null,
         "operation": {
-         "OperationId": "op_9684763c2c2f4177998825a70636cd9f",
+         "OperationId": "op_02414092a6a34bafa652d775f5edc8a5",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:01:03.555027+00:00",
-         "CompletedAtUtc": "2026-10-04T02:01:03.6054324+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T04:14:51.4487752+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:51.4953142+00:00",
+         "DurationMs": 46,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1400,16 +1581,16 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "note": null,
         "operation": {
-         "OperationId": "op_c9e62df70f8d49c8a9db4a443f9836e7",
+         "OperationId": "op_d5045d5a6cb849068be3be89a306baaf",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:01:03.6363841+00:00",
-         "CompletedAtUtc": "2026-10-04T02:01:03.6614985+00:00",
-         "DurationMs": 25,
+         "StartedAtUtc": "2026-10-04T04:14:51.5213346+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:51.5393521+00:00",
+         "DurationMs": 18,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1462,16 +1643,16 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "note": null,
         "operation": {
-         "OperationId": "op_9eecd81b0c274915bcd2eab1259f9cb9",
+         "OperationId": "op_018728228855493988e23ffaac327f3c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:01:03.7032736+00:00",
-         "CompletedAtUtc": "2026-10-04T02:01:03.7280668+00:00",
-         "DurationMs": 24,
+         "StartedAtUtc": "2026-10-04T04:14:51.5821526+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:51.6074145+00:00",
+         "DurationMs": 25,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1524,15 +1705,15 @@
           "finalizers": []
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "note": null,
         "operation": {
-         "OperationId": "op_b9805e57d26e4affb3ba189b3ad19a65",
+         "OperationId": "op_d93c4a682fd34919af74330d902e6c0a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/harmony-patches",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:01:03.7701753+00:00",
-         "CompletedAtUtc": "2026-10-04T02:01:03.7943531+00:00",
+         "StartedAtUtc": "2026-10-04T04:14:51.6487447+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:51.6732873+00:00",
          "DurationMs": 24,
          "Result": null,
          "HasResult": true,
@@ -1556,7 +1737,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1564,14 +1745,7 @@
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [
-     {
-      "tick": 21417,
-      "detector": "health_progression",
-      "severity": "WARN",
-      "summary": "colonist Kaiser: 3 existing hediff(s) worsened"
-     }
-    ],
+    "hits_seen": [],
     "close_problems": []
    }
   },
@@ -1582,8 +1756,8 @@
      "name": "think_tree_carries_cleaning_toggle_node",
      "toggle": "roachCleaningEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: the roach tree no longer carries the cleaning toggle node (the toggle gates nothing)",
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: get_defs cannot read the think tree past its depth limit; the toggle node is below it",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
@@ -1665,15 +1839,15 @@
           }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 8427,
         "operation": {
-         "OperationId": "op_d6641598b0e6425590b91c0cda953b71",
+         "OperationId": "op_18f02c25efb2490c8c58113b067a1848",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T02:01:10.5853988+00:00",
-         "CompletedAtUtc": "2026-10-04T02:01:10.6345347+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T04:14:58.7154269+00:00",
+         "CompletedAtUtc": "2026-10-04T04:14:58.7640702+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1696,7 +1870,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1714,19 +1888,6 @@
     {
      "name": "bolts_dance_and_freeze_with_the_hum",
      "toggle": "boltDanceEnabled",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "watched_pricing_and_kill_irritation",
-     "toggle": "boltWatchedPricingEnabled",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
      "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
@@ -1790,6 +1951,45 @@
      "surprises": null
     },
     {
+     "name": "watched_pricing_and_kill_irritation",
+     "toggle": "boltWatchedPricingEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "hum_value_ladder_and_hysteresis",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "calm_bands_reachable",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: the bolt dance and the freeze at the worst band read the attitude value per tick on a living bolt; needs a generated RM_RustCathedral map (or a spawned bolt plus an attitude read tool) and game time",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
      "name": "roach_eats_filth",
      "toggle": "roachCleaningEnabled",
      "beyond_toggle": false,
@@ -1808,7 +2008,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 21 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1822,12 +2022,7 @@
   }
  ],
  "all_green": false,
- "findings": [
-  "<suite.Component object at 0x0000019A3EC54260>",
-  "<suite.Component object at 0x0000019A3EC54730>",
-  "<suite.Component object at 0x0000019A3EC541B0>",
-  "<suite.Component object at 0x0000019A3EC54AA0>"
- ],
+ "findings": [],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\RustCathedral.md",
  "bland_world": {
@@ -1859,14 +2054,20 @@
      "verified": true
     },
     "restore_colonists": {
-     "acted": 18,
+     "acted": 21,
      "verified": true,
      "residue": []
     },
     "restore_needs": {
-     "acted": 18,
+     "acted": 21,
      "verified": true
     }
+   },
+   "retile": {
+    "tile": 16419,
+    "biome": "ZBiome_Grasslands",
+    "temperature": 15.5066452,
+    "applied": "RM_RustCathedral"
    }
   },
   "after_problems": []

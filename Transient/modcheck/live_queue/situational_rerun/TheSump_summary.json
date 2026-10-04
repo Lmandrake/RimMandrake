@@ -32,15 +32,15 @@
           "defName": "TheSumpNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_ec08a627faa64c86b3046050aae7a8d2",
+         "OperationId": "op_13519154e771455fa471e29363b8a936",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:58:40.4778645+00:00",
-         "CompletedAtUtc": "2026-10-04T01:58:40.5281627+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T03:44:57.8431778+00:00",
+         "CompletedAtUtc": "2026-10-04T03:44:57.8924809+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -61,29 +61,17 @@
      "name": "every_deployed_def_resolves",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: 61 of 79 defs resolved; notFound=['HediffDef/RM_Tarred', 'RecipeDef/RM_ScrubTarred', 'ResearchProjectDef/RM_CapstanTurret', 'ResearchProjectDef/RM_GaslightChemistry', 'ResearchProjectDef/RM_TarRendering', 'RimMandrake.EnvironmentalHazards.RM_DefAliasDef/RM_SumpTierMoveAliases', 'TerrainDef/RM_Duckboards', 'TerrainDef/RM_Glasswalk']",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "29 of 40 def(s) resolved; 11 not found",
+        "message": "40 of 40 def(s) resolved",
         "requested": 40,
-        "foundCount": 29,
-        "notFound": [
-         "HediffDef/RM_Tarred",
-         "RecipeDef/RM_ScrubTarred",
-         "ResearchProjectDef/RM_CapstanTurret",
-         "ResearchProjectDef/RM_GaslightChemistry",
-         "ResearchProjectDef/RM_TarRendering",
-         "RimMandrake.EnvironmentalHazards.RM_DefAliasDef/RM_SumpTierMoveAliases",
-         "TerrainDef/RM_Duckboards",
-         "TerrainDef/RM_Glasswalk",
-         "ThingDef/RM_Bitumen",
-         "ThingDef/RM_CapstanTurret",
-         "ThingDef/RM_GaslightLamp"
-        ],
+        "foundCount": 40,
+        "notFound": [],
         "malformed": [],
         "fieldsAsked": [
          "defName"
@@ -163,9 +151,15 @@
          },
          {
           "requested": "HediffDef/RM_Tarred",
-          "found": false,
+          "found": true,
+          "defName": "RM_Tarred",
           "defType": "HediffDef",
-          "defName": "RM_Tarred"
+          "label": "tarred",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Tarred"
+          }
          },
          {
           "requested": "IncidentDef/RUT_TarPitBelch",
@@ -325,34 +319,63 @@
          },
          {
           "requested": "RecipeDef/RM_ScrubTarred",
-          "found": false,
-          "defType": "RecipeDef",
-          "defName": "RM_ScrubTarred"
+          "found": true,
+          "defName": "RM_ScrubTarred",
+          "defType": "RM_RecipeDef_HediffByproduct",
+          "label": "scrub off tar",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ScrubTarred"
+          }
          },
          {
           "requested": "ResearchProjectDef/RM_CapstanTurret",
-          "found": false,
+          "found": true,
+          "defName": "RM_CapstanTurret",
           "defType": "ResearchProjectDef",
-          "defName": "RM_CapstanTurret"
+          "label": "capstan turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CapstanTurret"
+          }
          },
          {
           "requested": "ResearchProjectDef/RM_GaslightChemistry",
-          "found": false,
+          "found": true,
+          "defName": "RM_GaslightChemistry",
           "defType": "ResearchProjectDef",
-          "defName": "RM_GaslightChemistry"
+          "label": "gaslight chemistry",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GaslightChemistry"
+          }
          },
          {
           "requested": "ResearchProjectDef/RM_TarRendering",
-          "found": false,
+          "found": true,
+          "defName": "RM_TarRendering",
           "defType": "ResearchProjectDef",
-          "defName": "RM_TarRendering"
+          "label": "tar rendering",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TarRendering"
+          }
          },
          {
           "requested": "RimMandrake.EnvironmentalHazards.RM_DefAliasDef/RM_SumpTierMoveAliases",
-          "found": false,
-          "defType": "RimMandrake.EnvironmentalHazards.RM_DefAliasDef",
+          "found": true,
           "defName": "RM_SumpTierMoveAliases",
-          "error": "No def TYPE named 'RimMandrake.EnvironmentalHazards.RM_DefAliasDef'."
+          "defType": "RM_DefAliasDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_SumpTierMoveAliases"
+          }
          },
          {
           "requested": "RimMandrake.EnvironmentalHazards.RM_LotteryTableDef/RUT_DigStratumTable",
@@ -368,15 +391,27 @@
          },
          {
           "requested": "TerrainDef/RM_Duckboards",
-          "found": false,
+          "found": true,
+          "defName": "RM_Duckboards",
           "defType": "TerrainDef",
-          "defName": "RM_Duckboards"
+          "label": "duckboards",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Duckboards"
+          }
          },
          {
           "requested": "TerrainDef/RM_Glasswalk",
-          "found": false,
+          "found": true,
+          "defName": "RM_Glasswalk",
           "defType": "TerrainDef",
-          "defName": "RM_Glasswalk"
+          "label": "glasswalk",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Glasswalk"
+          }
          },
          {
           "requested": "TerrainDef/RUT_TarMoat",
@@ -404,9 +439,15 @@
          },
          {
           "requested": "ThingDef/RM_Bitumen",
-          "found": false,
+          "found": true,
+          "defName": "RM_Bitumen",
           "defType": "ThingDef",
-          "defName": "RM_Bitumen"
+          "label": "bitumen",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Bitumen"
+          }
          },
          {
           "requested": "ThingDef/RM_Brindeth",
@@ -446,9 +487,15 @@
          },
          {
           "requested": "ThingDef/RM_CapstanTurret",
-          "found": false,
+          "found": true,
+          "defName": "RM_CapstanTurret",
           "defType": "ThingDef",
-          "defName": "RM_CapstanTurret"
+          "label": "capstan turret",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_CapstanTurret"
+          }
          },
          {
           "requested": "ThingDef/RM_Dorvel",
@@ -488,9 +535,15 @@
          },
          {
           "requested": "ThingDef/RM_GaslightLamp",
-          "found": false,
+          "found": true,
+          "defName": "RM_GaslightLamp",
           "defType": "ThingDef",
-          "defName": "RM_GaslightLamp"
+          "label": "gaslight lamp",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_GaslightLamp"
+          }
          },
          {
           "requested": "ThingDef/RM_Gulveth",
@@ -505,15 +558,15 @@
           }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_53b7f864459d440fb87fabc81ba3916c",
+         "OperationId": "op_ced2b7632f4c4659848b5f1a22147a76",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:58:40.5784422+00:00",
-         "CompletedAtUtc": "2026-10-04T01:58:40.6335538+00:00",
-         "DurationMs": 55,
+         "StartedAtUtc": "2026-10-04T03:44:57.9432336+00:00",
+         "CompletedAtUtc": "2026-10-04T03:44:57.9923889+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -527,18 +580,10 @@
        "call": "bridge_call jawa/get_defs",
        "result": {
         "success": true,
-        "message": "32 of 39 def(s) resolved; 7 not found",
+        "message": "39 of 39 def(s) resolved",
         "requested": 39,
-        "foundCount": 32,
-        "notFound": [
-         "ThingDef/RM_StrongTarSolvent",
-         "ThingDef/RM_TarGas",
-         "ThingDef/RM_TarRuinedGoods",
-         "ThingDef/RM_TarVault",
-         "ThingDef/RM_ThrummelSeepwax",
-         "ThingDef/RM_WeakTarSolvent",
-         "ThoughtDef/RM_TarredThought"
-        ],
+        "foundCount": 39,
+        "notFound": [],
         "malformed": [],
         "fieldsAsked": [
          "defName"
@@ -726,9 +771,15 @@
          },
          {
           "requested": "ThingDef/RM_StrongTarSolvent",
-          "found": false,
+          "found": true,
+          "defName": "RM_StrongTarSolvent",
           "defType": "ThingDef",
-          "defName": "RM_StrongTarSolvent"
+          "label": "strong tar solvent",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_StrongTarSolvent"
+          }
          },
          {
           "requested": "ThingDef/RM_SumpMouse",
@@ -756,21 +807,39 @@
          },
          {
           "requested": "ThingDef/RM_TarGas",
-          "found": false,
+          "found": true,
+          "defName": "RM_TarGas",
           "defType": "ThingDef",
-          "defName": "RM_TarGas"
+          "label": "Sumpgas",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TarGas"
+          }
          },
          {
           "requested": "ThingDef/RM_TarRuinedGoods",
-          "found": false,
+          "found": true,
+          "defName": "RM_TarRuinedGoods",
           "defType": "ThingDef",
-          "defName": "RM_TarRuinedGoods"
+          "label": "tar-ruined goods",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TarRuinedGoods"
+          }
          },
          {
           "requested": "ThingDef/RM_TarVault",
-          "found": false,
+          "found": true,
+          "defName": "RM_TarVault",
           "defType": "ThingDef",
-          "defName": "RM_TarVault"
+          "label": "tar vault",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TarVault"
+          }
          },
          {
           "requested": "ThingDef/RM_Thrummel",
@@ -810,9 +879,15 @@
          },
          {
           "requested": "ThingDef/RM_ThrummelSeepwax",
-          "found": false,
+          "found": true,
+          "defName": "RM_ThrummelSeepwax",
           "defType": "ThingDef",
-          "defName": "RM_ThrummelSeepwax"
+          "label": "thrummel seepwax",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ThrummelSeepwax"
+          }
          },
          {
           "requested": "ThingDef/RM_ThrummelWarden",
@@ -852,9 +927,15 @@
          },
          {
           "requested": "ThingDef/RM_WeakTarSolvent",
-          "found": false,
+          "found": true,
+          "defName": "RM_WeakTarSolvent",
           "defType": "ThingDef",
-          "defName": "RM_WeakTarSolvent"
+          "label": "weak tar solvent",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_WeakTarSolvent"
+          }
          },
          {
           "requested": "ThingDef/RUT_BeastBulge",
@@ -954,9 +1035,15 @@
          },
          {
           "requested": "ThoughtDef/RM_TarredThought",
-          "found": false,
+          "found": true,
+          "defName": "RM_TarredThought",
           "defType": "ThoughtDef",
-          "defName": "RM_TarredThought"
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_TarredThought"
+          }
          },
          {
           "requested": "WeatherDef/RUT_SumpWeather",
@@ -971,15 +1058,15 @@
           }
          }
         ],
-        "ticksGame": 21417,
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_07138120a1a0475c8422b5d29620532d",
+         "OperationId": "op_9af447ee489a4a3d8ca0acf50e648f68",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:58:40.6944629+00:00",
-         "CompletedAtUtc": "2026-10-04T01:58:40.7434198+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T03:44:58.0435171+00:00",
+         "CompletedAtUtc": "2026-10-04T03:44:58.0932808+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1000,8 +1087,8 @@
      "name": "held_defs_are_unmeasured_by_hold",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1015,11 +1102,11 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -1060,8 +1147,8 @@
      "name": "capstanCooldownSeconds_round_trips",
      "toggle": "capstanCooldownSeconds",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: capstanCooldownSeconds: get returned no value",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1073,8 +1160,8 @@
      "name": "capstanEnabled_round_trips",
      "toggle": "capstanEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1086,8 +1173,8 @@
      "name": "capstanFriendlyPull_round_trips",
      "toggle": "capstanFriendlyPull",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1099,8 +1186,8 @@
      "name": "capstanMaxBodySize_round_trips",
      "toggle": "capstanMaxBodySize",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1112,8 +1199,8 @@
      "name": "capstanMaxMass_round_trips",
      "toggle": "capstanMaxMass",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1125,8 +1212,8 @@
      "name": "capstanRange_round_trips",
      "toggle": "capstanRange",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1138,8 +1225,8 @@
      "name": "capstanReelSpeed_round_trips",
      "toggle": "capstanReelSpeed",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1151,8 +1238,8 @@
      "name": "capstanSnapChance_round_trips",
      "toggle": "capstanSnapChance",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1164,8 +1251,8 @@
      "name": "capstanSnapDamage_round_trips",
      "toggle": "capstanSnapDamage",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1177,8 +1264,8 @@
      "name": "deepBlackMereEnabled_round_trips",
      "toggle": "deepBlackMereEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1190,8 +1277,8 @@
      "name": "kethrelDensity_round_trips",
      "toggle": "kethrelDensity",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1203,8 +1290,8 @@
      "name": "kethrelHandlingDifficulty_round_trips",
      "toggle": "kethrelHandlingDifficulty",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1216,8 +1303,8 @@
      "name": "kethrelMoltLoadKg_round_trips",
      "toggle": "kethrelMoltLoadKg",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1229,8 +1316,8 @@
      "name": "kethrelShellEnabled_round_trips",
      "toggle": "kethrelShellEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1242,8 +1329,8 @@
      "name": "kethrelTakeColonyProperty_round_trips",
      "toggle": "kethrelTakeColonyProperty",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1255,8 +1342,8 @@
      "name": "kethrelValueCeiling_round_trips",
      "toggle": "kethrelValueCeiling",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1268,8 +1355,8 @@
      "name": "tarVaultEnabled_round_trips",
      "toggle": "tarVaultEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -1283,11 +1370,11 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
@@ -1317,7 +1404,177 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "tar_vault",
+   "components": [
+    {
+     "name": "stored_goods_sealed_rot_frozen_forbidden",
+     "toggle": "tarVaultEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofVault(Verse.Map)",
+        "result": "sealed=True rotFrozen=True forbidden=True ruinedOut=True cleanOut=True solventLeft=1",
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_7240f868b75645349118dda83b5e10b9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:46:25.3749828+00:00",
+         "CompletedAtUtc": "2026-10-04T03:46:25.4575756+00:00",
+         "DurationMs": 82,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "no_solvent_comes_out_ruined",
+     "toggle": "tarVaultEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "solvent_extracts_clean_and_is_spent",
+     "toggle": "tarVaultEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "kethrel_shell",
+   "components": [
+    {
+     "name": "load_steps_shell_stage",
+     "toggle": "kethrelShellEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofKethrel(Verse.Map)",
+        "result": "s0=0 kg1=15 s1=2 hediff1=3.01 s2=3 dropped=1 sAfter=0 hediffGone=True steelOnMap=60",
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_51a5b89821d0412e9c2d0770410a98f8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:46:31.1497404+00:00",
+         "CompletedAtUtc": "2026-10-04T03:46:31.2045111+00:00",
+         "DurationMs": 54,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "molt_drops_everything",
+     "toggle": "kethrelMoltLoadKg",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "kethrel_ignores_home_area_unless_allowed",
+     "toggle": "kethrelTakeColonyProperty",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: needs a home area, a weapon inside it and a wild kethrel beside it over rare ticks, toggle off then on",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1335,58 +1592,6 @@
     {
      "name": "deep_black_mere_generated",
      "toggle": "deepBlackMereEnabled",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "kethrel_wears_shell_and_steps_stage",
-     "toggle": "kethrelShellEnabled",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "kethrel_molt_drops_everything",
-     "toggle": "kethrelMoltLoadKg",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "kethrel_ignores_home_area_unless_allowed",
-     "toggle": "kethrelTakeColonyProperty",
-     "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve",
-     "evidence": [],
-     "screenshots": [],
-     "sequences": [],
-     "checkpoints": [],
-     "shows": [],
-     "surprises": null
-    },
-    {
-     "name": "tar_vault_seals_contents",
-     "toggle": "tarVaultEnabled",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
      "detail": "UNMEASURED: a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve",
@@ -1507,7 +1712,7 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
@@ -1526,23 +1731,24 @@
      "name": "reels_an_enemy_toward_the_turret",
      "toggle": "capstanEnabled",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: the target was not pulled several cells in: ",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/static_call",
        "result": {
-        "success": false,
-        "message": "Type not found: RimMandrake.TheSump.RM_CapstanTurretProof",
-        "details": null,
+        "success": true,
+        "method": "System.String ProofPull(System.String)",
+        "result": "PULL kind=Villager roped=True start=9.0 end=5.0 steps=5 snaps=1 turretHp=190/220",
+        "ticksGame": 4403,
         "operation": {
-         "OperationId": "op_1e0419e766044e65819af808a31c9c53",
+         "OperationId": "op_57f155f3ba9e4bb2bd8d6f399dc659e2",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:59:09.1692095+00:00",
-         "CompletedAtUtc": "2026-10-04T01:59:09.2187689+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T03:46:41.1498522+00:00",
+         "CompletedAtUtc": "2026-10-04T03:46:41.2735998+00:00",
+         "DurationMs": 123,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1563,9 +1769,34 @@
      "name": "over_mass_target_snaps_the_line",
      "toggle": "capstanMaxMass",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofPull(System.String)",
+        "result": "PULL kind=heavy roped=False start=9.0 end=9.0 steps=0 snaps=1 turretHp=190/220",
+        "ticksGame": 4403,
+        "operation": {
+         "OperationId": "op_57e179541e074b209d42ca1d45cdaab9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:46:41.2993967+00:00",
+         "CompletedAtUtc": "2026-10-04T03:46:41.3534475+00:00",
+         "DurationMs": 54,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -1578,25 +1809,28 @@
     "companion": true,
     "bland_problems": [],
     "bland_notes": [
-     "restore_colonists acted 18 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [],
+    "hits_seen": [
+     {
+      "tick": 4403,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
     "close_problems": []
    }
   }
  ],
  "all_green": false,
- "findings": [
-  "<suite.Component object at 0x0000019A3EC54CB0>",
-  "<suite.Component object at 0x0000019A3EC55230>",
-  "<suite.Component object at 0x0000019A3EC54940>"
- ],
+ "findings": [],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\TheSump.md",
  "bland_world": {
@@ -1628,12 +1862,12 @@
      "verified": true
     },
     "restore_colonists": {
-     "acted": 18,
+     "acted": 9,
      "verified": true,
      "residue": []
     },
     "restore_needs": {
-     "acted": 18,
+     "acted": 9,
      "verified": true
     }
    }

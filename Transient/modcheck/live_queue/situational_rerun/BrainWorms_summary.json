@@ -32,15 +32,15 @@
           "defName": "RSW_BrainWormNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_e718e64c73174c3ca713804ccf42539a",
+         "OperationId": "op_024328673e304cb192f11caa3a74ec56",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:00.2053101+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:00.2233566+00:00",
-         "DurationMs": 18,
+         "StartedAtUtc": "2026-10-04T03:10:12.6925275+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:12.7405725+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -198,15 +198,15 @@
           }
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_04dc2c804835461dbda215736443534f",
+         "OperationId": "op_ac6c919b8c22468d8da191841dff3e75",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:00.260144+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:00.2767577+00:00",
-         "DurationMs": 16,
+         "StartedAtUtc": "2026-10-04T03:10:12.7936209+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:12.8409781+00:00",
+         "DurationMs": 47,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -290,15 +290,15 @@
           }
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_84faf57b78f54582a40f3a00800d7f09",
+         "OperationId": "op_b279615616064ad4a047ec26e0ca2f46",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:00.2943038+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:00.3120695+00:00",
-         "DurationMs": 17,
+         "StartedAtUtc": "2026-10-04T03:10:12.8911052+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:12.940804+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -656,15 +656,15 @@
           }
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_03970e3f4ca542019c396ca3c18450db",
+         "OperationId": "op_ddcd47a5efd84af79dc3019ce7a42bc7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:20.6371418+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:20.6521794+00:00",
-         "DurationMs": 15,
+         "StartedAtUtc": "2026-10-04T03:10:39.2439751+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:39.2923872+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -714,15 +714,15 @@
           }
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_e69c14d11c0e4d4e9be0ea294530c7fe",
+         "OperationId": "op_230496e0e7744a00b0fbc2e038737fda",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:20.6694811+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:20.6860993+00:00",
-         "DurationMs": 16,
+         "StartedAtUtc": "2026-10-04T03:10:39.3432516+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:39.3922846+00:00",
+         "DurationMs": 49,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -764,16 +764,16 @@
      "name": "infected_pawn_carries_hediff_clean_control_does_not",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: jawa/pawn_get has no hediffs list",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/map_info",
        "result": {
         "success": true,
-        "tile": 6220,
+        "tile": 2350,
         "tileValid": true,
-        "mapId": 1,
+        "mapId": 4,
         "sizeX": 250,
         "sizeZ": 250,
         "cellCount": 62500,
@@ -781,10 +781,10 @@
          "biome": "ZBiome_Grasslands",
          "hilliness": "Flat",
          "hillinessInt": 1,
-         "elevation": 261.174927,
-         "rainfall": 554.1614,
+         "elevation": 269.5457,
+         "rainfall": 557.4923,
          "swampiness": 0.0,
-         "temperature": 24.6040459,
+         "temperature": 24.121994,
          "pollution": 0.0,
          "waterCovered": false,
          "isSurfaceTile": true,
@@ -792,26 +792,26 @@
         },
         "mapBiome": "ZBiome_Grasslands",
         "mapBiomeLabel": "the Pyrelands",
-        "outdoorTempNow": 28.5663033,
-        "latitude": 22.629427,
-        "longitude": 1.58393455,
+        "outdoorTempNow": 28.7944279,
+        "latitude": 19.8631535,
+        "longitude": 26.8303432,
         "season": "Spring",
         "mapParent": {
          "defName": "Settlement",
          "label": "NorthstarBland",
          "faction": "PlayerColony",
-         "factionName": "New Arrivals"
+         "factionName": "NorthstarBland"
         },
         "playerSettlementsOnThisTile": 1,
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_f5d1d86826ea4adfb8c6d62663545e95",
+         "OperationId": "op_e9732476340e4aeeaef066fd0c10e622",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.0454848+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.0599966+00:00",
-         "DurationMs": 14,
+         "StartedAtUtc": "2026-10-04T03:10:45.1424972+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.1910728+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -825,75 +825,74 @@
        "call": "clear_area(12)",
        "result": {
         "success": true,
-        "message": "Destroyed 65 thing(s) across 144 cell(s).",
+        "message": "Destroyed 95 thing(s) across 144 cell(s).",
         "cellsExamined": 144,
         "outOfBounds": 0,
-        "destroyed": 65,
+        "destroyed": 95,
         "pawnsSkipped": 0,
         "perCategory": {
-         "Building": 3,
-         "Plant": 60,
-         "Filth": 2
+         "Plant": 76,
+         "Filth": 19
         },
         "samples": [
          {
-          "x": 44,
-          "z": 194,
-          "def": "PassableMarble",
-          "category": "Building"
+          "x": 194,
+          "z": 44,
+          "def": "RG_Plant_AridGrass",
+          "category": "Plant"
          },
          {
-          "x": 44,
-          "z": 195,
+          "x": 194,
+          "z": 49,
+          "def": "Filth_MachineBits",
+          "category": "Filth"
+         },
+         {
+          "x": 194,
+          "z": 50,
+          "def": "Filth_MachineBits",
+          "category": "Filth"
+         },
+         {
+          "x": 194,
+          "z": 51,
           "def": "RM_FE_Plant_Quickgrass",
           "category": "Plant"
          },
          {
-          "x": 44,
-          "z": 196,
+          "x": 194,
+          "z": 52,
           "def": "RM_FE_Plant_Quickgrass",
           "category": "Plant"
          },
          {
-          "x": 44,
-          "z": 197,
+          "x": 194,
+          "z": 53,
           "def": "RM_FE_Plant_Quickgrass",
           "category": "Plant"
          },
          {
-          "x": 44,
-          "z": 198,
+          "x": 194,
+          "z": 54,
           "def": "RM_FE_Plant_Quickgrass",
           "category": "Plant"
          },
          {
-          "x": 44,
-          "z": 199,
-          "def": "RM_FE_Plant_Quickgrass",
-          "category": "Plant"
-         },
-         {
-          "x": 44,
-          "z": 203,
-          "def": "RM_FE_Plant_Quickgrass",
-          "category": "Plant"
-         },
-         {
-          "x": 44,
-          "z": 204,
+          "x": 194,
+          "z": 55,
           "def": "RM_FE_Plant_Quickgrass",
           "category": "Plant"
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_d9c6d247d9954f4088ca927fad432b4e",
+         "OperationId": "op_ccb18c2b032243f1979346ccafa470b6",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.08183+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.1435419+00:00",
-         "DurationMs": 61,
+         "StartedAtUtc": "2026-10-04T03:10:45.2426104+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.3143525+00:00",
+         "DurationMs": 71,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -915,8 +914,8 @@
         "pawns": [
          {
           "ok": true,
-          "id": "Human163835",
-          "name": "Engie",
+          "id": "Human132651",
+          "name": "Four Eyes",
           "kindRequested": "Colonist",
           "kindActual": "Colonist",
           "kindSubstituted": false,
@@ -930,15 +929,15 @@
           "xenotypeApplied": true
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_5668adf8eac64cec8cb54c7fc1b078d5",
+         "OperationId": "op_8baf55bf96e4496d95fb79b040b6470b",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.1445688+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.3681534+00:00",
-         "DurationMs": 223,
+         "StartedAtUtc": "2026-10-04T03:10:45.3153523+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.4293011+00:00",
+         "DurationMs": 113,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -960,8 +959,8 @@
         "pawns": [
          {
           "ok": true,
-          "id": "Human163850",
-          "name": "Ozzy",
+          "id": "Human132654",
+          "name": "Iratha",
           "kindRequested": "Colonist",
           "kindActual": "Colonist",
           "kindSubstituted": false,
@@ -975,15 +974,15 @@
           "xenotypeApplied": true
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_c76bb82e785047f0ad6373150b580aff",
+         "OperationId": "op_0eccbcf1b56e43d792407186db83ef4d",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.3897395+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.4907209+00:00",
-         "DurationMs": 100,
+         "StartedAtUtc": "2026-10-04T03:10:45.4660563+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.6001376+00:00",
+         "DurationMs": 134,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1021,27 +1020,12 @@
          "Jaw",
          "Tongue"
         ],
-        "hediffCount": 6,
+        "hediffCount": 3,
         "hediffs": [
          {
-          "def": "AS_PsychicPassion",
+          "def": "AS_IdeologicalPassion_Hediff",
           "part": null,
           "severity": 1.0
-         },
-         {
-          "def": "AS_CompetitivePassion",
-          "part": null,
-          "severity": 1.0
-         },
-         {
-          "def": "Gunshot",
-          "part": "Torso",
-          "severity": 6.0
-         },
-         {
-          "def": "Bite",
-          "part": "Torso",
-          "severity": 2.0
          },
          {
           "def": "SEX_Womb",
@@ -1054,15 +1038,15 @@
           "severity": 0.5
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_1ea673f0dd0f424bb23ae48c0805e260",
+         "OperationId": "op_db41889ef0b04dfb84527f6dbb4c2d06",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.5085964+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.533226+00:00",
-         "DurationMs": 24,
+         "StartedAtUtc": "2026-10-04T03:10:45.6401679+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.6735529+00:00",
+         "DurationMs": 33,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1079,25 +1063,25 @@
         "count": 1,
         "pawns": [
          {
-          "thingId": "Human163835",
-          "thingIdNumber": 163835,
-          "name": "Amelia 'Engie' Flais",
-          "nameShort": "Engie",
-          "title": "combat engineer",
+          "thingId": "Human132651",
+          "thingIdNumber": 132651,
+          "name": "Sarah 'Four Eyes' Renault",
+          "nameShort": "Four Eyes",
+          "title": "deep space surveyor",
           "kindDef": "Colonist",
           "faction": "PlayerColony",
-          "factionName": "New Arrivals",
+          "factionName": "NorthstarBland",
           "gender": "Female",
-          "ageBiologicalYears": 23,
-          "ageChronologicalYears": 62,
+          "ageBiologicalYears": 36,
+          "ageChronologicalYears": 38,
           "developmentalStage": "Adult",
           "xenotype": "Baseliner",
-          "ideo": "Prejudiced Creed",
-          "childhood": "FoundryApprentice76",
-          "adulthood": "CombatEngineer4",
-          "headType": "Female_AverageNormal",
+          "ideo": "Fruitful Path",
+          "childhood": "AspiringPhysicist47",
+          "adulthood": "DeepSpaceSurveyor1",
+          "headType": "Female_NarrowPointy",
           "bodyType": "Female",
-          "hair": "Wavy",
+          "hair": "Cute",
           "beard": "NoBeard",
           "position": {
            "x": 125,
@@ -1105,44 +1089,44 @@
           },
           "traits": [
            {
-            "def": "DrugDesire",
-            "degree": 1,
-            "label": "Chemical interest",
+            "def": "VTE_DogPerson",
+            "degree": 0,
+            "label": "Dog person",
             "forced": false
            },
            {
-            "def": "Tough",
+            "def": "Ascetic",
             "degree": 0,
-            "label": "Tough",
+            "label": "Ascetic",
             "forced": false
            },
            {
-            "def": "VTE_Squeamish",
+            "def": "VTE_AnimalLover",
             "degree": 0,
-            "label": "Squeamish",
+            "label": "Animal lover",
             "forced": false
            },
            {
-            "def": "Gay",
+            "def": "Bisexual",
             "degree": 0,
-            "label": "Gay",
+            "label": "Bisexual",
             "forced": false
            }
           ],
           "skills": [
            {
             "skill": "Shooting",
-            "levelRaw": 8,
-            "levelEffective": 8,
-            "passion": "Minor",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "35",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Melee",
-            "levelRaw": 4,
-            "levelEffective": 4,
-            "passion": "None",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
@@ -1150,7 +1134,7 @@
             "skill": "Construction",
             "levelRaw": 9,
             "levelEffective": 9,
-            "passion": "4",
+            "passion": "None",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
@@ -1164,6 +1148,30 @@
            },
            {
             "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
             "levelRaw": 2,
             "levelEffective": 2,
             "passion": "None",
@@ -1171,7 +1179,7 @@
             "disabled": false
            },
            {
-            "skill": "Plants",
+            "skill": "Artistic",
             "levelRaw": 1,
             "levelEffective": 1,
             "passion": "None",
@@ -1179,61 +1187,31 @@
             "disabled": false
            },
            {
-            "skill": "Animals",
-            "levelRaw": 2,
-            "levelEffective": 2,
-            "passion": "None",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Crafting",
-            "levelRaw": 11,
-            "levelEffective": 11,
-            "passion": "None",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Artistic",
+            "skill": "Medicine",
             "levelRaw": 0,
             "levelEffective": 0,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Medicine",
-            "levelRaw": 2,
-            "levelEffective": 2,
-            "passion": "6",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
+            "disabled": true
            },
            {
             "skill": "Social",
-            "levelRaw": 0,
-            "levelEffective": 0,
-            "passion": "None",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Intellectual",
-            "levelRaw": 3,
-            "levelEffective": 3,
-            "passion": "None",
+            "levelRaw": 12,
+            "levelEffective": 12,
+            "passion": "13",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            }
           ],
           "apparel": [
-           {
-            "def": "Apparel_BasicShirt",
-            "defName": "Apparel_BasicShirt",
-            "stuff": "Synthread",
-            "hp": 130
-           },
            {
             "def": "Apparel_Pants",
             "defName": "Apparel_Pants",
@@ -1241,33 +1219,18 @@
             "hp": 130
            },
            {
-            "def": "VAE_Handwear_Gloves",
-            "defName": "VAE_Handwear_Gloves",
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
             "stuff": "Synthread",
-            "hp": 130
+            "hp": 235
            }
           ],
           "equipment": [],
           "hediffs": [
            {
-            "def": "AS_PsychicPassion",
+            "def": "AS_IdeologicalPassion_Hediff",
             "part": null,
             "severity": 1.0
-           },
-           {
-            "def": "AS_CompetitivePassion",
-            "part": null,
-            "severity": 1.0
-           },
-           {
-            "def": "Gunshot",
-            "part": "Torso",
-            "severity": 6.0
-           },
-           {
-            "def": "Bite",
-            "part": "Torso",
-            "severity": 2.0
            },
            {
             "def": "SEX_Womb",
@@ -1293,18 +1256,18 @@
            },
            {
             "need": "Rest",
-            "level": 0.9539593,
-            "pct": 0.9539593
+            "level": 0.9021675,
+            "pct": 0.9021675
            },
            {
             "need": "Hygiene",
-            "level": 0.6193391,
-            "pct": 0.6193391
+            "level": 0.6175406,
+            "pct": 0.6175406
            },
            {
             "need": "Joy",
-            "level": 0.5413197,
-            "pct": 0.5413197
+            "level": 0.5226649,
+            "pct": 0.5226649
            },
            {
             "need": "Beauty",
@@ -1343,13 +1306,13 @@
            },
            {
             "need": "Bladder",
-            "level": 1.0,
-            "pct": 1.0
+            "level": 0.1,
+            "pct": 0.1
            },
            {
             "need": "DBHThirst",
-            "level": 0.948195457,
-            "pct": 0.948195457
+            "level": 0.9777557,
+            "pct": 0.9777557
            },
            {
             "need": "RomanceOnTheRim_Need_Romance",
@@ -1383,21 +1346,1397 @@
            },
            {
             "need": "SEX_Intimacy",
-            "level": 0.545193851,
-            "pct": 0.545193851
+            "level": 0.307857245,
+            "pct": 0.307857245
            }
           ]
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_addfaf64c6da4f448b674684b9378c5a",
+         "OperationId": "op_7bf2745f1eb9440892dcfef189008f0f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.5522788+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.5745525+00:00",
-         "DurationMs": 22,
+         "StartedAtUtc": "2026-10-04T03:10:45.70688+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.7562135+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "2 pawn(s), 14 outside the rect.",
+        "pawns": [
+         {
+          "id": "Human132651",
+          "name": "Four Eyes",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "RSW_BrainWormInfection",
+             "label": "brain worm (influenced)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.9,
+            "Moving": 0.9,
+            "Manipulation": 0.9,
+            "Talking": 0.9,
+            "Eating": 0.9,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human132654",
+          "name": "Iratha",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 2,
+        "truncated": 0,
+        "totalOnMap": 16,
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_0a0a27603e644b5d8223aa254c6ffefd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:45.8087834+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.857318+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_mental",
+       "result": {
+        "success": true,
+        "action": "list",
+        "started": null,
+        "notes": [],
+        "currentState": null,
+        "totalDefs": 74,
+        "states": [
+         {
+          "def": "Berserk",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkPermanent",
+          "label": "berserk",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FireStartingSpree",
+          "label": "fire starting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_DrugExtreme",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Jailbreaker",
+          "label": "inducing prisoner to escape",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Slaughterer",
+          "label": "slaughterer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MurderousRage",
+          "label": "murderous rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "GiveUpExit",
+          "label": "giving up and leaving",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Binging_DrugMajor",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Psychotic",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_Psychotic_Short",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Tantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BedroomTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "SadisticRage",
+          "label": "sadistic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "CorpseObsession",
+          "label": "corpse obsession",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_Food",
+          "label": "binging on food",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Sad",
+          "label": "sad wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_OwnRoom",
+          "label": "sitting alone",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedInsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "WanderConfused",
+          "label": "confused wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "PanicFlee",
+          "label": "panic fleeing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Manhunter",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterPermanent",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "SocialFighting",
+          "label": "social fighting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Roaming",
+          "label": "roaming",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkMechanoid",
+          "label": "aggression judgement scramble",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CocoonDisturbed",
+          "label": "cocoon disturbed",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "IdeoChange",
+          "label": "crisis of belief",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Rebellion",
+          "label": "rebelling",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkTrance",
+          "label": "berserk trance",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Crying",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Giggling",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "PanicFleeFire",
+          "label": "panic-fleeing fire",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkWarcall",
+          "label": "warcall berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "DarkVisions",
+          "label": "dark visions",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsaneRamblings",
+          "label": "insane ramblings",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityKiller",
+          "label": "entity slayer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityLiberator",
+          "label": "entity liberator",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TerrifyingHallucinations",
+          "label": "terrifying hallucinations",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "HumanityBreak",
+          "label": "humanity break",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkShort",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "ManhunterBloodRain",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CubeSculpting",
+          "label": "cube sculpting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Terror",
+          "label": "terror",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FFF_FleeInPlace",
+          "label": "fleeing in fear",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BS_LostManhunter",
+          "label": "reanimation psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BS_LostManhunterPermanent",
+          "label": "Permanent reanimation psychosis",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VEF_XenophobicRage",
+          "label": "xenophobic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EBSG_AggressiveSummon",
+          "label": "aggressive summon",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterAttackColony",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_GraffitiPaintingSpreeState",
+          "label": "graffiti painting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Turn_MentalState_Rampage",
+          "label": "rampaging",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MCR_BellyLaughing",
+          "label": "laughing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VQEA_MutantBerserk",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VRE_SelectiveBerserk",
+          "label": "mindless rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VTE_TechnophobeTantrum",
+          "label": "technophobe tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VTE_PanicFreezing",
+          "label": "panicking",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VTE_Kleptomaniac",
+          "label": "kleptomaniac",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         }
+        ],
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_09c9995621a546e3a6db0c7db9ae3f38",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-mental",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:45.907353+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:45.9568848+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_get",
+       "result": {
+        "success": true,
+        "count": 1,
+        "pawns": [
+         {
+          "thingId": "Human132654",
+          "thingIdNumber": 132654,
+          "name": "Iratha Pleione",
+          "nameShort": "Iratha",
+          "title": "Military surplus supplier",
+          "kindDef": "Colonist",
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "gender": "Female",
+          "ageBiologicalYears": 43,
+          "ageChronologicalYears": 121,
+          "developmentalStage": "Adult",
+          "xenotype": "Baseliner",
+          "ideo": "Fruitful Path",
+          "childhood": "VatgrownSoldier8",
+          "adulthood": "VBE_MilitarySurplusSupplier",
+          "headType": "Female_AverageWide",
+          "bodyType": "Female",
+          "hair": "Flowy",
+          "beard": "NoBeard",
+          "position": {
+           "x": 129,
+           "z": 125
+          },
+          "traits": [
+           {
+            "def": "Industriousness",
+            "degree": 1,
+            "label": "Hard worker",
+            "forced": false
+           },
+           {
+            "def": "Nerves",
+            "degree": 1,
+            "label": "Steadfast",
+            "forced": false
+           },
+           {
+            "def": "Bisexual",
+            "degree": 0,
+            "label": "Bisexual",
+            "forced": false
+           }
+          ],
+          "skills": [
+           {
+            "skill": "Shooting",
+            "levelRaw": 12,
+            "levelEffective": 12,
+            "passion": "Minor",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Melee",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Construction",
+            "levelRaw": 9,
+            "levelEffective": 9,
+            "passion": "3",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Mining",
+            "levelRaw": 4,
+            "levelEffective": 4,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Cooking",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
+            "levelRaw": 8,
+            "levelEffective": 8,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Artistic",
+            "levelRaw": 5,
+            "levelEffective": 5,
+            "passion": "4",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Medicine",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Social",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Intellectual",
+            "levelRaw": 1,
+            "levelEffective": 1,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           }
+          ],
+          "apparel": [
+           {
+            "def": "Apparel_BasicShirt",
+            "defName": "Apparel_BasicShirt",
+            "stuff": "Synthread",
+            "hp": 130
+           },
+           {
+            "def": "Apparel_Pants",
+            "defName": "Apparel_Pants",
+            "stuff": "Synthread",
+            "hp": 130
+           }
+          ],
+          "equipment": [],
+          "hediffs": [
+           {
+            "def": "SEX_Womb",
+            "part": "SEX_Reproduction",
+            "severity": 0.5
+           }
+          ],
+          "needs": [
+           {
+            "need": "Mood",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Food",
+            "level": 0.8,
+            "pct": 0.8
+           },
+           {
+            "need": "Rest",
+            "level": 0.9753356,
+            "pct": 0.9753356
+           },
+           {
+            "need": "Hygiene",
+            "level": 0.692988455,
+            "pct": 0.692988455
+           },
+           {
+            "need": "Joy",
+            "level": 0.5557335,
+            "pct": 0.5557335
+           },
+           {
+            "need": "Beauty",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Comfort",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Outdoors",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "DrugDesire",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "RoomSize",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "AM_TeaNeed",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "AM_CoffeeNeed",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "Bladder",
+            "level": 0.1,
+            "pct": 0.1
+           },
+           {
+            "need": "DBHThirst",
+            "level": 0.962000132,
+            "pct": 0.962000132
+           },
+           {
+            "need": "RomanceOnTheRim_Need_Romance",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "PrisonLabor_Motivation",
+            "level": 1.0,
+            "pct": 1.0
+           },
+           {
+            "need": "PrisonLabor_Treatment",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Desserts",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Anonymity",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "VME_Corruption",
+            "level": 0.5,
+            "pct": 0.5
+           },
+           {
+            "need": "SEX_Intimacy",
+            "level": 0.37416783,
+            "pct": 0.37416783
+           }
+          ]
+         }
+        ],
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_b0282757eeaf4d329322df998decaa0a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:46.0069248+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:46.0564503+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "2 pawn(s), 14 outside the rect.",
+        "pawns": [
+         {
+          "id": "Human132651",
+          "name": "Four Eyes",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "RSW_BrainWormInfection",
+             "label": "brain worm (influenced)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.9,
+            "Moving": 0.9,
+            "Manipulation": 0.9,
+            "Talking": 0.9,
+            "Eating": 0.9,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human132654",
+          "name": "Iratha",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 2,
+        "truncated": 0,
+        "totalOnMap": 16,
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_27daf84dfaea481f9f530e780d00b20a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:46.1069973+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:46.1560329+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_mental",
+       "result": {
+        "success": true,
+        "action": "list",
+        "started": null,
+        "notes": [],
+        "currentState": null,
+        "totalDefs": 74,
+        "states": [
+         {
+          "def": "Berserk",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkPermanent",
+          "label": "berserk",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FireStartingSpree",
+          "label": "fire starting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_DrugExtreme",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Jailbreaker",
+          "label": "inducing prisoner to escape",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Slaughterer",
+          "label": "slaughterer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MurderousRage",
+          "label": "murderous rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "GiveUpExit",
+          "label": "giving up and leaving",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Binging_DrugMajor",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Psychotic",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_Psychotic_Short",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Tantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BedroomTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "SadisticRage",
+          "label": "sadistic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "CorpseObsession",
+          "label": "corpse obsession",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_Food",
+          "label": "binging on food",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Sad",
+          "label": "sad wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_OwnRoom",
+          "label": "sitting alone",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedInsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "WanderConfused",
+          "label": "confused wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "PanicFlee",
+          "label": "panic fleeing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Manhunter",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterPermanent",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "SocialFighting",
+          "label": "social fighting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Roaming",
+          "label": "roaming",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkMechanoid",
+          "label": "aggression judgement scramble",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CocoonDisturbed",
+          "label": "cocoon disturbed",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "IdeoChange",
+          "label": "crisis of belief",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Rebellion",
+          "label": "rebelling",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkTrance",
+          "label": "berserk trance",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Crying",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Giggling",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "PanicFleeFire",
+          "label": "panic-fleeing fire",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkWarcall",
+          "label": "warcall berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "DarkVisions",
+          "label": "dark visions",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsaneRamblings",
+          "label": "insane ramblings",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityKiller",
+          "label": "entity slayer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityLiberator",
+          "label": "entity liberator",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TerrifyingHallucinations",
+          "label": "terrifying hallucinations",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "HumanityBreak",
+          "label": "humanity break",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkShort",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "ManhunterBloodRain",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CubeSculpting",
+          "label": "cube sculpting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Terror",
+          "label": "terror",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FFF_FleeInPlace",
+          "label": "fleeing in fear",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BS_LostManhunter",
+          "label": "reanimation psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BS_LostManhunterPermanent",
+          "label": "Permanent reanimation psychosis",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VEF_XenophobicRage",
+          "label": "xenophobic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EBSG_AggressiveSummon",
+          "label": "aggressive summon",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterAttackColony",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_GraffitiPaintingSpreeState",
+          "label": "graffiti painting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Turn_MentalState_Rampage",
+          "label": "rampaging",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MCR_BellyLaughing",
+          "label": "laughing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VQEA_MutantBerserk",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VRE_SelectiveBerserk",
+          "label": "mindless rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VTE_TechnophobeTantrum",
+          "label": "technophobe tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VTE_PanicFreezing",
+          "label": "panicking",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VTE_Kleptomaniac",
+          "label": "kleptomaniac",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         }
+        ],
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_d5147397fca24bcaa6bc1f3447c907a3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-mental",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:46.2089735+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:46.2570974+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1419,7 +2758,7 @@
      "toggle": "progressionSpeedMultiplier",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: pawn_get hediff rows carry no severity field",
+     "detail": "surprise: raid_arrived: raid signal(s): Brain worm: Four Eyes; open, awaiting arrivals [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__infection_state__raid_arrived__t759685__001.json]",
      "evidence": [
       {
        "call": "bridge_call jawa/pawn_get",
@@ -1428,25 +2767,25 @@
         "count": 1,
         "pawns": [
          {
-          "thingId": "Human163835",
-          "thingIdNumber": 163835,
-          "name": "Amelia 'Engie' Flais",
-          "nameShort": "Engie",
-          "title": "combat engineer",
+          "thingId": "Human132651",
+          "thingIdNumber": 132651,
+          "name": "Sarah 'Four Eyes' Renault",
+          "nameShort": "Four Eyes",
+          "title": "deep space surveyor",
           "kindDef": "Colonist",
           "faction": "PlayerColony",
-          "factionName": "New Arrivals",
+          "factionName": "NorthstarBland",
           "gender": "Female",
-          "ageBiologicalYears": 23,
-          "ageChronologicalYears": 62,
+          "ageBiologicalYears": 36,
+          "ageChronologicalYears": 38,
           "developmentalStage": "Adult",
           "xenotype": "Baseliner",
-          "ideo": "Prejudiced Creed",
-          "childhood": "FoundryApprentice76",
-          "adulthood": "CombatEngineer4",
-          "headType": "Female_AverageNormal",
+          "ideo": "Fruitful Path",
+          "childhood": "AspiringPhysicist47",
+          "adulthood": "DeepSpaceSurveyor1",
+          "headType": "Female_NarrowPointy",
           "bodyType": "Female",
-          "hair": "Wavy",
+          "hair": "Cute",
           "beard": "NoBeard",
           "position": {
            "x": 125,
@@ -1454,44 +2793,44 @@
           },
           "traits": [
            {
-            "def": "DrugDesire",
-            "degree": 1,
-            "label": "Chemical interest",
+            "def": "VTE_DogPerson",
+            "degree": 0,
+            "label": "Dog person",
             "forced": false
            },
            {
-            "def": "Tough",
+            "def": "Ascetic",
             "degree": 0,
-            "label": "Tough",
+            "label": "Ascetic",
             "forced": false
            },
            {
-            "def": "VTE_Squeamish",
+            "def": "VTE_AnimalLover",
             "degree": 0,
-            "label": "Squeamish",
+            "label": "Animal lover",
             "forced": false
            },
            {
-            "def": "Gay",
+            "def": "Bisexual",
             "degree": 0,
-            "label": "Gay",
+            "label": "Bisexual",
             "forced": false
            }
           ],
           "skills": [
            {
             "skill": "Shooting",
-            "levelRaw": 8,
-            "levelEffective": 8,
-            "passion": "Minor",
+            "levelRaw": 7,
+            "levelEffective": 7,
+            "passion": "35",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Melee",
-            "levelRaw": 4,
-            "levelEffective": 4,
-            "passion": "None",
+            "levelRaw": 2,
+            "levelEffective": 2,
+            "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
@@ -1499,7 +2838,7 @@
             "skill": "Construction",
             "levelRaw": 9,
             "levelEffective": 9,
-            "passion": "4",
+            "passion": "None",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
@@ -1513,6 +2852,30 @@
            },
            {
             "skill": "Cooking",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": true
+           },
+           {
+            "skill": "Plants",
+            "levelRaw": 0,
+            "levelEffective": 0,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Animals",
+            "levelRaw": 3,
+            "levelEffective": 3,
+            "passion": "None",
+            "xpSinceLastLevel": 0.0,
+            "disabled": false
+           },
+           {
+            "skill": "Crafting",
             "levelRaw": 2,
             "levelEffective": 2,
             "passion": "None",
@@ -1520,7 +2883,7 @@
             "disabled": false
            },
            {
-            "skill": "Plants",
+            "skill": "Artistic",
             "levelRaw": 1,
             "levelEffective": 1,
             "passion": "None",
@@ -1528,61 +2891,31 @@
             "disabled": false
            },
            {
-            "skill": "Animals",
-            "levelRaw": 2,
-            "levelEffective": 2,
-            "passion": "None",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Crafting",
-            "levelRaw": 11,
-            "levelEffective": 11,
-            "passion": "None",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Artistic",
+            "skill": "Medicine",
             "levelRaw": 0,
             "levelEffective": 0,
             "passion": "None",
             "xpSinceLastLevel": 0.0,
-            "disabled": false
-           },
-           {
-            "skill": "Medicine",
-            "levelRaw": 2,
-            "levelEffective": 2,
-            "passion": "6",
-            "xpSinceLastLevel": 0.0,
-            "disabled": false
+            "disabled": true
            },
            {
             "skill": "Social",
-            "levelRaw": 0,
-            "levelEffective": 0,
-            "passion": "None",
+            "levelRaw": 6,
+            "levelEffective": 6,
+            "passion": "Minor",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            },
            {
             "skill": "Intellectual",
-            "levelRaw": 3,
-            "levelEffective": 3,
-            "passion": "None",
+            "levelRaw": 12,
+            "levelEffective": 12,
+            "passion": "13",
             "xpSinceLastLevel": 0.0,
             "disabled": false
            }
           ],
           "apparel": [
-           {
-            "def": "Apparel_BasicShirt",
-            "defName": "Apparel_BasicShirt",
-            "stuff": "Synthread",
-            "hp": 130
-           },
            {
             "def": "Apparel_Pants",
             "defName": "Apparel_Pants",
@@ -1590,33 +2923,18 @@
             "hp": 130
            },
            {
-            "def": "VAE_Handwear_Gloves",
-            "defName": "VAE_Handwear_Gloves",
+            "def": "Apparel_Parka",
+            "defName": "Apparel_Parka",
             "stuff": "Synthread",
-            "hp": 130
+            "hp": 235
            }
           ],
           "equipment": [],
           "hediffs": [
            {
-            "def": "AS_PsychicPassion",
+            "def": "AS_IdeologicalPassion_Hediff",
             "part": null,
             "severity": 1.0
-           },
-           {
-            "def": "AS_CompetitivePassion",
-            "part": null,
-            "severity": 1.0
-           },
-           {
-            "def": "Gunshot",
-            "part": "Torso",
-            "severity": 6.0
-           },
-           {
-            "def": "Bite",
-            "part": "Torso",
-            "severity": 2.0
            },
            {
             "def": "SEX_Womb",
@@ -1642,18 +2960,18 @@
            },
            {
             "need": "Rest",
-            "level": 0.9539593,
-            "pct": 0.9539593
+            "level": 0.9021675,
+            "pct": 0.9021675
            },
            {
             "need": "Hygiene",
-            "level": 0.6193391,
-            "pct": 0.6193391
+            "level": 0.6175406,
+            "pct": 0.6175406
            },
            {
             "need": "Joy",
-            "level": 0.5413197,
-            "pct": 0.5413197
+            "level": 0.5226649,
+            "pct": 0.5226649
            },
            {
             "need": "Beauty",
@@ -1692,13 +3010,13 @@
            },
            {
             "need": "Bladder",
-            "level": 1.0,
-            "pct": 1.0
+            "level": 0.1,
+            "pct": 0.1
            },
            {
             "need": "DBHThirst",
-            "level": 0.948195457,
-            "pct": 0.948195457
+            "level": 0.9777557,
+            "pct": 0.9777557
            },
            {
             "need": "RomanceOnTheRim_Need_Romance",
@@ -1732,21 +3050,560 @@
            },
            {
             "need": "SEX_Intimacy",
-            "level": 0.545193851,
-            "pct": 0.545193851
+            "level": 0.307857245,
+            "pct": 0.307857245
            }
           ]
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759128,
         "operation": {
-         "OperationId": "op_073da017a094494589d64442450b5b44",
+         "OperationId": "op_7b0c71ea0ed54f47b4ac6b23bca17fd3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-get",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:23.5935186+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:23.6115546+00:00",
-         "DurationMs": 18,
+         "StartedAtUtc": "2026-10-04T03:10:46.3076765+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:46.3562092+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_pawns",
+       "result": {
+        "success": true,
+        "message": "2 pawn(s), 14 outside the rect.",
+        "pawns": [
+         {
+          "id": "Human132651",
+          "name": "Four Eyes",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 125,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "AS_IdeologicalPassion_Hediff",
+             "label": "ideological passion",
+             "severity": 1.0,
+             "part": null,
+             "partLabel": null
+            },
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            },
+            {
+             "def": "RSW_BrainWormInfection",
+             "label": "brain worm (influenced)",
+             "severity": 0.5,
+             "part": null,
+             "partLabel": null
+            }
+           ],
+           "capacities": {
+            "Consciousness": 0.9,
+            "Moving": 0.9,
+            "Manipulation": 0.9,
+            "Talking": 0.9,
+            "Eating": 0.9,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         },
+         {
+          "id": "Human132654",
+          "name": "Iratha",
+          "kind": "Colonist",
+          "kindDef": "Colonist",
+          "def": "Human",
+          "hasGenes": true,
+          "xenotype": "Baseliner",
+          "xenotypeLabel": "Baseliner",
+          "uniqueXenotype": false,
+          "faction": "PlayerColony",
+          "factionName": "NorthstarBland",
+          "isPlayer": true,
+          "hostile": false,
+          "x": 129,
+          "z": 125,
+          "spawned": true,
+          "dead": false,
+          "downed": false,
+          "stunned": false,
+          "stunTicksLeft": 0,
+          "fleshType": "Normal",
+          "isMechanoid": false,
+          "isFlesh": true,
+          "intelligence": "Humanlike",
+          "bodySize": 1.0,
+          "health": {
+           "hediffs": [
+            {
+             "def": "SEX_Womb",
+             "label": "uterus",
+             "severity": 0.5,
+             "part": "SEX_Reproduction",
+             "partLabel": "reproductives"
+            }
+           ],
+           "capacities": {
+            "Consciousness": 1.0,
+            "Moving": 1.0,
+            "Manipulation": 1.0,
+            "Talking": 1.0,
+            "Eating": 1.0,
+            "Sight": 1.0,
+            "Hearing": 1.0,
+            "Breathing": 1.0,
+            "BloodFiltration": 1.0,
+            "BloodPumping": 1.0,
+            "Metabolism": 1.0
+           },
+           "capacityErrors": [],
+           "painTotal": 0.0,
+           "bleedRate": 0.0
+          }
+         }
+        ],
+        "returned": 2,
+        "truncated": 0,
+        "totalOnMap": 16,
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_969bd890e8a940a3890a17bd86de975e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:46.4069392+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:46.456416+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/pawn_mental",
+       "result": {
+        "success": true,
+        "action": "list",
+        "started": null,
+        "notes": [],
+        "currentState": null,
+        "totalDefs": 74,
+        "states": [
+         {
+          "def": "Berserk",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkPermanent",
+          "label": "berserk",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FireStartingSpree",
+          "label": "fire starting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_DrugExtreme",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Jailbreaker",
+          "label": "inducing prisoner to escape",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Slaughterer",
+          "label": "slaughterer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MurderousRage",
+          "label": "murderous rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "GiveUpExit",
+          "label": "giving up and leaving",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Binging_DrugMajor",
+          "label": "binging on drug",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Psychotic",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_Psychotic_Short",
+          "label": "wandering in psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Tantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BedroomTantrum",
+          "label": "tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "SadisticRage",
+          "label": "sadistic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "CorpseObsession",
+          "label": "corpse obsession",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Binging_Food",
+          "label": "binging on food",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Wander_Sad",
+          "label": "sad wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Wander_OwnRoom",
+          "label": "sitting alone",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TargetedInsultingSpree",
+          "label": "insulting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "WanderConfused",
+          "label": "confused wandering",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "PanicFlee",
+          "label": "panic fleeing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Manhunter",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterPermanent",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "SocialFighting",
+          "label": "social fighting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Roaming",
+          "label": "roaming",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkMechanoid",
+          "label": "aggression judgement scramble",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CocoonDisturbed",
+          "label": "cocoon disturbed",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "IdeoChange",
+          "label": "crisis of belief",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Rebellion",
+          "label": "rebelling",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BerserkTrance",
+          "label": "berserk trance",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Crying",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Giggling",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "PanicFleeFire",
+          "label": "panic-fleeing fire",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkWarcall",
+          "label": "warcall berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "DarkVisions",
+          "label": "dark visions",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "InsaneRamblings",
+          "label": "insane ramblings",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityKiller",
+          "label": "entity slayer",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EntityLiberator",
+          "label": "entity liberator",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "TerrifyingHallucinations",
+          "label": "terrifying hallucinations",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "HumanityBreak",
+          "label": "humanity break",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BerserkShort",
+          "label": "berserk",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "ManhunterBloodRain",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "CubeSculpting",
+          "label": "cube sculpting",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "Terror",
+          "label": "terror",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "FFF_FleeInPlace",
+          "label": "fleeing in fear",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "BS_LostManhunter",
+          "label": "reanimation psychosis",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "BS_LostManhunterPermanent",
+          "label": "Permanent reanimation psychosis",
+          "neverRecoversAlone": true,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VEF_XenophobicRage",
+          "label": "xenophobic rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "EBSG_AggressiveSummon",
+          "label": "aggressive summon",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "ManhunterAttackColony",
+          "label": "manhunter",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "RM_GraffitiPaintingSpreeState",
+          "label": "graffiti painting spree",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "Turn_MentalState_Rampage",
+          "label": "rampaging",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "MCR_BellyLaughing",
+          "label": "laughing",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VQEA_MutantBerserk",
+          "label": null,
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VRE_SelectiveBerserk",
+          "label": "mindless rage",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         },
+         {
+          "def": "VTE_TechnophobeTantrum",
+          "label": "technophobe tantrum",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VTE_PanicFreezing",
+          "label": "panicking",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": true
+         },
+         {
+          "def": "VTE_Kleptomaniac",
+          "label": "kleptomaniac",
+          "neverRecoversAlone": false,
+          "blockNormalThoughts": false
+         }
+        ],
+        "ticksGame": 759128,
+        "operation": {
+         "OperationId": "op_95e6c6cb041e4b9e8214114cee8679c2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-mental",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T03:10:46.5074543+00:00",
+         "CompletedAtUtc": "2026-10-04T03:10:46.5559871+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1761,7 +3618,23 @@
      "sequences": [],
      "checkpoints": [],
      "shows": [],
-     "surprises": null
+     "surprises": {
+      "kind": "surprise",
+      "message": "raid_arrived: raid signal(s): Brain worm: Four Eyes; open, awaiting arrivals",
+      "hits": [
+       {
+        "detector": "raid_arrived",
+        "severity": "SURPRISE",
+        "summary": "raid signal(s): Brain worm: Four Eyes; open, awaiting arrivals"
+       }
+      ],
+      "evidence": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__infection_state__raid_arrived__t759685__001.json"
+      ],
+      "screenshots": [
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__infection_state__raid_arrived__t759685__001.png"
+      ]
+     }
     }
    ],
    "situational": {
@@ -1775,20 +3648,20 @@
     "chunk": 600,
     "sweeps": 1,
     "fed": 0,
-    "ticks_spent": 0,
+    "ticks_spent": 557,
     "surprises": [
      {
-      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__infection_state__raid_arrived__t26951__001.json",
-      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__infection_state__raid_arrived__t26951__001.png",
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__infection_state__raid_arrived__t759685__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__infection_state__raid_arrived__t759685__001.png",
       "notes": []
      }
     ],
     "hits_seen": [
      {
-      "tick": 26951,
+      "tick": 759685,
       "detector": "raid_arrived",
       "severity": "SURPRISE",
-      "summary": "raid signal(s): Brain worm: Engie; open, awaiting arrivals"
+      "summary": "raid signal(s): Brain worm: Four Eyes; open, awaiting arrivals"
      }
     ],
     "close_problems": []
@@ -1802,15 +3675,15 @@
      "toggle": null,
      "beyond_toggle": true,
      "verdict": "UNMEASURED",
-     "detail": "surprise: raid_arrived: raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.json]",
+     "detail": "surprise: raid_arrived: raid signal(s): Brain worm: Captain; Puppeted: Captain; open, awaiting arrivals [evidence: \\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__puppet_state__raid_arrived__t759935__001.json]",
      "evidence": [
       {
        "call": "bridge_call jawa/map_info",
        "result": {
         "success": true,
-        "tile": 6220,
+        "tile": 2350,
         "tileValid": true,
-        "mapId": 1,
+        "mapId": 4,
         "sizeX": 250,
         "sizeZ": 250,
         "cellCount": 62500,
@@ -1818,10 +3691,10 @@
          "biome": "ZBiome_Grasslands",
          "hilliness": "Flat",
          "hillinessInt": 1,
-         "elevation": 261.174927,
-         "rainfall": 554.1614,
+         "elevation": 269.5457,
+         "rainfall": 557.4923,
          "swampiness": 0.0,
-         "temperature": 24.6040459,
+         "temperature": 24.121994,
          "pollution": 0.0,
          "waterCovered": false,
          "isSurfaceTile": true,
@@ -1829,26 +3702,26 @@
         },
         "mapBiome": "ZBiome_Grasslands",
         "mapBiomeLabel": "the Pyrelands",
-        "outdoorTempNow": 28.5663033,
-        "latitude": 22.629427,
-        "longitude": 1.58393455,
+        "outdoorTempNow": 28.4598923,
+        "latitude": 19.8631535,
+        "longitude": 26.8303432,
         "season": "Spring",
         "mapParent": {
          "defName": "Settlement",
          "label": "NorthstarBland",
          "faction": "PlayerColony",
-         "factionName": "New Arrivals"
+         "factionName": "NorthstarBland"
         },
         "playerSettlementsOnThisTile": 1,
-        "ticksGame": 26951,
+        "ticksGame": 759685,
         "operation": {
-         "OperationId": "op_c0885f5ddd3b483e809c6f8d21b23c15",
+         "OperationId": "op_d6a2bbd45eaa473bbf6e818bc8516f5e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-info",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:27.1124684+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:27.1277507+00:00",
-         "DurationMs": 15,
+         "StartedAtUtc": "2026-10-04T03:11:05.205638+00:00",
+         "CompletedAtUtc": "2026-10-04T03:11:05.25395+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1869,15 +3742,15 @@
         "pawnsSkipped": 0,
         "perCategory": {},
         "samples": [],
-        "ticksGame": 26951,
+        "ticksGame": 759685,
         "operation": {
-         "OperationId": "op_c5ff8029c86c4e0185f53aa19350ddfa",
+         "OperationId": "op_743433d79d674d1e87e153edb4fa6d5a",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:27.1453216+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:27.1614605+00:00",
-         "DurationMs": 16,
+         "StartedAtUtc": "2026-10-04T03:11:05.3050424+00:00",
+         "CompletedAtUtc": "2026-10-04T03:11:05.3556719+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1899,8 +3772,8 @@
         "pawns": [
          {
           "ok": true,
-          "id": "Human163855",
-          "name": "Bullock",
+          "id": "Human132686",
+          "name": "Captain",
           "kindRequested": "Colonist",
           "kindActual": "Colonist",
           "kindSubstituted": false,
@@ -1914,15 +3787,15 @@
           "xenotypeApplied": true
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759685,
         "operation": {
-         "OperationId": "op_510c3b129c7a4702a776878481cd2260",
+         "OperationId": "op_a6e71b1c206d43a9ad9ceb13ba4daef1",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-pawn",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:27.1614605+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:27.2775665+00:00",
-         "DurationMs": 116,
+         "StartedAtUtc": "2026-10-04T03:11:05.3566727+00:00",
+         "CompletedAtUtc": "2026-10-04T03:11:05.5465396+00:00",
+         "DurationMs": 189,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1960,10 +3833,15 @@
          "Jaw",
          "Tongue"
         ],
-        "hediffCount": 2,
+        "hediffCount": 3,
         "hediffs": [
          {
-          "def": "SEX_Womb",
+          "def": "AS_TraumaticPassion",
+          "part": null,
+          "severity": 0.1
+         },
+         {
+          "def": "SEX_Penis",
           "part": "SEX_Reproduction",
           "severity": 0.5
          },
@@ -1973,15 +3851,15 @@
           "severity": 0.9
          }
         ],
-        "ticksGame": 26951,
+        "ticksGame": 759685,
         "operation": {
-         "OperationId": "op_a8d102f3d1c14a649473d4d71158306c",
+         "OperationId": "op_888a88b6ed85413e9a4010739f87729c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-health",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:27.3007193+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:27.3225012+00:00",
-         "DurationMs": 21,
+         "StartedAtUtc": "2026-10-04T03:11:05.5786202+00:00",
+         "CompletedAtUtc": "2026-10-04T03:11:05.6295071+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1998,19 +3876,19 @@
      "shows": [],
      "surprises": {
       "kind": "surprise",
-      "message": "raid_arrived: raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals",
+      "message": "raid_arrived: raid signal(s): Brain worm: Captain; Puppeted: Captain; open, awaiting arrivals",
       "hits": [
        {
         "detector": "raid_arrived",
         "severity": "SURPRISE",
-        "summary": "raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals"
+        "summary": "raid signal(s): Brain worm: Captain; Puppeted: Captain; open, awaiting arrivals"
        }
       ],
       "evidence": [
-       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.json"
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__puppet_state__raid_arrived__t759935__001.json"
       ],
       "screenshots": [
-       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.png"
+       "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__puppet_state__raid_arrived__t759935__001.png"
       ]
      }
     }
@@ -2029,17 +3907,17 @@
     "ticks_spent": 250,
     "surprises": [
      {
-      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.json",
-      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T164456\\BrainWorms__puppet_state__raid_arrived__t27201__001.png",
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__puppet_state__raid_arrived__t759935__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T201005\\BrainWorms__puppet_state__raid_arrived__t759935__001.png",
       "notes": []
      }
     ],
     "hits_seen": [
      {
-      "tick": 27201,
+      "tick": 759935,
       "detector": "raid_arrived",
       "severity": "SURPRISE",
-      "summary": "raid signal(s): Brain worm: Bullock; Puppeted: Bullock; open, awaiting arrivals"
+      "summary": "raid signal(s): Brain worm: Captain; Puppeted: Captain; open, awaiting arrivals"
      }
     ],
     "close_problems": []
@@ -2066,17 +3944,17 @@
         "fired": false,
         "windowsOpened": [],
         "blockedByDialog": false,
-        "points": 35.0,
+        "points": 35.6528053,
         "faction": null,
-        "ticksGame": 27201,
+        "ticksGame": 759935,
         "operation": {
-         "OperationId": "op_4bfdca14ef2945da805832d237af6152",
+         "OperationId": "op_9d9bdc02c03341b8a84b53311d99160f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:34.1723988+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:34.2103874+00:00",
-         "DurationMs": 37,
+         "StartedAtUtc": "2026-10-04T03:11:18.0555691+00:00",
+         "CompletedAtUtc": "2026-10-04T03:11:18.1036122+00:00",
+         "DurationMs": 48,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2097,17 +3975,17 @@
         "fired": false,
         "windowsOpened": [],
         "blockedByDialog": false,
-        "points": 35.0,
+        "points": 35.6528053,
         "faction": null,
-        "ticksGame": 27201,
+        "ticksGame": 759935,
         "operation": {
-         "OperationId": "op_d687d8e4922144858d5cce7a0f7d140a",
+         "OperationId": "op_599366f4df624e0c84e31ee60276e5f7",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-03T23:45:34.9840331+00:00",
-         "CompletedAtUtc": "2026-10-03T23:45:35.0236829+00:00",
-         "DurationMs": 39,
+         "StartedAtUtc": "2026-10-04T03:11:19.5976761+00:00",
+         "CompletedAtUtc": "2026-10-04T03:11:19.6399229+00:00",
+         "DurationMs": 42,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2244,7 +4122,7 @@
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x0000016BBF871E90>"
+  "<suite.Component object at 0x0000029DEAE11910>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimStarWars\\BrainWorms.md",
@@ -2270,7 +4148,7 @@
      "residue": []
     },
     "incident_queue_cleared": 0,
-    "corpses_destroyed": 1,
+    "corpses_destroyed": 7,
     "corpses_left": 0,
     "extinguish": {
      "acted": 0,
@@ -2288,7 +4166,7 @@
    }
   },
   "after_problems": [
-   "corpses present: 1"
+   "corpses present: 3"
   ]
  },
  "visual": [],

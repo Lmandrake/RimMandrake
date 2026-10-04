@@ -137,3 +137,7 @@
 - 23:53 r5: modal Dialog_NodeTree was open from the Aftermath raid until 23:47:49 -> Aftermath/TheRot/Armoury/LeaningScrub run20a verdicts TAINTED (amendment widened to all mods 23:37-23:47); TheRot swallow PASS and Armoury 21P/6F need a clean rerun
 - 00:00 r5: killed run20a at TheForge start (WS recorded: clean modals); launched 20b clean rerun Aftermath,Armoury,TheRot,LeaningScrub (new modal sweep incl NodeTree, git identity)
 - 00:16 r5 FINAL: no runner live, game UP load 14, bridge still held by FOUNDRY; handoff FOUNDRY_HANDOFF_202610040706 written
+- 00:19 r6: game closed for load 15; deploying plain+biomes --prune, companion
+- 00:23 r6: deployed plain+biomes --prune, KeelHoist DLL, companion (damage_log origin stack); load 15 launched
+- 00:38 r6 load 15 loading (15m), watching
+- 00:43 r6 HANDOFF: no runner live, load 15 loading, bridge held; handoff 202610040742

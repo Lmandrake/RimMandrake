@@ -39,3 +39,10 @@
 [ws] 19:02:45 waterTruceRadius_slider_roundtrip PASS 
 [ws] 19:02:50 suppression_source_wired PASS 
 [ws] 19:02:53 suppression_toggle_default_and_roundtrip PASS 
+[ws] 19:02:59 condenser_defs_wired PASS 
+[ws] 19:03:05 dewsilk_defs_wired PASS 
+[ws] 19:03:08 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 19:03:08 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 19:03:13 oasis_source_wired PASS 
+[ws-note] Oasis.workerClass not serialisable by get_defs (instrument limit): true
+[ws] 19:03:13 oasis_def_accepts_our_biome PASS 

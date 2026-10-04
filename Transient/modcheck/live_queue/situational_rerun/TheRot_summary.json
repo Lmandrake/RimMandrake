@@ -32,15 +32,15 @@
           "defName": "TheRotNoSuchDef_ZZ"
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_e54918236ca3472eb54022d3d615b6f8",
+         "OperationId": "op_e34d71b44dbd432fb044965bbe309150",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:59.8764681+00:00",
-         "CompletedAtUtc": "2026-10-04T01:39:59.9260114+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:03:06.0679376+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.0829535+00:00",
+         "DurationMs": 15,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -558,15 +558,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_e77c497376aa4553bc4f2eb6e432495c",
+         "OperationId": "op_fa90701cea7949c99f003e0d098eaacb",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:39:59.9766617+00:00",
-         "CompletedAtUtc": "2026-10-04T01:40:00.0261065+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:03:06.1009734+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.1154833+00:00",
+         "DurationMs": 14,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1070,15 +1070,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_714dcffd2754415ea43ef840bf807605",
+         "OperationId": "op_12e87e04dac64a66a297d87a011832cf",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:40:00.076431+00:00",
-         "CompletedAtUtc": "2026-10-04T01:40:00.1259679+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:03:06.1304943+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.1460068+00:00",
+         "DurationMs": 15,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -1582,15 +1582,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_98513a6c897d497fac6113a20b080b0f",
+         "OperationId": "op_ff6d4c24a3384500bbe5e50d9c979e46",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:40:00.1768052+00:00",
-         "CompletedAtUtc": "2026-10-04T01:40:00.2255055+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T07:03:06.1632227+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.1802367+00:00",
+         "DurationMs": 17,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2094,15 +2094,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_52f6bb1b2174485c8c25376fd14bd3da",
+         "OperationId": "op_ad02120c009d44e5903f22ab510cb7a4",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:40:00.2762249+00:00",
-         "CompletedAtUtc": "2026-10-04T01:40:00.3257889+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:03:06.1957469+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.2147628+00:00",
+         "DurationMs": 19,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2606,15 +2606,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_73eb8eb366444ee6bcccaa76892702dc",
+         "OperationId": "op_183b92b3100e47c49910f45940c66d2b",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:40:00.3767894+00:00",
-         "CompletedAtUtc": "2026-10-04T01:40:00.4258218+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:03:06.2323607+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.2468736+00:00",
+         "DurationMs": 14,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2674,15 +2674,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_46ecbdcdbc394a428f9f82571b17ffaf",
+         "OperationId": "op_5495b3c18d43404ea6a90590547ad131",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:40:00.4762916+00:00",
-         "CompletedAtUtc": "2026-10-04T01:40:00.525553+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:03:06.2619564+00:00",
+         "CompletedAtUtc": "2026-10-04T07:03:06.2764635+00:00",
+         "DurationMs": 14,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -2715,6 +2715,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -2919,8 +2928,8 @@
      "name": "hwelgrueMapCap_round_trips",
      "toggle": "hwelgrueMapCap",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: hwelgrueMapCap: set failed",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -2932,8 +2941,8 @@
      "name": "hwelgrueRotMultiplier_round_trips",
      "toggle": "hwelgrueRotMultiplier",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -2945,8 +2954,8 @@
      "name": "hwelgrueSwallow_round_trips",
      "toggle": "hwelgrueSwallow",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -2958,8 +2967,8 @@
      "name": "livePreparations_round_trips",
      "toggle": "livePreparations",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -2971,8 +2980,8 @@
      "name": "livePreparationsStrictViability_round_trips",
      "toggle": "livePreparationsStrictViability",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -2984,8 +2993,8 @@
      "name": "livingProduceHeat_round_trips",
      "toggle": "livingProduceHeat",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -2997,8 +3006,8 @@
      "name": "livingProduceHeatPerUnit_round_trips",
      "toggle": "livingProduceHeatPerUnit",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3010,8 +3019,8 @@
      "name": "navigatorCore_round_trips",
      "toggle": "navigatorCore",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3023,8 +3032,8 @@
      "name": "navigatorPingHours_round_trips",
      "toggle": "navigatorPingHours",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3036,8 +3045,8 @@
      "name": "navigatorPingsPerEntry_round_trips",
      "toggle": "navigatorPingsPerEntry",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3049,8 +3058,8 @@
      "name": "navigatorRangeBonus_round_trips",
      "toggle": "navigatorRangeBonus",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3062,8 +3071,8 @@
      "name": "navigatorRuinThreshold_round_trips",
      "toggle": "navigatorRuinThreshold",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3075,8 +3084,8 @@
      "name": "navigatorShipDamageFactor_round_trips",
      "toggle": "navigatorShipDamageFactor",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3088,8 +3097,8 @@
      "name": "paleTreeSpawn_round_trips",
      "toggle": "paleTreeSpawn",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3101,8 +3110,8 @@
      "name": "sheenExposure_round_trips",
      "toggle": "sheenExposure",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3114,8 +3123,8 @@
      "name": "sporeAllergy_round_trips",
      "toggle": "sporeAllergy",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3127,8 +3136,8 @@
      "name": "sporeAllergyIncidence_round_trips",
      "toggle": "sporeAllergyIncidence",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3140,8 +3149,8 @@
      "name": "sporeCloudIncidentWeight_round_trips",
      "toggle": "sporeCloudIncidentWeight",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3153,8 +3162,8 @@
      "name": "swallowBellyCutDamage_round_trips",
      "toggle": "swallowBellyCutDamage",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3166,8 +3175,8 @@
      "name": "swallowHoursPerBodySize_round_trips",
      "toggle": "swallowHoursPerBodySize",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3179,8 +3188,8 @@
      "name": "swallowLoudness_round_trips",
      "toggle": "swallowLoudness",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3192,8 +3201,8 @@
      "name": "swallowStrangerChance_round_trips",
      "toggle": "swallowStrangerChance",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3205,8 +3214,8 @@
      "name": "theRotEnabled_round_trips",
      "toggle": "theRotEnabled",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3218,8 +3227,8 @@
      "name": "unjoiningDraught_round_trips",
      "toggle": "unjoiningDraught",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3231,8 +3240,8 @@
      "name": "unjoiningOrganDamage_round_trips",
      "toggle": "unjoiningOrganDamage",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3244,8 +3253,8 @@
      "name": "unjoiningPurgeHours_round_trips",
      "toggle": "unjoiningPurgeHours",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3257,8 +3266,8 @@
      "name": "warmMat_round_trips",
      "toggle": "warmMat",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3270,8 +3279,8 @@
      "name": "warmMatWarmth_round_trips",
      "toggle": "warmMatWarmth",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3289,12 +3298,21 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -3337,15 +3355,15 @@
           }
          }
         ],
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_495a92bd5caf4fea8d65ca82ff8cf6a3",
+         "OperationId": "op_35ca110c29b74a55b1ed34bf4f31e51e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:09.0235627+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:09.072039+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T07:05:43.3689987+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:43.3835539+00:00",
+         "DurationMs": 14,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3366,44 +3384,24 @@
      "name": "biome_worker_class_loaded",
      "toggle": null,
      "beyond_toggle": true,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: workerClass reads '(no such field)', expected a type containing RM_BiomeWorker_TheRot",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
-       "call": "bridge_call jawa/get_defs",
+       "call": "bridge_call jawa/static_call",
        "result": {
         "success": true,
-        "message": "1 of 1 def(s) resolved",
-        "requested": 1,
-        "foundCount": 1,
-        "notFound": [],
-        "malformed": [],
-        "fieldsAsked": [
-         "workerClass"
-        ],
-        "defs": [
-         {
-          "requested": "BiomeDef/RM_TheRot",
-          "found": true,
-          "defName": "RM_TheRot",
-          "defType": "BiomeDef",
-          "label": "the Rot",
-          "modName": "RimMandrake: Baroque Biomes",
-          "packageId": "mandrake.rm.biomes",
-          "fields": {
-           "workerClass": "(no such field)"
-          }
-         }
-        ],
-        "ticksGame": 7929,
+        "method": "System.String ProofWorker()",
+        "result": "WORKER RimMandrake.TheRot.RM_BiomeWorker_TheRot | instance RM_BiomeWorker_TheRot",
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_82a3e6f659604b0b935c596e8caa63a9",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "OperationId": "op_51442d889c794893bca87ccdf62cc27c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:09.1225783+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:09.1717797+00:00",
-         "DurationMs": 49,
+         "StartedAtUtc": "2026-10-04T07:05:43.4035989+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:43.4185838+00:00",
+         "DurationMs": 14,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3430,12 +3428,21 @@
     ],
     "policy": "abort",
     "chunk": 600,
-    "sweeps": 0,
+    "sweeps": 1,
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -3587,6 +3594,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -3605,15 +3621,15 @@
         "success": true,
         "method": "System.String ProofSpawn(Int32)",
         "result": "HWELGRUE alive 1",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_d1f57f3f7f904a4dbbbd4b3a2fe32b49",
+         "OperationId": "op_746d7f4f68b4410ea23821a73c56ab3e",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:19.1125762+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:19.1817987+00:00",
-         "DurationMs": 69,
+         "StartedAtUtc": "2026-10-04T07:05:47.9987102+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.0287755+00:00",
+         "DurationMs": 30,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3643,15 +3659,15 @@
         "success": true,
         "method": "System.String ProofDigest()",
         "result": "GUT 1 | kept 1 | wood destroyed True | first MeleeWeapon_Knife",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_80f16cfba8524729a1a3e9cd3b85ba9c",
+         "OperationId": "op_b420dae0bfe14652969cc3758ae99375",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:19.2099036+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:19.2599945+00:00",
-         "DurationMs": 50,
+         "StartedAtUtc": "2026-10-04T07:05:48.0455766+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.0658988+00:00",
+         "DurationMs": 20,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3681,15 +3697,15 @@
         "success": true,
         "method": "System.String ProofCasting()",
         "result": "CAST castings on map 1 | dropped 1 | all full hp True | gut now 0",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_d82bb107b971407092b948a5aed2172a",
+         "OperationId": "op_a5b25dab893d4203b86dd15a106ba7dc",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:19.3102356+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:19.3583046+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T07:05:48.080429+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.0982307+00:00",
+         "DurationMs": 17,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3710,24 +3726,24 @@
      "name": "swallow_then_cut_out",
      "toggle": "hwelgrueSwallow",
      "beyond_toggle": false,
-     "verdict": "FAIL",
-     "detail": "ExpectationFailed: 200 damage did not cut the swallowed pawn out alive: CUT released False | spawned False | inside Kelley",
+     "verdict": "PASS",
+     "detail": "",
      "evidence": [
       {
        "call": "bridge_call jawa/static_call",
        "result": {
         "success": true,
         "method": "System.String ProofSwallow()",
-        "result": "SWALLOW held Kelley | spawned False | inspect Something is still alive in there: Kelley, about 24 hours.",
-        "ticksGame": 7929,
+        "result": "SWALLOW held Masahiro | spawned False | inspect Something is still alive in there: Masahiro, about 24 hours.",
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_26aa2d3834cf45de83fa3806039a995b",
+         "OperationId": "op_7285acd34e194b5fa52a6781b3f083d0",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:19.4096275+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:19.560251+00:00",
-         "DurationMs": 150,
+         "StartedAtUtc": "2026-10-04T07:05:48.1166966+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.1672687+00:00",
+         "DurationMs": 50,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3742,16 +3758,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofCut(Single)",
-        "result": "CUT released False | spawned False | inside Kelley",
-        "ticksGame": 7929,
+        "result": "CUT released True | spawned True | inside none | via belly | hits 2 | dealt 255",
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_3e9191210a604316b0fb977b1cf56498",
+         "OperationId": "op_5396eb20044e45f89d9d54468bc6b661",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:19.5936071+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:19.6407927+00:00",
-         "DurationMs": 47,
+         "StartedAtUtc": "2026-10-04T07:05:48.1832779+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.2664689+00:00",
+         "DurationMs": 83,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3772,9 +3788,58 @@
      "name": "knocking_louder_early",
      "toggle": "swallowLoudness",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofKnock(Single)",
+        "result": "KNOCK RM_GutKnocking | volume 0.85",
+        "ticksGame": 345822,
+        "operation": {
+         "OperationId": "op_0c442a56de9e4b268ce813f8943ff520",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T07:05:48.2849943+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.303877+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofKnock(Single)",
+        "result": "KNOCK RM_GutKnocking_Failing | volume 0.40",
+        "ticksGame": 345822,
+        "operation": {
+         "OperationId": "op_04f958541da4443483c9c55711bf60e8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T07:05:48.3206967+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.3387006+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -3785,9 +3850,34 @@
      "name": "one_core_per_world",
      "toggle": "navigatorCore",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofClaim(Int32)",
+        "result": "CORE carriers 0 of 4 | world carrier RM_Hwelgrue66069 spent True pings 16",
+        "ticksGame": 345822,
+        "operation": {
+         "OperationId": "op_afeaa2eff2184eb0993ccea902e1c6ef",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T07:05:48.3557208+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.382276+00:00",
+         "DurationMs": 26,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -3798,9 +3888,58 @@
      "name": "ruined_below_threshold",
      "toggle": "navigatorRuinThreshold",
      "beyond_toggle": false,
-     "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
-     "evidence": [],
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDrop(Single)",
+        "result": "DROP RM_SwallowedDriveCore",
+        "ticksGame": 345822,
+        "operation": {
+         "OperationId": "op_5f7873cefeb64f73a370152a5fb98ba9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T07:05:48.399934+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.4164678+00:00",
+         "DurationMs": 16,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDrop(Single)",
+        "result": "DROP RM_RuinedDriveCore",
+        "ticksGame": 345822,
+        "operation": {
+         "OperationId": "op_507f2cd4f5b54f6eb796f5930156ab20",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T07:05:48.4336386+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:48.4509194+00:00",
+         "DurationMs": 17,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -3812,7 +3951,7 @@
      "toggle": "navigatorRangeBonus",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "detail": "UNMEASURED: needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3825,7 +3964,7 @@
      "toggle": "navigatorShipDamageFactor",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "detail": "UNMEASURED: needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3838,7 +3977,7 @@
      "toggle": "hwelgrueRotMultiplier",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
-     "detail": "upstream failed -- this chain's state is meaningless",
+     "detail": "UNMEASURED: needs a gravship (engine + thrusters) with an installed, linked core; read RM_SwallowedCoreProof.ProofRange before and after installing it",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -3862,6 +4001,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -3879,16 +4027,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofResearch()",
-        "result": "RESEARCH before studied False | canStart False || after studied True | canStart False",
-        "ticksGame": 7929,
+        "result": "RESEARCH before studied True | canStart False || after studied True | canStart False",
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_fd9983ecbb3c4a3fa6b83b2a8c94ecec",
+         "OperationId": "op_f985c34efad247b3892e640d7305d3f3",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:24.7999131+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:24.8484668+00:00",
-         "DurationMs": 48,
+         "StartedAtUtc": "2026-10-04T07:05:50.6738604+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:50.6903882+00:00",
+         "DurationMs": 16,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3917,16 +4065,16 @@
        "result": {
         "success": true,
         "method": "System.String ProofDigest()",
-        "result": "VAT out 8 | BionicArm True | rifle True | parka True | corpse gone True",
-        "ticksGame": 7929,
+        "result": "VAT out 9 | BionicArm True | rifle True | parka True | corpse gone True",
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_10d7a2bba73c4dcea301b4c43c832a7a",
+         "OperationId": "op_463c9e75fe5f44b593ab426195db1a1c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:24.8990304+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:25.0199555+00:00",
-         "DurationMs": 120,
+         "StartedAtUtc": "2026-10-04T07:05:50.7106748+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:50.8223468+00:00",
+         "DurationMs": 111,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3956,15 +4104,15 @@
         "success": true,
         "method": "System.String ProofDormant()",
         "result": "DORMANT progress 0 -> 0 | dormant True",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_7f0f7d0e402542b4af4090f1ce13221c",
+         "OperationId": "op_d9e0ea11f5e74af3818b8ff273e5ec7c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:25.0484874+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:25.2208351+00:00",
-         "DurationMs": 172,
+         "StartedAtUtc": "2026-10-04T07:05:50.8387241+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:51.0286871+00:00",
+         "DurationMs": 189,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -3994,15 +4142,15 @@
         "success": true,
         "method": "System.String ProofStarter()",
         "result": "STARTER rottable False | viability False | tradeable True | value 900 | split makes 1",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_773114a63bf54aa8b7fd6cb637771460",
+         "OperationId": "op_cbd50cfe217642a58651a5243fcec257",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:25.2572778+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:25.2802943+00:00",
-         "DurationMs": 23,
+         "StartedAtUtc": "2026-10-04T07:05:51.0702706+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:51.0883322+00:00",
+         "DurationMs": 18,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4033,15 +4181,17 @@
     "fed": 0,
     "ticks_spent": 0,
     "surprises": [],
-    "hits_seen": [
-     {
-      "tick": 7929,
-      "detector": "letter_unexpected",
-      "severity": "INFO",
-      "summary": "new letter [PositiveEvent] The gut-mother gives back"
-     }
-    ],
+    "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -4051,48 +4201,24 @@
      "name": "entry_every_n_pings",
      "toggle": "navigatorPingsPerEntry",
      "beyond_toggle": false,
-     "verdict": "PASS",
-     "detail": "",
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: 4 pings did not read exactly one entry: LOG pings 20 | entries 2 | sites 1 | quests 1",
      "evidence": [
       {
        "call": "bridge_call jawa/static_call",
        "result": {
         "success": true,
         "method": "System.String ProofPings(Int32)",
-        "result": "LOG pings 4 | entries 1 | sites 0 | quests 0",
-        "ticksGame": 7929,
+        "result": "LOG pings 20 | entries 2 | sites 1 | quests 1",
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_20d34e30955649369e5fd8e5919839a9",
+         "OperationId": "op_538f9ecbf8824def927454ca9c56e35f",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:30.8838401+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:30.9329643+00:00",
-         "DurationMs": 49,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      },
-      {
-       "call": "bridge_call jawa/static_call",
-       "result": {
-        "success": true,
-        "method": "System.String ProofPings(Int32)",
-        "result": "LOG pings 8 | entries 2 | sites 1 | quests 1",
-        "ticksGame": 7929,
-        "operation": {
-         "OperationId": "op_376a5dee52264f0598c8bb861b643cf7",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:30.9833877+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:32.3814973+00:00",
-         "DurationMs": 1398,
+         "StartedAtUtc": "2026-10-04T07:05:54.078297+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:54.094314+00:00",
+         "DurationMs": 16,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4113,34 +4239,9 @@
      "name": "carrier_death_cuts_log",
      "toggle": "navigatorCore",
      "beyond_toggle": false,
-     "verdict": "PASS",
-     "detail": "",
-     "evidence": [
-      {
-       "call": "bridge_call jawa/static_call",
-       "result": {
-        "success": true,
-        "method": "System.String ProofKillThenPing(Int32)",
-        "result": "KILLED entries 2 -> 2 | cut True",
-        "ticksGame": 7929,
-        "operation": {
-         "OperationId": "op_d054cbe422e442cc8a05e59195e753cf",
-         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
-         "Status": 2,
-         "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:32.4470799+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:32.4688875+00:00",
-         "DurationMs": 21,
-         "Result": null,
-         "HasResult": true,
-         "ResultWasTruncated": false,
-         "Warnings": [],
-         "Error": null,
-         "Metadata": {}
-        }
-       }
-      }
-     ],
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
      "screenshots": [],
      "sequences": [],
      "checkpoints": [],
@@ -4152,7 +4253,7 @@
      "toggle": "navigatorCore",
      "beyond_toggle": false,
      "verdict": "UNMEASURED",
-     "detail": "UNMEASURED: needs a living carrier on a map and a gravship landing there; RM_SwallowedCoreProof.ProofClaim pings 0 -> 1, and 0 with no carrier",
+     "detail": "upstream failed -- this chain's state is meaningless",
      "evidence": [],
      "screenshots": [],
      "sequences": [],
@@ -4176,6 +4277,15 @@
     "surprises": [],
     "hits_seen": [],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   },
   {
@@ -4194,15 +4304,15 @@
         "success": true,
         "method": "System.String ProofDraught(System.String)",
         "result": "UNJOIN left 0 | purge True | husks 1 | scars 1 | horror emerging False",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_dd971e05e030436c8ebcc2d543f0c30a",
+         "OperationId": "op_224fc859a0d040919b5a33ed9acdcd4c",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:37.4739361+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:37.6325973+00:00",
-         "DurationMs": 158,
+         "StartedAtUtc": "2026-10-04T07:05:56.337663+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:56.4853765+00:00",
+         "DurationMs": 147,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4232,15 +4342,15 @@
         "success": true,
         "method": "System.String ProofDraught(System.String)",
         "result": "UNJOIN left 0 | purge True | husks 0 | scars 1 | horror emerging False",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_9419911042134ff49c53ee468fa20caf",
+         "OperationId": "op_dcb04289a1fc4bf0abdc161da6f0bcde",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:37.673197+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:37.8293534+00:00",
-         "DurationMs": 156,
+         "StartedAtUtc": "2026-10-04T07:05:56.5029885+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:56.6260396+00:00",
+         "DurationMs": 123,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4270,15 +4380,15 @@
         "success": true,
         "method": "System.String ProofDraught(System.String)",
         "result": "UNJOIN left 0 | purge True | husks 0 | scars 1 | horror emerging True",
-        "ticksGame": 7929,
+        "ticksGame": 345822,
         "operation": {
-         "OperationId": "op_4de1e30076ca4deca297a4ec5130ca47",
+         "OperationId": "op_c40df98d5d8843328d3febbed00a08fa",
          "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
          "Status": 2,
          "Success": true,
-         "StartedAtUtc": "2026-10-04T01:41:37.8670954+00:00",
-         "CompletedAtUtc": "2026-10-04T01:41:38.024348+00:00",
-         "DurationMs": 157,
+         "StartedAtUtc": "2026-10-04T07:05:56.6439163+00:00",
+         "CompletedAtUtc": "2026-10-04T07:05:56.774853+00:00",
+         "DurationMs": 130,
          "Result": null,
          "HasResult": true,
          "ResultWasTruncated": false,
@@ -4310,67 +4420,77 @@
     "ticks_spent": 0,
     "surprises": [
      {
-      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T183952\\TheRot__unjoining__colonist_damaged__t7929__001.json",
-      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T183952\\TheRot__unjoining__colonist_damaged__t7929__001.png",
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T000303\\TheRot__unjoining__colonist_damaged__t345822__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T000303\\TheRot__unjoining__colonist_damaged__t345822__001.png",
       "notes": []
      }
     ],
     "hits_seen": [
      {
-      "tick": 7929,
+      "tick": 345822,
       "detector": "colonist_damaged",
       "severity": "SURPRISE",
-      "summary": "colonist Max took 4 damage event(s): Cut by nobody"
+      "summary": "colonist Escobar took 4 damage event(s): Cut by nobody"
      },
      {
-      "tick": 7929,
+      "tick": 345822,
       "detector": "colonist_downed",
       "severity": "SURPRISE",
-      "summary": "colonist Intsu is downed"
+      "summary": "colonist Escobar is downed"
      },
      {
-      "tick": 7929,
-      "detector": "colonist_downed",
-      "severity": "SURPRISE",
-      "summary": "colonist Max is downed"
-     },
-     {
-      "tick": 7929,
+      "tick": 345822,
       "detector": "raid_arrived",
       "severity": "SURPRISE",
       "summary": "raid signal(s): Metalhorror emerging; open, awaiting arrivals"
      },
      {
-      "tick": 7929,
+      "tick": 345822,
       "detector": "pawn_roster_transition",
       "severity": "WARN",
-      "summary": "pawn Intsu (Human83733) joined the roster"
+      "summary": "pawn Andrew (Human168830) joined the roster"
      },
      {
-      "tick": 7929,
+      "tick": 345822,
       "detector": "pawn_roster_transition",
       "severity": "WARN",
-      "summary": "pawn Linder (Human83740) joined the roster"
+      "summary": "pawn Harri (Human168835) joined the roster"
      },
      {
-      "tick": 7929,
+      "tick": 345822,
       "detector": "pawn_roster_transition",
       "severity": "WARN",
-      "summary": "pawn Max (Human83743) joined the roster"
+      "summary": "pawn Escobar (Human168839) joined the roster"
      }
     ],
     "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
    }
   }
  ],
  "all_green": false,
  "findings": [
-  "<suite.Component object at 0x0000019A3EC541B0>",
-  "<suite.Component object at 0x0000019A378AF540>",
-  "<suite.Component object at 0x0000019A378AF960>"
+  "<suite.Component object at 0x000001C0CBD86360>"
  ],
  "refused": "",
  "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\TheRot.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
  "bland_world": {
   "before": {
    "bland": true,
@@ -4408,14 +4528,39 @@
      "acted": 9,
      "verified": true
     }
+   },
+   "retile": {
+    "tile": 839,
+    "biome": "ZBiome_Grasslands",
+    "temperature": 16.45338,
+    "applied": "RM_TheRot"
    }
   },
   "after_problems": [
-   "colonist Human83733 carries ['Frostbite', 'Stab']",
-   "colonist Human83743 carries ['Bite', 'Cut', 'Crack', 'Cut']"
+   "corpses present: 1",
+   "colonist Human168839 carries ['Cut', 'Crack', 'Cut', 'Crack']"
   ]
  },
  "visual": [],
  "visual_all_green": true,
- "state_all_green": false
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T000034-situational_rerun-4872",
+  "git": {
+   "source": "git",
+   "sha": "0e0b48cd84616c7fb3cdcbee0e675ace2319a95b"
+  },
+  "deploy_start": {
+   "mod": "TheRot",
+   "at": "2026-10-04T00:03:03",
+   "state": "unknown",
+   "reason": "no source dir with About/About.xml for TheRot"
+  },
+  "deploy_end": {
+   "mod": "TheRot",
+   "at": "2026-10-04T00:05:58",
+   "state": "unknown",
+   "reason": "no source dir with About/About.xml for TheRot"
+  }
+ }
 }
