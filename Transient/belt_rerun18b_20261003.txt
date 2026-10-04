@@ -1,0 +1,77 @@
+[gt] 20:59:48 shipped_defs_resolve PASS 
+[gt] 20:59:48 control_absent_def_reads_absent PASS 
+[gt] 21:00:00 mireEnabled_round_trips PASS 
+[gt] 21:00:10 buriedCacheEnabled_round_trips PASS 
+[gt] 21:00:21 mireSeverityMultiplier_round_trips PASS 
+[gt] 21:00:33 plantDensity_round_trips PASS 
+[gt] 21:00:43 movementDifficulty_round_trips PASS 
+[gt] 21:00:54 crossBiomeEnabled_round_trips PASS 
+[gt] 21:01:05 crossBiomeEverywhere_round_trips PASS 
+[gt] 21:01:16 crossBiomeBiomeList_round_trips PASS 
+[gt] 21:01:27 crossBiomeCoverage_round_trips PASS 
+[gt] 21:01:38 frenzyEnabled_round_trips PASS 
+[gt] 21:01:49 frenzySeverityMultiplier_round_trips PASS 
+[gt] 21:02:00 feverMarkEnabled_round_trips PASS 
+[gt] 21:02:11 feverMarkGrantsImmunity_round_trips PASS 
+[gt] 21:02:21 stenchGrenadeEnabled_round_trips PASS 
+[gt] 21:02:33 stenchGrenadeRadiusMultiplier_round_trips PASS 
+[gt] 21:02:43 canopySwarmEnabled_round_trips PASS 
+[gt] 21:02:55 vurrakAmbushEnabled_round_trips PASS 
+[gt] 21:03:06 vurrakTriggerBodySize_round_trips PASS 
+[gt] 21:03:17 vurrakFirstRevealPause_round_trips PASS 
+[gt] 21:03:33 site_ready_mire UNMEASURED surprise: colonist_damaged: colonist Owen took 1 damage event(s): Stab by Metalhorror; hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T205937\Greentide__mi
+[gt] 21:03:33 mire_applies_on_churnmud UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Owen took 1 damage event(s): Stab by Metalhorror; hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: \\wsl.
+[gt] 21:03:33 mire_skips_concrete_and_sealed_floor UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Owen took 1 damage event(s): Stab by Metalhorror; hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: \\wsl.
+[gt] 21:03:33 mire_master_switch_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Owen took 1 damage event(s): Stab by Metalhorror; hostile_pawns: 1 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat) [evidence: \\wsl.
+[gt] 21:03:40 stuck_threshold_and_free_mired_job UNMEASURED UNMEASURED: the stuck threshold is ~0.85 severity at 0.008 per 60 ticks with a 15%% struggle roll (a ~6000+ tick random climb) and RM_FreeMired needs a second pawn's job; a seeded hediff plus an ordered job is owed to a live round
+[gt] 21:03:48 site_ready_swallow PASS 
+[gt] 21:04:51 swallow_buries_on_churnmud_only FAIL ExpectationFailed: Steel left 3200 ticks on RM_GreentideChurnmud was not swallowed (RM_MapComponent_MudSwallow dead, or swallowTicks changed)
+[gt] 21:04:51 buried_cache_switch_off_keeps_items UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 21:04:51 dig_out_job_restores_the_buried_item UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 21:04:58 site_ready_dose PASS 
+[gt] 21:05:11 dose_gives_frenzy UNMEASURED surprise: colonist_injured_unexpectedly: colonist Gavril gained 1 new hediff(s) (RM_Mired); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T205937\Greentide__frenzy_dose__colonist_injured_unexpectedly__t8427__001.json]
+[gt] 21:05:11 frenzy_master_switch_off_gives_none UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Gavril gained 1 new hediff(s) (RM_Mired); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\2
+[gt] 21:05:11 fever_mark_gates_the_dose UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Gavril gained 1 new hediff(s) (RM_Mired); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\2
+[gt] 21:05:11 fever_mark_earned_by_surviving_the_coma UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Gavril gained 1 new hediff(s) (RM_Mired); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\2
+[gt] 21:05:11 ambient_frenzy_incident UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Gavril gained 1 new hediff(s) (RM_Mired); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\2
+[gt] 21:05:19 biome_carries_the_settings_density PASS 
+[gt] vurrak colonist: DISGUISED=True -> STRUCK Human90948
+[gt] 21:05:26 vurrak_bites_a_person PASS 
+[gt] vurrak hare: REFUSED: (50, 0, 50) is not bank (needs water within 2.9)
+[gt] 21:05:26 vurrak_hare_only_reveals FAIL ExpectationFailed: a hare (body 0.2) on a flat vurrak should reveal it without a bite: REFUSED: (50, 0, 50) is not bank (needs water within 2.9)
+[gt] 21:05:26 vurrak_toggle_off_refused UNMEASURED upstream failed -- this chain's state is meaningless
+[gt] 21:05:33 churnmud_seeded_once_on_a_fresh_non_greentide_map UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; needs a new map generated with crossBiomeEnabled on, which the harness cannot do on a held map
+[gt] 21:05:40 stench_smoke_radius_follows_multiplier UNMEASURED UNMEASURED: needs a thrown grenade and an explosion-radius read; no bridge reader for the smoke cloud
+[gt] 21:05:47 krannock_spawn_gate UNMEASURED UNMEASURED: canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)
+[gt] 21:06:08 all_settings_at_shipped_defaults PASS 
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 13
+     bland_world: reusing the bland map already current (tile 16419, 3 colonists)
+  ok   bland world established (tile 16419, map 1)
+  -- Webwork
+     !! Webwork: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 21, 'UNMEASURED': 3, 'FAIL': 1} surprises=0 serious=[]
+  -- Miasma
+     !! Miasma: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 23, 'UNMEASURED': 8, 'FAIL': 1} surprises=1 serious=['colonist_died:FATAL']
+  -- TheRot
+     !! TheRot: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 59, 'UNMEASURED': 17, 'FAIL': 1} surprises=1 serious=['colonist_damaged:SURPRISE', 'colonist_downed:SURPRISE', 'raid_arrived:SURPRISE']
+  -- RustCathedral
+     !! RustCathedral: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 28, 'FAIL': 4, 'UNMEASURED': 11} surprises=0 serious=[]
+  -- Greentide
+     !! Greentide: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 26, 'UNMEASURED': 16, 'FAIL': 2} surprises=2 serious=['colonist_damaged:SURPRISE', 'colonist_injured_unexpectedly:SURPRISE', 'hostile_pawns:SURPRISE']
+  -- LanternDeeps
+     !! LanternDeeps: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 27, 'FAIL': 5, 'UNMEASURED': 8} surprises=0 serious=[]
+  -- NightsideIce
+     !! NightsideIce: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 22, 'UNMEASURED': 3, 'FAIL': 3} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 5/5 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

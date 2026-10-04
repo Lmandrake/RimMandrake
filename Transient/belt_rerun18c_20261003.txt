@@ -1,0 +1,215 @@
+[bdesert-note] shipped defs resolved: 68
+[bdesert] 21:15:27 defs_resolve PASS 
+[bdesert] 21:15:27 flora_expansion_shape PASS 
+[bdesert-note] BiomeDef weather table: {"Clear": 60.0, "RM_Haze": 15.0, "RM_IceSandDrift": 15.0, "RM_IceFog": 10.0, "Fog": 0, "Rain": 0, "DryThunderstorm": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "SnowGentle": 0, "SnowHard": 0, "GrayPall": 0, "Windy": 0, "Overcast": 0, "Blizzard": 0}
+[bdesert] 21:15:27 biome_weather_table PASS 
+[bdesert] 21:15:27 biome_carrier_condition PASS 
+[bdesert-note] biome roster states (AA_Thunderbeast follows the mod list): {"RM_Dorrak": "spawning", "RM_Dovvik": "spawning", "RM_Krissek": "spawning", "RM_Murrek": "spawning", "RM_Ossivel": "spawning", "RM_Utikka": "spawning", "RM_Vekkit": "spawning", "RM_Vhaulk": "spawning", "RM_Vrisk": "spawning", "RM_Zhaaz": "spawning", "RM_Palefloss": "spawning", "RM_Glassfern": "spawning", "RM_Chimeglobe": "spawning", "RM_Virr": "spawning", "RM_Qeshra": "spawning", "RM_Kethevar": "spawning", "RM_Lisqueth": "spawning", "RM_Vashpuk": "spawning", "AA_Thunderbeast": "spawning"}
+[bdesert] 21:15:27 biome_roster_and_density PASS 
+[bdesert] 21:15:28 charge_comps_wired PASS 
+[bdesert] 21:15:29 rack_needs_no_power PASS 
+[bdesert] 21:15:29 ablation_and_murrek_wired PASS 
+[bdesert] 21:15:54 defaults PASS 
+[bdesert] 21:15:58 burnerHaloEnabled_roundtrip PASS 
+[bdesert] 21:16:02 crackCueEnabled_roundtrip PASS 
+[bdesert] 21:16:06 murrekReseedEnabled_roundtrip PASS 
+[bdesert] 21:16:10 ablationSalvageEnabled_roundtrip PASS 
+[bdesert] 21:16:14 ablationPaceFactor_roundtrip PASS 
+[bdesert] 21:16:17 vhaulkRoadDaysFactor_roundtrip PASS 
+[bdesert] 21:16:21 vhaulkStayDaysFactor_roundtrip PASS 
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 21:16:30 natives_spawn_charged PASS 
+[bdesert] 21:16:30 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": ["RM_Palefloss", "RM_Glassfern", "RM_Chimeglobe", "RM_Virr", "RM_Qeshra", "RM_Kethevar", "RM_Lisqueth", "RM_Vashpuk"]}
+[bdesert] 21:16:40 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Palefloss', 'RM_Glassfern', 'RM_Chimeglobe', 'RM_Virr', 'RM_Qeshra', 'RM_Kethevar', 'RM_Lisqueth', 'RM_Vashpuk']
+[bdesert] 21:16:47 plant_death_chains UNMEASURED UNMEASURED: chain ON: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 21:16:51 plant_death_toggle_off_no_chain UNMEASURED UNMEASURED: chain OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 21:16:54 plant_death_master_off_no_chain UNMEASURED UNMEASURED: master OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert-note] warm arms: {"amb": 18.4274445, "low": 5.0, "high": 26.43}
+[bdesert] 21:17:02 warm_site_ready UNMEASURED UNMEASURED: only 0 of 3 palefloss stand on the warm pad
+[bdesert] 21:17:02 warm_threshold_above_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 21:17:02 warm_toggle_off_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 21:17:02 warm_detonates_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 21:17:09 dorrak_site_ready PASS 
+[bdesert-note] hump hit, native detonations ON: {"hump_missing": true, "dead": true}
+[bdesert] 21:17:17 hump_hit_kills PASS 
+[bdesert] 21:17:27 leg_hit_does_not_kill UNMEASURED UNMEASURED: dorrak(leg,on) vanished from list_pawns after a hit
+[bdesert] 21:17:33 hump_toggle_off_ordinary_part UNMEASURED UNMEASURED: dorrak(hump,off) vanished from list_pawns after a hit
+[bdesert-note] krissek death, detonations ON: {"krissek_dead": true, "near": true, "far": false}
+[bdesert] 21:17:48 krissek_death_blasts PASS 
+[bdesert-note] krissek death, detonations OFF: {"krissek_dead": true, "near": false, "far": false}
+[bdesert] 21:17:56 krissek_off_quiet PASS 
+[bdesert-note] heat_kill_detonates: Flame 9999: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 21:18:12 heat_kill_detonates PASS 
+[bdesert-note] kinetic_kill_does_not: Cut 9999: {"vhaulk_dead": false, "witness": false, "control": false}
+[bdesert] 21:18:18 kinetic_kill_does_not UNMEASURED UNMEASURED: the vhaulk did not die of Cut 9999: {'vhaulk_dead': False, 'witness': False, 'control': False}
+[bdesert-note] emp_on_living_detonates: EMP 100: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 21:18:24 emp_on_living_detonates PASS 
+[bdesert-note] heat_gate_off_any_death_detonates: Cut 9999: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 21:18:33 heat_gate_off_any_death_detonates PASS 
+[bdesert-note] emp_trap_off_is_ordinary_damage: EMP 100: {"vhaulk_dead": false, "witness": false, "control": false}
+[bdesert] 21:18:43 emp_trap_off_is_ordinary_damage PASS 
+[bdesert-note] native_toggle_off_no_blast: Flame 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 21:18:52 native_toggle_off_no_blast PASS 
+[bdesert-note] master_off_no_blast: Flame 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 21:19:01 master_off_no_blast PASS 
+[bdesert] 21:19:13 haze_site_ready PASS 
+[bdesert-note] haze film severity (outdoor, roofed): [0.0121000018, 0.0001]
+[bdesert-note] haze film severity after 800 more ticks: [0.0121000018, 0.0201000031]
+[bdesert] 21:20:44 haze_film_on_outdoor_colonist PASS 
+[bdesert] 21:20:45 haze_spares_natives UNMEASURED UNMEASURED: the vekkit left list_pawns
+[bdesert] 21:21:48 haze_toggle_off_new_arrival_clean PASS 
+[bdesert] 21:21:56 foreign_grazer_takes_butane_gut UNMEASURED UNMEASURED: no palefloss stands at (104,187) for the Muffalo to eat
+[bdesert] 21:21:57 native_grazer_exempt UNMEASURED UNMEASURED: no palefloss stands at (112,187) for the RM_Dorrak to eat
+[bdesert] 21:22:00 butane_toggle_off_clean UNMEASURED UNMEASURED: no palefloss stands at (120,187) for the Muffalo to eat
+[bdesert-note] cold wax, warm-reactive OFF: {"end": "stands", "ruined_seen": true}
+[bdesert] 21:23:26 wax_toggle_off_ruined_but_inert PASS 
+[bdesert] 21:24:21 wax_ruined_wicks_and_goes UNMEASURED surprise: colonist_injured_unexpectedly: colonist Bowman gained 1 new hediff(s) (BadHygiene); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T211515\BlueDesert__cold_wax__colonist_injured_unexpectedly__t23427__001.json]
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "NorthstarBland", "styleDefAfter": null, "ticksGame": 23427, "operation": {"OperationId": "op_58de3e1c3960420687882f188021f6db", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-04T04:24:31.1859185+00:00", "CompletedAtUtc": "2026-10-04T04:24:31.238626+00:00", "DurationMs": 52, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "NorthstarBland", "styleDefAfter": null, "ticksGame": 23427, "operation": {"OperationId": "op_09709d02c41c47bdadda77fbb7f307d9", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-04T04:24:31.2860752+00:00", "CompletedAtUtc": "2026-10-04T04:24:31.3386372+00:00", "DurationMs": 52, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert] 21:25:19 rack_site_ready PASS 
+[bdesert-note] room temperatures after 1500 ticks (A loaded, B empty): [10.6234255, 20.8534069]
+[bdesert] 21:25:51 rack_cools_loaded_room_only PASS 
+[bdesert-note] after 3600 ticks: {"held_h": 5.8, "held0_h": 7.2, "cans": 3}
+[bdesert] 21:26:33 rack_spends_ice_and_drips PASS 
+[bdesert-note] coldSinkEnabled OFF: temperatures and cold held: [20.5597858, 16.2873783, 5.8]
+[bdesert] 21:27:07 rack_toggle_off_leaves_room_alone FAIL ExpectationFailed: coldSinkEnabled OFF but room A still differs from the empty control by 4.3 C
+[bdesert-note] quarry, roll OFF: {"mined": 23, "ice": 184, "debris": 0}
+[bdesert] 21:28:34 thaw_toggle_off_mines_cleanly FAIL ExpectationFailed: 23 blocks mined but only 184 blue ice came out (15 per block expected)
+[bdesert] 21:28:34 thaw_roll_finds_debris UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 21:28:42 road_laid_and_flora_cropped UNMEASURED UNMEASURED: road ON: path plants 0/2, control plants 0/1 stand
+[bdesert] 21:28:45 road_toggle_off_walks_clean UNMEASURED UNMEASURED: road OFF: path plants 0/2, control plants 0/1 stand
+[bdesert-note] dialog mandrake.rm.biomes opened=False wrote_config=False: null
+[bdesert-note] dialog mandrake.rm.bluedesert opened=False wrote_config=False: null
+[bdesert] 21:28:56 ruled_weathers_toggle_applies UNMEASURED UNMEASURED: no Mod Settings dialog (mandrake.rm.biomes, mandrake.rm.bluedesert) wrote the Blue Desert settings file: the WriteSettings path is unreachable from the bridge
+[bdesert] 21:29:03 ablation_only_in_blue_desert UNMEASURED UNMEASURED: the site IS a Blue Desert map: this negative gate cannot be read here
+[bdesert-note] after the wait: {"gone": true, "letters_before": 108, "labels": ["Funerals for Aiko", "Death: Aiko", "The mountain walks in", "The mountain walks in", "The mountain walks in", "The mountain moves on"]}
+[bdesert] 21:31:14 vhaulk_walks_off_with_a_letter PASS 
+[bdesert-note] log scan: {"bluedesert errors": 0, "xref naming our defs": 0, "RimMandrake.BlueDesert errors": 0, "config errors naming our defs": 0, "bufferLines": 1000}
+[bdesert] 21:31:21 log_clean PASS 
+[fw-note] Player.log scan: {"lines": 42773, "hits": [], "game-wide config/xref lines (instrument probe)": 43}
+[fw] 21:31:44 player_log_names_no_feverwood_error PASS 
+[fw-note] folded standalone packageIds checked: 29
+[fw] 21:31:52 no_mayrequire_names_a_folded_standalone_mod PASS 
+[fw] 21:31:52 no_top_level_operation_carries_mayrequire PASS 
+[fw] 21:31:52 campaign_patches_and_free_def_tier_leaks_closed PASS 
+[fw] 21:31:52 free_text_names_no_canon_and_dianoga_patches_guarded PASS 
+[fw-note] dianoga tier: {"swTier": true, "wrong": []}
+[fw] 21:31:59 limbs_named_for_the_loaded_tier PASS 
+[fw] 21:32:06 resolve_probe_sees_absence PASS 
+[fw] 21:32:07 defs_resolve_biome_BiomeDef PASS 
+[fw] 21:32:07 defs_resolve_designation_DesignationDef PASS 
+[fw] 21:32:07 defs_resolve_faction_FactionDef PASS 
+[fw] 21:32:07 defs_resolve_hediff_HediffDef PASS 
+[fw] 21:32:07 defs_resolve_incident_IncidentDef PASS 
+[fw] 21:32:07 defs_resolve_job_JobDef PASS 
+[fw] 21:32:07 defs_resolve_mapgeneration_GenStepDef PASS 
+[fw] 21:32:07 defs_resolve_terrain_TerrainDef PASS 
+[fw] 21:32:07 defs_resolve_buildings_ThingDef PASS 
+[fw] 21:32:07 defs_resolve_items_RecipeDef PASS 
+[fw] 21:32:08 defs_resolve_items_ThingDef PASS 
+[fw] 21:32:08 defs_resolve_plants_ThingDef PASS 
+[fw] 21:32:08 defs_resolve_races_PawnKindDef PASS 
+[fw] 21:32:08 defs_resolve_races_ThingDef PASS 
+[fw] 21:32:08 defs_resolve_workgiver_WorkGiverDef PASS 
+[fw] 21:32:08 defs_named_in_code_exist PASS 
+[fw] 21:32:15 biome_probe_ready PASS 
+[fw] 21:32:15 biome_flags_and_densities PASS 
+[fw-note] wild animals rows not asserted (their donor mod is not on this tier): ["VFEI2_Megathrips (needs oskarpotocki.vfe.insectoid2)"]
+[fw] 21:32:15 wild_animals_wired PASS 
+[fw-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[fw] 21:32:15 wild_plants_wired PASS 
+[fw] 21:32:15 probe_states_are_honest PASS 
+[fw] 21:32:16 hazard_and_hive_extensions_present UNMEASURED UNMEASURED: get_defs lists the biome's modExtensions by field values with no class names (220 entries): class presence is not answerable this way
+[fw] 21:32:16 crown_sound_and_heat_kind PASS 
+[fw] 21:32:23 gensteps_registered_on_their_map_generator PASS 
+[fw] 21:32:23 orders_designators_listed PASS 
+[fw] 21:32:23 suppressant_recipe_on_the_machining_table UNMEASURED UNMEASURED: the vanilla component recipe is not readable from TableMachining.recipes (control), so the list is not trustworthy: ['BS_ShredRobot', 'ButcherCorpseMechanoid']
+[fw] 21:32:23 failed_tame_hook_is_patched_in PASS 
+[fw] 21:32:59 all_fields_at_shipped_defaults_and_assembly_loaded PASS 
+[fw] 21:33:03 toggle_roundtrip_antHiveDungeonEnabled PASS 
+[fw] 21:33:08 toggle_roundtrip_antHiveFarmChamberEnabled PASS 
+[fw] 21:33:11 toggle_roundtrip_antHiveParasiteChamberEnabled PASS 
+[fw] 21:33:16 toggle_roundtrip_antHiveSealingEnabled PASS 
+[fw] 21:33:20 toggle_roundtrip_antTheftEnabled PASS 
+[fw] 21:33:25 toggle_roundtrip_kurrethColumnEnabled PASS 
+[fw] 21:33:29 toggle_roundtrip_naturalPlacementEnabled PASS 
+[fw] 21:33:34 toggle_roundtrip_oilBoilEnabled PASS 
+[fw] 21:33:38 toggle_roundtrip_oilBoilWakesDeep PASS 
+[fw] 21:33:42 toggle_roundtrip_sapSuckerMishandleRefusalEnabled PASS 
+[fw] 21:33:46 toggle_roundtrip_sekkulaathTankEnabled PASS 
+[fw] 21:33:51 toggle_roundtrip_tentacleBestiaryEnabled PASS 
+[fw] 21:33:55 toggle_roundtrip_tentacleGreatEmergenceEnabled PASS 
+[fw] 21:33:59 toggle_roundtrip_tentacleUraniumSuppressionEnabled PASS 
+[fw] 21:34:03 toggle_roundtrip_twoFrontLureEnabled PASS 
+[fw] 21:34:07 toggle_roundtrip_twoFrontLureLockOnceTriggered PASS 
+[fw] 21:34:14 bough_soil_fertile_for_every_crown_plant PASS 
+[fw] 21:34:22 rottable_items_tick PASS 
+[fw] 21:34:29 site_ready_ladder PASS 
+[fw] 21:34:33 severe_damage_severs_the_limb_and_drops_flesh PASS 
+[fw] 21:34:36 a_killing_blow_still_drops_flesh PASS 
+[fw] 21:34:44 mild_damage_retreats_without_dropping_anything PASS 
+[fw] 21:34:52 site_ready_porter PASS 
+[fw-note] porter loot: [["RM_OssagrelSap", 1]]
+[fw] 21:35:21 unmolested_porter_deposits_loot_then_withdraws PASS 
+[fw] 21:36:00 a_hit_porter_vanishes_and_brings_nothing UNMEASURED surprise: colonist_injured_unexpectedly: colonist Smith gained 2 new hediff(s) (Asthma); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T213133\FeverWood__tentacle_porter__colonist_injured_unexpectedly__t42039__001.json]
+[fw] 21:36:09 site_ready_lash PASS 
+[fw] 21:36:24 lash_spares_a_pawn_outside_its_range PASS 
+[fw] 21:36:41 lash_cuts_a_pawn_inside_its_range PASS 
+[fw] 21:36:48 site_ready_tank PASS 
+[fw] 21:36:49 tank_reads_occupant_fed PASS 
+[fw] 21:36:55 a_hit_below_the_threshold_keeps_the_tank_shut PASS 
+[fw] 21:37:03 a_heavy_hit_breaches_the_tank_and_the_juvenile_escapes_remembering UNMEASURED surprise: colonist_injured_unexpectedly: colonist Inga gained 1 new hediff(s) (Bruise); cause_hint=unknown; wildlife_near_colonist: 1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured; mental_break: Dianoga entered mental state Manhunter (
+[fw] 21:37:12 with_the_tank_toggle_off_the_same_hit_breaks_nothing UNMEASURED surprise: colonist_injured_unexpectedly: colonist Inga gained 1 new hediff(s) (Bruise); cause_hint=unknown; wildlife_near_colonist: 1 wild animal(s) within 12 cells of a colonist (1 new since baseline); proximity only, hunting intent unmeasured; mental_break: Dianoga entered mental state Manhunter (
+[fw] 21:37:21 site_ready_foul_pool PASS 
+[fw] 21:37:59 job_consumes_the_configured_amount_and_announces_suppression PASS 
+[fw] 21:38:46 with_the_toggle_off_the_charge_is_spent_and_nothing_is_announced PASS 
+[fw] 21:38:54 site_ready_RM_Vaulm PASS 
+[fw] 21:38:55 RM_Vaulm_refuses_with_its_hediff_when_hurt PASS 
+[fw] 21:39:50 RM_Vaulm_refusal_is_cooldown_gated_not_a_roll UNMEASURED UNMEASURED: RM_Vaulm left the pad during the cooldown wait
+[fw] 21:39:57 site_ready_RM_Drommath PASS 
+[fw] 21:39:57 RM_Drommath_refuses_with_its_hediff_when_hurt PASS 
+[fw] 21:40:50 RM_Drommath_refusal_is_cooldown_gated_not_a_roll UNMEASURED UNMEASURED: RM_Drommath left the pad during the cooldown wait
+[fw] 21:40:58 site_ready_stake PASS 
+[fw] 21:40:58 an_empty_stake_reads_no_bait PASS 
+[fw] 21:41:32 haul_to_stake_chains_the_downed_bait PASS 
+[fw] 21:41:32 a_baited_stake_reads_baited PASS 
+[fw] 21:41:33 destroying_the_stake_frees_the_bait PASS 
+[fw] 21:41:42 site_ready_flora PASS 
+[fw] 21:46:20 every_flora_yields_its_harvest_item UNMEASURED surprise: colonist_injured_unexpectedly: colonist Bowman gained 1 new hediff(s) (DBHDehydration); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T213133\FeverWood__flora_harvest__colonist_injured_unexpectedly__t52900__001.json]
+[fw] 21:46:27 site_ready_raid PASS 
+[fw] 21:48:55 with_the_lure_toggle_off_no_raid_comes UNMEASURED surprise: colonist_injured_unexpectedly: colonist Inga gained 1 new hediff(s) (BadHygiene); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T213133\FeverWood__lure_raid__colonist_injured_unexpectedly__t58324__001.json]
+[fw] 21:49:40 a_staked_lure_draws_the_swarm UNMEASURED surprise: colonist_injured_unexpectedly: colonist Inga gained 1 new hediff(s) (BadHygiene); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T213133\FeverWood__lure_raid__colonist_injured_unexpectedly__t58324__001.json]
+[fw] 21:49:59 a_seen_intruder_rallies_the_whole_line UNMEASURED surprise: colonist_damaged: colonist Owen took 1 damage event(s): Bite by RM_Kurreth; colonist_downed: colonist Owen is downed [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T213133\FeverWood__hive_rally__colonist_damaged__t58924__001.json]
+[fw] 21:50:00 with_detection_off_the_same_layout_rallies_nobody UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Owen took 1 damage event(s): Bite by RM_Kurreth; colonist_downed: colonist Owen is downed [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modc
+[fw] 21:51:06 a_hungry_glomvar_eats_a_kurreth_unseen_and_ignores_the_colonist UNMEASURED surprise: colonist_damaged: colonist Owen took 1 damage event(s): Bite by RM_Kurreth; colonist_downed: colonist Owen is downed; colonist_injured_unexpectedly: colonist Owen gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\mod
+[fw] 21:51:07 with_the_parasite_toggle_off_the_kurreth_lives UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Owen took 1 damage event(s): Bite by RM_Kurreth; colonist_downed: colonist Owen is downed; colonist_injured_unexpectedly: colonist Owen gained 1 new hediff(s) (Blo
+[fw] 21:51:14 lure_routes_kurreth_to_the_theft_lordjob PASS 
+[fw] 21:51:14 a_kurreth_column_carries_thornbugs_off_alive FAIL ExpectationFailed: ProofRaid did not stage the column: (static_call returned no result: success=False message=Invoke threw NullReferenceException: Object reference not set to an instance of an object)
+[fw] 21:51:21 column_quest_wired PASS 
+[fw] 21:51:21 a_theft_opens_a_column_camp_holding_the_animals FAIL ExpectationFailed: ProofRaid did not stage the column: (static_call returned no result: success=False message=Invoke threw NullReferenceException: Object reference not set to an instance of an object)
+[fw-note] column after deadline: {}
+[fw] 21:51:21 an_unreached_column_moves_on_and_says_so UNMEASURED upstream failed -- this chain's state is meaningless
+[fw] 21:51:27 weather_and_condition_wired PASS 
+[fw] 21:51:27 gate_follows_the_temperature_setting PASS 
+[fw] 21:51:28 seepril_yield_doubles_while_boiling PASS 
+[fw] 21:51:28 a_spark_in_the_haze_flashes_and_burns_it_off PASS 
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 13
+     bland_world: reusing the bland map already current (tile 16419, 11 colonists)
+  ok   bland world established (tile 16419, map 1)
+  -- RustCathedral
+     !! RustCathedral: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 32, 'UNMEASURED': 11} surprises=0 serious=[]
+  -- BlueDesert
+     !! BlueDesert: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 37, 'FAIL': 3, 'UNMEASURED': 20} surprises=1 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- FeverWood
+     !! FeverWood: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 83, 'UNMEASURED': 15, 'FAIL': 2} surprises=7 serious=['colonist_damaged:SURPRISE', 'colonist_downed:SURPRISE', 'colonist_injured_unexpectedly:SURPRISE', 'fire_on_map:SURPRISE', 'mental_break:SURPRISE', 'raid_arrived:SURPRISE', 'wildlife_near_colonist:SURPRISE']
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 5/5 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

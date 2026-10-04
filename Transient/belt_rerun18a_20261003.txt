@@ -1,0 +1,24 @@
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 13
+  FAIL bland world established (tile 16419, map 1)  -- ['ruins present: 3', "colonist Human90205 carries ['Bite']"]
+  -- KeelHoist
+     !! KeelHoist: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 15, 'FAIL': 1, 'UNMEASURED': 2} surprises=0 serious=[]
+  -- AcousticScanner
+     !! AcousticScanner: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 17, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- AssailantSalvage
+     !! AssailantSalvage: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 5, 'UNMEASURED': 6, 'FAIL': 1} surprises=0 serious=[]
+  -- FallLineArrivals
+     !! FallLineArrivals: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 8, 'FAIL': 2, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- TheSump
+     !! TheSump: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 29, 'UNMEASURED': 11} surprises=0 serious=[]
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL situational_rerun -- 4/5 checks ; failed: bland world established (tile 16419, map 1)
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl
