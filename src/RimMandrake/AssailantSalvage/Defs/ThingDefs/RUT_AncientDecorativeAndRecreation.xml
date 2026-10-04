@@ -164,9 +164,11 @@
       <Flammability>0</Flammability>
     </statBases>
     <graphicData>
+      <!-- one rotating sprite on a square canvas: the landed artpipe east facing drew the row
+           horizontally (wrong for a 1x3 east footprint), so only the validated south is used -->
       <texPath>Things/Building/Ancient/RUT_CryptoAncientTerminalBank</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3,1)</drawSize>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
     </graphicData>
     <costList>
       <ChunkSlagSteel>6</ChunkSlagSteel>
@@ -295,8 +297,10 @@
          same JoyGainFactor, just filed under the vanilla joy kind instead of a
          donor-specific one. -->
     <graphicData>
+      <!-- one rotating top-down sprite (the landed artpipe south, turned to portrait to sit on the 2x3
+           south footprint); its east facing was a side elevation, a different view, so it is not used -->
       <texPath>Things/Building/Ancient/RUT_AncientWargamingTable</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
+      <graphicClass>Graphic_Single</graphicClass>
       <shaderType>CutoutComplex</shaderType>
       <drawSize>(4,4)</drawSize>
       <damageData>
