@@ -131,6 +131,14 @@ namespace RimMandrake.TheSump
             Scan();
         }
 
+        /// <summary>One seal/unseal pass now (CompTick runs it every scanIntervalTicks; RM_TheSumpProof drives it).</summary>
+        public void ScanNow()
+        {
+            Scan();
+        }
+
+        public bool IsSealed(Thing t) => sealedThings.Contains(t);
+
         private void Scan()
         {
             if (!parent.Spawned || !(parent is Building_Storage storage))
