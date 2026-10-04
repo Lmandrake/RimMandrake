@@ -501,18 +501,36 @@ namespace RimMandrake.MessyConduit.Hose
         // ---------------------------------------------------------------- install validity
         /// <summary>Null when a hose may be laid from the reel cell to target, else the reason. maxLength is the
         /// hose's length (cells): the straight distance and the planned route must both fit it.</summary>
-        public static string CheckInstall(CordWorld w, Cell reel, Cell target, double maxLength)
+        public static string CheckInstall(CordWorld w, Cell reel, Cell target, double maxLength) =>
+            CheckInstall(w, new HoseReelRect(reel.X, reel.Z, 1, 1), target, maxLength);
+
+        /// <summary>Any reel footprint (round 3: the reel is 2x2). Distances run from the reel's CENTRE (where the hose
+        /// leaves it); the route is A* from the reel cell nearest the target plus the hop from the centre to that cell.</summary>
+        public static string CheckInstall(CordWorld w, HoseReelRect reel, Cell target, double maxLength)
         {
             if (!w.InBounds(target)) return "out of bounds";
-            if (target == reel) return "same cell";
+            if (reel.Contains(target)) return "same cell";
             if (V2.Dist(reel.Centre, target.Centre) > maxLength) return "too far";
             if (!w.IsWalkable(target)) return "target blocked";
-            List<Cell> path = CordPlanner.AStar(w, reel, target, 20000);
+            Cell s = reel.StartCellToward(target);
+            List<Cell> path = CordPlanner.AStar(w, s, target, 20000);
             if (path == null) return "no route";
-            double len = 0;
+            double len = V2.Dist(reel.Centre, s.Centre);
             for (int i = 1; i < path.Count; i++) len += V2.Dist(path[i - 1].Centre, path[i].Centre);
             if (len * 1.08 > maxLength) return "route too long";
             return null;
+        }
+
+        /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1 (owner, by card 2026-10-04: "reroute within its length; if none exists,
+        /// retract to the reel with a visible alert. Never a ghost hose; also enforce length on re-plan."). Run when an
+        /// obstacle changes a laid hose's corridor, or its lay failed: null = keep it laid (re-route), else the reason it
+        /// must be reeled in. The SAME test as installing, so a re-plan can never keep a hose install would refuse.
+        /// layFailed: the planner could not lay a hose the route check passed -- also retracted, never left invisible.</summary>
+        public static string CheckReplan(CordWorld w, HoseReelRect reel, Cell target, double maxLength, bool layFailed, string layReason)
+        {
+            string why = CheckInstall(w, reel, target, maxLength);
+            if (why != null) return why;
+            return layFailed ? (string.IsNullOrEmpty(layReason) ? "could not be laid" : layReason) : null;
         }
 
         // ---------------------------------------------------------------- flow signal rules
@@ -550,6 +568,50 @@ namespace RimMandrake.MessyConduit.Hose
     /// pipe-friendly building that opted in. Rank order is the preference order.</summary>
     public enum HosePortKind { Pipe, Tank, Other, None }
 
+    /// <summary>The reel's footprint (round 3, owner 2026-10-04: "the reel should be 2x2, not 1x1, as the shown hose is
+    /// quite large"). The hose leaves the reel at its CENTRE (a cell corner for 2x2) from under the sprite.</summary>
+    public struct HoseReelRect
+    {
+        public int X0, Z0, W, H;
+        public HoseReelRect(int x0, int z0, int w, int h) { X0 = x0; Z0 = z0; W = Math.Max(1, w); H = Math.Max(1, h); }
+        public V2 Centre => new V2(X0 + W / 2.0, Z0 + H / 2.0);
+        public bool Contains(Cell c) => c.X >= X0 && c.X < X0 + W && c.Z >= Z0 && c.Z < Z0 + H;
+        public bool Overlaps(HosePortCandidate o) => o.X0 < X0 + W && X0 < o.X0 + o.W && o.Z0 < Z0 + H && Z0 < o.Z0 + o.H;
+
+        /// <summary>The reel cells on one side (side = unit step outward), ascending along it.</summary>
+        public List<Cell> EdgeCells(Cell side)
+        {
+            var l = new List<Cell>();
+            if (side.X != 0) { int x = side.X > 0 ? X0 + W - 1 : X0; for (int z = Z0; z < Z0 + H; z++) l.Add(new Cell(x, z)); }
+            else { int z = side.Z > 0 ? Z0 + H - 1 : Z0; for (int x = X0; x < X0 + W; x++) l.Add(new Cell(x, z)); }
+            return l;
+        }
+
+        /// <summary>The reel cell nearest the target (the planner's start cell); ties to the lowest x, then z.</summary>
+        public Cell StartCellToward(Cell target)
+        {
+            Cell best = new Cell(X0, Z0);
+            double bd = double.MaxValue;
+            for (int x = X0; x < X0 + W; x++)
+                for (int z = Z0; z < Z0 + H; z++)
+                {
+                    var c = new Cell(x, z);
+                    double d = V2.Dist(c.Centre, target.Centre);
+                    if (d < bd - 1e-9) { bd = d; best = c; }
+                }
+            return best;
+        }
+
+        /// <summary>The cells just outside the footprint that share an edge with it (the only cells a port may occupy).</summary>
+        public List<Cell> Perimeter()
+        {
+            var l = new List<Cell>();
+            foreach (Cell s in HosePortRule.SideOrder)
+                foreach (Cell e in EdgeCells(s)) l.Add(e + s);
+            return l;
+        }
+    }
+
     public struct HosePortCandidate
     {
         public int X0, Z0, W, H;
@@ -567,19 +629,31 @@ namespace RimMandrake.MessyConduit.Hose
         public static readonly Cell[] SideOrder = { new Cell(1, 0), new Cell(0, 1), new Cell(-1, 0), new Cell(0, -1) };
 
         /// <summary>Index of the chosen candidate, or -1. side = the unit step from the reel to the contact cell.</summary>
-        public static int Pick(Cell reel, IList<HosePortCandidate> cands, out Cell side)
+        public static int Pick(Cell reel, IList<HosePortCandidate> cands, out Cell side) =>
+            Pick(new HoseReelRect(reel.X, reel.Z, 1, 1), cands, out side, out _);
+
+        /// <summary>Any reel footprint (round 3: 2x2). contact = the neighbour cell (outside the reel) across the shared
+        /// edge; the reel cell it touches is contact - side. Ties: kind, then side (E, N, W, S), then the lowest cell along
+        /// that side -- never candidate order.</summary>
+        public static int Pick(HoseReelRect reel, IList<HosePortCandidate> cands, out Cell side, out Cell contact)
         {
             side = new Cell(0, 0);
+            contact = new Cell(0, 0);
             int best = -1, bestRank = int.MaxValue;
             for (int i = 0; i < cands.Count; i++)
             {
                 HosePortCandidate c = cands[i];
-                if (c.Kind == HosePortKind.None || c.Contains(reel)) continue;
+                if (c.Kind == HosePortKind.None || reel.Overlaps(c)) continue;
                 for (int s = 0; s < SideOrder.Length; s++)
                 {
-                    if (!c.Contains(reel + SideOrder[s])) continue;
-                    int rank = (int)c.Kind * 8 + s;
-                    if (rank < bestRank) { bestRank = rank; best = i; side = SideOrder[s]; }
+                    List<Cell> edge = reel.EdgeCells(SideOrder[s]);
+                    for (int k = 0; k < edge.Count; k++)
+                    {
+                        Cell n = edge[k] + SideOrder[s];
+                        if (!c.Contains(n)) continue;
+                        int rank = ((int)c.Kind * 8 + s) * 64 + k;
+                        if (rank < bestRank) { bestRank = rank; best = i; side = SideOrder[s]; contact = n; }
+                    }
                 }
             }
             return best;

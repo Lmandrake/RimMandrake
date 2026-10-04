@@ -65,18 +65,18 @@ namespace RimMandrake.MessyConduit.Hose
         }
 
         /// <summary>The reel's coupled neighbour (null when none), the side it is on and its kind.</summary>
-        public static Thing Find(CompHoseReel r, out Cell side, out HosePortKind kind)
+        public static Thing Find(CompHoseReel r, out Cell side, out Cell contact, out HosePortKind kind)
         {
-            side = new Cell(0, 0);
+            side = contact = new Cell(0, 0);
             kind = HosePortKind.None;
             Map map = r.parent.Map;
             if (map == null) return null;
-            IntVec3 p = r.parent.Position;
+            HoseReelRect rect = r.Rect;
             var things = new List<Thing>();
             var cands = new List<HosePortCandidate>();
-            foreach (Cell s in HosePortRule.SideOrder)
+            foreach (Cell pc in rect.Perimeter())
             {
-                var c = new IntVec3(p.x + s.X, 0, p.z + s.Z);
+                var c = new IntVec3(pc.X, 0, pc.Z);
                 if (!c.InBounds(map)) continue;
                 List<Thing> l = c.GetThingList(map);
                 for (int i = 0; i < l.Count; i++)
@@ -90,7 +90,7 @@ namespace RimMandrake.MessyConduit.Hose
                     cands.Add(new HosePortCandidate(rc.minX, rc.minZ, rc.Width, rc.Height, k));
                 }
             }
-            int pick = HosePortRule.Pick(new Cell(p.x, p.z), cands, out side);
+            int pick = HosePortRule.Pick(rect, cands, out side, out contact);
             if (pick < 0) return null;
             kind = cands[pick].Kind;
             return things[pick];

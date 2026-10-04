@@ -38,7 +38,7 @@ namespace RimMandrake.MessyConduit.Hose
         private static int[] Ints(string s) => s.Split(',').Select(x => int.Parse(x.Trim(), CultureInfo.InvariantCulture)).ToArray();
 
         private static CompHoseReel ReelAt(RM_MapComponent_Hoses comp, int x, int z) =>
-            comp.Reels.FirstOrDefault(r => r.parent.Position.x == x && r.parent.Position.z == z);
+            comp.Reels.FirstOrDefault(r => r.parent.OccupiedRect().Contains(new IntVec3(x, 0, z)));   // any cell of the 2x2 reel
 
         private static string Run(Map map, RM_MapComponent_Hoses comp, string cmd)
         {
@@ -102,6 +102,7 @@ namespace RimMandrake.MessyConduit.Hose
               .Append(",\"relays\":").Append(RM_MapComponent_Hoses.Relays)
               .Append(",\"lastLayMs\":").Append(RM_MapComponent_Hoses.LastLayMs)
               .Append(",\"feedDraws\":").Append(comp.lastFeedDraws)
+              .Append(",\"retracts\":").Append(RM_MapComponent_Hoses.Retracts)
               .Append(",\"hoses\":[");
             bool first = true;
             foreach (CompHoseReel r in comp.Reels)
@@ -134,6 +135,11 @@ namespace RimMandrake.MessyConduit.Hose
                   .Append(",\"port\":").Append(S(r.Port(true)?.def.defName))
                   .Append(",\"portKind\":").Append(S(r.portKind.ToString()))
                   .Append(",\"portSide\":[").Append(r.portSide.X).Append(',').Append(r.portSide.Z).Append(']')
+                  .Append(",\"portContact\":[").Append(r.portContact.X).Append(',').Append(r.portContact.Z).Append(']')
+                  .Append(",\"footprint\":[").Append(r.Rect.X0).Append(',').Append(r.Rect.Z0).Append(',').Append(r.Rect.W).Append(',').Append(r.Rect.H).Append(']')
+                  .Append(",\"start\":[").Append(D(r.Rect.Centre.X)).Append(',').Append(D(r.Rect.Centre.Z)).Append(']')
+                  .Append(",\"retractReason\":").Append(S(r.lastRetractReason))
+                  .Append(",\"retractTick\":").Append(r.lastRetractTick)
                   .Append(",\"history\":[").Append(string.Join(",", r.history.Select(h => "[" + h.Key + "," + S(h.Value.ToString()) + "]"))).Append(']');
                 if (lay != null)
                 {
