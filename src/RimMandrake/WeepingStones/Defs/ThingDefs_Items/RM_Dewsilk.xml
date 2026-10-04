@@ -13,9 +13,8 @@
     <label>dewsilk cocoon</label>
     <description>A damp, pearl-grey cocoon the size of a thumbnail, combed from the mesh wings of a tamed mirrik swarm. Spun at a tailor bench it becomes dewsilk.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Wool</texPath>
+      <texPath>Things/Item/RM_DewsilkCocoon</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(205, 215, 220)</color>
     </graphicData>
     <stackLimit>100</stackLimit>
     <statBases>
@@ -37,9 +36,8 @@
     <label>dewsilk</label>
     <description>A pale, weightless fabric spun from mirrik cocoons. It sheds water, stays cool against the skin and insulates well against heat; the Weeping Stones' one export that caravans ask for by name.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Cloth</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(205, 220, 228)</color>
+      <texPath>Things/Item/RM_Dewsilk</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>100</stackLimit>
     <statBases>

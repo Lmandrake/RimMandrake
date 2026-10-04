@@ -2,8 +2,8 @@
 <!-- MIASMA_DECAY_CELLS_1 part A. RM_DecayCell: power from rot (RM_CompPowerPlantDecay: output = 600 W x power setting x
      lerp(0.3, 1, feed fullness), zero when empty); fed raw food (what rots; meals left out so cooks are not robbed, and the refill target is configurable); after 600 units digested
      it becomes RM_RottingBed. Cost uses delta loam, delta silt and delta salt: the design's "silt ceramic" has no def
-     (MEASURED: no ceramic item in src/), so raw delta silt stands in. Numbers // INVENTED. ART: placeholder vanilla
-     wood-fired generator, tinted; the rotting bed's yield (Star Wars Cuisine) is MIASMA_ROTTING_BED_CUISINE_1 and its
+     (MEASURED: no ceramic item in src/), so raw delta silt stands in. Numbers // INVENTED. ART: the cell is artpipe
+     RM_DecayCell; the rotting bed is still the vanilla wood-fired generator, tinted; the rotting bed's yield (Star Wars Cuisine) is MIASMA_ROTTING_BED_CUISINE_1 and its
      corpse disposal (MIASMA_ROTTING_BED_CORPSES_1) is RM_Building_RottingBed, Source/RM_RottingBed.cs. -->
 <Defs>
   <ThingDef ParentName="BuildingBase">
@@ -13,10 +13,9 @@
     <thingClass>Building</thingClass>
     <drawerType>MapMeshAndRealTime</drawerType>
     <graphicData>
-      <texPath>Things/Building/Power/WoodFiredGenerator</texPath>
+      <texPath>Things/Building/RM_DecayCell</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(2,2)</drawSize>
-      <color>(120,135,90)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>
