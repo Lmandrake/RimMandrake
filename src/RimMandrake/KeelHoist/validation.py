@@ -117,7 +117,7 @@ def fixed_site_frames(t):
             raise ExpectationFailed("tower door does not get RM_HoistFrameSiteExtension")
     with t.component("holder_lift_waits_for_gate", beyond_toggle=True):
         hoist = _src("RM_KeelHoist.cs")
-        raise_body = hoist[hoist.index("public void RaiseCradle()"):hoist.index("public override IEnumerable<Gizmo> GetGizmos()")]
+        raise_body = hoist[hoist.index("void RaiseCradle()"):hoist.index("public override IEnumerable<Gizmo> GetGizmos()")]
         if raise_body.find("GateOpen") < 0 or raise_body.find("GateOpen") > raise_body.find("TakeAll"):
             raise ExpectationFailed("RaiseCradle can empty a holder before checking its gate")
     with t.component("frame_defs_resolve_live", beyond_toggle=True):
