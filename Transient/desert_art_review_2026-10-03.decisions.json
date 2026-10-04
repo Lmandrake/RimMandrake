@@ -1,11 +1,556 @@
 {
-  "decisions": {},
-  "posture": "verdict",
   "criterion": "Nothing ranks these: rows are sorted by group then name, not by quality. Art fit is an eye judgment only; the validator passes were format checks (canvas, alpha, facing), not a look.",
+  "decidedCount": 88,
+  "decisions": {
+    "A_AA_BoulderMit": {
+      "at": "2026-10-04T07:08:03.234Z",
+      "decision": "keep",
+      "note": "Tint it darker stone",
+      "prefill": ""
+    },
+    "A_AA_Cactipine": {
+      "at": "2026-10-04T07:03:44.144Z",
+      "decision": "redo",
+      "note": "The needles should be very long, more like a porcupine",
+      "prefill": ""
+    },
+    "A_AA_DesertAve": {
+      "at": "2026-10-04T07:04:58.605Z",
+      "decision": "redo",
+      "note": "Tint bird more golden, and North face is wrong creature?",
+      "prefill": ""
+    },
+    "A_AA_Eyeling": {
+      "at": "2026-10-04T07:08:11.108Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_AA_Gigantelope": {
+      "at": "2026-10-04T07:06:57.259Z",
+      "decision": "redo",
+      "note": "Unify beast faces",
+      "prefill": ""
+    },
+    "A_AA_MammothWorm": {
+      "at": "2026-10-04T13:58:36.481Z",
+      "decision": "keep",
+      "note": "Tint this one towards violet",
+      "prefill": ""
+    },
+    "A_AA_Needlepost": {
+      "at": "2026-10-04T14:01:18.545Z",
+      "decision": "redo",
+      "note": "This is absurd. It is not a four legged beast at all, but supposedly a near stationary cactus-like object. Please make it look more like an alien Cholla with two eye stalks.",
+      "prefill": ""
+    },
+    "A_AA_Needleroll": {
+      "at": "2026-10-04T14:02:33.867Z",
+      "decision": "redo",
+      "note": "This is incoherent. Please make it look like a large tumbleweed with oddly thick branches and two eye stalks peeking out from within.",
+      "prefill": ""
+    },
+    "A_AA_SandProwler": {
+      "at": "2026-10-04T14:05:17.758Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_AA_SandSquid": {
+      "at": "2026-10-04T14:06:03.739Z",
+      "decision": "redo",
+      "note": "No, it should look like a huge squid, not have elephant-like legs at all. Like a huge squid adapted to live in and emerge from the fine desert sand",
+      "prefill": ""
+    },
+    "A_AA_Terramorph": {
+      "at": "2026-10-04T14:08:50.123Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_AA_TetraSlug": {
+      "at": "2026-10-04T14:11:35.137Z",
+      "decision": "redo",
+      "note": "Each face looks like a different creature.",
+      "prefill": ""
+    },
+    "A_AA_Wildpawn": {
+      "at": "2026-10-04T14:14:19.738Z",
+      "decision": "keep",
+      "note": "Tint different shades for fun",
+      "prefill": ""
+    },
+    "A_AA_Wildpod": {
+      "at": "2026-10-04T14:14:11.073Z",
+      "decision": "keep",
+      "note": "Tint different shades for fun",
+      "prefill": ""
+    },
+    "A_Anooba": {
+      "at": "2026-10-04T07:07:45.878Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Bantha": {
+      "at": "2026-10-04T07:07:51.704Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Bolotaur": {
+      "at": "2026-10-04T07:07:54.580Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Cannok": {
+      "at": "2026-10-04T07:03:31.472Z",
+      "decision": "redo",
+      "note": "Different animals in different faces, and too cartoonish",
+      "prefill": ""
+    },
+    "A_Clodhopper": {
+      "at": "2026-10-04T07:04:18.634Z",
+      "decision": "redo",
+      "note": "less cartoonish",
+      "prefill": ""
+    },
+    "A_Convor": {
+      "at": "2026-10-04T07:04:32.290Z",
+      "decision": "redo",
+      "note": "different animals in different faces",
+      "prefill": ""
+    },
+    "A_Corinathoth": {
+      "at": "2026-10-04T07:04:42.701Z",
+      "decision": "redo",
+      "note": "different animals in different faces",
+      "prefill": ""
+    },
+    "A_Eopie": {
+      "at": "2026-10-04T07:05:13.253Z",
+      "decision": "redo",
+      "note": "Look online for images of eopie's they are not mule like at all.",
+      "prefill": ""
+    },
+    "A_Falumpaset": {
+      "at": "2026-10-04T07:05:43.934Z",
+      "decision": "redo",
+      "note": "every animal appears to be something different",
+      "prefill": ""
+    },
+    "A_FeralNerf": {
+      "at": "2026-10-04T07:06:04.082Z",
+      "decision": "redo",
+      "note": "Not a Nerf from Star wars...",
+      "prefill": ""
+    },
+    "A_Gizka": {
+      "at": "2026-10-04T07:07:14.670Z",
+      "decision": "redo",
+      "note": "We had a good Gizka.... it didn't need to be redone, and it isn't a frog.",
+      "prefill": ""
+    },
+    "A_Gorg": {
+      "at": "2026-10-04T07:07:29.908Z",
+      "decision": "redo",
+      "note": "This is absolutely not a Gorg. Look it up. Not frog like. ",
+      "prefill": ""
+    },
+    "A_Iriaz": {
+      "at": "2026-10-04T07:09:40.602Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_IridonianReek": {
+      "at": "2026-10-04T07:09:44.469Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_JOE_Landopus": {
+      "at": "2026-10-04T07:12:10.867Z",
+      "decision": "redo",
+      "note": "This is just horrible. It should be an octopus with blue rings that drags itself along the ground, not a man creature with loctupus legs. ",
+      "prefill": ""
+    },
+    "A_Jakobeast": {
+      "at": "2026-10-04T07:09:51.299Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Jamel": {
+      "at": "2026-10-04T07:09:55.957Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Jimvu": {
+      "at": "2026-10-04T07:10:19.681Z",
+      "decision": "redo",
+      "note": "",
+      "prefill": ""
+    },
+    "A_KowakianMonkeyLizard": {
+      "at": "2026-10-04T07:10:35.188Z",
+      "decision": "redo",
+      "note": "different faces must look the same. See web",
+      "prefill": ""
+    },
+    "A_KraytDragon": {
+      "at": "2026-10-04T07:10:45.724Z",
+      "decision": "redo",
+      "note": "unify faces",
+      "prefill": ""
+    },
+    "A_Kreetle": {
+      "at": "2026-10-04T13:56:45.304Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Krykna": {
+      "at": "2026-10-04T13:56:57.255Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Kwi": {
+      "at": "2026-10-04T13:57:29.949Z",
+      "decision": "keep",
+      "note": "Generate variants of this by tinting them various shades of red and orange.",
+      "prefill": ""
+    },
+    "A_Kybuck": {
+      "at": "2026-10-04T13:57:52.135Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_LongtailGorg": {
+      "at": "2026-10-04T07:12:20.891Z",
+      "decision": "redo",
+      "note": "look up gorg",
+      "prefill": ""
+    },
+    "A_Lothcat": {
+      "at": "2026-10-04T07:12:38.611Z",
+      "decision": "redo",
+      "note": "Look up online, unify, less cartoonish",
+      "prefill": ""
+    },
+    "A_Massiff": {
+      "at": "2026-10-04T13:58:52.434Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Mudhorn": {
+      "at": "2026-10-04T13:59:35.156Z",
+      "decision": "redo",
+      "note": "This is very good except that it needs to have shaggy hide.",
+      "prefill": ""
+    },
+    "A_Mynock": {
+      "at": "2026-10-04T13:59:59.387Z",
+      "decision": "current",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Nerf": {
+      "at": "2026-10-04T14:02:43.810Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Nuna": {
+      "at": "2026-10-04T14:03:00.508Z",
+      "decision": "current",
+      "note": "We already had a good looking Nuna",
+      "prefill": ""
+    },
+    "A_Pikobis": {
+      "at": "2026-10-04T14:03:11.661Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Porg": {
+      "at": "2026-10-04T14:03:19.086Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Pufferpig": {
+      "at": "2026-10-04T14:03:49.453Z",
+      "decision": "redo",
+      "note": "Needs to look more alien. Look up Pufferpig on the internet to get better info.",
+      "prefill": ""
+    },
+    "A_Qormot": {
+      "at": "2026-10-04T14:04:32.726Z",
+      "decision": "redo",
+      "note": "Check internet lore, this looks too cartonish.",
+      "prefill": ""
+    },
+    "A_RSW_ImperialToad": {
+      "at": "2026-10-04T07:09:33.059Z",
+      "decision": "",
+      "note": "Cut it",
+      "prefill": ""
+    },
+    "A_RSW_Jellypot": {
+      "at": "2026-10-04T07:10:02.975Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_RSW_MossBeetle": {
+      "at": "2026-10-04T13:58:59.102Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Rat": {
+      "at": "2026-10-04T14:17:40.947Z",
+      "decision": "redo",
+      "note": "Escaped white lab rat",
+      "prefill": ""
+    },
+    "A_Ronto": {
+      "at": "2026-10-04T14:04:41.098Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Runyip": {
+      "at": "2026-10-04T14:04:54.073Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Scavrat": {
+      "at": "2026-10-04T14:06:21.715Z",
+      "decision": "redo",
+      "note": "more alien",
+      "prefill": ""
+    },
+    "A_Scurrier": {
+      "at": "2026-10-04T14:06:39.351Z",
+      "decision": "redo",
+      "note": "more alien",
+      "prefill": ""
+    },
+    "A_Shaak": {
+      "at": "2026-10-04T14:06:52.122Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Shyrack": {
+      "at": "2026-10-04T14:07:02.531Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Skalder": {
+      "at": "2026-10-04T14:07:26.310Z",
+      "decision": "redo",
+      "note": "not all facings are the same animal",
+      "prefill": ""
+    },
+    "A_Sketto": {
+      "at": "2026-10-04T14:07:54.188Z",
+      "decision": "redo",
+      "note": "just look like little dragons. Look up canon imagery in the database.",
+      "prefill": ""
+    },
+    "A_Strill": {
+      "at": "2026-10-04T14:08:14.446Z",
+      "decision": "redo",
+      "note": "Look in canon examples",
+      "prefill": ""
+    },
+    "A_TeeMuss": {
+      "at": "2026-10-04T14:08:27.019Z",
+      "decision": "redo",
+      "note": "Look in canon examples",
+      "prefill": ""
+    },
+    "A_Terrorworm": {
+      "at": "2026-10-04T14:10:37.437Z",
+      "decision": "keep",
+      "note": "Tint this an eerie blue with red insides. Rename to Assailant Worm",
+      "prefill": ""
+    },
+    "A_Urusai": {
+      "at": "2026-10-04T14:11:51.549Z",
+      "decision": "redo",
+      "note": "Look at canon, each face appears diferent creature.",
+      "prefill": ""
+    },
+    "A_Uvak": {
+      "at": "2026-10-04T14:12:08.203Z",
+      "decision": "redo",
+      "note": "Check canon lore, each face looks different",
+      "prefill": ""
+    },
+    "A_Varactyl": {
+      "at": "2026-10-04T14:12:20.156Z",
+      "decision": "redo",
+      "note": "Check lore, each face looks different",
+      "prefill": ""
+    },
+    "A_Voorpak": {
+      "at": "2026-10-04T14:12:30.282Z",
+      "decision": "redo",
+      "note": "Check lore, each face looks different",
+      "prefill": ""
+    },
+    "A_Vulptex": {
+      "at": "2026-10-04T14:12:36.542Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_WarWyrm": {
+      "at": "2026-10-04T14:13:08.355Z",
+      "decision": "redo",
+      "note": "Check lore, each face looks different. But keep this creature, that's an amazing render! New beast somewhere.",
+      "prefill": ""
+    },
+    "A_Whisperbird": {
+      "at": "2026-10-04T14:13:20.875Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_WompRat": {
+      "at": "2026-10-04T14:14:27.113Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "A_Worrt": {
+      "at": "2026-10-04T14:14:46.982Z",
+      "decision": "redo",
+      "note": "Check canon",
+      "prefill": ""
+    },
+    "A_Wraid": {
+      "at": "2026-10-04T14:14:58.783Z",
+      "decision": "redo",
+      "note": "Check canon imagery, each face looks different",
+      "prefill": ""
+    },
+    "A_Zeer": {
+      "at": "2026-10-04T14:15:09.178Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_AB_Aaklac": {
+      "at": "2026-10-04T14:15:21.190Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_AB_DessertTree": {
+      "at": "2026-10-04T14:15:57.762Z",
+      "decision": "",
+      "note": "THIS IS CUT",
+      "prefill": ""
+    },
+    "P_AB_GiantStikehr": {
+      "at": "2026-10-04T14:17:45.744Z",
+      "decision": "redo",
+      "note": "",
+      "prefill": ""
+    },
+    "P_AB_HardyGrass": {
+      "at": "2026-10-04T14:16:06.090Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_Plant_Bloddle": {
+      "at": "2026-10-04T14:15:33.076Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_Plant_Brambles": {
+      "at": "2026-10-04T14:15:37.857Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_Plant_Bush": {
+      "at": "2026-10-04T14:15:40.644Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_Plant_Chakroot_Wild": {
+      "at": "2026-10-04T14:16:18.214Z",
+      "decision": "current",
+      "note": "",
+      "prefill": ""
+    },
+    "P_Plant_HealrootWild": {
+      "at": "2026-10-04T14:16:59.228Z",
+      "decision": "redo",
+      "note": "This needs to be instantly recognizable on the map in appearance and color. Try again.",
+      "prefill": ""
+    },
+    "P_Plant_HubbaGourd_Wild": {
+      "at": "2026-10-04T14:17:14.925Z",
+      "decision": "current",
+      "note": "",
+      "prefill": ""
+    },
+    "P_Plant_Nysyllin_Wild": {
+      "at": "2026-10-04T14:17:22.837Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_RG_Plant_AridGrass": {
+      "at": "2026-10-04T14:16:04.241Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_RG_Plant_CreepStern": {
+      "at": "2026-10-04T14:15:43.729Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_RG_Plant_CrimsonCushion": {
+      "at": "2026-10-04T14:15:46.304Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    },
+    "P_RG_Plant_Dervish": {
+      "at": "2026-10-04T14:15:48.768Z",
+      "decision": "keep",
+      "note": "",
+      "prefill": ""
+    }
+  },
+  "posture": "verdict",
   "reviewStatus": {
-    "state": "prefill",
-    "by": null,
     "at": null,
-    "evidence": "generated 2026-10-03; no row has a decision, nothing pre-selected, no human has ruled"
-  }
+    "by": null,
+    "evidence": "generated 2026-10-03; no row has a decision, nothing pre-selected, no human has ruled",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-04T07:17:46-0700",
+  "savedBy": "review-sheet-sidecar",
+  "writeCount": 214
 }
