@@ -103,16 +103,14 @@
   </LetterDef>
 
   <!-- The tipping pad: a marker post; RM_CompTippingPad licenses the 7x7 area around it.
-       Art: PLACEHOLDER — the vanilla ship landing beacon texture
-       (Things/Building/Misc/ShipLandingBeacon, verified against the decompiled 1.6 def). -->
+       Art: own (artpipe RM_WasteTippingPad). -->
   <ThingDef ParentName="BuildingBase">
     <defName>RM_WasteTippingPad</defName>
     <label>waste tipping pad</label>
     <description>A marker post that licenses the ground around it as a waste tipping pad. A licensed convoy lands its casks inside the marked area. Select it to see the area.</description>
     <graphicData>
-      <texPath>Things/Building/Misc/ShipLandingBeacon</texPath>
+      <texPath>Things/Building/RM_WasteTippingPad</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(200,190,90)</color>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
     <passability>PassThroughOnly</passability>

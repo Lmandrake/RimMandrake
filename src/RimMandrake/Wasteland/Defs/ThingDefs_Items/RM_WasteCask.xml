@@ -7,8 +7,7 @@
   bay it does not deteriorate and, while the bay's seals hold, does not leak.
   Marked as waste (RM_WasteMarkerExtension) so a stockpile of them lures the Middenshell.
 
-  Art: PLACEHOLDER — the vanilla Biotech wastepack texture (Things/Item/Resource/Wastepack,
-  verified against the decompiled 1.6 Wastepack def). A bespoke cask is owed.
+  Art: own (artpipe RM_WasteCask), a one-texture StackCount folder.
 -->
 <Defs>
 
@@ -17,7 +16,7 @@
     <label>waste cask</label>
     <description>A heavy sealed drum of old, dangerous waste — dose-bearing slag, spent cells, contaminated sludge — the kind of thing the Wasteland has been collecting for centuries.\n\nIt is safe while it is whole. Breached below half its integrity it leaks tox gas and pollution until it is moved into a powered sealed cask bay or off the map, and a cask destroyed outright spills everything at once. Left outdoors it weathers.\n\nA sealed cask bay holds casks safely, and a tamed sloghog or sootgrazer beside the bay can digest them into bezoars or soot bricks. A cask can also be dug back into the ground — illegally.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/Wastepack</texPath>
+      <texPath>Things/Item/Resource/RM_WasteCask</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
       <drawSize>1.2</drawSize>
     </graphicData>

@@ -137,16 +137,15 @@
     </modExtensions>
   </ThingDef>
 
-  <!-- MIASMA_ROTTING_BED_CORPSES_1: no bone item exists in 1.6 + DLCs (MEASURED 2026-10-03, RimSage). ART: placeholder
-       vanilla skull stack, bleached; own art is an artpipe job. -->
+  <!-- MIASMA_ROTTING_BED_CORPSES_1: no bone item exists in 1.6 + DLCs (MEASURED 2026-10-03, RimSage). ART: own
+       (artpipe RM_Bones). -->
   <ThingDef ParentName="ResourceBase">
     <defName>RM_Bones</defName>
     <label>bones</label>
     <description>Clean bones left when a rotting bed has finished with a body. Light, dry and slightly greasy.</description>
     <graphicData>
-      <texPath>Things/Item/Skull</texPath>
+      <texPath>Things/Item/Resource/RM_Bones</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
-      <color>(225,215,190)</color>
       <drawSize>(0.7,0.7)</drawSize>
     </graphicData>
     <statBases>

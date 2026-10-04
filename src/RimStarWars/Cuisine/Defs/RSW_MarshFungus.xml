@@ -5,8 +5,7 @@
      cross-tier wiring is Patches/RSW_RottingBed_MarshFungus.xml, guarded on mandrake.rm.miasma.
      It is PlantFoodRaw (through RSW_CultureStarters, a child of PlantFoodRaw) so RSW_CookFungusOnAStick and vanilla cooking
      take it today; RSW_CultureStarters is the tag the hazard-pantry and the fermentation crock will read when those rungs
-     of high_cuisine_deep_design.md land. Numbers // INVENTED. ART: placeholder = vanilla raw fungus, tinted; own art is an
-     artpipe job (RSW_MarshFungus). -->
+     of high_cuisine_deep_design.md land. Numbers // INVENTED. ART: own (artpipe RSW_MarshFungus). -->
 <Defs>
   <ThingCategoryDef>
     <defName>RSW_CultureStarters</defName>
@@ -19,9 +18,8 @@
     <label>marsh fungus</label>
     <description>A pale, rubbery swamp fungus that grows best in warm rot. Bland and a little sour raw; mashed, it turns into a sweet, creamy paste that hermits on swamp worlds eat like yogurt. Cooks well on a stick, and makes a good starter for anything left to ferment.</description>
     <graphicData>
-      <texPath>Things/Item/Resource/PlantFoodRaw/RawFungus</texPath>
+      <texPath>Things/Item/RSW_MarshFungus</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(170,185,140)</color>
     </graphicData>
     <statBases>
       <MarketValue>1.4</MarketValue>
