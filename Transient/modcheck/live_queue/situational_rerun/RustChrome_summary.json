@@ -1,0 +1,323 @@
+{
+ "chains": [
+  {
+   "name": "boot_theme_applied",
+   "components": [
+    {
+     "name": "colour_fields_resolved",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no recent log line matched tag='[RimMandrake.RustChrome]' field=None value=None (last matching line: None)",
+     "evidence": [
+      {
+       "call": "expect_log_contains([RimMandrake.RustChrome], None=None)",
+       "result": false
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "override_textures_static",
+   "components": [
+    {
+     "name": "fourteen_overrides_present_nonblank_vanilla_sized",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "theme_toggle_applies_and_restores",
+   "components": [
+    {
+     "name": "static_apply_restore_symmetry",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "the_theme_actually_differs_from_vanilla",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RustChromeColors.ProofTheme answered nothing (DLL not rebuilt/deployed yet?): No public static ProofTheme with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofTheme with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofTheme(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_9ac58265dc5d412bb931524c53df9652",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:20:06.7787424+00:00",
+         "CompletedAtUtc": "2026-10-04T11:20:06.8197916+00:00",
+         "DurationMs": 41,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "theme_on_sets_the_six_fields_and_the_tab_fill_to_the_palette",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RustChromeColors.ProofTheme answered nothing (DLL not rebuilt/deployed yet?): No public static ProofTheme with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "themeEnabled_off_restores_the_captured_vanilla_colours_and_texture",
+     "toggle": "themeEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RustChromeColors.ProofTheme answered nothing (DLL not rebuilt/deployed yet?): No public static ProofTheme with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001E730283CD0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\RustChrome.md",
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T041742-situational_rerun-36080",
+  "git": {
+   "source": "git",
+   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+  },
+  "deploy_start": {
+   "mod": "RustChrome",
+   "at": "2026-10-04T04:19:47",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/RustChrome",
+   "src_hash": "409224fe7e354633",
+   "deployed_hash": "409224fe7e354633",
+   "n_src": 18,
+   "n_deployed": 18,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeRustChrome.dll",
+     "sha": "326594e9fa92a900",
+     "srchash": "# project: RimMandrake/RustChrome/Source/RustChrome.csproj\n# dll"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "RustChrome",
+   "at": "2026-10-04T04:20:08",
+   "state": "in-sync",
+   "reason": null,
+   "src_dir": "src/RimMandrake/RustChrome",
+   "src_hash": "409224fe7e354633",
+   "deployed_hash": "409224fe7e354633",
+   "n_src": 18,
+   "n_deployed": 18,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Assemblies/RimMandrakeRustChrome.dll",
+     "sha": "326594e9fa92a900",
+     "srchash": "# project: RimMandrake/RustChrome/Source/RustChrome.csproj\n# dll"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}

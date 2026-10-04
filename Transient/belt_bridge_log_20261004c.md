@@ -1,0 +1,33 @@
+# belt bridge log 20261004c (round 3)
+- 03:03:23 skeleton created, read 004b
+- 03:03:46 set_gas gasType is a closed enum (ToxGas|BlindSmoke|RotStink|DeadlifeDust): AB_MycoticSpores clear can never work; reading destroy_bulk filters
+- 03:04:00 bridge taken, game UP
+- 03:04:36 harness fixed: reuse-path trims surplus player pawns (clear_area), AB gas via destroy_batch Gas; running selftests
+- 03:07:13 harness committed+pushed 3a88ebb6b; CUT_BY_NOBODY_SOURCE_1 filed+noted; starting FeverWood rerun
+- 03:07:26 FeverWood rerun started bg -> Transient/belt_rerun_FeverWood_20261004c.txt
+- 03:07:41 StockPoolPen: Invalid count:-1 = Toils_Haul.ErrorCheckForCarry when curJob.count<=0 (engine self-heals to 1); WG sets count=1 so the job came from a harness/order_pawn path
+- 03:07:56 WeepingStones count=1 fix pushed
+- 03:12:22 FeverWood running
+- 03:14:17 FeverWood running, no colonist_died so far
+- 03:18:05 FeverWood running healthy
+- 03:19:41 FeverWood run3: 78P/19U/4F surprises 8 (13->8; colonist count fixed 12->3); 4 FAIL = anchor+45 outside map -> anchor_margin 67 pushed; rerunning
+- 03:20:30 KeelHoist theory resolved offline: KeepersBuying needs !GateOpen, bland map parent=player => gate open; sale component now UNMEASURED w/ reason; pushed
+- 03:24:31 FeverWood run4 in progress
+- 03:30:33 FeverWood run4 stake chain passing
+- 03:34:31 flora phase
+- 03:37:53 FeverWood run4: 85 PASS/16 UNMEAS/0 FAIL, surprises 10, no FATAL; recorded
+- 03:38:11 proven 130 -> 134 of 1757 (FeverWood 85/101); starting KeelHoist+WeepingStones rerun
+- 03:43:21 KeelHoist done?, WeepingStones in progress
+- 03:47:26 WeepingStones running
+- 03:49:31 watchdog STALLED belt_logs (offline builder log 23m silent; not mine, flagged to parent)
+- 03:55:11 WeepingStones continuing
+- 03:57:46 KeelHoist 19/24 proven 0F, WeepingStones 62/65 proven but 7 FAIL (jobs never ran: net/stock/feed/harvest/cull/dewgourd); recorded
+- 03:58:09 WEEPINGSTONES_STOCK_JOB_LOOP_1 filed
+- 03:58:28 WS draft-idle-colonists fix pushed; rerunning WeepingStones
+- 04:04:24 WS rerun2 in progress; NET still fails (known flee finding)
+- 04:08:08 WS rerun2 near end; next suites MovingDunes.. are not in suite_mods registry, will try --mods
+- 04:14:08 WS rerun2 finishing
+- 04:16:04 WS recorded 54P/3F; MovingDunes rerun started
+- 04:17:42 MovingDunes 14P/2F/23U recorded; batch RaidRedesigner,SeaShores,RustChrome,RestrainingBolts,GravshipLanding,TheSump started
+- 04:21:32 batch running
+- 04:25:17 batch done: proven 227 of 1853 (denominator grew with new suites); TheSump 25 tainted stale-deploy; fails above. releasing bridge

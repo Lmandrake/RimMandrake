@@ -1,0 +1,355 @@
+{
+ "chains": [
+  {
+   "name": "healer_ran_clean",
+   "components": [
+    {
+     "name": "boot_and_heal",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "0 message(s) of 1000 in the buffer.",
+        "totalInBuffer": 1000,
+        "messages": [],
+        "ticksGame": 426242,
+        "operation": {
+         "OperationId": "op_582845a3d945491f963ff74a2dea3f3c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:19:05.5767968+00:00",
+         "CompletedAtUtc": "2026-10-04T11:19:05.6273348+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [
+      "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Screenshots\\boot_and_heal_1791112745.png"
+     ],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  },
+  {
+   "name": "sea_shore_rules",
+   "components": [
+    {
+     "name": "static_gates_wiring_and_settings_scribe",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rare_catch_transpiler_rewrote_the_patched_il",
+     "toggle": "seaCatchTables",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": false,
+        "message": "No public static ProofShore with 0 params.",
+        "details": {
+         "available": [
+          "System.String ProofShore(System.String)"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_abe3e44dbe19437e80e38225759207a3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T11:19:11.7673444+00:00",
+         "CompletedAtUtc": "2026-10-04T11:19:11.809024+00:00",
+         "DurationMs": 41,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "generateSeaShores_switch_suppresses_the_shore",
+     "toggle": "generateSeaShores",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "seaCatchTables_off_arm_returns_the_land_biome_and_land_cells_stay_land",
+     "toggle": "seaCatchTables",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "seasCountAsCoast_makes_land_beside_a_sea_coastal_and_off_restores_vanilla",
+     "toggle": "seasCountAsCoast",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "worldgen_prefix_swaps_coast_for_sea_coast_only_beside_a_sea",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "healer_leaves_nothing_to_heal_after_load",
+     "toggle": "healFrozenWorldOnLoad",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "sea_water_catch_and_fresh_shore_terrain_state_read",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: RM_SeaShoresProof.ProofShore answered nothing (DLL not rebuilt/deployed yet?): No public static ProofShore with 0 params.",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   },
+   "modal_check": {
+    "found_open": false,
+    "dialogs": {
+     "Dialog_NamePlayerFactionAndSettlement": 0,
+     "Dialog_ModSettings": 0,
+     "Dialog_NodeTree": 0
+    },
+    "errors": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": null,
+ "modal_check_final": {
+  "found_open": false,
+  "dialogs": {
+   "Dialog_NamePlayerFactionAndSettlement": 0,
+   "Dialog_ModSettings": 0,
+   "Dialog_NodeTree": 0
+  },
+  "errors": []
+ },
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false,
+ "run_identity": {
+  "run_id": "20261004T041742-situational_rerun-36080",
+  "git": {
+   "source": "git",
+   "sha": "718016cbf527559687fe9c72282d3c0ae8b9f1ea"
+  },
+  "deploy_start": {
+   "mod": "SeaShores",
+   "at": "2026-10-04T04:18:32",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/SeaShores",
+   "src_hash": "b9386cdae8fbc888",
+   "deployed_hash": "b9386cdae8fbc888",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/SeaShores/Assemblies/RimMandrakeSeaShores.dll",
+     "sha": "97bcecd449d16559",
+     "srchash": "# project: RimMandrake/SeaShores/Source/RM_SeaShores.csproj\n# dl"
+    }
+   ],
+   "src_dirty": false
+  },
+  "deploy_end": {
+   "mod": "SeaShores",
+   "at": "2026-10-04T04:19:13",
+   "state": "in-sync",
+   "reason": null,
+   "composed": "RimMandrake.Biomes",
+   "src_dir": "src/RimMandrake/SeaShores",
+   "src_hash": "b9386cdae8fbc888",
+   "deployed_hash": "b9386cdae8fbc888",
+   "n_src": 4,
+   "n_deployed": 4,
+   "n_held": 0,
+   "drift": {
+    "new": 0,
+    "changed": 0,
+    "gone": 0,
+    "sample": []
+   },
+   "dlls": [
+    {
+     "dll": "Biomes/SeaShores/Assemblies/RimMandrakeSeaShores.dll",
+     "sha": "97bcecd449d16559",
+     "srchash": "# project: RimMandrake/SeaShores/Source/RM_SeaShores.csproj\n# dl"
+    }
+   ],
+   "src_dirty": false
+  }
+ }
+}
