@@ -1,0 +1,1 @@
+jawa/ordered_job with waitTicks>0 on a PAUSED clock burns the whole tool timeout (~17 s per order): 72 queued Mine orders took 20 minutes of a 25-minute suite budget (BlueDesert thaw, 2026-10-03). Queue with waitTicks=0 and read the effect after a real wait.
