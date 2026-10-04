@@ -153,6 +153,187 @@ def every_fix_is_guarded_static(t):
             raise ExpectationFailed("%d unguarded op(s): %s" % (len(bad), bad))
 
 
+# ---- MANDRAKEPATCHES_COVERAGE_GAPS_1 (offline half, round 41) ---------------------------------------------------
+# Every leaf Replace/Add/Remove under Patches/ names a donor def by xpath and a donor mod by FindMod NAME. A patch that
+# matches nothing logs nothing, so for each op: the FindMod name must be a real installed mod; when that mod is ACTIVE
+# (the load-14 dump manifest) the target def must be in the dump and the dump must show the patch's effect.
+import json as _json
+import re as _re
+
+_TARGET = _re.compile(r'^/?Defs/([\w.]+)\[defName="([^"]+)"\](.*)$')
+
+
+def leaf_ops(patch_dir=None):
+    """[{file, cls, type, name, rest, xpath, values, gone, guards}] for every leaf Replace/Add/Remove, walking
+    FindMod/Sequence/Conditional (match, nomatch, operations/li). `values` = every non-empty leaf text of <value>;
+    `gone` = text()= / texPath= literals the xpath selects (what a Replace removes)."""
+    import os as _os
+    import xml.etree.ElementTree as _ET
+    patch_dir = patch_dir or _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "Patches")
+    out = []
+
+    def walk(e, fn, guards):
+        c = (e.get("Class") or "").replace("PatchOperation", "")
+        if c == "FindMod":
+            g = [li.text.strip() for li in e.findall("mods/li") if li.text]
+            for x in e.findall("match"):
+                walk(x, fn, guards + [g])
+            for x in e.findall("nomatch"):
+                walk(x, fn, guards)
+        elif c == "Sequence":
+            for li in e.findall("operations/li"):
+                walk(li, fn, guards)
+        elif c == "Conditional":
+            for k in ("match", "nomatch"):
+                for x in e.findall(k):
+                    walk(x, fn, guards)
+        elif c in ("Replace", "Add", "Remove"):
+            xp = (e.findtext("xpath") or "").strip()
+            m = _TARGET.match(xp)
+            if not m:
+                return
+            vals = []
+            val = e.find("value")
+            if val is not None:
+                for n in val.iter():
+                    t = (n.text or "").strip()
+                    if t and len(n) == 0:
+                        vals.append(t)
+            pairs = []
+            if val is not None:
+                pairs = [(n.tag, (n.text or "").strip()) for n in val if len(n) == 0 and (n.text or "").strip()]
+            gone = _re.findall(r'(?:text\(\)|texPath)="([^"]+)"', m.group(3))
+            out.append({"file": fn, "cls": c, "type": m.group(1), "name": m.group(2), "rest": m.group(3), "xpath": xp,
+                        "values": vals, "pairs": pairs, "gone": gone, "guards": guards})
+    for fn in sorted(f for f in _os.listdir(patch_dir) if f.endswith(".xml")):
+        for op in _ET.parse(_os.path.join(patch_dir, fn)).getroot().findall("Operation"):
+            walk(op, fn, [])
+    return out
+
+
+def _flat(x, acc):
+    if isinstance(x, dict):
+        for v in x.values():
+            _flat(v, acc)
+    elif isinstance(x, list):
+        for v in x:
+            _flat(v, acc)
+    elif isinstance(x, bool):
+        acc.add(str(x).lower())          # the dump carries JSON booleans, the XML writes true/false
+    elif x is not None:
+        acc.add(str(x))
+        try:
+            f = float(x)
+            acc.add(str(int(f)) if f == int(f) else str(f))
+        except (TypeError, ValueError):
+            pass
+    return acc
+
+
+def tag_of(o):
+    return "%s %s[%s]" % (o["file"], o["type"], o["name"])
+
+
+def effect_findings(ops, rows_by_type, active_names, installed_names):
+    """(checked, skipped, findings). rows_by_type[type] = {defName: dumpRow} or None when the type is not dumped."""
+    checked, skipped, bad = 0, {"donor mod inactive": 0, "type not dumped": 0}, []
+    for o in ops:
+        tag = "%s %s[%s]" % (o["file"], o["type"], o["name"])
+        for grp in o["guards"]:
+            if not any(g.lower() in installed_names for g in grp):
+                bad.append("%s: FindMod names %s, which no installed mod is called (the fix can never apply)" % (tag, grp))
+        if any(not any(g.lower() in active_names for g in grp) for grp in o["guards"]):
+            skipped["donor mod inactive"] += 1
+            continue
+        rows = rows_by_type.get(o["type"])
+        if rows is None:
+            skipped["type not dumped"] += 1
+            continue
+        checked += 1
+        row = rows.get(o["name"])
+        if row is None:
+            bad.append("%s: donor mod is active but the def is not in the dump (renamed or removed: the patch matches nothing)" % tag)
+            continue
+        leaves = _flat(row.get("fields") or {}, set())
+        if o["cls"] == "Remove":
+            last = o["rest"].rstrip("/").split("/")[-1]
+            if last and last in leaves | set(_flat(list((row.get("fields") or {}).keys()), set())) or ('"%s"' % last) in _json.dumps(row.get("fields")):
+                bad.append("%s: %s is still in the dump after the Remove" % (tag, last))
+            continue
+        if o["cls"] in ("Add", "Replace") and o["rest"] in ("", "/" + (o["pairs"][0][0] if o["pairs"] else "")):
+            for tag, want in o["pairs"]:     # a top-level field set on the def itself: the dump's field must equal it
+                got = (row.get("fields") or {}).get(tag)
+                gl = str(got).lower() if isinstance(got, bool) else str(got)
+                same = gl == want.lower() if isinstance(got, bool) else gl == want
+                if not same:
+                    try:
+                        same = float(got) == float(want)
+                    except (TypeError, ValueError):
+                        pass
+                if not same:
+                    bad.append("%s: field %s is %r in the dump, the patch sets %r" % (tag_of(o), tag, got, want))
+        for v in o["values"]:
+            if len(v) >= 2 and v not in leaves:
+                bad.append("%s: patched value %r is not in the dump" % (tag, v[:60]))
+        for g in o["gone"]:
+            if g in leaves:
+                bad.append("%s: the replaced-away %r is still in the dump" % (tag, g[:60]))
+    return checked, skipped, bad
+
+
+def _installed_names():
+    import glob as _glob
+    out = set()
+    for r in ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100",
+              "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Mods"):
+        for p in _glob.glob(r + "/*/About/About.xml"):
+            try:
+                m = _re.search(r"<name>([^<]*)</name>", open(p, encoding="utf-8-sig", errors="replace").read())
+            except OSError:
+                continue
+            if m:
+                out.add(m.group(1).strip().lower())
+    return out
+
+
+def _dump_inputs(types):
+    import os as _os
+    import game_paths as _GP
+    base = _GP.DEF_DUMP
+    man = _json.load(open(_os.path.join(base, "manifest.json")))
+    active = set((m.get("name") or "").strip().lower() for m in man.get("mods", []))
+    rows = {}
+    for ty in types:
+        p = _os.path.join(base, "defs", ty + ".json")
+        rows[ty] = dict((r["defName"], r) for r in _json.load(open(p))["defs"]) if _os.path.isfile(p) else None
+    return rows, active
+
+
+@suite.chain("fix_effects_vs_dump_static")
+def fix_effects_vs_dump_static(t):
+    """Offline: each donor fix (FindMod name real; target def present; patched values in the dump; replaced-away values gone)
+    against the load-14 dump, for the donors that are ACTIVE there. UNMEASURED without a dump or the Steam folders."""
+    with t.component("every_active_donor_fix_shows_its_effect_in_the_dump", beyond_toggle=True):
+        ops = leaf_ops()
+        if len(ops) < 25 or not any(o["type"] == "WorkGiverDef" for o in ops):
+            raise ExpectationFailed("blind parse: %d leaf ops" % len(ops))
+        try:
+            rows, active = _dump_inputs(sorted(set(o["type"] for o in ops)))
+            installed = _installed_names()
+        except Exception as e:
+            t.upstream_failed = True
+            t.upstream_reason = "UNMEASURED: no readable def dump / Steam folders (%s)" % e
+            return
+        if len(installed) < 500 or len(active) < 300:
+            raise ExpectationFailed("blind inputs: %d installed names, %d active" % (len(installed), len(active)))
+        checked, skipped, bad = effect_findings(ops, rows, active, installed)
+        if checked < 15:
+            raise ExpectationFailed("only %d ops were checkable (skipped %s)" % (checked, skipped))
+        if bad:
+            raise ExpectationFailed("%d finding(s) over %d checked ops (skipped %s): %s" % (len(bad), checked, skipped, "; ".join(bad[:5])))
+
+
+
 @suite.chain("settlement_icon_size")
 def settlement_icon_size(t):
     """`WorldMapReadability_Ashkarr.xml`'s one unconditional patch: Core's
