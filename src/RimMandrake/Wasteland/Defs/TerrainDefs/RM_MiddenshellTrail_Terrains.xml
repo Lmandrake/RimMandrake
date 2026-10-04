@@ -12,7 +12,7 @@
     <defName>RM_MiddenshellTrack</defName>
     <label>middenshell track</label>
     <description>Ground crushed flat and glazed by a middenshell's passing: a trench twenty paces wide of packed crust, slag and metal-salt smear. Nothing grows in it.</description>
-    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <texturePath>Terrain/Surfaces/RM_MiddenshellTrack</texturePath>
     <color>(0.52,0.48,0.40)</color>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>322</renderPrecedence>
@@ -38,7 +38,7 @@
     <defName>RM_MiddenshellEdgeScar</defName>
     <label>middenshell edge scar</label>
     <description>Where a middenshell dragged itself off the map: the ground torn open and gouged into ridges, dark with its leakage. A landmark for as long as anyone lives here.</description>
-    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <texturePath>Terrain/Surfaces/RM_MiddenshellEdgeScar</texturePath>
     <color>(0.30,0.30,0.24)</color>
     <edgeType>FadeRough</edgeType>
     <renderPrecedence>323</renderPrecedence>

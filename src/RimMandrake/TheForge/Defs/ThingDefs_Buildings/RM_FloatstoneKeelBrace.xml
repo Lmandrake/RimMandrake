@@ -28,7 +28,7 @@
     <description>A pearl-white brace of spun floatstone, threaded through a gravship's frame along the lines its strain runs. It weighs almost nothing and gives almost nothing, so the grav engine lifts the ship with less help from its thrusters: every linked brace cuts the fuel a flight burns.\n\nA gravship can carry up to four keel braces.</description>
     <graphicData>
       <graphicClass>Graphic_Single</graphicClass>
-      <texPath>Things/Item/RM_Floatstone/RM_Floatstone</texPath>
+      <texPath>Things/Building/RM_FloatstoneKeelBrace</texPath>
       <drawSize>(1, 1)</drawSize>
     </graphicData>
     <statBases>

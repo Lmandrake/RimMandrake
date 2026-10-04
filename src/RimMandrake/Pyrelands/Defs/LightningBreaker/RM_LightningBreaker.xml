@@ -89,7 +89,7 @@
     <thingClass>RimMandrake.Pyrelands.RM_LightningBreaker</thingClass>
     <category>Building</category>
     <graphicData>
-      <texPath>Things/Building/Power/PowerSwitch</texPath>
+      <texPath>Things/Building/Power/RM_LightningBreaker</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <color>(230,200,120)</color>
     </graphicData>
