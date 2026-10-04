@@ -81,7 +81,7 @@ Still not proven / likely first-live-run corrections:
      reason, `research_finish_project`'s own `success`/`wasAlreadyFinished`
      read-back below is what would catch it.
 """
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, shipped_defs
 
 suite = Suite("Rites")
 suite.toggles = []   # pure data, no ModSettings at all -- About.xml, checked whole.
@@ -143,3 +143,12 @@ def conduit_choir_gated_by_hidden_prerequisite(t):
             if not avail.get("prerequisitesCompleted"):
                 raise ExpectationFailed(
                     "prerequisitesCompleted flipped to False unexpectedly: %r" % avail)
+
+
+# NORTHSTAR_PARTIAL_GAPS_FILL_1 (audit row: "five defs/tab resolve (script has only the single chain)"): every shipped
+# def is loaded live, and each of the five research nodes reads back on the RUT_Rites tab with its XML baseCost and
+# techLevel (a node silently landing on the vanilla tab, or re-costed by another mod, reads red).
+shipped_defs.add_chain(suite, __file__,
+                       fields_by_type={"ResearchProjectDef": ("label", "baseCost", "techLevel", "tab"),
+                                       "ResearchTabDef": ("label",)},
+                       sanity=("RUT_Rites", "RUT_Rites_GodsSpeakBack"), min_count=6)

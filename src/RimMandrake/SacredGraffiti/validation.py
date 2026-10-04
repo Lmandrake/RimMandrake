@@ -63,7 +63,7 @@ WHAT THIS SUITE CANNOT PROVE, and why:
     succeeded; one screenshot is taken so a human reviewing the run's sheet
     can eyeball the art anyway.
 """
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, shipped_defs
 
 suite = Suite("SacredGraffiti")
 suite.toggles = ["sacredMarkEnabled", "markCountMultiplier"]
@@ -106,3 +106,11 @@ def settings_are_live_flippable(t):
     with t.component("mark_count_multiplier_flips", toggle="markCountMultiplier"):
         t.set_setting(SETTINGS_TYPE, {"markCountMultiplier": 2.0})
         t.set_setting(SETTINGS_TYPE, {"markCountMultiplier": 1.0})
+
+
+# NORTHSTAR_PARTIAL_GAPS_FILL_1: all five shipped defs (outcome effect, mark, style category + style, viewed-mark
+# thought) are loaded live; the ritual outcome's startingQuality and filth def read back equal to the XML.
+shipped_defs.add_chain(suite, __file__,
+                       fields_by_type={"RitualOutcomeEffectDef": ("startingQuality", "filthDefToSpawn"),
+                                       "ThingDef": ("label",), "StyleCategoryDef": ("label",)},
+                       sanity=("RM_Ishko_RitualOutcome_PlaceSacredMark", "RM_ViewedSacredMark_Ishko"), min_count=5)

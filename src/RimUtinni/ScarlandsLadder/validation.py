@@ -111,6 +111,14 @@ def _build_suite():
                 if not m or int(m.group(1)) < 1 or min(int(x) for x in m.groups()[1:]) < int(m.group(1)):
                     raise ExpectationFailed("camps did not place fire + body + journal: %s" % txt)
 
+    # NORTHSTAR_PARTIAL_GAPS_FILL_1: the camp GenStep's order, the ladder table's ladderId/maxStage (the two rungs)
+    # and the journal's stack/tradeability read back equal to the XML.
+    from modcheck import shipped_defs
+    shipped_defs.add_chain(suite, __file__,
+                           fields_by_type={"GenStepDef": ("order",),
+                                           "RimMandrake.LoreStages.RM_LoreStageTableDef": ("ladderId", "maxStage"),
+                                           "ThingDef": ("label", "stackLimit", "tradeability")},
+                           sanity=("RUT_PilgrimCamps", "RUT_ScarlandsLadder", "RUT_PilgrimJournal"), min_count=3)
     return suite
 
 

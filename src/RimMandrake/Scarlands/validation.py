@@ -799,6 +799,24 @@ def _build_suite():
             _unmeasured(t, "a caravan carrying RM_TetchikJar receiving the message approaching a polluted tile needs a live world "
                            "with a polluted tile and a caravan on a path")
 
+    # NORTHSTAR_PARTIAL_GAPS_FILL_1 (audit row: "RM_Warscar BiomeDef itself ... biome+flora have no script"):
+    # every one of the ~100 shipped defs is loaded live (only 19 were named anywhere above), and the biome's own
+    # density/difficulty/forage numbers, every pawnkind's race/combatPower/ecoSystemWeight, hediff severities,
+    # workgiver priorities and research costs read back equal to the XML.
+    from modcheck import shipped_defs
+    shipped_defs.add_chain(suite, __file__, fields_by_type={
+        "BiomeDef": ("label", "animalDensity", "plantDensity", "movementDifficulty", "forageability",
+                     "foragedFood", "allowRoads", "allowRivers", "diseaseMtbDays", "wildPlantRegrowDays"),
+        "PawnKindDef": ("label", "race", "combatPower", "ecoSystemWeight"),
+        "HediffDef": ("label", "isBad", "initialSeverity", "maxSeverity", "tendable"),
+        "WorkGiverDef": ("label", "workType", "priorityInType"),
+        "ResearchProjectDef": ("label", "baseCost", "techLevel"),
+        "RecipeDef": ("label", "workAmount", "workSkill"),
+        "IncidentDef": ("label", "baseChance", "minRefireDays"),
+        "GenStepDef": ("order",),
+        "ThingDef": ("label", "stackLimit"),
+        "RimMandrake.Scarlands.RM_DeserterHistoryDef": ("label",)},
+        sanity=("RM_Warscar", "RM_OldLineTurret", "RM_Chatrak"), min_count=90)
     return suite
 
 
