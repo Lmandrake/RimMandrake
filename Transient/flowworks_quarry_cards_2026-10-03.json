@@ -1,0 +1,32 @@
+{"cards":[
+{"title":"Digging canals turns up local minerals",
+ "questions":[
+ {"question":"When a colonist digging a canal finds something, how should it show up?","header":"Dig find","multiSelect":false,"options":[
+  {"label":"Lump on the bank, letter first time (Recommended)","description":"The ore drops beside the canal with a small message; the first find of each material on a map gets a letter. Buys: clear and cheap to build. Costs: the letters add up early on. Why: you see every find without being nagged."},
+  {"label":"Reveal a small seam","description":"A little vein of the ore appears in rock next to the canal, to mine later. Buys: feels like real discovery. Costs: needs rock beside the canal, and adds deposits outside the abundance sheet."},
+  {"label":"Message only","description":"The ore drops with a small message, never a letter. Buys: quietest. Costs: easy to miss a rare find."}]},
+ {"question":"Should deeper canal cuts be able to find the deeper, rarer local minerals?","header":"Depth","multiSelect":false,"options":[
+  {"label":"Yes, deep cuts reach deep minerals (Recommended)","description":"Shallow and mid cuts find surface minerals; deep and superdeep cuts can also find what a deep drill would. Buys: a reason to dig deep. Costs: one more thing to balance. Why: matches how the deep drill already works."},
+  {"label":"No, every depth is the same","description":"Same chance and same pool at every depth. Buys: simplest. Costs: depth means nothing for mining."}]},
+ {"question":"In a biome with no minerals to find, what should canal digging turn up?","header":"Bare biome","multiSelect":false,"options":[
+  {"label":"Nothing extra (Recommended)","description":"Digging just digs. Buys: honest; a barren land is barren. Costs: digging there has no side reward. Why: chunks would clutter every canal for little value."},
+  {"label":"Chunks of local rock","description":"Matches your quarry ruling. Buys: consistent with quarries. Costs: every long canal litters the bank with stone chunks."}]}
+ ]},
+{"title":"Sluice boxes and panning in rivers",
+ "questions":[
+ {"question":"Most biomes in the draft mineral sheet hold no gold at all, so how should river gold work?","header":"River gold","multiSelect":false,"options":[
+  {"label":"Separate river column in the sheet (Recommended)","description":"Each biome gets its own 'what the rivers carry' numbers, apart from its veins, so a river can carry gold where the hills do not. Buys: real placer gold, still set per biome by you. Costs: one more column to review. Why: keeps the sheet in charge."},
+  {"label":"Pan what the land already holds","description":"Rivers give the biome's own heavy minerals only. Buys: no new column. Costs: gold almost nowhere; most rivers give silver or nothing."},
+  {"label":"Gold in every river","description":"A flat gold rate wherever a river runs. Buys: simplest, always works. Costs: breaks the local-materials ruling."}]},
+ {"question":"Which mod should the sluice box and panning live in?","header":"Mod home","multiSelect":false,"options":[
+  {"label":"River Works (Recommended)","description":"River Works already owns the river current, weirs and the shared fish stock these reuse; canal digging stays in FlowWorks. Buys: no mod reaching into another. Costs: the idea you asked for is split across two mods. Why: they are river buildings."},
+  {"label":"FlowWorks, needing River Works","description":"All three ideas in FlowWorks. Buys: one place for 'digging and water work'. Costs: FlowWorks must depend on River Works to read the current."},
+  {"label":"Their own small mod","description":"A 'Prospecting' mod holding sluice and panning. Buys: easy to switch off whole. Costs: one more mod to keep."}]},
+ {"question":"Which skill should panning use?","header":"Pan skill","multiSelect":false,"options":[
+  {"label":"Mining (Recommended)","description":"Miners pan, and canal digging already uses mining speed. Buys: works today, no new skill needed. Costs: miners get busier. Why: panning takes minerals from the ground, like mining."},
+  {"label":"Salvaging","description":"The proposed new salvage skill. Buys: gives that skill more to do. Costs: that skill is not decided yet, and salvage means taking apart made things."}]},
+ {"question":"How should a colonist be told where to pan?","header":"Pan where","multiSelect":false,"options":[
+  {"label":"A panning spot on the bank (Recommended)","description":"Place a free spot beside shallow moving water; the colonist works from the dry bank. Buys: the river current never sweeps them away. Costs: one spot per place you want panned. Why: River Works shoves anyone standing in moving water."},
+  {"label":"A panning zone over the water","description":"Paint shallow water like a fishing zone. Buys: familiar, covers a stretch at once. Costs: colonists stand in the current and get pushed downstream."}]}
+ ]}
+]}
