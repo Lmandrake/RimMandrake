@@ -39,3 +39,10 @@ Ledger item: `MESSYCONDUIT_REVIEW_ROUND1_1` (new findings file as B28 onward).
 Workstreams (2026-10-04): AERIAL (centroid connectors under buildings, power-tap clamp art, wall-mount lean/offset,
 batten–pole connector, terminal-assignment logic), HOSE (reel joins universal pipes/tanks, reel art, maze/spiral/blocked-wall
 path tests), SHEET (new stations in `human_review.py`), CONSULT (GPT test review + user-selectable-art test plan).
+
+## Decisions taken by question card, 2026-10-04 3:46 PM PDT (card clicks, not typed words)
+
+1. **Blocked hose:** reroute within its length; if none exists, retract to the reel with a visible alert. Never a ghost hose; also enforce length on re-plan.
+2. **Universal pipe:** wait for FlowWorks. Reel connection stays generic (any pipe-like building sharing an edge); test against tanks.
+3. **Modern cord colour:** store colour on each cord piece; a merge keeps the larger run's colour (save migration owed).
+4. **Pole terminals:** spread devices across the three terminals, share only when full (as built).
