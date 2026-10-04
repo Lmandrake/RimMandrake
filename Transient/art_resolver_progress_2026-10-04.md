@@ -2,3 +2,4 @@
 - 15:43 spec+code read; design: subject.py self-contained, job fields target_def/target_original/target_texpath/canon_reference (canon imgs attached as guidance, NOT reference — reference arms reskin-validate)
 - 15:46 subject.py PUBLISHED 9f6c5d948; fill_queue binding + load_job shape checks + daemon canon attach written; next: selftests
 - 15:47 artpipe binding done, selftest_artpipe 481 ok; publishing; next selftest_subject.py
+- 15:48 selftest_subject ALL PASS; running run_selftests
