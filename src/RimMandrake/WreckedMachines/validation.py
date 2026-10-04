@@ -1,11 +1,13 @@
 """validation.py -- modcheck suite for RimMandrake Wrecked Machines
 (mandrake.rm.wreckedmachines).
 
-Grounded in this mod's actual Defs. The mod DOES carry C# and a settings
-class (`Source/WreckedMachinesMod.cs`: allowDonorSmelter, researchCostFactor,
-materialCostFactor, skipRestorationResearch); none is asserted yet and
-`suite.toggles = []` -- that gap is WRECKEDMACHINES_COVERAGE_GAPS_1. Every
-component below is `beyond_toggle=True`.
+Grounded in this mod's actual Defs. The mod carries C# and a settings class
+(`Source/WreckedMachinesMod.cs`: allowDonorSmelter, researchCostFactor,
+materialCostFactor, skipRestorationResearch). Each one is driven by
+`settings_drive_the_defs` (set, re-run WreckedMachinesPatcher.Apply, read the
+def it rewrites, restore); the tier shapes (process counts, canOverclock,
+shared replaceTags, research gate) are also asserted offline by
+`static_checks()` (`python3 validation.py`).
 
 WHAT THIS MOD ACTUALLY SHIPS (Buildings_WreckedMachines_AutomatedSmelter.xml,
 ResearchProjects_WreckedMachines.xml, SpecialResearchOpportunities_
@@ -64,10 +66,93 @@ Still not proven / likely first-live-run corrections:
      file header already records it as "NOT VERIFIED AT RUNTIME -- reserved
      for the owner's own quicktest."
 """
-from modcheck import Suite, ExpectationFailed
+import os
+import re
+import sys
+import xml.etree.ElementTree as ET
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+SETTINGS_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesSettings"
+PATCHER_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesPatcher"
+SETTINGS = ("allowDonorSmelter", "researchCostFactor", "materialCostFactor", "skipRestorationResearch")
+
+
+def _tiers():
+    root = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Buildings",
+                                 "Buildings_WreckedMachines_AutomatedSmelter.xml")).getroot()
+    return {d.findtext("defName"): d for d in root.findall("ThingDef")}
+
+
+def static_checks():
+    """Offline: the three tiers are the shapes the mod promises, and every setting is wired."""
+    bad = []
+    tiers = _tiers()
+    if len(tiers) < 3:
+        return ["only %d ThingDefs parsed (sanity probe failed)" % len(tiers)]
+    for dn in ("RM_WM_AutomatedSmelter_Wrecked", "RM_WM_AutomatedSmelter_Kludged", "RM_WM_AutomatedSmelter_Repaired"):
+        d = tiers.get(dn)
+        if d is None:
+            bad.append("%s missing" % dn)
+            continue
+        if [li.text for li in d.findall("replaceTags/li")] != ["WM_AutomatedSmelter"]:
+            bad.append("%s does not carry the shared replaceTags WM_AutomatedSmelter (build-over breaks)" % dn)
+    w = tiers.get("RM_WM_AutomatedSmelter_Wrecked")
+    if w is not None and (w.findtext("building/isInert") != "true" or w.find("comps") is not None or w.findtext("tickerType") != "Never"):
+        bad.append("Wrecked tier is not inert (isInert true, no comps, tickerType Never)")
+    for dn, nproc, oc in (("RM_WM_AutomatedSmelter_Kludged", 3, "false"), ("RM_WM_AutomatedSmelter_Repaired", 6, "true")):
+        d = tiers.get(dn)
+        if d is None:
+            continue
+        proc = [li for li in d.findall("comps/li") if li.get("Class") == "PipeSystem.CompProperties_AdvancedResourceProcessor"]
+        if len(proc) != 1:
+            bad.append("%s has %d AdvancedResourceProcessor comps, want 1" % (dn, len(proc)))
+            continue
+        n = len(proc[0].findall("processes/li"))
+        if n != nproc:
+            bad.append("%s runs %d processes, want %d" % (dn, n, nproc))
+        if (proc[0].findtext("canOverclock") or "").strip() != oc:
+            bad.append("%s canOverclock is %r, want %s" % (dn, proc[0].findtext("canOverclock"), oc))
+    r = tiers.get("RM_WM_AutomatedSmelter_Repaired")
+    if r is not None and "RM_WM_AutomatedSmelterRestoration" not in [li.text for li in r.findall("researchPrerequisites/li")]:
+        bad.append("Repaired tier is not gated by RM_WM_AutomatedSmelterRestoration")
+    src = open(os.path.join(HERE, "Source", "WreckedMachinesMod.cs"), encoding="utf-8").read()
+    fields = re.findall(r"public\s+static\s+(?:bool|float)\s+(\w+)\s*=", src)
+    if sorted(fields) != sorted(SETTINGS):
+        bad.append("settings fields drifted: source has %s, suite drives %s" % (sorted(fields), sorted(SETTINGS)))
+    scribed = src.split("void ExposeData", 1)[-1].split("DoWindowContents", 1)[0]
+    ui = src.split("void DoWindowContents", 1)[-1].split("class WreckedMachinesMod", 1)[0]
+    apply = src.split("public static void Apply", 1)[-1]
+    for f in fields:
+        if '"%s"' % f not in scribed:
+            bad.append("%s is not Scribed" % f)
+        if not re.search(r"\b%s\b" % f, ui):
+            bad.append("%s has no control in DoWindowContents" % f)
+        if "WreckedMachinesSettings.%s" % f not in apply:
+            bad.append("%s is never read by WreckedMachinesPatcher.Apply (a dead setting)" % f)
+    return bad
+
+
+try:
+    from modcheck import Suite, ExpectationFailed
+except ImportError:
+    _UTILS = os.path.join(HERE, "..", "Utils")
+    sys.path.insert(0, _UTILS)
+    try:
+        from modcheck import Suite, ExpectationFailed
+    except ImportError:
+        Suite = None
+
+if Suite is None:
+    if __name__ == "__main__":
+        problems = static_checks()
+        print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+        for p in problems:
+            print("  - " + p)
+        sys.exit(1 if problems else 0)
+    raise SystemExit("modcheck not importable")
 
 suite = Suite("WreckedMachines")
-suite.toggles = []
+suite.toggles = list(SETTINGS)
 
 WRECKED = "RM_WM_AutomatedSmelter_Wrecked"
 KLUDGED = "RM_WM_AutomatedSmelter_Kludged"
@@ -186,3 +271,116 @@ def repaired_tier_gated_by_own_research(t):
                 % (REPAIRED, row))
         _assert_no_mod_errors(t)
         t.screenshot()
+
+
+def _setting(t, action, field, value=None):
+    if value is not None:
+        r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action=action, field=field, value=str(value))
+    else:
+        r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS_TYPE, action=action, field=field)
+    return r if isinstance(r, dict) else {}
+
+
+def _def_field(t, defpath, field):
+    r = t.bridge_call("jawa/get_defs", defs=defpath, fields=field, limit=2)
+    rows = (r or {}).get("defs") or [] if isinstance(r, dict) else []
+    if not isinstance(r, dict) or r.get("success") is False or not rows:
+        return None, r
+    return (rows[0].get("fields") or {}).get(field), r
+
+
+def _apply(t):
+    r = t.bridge_call("jawa/static_call", type=PATCHER_TYPE, method="Apply", args="")
+    return isinstance(r, dict) and r.get("success") is True
+
+
+def _unmeasured(t, why):
+    t.upstream_reason = "UNMEASURED: " + why
+    t.upstream_failed = True
+
+
+def _num(x):
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return None
+
+
+# One chain per setting (a failure in one must not taint the others). Each: set the
+# setting live, re-run WreckedMachinesPatcher.Apply (what closing the settings window
+# runs), read the def it rewrites, restore; the restore read is the off arm.
+DRIVES = (
+    ("researchCostFactor", 2.0, "ResearchProjectDef/RM_WM_AutomatedSmelterRestoration", "baseCost",
+     lambda b, a: None if _num(a) is not None and _num(b) and abs(_num(a) - 2 * _num(b)) < 1 else "baseCost did not double"),
+    ("materialCostFactor", 2.0, "ThingDef/RM_WM_AutomatedSmelter_Kludged", "costList",
+     lambda b, a: None if a != b and "240" in str(a) else "Kludged costList did not scale (Steel 120 -> 240)"),
+    ("skipRestorationResearch", True, "ThingDef/RM_WM_AutomatedSmelter_Repaired", "researchPrerequisites",
+     lambda b, a: None if "RM_WM_AutomatedSmelterRestoration" in str(b) and "RM_WM_AutomatedSmelterRestoration" not in str(a)
+     else "Repaired still names the restoration research"),
+    ("allowDonorSmelter", True, "ThingDef/VFEFactory_AutomatedSmelter", "designationCategory",
+     lambda b, a: None if "VFEFactory_Factories" in str(a) and "VFEFactory_Factories" not in str(b)
+     else "donor smelter did not reappear in the Factories category"),
+)
+
+
+def _make_drive(field, new, defpath, defield, check):
+    def chain(t):
+        if t.session is None:
+            with t.component("%s_rewrites_its_def" % field, toggle=field):
+                pass
+            with t.component("%s_restores_the_shipped_def" % field, toggle=field):
+                pass
+            return
+        with t.component("%s_rewrites_its_def" % field, toggle=field):
+            old = _setting(t, "get", field).get("value")
+            if old is None:
+                _unmeasured(t, "mod_settings_field could not read %s" % field)
+                return
+            before, raw = _def_field(t, defpath, defield)
+            if before is None:
+                _unmeasured(t, "get_defs could not read %s %s: %s" % (defpath, defield, str(raw)[:160]))
+                return
+            try:
+                if not _setting(t, "set", field, new).get("success") or not _apply(t):
+                    raise ExpectationFailed("could not set %s=%s and re-run Apply" % (field, new))
+                after, _ = _def_field(t, defpath, defield)
+                why = check(before, after)
+                if why:
+                    raise ExpectationFailed("%s=%s: %s (before %r, after %r)" % (field, new, why, before, after))
+            finally:
+                _setting(t, "set", field, old)
+                _apply(t)
+        with t.component("%s_restores_the_shipped_def" % field, toggle=field):
+            back, _ = _def_field(t, defpath, defield)
+            if str(back) != str(before):
+                raise ExpectationFailed("%s restored but %s %s reads %r, was %r" % (field, defpath, defield, back, before))
+    chain.__name__ = "setting_%s" % field
+    return chain
+
+
+for _d in DRIVES:
+    suite.chain("setting_%s_drives_def" % _d[0])(_make_drive(*_d))
+
+
+@suite.chain("tier_shapes_static")
+def tier_shapes_static(t):
+    """Offline-provable halves of the tier contract (process counts, canOverclock, replaceTags
+    build-over key, research gate, settings wiring), asserted from the shipped XML/C#.
+    The live build-over through a blueprint is still UNMEASURED: no bridge tool resolves a
+    blueprint through GenConstruct (jawa/spawn_batch places finished things)."""
+    with t.component("tiers_have_the_promised_shapes", beyond_toggle=True):
+        problems = static_checks()
+        if problems:
+            raise ExpectationFailed("; ".join(problems))
+    with t.component("replace_tags_build_over_live", beyond_toggle=True):
+        if t.session is not None:
+            _unmeasured(t, "needs a blueprint placed over a standing tier and resolved by construction; "
+                         "no bridge tool places a blueprint (jawa/spawn_batch spawns finished things)")
+
+
+if __name__ == "__main__":
+    problems = static_checks()
+    print("STATIC: %s" % ("PASS (0 findings)" if not problems else "FAIL"))
+    for p in problems:
+        print("  - " + p)
+    sys.exit(1 if problems else 0)
