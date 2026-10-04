@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- MIASMA_ROTTING_BED_CUISINE_1: a spent decay cell (RM_RottingBed, mandrake.rm.miasma) grows marsh fungus beside it.
+     Guarded by a PatchOperationConditional on the bed def itself (MayRequire on a top-level Operation is ignored by the
+     1.6 engine; a def test also survives the Miasma folding into RimMandrake.Biomes), so with the Miasma absent this file does nothing and with the Cuisine absent the free bed simply grows nothing.
+     Vanilla CompSpawner runs off the bed's Rare ticker (CompTickRare -> 250 ticks a call; RM_Building_RottingBed.TickRare
+     calls base) and drops the fungus on a free walkable cell around the 2x2, never on the bed itself.
+     Numbers // INVENTED: 5 every 2-3 days, stops while 30 already lie within one cell of its centre. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_RottingBed"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>Defs/ThingDef[defName="RM_RottingBed"]/comps</xpath>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="RM_RottingBed"]</xpath>
+            <value>
+              <comps />
+            </value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="RM_RottingBed"]/comps</xpath>
+          <value>
+            <li Class="CompProperties_Spawner">
+              <thingToSpawn>RSW_MarshFungus</thingToSpawn>
+              <spawnCount>5</spawnCount>
+              <spawnIntervalRange>120000~180000</spawnIntervalRange>
+              <spawnMaxAdjacent>30</spawnMaxAdjacent>
+              <writeTimeLeftToSpawn>true</writeTimeLeftToSpawn>
+              <showMessageIfOwned>false</showMessageIfOwned>
+              <saveKeysPrefix>rswMarshFungus</saveKeysPrefix>
+            </li>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
