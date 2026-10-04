@@ -194,6 +194,10 @@ namespace RimMandrake.FeverWood
         /// "Release lure" once this specific stake has drawn a raid.</summary>
         public static bool twoFrontLureLockOnceTriggered = false;
 
+        /// <summary>FEVERWOOD_ANT_THEFT_RAIDBACK_1: a kurreth raid stuns thornbugs and tamed sap-suckers and
+        /// carries them off alive (letter + slime trail). Off: the lure's kurreth wave is a plain assault.</summary>
+        public static bool antTheftEnabled = true;
+
         /// <summary>FEVERWOOD_SAP_SUCKER_MISHANDLE_HOOK_1 toggle. On: a
         /// failed taming attempt on a vaulm, drommath or ollareth triggers
         /// its refusal (seal / swell / scream) exactly as taking damage does.
@@ -232,12 +236,18 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref twoFrontLureMinThreatPoints, "twoFrontLureMinThreatPoints", 80f);
             Scribe_Values.Look(ref twoFrontLureLockOnceTriggered, "twoFrontLureLockOnceTriggered", false);
             Scribe_Values.Look(ref sapSuckerMishandleRefusalEnabled, "sapSuckerMishandleRefusalEnabled", true);
+            Scribe_Values.Look(ref antTheftEnabled, "antTheftEnabled", true);
         }
+
+        private static Vector2 scroll;
+        private static float viewHeight = 2000f;
 
         public void DoWindowContents(Rect inRect)
         {
-            Listing_Standard list = new Listing_Standard { ColumnWidth = inRect.width };
-            list.Begin(inRect);
+            Rect view = new Rect(0f, 0f, inRect.width - 16f, viewHeight);
+            Widgets.BeginScrollView(inRect, ref scroll, view);
+            Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
+            list.Begin(view);
 
             list.Label("Fever Wood");
             list.CheckboxLabeled("Compete for natural placement on generated worlds", ref naturalPlacementEnabled,
@@ -341,8 +351,16 @@ namespace RimMandrake.FeverWood
                 "On: a failed attempt to tame a vaulm, drommath or ollareth sets off its refusal — the vaulm "
               + "seals itself, the drommath swells, the ollareth screams — just as being hurt does. Off: only "
               + "being hurt sets it off.");
+            list.GapLine();
+            list.CheckboxLabeled("Kurreth carry animals off alive", ref antTheftEnabled,
+                "On: a kurreth raid fights as before, but up to a third of the column pins a thornbug (then any "
+              + "tamed vaulm, ollareth or drommath) down without killing it and carries it off the map alive; once "
+              + "nothing is left to take, the rest leave. A letter names every animal taken and the way the column "
+              + "went, and a slime trail leads off the edge there. Off: the kurreth wave is a plain assault.");
 
+            viewHeight = list.CurHeight + 20f;
             list.End();
+            Widgets.EndScrollView();
         }
     }
 
