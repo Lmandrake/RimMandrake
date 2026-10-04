@@ -344,11 +344,21 @@ def def_and_spawn_wiring(t):
     t.clear_area(size=10)
 
     with _pure(t, "crystal_genstep_wired", toggle="crystalFormationsEnabled"):
-        cls = _def_field(t, "GenStepDef/KOTOR_CrystalFormation", "genStep")
-        if cls is None or "GenStep_ScatterLightsaberCrystals" not in str(cls):
-            raise ExpectationFailed(
-                "GenStepDef/KOTOR_CrystalFormation.genStep read %r, expected it to "
-                "name CrystalFormations.GenStep_ScatterLightsaberCrystals" % cls)
+        # jawa/get_defs shows a GenStep as its FIELDS (groups, order...) and never names the class, so the class is
+        # asserted from the shipped XML and the LIVE half proves the def resolved with a real, non-null genStep object
+        # (an unresolvable Class= discards the whole def). Load 13: the old read of 'genStep' as a class name gave
+        # '(no such field)' and FAILED a def that was wired and loaded.
+        import os as _o
+        xml_path = _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "Defs", "Absorbed_KotorCore",
+                                "ThingDefs_Resources", "Absorbed_KotorCore_CrystalMapGenerator.xml")
+        if 'Class="CrystalFormations.GenStep_ScatterLightsaberCrystals"' not in open(xml_path, encoding="utf-8").read():
+            raise ExpectationFailed("KOTOR_CrystalFormation's genStep no longer names CrystalFormations.GenStep_ScatterLightsaberCrystals")
+        r = t.bridge_call("jawa/get_defs", defs="GenStepDef/KOTOR_CrystalFormation", deep=True)
+        if t.session is not None:
+            rows = (r or {}).get("defs") or []
+            gs = ((rows[0].get("fields") or {}).get("genStep")) if rows else None
+            if (r or {}).get("notFound") or not isinstance(gs, dict) or "groups" not in gs:
+                raise ExpectationFailed("GenStepDef/KOTOR_CrystalFormation did not load with a populated genStep: %r" % (r,))
     with _pure(t, "crystal_abundance_floor", toggle="crystalAbundance"):
         cls = _def_field(t, "GenStepDef/KOTOR_CrystalFormation", "genStep")
         if cls is None:
