@@ -25,11 +25,12 @@ matches nothing logs nothing") mean a missing target is a silent no-op, not
 a load error -- "the patch applied" can only be checked by reading the
 resulting def back, never by log absence.
 
-COUNTS -- recounted directly this pass (`grep -c PatchOperationConditional
-<file>`, 2026-09-17), matching the walk doc's own 2026-09-08 count exactly:
-CoreInteractions 2, Ideology 15, Insults 3, Interactions 58, animals 1,
-chitchat_jokes 33, chitchat_thoughts 45, chitchat_weather 17, deeptalk 5,
-prisoners 21, romance 5 -- 205 total across 11 files.
+COUNTS -- top-level <Operation> elements parsed as XML (2026-10-03; a line
+grep reads 205 because two comments name the class): CoreInteractions 2,
+Ideology 14, Insults 2, Interactions 58, animals 1, chitchat_jokes 33,
+chitchat_thoughts 45, chitchat_weather 17, deeptalk 5, prisoners 21,
+romance 5 -- 203 total across 11 files. Chain identity_gate_static asserts
+every one of them offline.
 
 EVERY defName THE WALK DOC NAMES WAS CONFIRMED PRESENT IN ITS FILE (not the
 first entry in each file, but present, with the exact quoted Jawaese text
@@ -219,3 +220,62 @@ def jawa_identity_gate_grounds(t):
                 "INITIATOR_kind==RSW_Jawa would be an orphaned gate "
                 "condition if this xenotype cannot exist: %r" % r)
         t.screenshot()
+
+
+_GATES = {"INITIATOR_faction==PlayerColony", "INITIATOR_faction==PlayerTribe",
+          "INITIATOR_kind==RSW_Jawa", "INITIATOR_kind==RSW_JawaTribal"}
+
+
+def identity_gate_problems(patch_dir=None):
+    """(ops, problems) over every Patches/*.xml: each top-level op is a PatchOperationConditional (no nomatch:
+    SpeakUp absent = silent no-op by design) whose <match> is a PatchOperationAdd on the SAME xpath it tests,
+    and whose value lines come in identity quads -- each Jawaese line exactly once per gate (PlayerColony,
+    PlayerTribe, RSW_Jawa, RSW_JawaTribal), every one at priority=250."""
+    import os as _o
+    import re as _re
+    import xml.etree.ElementTree as _ET
+    patch_dir = patch_dir or _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "Patches")
+    ops, bad = 0, []
+    for fn in sorted(f for f in _o.listdir(patch_dir) if f.endswith(".xml")):
+        file_ops = 0
+        for i, op in enumerate(o for o in _ET.parse(_o.path.join(patch_dir, fn)).getroot() if o.tag == "Operation"):
+            ops += 1
+            file_ops += 1
+            where = "%s#%d" % (fn, i)
+            m = op.find("match")
+            if op.get("Class") != "PatchOperationConditional" or m is None or m.get("Class") != "PatchOperationAdd":
+                bad.append("%s: not Conditional->Add" % where)
+                continue
+            if op.find("nomatch") is not None:
+                bad.append("%s: carries a nomatch branch" % where)
+            if (op.findtext("xpath") or "").strip() != (m.findtext("xpath") or "").strip():
+                bad.append("%s: tests one xpath and adds to another" % where)
+            groups = {}
+            lis = m.findall("value/li")
+            if not lis:
+                bad.append("%s: adds no lines" % where)
+            for li in lis:
+                mm = _re.match(r"r_logentry\(([^,()]+),priority=(\d+)\)->(.+)$", (li.text or "").strip(), _re.S)
+                if not mm:
+                    bad.append("%s: line not r_logentry(<gate>,priority=N)->...: %r" % (where, (li.text or "")[:60]))
+                    continue
+                if mm.group(2) != "250":
+                    bad.append("%s: priority %s, not 250" % (where, mm.group(2)))
+                groups.setdefault(mm.group(3), []).append(mm.group(1))
+            for text, gates in groups.items():
+                if sorted(gates) != sorted(_GATES):
+                    bad.append("%s: %r gated %s, not exactly the four identity gates" % (where, text[:40], sorted(gates)))
+        if file_ops == 0:
+            bad.append("%s: no operations parsed" % fn)
+    return ops, bad
+
+
+@suite.chain("identity_gate_static")
+def identity_gate_static(t):
+    """Offline: the identity gate the walk describes holds on every op, not a sample (audit row gap)."""
+    with t.component("every_op_adds_four_gated_lines_at_250", beyond_toggle=True):
+        ops, bad = identity_gate_problems()
+        if ops < 150:
+            raise ExpectationFailed("blind parse: only %d operations found across Patches/" % ops)
+        if bad:
+            raise ExpectationFailed("%d problems over %d ops: %s" % (len(bad), ops, "; ".join(bad[:10])))
