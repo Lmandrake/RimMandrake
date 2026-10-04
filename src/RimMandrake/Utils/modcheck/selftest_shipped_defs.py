@@ -35,6 +35,7 @@ XML = """<Defs>
 # real mods wired to the helper: (mod folder under src, sanity names, min_count)
 WIRED = [
     ("RimStarWars/Cuisine", ("RSW_SaltCuredRation_White", "RSW_CureWithAmberSalt", "RSW_AteCrystalSaltCured"), 30),
+    ("RimUtinni/Antiquities", ("RUT_AntiquityCipherBench",), 8),
 ]
 
 

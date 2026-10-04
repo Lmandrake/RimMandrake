@@ -85,7 +85,7 @@ the raw keyed name -- the assertions below check for the actual English
 text in Languages/English/Keyed/RUT_Antiquities.xml ("Catalogued" /
 "Not yet read"), not "RUT_Antiquity_Catalogued" itself.
 """
-from modcheck import Suite, ExpectationFailed
+from modcheck import Suite, ExpectationFailed, shipped_defs
 
 suite = Suite("Antiquities")
 suite.toggles = ["readingEnabled", "durationMultiplier", "keyTextBonusEnabled",
@@ -204,3 +204,14 @@ def no_more_reading_once_all_stages_done(t):
 
         _inspect_contains(t, urn_id, "Not yet read")
         t.screenshot()
+
+
+# NORTHSTAR_PARTIAL_GAPS_FILL_1 (audit row: Stele and Gravegood families never read, CipherBench and the five
+# RUT_Antiq_* nodes' gating unasserted): every shipped def is loaded live; each research node's
+# requiredResearchBuilding reads back as the deliberately unbuildable RUT_AntiquityCipherBench (so a vanilla bench
+# can never advance it), with its baseCost and techLevel; items and buildings by label.
+shipped_defs.add_chain(suite, __file__,
+                       fields_by_type={"ResearchProjectDef": ("label", "baseCost", "techLevel",
+                                                              "requiredResearchBuilding"),
+                                       "ThingDef": ("label", "stackLimit")},
+                       sanity=("RUT_AntiquityCipherBench",), min_count=8)
