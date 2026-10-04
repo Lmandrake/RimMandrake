@@ -130,7 +130,7 @@ def _git(*args, **kw):
 def step_git(budget=480):
     t0 = time.time()
     out = _git("log", "--all", "--no-renames", "--raw", "--no-abbrev", "--diff-filter=AM",
-               "--format=C\t%H\t%cs\t%s", "--", "src").decode("utf-8", "replace")
+               "--format=C\t%H\t%cs\t%s").decode("utf-8", "replace")
     blobs = {}          # blob -> list of (commit, date, subj, path)
     cur = None
     for line in out.splitlines():
