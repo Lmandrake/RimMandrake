@@ -1,0 +1,1016 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "control_probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "BiomeDef/RM_NightsideIceNoSuchDef_ZZ"
+        ],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_NightsideIceNoSuchDef_ZZ",
+          "found": false,
+          "defType": "BiomeDef",
+          "defName": "RM_NightsideIceNoSuchDef_ZZ"
+         }
+        ],
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_e9a36f33863d4ce8a0f93557bb5a6e14",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:28:30.5644416+00:00",
+         "CompletedAtUtc": "2026-10-04T01:28:30.6139855+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "every_shipped_def_resolves",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "8 of 8 def(s) resolved",
+        "requested": 8,
+        "foundCount": 8,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_NightsideIce",
+          "found": true,
+          "defName": "RM_NightsideIce",
+          "defType": "BiomeDef",
+          "label": "the Sleeping Ice",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_NightsideIce"
+          }
+         },
+         {
+          "requested": "FleckDef/RM_ShivvenTell",
+          "found": true,
+          "defName": "RM_ShivvenTell",
+          "defType": "FleckDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ShivvenTell"
+          }
+         },
+         {
+          "requested": "HediffDef/RM_ShivvenUnderIce",
+          "found": true,
+          "defName": "RM_ShivvenUnderIce",
+          "defType": "HediffDef",
+          "label": "in the ice",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ShivvenUnderIce"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RM_Shivven",
+          "found": true,
+          "defName": "RM_Shivven",
+          "defType": "PawnKindDef",
+          "label": "shivven",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Shivven"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_ShivvenBreach",
+          "found": true,
+          "defName": "RM_ShivvenBreach",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ShivvenBreach"
+          }
+         },
+         {
+          "requested": "SoundDef/RM_ShivvenRumble",
+          "found": true,
+          "defName": "RM_ShivvenRumble",
+          "defType": "SoundDef",
+          "label": null,
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_ShivvenRumble"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_BreachCrack",
+          "found": true,
+          "defName": "RM_BreachCrack",
+          "defType": "ThingDef",
+          "label": "crack in the ice",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_BreachCrack"
+          }
+         },
+         {
+          "requested": "ThingDef/RM_Shivven",
+          "found": true,
+          "defName": "RM_Shivven",
+          "defType": "ThingDef",
+          "label": "shivven",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "defName": "RM_Shivven"
+          }
+         }
+        ],
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_53036b9c9a9e4f94ad8843a5fa2eae86",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:28:30.6650287+00:00",
+         "CompletedAtUtc": "2026-10-04T01:28:30.715318+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "settings_probe_finds_fields",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breachEnabled_round_trips",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breachFirstCountdownHours_round_trips",
+     "toggle": "breachFirstCountdownHours",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: breachFirstCountdownHours: set failed",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breachFrequencyScale_round_trips",
+     "toggle": "breachFrequencyScale",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "breachWarnings_round_trips",
+     "toggle": "breachWarnings",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "heatDialAlert_round_trips",
+     "toggle": "heatDialAlert",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "heatDialAlertThreshold_round_trips",
+     "toggle": "heatDialAlertThreshold",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "heatDialEnabled_round_trips",
+     "toggle": "heatDialEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "heatDialScale_round_trips",
+     "toggle": "heatDialScale",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "masterEnabled_round_trips",
+     "toggle": "masterEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shivvenHeatSeek_round_trips",
+     "toggle": "shivvenHeatSeek",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shivvenIceOnly_round_trips",
+     "toggle": "shivvenIceOnly",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shivvenSenseRange_round_trips",
+     "toggle": "shivvenSenseRange",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "shivvenStrikeHeaters_round_trips",
+     "toggle": "shivvenStrikeHeaters",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "biome_doctrine",
+   "components": [
+    {
+     "name": "flags_and_worker_match_the_sheet",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: workerClass live '(no such field)' != BiomeWorker_IceSheet",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "1 of 1 def(s) resolved",
+        "requested": 1,
+        "foundCount": 1,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "animalDensity",
+         "plantDensity",
+         "allowRoads",
+         "allowRivers",
+         "allowFarmingCamps",
+         "isExtremeBiome",
+         "workerClass"
+        ],
+        "defs": [
+         {
+          "requested": "BiomeDef/RM_NightsideIce",
+          "found": true,
+          "defName": "RM_NightsideIce",
+          "defType": "BiomeDef",
+          "label": "the Sleeping Ice",
+          "modName": "RimMandrake: Baroque Biomes",
+          "packageId": "mandrake.rm.biomes",
+          "fields": {
+           "allowRoads": true,
+           "allowRivers": false,
+           "allowFarmingCamps": false,
+           "animalDensity": 0.2,
+           "plantDensity": 0.0,
+           "isExtremeBiome": true,
+           "workerClass": "(no such field)"
+          }
+         }
+        ],
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_54fbb360523f4ef2b6dbf191838e99a1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:28:46.9961361+00:00",
+         "CompletedAtUtc": "2026-10-04T01:28:47.0367444+00:00",
+         "DurationMs": 40,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "only_clear_weather_has_weight",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "biome_roster",
+   "components": [
+    {
+     "name": "biome_probe_ready",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/biome_probe",
+       "result": {
+        "success": true,
+        "message": "1 biome(s) probed; searched for 1 name(s) \u2014 read `findResults` per biome, and note that present-at-commonality-0 is NOT absent.",
+        "biomesProbed": 1,
+        "notFound": [],
+        "searched": [
+         "RM_NightsideIceNoSuchCreature_ZZ"
+        ],
+        "absentFromEveryProbedBiome": [
+         "RM_NightsideIceNoSuchCreature_ZZ"
+        ],
+        "biomes": [
+         {
+          "defName": "RM_NightsideIce",
+          "label": "the Sleeping Ice",
+          "modName": "RimMandrake: Baroque Biomes",
+          "implemented": true,
+          "generatesNaturally": true,
+          "canBuildBase": true,
+          "canAutoChoose": true,
+          "isExtremeBiome": true,
+          "isWaterBiome": false,
+          "impassable": false,
+          "animalDensity": 0.2,
+          "plantDensity": 0.0,
+          "diseaseMtbDays": 90.0,
+          "forageability": 0.0,
+          "foragedFood": null,
+          "settlementSelectionWeight": 1.0,
+          "wildAnimalCount": 4,
+          "wildPlantCount": 0,
+          "animalsListed": 4,
+          "plantsListed": 0,
+          "animals": [
+           {
+            "defName": "Tauntaun",
+            "commonality": 0.03
+           },
+           {
+            "defName": "RSW_Wampa",
+            "commonality": 0.03
+           },
+           {
+            "defName": "RSW_CaveLemming",
+            "commonality": 0.03
+           },
+           {
+            "defName": "AA_ShockGoat",
+            "commonality": 0.015
+           }
+          ],
+          "plants": [],
+          "findResults": [
+           {
+            "defName": "RM_NightsideIceNoSuchCreature_ZZ",
+            "present": false,
+            "state": "absent",
+            "declared": false,
+            "where": null,
+            "commonality": 0.0,
+            "declaredCommonality": 0.0
+           }
+          ]
+         }
+        ],
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_a57ac1817ed840f29d07f71c081631c5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/biome-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:28:52.0461048+00:00",
+         "CompletedAtUtc": "2026-10-04T01:28:52.0874366+00:00",
+         "DurationMs": 41,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "no_wild_plants",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "animal_rows_carry_source_commonality",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: roster drift: commonality ['AA_ShockGoat live 0.015 != source 0.03']; ungated rows missing []",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "heat_dial",
+   "components": [
+    {
+     "name": "dial_reads",
+     "toggle": "heatDialEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofDial(Verse.Map)",
+        "result": "DIAL 0.00 raw 0.0 heaters 0.0 fires 0.0 power 0.0 rooms 0.0 applies=False biome=Desert",
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_2b2867fadfca4edaba122448c3b12c85",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:28:57.1040646+00:00",
+         "CompletedAtUtc": "2026-10-04T01:28:57.1536127+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "fire_raises_the_dial",
+     "toggle": "heatDialEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFireRaisesDial(Verse.Map)",
+        "result": "BEFORE raw 0.0 AFTER raw 20.0 rose=True",
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_8c28bb885f7e46f9ad1fa5e5c00a7f3e",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:28:57.2044977+00:00",
+         "CompletedAtUtc": "2026-10-04T01:28:57.253791+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "shivven",
+   "components": [
+    {
+     "name": "seeks_heater_under_ice",
+     "toggle": "shivvenHeatSeek",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: the shivven did not take up the heater's heat from the ice: REFUSED: no working player heater on this map (build and power one first)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofSeek(Verse.Map)",
+        "result": "REFUSED: no working player heater on this map (build and power one first)",
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_0722cbf6a05e4a9a9c26731e8f530d03",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:29:02.8877686+00:00",
+         "CompletedAtUtc": "2026-10-04T01:29:02.9367063+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "stays_on_ice",
+     "toggle": "shivvenIceOnly",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "breach_cracks",
+   "components": [
+    {
+     "name": "first_crack_on_open_ice_taught",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: first crack not on open ice or not taught: REFUSED: no open ice 3-12 cells from the base",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOpen(Verse.Map)",
+        "result": "REFUSED: no open ice 3-12 cells from the base",
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_f8ad4b8ae84149b7a46472ffc6f6dd7c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:29:08.0666875+00:00",
+         "CompletedAtUtc": "2026-10-04T01:29:08.116438+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "crack_releases_shivven",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "destroyed_crack_stops_breach",
+     "toggle": "breachEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "map_mechanics",
+   "components": [
+    {
+     "name": "generated_map_is_all_ice_without_water",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: an all-Ice terrain map with no ponds and Clear-only weather exists only on a map GENERATED as RM_NightsideIce; the bridge cannot generate a map",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x0000027081B5B3E0>",
+  "<suite.Component object at 0x0000027081B5AFC0>",
+  "<suite.Component object at 0x0000027081B5AF10>",
+  "<suite.Component object at 0x0000027081B5AC50>",
+  "<suite.Component object at 0x0000027081B5ADB0>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\NightsideIce.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 6,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

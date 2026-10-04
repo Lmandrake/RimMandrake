@@ -1,0 +1,1757 @@
+{
+ "chains": [
+  {
+   "name": "load_clean",
+   "components": [
+    {
+     "name": "no_errors_naming_this_mod",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "83 message(s) of 1000 in the buffer.",
+        "totalInBuffer": 1000,
+        "messages": [
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.beliar 'Beliar Xenotype' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> van.beasts 'Dark Ages : Beasts and Monsters' has 2 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> det.keshig 'Det's Xenotypes - Keshig' has 3 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.highborn 'Highborn Xenotype' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.horrors 'Horrors (Continued)' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> sihv.rombonesport 'Rim of Madness - Bones Unofficial Fix' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.starwarsanimalcollection 'Star Wars Animal Collection (Continued)' has 13 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.swbestiary 'RimMandrake: SW \u2014 Bestiary' has 11 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> jellypowered.survivaltools 'Survival Tools Reborn' has 22 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> ludeon.rimworld 'Core' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> vanillaquestsexpanded.ancients 'Vanilla Quests Expanded - Ancients' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.dungeonpack 'Dungeon Pack (Continued)' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> lee.theforce.lightsaber 'Star Wars : The Force - Lightsaber' has 5 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.armoury 'Jawa Armoury Rebalance' has 40 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.biomes 'RimMandrake: Baroque Biomes' has 6 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.pyrinth 'RimMandrake: Pyrinth' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> det.epochspyrinth 'Epochs - Pyrinth' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=38 elapsedMs=978498",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1972 elapsedMs=980471",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=980472",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=980474",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=980475",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=980475",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=980476",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=980477",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=980481",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=980482",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=980483",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=980487",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=14 elapsedMs=980502",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=2004 elapsedMs=980503",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=15 elapsedMs=980503",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find player faction.",
+          "repeats": 6
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 6
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12122,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.ResearchProjectDef named RimFridge_PowerFactorSetting. There are 413 defs of this type loaded.\n\nPossible Matches:\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ResearchProjectDefs\\ResearchProjects.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\Fridge_Building.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\WallFridge_Building.xml]\n",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1C964610]\n  at RimFridge.RimFridgeComponent.StartedOrLoadedGame () [0x0001a] in <948532676ba340059cc9093181148128>:0 \n    - TRANSPILER PerformanceOptimizer.Main: IEnumerable`1 PerformanceOptimizer.Optimization_FasterGetCompReplacement:Transpiler(IEnumerable`1 instructions, MethodBase method)\n  at RimFridge.RimFridgeComponent.StartedNewGame () [0x00000] in <948532676ba340059cc9093181148128>:0 \n  at Verse.GameComponentUtility.StartedNewGame () [0x0001a] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void SmashTools.GameEvent:RaiseOnNewGame()\n    - POSTFIX SmashPhil.VehicleFramework: Void UpdateLogTool.Patches:UpdateOnNewGame()\n    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_GameComponentUtility_LoadedGame_Patch+StartedNewGame:Postfix()",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Ascendant Helix is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Deepwater Compact is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Free Droid Enclaves is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Geonosian Foundry Hive is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Hutt Cartel is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Wildsteam Clan is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Texture for _DistortionTex is not yet loaded; file may be invalid, or main thread may not have loaded it yet",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 22,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 3
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DF9ACD49]\n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>g__RecolorMineables|4 () [0x00062] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>b__0 () [0x00000] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at Verse.LongEventHandler.UpdateCurrentSynchronousEvent (System.Boolean& sceneChanged) [0x0001d] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'ResourceSys_Rhydonium/RhydoniumPipes_Deconstruct' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'ResourceSys_Plasma/TibannaPipes_Deconstruct' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing SteamGeyser36748",
+          "repeats": 4
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock43437",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock_Large43438",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_ForcedAncientAirlock43439",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43491",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43512",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43526",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to SetForbidden on non-ThingWithComps Thing Filth_Slime43550",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find any textures at Things/Building/Ancient/RUT_RuinedHospitalBed while constructing Multi(initPath=Things/Building/Ancient/RUT_RuinedHospitalBed, color=RGBA(0.631, 0.835, 0.706, 1.000), colorTwo=RGBA(0.631, 0.835, 0.706, 1.000))",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find any textures at Things/Building/Ancient/RUT_AncientAirlock_Top while constructing Multi(initPath=Things/Building/Ancient/RUT_AncientAirlock_Top, color=RGBA(1.000, 1.000, 1.000, 1.000), colorTwo=RGBA(1.000, 1.000, 1.000, 1.000))",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_1859ea43f5a64c78bdec9609092ce235",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:10.3342311+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:10.3842722+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "defs",
+   "components": [
+    {
+     "name": "all_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "13 of 13 def(s) resolved",
+        "requested": 13,
+        "foundCount": 13,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "QuestScriptDef/RUT_UnfinishedLine",
+          "found": true,
+          "defName": "RUT_UnfinishedLine",
+          "defType": "QuestScriptDef",
+          "label": null,
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLine"
+          }
+         },
+         {
+          "requested": "QuestScriptDef/RUT_UnfinishedLine_1_Count",
+          "found": true,
+          "defName": "RUT_UnfinishedLine_1_Count",
+          "defType": "QuestScriptDef",
+          "label": null,
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLine_1_Count"
+          }
+         },
+         {
+          "requested": "QuestScriptDef/RUT_UnfinishedLine_2_Envoy",
+          "found": true,
+          "defName": "RUT_UnfinishedLine_2_Envoy",
+          "defType": "QuestScriptDef",
+          "label": null,
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLine_2_Envoy"
+          }
+         },
+         {
+          "requested": "QuestScriptDef/RUT_UnfinishedLine_3_Cores",
+          "found": true,
+          "defName": "RUT_UnfinishedLine_3_Cores",
+          "defType": "QuestScriptDef",
+          "label": null,
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLine_3_Cores"
+          }
+         },
+         {
+          "requested": "QuestScriptDef/RUT_UnfinishedLine_5_FirstLight",
+          "found": true,
+          "defName": "RUT_UnfinishedLine_5_FirstLight",
+          "defType": "QuestScriptDef",
+          "label": null,
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLine_5_FirstLight"
+          }
+         },
+         {
+          "requested": "HistoryEventDef/RUT_UnfinishedLineCompleted",
+          "found": true,
+          "defName": "RUT_UnfinishedLineCompleted",
+          "defType": "HistoryEventDef",
+          "label": "finished the line neither people could build alone",
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLineCompleted"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_UnfinishedLine_Offer",
+          "found": true,
+          "defName": "RUT_UnfinishedLine_Offer",
+          "defType": "IncidentDef",
+          "label": "the unfinished line",
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_UnfinishedLine_Offer"
+          }
+         },
+         {
+          "requested": "SitePartDef/RUT_SilicaxFoundryRuin",
+          "found": true,
+          "defName": "RUT_SilicaxFoundryRuin",
+          "defType": "SitePartDef",
+          "label": "silicax foundry ruin",
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_SilicaxFoundryRuin"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FoundryPatternCore",
+          "found": true,
+          "defName": "RUT_FoundryPatternCore",
+          "defType": "ThingDef",
+          "label": "pattern core",
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_FoundryPatternCore"
+          }
+         },
+         {
+          "requested": "MentalStateDef/RUT_WildDroidPack",
+          "found": true,
+          "defName": "RUT_WildDroidPack",
+          "defType": "MentalStateDef",
+          "label": "wild droid",
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_WildDroidPack"
+          }
+         },
+         {
+          "requested": "LetterDef/RUT_CoreBrokerOffer",
+          "found": true,
+          "defName": "RUT_CoreBrokerOffer",
+          "defType": "LetterDef",
+          "label": null,
+          "modName": "RimUtinni: The Unfinished Line",
+          "packageId": "mandrake.rut.unfinishedline",
+          "fields": {
+           "defName": "RUT_CoreBrokerOffer"
+          }
+         },
+         {
+          "requested": "FactionDef/RUT_Jawa_FreeDroidEnclaves",
+          "found": true,
+          "defName": "RUT_Jawa_FreeDroidEnclaves",
+          "defType": "FactionDef",
+          "label": "Free Droid Enclaves",
+          "modName": "RimUtinni Patches (Jawa campaign)",
+          "packageId": "mandrake.rut.patches",
+          "fields": {
+           "defName": "RUT_Jawa_FreeDroidEnclaves"
+          }
+         },
+         {
+          "requested": "FactionDef/RUT_Jawa_GeonosianFoundryHive",
+          "found": true,
+          "defName": "RUT_Jawa_GeonosianFoundryHive",
+          "defType": "FactionDef",
+          "label": "Geonosian Foundry Hive",
+          "modName": "RimUtinni Patches (Jawa campaign)",
+          "packageId": "mandrake.rut.patches",
+          "fields": {
+           "defName": "RUT_Jawa_GeonosianFoundryHive"
+          }
+         }
+        ],
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_04803b07447e44adbe3caa31563562f5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:16.1593141+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:16.2068753+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "gates",
+   "components": [
+    {
+     "name": "gate_report_reads",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGates()",
+        "result": "GATES closed: day 0 < 30",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_bb1d3f78571f4d93bd32d4f94a08fcfb",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:21.8583854+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:21.9072896+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "disabled_chain_closes_the_gate",
+     "toggle": "chainEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'chainEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofGates()",
+        "result": "GATES closed: chain disabled in Mod Settings",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_704946e1de7547ca96641e843e0fb540",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:23.8157952+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:23.8361807+00:00",
+         "DurationMs": 20,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'chainEnabled': True})",
+       "result": true
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "chain",
+   "components": [
+    {
+     "name": "parent_offers_and_accepts",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOffer(Boolean)",
+        "result": "CHAIN Ongoing | part Enabled | successes 0/5 | built beats 4 | current RUT_UnfinishedLine_1_Count | failures 0 | pending 0 | broken False | children []",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_ba8079e0cae247b4a6932fc15ac081e5",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:31.2649044+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:31.342638+00:00",
+         "DurationMs": 77,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "first_beat_is_the_count",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNextBeat()",
+        "result": "OFFERED RUT_UnfinishedLine_1_Count || CHAIN Ongoing | part Enabled | successes 0/5 | built beats 4 | current RUT_UnfinishedLine_1_Count | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:NotYetAccepted]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_05bacb7d6510490c8b3ecaa4590ca283",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:31.3657811+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:31.526805+00:00",
+         "DurationMs": 161,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "one_beat_at_a_time",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNextBeat()",
+        "result": "REFUSED: a beat is already offered or running || CHAIN Ongoing | part Enabled | successes 0/5 | built beats 4 | current RUT_UnfinishedLine_1_Count | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:NotYetAccepted]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_5d46214cbef7468fb49090f3fbc79e82",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:31.5561658+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:31.6050028+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 3678,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NewQuest] Quest available: The Count"
+     },
+     {
+      "tick": 3678,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "truce",
+   "components": [
+    {
+     "name": "truce_holds_hive_neutral",
+     "toggle": "brokeredTruceEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTruce(Boolean)",
+        "result": "TRUCE active | hive goodwill 0 | relation Neutral",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_73debf246e214d28a5563d2d2bdcf622",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:37.3306012+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:37.3776706+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "truce_off_does_nothing",
+     "toggle": "brokeredTruceEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTruce(Boolean)",
+        "result": "TRUCE off | hive goodwill 0 | relation Neutral",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_0d4d42e357b443db950ffd7e27c7be4d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:37.42962+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:37.4784372+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'brokeredTruceEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTruce(Boolean)",
+        "result": "TRUCE off | hive goodwill 0 | relation Neutral",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_553daf094f9048ddbd4f239791a7c793",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:39.3517013+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:39.3981777+00:00",
+         "DurationMs": 46,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "set_setting(RimMandrake.Utinni.UnfinishedLine.UnfinishedLineSettings, {'brokeredTruceEnabled': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofTruce(Boolean)",
+        "result": "TRUCE off | hive goodwill 0 | relation Neutral",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_798e74cc996d400caba18c86160defd7",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:41.1747342+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:41.2094918+00:00",
+         "DurationMs": 34,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "wild_pack",
+   "components": [
+    {
+     "name": "pack_does_not_fight_itself",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofWildPack(Int32)",
+        "result": "PACK 3 | in pack state 3 | mutual hostile pairs 0 | hostile to player 3",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_485a2c0984bd4c5ba2f676f3471734c0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:46.786243+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:46.9361129+00:00",
+         "DurationMs": 149,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "cores",
+   "components": [
+    {
+     "name": "beat3_offered_after_two_successes",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofOffer(Boolean)",
+        "result": "CHAIN Ongoing | part Enabled | successes 0/5 | built beats 4 | current RUT_UnfinishedLine_1_Count | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:NotYetAccepted]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_df62b7324ff8456db168eeb45efa0389",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:52.5654606+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:52.614559+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNextBeat()",
+        "result": "REFUSED: a beat is already offered or running || CHAIN Ongoing | part Enabled | successes 0/5 | built beats 4 | current RUT_UnfinishedLine_1_Count | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:NotYetAccepted]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_23488241653040f7b0a22418411784a2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:52.666519+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:52.714911+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofEndBeat(Boolean)",
+        "result": "ENDED RUT_UnfinishedLine_1_Count:EndedSuccess || CHAIN Ongoing | part Enabled | successes 1/5 | built beats 4 | current RUT_UnfinishedLine_2_Envoy | failures 0 | pending 0 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_5a30bc6d6b87416cbb858bc4441c932c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:52.7659454+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:53.1889464+00:00",
+         "DurationMs": 423,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNextBeat()",
+        "result": "OFFERED RUT_UnfinishedLine_2_Envoy || CHAIN Ongoing | part Enabled | successes 1/5 | built beats 4 | current RUT_UnfinishedLine_2_Envoy | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:NotYetAccepted]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_79be492345234c1d8c42e0038db6de33",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:53.2362495+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:53.4048937+00:00",
+         "DurationMs": 168,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofEndBeat(Boolean)",
+        "result": "ENDED RUT_UnfinishedLine_2_Envoy:EndedSuccess || CHAIN Ongoing | part Enabled | successes 2/5 | built beats 4 | current RUT_UnfinishedLine_3_Cores | failures 0 | pending 0 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:EndedSuccess]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_3bbd71a1bd064760aa658b554efab420",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:53.4414088+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:54.014826+00:00",
+         "DurationMs": 573,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofNextBeat()",
+        "result": "OFFERED RUT_UnfinishedLine_3_Cores || CHAIN Ongoing | part Enabled | successes 2/5 | built beats 4 | current RUT_UnfinishedLine_3_Cores | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:EndedSuccess, RUT_UnfinishedLine_3_Cores:NotYetAccepted]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_2b6df5277bce43e3afe69cc9b744424a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:54.0564024+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:54.1730357+00:00",
+         "DurationMs": 116,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cores_home_raises_the_broker",
+     "toggle": "coreBrokerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCores(System.String)",
+        "result": "CORES home | cores 3/3 | home False | decided False | broker deadline -1 | freed 0 | site no map | beat Ongoing || CHAIN Ongoing | part Enabled | successes 2/5 | built beats 4 | current RUT_UnfinishedLine_3_Cores | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:EndedSuccess, RUT_UnfinishedLine_3_Cores:Ongoing]",
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_aae4a2ceead34247bd83548f01f88b5f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:54.2011581+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:54.2495516+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/step_game_ticks",
+       "result": {
+        "success": true,
+        "stepId": "step_4ccf050e91634db08902bf49445c6275",
+        "status": "completed",
+        "requestedTicks": 300,
+        "completedTicks": 300,
+        "remainingTicks": 0,
+        "startTicksGame": 3678,
+        "endTicksGame": 3978,
+        "advancedTicks": 300,
+        "initialFrame": 60719,
+        "lastFrame": 61018,
+        "advancedFrames": 300,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-04T01:24:54.3166044+00:00",
+        "completedAtUtc": "2026-10-04T01:24:59.6886041+00:00",
+        "message": "Advanced 300 game tick(s) across 300 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_1",
+         "currentMapIndex": 1,
+         "mapCount": 2,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_a0f84d65c8114194b8c5ee4e0196c384",
+         "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:54.3005897+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:59.6981114+00:00",
+         "DurationMs": 5397,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCores(System.String)",
+        "result": "CORES state | cores 3/3 | home True | decided False | broker deadline 183750 | freed 0 | site no map | beat Ongoing || CHAIN Ongoing | part Enabled | successes 2/5 | built beats 4 | current RUT_UnfinishedLine_3_Cores | failures 0 | pending 1 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:EndedSuccess, RUT_UnfinishedLine_3_Cores:Ongoing]",
+        "ticksGame": 3978,
+        "operation": {
+         "OperationId": "op_08dfc92e86384565af5a809a4bddebb4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:59.7476514+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:59.796698+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "selling_fails_the_chain",
+     "toggle": "coreBrokerEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofCores(System.String)",
+        "result": "CORES SOLD | cores 0/3 | home True | decided True | broker deadline 183750 | freed 0 | site no map | beat EndedFailed || CHAIN EndedFailed | part Enabled | successes 2/5 | built beats 4 | current RUT_UnfinishedLine_3_Cores | failures 1 | pending 0 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:EndedSuccess, RUT_UnfinishedLine_3_Cores:EndedFailed]",
+        "ticksGame": 3978,
+        "operation": {
+         "OperationId": "op_5cb3effc90e545948f4aac709fbaac78",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:59.8469655+00:00",
+         "CompletedAtUtc": "2026-10-04T01:24:59.9105549+00:00",
+         "DurationMs": 63,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/step_game_ticks",
+       "result": {
+        "success": true,
+        "stepId": "step_d0f98b1cfce34246b964df601bd7386f",
+        "status": "completed",
+        "requestedTicks": 60,
+        "completedTicks": 60,
+        "remainingTicks": 0,
+        "startTicksGame": 3978,
+        "endTicksGame": 4038,
+        "advancedTicks": 60,
+        "initialFrame": 61035,
+        "lastFrame": 61094,
+        "advancedFrames": 60,
+        "initialTimeSpeed": "Paused",
+        "startedAtUtc": "2026-10-04T01:24:59.9631076+00:00",
+        "completedAtUtc": "2026-10-04T01:25:00.9594602+00:00",
+        "message": "Advanced 60 game tick(s) across 60 Unity update frame(s).",
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_1",
+         "currentMapIndex": 1,
+         "mapCount": 2,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_df4899949e2044cb99a650d1930d56be",
+         "CapabilityId": "rimbridge.core/lifecycle/step-game-ticks",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:24:59.9470906+00:00",
+         "CompletedAtUtc": "2026-10-04T01:25:00.9729776+00:00",
+         "DurationMs": 1025,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofChain()",
+        "result": "CHAIN EndedFailed | part Enabled | successes 2/5 | built beats 4 | current RUT_UnfinishedLine_3_Cores | failures 1 | pending 0 | broken False | children [RUT_UnfinishedLine_1_Count:EndedSuccess, RUT_UnfinishedLine_2_Envoy:EndedSuccess, RUT_UnfinishedLine_3_Cores:EndedFailed]",
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_719009c6e7df4de8a94c45a260b7830b",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:25:01.0243926+00:00",
+         "CompletedAtUtc": "2026-10-04T01:25:01.0734415+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 360,
+    "surprises": [
+     {
+      "sidecar": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T182403\\UnfinishedLine__cores__colonist_damaged__t4038__001.json",
+      "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261003T182403\\UnfinishedLine__cores__colonist_damaged__t4038__001.png",
+      "notes": []
+     }
+    ],
+    "hits_seen": [
+     {
+      "tick": 4038,
+      "detector": "colonist_damaged",
+      "severity": "SURPRISE",
+      "summary": "colonist Human225 took 2 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid"
+     },
+     {
+      "tick": 4038,
+      "detector": "raid_arrived",
+      "severity": "SURPRISE",
+      "summary": "raid signal(s): Nothing they freed comes back; open, awaiting arrivals"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NewQuest] Quest available: The Envoy"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NewQuest] Quest available: The Pattern Cores"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NegativeEvent] Hostile: Geonosian Foundry Hive"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NegativeEvent] Quest failed x2"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "WARN",
+      "summary": "new letter [NegativeEvent] Hostile: Free Droid Enclaves"
+     },
+     {
+      "tick": 4038,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "4 new error message(s) in the log"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] The Count: Three of the fallen"
+     },
+     {
+      "tick": 4038,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [PositiveEvent] The Envoy arrives"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "first_light",
+   "components": [
+    {
+     "name": "strike_faction_found",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/static_call",
+       "result": {
+        "success": true,
+        "method": "System.String ProofFirstLightSetup()",
+        "result": "STRIKE Pirate hostile=True run=2d flags branch=False noticed=False done=False",
+        "ticksGame": 4038,
+        "operation": {
+         "OperationId": "op_59ac0ae76b2849409b44129047f71181",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/static-call",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:25:07.6917291+00:00",
+         "CompletedAtUtc": "2026-10-04T01:25:07.7402628+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": true,
+ "findings": [],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\UnfinishedLine.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": true
+}

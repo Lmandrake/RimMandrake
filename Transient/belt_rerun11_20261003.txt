@@ -1,0 +1,200 @@
+[cauldron]-note shipped defs resolved: 42
+[cauldron] 13:49:10 defs_resolve PASS 
+[cauldron] 13:49:10 flora_expansion_shape PASS 
+[cauldron] 13:49:10 fexxil_venom_shape PASS 
+[cauldron] 13:49:12 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 13:49:12 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 13:49:12 biome_roster PASS 
+[cauldron] 13:49:13 biome_worker_and_terrain PASS 
+[cauldron] 13:49:13 nettle_habitat_wired PASS 
+[cauldron] 13:49:13 vent_habitat_wired PASS 
+[cauldron] 13:49:18 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 13:49:19 weathers_selectable PASS 
+[cauldron] 13:49:41 defaults PASS 
+[cauldron] 13:49:45 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 13:49:48 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 13:49:52 ventsEnabled_roundtrip PASS 
+[cauldron] 13:49:56 ventFalterMessage_roundtrip PASS 
+[cauldron] 13:50:00 ventGardensEnabled_roundtrip PASS 
+[cauldron] 13:50:03 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 13:50:09 suush_and_vexxiss_comps PASS 
+[cauldron] 13:50:09 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 13:50:15 fauna_spawns PASS 
+[cauldron] 13:50:16 suush_can_fly PASS 
+[cauldron] 13:50:36 suush_ignores_melee FAIL ExpectationFailed: a suush hit by a Cut (melee) detonated or died: only Bullet/Bomb start the wick, melee must not (None)
+[cauldron] 13:50:36 suush_detonates_when_shot UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 13:50:46 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 13:50:46 assay_grades PASS 
+[cauldron] 13:50:49 assay_toggle_off PASS 
+[cauldron] 13:50:52 assay_factor_scales PASS 
+[cauldron] 13:50:56 yield_site_ready PASS 
+[cauldron]-note martyr harvest 1 (factor 1.0): wood / steel: [47, 351]
+[cauldron] 13:51:27 harvest_pays_metal FAIL ExpectationFailed: a full-grown martyr tree paid 351 steel beside 47 wood, expected ~6
+[cauldron] 13:51:27 yield_factor_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:51:27 yield_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note map-biome native / non-native herbivore picked: ["Alpaca", "Deer"]
+[cauldron]-note weather transition factor after the wait: 1.0
+[cauldron] 13:52:24 bloom_site_ready PASS 
+[cauldron]-note outdoor colonist hediff: {"def": "RM_VentMetalLoad", "label": "metal load (trace)", "severity": 0.012, "part": null, "partLabel": null}
+[cauldron] 13:52:24 bloom_loads_exposed PASS 
+[cauldron] 13:52:24 bloom_no_double_tax PASS 
+[cauldron] 13:52:24 bloom_spares_roofed PASS 
+[cauldron] 13:52:24 bloom_spares_natives PASS 
+[cauldron] 13:52:28 bloom_toggle_off PASS 
+[cauldron]-note severity at factor 2.0 vs 1.0 (ratio): [0.0237333328, 0.012, 1.9777777333333333]
+[cauldron] 13:52:33 bloom_factor_scales PASS 
+[cauldron] 13:52:37 water_site_ready UNMEASURED UNMEASURED: a 'Vexxiss poisoning water' letter is already on the stack before the vexxiss wades
+[cauldron] 13:52:37 water_poison_on UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:52:37 water_letter_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:52:37 water_letter_cooldown UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:52:37 water_letter_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:52:37 water_poison_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 13:52:42 fire_warden_beats_fire UNMEASURED surprise: colonist_damaged: colonist Sonia took 1 damage event(s): Crush by nobody; colonist_downed: colonist Sonia is bleeding; colonist_injured_unexpectedly: colonist Sonia gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 9 fire(s) on the map outside the expected set [evidence:
+[cauldron] 13:52:42 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Sonia took 1 damage event(s): Crush by nobody; colonist_downed: colonist Sonia is bleeding; colonist_injured_unexpectedly: colonist Sonia gained 1 new hediff(s) (B
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 13:52:45 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 13:52:49 vent_weather_multiplier PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron] 13:53:17 vent_falter_precedes_bloom UNMEASURED surprise: colonist_died: colonist Human64486 died (damage_log_kill); colonist_died: colonist Perkins died (death_letter) [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T134902\Cauldron__vents__colonist_died__t409283__001.json]
+[cauldron] 13:53:17 vent_exposure_is_local UNMEASURED a surprise ended this chain earlier: surprise: colonist_died: colonist Human64486 died (damage_log_kill); colonist_died: colonist Perkins died (death_letter) [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\s
+[cauldron] 13:53:17 vexxiss_drinks_vent UNMEASURED a surprise ended this chain earlier: surprise: colonist_died: colonist Human64486 died (damage_log_kill); colonist_died: colonist Perkins died (death_letter) [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\s
+[cauldron] 13:53:17 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: surprise: colonist_died: colonist Human64486 died (damage_log_kill); colonist_died: colonist Perkins died (death_letter) [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\s
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 0, "bufferLines": 1000}
+[cauldron] 13:53:19 log_clean PASS 
+[lscrub-note] shipped defs resolved: 58
+[lscrub] 13:53:33 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 13:53:33 biome_weather_table PASS 
+[lscrub] 13:53:33 biome_density_and_flora PASS 
+[lscrub] 13:53:33 biome_lean_extension PASS 
+[lscrub] 13:53:36 rules_armed PASS 
+[lscrub] 13:53:37 thicket_smotherable PASS 
+[lscrub] 13:53:37 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 20, "campfire": ["Fuel: 19 / 20 (1.9 days)", "Comfort: +0.09 (inactive)", "Rest effectiveness: +6% (inactive)", "Max connected per building: 1"]}
+[lscrub] 13:54:43 dead_venomvine_fuels_fire FAIL ExpectationFailed: the colonist did not burn any dead venomvine (stack 20 -> 20): the fuel patch does not apply to the Campfire's fuel filter
+[lscrub] 13:55:16 defaults PASS 
+[lscrub] 13:55:20 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 13:55:24 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 13:55:28 leanEnabled_roundtrip PASS 
+[lscrub] 13:55:33 leanScentEnabled_roundtrip PASS 
+[lscrub] 13:55:37 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 13:55:41 fauna_spawns PASS 
+[lscrub] 13:55:42 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 13:55:47 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub-note] Stall: path lengths (cells) over 1500 ticks: {"RM_Thornhold171524": {"alive": 7, "samples": 7, "path": 0.0}, "RM_Shirrel171525": {"alive": 7, "samples": 7, "path": 24.077753286934588}}
+[lscrub] 13:56:15 stall_freezes_small PASS 
+[lscrub-note] Stall, stallFreezeEnabled OFF: path: {"RM_Thornhold171524": {"alive": 7, "samples": 7, "path": 9.70820393249937}}
+[lscrub] 13:56:42 stall_toggle_off_wanders PASS 
+[lscrub-note] Stall, modEnabled OFF: path: {"RM_Thornhold171524": {"alive": 7, "samples": 7, "path": 21.89292222699217}}
+[lscrub] 13:57:10 stall_master_off_wanders PASS 
+[lscrub] 13:57:13 gale_site_ready PASS 
+[lscrub] 13:57:21 gale_deafens_outdoors PASS 
+[lscrub] 13:57:21 gale_spares_roofed PASS 
+[lscrub] 13:57:31 gale_deafen_toggle_off PASS 
+[lscrub-note] turbine output W (on, off, on): [5477.0, 4213.0, 5477.0]
+[lscrub] 13:58:29 gale_turbine_surge PASS 
+[lscrub] 13:59:40 gale_turbine_breakdown FAIL ExpectationFailed: no breakdown on a running turbine after two rolls at a 0.01-day mean in the Gale: ['Power output: 5508 W', 'Grid excess: 5508 W (0 Wd stored)']
+[lscrub] 13:59:43 lash_site_ready PASS 
+[lscrub] 13:59:51 lash_toggle_off_quiet UNMEASURED surprise: colonist_damaged: colonist Toni took 1 damage event(s): Crush by nobody; colonist_damaged: colonist Sonia took 1 damage event(s): Crush by nobody; colonist_downed: colonist Toni is bleeding; colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown
+[lscrub] 13:59:51 lash_strikes_once UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Toni took 1 damage event(s): Crush by nobody; colonist_damaged: colonist Sonia took 1 damage event(s): Crush by nobody; colonist_downed: colonist Toni is bleeding;
+[lscrub] 13:59:56 smother_site_ready PASS 
+[lscrub] 14:00:16 smother_claims_stands UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T135330\LeaningScrub__smother__colonist_injured_unexpectedly__t428748__001.json]
+[lscrub] 14:00:16 smother_off_holds_claims UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:00:16 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:00:47 dripping_survives_harvest UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T135330\LeaningScrub__dripping__colonist_injured_unexpectedly__t429348__001.json]
+[lscrub] 14:00:49 crown_site_ready PASS 
+[lscrub] 14:01:02 crown_toggle_off_stays_away UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T135330\LeaningScrub__crown__colonist_injured_unexpectedly__t429948__001.json]
+[lscrub] 14:01:02 crown_mob_gathers UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:12 bloom_toggle_off_quiet UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T135330\LeaningScrub__bloom__colonist_injured_unexpectedly__t430039__001.json]
+[lscrub] 14:01:12 bloom_answers_a_walker UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:15 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: ["RM_Barkwarden180007", "RM_Barkwarden180008", "RM_Barkwarden180009"]
+[lscrub] 14:01:16 guardians_roost_on_spawn PASS 
+[lscrub-note] sweetline label / inspect: ["Where the Wind Turned (sweetline tree)", ["Ready to harvest.", "Loose sweetline felt falls in 2 days.", "Bark-wardens roost here (3). Calm."]]
+[lscrub] 14:01:16 station_named_and_timed PASS 
+[lscrub] 14:01:19 station_toggle_off_plain PASS 
+[lscrub] 14:01:29 station_sheds_wool UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T135330\LeaningScrub__sweetline__colonist_injured_unexpectedly__t760639__001.json]
+[lscrub] 14:01:29 scratch_toggle_off_refused UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 scratch_drops_coat UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 visitors_toggle_off_quiet UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 visitors_come_and_leave_marks UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 felt_comfort_toggle_off_plain UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 felt_furniture_comfort UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 map_step_chance_zero_plants_none UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub] 14:01:29 map_step_plants_one_or_two UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[lscrub] 14:01:32 log_clean PASS 
+[bdesert-note] shipped defs resolved: 68
+[bdesert] 14:01:45 defs_resolve PASS 
+[bdesert] 14:01:45 flora_expansion_shape PASS 
+[bdesert-note] BiomeDef weather table: {"Clear": 60.0, "RM_Haze": 15.0, "RM_IceSandDrift": 15.0, "RM_IceFog": 10.0, "Fog": 0, "Rain": 0, "DryThunderstorm": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "SnowGentle": 0, "SnowHard": 0, "GrayPall": 0, "Windy": 0, "Overcast": 0, "Blizzard": 0}
+[bdesert] 14:01:45 biome_weather_table PASS 
+[bdesert] 14:01:45 biome_carrier_condition PASS 
+[bdesert-note] biome roster states (AA_Thunderbeast follows the mod list): {"RM_Dorrak": "spawning", "RM_Dovvik": "spawning", "RM_Krissek": "spawning", "RM_Murrek": "spawning", "RM_Ossivel": "spawning", "RM_Utikka": "spawning", "RM_Vekkit": "spawning", "RM_Vhaulk": "spawning", "RM_Vrisk": "spawning", "RM_Zhaaz": "spawning", "RM_Palefloss": "spawning", "RM_Glassfern": "spawning", "RM_Chimeglobe": "spawning", "RM_Virr": "spawning", "RM_Qeshra": "spawning", "RM_Kethevar": "spawning", "RM_Lisqueth": "spawning", "RM_Vashpuk": "spawning", "AA_Thunderbeast": "spawning"}
+[bdesert] 14:01:45 biome_roster_and_density PASS 
+[bdesert] 14:01:46 charge_comps_wired PASS 
+[bdesert] 14:01:46 rack_needs_no_power PASS 
+[bdesert] 14:01:46 ablation_and_murrek_wired PASS 
+[bdesert] 14:02:06 defaults PASS 
+[bdesert] 14:02:10 burnerHaloEnabled_roundtrip PASS 
+[bdesert] 14:02:14 crackCueEnabled_roundtrip PASS 
+[bdesert] 14:02:18 murrekReseedEnabled_roundtrip PASS 
+[bdesert] 14:02:21 ablationSalvageEnabled_roundtrip PASS 
+[bdesert] 14:02:25 ablationPaceFactor_roundtrip PASS 
+[bdesert] 14:02:29 vhaulkRoadDaysFactor_roundtrip PASS 
+[bdesert] 14:02:32 vhaulkStayDaysFactor_roundtrip PASS 
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 14:02:36 natives_spawn_charged PASS 
+[bdesert] 14:02:36 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": []}
+[bdesert] 14:02:40 flora_spawns PASS 
+[bdesert] 14:02:48 plant_death_chains UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__flora_chain__colonist_injured_unexpectedly__t760939__001.json]
+[bdesert] 14:02:48 plant_death_toggle_off_no_chain UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert] 14:02:48 plant_death_master_off_no_chain UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert-note] warm arms: {"amb": 29.0730953, "low": 5.0, "high": 37.07}
+[bdesert] 14:02:51 warm_site_ready PASS 
+[bdesert] 14:03:57 warm_threshold_above_keeps_plants FAIL ExpectationFailed: clock stalled at 761200 during a 4300-tick wait (a modal dialog pausing the game?)
+[bdesert] 14:03:57 warm_toggle_off_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:03:57 warm_detonates_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:04:00 dorrak_site_ready PASS 
+[bdesert] 14:04:03 hump_hit_kills UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__dorrak_hump__colonist_injured_unexpectedly__t761260__001.json]
+[bdesert] 14:04:03 leg_hit_does_not_kill UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert] 14:04:03 hump_toggle_off_ordinary_part UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert] 14:04:10 krissek_death_blasts UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__krissek_blast_
+[bdesert] 14:04:10 krissek_off_quiet UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:18 heat_kill_detonates UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__vhaulk_gates__
+[bdesert] 14:04:18 kinetic_kill_does_not UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:18 emp_on_living_detonates UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:18 heat_gate_off_any_death_detonates UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:18 emp_trap_off_is_ordinary_damage UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:18 native_toggle_off_no_blast UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:18 master_off_no_blast UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubu
+[bdesert] 14:04:22 haze_site_ready PASS 
+[bdesert] 14:04:31 haze_film_on_outdoor_colonist UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__haze__colonist_injured_unexpectedly__t761830__001.json]
+[bdesert] 14:04:31 haze_spares_natives UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert] 14:04:31 haze_toggle_off_new_arrival_clean UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert] 14:05:04 foreign_grazer_takes_butane_gut FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bdesert] 14:05:04 native_grazer_exempt UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:05:04 butane_toggle_off_clean UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:05:21 wax_toggle_off_ruined_but_inert UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__cold_wax__colonist_injured_unexpectedly__t762330__001.json]
+[bdesert] 14:05:21 wax_ruined_wicks_and_goes UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "New Arrivals", "styleDefAfter": null, "ticksGame": 762330, "operation": {"OperationId": "op_3d58947694634bb2ac7e1e0b067ac9ae", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-03T21:05:26.0942033+00:00", "CompletedAtUtc": "2026-10-03T21:05:26.130551+00:00", "DurationMs": 36, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "New Arrivals", "styleDefAfter": null, "ticksGame": 762330, "operation": {"OperationId": "op_4be130aafe14417d83bc60347e3a638b", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-03T21:05:26.1585895+00:00", "CompletedAtUtc": "2026-10-03T21:05:26.1889902+00:00", "DurationMs": 30, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert] 14:05:56 rack_site_ready FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bdesert] 14:05:56 rack_cools_loaded_room_only UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:05:56 rack_spends_ice_and_drips UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:05:56 rack_toggle_off_leaves_room_alone UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 14:12:45 thaw_toggle_off_mines_cleanly UNMEASURED surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T140142\BlueDesert__thaw__colonist_injured_unexpectedly__t762930__001.json]
+[bdesert] 14:12:45 thaw_roll_finds_debris UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Toni gained 1 new hediff(s) (BloodLoss); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20
+[bdesert] 14:13:18 road_laid_and_flora_cropped FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bdesert] 14:13:18 road_toggle_off_walks_clean UNMEASURED upstream failed -- this chain's state is meaningless

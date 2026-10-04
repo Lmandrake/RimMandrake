@@ -1,0 +1,66 @@
+[ws-note] Player.log scan: {"lines": 16089, "hits": [], "game-wide config/xref lines (instrument probe)": 66}
+[ws] 08:35:13 player_log_names_no_weepingstones_error PASS 
+[ws] 08:35:15 resolve_probe_sees_absence PASS 
+[ws] 08:35:15 defs_resolve_race_things PASS 
+[ws] 08:35:15 defs_resolve_pawnkinds PASS 
+[ws] 08:35:15 defs_resolve_items PASS 
+[ws] 08:35:15 defs_resolve_plants PASS 
+[ws] 08:35:15 defs_resolve_recipes PASS 
+[ws] 08:35:15 defs_resolve_thoughts PASS 
+[ws] 08:35:15 defs_resolve_jobs PASS 
+[ws] 08:35:15 defs_resolve_workgivers PASS 
+[ws] 08:35:15 defs_resolve_set_makers PASS 
+[ws] 08:35:15 defs_resolve_biome PASS 
+[ws] 08:35:15 defs_resolve_buildings PASS 
+[ws] 08:35:15 defs_resolve_letters PASS 
+[ws] 08:35:15 defs_pair_up_by_convention PASS 
+[ws] 08:35:18 biome_probe_ready PASS 
+[ws] 08:35:18 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): ["RM_Ikee (needs mandrake.rm.stillsand)"]
+[ws] 08:35:18 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 08:35:18 wild_plants_wired PASS 
+[ws] 08:35:18 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 08:35:18 stocked_catch_has_living_counterpart PASS 
+[ws] 08:35:18 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "stripDefNames", "Plant_TreePalm", "Plant_RatPalm", "Plant_Grass", "Plant_GrayGrass", "TreePalma", "VEE_Plant_DatePalm", "plants", "plant", "RM_Dewblade"]
+[ws] 08:35:18 water_truce_extension_present PASS 
+[ws] 08:35:18 sun_heat_extension_present FAIL ExpectationFailed: RM_SunHeatExtension is not among the biome's modExtensions: ['radius', '10.0', 'stripDefNames', 'Plant_TreePalm', 'Plant_RatPalm', 'Plant_Grass', 'Plant_GrayGrass', 'TreePalma', 'VEE_Plant_DatePalm', 'plants']
+[ws] 08:35:19 no_dead_windhour_text PASS 
+[ws] 08:35:21 recipes_on_both_stoves FAIL ExpectationFailed: ElectricStove lacks recipes ['RM_SpinDewsilk'] (RM_StockedPoolRecipeWiring.xml matched nothing?)
+[ws] 08:35:21 rottable_items_tick PASS 
+[ws] 08:35:24 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}
+[ws] 08:35:24 designator_listed_when_on PASS 
+[ws] 08:35:27 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=True) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 08:35:33 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 08:35:36 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 08:35:39 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 08:35:42 waterTruceRadius_slider_roundtrip PASS 
+[ws] 08:35:44 suppression_source_wired PASS 
+[ws] 08:35:48 suppression_toggle_default_and_roundtrip PASS 
+[ws] 08:35:50 condenser_defs_wired PASS 
+[ws] 08:35:52 dewsilk_defs_wired PASS 
+[ws] 08:35:56 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 08:35:56 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 08:35:58 oasis_source_wired PASS 
+[ws] 08:35:58 oasis_def_accepts_our_biome FAIL ExpectationFailed: Oasis.workerClass is not RimMandrake.WeepingStones.RM_TileMutatorWorker_Oasis: ['biomeWhitelist', 'Desert', 'ExtremeDesert', 'Savanna', 'AB_GallatrossGraveyard', 'AB_TarPits', 'BiomeArcticOasis', 'BiomeAreeb', 'BiomeCypreJungle', 'BiomeGRimberlands', 'BiomeGRimond', 'BiomeGRimphir
+[ws] 08:36:01 oasis_toggle_default_and_roundtrip PASS 
+[ws] 08:36:01 oasis_map_census UNMEASURED UNMEASURED: needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing pal
+[rimbridge_client] rimworld/pause_game -> UNCHECKED: tools/list failed ([WinError 10054] An existing connection was forcibly closed by the remote host)
+[rimbridge_client] rimworld/pause_game -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] rimworld/pause_game -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/debug_settings -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/debug_settings -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/window_list_close -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+== situational_rerun
+  -- WeepingStones
+  -- TheForge
+  -- Cauldron
+  -- LeaningScrub
+  FAIL no suite raised out of run_suite  -- ["WeepingStones: AttributeError: 'NoneType' object has no attribute 'sendall'", "TheForge: AttributeError: 'NoneType' object has no attribute 'sendall'", "Cauldron: AttributeError: 'NoneType' object has no attribute 'sendall'", "LeaningScrub: AttributeError: 'NoneType' object has no attribute 'senda
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL situational_rerun -- 3/4 checks ; failed: no suite raised out of run_suite
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

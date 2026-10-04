@@ -1,0 +1,18 @@
+[bacta] 15:29:51 defs_resolve PASS 
+[bacta] 15:29:51 tank_def_wiring PASS 
+[bacta] 15:29:51 fluid_and_items_trade PASS 
+[bacta] 15:29:51 trader_stock_patch_landed FAIL ExpectationFailed: Base_Outlander_Standard stockGenerators lack the patch's rows [(0, 6), (0, 3)]: the patch matched nothing, or another mod rewrote the list
+[bacta] 15:29:51 doctor_recipes_patch_landed UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 15:29:51 settings_ship_defaults UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 15:29:51 no_bacta_errors_in_log UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 15:30:21 site_ready_heals PASS 
+[bacta] 15:31:03 tank_refuels_via_vanilla_job PASS 
+[bacta] 15:32:20 enters_and_reports_off PASS 
+[bacta] 15:32:46 heals_fresh_wound_at_tuned_rate UNMEASURED surprise: colonist_injured_unexpectedly: colonist Maxim gained 1 new hediff(s) (SEX_Birthday); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T152945\Bacta__tank_heals__colonist_injured_unexpectedly__t5726__001.json]
+[bacta] 15:32:46 drains_bacta_while_healing UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Maxim gained 1 new hediff(s) (SEX_Birthday); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprise
+[bacta] 15:32:46 never_regrows_never_touches_brain UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Maxim gained 1 new hediff(s) (SEX_Birthday); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprise
+[bacta] 15:32:46 ejects_when_nothing_left UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Maxim gained 1 new hediff(s) (SEX_Birthday); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprise
+[bacta] 15:32:46 no_bacta_errors_after_ticking UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Maxim gained 1 new hediff(s) (SEX_Birthday); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprise
+[bacta] 15:34:29 site_ready_scar FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bacta] 15:34:29 scar_erasure_off_keeps_the_scar UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 15:34:29 scar_erasure_on_removes_the_scar UNMEASURED upstream failed -- this chain's state is meaningless

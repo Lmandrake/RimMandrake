@@ -1,0 +1,2469 @@
+{
+ "chains": [
+  {
+   "name": "load_clean",
+   "components": [
+    {
+     "name": "no_errors_naming_this_mod",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/drain_log",
+       "result": {
+        "success": true,
+        "message": "250 message(s) of 1000 in the buffer.",
+        "totalInBuffer": 1000,
+        "messages": [
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Glowtail",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Maligoat",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Screecher",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_TaintedTurtle",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_TripleSnapper",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_Varmot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Meat_BMT_WasteHound",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BiomesIslands_Coconuts",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_CryingWolfBerries",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_PoxSorghumHarvested",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_ClawhandCitron",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_RegalMilk",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BiomesIslands_EggFlamingoUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggLandOctopusUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMaxolotlUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggBiliousVarogUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggBloodletterPetrelUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggCarrionVultureUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggFamineLocustUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggGastroToadUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggGlowtailUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegakrillUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegaroachUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMucklurkerCatfishUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggNorpheaUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMutatingTumorfishUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggSacapillarUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggScreecherUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggSludgeCrawlerUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_SmogMothEggUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggSwarmcallerUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggTaintedTurtleUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggTripleSnapperUnfertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BiomesIslands_EggFlamingoFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggLandOctopusFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMaxolotlFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggBiliousVarogFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggBloodletterPetrelFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggCarrionVultureFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggFamineLocustFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggGastroToadFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggGlowtailFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegakrillFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMegaroachFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMucklurkerCatfishFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggNorpheaFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggMutatingTumorfishFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggPustuleHornetQueenFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggSacapillarFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggScreecherFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggSludgeCrawlerFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_SmogMothEggFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggSwarmcallerFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggTaintedTurtleFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_EggTripleSnapperFertilized",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_BufoBile",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_MutapoxVial",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_ToxClear",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named BMT_HagbloomNectar",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BiomesIslands_Flamingo",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_LandOctopus",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Maxolotl",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_HotfootRat",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_KangarooRat",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_Lemming",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_Mouse",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_TYR_MousePoison",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_MO_AbominationRace",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BarbedPangolin",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BiliousVarog",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BloodletterPetrel",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_CarrionVulture",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_FenridStoat",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Polluwog",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_GastroToad",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Glowtail",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Maligoat",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Creature_Mantrap",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MegaphoridLarva",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MucklurkerCatfish",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishSpawn",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishFry",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutatingTumorfishAdult",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Screecher",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SludgeCrawler",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_TaintedTurtle",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_ToxSheep",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_TripleSnapper",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Varmot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_WasteHound",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_VQE_IceCrawler",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_VQE_Megamidge",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_BunkerBug",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_FamineLocust",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Megakrill",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Megaphorid",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Megaroach",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_MutagenicNorphea",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornet",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornetSpawned",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_ColonyPustuleHornet",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_PustuleHornetQueen",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_ColonyPustuleHornetQueen",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Sacapillar",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SmogMothLarvae",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SmogPupa",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_SmogMoth",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load reference to Verse.ThingDef named Corpse_BMT_Swarmcaller",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Error during patching RimWorld.PregnancyUtility :: Verse.AcceptanceReport CanEverProduceChild(Verse.Pawn, Verse.Pawn) with: pre  | post: Void CanEverProduceChildPostfix(Verse.Pawn, Verse.Pawn, Verse.AcceptanceReport ByRef) | trans: System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction] CanEverProduceChildTranspiler(System.Collections.Generic.IEnumerable`1[HarmonyLib.CodeInstruction])\nSystem.Exception: Wrong null argument: brtrue NULL\r\n[Ref A3C4372C]\n  at HarmonyLib.MethodCreatorTools+<>c__DisplayClass12_0.<EmitCodes>b__0 (HarmonyLib.CodeInstruction codeInstruction) [0x00155] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.CollectionExtensions.Do[T] (System.Collections.Generic.IEnumerable`1[T] sequence, System.Action`1[T] action) [0x00014] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.MethodCreatorTools.EmitCodes (HarmonyLib.MethodCreator _, HarmonyLib.Emitter emitter, System.Collections.Generic.List`1[T] codeInstructions) [0x0000d] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.MethodCreator.CreateReplacement () [0x008ca] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchFunctions.UpdateWrapper (System.Reflection.MethodBase original, HarmonyLib.PatchInfo patchInfo) [0x0007c] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchProcessor.Patch () [0x0013c] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.Harmony.Patch (System.Reflection.MethodBase original, HarmonyLib.HarmonyMethod prefix, HarmonyLib.HarmonyMethod postfix, HarmonyLib.HarmonyMethod transpiler, HarmonyLib.HarmonyMethod finalizer) [0x0002a] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at AlienRace.AlienHarmony.Patch (System.Reflection.MethodBase original, HarmonyLib.HarmonyMethod prefix, HarmonyLib.HarmonyMethod postfix, HarmonyLib.HarmonyMethod transpiler, HarmonyLib.HarmonyMethod finalizer) [0x000ab] in C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AlienRaces\\Source\\AlienRace\\AlienRace\\AlienHarmony.cs:42 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Error in static constructor of JumppackForMeleeAI.JumppackForMeleeAI: System.TypeInitializationException: The type initializer for 'JumppackForMeleeAI.JumppackForMeleeAI' threw an exception. ---> HarmonyLib.HarmonyException: Patching exception in method virtual Verse.AI.Job RimWorld.JobGiver_AIFightEnemy::TryGiveJob(Verse.Pawn pawn) ---> System.InvalidProgramException: Invalid IL code in (wrapper dynamic-method) MonoMod.Utils.DynamicMethodDefinition:RimWorld.JobGiver_AIFightEnemy.TryGiveJob_Patch4 (RimWorld.JobGiver_AIFightEnemy,Verse.Pawn): IL_01f0: br        IL_0356\n\n\r\n[Ref 1548B61A]\n  at HarmonyLib.PatchFunctions.UpdateWrapper (System.Reflection.MethodBase original, HarmonyLib.PatchInfo patchInfo) [0x000c2] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchClassProcessor.ProcessPatchJob (HarmonyLib.PatchJobs`1+Job[T] job) [0x000f8] in <024a0e6ec8c2437ead047b6279389c23>:0 \r\n   --- End of inner exception stack trace ---\r\n[Ref B334752]\n  at HarmonyLib.PatchClassProcessor.ReportException (System.Exception exception, System.Reflection.MethodBase original) [0x0013c] in <024a0e6ec8c2437ead047b6279389c23>:0 \n  at HarmonyLib.PatchClassProcessor.Patch () [0x00096] in <024a0e6ec8c2437ead047b6279389c23>:0 \nJumppackForMeleeAI.JumppackForMeleeAI..cctor()\r\n   --- End of inner exception stack trace ---\r\n[Ref 8F3E133E]\n(wrapper managed-to-native) System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(intptr)\n  at System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor (System.RuntimeTypeHandle type) [0x0004e] in <51fded79cd284d4d911c5949aff4cb21>:0 \n    - PREFIX rimworld.aRandomKiwi.RimTheme: Boolean aRandomKiwi.RimThemes.RuntimeHelpers_RunClassConstructor_Patch:Prefix(RuntimeTypeHandle type)\n  at RimMandrake.LoadTracer.LoadTracerPatches.CallAllPrefix () [0x000f4] in <20a5b707b8db4a4eb995edbc83a1554a>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 AbilityDef: RimWorld.AbilityDef=540->AbilityDef.json, VEF.Abilities.AbilityDef=17->VEF.Abilities.AbilityDef.json, AbilityUser.AbilityDef=0->AbilityUser.AbilityDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 CustomMapDataDef: AncientMarket_Libraray.CustomMapDataDef=42->CustomMapDataDef.json, QuestEditor_Library.CustomMapDataDef=12->QuestEditor_Library.CustomMapDataDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 DefExtensions: DubRoss.DefExtensions=1->DefExtensions.json, DubsBadHygiene.DefExtensions=1->DubsBadHygiene.DefExtensions.json, Rimefeller.DefExtensions=1->Rimefeller.DefExtensions.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 DialogTreeDef: AncientMarket_Libraray.DialogTreeDef=1->DialogTreeDef.json, QuestEditor_Library.DialogTreeDef=0->QuestEditor_Library.DialogTreeDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 DubsModOptions: DubsBadHygiene.DubsModOptions=15->DubsModOptions.json, Rimefeller.DubsModOptions=4->Rimefeller.DubsModOptions.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 ExpansionDef: RimWorld.ExpansionDef=6->ExpansionDef.json, CaravanAdventures.Expansions.ExpansionDef=1->CaravanAdventures.Expansions.ExpansionDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 FaceTypeDef: FacialAnimation.FaceTypeDef=150->FaceTypeDef.json, FaceAddon.FaceTypeDef=0->FaceAddon.FaceTypeDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 ModDef: VEF.OptionalFeatures.ModDef=6->ModDef.json, MVCF.ModDef=5->MVCF.ModDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 QuestGiverDef: RimQuest.QuestGiverDef=5->QuestGiverDef.json, VEF.Storyteller.QuestGiverDef=1->VEF.Storyteller.QuestGiverDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 StructureLayoutDef: KCSG.StructureLayoutDef=272->StructureLayoutDef.json, Fortified.Structures.StructureLayoutDef=0->Fortified.Structures.StructureLayoutDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 StructureSetDef: VanillaQuestsExpandedAncients.StructureSetDef=14->StructureSetDef.json, VEF.Storyteller.StructureSetDef=0->VEF.Storyteller.StructureSetDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimMandrake.RimDefDump] def type name collision \u2014 SymbolDef: KCSG.SymbolDef=8999->SymbolDef.json, Fortified.Structures.SymbolDef=0->Fortified.Structures.SymbolDef.json",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "[RimMandrake.TitanicCreatures] No RM_TitanicTierDef found - Defs/TitanicTierDefs/RM_TitanicTierDef.xml is missing or failed to load. Falling back to hardcoded defaults (4/8/20); fix the XML.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[Map Preview v1.12.26.1] Detected potential conflict: The mod \"Custom Quest Framework\" (QF_Patch) adds a destructive patch that will likely override or break some functionality of Map Preview.\nPatch method: static System.Boolean QuestEditor_Library.Patch_MapGenerate::prefix(Verse.IntVec3& mapSize, RimWorld.Planet.MapParent parent, Verse.MapGeneratorDef mapGenerator)\nTarget method: static Verse.Map Verse.MapGenerator::GenerateMap(Verse.IntVec3 mapSize, RimWorld.Planet.MapParent parent, Verse.MapGeneratorDef mapGenerator, System.Collections.Generic.IEnumerable`1<Verse.GenStepWithParams> extraGenStepDefs, System.Action`1<Verse.Map> extraInitBeforeContentGen, System.Boolean isPocketMap, System.Boolean stepDebugger)",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[Geological Landforms v1.7.13.1] Detected potential conflict: The mod \"GravTide\" (gravtide.mod) adds a destructive patch that will likely override or break some functionality of Geological Landforms.\nPatch method: static System.Boolean GravTide.BuildFor_Patch::Prefix(Verse.MapPlantGrowthRateCalculator __instance, Verse.Map map)\nTarget method: System.Void Verse.MapPlantGrowthRateCalculator::BuildFor(Verse.Map map)",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[Geological Landforms v1.7.13.1] Detected potential conflict: The mod \"RimMandrake: Baroque Biomes\" (mandrake.rm.lanterndeeps) adds a destructive patch that will likely override or break some functionality of Geological Landforms.\nPatch method: static System.Boolean RimMandrake.LanternDeeps.Patch_MapPlantGrowthRateCalculator_BuildFor::Prefix(Verse.MapPlantGrowthRateCalculator __instance, Verse.Map map)\nTarget method: System.Void Verse.MapPlantGrowthRateCalculator::BuildFor(Verse.Map map)",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[Geological Landforms v1.7.13.1] Detected potential conflict: The mod \"GravTide\" (gravtide.mod) adds a destructive patch that will likely override or break some functionality of Geological Landforms.\nPatch method: static System.Boolean GravTide.WeatherEvent_LightningStrike_FireEvent_Patch::Prefix(Verse.Map ___map, Verse.IntVec3& ___strikeLoc)\nTarget method: virtual System.Void RimWorld.WeatherEvent_LightningStrike::FireEvent()",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type GrabUtility probably needs a StaticConstructorOnStartup attribute, because it has a field mpb of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type GrappleFlyer probably needs a StaticConstructorOnStartup attribute, because it has a field mpb of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Building_DuelSpot probably needs a StaticConstructorOnStartup attribute, because it has a field invisible of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type CompVehicleHover probably needs a StaticConstructorOnStartup attribute, because it has a field s_ThrusterFlameBlock of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type MarkerCache probably needs a StaticConstructorOnStartup attribute, because it has a field outlineGeneratorMaterial of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type OreHighlightRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field sharedStripeTexture of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type TransparentObject probably needs a StaticConstructorOnStartup attribute, because it has a field copyToDepthMaterial of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type QuestBookNodeCanvas probably needs a StaticConstructorOnStartup attribute, because it has a field nodeFrame of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type TransparentObject_Atmosphere probably needs a StaticConstructorOnStartup attribute, because it has a field AtmosphereLUT of type Shader. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Dialog_QuestBookStepInfo probably needs a StaticConstructorOnStartup attribute, because it has a field nodeFrame of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type TransparentObject_Cloud probably needs a StaticConstructorOnStartup attribute, because it has a field SkyBoxCloud of type Shader. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Patch_GravEngine_GetGizmos probably needs a StaticConstructorOnStartup attribute, because it has a field SaveTex of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Dialog_EditQuestBookStep probably needs a StaticConstructorOnStartup attribute, because it has a field nodeFrame of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type TransparentObject_Ring probably needs a StaticConstructorOnStartup attribute, because it has a field BasicRing of type Shader. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type PlaySettings_ToggleIcons_Patch probably needs a StaticConstructorOnStartup attribute, because it has a field Icon of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type DoExtraIconsTweak probably needs a StaticConstructorOnStartup attribute, because it has a field TechprintIcon_Missing of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Apparel_HumanSkinSuit probably needs a StaticConstructorOnStartup attribute, because it has a field skinBoltGraphic of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type BTD_DesignRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field vgeTileMaterial of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Patches_WorldLayer_MapMode_OnGUI_Invasions probably needs a StaticConstructorOnStartup attribute, because it has a field DraftIcon of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Dialog_WorkbenchImageBrowser probably needs a StaticConstructorOnStartup attribute, because it has a field checkerTexture of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type AnimationTextureLayerRuntime probably needs a StaticConstructorOnStartup attribute, because it has a field DrawBlock of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Patches_ExpandableWorldObjectsOnGUI probably needs a StaticConstructorOnStartup attribute, because it has a field DraftIcon of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type SandHammerThing probably needs a StaticConstructorOnStartup attribute, because it has a field bottomGraphic of type Graphic. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type BGRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field layers of type Texture2D[]. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type RM_GameCondition_Mirage probably needs a StaticConstructorOnStartup attribute, because it has a field bandMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Invasion probably needs a StaticConstructorOnStartup attribute, because it has a field AttackSettlementIcon of type Texture2D. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type VideoPlayerUtil probably needs a StaticConstructorOnStartup attribute, because it has a field go of type GameObject. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type AnimRenderer probably needs a StaticConstructorOnStartup attribute, because it has a field DefaultCutout of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type SectionLayer_RM_SkyColumns probably needs a StaticConstructorOnStartup attribute, because it has a field hazeMat of type Material. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Type Dialog_AnimationDebugger probably needs a StaticConstructorOnStartup attribute, because it has a field mpb of type MaterialPropertyBlock. All assets must be loaded in the main thread.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[makeitso.configurabletechprints] Patches on methods annotated as Obsolete were detected by HugsLib: RimWorld.TechprintUtility.TryGetTechprintDefToGenerate",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Greatbole/RM_Greatbole_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/RM_Kaddrath/RM_Kaddrath_a",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Collection cannot init: No textures found at path Things/Plant/VaultRoot",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "RSW_Pawn_SandP_Death SubSound RSW_Pawn_SandP_Death_0 has no resolvedGrains.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "RSW_Pawn_SandP_Wounded SubSound RSW_Pawn_SandP_Wounded_0 has no resolvedGrains.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "RSW_Biomes_GiantSnail_Death SubSound RSW_Biomes_GiantSnail_Death_0 has no resolvedGrains.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "RSW_Biomes_GiantSnail_Wounded SubSound RSW_Biomes_GiantSnail_Wounded_0 has no resolvedGrains.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><value><RSW_Gizka>1.0</RSW_Gizka><RSW_Clodhopper>0.7</RSW_Clodhopper><RSW_Whisperbird>0.7</RSW_Whisperbird><RSW_Worrt>0.7</RSW_Worrt><RSW_Shiro>0.5</RSW_Shiro><RSW_ShiroTrap>0.5</RSW_ShiroTrap><RSW_Diggerpede>0.4</RSW_Diggerpede><RSW_Klorslug>0.4</RSW_Klorslug><RSW_Mott>0.4</RSW_Mott><RSW_Nuna>0.4</RSW_Nuna><RSW_Convor>0.3</RSW_Convor><RSW_Falumpaset>0.3</RSW_Falumpaset><RSW_Gelagrub>0.3</RSW_Gelagrub><RSW_Kinrath>0.3</RSW_Kinrath><RSW_Fambaa>0.25</RSW_Fambaa><RSW_PekoPeko>0.2</RSW_PekoPeko><RSW_Dalgo>0.18</RSW_Dalgo><RSW_Hawkbat>0.18</RSW_Hawkbat><RSW_Hssiss>0.18</RSW_Hssiss><RSW_Dragonsnake>0.12</RSW_Dragonsnake><RSW_Lylek>0.05</RSW_Lylek><RSW_Beldon>0.008</RSW_Beldon></value></match></Operation></operations>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><value><AA_Needlepost MayRequire=\"sarg.alphaanimals\">0.3</AA_Needlepost><AA_BloodShrimp MayRequire=\"sarg.alphaanimals\">0.2</AA_BloodShrimp></value></match></Operation></operations>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/wildAnimals</xpath><value><VFEI2_Swarmling MayRequire=\"oskarpotocki.vfe.insectoid2\">0.4</VFEI2_Swarmling></value></match></Operation></operations>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Common</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Common</xpath><value><RSW_MeeCatch>0.4</RSW_MeeCatch></value></match></Operation></operations>",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "XML format error: List item found with name Operation that is not <li>, and which does not have a custom XML loader method, in <operations><Operation Class=\"PatchOperationConditional\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Uncommon</xpath><match Class=\"PatchOperationAdd\"><xpath>Defs/BiomeDef[defName=\"RM_Greentide\"]/fishTypes/freshwater_Uncommon</xpath><value><RSW_FaaCatch>0.3</RSW_FaaCatch><RSW_LaaCatch>0.3</RSW_LaaCatch></value></match></Operation></operations>",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimHUD v1.17.5] Prisoner Realism Prisoner Realism is does not contain a version check.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> Potential patch conflicts (56):",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> \r\nVerse.PreRenderResults Verse.PawnRenderer::ParallelGetPreRenderResults(UnityEngine.Vector3 drawLoc, System.Nullable`1<Verse.Rot4> rotOverride, System.Boolean neverAimWeapon, System.Boolean disableCache)\r\nPrefixes:\r\n  [SmashPhil.VehicleFramework] DisableCachingPawnOverlays\r\n  [OskarPotocki.VEF] Prefix\r\n  [Font.Rimesis] Prefix\r\n  [RedMattis.BetterPrerequisites] Prefix\r\n  [rimworld.Nals.FacialAnimation] PrefixParallelGetPreRenderResults\r\n  [GiddyUp] Prefix\r\nTranspilers:\r\n  [net.pardeike.rimworld.lib.harmony] ParallelGetPreRenderResults_Transpiler\r\n  [rimworld.erdelf.alien_race.main] PostureTranspiler\r\nPostfixes:\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n\r\nstatic System.Void Verse.PawnRenderUtility::DrawEquipmentAiming(Verse.Thing eq, UnityEngine.Vector3 drawLoc, System.Single aimAngle)\r\nPrefixes:\r\n  [OskarPotocki.VEF] Prefix\r\n  [OskarPotocki.VEF] Prefix\r\n  [OskarPotocki.VEF] DrawEquipmentAimingPrefix\r\n  [VFEPirates.Mod] Prefix\r\n  [ChezhouLib.lib] Prefix\r\n  [Neronix17.TabulaRasa.RimWorld] Prefix\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [Lightsabers_ForceThe] DrawEquipmentAimingPreFix\r\n  [OskarPotocki.VEF] DrawDuplicate\r\n  [Mlie.BetterProjectileOrigin] Prefix\r\n  [rimworld.carnysenpai.enableoversizedweapons] Prefix_Drawloc\r\n  [jecstools.jecrell.comps.installedpart] DrawEquipmentAiming_PreFix\r\n  [jecstools.jecrell.comps.oversized] DrawEquipmentAimingPreFix\r\n  [XMB.AncientMall.MO] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [jecstools.jecrell.comps.activator] DrawEquipmentAimingPostFix\r\n  [jecstools.jecrell.comps.deflector] DrawEquipmentAimingPostFix\r\n\r\nSystem.Void Verse.PawnRenderer::RenderPawnAt(UnityEngine.Vector3 drawLoc, System.Nullable`1<Verse.Rot4> rotOverride, System.Boolean neverAimWeapon)\r\nPrefixes:\r\n  [net.pardeike.rimworld.mod.camera+] Prefix\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [vlvop.tormentmaster.expansion] Prefix\r\n  [Krkr.Rule56] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [Rimworld.Alite.EBSG.main] RenderPawnAtPostfix\r\n  [jecstools.chjees.shields] Patch_PawnRenderer_RenderPawnAt\r\n  [meathax.JobEffects] Postfix\r\n\r\nstatic System.Collections.Generic.List`1<Verse.FloatMenuOption> RimWorld.FloatMenuMakerMap::GetOptions(System.Collections.Generic.List`1<Verse.Pawn> selectedPawns, UnityEngine.Vector3 clickPos, RimWorld.FloatMenuContext& context)\r\nPrefixes:\r\n  [sensiblebedownership.1trickPwnyta] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [rimtek.patch] Postfix\r\n  [alt4s.visitsettlements] Postfix\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [RedMattis.BetterPrerequisites] Postfix\r\n  [rimtek.giveability] Postfix\r\n  [sensiblebedownership.1trickPwnyta] Postfix\r\n  [amoruch.RimWorldStealingMod] Postfix\r\n  [net.pardeike.rimworld.mods.achtung] Postfix\r\n\r\nstatic System.Void Verse.PawnGenerator::GenerateGearFor(Verse.Pawn pawn, Verse.PawnGenerationRequest request)\r\nPrefixes:\r\nTranspilers:\r\nPostfixes:\r\n  [Mlie.YayosCombat3] Postfix\r\n  [PeteTimesSix.SimpleSidearms] GenerateGearFor\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [jecstools.chjees.shields] Patch_PawnGenerator_GenerateGearFor\r\n  [rimworld.erdelf.alien_race.main] GenerateGearForPostfix\r\n\r\nstatic Verse.Pawn RimWorld.PawnUtility::PawnBlockingPathAt(Verse.IntVec3 c, Verse.Pawn forPawn, System.Boolean actAsIfHadCollideWithPawnsJob, System.Boolean collideOnlyWithStandingPawns, System.Boolean forPathFinder, System.Boolean useId)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [neku.largepawns] Postfix\r\n\r\nvirtual System.Boolean RimWorld.Verb_MeleeAttack::TryCastShot()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [Krkr.Rule56] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [PeteTimesSix.SimpleSidearms] TryCastShot\r\n  [mandrake.rm.warscar.totchak] Postfix\r\n  [mandrake.rm.warscar.chotrix] Postfix\r\n  [Krkr.Rule56] Postfix\r\n\r\nSystem.Boolean Verse.HediffSet::get_HasHead()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [rimworld.erdelf.alien_race.main] HasHeadPrefix\r\nTranspilers:\r\nPostfixes:\r\n\r\nSystem.Void Verse.PawnRenderer::DrawShadowInternal(UnityEngine.Vector3 drawLoc)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [gravtide.mod] Postfix\r\n\r\nSystem.Void Verse.PawnRenderTree::ParallelPreDraw(Verse.PawnDrawParms parms)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [astryl.sleepingbuddies] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [co.uk.epicguru.meleeanimation] Postfix\r\n  [rimworld.Nals.FacialAnimation] PostfixParallelPreDraw\r\n\r\nSystem.Void RimWorld.Pawn_ApparelTracker::Notify_ApparelChanged()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\nTranspilers:\r\nPostfixes:\r\n  [Fortified] Postfix\r\n  [costel.layeredapparel] Postfix_NotifyApparelChanged\r\n  [Krkr.Rule56] Postfix\r\n\r\nvirtual System.Void Verse.Pawn::DrawGUIOverlay()\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [Krkr.Rule56] Prefix\r\nTranspilers:\r\nPostfixes:\r\n\r\nSystem.Void Verse.Pawn_DrawTracker::Notify_MeleeAttackOn(Verse.Thing Target)\r\nPrefixes:\r\n  [co.uk.epicguru.meleeanimation] Prefix\r\n  [meathax.JobEffects] Prefix\r\nTranspilers:\r\nPostfixes:\r\n",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> Error generating texture report []: Failed to find texture path i.e. graphicData.texPath 'Things/Plant/RM_Slackwax/RM_Slackwax' (Verse.Graphic_StackCount) pass 0",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> Failed to get texture report for RM_SlackwaxTimber: Failed to find texture path i.e. graphicData.texPath 'Things/Plant/RM_Slackwax/RM_Slackwax' (Verse.Graphic_StackCount) pass 0",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.beliar 'Beliar Xenotype' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> van.beasts 'Dark Ages : Beasts and Monsters' has 2 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> det.keshig 'Det's Xenotypes - Keshig' has 3 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> elsov.highborn 'Highborn Xenotype' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.horrors 'Horrors (Continued)' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> sihv.rombonesport 'Rim of Madness - Bones Unofficial Fix' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.starwarsanimalcollection 'Star Wars Animal Collection (Continued)' has 13 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.swbestiary 'RimMandrake: SW \u2014 Bestiary' has 11 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> jellypowered.survivaltools 'Survival Tools Reborn' has 22 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> ludeon.rimworld 'Core' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> vanillaquestsexpanded.ancients 'Vanilla Quests Expanded - Ancients' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mlie.dungeonpack 'Dungeon Pack (Continued)' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> lee.theforce.lightsaber 'Star Wars : The Force - Lightsaber' has 5 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rsw.armoury 'Jawa Armoury Rebalance' has 40 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.biomes 'RimMandrake: Baroque Biomes' has 6 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> mandrake.rm.pyrinth 'RimMandrake: Pyrinth' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "<color=#66ffb5>[MeleeAnim]</color> det.epochspyrinth 'Epochs - Pyrinth' has 1 missing weapon tweak data.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=late-input-patches durationMs=38 elapsedMs=978498",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=capabilities.initialize durationMs=1972 elapsedMs=980471",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=logs.initialize durationMs=1 elapsedMs=980472",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=application.run-in-background durationMs=0 elapsedMs=980474",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=debug.playback-defaults durationMs=0 elapsedMs=980475",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.construct durationMs=0 elapsedMs=980475",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.builder.configure durationMs=1 elapsedMs=980476",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.build durationMs=1 elapsedMs=980477",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-core durationMs=3 elapsedMs=980481",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=tools.register-extensions durationMs=0 elapsedMs=980482",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=event-relay.initialize durationMs=0 elapsedMs=980483",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=attention.initialize durationMs=1 elapsedMs=980487",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-submit durationMs=14 elapsedMs=980502",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=bridge-start.total durationMs=2004 elapsedMs=980503",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RimBridge] STARTUP_TIMING phase=gabp.server.start-async durationMs=15 elapsedMs=980503",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not find player faction.",
+          "repeats": 6
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 6
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 12122,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Scatterer Verse.GenStep_ScatterGroupPrefabs from def RUT_Jawa_StampGroundHulk could not find cell to generate at.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Failed to find Verse.ResearchProjectDef named RimFridge_PowerFactorSetting. There are 413 defs of this type loaded.\n\nPossible Matches:\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ResearchProjectDefs\\ResearchProjects.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\Fridge_Building.xml]\n[Source: RimFridge: Now with Shelves!]\n[File: C:\\Program Files (x86)\\Steam\\steamapps\\workshop\\content\\294100\\2898411376\\1.6\\Defs\\ThingDefs_Buildings\\WallFridge_Building.xml]\n",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref 1C964610]\n  at RimFridge.RimFridgeComponent.StartedOrLoadedGame () [0x0001a] in <948532676ba340059cc9093181148128>:0 \n    - TRANSPILER PerformanceOptimizer.Main: IEnumerable`1 PerformanceOptimizer.Optimization_FasterGetCompReplacement:Transpiler(IEnumerable`1 instructions, MethodBase method)\n  at RimFridge.RimFridgeComponent.StartedNewGame () [0x00000] in <948532676ba340059cc9093181148128>:0 \n  at Verse.GameComponentUtility.StartedNewGame () [0x0001a] in <61e4173561894da49d210260257b5097>:0 \n    - POSTFIX SmashPhil.VehicleFramework: Void SmashTools.GameEvent:RaiseOnNewGame()\n    - POSTFIX SmashPhil.VehicleFramework: Void UpdateLogTool.Patches:UpdateOnNewGame()\n    - POSTFIX OskarPotocki.VEF: Void VEF.Factions.VanillaExpandedFramework_GameComponentUtility_LoadedGame_Patch+StartedNewGame:Postfix()",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Ascendant Helix is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Deepwater Compact is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Free Droid Enclaves is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Geonosian Foundry Hive is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Hutt Cartel is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Faction leader for Wildsteam Clan is null.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Texture for _DistortionTex is not yet loaded; file may be invalid, or main thread may not have loaded it yet",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "[RM EnvironmentalHazards] RM_GenStep_GradientAxis: tile 22,0 resolved neither a coast nor a lake direction \u2014 defaulting the brine axis to South. Owed: verify this against the live authored Miasma tiles.",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 3
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for mother with gender \"Male\".",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Exception from long event: System.NullReferenceException: Object reference not set to an instance of an object\r\n[Ref DF9ACD49]\n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>g__RecolorMineables|4 () [0x00062] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at ReGrowthCore.Map_FinalizeInit_Patch+<>c__DisplayClass1_0.<ProcessMap>b__0 () [0x00000] in <acfddc0d2a0c4a46856e0dc133c25af1>:0 \n  at Verse.LongEventHandler.UpdateCurrentSynchronousEvent (System.Boolean& sceneChanged) [0x0001d] in <61e4173561894da49d210260257b5097>:0 ",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43409",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43410",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing VHGE_GasGeyser43411",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 1
+         },
+         {
+          "type": "Warning",
+          "text": "Tried to calculate chance for father with gender \"Female\".",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'ResourceSys_Rhydonium/RhydoniumPipes_Deconstruct' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Could not load Texture2D at 'ResourceSys_Plasma/TibannaPipes_Deconstruct' in any active mod or in base resources.",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing SteamGeyser36748",
+          "repeats": 4
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock43437",
+          "repeats": 1
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_JammedAncientAirlock_Large43438",
+          "repeats": 2
+         },
+         {
+          "type": "Error",
+          "text": "Tried to destroy non-destroyable thing RUT_ForcedAncientAirlock43439",
+          "repeats": 1
+         }
+        ],
+        "ticksGame": 478,
+        "operation": {
+         "OperationId": "op_c2fef0340d934f108060a8ff4f47b2b4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/drain-log",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:20:55.5749958+00:00",
+         "CompletedAtUtc": "2026-10-04T01:20:55.6250072+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "defs",
+   "components": [
+    {
+     "name": "all_defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "13 of 13 def(s) resolved",
+        "requested": 13,
+        "foundCount": 13,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "defName"
+        ],
+        "defs": [
+         {
+          "requested": "IncidentDef/RUT_FallArrival",
+          "found": true,
+          "defName": "RUT_FallArrival",
+          "defType": "IncidentDef",
+          "label": "wreck falls",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallArrival"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_LabRatFalls",
+          "found": true,
+          "defName": "RUT_LabRatFalls",
+          "defType": "IncidentDef",
+          "label": "specimen",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_LabRatFalls"
+          }
+         },
+         {
+          "requested": "PawnKindDef/RUT_LabRat",
+          "found": true,
+          "defName": "RUT_LabRat",
+          "defType": "PawnKindDef",
+          "label": "lab rat",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_LabRat"
+          }
+         },
+         {
+          "requested": "IncidentDef/RUT_FallSurvivor",
+          "found": true,
+          "defName": "RUT_FallSurvivor",
+          "defType": "IncidentDef",
+          "label": "feral droid",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallSurvivor"
+          }
+         },
+         {
+          "requested": "HediffDef/RUT_Hediff_Feral",
+          "found": true,
+          "defName": "RUT_Hediff_Feral",
+          "defType": "HediffDef",
+          "label": "feral",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_Hediff_Feral"
+          }
+         },
+         {
+          "requested": "ThinkTreeDef/RUT_FeralDroidInsert",
+          "found": true,
+          "defName": "RUT_FeralDroidInsert",
+          "defType": "ThinkTreeDef",
+          "label": null,
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FeralDroidInsert"
+          }
+         },
+         {
+          "requested": "TileMutatorDef/RUT_FallLine",
+          "found": true,
+          "defName": "RUT_FallLine",
+          "defType": "TileMutatorDef",
+          "label": "the Fall Line",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallLine"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Hull",
+          "found": true,
+          "defName": "RUT_FallWreck_Hull",
+          "defType": "ThingDef",
+          "label": "wrecked hull rib",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Hull"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Cargo",
+          "found": true,
+          "defName": "RUT_FallWreck_Cargo",
+          "defType": "ThingDef",
+          "label": "wrecked cargo section",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Cargo"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreck_Tank",
+          "found": true,
+          "defName": "RUT_FallWreck_Tank",
+          "defType": "ThingDef",
+          "label": "wrecked fuel tank",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreck_Tank"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Hull",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Hull",
+          "defType": "ThingDef",
+          "label": "wrecked hull rib (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Hull"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Cargo",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Cargo",
+          "defType": "ThingDef",
+          "label": "wrecked cargo section (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Cargo"
+          }
+         },
+         {
+          "requested": "ThingDef/RUT_FallWreckIncoming_Tank",
+          "found": true,
+          "defName": "RUT_FallWreckIncoming_Tank",
+          "defType": "ThingDef",
+          "label": "wrecked fuel tank (incoming)",
+          "modName": "Jawa Fall Line Arrivals",
+          "packageId": "mandrake.rut.falllinearrivals",
+          "fields": {
+           "defName": "RUT_FallWreckIncoming_Tank"
+          }
+         }
+        ],
+        "ticksGame": 478,
+        "operation": {
+         "OperationId": "op_7a533482b04b4dcb8f68dd63607ef5cf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:01.2754676+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:01.3246102+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "gate",
+   "components": [
+    {
+     "name": "off_fall_line_refused",
+     "toggle": "onlyOnFallLine",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: fire_incident dryRun RUT_FallArrival failed: {'success': False, 'message': 'RUT_FallArrival canFireNow=False (dry run, nothing fired).', 'incident': 'RUT_FallArrival', 'category': 'Misc', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 35.0, 'faction': None, 'ticksGame': 478, 'operation': {'OperationId': 'op_741b457cc3504c4d9ecc4dbd6f55694d', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:21:08.4883463+00:00', 'CompletedAtUtc': '2026-10-04T01:21:08.53542+00:00', 'DurationMs': 47, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'onlyOnFallLine': True})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallArrival canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 478,
+        "operation": {
+         "OperationId": "op_741b457cc3504c4d9ecc4dbd6f55694d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:08.4883463+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:08.53542+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "anywhere_allows",
+     "toggle": "onlyOnFallLine",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "wrecks_toggle_off_refuses",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "wreck_falls_and_nests",
+   "components": [
+    {
+     "name": "wreck_lands",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7510,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 478,
+        "message": "NOTHING MATCHED. 7510 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_d680771d5c554f48ae6683827b2c119d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:15.0090516+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:15.0698378+00:00",
+         "DurationMs": 60,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7510,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 478,
+        "message": "NOTHING MATCHED. 7510 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_98751fc58301438d9819a9661e8d88a0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:15.0888932+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:15.1090452+00:00",
+         "DurationMs": 20,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7510,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 478,
+        "message": "NOTHING MATCHED. 7510 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_11e518d1ba1e4624b3e7fd05c6f2448d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:15.1312361+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:15.1498333+00:00",
+         "DurationMs": 18,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": true,
+        "message": "RUT_FallArrival fired with 35 points.",
+        "incident": "RUT_FallArrival",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": true,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 478,
+        "operation": {
+         "OperationId": "op_65be96bfeba74c2280bf765804c0ef86",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:15.1701124+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:15.2114125+00:00",
+         "DurationMs": 41,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(600) [watched] -> 600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 600,
+        "requested": 600
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7515,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 1078,
+        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_224fc8ad112c4ae7ad1e806fa0500a8c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:27.5880399+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:27.636976+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RUT_FallWreck_Cargo43473",
+          "def": "RUT_FallWreck_Cargo",
+          "label": "Wrecked cargo section",
+          "x": 50,
+          "z": 19,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 300,
+          "maxHitPoints": 300,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 7515,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RUT_FallWreck_Cargo": 1
+        },
+        "ticksGame": 1078,
+        "message": "1 of 1 matching thing(s) returned, 7515 examined.",
+        "operation": {
+         "OperationId": "op_66c417589a1d43b69340ead6fdb8c9c6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:27.6874755+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:27.7364336+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7515,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 1078,
+        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_97957452ca5446d0bed05821dfefe46f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:27.7873388+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:27.8372665+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "vermin_burst_from_wreck",
+     "toggle": "wreckFallsEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: no ship-vermin came out of the wreck within 2600 ticks (0 -> 0)",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7515,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 1078,
+        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_f2e8da91f9e74c0aa7267221df09797c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:27.8874802+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:27.9365941+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7515,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 1078,
+        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_723405bfa7f642c0950cd395544680f1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:27.9880122+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:28.0369497+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7515,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 1078,
+        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_44dd3967912147a381e7e944693e1eaf",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:28.0875992+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:28.1366662+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7515,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {},
+        "ticksGame": 1078,
+        "message": "NOTHING MATCHED. 7515 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_a242acae6eb146868dccb3ed35829599",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:21:28.1882068+00:00",
+         "CompletedAtUtc": "2026-10-04T01:21:28.2368959+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(2600) [watched] -> 2600 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 2600,
+        "requested": 2600
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7520,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 3678,
+        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_315669ac7cd04602924287ea5ff277db",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:17.1206828+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:17.1700026+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7520,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 3678,
+        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_302f8fff927e45a2b6279062e1d01381",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:17.2205874+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:17.2691396+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7520,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 3678,
+        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_256f0db2ac914db6a7ec70d8074af2e0",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:17.320828+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:17.3689374+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [],
+        "scanned": 7520,
+        "countReturned": 0,
+        "countMatched": 0,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 7,
+        "perDef": {},
+        "ticksGame": 3678,
+        "message": "NOTHING MATCHED. 7520 thing(s) were examined, so this is a filter result, not an empty map \u2014 check the defName spelling, the rect and the group before concluding the thing is absent.",
+        "operation": {
+         "OperationId": "op_56ffd38ad5fa43d9a6bf0d7860fa0d30",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:17.421156+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:17.4687064+00:00",
+         "DurationMs": 47,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 7,
+    "fed": 0,
+    "ticks_spent": 3200,
+    "surprises": [],
+    "hits_seen": [
+     {
+      "tick": 1077,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 1078,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 1667,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "1 new error message(s) in the log"
+     },
+     {
+      "tick": 2261,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "2 new error message(s) in the log"
+     },
+     {
+      "tick": 2857,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "3 new error message(s) in the log"
+     },
+     {
+      "tick": 3457,
+      "detector": "strangers_near_anchor",
+      "severity": "WARN",
+      "summary": "2 non-player pawn(s) within 30 cells of the anchor"
+     },
+     {
+      "tick": 3457,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "4 new error message(s) in the log"
+     },
+     {
+      "tick": 3457,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Wreck: cargo section"
+     },
+     {
+      "tick": 3678,
+      "detector": "strangers_near_anchor",
+      "severity": "WARN",
+      "summary": "1 non-player pawn(s) within 30 cells of the anchor"
+     },
+     {
+      "tick": 3678,
+      "detector": "log_errors",
+      "severity": "WARN",
+      "summary": "4 new error message(s) in the log"
+     },
+     {
+      "tick": 3678,
+      "detector": "letter_unexpected",
+      "severity": "INFO",
+      "summary": "new letter [NeutralEvent] Wreck: cargo section"
+     }
+    ],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "specimen",
+   "components": [
+    {
+     "name": "lab_rat_toggle_off_refuses",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: fire_incident dryRun RUT_LabRatFalls failed: {'success': False, 'message': 'RUT_LabRatFalls canFireNow=False (dry run, nothing fired).', 'incident': 'RUT_LabRatFalls', 'category': 'Misc', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 35.0, 'faction': None, 'ticksGame': 3678, 'operation': {'OperationId': 'op_3609c435688347289971b0cbfaf4e608', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:22:25.7275044+00:00', 'CompletedAtUtc': '2026-10-04T01:22:25.7465228+00:00', 'DurationMs': 19, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'labRatEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_LabRatFalls canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_LabRatFalls",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_3609c435688347289971b0cbfaf4e608",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:25.7275044+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:25.7465228+00:00",
+         "DurationMs": 19,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "lab_rat_arrives_in_pod",
+     "toggle": "labRatEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "survivors",
+   "components": [
+    {
+     "name": "survivor_toggle_off_refuses",
+     "toggle": "survivorsEnabled",
+     "beyond_toggle": false,
+     "verdict": "FAIL",
+     "detail": "ExpectationFailed: fire_incident dryRun RUT_FallSurvivor failed: {'success': False, 'message': 'RUT_FallSurvivor canFireNow=False (dry run, nothing fired).', 'incident': 'RUT_FallSurvivor', 'category': 'Misc', 'canFireNow': False, 'fired': False, 'windowsOpened': [], 'blockedByDialog': False, 'points': 35.0, 'faction': None, 'ticksGame': 3678, 'operation': {'OperationId': 'op_4432059217ef458e9183e8427e9d40b6', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident', 'Status': 2, 'Success': True, 'StartedAtUtc': '2026-10-04T01:22:33.8853498+00:00', 'CompletedAtUtc': '2026-10-04T01:22:33.9171108+00:00', 'DurationMs': 31, 'Result': None, 'HasResult': True, 'ResultWasTruncated': False, 'Warnings': [], 'Error': None, 'Metadata': {}}}",
+     "evidence": [
+      {
+       "call": "set_setting(RimMandrake.Utinni.FallLineArrivals.FallLineArrivalsSettings, {'survivorsEnabled': False})",
+       "result": true
+      },
+      {
+       "call": "bridge_call jawa/fire_incident",
+       "result": {
+        "success": false,
+        "message": "RUT_FallSurvivor canFireNow=False (dry run, nothing fired).",
+        "incident": "RUT_FallSurvivor",
+        "category": "Misc",
+        "canFireNow": false,
+        "fired": false,
+        "windowsOpened": [],
+        "blockedByDialog": false,
+        "points": 35.0,
+        "faction": null,
+        "ticksGame": 3678,
+        "operation": {
+         "OperationId": "op_4432059217ef458e9183e8427e9d40b6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/fire-incident",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:22:33.8853498+00:00",
+         "CompletedAtUtc": "2026-10-04T01:22:33.9171108+00:00",
+         "DurationMs": 31,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "survivor_drifts_in_feral",
+     "toggle": "survivorsEnabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "upstream failed -- this chain's state is meaningless",
+     "evidence": [],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 0,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [
+  "<suite.Component object at 0x000001C597505E90>",
+  "<suite.Component object at 0x000001C597506C50>",
+  "<suite.Component object at 0x000001C597506AF0>",
+  "<suite.Component object at 0x000001C597506D00>"
+ ],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimUtinni\\FallLineArrivals.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 9,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

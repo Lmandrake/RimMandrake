@@ -1,0 +1,207 @@
+[bdesert-note] shipped defs resolved: 68
+[bdesert] 17:09:57 defs_resolve PASS 
+[bdesert] 17:09:57 flora_expansion_shape PASS 
+[bdesert-note] BiomeDef weather table: {"Clear": 60.0, "RM_Haze": 15.0, "RM_IceSandDrift": 15.0, "RM_IceFog": 10.0, "Fog": 0, "Rain": 0, "DryThunderstorm": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "SnowGentle": 0, "SnowHard": 0, "GrayPall": 0, "Windy": 0, "Overcast": 0, "Blizzard": 0}
+[bdesert] 17:09:58 biome_weather_table PASS 
+[bdesert] 17:09:58 biome_carrier_condition PASS 
+[bdesert-note] biome roster states (AA_Thunderbeast follows the mod list): {"RM_Dorrak": "spawning", "RM_Dovvik": "spawning", "RM_Krissek": "spawning", "RM_Murrek": "spawning", "RM_Ossivel": "spawning", "RM_Utikka": "spawning", "RM_Vekkit": "spawning", "RM_Vhaulk": "spawning", "RM_Vrisk": "spawning", "RM_Zhaaz": "spawning", "RM_Palefloss": "spawning", "RM_Glassfern": "spawning", "RM_Chimeglobe": "spawning", "RM_Virr": "spawning", "RM_Qeshra": "spawning", "RM_Kethevar": "spawning", "RM_Lisqueth": "spawning", "RM_Vashpuk": "spawning", "AA_Thunderbeast": "spawning"}
+[bdesert] 17:09:58 biome_roster_and_density PASS 
+[bdesert] 17:09:59 charge_comps_wired PASS 
+[bdesert] 17:09:59 rack_needs_no_power PASS 
+[bdesert] 17:10:00 ablation_and_murrek_wired PASS 
+[bdesert] 17:10:23 defaults FAIL ExpectationFailed: settings not at shipped defaults (or field missing): {'coldSinkCapacityFactor': '0.25'}
+[bdesert] 17:10:23 burnerHaloEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:23 crackCueEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:23 murrekReseedEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:23 ablationSalvageEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:23 ablationPaceFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:23 vhaulkRoadDaysFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:23 vhaulkStayDaysFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 17:10:29 natives_spawn_charged PASS 
+[bdesert] 17:10:29 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": ["RM_Palefloss", "RM_Glassfern", "RM_Chimeglobe", "RM_Virr", "RM_Qeshra", "RM_Kethevar", "RM_Lisqueth", "RM_Vashpuk"]}
+[bdesert] 17:10:38 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Palefloss', 'RM_Glassfern', 'RM_Chimeglobe', 'RM_Virr', 'RM_Qeshra', 'RM_Kethevar', 'RM_Lisqueth', 'RM_Vashpuk']
+[bdesert] 17:10:44 plant_death_chains UNMEASURED UNMEASURED: chain ON: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 17:10:47 plant_death_toggle_off_no_chain UNMEASURED UNMEASURED: chain OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert] 17:10:50 plant_death_master_off_no_chain UNMEASURED UNMEASURED: master OFF: only 0 of 5 palefloss stand in the row after set_plants
+[bdesert-note] warm arms: {"amb": 23.8716469, "low": 5.0, "high": 31.87}
+[bdesert] 17:10:56 warm_site_ready UNMEASURED UNMEASURED: only 0 of 3 palefloss stand on the warm pad
+[bdesert] 17:10:56 warm_threshold_above_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:56 warm_toggle_off_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:10:56 warm_detonates_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:11:02 dorrak_site_ready PASS 
+[bdesert-note] hump hit, native detonations ON: {"hump_missing": true, "dead": true}
+[bdesert] 17:11:13 hump_hit_kills PASS 
+[bdesert-note] leg hit control: {"leg_missing": true, "dead": false}
+[bdesert] 17:11:19 leg_hit_does_not_kill PASS 
+[bdesert] 17:11:24 hump_toggle_off_ordinary_part UNMEASURED UNMEASURED: dorrak(hump,off) vanished from list_pawns after a hit
+[bdesert-note] krissek death, detonations ON: {"krissek_dead": true, "near": true, "far": false}
+[bdesert] 17:11:36 krissek_death_blasts PASS 
+[bdesert-note] krissek death, detonations OFF: {"krissek_dead": true, "near": true, "far": false}
+[bdesert] 17:11:44 krissek_off_quiet FAIL ExpectationFailed: nativeDetonationsEnabled OFF but a colonist 2 cells from the dying krissek still burned: the krissek does not die like an ordinary animal (its RM_KrissekCharge hediff carries the vanilla ExplodeOnDeath, which ignores the setting): {'krissek_dead': True, 'near': True, 'far': False}
+[bdesert-note] heat_kill_detonates: Flame 9999: {"vhaulk_dead": false, "witness": null, "control": null}
+[bdesert] 17:11:57 heat_kill_detonates UNMEASURED UNMEASURED: the vhaulk did not die of Flame 9999: {'vhaulk_dead': False, 'witness': None, 'control': None}
+[bdesert-note] kinetic_kill_does_not: Cut 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 17:12:02 kinetic_kill_does_not PASS 
+[bdesert-note] emp_on_living_detonates: EMP 100: {"vhaulk_dead": true, "witness": true, "control": false}
+[bdesert] 17:12:09 emp_on_living_detonates PASS 
+[bdesert-note] heat_gate_off_any_death_detonates: Cut 9999: {"vhaulk_dead": false, "witness": false, "control": false}
+[bdesert] 17:12:17 heat_gate_off_any_death_detonates UNMEASURED UNMEASURED: the vhaulk did not die of Cut 9999: {'vhaulk_dead': False, 'witness': False, 'control': False}
+[bdesert-note] emp_trap_off_is_ordinary_damage: EMP 100: {"vhaulk_dead": false, "witness": false, "control": false}
+[bdesert] 17:12:25 emp_trap_off_is_ordinary_damage PASS 
+[bdesert-note] native_toggle_off_no_blast: Flame 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 17:12:33 native_toggle_off_no_blast PASS 
+[bdesert-note] master_off_no_blast: Flame 9999: {"vhaulk_dead": true, "witness": false, "control": false}
+[bdesert] 17:12:42 master_off_no_blast PASS 
+[bdesert] 17:12:49 haze_site_ready PASS 
+[bdesert-note] haze film severity (outdoor, roofed): [0.00729999971, 0.0001]
+[bdesert] 17:13:54 haze_film_on_outdoor_colonist FAIL ExpectationFailed: the unroofed colonist's film did not climb (severity 0.00729999971, expected >= 0.01 after 3700 ticks of exposure)
+[bdesert] 17:13:54 haze_spares_natives UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:13:54 haze_toggle_off_new_arrival_clean UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert-note] foreign grazer: {"plant_eaten": true, "gut": {"def": "RM_ButaneGut", "label": "butane gut (mild)", "severity": 0.249000013, "part": null, "partLabel": null}}
+[bdesert] 17:14:44 foreign_grazer_takes_butane_gut PASS 
+[bdesert-note] native grazer: {"plant_eaten": true, "gut": null}
+[bdesert] 17:15:26 native_grazer_exempt PASS 
+[bdesert] 17:16:12 butane_toggle_off_clean PASS 
+[bdesert-note] cold wax, warm-reactive OFF: {"end": "stands", "ruined_seen": true}
+[bdesert] 17:17:26 wax_toggle_off_ruined_but_inert PASS 
+[bdesert-note] cold wax, warm-reactive ON: {"end": "stands", "ruined_seen": false}
+[bdesert] 17:18:55 wax_ruined_wicks_and_goes FAIL ExpectationFailed: warm-ruined cold wax with the mechanic ON is still standing (never ruined): the ruined signal does not start the wick
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "NorthstarBland", "styleDefAfter": null, "ticksGame": 427286, "operation": {"OperationId": "op_2ae088ce10b44616a535bc4cdfcba814", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-04T00:19:01.3069724+00:00", "CompletedAtUtc": "2026-10-04T00:19:01.3409972+00:00", "DurationMs": 34, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "NorthstarBland", "styleDefAfter": null, "ticksGame": 427286, "operation": {"OperationId": "op_c9b241cb03ce4cd6967522ca241eeff6", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-04T00:19:01.3670122+00:00", "CompletedAtUtc": "2026-10-04T00:19:01.4017463+00:00", "DurationMs": 34, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert] 17:19:44 rack_site_ready PASS 
+[bdesert-note] room temperatures after 1500 ticks (A loaded, B empty): [13.95601, 24.0370617]
+[bdesert] 17:20:13 rack_cools_loaded_room_only PASS 
+[bdesert-note] after 3600 ticks: {"held_h": 5.8, "held0_h": 7.2, "cans": 3}
+[bdesert] 17:20:54 rack_spends_ice_and_drips PASS 
+[bdesert-note] coldSinkEnabled OFF: temperatures and cold held: [23.3250713, 23.5103989, 5.8]
+[bdesert] 17:21:28 rack_toggle_off_leaves_room_alone PASS 
+[bdesert-note] quarry, roll OFF: {"mined": 23, "ice": 179, "debris": 0}
+[bdesert] 17:29:49 thaw_toggle_off_mines_cleanly FAIL ExpectationFailed: 23 blocks mined but only 179 blue ice came out (15 per block expected)
+[bdesert] 17:29:49 thaw_roll_finds_debris UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 17:30:55 road_laid_and_flora_cropped UNMEASURED UNMEASURED: plant inspect text has no 'Growth N%' line: ['Ready to harvest.']
+[bdesert] 17:31:58 road_toggle_off_walks_clean UNMEASURED UNMEASURED: plant inspect text has no 'Growth N%' line: ['Ready to harvest.']
+[bdesert-note] dialog mandrake.rm.biomes opened=False wrote_config=False: null
+[bdesert-note] dialog mandrake.rm.bluedesert opened=False wrote_config=False: null
+[bdesert] 17:32:08 ruled_weathers_toggle_applies UNMEASURED UNMEASURED: no Mod Settings dialog (mandrake.rm.biomes, mandrake.rm.bluedesert) wrote the Blue Desert settings file: the WriteSettings path is unreachable from the bridge
+[bdesert-note] dry-run canFireNow on a RM_TheRot map: {"fires_here": []}
+[bdesert] 17:32:15 ablation_only_in_blue_desert PASS 
+[bdesert-note] after the wait: {"gone": true, "letters_before": 163, "labels": ["Funerals for Manuel", "Death: Manuel", "The mountain walks in", "The mountain walks in", "The mountain walks in", "The mountain moves on"]}
+[bdesert] 17:34:22 vhaulk_walks_off_with_a_letter PASS 
+[bdesert-note] log scan: {"bluedesert errors": 0, "xref naming our defs": 0, "RimMandrake.BlueDesert errors": 0, "config errors naming our defs": 0, "bufferLines": 1000}
+[bdesert] 17:34:29 log_clean PASS 
+[ws-note] Player.log scan: {"lines": 34547, "hits": [], "game-wide config/xref lines (instrument probe)": 76}
+[ws] 17:34:49 player_log_names_no_weepingstones_error PASS 
+[ws] 17:34:55 resolve_probe_sees_absence PASS 
+[ws] 17:34:55 defs_resolve_race_things PASS 
+[ws] 17:34:55 defs_resolve_pawnkinds PASS 
+[ws] 17:34:56 defs_resolve_items PASS 
+[ws] 17:34:56 defs_resolve_plants PASS 
+[ws] 17:34:56 defs_resolve_recipes PASS 
+[ws] 17:34:56 defs_resolve_thoughts PASS 
+[ws] 17:34:56 defs_resolve_jobs PASS 
+[ws] 17:34:56 defs_resolve_workgivers PASS 
+[ws] 17:34:56 defs_resolve_set_makers PASS 
+[ws] 17:34:56 defs_resolve_biome PASS 
+[ws] 17:34:56 defs_resolve_buildings PASS 
+[ws] 17:34:56 defs_resolve_letters PASS 
+[ws] 17:34:57 defs_pair_up_by_convention PASS 
+[ws] 17:35:03 biome_probe_ready PASS 
+[ws] 17:35:03 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): []
+[ws] 17:35:03 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 17:35:03 wild_plants_wired PASS 
+[ws] 17:35:03 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 17:35:03 stocked_catch_has_living_counterpart PASS 
+[ws] 17:35:03 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "heatKind", "lowSun", "heatOffsetC", "14.0", "maxHeatOffsetC", "70.0", "bodySizeExponent", "0.5", "minBodySizeFactor", "0.25"]
+[ws] 17:35:03 water_truce_extension_present PASS 
+[ws] 17:35:03 sun_heat_extension_present PASS 
+[ws] 17:35:04 no_dead_windhour_text PASS 
+[ws] 17:35:10 recipes_on_both_stoves PASS 
+[ws] 17:35:10 rottable_items_tick PASS 
+[ws] 17:35:17 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}
+[ws] 17:35:18 designator_listed_when_on PASS 
+[ws] 17:35:20 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=True) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 17:35:30 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 17:35:33 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 17:35:36 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 17:35:39 waterTruceRadius_slider_roundtrip PASS 
+[ws] 17:35:45 suppression_source_wired PASS 
+[ws] 17:35:48 suppression_toggle_default_and_roundtrip PASS 
+[ws] 17:35:55 condenser_defs_wired PASS 
+[ws] 17:36:01 dewsilk_defs_wired PASS 
+[ws] 17:36:04 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 17:36:04 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 17:36:10 oasis_source_wired PASS 
+[ws-note] Oasis.workerClass not serialisable by get_defs (instrument limit): true
+[ws] 17:36:10 oasis_def_accepts_our_biome PASS 
+[ws] 17:36:13 oasis_toggle_default_and_roundtrip PASS 
+[ws] 17:36:14 oasis_map_census UNMEASURED UNMEASURED: needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing pal
+[ws] 17:36:21 site_ready_pen_zone PASS 
+[ws-note] designating dry floor: {"success": false, "dryRun": false, "designator": {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}, "requestedCellCount": 16, "a
+[ws] 17:36:21 pen_refuses_dry_floor PASS 
+[ws] 17:36:21 pen_covers_exactly_the_water PASS 
+[ws] 17:36:30 site_ready_net PASS 
+[ws] 17:37:56 net_turns_wild_pawn_into_breeding_stock PASS 
+[ws] 17:38:05 site_ready_stock PASS 
+[ws] 17:39:43 stock_releases_species_pawn_into_pen FAIL ExpectationFailed: after STOCK: 0 skarrin released (want 1), 1 breeding stock left (want 0)
+[ws] 17:39:51 site_ready_stock_dry PASS 
+[ws] 17:41:31 stock_outside_pen_releases_nothing FAIL ExpectationFailed: the breeding stock is still on the ground: the job never ran (1 left)
+[ws] 17:41:39 site_ready_feed PASS 
+[ws] 17:43:16 feed_consumes_food_at_the_pen FAIL ExpectationFailed: the meal is still on the ground after FEED (1): the job never delivered it
+[ws] 17:43:24 site_ready_harvest PASS 
+[ws] 17:44:58 harvest_yields_species_meat FAIL ExpectationFailed: after HARVEST: 0 skarrin left (want 0), 0 meat stacks (want >=1)
+[ws] 17:45:06 site_ready_cull PASS 
+[ws] 17:46:42 cull_yields_enormous_harvest FAIL ExpectationFailed: after CULL: 1 vhorrin left (want 0), 0 meat stacks (want >=1)
+[ws] 17:46:46 site_ready_RM_Bladderquill PASS 
+[ws-note] RM_BladderFruit stacks: []
+[ws] 17:48:12 harvest_yields_RM_BladderFruit FAIL ExpectationFailed: no RM_BladderFruit after a forced harvest of 3 RM_Bladderquill (harvestedThingDef is wired in the def; the yield never arrived)
+[ws] 17:48:16 site_ready_RM_Steamfrond PASS 
+[ws-note] RM_SeepSalt stacks: []
+[ws] 17:49:45 harvest_yields_RM_SeepSalt FAIL ExpectationFailed: no RM_SeepSalt after a forced harvest of 3 RM_Steamfrond (harvestedThingDef is wired in the def; the yield never arrived)
+[ws] 17:49:49 site_ready_RM_Dewgourd PASS 
+[ws] 17:51:07 harvest_yields_RM_DewgourdFruit UNMEASURED surprise: colonist_injured_unexpectedly: colonist Roxy gained 4 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T173440\WeepingStones__flora_RM_Dewgourd__colonist_injured_une
+[forge-note] Player.log scan: {"lines": 40513, "hits": [], "log cap reached": 2, "game-wide config/xref lines (instrument probe)": 76}
+[forge] 17:51:22 player_log_names_no_forge_error UNMEASURED UNMEASURED: the log hit RimWorld's 10,000-message cap (every debug action will be silent): relaunch before the cycle chains
+[forge] 17:51:26 resolve_probe_sees_absence PASS 
+[forge] 17:51:26 defs_resolve_races PASS 
+[forge] 17:51:26 defs_resolve_pawnkinds PASS 
+[forge] 17:51:26 defs_resolve_plants PASS 
+[forge] 17:51:27 defs_resolve_items PASS 
+[forge] 17:51:27 defs_resolve_buildings PASS 
+[forge] 17:51:27 defs_resolve_terrain PASS 
+[forge] 17:51:27 defs_resolve_weather PASS 
+[forge] 17:51:27 defs_resolve_conditions PASS 
+[forge] 17:51:27 defs_resolve_hediffs PASS 
+[forge] 17:51:27 defs_resolve_research PASS 
+[forge] 17:51:27 defs_resolve_sounds PASS 
+[forge] 17:51:27 defs_resolve_render_trees PASS 
+[forge] 17:51:27 defs_resolve_biome PASS 
+[forge] 17:51:27 plants_mesh_count_is_perfect_square PASS 
+[forge] 17:51:27 cycle_terrains_are_temporary PASS 
+[forge] 17:51:27 scald_damage_def_resolves PASS 
+[forge] 17:51:31 native_dormancy_comps_wired PASS 
+[forge] 17:51:31 flyers_carry_flight_stat PASS 
+[forge] 17:51:32 floatstone_only_from_gardens PASS 
+[forge] 17:51:32 keel_brace_needs_spunstone_research PASS 
+[forge] 17:51:32 engine_links_keel_brace PASS 
+[forge] 17:51:35 biome_probe_ready PASS 
+[forge] 17:51:35 biome_densities_live PASS 
+[forge-note] wild animals rows not asserted (their donor mod is not on this tier): ["AA_Aerofleet (needs sarg.alphaanimals)", "AA_ColossalAerofleet (needs sarg.alphaanimals)", "AA_CrescendoAnole (needs sarg.alphaanimals)", "AA_Metallovore (needs sarg.alphaanimals)"]
+[forge] 17:51:35 wild_animals_wired PASS 
+[forge-note] wild plants rows not asserted (their donor mod is not on this tier): ["IronScruff_Bindweed (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialGrass (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialTallGrass (needs IronScruff.PrimordialGeysers)"]
+[forge] 17:51:35 wild_plants_wired PASS 
+[forge] 17:51:35 natives_spawn_and_probe_is_honest PASS 
+[forge] 17:51:36 biome_map_condition_is_forge_pulse PASS 
+[forge] 17:51:36 biome_declares_ambient_heat PASS 
+[forge] 17:51:36 biome_lava_patchmakers PASS 
+[forge] 17:51:40 settings_at_shipped_defaults PASS 
+[forge] 17:51:40 scaffolding_settings_declared_and_inert PASS 
+[forge] 17:51:45 project_hidden_until_studied PASS 
+[forge] 17:51:48 study_toggle_off_shows_project PASS 
+[forge] 17:51:49 reveal_opens_project PASS 
+[forge] 17:51:53 keel_default_saving PASS 

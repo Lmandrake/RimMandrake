@@ -1,0 +1,3221 @@
+{
+ "chains": [
+  {
+   "name": "defs_resolve",
+   "components": [
+    {
+     "name": "defs_resolve",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "2 of 2 def(s) resolved",
+        "requested": 2,
+        "foundCount": 2,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_AcousticSounder",
+          "found": true,
+          "defName": "RM_AcousticSounder",
+          "defType": "ThingDef",
+          "label": "acoustic sounder",
+          "modName": "RimMandrake: Acoustic Scanner",
+          "packageId": "mandrake.rm.acousticscanner",
+          "fields": {
+           "category": "Building",
+           "tickerType": "Never",
+           "stackLimit": 1,
+           "destroyable": true,
+           "rotatable": false,
+           "smallVolume": false,
+           "useHitPoints": true,
+           "receivesSignals": false,
+           "comps": [
+            "CompProperties",
+            "CompProperties_Forbiddable",
+            "CompProperties_Power",
+            "CompProperties_Flickable",
+            "CompProperties_Breakdownable",
+            "CompProperties"
+           ],
+           "virtualDefs": [],
+           "virtualDefParent": null,
+           "devNote": null,
+           "killedLeavingsRanges": null,
+           "killedLeavings": null,
+           "killedLeavingsPlayerHostile": null,
+           "killedLeavingsChance": 1.0,
+           "forceLeavingsAllowed": false,
+           "butcherProducts": null,
+           "smeltProducts": null,
+           "smeltable": false,
+           "burnableByRecipe": false,
+           "randomizeRotationOnSpawn": false,
+           "damageMultipliers": null,
+           "isTechHediff": false,
+           "recipeMaker": null,
+           "minifiedDef": "MinifiedThing",
+           "isUnfinishedThing": false,
+           "leaveResourcesWhenKilled": true,
+           "slagDef": null,
+           "isFrameInt": false,
+           "multipleInteractionCellOffsets": null,
+           "hasInteractionCell": false,
+           "interactionCellIcon": null,
+           "interactionCellIconReverse": false,
+           "filthLeaving": "Filth_RubbleBuilding",
+           "forceDebugSpawnable": false,
+           "intricate": false,
+           "scatterableOnMapGen": true,
+           "deepCommonality": 0.0,
+           "deepCountPerCell": 300,
+           "deepCountPerPortion": -1,
+           "generateCommonality": 1.0,
+           "generateAllowChance": 1.0,
+           "thingSetMakerTags": null,
+           "alwaysFlee": false,
+           "recipes": null,
+           "messageOnDeteriorateInStorage": true,
+           "deteriorateFromEnvironmentalEffects": true,
+           "canDeteriorateUnspawned": false,
+           "canLoadIntoCaravan": true,
+           "isMechClusterThreat": false,
+           "minRewardCount": 1,
+           "preventSkyfallersLandingOn": false,
+           "requiresFactionToAcquire": null,
+           "relicChance": 0.0,
+           "orderedTakeGroup": null,
+           "allowedArchonexusCount": 0,
+           "possessionCount": 0,
+           "notifyMapRemoved": false,
+           "canScatterOver": true,
+           "genericMarketSellable": true,
+           "drawHighlight": false,
+           "highlightColor": null,
+           "drawHighlightOnlyForHostile": false,
+           "autoTargetNearbyIdenticalThings": false,
+           "preventDroppingThingsOn": false,
+           "hiddenWhileUndiscovered": false,
+           "disableImpassableShotOverConfigError": false,
+           "showInSearch": true,
+           "bringAlongOnGravship": true,
+           "dropPodFaller": null,
+           "dropPodActive": null,
+           "preventSpawningInResourcePod": false,
+           "pathfinderDangerous": false,
+           "noRightClickDraftAttack": false,
+           "gravshipSpawnPriority": 1,
+           "replaceTags": null,
+           "preventGravshipLandingOn": false,
+           "canInteractThroughCorners": false,
+           "drawerType": "MapMeshOnly",
+           "drawOffscreen": false,
+           "colorGenerator": null,
+           "hideAtSnowOrSandDepth": 99999.0,
+           "drawDamagedOverlay": true,
+           "castEdgeShadows": false,
+           "staticSunShadowHeight": 0.0,
+           "useSameGraphicForGhost": false,
+           "useBlueprintGraphicAsGhost": false,
+           "randomStyle": null,
+           "randomStyleChance": 0.0,
+           "canEditAnyStyle": false,
+           "dontPrint": false,
+           "defaultStuff": null,
+           "killedLeavingsExpandRect": 0,
+           "minifiedManualDraw": false,
+           "minifiedDrawScale": 1.0,
+           "deselectedSelectionBracketFactor": 1.0,
+           "selectable": true,
+           "containedPawnsSelectable": false,
+           "containedItemsSelectable": false,
+           "neverMultiSelect": false,
+           "isAutoAttackableMapObject": false,
+           "hasTooltip": false,
+           "inspectorTabs": null,
+           "inspectorTabsResolved": null,
+           "seeThroughFog": false,
+           "drawGUIOverlay": false,
+           "drawGUIOverlayQuality": true,
+           "resourceReadoutPriority": "Uncounted",
+           "resourceReadoutAlwaysShow": false,
+           "drawPlaceWorkersWhileSelected": false,
+           "drawPlaceWorkersWhileInstallBlueprintSelected": false,
+           "storedConceptLearnOpportunity": null,
+           "uiIconScale": 1.0,
+           "hasCustomRectForSelector": false,
+           "hideStats": false,
+           "hideInspect": false,
+           "onlyShowInspectString": false,
+           "hideMainDesc": false,
+           "alwaysHaulable": false,
+           "designateHaulable": false,
+           "thingCategories": [
+            "BuildingsMisc"
+           ],
+           "mineable": false,
+           "socialPropernessMatters": false,
+           "stealable": true,
+           "soundSpawned": null,
+           "soundDrop": "Standard_Drop",
+           "soundPickup": "Standard_Pickup",
+           "soundInteract": "Standard_Pickup",
+           "soundImpactDefault": "BulletImpact_Metal",
+           "soundPlayInstrument": null,
+           "soundOpen": null,
+           "saveCompressible": false,
+           "isSaveable": true,
+           "holdsRoof": false,
+           "fillPercent": 0.4,
+           "coversFloor": false,
+           "neverOverlapFloors": false,
+           "surfaceType": "None",
+           "wipesPlants": false,
+           "blockPlants": false,
+           "blockLight": false,
+           "blockWind": false,
+           "blockWeather": false,
+           "tradeability": "All",
+           "tradeTags": null,
+           "tradeNeverStack": false,
+           "tradeNeverGenerateStacked": false,
+           "healthAffectsPrice": true,
+           "colorGeneratorInTraderStock": null,
+           "tools": null,
+           "equippedAngleOffset": 0.0,
+           "equippedDistanceOffset": 0.0,
+           "equipmentType": "None",
+           "techLevel": "Undefined",
+           "weaponClasses": null,
+           "weaponTags": null,
+           "techHediffsTags": null,
+           "violentTechHediff": false,
+           "destroyOnDrop": false,
+           "equippedStatOffsets": null,
+           "meleeHitSound": null,
+           "recoilPower": 1.0,
+           "recoilRelaxation": 10.0,
+           "rotateInShelves": true,
+           "mergeVerbGizmos": true,
+           "entityDefToBuild": null,
+           "projectileWhenLoaded": null,
+           "ideoBuildingNamerBase": null,
+           "entityCodexEntry": null,
+           "ingestible": null,
+           "filth": null,
+           "gas": null,
+           "race": null,
+           "apparel": null,
+           "mote": null,
+           "plant": null,
+           "projectile": null,
+           "stuffProps": null,
+           "skyfaller": null,
+           "pawnFlyer": null,
+           "ritualFocus": null,
+           "ingredient": null,
+           "portal": null,
+           "canBeUsedUnderRoof": true,
+           "interactionCellGraphic": null,
+           "statBases": [
+            "StatModifier",
+            "StatModifier",
+            "StatModifier",
+            "StatModifier",
+            "StatModifier",
+            "StatModifier"
+           ],
+           "passability": "PassThroughOnly",
+           "pathCost": 50,
+           "pathCostIgnoreRepeat": true,
+           "fertility": -1.0,
+           "costList": [
+            "ThingDefCountClass",
+            "ThingDefCountClass"
+           ],
+           "costStuffCount": 0,
+           "stuffCategories": null,
+           "stuffCategorySummary": null,
+           "costListForDifficulty": null,
+           "drawStyleCategory": null,
+           "clearBuildingArea": true,
+           "resourcesFractionWhenDeconstructed": 0.5,
+           "blocksAltitudes": null,
+           "dominantStyleCategory": null,
+           "forcePassableByFlyingPawns": false,
+           "forceMoveItemsBeforeConstruction": false,
+           "isAltar": false,
+           "useStuffTerrainAffordance": false,
+           "terrainAffordanceNeeded": "Heavy",
+           "buildingPrerequisites": null,
+           "discoveryPrerequisites": null,
+           "researchPrerequisites": [
+            "RM_AcousticSounding"
+           ],
+           "minMonolithLevel": 0,
+           "constructionSkillPrerequisite": 6,
+           "artisticSkillPrerequisite": 0,
+           "minTechLevelToBuild": "Undefined",
+           "maxTechLevelToBuild": "Undefined",
+           "requireInspectedGravEngine": false,
+           "altitudeLayer": "Building",
+           "repairEffect": "Repair",
+           "constructEffect": null,
+           "colorPerStuff": null,
+           "canGenerateDefaultDesignator": true,
+           "ideoBuilding": false,
+           "specialDisplayRadius": 0.0,
+           "placeWorkers": [
+            "RuntimeType"
+           ],
+           "designationCategory": "Misc",
+           "designatorDropdown": null,
+           "designationHotKey": null,
+           "uiOrder": 2999.0,
+           "uiIconPath": null,
+           "uiIconPathsStuff": null,
+           "uiIconForStackCount": -1,
+           "blueprintDef": "Blueprint_RM_AcousticSounder",
+           "installBlueprintDef": "Blueprint_Install_RM_AcousticSounder",
+           "frameDef": "Frame_RM_AcousticSounder",
+           "uiIconMaterial": null,
+           "stuffUiIcons": null,
+           "uiIconAngle": 0.0,
+           "defName": "RM_AcousticSounder",
+           "label": "acoustic sounder",
+           "description": "A heavy transducer bolted through the hull into the ship's belly. When the gravship is landed and the sounder is powered, it can fire a sounding pulse: dust jumps from the walls, a bass note rolls through the deck plating, and for a few hours afterward the ground's reply hangs over the map as broad bands of likelihood. It never says exactly where; it says where to look. What it hears depends on the land beneath the ship.\n\n<i><color=#66E0E4FF>RimMandrake: Acoustic Scanner</color></i>",
+           "descriptionHyperlinks": [
+            "DefHyperlink",
+            "DefHyperlink",
+            "DefHyperlink"
+           ],
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": [
+            "Offsetter"
+           ],
+           "shortHash": 32391,
+           "index": 13413,
+           "fileName": "RM_AcousticSounder.xml",
+           "defNameHash": -1561940695,
+           "generated": false,
+           "debugRandomId": 42086
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_AcousticSounding",
+          "found": true,
+          "defName": "RM_AcousticSounding",
+          "defType": "ResearchProjectDef",
+          "label": "acoustic sounding",
+          "modName": "RimMandrake: Acoustic Scanner",
+          "packageId": "mandrake.rm.acousticscanner",
+          "fields": {
+           "baseCost": 600.0,
+           "prerequisites": [
+            "BasicGravtech"
+           ],
+           "hiddenPrerequisites": null,
+           "techLevel": "Industrial",
+           "requiredByThis": null,
+           "requiredResearchBuilding": null,
+           "requiredResearchFacilities": null,
+           "tags": null,
+           "tab": "Main",
+           "researchViewX": 10.0,
+           "researchViewY": 5.6,
+           "discoveredLetterTitle": null,
+           "discoveredLetterText": null,
+           "techprintCount": 1,
+           "techprintCommonality": 3.0,
+           "techprintMarketValue": 150.0,
+           "heldByFactionCategoryTags": [
+            "Outlander",
+            "Empire",
+            "TradersGuild",
+            null,
+            "Pirate"
+           ],
+           "requiresMechanitor": false,
+           "requiredAnalyzed": null,
+           "recalculatePower": false,
+           "knowledgeCategory": null,
+           "knowledgeCost": 0.0,
+           "teachConcept": null,
+           "requireGravEngineInspected": false,
+           "customUnlockTexts": null,
+           "defName": "RM_AcousticSounding",
+           "label": "acoustic sounding",
+           "description": "Turn a landed gravship into a drum. A hull-mounted sounder drives a low pulse into the ground and listens to what comes back: water, voids, buried things, things that move. The reading is never exact, only broad bands of likelihood, and what the ground gives back depends on where you land.\n\n<i><color=#66E0E4FF>RimMandrake: Acoustic Scanner</color></i>",
+           "descriptionHyperlinks": [
+            "DefHyperlink"
+           ],
+           "ignoreConfigErrors": false,
+           "ignoreIllegalLabelCharacterConfigError": false,
+           "modExtensions": null,
+           "shortHash": 24889,
+           "index": 411,
+           "fileName": "RM_AcousticSounding.xml",
+           "defNameHash": 316516150,
+           "generated": false,
+           "debugRandomId": 28721
+          }
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_5a5a634bc593429e8a7c109198830ba1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:35.198986+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:35.248018+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "probe_can_say_absent",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "0 of 1 def(s) resolved; 1 not found",
+        "requested": 1,
+        "foundCount": 0,
+        "notFound": [
+         "ThingDef/RM_AcousticSounder_NoSuchDef_Control"
+        ],
+        "malformed": [],
+        "fieldsAsked": [],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_AcousticSounder_NoSuchDef_Control",
+          "found": false,
+          "defType": "ThingDef",
+          "defName": "RM_AcousticSounder_NoSuchDef_Control"
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_0b5709f9fc3b41ad9a75691658e46109",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:35.2980844+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:35.3476347+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "classes_loaded",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/type_probe",
+       "result": {
+        "success": true,
+        "typeName": "RimMandrake.AcousticScanner.RM_AcousticScannerSettings",
+        "resolved": true,
+        "assembly": "RimMandrake.AcousticScanner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AcousticScanner\\Assemblies\\RimMandrake.AcousticScanner.dll",
+        "assemblyLocationSource": "modAssembliesFolder (Assembly.Location empty - loaded from bytes)",
+        "assemblyMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+        "assemblyFileSha256": "712164585e5f42e1327cf296dd97a5c4cb2ec185eee72fa14c1b2a601b85fc83",
+        "assemblyFileMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+        "mvidMatchesFile": true,
+        "identityError": null,
+        "inAllTypesByIdentity": true,
+        "allTypesNameMatches": 1,
+        "allTypesCount": 68284,
+        "assemblyTypesInAllTypes": 16,
+        "carryingMods": [
+         "mandrake.rm.acousticscanner"
+        ],
+        "debugActions": [],
+        "state": {
+         "programState": "Playing",
+         "worldSelected": false,
+         "hasCurrentMap": true
+        },
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_9b7abc804cee4aae9192ed143636b6d8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/type-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:35.3986858+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:35.5854045+00:00",
+         "DurationMs": 186,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/type_probe",
+       "result": {
+        "success": true,
+        "typeName": "RimMandrake.AcousticScanner.RM_AcousticPayloadExtension",
+        "resolved": true,
+        "assembly": "RimMandrake.AcousticScanner, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+        "assemblyLocation": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\RimWorld\\Mods\\AcousticScanner\\Assemblies\\RimMandrake.AcousticScanner.dll",
+        "assemblyLocationSource": "modAssembliesFolder (Assembly.Location empty - loaded from bytes)",
+        "assemblyMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+        "assemblyFileSha256": "712164585e5f42e1327cf296dd97a5c4cb2ec185eee72fa14c1b2a601b85fc83",
+        "assemblyFileMvid": "47b834dd-30e1-4adb-aecf-a2900a0ce013",
+        "mvidMatchesFile": true,
+        "identityError": null,
+        "inAllTypesByIdentity": true,
+        "allTypesNameMatches": 1,
+        "allTypesCount": 68284,
+        "assemblyTypesInAllTypes": 16,
+        "carryingMods": [
+         "mandrake.rm.acousticscanner"
+        ],
+        "debugActions": [],
+        "state": {
+         "programState": "Playing",
+         "worldSelected": false,
+         "hasCurrentMap": true
+        },
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_af63d9456312410f9c3a7b7e46ba13d9",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/type-probe",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:35.6379555+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:35.8180435+00:00",
+         "DurationMs": 180,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "research_gate",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/get_defs",
+       "result": {
+        "success": true,
+        "message": "2 of 2 def(s) resolved",
+        "requested": 2,
+        "foundCount": 2,
+        "notFound": [],
+        "malformed": [],
+        "fieldsAsked": [
+         "researchPrerequisites",
+         "prerequisites"
+        ],
+        "defs": [
+         {
+          "requested": "ThingDef/RM_AcousticSounder",
+          "found": true,
+          "defName": "RM_AcousticSounder",
+          "defType": "ThingDef",
+          "label": "acoustic sounder",
+          "modName": "RimMandrake: Acoustic Scanner",
+          "packageId": "mandrake.rm.acousticscanner",
+          "fields": {
+           "researchPrerequisites": [
+            "RM_AcousticSounding"
+           ],
+           "prerequisites": "(no such field)"
+          }
+         },
+         {
+          "requested": "ResearchProjectDef/RM_AcousticSounding",
+          "found": true,
+          "defName": "RM_AcousticSounding",
+          "defType": "ResearchProjectDef",
+          "label": "acoustic sounding",
+          "modName": "RimMandrake: Acoustic Scanner",
+          "packageId": "mandrake.rm.acousticscanner",
+          "fields": {
+           "prerequisites": [
+            "BasicGravtech"
+           ],
+           "researchPrerequisites": "(no such field)"
+          }
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_290e3cfa3aa54fd0934c56e3dbea51e8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:35.8499756+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:35.8765127+00:00",
+         "DurationMs": 26,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "settings_roundtrip",
+   "components": [
+    {
+     "name": "bandSize_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "bandSize",
+        "fieldKind": "instance",
+        "value": "11",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_b21aa1e62c76429893e0716111e50782",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:41.52799+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:42.2591322+00:00",
+         "DurationMs": 731,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "bandSize",
+        "fieldKind": "instance",
+        "valueBefore": "11",
+        "valueAfter": "9",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_77175768025048db8a701398e33be768",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:42.2919329+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:43.0263162+00:00",
+         "DurationMs": 734,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "bandSize",
+        "fieldKind": "instance",
+        "value": "9",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1d7c47e29bae43cdacf3eba528dfae65",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:43.0663664+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:43.8081345+00:00",
+         "DurationMs": 741,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "bandSize",
+        "fieldKind": "instance",
+        "value": "11",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1cca9162dfea40fa89154dc9ce5013f3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:44.566419+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:45.3278822+00:00",
+         "DurationMs": 761,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "cooldownHours_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "cooldownHours",
+        "fieldKind": "instance",
+        "value": "24",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_b0c82dc06023440f8452f8ca64a16726",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:45.4390204+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:46.1585491+00:00",
+         "DurationMs": 719,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "cooldownHours",
+        "fieldKind": "instance",
+        "valueBefore": "24",
+        "valueAfter": "3",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_28159ca3e16949129a8455382b85da59",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:46.1965777+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:46.949777+00:00",
+         "DurationMs": 753,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "cooldownHours",
+        "fieldKind": "instance",
+        "value": "3",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_5ef70ec3d5f6450889b96714a23dc628",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:46.9833237+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:47.7302942+00:00",
+         "DurationMs": 746,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "cooldownHours",
+        "fieldKind": "instance",
+        "value": "24",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_5a64a7ce06574f0fbf566e6b2560405f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:48.5262833+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:49.2725269+00:00",
+         "DurationMs": 746,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "enabled_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "enabled",
+        "fieldKind": "instance",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1de015f5ce1245b18cfc72edec69b930",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:49.2930539+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:50.0190409+00:00",
+         "DurationMs": 725,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "enabled",
+        "fieldKind": "instance",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_c6f3d40ddfc847509ed659c1b81d62fd",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:50.0630821+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:50.8049866+00:00",
+         "DurationMs": 741,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "enabled",
+        "fieldKind": "instance",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_fa62150cdc5f4646ac3d4c9b437f86a4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:50.8278649+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:51.5807524+00:00",
+         "DurationMs": 752,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "enabled",
+        "fieldKind": "instance",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_f9d4becdbac64597937db8dd0afed29c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:52.3829427+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:53.1521875+00:00",
+         "DurationMs": 769,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "overlayHours_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "overlayHours",
+        "fieldKind": "instance",
+        "value": "6",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1a4bcf7694b647e99eeacd268cee8a1a",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:53.1927336+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:53.9151922+00:00",
+         "DurationMs": 722,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "overlayHours",
+        "fieldKind": "instance",
+        "valueBefore": "6",
+        "valueAfter": "2",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_321cfa7efa294e1aab237fa2b6832540",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:53.9405859+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:54.737976+00:00",
+         "DurationMs": 797,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "overlayHours",
+        "fieldKind": "instance",
+        "value": "2",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_1058c32f922f4d05aaca86e090fc6aa2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:54.79604+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:55.5280517+00:00",
+         "DurationMs": 732,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "overlayHours",
+        "fieldKind": "instance",
+        "value": "6",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_da8d23fc5ab14967acdd3adb7a453f58",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:56.3305568+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:57.0928232+00:00",
+         "DurationMs": 762,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "pulseEffects_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "pulseEffects",
+        "fieldKind": "instance",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_66779e5ad5af4bf5bfd1ee32ced76d94",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:57.1373602+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:57.8580772+00:00",
+         "DurationMs": 720,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "pulseEffects",
+        "fieldKind": "instance",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_de88aa8be65848bba8fa4f0940f54549",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:57.903147+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:58.624024+00:00",
+         "DurationMs": 720,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "pulseEffects",
+        "fieldKind": "instance",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_6c88410009d04bdcb743fa7e43c5a531",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:18:58.6620539+00:00",
+         "CompletedAtUtc": "2026-10-04T01:18:59.4330628+00:00",
+         "DurationMs": 771,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "pulseEffects",
+        "fieldKind": "instance",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_25fb13663c294f418c1ea3edbd128752",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:00.2004734+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:00.9547929+00:00",
+         "DurationMs": 754,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "rangeCells_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "rangeCells",
+        "fieldKind": "instance",
+        "value": "60",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_eac2977cadc942a99670b2b61df3420c",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:00.9869159+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:01.7364272+00:00",
+         "DurationMs": 749,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "rangeCells",
+        "fieldKind": "instance",
+        "valueBefore": "60",
+        "valueAfter": "80",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_feb2f029ff6c411d9d72d596219ee462",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:01.7669471+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:02.5068448+00:00",
+         "DurationMs": 739,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "rangeCells",
+        "fieldKind": "instance",
+        "value": "80",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_09051f11e0c140f48ae4a79510b4e8e6",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:02.5268578+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:03.2965788+00:00",
+         "DurationMs": 769,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "rangeCells",
+        "fieldKind": "instance",
+        "value": "60",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_c8fdbe83a9554a20ba116b381a3be4b2",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:04.0286075+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:04.7922696+00:00",
+         "DurationMs": 763,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "requireLandedShip_roundtrip",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "requireLandedShip",
+        "fieldKind": "instance",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_6d4ed2592c204f298caca9fc8f8c7d95",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:04.8262937+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:05.5430743+00:00",
+         "DurationMs": 716,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "requireLandedShip",
+        "fieldKind": "instance",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_a8a2a1761f894c43a456fd1077b24016",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:05.5861034+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:06.2888649+00:00",
+         "DurationMs": 702,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "requireLandedShip",
+        "fieldKind": "instance",
+        "value": "False",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_0adf21c44655483996e2ba3cee79fb61",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:06.3364095+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:07.0866647+00:00",
+         "DurationMs": 750,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "get",
+        "field": "requireLandedShip",
+        "fieldKind": "instance",
+        "value": "True",
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_8d7c6c90313342b480cd47c8e49533e8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:07.8429751+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:08.5848494+00:00",
+         "DurationMs": 741,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "nonexistent_field_fails_loudly",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": false,
+        "message": "No public field 'noSuchField_control' (static or instance) on RimMandrake.AcousticScanner.RM_AcousticScannerSettings.",
+        "details": {
+         "staticFields": [
+          "MaxBandSize",
+          "MinBandSize"
+         ],
+         "instanceFields": [
+          "bandSize",
+          "cooldownHours",
+          "enabled",
+          "overlayHours",
+          "pulseEffects",
+          "rangeCells",
+          "requireLandedShip"
+         ]
+        },
+        "operation": {
+         "OperationId": "op_984165faaa1e4f7780b8ad1532c403e3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:08.6284036+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:09.3907609+00:00",
+         "DurationMs": 762,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 0,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "sounder_gating",
+   "components": [
+    {
+     "name": "unpowered_refuses",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "clear_area(30)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 34 thing(s) across 900 cell(s).",
+        "cellsExamined": 900,
+        "outOfBounds": 0,
+        "destroyed": 34,
+        "pawnsSkipped": 0,
+        "perCategory": {
+         "Item": 3,
+         "Plant": 17,
+         "Building": 14
+        },
+        "samples": [
+         {
+          "x": 38,
+          "z": 41,
+          "def": "ChunkSlagSteel",
+          "category": "Item"
+         },
+         {
+          "x": 38,
+          "z": 42,
+          "def": "ChunkSlagSteel",
+          "category": "Item"
+         },
+         {
+          "x": 39,
+          "z": 42,
+          "def": "ChunkSlagSteel",
+          "category": "Item"
+         },
+         {
+          "x": 57,
+          "z": 60,
+          "def": "RG_Plant_AridGrass",
+          "category": "Plant"
+         },
+         {
+          "x": 58,
+          "z": 59,
+          "def": "RG_Plant_AridGrass",
+          "category": "Plant"
+         },
+         {
+          "x": 58,
+          "z": 61,
+          "def": "Plant_TreeDrago",
+          "category": "Plant"
+         },
+         {
+          "x": 58,
+          "z": 63,
+          "def": "Plant_PincushionCactus",
+          "category": "Plant"
+         },
+         {
+          "x": 58,
+          "z": 64,
+          "def": "RG_Plant_AridGrass",
+          "category": "Plant"
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_d94e8a83b85e4554b73483247d9a89d3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:15.1572914+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:15.2168747+00:00",
+         "DurationMs": 59,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_substructure_batch",
+       "result": {
+        "success": true,
+        "action": "set",
+        "changed": 49,
+        "cellsInRect": 49,
+        "cellsWithNoFoundation": 0,
+        "refusedCount": 0,
+        "refusedListTruncated": false,
+        "refused": [],
+        "note": "substructureGrid.MarkDirty() called. Run jawa/map_commit for regions, pathing and the mesh.",
+        "cells": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_e550089b3f194e21b5f8a58b4b67ad97",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-substructure-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:15.2168747+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:15.2569231+00:00",
+         "DurationMs": 40,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "spawn RM_AcousticSounder x1 at point",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_AcousticSounder": 1
+        },
+        "errors": [],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_366e27c5e7be4b228b28dce4a502314f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:15.3066127+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:15.3612081+00:00",
+         "DurationMs": 54,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "def": "RM_AcousticSounder",
+          "label": "Acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 200,
+          "maxHitPoints": 200,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 7620,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_AcousticSounder": 1
+        },
+        "ticksGame": 1,
+        "message": "1 of 1 matching thing(s) returned, 7620 examined.",
+        "operation": {
+         "OperationId": "op_19789ff2d91b470e9698fbebaebf9364",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:15.4012596+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:15.4398215+00:00",
+         "DurationMs": 38,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7620 examined.",
+        "matched": 1,
+        "examined": 7620,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "No power."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_29c7a1a64f834994a61a3f23ac044557",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:15.4903883+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:15.5404654+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "off_the_ship_refuses",
+     "toggle": "requireLandedShip",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/power_net",
+       "result": {
+        "success": true,
+        "message": "RM_AcousticSounder43422 has CompPower but is not connected to any PowerNet.",
+        "thing": {
+         "id": "RM_AcousticSounder43422",
+         "defName": "RM_AcousticSounder"
+        },
+        "connected": false,
+        "net": null,
+        "isPowerTrader": true,
+        "powerOnBefore": false,
+        "powerOnAfter": true,
+        "energyOutputPerTick": -0.005,
+        "ticksGame": 1,
+        "operation": {
+         "OperationId": "op_fb917953005d48f5b84450867c347d99",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/power-net-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:15.5909116+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:15.6456282+00:00",
+         "DurationMs": 54,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(10) [watched] -> 10 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 10,
+        "requested": 10
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7619 examined.",
+        "matched": 1,
+        "examined": 7619,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "The sounder must stand on the substructure of a landed gravship."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 11,
+        "operation": {
+         "OperationId": "op_1de6d442d668437e8c5d486533ad4ce8",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:17.6253111+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:17.6747903+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "ready_on_landed_ship",
+     "toggle": null,
+     "beyond_toggle": true,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "GravEngine": 1
+        },
+        "errors": [],
+        "ticksGame": 11,
+        "operation": {
+         "OperationId": "op_e7967be239ef4ff3b5f3a8b9011e27d4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:17.7248496+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:17.78945+00:00",
+         "DurationMs": 64,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(10) [watched] -> 10 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 10,
+        "requested": 10
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7620 examined.",
+        "matched": 1,
+        "examined": 7620,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "Ready to sound."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 21,
+        "operation": {
+         "OperationId": "op_8e208f52379f447a9ceab2949517e847",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:19.4087573+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:19.4573673+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "master_off_refuses",
+     "toggle": "enabled",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "enabled",
+        "fieldKind": "instance",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 21,
+        "operation": {
+         "OperationId": "op_cc87e7824b404ff480cf344f88cda960",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:19.5084325+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:20.2715549+00:00",
+         "DurationMs": 763,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(5) [watched] -> 5 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 5,
+        "requested": 5
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7620 examined.",
+        "matched": 1,
+        "examined": 7620,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "Acoustic sounding is switched off in Mod Settings."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 26,
+        "operation": {
+         "OperationId": "op_ea595e6baaf84d7881d41c109edc8ca1",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:21.7862144+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:21.8352749+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(5) [watched] -> 5 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 5,
+        "requested": 5
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7620 examined.",
+        "matched": 1,
+        "examined": 7620,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "Ready to sound."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 31,
+        "operation": {
+         "OperationId": "op_11743aa998a84bc89749b68a6c3bacd4",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:24.1118157+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:24.1611292+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    },
+    {
+     "name": "require_ship_off_relaxes",
+     "toggle": "requireLandedShip",
+     "beyond_toggle": false,
+     "verdict": "PASS",
+     "detail": "",
+     "evidence": [
+      {
+       "call": "bridge_call jawa/destroy_batch",
+       "result": {
+        "success": true,
+        "message": "Destroyed 1 thing(s) across 25 cell(s).",
+        "cellsExamined": 25,
+        "outOfBounds": 0,
+        "destroyed": 1,
+        "pawnsSkipped": 0,
+        "perCategory": {
+         "Building": 1
+        },
+        "samples": [
+         {
+          "x": 58,
+          "z": 49,
+          "def": "GravEngine",
+          "category": "Building"
+         }
+        ],
+        "ticksGame": 31,
+        "operation": {
+         "OperationId": "op_77bfbdc03e094794bc0a1c0f884b001d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:24.2116792+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:24.2602646+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(10) [watched] -> 10 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 10,
+        "requested": 10
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7619 examined.",
+        "matched": 1,
+        "examined": 7619,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "The sounder must stand on the substructure of a landed gravship."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 41,
+        "operation": {
+         "OperationId": "op_e4794232c9ce4da0a06cb1d32128b735",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:25.8953381+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:25.9443871+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/mod_settings_field",
+       "result": {
+        "success": true,
+        "action": "set",
+        "field": "requireLandedShip",
+        "fieldKind": "instance",
+        "valueBefore": "True",
+        "valueAfter": "False",
+        "ticksGame": 41,
+        "operation": {
+         "OperationId": "op_09ac16587d4c4aa1a0c2ed1b6c40713f",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/mod-settings-field",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:25.994918+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:26.7191218+00:00",
+         "DurationMs": 724,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(5) [watched] -> 5 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 5,
+        "requested": 5
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7619 examined.",
+        "matched": 1,
+        "examined": 7619,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43422",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "Ready to sound."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 46,
+        "operation": {
+         "OperationId": "op_b327591dd09c45ec9681bc63857be2c3",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:28.2289881+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:28.2770291+00:00",
+         "DurationMs": 48,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 7,
+    "fed": 0,
+    "ticks_spent": 45,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  },
+  {
+   "name": "pulse",
+   "components": [
+    {
+     "name": "pulse_starts_cooldown_and_sends_letter",
+     "toggle": "enabled",
+     "beyond_toggle": false,
+     "verdict": "UNMEASURED",
+     "detail": "UNMEASURED: no 'Sound the ground' gizmo among the selected thing's gizmos: ['Claim', 'Deconstruct', 'Select similar', 'Uninstall', 'Selection tools', 'Edit item', 'Customize', 'DEV: Toggle power on', 'Build copy']",
+     "evidence": [
+      {
+       "call": "clear_area(30)",
+       "result": {
+        "success": true,
+        "message": "Destroyed 0 thing(s) across 900 cell(s).",
+        "cellsExamined": 900,
+        "outOfBounds": 0,
+        "destroyed": 0,
+        "pawnsSkipped": 0,
+        "perCategory": {},
+        "samples": [],
+        "ticksGame": 46,
+        "operation": {
+         "OperationId": "op_ef76b269b208444ebae31277ebbd449d",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:34.6485821+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:34.6976232+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/set_substructure_batch",
+       "result": {
+        "success": true,
+        "action": "set",
+        "changed": 49,
+        "cellsInRect": 49,
+        "cellsWithNoFoundation": 0,
+        "refusedCount": 0,
+        "refusedListTruncated": false,
+        "refused": [],
+        "note": "substructureGrid.MarkDirty() called. Run jawa/map_commit for regions, pathing and the mesh.",
+        "cells": [],
+        "ticksGame": 46,
+        "operation": {
+         "OperationId": "op_739f5e2e0e8a42938ed31fe0cde302fc",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-substructure-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:34.6976232+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:34.7476723+00:00",
+         "DurationMs": 50,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "spawn RM_AcousticSounder x1 at point",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "RM_AcousticSounder": 1
+        },
+        "errors": [],
+        "ticksGame": 46,
+        "operation": {
+         "OperationId": "op_b6cc387cc003412c866452f0dfc32dad",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:34.7977416+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:34.8473078+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/list_things",
+       "result": {
+        "success": true,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43433",
+          "def": "RM_AcousticSounder",
+          "label": "Acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "spawned": true,
+          "rot": 0,
+          "stackCount": 1,
+          "hitPoints": 200,
+          "maxHitPoints": 200,
+          "faction": null,
+          "factionName": null,
+          "stuff": null,
+          "quality": null
+         }
+        ],
+        "scanned": 7619,
+        "countReturned": 1,
+        "countMatched": 1,
+        "isCompleteList": true,
+        "truncated": 0,
+        "pawnsSkipped": 3,
+        "perDef": {
+         "RM_AcousticSounder": 1
+        },
+        "ticksGame": 46,
+        "message": "1 of 1 matching thing(s) returned, 7619 examined.",
+        "operation": {
+         "OperationId": "op_4cf88190176241ab9b49496a26f12d26",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:34.8643294+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:34.9138135+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/power_net",
+       "result": {
+        "success": true,
+        "message": "RM_AcousticSounder43433 has CompPower but is not connected to any PowerNet.",
+        "thing": {
+         "id": "RM_AcousticSounder43433",
+         "defName": "RM_AcousticSounder"
+        },
+        "connected": false,
+        "net": null,
+        "isPowerTrader": true,
+        "powerOnBefore": false,
+        "powerOnAfter": true,
+        "energyOutputPerTick": -0.005,
+        "ticksGame": 46,
+        "operation": {
+         "OperationId": "op_13fa1f012cde417ebefa316e1a78d398",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/power-net-tool",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:34.9641166+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:35.0136598+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/spawn_batch",
+       "result": {
+        "success": true,
+        "message": "Placed 1 thing(s) of 1 requested across 1 of 1 op(s).",
+        "opsRequested": 1,
+        "spawned": 1,
+        "failed": 0,
+        "thingsRequested": 1,
+        "thingsPlaced": 1,
+        "thingsShort": 0,
+        "stacksOverLimit": 0,
+        "cellsOutOfBounds": 0,
+        "perDef": {
+         "GravEngine": 1
+        },
+        "errors": [],
+        "ticksGame": 46,
+        "operation": {
+         "OperationId": "op_447f32e330d9469abfc00b706a2c2912",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/spawn-batch",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:35.0647154+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:35.1142524+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "wait_ticks(10) [watched] -> 10 tick(s)",
+       "result": {
+        "success": true,
+        "advanced": 10,
+        "requested": 10
+       }
+      },
+      {
+       "call": "bridge_call jawa/inspect_string",
+       "result": {
+        "success": true,
+        "message": "1 thing(s) inspected, 7620 examined.",
+        "matched": 1,
+        "examined": 7620,
+        "threw": 0,
+        "things": [
+         {
+          "id": "RM_AcousticSounder43433",
+          "defName": "RM_AcousticSounder",
+          "label": "acoustic sounder",
+          "x": 50,
+          "z": 50,
+          "className": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+          "inspect": [
+           "Power needed: 300 W",
+           "Not connected to power.",
+           "Ready to sound."
+          ],
+          "lowPriority": null,
+          "error": null
+         }
+        ],
+        "ticksGame": 56,
+        "operation": {
+         "OperationId": "op_4c28604572b547bfb775cfbbf98bdb35",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/inspect-string",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:36.7476975+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:36.7972399+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call jawa/letter_list",
+       "result": {
+        "success": true,
+        "count": 3,
+        "letters": [
+         {
+          "label": {
+           "RawText": "Ozzik the Shamed",
+           "Length": 16,
+           "StrippedLength": 16
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 0,
+          "lookTargets": null
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets"
+         },
+         {
+          "label": {
+           "RawText": "Area revealed",
+           "Length": 13,
+           "StrippedLength": 13
+          },
+          "defName": "NeutralEvent",
+          "arrivalTick": 1,
+          "lookTargets": "Verse.LookTargets"
+         }
+        ],
+        "ticksGame": 56,
+        "operation": {
+         "OperationId": "op_d71df04bc8ac4c27bb8bdcf6ab3d96ed",
+         "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/letter-list",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:36.8479325+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:36.8971695+00:00",
+         "DurationMs": 49,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/set_god_mode",
+       "result": {
+        "success": true,
+        "changed": true,
+        "previousGodMode": false,
+        "godMode": true,
+        "devModeEnabled": true,
+        "selectionStillValid": false,
+        "designatorState": {
+         "hasSelection": false,
+         "selectedDesignatorId": null,
+         "selectedDesignator": null,
+         "selectedContainerDesignatorId": null,
+         "selectedContainerDesignator": null,
+         "selectedAllowedArea": null,
+         "unmappedSelectedDesignator": null
+        },
+        "state": {
+         "programState": "Playing",
+         "inEntryScene": false,
+         "hasCurrentGame": true,
+         "currentMapId": "Map_1",
+         "currentMapIndex": 1,
+         "mapCount": 2,
+         "longEventPending": false,
+         "paused": true,
+         "timeSpeed": "Paused",
+         "screenFading": false,
+         "fadeOverlayAlpha": 0.0,
+         "gameDataReady": true,
+         "mapDataReady": true,
+         "currentMapReady": true,
+         "screenFadeClear": true,
+         "playable": true,
+         "visualReady": true,
+         "automationReady": true
+        },
+        "operation": {
+         "OperationId": "op_1aa4e1fd33b84462b656fa57eddcf94b",
+         "CapabilityId": "rimbridge.optional/architect/set-god-mode",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:36.9484839+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:37.1431474+00:00",
+         "DurationMs": 194,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/click_cell",
+       "result": {
+        "success": true,
+        "command": "click_cell",
+        "actionKind": "click_dispatched",
+        "gestureKind": "click",
+        "clickCell": {
+         "x": 50,
+         "z": 50
+        },
+        "startCell": null,
+        "endCell": null,
+        "target": "cell 50,50",
+        "button": "left",
+        "holdDurationMs": 0,
+        "modifiers": "none",
+        "selectionBefore": {
+         "hasSelection": false,
+         "selectionFingerprint": "sel-e3b0c44298fc1c14",
+         "selectedCount": 0,
+         "selectedObjects": [],
+         "selectionDetailsTruncated": false
+        },
+        "selectionAfter": {
+         "hasSelection": true,
+         "selectionFingerprint": "sel-3c24d209328ec102",
+         "selectedCount": 1,
+         "selectedObjects": [
+          {
+           "kind": "thing",
+           "type": "RimMandrake.AcousticScanner.RM_Building_AcousticSounder",
+           "id": "Thing_RM_AcousticSounder43433",
+           "label": "Acoustic sounder",
+           "inspectLabel": "Acoustic sounder",
+           "inspectString": null,
+           "inspectStringLines": null,
+           "inspectTabTypes": null,
+           "reference": {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           },
+           "details": {
+            "thingId": "Thing_RM_AcousticSounder43433",
+            "thingIdNumber": 43433,
+            "defName": "RM_AcousticSounder",
+            "label": "Acoustic sounder",
+            "spawned": true,
+            "stackCount": 1,
+            "hitPoints": 200,
+            "maxHitPoints": 200,
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          }
+         ],
+         "selectionDetailsTruncated": false
+        },
+        "message": "Dispatched a live left-click through RimWorld's play UI. No context menu remained open after the click.",
+        "operation": {
+         "OperationId": "op_ca5a4a1b0f314504819aee457a30bc9a",
+         "CapabilityId": "rimbridge.optional/context_menu/click-cell",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:37.1886794+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:37.2766899+00:00",
+         "DurationMs": 88,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      },
+      {
+       "call": "bridge_call rimworld/list_selected_gizmos",
+       "result": {
+        "success": true,
+        "hasSelection": true,
+        "selectionFingerprint": "sel-3c24d209328ec102",
+        "selectedCount": 1,
+        "gizmoCount": 9,
+        "gizmos": [
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:1:45d5ab7af1a1bb45",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 1,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Claim",
+          "description": "Claim neutral structures for the colony, including ancient ruins and abandoned siege bases. Claimed structures can be repaired and maintained by your colonists.",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": -20.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": "Misc4",
+          "hotKey": "N",
+          "supportsRightClick": false,
+          "reverseDesignator": true
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:2:fdb6b4ab8361f644",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 2,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Deconstruct",
+          "description": "Deconstruct this and reclaim part of its resources.",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": -20.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": "Designator_Deconstruct",
+          "hotKey": "X",
+          "supportsRightClick": false,
+          "reverseDesignator": true
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:3:8a604343cd6c2859",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 3,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Select similar",
+          "description": "Selects only things similar to those already selected.\n<b>Hold Shift</b> to pick additional things.\n<b>Hold Alt</b> to ignore selection limits.\n\n<i><color=#66E0E4FF>Allow Tool</color></i>",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": -20.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": "DesignatorSelectSimilar",
+          "hotKey": "P",
+          "supportsRightClick": false,
+          "reverseDesignator": true
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:4:6c57a382c8105f75",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 4,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Uninstall",
+          "description": "Uninstall this so it can be moved, sold, or installed somewhere else.",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": -11.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": "Misc12",
+          "hotKey": "P",
+          "supportsRightClick": false,
+          "reverseDesignator": true
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:5:e2269684f98beeb4",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 5,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Selection tools",
+          "description": "Various selection tools for this item type. Hold shift to ignore stuff",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": 0.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": null,
+          "hotKey": null,
+          "supportsRightClick": false,
+          "reverseDesignator": false
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:6:fcf50c1f3208be48",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 6,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Edit item",
+          "description": "Open Rim Control for this specific object.",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": 0.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": null,
+          "hotKey": null,
+          "supportsRightClick": false,
+          "reverseDesignator": false
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:7:4c49dc395cfca3fd",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 7,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Customize",
+          "description": "Open customization menu for acoustic sounder.",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": 0.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": null,
+          "hotKey": null,
+          "supportsRightClick": false,
+          "reverseDesignator": false
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:8:3301d3029fe75f1e",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 8,
+          "gizmoType": "Verse.Command_Action",
+          "label": "DEV: Toggle power on",
+          "description": null,
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": 0.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": null,
+          "hotKey": null,
+          "supportsRightClick": false,
+          "reverseDesignator": false
+         },
+         {
+          "id": "selection-gizmo:sel-3c24d209328ec102:9:1be9bf3fdb569f06",
+          "selectionFingerprint": "sel-3c24d209328ec102",
+          "ordinal": 9,
+          "gizmoType": "Verse.Command_Action",
+          "label": "Build copy",
+          "description": "Build a copy of this building.",
+          "descriptionPostfix": null,
+          "topRightLabel": null,
+          "disabled": false,
+          "disabledReason": null,
+          "visible": true,
+          "order": 10.0,
+          "groupSize": 1,
+          "ownerCount": 1,
+          "owners": [
+           {
+            "kind": "thing",
+            "id": "Thing_RM_AcousticSounder43433",
+            "label": "Acoustic sounder",
+            "mapId": "Map_1",
+            "mapIndex": 1,
+            "position": {
+             "x": 50,
+             "z": 50
+            }
+           }
+          ],
+          "hotKeyDef": "Misc11",
+          "hotKey": "O",
+          "supportsRightClick": false,
+          "reverseDesignator": false
+         }
+        ],
+        "operation": {
+         "OperationId": "op_22a02fa688cc4492b87af111aadb2603",
+         "CapabilityId": "rimbridge.core/inspection/list-selected-gizmos",
+         "Status": 2,
+         "Success": true,
+         "StartedAtUtc": "2026-10-04T01:19:37.3759572+00:00",
+         "CompletedAtUtc": "2026-10-04T01:19:37.4000061+00:00",
+         "DurationMs": 24,
+         "Result": null,
+         "HasResult": true,
+         "ResultWasTruncated": false,
+         "Warnings": [],
+         "Error": null,
+         "Metadata": {}
+        }
+       }
+      }
+     ],
+     "screenshots": [],
+     "sequences": [],
+     "checkpoints": [],
+     "shows": [],
+     "surprises": null
+    }
+   ],
+   "situational": {
+    "bland": true,
+    "companion": true,
+    "bland_problems": [],
+    "bland_notes": [
+     "restore_colonists acted 9 time(s) incl. resurrections of colonists a previous chain lost: those deaths belong to THAT chain's evidence, not this one"
+    ],
+    "policy": "abort",
+    "chunk": 600,
+    "sweeps": 1,
+    "fed": 0,
+    "ticks_spent": 10,
+    "surprises": [],
+    "hits_seen": [],
+    "close_problems": []
+   }
+  }
+ ],
+ "all_green": false,
+ "findings": [],
+ "refused": "",
+ "walk": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\design\\validation_walks\\RimMandrake\\AcousticScanner.md",
+ "bland_world": {
+  "before": {
+   "bland": true,
+   "problems": [],
+   "steps": {
+    "dialogs_closed": 0,
+    "kill_hostiles": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "kill_wildlife": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "clear_strangers": {
+     "acted": 0,
+     "verified": true,
+     "residue": []
+    },
+    "incident_queue_cleared": 0,
+    "corpses_destroyed": 0,
+    "corpses_left": 0,
+    "extinguish": {
+     "acted": 0,
+     "verified": true
+    },
+    "restore_colonists": {
+     "acted": 11,
+     "verified": true,
+     "residue": []
+    },
+    "restore_needs": {
+     "acted": 9,
+     "verified": true
+    }
+   }
+  },
+  "after_problems": []
+ },
+ "visual": [],
+ "visual_all_green": true,
+ "state_all_green": false
+}

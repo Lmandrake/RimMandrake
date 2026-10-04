@@ -1,0 +1,173 @@
+[cauldron]-note shipped defs resolved: 42
+[cauldron] 12:47:29 defs_resolve PASS 
+[cauldron] 12:47:29 flora_expansion_shape PASS 
+[cauldron] 12:47:29 fexxil_venom_shape PASS 
+[cauldron] 12:47:32 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 12:47:32 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 12:47:32 biome_roster PASS 
+[cauldron] 12:47:32 biome_worker_and_terrain PASS 
+[cauldron] 12:47:32 nettle_habitat_wired PASS 
+[cauldron] 12:47:33 vent_habitat_wired PASS 
+[cauldron] 12:47:38 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 12:47:39 weathers_selectable PASS 
+[cauldron] 12:48:01 defaults PASS 
+[cauldron] 12:48:05 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 12:48:08 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 12:48:12 ventsEnabled_roundtrip PASS 
+[cauldron] 12:48:16 ventFalterMessage_roundtrip PASS 
+[cauldron] 12:48:20 ventGardensEnabled_roundtrip PASS 
+[cauldron] 12:48:23 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 12:48:29 suush_and_vexxiss_comps PASS 
+[cauldron] 12:48:29 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 12:48:33 fauna_spawns PASS 
+[cauldron] 12:48:33 suush_can_fly PASS 
+[cauldron] 12:48:37 suush_ignores_melee UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:48:37 suush_detonates_when_shot UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron]-note flora set: {"asked": 17, "lost": []}
+[cauldron] 12:48:42 flora_spawns PASS 
+[cauldron]-note assay grades read per growth 0.1/0.6/1.0: {"unripe": "unripe", "fair": "fair", "lode": "lode"}
+[cauldron] 12:48:43 assay_grades PASS 
+[cauldron] 12:48:46 assay_toggle_off PASS 
+[cauldron] 12:48:49 assay_factor_scales PASS 
+[cauldron] 12:48:52 yield_site_ready PASS 
+[cauldron] 12:49:09 harvest_pays_metal UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:09 yield_factor_scales UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:09 yield_toggle_off UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron]-note map-biome native / non-native herbivore picked: ["Muffalo", "Deer"]
+[cauldron] 12:49:13 bloom_site_ready UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:13 bloom_loads_exposed UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:13 bloom_no_double_tax UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:13 bloom_spares_roofed UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:13 bloom_spares_natives UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:13 bloom_toggle_off UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:13 bloom_factor_scales UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:17 water_site_ready PASS 
+[cauldron] 12:49:17 water_poison_on UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:17 water_letter_arrives UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:17 water_letter_cooldown UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:17 water_letter_toggle_off UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:17 water_poison_toggle_off UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:21 fire_warden_beats_fire UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:21 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 12:49:24 vents_site_ready PASS 
+[cauldron] 12:49:24 vent_weather_multiplier UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:24 vent_falter_precedes_bloom UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:24 vent_exposure_is_local UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:24 vexxiss_drinks_vent UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron] 12:49:24 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 1, "bufferLines": 1000}
+[cauldron] 12:49:27 log_clean FAIL ExpectationFailed: log carries errors: ['Tried to destroy non-destroyable thing RM_CauldronVent153800']
+[lscrub-note] shipped defs resolved: 58
+[lscrub] 12:49:39 defs_resolve PASS 
+[lscrub-note] BiomeDef weather table: {"RM_ScrubWind": 28.0, "RM_ScrubWindFog": 40.0, "RM_Stall": 3.0, "RM_Gale": 7.0, "DryThunderstorm": 1.0, "SnowGentle": 0, "SnowHard": 0, "Rain": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "GrayPall": 1.0, "Overcast": 5.0}
+[lscrub] 12:49:39 biome_weather_table PASS 
+[lscrub] 12:49:39 biome_density_and_flora PASS 
+[lscrub] 12:49:39 biome_lean_extension PASS 
+[lscrub] 12:49:42 rules_armed PASS 
+[lscrub] 12:49:42 thicket_smotherable PASS 
+[lscrub] 12:49:42 vissler_arm_is_rotting_meat PASS 
+[lscrub] 12:49:42 dead_venomvine_fuels_fire UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:14 defaults PASS 
+[lscrub] 12:50:18 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 12:50:22 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 12:50:25 leanEnabled_roundtrip PASS 
+[lscrub] 12:50:29 leanScentEnabled_roundtrip PASS 
+[lscrub] 12:50:32 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 14, "lost": []}
+[lscrub] 12:50:35 fauna_spawns PASS 
+[lscrub] 12:50:35 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 12:50:39 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub] 12:50:42 stall_freezes_small UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:42 stall_toggle_off_wanders UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:42 stall_master_off_wanders UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:45 gale_site_ready PASS 
+[lscrub] 12:50:45 gale_deafens_outdoors UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:45 gale_spares_roofed UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:45 gale_deafen_toggle_off UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:45 gale_turbine_surge UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:45 gale_turbine_breakdown UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:48 lash_site_ready PASS 
+[lscrub] 12:50:52 lash_toggle_off_quiet UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:52 lash_strikes_once UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:50:57 smother_site_ready PASS 
+[lscrub] 12:51:14 smother_claims_stands UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:51:14 smother_off_holds_claims UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:51:14 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:51:36 dripping_survives_harvest UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:51:38 crown_site_ready PASS 
+[lscrub] 12:51:42 crown_toggle_off_stays_away UNMEASURED harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:51:42 crown_mob_gathers UNMEASURED a surprise ended this chain earlier: harness: ClockStall: step_game_ticks moved nothing 3 times in a row
+[lscrub] 12:52:28 bloom_toggle_off_quiet FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[lscrub] 12:52:28 bloom_answers_a_walker UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 sweetline_site_ready PASS 
+[lscrub-note] bark-wardens within 4 of a fresh sweetline tree: []
+[lscrub] 12:52:31 guardians_roost_on_spawn FAIL ExpectationFailed: a freshly spawned sweetline tree roosts 0 bark-wardens (expect 2-3)
+[lscrub] 12:52:31 station_named_and_timed UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 station_toggle_off_plain UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 station_sheds_wool UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 scratch_toggle_off_refused UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 scratch_drops_coat UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 visitors_toggle_off_quiet UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 visitors_come_and_leave_marks UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 felt_comfort_toggle_off_plain UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 felt_furniture_comfort UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 map_step_chance_zero_plants_none UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 12:52:31 map_step_plants_one_or_two UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[lscrub] 12:52:34 log_clean PASS 
+[bdesert-note] shipped defs resolved: 68
+[bdesert] 12:52:46 defs_resolve PASS 
+[bdesert] 12:52:46 flora_expansion_shape PASS 
+[bdesert-note] BiomeDef weather table: {"Clear": 60.0, "RM_Haze": 15.0, "RM_IceSandDrift": 15.0, "RM_IceFog": 10.0, "Fog": 0, "Rain": 0, "DryThunderstorm": 0, "RainyThunderstorm": 0, "FoggyRain": 0, "SnowGentle": 0, "SnowHard": 0, "GrayPall": 0, "Windy": 0, "Overcast": 0, "Blizzard": 0}
+[bdesert] 12:52:47 biome_weather_table PASS 
+[bdesert] 12:52:47 biome_carrier_condition PASS 
+[bdesert-note] biome roster states (AA_Thunderbeast follows the mod list): {"RM_Dorrak": "spawning", "RM_Dovvik": "spawning", "RM_Krissek": "spawning", "RM_Murrek": "spawning", "RM_Ossivel": "spawning", "RM_Utikka": "spawning", "RM_Vekkit": "spawning", "RM_Vhaulk": "spawning", "RM_Vrisk": "spawning", "RM_Zhaaz": "spawning", "RM_Palefloss": "spawning", "RM_Glassfern": "spawning", "RM_Chimeglobe": "spawning", "RM_Virr": "spawning", "RM_Qeshra": "spawning", "RM_Kethevar": "spawning", "RM_Lisqueth": "spawning", "RM_Vashpuk": "spawning", "AA_Thunderbeast": "spawning"}
+[bdesert] 12:52:47 biome_roster_and_density PASS 
+[bdesert] 12:52:47 charge_comps_wired FAIL ExpectationFailed: RM_ColdWax has no RuinedDetonator comp: ['CompProperties', 'CompProperties_Forbiddable', 'CompProperties_Explosive', 'CompProperties_TemperatureRuinable', 'CompProperties']
+[bdesert] 12:52:47 rack_needs_no_power UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:52:47 ablation_and_murrek_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 defaults FAIL ExpectationFailed: settings not at shipped defaults (or field missing): {'thawRollEnabled': 'False'}
+[bdesert] 12:53:06 burnerHaloEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 crackCueEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 murrekReseedEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 ablationSalvageEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 ablationPaceFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 vhaulkRoadDaysFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 12:53:06 vhaulkStayDaysFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 12:53:11 natives_spawn_charged PASS 
+[bdesert] 12:53:11 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": []}
+[bdesert] 12:53:16 flora_spawns PASS 
+[rimbridge_client] jawa/list_things -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/drain_log -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/window_list_close -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/pawn_census -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/damage_log -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+[rimbridge_client] jawa/window_list_close -> UNCHECKED: tools/list failed ('NoneType' object has no attribute 'sendall')
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 169
+  FAIL bland world established (tile 3763, map 1)  -- ['ruins present: 3', "colonist Human153620 carries ['Gunshot']", "colonist Human153624 carries ['Scratch']"]
+  -- Cauldron
+     !! Cauldron: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 29, 'UNMEASURED': 24, 'FAIL': 1} surprises=0 serious=[]
+  -- LeaningScrub
+     !! LeaningScrub: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 21, 'UNMEASURED': 29, 'FAIL': 3} surprises=0 serious=[]
+  -- BlueDesert
+  -- WeepingStones
+  -- TheForge
+  -- Bacta
+  FAIL no suite raised out of run_suite  -- ['BlueDesert: ClockLost: time_clock call failed: AttributeError("\'NoneType\' object has no attribute \'sendall\'")', "WeepingStones: AttributeError: 'NoneType' object has no attribute 'sendall'", "TheForge: AttributeError: 'NoneType' object has no attribute 'sendall'", "Bacta: AttributeError: 'None
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL situational_rerun -- 3/5 checks ; failed: bland world established (tile 3763, map 1), no suite raised out of run_suite
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

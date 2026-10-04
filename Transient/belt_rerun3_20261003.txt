@@ -1,0 +1,297 @@
+[ws-note] Player.log scan: {"lines": 15634, "hits": [], "game-wide config/xref lines (instrument probe)": 50}
+[ws] 09:38:56 player_log_names_no_weepingstones_error PASS 
+[ws] 09:38:58 resolve_probe_sees_absence PASS 
+[ws] 09:38:58 defs_resolve_race_things PASS 
+[ws] 09:38:59 defs_resolve_pawnkinds PASS 
+[ws] 09:38:59 defs_resolve_items PASS 
+[ws] 09:38:59 defs_resolve_plants PASS 
+[ws] 09:38:59 defs_resolve_recipes PASS 
+[ws] 09:38:59 defs_resolve_thoughts PASS 
+[ws] 09:38:59 defs_resolve_jobs PASS 
+[ws] 09:38:59 defs_resolve_workgivers PASS 
+[ws] 09:38:59 defs_resolve_set_makers PASS 
+[ws] 09:38:59 defs_resolve_biome PASS 
+[ws] 09:38:59 defs_resolve_buildings PASS 
+[ws] 09:38:59 defs_resolve_letters PASS 
+[ws] 09:38:59 defs_pair_up_by_convention PASS 
+[ws] 09:39:01 biome_probe_ready PASS 
+[ws] 09:39:01 biome_flags_and_densities PASS 
+[ws-note] wild animals rows not asserted (their donor mod is not on this tier): ["RM_Ikee (needs mandrake.rm.stillsand)"]
+[ws] 09:39:01 wild_animals_wired PASS 
+[ws-note] wild plants rows not asserted (their donor mod is not on this tier): []
+[ws] 09:39:01 wild_plants_wired PASS 
+[ws] 09:39:01 vhorrin_never_ambient_and_probe_is_honest PASS 
+[ws] 09:39:01 stocked_catch_has_living_counterpart PASS 
+[ws] 09:39:02 fish_types_wired PASS 
+[ws-note] modExtensions: ["radius", "10.0", "heatKind", "lowSun", "heatOffsetC", "14.0", "maxHeatOffsetC", "70.0", "bodySizeExponent", "0.5", "minBodySizeFactor", "0.25"]
+[ws] 09:39:02 water_truce_extension_present PASS 
+[ws] 09:39:02 sun_heat_extension_present PASS 
+[ws] 09:39:02 no_dead_windhour_text PASS 
+[ws] 09:39:04 recipes_on_both_stoves FAIL ExpectationFailed: ElectricStove lacks recipes ['RM_SpinDewsilk'] (RM_StockedPoolRecipeWiring.xml matched nothing?)
+[ws] 09:39:04 rottable_items_tick PASS 
+[ws] 09:39:07 setting_default_on_and_assembly_loaded PASS 
+[ws-note] pen designator row: {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}
+[ws] 09:39:07 designator_listed_when_on PASS 
+[ws] 09:39:10 designator_hidden_when_off UNMEASURED UNMEASURED: pool-pen designator still listed (row visible=True) with stockedPoolsEnabled=false; source Visible reads the setting, so this is a stale deployed DLL or a cached bridge listing; redeploy and re-run, or look at the Zone tab
+[ws] 09:39:15 vhorrinOddsMultiplier_slider_roundtrip PASS 
+[ws] 09:39:18 vizhikEscapeChance_slider_roundtrip PASS 
+[ws] 09:39:21 condenserSeasonDays_slider_roundtrip PASS 
+[ws] 09:39:24 waterTruceRadius_slider_roundtrip PASS 
+[ws] 09:39:26 suppression_source_wired PASS 
+[ws] 09:39:29 suppression_toggle_default_and_roundtrip PASS 
+[ws] 09:39:32 condenser_defs_wired PASS 
+[ws] 09:39:34 dewsilk_defs_wired PASS 
+[ws] 09:39:37 dewsilk_toggle_default_and_roundtrip PASS 
+[ws] 09:39:37 tamed_mirrik_yield_cocoons UNMEASURED UNMEASURED: needs a TAMED mirrik swarm gathered after shearIntervalDays on a live quicktest map (tame roll and wait are not driven by this suite); the comp's wiring is covered by dewsilk_defs_wired
+[ws] 09:39:39 oasis_source_wired PASS 
+[ws] 09:39:39 oasis_def_accepts_our_biome FAIL ExpectationFailed: Oasis.workerClass is not RimMandrake.WeepingStones.RM_TileMutatorWorker_Oasis: ['biomeWhitelist', 'Desert', 'ExtremeDesert', 'Savanna', 'AB_GallatrossGraveyard', 'AB_TarPits', 'BiomeArcticOasis', 'BiomeAreeb', 'BiomeCypreJungle', 'BiomeGRimberlands', 'BiomeGRimond', 'BiomeGRimphir
+[ws] 09:39:43 oasis_toggle_default_and_roundtrip PASS 
+[ws] 09:39:43 oasis_map_census UNMEASURED UNMEASURED: needs a generated Weeping Stones Oasis-mutator map (census per def with jawa/list_things: zero Plant_TreePalm/Plant_RatPalm/TreePalma/VEE_Plant_DatePalm/Plant_Grass/Plant_GrayGrass, native RM_Dewblade count > 0 as the can-it-see probe, and a vanilla Desert oasis control still growing pal
+[ws] 09:39:47 site_ready_pen_zone PASS 
+[ws-note] designating dry floor: {"success": false, "dryRun": false, "designator": {"id": "architect-designator:zone:highlight-designator-zoneadd-rm-poolpen", "parentId": null, "categoryId": "architect-category:zone", "categoryDefName": "Zone", "categoryLabel": "Zone", "kind": "designator", "applicationKind": "designation", "actionable": true, "supportsCellApplication": true, "supportsRectangleApplication": true, "dragDrawMeasurements": true, "drawStyleCategoryDefName": "Zones", "visible": true, "selected": false, "selectedContainer": false, "index": 37, "childIndex": null, "childCount": 0, "label": "Pool pen", "description": "Designate a stocked-pool pen over open water. Nets breeding stock, not a building \u2014 pen walls (ordinary low walls at the waterline) are placed separately to raise the escape bar.", "className": "RimMandrake.WeepingStones.RM_Designator_ZoneAdd_PoolPen", "highlightTag": "Designator-ZoneAdd_RM_PoolPen", "hotKey": "Misc6", "designationDefName": null, "buildableDefName": null, "buildableLabel": null, "stuffDefName": null, "zoneTypeName": "RimMandrake.WeepingStones.RM_Zone_PoolPen", "selectedZone": null, "selectedAllowedArea": null, "dropdownActiveChildId": null}, "requestedCellCount": 16, "a
+[ws] 09:39:47 pen_refuses_dry_floor PASS 
+[ws] 09:39:47 pen_covers_exactly_the_water PASS 
+[ws] 09:39:50 site_ready_net PASS 
+[ws] 09:41:07 net_turns_wild_pawn_into_breeding_stock FAIL ExpectationFailed: after NET: 0 wild skarrin left (want 0), 0 RM_SkarrinBreedingStock (want 1)
+[ws] 09:41:12 site_ready_stock PASS 
+[ws] 09:42:39 stock_releases_species_pawn_into_pen FAIL ExpectationFailed: after STOCK: 0 skarrin released (want 1), 1 breeding stock left (want 0)
+[ws] 09:42:42 site_ready_stock_dry PASS 
+[ws] 09:44:12 stock_outside_pen_releases_nothing FAIL ExpectationFailed: the breeding stock is still on the ground: the job never ran (1 left)
+[ws] 09:44:15 site_ready_feed PASS 
+[ws] 09:45:31 feed_consumes_food_at_the_pen UNMEASURED surprise: colonist_injured_unexpectedly: colonist Artemis gained 4 new hediff(s) (BloodLoss,Scratch,ToxicBuildup); cause_hint=mixed:animal,toxic [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T093854\WeepingStones__job_feed__colonist_injured_unexpecte
+[ws] 09:45:35 site_ready_harvest PASS 
+[ws] 09:46:50 harvest_yields_species_meat UNMEASURED surprise: colonist_injured_unexpectedly: colonist Ferrell gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Ingrid gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Crabby gained 1 new hediff(s) (
+[ws] 09:46:53 site_ready_cull PASS 
+[ws] 09:48:18 cull_yields_enormous_harvest FAIL ExpectationFailed: after CULL: 0 vhorrin left (want 0), 0 meat stacks (want >=1)
+[ws] 09:48:22 site_ready_RM_Bladderquill PASS 
+[ws] 09:49:21 harvest_yields_RM_BladderFruit UNMEASURED surprise: colonist_injured_unexpectedly: colonist Artemis gained 2 new hediff(s) (Scratch); cause_hint=animal [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T093854\WeepingStones__flora_RM_Bladderquill__colonist_injured_unexpectedly__t7174__001.json]
+[ws] 09:49:25 site_ready_RM_Steamfrond PASS 
+[ws] 09:50:25 harvest_yields_RM_SeepSalt UNMEASURED surprise: colonist_injured_unexpectedly: colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T093854\WeepingStones__flora_RM_Steamfrond__colonist_injured_unexpectedly__t7734__001.
+[ws] 09:50:29 site_ready_RM_Dewgourd PASS 
+[ws] 09:52:00 harvest_yields_RM_DewgourdFruit UNMEASURED surprise: colonist_injured_unexpectedly: colonist Fernand gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Ferrell gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Ingrid gained 1 new hediff(s) 
+[forge-note] Player.log scan: {"lines": 19612, "hits": [], "log cap reached": 0, "game-wide config/xref lines (instrument probe)": 50}
+[forge] 09:52:13 player_log_names_no_forge_error PASS 
+[forge] 09:52:16 resolve_probe_sees_absence PASS 
+[forge] 09:52:16 defs_resolve_races PASS 
+[forge] 09:52:16 defs_resolve_pawnkinds PASS 
+[forge] 09:52:16 defs_resolve_plants PASS 
+[forge] 09:52:17 defs_resolve_items PASS 
+[forge] 09:52:17 defs_resolve_buildings PASS 
+[forge] 09:52:17 defs_resolve_terrain PASS 
+[forge] 09:52:17 defs_resolve_weather PASS 
+[forge] 09:52:17 defs_resolve_conditions PASS 
+[forge] 09:52:17 defs_resolve_hediffs PASS 
+[forge] 09:52:17 defs_resolve_research PASS 
+[forge] 09:52:17 defs_resolve_sounds PASS 
+[forge] 09:52:17 defs_resolve_render_trees PASS 
+[forge] 09:52:17 defs_resolve_biome PASS 
+[forge] 09:52:17 plants_mesh_count_is_perfect_square PASS 
+[forge] 09:52:17 cycle_terrains_are_temporary PASS 
+[forge] 09:52:17 scald_damage_def_resolves PASS 
+[forge] 09:52:22 native_dormancy_comps_wired PASS 
+[forge] 09:52:22 flyers_carry_flight_stat PASS 
+[forge] 09:52:22 floatstone_only_from_gardens PASS 
+[forge] 09:52:22 keel_brace_needs_spunstone_research PASS 
+[forge] 09:52:22 engine_links_keel_brace PASS 
+[forge] 09:52:26 biome_probe_ready PASS 
+[forge] 09:52:26 biome_densities_live PASS 
+[forge-note] wild animals rows not asserted (their donor mod is not on this tier): ["AA_Aerofleet (needs sarg.alphaanimals)", "AA_ColossalAerofleet (needs sarg.alphaanimals)", "AA_CrescendoAnole (needs sarg.alphaanimals)", "AA_Metallovore (needs sarg.alphaanimals)"]
+[forge] 09:52:26 wild_animals_wired PASS 
+[forge-note] wild plants rows not asserted (their donor mod is not on this tier): ["IronScruff_Bindweed (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialGrass (needs IronScruff.PrimordialGeysers)", "IronScruff_PrimordialTallGrass (needs IronScruff.PrimordialGeysers)"]
+[forge] 09:52:26 wild_plants_wired PASS 
+[forge] 09:52:26 natives_spawn_and_probe_is_honest PASS 
+[forge] 09:52:26 biome_map_condition_is_forge_pulse PASS 
+[forge] 09:52:26 biome_declares_ambient_heat PASS 
+[forge] 09:52:26 biome_lava_patchmakers PASS 
+[forge] 09:52:30 settings_at_shipped_defaults PASS 
+[forge] 09:52:30 scaffolding_settings_declared_and_inert PASS 
+[forge] 09:52:35 project_hidden_until_studied PASS 
+[forge] 09:52:38 study_toggle_off_shows_project PASS 
+[forge] 09:52:39 reveal_opens_project FAIL TypeError: unhashable type: 'dict'
+[forge] 09:52:42 keel_default_saving PASS 
+[forge] 09:52:45 keel_off_zeroes_saving UNMEASURED UNMEASURED: cannot open the Mod Settings dialog for mandrake.rm.biomes: {"success": false, "message": "Query 'mandrake.rm.biomes' matched multiple loaded mods: mod-settings:mandrake.rm.biomes:a0dbaa8098ca699b, mod-settings:mandrake.rm.biomes:9f58b0f2d148ebd1, mod-settings
+[forge] 09:52:45 keel_ring_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 09:52:45 dhuvvox_scuttle_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 09:52:56 site_ready_cycle PASS 
+[forge] 09:52:56 cycle_starts_in_still_heat PASS 
+[forge] 09:53:01 gas_wash_ignites UNMEASURED surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire_on_map__t10275__001.json]
+[forge] 09:53:01 rain_forces_boiling_weather_and_floods UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:01 freeze_crusts_lava UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:01 crust_is_walkable UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:01 growth_blooms_floatstone UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:01 cracks_drift_gardens_and_glow UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:01 melt_restores_lava_and_counts_losses UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:01 telegraph_letters_sent UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 17 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_walk__fire
+[forge] 09:53:13 site_ready_arms PASS 
+[forge] 09:53:21 gas_wash_off_no_ignitions PASS 
+[forge] 09:53:35 flooding_off_no_floods UNMEASURED surprise: raid_arrived: raid signal(s): Glowing cracks; The melt; window passed, no hostiles seen [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_arms__raid_arrived__t11425__001.json]
+[forge] 09:53:39 freeze_off_closes_cycle_early PASS 
+[forge] 09:53:47 bloom_off_no_gardens UNMEASURED surprise: raid_arrived: raid signal(s): Glowing cracks; The melt; Glowing cracks; The melt; window passed, no hostiles seen [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_arms__raid_arrived__t11555__002.json]
+[forge] 09:53:51 melt_gentle_spares_pawn_and_items PASS 
+[forge] 09:54:00 cycle_off_melts_back_gently UNMEASURED surprise: raid_arrived: raid signal(s): Glowing cracks; The melt; Glowing cracks; The melt; Glowing cracks; The melt; window passed, no hostiles seen [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_arms__raid_arrived__t11755__00
+[forge] 09:54:01 telegraph_off_sends_no_letters FAIL TypeError: unhashable type: 'dict'
+[forge] 09:54:08 cycle_gate_off_pulse_toggle_never_starts UNMEASURED surprise: raid_arrived: raid signal(s): Glowing cracks; The melt; Glowing cracks; The melt; Glowing cracks; The melt; window passed, no hostiles seen [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_arms__raid_arrived__t11755__00
+[forge] 09:54:16 cycle_gate_off_grand_cycle_toggle_never_starts UNMEASURED surprise: raid_arrived: raid signal(s): Glowing cracks; The melt; Glowing cracks; The melt; Glowing cracks; The melt; window passed, no hostiles seen [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_arms__raid_arrived__t11755__00
+[forge] 09:54:22 cycle_gate_off_master_toggle_never_starts UNMEASURED surprise: raid_arrived: raid signal(s): Glowing cracks; The melt; Glowing cracks; The melt; Glowing cracks; The melt; window passed, no hostiles seen [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\TheForge__cycle_arms__raid_arrived__t11755__00
+[forge] 09:54:30 site_ready_hiss FAIL TypeError: unhashable type: 'dict'
+[forge] 09:54:32 hiss_not_sent_with_gas_wash_off UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 09:54:32 hiss_letter_sent_before_gas_wash UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 09:54:41 site_ready_voices UNMEASURED surprise: colonist_injured_unexpectedly: colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Fernand gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Ferrell gained 1 new hediff(s) 
+[forge] 09:54:44 voices_off_no_cue UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Fernand gained 1 new hediff(s) (RM_SheenC
+[forge] 09:54:47 visual_cue_message_names_phase UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Fernand gained 1 new hediff(s) (RM_SheenC
+[forge] 09:54:58 site_ready_dormancy UNMEASURED harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:54:58 natives_seal_in_still_heat UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:54:59 dormancy_off_clears_sealed_line UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:54:59 fresh_natives_seal UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:54:59 rain_wakes_all_natives UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:54:59 dhuvvox_clock_shows_countdown_and_slows UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:55:01 clock_off_removes_slowing UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:55:01 dry_growth_seals_dhokkur_only UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 170000 ticks (cap 1500); it must be driven through wait_ticks
+[forge] 09:55:07 site_ready_harvest FAIL ExpectationFailed: set_plants placed no floatstone garden (affordance/temperature rejected the cell?)
+[forge] 09:55:07 floatstone_garden_yields_floatstone UNMEASURED upstream failed -- this chain's state is meaningless
+[forge] 09:55:19 site_ready_plume UNMEASURED surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095210\T
+[forge] 09:55:19 plume_front_spawns_and_lives UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:19 plume_soaks_ground UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:21 soak_off_adds_no_puddles UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:22 fronts_off_clears_fronts UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:23 plume_source_launches_from_new_crust UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:23 plume_source_obscures_with_blind_smoke UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:23 plume_source_heat_is_ambient_temperature UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:23 plume_source_exempts_vapour_adapted UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:23 plume_source_strength_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Vasilisa gained 1 new hediff(s) (MCR_MoodChainWatcher); cause_hint=unknown; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evid
+[forge] 09:55:26 sky_source_grid_is_a_dirty_safe_section_layer PASS 
+[forge] 09:55:26 sky_source_spirals_are_cosmetic_flecks PASS 
+[forge] 09:55:26 sky_source_hunt_scores_columns PASS 
+[forge] 09:55:26 sky_source_jossur_stoop_uses_flight_stats PASS 
+[forge] 09:55:26 sky_source_highlight_is_selection_only PASS 
+[forge] 09:55:26 sky_source_debug_report_exists PASS 
+[forge-note] sky UNMEASURED: "the haze mesh, ash spirals, prey-score effect, a stoop in play and the outline: no bridge tool reads them and flyer flight is never live-hunted; run 'Forge sky: report' by hand for the counters"
+[cauldron] 09:55:39 defs_resolve FAIL ExpectationFailed: 11 shipped def(s) did not resolve live (silently discarded?): ['DamageDef/RM_FexxilScratch', 'RecipeDef/RM_RoastTsevrix', 'ThingDef/RM_Fexxil', 'ThingDef/RM_FexxilShard', 'ThingDef/RM_Ixalith', 'ThingDef/RM_Kissaveth', 'ThingDef/RM_Selvix', 'ThingDef/RM_Sessarix', 'ThingDef/RM_Tse
+[cauldron] 09:55:39 flora_expansion_shape UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 fexxil_venom_shape UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 types_resolve UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 biome_weather_table UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 biome_roster UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 biome_worker_and_terrain UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 nettle_habitat_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:39 vent_habitat_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:42 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 09:55:42 weathers_selectable PASS 
+[cauldron] 09:55:50 defaults FAIL ExpectationFailed: mod_settings_field(get fexxilVenomEnabled) failed: {'success': False, 'message': "No public field 'fexxilVenomEnabled' (static or instance) on RimMandrake.Cauldron.RM_CauldronSettings.", 'details': {'staticFields': ['assayGradeEnabled', 'biomeRarityFactor', 'condensateGardensEnabl
+[cauldron] 09:55:50 vexxissAttacksIgniter_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:50 condensateGardensEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:50 ventsEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:50 ventFalterMessage_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:50 ventGardensEnabled_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:55:50 biomeRarityFactor_roundtrip UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties"]}
+[cauldron] 09:55:52 suush_and_vexxiss_comps PASS 
+[cauldron] 09:55:52 zisska_yields_and_toxic_meat PASS 
+[cauldron] 09:55:56 fauna_spawns FAIL ExpectationFailed: spawn_pawn(RM_Suush, none) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_9a690c75ad6d47559c3c2cc68ee990e1', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/sp
+[cauldron] 09:55:56 suush_can_fly UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:07 suush_ignores_melee UNMEASURED surprise: fire_on_map: 1 fire(s) on the map outside the expected set; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__suush__fire_on_map__t183225__001.json]
+[cauldron] 09:56:07 suush_detonates_when_shot UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 1 fire(s) on the map outside the expected set; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Tr
+[cauldron]-note flora set: {"asked": 17, "lost": ["RM_BloodBouquet", "RM_CrystalFlower", "RM_Fexxil", "RM_GiantAgariTox", "RM_GiantToxicFlower", "RM_Ixalith", "RM_Kissaveth", "RM_RavenNettle", "RM_Selvix", "RM_Sessarix", "RM_TreeMartyr", "RM_Tsevrix", "RM_Xithess"]}
+[cauldron] 09:56:12 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_BloodBouquet', 'RM_CrystalFlower', 'RM_Fexxil', 'RM_GiantAgariTox', 'RM_GiantToxicFlower', 'RM_Ixalith', 'RM_Kissaveth', 'RM_RavenNettle', 'RM_Selvix', 'RM_Sessarix', 'RM_TreeMartyr', 'RM_Tsevrix', 'RM_Xithess']
+[cauldron] 09:56:12 assay_grades UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:12 assay_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:12 assay_factor_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:15 yield_site_ready PASS 
+[cauldron] 09:56:42 harvest_pays_metal UNMEASURED surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__yield__modal_open__t183825__001.json]
+[cauldron] 09:56:42 yield_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__yield__
+[cauldron] 09:56:42 yield_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__yield__
+[cauldron] 09:56:46 bloom_site_ready FAIL ExpectationFailed: spawn_pawn(Colonist, player) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_bb3a0e184518420c9957b0225c0fa4c4', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/
+[cauldron] 09:56:46 bloom_loads_exposed UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:46 bloom_no_double_tax UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:46 bloom_spares_roofed UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:46 bloom_spares_natives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:46 bloom_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:46 bloom_factor_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:49 water_site_ready FAIL ExpectationFailed: spawn_pawn(Colonist, player) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_4ec642f36be045a397835ff6654a03cd', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/
+[cauldron] 09:56:49 water_poison_on UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:49 water_letter_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:49 water_letter_cooldown UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:49 water_letter_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:49 water_poison_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 09:56:54 fire_warden_beats_fire UNMEASURED surprise: fire_on_map: 9 fire(s) on the map outside the expected set; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__fire__fire_on_map__t183875__001.json]
+[cauldron] 09:56:54 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 9 fire(s) on the map outside the expected set; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Tr
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 09:56:57 vents_site_ready PASS 
+[cauldron] 09:57:01 vent_weather_multiplier UNMEASURED surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__vents__modal_open__t183935__001.json]
+[cauldron] 09:57:01 vent_falter_precedes_bloom UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__vents__
+[cauldron] 09:57:01 vent_exposure_is_local UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__vents__
+[cauldron] 09:57:01 vexxiss_drinks_vent UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__vents__
+[cauldron] 09:57:01 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095537\Cauldron__vents__
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 1, "bufferLines": 1000}
+[cauldron] 09:57:03 log_clean FAIL ExpectationFailed: log carries errors: ['Tried to destroy non-destroyable thing RM_CauldronVent83771']
+[lscrub-note] shipped defs resolved: 55
+[lscrub] 09:57:15 defs_resolve PASS 
+[lscrub] 09:57:15 biome_weather_table FAIL AttributeError: 'str' object has no attribute 'get'
+[lscrub] 09:57:15 biome_density_and_flora UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:57:15 biome_lean_extension UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:57:17 rules_armed PASS 
+[lscrub] 09:57:17 thicket_smotherable PASS 
+[lscrub] 09:57:17 vissler_arm_is_rotting_meat PASS 
+[lscrub] 09:57:44 dead_venomvine_fuels_fire UNMEASURED surprise: fire_on_map: 1 fire(s) on the map outside the expected set; modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__patches__fire_on_map__t184535__001.json]
+[lscrub] 09:58:09 defaults PASS 
+[lscrub] 09:58:13 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 09:58:17 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 09:58:20 leanEnabled_roundtrip PASS 
+[lscrub] 09:58:24 leanScentEnabled_roundtrip PASS 
+[lscrub] 09:58:28 leanFireEnabled_roundtrip PASS 
+[lscrub-note] wild kinds spawned: {"asked": 13, "lost": []}
+[lscrub] 09:58:33 fauna_spawns PASS 
+[lscrub] 09:58:33 dustflutter_can_fly PASS 
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 09:58:38 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub] 09:58:45 stall_freezes_small UNMEASURED surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__stall__modal_open__t184785__001.json]
+[lscrub] 09:58:45 stall_toggle_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__sta
+[lscrub] 09:58:45 stall_master_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__sta
+[lscrub] 09:58:49 gale_site_ready UNMEASURED UNMEASURED: the sealed room is not roofed (get_roof_batch {'success': True, 'message': 'Read 49 cell(s), 1 distinct roof(s).', 'ops': 'RoofConstructed:40,152,7,1;RoofConstructed:40,153,7,1;RoofConstructed:40,154,7,1;RoofConstructed:40,155,7,1;RoofConstructed:40,156,7,1;RoofConstructed:40,157,7,1;Roo
+[lscrub] 09:58:49 gale_deafens_outdoors UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:58:49 gale_spares_roofed UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:58:49 gale_deafen_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:58:49 gale_turbine_surge UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:58:49 gale_turbine_breakdown UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 09:58:52 lash_site_ready PASS 
+[lscrub] 09:59:03 lash_toggle_off_quiet UNMEASURED surprise: colonist_injured_unexpectedly: colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Fernand gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Ferrell gained 1 new hediff(s) 
+[lscrub] 09:59:03 lash_strikes_once UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Kinsei gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Fernand gained 1 new hediff(s) (RM_SheenC
+[lscrub] 09:59:08 smother_site_ready PASS 
+[lscrub] 09:59:31 smother_claims_stands UNMEASURED surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__smother__modal_open__t185250__001.json]
+[lscrub] 09:59:31 smother_off_holds_claims UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__smo
+[lscrub] 09:59:31 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__smo
+[lscrub] 10:00:02 dripping_survives_harvest UNMEASURED surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__dripping__modal_open__t185850__001.json]
+[lscrub] 10:00:04 crown_site_ready PASS 
+[lscrub] 10:00:17 crown_toggle_off_stays_away UNMEASURED surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__crown__modal_open__t186450__001.json]
+[lscrub] 10:00:17 crown_mob_gathers UNMEASURED a surprise ended this chain earlier: surprise: modal_open: 1 force-pause modal(s) open: RimWorld.Dialog_ModSettings [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T095713\LeaningScrub__cro
+[lscrub] 10:00:23 bloom_toggle_off_quiet FAIL ExpectationFailed: spawn_pawn(RM_Vissler, none) returned no pawn: {'success': False, 'message': 'Cell is outside the map.', 'details': None, 'operation': {'OperationId': 'op_75a66184f2a04f2db2e1387366f2d36e', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/
+[lscrub] 10:00:23 bloom_answers_a_walker UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:00:26 sweetline_site_ready PASS 
+[lscrub-note] sweetline label / inspect: ["Audol the Waymark (sweetline tree)", ["Ready to harvest.", "Snagged giant-wool sheds in 3.9 days."]]
+[lscrub] 10:00:26 station_named_and_timed PASS 
+[lscrub] 10:00:29 station_toggle_off_plain PASS 
+[lscrub] 10:00:30 station_sheds_wool UNMEASURED harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 330000 ticks (cap 1500); it must be driven through wait_ticks
+[lscrub] 10:00:30 visitors_toggle_off_quiet UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 330000 ticks (cap 1500); it must be driven through wait_ticks
+[lscrub] 10:00:30 visitors_come_and_leave_marks UNMEASURED a surprise ended this chain earlier: harness: clock_runaway: bridge_call:jawa/time_set_ticks moved the clock 330000 ticks (cap 1500); it must be driven through wait_ticks
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[lscrub] 10:00:32 log_clean PASS 
+== situational_rerun
+  -- WeepingStones
+     !! WeepingStones: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 51, 'FAIL': 6, 'UNMEASURED': 8} surprises=5 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- TheForge
+     !! TheForge: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 48, 'FAIL': 4, 'UNMEASURED': 41} surprises=7 serious=['colonist_injured_unexpectedly:SURPRISE', 'fire_on_map:SURPRISE', 'modal_open:SURPRISE', 'raid_arrived:SURPRISE']
+  -- Cauldron
+     !! Cauldron: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'FAIL': 7, 'UNMEASURED': 41, 'PASS': 6} surprises=6 serious=['fire_on_map:SURPRISE', 'modal_open:SURPRISE']
+  -- LeaningScrub
+     !! LeaningScrub: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 19, 'FAIL': 3, 'UNMEASURED': 24} surprises=9 serious=['colonist_injured_unexpectedly:SURPRISE', 'fire_on_map:SURPRISE', 'modal_open:SURPRISE']
+  ok   no suite raised out of run_suite
+  ok   no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED PASS situational_rerun -- 4/4 checks
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

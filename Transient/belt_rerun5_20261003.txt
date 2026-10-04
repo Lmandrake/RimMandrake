@@ -1,0 +1,237 @@
+[cauldron]-note shipped defs resolved: 42
+[cauldron] 10:43:01 defs_resolve PASS 
+[cauldron] 10:43:01 flora_expansion_shape PASS 
+[cauldron] 10:43:01 fexxil_venom_shape PASS 
+[cauldron] 10:43:03 types_resolve PASS 
+[cauldron]-note BiomeDef weather table: {"RM_ScatterDusk": 60.0, "RM_VapourBank": 20.0, "RM_Dewfall": 12.0, "RM_VentBloom": 8.0, "Fog": 0, "Clear": 0, "DryThunderstorm": 1.0, "Rain": 0, "RainyThunderstorm": 0, "SnowGentle": 0, "SnowHard": 0}
+[cauldron] 10:43:03 biome_weather_table PASS 
+[cauldron]-note biome roster states: {"RM_Suush": "spawning", "RM_Vexxiss": "spawning", "RM_Zisska": "spawning", "RM_Eskith": "spawning", "RM_BloodBouquet": "spawning", "RM_CrystalFlower": "spawning", "RM_DarkCrust": "spawning", "RM_Fexxil": "spawning", "RM_GiantAgariTox": "spawning", "RM_GiantToxicFlower": "spawning", "RM_Ixalith": "spawning", "RM_KeeningCordax": "spawning", "RM_Kissaveth": "spawning", "RM_RavenNettle": "spawning", "RM_RedBugloss": "spawning", "RM_Selvix": "spawning", "RM_Sessarix": "spawning", "RM_TreeMartyr": "spawning", "RM_Tsevrix": "spawning", "RM_TwistingThornwood": "spawning", "RM_Xithess": "spawning"}
+[cauldron] 10:43:04 biome_roster PASS 
+[cauldron] 10:43:04 biome_worker_and_terrain PASS 
+[cauldron] 10:43:04 nettle_habitat_wired PASS 
+[cauldron] 10:43:04 vent_habitat_wired PASS 
+[cauldron] 10:43:10 weather_defs_laws PASS 
+[cauldron]-note weather read-back per lock: {"RM_ScatterDusk": "RM_ScatterDusk", "RM_VentBloom": "RM_VentBloom", "RM_VapourBank": "RM_VapourBank", "RM_Dewfall": "RM_Dewfall"}
+[cauldron] 10:43:10 weathers_selectable PASS 
+[cauldron] 10:43:32 defaults PASS 
+[cauldron] 10:43:36 vexxissAttacksIgniter_roundtrip PASS 
+[cauldron] 10:43:40 condensateGardensEnabled_roundtrip PASS 
+[cauldron] 10:43:43 ventsEnabled_roundtrip PASS 
+[cauldron] 10:43:47 ventFalterMessage_roundtrip PASS 
+[cauldron] 10:43:51 ventGardensEnabled_roundtrip PASS 
+[cauldron] 10:43:54 biomeRarityFactor_roundtrip PASS 
+[cauldron]-note comps: {"RM_Suush": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Explosive", "CompProperties"], "RM_Vexxiss": ["CompProperties", "CompProperties_PawnLookupCache", "CompProperties_PawnRenderProperties", "CompProperties", "CompProperties_CombatAI", "CompProperties_Statistics", "CompProperties", "CompProperties_RunAndGun", "UniteComp_Properties", "CompProperties", "CompProperties", "CompProperties_SidearmMemory", "CompProperties", "CompProperties", "CompProperties_HoldingPlatformTarget", "CompProperties_Studiable", "CompProperties_Shearable", "RM_CompProperties_VexxissBehaviour", "CompProperties", "CompProperties_TitanicWake"]}
+[cauldron] 10:43:59 suush_and_vexxiss_comps PASS 
+[cauldron] 10:44:00 zisska_yields_and_toxic_meat PASS 
+[cauldron]-note wild kinds spawned: {"asked": 4, "lost": []}
+[cauldron] 10:44:06 fauna_spawns PASS 
+[cauldron] 10:44:06 suush_can_fly PASS 
+[cauldron] 10:44:21 suush_ignores_melee FAIL ExpectationFailed: a suush hit by a Cut (melee) detonated or died: only Bullet/Bomb start the wick, melee must not (None)
+[cauldron] 10:44:21 suush_detonates_when_shot UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron]-note flora set: {"asked": 17, "lost": ["RM_Sessarix"]}
+[cauldron] 10:44:30 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Sessarix']
+[cauldron] 10:44:30 assay_grades UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:44:30 assay_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:44:30 assay_factor_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:44:36 yield_site_ready PASS 
+[cauldron] 10:45:07 harvest_pays_metal UNMEASURED surprise: colonist_damaged: colonist Schmitt took 1 damage event(s): Cut by nobody; colonist_downed: colonist Schmitt is bleeding; colonist_injured_unexpectedly: colonist Schmitt gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transi
+[cauldron] 10:45:07 yield_factor_scales UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Schmitt took 1 damage event(s): Cut by nobody; colonist_downed: colonist Schmitt is bleeding; colonist_injured_unexpectedly: colonist Schmitt gained 1 new hediff(s
+[cauldron] 10:45:07 yield_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Schmitt took 1 damage event(s): Cut by nobody; colonist_downed: colonist Schmitt is bleeding; colonist_injured_unexpectedly: colonist Schmitt gained 1 new hediff(s
+[cauldron] 10:45:14 bloom_site_ready UNMEASURED UNMEASURED: the sealed room is not roofed (get_roof_batch {'success': True, 'message': 'Read 49 cell(s), 1 distinct roof(s).', 'ops': 'RoofConstructed:70,167,7,1;RoofConstructed:70,168,7,1;RoofConstructed:70,169,7,1;RoofConstructed:70,170,7,1;RoofConstructed:70,171,7,1;RoofConstructed:70,172,7,1;Roo
+[cauldron] 10:45:14 bloom_loads_exposed UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:14 bloom_no_double_tax UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:14 bloom_spares_roofed UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:14 bloom_spares_natives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:14 bloom_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:14 bloom_factor_scales UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:20 water_site_ready UNMEASURED UNMEASURED: pond A did not read as 64 clean WaterShallow cells: {'WaterShallow': 54, 'BrokenSubstructure': 10}
+[cauldron] 10:45:20 water_poison_on UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:20 water_letter_arrives UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:20 water_letter_cooldown UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:20 water_letter_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:20 water_poison_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[cauldron] 10:45:29 fire_warden_beats_fire UNMEASURED surprise: fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T104256\Cauldron__fire__fire_on_map__t1029__001.json]
+[cauldron] 10:45:29 fire_warden_toggle_off UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 9 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T104256\Cauldron__fire__fire_on_map
+[cauldron]-note fresh vent output / state: [1.0, "breathing"]
+[cauldron] 10:45:35 vents_site_ready PASS 
+[cauldron]-note vent output scatter-dusk / vapour bank: [1.0, 0.8]
+[cauldron] 10:45:41 vent_weather_multiplier PASS 
+[cauldron]-note vent output / state just after the bloom is chosen: [0.1, "faltering"]
+[cauldron] 10:46:08 vent_falter_precedes_bloom UNMEASURED surprise: colonist_damaged: colonist Davis Jr took 1 damage event(s): Cut by nobody; colonist_downed: colonist Davis Jr is bleeding; colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (ToxicBuildup); cause_hint=toxic [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Tra
+[cauldron] 10:46:08 vent_exposure_is_local UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Davis Jr took 1 damage event(s): Cut by nobody; colonist_downed: colonist Davis Jr is bleeding; colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hedif
+[cauldron] 10:46:08 vexxiss_drinks_vent UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Davis Jr took 1 damage event(s): Cut by nobody; colonist_downed: colonist Davis Jr is bleeding; colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hedif
+[cauldron] 10:46:08 vent_silences_and_recovers UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Davis Jr took 1 damage event(s): Cut by nobody; colonist_downed: colonist Davis Jr is bleeding; colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hedif
+[cauldron]-note log scan: {"errors naming the mod or one of its defs": 1, "bufferLines": 1000}
+[cauldron] 10:46:14 log_clean FAIL ExpectationFailed: log carries errors: ['Tried to destroy non-destroyable thing RM_CauldronVent42584']
+[lscrub] 10:46:28 defs_resolve FAIL ExpectationFailed: 2 shipped def(s) did not resolve live (silently discarded?): ['PawnKindDef/RM_Barkwarden', 'ThingDef/RM_Barkwarden']
+[lscrub] 10:46:28 biome_weather_table UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:46:28 biome_density_and_flora UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:46:28 biome_lean_extension UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:46:33 rules_armed PASS 
+[lscrub] 10:46:33 thicket_smotherable PASS 
+[lscrub] 10:46:33 vissler_arm_is_rotting_meat PASS 
+[lscrub-note] refuel with dead venomvine: {"stackBefore": 20, "stackAfter": 20, "campfire": ["Fuel: 20 / 20 (2 days)", "Comfort: +0.09 (inactive)", "Rest effectiveness: +6% (inactive)", "Max connected per building: 1"]}
+[lscrub] 10:47:09 dead_venomvine_fuels_fire FAIL ExpectationFailed: the colonist did not burn any dead venomvine (stack 20 -> 20): the fuel patch does not apply to the Campfire's fuel filter
+[lscrub] 10:47:36 defaults PASS 
+[lscrub] 10:47:39 venomvinePassabilityEnabled_roundtrip PASS 
+[lscrub] 10:47:43 galeRaidWeightingEnabled_roundtrip PASS 
+[lscrub] 10:47:47 leanEnabled_roundtrip PASS 
+[lscrub] 10:47:50 leanScentEnabled_roundtrip PASS 
+[lscrub] 10:47:54 leanFireEnabled_roundtrip PASS 
+[lscrub] 10:47:59 fauna_spawns FAIL ExpectationFailed: spawn_pawn(RM_Barkwarden, none) returned no pawn: {'success': False, 'message': "No PawnKindDef named 'RM_Barkwarden'.", 'details': {'suggestions': []}, 'operation': {'OperationId': 'op_d179fa8840c74dabaf6b6698ba25a29a', 'CapabilityId': 'extension.global/global/jawa-bench.-bridge-
+[lscrub] 10:47:59 dustflutter_can_fly UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub-note] flora set: {"asked": 12, "lost": ["RM_Grellspine"]}
+[lscrub] 10:48:07 flora_spawns FAIL ExpectationFailed: plant def(s) did not stand after set_plants: ['RM_Grellspine']
+[lscrub-note] Stall: path lengths (cells) over 1500 ticks: {"RM_Thornhold47004": {"alive": 7, "samples": 7, "path": 0.0}, "RM_Shirrel47005": {"alive": 7, "samples": 7, "path": 26.695286871655266}}
+[lscrub] 10:48:41 stall_freezes_small PASS 
+[lscrub] 10:48:48 stall_toggle_off_wanders UNMEASURED surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Charlzie gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Schmitt gained 1 new hediff(
+[lscrub] 10:48:48 stall_master_off_wanders UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Charlzie gained 1 new hediff(s) (RM_She
+[lscrub] 10:48:51 gale_site_ready UNMEASURED UNMEASURED: the sealed room is not roofed (get_roof_batch {'success': True, 'message': 'Read 49 cell(s), 1 distinct roof(s).', 'ops': 'RoofConstructed:77,39,7,1;RoofConstructed:77,40,7,1;RoofConstructed:77,41,7,1;RoofConstructed:77,42,7,1;RoofConstructed:77,43,7,1;RoofConstructed:77,44,7,1;RoofConst
+[lscrub] 10:48:51 gale_deafens_outdoors UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:48:51 gale_spares_roofed UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:48:51 gale_deafen_toggle_off UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:48:51 gale_turbine_surge UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:48:51 gale_turbine_breakdown UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:48:53 lash_site_ready PASS 
+[lscrub] 10:49:00 lash_toggle_off_quiet FAIL ExpectationFailed: twitcherLashEnabled OFF but the colonist next to the stand gained 1 hediff(s)
+[lscrub] 10:49:00 lash_strikes_once UNMEASURED upstream failed -- this chain's state is meaningless
+[lscrub] 10:49:05 smother_site_ready PASS 
+[lscrub] 10:49:55 smother_claims_stands PASS 
+[lscrub] 10:50:31 smother_off_holds_claims UNMEASURED harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 8813 of cap 833
+[lscrub] 10:50:31 smother_matures_to_dead_wood UNMEASURED a surprise ended this chain earlier: harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 8813 of cap 833
+[lscrub-note] dripping harvest: venom items / stand standing / inspect: [0, 1, ["Ready to harvest."]]
+[lscrub] 10:51:10 dripping_survives_harvest UNMEASURED UNMEASURED: no venom was harvested in 1200 ticks (job not done): cannot judge whether the stand survives
+[lscrub] 10:51:17 crown_site_ready PASS 
+[lscrub-note] crown trial OFF: dustflutter distances to the stand: []
+[lscrub] 10:51:49 crown_toggle_off_stays_away UNMEASURED UNMEASURED: 0 of 3 dustflutters survived to be measured
+[lscrub-note] crown trial ON: dustflutter distances to the stand: [3.605551275463989, 2.23606797749979, 2.0]
+[lscrub] 10:52:19 crown_mob_gathers PASS 
+[lscrub] 10:52:39 bloom_toggle_off_quiet UNMEASURED surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Charlzie gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Schmitt gained 1 new hediff(
+[lscrub] 10:52:39 bloom_answers_a_walker UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Charlzie gained 1 new hediff(s) (RM_She
+[lscrub] 10:52:46 sweetline_site_ready PASS 
+[lscrub-note] sweetline label / inspect: ["Gomumo the Leaner (sweetline tree)", ["Ready to harvest.", "Snagged giant-wool sheds in 3.2 days."]]
+[lscrub] 10:52:46 station_named_and_timed PASS 
+[lscrub] 10:52:49 station_toggle_off_plain PASS 
+[lscrub-note] sweetline wool beside the tree before / after a 5.5-day jump: [0, 5]
+[lscrub] 10:53:21 station_sheds_wool PASS 
+[lscrub-note] sweetline visits before / after a 13-day jump, visitors OFF: [0, 0]
+[lscrub] 10:53:48 visitors_toggle_off_quiet PASS 
+[lscrub-note] sweetline visits recorded / tokens before-after, visitors ON: [1, 0, 0]
+[lscrub] 10:54:13 visitors_come_and_leave_marks PASS 
+[lscrub-note] log scan: {"leaningscrub errors": 0, "xref naming our defs": 0, "bufferLines": 1000}
+[lscrub] 10:54:15 log_clean PASS 
+[bdesert-note] shipped defs resolved: 68
+[bdesert] 10:54:27 defs_resolve PASS 
+[bdesert] 10:54:27 flora_expansion_shape PASS 
+[bdesert] 10:54:27 biome_weather_table FAIL AttributeError: 'str' object has no attribute 'get'
+[bdesert] 10:54:27 biome_carrier_condition UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:54:27 biome_roster_and_density UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:54:27 charge_comps_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:54:27 rack_needs_no_power UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:54:27 ablation_and_murrek_wired UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:54:47 defaults PASS 
+[bdesert] 10:54:51 burnerHaloEnabled_roundtrip PASS 
+[bdesert] 10:54:54 crackCueEnabled_roundtrip PASS 
+[bdesert] 10:54:58 murrekReseedEnabled_roundtrip PASS 
+[bdesert] 10:55:02 ablationSalvageEnabled_roundtrip PASS 
+[bdesert] 10:55:05 ablationPaceFactor_roundtrip PASS 
+[bdesert] 10:55:09 vhaulkRoadDaysFactor_roundtrip PASS 
+[bdesert] 10:55:13 vhaulkStayDaysFactor_roundtrip PASS 
+[bdesert-note] natives spawned: {"asked": 10, "bad": []}
+[bdesert] 10:55:17 natives_spawn_charged PASS 
+[bdesert] 10:55:17 vrisk_can_fly PASS 
+[bdesert-note] flora set: {"asked": 8, "lost": []}
+[bdesert] 10:55:21 flora_spawns PASS 
+[bdesert-note] chain ON: plants left of 5 after the first is cut down: 0
+[bdesert] 10:55:29 plant_death_chains PASS 
+[bdesert-note] chain OFF: plants left of 5 after the first is cut down: 4
+[bdesert] 10:55:36 plant_death_toggle_off_no_chain PASS 
+[bdesert-note] master OFF: plants left of 5 after the first is cut down: 4
+[bdesert] 10:55:43 plant_death_master_off_no_chain PASS 
+[bdesert-note] warm arms: {"amb": -27.2673378, "low": -30.27, "high": -19.27}
+[bdesert] 10:55:45 warm_site_ready PASS 
+[bdesert] 10:56:49 warm_threshold_above_keeps_plants FAIL ExpectationFailed: clock stalled at 1917214 during a 4300-tick wait (a modal dialog pausing the game?)
+[bdesert] 10:56:49 warm_toggle_off_keeps_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:56:49 warm_detonates_plants UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:56:52 dorrak_site_ready PASS 
+[bdesert-note] hump hit, native detonations ON: {"hump_missing": true, "dead": true}
+[bdesert] 10:56:57 hump_hit_kills PASS 
+[bdesert-note] leg hit control: {"leg_missing": true, "dead": false}
+[bdesert] 10:57:02 leg_hit_does_not_kill PASS 
+[bdesert] 10:57:07 hump_toggle_off_ordinary_part UNMEASURED UNMEASURED: dorrak(hump,off) vanished from list_pawns after a hit
+[bdesert] 10:57:16 krissek_death_blasts UNMEASURED surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__kris
+[bdesert] 10:57:16 krissek_off_quiet UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.loc
+[bdesert] 10:57:25 heat_kill_detonates UNMEASURED surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__fire_on_map__t1917784__001.json]
+[bdesert] 10:57:25 kinetic_kill_does_not UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__f
+[bdesert] 10:57:25 emp_on_living_detonates UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__f
+[bdesert] 10:57:25 heat_gate_off_any_death_detonates UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__f
+[bdesert] 10:57:25 emp_trap_off_is_ordinary_damage UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__f
+[bdesert] 10:57:25 native_toggle_off_no_blast UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__f
+[bdesert] 10:57:25 master_off_no_blast UNMEASURED a surprise ended this chain earlier: surprise: fire_on_map: 2 fire(s) on the map outside the expected set [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T105425\BlueDesert__vhaulk_gates__f
+[bdesert] 10:57:28 haze_site_ready UNMEASURED UNMEASURED: the sealed room is not roofed (get_roof_batch {'success': True, 'message': 'Read 25 cell(s), 1 distinct roof(s).', 'ops': 'RoofConstructed:127,35,5,1;RoofConstructed:127,36,5,1;RoofConstructed:127,37,5,1;RoofConstructed:127,38,5,1;RoofConstructed:127,39,5,1', 'cellsRead': 25, 'cellsOutOf
+[bdesert] 10:57:28 haze_film_on_outdoor_colonist UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:57:28 haze_spares_natives UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:57:28 haze_toggle_off_new_arrival_clean UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:58:02 foreign_grazer_takes_butane_gut FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bdesert] 10:58:02 native_grazer_exempt UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:58:02 butane_toggle_off_clean UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:58:43 wax_toggle_off_ruined_but_inert UNMEASURED surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Charlzie gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Schmitt gained 1 new hediff(
+[bdesert] 10:58:43 wax_ruined_wicks_and_goes UNMEASURED a surprise ended this chain earlier: surprise: colonist_injured_unexpectedly: colonist Davis Jr gained 1 new hediff(s) (RM_SheenCoating); cause_hint=unknown; colonist_injured_unexpectedly: colonist Charlzie gained 1 new hediff(s) (RM_She
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "New Arrivals", "styleDefAfter": null, "ticksGame": 1920000, "operation": {"OperationId": "op_71be832f92df4208b7f9781050bd5357", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-03T17:58:47.9185191+00:00", "CompletedAtUtc": "2026-10-03T17:58:47.9566278+00:00", "DurationMs": 38, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert-note] set_thing_props faction: {"success": true, "thing": "Blue-ice cold rack", "changed": ["faction"], "skipped": [], "qualityAfter": null, "hitPointsAfter": 120, "maxHitPoints": 120, "factionAfter": "New Arrivals", "styleDefAfter": null, "ticksGame": 1920000, "operation": {"OperationId": "op_86f4339110f542c6acc38f35a94f0dcb", "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-thing-props", "Status": 2, "Success": true, "StartedAtUtc": "2026-10-03T17:58:47.9762174+00:00", "CompletedAtUtc": "2026-10-03T17:58:47.9982288+00:00", "DurationMs": 22, "Result": null, "HasResult": true, "ResultWasTruncated": false, "Warnings": [], "Error": null, "Metadata": {}}}
+[bdesert] 10:59:18 rack_site_ready FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bdesert] 10:59:18 rack_cools_loaded_room_only UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:59:18 rack_spends_ice_and_drips UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 10:59:18 rack_toggle_off_leaves_room_alone UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert-note] quarry, roll OFF: {"mined": 18, "ice": 144, "debris": 0}
+[bdesert] 11:06:27 thaw_toggle_off_mines_cleanly FAIL ExpectationFailed: 18 blocks mined but only 144 blue ice came out (15 per block expected)
+[bdesert] 11:06:27 thaw_roll_finds_debris UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 11:07:00 road_laid_and_flora_cropped FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bdesert] 11:07:00 road_toggle_off_walks_clean UNMEASURED upstream failed -- this chain's state is meaningless
+[bdesert] 11:07:03 ruled_weathers_toggle_applies FAIL AttributeError: 'str' object has no attribute 'get'
+[bdesert-note] dry-run canFireNow on a RM_TheRot map: {"fires_here": []}
+[bdesert] 11:07:05 ablation_only_in_blue_desert PASS 
+[bdesert] 11:08:11 vhaulk_walks_off_with_a_letter FAIL ExpectationFailed: clock stalled at 1923200 during a 6000-tick wait (a modal dialog pausing the game?)
+[bdesert-note] log scan: {"bluedesert errors": 0, "xref naming our defs": 0, "RimMandrake.BlueDesert errors": 0, "config errors naming our defs": 0, "bufferLines": 1000}
+[bdesert] 11:08:13 log_clean PASS 
+[bacta] 11:09:21 defs_resolve PASS 
+[bacta] 11:09:21 tank_def_wiring PASS 
+[bacta] 11:09:21 fluid_and_items_trade PASS 
+[bacta] 11:09:21 trader_stock_patch_landed FAIL ExpectationFailed: Base_Outlander_Standard stockGenerators tail [(0, 0), (0, 0)] is not the patch's rows [(0, 6), (0, 3)]: the patch matched nothing, or another mod rewrote the list
+[bacta] 11:09:21 doctor_recipes_patch_landed UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:09:21 settings_ship_defaults UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:09:21 no_bacta_errors_in_log UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:09:47 site_ready_heals PASS 
+[bacta] 11:10:17 tank_refuels_via_vanilla_job FAIL RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound
+[bacta] 11:10:17 enters_and_reports_off UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:10:17 heals_fresh_wound_at_tuned_rate UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:10:17 drains_bacta_while_healing UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:10:17 never_regrows_never_touches_brain UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:10:17 ejects_when_nothing_left UNMEASURED upstream failed -- this chain's state is meaningless
+[bacta] 11:10:17 no_bacta_errors_after_ticking UNMEASURED upstream failed -- this chain's state is meaningless
+== situational_rerun
+  -- Cauldron
+     !! Cauldron: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 25, 'FAIL': 3, 'UNMEASURED': 26} surprises=3 serious=['colonist_damaged:SURPRISE', 'colonist_downed:SURPRISE', 'colonist_injured_unexpectedly:SURPRISE', 'fire_on_map:SURPRISE']
+  -- LeaningScrub
+     !! LeaningScrub: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'FAIL': 5, 'UNMEASURED': 19, 'PASS': 22} surprises=2 serious=['colonist_injured_unexpectedly:SURPRISE']
+  -- BlueDesert
+     !! BlueDesert: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 22, 'FAIL': 8, 'UNMEASURED': 30} surprises=3 serious=['colonist_injured_unexpectedly:SURPRISE', 'fire_on_map:SURPRISE']
+  -- AcousticScanner
+     !! AcousticScanner: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 17, 'UNMEASURED': 1} surprises=0 serious=[]
+  -- Bacta
+  -- BrainWorms
+     !! BrainWorms: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 6, 'FAIL': 5, 'UNMEASURED': 9} surprises=0 serious=[]
+  -- AssailantSalvage
+     !! AssailantSalvage: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 4, 'FAIL': 3, 'UNMEASURED': 5} surprises=0 serious=[]
+  FAIL no suite raised out of run_suite  -- ['Bacta: RimBridgeError: timed out after 30.0s waiting for the bridge; RimWorld may be in a long event or the call may be frame-bound']
+  FAIL no component UNMEASURED by BudgetExceeded (Antiquities chunked)  -- ['smother/smother_off_holds_claims', 'smother/smother_matures_to_dead_wood']
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL situational_rerun -- 2/4 checks ; failed: no suite raised out of run_suite, no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl

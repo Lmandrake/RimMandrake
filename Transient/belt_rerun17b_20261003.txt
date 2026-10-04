@@ -1,0 +1,70 @@
+[gt] 18:32:45 shipped_defs_resolve PASS 
+[gt] 18:32:45 control_absent_def_reads_absent PASS 
+[gt] 18:32:55 mireEnabled_round_trips PASS 
+[gt] 18:33:05 buriedCacheEnabled_round_trips PASS 
+[gt] 18:33:15 mireSeverityMultiplier_round_trips PASS 
+[gt] 18:33:24 plantDensity_round_trips PASS 
+[gt] 18:33:35 movementDifficulty_round_trips PASS 
+[gt] 18:33:44 crossBiomeEnabled_round_trips PASS 
+[gt] 18:33:54 crossBiomeEverywhere_round_trips PASS 
+[gt] 18:34:04 crossBiomeBiomeList_round_trips PASS 
+[gt] 18:34:14 crossBiomeCoverage_round_trips PASS 
+[gt] 18:34:24 frenzyEnabled_round_trips PASS 
+[gt] 18:34:33 frenzySeverityMultiplier_round_trips PASS 
+[gt] 18:34:45 feverMarkEnabled_round_trips PASS 
+[gt] 18:34:55 feverMarkGrantsImmunity_round_trips PASS 
+[gt] 18:35:05 stenchGrenadeEnabled_round_trips PASS 
+[gt] 18:35:15 stenchGrenadeRadiusMultiplier_round_trips PASS 
+[gt] 18:35:25 canopySwarmEnabled_round_trips PASS 
+[gt] 18:35:35 vurrakAmbushEnabled_round_trips PASS 
+[gt] 18:35:44 vurrakTriggerBodySize_round_trips PASS 
+[gt] 18:35:54 vurrakFirstRevealPause_round_trips PASS 
+[gt] 18:36:08 site_ready_mire PASS 
+[gt] 18:36:08 mire_applies_on_churnmud PASS 
+[gt] 18:36:08 mire_skips_concrete_and_sealed_floor PASS 
+[gt] 18:36:18 mire_master_switch_off UNMEASURED surprise: colonist_damaged: colonist Human225 took 1 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T183237\Greentide__mire__colonist_damaged__t4518__001.json]
+[gt] 18:36:23 stuck_threshold_and_free_mired_job UNMEASURED UNMEASURED: the stuck threshold is ~0.85 severity at 0.008 per 60 ticks with a 15%% struggle roll (a ~6000+ tick random climb) and RM_FreeMired needs a second pawn's job; a seeded hediff plus an ordered job is owed to a live round
+[gt] 18:36:30 site_ready_swallow PASS 
+[gt] 18:36:45 swallow_buries_on_churnmud_only UNMEASURED harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 2811 of cap 1086
+[gt] 18:36:45 buried_cache_switch_off_keeps_items UNMEASURED a surprise ended this chain earlier: harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 2811 of cap 1086
+[gt] 18:36:45 dig_out_job_restores_the_buried_item UNMEASURED a surprise ended this chain earlier: harness: BudgetExceeded: tick budget exceeded in scope 'component': spent 2811 of cap 1086
+[gt] 18:36:51 site_ready_dose PASS 
+[gt] 18:37:04 dose_gives_frenzy UNMEASURED surprise: colonist_damaged: colonist Human231 took 6 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\surprises\20261003T183237\Greentide__frenzy_dose__colonist_damaged__t7929__001.json]
+[gt] 18:37:04 frenzy_master_switch_off_gives_none UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human231 took 6 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\sur
+[gt] 18:37:04 fever_mark_gates_the_dose UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human231 took 6 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\sur
+[gt] 18:37:04 fever_mark_earned_by_surviving_the_coma UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human231 took 6 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\sur
+[gt] 18:37:04 ambient_frenzy_incident UNMEASURED a surprise ended this chain earlier: surprise: colonist_damaged: colonist Human231 took 6 damage event(s): Blunt by RSW_DW_Race_OuterRim_ImperialLaborDroid [evidence: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\sur
+[gt] 18:37:11 biome_carries_the_settings_density PASS 
+[gt] vurrak colonist: DISGUISED=True -> STRUCK Human61611
+[gt] 18:37:17 vurrak_bites_a_person PASS 
+[gt] vurrak hare: DISGUISED=True -> REVEALED Hare61617
+[gt] 18:37:17 vurrak_hare_only_reveals PASS 
+[gt] 18:37:21 vurrak_toggle_off_refused PASS 
+[gt] 18:37:28 churnmud_seeded_once_on_a_fresh_non_greentide_map UNMEASURED UNMEASURED: WORLDGEN-AFFECTING: RM_MapComponent_CrossBiomeChurnmud runs once on a freshly generated map; needs a new map generated with crossBiomeEnabled on, which the harness cannot do on a held map
+[gt] 18:37:33 stench_smoke_radius_follows_multiplier UNMEASURED UNMEASURED: needs a thrown grenade and an explosion-radius read; no bridge reader for the smoke cloud
+[gt] 18:37:39 krannock_spawn_gate UNMEASURED UNMEASURED: canopySwarmEnabled is a deliberate no-op until the Krannock is rostered at the biome's own review sitting (About.xml)
+[gt] 18:38:00 all_settings_at_shipped_defaults PASS 
+== situational_rerun
+     bland_world: tiles exported 119904 candidates 1719
+  FAIL bland world established (tile 630, map 2)  -- ['ruins present: 3', "colonist Human61431 carries ['Scratch']"]
+  -- LanternDeeps
+     !! LanternDeeps: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 21, 'FAIL': 8, 'UNMEASURED': 11} surprises=0 serious=[]
+  -- NightsideIce
+     !! NightsideIce: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 8, 'FAIL': 5, 'UNMEASURED': 16} surprises=0 serious=[]
+  -- Miasma
+     !! Miasma: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 13, 'UNMEASURED': 10, 'FAIL': 2} surprises=0 serious=[]
+  -- Abyss
+     !! Abyss: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 17} surprises=0 serious=[]
+  -- Greentide
+     !! Greentide: RECORDING FAILED (status NOT updated): PermissionError: [Errno 13] Permission denied
+     refused='' verdicts={'PASS': 31, 'UNMEASURED': 13} surprises=3 serious=['colonist_damaged:SURPRISE', 'colonist_downed:SURPRISE', 'raid_arrived:SURPRISE', 'wildlife_near_colonist:SURPRISE']
+  ok   no suite raised out of run_suite
+  FAIL no component UNMEASURED by BudgetExceeded (Antiquities chunked)  -- ['swallow/swallow_buries_on_churnmud_only', 'swallow/buried_cache_switch_off_keeps_items', 'swallow/dig_out_job_restores_the_buried_item']
+  ok   every chain established a bland map
+  ok   every recorded surprise has its evidence on disk
+MEASURED FAIL situational_rerun -- 3/5 checks ; failed: bland world established (tile 630, map 2), no component UNMEASURED by BudgetExceeded (Antiquities chunked)
+  results: \\wsl.localhost\Ubuntu\home\mandrake\rm\foundry\Transient\modcheck\live_queue_results.jsonl
