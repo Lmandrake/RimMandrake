@@ -28,17 +28,18 @@ namespace RimMandrake.TheForge
     //
     // Only the map the player is looking at sounds; sustainers end the moment
     // the camera leaves the map, the toggle goes off or the cycle stops.
-    // Every interval below is TUNED: chosen to read as "occasional" against
-    // a 60-tick cycle step, not taken from any ruling.
+    // Every interval below is PROVISIONAL (owner ruling 2026-10-03: first
+    // guesses ship, tuned live later), chosen to read as "occasional" against
+    // a 60-tick cycle step.
     // ════════════════════════════════════════════════════════════════════
     public class RM_ForgeVoices
     {
-        // TUNED: one vent cough every ~4 s of game time while the gas comes.
+        // PROVISIONAL: one vent cough every ~4 s of game time while the gas comes.
         private const int CoughIntervalTicks = 240;
-        // TUNED: crust ticks every ~1.5 s, a glass note about one tick in five.
+        // PROVISIONAL: crust ticks every ~1.5 s, a glass note about one tick in five.
         private const int BasaltTickIntervalTicks = 90;
         private const float GlassSingChance = 0.2f;
-        // TUNED: the cracking pulse every ~6 s, like a slow heartbeat.
+        // PROVISIONAL: the cracking pulse every ~6 s, like a slow heartbeat.
         private const int CrackPulseIntervalTicks = 360;
 
         private Sustainer sustainer;

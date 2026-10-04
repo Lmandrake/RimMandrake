@@ -53,6 +53,8 @@
       </li>
       <!-- FORGE_CYCLE_MECHANICS_1: every number INVENTED (the item rules the
            order and content of the phases, not their lengths). -->
+      <!-- FORGE_CYCLE_MECHANICS_1: every phase length, count, radius, chance and burn below is PROVISIONAL
+           (owner ruling 2026-10-03: first-guess numbers ship, tuned live later). -->
       <li Class="RimMandrake.TheForge.RM_ForgeCycleExtension">
         <stillHours>48~72</stillHours>
         <gasWashHours>2~3</gasWashHours>

@@ -71,6 +71,18 @@ namespace RimMandrake.TheForge
         private int nextFloodTick = -1;
         private bool gardensSeeded;
 
+        // FORGE_CYCLE_MECHANICS_1, the dhuvvox mass eruption ("erupt by the hundred" for the rain window, then
+        // reseal). PROVISIONAL numbers (owner ruling 2026-10-03, tuned live later): SwarmSize extra dhuvvox per
+        // rain, placed within SwarmSpread cells of a resident dhuvvox (else anywhere unroofed). At the end of the
+        // rain every surviving swarm member burrows back: an ash scar (Filth_Ash) where it went down and ONE
+        // counted message, so nothing vanishes without a sign. Toggle: dhuvvoxSwarmEnabled.
+        public const int SwarmSize = 60;           // PROVISIONAL
+        public const float SwarmSpread = 12f;      // PROVISIONAL
+        private List<Pawn> swarm = new List<Pawn>();
+        public int StatSwarmErupted;
+        public int StatSwarmResealed;
+        public int SwarmLive => swarm.Count;
+
         // Every cell currently carrying our crust (basalt, pumice or crack).
         private HashSet<IntVec3> frozenCells = new HashSet<IntVec3>();
         private List<Thing> gardens = new List<Thing>();
@@ -433,9 +445,11 @@ namespace RimMandrake.TheForge
                     }
                     floodsLeft = Mathf.Max(0, ext.floodReleases.RandomInRange);
                     nextFloodTick = now + Mathf.RoundToInt(0.5f * TicksPerHour);
+                    EruptSwarm(map);
                     break;
 
                 case ForgeCyclePhase.Freeze:
+                    ResealSwarm(map);
                     if (frozenCells.Count == 0 && RM_TheForgeSettings.Active(RM_TheForgeSettings.lavaFreezeEnabled)
                         && CountFreezable(map, ext) > 0)
                     {
@@ -933,6 +947,75 @@ namespace RimMandrake.TheForge
             StatMeltDestroyed++;
         }
 
+        /// <summary>Spawns the rain's dhuvvox swarm. Public for the proof/dev action. Returns the number spawned.</summary>
+        public int EruptSwarm(Map map)
+        {
+            if (map == null || !RM_TheForgeSettings.Active(RM_TheForgeSettings.dhuvvoxSwarmEnabled))
+            {
+                return 0;
+            }
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail("RM_Dhuvvox");
+            if (kind == null)
+            {
+                return 0;
+            }
+            var anchors = new List<IntVec3>();
+            foreach (Pawn p in map.mapPawns.AllPawnsSpawned)
+            {
+                if (p.def == kind.race && p.Faction == null) anchors.Add(p.Position);
+            }
+            int n = 0;
+            for (int i = 0; i < SwarmSize; i++)
+            {
+                IntVec3 cell;
+                bool found = anchors.Count > 0
+                    ? CellFinder.TryFindRandomCellNear(anchors.RandomElement(), map, Mathf.RoundToInt(SwarmSpread),
+                        c => c.Standable(map) && !c.Roofed(map) && !c.Fogged(map), out cell)
+                    : CellFinderLoose.TryGetRandomCellWith(c => c.Standable(map) && !c.Roofed(map) && !c.Fogged(map), map, 300, out cell);
+                if (!found) continue;
+                Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null, PawnGenerationContext.NonPlayer,
+                    forceGenerateNewPawn: true, canGeneratePawnRelations: false));
+                GenSpawn.Spawn(p, cell, map);
+                swarm.Add(p);
+                n++;
+            }
+            StatSwarmErupted += n;
+            if (n > 0)
+            {
+                Messages.Message("The rain has woken the dhuvvox: " + n + " erupt from the ash to strip the wet rock.",
+                    new TargetInfo(swarm[swarm.Count - 1].Position, map), MessageTypeDefOf.NeutralEvent);
+            }
+            return n;
+        }
+
+        /// <summary>Ends the swarm: each surviving member burrows back into the ash, leaving an ash scar; one counted
+        /// message. Dead or tamed members are simply released from the list. Returns the number resealed.</summary>
+        public int ResealSwarm(Map map)
+        {
+            int n = 0;
+            IntVec3 last = IntVec3.Invalid;
+            ThingDef ash = DefDatabase<ThingDef>.GetNamedSilentFail("Filth_Ash");
+            foreach (Pawn p in swarm)
+            {
+                if (p == null || p.Dead || p.Destroyed || !p.Spawned || p.Map != map || p.Faction != null)
+                {
+                    continue;
+                }
+                last = p.Position;
+                if (ash != null) FilthMaker.TryMakeFilth(p.Position, map, ash);
+                p.Destroy(DestroyMode.Vanish);
+                n++;
+            }
+            swarm.Clear();
+            StatSwarmResealed += n;
+            if (n > 0 && map != null)
+            {
+                Messages.Message("The rain is over and the dhuvvox swarm has burrowed back into the ash (" + n
+                    + "). Only the scars where they went down are left.", new TargetInfo(last, map), MessageTypeDefOf.NeutralEvent);
+            }
+            return n;
+        }
+
         public string DebugStateReport()
         {
             return "phase=" + phase + " endsIn=" + (phaseEndTick - Find.TickManager.TicksGame)
@@ -941,7 +1024,8 @@ namespace RimMandrake.TheForge
                 + " cellsFrozen=" + StatCellsFrozen + " cellsMelted=" + StatCellsMelted
                 + " gardensSpawned=" + StatGardensSpawned + " gardensDrifted=" + StatGardensDrifted
                 + " meltDestroyed=" + StatMeltDestroyed + " meltPawnsBurned=" + StatMeltPawnsBurned
-                + " meltRelocated=" + StatMeltRelocated;
+                + " meltRelocated=" + StatMeltRelocated
+                + " swarmLive=" + swarm.Count + " swarmErupted=" + StatSwarmErupted + " swarmResealed=" + StatSwarmResealed;
         }
 
         public override void ExposeData()
@@ -958,6 +1042,9 @@ namespace RimMandrake.TheForge
             Scribe_Values.Look(ref gardensSeeded, "forgeGardensSeeded", false);
             Scribe_Collections.Look(ref frozenCells, "forgeFrozenCells", LookMode.Value);
             Scribe_Collections.Look(ref gardens, "forgeGardens", LookMode.Reference);
+            Scribe_Collections.Look(ref swarm, "forgeDhuvvoxSwarm", LookMode.Reference);
+            Scribe_Values.Look(ref StatSwarmErupted, "statSwarmErupted", 0);
+            Scribe_Values.Look(ref StatSwarmResealed, "statSwarmResealed", 0);
             Scribe_Values.Look(ref StatCycles, "statCycles", 0);
             Scribe_Values.Look(ref StatGasIgnitions, "statGasIgnitions", 0);
             Scribe_Values.Look(ref StatFloodReleases, "statFloodReleases", 0);
@@ -972,6 +1059,8 @@ namespace RimMandrake.TheForge
             {
                 if (frozenCells == null) frozenCells = new HashSet<IntVec3>();
                 if (gardens == null) gardens = new List<Thing>();
+                if (swarm == null) swarm = new List<Pawn>();
+                swarm.RemoveAll(x => x == null);
                 gardens.RemoveAll(g => g == null);
             }
         }

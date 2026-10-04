@@ -54,3 +54,17 @@ degrades gracefully.
 - Nine-mark re-score at close: the Forge's remaining deliberate gaps are mark 6
   (gravship touch — B struck) and mark 2 unless the growth forms carry it;
   record both as owner-accepted misses, not silent drops.
+
+## round 36 (2026-10-03): numbers, audio, the dhuvvox swarm
+
+- **Audio:** already shipped with vanilla clips by `FORGE_GPT_ENRICHMENT_1` (`RM_ForgeVoices.xml`: still throb,
+  vent cough, rain hiss, basalt tick, glass sing, crack pulse, phase stinger). Owner 2026-10-03: vanilla ships as
+  final. Nothing audio-owed remains.
+- **PROVISIONAL numbers:** every value in `RM_ForgePulse.xml`'s `RM_ForgeCycleExtension` (phase hours, wave and
+  flood counts, radii, chances, melt burn) and every voice interval in `RM_ForgeVoices.cs`.
+- **Dhuvvox mass eruption built:** entering the Rain spawns **60 (PROVISIONAL)** extra wild dhuvvox within
+  **12 cells (PROVISIONAL)** of resident ones; entering the Freeze burrows every survivor back with a
+  `Filth_Ash` scar and one counted message (no silent vanish). Toggle `dhuvvoxSwarmEnabled`. Report tokens
+  `swarmLive/swarmErupted/swarmResealed`; suite components `rain_erupts_dhuvvox_swarm` and
+  `rain_end_reseals_swarm_with_signs` (mock breaks red).
+- Still owed: live re-run of the cycle with the swarm; dhokkur path memory; crust art.
