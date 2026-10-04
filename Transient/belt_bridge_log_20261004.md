@@ -1,0 +1,11 @@
+# Belt bridge log 2026-10-04
+- 01:28 bridge take attempted
+- 01:28 bridge taken; game UP
+- 01:28 setbg done; starting FeverWood rerun
+- 01:38 FeverWood run in progress (harness-backgrounded)
+- 01:47 waiting FeverWood
+- 01:47 FeverWood: Cut-by-nobody sidecars written, reading stacks
+- 01:48 ORIGIN FOUND: Cut by nobody = Gas_Mycotic.Tick -> Thing.TakeDamage (instigator-less Cut 1.0/~120t); lure_raid sidecar next
+- 01:49 wait
+- 01:49 FeverWood recorded: 87 PASS/13 UNMEAS/1 FAIL(harvest Seepril/GiantLeaf yields nothing). Cut origin = Gas_Mycotic.Tick (mycotic gas, no src def in repo -> donor). kurreth faction fix PASS (hidden_raider_factions_have_a_name_source), lure->theft lordjob PASS
+- 01:50 INSTRUMENT DEFECT: run_identity.mod_fingerprint uses deploy_custom_mods.mod_dirs() which EXCLUDES biome mods folded into Biomes.compose.json -> FeverWood deploy state 'unknown: no source dir' -> all 87 PASS stay unproven. Fix: fingerprint the composed target (RimMandrake.Biomes) for folded mods. NEXT for next seat.

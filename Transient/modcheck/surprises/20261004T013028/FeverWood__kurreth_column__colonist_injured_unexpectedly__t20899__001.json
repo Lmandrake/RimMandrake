@@ -1,0 +1,615 @@
+{
+ "name": "FeverWood__kurreth_column__colonist_injured_unexpectedly__t20899__001",
+ "when_utc": "2026-10-04T08:49:05Z",
+ "hits": [
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Merandil gained 1 new hediff(s) (BloodLoss); cause_hint=unknown",
+   "evidence": {
+    "id": "Human73229",
+    "name": "Merandil",
+    "new_hediffs": [
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0324
+     }
+    ],
+    "cause_hint": "unknown",
+    "causes": [
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    95,
+    103
+   ],
+   "fingerprint": "colonist_injured:Human73229:BloodLoss@None"
+  },
+  {
+   "detector": "hostile_pawns",
+   "severity": "SURPRISE",
+   "summary": "6 hostile-flagged pawn(s) outside the expected set (hostile != confirmed threat)",
+   "evidence": {
+    "pawns": [
+     {
+      "id": "RM_Kurreth123231",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 83,
+      "z": 101
+     },
+     {
+      "id": "RM_Kurreth123232",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 88,
+      "z": 100
+     },
+     {
+      "id": "RM_Kurreth123233",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 94,
+      "z": 102
+     },
+     {
+      "id": "RM_Kurreth123234",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 87,
+      "z": 103
+     },
+     {
+      "id": "RM_Kurreth123235",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 91,
+      "z": 102
+     },
+     {
+      "id": "RM_Kurreth123236",
+      "kindDef": "RM_Kurreth",
+      "faction": "RM_FactionDef_KurrethSwarm",
+      "x": 90,
+      "z": 103
+     }
+    ],
+    "threat_confirmed": false
+   },
+   "suggest": [
+    "kill_hostiles"
+   ],
+   "focus": [
+    83,
+    101
+   ],
+   "fingerprint": "hostile_pawns:RM_Kurreth123231,RM_Kurreth123232,RM_Kurreth123233,RM_Kurreth123234,RM_Kurreth123235,RM_Kurreth123236"
+  }
+ ],
+ "snapshot": {
+  "tick": 20899,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human73229",
+    "name": "Merandil",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 95,
+    "z": 103,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_TraumaticPassion",
+      "label": "traumatic passion",
+      "part": null,
+      "severity": 0.1
+     },
+     {
+      "def": "AS_RainyDayPassion",
+      "label": "rainy day passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off (fresh)",
+      "part": "Leg",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Femur",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Shattered",
+      "part": "Tibia",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Foot",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "MissingBodyPart",
+      "label": "Bitten off",
+      "part": "Toe",
+      "severity": 0.5
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.0324
+     }
+    ],
+    "bleedRate": 3.6,
+    "painTotal": 0.375,
+    "census": true,
+    "job": "Wait_Wander",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth123231",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 83,
+    "z": 101,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth123232",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 88,
+    "z": 100,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "RM_KurrethStun",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth123233",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 94,
+    "z": 102,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth123234",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 87,
+    "z": 103,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth123235",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 91,
+    "z": 102,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "AttackMelee",
+    "isPredatorHunting": false,
+    "preyId": null
+   },
+   {
+    "id": "RM_Kurreth123236",
+    "name": "Kurreth",
+    "kindDef": "RM_Kurreth",
+    "def": "RM_Kurreth",
+    "faction": "RM_FactionDef_KurrethSwarm",
+    "isPlayer": false,
+    "hostile": true,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 90,
+    "z": 103,
+    "intelligence": "Animal",
+    "isMechanoid": false,
+    "isColonist": false,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [],
+    "bleedRate": 0.0,
+    "painTotal": 0.0,
+    "census": true,
+    "job": "Goto",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 15,
+   "adaptDays": -4.33333349,
+   "totalThreatPointsFactor": 0.74222225,
+   "ticksGame": 20899
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "Iris is already in conversation."
+  ],
+  [
+   "Message",
+   "Pepper is already in conversation."
+  ],
+  [
+   "Message",
+   "Pepper cannot engage in social activities due to their current duty."
+  ],
+  [
+   "Message",
+   "Phillips cannot converse with Pepper."
+  ],
+  [
+   "Message",
+   "Ashton cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Helene cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Giggles cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Mila cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Deva cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Merandil cannot currently do lovin'"
+  ],
+  [
+   "Message",
+   "Dwight cannot ever do lovin'"
+  ],
+  [
+   "Message",
+   "Jerbear and Vitaly are not mutually attracted"
+  ],
+  [
+   "Message",
+   "Jerbear and Dmitry cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Jerbear and Blue cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "Jerbear and Hugh cannot do lovin' due to low disposition"
+  ],
+  [
+   "Message",
+   "IntimacyGiver_Sex: No eligible partner found for Jerbear"
+  ],
+  [
+   "Message",
+   "Mila is not generally well."
+  ],
+  [
+   "Message",
+   "Deva is not generally well."
+  ],
+  [
+   "Message",
+   "Merandil is not generally well."
+  ],
+  [
+   "Message",
+   "Jerbear failed to get a job from any IntimacyGivers"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594955631,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 559,
+  "overhead_spent": 0,
+  "total_spent": 559,
+  "epoch": 0,
+  "last_seen_tick": 20899,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 8100,
+    "spent": 559
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 20340,
+    "tick_to": 20899,
+    "ticks": 559,
+    "requested": 600
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "kurreth_column",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T013028\\FeverWood__kurreth_column__colonist_injured_unexpectedly__t20899__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3265317,
+  "width": 1810,
+  "height": 1183,
+  "md5": "21f480e61741981625c18ab09f015fbe",
+  "why": ""
+ },
+ "notes": []
+}

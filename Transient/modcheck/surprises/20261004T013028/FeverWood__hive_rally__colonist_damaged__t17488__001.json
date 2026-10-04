@@ -1,0 +1,446 @@
+{
+ "name": "FeverWood__hive_rally__colonist_damaged__t17488__001",
+ "when_utc": "2026-10-04T08:47:32Z",
+ "hits": [
+  {
+   "detector": "colonist_damaged",
+   "severity": "SURPRISE",
+   "summary": "colonist Human335 took 2 damage event(s): Cut by nobody",
+   "evidence": {
+    "id": "Human335",
+    "events": [
+     {
+      "seq": 117,
+      "tick": 17257,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch16 < Gas_Mycotic.Tick < Thing.DoTick < TickList.Tick < DynamicMethodDefinition.Verse.TickManager.DoSingleTick_Patch6 < RimWorldTickStepper.AdvanceLocked < RimWorldTickStepper.AdvanceFromRootUpdate",
+      "hediffsAdded": [
+       "Cut"
+      ]
+     },
+     {
+      "seq": 120,
+      "tick": 17377,
+      "damageDef": "Cut",
+      "amount": 1.0,
+      "instigatorId": null,
+      "instigatorDef": null,
+      "weapon": null,
+      "origin": "DynamicMethodDefinition.Verse.Thing.TakeDamage_Patch16 < Gas_Mycotic.Tick < Thing.DoTick < TickList.Tick < DynamicMethodDefinition.Verse.TickManager.DoSingleTick_Patch6 < RimWorldTickStepper.AdvanceLocked < RimWorldTickStepper.AdvanceFromRootUpdate",
+      "hediffsAdded": [
+       "Crack",
+       "Cut"
+      ]
+     }
+    ],
+    "via": "damage_log"
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": null,
+   "fingerprint": "colonist_damaged:Human335:117,120"
+  },
+  {
+   "detector": "colonist_injured_unexpectedly",
+   "severity": "SURPRISE",
+   "summary": "colonist Deva gained 5 new hediff(s) (Bite,BloodLoss); cause_hint=animal",
+   "evidence": {
+    "id": "Human87552",
+    "name": "Deva",
+    "new_hediffs": [
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 11.82441
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Shoulder",
+      "severity": 10.7974577
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.009026349
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Leg",
+      "severity": 12.8341284
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Leg",
+      "severity": 11.6615314
+     }
+    ],
+    "cause_hint": "animal",
+    "causes": [
+     "animal",
+     "unknown"
+    ],
+    "unmapped_defs": [
+     "BloodLoss"
+    ]
+   },
+   "suggest": [
+    "restore_colonists"
+   ],
+   "focus": [
+    77,
+    120
+   ],
+   "fingerprint": "colonist_injured:Human87552:Bite@Arm,Bite@Leg,Bite@Leg,Bite@Shoulder,BloodLoss@None"
+  }
+ ],
+ "snapshot": {
+  "tick": 17488,
+  "epoch": 0,
+  "map_id": 1,
+  "pawns": [
+   {
+    "id": "Human87552",
+    "name": "Deva",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "faction": "PlayerColony",
+    "isPlayer": true,
+    "hostile": false,
+    "dead": false,
+    "downed": false,
+    "spawned": true,
+    "x": 77,
+    "z": 120,
+    "intelligence": "Humanlike",
+    "isMechanoid": false,
+    "isColonist": true,
+    "isSlave": null,
+    "isPrisoner": null,
+    "mentalState": null,
+    "hediffs": [
+     {
+      "def": "AS_CompetitivePassion",
+      "label": "competitive passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_NomadicPassion",
+      "label": "nomadic passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "AS_ForbiddenPassion",
+      "label": "forbidden passion",
+      "part": null,
+      "severity": 1.0
+     },
+     {
+      "def": "SEX_Penis",
+      "label": "phallus",
+      "part": "SEX_Reproduction",
+      "severity": 0.5
+     },
+     {
+      "def": "MCR_MoodChainWatcher",
+      "label": "mood chain watcher (mood chain watcher)",
+      "part": null,
+      "severity": 0.5
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Arm",
+      "severity": 11.82441
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Shoulder",
+      "severity": 10.7974577
+     },
+     {
+      "def": "BloodLoss",
+      "label": "blood loss (minor)",
+      "part": null,
+      "severity": 0.009026349
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Leg",
+      "severity": 12.8341284
+     },
+     {
+      "def": "Bite",
+      "label": "bite (kurreth mandibles)",
+      "part": "Leg",
+      "severity": 11.6615314
+     }
+    ],
+    "bleedRate": 2.82705164,
+    "painTotal": 0.5889691,
+    "census": true,
+    "job": "FleeAndCower",
+    "isPredatorHunting": false,
+    "preyId": null
+   }
+  ],
+  "letters": [
+   {
+    "defName": "NeutralEvent",
+    "label": "Ozzik the Shamed",
+    "arrivalTick": 0,
+    "mapId": null,
+    "fingerprint": [
+     "NeutralEvent",
+     "Ozzik the Shamed",
+     0
+    ]
+   }
+  ],
+  "story": {
+   "numRaidsEnemy": 0,
+   "numThreatBigs": 0,
+   "colonistsKilled": 0,
+   "colonistsLaunched": 0,
+   "greatestPopulation": 14,
+   "adaptDays": 0.0,
+   "totalThreatPointsFactor": 0.8,
+   "ticksGame": 17488
+  },
+  "fires": 0,
+  "conditions": [
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   },
+   {
+    "def": "WeatherController",
+    "scope": "map",
+    "affectsThisMap": true,
+    "permanent": true
+   }
+  ]
+ },
+ "log_tail": [
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Luxemburg: opinion=0, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Dmitry: opinion=-20, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval BB: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Eval Hugh: opinion=-45, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Merandil: Scan finished. NewlyAddedMemories=1"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Starting scan. Candidates=14, CurrentMood=0.49"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Merandil: opinion=-25, mood=0.68, happy=True, sad=False, thought=MCR_ADislikableGuyIsHappy, result=ADDED"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Giggles: opinion=0, mood=0.57, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Dwight: opinion=-10, mood=0.63, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Vitaly: opinion=-10, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Mila: opinion=0, mood=0.38, happy=False, sad=True, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Deva: opinion=0, mood=0.38, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Ashton: opinion=0, mood=0.41, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Genevieve: opinion=0, mood=0.42, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Jerbear: opinion=-10, mood=0.46, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Helene: opinion=0, mood=0.44, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Luxemburg: opinion=0, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval Dmitry: opinion=-10, mood=0.48, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Eval BB: opinion=0, mood=0.49, happy=False, sad=False, thought=null"
+  ],
+  [
+   "Message",
+   "[MCR][MoodChain] Hugh: Scan finished. NewlyAddedMemories=1"
+  ]
+ ],
+ "windows": [
+  {
+   "index": 0,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": -1593759361,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 1,
+   "type": "DubsMintMinimap.MainTabWindow_MiniMap",
+   "optionalTitle": null,
+   "layer": "GameUI",
+   "id": 2,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 2,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956341,
+   "isDebug": false,
+   "forcePause": false
+  },
+  {
+   "index": 3,
+   "type": "Verse.ImmediateWindow",
+   "optionalTitle": null,
+   "layer": "Super",
+   "id": -1594956278,
+   "isDebug": false,
+   "forcePause": false
+  }
+ ],
+ "ledger": {
+  "session_cap": 60000,
+  "component_spent": 400,
+  "overhead_spent": 0,
+  "total_spent": 400,
+  "epoch": 0,
+  "last_seen_tick": 17488,
+  "open_frames": [
+   {
+    "scope": "component",
+    "cap": 1100,
+    "spent": 400
+   }
+  ],
+  "entries": [
+   {
+    "kind": "charge",
+    "ledger": "component",
+    "reason": "step",
+    "scope": [
+     "component"
+    ],
+    "epoch": 0,
+    "tick_from": 17088,
+    "tick_to": 17488,
+    "ticks": 400,
+    "requested": 400
+   }
+  ]
+ },
+ "context": {
+  "mod": "FeverWood",
+  "chain": "hive_rally",
+  "policy": "abort"
+ },
+ "png": "\\\\wsl.localhost\\Ubuntu\\home\\mandrake\\rm\\foundry\\Transient\\modcheck\\surprises\\20261004T013028\\FeverWood__hive_rally__colonist_damaged__t17488__001.png",
+ "png_info": {
+  "ok": true,
+  "bytes": 3355651,
+  "width": 1810,
+  "height": 1183,
+  "md5": "22a99e1d41bdaad099ba1214a0c705d0",
+  "why": ""
+ },
+ "notes": []
+}
