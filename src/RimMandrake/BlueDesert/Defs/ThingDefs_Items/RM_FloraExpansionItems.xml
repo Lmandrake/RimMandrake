@@ -26,9 +26,10 @@
     <ingestible>
       <foodType>Plant</foodType>
       <preferability>RawBad</preferability>
-      <socialPropernessMatters>true</socialPropernessMatters>
       <optimalityOffsetHumanlikes>-100</optimalityOffsetHumanlikes>
     </ingestible>
+    <!-- ThingDef-level field (IngestibleProperties.ConfigErrors reads parent.socialPropernessMatters); inside <ingestible> it is silently ignored -->
+    <socialPropernessMatters>true</socialPropernessMatters>
     <thingCategories>
       <li>Manufactured</li>
     </thingCategories>

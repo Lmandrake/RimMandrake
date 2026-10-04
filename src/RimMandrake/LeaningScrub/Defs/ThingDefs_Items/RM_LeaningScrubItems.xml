@@ -38,10 +38,11 @@
     <ingestible>
       <foodType>Meat</foodType>
       <preferability>RawTasty</preferability>
-      <socialPropernessMatters>true</socialPropernessMatters>
       <tasteThought>AteRawFood</tasteThought>
       <optimalityOffsetHumanlikes>-30</optimalityOffsetHumanlikes>
     </ingestible>
+    <!-- ThingDef-level field (IngestibleProperties.ConfigErrors reads parent.socialPropernessMatters); inside <ingestible> it is silently ignored -->
+    <socialPropernessMatters>true</socialPropernessMatters>
     <comps>
       <li Class="CompProperties_Rottable">
         <daysToRotStart>6</daysToRotStart>
