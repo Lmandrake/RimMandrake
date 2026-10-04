@@ -421,11 +421,19 @@ def run_save_load(args):
     B.ticks(2)
     time.sleep(1.0)
     cb = B.ap("census")
+    # LEARNED live 2026-10-04: the census read right after load can be EMPTY (anchors register a little later); the
+    # first failure of this row was that race, not lost state -- poll up to 12 s and report how long it took.
+    t_poll = time.time()
+    while not cb.get("anchors") and time.time() - t_poll < 12.0:
+        B.ticks(10)
+        time.sleep(1.0)
+        cb = B.ap("census")
+    registered_after_s = round(time.time() - t_poll, 1)
     sa, sb = _aerial_set(ca), _aerial_set(cb)
     diff = sorted(k for k in sa if sa[k] != sb[k])
     V.row(rows, "M16_save_load_links", "PASS" if not diff and sa["links"] and sa["fallen"] else "FAIL", "MOD",
           {"differs": diff, "links": len(sa["links"]), "fallen": len(sa["fallen"]), "netGroups": sb["netGroups"], "loadSeconds": waited,
-           "netRepairsAfterLoad": cb.get("netRepairs")})
+           "netRepairsAfterLoad": cb.get("netRepairs"), "registeredAfterS": registered_after_s})
     res["before"], res["after"] = sa, sb
     res["screenshots"] = [B.shot("aerial_05_after_save_load", (AX0 - 1, AZ0 + 1, 42, 16))]
     return res
