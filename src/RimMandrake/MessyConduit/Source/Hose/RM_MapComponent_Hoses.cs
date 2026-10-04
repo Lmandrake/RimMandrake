@@ -21,7 +21,7 @@ namespace RimMandrake.MessyConduit.Hose
         private CordWorld world;
         private int worldTick = -1;
         private bool drawErrorLogged;
-        public static int Relays, LastLayMs;
+        public static int Relays, LastLayMs, Retracts;
 
         private sealed class Cached
         {
@@ -83,19 +83,13 @@ namespace RimMandrake.MessyConduit.Hose
         public string CheckInstall(CompHoseReel r, IntVec3 target)
         {
             if (!HoseSettings.enabled) return "hoses are switched off in Mod Settings";
-            IntVec3 p = r.parent.Position;
-            return HoseMath.CheckInstall(World(), new Cell(p.x, p.z), new Cell(target.x, target.z), r.MaxLength);
+            return HoseMath.CheckInstall(World(), r.Rect, new Cell(target.x, target.z), r.MaxLength);
         }
 
         // ------------------------------------------------------------------ lay
-        /// <summary>The hose leaves the reel 0.45 cell from its centre toward the free end.</summary>
-        public static V2 Start(CompHoseReel r)
-        {
-            IntVec3 p = r.parent.Position, f = r.far;
-            var a = new V2(p.x + 0.5, p.z + 0.5);
-            V2 d = new V2(f.x - p.x, f.z - p.z).Norm();
-            return a + d * 0.45;
-        }
+        /// <summary>Round 3 (2x2 reel): the hose leaves the reel at its CENTRE, under the sprite, so it shows emerging from
+        /// beneath the reel; the deployed art draws the hose running down off the drum into the base there.</summary>
+        public static V2 Start(CompHoseReel r) => r.Rect.Centre;
 
         public HoseLay EnsureLay(CompHoseReel r)
         {
@@ -108,6 +102,7 @@ namespace RimMandrake.MessyConduit.Hose
             LastLayMs = (int)sw.ElapsedMilliseconds;
             Relays++;
             r.lay = lay.Ok ? lay : null;
+            r.lastLayReason = lay.Ok ? null : (lay.Reason ?? "could not be laid");
             r.layKey = key;
             r.corridorHash = lay.Ok ? CorridorHash(w, lay) : 0;
             DropMeshes(r);
@@ -158,8 +153,15 @@ namespace RimMandrake.MessyConduit.Hose
                     r.history.Add(new KeyValuePair<int, HoseVis>(now, r.sm.State));
                     if (r.history.Count > 64) r.history.RemoveAt(0);
                 }
-                // an obstacle built or removed across the hose re-lays it (checked every 250 ticks)
-                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHash(World(), r.lay) != r.corridorHash)) r.layKey = null; // a failed lay (lay null) is retried at the same cadence
+                // an obstacle built or removed across the hose (checked every 250 ticks): HOSE_BLOCKED_REROUTE_RETRACT_1 --
+                // re-route if a route within the hose's length remains, else wind it back onto the reel with an alert.
+                // A failed lay is never left laid-but-invisible (no ghost hose).
+                if ((now + r.parent.thingIDNumber) % 250 == 0 && r.layKey != null && (r.lay == null || CorridorHash(World(), r.lay) != r.corridorHash))
+                {
+                    string why = HoseMath.CheckReplan(World(), r.Rect, new Cell(r.far.x, r.far.z), r.MaxLength, r.lay == null, r.lastLayReason);
+                    if (why != null) { r.Retract(why); Retracts++; continue; }
+                    r.layKey = null;
+                }
             }
         }
 
@@ -340,8 +342,9 @@ namespace RimMandrake.MessyConduit.Hose
         private void DrawFeed(CompHoseReel r, float y)
         {
             if (r.Port() == null) return;
-            IntVec3 p = r.parent.Position;
-            HosePortRule.Feed(new Cell(p.x, p.z), r.portSide, out V2 from, out V2 to, out V2 coupling);
+            // the reel cell touching the port (2x2 reel: one of its edge cells), so the feed crosses the shared edge
+            var touch = new Cell(r.portContact.X - r.portSide.X, r.portContact.Z - r.portSide.Z);
+            HosePortRule.Feed(touch, r.portSide, out V2 from, out V2 to, out V2 coupling);
             float vis = (float)HoseMath.VisibleWidth(0, HoseSettings.plumpAmount);
             Material m = HoseMaterials.Flat(1f);
             if (m == null) return;
@@ -528,5 +531,47 @@ namespace RimMandrake.MessyConduit.Hose
             }
             return __exception;
         }
+    }
+}
+
+namespace RimMandrake.MessyConduit.Hose
+{
+    /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1's visible alert: reels whose hose was wound back in automatically in the last
+    /// in-game day because no route within its length remained. Clears when the player lays the hose again.</summary>
+    public class Alert_HoseRetracted : Alert
+    {
+        private readonly List<Thing> culprits = new List<Thing>();
+
+        public Alert_HoseRetracted()
+        {
+            defaultLabel = "Hose reeled in";
+            defaultPriority = AlertPriority.Medium;
+        }
+
+        private List<Thing> Culprits()
+        {
+            culprits.Clear();
+            int now = Find.TickManager.TicksGame;
+            foreach (Map m in Find.Maps)
+            {
+                RM_MapComponent_Hoses c = m.GetComponent<RM_MapComponent_Hoses>();
+                if (c == null) continue;
+                foreach (CompHoseReel r in c.Reels)
+                    if (!r.laid && r.lastRetractReason != null && r.lastRetractTick >= 0 && now - r.lastRetractTick < GenDate.TicksPerDay)
+                        culprits.Add(r.parent);
+            }
+            return culprits;
+        }
+
+        public override TaggedString GetExplanation()
+        {
+            var sb = new System.Text.StringBuilder("An obstacle cut these hoses' routes and no other route fits within the hose's length, so they were wound back onto the reel:\n");
+            foreach (Thing t in culprits)
+                sb.Append("\n  - ").Append(t.LabelShort).Append(": ").Append(t.TryGetComp<CompHoseReel>()?.lastRetractReason);
+            sb.Append("\n\nClear the way or lay the hose to a nearer cell.");
+            return sb.ToString();
+        }
+
+        public override AlertReport GetReport() => HoseSettings.enabled ? AlertReport.CulpritsAre(Culprits()) : AlertReport.Inactive;
     }
 }

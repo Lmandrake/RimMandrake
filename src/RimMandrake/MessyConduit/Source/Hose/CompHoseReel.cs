@@ -47,8 +47,13 @@ namespace RimMandrake.MessyConduit.Hose
         public readonly List<KeyValuePair<int, HoseVis>> history = new List<KeyValuePair<int, HoseVis>>();
         /// <summary>Runtime only: the coupled pipe/tank (owner review round 2), refreshed by Port() at most every 60 ticks.</summary>
         public Thing port;
-        public Core.Cell portSide;
+        public Core.Cell portSide, portContact;
         public HosePortKind portKind = HosePortKind.None;
+        /// <summary>Runtime: why the planner could not lay this hose (null when it could).</summary>
+        public string lastLayReason;
+        /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1: the last automatic reel-in (saved, so the inspect line survives a load).</summary>
+        public string lastRetractReason;
+        public int lastRetractTick = -1;
         private int portTick = int.MinValue;
 
         /// <summary>The coupled neighbour (null = not connected), re-read at most every 60 ticks or when forced.</summary>
@@ -57,7 +62,7 @@ namespace RimMandrake.MessyConduit.Hose
             int now = Find.TickManager?.TicksGame ?? 0;
             if (!force && now - portTick < 60 && (port == null || port.Spawned)) return port;
             portTick = now;
-            port = HosePorts.Find(this, out portSide, out portKind);
+            port = HosePorts.Find(this, out portSide, out portContact, out portKind);
             return port;
         }
 
@@ -67,6 +72,16 @@ namespace RimMandrake.MessyConduit.Hose
 
         public ulong Seed => (ulong)(parent.thingIDNumber * 7919L + 17);
         public float MaxLength => Mathf.Clamp(HoseSettings.maxLength, 4f, 80f);
+
+        /// <summary>The reel's footprint (2x2 since round 3); the hose leaves it at the centre.</summary>
+        public HoseReelRect Rect
+        {
+            get
+            {
+                CellRect rc = parent.OccupiedRect();
+                return new HoseReelRect(rc.minX, rc.minZ, rc.Width, rc.Height);
+            }
+        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -98,6 +113,8 @@ namespace RimMandrake.MessyConduit.Hose
             Scribe_Values.Look(ref sm.LastTrue, "rmHoseLastTrue", int.MinValue / 2);
             Scribe_Values.Look(ref sm.PlumpSince, "rmHosePlumpSince");
             Scribe_Values.Look(ref sm.Transitions, "rmHoseTransitions");
+            Scribe_Values.Look(ref lastRetractReason, "rmHoseRetractWhy");
+            Scribe_Values.Look(ref lastRetractTick, "rmHoseRetractTick", -1);
         }
 
         /// <summary>Null when laid, else why not (also the gizmo's reject message).</summary>
@@ -113,6 +130,8 @@ namespace RimMandrake.MessyConduit.Hose
             if (why != null) return why;
             far = target;
             laid = true;
+            lastRetractReason = null;
+            lastLayReason = null;
             lay = null;
             layKey = null;
             sm.ResetFlat();
@@ -121,10 +140,25 @@ namespace RimMandrake.MessyConduit.Hose
             return null;
         }
 
+        /// <summary>HOSE_BLOCKED_REROUTE_RETRACT_1: no route within the hose's length remains, so the hose winds back
+        /// onto the reel (never left laid but invisible), with a message pointing at the reel and the Alert_HoseRetracted
+        /// entry. The free-end target is forgotten; the player lays it again.</summary>
+        public void Retract(string why)
+        {
+            ReelIn();
+            lastRetractReason = why;
+            lastRetractTick = Find.TickManager?.TicksGame ?? 0;
+            if (parent.Spawned && parent.Faction == Faction.OfPlayer)
+                Messages.Message("Hose reeled in: " + why + " (an obstacle cut its route and no other route fits the hose).",
+                    new LookTargets(parent), MessageTypeDefOf.NegativeEvent, false);
+        }
+
         public void ReelIn()
         {
             laid = false;
             lay = null;
+            layKey = null;
+            lastLayReason = null;
             sm.ResetFlat();
             history.Clear();
             RefreshLook();
@@ -184,15 +218,15 @@ namespace RimMandrake.MessyConduit.Hose
         public override void PostDrawExtraSelectionOverlays()
         {
             base.PostDrawExtraSelectionOverlays();
-            if (!laid && HoseSettings.enabled && MaxLength < GenRadial.MaxRadialPatternRadius)
-                GenDraw.DrawRadiusRing(parent.Position, MaxLength);
+            if (!laid && HoseSettings.enabled)
+                GenDraw.DrawCircleOutline(new Vector3((float)Rect.Centre.X, AltitudeLayer.MetaOverlays.AltitudeFor(), (float)Rect.Centre.Z), MaxLength);   // from the 2x2 reel's centre
         }
 
         public override string CompInspectStringExtra()
         {
             Thing p = parent.Spawned ? Port() : null;
             string conn = p != null ? "Connected to " + p.LabelShort + " (" + portKind.ToString().ToLower() + ")." : "Not connected: build it beside a pipe or tank.";
-            if (!laid) return conn + "\nHose reeled in.";
+            if (!laid) return conn + "\nHose reeled in." + (lastRetractReason != null ? " Retracted automatically: " + lastRetractReason + "." : "");
             return conn + "\nHose laid to " + far + " (" + sm.State.ToString().ToLower() + ").";
         }
     }

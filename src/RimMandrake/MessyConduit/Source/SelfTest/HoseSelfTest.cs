@@ -35,6 +35,8 @@ namespace RimMandrake.MessyConduit.SelfTest
             Signals();
             Ports();
             Maze();
+            Reel2x2();
+            Replan();
             Console.WriteLine($"hose: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -348,6 +350,62 @@ namespace RimMandrake.MessyConduit.SelfTest
             // 5. the A* expansion cap answers 'no route' rather than hanging (a cap of 10 cannot reach T)
             w.SetBlocked(b, BlockKind.None);
             C(CordPlanner.AStar(w, R, T, 10) == null && CordPlanner.AStar(w, R, T) != null, "maze 5: the A* expansion cap gives up cleanly");
+        }
+            // ------------------------------------------------------------------ round 3: the 2x2 reel (owner 2026-10-04)
+        private static void Reel2x2()
+        {
+            var reel = new HoseReelRect(10, 10, 2, 2);   // cells (10..11, 10..11), centre (11, 11)
+            C(Math.Abs(reel.Centre.X - 11) < 1e-9 && Math.Abs(reel.Centre.Z - 11) < 1e-9, "2x2: the hose leaves the reel at its centre (a cell corner)");
+            C(reel.Perimeter().Count == 8 && reel.Perimeter().All(c => !reel.Contains(c)), "2x2: 8 edge-sharing neighbour cells, none inside the reel");
+            // a 1-cell pipe beside the upper east cell, a 2x2 tank to the south, a pipe touching only a corner
+            var pipeE = new HosePortCandidate(12, 11, 1, 1, HosePortKind.Pipe);
+            var tankS = new HosePortCandidate(10, 8, 2, 2, HosePortKind.Tank);
+            var corner = new HosePortCandidate(12, 12, 1, 1, HosePortKind.Pipe);
+            int i = HosePortRule.Pick(reel, new List<HosePortCandidate> { tankS }, out Cell s, out Cell ct);
+            C(i == 0 && s == new Cell(0, -1) && ct == new Cell(10, 9), "2x2: a 2x2 tank below couples on the south side, lowest cell along the edge");
+            i = HosePortRule.Pick(reel, new List<HosePortCandidate> { tankS, pipeE }, out s, out ct);
+            C(i == 1 && s == new Cell(1, 0) && ct == new Cell(12, 11), "2x2: a pipe beside the UPPER east cell couples (pipe over tank)");
+            C(HosePortRule.Pick(reel, new List<HosePortCandidate> { corner }, out s, out ct) == -1, "2x2: a corner touch does not couple");
+            C(HosePortRule.Pick(reel, new List<HosePortCandidate> { new HosePortCandidate(11, 11, 1, 1, HosePortKind.Pipe) }, out s, out ct) == -1,
+                "2x2: a candidate overlapping any reel cell is ignored");
+            var pipeE0 = new HosePortCandidate(12, 10, 1, 1, HosePortKind.Pipe);
+            i = HosePortRule.Pick(reel, new List<HosePortCandidate> { pipeE, pipeE0 }, out s, out ct);
+            C(i == 1 && ct == new Cell(12, 10), "2x2: two pipes on one side tie-break to the lowest cell, not list order");
+            var touch = new Cell(ct.X - s.X, ct.Z - s.Z);
+            HosePortRule.Feed(touch, s, out V2 from, out V2 to, out V2 cp);
+            C(reel.Contains(touch) && Math.Abs(cp.X - 12.0) < 1e-9 && Math.Abs(to.X - 12.5) < 1e-9 && from.X > 11.5 && from.X < 12.0,
+                "2x2: the feed starts under the reel's edge cell and crosses the shared edge at x=12");
+            // the 1x1 overload still answers as round 2 did
+            i = HosePortRule.Pick(new Cell(10, 10), new List<HosePortCandidate> { new HosePortCandidate(11, 10, 1, 1, HosePortKind.Pipe) }, out s);
+            C(i == 0 && s == new Cell(1, 0), "2x2: the 1x1 Pick overload is unchanged");
+            // install from the 2x2 footprint
+            CordWorld w = Open(40, 30);
+            C(HoseMath.CheckInstall(w, reel, new Cell(11, 10), 30) == "same cell", "2x2: laying onto any reel cell is refused");
+            C(HoseMath.CheckInstall(w, reel, new Cell(20, 11), 30) == null, "2x2: an open target in range is valid");
+            C(reel.StartCellToward(new Cell(20, 10)) == new Cell(11, 10), "2x2: the planner starts from the reel cell nearest the target");
+            C(HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 10) == "route too long" && HoseMath.CheckInstall(w, reel, new Cell(11 + 9, 11), 11) == null,
+                "2x2: route length counts the hop from the reel centre");
+            HoseLay l = HoseMath.Lay(w, reel.Centre, new Cell(20, 11).Centre, new HoseShapeParams(), 5);
+            C(l.Ok && V2.Dist(l.Flat[0], reel.Centre) < 1e-6, "2x2: the laid hose starts exactly at the reel centre");
+        }
+
+        // ------------------------------------------------------------------ HOSE_BLOCKED_REROUTE_RETRACT_1 (owner card 2026-10-04)
+        private static void Replan()
+        {
+            CordWorld w = MazeWorld(3, 3, out Cell R, out Cell T, out Cell g, out Cell b);
+            var reel = new HoseReelRect(R.X, R.Z, 1, 1);
+            C(HoseMath.CheckReplan(w, reel, T, 30, false, null) == null, "replan: open maze keeps the hose");
+            w.SetBlocked(g, BlockKind.Wall);
+            C(HoseMath.CheckReplan(w, reel, T, 30, false, null) == null, "replan: gap walled, the spiral fits a 30-cell hose -> re-route, stay laid");
+            C(HoseMath.CheckReplan(w, reel, T, 20, false, null) == "route too long", "replan: gap walled, a 20-cell hose cannot take the spiral -> retract (length enforced on re-plan)");
+            w.SetBlocked(b, BlockKind.Wall);
+            C(HoseMath.CheckReplan(w, reel, T, 30, false, null) == "no route", "replan: both routes walled -> retract (no route)");
+            w.SetBlocked(b, BlockKind.None);
+            w.SetBlocked(T, BlockKind.Wall);
+            C(HoseMath.CheckReplan(w, reel, T, 30, false, null) == "target blocked", "replan: a wall built on the free end -> retract");
+            w.SetBlocked(T, BlockKind.None);
+            C(HoseMath.CheckReplan(w, reel, T, 30, true, "no route") == "no route", "replan: a lay that failed although the route check passes is retracted, never left invisible");
+            C(HoseMath.CheckReplan(w, reel, T, 30, true, null) == "could not be laid", "replan: a failed lay with no reason still retracts");
         }
     }
 }
