@@ -1,0 +1,4 @@
+// Recorded taints/attestations for modcheck run records (rules: design/RimMandrake/bridge_validation_observatory.md 2.4). Append-only; a taint only REMOVES trust.
+{"kind": "taint", "reason": "log-blind", "mods": "*", "from": "2026-10-03T16:54:00", "to": "2026-10-03T17:19:40", "source": "belt_bridge_log_20261003.md 17:19:40: Player.log blind since 16:54 (Verse.Log 1000-msg cap), reset via static_call"}
+{"kind": "taint", "reason": "focus-lost", "mods": "*", "from": "2026-10-03T17:03:00", "to": "2026-10-03T17:04:00", "source": "belt_bridge_log_20261003.md 17:03:52: focus stolen by AGENT BENCH -> game_focus"}
+{"kind": "taint", "reason": "stale-deploy", "mods": "*", "from": "2026-10-03T18:14:00", "to": "2026-10-03T20:36:45", "source": "belt_bridge_log_20261003.md 18:25:00 (builder rebuilt 18:14 after the 18:13 deploy), 19:25:42 (deploy plan shows drift: all stale DLLs), 20:18:33 (run17d killed, stale DLL), 20:36:45 (load 12 up after redeploy)"}
