@@ -1,11 +1,10 @@
 """validation.py -- modcheck suite for RimMandrake Wrecked Machines
 (mandrake.rm.wreckedmachines).
 
-Grounded in this mod's actual Defs -- there is no C# here at all: `Source/`
-holds only offline Python art tooling (fit_sprite.py, grab_source_art.py,
-sheet.py, ...), no .csproj, no Assemblies folder, no ModSettings class. Per
-this runner spec's own floor rule, "most mods have no settings yet ... zero
-toggles is not a floor violation" -- `suite.toggles = []` and every
+Grounded in this mod's actual Defs. The mod DOES carry C# and a settings
+class (`Source/WreckedMachinesMod.cs`: allowDonorSmelter, researchCostFactor,
+materialCostFactor, skipRestorationResearch); none is asserted yet and
+`suite.toggles = []` -- that gap is WRECKEDMACHINES_COVERAGE_GAPS_1. Every
 component below is `beyond_toggle=True`.
 
 WHAT THIS MOD ACTUALLY SHIPS (Buildings_WreckedMachines_AutomatedSmelter.xml,
