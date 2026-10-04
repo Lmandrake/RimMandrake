@@ -821,6 +821,11 @@ three defect classes apart — a **missing gene** is edited in the def, an **eng
 needs new art or more mask channels, and a **rig limit** (Ithorian neck, Kaminoan
 proportions, Muun body, Lasat legs) cannot be fixed at all, so art chasing it is waste.
 ⛔ **Cosmetic changes need his permission first** — they can break animated faces.
+🔑 **Every art review sheet shows the canon reference images and the entry's `## Must show`
+beside each row whenever the subject has a canon entry** (owner, 2026-10-04); a row without one
+says so. Since 2026-10-04 art goes through the art ledger and its `art install` only
+(`design/RimMandrake/art_ledger_design_2026-10-04.md`), and his rulings live in
+`infrastructure/state/art_rulings/`, never only in `Transient/`.
 
 ```
 src/                    mods, defs, C#, art            FOUNDRY owns
