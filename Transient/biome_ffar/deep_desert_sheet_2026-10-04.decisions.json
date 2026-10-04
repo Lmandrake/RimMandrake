@@ -90,6 +90,11 @@
    "note": "",
    "prefill": "A"
   },
+  "RSW_Drazzik": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_Gizka": {
    "decision": "A",
    "note": "",
@@ -101,6 +106,11 @@
    "prefill": "A"
   },
   "RSW_GreaterKraytDragon": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Ikee": {
    "decision": "A",
    "note": "",
    "prefill": "A"
@@ -130,6 +140,11 @@
     "swanimals/Scurrier/Scurrier_m": "C"
    }
   },
+  "RSW_Vozzik": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
   "RSW_WarWyrm": {
    "decision": "A",
    "note": "",
@@ -156,6 +171,16 @@
    "prefill": "A"
   },
   "RM_Ollim": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_LightPipeNub": {
+   "decision": "A",
+   "note": "",
+   "prefill": "A"
+  },
+  "RSW_Ollim": {
    "decision": "A",
    "note": "",
    "prefill": "A"

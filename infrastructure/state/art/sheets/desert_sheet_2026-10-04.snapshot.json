@@ -1,8 +1,8 @@
 {
  "biome": "RM_LongShade",
- "built": "2026-10-04T15:00:09-0700",
+ "built": "2026-10-04T15:23:41-0700",
  "census": "Transient/biome_ffar/census.json",
- "census_git_head": "79c294972",
+ "census_git_head": "eeff5234d",
  "loadOrder": "ModsConfig.xml 9 active, modified 2026-10-04 10:55",
  "rows": {
   "JOE_Landopus": {
@@ -2743,6 +2743,30 @@
    "res": "swanimals/Bantha/BanthaW",
    "subject_key": "bantha"
   },
+  "RSW_Bokka": {
+   "columns": {
+    "A": {
+     "east": "fc81454aac0c764c37b72a7893a92972f41b1508e70dbc7be1abeded5524dfa8",
+     "north": "170a03cdefac7354a0be1ad21ea9d654ec0e255205fa88c5916f2c1ae034861e",
+     "south": "87d87147ac9299c72d1da88e397bdfda6ff3c2c2f159ccc1c51b7da8a650f370"
+    },
+    "B": {
+     "east": "eafc5f0e96822ed379d91db612a1b8bcd33d33ad28c338ea22c0dbcfb27437a6",
+     "north": "5b5ffd4ff70477aaa71e048368efc0e1ed81e2f940db068396b423f9a0a86901",
+     "south": "9225dd365647e53b48cdadbd2c8c25eb2950f5b5e030a02900b6e3de95f6d2f7"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RSW_Stoneback"
+   },
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Stoneback/Stoneback",
+   "subject_key": "bokka"
+  },
   "RSW_Bolotaur": {
    "columns": {
     "A": {
@@ -3307,6 +3331,40 @@
    "res": "swanimals/Gorg/Gorg",
    "subject_key": "gorg"
   },
+  "RSW_GreatDevourer": {
+   "columns": {
+    "A": {
+     "east": "c3779b3a427610c166ca09620c9f684e98e964349a2858fdd48cb6ecd642b128",
+     "north": "1fa895d8b21640a86c3c9e46f438fdb1739d374f47ff1ad9daa6292eecbfb830",
+     "south": "9df7108819f8cf0a405af8c4700297544d61029eba04ec2fad6c4bd8ea1f1828"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_GreatDevourer"
+   },
+   "res": null,
+   "subject_key": "greatdevourer"
+  },
+  "RSW_Groundrunner": {
+   "columns": {
+    "A": {
+     "east": "1c8b807c9524889d23adb013839df5d9a0fa20abe8c34ac862c5fd0ae699a470",
+     "north": "957199fda92fa0ea164eca698d952bd3648525d62caa644cf13a5e8a57b0de0d",
+     "south": "aa48b7936df214a9c56fb49b4c00377161b806611fde7dabfa07d2dc685c56fb"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_Groundrunner"
+   },
+   "res": null,
+   "subject_key": "groundrunner"
+  },
   "RSW_Gutkurr": {
    "columns": {
     "A": {
@@ -3557,6 +3615,30 @@
    "res": "swanimals/Jamel/Jamel",
    "subject_key": "jamel"
   },
+  "RSW_Jellypot": {
+   "columns": {
+    "A": {
+     "east": "759aff4ab46d98b877125db29c9e2f3ab121399eadc02373201aba881a85ce2f",
+     "north": "515e5b7f39df8d90204f574fb3fdc06c2c1d728487ee754307b471fd289c40bc",
+     "south": "6032696606acb8a272112b5f908d4d849f56082fa7ce12bd48985d83fd101945"
+    },
+    "B": {
+     "east": "388390dc51913d33d6aaed92bdbe8c69a24ee2bb27d5cba90a62a7051ee2ec95",
+     "north": "98384dcadc06b05500a44aa7ea355a1749ea35ea3574339b0ccc4d641ef91899",
+     "south": "3efcf1a76c71854b7f60a685bcc3e37918c8909df1d7d0d139b7ba71571e80c8"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render desertportb_jellypot"
+   },
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot",
+   "subject_key": "jellypot"
+  },
   "RSW_Jimvu": {
    "columns": {
     "A": {
@@ -3581,6 +3663,30 @@
    "res": "swanimals/Jimvu/Jimvu",
    "subject_key": "jimvu"
   },
+  "RSW_Khorrak": {
+   "columns": {
+    "A": {
+     "east": "436b8501c92a18f633e3ffc8897c7f69880eac5e4f37431110a3072ac4c942b8",
+     "north": "e8b87690b8ee7d96a30aa58ec44609a8c61cf3c799df612dfd88707b1b1e44c3",
+     "south": "94de8bc7c51967f44ad4075c08556460223ab4b3e0fc582e81e24fa1ed9355aa"
+    },
+    "B": {
+     "east": "ed969696fb9b1831fdb0955c9488e145678fb535271ea1681dda8981a594d300",
+     "north": "ec5cacdb2a581d56308b9d3990943f7a5be41cdfe622a596ef79623cc263c60e",
+     "south": "f543ad9be205860b0bff91eabc40739fb98c84b0c792e9eceb98c11e38484b40"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Khorrak"
+   },
+   "res": "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak",
+   "subject_key": "khorrak"
+  },
   "RSW_Krykna": {
    "columns": {
     "A": {
@@ -3604,6 +3710,30 @@
    },
    "res": "swanimals/Krykna/Krykna",
    "subject_key": "krykna"
+  },
+  "RSW_Kudda": {
+   "columns": {
+    "A": {
+     "east": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331",
+     "north": "00bad92c05c391a35bcf44f63623138b2832b4ed6cfd3b62b1dfd555ac0549c2",
+     "south": "96911a4a68dba1911b79ab2a1951f4137e84141db42f44c3b149d26123cb7618"
+    },
+    "B": {
+     "east": "83b719b83fb3ba1676b6e75dfa62b24c2559cb1e27739e0d55f82ae7233eff53",
+     "north": "db6b01cf6b48acde356e6aabd7aeaf7bd48153724ffeae12c735e5f3bcf88e54",
+     "south": "0c8402881b9cc9428b3a936b2b81f9a6756f347a3534c26d175dfe3ee31b0ab5"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Kudda/RSW_Kudda",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Kudda"
+   },
+   "res": "Things/Pawn/Animal/RSW_Kudda/RSW_Kudda",
+   "subject_key": "kudda"
   },
   "RSW_Kwi": {
    "columns": {
@@ -3673,6 +3803,23 @@
    },
    "res": "swanimals/LongtailGorg/LongtailGorg",
    "subject_key": "longtailgorg"
+  },
+  "RSW_MatureFleshbeast": {
+   "columns": {
+    "A": {
+     "east": "e34da4a0974656f7711c4ef5a310cc30e3b4cc01e2e4ca354c529ac312274b49",
+     "north": "924215c2575d4f3d829d926428520551b9b63ed2ac93c875db4031072bff095c",
+     "south": "c252527a99985e86c0af1bdc2f0a6d18a8251479300d8c4709567e57b88652d7"
+    }
+   },
+   "graphic_of": {
+    "A": "_byname"
+   },
+   "labels": {
+    "A": "render RM_MatureFleshbeast"
+   },
+   "res": null,
+   "subject_key": "maturefleshbeast"
   },
   "RSW_Nerf": {
    "columns": {
@@ -3775,6 +3922,54 @@
    },
    "res": "swanimals/Nuna/Nuna_f",
    "subject_key": "nuna"
+  },
+  "RSW_Ommok": {
+   "columns": {
+    "A": {
+     "east": "333db5930ae3509e57157d4c68fe0674efae5b7ce23ebca162dc47e0a70ab024",
+     "north": "10115071a331deac22f9d0afe3d6191f391f8a90773f35a7b968ba9e5908e51b",
+     "south": "58cf7d565fcd15a804298c4e8cafc988feab8092a0bb061bdbd0df0df308c100"
+    },
+    "B": {
+     "east": "5a886bd59aca4df841bfacf82640eb2e0910ffe47684bbae79ee2f4ea4403481",
+     "north": "dc65e88c249af4a1363557f5430021b4b292c327a3a9eac1eeaaf12a8f75b619",
+     "south": "0bd92c393b1fa0d50ce1c1e6c01a099d74ecfab37f5bbd3336ed8858e0a04257"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Ommok"
+   },
+   "res": "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok",
+   "subject_key": "ommok"
+  },
+  "RSW_Ossik": {
+   "columns": {
+    "A": {
+     "east": "085e71fae525e76d4130ba2d656479264f076fef3b9be49386a1849c46dc04a3",
+     "north": "a25f92f19950d1b87afda2b3b82ebb424c5e06906cc3b09a57975587d4fcf925",
+     "south": "72223f1e2fc1d5e94a55737daa7f4762a48331767119091c531e5fdf1e8e7fd0"
+    },
+    "B": {
+     "east": "919b35c82665929c48b6017deeccbe2c333d21a74e1a0cd45abd69153b4cb3d8",
+     "north": "9ecd37095c8f967d1d28d667d8f890c333e1d6a0e2575d59ac3f6665fb00a767",
+     "south": "a741bfbc024eada102892042fb000dabe3d88b855c458f84d4cf7aadd22fa819"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Ossik/RSW_Ossik",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Ossik"
+   },
+   "res": "Things/Pawn/Animal/RSW_Ossik/RSW_Ossik",
+   "subject_key": "ossik"
   },
   "RSW_Plant_Chakroot_Wild": {
    "columns": {
@@ -4756,6 +4951,338 @@
    "res": "swanimals/TeeMuss/TeeMuss",
    "subject_key": "teemuss"
   },
+  "RSW_Thurra": {
+   "columns": {
+    "A": {
+     "east": "a5ee2619adc52f7f587af390712d7e62a907bba4c38dbf85d3147b65e16aeb8c",
+     "north": "9a6ec71f66fd2f694fe7706d301cbb9ce5b75317fe6d85ad89cb07a425cef494",
+     "south": "e80a5c09a5f0e424cc257cced44663d22f26d64fe325e08b2ae014acaf930771"
+    },
+    "B": {
+     "east": "e3dbd0226bc38f132307b352c36ec19b7202b68097b37b8022d42a73fd7ed8be",
+     "north": "93baf55460506694bc18710a1de9f20d50995219539dba2876d42baff4923a64",
+     "south": "0e97b9ed73a76baad2b937861950eb2aec39c95710f43f28396d584fcd632c99"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Thurra/RSW_Thurra",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Thurra"
+   },
+   "res": "Things/Pawn/Animal/RSW_Thurra/RSW_Thurra",
+   "subject_key": "thurra"
+  },
+  "RSW_TruffleMole": {
+   "columns": {
+    "A": {
+     "east": "681035b6a4485896d65e1080dfb366c25892abe54f6395905ee7ae24637a3cee",
+     "north": "11e1aedb5b3ae818717c7535b83f606804ea86ec5cd724a904ca833dadb43cb8",
+     "south": "e6173760cd2a4923996d14e7f0801d0a5aca9a8bcf1fa27350ce435dcf98e5cc"
+    },
+    "B": {
+     "east": "2d1a22bd0a52cf8369673d7eaa4e7f8a96afb6f60d72469081fbc9074c8d27b3",
+     "north": "fb8f53e926779191a054214f047a480247cdefbacd76d690870a0c54c9f03b14",
+     "south": "61d3f0154f390757b082d669406c0abda4079094834a6825d72d52c8287d9a24"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_TruffleMole"
+   },
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+   "subject_key": "trufflemole"
+  },
+  "RSW_Ulgga": {
+   "columns": {
+    "A": {
+     "east": "361b681d4e81658343ccf6c379afdebc5135072458feeec91e583f9fdfd25c66",
+     "north": "8b19b8c83a4b714197b86b727bd245f66cbf5db992c54ecd68386618e5bee07a",
+     "south": "7883f388a431d062ae883cc7933b8edb747b7c979ec70adc2848e99e3d78e286"
+    },
+    "B": {
+     "east": "9469399751d86b1067d1c5211c0646778ea2fa1c77a65a81b732d99f397a752a",
+     "north": "dd87d591d64faa7477367d5faf88a1fc6a92d0fdd55f38b5bbb4372cef1c8caa",
+     "south": "ef255da3b1be3aa457bc0ffbef952cee63f1a0206df330c86ac530639dfee03a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Ulgga"
+   },
+   "res": "Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga",
+   "subject_key": "ulgga"
+  },
+  "RSW_Ultracactus": {
+   "columns": {
+    "A": {
+     "single": "5d44b38769934176ea57b82b2e320b36ddc28d74dbfecc320a7cc0ba77baf9b4"
+    },
+    "B": {
+     "single": "12c25718afbadf476446a6e8893328cd60cd1532b1cd082ba785daed83ce5b6c"
+    },
+    "C": {
+     "single": "a0a99480654a2be63d1a83fa7fc45505acd94975c43e005a367a2fb959614e36"
+    },
+    "D": {
+     "single": "7f2bd74e65de497be5ec6c5ef5348a71c872a4125630d8dc2c168a0107a48408"
+    },
+    "E": {
+     "single": "d58dcbbf585e3f2a58794c372bb2c9b25100046d3fb517137102819689337cd4"
+    },
+    "F": {
+     "single": "8a3786b17f8c02728af67197e5b89cd8198ca6dc7479871f148ffa58bd739936"
+    },
+    "G": {
+     "single": "0c22af1d355fdc8a2501bb24aa5e30a06ba89fd9b4c44d100b024cd75e2b7116"
+    },
+    "H": {
+     "single": "10760db428b68a269b28a5bc21bd994487df0c57030cf13d120f3e72f6c2135a"
+    },
+    "I": {
+     "single": "063718d54a8676c4cb8bbb1adb46fbe40a10436fc49dc4dcd29ca7a56cac3e64"
+    },
+    "J": {
+     "single": "9d655520649f7a472f8ba0fdc6fb504174261c76d56d7e2c8467ac77df5335c1"
+    },
+    "K": {
+     "single": "9e0e6c1d33b1de66a6f3fa8ba117c7f41042efbc9988a279e50553352bd7d331"
+    },
+    "L": {
+     "single": "7b048b01f0a83e7043206fa0d59b6158e7ca044d267abf4304eb42fe5f466710"
+    },
+    "M": {
+     "single": "2d8b9724ff6d3d685da04302e798e560916489c0cf6af3e2f7d4a880e004bf9e"
+    },
+    "N": {
+     "single": "a19ead51a7da47f5122e7bc65f63c90276fe315e2712fa11369983788ac60bd5"
+    },
+    "O": {
+     "single": "238307afc832b9d105087aceea2c827822f17ca12d2f6332e2d9d79ca387c6c0"
+    },
+    "P": {
+     "single": "39b968254fc0c85cab62670561b1dcde4df67e0800a9adfd800f9db5a02d6c90"
+    },
+    "Q": {
+     "single": "fbe4f2495996d9e05d49cdf3535edd3fed2f8e24258b881b838c8e01feb7303d"
+    },
+    "R": {
+     "single": "afb026cdcdb9245acfdba4b299a257811fdcfab3aa9f53b10ce44bfc56615ce7"
+    },
+    "S": {
+     "single": "c3add4c5594a571f38fa2b4c0b23f4f808d438552a1effcb41664165ee396d76"
+    },
+    "T": {
+     "single": "dd850c3183fa5f7f2ccc97f85b170ed5457fb0b6401a06581c78836064436951"
+    },
+    "U": {
+     "single": "ba54d688b525a07006add872e990c0a8f41970939e96292e603ef80eea297665"
+    },
+    "V": {
+     "single": "394de89470e1c66319186270c1d42b7400bd42f68a56a67ea8ea5470b8a2e334"
+    },
+    "W": {
+     "single": "84b3241627677cbc345bedb09c221eb47f6177fa620250b29731b18f311795c5"
+    },
+    "X": {
+     "single": "64b79ee921506142353ffd6fc334db172b0746512a7863bab4151d1fa3f69f74"
+    },
+    "Y": {
+     "single": "b1a6c66def591dd6169e9a0f4b804a6097a31aa22246ef7ad0a1509b37e28e35"
+    },
+    "Z": {
+     "single": "56089e9528339d21615229ed4439aba0d147860d7c1ab0d20664d2a7605b6d33"
+    },
+    "a": {
+     "single": "263e76917d25ce455c401bfbe9a425090e66e9391df7cc7ed45e2be1ed3ba177"
+    },
+    "b": {
+     "single": "17ddf73ef765f0fd5640837d745b6cb1a0a33a47ae173f151a4d0f49772cae83"
+    },
+    "c": {
+     "single": "b6bad88df5c00548e30ebb2f80b1cab5e8dd911e738c408ece3334e901daed2c"
+    },
+    "d": {
+     "single": "2ce187ed53b479e9d89a655425aae3d8073efc8b725f0562b3478d32ec83a047"
+    },
+    "e": {
+     "single": "96af644439dd310687d7da7db6c768ca288bad1f30a8546e97db8b0d70155e99"
+    },
+    "f": {
+     "single": "6532b2a91c32b174920db77d145639546bf20dfece840736ac28bc5f982ef9f7"
+    },
+    "g": {
+     "single": "20185c0d058b3ca5bb6088cbea1a836764b28f0ba36b7d99bf738993017ceda6"
+    },
+    "h": {
+     "single": "6307cb66fc376cab9ad92258cdf665f30311b68b117ba1c747a9c9ae3a27f086"
+    },
+    "i": {
+     "single": "b38cbe5164ab0df108219f9a7d9a286ac6a3a4c06813fb6025b00ee0c2de5936"
+    },
+    "j": {
+     "single": "cd6823246d62e43545f73d2b288ca3ee3df7944e17fdebb51f04a6ba8f9b7f68"
+    },
+    "k": {
+     "single": "b10f0ed989ee1ac5cd1b4d1b2b1ac32350849289f7e4fbc959d3ecb67afef71b"
+    },
+    "l": {
+     "single": "f248be99d6ce8ca3ca6cee7a5568d718f259bf79d96ca08b7211d77487e0eb3e"
+    },
+    "m": {
+     "single": "0870b3e0c127e7806f5ff89a46dc01a31f73fea4ba802348cf8e9af63f392d13"
+    },
+    "n": {
+     "single": "45e8d88fb8ba2f73f97c96e73cb24ab6033716ef55d288e9b72cdc27ae1d1bbd"
+    },
+    "o": {
+     "single": "5860971588dfcbeb89f44ff24c3249b95c903f17e4c886645a19b3401a39ab2c"
+    },
+    "p": {
+     "single": "88ade78d2e7ad7c99d99a4e1334b97c48a040800b1936848f077290dc5657e14"
+    },
+    "q": {
+     "single": "bb8acc77530e323553c627da598e054dd471147578b34a47badf3ab018ee05a2"
+    },
+    "r": {
+     "single": "93370c52b55c9be05d5ba9c453f6e0704fba10e644ecd549e19becbc97c297a3"
+    },
+    "s": {
+     "single": "0551dd598a9b085e037042ff4e8ff79637aa8a000f2f75024f6ddf0cc5051bad"
+    },
+    "t": {
+     "single": "d59f0ab79393f3f2f0337b4f7e93595e5f8ea9f1fea4811ddc50891aa7d0ef85"
+    },
+    "u": {
+     "single": "132977990302d26b3b87037645779ab19d6a1d2436f5534e208bb498c2a4b31e"
+    },
+    "v": {
+     "single": "3105b6b801ac592bf39c17c086011c3241ccd24c33cc1388eb4f75723f9cd5c4"
+    },
+    "w": {
+     "single": "1686945df1bef736db25f05dd3ca79f5773ff111b6d31a5dd071f18384d587cf"
+    },
+    "x": {
+     "single": "210c1223191b84e30f5a87c8e65aeaef0280891feaaf21131f6fef4b49dfbc92"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Plant/RSW_Ultracactus",
+    "B": "Things/Plant/RSW_Ultracactus",
+    "C": "Things/Plant/RSW_Ultracactus",
+    "D": "Things/Plant/RSW_Ultracactus",
+    "E": "Things/Plant/RSW_Ultracactus",
+    "F": "Things/Plant/RSW_Ultracactus",
+    "G": "Things/Plant/RSW_Ultracactus",
+    "H": "Things/Plant/RSW_Ultracactus",
+    "I": "Things/Plant/RSW_Ultracactus",
+    "J": "Things/Plant/RSW_Ultracactus",
+    "K": "Things/Plant/RSW_Ultracactus",
+    "L": "Things/Plant/RSW_Ultracactus",
+    "M": "Things/Plant/RSW_Ultracactus",
+    "N": "Things/Plant/RSW_Ultracactus",
+    "O": "Things/Plant/RSW_Ultracactus",
+    "P": "Things/Plant/RSW_Ultracactus",
+    "Q": "Things/Plant/RSW_Ultracactus",
+    "R": "Things/Plant/RSW_Ultracactus",
+    "S": "Things/Plant/RSW_Ultracactus",
+    "T": "Things/Plant/RSW_Ultracactus",
+    "U": "Things/Plant/RSW_Ultracactus",
+    "V": "Things/Plant/RSW_Ultracactus",
+    "W": "Things/Plant/RSW_Ultracactus",
+    "X": "Things/Plant/RSW_Ultracactus",
+    "Y": "Things/Plant/RSW_Ultracactus",
+    "Z": "Things/Plant/RSW_Ultracactus",
+    "a": "Things/Plant/RSW_Ultracactus",
+    "b": "Things/Plant/RSW_Ultracactus",
+    "c": "Things/Plant/RSW_Ultracactus",
+    "d": "Things/Plant/RSW_Ultracactus",
+    "e": "Things/Plant/RSW_Ultracactus",
+    "f": "Things/Plant/RSW_Ultracactus",
+    "g": "Things/Plant/RSW_Ultracactus",
+    "h": "Things/Plant/RSW_Ultracactus",
+    "i": "Things/Plant/RSW_Ultracactus",
+    "j": "Things/Plant/RSW_Ultracactus",
+    "k": "Things/Plant/RSW_Ultracactus",
+    "l": "Things/Plant/RSW_Ultracactus",
+    "m": "Things/Plant/RSW_Ultracactus",
+    "n": "Things/Plant/RSW_Ultracactus",
+    "o": "Things/Plant/RSW_Ultracactus",
+    "p": "Things/Plant/RSW_Ultracactus",
+    "q": "Things/Plant/RSW_Ultracactus",
+    "r": "Things/Plant/RSW_Ultracactus",
+    "s": "Things/Plant/RSW_Ultracactus",
+    "t": "Things/Plant/RSW_Ultracactus",
+    "u": "Things/Plant/RSW_Ultracactus",
+    "v": "Things/Plant/RSW_Ultracactus",
+    "w": "Things/Plant/RSW_Ultracactus",
+    "x": "_byname"
+   },
+   "labels": {
+    "A": "render chill_plant_eldspar",
+    "B": "render chill_plant_fuselight",
+    "C": "render chill_plant_ghostpane",
+    "D": "render chill_plant_keelgrass",
+    "E": "render chill_plant_pitchpearl",
+    "F": "render chill_plant_skyharp",
+    "G": "render chill_plant_slackwax",
+    "H": "render chill_plant_stillbloom",
+    "I": "render chill_plant_stonewater",
+    "J": "render chill_plant_tarspool",
+    "K": "render webwork_plant_brimlock",
+    "L": "render feverwood_plant_ammeth",
+    "M": "render feverwood_plant_cistrel",
+    "N": "render feverwood_plant_claithe",
+    "O": "render feverwood_plant_corvath",
+    "P": "render feverwood_plant_halquin",
+    "Q": "render feverwood_plant_maulith",
+    "R": "render feverwood_plant_nubrith",
+    "S": "render feverwood_plant_plennith",
+    "T": "render feverwood_plant_seepril",
+    "U": "render feverwood_plant_skimmel",
+    "V": "render feverwood_plant_sodderel",
+    "W": "render feverwood_plant_varnoth",
+    "X": "render feverwood_plant_wanlith",
+    "Y": "render webwork_plant_brennoth",
+    "Z": "render webwork_plant_dulloth",
+    "a": "render webwork_plant_fellome",
+    "b": "render webwork_plant_grennick",
+    "c": "render webwork_plant_kessaroth",
+    "d": "render webwork_plant_kollavane",
+    "e": "render webwork_plant_norrveth",
+    "f": "render webwork_plant_pellareth",
+    "g": "render webwork_plant_ruddreth",
+    "h": "render webwork_plant_sellith",
+    "i": "render webwork_plant_sorrivel",
+    "j": "render webwork_plant_tavrosk",
+    "k": "render webwork_plant_threllick",
+    "l": "render webwork_plant_varrisk",
+    "m": "render webwork_plant_vessark",
+    "n": "render feverwood_plant_ossagrel",
+    "o": "render feverwood_plant_skethral",
+    "p": "render feverwood_plant_thulvane",
+    "q": "render feverwood_plant_tullick",
+    "r": "render feverwood_plant_verrow",
+    "s": "render desertportb_plant_bloddle",
+    "t": "render desertportb_plant_chakroot_wild",
+    "u": "render desertportb_plant_hubbagourd_wild",
+    "v": "render desertportb_plant_nysyllin_wild",
+    "w": "render rut_furnacecap_plant_v1",
+    "x": "render RM_UltracactusPad"
+   },
+   "res": "Things/Plant/RSW_Ultracactus",
+   "subject_key": "ultracactus"
+  },
   "RSW_Uvak": {
    "columns": {
     "A": {
@@ -5094,6 +5621,30 @@
    },
    "res": "swanimals/Voorpak/Voorpak",
    "subject_key": "voorpak"
+  },
+  "RSW_Vosska": {
+   "columns": {
+    "A": {
+     "east": "e42abb0cf8f12d32612e6290417d502654e6091a6c8b2d0e36a706179dc98caf",
+     "north": "e4c475f2756e785ff4bdf6bd4710d7702a02d47f83cb708646fb5f499637bd80",
+     "south": "04da5645896afec928d12efa817902c407c881ca67b6935f455a0b65885b6184"
+    },
+    "B": {
+     "east": "bba99d25b637ae47356c7a7d9afb017d36128b09434c8ab426541d078235826c",
+     "north": "8ad632dcaf706c8240abb43cb2d7b47a8083d3844e9b4a738ccbc9798c2fcb8c",
+     "south": "03378f8071ab806dfbd4cdccc3719c9e2d0320ae596f0552dce718710551c939"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+    "B": "_byname"
+   },
+   "labels": {
+    "A": "shipped, shadowed \u2014 SWBestiary",
+    "B": "render RM_Vosska"
+   },
+   "res": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+   "subject_key": "vosska"
   },
   "RSW_Worrt": {
    "columns": {
