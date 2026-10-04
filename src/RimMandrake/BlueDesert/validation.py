@@ -1021,10 +1021,17 @@ def vhaulk_gates(t):
         far = _spawn(t, "Colonist", x + 9, z, faction="player")
         for p in (wit, far):
             t.bridge_call("jawa/set_draft", pawnId=p, drafted=True)
-        _damage(t, v, ddef, amount, part)
+        hit = _damage(t, v, ddef, amount, part)
         t.wait_ticks(180)
         rows = _rows(t, health=True, corpses=True)
-        out = {"vhaulk_dead": bool((rows.get(v) or {}).get("dead")), "witness": _burned(rows.get(wit)),
+        # LIVE 2026-10-03: a detonation DESTROYS the corpses in the blast (no list_pawns row at all), so a missing row read as
+        # "did not die"/"unknown". The damage call itself reports `dead`; a witness whose row is gone while the far control
+        # still stands was destroyed by the blast (burned); both gone is unreadable.
+        hit_dead = any(bool(r.get("dead")) for r in ((hit or {}).get("results") or []) if isinstance(r, dict))
+        witness = _burned(rows.get(wit))
+        if witness is None and rows.get(far):
+            witness = True
+        out = {"vhaulk_dead": hit_dead or bool((rows.get(v) or {}).get("dead")), "witness": witness,
                "control": _burned(rows.get(far))}
         return out, [v, wit, far]
 
