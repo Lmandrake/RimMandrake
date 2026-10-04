@@ -27,6 +27,9 @@ import sys
 
 from PIL import Image, ImageOps
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "art"))
+import artledger  # noqa: E402  the only sanctioned writer into Textures (ART_VERSION_WRANGLING_1)
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", "..", ".."))
 MOD = os.path.join(REPO, "src", "RimMandrake", "MessyConduit")
@@ -115,7 +118,8 @@ def build(check):
                         im = ImageOps.flip(im) if f in ("north", "south") else ImageOps.mirror(im)
                         notes.append("%s %s: render plate %s, flipped to %s" % (look, f, plate, WALL_SIDE[f]))
                     os.makedirs(os.path.join(STY, look), exist_ok=True)
-                    im.save(os.path.join(STY, look, "WallBracket_%s.png" % f))
+                    artledger.install_image(os.path.join(STY, look, "WallBracket_%s.png" % f), im,
+                                            reason="script:src/RimMandrake/Utils/mockups/messy_conduit/wire_bracket_art.py")
                 have = list(FACINGS)
             else:
                 notes.append("%s: renders missing %s (stays the tinted stand-in)" % (look, [f for f, p in srcs.items() if not p]))
