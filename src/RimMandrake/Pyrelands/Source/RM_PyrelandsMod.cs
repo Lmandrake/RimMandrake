@@ -105,6 +105,11 @@ namespace RimMandrake.Pyrelands
         public static bool ullaiEnabled = true;
         public static float ullaiHerdSizeMultiplier = 1f;
         public static bool furnaceBeastGiant = true;
+        // PYRELANDS_LIGHTNING_BREAKER_BUILD_1
+        public static bool lightningBreakerEnabled = true;
+        public static bool breakerPyrelandsOnly = true;
+        public static int breakerTripCost = 10;
+        public static float breakerRecipeCostFactor = 1f;
 
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
@@ -154,6 +159,10 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref ullaiEnabled, "ullaiEnabled", true);
             Scribe_Values.Look(ref ullaiHerdSizeMultiplier, "ullaiHerdSizeMultiplier", 1f);
             Scribe_Values.Look(ref furnaceBeastGiant, "furnaceBeastGiant", true);
+            Scribe_Values.Look(ref lightningBreakerEnabled, "lightningBreakerEnabled", true);
+            Scribe_Values.Look(ref breakerPyrelandsOnly, "breakerPyrelandsOnly", true);
+            Scribe_Values.Look(ref breakerTripCost, "breakerTripCost", 10);
+            Scribe_Values.Look(ref breakerRecipeCostFactor, "breakerRecipeCostFactor", 1f);
         }
 
         /// <summary>True if the cross-biome ash-accumulation opt-in currently
@@ -333,6 +342,20 @@ namespace RimMandrake.Pyrelands
               + "ground and shelters near-immune to heat while a fire front is close, then "
               + "surfaces once it clears. Off: those races stand their ground like any other "
               + "animal and take ordinary fire damage — nothing about the def breaks.");
+            list.GapLine();
+
+            list.Label("Lightning breakers");
+            list.CheckboxLabeled("Breakers trip on a short circuit", ref lightningBreakerEnabled,
+                "Shipped default: ON. A lightning breaker on a power line trips when a short circuit strikes its side of the "
+              + "grid: the grid splits there and only the faulted side's batteries discharge. Off: breakers are plain "
+              + "conduits and every short circuit drains the whole grid, as in vanilla.");
+            list.CheckboxLabeled("Learnable only in the Pyrelands", ref breakerPyrelandsOnly,
+                "Shipped default: ON (owner ruling). The research can only be begun while you hold a home on a Pyrelands "
+              + "map; once known, breakers are buildable anywhere and desert sand works. Off: researchable anywhere.");
+            list.Label("Glass sand spent per trip: " + breakerTripCost);
+            breakerTripCost = Mathf.RoundToInt(list.Slider(breakerTripCost, 0f, 30f));
+            list.Label("Breaker core recipe cost (restart): " + breakerRecipeCostFactor.ToStringPercent());
+            breakerRecipeCostFactor = list.Slider(breakerRecipeCostFactor, 0.25f, 3f);
             list.GapLine();
 
             list.Label("Cross-biome ash accumulation (WORLDGEN-AFFECTING — new maps only)");

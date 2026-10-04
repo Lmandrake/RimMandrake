@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PYRELANDS_LIGHTNING_BREAKER_BUILD_1 (design/Jawa/worldbuilding/biomes/pyrelands_bedazzle_review_2026-10-01.md §5).
+  Metal and sand at the smithy make a breaker core; the core plus steel builds the breaker. The research can only be
+  begun with a home on a Pyrelands map (RM_PyrelandsOnlyResearch, Mod Settings), then works everywhere. Sand is
+  RM_GlassSand (Stillsand, same Baroque Biomes mod): every desert drift yields it.
+  ART: placeholders. The breaker borrows vanilla's power switch (its _Off frame is the tripped state); the core is a
+  tinted component. Art list job RM_LightningBreaker.
+-->
+<Defs>
+  <ResearchProjectDef>
+    <defName>RM_LightningBreakers</defName>
+    <label>lightning breakers</label>
+    <description>Pyrelands lightning strikes sand and leaves glass; the people who live under it learned to make a fuse of the same thing. A breaker of fused sand in a steel housing opens the line when a short circuit strikes, so one side of the grid burns and the other stays live.\n\nThis can only be begun while you hold a home in the Pyrelands, where the lightning and the sand teach it. Once known, desert sand works just as well, anywhere.</description>
+    <baseCost>700</baseCost>
+    <techLevel>Industrial</techLevel>
+    <prerequisites>
+      <li>Electricity</li>
+    </prerequisites>
+    <researchViewX>7.10</researchViewX>
+    <researchViewY>6.95</researchViewY>
+    <modExtensions>
+      <li Class="RimMandrake.Pyrelands.RM_PyrelandsOnlyResearch" />
+    </modExtensions>
+  </ResearchProjectDef>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RM_LightningBreakerCore</defName>
+    <label>breaker core</label>
+    <description>A fuse of fused glass sand in a steel sleeve, the heart of a lightning breaker.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(230,220,160)</color>
+    </graphicData>
+    <stackLimit>10</stackLimit>
+    <statBases>
+      <MarketValue>45</MarketValue>
+      <Mass>2</Mass>
+      <MaxHitPoints>70</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <tradeability>Sellable</tradeability>
+  </ThingDef>
+
+  <RecipeDef>
+    <defName>RM_Make_LightningBreakerCore</defName>
+    <label>make breaker core</label>
+    <description>Fuse glass sand into a steel sleeve to make a lightning breaker's core.</description>
+    <jobString>Making breaker core.</jobString>
+    <workAmount>1600</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Smith</soundWorking>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers>
+      <li>FueledSmithy</li>
+      <li>ElectricSmithy</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_LightningBreakers</researchPrerequisite>
+    <ingredients>
+      <li>
+        <filter><thingDefs><li>Steel</li></thingDefs></filter>
+        <count>30</count>
+      </li>
+      <li>
+        <filter><thingDefs><li>RM_GlassSand</li></thingDefs></filter>
+        <count>20</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>Steel</li>
+        <li>RM_GlassSand</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_LightningBreakerCore>1</RM_LightningBreakerCore>
+    </products>
+  </RecipeDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_LightningBreaker</defName>
+    <label>lightning breaker</label>
+    <description>A breaker on a power line. When a short circuit strikes one side of the grid it trips with a crack: the line opens here, only the faulted side's batteries discharge, and the other side stays live. Each trip spends glass sand from its hopper; re-arm it once the fault is fixed.</description>
+    <thingClass>RimMandrake.Pyrelands.RM_LightningBreaker</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Power/PowerSwitch</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(230,200,120)</color>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>14</pathCost>
+    <fillPercent>0.15</fillPercent>
+    <building>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-2</Beauty>
+    </statBases>
+    <size>(1,1)</size>
+    <costList>
+      <RM_LightningBreakerCore>1</RM_LightningBreakerCore>
+      <Steel>15</Steel>
+    </costList>
+    <placeWorkers>
+      <li>PlaceWorker_Conduit</li>
+    </placeWorkers>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTransmitter</compClass>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Glass sand</fuelLabel>
+        <fuelGizmoLabel>Hopper</fuelGizmoLabel>
+        <fuelCapacity>30</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <fuelConsumptionRate>0</fuelConsumptionRate>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_GlassSand</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+    </comps>
+    <designationCategory>Power</designationCategory>
+    <researchPrerequisites>
+      <li>RM_LightningBreakers</li>
+    </researchPrerequisites>
+    <constructEffect>ConstructMetal</constructEffect>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <tickerType>Rare</tickerType>
+  </ThingDef>
+</Defs>

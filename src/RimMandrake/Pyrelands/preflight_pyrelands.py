@@ -80,6 +80,8 @@ DEFAULTS = {
     "ullaiEnabled": True, "ullaiHerdSizeMultiplier": 1.0, "furnaceBeastGiant": True,
     "crossBiomeEnabled": False, "crossBiomeEverywhere": False, "crossBiomeBiomeList": "",
     "crossBiomeCoverage": 1.0,
+    "lightningBreakerEnabled": True, "breakerPyrelandsOnly": True, "breakerTripCost": 10,
+    "breakerRecipeCostFactor": 1.0,
 }
 
 # (repo DLL, deployed DLL relative to the Mods folder, owning packageId)
