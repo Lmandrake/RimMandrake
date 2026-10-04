@@ -42,6 +42,7 @@
 
   <ItemGroup>
     <Compile Include="SlimeMod.cs" />
+    <Compile Include="SlimeSeekerProof.cs" />
     <Compile Include="SlimeBiome.cs" />
     <Compile Include="Slimification.cs" />
     <Compile Include="SlimeExposure.cs" />

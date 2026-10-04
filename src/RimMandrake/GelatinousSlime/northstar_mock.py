@@ -8,7 +8,7 @@ the XML breaks the mock the same way it would break the game.
 
 Faults: nodef:<Type/name> notag nodry nolaw2 nostage nodissolve nosmear nosmearsetting noexpose growfast
         nosalve antidote_noop antidote_nocost eat_nocure eat_nofee nomarkedcost noshed noclamp noalert noweather
-        noseeker defaultswrong
+        noseeker defaultswrong noload noswap slowclock noreek nocharm offignored
 """
 import os
 import random
@@ -285,6 +285,36 @@ class SlimeSim(object):
             self.pending.append(dict(p))
             return {"success": True, "accepted": True, "nowRunningRequested": True}
         return NotImplemented
+
+    def t_jawa_static_call(self, p):
+        """SLIME_SEEKER_LOAD_TOOL_1: RM_SlimeSeekerProof, mirroring SlimeSeekerProof.cs (and its faults)."""
+        if p.get("type") != "RimMandrake.GelatinousSlime.RM_SlimeSeekerProof":
+            return NotImplemented
+        m = p.get("method")
+        if m == "ProofLoad":
+            primed = "noload" not in self.f
+            return {"success": True, "result": "seekerId=900 primed=%s target=RM_Gene_A01_Test rider=%s"
+                    % (primed, "RM_Gene_B25_TheReek" if primed else "")}
+        if m == "ProofExtractStart":
+            self.extract_at = self.g.ticks
+            return {"success": True, "result": "STARTED took=True pawnId=901 seekerId=902 target=RM_Gene_A01_Test workTicks=4500"}
+        if m == "ProofExtractState":
+            done = getattr(self, "extract_at", None) is not None and self.g.ticks - self.extract_at >= 4500 \
+                and "noswap" not in self.f
+            return {"success": True, "result": "loaded=%d loadedWithLoad=%d" % (int(done), int(done))}
+        if m == "ProofInject":
+            on = self.settings.get("slimificationEnabled") == "True"
+            days = float(self.settings.get("slimificationClockDays", "7"))
+            rate = (1.0 / 3.0) * (7.0 / max(0.5, days)) if (on or "offignored" in self.f) else -0.5
+            if "slowclock" in self.f:
+                rate = 1.0 / 7.0
+            mark_a = 1.0 if "noreek" in self.f else 2.0
+            mark_b = 1.0 if "nocharm" in self.f else 0.0
+            cured = "antidote_noop" not in self.f
+            fmt = "target=True rider=True coma=True slim=0.40 fastClock=True ratePerDay=%.3f mark=%.1f seekerUsed=True"
+            return {"success": True, "result": "A[" + fmt % (rate, mark_a) + "] B[" + fmt % (rate, mark_b)
+                    + "] antidoteCuredA=%s" % cured}
+        return {"success": False, "error": "mock: unknown proof method %s" % m}
 
     # ------------------------------------------------------------------ time
     def step(self, t0, t1):

@@ -141,6 +141,12 @@ namespace RimMandrake.GelatinousSlime
         // ────────────────────────────────────────────────────────────────
         // THE RATE. One method, three cases, in priority order.
         // ────────────────────────────────────────────────────────────────
+        /// <summary>SLIME_SEEKER_LOAD_TOOL_1: the current rate, read by RM_SlimeSeekerProof (no side effects).</summary>
+        public float RatePerDay(Pawn pawn)
+        {
+            return SeverityChangePerDay(pawn);
+        }
+
         private float SeverityChangePerDay(Pawn pawn)
         {
             BiomeDef biome = SlimeUtility.BiomeOf(pawn);
