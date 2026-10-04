@@ -351,8 +351,10 @@ def _build_suite():
                     raise ExpectationFailed("the egg carries a hatcher comp: ban 1 (inert cargo, it must never hatch)")
                 if "RM_Contraband" not in "|".join(_flat(f.get("tradeTags"))):
                     raise ExpectationFailed("the egg lost its RM_Contraband trade tag: %r" % (f.get("tradeTags"),))
-                if "Sellable" not in "|".join(_flat(f.get("tradeability"))):
-                    raise ExpectationFailed("the egg tradeability is %r, not Sellable" % (f.get("tradeability"),))
+                # LIVE 2026-10-03: reads 'All' (Buyable|Sellable) on the campaign list, where the RUT patch replaces the
+                # def's explicit Sellable; both let the player sell it, which is the property under test.
+                if "|".join(_flat(f.get("tradeability"))) not in ("Sellable", "All"):
+                    raise ExpectationFailed("the egg tradeability is %r, not Sellable or All" % (f.get("tradeability"),))
         with t.component("ollathrix_is_dormant_capable_with_a_turret_gun", beyond_toggle=True):
             f = _deep(t, "ThingDef/RM_Ollathrix", "comps")
             if f is not None:
