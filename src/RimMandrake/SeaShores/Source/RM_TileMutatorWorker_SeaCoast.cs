@@ -25,7 +25,7 @@ namespace RimMandrake.SeaShores
 
         private RM_SeaShoreExtension Ext => RM_SeaShoreUtility.ExtensionOf(mapSea);
 
-        private bool ShoreSuppressed
+        public bool ShoreSuppressed
         {
             get
             {

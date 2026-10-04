@@ -32,10 +32,23 @@ namespace RimMandrake.SeaShores
                 return;
             }
 
-            PlanetLayer layer = world.grid.Surface;
-            int healed = 0;
-            int replaced = 0;
-            int already = 0;
+            int healed, replaced, already;
+            Heal(world.grid.Surface, true, out healed, out replaced, out already);
+
+            if (healed > 0 || replaced > 0 || already > 0)
+            {
+                Log.Message("[RM_SeaShores] healed " + healed + " tiles with RM_SeaCoast, replaced "
+                          + replaced + " stale vanilla Coast (" + already + " already coastal)");
+            }
+        }
+
+        // Proof seam (SEASHORES_COVERAGE_GAPS_1): the whole healing rule as one function. apply=false
+        // only COUNTS what FinalizeInit would do, so a live proof can read "nothing left to heal" without touching the world.
+        public static void Heal(PlanetLayer layer, bool apply, out int healed, out int replaced, out int already)
+        {
+            healed = 0;
+            replaced = 0;
+            already = 0;
             foreach (Tile tile in layer.Tiles)
             {
                 if (tile?.PrimaryBiome == null || !tile.PrimaryBiome.canBuildBase)
@@ -46,13 +59,6 @@ namespace RimMandrake.SeaShores
                 {
                     continue;
                 }
-                // Anything already wearing a Coast-category mutator — Lakeshore,
-                // our own from a previous load, or vanilla Coast beside a real
-                // vanilla ocean — is left exactly as it is. But a stale vanilla
-                // Coast with NO vanilla-Ocean neighbour is not "already coastal":
-                // TileMutatorWorker_Coast would ask CoastAngleAt(tile, Ocean),
-                // get null, and lay vanilla water on an arbitrary side. Heal
-                // that one too — AddMutator's priority rule removes it for us.
                 bool staleVanillaCoast = tile.Mutators.Contains(TileMutatorDefOf.Coast)
                     && !RM_Patch_TryAddMutator.HasVanillaOceanNeighbour(tile.tile, layer);
                 if (HasCoastMutator(tile) && !staleVanillaCoast)
@@ -60,7 +66,10 @@ namespace RimMandrake.SeaShores
                     already++;
                     continue;
                 }
-                tile.AddMutator(RM_SeaShoresDefOf.RM_SeaCoast);
+                if (apply)
+                {
+                    tile.AddMutator(RM_SeaShoresDefOf.RM_SeaCoast);
+                }
                 if (staleVanillaCoast)
                 {
                     replaced++;
@@ -69,12 +78,6 @@ namespace RimMandrake.SeaShores
                 {
                     healed++;
                 }
-            }
-
-            if (healed > 0 || replaced > 0 || already > 0)
-            {
-                Log.Message("[RM_SeaShores] healed " + healed + " tiles with RM_SeaCoast, replaced "
-                          + replaced + " stale vanilla Coast (" + already + " already coastal)");
             }
         }
 
