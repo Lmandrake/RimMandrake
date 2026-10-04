@@ -26,6 +26,15 @@ namespace RimMandrake.RaidRedesigner
 
         public IReadOnlyList<OldFriendEntry> Entries => entries;
 
+        // RAIDREDESIGNER_COVERAGE_GAPS_1: proof seam. Swaps the live roster for a scratch list and returns the
+        // real one, so RaidRedesignerProof can drive RecordEncounter without touching the player's roster.
+        public List<OldFriendEntry> ProofSwapEntries(List<OldFriendEntry> scratch)
+        {
+            List<OldFriendEntry> real = entries;
+            entries = scratch;
+            return real;
+        }
+
         // The one entry point every capture hook calls. Idempotent per living
         // pawn: a pawn who already has a living entry gets a new Encounter
         // appended and deltas applied, never a duplicate entry. `role` only
@@ -96,7 +105,7 @@ namespace RimMandrake.RaidRedesigner
         // battle we never render) with no Harmony seam telling us directly --
         // an hourly poll of a <=24-entry list is the cheap, correct way to
         // learn it, mirroring Ninefold's own hourly-cadence housekeeping.
-        private void SweepForDeaths()
+        public void SweepForDeaths()
         {
             for (int i = 0; i < entries.Count; i++)
             {

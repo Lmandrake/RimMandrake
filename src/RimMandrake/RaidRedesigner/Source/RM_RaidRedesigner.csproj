@@ -60,6 +60,8 @@
     <Compile Include="Patch_CaravanRobbed.cs" />
     <Compile Include="Patch_ColonistKidnapped.cs" />
     <Compile Include="Patch_WokenAncient_STUB.cs" />
+    <!-- RAIDREDESIGNER_COVERAGE_GAPS_1: live proof hooks (jawa/static_call) -->
+    <Compile Include="RaidRedesignerProof.cs" />
   </ItemGroup>
 
   <ItemGroup>
