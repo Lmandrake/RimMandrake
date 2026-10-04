@@ -80,9 +80,9 @@
     <wildGroupSize>6~14</wildGroupSize>
     <ecoSystemWeight>0.25</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.22</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Niim/RM_Niim</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -132,9 +132,9 @@
     <wildGroupSize>3~8</wildGroupSize>
     <ecoSystemWeight>0.08</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.25</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.33</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.42</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.25</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.33</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Pallu/RM_Pallu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.42</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -237,9 +237,9 @@
     <wildGroupSize>2~5</wildGroupSize>
     <ecoSystemWeight>0.35</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>1.0</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Nuudal/RM_Nuudal</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>1.0</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -352,9 +352,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.45</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.45</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Kellu/RM_Kellu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -408,9 +408,9 @@
     <wildGroupSize>1~3</wildGroupSize>
     <ecoSystemWeight>0.2</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.45</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.45</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.6</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Murrol/RM_Murrol</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.8</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -460,9 +460,9 @@
     <wildGroupSize>1~4</wildGroupSize>
     <ecoSystemWeight>0.08</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.46</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.28</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.36</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Hollu/RM_Hollu</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.46</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -520,9 +520,9 @@
     <wildGroupSize>1</wildGroupSize>
     <ecoSystemWeight>0.25</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.7</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.9</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.7</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Oobo/RM_Oobo</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.9</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 
@@ -572,9 +572,9 @@
     <wildGroupSize>1~2</wildGroupSize>
     <ecoSystemWeight>0.06</ecoSystemWeight>
     <lifeStages>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
-      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Single</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.3</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.4</drawSize></bodyGraphicData></li>
+      <li><bodyGraphicData><texPath>Things/Pawn/Animal/RM_Liiru/RM_Liiru</texPath><graphicClass>Graphic_Multi</graphicClass><drawSize>0.5</drawSize></bodyGraphicData></li>
     </lifeStages>
   </PawnKindDef>
 

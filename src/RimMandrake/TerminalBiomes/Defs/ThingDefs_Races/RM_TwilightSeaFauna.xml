@@ -88,21 +88,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Noolim/RM_Noolim</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Noolim/RM_Noolim</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Noolim/RM_Noolim</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>
@@ -191,21 +191,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Loohn/RM_Loohn</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>1.5</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Loohn/RM_Loohn</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.13</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Loohn/RM_Loohn</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>2.75</drawSize>
         </bodyGraphicData>
       </li>
@@ -280,21 +280,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Weloon/RM_Weloon</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Weloon/RM_Weloon</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Weloon/RM_Weloon</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>
@@ -368,21 +368,21 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.25</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.35</drawSize>
         </bodyGraphicData>
       </li>
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/RM_Lunoowa/RM_Lunoowa</texPath>
-          <graphicClass>Graphic_Single</graphicClass>
+          <graphicClass>Graphic_Multi</graphicClass>
           <drawSize>0.45</drawSize>
         </bodyGraphicData>
       </li>
