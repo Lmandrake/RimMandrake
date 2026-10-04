@@ -434,6 +434,11 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
             kind = "frozen log ending in a loop" if log_age > LOG_FROZEN_S else "repeating every frame"
             sigs.append(Sig("player_log", WEDGED, "%s; %s: %dx (%.0f%% of tail errors) %r" % (
                 detail, kind, loop["count"], loop["share"] * 100, loop["sig"][:110]), loop["remedy"]))
+        elif game and log_age > LOG_FROZEN_S and run_active and "Reached max messages limit" in tail_text(player_log):
+            # Verse.Log stops writing after 1000 messages until Log.ResetMessageCount (only called at data load): the game is
+            # fine but every later error is INVISIBLE to Player.log and jawa/drain_log (MEASURED live 2026-10-03, 16:54).
+            sigs.append(Sig("player_log", WARN, detail + "; Verse.Log hit its 1000-message cap (blind, not hung)",
+                            "jawa/static_call type=Verse.Log method=ResetMessageCount (the runner does it per chain)"))
         elif game and log_age > LOG_FROZEN_S and run_active:
             sigs.append(Sig("player_log", STALLED, detail + " while a run is active (frozen?)",
                             "probe the bridge main thread; if it times out, kill and relaunch"))
