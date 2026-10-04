@@ -346,9 +346,10 @@ namespace RimMandrake.KeelHoist
             frame.DebugArriveAllNow();
             frame.DebugArriveAllNow();   // the silver's own trip up
             int silverAfter = map.listerThings.ThingsOfDef(ThingDefOf.Silver).Sum(t => t.stackCount);
-            bool sold = pit.HeldCount == heldBefore + 1 && p.Faction == pit.Faction;
+            // a humanlike buyer's slave keeps its own Faction; the buyer is its HostFaction (guest status Slave)
+            bool sold = pit.HeldCount == heldBefore + 1 && (p.Faction == pit.Faction || p.HostFaction == pit.Faction);
             return string.Format("{0} pawn={1} price={2} silverOnMap={3} held={4}->{5} faction={6} sales={7}",
-                sold ? "SOLD" : "NOTSOLD", p.LabelShort, expected, silverAfter, heldBefore, pit.HeldCount, p.Faction?.Name ?? "none",
+                sold ? "SOLD" : "NOTSOLD", p.LabelShort, expected, silverAfter, heldBefore, pit.HeldCount, (p.Faction?.Name ?? "none") + "/host=" + (p.HostFaction?.Name ?? "none"),
                 pit.sales.Count);
         }
 
