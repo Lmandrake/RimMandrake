@@ -198,10 +198,10 @@ def station_list():
     st(14, "C", C_X[2], ROW_C, 18, 6, "HOSE: PLUMP", "flow ON, fully filled",
        ["full round hose, visibly wider than the flat one", "still no joiner on the straight"], hose_i,
        hose=dict(reel=(0, 2), far=(16, 2), state="Plump"))
-    st(15, "C", C_X[3], ROW_C, 28, 6, "HOSE: LONG + BEND", "a 26-cell plump hose routed round a wall stub",
+    st(15, "C", C_X[3], ROW_C, 28, 6, "HOSE: LONG + BEND", "a 24-cell plump hose routed round a wall stub",
        ["the hose bends smoothly round the obstacle (never kinks tighter than the minimum bend)",
         "joiners only at the bends: two brass couplings screwed face to face, joining two lengths", "it never crosses the wall"], hose_i,
-       walls=[(13, z) for z in range(1, 5)], hose=dict(reel=(0, 2), far=(26, 2), state="Plump"))
+       walls=[(13, z) for z in range(1, 5)], hose=dict(reel=(0, 2), far=(24, 2), state="Plump"))   # far 24: the 2x2 reel's route is ~27.6 of 30
     # ---- row D: hose crossings and parallel runs (owner review 2026-10-04 B18/B20; ruled by card: hoses do NOT branch,
     # one hose = one line with two ends, a "grid" is hoses crossing or lying side by side). What it does TODAY, shown as is.
     cross_i = hose_i + ["NOT designed: there is no crossing piece and no T or + hose fitting (hoses never branch, by ruling)"]
@@ -317,8 +317,9 @@ def stations_round2(st, hose_i):
         "it stays inside the corridors (it never jumps a wall)"],
        maze_i, walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_maze_hook", **R2)
     st(23, "F", 194, 144, 18, 11, "HOSE MAZE: SHORT WAY WALLED", "station 22's maze; after the hose is laid, a wall is built across the "
-       "short (south-east) gap - does the hose re-route the long way, refuse, or pass through the new wall?",
-       ["what the hose does when its route is blocked AFTER laying: re-routes north-east, stays and clips the wall, or drops",
+       "short (south-east) gap - does the hose re-route the long way, or reel itself in?",
+       ["what the hose does when its route is blocked AFTER laying: it re-routes north-east if that still fits the hose length "
+        "(about 29 of 30 cells), else it winds back onto the reel with a message and an alert (HOSE_BLOCKED_REROUTE_RETRACT_1)",
         "if it re-routes, the new path is as clean as station 22's"],
        maze_i + ["deconstruct the blocking wall (cells 12,1 and 12,2): does the hose go back to the short way?"],
        walls=maze, hose=dict(reel=(6, 5), far=(16, 2), state="Plump"), hook="hose_block_wall_hook",
@@ -413,6 +414,11 @@ FREE = dict(rect=(160, 10, 70, 30), pad_conduit=line(161, 176, 31),
                    ("WoodLog", 75, (179, 13)), ("WoodLog", 75, (180, 13))])
 
 
+def reel_footprint(pos):
+    """RM_HoseReel's 2x2 footprint (rot North): Position is the south-west cell."""
+    return [(pos[0] + i, pos[1] + j) for i in (0, 1) for j in (0, 1)]
+
+
 def g(st, c):
     return (st["origin"][0] + c[0], st["origin"][1] + c[1])
 
@@ -444,8 +450,16 @@ def layout_check(S):
         w, h = s["size"]
         cells = list(s["conduit"]) + list(s["walls"]) + list(s["rock"]) + list(s.get("wconduit", [])) + \
             [d[1] for d in s["devs"]] + [m[1] for m in s["masts"]] + [b[1] for b in s.get("blueprints", [])] + list(s.get("block", []))
+        solid = set(s["walls"]) | set(s["rock"]) | set(s["conduit"]) | set(s.get("wconduit", [])) | {d[1] for d in s["devs"]} | \
+            {m[1] for m in s["masts"]} | {h[1] for h in s["hostile"]}
+        seen_fp = set()
         for hz in s["hoses"]:
-            cells += [hz["reel"], hz["far"]]
+            fp = reel_footprint(hz["reel"])        # RM_HoseReel is 2x2, Position = SW cell: nothing else may sit in its 4 cells
+            cells += fp + [hz["far"]]
+            for c in fp:
+                if c in solid or c in seen_fp or c == tuple(hz["far"]) or any(tuple(o["far"]) == c for o in s["hoses"]):
+                    probs.append("station %d hose reel %s: footprint cell %s overlaps a wall/building/reel/free end" % (s["n"], hz["reel"], c))
+                seen_fp.add(c)
         for c in cells:
             if s["n"] >= 19 and not (0 <= c[0] < w and 0 <= c[1] < h):   # 1-18 predate the rule (st.9's N bracket)
                 probs.append("station %d cell %s outside its %dx%d footprint" % (s["n"], c, w, h))

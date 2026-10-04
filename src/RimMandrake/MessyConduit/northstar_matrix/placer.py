@@ -193,7 +193,7 @@ def plan(sc, case, origin=(150, 150)):
     hose_after = []
     if sc.get("hose"):
         hs = sc["hose"]
-        reel, far = M.g(hs["cells"][0]), M.g(hs["cells"][-1])
+        reel, far = M.g(hs["cells"][0]), M.g(hs["cells"][-1])   # reel = the 2x2's SW cell (hs["footprint"] holds its 4 cells)
         tool("jawa/build_batch", ops=_ops(REEL_DEF, [reel]), faction="player", wipeExisting=False,
              why="hose strip: reel at %s, far end %s (%d cells, %s)" % (reel, far, len(hs["cells"]), hs["inflation"]))
         hose_after = hose_steps(reel, far, "Plump" if hs["inflation"] == "plump" else "Flat")
