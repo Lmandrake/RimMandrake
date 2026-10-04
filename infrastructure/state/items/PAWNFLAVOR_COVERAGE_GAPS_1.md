@@ -10,3 +10,6 @@ Add a component per uncovered behaviour that asserts it DOES its job (not spawn-
 
 ## criteria
 Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.
+
+## progress 2026-10-03 (r34)
+- `every_shipped_def_reads_back` wired (77 backstories by title/titleShort/slot, 13 traits loaded). About.xml count corrected (was 50/5 + "droid backstories absent"; measured 77 = 30 childhood + 47 adulthood across 13 faction categories, 13 traits, FDE droid sets present). Still open: faction filters live, pirate-leak containment, traits doing anything.

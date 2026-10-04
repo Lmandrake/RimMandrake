@@ -198,3 +198,8 @@ def core_rows_retagged(t):
                     "Core research rows do not match the retag/tab-assign patches: %s"
                     % "; ".join(bad))
         t.screenshot()
+
+# Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
+# ResearchProjectDef baseCost/tab are retagged by this mod's own Patches, so only labels are compared). The Defs/ parse is the list, so a def added later is covered with no edit here.
+from modcheck import shipped_defs  # noqa: E402
+shipped_defs.add_chain(suite, __file__, sanity=('RR_LateralThinking', 'GravForge'), min_count=40)

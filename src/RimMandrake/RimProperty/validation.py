@@ -305,3 +305,8 @@ def claim_erase_api(t):
         text = str((r or {}).get("result", ""))
         if not text.startswith("PASS"):
             raise ExpectationFailed("claim erase proof: %s (raw: %s)" % (text or "no result", r))
+
+# Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
+# theft jobs, think trees, trainable). The Defs/ parse is the list, so a def added later is covered with no edit here.
+from modcheck import shipped_defs  # noqa: E402
+shipped_defs.add_chain(suite, __file__, sanity=('RM_AnimalSteal',), min_count=5)

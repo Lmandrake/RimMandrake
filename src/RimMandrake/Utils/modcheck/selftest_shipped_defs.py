@@ -45,6 +45,13 @@ WIRED = [
     ("RimUtinni/ScarlandsLadder", ("RUT_PilgrimCamps", "RUT_ScarlandsLadder", "RUT_PilgrimJournal"), 3),
     ("RimMandrake/Scarlands", ("RM_Warscar", "RM_OldLineTurret", "RM_Chatrak"), 90),
     ("RimStarWars/StarWarsRaces", ("RSW_RimMandrakeJawa", "RSW_MandrakeJawa", "Head_Bone"), 500),
+    ("RimUtinni/ResearchRetag", ("RR_LateralThinking", "GravForge"), 40),
+    ("RimUtinni/PawnFlavor", ("RUT_Jawa_CisternHatched", "RUT_Jawa_WaterWarden"), 85),
+    ("RimMandrake/CreatureBehaviors", ("RM_PincerCrush", "RM_Mirage"), 35),
+    ("RimMandrake/DivingInteraction", ("RM_SeaFloorTerrain", "RM_ProbeGalleryOutlet"), 50),
+    ("RimMandrake/RimProperty", ("RM_AnimalSteal",), 5),
+    ("RimMandrake/Pyrinth", ("DV_PyrinthHeater", "DV_Mote_PyrinthSpark"), 12),
+    ("RimStarWars/StarWarsPatches", ("Heron_ResearchTab", "ProjectHeron_Swdoors"), 30),
 ]
 
 
