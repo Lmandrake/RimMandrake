@@ -16,8 +16,8 @@ dust warning, and their Mod Settings ("Stillsand: skeletons and horizon"). Code:
    (`STILLSAND_SKELETON_ART_TRACKS_WIRING_1`, 2655f315f). The sandcrawler tread art has no walking race.
 2. **Dune burial (parent §4)** — the dunes engine should bury a ribcage to its top arcs and later
    strip it. Needs a hook in `MapComponent_DuneField`; not started.
-3. **Art** — the seven skeleton sprites are wired (2655f315f). `RM_GiantSkull` still renders vanilla
-   `RubblePile`; its artpipe job `RM_GiantSkull` FAILED validation 2026-10-03 (`failed/RM_GiantSkull.json`): requeue, then wire.
+3. **Art** — DONE: the seven skeleton sprites are wired (2655f315f) and `RM_GiantSkull` has its own sprite
+   (requeued job landed, wired).
 4. **Giant bone** — add the one bone material to each skeleton's `leavings`
    (`RM_GiantSkeletonExtension`) once `DESIGN_MATERIALS_REVIEW_1` names it.
 5. **Ribs' rendered shadow** — DONE: `staticSunShadowHeight 0.5` on `RM_GiantSkeletonBase`. No shade-grid
