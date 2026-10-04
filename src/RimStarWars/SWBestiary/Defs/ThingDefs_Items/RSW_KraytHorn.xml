@@ -21,7 +21,7 @@
     <description>A great curved horn cut from a krayt dragon's skull and bound in its hide, wide as a man's shoulders at the mouth. Blown, it gives the dragon's own call out over the dunes: small predators and tribal raiders break and run from it. Something larger may hear it too, and answer.</description>
     <graphicData>
       <!-- art placeholder: bantha horn texture; krayt horn art owed -->
-      <texPath>swresource/Trophies/BanthaHorn</texPath>
+      <texPath>Things/Item/RSW_KraytHorn</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
     <stackLimit>1</stackLimit>
