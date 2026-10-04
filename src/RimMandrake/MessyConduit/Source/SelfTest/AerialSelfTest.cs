@@ -39,6 +39,8 @@ namespace RimMandrake.MessyConduit.SelfTest
             Explosion();
             Tap();
             CanFail();
+            Brackets();
+            Terminals();
             Console.WriteLine($"aerial: {mine - mineFails}/{mine} checks passed");
         }
 
@@ -67,6 +69,67 @@ namespace RimMandrake.MessyConduit.SelfTest
             List<P2> ns = AerialMath.SpanCurve(new P2(5, 5), new P2(5, 15), 0.06);
             C(ns.Any(p => p.Z < Math.Min(5, 15) + 5 - 0.001 && p.X == 5), "north-south span is sampled along its length");
             C(AerialMath.SpanCurve(a, b, 0.0).All(p => Math.Abs(p.Z - 10) < 1e-9), "sag 0 is a straight line");
+        }
+
+        // ------------------------------------------------------------------ round 2 (owner 2026-10-04): wall brackets
+        private static readonly string[] Rots = { "North", "East", "South", "West" };
+
+        private static void Brackets()
+        {
+            Dictionary<string, P2> ins = BracketGeometryTable.Build();
+            Dictionary<string, double> edge = BracketGeometryTable.PlateEdge();
+            var looks = ins.Keys.Select(k => k.Split('/')[0]).Distinct().ToList();
+            C(looks.Count >= 4, "bracket table carries every look (" + string.Join(",", looks) + ")");
+            int n = 0;
+            var bad = new List<string>();
+            foreach (string look in looks)
+                for (int rot = 0; rot < 4; rot++)
+                {
+                    string key = look + "/" + Rots[rot];
+                    if (!ins.TryGetValue(key, out P2 i) || !edge.TryGetValue(key, out double e)) { bad.Add(key + " missing"); continue; }
+                    n++;
+                    P2 nrm = AerialMath.WallNormal(rot), t = new P2(-nrm.Z, nrm.X);
+                    P2 off = AerialMath.BracketDrawOffset(rot, e);
+                    double plateWorld = AerialMath.Dot(off, nrm) + e;                        // along the normal, from the cell centre
+                    double insWorld = AerialMath.Dot(off, nrm) + AerialMath.Dot(i, nrm);
+                    if (!AerialMath.BracketLeansOut(rot, i)) bad.Add(key + " leans INTO the wall (insulator " + i + ")");
+                    if (Math.Abs(plateWorld - (0.5 + AerialMath.BracketPlateInset)) > 1e-9) bad.Add(key + " plate edge at " + plateWorld.ToString("0.000") + ", not the wall's outer edge");
+                    if (insWorld >= 0.5) bad.Add(key + " insulator buried in the wall (" + insWorld.ToString("0.00") + ")");
+                    if (insWorld <= -0.5) bad.Add(key + " insulator past its own cell (" + insWorld.ToString("0.00") + ")");
+                    if (Math.Abs(AerialMath.Dot(off, t)) > 1e-12) bad.Add(key + " draw offset slides along the wall");
+                }
+            C(n == looks.Count * 4 && bad.Count == 0, "brackets, " + n + " look x facing: lean OUT, plate on the wall's outer edge, insulator outside the wall in its own cell" +
+              (bad.Count > 0 ? ": " + string.Join("; ", bad) : ""));
+            // the facing convention: rot points AT the wall
+            C(AerialMath.WallNormal(0).Z == 1 && AerialMath.WallNormal(1).X == 1 && AerialMath.WallNormal(2).Z == -1 && AerialMath.WallNormal(3).X == -1,
+              "wall normal: N +z, E +x, S -z, W -x");
+            // N/S at the outer edge, not the centre: the graphic centre stands OUT of the wall cell, not 0.9 onto it
+            double sOff = AerialMath.Dot(AerialMath.BracketDrawOffset(2, 0.32), AerialMath.WallNormal(2));
+            C(sOff < 0.45, "a south bracket's graphic is drawn " + sOff.ToString("0.00") + " toward its wall (was 0.9: the wall's centre)");
+            // can fail: the round-1 Scrapper/South insulator (plate-up art) leaned into the wall
+            C(!AerialMath.BracketLeansOut(2, new P2(0.004, -0.229)) && !AerialMath.BracketLeansOut(1, new P2(0.3, 0.1)),
+              "can fail: the round-1 Scrapper south art (insulator toward the wall) reads as leaning IN");
+        }
+
+        // ------------------------------------------------------------------ round 2: local devices across a pole's terminals
+        private static void Terminals()
+        {
+            Dictionary<int, int> one = AerialMath.AssignTerminals(new List<(int, double)> { (5, 0.3) }, 3);
+            C(one[5] == 1, "one local device takes the middle terminal");
+            Dictionary<int, int> two = AerialMath.AssignTerminals(new List<(int, double)> { (8, 1.0), (9, -2.0) }, 3);
+            C(two[9] == 0 && two[8] == 2, "two devices take the outer pair, the western one on the left");
+            Dictionary<int, int> three = AerialMath.AssignTerminals(new List<(int, double)> { (1, 0.0), (2, -3.0), (3, 2.5) }, 3);
+            C(three[2] == 0 && three[1] == 1 && three[3] == 2, "three lights each wire to a different terminal, left to right");
+            var many = new List<(int, double)>();
+            for (int i = 0; i < 7; i++) many.Add((100 + i, i - 3.0));
+            Dictionary<int, int> m = AerialMath.AssignTerminals(many, 3);
+            var load = Enumerable.Range(0, 3).Select(t => m.Values.Count(v => v == t)).ToList();
+            bool monotone = many.OrderBy(d => d.Item2).Select(d => m[d.Item1]).Zip(many.OrderBy(d => d.Item2).Select(d => m[d.Item1]).Skip(1), (a, b) => a <= b).All(x => x);
+            C(m.Count == 7 && load.Max() - load.Min() <= 1 && monotone, "seven devices share three terminals evenly (" + string.Join("/", load) + "), never crossing");
+            C(AerialMath.AssignTerminals(many, 1).Values.All(v => v == 0), "a one-insulator bracket: everything on its one terminal");
+            var rev = new List<(int, double)>(many); rev.Reverse();
+            Dictionary<int, int> m2 = AerialMath.AssignTerminals(rev, 3);
+            C(m.All(kv => m2[kv.Key] == kv.Value), "terminal choice does not depend on enumeration order");
         }
 
         private static void Strands()

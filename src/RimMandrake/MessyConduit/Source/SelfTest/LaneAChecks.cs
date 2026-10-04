@@ -356,7 +356,7 @@ namespace RimMandrake.MessyConduit.SelfTest
             long work = ps.SelectMany(p => p.Strands).Where(s => s.Settle != null).Sum(s => s.Settle.Work);
             Check(b.LastPlanned == 0, $"perf: warm rebuild of the 1000-cell field planned {b.LastPlanned} edges");
             Check(cold < 4000, $"perf: cold build of the {cells}-cell field took {cold:0} ms (> 4 s)");
-            int bad = ps.SelectMany(p => p.Strands).Where(s => !s.OverFace).Sum(s => s.Pts.Skip(1).Take(Math.Max(0, s.Pts.Count - 2)).Count(q => !w.IsWalkable(q.Floor)));
+            int bad = ps.SelectMany(p => p.Strands).Where(s => !s.OverFace).Sum(s => { List<V2> t = Program.TrimUnderArt(w, s.Pts); return t.Skip(1).Take(Math.Max(0, t.Count - 2)).Count(q => !w.IsWalkable(q.Floor)); });
             Check(bad == 0, $"perf: {bad} laid vertices in unwalkable cells on the density field");
             Console.WriteLine($"  perf: {cells} conduit cells -> {b.Graph.Nodes.Count} nodes, {b.Graph.CordEdges().Count()} cord edges, {ps.Sum(p => p.Strands.Count)} strands, {pts} laid points, settle work {work}; cold {cold:0} ms, warm {warm:0} ms");
         }

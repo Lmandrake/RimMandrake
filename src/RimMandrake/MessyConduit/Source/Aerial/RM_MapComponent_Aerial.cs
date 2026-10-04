@@ -49,7 +49,7 @@ namespace RimMandrake.MessyConduit.Aerial
         public void Deregister(CompPowerTap t) => taps.Remove(t);
         public void QueueAutoLink(CompAerialAnchor a) { if (!pendingAuto.Contains(a)) pendingAuto.Add(a); }
 
-        public void Notify_SpansChanged() => meshes.Clear();
+        public void Notify_SpansChanged() => meshes.Clear();      // local drops re-sign themselves every frame (DrawLocalDrops)
 
         public void Notify_SettingsChanged()
         {
@@ -87,6 +87,71 @@ namespace RimMandrake.MessyConduit.Aerial
                 PollFallen();
             }
             Sparks(now);
+            TapSparks(now);
+        }
+
+        // ------------------------------------------------------------------ the power-tap clamp BITING its line (owner round 2)
+        /// <summary>The clamp art (Aerial/TapClamp: the jaws biting a vertical length of line at the art's LEFT, our cable
+        /// trailing off its right edge) is drawn per frame, its bitten line laid ON the victim transmitter's cell centre and
+        /// its handle turned toward the tap's own cell, so it reads as grabbed onto their line. Size and the bite's place in
+        /// the art (fraction of the width from the centre) PROVISIONAL, measured from the 128 px art.</summary>
+        public const float TapSize = 1.5f, TapBiteX = -0.375f;
+        public int lastTapDraws, tapSparks;
+        private static Material tapMat;
+        private static bool tapMatTried;
+
+        public static bool TapBite(CompPowerTap t, out Vector3 bite, out Vector3 centre, out float angle)
+        {
+            Vector3 home = t.parent.TrueCenter();
+            t.VictimNet(out Thing v);
+            angle = 0f;
+            if (v == null) { bite = centre = home; return false; }
+            bite = v.TrueCenter();
+            Vector3 back = home - bite;
+            back.y = 0f;
+            back = back.normalized;
+            centre = bite - back * (TapBiteX * TapSize);
+            angle = -Mathf.Atan2(back.z, back.x) * Mathf.Rad2Deg;
+            return true;
+        }
+
+        private void DrawTaps(CellRect view)
+        {
+            lastTapDraws = 0;
+            if (!tapMatTried)
+            {
+                tapMatTried = true;
+                Texture2D tex = ContentFinder<Texture2D>.Get(AerialMaterials.AerialDir + "TapClamp", false);
+                if (tex != null) tapMat = MaterialPool.MatFrom(new MaterialRequest(tex, ShaderDatabase.Transparent));
+            }
+            if (tapMat == null) return;
+            float y = AltitudeLayer.BuildingOnTop.AltitudeFor();
+            foreach (CompPowerTap t in Taps)
+            {
+                if (!view.Contains(t.parent.Position)) continue;
+                TapBite(t, out _, out Vector3 c, out float ang);
+                c.y = y;
+                Graphics.DrawMesh(MeshPool.plane10, Matrix4x4.TRS(c, Quaternion.AngleAxis(ang, Vector3.up), new Vector3(TapSize, 1f, TapSize)), tapMat, 0);
+                lastTapDraws++;
+            }
+        }
+
+        /// <summary>A clamp that is drawing power now spits a few sparks from its jaws now and then (look only).</summary>
+        private void TapSparks(int tick)
+        {
+            if (!AerialSettings.enabled || MessyConduitSettings.sparkIntensity <= 0.01f || Find.CurrentMap != map) return;
+            foreach (CompPowerTap t in Taps)
+            {
+                if (t.lastStolenW <= 0f) continue;
+                int seed = (int)(AerialMath.Hash(t.parent.thingIDNumber, 0x7A9) & 0x7fff);
+                int period = Mathf.Max(40, Mathf.RoundToInt((150 + seed % 120) / MessyConduitSettings.sparkIntensity));
+                if ((tick + seed) % period != 0) continue;
+                if (!TapBite(t, out Vector3 bite, out _, out _)) continue;
+                bite.y = AltitudeLayer.MoteOverhead.AltitudeFor();
+                FleckMaker.ThrowMicroSparks(bite, map);
+                if (((tick / period + seed) % 3) == 0) FleckMaker.ThrowLightningGlow(bite, map, 0.35f);
+                tapSparks++;
+            }
         }
 
         private void ProcessAutoLinks()
@@ -282,7 +347,137 @@ namespace RimMandrake.MessyConduit.Aerial
                         lastDropDraws++;
                     }
             }
+            DrawLocalDrops(view);
+            DrawTaps(view);
             DrawFallenGlow();
+        }
+
+        // ------------------------------------------------------------------ local drops (owner round 2, 2026-10-04)
+        public int lastLocalDrops;
+        /// <summary>State read: per anchor id, device id -> terminal index used on the last frame.</summary>
+        public readonly Dictionary<int, Dictionary<int, int>> lastTerminals = new Dictionary<int, Dictionary<int, int>>();
+        private readonly Dictionary<long, KeyValuePair<int, Mesh[]>> dropMeshes = new Dictionary<long, KeyValuePair<int, Mesh[]>>();
+        private readonly HashSet<long> dropUsed = new HashSet<long>();
+
+        /// <summary>The things that hang off this pole locally: the devices vanilla wired to it (connectChildren) and the
+        /// transmitters standing cardinally beside it (a battery: joined by adjacency, drawn by nothing until round 2).
+        /// Our invisible conduit is the cord graph's; other anchors are spans.</summary>
+        public static List<Thing> LocalConnections(CompAerialAnchor a)
+        {
+            var r = new List<Thing>();
+            CompPower pc = a.PowerComp;
+            if (pc?.connectChildren != null)
+                foreach (CompPower c in pc.connectChildren)
+                    if (c?.parent != null && c.parent.Spawned && !r.Contains(c.parent)) r.Add(c.parent);
+            if (!a.Spawned) return r;
+            foreach (IntVec3 adj in GenAdj.CellsAdjacentCardinal(a.parent))
+            {
+                if (!adj.InBounds(a.Map)) continue;
+                foreach (Thing t in adj.GetThingList(a.Map))
+                {
+                    if (!(t is Building b) || r.Contains(t) || CompAerialAnchor.Of(t) != null) continue;
+                    if (t.def.building != null && t.def.building.isPowerConduit) continue;
+                    CompPower p = b.PowerComp;
+                    if (p == null || !p.Props.transmitsPower) continue;
+                    r.Add(t);
+                }
+            }
+            return r;
+        }
+
+        /// <summary>Each local connection is a drop wire from the device's CENTROID up to the pole terminal
+        /// AerialMath.AssignTerminals gave it (spread over the crossarm, shared only when there are more devices than
+        /// insulators). The part over the device's own art is drawn BENEATH the building (SmallWire), so it vanishes into the
+        /// device whatever its art; the rest hangs at span altitude and ends exactly on the insulator tip.</summary>
+        private void DrawLocalDrops(CellRect view)
+        {
+            lastLocalDrops = 0;
+            if (!AerialSettings.enabled || AerialMaterials.Span == null) return;
+            dropUsed.Clear();
+            float under = AltitudeLayer.SmallWire.AltitudeFor(), over = SpanAltitude;
+            foreach (CompAerialAnchor a in Anchors)
+            {
+                if (!view.ExpandedBy(6).Contains(a.Position)) continue;
+                List<Thing> devs = LocalConnections(a);
+                if (devs.Count == 0) { lastTerminals.Remove(a.thingIDNumber); continue; }
+                List<P2> tips = a.InsulatorTips();
+                if (tips.Count == 0) continue;
+                Vector3 bp = a.BasePoint;
+                Dictionary<int, int> term = AerialMath.AssignTerminals(devs.Select(d => (d.thingIDNumber, (double)(d.TrueCenter().x - bp.x))).ToList(), tips.Count);
+                lastTerminals[a.thingIDNumber] = term;
+                foreach (Thing d in devs)
+                {
+                    P2 tip = tips[Mathf.Clamp(term[d.thingIDNumber], 0, tips.Count - 1)];
+                    long key = ((long)a.thingIDNumber << 32) ^ (uint)d.thingIDNumber;
+                    dropUsed.Add(key);
+                    Vector3 c = d.TrueCenter();
+                    int sig = Gen.HashCombineInt(Gen.HashCombineInt(c.GetHashCode(), tip.X.GetHashCode() ^ tip.Z.GetHashCode()),
+                                                 Gen.HashCombineInt(Mathf.RoundToInt(AerialMaterials.SpanWidth * 1000f), d.Rotation.AsInt));
+                    if (!dropMeshes.TryGetValue(key, out var kv) || kv.Key != sig)
+                    {
+                        if (kv.Value != null) foreach (Mesh old in kv.Value) if (old != null) UnityEngine.Object.Destroy(old);
+                        kv = new KeyValuePair<int, Mesh[]>(sig, DropMeshes(d, new P2(c.x, c.z), tip, under, over));
+                        dropMeshes[key] = kv;
+                    }
+                    foreach (Mesh m in kv.Value)
+                        if (m != null) Graphics.DrawMesh(m, Matrix4x4.identity, AerialMaterials.Span, 0);
+                    lastLocalDrops++;
+                }
+            }
+            if (dropMeshes.Count > dropUsed.Count * 2 + 32)
+                foreach (long k in dropMeshes.Keys.Where(k => !dropUsed.Contains(k)).ToList())
+                {
+                    foreach (Mesh old in dropMeshes[k].Value) if (old != null) UnityEngine.Object.Destroy(old);
+                    dropMeshes.Remove(k);
+                }
+        }
+
+        /// <summary>The device's drawn extent (its footprint united with its graphic rect), in which the drop runs under it.</summary>
+        public static bool InDeviceArt(Thing d, P2 p)
+        {
+            CellRect r = d.OccupiedRect();
+            if (p.X >= r.minX && p.X <= r.maxX + 1 && p.Z >= r.minZ && p.Z <= r.maxZ + 1) return true;
+            if (d.Graphic == null) return false;
+            Vector3 g = d.TrueCenter() + d.Graphic.DrawOffset(d.Rotation);
+            Vector2 sz = d.Graphic.drawSize;
+            if (d.Rotation.IsHorizontal && d.Graphic.ShouldDrawRotated) sz = new Vector2(sz.y, sz.x);
+            return Math.Abs(p.X - g.x) <= sz.x / 2f && Math.Abs(p.Z - g.z) <= sz.y / 2f;
+        }
+
+        private static Mesh[] DropMeshes(Thing d, P2 from, P2 tip, float under, float over)
+        {
+            List<P2> pts = AerialMath.SpanCurve(from, tip, 0.04, 0.2);
+            int split = 0;
+            while (split < pts.Count - 1 && InDeviceArt(d, pts[split])) split++;
+            var lo = pts.GetRange(0, Math.Min(pts.Count, split + 1));
+            var hi = pts.GetRange(split, pts.Count - split);
+            return new[] { Ribbon(lo, under, "RM_AerialDropUnder"), Ribbon(hi, over, "RM_AerialDrop") };
+        }
+
+        private static Mesh Ribbon(List<P2> pts, float y, string name)
+        {
+            if (pts.Count < 2) return null;
+            var verts = new List<Vector3>(); var uvs = new List<Vector2>(); var tris = new List<int>();
+            float w = AerialMaterials.SpanWidth * 0.85f;
+            double u = 0;
+            for (int i = 0; i < pts.Count; i++)
+            {
+                P2 prev = i > 0 ? pts[i - 1] : pts[i], next = i < pts.Count - 1 ? pts[i + 1] : pts[i];
+                double tx = next.X - prev.X, tz = next.Z - prev.Z, tl = Math.Sqrt(tx * tx + tz * tz);
+                if (tl < 1e-9) { tx = 0; tz = 1; tl = 1; }
+                double nx = -tz / tl * w / 2, nz = tx / tl * w / 2;
+                if (i > 0) u += P2.Dist(pts[i - 1], pts[i]) / (w * 4);
+                verts.Add(new Vector3((float)(pts[i].X + nx), y, (float)(pts[i].Z + nz)));
+                verts.Add(new Vector3((float)(pts[i].X - nx), y, (float)(pts[i].Z - nz)));
+                uvs.Add(new Vector2((float)u, 1f)); uvs.Add(new Vector2((float)u, 0f));
+                if (i == 0) continue;
+                int q = 2 * (i - 1);
+                tris.Add(q); tris.Add(q + 2); tris.Add(q + 3);
+                tris.Add(q); tris.Add(q + 3); tris.Add(q + 1);
+            }
+            var m = new Mesh { name = name };
+            m.SetVertices(verts); m.SetUVs(0, uvs); m.SetTriangles(tris, 0); m.RecalculateBounds();
+            return m;
         }
 
         public static float SpanAltitude => AltitudeLayer.PawnState.AltitudeFor(5f);

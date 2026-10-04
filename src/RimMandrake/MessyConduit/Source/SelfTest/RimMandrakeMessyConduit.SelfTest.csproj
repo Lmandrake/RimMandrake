@@ -37,6 +37,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="LaneAChecks.cs" />
     <Compile Include="..\Aerial\AerialMath.cs" />
+    <Compile Include="..\Aerial\BracketGeometryTable.cs" />
     <Compile Include="AerialSelfTest.cs" />
     <Compile Include="..\Hose\HoseMath.cs" />
     <Compile Include="HoseSelfTest.cs" />

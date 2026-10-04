@@ -149,6 +149,10 @@ namespace RimMandrake.MessyConduit
             // bracket, a power switch) was vanilla's hair-thin grey wire, invisible to him. Print it as the look's own
             // cable instead (the span cable: thick dark Industrial/Scrapper, black Modern, sleek steel Futuristic).
             if (A == null || B == null || Aerial.AerialMaterials.Span == null) return true;
+            // round 2 (owner 2026-10-04): a device wired to a mast / lamp mast / bracket is a drop wire from its centroid to
+            // the pole TERMINAL it is given (RM_MapComponent_Aerial.DrawLocalDrops, drawn per frame so the terminal spread
+            // follows every sibling), never this straight line to the pole's graphic centre
+            if (Aerial.AerialSettings.enabled && Aerial.CompAerialAnchor.Of(B) != null) { ConduitVisuals.HookupWiresSuppressed++; return false; }
             ConduitVisuals.HookupCablesPrinted++;
             PrintCable(layer, A, B);
             return false;
@@ -156,7 +160,9 @@ namespace RimMandrake.MessyConduit
 
         public static void PrintCable(SectionLayer layer, Thing A, Thing B)
         {
-            Vector3 a = A.TrueCenter() + A.Graphic.DrawOffset(A.Rotation), b = B.TrueCenter() + B.Graphic.DrawOffset(B.Rotation);
+            // round 2 (owner 2026-10-04, station 4): end at each building's CENTROID, printed at SmallWire altitude, i.e.
+            // beneath both buildings, so the art hides the ends and no misalignment can show
+            Vector3 a = A.TrueCenter(), b = B.TrueCenter();
             Vector3 center = (a + b) / 2f;
             center.y = AltitudeLayer.SmallWire.AltitudeFor();
             Vector3 v = b - a;
