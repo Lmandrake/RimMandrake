@@ -183,6 +183,17 @@ def static_checks():
             bad.append("RM_CapstanTurret.cs lacks %s" % need)
     if "HarmonyLib" in ccs:
         bad.append("RM_CapstanTurret.cs uses Harmony: this assembly has no Harmony reference")
+    # SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1: the row is locked behind studying two draw-joints found in the dig strata
+    rp = open(os.path.join(HERE, "Defs", "ResearchProjectDefs", "RM_CapstanTurret.xml"), encoding="utf-8").read()
+    if "<li>RUT_PreservedDrawJoint</li>" not in rp.split("<requiredAnalyzed>")[-1].split("</requiredAnalyzed>")[0]:
+        bad.append("RM_CapstanTurret research does not require studying RUT_PreservedDrawJoint")
+    dj = ET.parse(os.path.join(HERE, "Defs", "ThingDefs_Items", "RUT_PreservedDrawJoint.xml")).getroot()
+    ana = dj.find(".//li[@Class='CompProperties_CompAnalyzableUnlockResearch']")
+    if ana is None or ana.findtext("analysisRequiredRange") != "2~2" or ana.findtext("destroyedOnAnalyzed") != "true":
+        bad.append("RUT_PreservedDrawJoint must be analyzable twice and consumed (spec: two preserved draw-joints)")
+    lot = ET.parse(os.path.join(HERE, "Defs", "LotteryTableDefs", "RUT_DigStratumTable.xml")).getroot()
+    if not any(r.findtext("thingDef") == "RUT_PreservedDrawJoint" for r in lot.iter("li")):
+        bad.append("RUT_DigStratumTable never yields RUT_PreservedDrawJoint")
     # SUMP_FREE_TIER_MOVE_BUILD_1: the tar kit ships in this free mod, never in the campaign tier
     moved = ("RM_Tarred", "RM_TarredThought", "RM_WeakTarSolvent", "RM_StrongTarSolvent", "RM_ThrummelSeepwax",
              "RM_TarRuinedGoods", "RM_TarVault", "RM_GaslightLamp", "RM_TarGas", "RM_Duckboards", "RM_Glasswalk",
