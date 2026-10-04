@@ -2,7 +2,7 @@
 """
 weapon_affordability.py — will this pawn kind actually spawn holding something?
 
-VERSION 1.0  (2026-08-20)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-20)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 WHY THIS EXISTS

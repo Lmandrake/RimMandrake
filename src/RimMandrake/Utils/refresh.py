@@ -2,7 +2,7 @@
 """
 refresh.py — what went stale when the mod list changed, and how to fix it.
 
-VERSION 1.0  (2026-08-11)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-11)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 THE PROBLEM THIS SOLVES

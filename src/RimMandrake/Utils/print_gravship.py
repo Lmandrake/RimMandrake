@@ -2,7 +2,7 @@
 """
 print_gravship.py - stamp a saved ShipLayoutDefV2 onto a LIVE map through the bridge.
 
-VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 
 WHY THIS EXISTS
 ---------------

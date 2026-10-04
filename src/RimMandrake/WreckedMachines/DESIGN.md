@@ -149,7 +149,7 @@ downscale, material detail does not. So every prompt in this style must push
 the breaches — rather than asking for more damage or more texture.
 
 The three candidates are kept at
-`file:///D:/Luke/dev/Rimworld/src/Jawa/art_bench/smelter/` for comparison if the
+`file:///D:/Luke/dev/RimMandrake/src/Jawa/art_bench/smelter/` for comparison if the
 decision is ever revisited — `variant_flat.png`, `variant_painterly.png` and the
 winner `variant_rendered.png`, which became the wrecked south anchor. They are
 tracked in git; **do not delete them**, because the ruling is only re-openable

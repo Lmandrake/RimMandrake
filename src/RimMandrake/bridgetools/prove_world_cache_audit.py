@@ -2,7 +2,7 @@
 
 HILLINESS_CACHE_NOT_READABLE_1. Run under Windows python.exe with the game up:
 
-    python.exe D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\bridgetools\\prove_world_cache_audit.py
+    python.exe D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\bridgetools\\prove_world_cache_audit.py
 
 THE THING THIS HAS TO AVOID
 ===========================

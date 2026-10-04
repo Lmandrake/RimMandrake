@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """gen_furniture_register.py — the owner's FURNITURE-art review sheet, rebuildable.
 
-VERSION 1.0  (2026-09-05)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-09-05)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Python 3.8+ stdlib **plus Pillow** (already required by animal_contact_sheet.py).
 
 Sibling of `gen_creature_register.py`, and deliberately its mirror: same four

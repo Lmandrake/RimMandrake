@@ -135,7 +135,7 @@ scoped syntax to separate them, so the deny silently breaks every subagent resum
 well. ⚠️ **And do not set `crossSessionInbound: "refuse"` to get there**: the owner's own
 broadcast reaches windows through that same inbound socket, so `refuse` drops HIS
 game-state announcements too — the one class of message that must get through. Working
-example: `D:\Luke\dev\Rimworld\.claude\hooks\block_peer_messages.py`.
+example: `D:\Luke\dev\RimMandrake\.claude\hooks\block_peer_messages.py`.
 
 ## Remote Control (the phone) is a protocol, and it lives in one skill — owner, 2026-09-19
 
@@ -189,7 +189,7 @@ point and it has not changed.** What changed is the form.
 backticks so backslashes survive markdown rendering:
 
 ```
-`D:\Luke\dev\Rimworld\src\RimMandrake\Utils\rimbench\scatter.py`
+`D:\Luke\dev\RimMandrake\src\RimMandrake\Utils\rimbench\scatter.py`
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Player.log`
 ```
 

@@ -137,7 +137,7 @@ def build(clean, gm):
         sys.exit(
             "On the /mnt/d tree run this under Windows Python, not WSL python3 (from an ext4\n"
             "clone, WSL python3 works — it stages the build through winbuild.py):\n"
-            "    cd /mnt/d/Luke/dev/Rimworld && python.exe src/RimMandrake/bridgetools/build.py\n"
+            "    cd /mnt/d/Luke/dev/RimMandrake && python.exe src/RimMandrake/bridgetools/build.py\n"
             "dotnet.exe cannot accept a /mnt/... project path, and every deploy\n"
             "path in this script is Windows-native.")
     if not os.path.exists(DOTNET):

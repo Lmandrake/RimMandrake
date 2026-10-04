@@ -2,7 +2,7 @@
 """
 def_inventory.py — the whole modded def database, offline, inheritance resolved.
 
-VERSION 1.0  (2026-08-10)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-10)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Docs/manifest: src/RimMandrake/Utils/README.md  ("def_inventory.py" section)
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 

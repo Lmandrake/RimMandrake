@@ -83,7 +83,7 @@ and should not be retired.
 
 1. Copy the mod into the game (not done automatically — see *Staging* below):
    ```
-   robocopy "D:\Luke\dev\Rimworld\src\RimMandrake\RimDefDump" ^
+   robocopy "D:\Luke\dev\RimMandrake\src\RimMandrake\RimDefDump" ^
             "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimDefDump" /E
    ```
 2. Enable `mandrake.rm.rimdefdump` in the mod list. It has no dependencies and no

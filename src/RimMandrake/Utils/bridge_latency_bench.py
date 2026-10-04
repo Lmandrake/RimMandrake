@@ -13,7 +13,7 @@ driver pays A+B (plus its own thinking time) for every handful of calls, where
 a deterministic script pays them once per session.
 
 Run FROM WINDOWS PYTHON (the bridge binds Windows loopback):
-    cd /mnt/d/Luke/dev/Rimworld && python.exe src/RimMandrake/Utils/bridge_latency_bench.py
+    cd /mnt/d/Luke/dev/RimMandrake && python.exe src/RimMandrake/Utils/bridge_latency_bench.py
 
 Per the rimbridge skill's rule, every number is printed WITH its conditions
 (mod count is not read here — record it beside the output when you quote it;

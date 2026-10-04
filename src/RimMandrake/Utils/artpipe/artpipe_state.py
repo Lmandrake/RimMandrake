@@ -43,7 +43,7 @@ SEARCH_FILES = ("registry.jsonl", "art_status.json")
 # The PRE-MIGRATION artpipe tree (the old Rimworld repo). Its _artsrc holds ~2241
 # renders that never moved to the state dir; r31 found wireable art there that
 # `find` could not see. Searched by `find` unless --no-legacy.
-LEGACY_ROOTS = (Path("/mnt/d/Luke/dev/Rimworld/infrastructure/artpipe"),)
+LEGACY_ROOTS = (Path("/mnt/d/Luke/dev/RimMandrake/infrastructure/artpipe"),)
 
 
 # ---------------------------------------------------------------- where

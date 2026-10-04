@@ -387,8 +387,8 @@ def run_selftest():
         print("selftest 1 FAILED: %r" % (e,))
 
     # (2) one corpus map, if present on disk.
-    corpus = ("/mnt/d/Luke/dev/Rimworld/research/RimMandrake/hand_authored_maps/"
-              "World_45_In_Memory_of_Rain/InMemoryOfRain.rws")
+    corpus = os.path.join(_HERE, "..", "..", "..", "..", "research", "RimMandrake", "hand_authored_maps",
+                          "World_45_In_Memory_of_Rain", "InMemoryOfRain.rws")
     if os.path.isfile(corpus):
         try:
             w, h, colors, uc, uh = render_rws(corpus, DEFAULT_DUMP_DIR)

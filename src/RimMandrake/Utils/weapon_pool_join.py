@@ -3,7 +3,7 @@
 weapon_pool_join.py — for the 23 bare-producing kinds, which mechanism actually empties
 their pool: no ranged fallback, or a generateAllowChance coin-flip on a thin pool?
 
-VERSION 1.0  (2026-08-29)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-29)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Dependency-free: Python 3.8+ stdlib only. Keep it that way.
 
 WHY THIS EXISTS

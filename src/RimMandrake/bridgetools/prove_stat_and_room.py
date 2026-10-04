@@ -28,7 +28,7 @@ WHAT IT CHECKS, IN THE ONLY ORDER THAT MAKES SENSE
 
 USAGE
 =====
-    python.exe D:\\Luke\\dev\\Rimworld\\src\\RimMandrake\\bridgetools\\prove_stat_and_room.py
+    python.exe D:\\Luke\\dev\\RimMandrake\\src\\RimMandrake\\bridgetools\\prove_stat_and_room.py
     ... --census        stop after check 1
     ... --rect X,Z,W,H  where a dwelling has been built, for check 4
 

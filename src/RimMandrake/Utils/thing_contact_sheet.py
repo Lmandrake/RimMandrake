@@ -2,7 +2,7 @@
 """
 thing_contact_sheet.py — contact sheets for everything that is NOT a pawn.
 
-VERSION 1.0  (2026-08-15)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-15)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Python 3.8+ stdlib **plus Pillow**. Nothing else. Keep it that way.
 
 CHANGELOG

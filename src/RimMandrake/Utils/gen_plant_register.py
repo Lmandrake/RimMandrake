@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """gen_plant_register.py — the owner's PLANT art + worth review sheet, rebuildable.
 
-VERSION 1.0  (2026-09-05)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-09-05)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 Python 3.8+ stdlib **plus Pillow**. Sibling of `gen_creature_register.py`, which it
 mirrors deliberately: same four stages, same lock, same data-honesty discipline.
 

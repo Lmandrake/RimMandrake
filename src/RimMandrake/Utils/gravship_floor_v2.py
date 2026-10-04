@@ -2,7 +2,7 @@
 """
 gravship_floor_v2.py - Cargo Decks, blistered and rusted. Offline renders.
 
-VERSION 2.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 2.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 
 What changed from v1 (`gravship_floor_designs.py`):
 

@@ -2844,3 +2844,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"SUMP_CAPSTAN_LOCAL_RECIPE_1","ts":"2026-10-04T09:30:01Z","tsn":1791106201279181995}
 {"seat":"FOUNDRY","event":"start","id":"SUMP_CAPSTAN_LOCAL_RECIPE_1","ts":"2026-10-04T09:30:01Z","tsn":1791106201830355166}
 {"seat":"FOUNDRY","event":"close","id":"SUMP_CAPSTAN_LOCAL_RECIPE_1","sha":"6ad918e08","reason":"Two defs on abstract RM_CapstanTurretBase: RM_CapstanTurret (learned) + RM_CapstanTurret_PitRigged (60 bitumen, 25 seepwax, 40 steel, 1 component; PROVISIONAL). Same research row. Static validation only; not deployed.","ts":"2026-10-04T09:33:02Z","tsn":1791106382205904392}
+{"seat":"FOUNDRY","event":"needs","id":"ARMOURY_KOTOR_BOLT_GUARD_1","to":"bridge","reason":"offline half done (generator fixed, own_ranged_ops_carry_no_donor_guard PASS); only the live bar ranged_patch_damage_is_live remains (deploy Armoury, KotORBlasterBolt_default reads 33)","ts":"2026-10-04T09:37:00Z","tsn":1791106620500246813}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"belt reruns 2","ts":"2026-10-04T09:37:33Z","tsn":1791106653106296131}

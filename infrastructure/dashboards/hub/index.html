@@ -131,7 +131,7 @@
 </section>
 
 <footer>
-  <div>Shell source: <code>D:\Luke\dev\Rimworld\infrastructure\dashboards\hub\index.html</code>
+  <div>Shell source: <code>D:\Luke\dev\RimMandrake\infrastructure\dashboards\hub\index.html</code>
   &nbsp;·&nbsp; regenerate tab data: <code>python3 infrastructure/dashboards/hub/make_tab_data.py</code>
   &nbsp;·&nbsp; the same lamps, from a terminal: <code>python3 infrastructure/dashboards/hub/hub_check.py</code></div>
   <div style="margin-top:6px">Contract: every tab reads one data file carrying
@@ -233,7 +233,7 @@ grab("data/artsheets.json").then(d=>{
     `<h3>Unresolved review sheets (${rows.length})</h3>`+
     (rows.length?`<div class="scroll"><table><tr><th>sheet</th><th class="num">undecided</th><th>path</th></tr>`+
       rows.map(r=>{
-        const winPath="D:\\Luke\\dev\\Rimworld\\"+r.file.replace(/\//g,"\\");
+        const winPath="D:\\Luke\\dev\\RimMandrake\\"+r.file.replace(/\//g,"\\");
         const u=(r.undecided==null)?"UNMEASURED":`${r.undecided} / ${r.total??"?"}`;
         return `<tr><td><a href="${esc(r.published)}">${esc(r.title)}</a></td>`+
           `<td class="num">undecided ${esc(u)}</td>`+

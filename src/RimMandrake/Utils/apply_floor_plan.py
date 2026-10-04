@@ -2,7 +2,7 @@
 """
 apply_floor_plan.py - lay a gravship_floor_v2 plan onto the LIVE map.
 
-VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/Rimworld/src/RimMandrake/Utils/
+VERSION 1.0  (2026-08-27)   Project: D:/Luke/dev/RimMandrake/src/RimMandrake/Utils/
 
 Run under WINDOWS python (`python.exe`); the bridge binds Windows loopback.
 

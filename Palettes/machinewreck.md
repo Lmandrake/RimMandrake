@@ -93,7 +93,7 @@ used Nothing yet. First consumer will be the ruined Gravship Cradle's surroundin
 
 ## What the sheet showed
 
-`D:\Luke\dev\Rimworld\Palettes\machinewreck_contact.png` — 33 cells, grouped by
+`D:\Luke\dev\RimMandrake\Palettes\machinewreck_contact.png` — 33 cells, grouped by
 the sections in the block above, captioned with defName and supplying mod.
 
 **Acted on — a fact, not taste.** `KotORChunk_plasteel`, `_durasteel` and `_bronzium`
