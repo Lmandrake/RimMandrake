@@ -183,6 +183,14 @@ def static_checks():
             bad.append("RM_CapstanTurret.cs lacks %s" % need)
     if "HarmonyLib" in ccs:
         bad.append("RM_CapstanTurret.cs uses Harmony: this assembly has no Harmony reference")
+    # SUMP_CAPSTAN_LOCAL_RECIPE_1: two defs on one abstract parent, the local one paid in Sump bitumen and seepwax
+    cx = ET.parse(cap).getroot()
+    caps = {d.findtext("defName"): d for d in cx.iter("ThingDef") if d.findtext("defName")}
+    pr = caps.get("RM_CapstanTurret_PitRigged")
+    if "RM_CapstanTurret" not in caps or pr is None:
+        bad.append("capstan needs both RM_CapstanTurret and RM_CapstanTurret_PitRigged")
+    elif pr.find("costList/RM_Bitumen") is None or pr.find("costList/RM_Seepwax") is None:
+        bad.append("RM_CapstanTurret_PitRigged must cost RM_Bitumen (tar-glass bearings) and RM_Seepwax (cable packing)")
     # SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1: the row is locked behind studying two draw-joints found in the dig strata
     rp = open(os.path.join(HERE, "Defs", "ResearchProjectDefs", "RM_CapstanTurret.xml"), encoding="utf-8").read()
     if "<li>RUT_PreservedDrawJoint</li>" not in rp.split("<requiredAnalyzed>")[-1].split("</requiredAnalyzed>")[0]:

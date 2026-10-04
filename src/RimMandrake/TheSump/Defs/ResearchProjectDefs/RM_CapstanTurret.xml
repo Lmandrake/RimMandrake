@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SUMP_CAPSTAN_TURRET_BUILD_1 + SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1: the row stays locked until two preserved
      draw-joints from the Sump dig strata are studied (RUT_PreservedDrawJoint, vanilla requiredAnalyzed). The row is
-     visible-but-locked rather than hidden. The first local-materials recipe (tar-glass bearings, seepwax cable)
-     is still owed on that item. -->
+     visible-but-locked rather than hidden. It unlocks both recipes: RM_CapstanTurret (steel, components, cloth)
+     and RM_CapstanTurret_PitRigged (tar-glass bearings, seepwax cable; SUMP_CAPSTAN_LOCAL_RECIPE_1). -->
 <Defs>
   <ResearchProjectDef>
     <defName>RM_CapstanTurret</defName>
