@@ -88,10 +88,11 @@ Still not proven / real gaps:
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("StructureInjectionsRUT")
-suite.toggles = []   # this mod ships no ModSettings of its own for the
-                      # GenStep/TileMutator mechanism -- the gate that
-                      # matters (RM_StructureInjectionsSettings.enabled)
-                      # belongs to the ENGINE mod, see module docstring.
+# STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1: the two real Mod Settings fields
+# (Source/StructureInjectionsRUTSettings.cs). The GenStep/TileMutator
+# mechanism's own gate (RM_StructureInjectionsSettings.enabled) belongs to
+# the ENGINE mod, see module docstring.
+suite.toggles = ["warLabCraterEnabled", "ashfallCommandCodesEnabled"]
 
 ENGINE_SETTINGS_TYPE = "RimMandrake.StructureInjections.RM_StructureInjectionsSettings"
 
@@ -257,3 +258,152 @@ def whisper_subsystem_rolls_correctly(t):
                     "%s: thing count near map center did not increase "
                     "(before=%d, after=%d)" % (gsd, before, after))
         t.screenshot()
+
+
+# ---- STRUCTUREINJECTIONSRUT_COVERAGE_GAPS_1 ---------------------------------
+RUT_SETTINGS_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.StructureInjectionsRUTSettings"
+WARLAB_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.WarLabCraterMutation"
+ASHFALL_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.AshfallCommandCodesFlag"
+
+
+def _mod_dir():
+    import os
+    return os.path.dirname(os.path.abspath(__file__))
+
+
+def _static(t, type_name, method):
+    """jawa/static_call -> (success, result string). Never substring-matches
+    a payload for presence; the caller compares the returned value."""
+    r = t.bridge_call("jawa/static_call", type=type_name, method=method, args="")
+    r = r or {}
+    return bool(r.get("success", True)) and "result" in r, str(r.get("result", "")).strip().lower()
+
+
+def _need_static(t, type_name, method):
+    ok, res = _static(t, type_name, method)
+    if not ok:
+        raise ExpectationFailed(
+            "UNMEASURED: jawa/static_call %s.%s returned no result (method not "
+            "reachable by the bridge, or the type is not loaded)" % (type_name, method))
+    return res
+
+
+@suite.chain("static_wiring_offline")
+def static_wiring_offline(t):
+    """Offline bars: read the mod's own files, no bridge."""
+    import glob
+    import os
+    import re
+    d = _mod_dir()
+    defs = os.path.join(d, "Defs")
+
+    with t.component("tile_mutator_extra_gen_steps_resolve", beyond_toggle=True):
+        # the natural mapgen path: every unguarded extraGenSteps entry of a
+        # TileMutatorDef here must be a GenStepDef this mod (or a known
+        # engine-side step) defines, else the mutator fires into nothing.
+        known = set()
+        for f in glob.glob(os.path.join(defs, "**", "*.xml"), recursive=True):
+            txt = open(f, encoding="utf-8", errors="replace").read()
+            known.update(re.findall(r"<GenStepDef>.*?<defName>([^<]+)</defName>", txt, re.S))
+            known.update(re.findall(r"<defName>(RUT_GenStep_[^<]+)</defName>", txt))
+        missing, seen = [], 0
+        for f in glob.glob(os.path.join(defs, "TileMutatorDefs_*.xml")):
+            txt = open(f, encoding="utf-8", errors="replace").read()
+            for blk in re.findall(r"<extraGenSteps>(.*?)</extraGenSteps>", txt, re.S):
+                for attrs, name in re.findall(r"<li([^>]*)>([^<]+)</li>", blk):
+                    if "MayRequire" in attrs:
+                        continue
+                    seen += 1
+                    if name.strip() not in known:
+                        missing.append((os.path.basename(f), name.strip()))
+        if seen == 0:
+            raise ExpectationFailed("found 0 extraGenSteps entries -- the scan could not see them")
+        if missing:
+            raise ExpectationFailed("extraGenSteps name no GenStepDef: %r" % missing)
+
+    with t.component("oasis_shrine_template_terrain_is_all_paved_tile", beyond_toggle=True):
+        txt = open(os.path.join(d, "Templates", "oasis_shrine.txt"), encoding="utf-8").read()
+        terr = [ln.split()[-1] for ln in txt.splitlines() if ln.startswith("TERRAIN")]
+        if len(terr) != 120 or set(terr) != {"PavedTile"}:
+            raise ExpectationFailed(
+                "oasis_shrine.txt TERRAIN lines: %d, defs=%r (want 120 x PavedTile)"
+                % (len(terr), sorted(set(terr))))
+
+    with t.component("compclass_types_exist_and_are_wired", beyond_toggle=True):
+        for rel, needle in (("WarLab/ThingDefs_Buildings/RUT_WarLabReactorCore.xml",
+                             "CompProperties_IgniteCraterOnDestroy"),
+                            ("Ashfall/ThingDefs_Items/RUT_RakatanCommandCodes.xml",
+                             "CompProperties_RedeemRakatanCommandCodes")):
+            txt = open(os.path.join(defs, rel), encoding="utf-8").read()
+            if "<li Class=\"RimMandrake.Utinni.StructureInjectionsRUT.%s\"" % needle not in txt:
+                raise ExpectationFailed("%s does not carry %s" % (rel, needle))
+
+
+@suite.chain("coverage_defs_load")
+def coverage_defs_load(t):
+    with t.component("war_lab_and_ashfall_defs_loaded", beyond_toggle=True):
+        for d in ("ThingDef/RUT_WarLabReactorCore", "ThingDef/RUT_RakatanCommandCodes",
+                  "TerrainDef/PavedTile", "TileMutatorDef/RUT_HomesteadAbode"):
+            r = t.bridge_call("jawa/get_defs", defs=d)
+            if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
+                raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
+
+
+@suite.chain("war_lab_crater_gate")
+def war_lab_crater_gate(t):
+    """warLabCraterEnabled: with it OFF, WarLabCraterMutation.Ignite() must
+    return false (CompIgniteCraterOnDestroy.PostDestroy calls exactly that).
+    The positive arm needs a live world carrying RUT_PropaneLake/RM_TheChill
+    tiles, which a quicktest world does not have."""
+    with t.component("war_lab_ignite_respects_toggle", toggle="warLabCraterEnabled"):
+        t.set_setting(RUT_SETTINGS_TYPE, {"warLabCraterEnabled": False})
+        off = _need_static(t, WARLAB_TYPE, "Ignite")
+        t.set_setting(RUT_SETTINGS_TYPE, {"warLabCraterEnabled": True})
+        if off != "false":
+            raise ExpectationFailed("Ignite() with warLabCraterEnabled=False returned %r, want false" % off)
+
+    with t.component("war_lab_ignite_mutates_propane_lake_tiles_once", beyond_toggle=True):
+        raise ExpectationFailed(
+            "UNMEASURED: no instrument -- the positive arm needs a live world with "
+            "RUT_PropaneLake/RM_TheChill tiles and a read of GameComponent_WarLabCrater."
+            "Triggered/CrateredTileIds; no jawa tool exposes that GameComponent and the "
+            "quicktest world has none of those tiles (add a ProofIgnite static to the mod)")
+
+
+@suite.chain("ashfall_command_codes_gate")
+def ashfall_command_codes_gate(t):
+    """ashfallCommandCodesEnabled: Seize() is a no-op while OFF, flips the
+    persistent flag exactly once while ON (idempotent)."""
+    with t.component("seize_respects_toggle_and_is_idempotent", toggle="ashfallCommandCodesEnabled"):
+        if _need_static(t, ASHFALL_TYPE, "get_HasBeenSeized") != "false":
+            raise ExpectationFailed("UNMEASURED: codes already seized in this game; cannot prove the first-time flip")
+        t.set_setting(RUT_SETTINGS_TYPE, {"ashfallCommandCodesEnabled": False})
+        off = _need_static(t, ASHFALL_TYPE, "Seize")
+        still = _need_static(t, ASHFALL_TYPE, "get_HasBeenSeized")
+        t.set_setting(RUT_SETTINGS_TYPE, {"ashfallCommandCodesEnabled": True})
+        if off != "false" or still != "false":
+            raise ExpectationFailed("OFF arm: Seize()=%r HasBeenSeized=%r, want false/false" % (off, still))
+        first = _need_static(t, ASHFALL_TYPE, "Seize")
+        flag = _need_static(t, ASHFALL_TYPE, "get_HasBeenSeized")
+        again = _need_static(t, ASHFALL_TYPE, "Seize")
+        if (first, flag, again) != ("true", "true", "false"):
+            raise ExpectationFailed(
+                "ON arm: Seize() first=%r flag=%r second=%r, want true/true/false" % (first, flag, again))
+
+
+@suite.chain("unmeasured_behaviours")
+def unmeasured_behaviours(t):
+    with t.component("vault_sleepers_send_woken_and_looted_signals", beyond_toggle=True):
+        raise ExpectationFailed(
+            "UNMEASURED: MapComponent_VaultSleepers only runs on a Site map carrying "
+            "RUT_VaultSite_Type3 with questTags (a live RUT_VaultThaw_V6_Umbra site); no jawa "
+            "tool in tool_schemas.json generates a quest site map or reads quest signals")
+    with t.component("inhabited_cast_runs_on_homestead_tiles", beyond_toggle=True):
+        raise ExpectationFailed(
+            "UNMEASURED: Inhabited_Cast/RM_InhabitedStock need a WorldObject_Inhabited on the "
+            "map's tile (mandrake.rm.inhabited); the quicktest has none and no tool places one")
+    with t.component("natural_mapgen_fires_tile_mutator_gensteps", beyond_toggle=True):
+        raise ExpectationFailed(
+            "UNMEASURED: needs a live world tile carrying a RUT_ TileMutatorDef and a map "
+            "generated from it; jawa/world_tile_set + a fresh map generation is not "
+            "available in a modcheck session (offline resolve bar covers the def side)")

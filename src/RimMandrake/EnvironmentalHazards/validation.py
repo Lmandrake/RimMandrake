@@ -14,6 +14,7 @@ CHAINS
                       a different value, read back, restore. Numerics compared numerically.
   harmony_rules_armed one component per Harmony rule the kit arms (type, method, prefix|postfix, patch method, owner id).
   contact_venom_wiring RM_VenomvineVenom is a lethal hediff (lethalSeverity 1.0, the number the lethal-off toggle holds under).
+  map_mechanics_wiring each of the 12 mechanics: toggle gates its Source file (offline), toggle live-readable, kit-shipped defs resolve.
   map_mechanics       gas, area attacks, weather conditions, water truce, boles, tar, glasswalk...: UNMEASURED, each with the
                       reason (needs a generated biome map / an incident / game days; this run may not drive them).
 
@@ -130,6 +131,45 @@ def _living_map_findings(comp_src=None, dread_src=None, mod_src=None):
     return bad
 
 
+# map_mechanics wiring: (component, Mod Settings toggle, Source file that must consult it in a branch, defs that must resolve live)
+MECHANICS = (
+    ("gas_emitters", "gasEmittersEnabled", "CompActiveGasEmitter.cs", ()),
+    ("periodic_area_attack", "areaAttacksEnabled", "HediffComp_PeriodicAreaAttack.cs", ()),
+    ("environmental_weather", "environmentalDamageEnabled", "GameCondition_EnvironmentalWeather.cs", ()),
+    ("scaled_explosion_death_action", "scaledExplosionsEnabled", "DeathActionWorker_ScaledExplosion.cs", ()),
+    ("water_truce_retribution", "waterTruceRetributionEnabled", "RM_MapComponent_WaterTruce.cs",
+     ("MentalStateDef/RM_WaterTruceRetribution",)),
+    ("living_boles_regrowth", "livingRegrowthEnabled", "RM_MapComponent_LivingRegrowth.cs", ()),
+    ("stranding_pools", "strandingPoolsEnabled", "RM_MapComponent_StrandingPools.cs",
+     ("ThinkTreeDef/RM_ThinkTree_StrandingBehaviors",)),
+    ("tar_coating", "tarCoatingEnabled", "RM_Comp_TarCoatingSource.cs", ()),
+    ("accelerated_rot", "acceleratedRotEnabled", "RM_MapComponent_AcceleratedRot.cs", ()),
+    ("sheen_scald", "sheenExposureEnabled", "RUT_HediffComp_SheenExposure.cs",
+     ("StatDef/RM_ScaldProtection", "StatDef/RM_ArmorRating_Scald", "DamageArmorCategoryDef/RM_ScaldArmor")),
+    ("venomvine_scratch", "contactVenomEnabled", "MapComponent_ContactVenom.cs",
+     ("DamageDef/RM_VenomvineScratch", "ThingDef/RM_Venomvine", "ThingDef/RM_VenomvineThicket", "HediffDef/RM_VenomvineVenom")),
+    ("living_boles_genstep", "livingBolesEnabled", "RM_GenStep_LivingBoles.cs", ()),
+)
+
+
+def gate_findings(comp_name=None):
+    """Offline: each mechanic's Source file consults its toggle inside a branch (if/return/&&/||), so a toggle that gates
+    nothing is red. Returns [message]."""
+    bad = []
+    for name, toggle, fn, _defs in MECHANICS:
+        if comp_name and name != comp_name:
+            continue
+        try:
+            src = open(os.path.join(HERE, "Source", fn), encoding="utf-8").read()
+        except IOError:
+            bad.append("%s: Source/%s not found" % (name, fn))
+            continue
+        if not re.search(r"(?:if|return|while)[^;{\n]*\b%s\b|(?:&&|\|\|)[^;\n]*\b%s\b|\b%s\b[^;\n]*(?:&&|\|\||\?)"
+                         % (toggle, toggle, toggle), re.sub(r"//[^\n]*", "", src)):
+            bad.append("%s: Source/%s never branches on %s (the toggle gates nothing there)" % (name, fn, toggle))
+    return bad
+
+
 def static_checks():
     bad = []
     if len(SHIPPED) < 10:
@@ -167,6 +207,7 @@ def static_checks():
         if not any(float(e.findtext("lethalSeverity") or 0) > 0 for e in hd if isinstance(e.tag, str)):
             bad.append("RM_VenomvineVenom has no lethalSeverity (the lethal-off toggle holds under it)")
     bad.extend(_living_map_findings())
+    bad.extend(gate_findings())
     if not os.path.isfile(os.path.join(HERE, "..", "..", "..", "design", "validation_walks", "RimMandrake", "EnvironmentalHazards.md")):
         bad.append("walk missing")
     return bad
@@ -328,38 +369,67 @@ def _build_suite():
                 if abs(ls - 1.0) > 1e-4:
                     raise ExpectationFailed("lethalSeverity %s, expected 1.0 (the lethal-off hold-under threshold)" % ls)
 
+    @suite.chain("map_mechanics_wiring")
+    def map_mechanics_wiring(t):
+        # What a bridge CAN read for each of the 12 mechanics with no generated map: its toggle is a live, readable setting, its
+        # Source file really branches on it (offline), and the kit-shipped defs the mechanism drives resolve (control proves
+        # get_defs can say absent). The effect itself stays UNMEASURED in map_mechanics, each naming the instrument it lacks.
+        for name, toggle, _fn, defs in MECHANICS:
+            with t.component(name + "_toggle_gates_and_wiring_resolves", toggle=toggle):
+                bad = gate_findings(name)
+                if bad:
+                    raise ExpectationFailed(bad[0])
+                if not _live(t):
+                    continue
+                r = _raw(t, "get", toggle)
+                if r.get("success") is False or str(r.get("value")).lower() not in ("true", "false"):
+                    raise ExpectationFailed("%s: toggle not readable as a bool: %r" % (toggle, r))
+                if defs:
+                    d = t.bridge_call("jawa/get_defs", defs=";".join(defs), fields="defName", limit=len(defs) + 2)
+                    if not isinstance(d, dict) or d.get("success") is False:
+                        _unmeasured(t, "get_defs could not be asked for %s: %s" % (defs, str(d)[:160]))
+                        return
+                    if int(d.get("foundCount", 0)) != len(defs) or d.get("notFound"):
+                        raise ExpectationFailed("%s: %d of %d wiring defs resolved; notFound=%r"
+                                                % (name, int(d.get("foundCount", 0)), len(defs), d.get("notFound")))
+
     @suite.chain("map_mechanics")
     def map_mechanics(t):
         for name, toggle, why in (
             ("gas_emitters_and_gas_effects", "gasEmittersEnabled",
-             "an emitter comp seeding a gas cloud, and the gas damaging/transmuting, need a ThingDef from a content mod that opts in "
-             "(this kit ships only abstract gas bases) and ticks"),
+             "missing instrument: a spawnable emitter ThingDef (this kit ships only abstract gas bases; content mods own the concrete ones) "
+             "plus a gas-cell reader (no jawa tool lists Gas things per cell by gas type or concentration)"),
             ("periodic_area_attack", "areaAttacksEnabled",
-             "needs a carrier pawn holding a content mod's hediff that carries HediffCompProperties_PeriodicAreaAttack, and ticks"),
+             "missing instrument: a kit-owned hediff carrying HediffCompProperties_PeriodicAreaAttack (none ships) and a hediff-adder tool; "
+             "damage_log could then read the pulse"),
             ("environmental_weather_and_latent_hazard", "environmentalDamageEnabled",
-             "needs a GameConditionDef from a content mod, fired on a map, with an unroofed pawn and ticks; fire_incident cannot "
-             "start a condition the kit does not own"),
+             "missing instrument: a kit-owned GameConditionDef using GameCondition_EnvironmentalWeather (none ships); jawa/game_condition "
+             "could start a content mod's and damage_log read it, but that is the content mod's script"),
             ("scaled_explosion_death_action", "scaledExplosionsEnabled",
-             "needs a creature whose def names the death action, killed on a map"),
+             "missing instrument: a kit-owned creature naming DeathActionWorker_ScaledExplosion (none ships); a static_call proof hook "
+             "(like RM_SumpLivingMapProof) is the way, and does not exist yet"),
             ("water_truce_retribution_and_suppression", "waterTruceRetributionEnabled",
-             "needs a generated map whose biome carries RM_WaterTruceExtension, water cells, a wild herd and a guilty hit; the "
-             "radius override (waterTruceRadius) is only read there"),
+             "missing instrument: a map whose biome carries RM_WaterTruceExtension (the bridge cannot generate one) and a static_call proof "
+             "hook that reports suppression/retribution; harmony_rules_armed covers the wiring half"),
             ("living_boles_regrowth_tree_fall", "livingRegrowthEnabled",
-             "needs a generated Greentide map with a Greatbole and regrow days of ticks"),
+             "missing instrument: a static_call proof hook on RM_MapComponent_LivingRegrowth with a synthetic clock (as RM_SumpLivingMapProof does) "
+             "and a Greentide map"),
             ("stranding_pools_and_gradient_axis", "strandingPoolsEnabled",
-             "needs a generated Miasma map and a tide recede/surge"),
+             "missing instrument: a static_call proof hook on RM_MapComponent_StrandingPools (recede/surge on a synthetic clock) and a Miasma map"),
             ("tar_coating_belch_and_glasswalk_slip", "tarCoatingEnabled",
-             "needs Sump terrain (RM_SlipperyWalkway / tar filth), a hurrying pawn, and the belch incident on a Sump map"),
+             "missing instrument: a static_call proof hook for tar-coat/belch and a pawn-speed reader on slippery terrain "
+             "(get_terrain_batch reads the floor, nothing reads the slip)"),
             ("accelerated_rot_warm_ground_living_produce", "acceleratedRotEnabled",
-             "needs a Rot-biome map with items/corpses and ticks to compare against vanilla rot"),
+             "missing instrument: a static_call proof hook on RM_MapComponent_AcceleratedRot returning the rot multiplier for a cell; "
+             "jawa/comp_read could read CompRottable progress but needs a Rot map and days of ticks"),
             ("sheen_scald_and_live_preparations", "sheenExposureEnabled",
-             "needs Sheen-fall weather on a Rot map, a carrier hediff and days of severity accrual"),
+             "missing instrument: a static_call proof hook on RUT_HediffComp_SheenExposure severity accrual (needs a content mod's carrier hediff and Sheen weather)"),
             ("venomvine_scratch_and_body_size_barrier", "contactVenomEnabled",
-             "scratching needs a grown Venomvine stand, a pawn standing in it for an hour of ticks, and a large pawn to be blocked; "
-             "the wiring half is in contact_venom_wiring"),
+             "missing instrument: a static_call proof hook on MapComponent_ContactVenom/RM_CompBodySizeBarrier (scratch roll, barrier cost); "
+             "damage_log could read the scratch but a grown stand and an hour of ticks are needed; wiring is in contact_venom_wiring"),
             ("worldgen_scatterers_and_gen_steps", "livingBolesEnabled",
-             "creche/sail/mirror-pool/causeway/grave-ward/ground-refusal steps act only while a map is GENERATED with the toggle; "
-             "the bridge cannot generate a map"),
+             "missing instrument: map generation (no bridge tool runs a GenStep; start_debug_game_ready generates only the stock steps) "
+             "and a static_call hook for RM_GenStep_*"),
         ):
             with t.component(name, toggle=toggle):
                 if _live(t):

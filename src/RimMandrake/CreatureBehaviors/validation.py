@@ -33,7 +33,10 @@ import time
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("CreatureBehaviors")
-suite.toggles = ["tracksEnabled"]
+suite.toggles = ["tracksEnabled", "verminBreedingEnabled", "gnawBehaviorEnabled", "eatCleanableBehaviorEnabled",
+                 "seekShadeBehaviorEnabled", "seekMarkedTerrainBehaviorEnabled", "sunScaldEnabled", "senseWebEnabled",
+                 "chewAnchorsBehaviorEnabled", "frontCreepEnabled", "aquaticAmbushEnabled", "parentalEnrageEnabled",
+                 "drumLureEnabled"]
 
 SETTINGS = "RimMandrake.CreatureBehaviors.RM_CreatureBehaviorsSettings"
 DIAG = "RimMandrake.CreatureBehaviors.RM_TrackGridDiag"
@@ -224,6 +227,92 @@ def track_grid(t):
                 _unmeasured(t, "eraser proof could not run: %r" % (r,))
             if res != "printed=True erased=True":
                 raise ExpectationFailed("moving sand did not bury the print: %r" % res)
+
+# ---- CREATUREBEHAVIORS_COVERAGE_GAPS_1: one component per mechanic toggle -------------------------------------
+# Each component asserts, per mechanic: (1) the C# classes that DO the job are loaded in the running game
+# (`jawa/type_probe` resolved, and an absent-type control reads resolved=False), (2) the defs that carry it
+# resolve (`jawa/get_defs` success + foundCount, never a substring), (3) the toggle's off arm: the Mod Settings
+# field flips to False, reads back False, and is restored to True in a finally. What this does NOT prove is the
+# behaviour in motion (a vermin breeding, a pawn gnawing): that needs a spawned carrier race on a real map, and
+# the carriers live in other mods (Greentide/Miasma/Webwork/LanternDeeps) that this suite's list does not load, so
+# the walk marks the in-motion lines UNCOVERED with that reason. Gate field names are the real statics of
+# RM_CreatureBehaviorsSettings (Source/RM_CreatureBehaviorsMod.cs).
+NS = "RimMandrake.CreatureBehaviors."
+ABSENT_TYPE = NS + "NoSuchType_Probe"
+
+# field -> (types that do the job, "DefType/DefName" carriers this mod itself ships)
+MECHANICS = [
+    ("verminBreedingEnabled", ["RM_CompVerminBreeder", "RM_MapComponent_VerminPopulation", "RM_Alert_VerminPopulationBase"], []),
+    ("gnawBehaviorEnabled", ["RM_JobDriver_Gnaw", "RM_JobGiver_GnawTargets", "RM_GnawTargetExtension"],
+     ["JobDef/RM_Gnaw", "ThinkTreeDef/RM_ThinkTree_VerminBehaviors"]),
+    ("eatCleanableBehaviorEnabled", ["RM_JobDriver_EatCleanable", "RM_ThinkNode_EatCleanable", "RM_EatCleanableExtension"],
+     ["JobDef/RM_EatCleanable"]),
+    ("seekShadeBehaviorEnabled", ["RM_JobGiver_SeekShade"], ["ThinkTreeDef/RM_ThinkTree_VerminBehaviors"]),
+    ("seekMarkedTerrainBehaviorEnabled", ["RM_JobGiver_SeekMarkedTerrain"], ["ThinkTreeDef/RM_ThinkTree_VerminBehaviors"]),
+    ("sunScaldEnabled", ["RM_Hediff_SunScald"], []),
+    ("senseWebEnabled", ["RM_MapComponent_SenseWeb", "RM_CompSenseWebNode"], []),
+    ("chewAnchorsBehaviorEnabled", ["RM_JobGiver_ChewAnchors", "RM_ChewAnchorsConsumerExtension", "RM_ChewableExtension"],
+     ["ThinkTreeDef/RM_ChewAnchors_Consume"]),
+    ("frontCreepEnabled", ["RM_MapComponent_FrontCreep", "RM_FrontCreepExtension"], []),
+    ("aquaticAmbushEnabled", ["RM_CompAquaticAmbusher", "RM_JobDriver_LungeAttack"],
+     ["JobDef/RM_LungeAttack", "HediffDef/RM_AquaticAmbushInvisibility", "HediffDef/RM_LungeSpeedBurst"]),
+    ("parentalEnrageEnabled", ["RM_CompParentalEnrage"], ["MentalStateDef/RM_ParentalEnrage"]),
+    ("drumLureEnabled", ["RM_CompDrumLure"], ["HediffDef/RM_DrumLureSubmersion", "HediffDef/RM_DrumLureLured"]),
+]
+
+
+def _setting(t, action, field, value=None):
+    if value is None:
+        r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action=action, field=field)
+    else:
+        r = t.bridge_call("jawa/mod_settings_field", typeName=SETTINGS, action=action, field=field, value=str(value))
+    return r if isinstance(r, dict) else {}
+
+
+@suite.chain("mechanic_toggles")
+def mechanic_toggles(t):
+    with _comp(t, "control_absent_type_reads_absent", beyond_toggle=True):
+        r = t.bridge_call("jawa/type_probe", typeName=ABSENT_TYPE)
+        if _live(t) and (not isinstance(r, dict) or r.get("resolved") is not False):
+            raise ExpectationFailed("sanity probe: an absent type did not read resolved=False: %r" % (r,))
+
+    for field, types, defs in MECHANICS:
+        with _comp(t, field.replace("Enabled", "").replace("Behavior", "") + "_wired_and_gated", toggle=field):
+            bad = []
+            for ty in types:
+                r = t.bridge_call("jawa/type_probe", typeName=NS + ty)
+                if not _live(t):
+                    continue
+                if not isinstance(r, dict) or r.get("success") is False:
+                    raise ExpectationFailed("type_probe(%s) failed outright: %r" % (ty, r))
+                if r.get("resolved") is not True:
+                    bad.append("%s did not resolve" % ty)
+            if defs:
+                r = t.bridge_call("jawa/get_defs", defs=";".join(defs), fields="defName", limit=len(defs) + 2)
+                if _live(t):
+                    if not isinstance(r, dict) or r.get("success") is False:
+                        raise ExpectationFailed("get_defs failed: %r" % (r,))
+                    if r.get("notFound") or int(r.get("foundCount", 0)) != len(defs):
+                        bad.append("%s of %d carrier defs resolved; notFound=%r"
+                                   % (r.get("foundCount"), len(defs), r.get("notFound")))
+            if bad:
+                raise ExpectationFailed("; ".join(bad))
+            if not _live(t):
+                continue
+            old = _setting(t, "get", field).get("value")
+            if old is None:
+                raise ExpectationFailed("%s: get returned no value (field name wrong?)" % field)
+            try:
+                if not _setting(t, "set", field, "False").get("success"):
+                    raise ExpectationFailed("%s: set False failed" % field)
+                off = _setting(t, "get", field).get("value")
+                if str(off).lower() != "false":
+                    raise ExpectationFailed("%s: wrote False, read %r (the off arm does not take)" % (field, off))
+            finally:
+                _setting(t, "set", field, old)
+            back = _setting(t, "get", field).get("value")
+            if str(back).lower() != str(old).lower():
+                raise ExpectationFailed("%s did not restore to %r (read %r)" % (field, old, back))
 
 # Every def this mod ships is loaded and its label is what its XML says (NORTHSTAR_PARTIAL_GAPS_FILL_1;
 # the shared engine's own defs). The Defs/ parse is the list, so a def added later is covered with no edit here.
