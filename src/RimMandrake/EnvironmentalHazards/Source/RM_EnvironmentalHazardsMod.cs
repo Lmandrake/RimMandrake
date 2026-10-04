@@ -444,6 +444,10 @@ namespace RimMandrake.EnvironmentalHazards
         public static bool gradientSurgeEnabled = true;
         public static bool grazingSuppressionHookEnabled = true;
         public static bool hazardApparelAIAwarenessEnabled = true;
+        // SUMP_TAR_LIVING_SYSTEMS_1 part 1: living-map responders after a tar rewrite. Pace is PROVISIONAL (1.0 = the
+        // first-guess delays in RM_MapComponent_SumpLivingMap; owner ruling 2026-10-03, tuned live later).
+        public static bool sumpLivingMapEnabled = true;
+        public static float sumpLivingMapPace = 1f;
 
         public override void ExposeData()
         {
@@ -521,6 +525,8 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref gradientSurgeEnabled, "gradientSurgeEnabled", true);
             Scribe_Values.Look(ref grazingSuppressionHookEnabled, "grazingSuppressionHookEnabled", true);
             Scribe_Values.Look(ref hazardApparelAIAwarenessEnabled, "hazardApparelAIAwarenessEnabled", true);
+            Scribe_Values.Look(ref sumpLivingMapEnabled, "sumpLivingMapEnabled", true);
+            Scribe_Values.Look(ref sumpLivingMapPace, "sumpLivingMapPace", 1f);
         }
 
         private static Vector2 scrollPosition = Vector2.zero;
@@ -544,7 +550,8 @@ namespace RimMandrake.EnvironmentalHazards
             // Bumped 4860->4920 for setting #56 (grazingSuppressionHookEnabled).
             // Bumped 4920->4990 for setting #51a (waterAgitationDensity slider).
             // Bumped 4990->5050 for setting #57 (hazardApparelAIAwarenessEnabled).
-            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5050f);
+            // Bumped 5050->5170 for setting #58 (sumpLivingMapEnabled + pace slider).
+            Rect view = new Rect(0f, 0f, inRect.width - 24f, 5170f);
             Widgets.BeginScrollView(inRect, ref scrollPosition, view);
             Listing_Standard list = new Listing_Standard { ColumnWidth = view.width };
             list.Begin(view);
@@ -757,6 +764,16 @@ namespace RimMandrake.EnvironmentalHazards
                 "Colonists stop factoring scald-steam/wet-bulb/Sheen protection into their own apparel "
               + "choice, so nobody picks up a boil-suit unprompted — you're back to a manual outfit "
               + "policy for hazard gear. The gear's actual protection is unaffected either way.");
+            list.CheckboxLabeled("Sump living map", ref sumpLivingMapEnabled,
+                "After tar or tar-glass rewrites the ground (a belch, a tar canal release), the Sump slowly "
+              + "answers: soffeth rings grow around the new seep, mice learn to detour around the fresh crust, "
+              + "and mirrelin creeps onto the new glass. Off: nothing new is noticed or grown; plants already "
+              + "grown stay.");
+            list.Label("Sump living map pace: " + sumpLivingMapPace.ToString("0.00") + "x (PROVISIONAL)");
+            list.Label("PROVISIONAL first-guess pacing, tuned live later: at 1.0x the first soffeth stalk comes a "
+                     + "day after a seep, mice re-route in 6 hours, mirrelin reaches new glass after 2 days and fresh "
+                     + "crust sets in 6. Higher is faster.");
+            sumpLivingMapPace = list.Slider(sumpLivingMapPace, 0.25f, 4f);
             list.GapLine();
 
             list.Label("Tar beast speed: " + tarBeastPace.ToString("0.0") + "x");

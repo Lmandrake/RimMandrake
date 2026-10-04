@@ -19,6 +19,20 @@ an explicit design decision this pass could not respons­ibly guess at.
    true; today the belch only splashes filth, so there is no real "after
    every rewrite" trigger yet to hang a responder off.
 
+   **Part 1 BUILT (2026-10-03, round 36)** as `RM_MapComponent_SumpLivingMap`
+   (`mandrake.rm.environmentalhazards`): an hourly terrain diff spots any cell
+   turned to tar or tar glass (belch release, canal release), so no FlowWorks
+   hook is needed. **PROVISIONAL numbers** (all scaled by one Mod Setting,
+   `sumpLivingMapPace`, 1.0x): a rewrite of >= 8 cells seeds a soffeth ring
+   (6 stalks, radius 2-4.9, first stalk after 1 day, then one per 6 h); new
+   glass is fresh crust that mice avoid (via `RM_MapComponent_DreadField.
+   IsDreaded`) from 6 h after it forms until it sets at 6 days or mirrelin
+   grows onto it; mirrelin reaches new glass after 2 days at ~1/72 chance
+   per cell per hour, max 4 sprouts per hour. Gate: the biome carries
+   RM_Soffeth or RM_Mirrelin as a wild plant (RUT_Sump carries neither today).
+   First script: `validation.py` `_living_map_findings` (offline) + live
+   chain `sump_living_map` (`RM_SumpLivingMapProof.ProofRewrite on|off`).
+
 2. **Tar rain — genuinely blocked on an architecture question, not merely
    deferred for time.** Ruling 1 (typed verbatim): "Tar rain is part of mod
    but not this scenario." `SUMP_TAR_HYDROLOGY_1`'s own build-status section
