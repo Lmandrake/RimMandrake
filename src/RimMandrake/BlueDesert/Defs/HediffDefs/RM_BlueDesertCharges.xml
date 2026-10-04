@@ -34,7 +34,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>3.9</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -54,7 +54,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>2.9</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -71,7 +71,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>1.1</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -96,7 +96,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>2.5</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -113,7 +113,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>1.1</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -130,7 +130,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>1.5</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -147,7 +147,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>1.1</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -202,7 +202,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>2.9</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -219,7 +219,7 @@
     <isBad>false</isBad>
     <tendable>false</tendable>
     <comps>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>1.1</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>
@@ -246,7 +246,7 @@
       <li Class="HediffCompProperties_SeverityPerDay">
         <severityPerDay>-0.15</severityPerDay>
       </li>
-      <li Class="HediffCompProperties_ExplodeOnDeath">
+      <li Class="RimMandrake.BlueDesert.HediffCompProperties_GatedExplodeOnDeath">
         <explosionRadius>1.9</explosionRadius>
         <damageDef>Flame</damageDef>
         <damageAmount>40</damageAmount>

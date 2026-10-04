@@ -113,6 +113,29 @@ namespace RimMandrake.BlueDesert
         }
     }
 
+    // The seven natives' (non-vhaulk) death charges: vanilla HediffComp_ExplodeOnDeath, gated on the mod settings.
+    // LIVE 2026-10-03 (krissek_off_quiet): the vanilla comp ignores RM_BlueDesertSettings, so "Native detonations off"
+    // still blew a colonist beside a dying krissek. Same blast, same fields; only the two toggles are new.
+    public class HediffCompProperties_GatedExplodeOnDeath : HediffCompProperties_ExplodeOnDeath
+    {
+        public HediffCompProperties_GatedExplodeOnDeath()
+        {
+            compClass = typeof(RM_HediffComp_GatedExplodeOnDeath);
+        }
+    }
+
+    public class RM_HediffComp_GatedExplodeOnDeath : HediffComp_ExplodeOnDeath
+    {
+        public override void Notify_PawnKilled()
+        {
+            if (!RM_BlueDesertSettings.masterEnabled || !RM_BlueDesertSettings.nativeDetonationsEnabled)
+            {
+                return;
+            }
+            base.Notify_PawnKilled();
+        }
+    }
+
     // -----------------------------------------------------------------
     // 2b. Flora charge -- the fractal flora's warm-detonation chain.
     // -----------------------------------------------------------------
