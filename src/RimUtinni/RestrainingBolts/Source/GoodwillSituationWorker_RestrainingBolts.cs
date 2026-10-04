@@ -57,9 +57,27 @@ namespace RimMandrake.Utinni.RestrainingBolts
             if (hediff == null)
                 return 100; // Droid Depot not active -- nothing to count, degrade quietly.
 
-            int boltedCount = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction
-                .Count(p => p.health?.hediffSet?.HasHediff(hediff) ?? false);
+            return CeilingFor(BoltedCount());
+        }
 
+        /// <summary>Live count of owned pawns carrying the bolt hediff; 0 when Droid Depot is absent.</summary>
+        public static int BoltedCount()
+        {
+            var hediff = BoltHediff;
+            if (hediff == null)
+                return 0;
+            return PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_OfPlayerFaction
+                .Count(p => p.health?.hediffSet?.HasHediff(hediff) ?? false);
+        }
+
+        public static bool BoltHediffLoaded => BoltHediff != null;
+
+        /// <summary>The ceiling for N bolted droids under the CURRENT settings (enabled off -> 100).
+        /// GetMaxGoodwill and RestrainingBoltsProof both call this, so the proof reads the shipped formula.</summary>
+        public static int CeilingFor(int boltedCount)
+        {
+            if (!RestrainingBoltsSettings.enabled)
+                return 100;
             return Mathf.Max(
                 Mathf.RoundToInt(RestrainingBoltsSettings.goodwillFloor),
                 100 - Mathf.RoundToInt(RestrainingBoltsSettings.penaltyPerBoltedDroid * boltedCount));
