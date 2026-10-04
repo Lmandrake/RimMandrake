@@ -1,0 +1,128 @@
+{
+ "cards": [
+  {
+   "title": "Art ledger: how strict, and where old art is kept",
+   "questions": [
+    {
+     "question": "Every texture change would go through one installer that refuses to overwrite art you kept unless you have ruled on the replacement, and keeps the replaced picture. How hard should the commit check be when someone (agent or script) copies a PNG into a mod's Textures folder by hand, bypassing the installer?",
+     "header": "Guard",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Block the commit (Recommended)",
+       "description": "Buys: kept art can no longer be silently replaced; the refusal prints the installer command. Costs: agents lose a quick hand-copy and must run one more command. One line why: the 774 silent overwrites all came through hand-copies."
+      },
+      {
+       "label": "Warn only",
+       "description": "Buys: nothing ever stops work; the warning names the file. Costs: warnings print where agents rarely act on them, so overwrites of kept art probably continue at roughly today's rate."
+      },
+      {
+       "label": "Build Textures from the ledger",
+       "description": "Buys: overwriting kept art becomes impossible by construction; mods' Textures folders become generated output. Costs: about two weeks, touches every mod's build and 7,900 files, and changes every agent's edit loop."
+      }
+     ]
+    },
+    {
+     "question": "When art is replaced, the old picture must stay findable so you can compare it later. Where should those replaced pictures be stored?",
+     "header": "Old art",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Art store on D: (Recommended)",
+       "description": "Buys: every replaced picture saved by fingerprint beside the artpipe folder, instant to show on sheets, repo stays small. Costs: one more folder outside git that only the Desktop holds; git history remains the backup copy. One line why: git already has them, so this is a fast index, not the only copy."
+      },
+      {
+       "label": "Commit them to the repo",
+       "description": "Buys: every old picture travels to every machine and survives anything. Costs: the repo grows with every regeneration (thousands of PNGs over time), slowing every clone and pull."
+      },
+      {
+       "label": "Git history only",
+       "description": "Buys: nothing new to store at all. Costs: art never committed (artpipe renders, donor sprites) is not covered, and building a comparison sheet means digging through history each time, which is slow."
+      }
+     ]
+    },
+    {
+     "question": "Mechanical passes (removing faint halos, padding to multiples of 4, downscaling) change the bytes of hundreds of kept pictures without changing what they look like. Should those still be allowed over art you kept?",
+     "header": "Sweeps",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Only listed exact operations (Recommended)",
+       "description": "Buys: cleanup passes keep working and your keep carries over, because the tool re-runs the named operation on the kept picture and checks the result matches exactly. Costs: each new kind of cleanup must be added to a short list before use. One line why: 328 overwrites were such passes, and an exact re-run cannot sneak in new art."
+      },
+      {
+       "label": "Allowed if it looks the same",
+       "description": "Buys: any cleanup works with no list to maintain. Costs: look-alike measures can pass a small recolour or lost detail as 'the same', which is exactly the silent change you want stopped."
+      },
+      {
+       "label": "Always need your ruling",
+       "description": "Buys: nothing touches kept art without you. Costs: you would be asked about hundreds of invisible pixel changes, which is review time spent on nothing you can see."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "title": "Re-reviewing the desert art and the 45 doubled textures",
+   "questions": [
+    {
+     "question": "For 45 texture paths (Nuna, Iriaz, Dalgo, Bantha, Eopie) two of our mods ship different art and the later-loading one, the old port, currently wins over the art you approved. How should we settle which copy each path keeps?",
+     "header": "Doubles",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Short compare sheet first (Recommended)",
+       "description": "Buys: you see both copies (plus every older version) of those five creatures side by side and pick; the winner goes into the override mod and the loser is archived. Costs: one short sitting of five rows before the in-game fix lands. One line why: you said not to replace older art that's better."
+      },
+      {
+       "label": "Override art wins now",
+       "description": "Buys: the art approved 2026-09-13 to 17 shows in game today, no sitting. Costs: assumes those approvals still hold; if an older port copy was better for any facing, it gets archived without you seeing it."
+      },
+      {
+       "label": "Wait for the desert sittings",
+       "description": "Buys: no separate sitting; they are decided inside the desert re-review. Costs: the approved art keeps losing in game until those sittings reach these creatures."
+      }
+     ]
+    },
+    {
+     "question": "The new comparison sheet shows one creature per row: every version ever made (current, older git versions, each render, the donor original, and the canon reference) as columns, with south, east and north stacked so a mismatched set is obvious. Your 10-03 desert decisions are shown on each row but marked as made against a broken sheet. How should the 109 desert rows be split?",
+     "header": "Sittings",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "One sitting per biome (Recommended)",
+       "description": "Buys: three shorter sittings (desert, deep desert, blue desert), matching your biome-by-biome rule, with the 14 at-risk creatures first. Costs: three sessions instead of one; rows in later biomes wait. One line why: matches how you have ruled biomes since 2026-09-22."
+      },
+      {
+       "label": "One sheet, all 109",
+       "description": "Buys: everything decided in one go, with filters. Costs: a long sitting where each row now carries far more versions than the 10-03 sheet did."
+      },
+      {
+       "label": "Only the 34 risky rows",
+       "description": "Buys: the 14 about-to-be-replaced and 20 already-overwritten creatures done fast. Costs: the other 75 rows keep whatever is live, including donor copies you never chose, until a later pass."
+      }
+     ]
+    },
+    {
+     "question": "Each sheet row comes pre-selected so you only change what you disagree with. Which version should be pre-selected?",
+     "header": "Prefill",
+     "multiSelect": false,
+     "options": [
+      {
+       "label": "Your latest keep (Recommended)",
+       "description": "Buys: the version you most recently kept is the default, so older art you liked is protected unless you change it. Costs: where you never ruled, it falls back to what is live, which may be a donor copy. One line why: directly implements don't replace older art that's better."
+      },
+      {
+       "label": "Newest render",
+       "description": "Buys: newest work shown as the default, fastest path to new art in game. Costs: this is the default that produced the 10-03 problem; every row you skip replaces something."
+      },
+      {
+       "label": "Nothing pre-selected",
+       "description": "Buys: no agent bias on any row. Costs: you decide every one of 109 rows from scratch, and any row you skip stays unruled."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
