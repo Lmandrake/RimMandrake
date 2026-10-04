@@ -320,8 +320,8 @@ shipped_defs.add_chain(suite, __file__,
 # Audit row: "48 name rulepacks beyond Jawa produce words? (a pack without its word list resolves and produces
 # nothing)". Pure repo read, runs offline: every Rule_File path in every RulePackDef under Defs/ resolves to a
 # NON-EMPTY Languages/English/Strings/<path>.txt, and every [keyword] a rulesStrings line uses is defined in the
-# same pack (rule params like "(p=3)" stripped). First run 2026-10-04 found RSW_KoTOR_NamerAqualish's three lists
-# absent from every installed mod (AQUALISH_NAME_WORDLISTS_1) and SandP's Nick.txt empty (its nickname rule cut).
+# same pack (rule params like "(p=3)" stripped). First run 2026-10-04 went red on RSW_KoTOR_NamerAqualish (its three
+# lists existed in no installed mod; canon lists written, AQUALISH_NAME_WORDLISTS_1) and SandP's empty Nick.txt.
 def rulepack_findings(mod_dir=_MOD_DIR):
     """([finding], packs_read, files_checked)."""
     import glob as _glob
