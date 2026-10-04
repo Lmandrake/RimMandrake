@@ -82,6 +82,7 @@ DEFAULTS = {
     "crossBiomeCoverage": 1.0,
     "lightningBreakerEnabled": True, "breakerPyrelandsOnly": True, "breakerTripCost": 10,
     "breakerRecipeCostFactor": 1.0,
+    "sandShovelEnabled": True, "sandShovelYieldMultiplier": 1.0,
 }
 
 # (repo DLL, deployed DLL relative to the Mods folder, owning packageId)

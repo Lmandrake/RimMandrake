@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- PYRELANDS_SAND_TERRAIN_YIELD_1: "Shovel sand" (Orders). The terrain side is the
+       RM_TerrainDigYieldExtension on RM_FE_Ground_Sand (TerrainDefs/ScorchableGround.xml). -->
+
+  <DesignationDef>
+    <defName>RM_ShovelTerrain</defName>
+    <texturePath>UI/Designators/Mine</texturePath>
+    <targetType>Cell</targetType>
+    <removeIfBuildingDespawned>false</removeIfBuildingDespawned>
+    <designateCancelable>true</designateCancelable>
+  </DesignationDef>
+
+  <JobDef>
+    <defName>RM_ShovelTerrain_Job</defName>
+    <driverClass>RimMandrake.Pyrelands.JobDriver_RM_ShovelTerrain</driverClass>
+    <reportString>shovelling sand.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+  <WorkGiverDef>
+    <defName>RM_ShovelTerrain</defName>
+    <label>shovel sand</label>
+    <giverClass>RimMandrake.Pyrelands.WorkGiver_RM_ShovelTerrain</giverClass>
+    <workType>Mining</workType>
+    <verb>shovel</verb>
+    <gerund>shovelling</gerund>
+    <priorityInType>45</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+</Defs>

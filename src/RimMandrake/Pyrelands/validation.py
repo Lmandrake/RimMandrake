@@ -57,7 +57,8 @@ suite = Suite("Pyrelands")
 suite.toggles = ["fulguriteEnabled", "ashDustingEnabled", "scorchFruitEnabled",
                  "ashfallAccumulationEnabled", "biomeGenerationEnabled",
                  "ullaiEnabled", "ullaiHerdSizeMultiplier", "furnaceBeastGiant",
-                 "lightningBreakerEnabled", "breakerPyrelandsOnly", "breakerTripCost", "breakerRecipeCostFactor"]
+                 "lightningBreakerEnabled", "breakerPyrelandsOnly", "breakerTripCost", "breakerRecipeCostFactor",
+                 "sandShovelEnabled", "sandShovelYieldMultiplier"]
 
 SETTINGS = "RimMandrake.Pyrelands.RM_PyrelandsSettings"
 SOIL = "RM_FE_Ground_Soil"
@@ -1304,6 +1305,42 @@ def ullai_and_giant(t):
             _unmeasured(t, "needs a Pyrelands site with a burn two in-game days old and a wild ullai herd; "
                            "no drive yet (step 2 days, read the herd centroid against BurnCenterAgo)")
         t.screenshot()
+
+
+@suite.chain("sand_shovel")
+def sand_shovel(t):
+    """PYRELANDS_SAND_TERRAIN_YIELD_1 (RM_TerrainDig.cs). The choice: a 'Shovel sand' DIG ORDER (Orders tab, Mining
+    work), not a terrain clear-yield -- vanilla has no clear action on natural terrain. RM_FE_Ground_Sand carries
+    RM_TerrainDigYieldExtension: 5 glass sand per cell, the cell becomes RM_FE_Ground_Gravel (a finite deposit).
+    ProofShovel lays one sand cell on the current map and completes the dig. Not proven here: a miner choosing the
+    order (WorkGiver) -- first poke: designate sand on a Pyrelands map with a colonist assigned to Mining."""
+    import xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    with t.component("sand_carries_the_dig_yield", beyond_toggle=True):
+        root = ET.parse(os.path.join(here, "Defs", "TerrainDefs", "ScorchableGround.xml")).getroot()
+        sand = [d for d in root if d.findtext("defName") == "RM_FE_Ground_Sand"]
+        if len(sand) != 1:
+            _fail("RM_FE_Ground_Sand not found once (sanity probe)")
+        ext = sand[0].find("modExtensions/li[@Class='RimMandrake.Pyrelands.RM_TerrainDigYieldExtension']")
+        if ext is None or ext.findtext("yield") != "RM_GlassSand" or ext.findtext("leaves") != "RM_FE_Ground_Gravel":
+            _fail("sand does not dig to RM_GlassSand leaving gravel")
+        patch = ET.parse(os.path.join(here, "Patches", "RM_ShovelSand_Orders.xml")).getroot()
+        if "RimMandrake.Pyrelands.Designator_RM_ShovelTerrain" not in [li.text for li in patch.iter("li")]:
+            _fail("the designator is not added to the Orders tab")
+    with t.component("shovel_yields_glass_sand_and_leaves_gravel", toggle="sandShovelEnabled"):
+        if t.session is None:
+            t.upstream_reason = "UNMEASURED: no bridge session"
+            t.upstream_failed = True
+            return
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.RM_TerrainDigProof", method="ProofShovel")
+        text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if not text.startswith("SHOVEL"):
+            t.upstream_reason = "UNMEASURED: ProofShovel gave no answer: %r" % text[:160]
+            t.upstream_failed = True
+            return
+        for want in ("accepts True", "offRefuses True", "yield RM_GlassSand x5", "terrain RM_FE_Ground_Gravel", "orderGone True"):
+            if want not in text:
+                _fail("shovel proof missing %r: %s" % (want, text))
 
 
 @suite.chain("lightning_breaker")
