@@ -482,8 +482,9 @@
     </statBases>
     <graphicData>
       <texPath>Things/Building/Ancient/RUT_AncientBlackBox</texPath>
-      <graphicClass>Graphic_Multi</graphicClass>
-      <drawSize>(3.5,1.5)</drawSize>
+      <!-- One top-down image the game rotates, like RUT_AncientBlackBox_Off (artpipe 2026-10-03). -->
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3.5,1.75)</drawSize>
     </graphicData>
     <costList>
       <ChunkSlagSteel>2</ChunkSlagSteel>
