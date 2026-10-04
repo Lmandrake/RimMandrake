@@ -1,0 +1,24 @@
+# Owner unblock list: 10 decisions, about 40 FOUNDRY items (2026-10-03 21:01 PDT)
+
+For BENCH to put to the owner as cards. They come from the 97 owner-blocked rows in
+`Transient/foundry_queue_triage_20261003_2101.md`. The order is by how many open FOUNDRY items one
+answer unblocks. Each line names the items so a ruling can be landed on all of them in one pass.
+Items on the belt skip list (pit/superdeep, mindstone, techprint gating, seabed descent, ship-readiness)
+are left out on purpose. They were already put to him elsewhere.
+
+| # | the decision (plain words) | answer shape | unblocks |
+|---|---|---|---|
+| 1 | **Forge sitting.** Answer the open question in each of the Forge enrichment picks he made by card on 2026-09-30, and say where the bespoke Forge voice clips come from. | one biome sitting, ~7 short answers | `FORGE_KEELWORK_REMAINDER_1` `FORGE_SPUNSTONE_SOURCES_1` `FORGE_WHITE_PLUME_FRONTS_1` `FORGE_SKY_PASTURES_1` `FORGE_DHOKKUR_WAYS_1` `FORGE_DHUVVOX_SWARM_REMAINDER_1` `FORGE_VOICES_AUDIO_1` (7) |
+| 2 | **Cracked Lands sitting.** The open questions on the six enrichment splits. The same sitting can also settle the rename: 44 world tiles are still on `RM_FloodedCanyon`, so either edit the canonical save or let the coming world remake carry it. That remake is where biome painting is already ruled to happen, so it is probably the cheap answer. | one sitting + one A/B | `CRACKEDLANDS_LEDGES_OF_MERCY_1` `CRACKEDLANDS_FIVE_BEATS_AUDIO_1` `CRACKEDLANDS_THREE_HEIGHT_FLORA_1` `CRACKEDLANDS_SALVAGE_CLAIM_CREW_1` `CRACKEDLANDS_PEAKSTORM_DUST_REVERSAL_1` `CRACKEDLANDS_WOOLAMANDER_FLIGHT_1` `CRACKEDLANDS_FULL_RENAME_1` (7) |
+| 3 | **Long Shade sitting.** Middens, shadecraft lessons, gloomcast wake-riders and the bedazzle fills. Then one watched quicktest, so he can judge how strict sun heat should be and tune the bedazzle numbers. | sitting + one watched quicktest | `LONGSHADE_MIDDENS_DESIGN_1` `SHADECRAFT_LESSONS_DESIGN_1` `GLOOMCAST_WAKE_RIDERS_1` `LONGSHADE_BEDAZZLE_CONTENT_1` `LONGSHADE_BEDAZZLE_MECHANICS_1` `SOLAR_HEAT_EXPOSURE_1` (6) |
+| 4 | **Map-generator sheets.** Keep or cut on the waiting v3 GL sheet and the round-4 painter sheet. Every later convergence round and the macro generator wait on these two looks. | two keep/cut looks | `MAPGEN_GL_SHEET_1` `MAPGEN_PAINTER_V1_1` `MAPGEN_CONVERGENCE_LOOP_1` `MACRO_GENERATOR_V0_1` (4) |
+| 5 | **Art review sheets that still hold only agent prefill.** No render may be wired until he grades them: 218 desert-port renders, the flora legibility sheet, and 14 recovered sweetline-tree candidates. | three sheets to grade | `DESERT_FAMILY_PORT_EXECUTION_1` `FLORA_LEGIBILITY_BAR_1` `TREE_GRAPHICS_OWNERSHIP_1` (3, and they gate a lot of art) |
+| 6 | **Audio source policy.** Several mechanics builds are stopped only on "bespoke audio". Choose one: (a) retinted vanilla clips may ship as final, (b) placeholders ship and the real clips come from a named source later, or (c) nothing ships until the real clips exist. | one A/B/C | the audio parts of `BLUEDESERT_MECHANICS_BUILD_1` `CRACKEDLANDS_MECHANICS_BUILD_1` `LEANINGSCRUB_MECHANICS_BUILD_1` `LONGSHADE_BEDAZZLE_MECHANICS_1`, plus #1/#2's audio items (4+) |
+| 7 | **Salvation rites design.** `SALVATION_RITES_UNIFICATION_1` decides how a rite is found and granted. Three rite builds wait on that machinery. | one design sitting | `ROT_UNJOINING_RITE_1` `GELATINOUSSLIME_JOINING_WATER_RITE_1` `GELATINOUSSLIME_VAULT_SEAL_BREACH_1` (3) |
+| 8 | **Greentide sitting.** Is the illisk one pawn or many, and how is "nearly unkillable" shown? The humming grove question. How dangerous hostile mobile plants are and to whom, and can they be hunted or harvested? | one sitting | `GREENTIDE_ILLISK_BUILD_1` `GREENTIDE_HUMMING_GROVE_1` `HOSTILE_MOBILE_PLANTS_1` (3) |
+| 9 | **Provisional numbers.** May FOUNDRY ship its own first-guess tuning constants, marked provisional and tuned live later? The tar living-systems pacing (growth rate, re-route delay, migration speed) is stopped only on this. | yes / no | `SUMP_TAR_LIVING_SYSTEMS_1`, and it stops the next number question being filed |
+| 10 | **Quick picks, one line each.** (a) Unfinished Line: keep or cut site B ("your colony gets the building")? (b) Scald walking pasture: when walkers shove someone aside, is it displace only, or damage/stun? (c) Scald gallery schematic: what does it unlock (an immersion cooler recipe, Berth heat reduction, or other)? (d) Waste run: one quest or five destinations? | four one-word answers | `UNFINISHED_LINE_SITE_CHOICE_1` `SCALD_WALKING_PASTURE_1` `SCALD_GALLERY_SCHEMATIC_UNLOCK_1` `WARCASKET_WASTE_RUN_REMAINDER_1` (4) |
+
+Not on the list because the answer is not a decision: `REBOOT_BREAKGLASS_VERIFY_1` (needs his phone and a
+reboot window), `CRYPTOFORGE_HARVEST_RETIRE_1` (canonical-save resave, owner-reserved), and
+`DROIDWORKS_PRIMITIVE_TIER_1` / `LANDMARK_NAMING_PASS_1` (a look at existing saves or names; each is a glance).
