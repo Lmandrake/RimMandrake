@@ -1,0 +1,2823 @@
+[
+ {
+  "id": "A_Anooba",
+  "word": "anooba",
+  "ported": "RSW_Anooba",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.4",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.4
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Anooba/Anooba_Dessicated",
+  "res": [
+   "swanimals/Anooba/Anooba_f",
+   "swanimals/Anooba/Anooba_m"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.4); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": true
+ },
+ {
+  "id": "A_Bantha",
+  "word": "bantha",
+  "ported": "RSW_Bantha",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.8, AridShrubland=0.5",
+  "live": {
+   "desert": 0.8,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.5
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 14,
+   "blue": 0,
+   "arid": 1
+  },
+  "cur": "swanimals/Bantha/Bantha_Dessicated",
+  "res": [
+   "swanimals/Bantha/BanthaW",
+   "swanimals/Bantha/BanthaW_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.8",
+  "atrisk": false
+ },
+ {
+  "id": "A_Bolotaur",
+  "word": "bolotaur",
+  "ported": "RSW_Bolotaur",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.1",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Bolotaur/Bolotaur_Dessicated",
+  "res": [
+   "swanimals/Bolotaur/Bolotaur"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1",
+  "atrisk": true
+ },
+ {
+  "id": "A_AA_BoulderMit",
+  "word": "bouldermit",
+  "ported": "RSW_Korrum",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.025",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 6,
+   "blue": 2,
+   "arid": 0
+  },
+  "cur": "swanimals/Korrum/Korrum",
+  "res": [
+   "swanimals/Korrum/Korrum"
+  ],
+  "biome": "deep",
+  "why": "no live desert-family roster; design sheets name it {'desert': 0, 'deep': 6, 'blue': 2}",
+  "atrisk": true
+ },
+ {
+  "id": "A_AA_Cactipine",
+  "word": "cactipine",
+  "ported": "RSW_Chikka",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.25",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.25
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine",
+  "res": [
+   "Things/Pawn/Animal/AA_Cactipine/AA_Cactipine"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.25); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Cannok",
+  "word": "cannok",
+  "ported": "RSW_Cannok",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.16",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.16
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Cannok/Cannok_Dessicated",
+  "res": [
+   "swanimals/Cannok/Cannok"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.16); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Clodhopper",
+  "word": "clodhopper",
+  "ported": "RSW_Clodhopper",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.1",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Clodhopper/Clodhopper_d",
+  "res": [
+   "swanimals/Clodhopper/Clodhopper"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1",
+  "atrisk": false
+ },
+ {
+  "id": "A_Convor",
+  "word": "convor",
+  "ported": "RSW_Convor",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.08",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.08
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Convor/Convor_Dessicated",
+  "res": [
+   "swanimals/Convor/Convor",
+   "swanimals/Convor/Convor_f"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.08); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Corinathoth",
+  "word": "corinathoth",
+  "ported": "RSW_Corinathoth",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.4",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.4
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 1
+  },
+  "cur": "swanimals/Corinathoth/Corinathoth_Dessicated",
+  "res": [
+   "swanimals/Corinathoth/Corinathoth"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.4); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_DesertAve",
+  "word": "desert ave",
+  "ported": "RSW_Ossik",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Ossik/RSW_Ossik",
+  "res": [
+   "Things/Pawn/Animal/RSW_Ossik/RSW_Ossik"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4",
+  "atrisk": false
+ },
+ {
+  "id": "A_Eopie",
+  "word": "eopie",
+  "ported": "RSW_Eopie",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3, AridShrubland=0.8",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 4,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Eopie/Eopie_Dessicated",
+  "res": [
+   "swanimals/Eopie/Eopie",
+   "swanimals/Eopie/Eopie_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3; NOTE: cast more heavily in Arid Shrubland (0.8)",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_Eyeling",
+  "word": "eyeling",
+  "ported": "RSW_Ikee",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.15",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.5,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 24,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee",
+  "res": [
+   "Things/Pawn/Animal/RSW_Ikee/RSW_Ikee"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.5",
+  "atrisk": true
+ },
+ {
+  "id": "A_Falumpaset",
+  "word": "falumpaset",
+  "ported": "RSW_Falumpaset",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 3,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Falumpaset/Falumpaset_Dessicated",
+  "res": [
+   "swanimals/Falumpaset/Falumpaset"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "A_FeralGrazer",
+  "word": "feral grazer",
+  "ported": "RSW_FeralGrazer",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.1",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/FeralGrazer/FeralGrazer_Dessicated",
+  "res": [
+   "swanimals/FeralGrazer/FeralGrazer"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1",
+  "atrisk": false
+ },
+ {
+  "id": "A_FeralNerf",
+  "word": "feral nerf",
+  "ported": "RSW_FeralNerf",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.04",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.04
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/FeralNerf/FeralNerf_Dessicated",
+  "res": [
+   "swanimals/FeralNerf/FeralNerf"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.04); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_FrilledGorg",
+  "word": "frilled gorg",
+  "ported": "RSW_FrilledGorg",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2, AridShrubland=1.0",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 1.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/FrilledGorg/FrilledGorg_Dessicated",
+  "res": [
+   "swanimals/FrilledGorg/FrilledGorg",
+   "swanimals/FrilledGorg/FrilledGorg_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2; NOTE: cast more heavily in Arid Shrubland (1)",
+  "atrisk": false
+ },
+ {
+  "id": "A_VFEI2_Fuelmite",
+  "word": "fuelmite",
+  "ported": "RSW_Cindermite",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_Gigantelope",
+  "word": "gigantelope",
+  "ported": "RSW_Thurra",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.05",
+  "live": {
+   "desert": 0.05,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Thurra/RSW_Thurra",
+  "res": [
+   "Things/Pawn/Animal/RSW_Thurra/RSW_Thurra"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.05",
+  "atrisk": false
+ },
+ {
+  "id": "A_Gizka",
+  "word": "gizka",
+  "ported": "RSW_Gizka",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.01, Desert=0.1, AridShrubland=0.4",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.01,
+   "blue": 0.0,
+   "arid": 0.4
+  },
+  "mentions": {
+   "desert": 1,
+   "deep": 11,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Gizka/Gizka_Dessicated",
+  "res": [
+   "swanimals/Gizka/Gizka"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1, deep 0.01; NOTE: cast more heavily in Arid Shrubland (0.4)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Gorg",
+  "word": "gorg",
+  "ported": "RSW_Gorg",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4, AridShrubland=1.0",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 1.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Gorg/Gorg_Dessicated",
+  "res": [
+   "swanimals/Gorg/Gorg",
+   "swanimals/Gorg/Gorg_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4; NOTE: cast more heavily in Arid Shrubland (1)",
+  "atrisk": false
+ },
+ {
+  "id": "A_GraniteSlug",
+  "word": "granite slug",
+  "ported": "RSW_GraniteSlug",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.1,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 7,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/GraniteSlug/GraniteSlug_Dessicated",
+  "res": [
+   "swanimals/GraniteSlug/GraniteSlug"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.1",
+  "atrisk": false
+ },
+ {
+  "id": "A_Grank",
+  "word": "Grank",
+  "ported": "RSW_Grank",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.2
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Grank/Grank_Dessicated",
+  "res": [
+   "swanimals/Grank/Grank"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.2); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_GreaterKraytDragon",
+  "word": "greater krayt dragon",
+  "ported": "RSW_GreaterKraytDragon",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.001",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.001,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 9,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/GreaterKraytDragon/GreaterKraytDragon_Dessicated",
+  "res": [
+   "swanimals/GreaterKraytDragon/GreaterKraytDragon"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.001",
+  "atrisk": false
+ },
+ {
+  "id": "A_Gutkurr",
+  "word": "gutkurr",
+  "ported": "RSW_Gutkurr",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Gutkurr/Gutkurr_Dessicated",
+  "res": [
+   "swanimals/Gutkurr/Gutkurr"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4",
+  "atrisk": false
+ },
+ {
+  "id": "A_Horax",
+  "word": "horax",
+  "ported": "RSW_Horax",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.01",
+  "live": {
+   "desert": 0.01,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Horax/Horax_Dessicated",
+  "res": [
+   "swanimals/Horax/Horax"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.01",
+  "atrisk": false
+ },
+ {
+  "id": "A_Hrumph",
+  "word": "hrumph",
+  "ported": "RSW_Hrumph",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Hrumph/Hrumph_Dessicated",
+  "res": [
+   "swanimals/Hrumph/Hrumph",
+   "swanimals/Hrumph/Hrumph_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_Igitz",
+  "word": "igitz",
+  "ported": "RSW_Igitz",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.7",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.7
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Igitz/Igitz_Dessicated",
+  "res": [
+   "swanimals/Igitz/Igitz",
+   "swanimals/Igitz/Igitz_j"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.7); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_RSW_ImperialToad",
+  "word": "imperial toad",
+  "ported": "RSW_ImperialToad",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.7",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.7
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/GoetoToad/Dessicated_GoetoToad",
+  "res": [
+   "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/ImperialToad/ImperialToad"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.7); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Iriaz",
+  "word": "iriaz",
+  "ported": "RSW_Iriaz",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.1, AridShrubland=1.0",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 1.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 1
+  },
+  "cur": "swanimals/Iriaz/Iriaz_Dessicated",
+  "res": [
+   "swanimals/Iriaz/Iriaz"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1; NOTE: cast more heavily in Arid Shrubland (1)",
+  "atrisk": false
+ },
+ {
+  "id": "A_IridonianReek",
+  "word": "iridonian reek",
+  "ported": "RSW_IridonianReek",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Reek/Reek_Dessicated",
+  "res": [
+   "swanimals/IridonianReek/IridonianReek",
+   "swanimals/Reek/Reek_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": true
+ },
+ {
+  "id": "A_Jakobeast",
+  "word": "jakobeast",
+  "ported": "RSW_Jakobeast",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Jakobeast/Jakobeast_Dessicated",
+  "res": [
+   "swanimals/Jakobeast/Jakobeast",
+   "swanimals/Jakobeast/Jakobeast_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "A_Jamel",
+  "word": "Jamel",
+  "ported": "RSW_Jamel",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 3,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Jamel/Jamel_Dessicated",
+  "res": [
+   "swanimals/Jamel/Jamel"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4",
+  "atrisk": true
+ },
+ {
+  "id": "A_RSW_Jellypot",
+  "word": "jellypot",
+  "ported": "RSW_Jellypot",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.7",
+  "live": {
+   "desert": 0.7,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/Spelopede/Dessicated_Spelopede",
+  "res": [
+   "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/Jellypot/Jellypot"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.7",
+  "atrisk": false
+ },
+ {
+  "id": "A_Jimvu",
+  "word": "jimvu",
+  "ported": "RSW_Jimvu",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Jimvu/Jimvu_Dessicated",
+  "res": [
+   "swanimals/Jimvu/Jimvu"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_KowakianMonkeyLizard",
+  "word": "kowakian monkey-lizard",
+  "ported": "RSW_KowakianMonkeyLizard",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.01",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.01
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard_Dessicated",
+  "res": [
+   "swanimals/KowakianMonkeyLizard/KowakianMonkeyLizard"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.01); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_KraytDragon",
+  "word": "krayt dragon",
+  "ported": "RSW_KraytDragon",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.15",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.15,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 26,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/KraytDragon/KraytDragon_Dessicated",
+  "res": [
+   "swanimals/KraytDragon/KraytDragon_f",
+   "swanimals/KraytDragon/KraytDragon_j",
+   "swanimals/KraytDragon/KraytDragon_m"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.15",
+  "atrisk": false
+ },
+ {
+  "id": "A_Kreetle",
+  "word": "kreetle",
+  "ported": "RSW_Kreetle",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.2, Desert=1.3, AridShrubland=0.8",
+  "live": {
+   "desert": 1.3,
+   "deep": 0.2,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 1,
+   "deep": 13,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Kreetle/Kreetle_Dessicated",
+  "res": [
+   "swanimals/Kreetle/Kreetle",
+   "swanimals/Kreetle/Kreetle_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 1.3, deep 0.2",
+  "atrisk": true
+ },
+ {
+  "id": "A_Krykna",
+  "word": "krykna",
+  "ported": "RSW_Krykna",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.1",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Krykna/Krykna_Dessicated",
+  "res": [
+   "swanimals/Krykna/Krykna"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1",
+  "atrisk": false
+ },
+ {
+  "id": "A_Kwi",
+  "word": "Kwi",
+  "ported": "RSW_Kwi",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Kwi/Kwi_Dessicated",
+  "res": [
+   "swanimals/Kwi/Kwi"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_Kybuck",
+  "word": "kybuck",
+  "ported": "RSW_Kybuck",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.6",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.6
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Kybuck/Kybuck_Dessicated",
+  "res": [
+   "swanimals/Kybuck/Kybuck"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.6); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_JOE_Landopus",
+  "word": "landopus",
+  "ported": "JOE_Landopus",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.5",
+  "live": {
+   "desert": 0.5,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/landopus/swimming_landopus",
+  "res": [
+   "Things/Pawn/Animal/landopus/landopus"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.5",
+  "atrisk": false
+ },
+ {
+  "id": "A_LongtailGorg",
+  "word": "longtail gorg",
+  "ported": "RSW_LongtailGorg",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4, AridShrubland=1.0",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 1.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/LongtailGorg/LongtailGorg_Dessicated",
+  "res": [
+   "swanimals/LongtailGorg/LongtailGorg",
+   "swanimals/LongtailGorg/LongtailGorg_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4; NOTE: cast more heavily in Arid Shrubland (1)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Lothcat",
+  "word": "loth-cat",
+  "ported": "RSW_Lothcat",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.8",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Lothcat/Lothcat_Dessicated",
+  "res": [
+   "swanimals/Lothcat/Lothcat_f",
+   "swanimals/Lothcat/Lothcat_m"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.8); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_MammothWorm",
+  "word": "mammoth worm",
+  "ported": "RSW_Ulgga",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.015",
+  "live": {
+   "desert": 0.015,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga",
+  "res": [
+   "Things/Pawn/Animal/RSW_Ulgga/RSW_Ulgga"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.015",
+  "atrisk": true
+ },
+ {
+  "id": "A_Massiff",
+  "word": "massiff",
+  "ported": "RSW_Massiff",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.6",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.6
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Massiff/Massiff_Dessicated",
+  "res": [
+   "swanimals/Massiff/Massiff"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.6); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_RSW_MossBeetle",
+  "word": "moss beetle",
+  "ported": "RSW_MossBeetle",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.3",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.3
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/Dessicated_MossBeetle",
+  "res": [
+   "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/MossBeetle/MossBeetle"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.3); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Mudhorn",
+  "word": "mudhorn",
+  "ported": "RSW_Mudhorn",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.8",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 1
+  },
+  "cur": "swanimals/Mudhorn/Mudhorn_Dessicated",
+  "res": [
+   "swanimals/Mudhorn/Mudhorn",
+   "swanimals/Mudhorn/Mudhorn_j"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.8); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Mynock",
+  "word": "mynock",
+  "ported": "RSW_Mynock",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 1,
+   "arid": 0
+  },
+  "cur": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+  "res": [
+   "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock"
+  ],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.3, Desert=0.3, AridShrubland=0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_Needlepost",
+  "word": "needlepost",
+  "ported": "RSW_Skorra",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.1
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 1,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost",
+  "res": [
+   "Things/Pawn/Animal/AA_NeedlePost/AA_NeedlePost"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.1); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_Needleroll",
+  "word": "needleroll",
+  "ported": "RSW_Kudda",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.3, Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.3,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 1,
+   "deep": 14,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Kudda/RSW_Kudda",
+  "res": [
+   "Things/Pawn/Animal/RSW_Kudda/RSW_Kudda"
+  ],
+  "biome": "deep",
+  "why": "live roster desert 0.2, deep 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_Nerf",
+  "word": "nerf",
+  "ported": "RSW_Nerf",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Nerf/Nerf_Dessicated",
+  "res": [
+   "swanimals/Nerf/Nerf_f",
+   "swanimals/Nerf/Nerf_j",
+   "swanimals/Nerf/Nerf_m"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "A_Nuna",
+  "word": "nuna",
+  "ported": "RSW_Nuna",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2, AridShrubland=0.4",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.4
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Nuna/Nuna_Dessicated",
+  "res": [
+   "swanimals/Nuna/Nuna_f",
+   "swanimals/Nuna/Nuna_m"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2; NOTE: cast more heavily in Arid Shrubland (0.4)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Pikobis",
+  "word": "pikobis",
+  "ported": "RSW_Pikobis",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.1
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Pikobis/Pikobis_Dessicated",
+  "res": [
+   "swanimals/Pikobis/Pikobis"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.1); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Porg",
+  "word": "porg",
+  "ported": "RSW_Porg",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.04",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.04
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Porg/Porg_Dessicated",
+  "res": [
+   "swanimals/Porg/Porg",
+   "swanimals/Porg/Porg_f",
+   "swanimals/Porg/Porg_j"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.04); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Pufferpig",
+  "word": "Pufferpig",
+  "ported": "RSW_Pufferpig",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.5",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.5
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Pufferpig/Pufferpig_i",
+  "res": [
+   "swanimals/Pufferpig/Pufferpig"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.5); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Qormot",
+  "word": "qormot",
+  "ported": "RSW_Qormot",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.2
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Qormot/Qormot_Dessicated",
+  "res": [
+   "swanimals/Qormot/Qormot"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.2); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Ronto",
+  "word": "ronto",
+  "ported": "RSW_Ronto",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4, AridShrubland=0.8",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 2,
+   "blue": 0,
+   "arid": 1
+  },
+  "cur": "swanimals/Ronto/Ronto_Dessicated",
+  "res": [
+   "swanimals/Ronto/Ronto"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4; NOTE: cast more heavily in Arid Shrubland (0.8)",
+  "atrisk": true
+ },
+ {
+  "id": "A_Runyip",
+  "word": "runyip",
+  "ported": "RSW_Runyip",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.1",
+  "live": {
+   "desert": 0.1,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Runyip/Runyip_Dessicated",
+  "res": [
+   "swanimals/Runyip/Runyip",
+   "swanimals/Runyip/Runyip_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.1",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_SandProwler",
+  "word": "sand prowler",
+  "ported": "RSW_Vosska",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.05",
+  "live": {
+   "desert": 0.05,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 1,
+   "deep": 2,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska",
+  "res": [
+   "Things/Pawn/Animal/RSW_Vosska/RSW_Vosska"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.05",
+  "atrisk": true
+ },
+ {
+  "id": "A_AA_SandSquid",
+  "word": "sand squid",
+  "ported": "RSW_Ommok",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.025",
+  "live": {
+   "desert": 0.025,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 27,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok",
+  "res": [
+   "Things/Pawn/Animal/RSW_Ommok/RSW_Ommok"
+  ],
+  "biome": "deep",
+  "why": "live roster desert 0.025; overridden: tiny live share and the deep design sheet names it 27x",
+  "atrisk": false
+ },
+ {
+  "id": "A_Scavrat",
+  "word": "Scavrats",
+  "ported": "RSW_Scavrat",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.6, Desert=1.0, AridShrubland=0.6",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Scavrat/Scavrat_Dessicated",
+  "res": [
+   "swanimals/Scavrat/Scavrat"
+  ],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.6, Desert=1.0, AridShrubland=0.6",
+  "atrisk": false
+ },
+ {
+  "id": "A_Scurrier",
+  "word": "scurrier",
+  "ported": "RSW_Scurrier",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.1, AridShrubland=0.8",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.1,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 9,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Scurrier/Scurrier_Dessicated",
+  "res": [
+   "swanimals/Scurrier/Scurrier_f",
+   "swanimals/Scurrier/Scurrier_m"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.1; NOTE: cast more heavily in Arid Shrubland (0.8)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Shaak",
+  "word": "shaak",
+  "ported": "RSW_Shaak",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Shaak/Shaak_Dessicated",
+  "res": [
+   "swanimals/Shaak/Shaak"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "A_Shyrack",
+  "word": "shyrack",
+  "ported": "RSW_Shyrack",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.6",
+  "live": {
+   "desert": 0.6,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Shyrack/Shyrack_Dessicated",
+  "res": [
+   "swanimals/Shyrack/Shyrack"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.6",
+  "atrisk": false
+ },
+ {
+  "id": "A_Skalder",
+  "word": "skalder",
+  "ported": "RSW_Skalder",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3, AridShrubland=0.08",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.08
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 1
+  },
+  "cur": "swanimals/Skalder/Skalder_Dessicated",
+  "res": [
+   "swanimals/Skalder/Skalder"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_Sketto",
+  "word": "sketto",
+  "ported": "RSW_Sketto",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.8, AridShrubland=0.8",
+  "live": {
+   "desert": 0.8,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.8
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Sketto/Sketto_Dessicated",
+  "res": [
+   "swanimals/Sketto/Sketto"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.8",
+  "atrisk": false
+ },
+ {
+  "id": "A_Strill",
+  "word": "strill",
+  "ported": "RSW_Strill",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.2
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Strill/Strill_Dessicated",
+  "res": [
+   "swanimals/Strill/Strill"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.2); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_TeeMuss",
+  "word": "tee muss",
+  "ported": "RSW_TeeMuss",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/TeeMuss/TeeMuss_Dessicated",
+  "res": [
+   "swanimals/TeeMuss/TeeMuss"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_Terramorph",
+  "word": "terramorph",
+  "ported": "RSW_Khorrak",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.035",
+  "live": {
+   "desert": 0.035,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak",
+  "res": [
+   "Things/Pawn/Animal/RSW_Khorrak/RSW_Khorrak"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.035",
+  "atrisk": true
+ },
+ {
+  "id": "A_Terrorworm",
+  "word": "terrorworm",
+  "ported": "RSW_Ashworm",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.7",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.7
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.7); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_TetraSlug",
+  "word": "tetra slug",
+  "ported": "RSW_Vozzik",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.0005",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0005,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 21,
+   "blue": 1,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik",
+  "res": [
+   "Things/Pawn/Animal/RSW_Vozzik/RSW_Vozzik"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.0005",
+  "atrisk": false
+ },
+ {
+  "id": "A_Urusai",
+  "word": "urusai",
+  "ported": "RSW_Urusai",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.7",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.7
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Urusai/Urusai_Dessicated",
+  "res": [
+   "swanimals/Urusai/Urusai"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.7); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Uvak",
+  "word": "uvak",
+  "ported": "RSW_Uvak",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Uvak/Uvak_Dessicated",
+  "res": [
+   "swanimals/Uvak/Uvak"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_Varactyl",
+  "word": "varactyl",
+  "ported": "RSW_Varactyl",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Varactyl/Varactyl_Dessicated",
+  "res": [
+   "swanimals/Varactyl/Varactyl_f",
+   "swanimals/Varactyl/Varactyl_m"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "A_Voorpak",
+  "word": "voorpak",
+  "ported": "RSW_Voorpak",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.05, AridShrubland=0.02",
+  "live": {
+   "desert": 0.05,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.02
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Voorpak/Voorpak_Dessicated",
+  "res": [
+   "swanimals/Voorpak/Voorpak"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.05",
+  "atrisk": false
+ },
+ {
+  "id": "A_Vulptex",
+  "word": "vulptex",
+  "ported": "RSW_Vulptex",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.08",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.08
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Vulptex/Vulptex_Dessicated",
+  "res": [
+   "swanimals/Vulptex/Vulptex"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.08); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_WarWyrm",
+  "word": "war wyrm",
+  "ported": "RSW_WarWyrm",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.2,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 22,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/WarWyrm/WarWyrm_Dessicated",
+  "res": [
+   "swanimals/WarWyrm/WarWyrm"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "A_Whisperbird",
+  "word": "whisperbird",
+  "ported": "RSW_Whisperbird",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.15",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.15
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 1,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Whisperbird/Whisperbird_Dessicated",
+  "res": [
+   "swanimals/Whisperbird/Whisperbird"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.15); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": true
+ },
+ {
+  "id": "A_AA_Wildpawn",
+  "word": "wildpawn",
+  "ported": "RSW_Durrok",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.1
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn",
+  "res": [
+   "Things/Pawn/Animal/AA_Wildpawn/AA_Wildpawn"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.1); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_AA_Wildpod",
+  "word": "wildpod",
+  "ported": "RSW_Mullgoth",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.025",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.025
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 2
+  },
+  "cur": "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod",
+  "res": [
+   "Things/Pawn/Animal/AA_Wildpod/AA_Wildpod"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.025); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": true
+ },
+ {
+  "id": "A_WompRat",
+  "word": "womp rat",
+  "ported": "RSW_WompRat",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.4, Desert=0.7, AridShrubland=0.4",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/WompRat/WompRat_Dessicated",
+  "res": [
+   "swanimals/WompRat/WompRat"
+  ],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.4, Desert=0.7, AridShrubland=0.4",
+  "atrisk": false
+ },
+ {
+  "id": "A_Worrt",
+  "word": "worrt",
+  "ported": "RSW_Worrt",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.2, AridShrubland=0.4",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.4
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Worrt/Worrt_Dessicated",
+  "res": [
+   "swanimals/Worrt/Worrt",
+   "swanimals/Worrt/Worrt_j"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2; NOTE: cast more heavily in Arid Shrubland (0.4)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Wraid",
+  "word": "wraid",
+  "ported": "RSW_Wraid",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.4",
+  "live": {
+   "desert": 0.4,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Wraid/Wraid_Dessicated",
+  "res": [
+   "swanimals/Wraid/Wraid"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.4",
+  "atrisk": false
+ },
+ {
+  "id": "A_Zeer",
+  "word": "zeer",
+  "ported": "RSW_Zeer",
+  "group": "Creatures \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swanimals/Zeer/Zeer_Dessicated",
+  "res": [
+   "swanimals/Zeer/Zeer"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": true
+ },
+ {
+  "id": "P_AB_Aaklac",
+  "word": "aaklac",
+  "ported": "RSW_VellaraBloom",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "Desert=0.12",
+  "live": {
+   "desert": 0.12,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Plant/RSW_VellaraBloom",
+  "res": [
+   "Things/Plant/RSW_VellaraBloom"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.12",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_Bloddle",
+  "word": "bloddle plant",
+  "ported": "RSW_Plant_Bloddle",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "ExtremeDesert=0.05",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.05,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 4,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Plant/RSW_Plant_Bloddle",
+  "res": [
+   "Things/Plant/RSW_Plant_Bloddle"
+  ],
+  "biome": "deep",
+  "why": "live roster deep 0.05",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_Brambles",
+  "word": "brambles",
+  "ported": "rut_grellspine",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.3",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.3
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [
+   "Things/Plant/RUT_Grellspine"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.3); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_Bush",
+  "word": "bush",
+  "ported": "rut_grellbush",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.3",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 2,
+   "deep": 11,
+   "blue": 9,
+   "arid": 7
+  },
+  "cur": "",
+  "res": [
+   "Things/Plant/RUT_Grellbush"
+  ],
+  "biome": "deep",
+  "why": "no live desert-family roster; design sheets name it {'desert': 2, 'deep': 11, 'blue': 9}",
+  "atrisk": false
+ },
+ {
+  "id": "P_RG_Plant_CreepStern",
+  "word": "creep stern",
+  "ported": "RSW_Starvine",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.2
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.2); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "P_RG_Plant_CrimsonCushion",
+  "word": "crimson cushion",
+  "ported": "RSW_EmberCarpet",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.2
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.2); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "P_RG_Plant_Dervish",
+  "word": "dervish",
+  "ported": "RSW_Whirlbloom",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.2",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.2
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.2); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "P_AB_DessertTree",
+  "word": "dessert tree",
+  "ported": "RSW_SweetbarkTree",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "Desert=0.06",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting Desert=0.06",
+  "atrisk": false
+ },
+ {
+  "id": "P_RG_Plant_AridGrass",
+  "word": "grass",
+  "ported": "RSW_Scrubgrass",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.5",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.5
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 1,
+   "blue": 8,
+   "arid": 3
+  },
+  "cur": "",
+  "res": [],
+  "biome": "blue",
+  "why": "no live desert-family roster; design sheets name it {'desert': 0, 'deep': 1, 'blue': 8}; also Arid Shrubland 0.5",
+  "atrisk": false
+ },
+ {
+  "id": "P_AB_HardyGrass",
+  "word": "hardy grass",
+  "ported": "RSW_Dunegrass",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "Desert=0.6",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting Desert=0.6",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_Chakroot_Wild",
+  "word": "wild chak-root plant",
+  "ported": "RSW_Plant_Chakroot_Wild",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "Desert=0.3",
+  "live": {
+   "desert": 0.3,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Plant/RSW_Plant_Chakroot_Wild",
+  "res": [
+   "Things/Plant/RSW_Plant_Chakroot_Wild"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.3",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_HealrootWild",
+  "word": "wild healroot",
+  "ported": "rut_wildhealroot",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.25",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [
+   "Things/Plant/RUT_WildHealroot"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.25); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_HubbaGourd_Wild",
+  "word": "wild hubba gourd plant",
+  "ported": "RSW_Plant_HubbaGourd_Wild",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "Desert=0.2",
+  "live": {
+   "desert": 0.2,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "Things/Plant/RSW_Plant_HubbaGourd_Wild",
+  "res": [
+   "Things/Plant/RSW_Plant_HubbaGourd_Wild"
+  ],
+  "biome": "desert",
+  "why": "live roster desert 0.2",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_Nysyllin_Wild",
+  "word": "wild nysyllin plant",
+  "ported": "RSW_Plant_Nysyllin_Wild",
+  "group": "Plants \u2014 renders ready",
+  "donor_biomes": "AridShrubland=0.22",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.22
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "swplants/Nysillin",
+  "res": [
+   "swplants/Nysillin"
+  ],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.22); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_Rat",
+  "word": "rat",
+  "ported": "RSW_Rat",
+  "group": "Creatures \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.1, Desert=0.2, AridShrubland=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.1, Desert=0.2, AridShrubland=0.1",
+  "atrisk": false
+ },
+ {
+  "id": "P_AB_GiantStikehr",
+  "word": "giant stikehr",
+  "ported": "RSW_AB_GiantStikehr",
+  "group": "Plants \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.04",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "deep",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.04",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_ShrubLow",
+  "word": "low shrubs",
+  "ported": "RSW_Plant_ShrubLow",
+  "group": "Plants \u2014 NO RENDER YET",
+  "donor_biomes": "AridShrubland=0.9",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.9); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "P_Plant_Ripthorn",
+  "word": "ripthorn",
+  "ported": "RSW_Plant_Ripthorn",
+  "group": "Plants \u2014 NO RENDER YET",
+  "donor_biomes": "AridShrubland=0.3",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "cast only in Arid Shrubland (AridShrubland=0.3); no desert/deep/blue roster names it \u2014 placed in Desert, the nearest dry neighbour (INVENTED rule)",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_DestroyerDroid",
+  "word": "Destroyer Droid",
+  "ported": "RSW_OuterRim_DestroyerDroid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.02, Desert=0.02, AridShrubland=0.02",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.02, Desert=0.02, AridShrubland=0.02",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_DUMDroid",
+  "word": "DUM Repair Droid",
+  "ported": "RSW_OuterRim_DUMDroid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_FX7Droid",
+  "word": "fx-7 medical droid",
+  "ported": "RSW_OuterRim_FX7Droid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_GNKDroid",
+  "word": "GNK Power Droid",
+  "ported": "RSW_OuterRim_GNKDroid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.08, Desert=0.08, AridShrubland=0.08",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_MSEDroid",
+  "word": "MSE Repair Droid",
+  "ported": "RSW_OuterRim_MSEDroid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_MuckrakerDroid",
+  "word": "Muckraker Crab Droid",
+  "ported": "RSW_OuterRim_MuckrakerDroid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.05, Desert=0.05, AridShrubland=0.05",
+  "atrisk": false
+ },
+ {
+  "id": "A_OuterRim_SalvageAssistDroid",
+  "word": "salvage assist droid",
+  "ported": "RSW_OuterRim_SalvageAssistDroid",
+  "group": "Droids \u2014 NO RENDER YET",
+  "donor_biomes": "ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+  "live": {
+   "desert": 0.0,
+   "deep": 0.0,
+   "blue": 0.0,
+   "arid": 0.0
+  },
+  "mentions": {
+   "desert": 0,
+   "deep": 0,
+   "blue": 0,
+   "arid": 0
+  },
+  "cur": "",
+  "res": [],
+  "biome": "desert",
+  "why": "no live roster of ours; donor casting ExtremeDesert=0.1, Desert=0.1, AridShrubland=0.1",
+  "atrisk": false
+ }
+]
