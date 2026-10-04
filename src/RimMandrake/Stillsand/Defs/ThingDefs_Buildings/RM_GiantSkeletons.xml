@@ -18,7 +18,7 @@
     bone material (no bone family is added here).
 
   ART: the four skeleton sprites from the artpipe (wired 2026-10-03, STILLSAND_SKELETONS_REMAINDER_1);
-  the base keeps vanilla RubblePile only as a fallback. RM_GiantSkull is still RubblePile: its artpipe job failed validation 2026-10-03.
+  the base keeps vanilla RubblePile only as a fallback. RM_GiantSkull's own sprite landed on the requeue and is wired.
 -->
 <Defs>
 
@@ -154,9 +154,8 @@
     <category>Building</category>
     <size>(3,3)</size>
     <graphicData>
-      <texPath>Things/Building/RubblePile</texPath>
+      <texPath>Things/Building/GiantSkeleton/RM_GiantSkull</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <color>(240,234,214)</color>
       <drawSize>(3.5,3.5)</drawSize>
     </graphicData>
     <altitudeLayer>Building</altitudeLayer>
