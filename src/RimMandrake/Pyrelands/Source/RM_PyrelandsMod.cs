@@ -110,6 +110,9 @@ namespace RimMandrake.Pyrelands
         public static bool breakerPyrelandsOnly = true;
         public static int breakerTripCost = 10;
         public static float breakerRecipeCostFactor = 1f;
+        // PYRELANDS_SAND_TERRAIN_YIELD_1: "Shovel sand" orders on terrain carrying RM_TerrainDigYieldExtension.
+        public static bool sandShovelEnabled = true;
+        public static float sandShovelYieldMultiplier = 1f;
 
         // Cross-biome opt-in — lets the ash-accumulation mechanic (4) run on
         // a NON-Pyrelands biome's map without importing the whole biome.
@@ -163,6 +166,8 @@ namespace RimMandrake.Pyrelands
             Scribe_Values.Look(ref breakerPyrelandsOnly, "breakerPyrelandsOnly", true);
             Scribe_Values.Look(ref breakerTripCost, "breakerTripCost", 10);
             Scribe_Values.Look(ref breakerRecipeCostFactor, "breakerRecipeCostFactor", 1f);
+            Scribe_Values.Look(ref sandShovelEnabled, "sandShovelEnabled", true);
+            Scribe_Values.Look(ref sandShovelYieldMultiplier, "sandShovelYieldMultiplier", 1f);
         }
 
         /// <summary>True if the cross-biome ash-accumulation opt-in currently
@@ -356,6 +361,12 @@ namespace RimMandrake.Pyrelands
             breakerTripCost = Mathf.RoundToInt(list.Slider(breakerTripCost, 0f, 30f));
             list.Label("Breaker core recipe cost (restart): " + breakerRecipeCostFactor.ToStringPercent());
             breakerRecipeCostFactor = list.Slider(breakerRecipeCostFactor, 0.25f, 3f);
+            list.CheckboxLabeled("Shovel sand (Orders)", ref sandShovelEnabled,
+                "Shipped default: ON. A 'Shovel sand' order on Pyrelands sand: a miner digs the cell out for glass sand and "
+              + "leaves gravel underneath, so a sand patch is a finite deposit. Off: the order cannot be placed and "
+              + "standing orders are ignored.");
+            list.Label("Glass sand per shovelled cell: " + sandShovelYieldMultiplier.ToStringPercent());
+            sandShovelYieldMultiplier = list.Slider(sandShovelYieldMultiplier, 0.25f, 3f);
             list.GapLine();
 
             list.Label("Cross-biome ash accumulation (WORLDGEN-AFFECTING — new maps only)");

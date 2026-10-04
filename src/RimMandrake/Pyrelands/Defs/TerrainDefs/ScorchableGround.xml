@@ -59,6 +59,16 @@
     <passability>Standable</passability>
     <pathCost>3</pathCost>
     <burnedDef>RM_FE_Ash_Trace</burnedDef>
+    <modExtensions>
+      <!-- PYRELANDS_SAND_TERRAIN_YIELD_1: "Shovel sand" digs a cell to gravel for glass sand (the breaker's hopper
+           fuel and the forge's breaker-core input). Finite by design: the cell does not stay sand. -->
+      <li Class="RimMandrake.Pyrelands.RM_TerrainDigYieldExtension">
+        <yield>RM_GlassSand</yield>
+        <count>5</count>
+        <workTicks>400</workTicks>
+        <leaves>RM_FE_Ground_Gravel</leaves>
+      </li>
+    </modExtensions>
   </TerrainDef>
 
   <TerrainDef ParentName="RM_FE_ScorchableGroundBase">

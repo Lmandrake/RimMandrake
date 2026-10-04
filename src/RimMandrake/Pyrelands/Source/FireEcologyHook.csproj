@@ -60,6 +60,7 @@
     <Compile Include="MapComponent_BurnLine.cs" />
     <Compile Include="RM_PyrelandsGiants.cs" />
     <Compile Include="RM_LightningBreaker.cs" />
+    <Compile Include="RM_TerrainDig.cs" />
     <Compile Include="PyrelandsFireFront.cs" />
     <Compile Include="CompFireHawkSpread.cs" />
     <Compile Include="JobGiver_RUT_FireHawkCarryEmber.cs" />
