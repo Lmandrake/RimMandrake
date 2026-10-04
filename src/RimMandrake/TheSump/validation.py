@@ -334,23 +334,72 @@ def _build_suite():
             if _live(t):
                 _unmeasured(t, "BiomeDef %s has 0 tiles until the one terminal repaint (BIOME_PAINT_ONCE_AT_THE_END_1), so densities are not exercised on a real map" % BIOME)
 
+    def _proof(t, method):
+        r = t.bridge_call("jawa/static_call", type="RimMandrake.TheSump.RM_TheSumpProof", method=method, args="current")
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def _kv(text):
+        return dict(m.groups() for m in re.finditer(r"(\w+)=(\S+)", text))
+
+    @suite.chain("tar_vault")
+    def tar_vault(t):
+        """THESUMP_COVERAGE_GAPS_1: RM_TheSumpProof.ProofVault on the current map drives the real seal comp
+        (ScanNow = what CompTick runs every scanIntervalTicks) and ExtractOne. Not proven: the tarVaultEnabled off
+        arm (CompTick returns before Scan; needs ticks with the toggle off, then a rot read)."""
+        state = {}
+        with t.component("stored_goods_sealed_rot_frozen_forbidden", toggle="tarVaultEnabled"):
+            if not _live(t):
+                return
+            text = _proof(t, "ProofVault")
+            if text.startswith("UNMEASURED"):
+                _unmeasured(t, text)
+                return
+            state.update(_kv(text))
+            for want in ("sealed=True", "rotFrozen=True", "forbidden=True"):
+                if want not in text:
+                    raise ExpectationFailed("vault proof missing %s: %s" % (want, text[:200]))
+        with t.component("no_solvent_comes_out_ruined", toggle="tarVaultEnabled"):
+            if not _live(t):
+                return
+            if state.get("ruinedOut") != "True":
+                raise ExpectationFailed("extracting with no solvent did not leave RM_TarRuinedGoods: %s" % state)
+        with t.component("solvent_extracts_clean_and_is_spent", toggle="tarVaultEnabled"):
+            if not _live(t):
+                return
+            if state.get("cleanOut") != "True" or state.get("solventLeft") != "1":
+                raise ExpectationFailed("with 2 solvent on the map, want a clean unforbidden thawed meal and 1 solvent left: %s" % state)
+
+    @suite.chain("kethrel_shell")
+    def kethrel_shell(t):
+        """THESUMP_COVERAGE_GAPS_1: RM_TheSumpProof.ProofKethrel on the current map: PickUp (what the rare tick does
+        on finding metal) steps the shell stage by load (stageLoadKg 3/10/22) and sets RM_KethrelShell; Molt drops it
+        all. Not proven: the seek/pickup AI itself and the home-area rule (kethrelTakeColonyProperty), which need a
+        weapon on tar beside a wild kethrel over rare ticks."""
+        state = {}
+        with t.component("load_steps_shell_stage", toggle="kethrelShellEnabled"):
+            if not _live(t):
+                return
+            text = _proof(t, "ProofKethrel")
+            if text.startswith("UNMEASURED"):
+                _unmeasured(t, text)
+                return
+            state.update(_kv(text))
+            if state.get("s0") != "0" or state.get("s1") != "2" or state.get("s2") != "3" or state.get("hediff1", "none") == "none":
+                raise ExpectationFailed("want stage 0 -> 2 at 15 kg (with the shell hediff) -> 3 at 30 kg: %s" % text[:220])
+        with t.component("molt_drops_everything", toggle="kethrelMoltLoadKg"):
+            if not _live(t):
+                return
+            if state.get("sAfter") != "0" or state.get("hediffGone") != "True" or state.get("steelOnMap") != "60":
+                raise ExpectationFailed("a molt must drop all 60 steel and return to stage 0 with no shell hediff: %s" % state)
+        with t.component("kethrel_ignores_home_area_unless_allowed", toggle="kethrelTakeColonyProperty"):
+            if _live(t):
+                _unmeasured(t, "needs a home area, a weapon inside it and a wild kethrel beside it over rare ticks, toggle off then on")
+
     @suite.chain("map_mechanics")
     def map_mechanics(t):
         with t.component("deep_black_mere_generated", toggle="deepBlackMereEnabled"):
             if _live(t):
                 _unmeasured(t, 'a once-per-map unbroken tar expanse exists only on a map GENERATED as RM_TheSump with the toggle on (none with it off); the bridge cannot generate a map. Its gen step def (RUT_GenStep_DeepBlackMere) resolves in defs_resolve')
-        with t.component("kethrel_wears_shell_and_steps_stage", toggle="kethrelShellEnabled"):
-            if _live(t):
-                _unmeasured(t, "needs a spawned RM_Kethrel beside tar with a dropped weapon, then a read of RM_CompKethrelShell stage and the RM_KethrelShell severity; no bridge tool reads the comp yet (a [Tool] returning Stage/LoadKg is the first thing to add)")
-        with t.component("kethrel_molt_drops_everything", toggle="kethrelMoltLoadKg"):
-            if _live(t):
-                _unmeasured(t, "needs a loaded kethrel and a molt; the same missing [Tool] as the stage read")
-        with t.component("kethrel_ignores_home_area_unless_allowed", toggle="kethrelTakeColonyProperty"):
-            if _live(t):
-                _unmeasured(t, "needs a home area, a weapon inside it and a kethrel beside it, with the toggle off then on")
-        with t.component("tar_vault_seals_contents", toggle="tarVaultEnabled"):
-            if _live(t):
-                _unmeasured(t, "needs a spawned RM_TarVault with a stored perishable and ticks, then a rot-progress read on the stored item; the def wiring (comp, filter, research gate) is asserted statically by moved_tar_content_static")
         with t.component("biome_rarity_worldgen", toggle="biomeRarityFactor"):
             if _live(t):
                 _unmeasured(t, 'rarity changes only planets generated afterwards; the world is frozen and the bridge cannot generate one')
