@@ -14,3 +14,5 @@
 - 11:51 aerial live 18 PASS; hose live run; matrix next (~6 min)
 - 11:59 matrix matrix_live_20261004T1152.json done; committing then recording
 - 12:02 run_selftests 172/173 (only failure src/RimUtinni/UtinniPatches/selftest_utinnipatches_dump.py, unrelated); publishing
+- 12:03 record core REFUSED: STALE (run at dff0b5f00e86, mod now 49214331977a -- shader_sway_look.py added to the mod folder after the run). Re-running core live + save-load at 49214
+- 12:05 re-run at 49214: core validation_result_20261004T120435.json (42 PASS) recorded REFUSED on U_motion_look UNCOVERED, U_style_missing_art UNBUILT, M4_save_load_hash UNCOVERED (covered by validation_save-load_20261004T120447.json PASS), M9_remove_mod_clean UNCOVERED (paused); matrix_live_20261004T1152.json recorded GREEN (121 PASS, 1 SKIP). Done.
