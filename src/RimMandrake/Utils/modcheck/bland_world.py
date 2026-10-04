@@ -171,6 +171,8 @@ def reset(session, expected_ids=(), resurrect=True):
     steps = {}
     if _PENDING:
         steps["tile_restored"] = restore_tile(session, None) or "ok"
+    if _PENDING_POND:
+        steps["pond_restored"] = restore_pond(session, None) or "ok"
     steps["dialogs_closed"] = close_naming_dialogs(session)
     for h in (H.kill_hostiles, H.kill_wildlife, H.clear_strangers):
         r = h(session, expected_ids)
@@ -308,6 +310,80 @@ def retile(session, biome, temperature=None):
     global _PENDING
     _PENDING = orig
     return orig
+
+
+# --retile runs: suites whose chains need open water on the map (water-bank ambushers, a warden mother's pond).
+# The bland map has none, so those proofs read UNMEASURED/refused ("not bank: needs water within 2.9"; BELT_WATER_HARNESS_1).
+SUITE_WATER = {"Miasma": True, "Greentide": True}
+_PENDING_POND = None   # {"originals": {(x, z): terrainDef}, "x","z","w","h","terrain"}: restored by reset() / the runner
+
+
+def _parse_terrain_ops(ops):
+    """'Terrain:x,z,w,h;...' (the companion's own grammar, read AND write) -> {(x, z): terrainDefName}."""
+    cells = {}
+    for tok in (ops or "").replace("\r", "\n").replace("\n", ";").split(";"):
+        tok = tok.strip()
+        if not tok or ":" not in tok:
+            continue
+        name, coord = tok.split(":", 1)
+        n = [int(v) for v in coord.split(",") if v.strip()]
+        x, z = n[0], n[1]
+        w, h = (n[2] if len(n) > 2 else 1), (n[3] if len(n) > 3 else 1)
+        for i in range(w):
+            for j in range(h):
+                cells[(x + i, z + j)] = name.strip()
+    return cells
+
+
+def _read_terrain(session, x, z, w, h):
+    r = session.call("jawa/get_terrain_batch", rects="%d,%d,%d,%d" % (x, z, w, h), layer="top")
+    cells = _parse_terrain_ops(r.get("ops") or "")
+    if not r.get("success", True) or len(cells) != w * h:
+        raise BlandWorldError("get_terrain_batch read %d of %d cells: %s" % (len(cells), w * h, r.get("message") or r))
+    return cells
+
+
+def paint_pond(session, w=9, h=9, dx=14, dz=0, terrain="WaterShallow"):
+    """Paint a w x h pond `dx,dz` from the map centre on the CURRENT bland map and prove it by reading the cells back.
+    Returns the record restore_pond() needs. Raises BlandWorldError on any unproven step (caller records UNMEASURED).
+    Colonists and proofs spawn within ~5 of the centre, so the pond sits clear of them but inside every proof's search
+    radius; the surrounding bland ground is the bank."""
+    info = session.call("jawa/map_info")
+    cx, cz = int(info.get("sizeX", 250)) // 2, int(info.get("sizeZ", 250)) // 2
+    x0, z0 = cx + dx, cz + dz
+    originals = _read_terrain(session, x0, z0, w, h)
+    r = session.call("jawa/set_terrain_batch", ops="%s:%d,%d,%d,%d" % (terrain, x0, z0, w, h), layer="top", refresh=True)
+    if not r.get("success") or (r.get("cellsFailedVerify") or 0):
+        raise BlandWorldError("set_terrain_batch refused or failed verify: %s" % (r.get("message") or r))
+    now = _read_terrain(session, x0, z0, w, h)
+    wrong = [c for c, t in now.items() if t.lower() != terrain.lower()]
+    if wrong:
+        raise BlandWorldError("%d of %d pond cells read %r after painting %s" % (len(wrong), w * h, now[wrong[0]], terrain))
+    global _PENDING_POND
+    _PENDING_POND = {"originals": originals, "x": x0, "z": z0, "w": w, "h": h, "terrain": terrain}
+    return {"x": x0, "z": z0, "w": w, "h": h, "terrain": terrain, "painted": len(now)}
+
+
+def restore_pond(session, rec=None):
+    """Undo paint_pond(): repaint the captured terrain and prove it. Returns [] or a list of problems."""
+    global _PENDING_POND
+    rec = rec or _PENDING_POND
+    if not rec:
+        return []
+    _PENDING_POND = None
+    ops = ["%s:%d,%d,1,1" % (t, x, z) for (x, z), t in sorted(rec["originals"].items())]   # <= 81 single-cell ops
+    r = session.call("jawa/set_terrain_batch", ops=";".join(ops), layer="top", refresh=True)
+    problems = []
+    if not r.get("success") or (r.get("cellsFailedVerify") or 0):
+        problems.append("restore_pond set_terrain_batch refused or failed verify: %s" % (r.get("message") or r))
+    try:
+        now = _read_terrain(session, rec["x"], rec["z"], rec["w"], rec["h"])
+        bad = [c for c, t in rec["originals"].items() if now.get(c, "").lower() != t.lower()]
+        if bad:
+            problems.append("%d pond cells did not restore (e.g. %s reads %r, was %r)" % (len(bad), bad[0], now.get(bad[0]), rec["originals"][bad[0]]))
+    except BlandWorldError as e:
+        problems.append("restore_pond read-back: %s" % e)
+    return problems
 
 
 def restore_tile(session, rec):

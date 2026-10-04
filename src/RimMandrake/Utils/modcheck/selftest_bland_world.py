@@ -125,6 +125,54 @@ except BW.BlandWorldError:
     ok = True
 check("control: a retile that does not read back raises (UNMEASURED, never trusted)", ok)
 
+# paint_pond / restore_pond (BELT_WATER_HARNESS_1): painted, read back, restored; controls for a lying paint and a stale pending pond
+class TerrainSession(object):
+    """Just the terrain tools, over a dict grid (FakeWorld has none). lie=True claims success and paints nothing."""
+    def __init__(self, lie=False):
+        self.grid, self.lie, self.calls = {}, lie, []
+
+    def _cells(self, ops):
+        out = []
+        for tok in ops.split(";"):
+            name, _, coord = tok.rpartition(":") if ":" in tok else ("", "", tok)
+            n = [int(v) for v in coord.split(",")]
+            w, h = (n[2], n[3]) if len(n) > 3 else (1, 1)
+            out += [(name, (n[0] + i, n[1] + j)) for i in range(w) for j in range(h)]
+        return out
+
+    def call(self, tool, **p):
+        self.calls.append(tool)
+        if tool == "jawa/map_info":
+            return {"success": True, "sizeX": 250, "sizeZ": 250}
+        if tool == "jawa/get_terrain_batch":
+            ops = ";".join("%s:%d,%d,1,1" % (self.grid.get(c, "Soil"), c[0], c[1]) for _n, c in self._cells(p["rects"]))
+            return {"success": True, "ops": ops}
+        if tool == "jawa/set_terrain_batch":
+            if not self.lie:
+                for name, c in self._cells(p["ops"]):
+                    self.grid[c] = name
+            return {"success": True, "cellsChanged": 1, "cellsFailedVerify": 0}
+        return {"success": True}
+
+
+ts = TerrainSession()
+rec = BW.paint_pond(ts)
+check("paint_pond paints and reads back a w x h pond near the centre",
+      rec["painted"] == 81 and sum(1 for t in ts.grid.values() if t == "WaterShallow") == 81 and rec["x"] == 139, str(rec))
+check("restore_pond puts the original terrain back and proves it",
+      BW.restore_pond(ts) == [] and all(t == "Soil" for t in ts.grid.values()) and BW._PENDING_POND is None)
+BW.paint_pond(ts)
+check("a painted pond stays pending until restored (reset() and the runner restore it after a crashed suite)",
+      BW._PENDING_POND is not None and BW.restore_pond(ts) == [])
+tl = TerrainSession(lie=True)
+try:
+    BW.paint_pond(tl)
+    ok = False
+except BW.BlandWorldError:
+    ok = True
+check("control: a paint that does not read back raises (UNMEASURED, never trusted)", ok)
+BW._PENDING_POND = None
+
 bad = [n for n, c in _results if not c]
 print("%d/%d passed" % (len(_results) - len(bad), len(_results)))
 sys.exit(1 if bad else 0)
