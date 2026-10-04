@@ -1,0 +1,2133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Review sheet</title>
+
+<!--
+  sheet_template.html — a COMPLETE review sheet, not a fragment to copy hooks out of.
+
+  The chrome in here is the part humans complain about when it is missing: a brief that
+  folds AND is height-bounded, a save path that is present and copyable, and a group
+  label that follows while scrolling. An earlier version of this asset was a ~100-line
+  fragment that said "wire the three marked hooks", and agents rebuilt the chrome from
+  scratch and dropped one. So the chrome is no longer yours to author.
+
+  YOU FILL IN EXACTLY THREE THINGS:
+    1. script#CONFIG   the brief, posture, criterion, options
+    2. script#ITEMS   the rows
+    3. (optional) script#RENDER                 window.itemBody = it => html
+                                                       — only if the default row is wrong
+
+  Everything else — persistence, keyboard, grid, undo, overrides, sticky labels — is done.
+  Run assets/check_sheet.py against your output before you hand it over.
+-->
+
+<style>
+/* ── palette ─────────────────────────────────────────────────────────────────────── */
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+  --rowh:84px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+code,kbd{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:0 5px;font-size:11px;color:var(--link)}
+a{color:var(--link)}
+
+/* ── 1. THE HEADER, AND THE BRIEF THAT FOLDS *AND* IS BOUNDED ────────────────────────
+   Folding alone is not enough. A brief that is open and unbounded still eats the page —
+   that is the actual complaint ("the top instructions are persistent and block the
+   screen"). max-height turns the worst case from "the rows are off-screen" into "the
+   brief scrolls inside itself". Fold state persists, because re-collapsing it on every
+   visit is the same annoyance wearing a different hat. */
+header{position:sticky;top:0;z-index:30;background:var(--panel);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:center;gap:12px;padding:9px 18px;flex-wrap:wrap}
+.hrow h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
+.sub{color:var(--dim);font-size:12px}
+.spacer{margin-left:auto}
+#brief{max-height:26vh;overflow:auto;padding:0 18px 10px;border-top:1px solid #1e232b}
+body.folded #brief{display:none}
+@keyframes flash{0%,100%{box-shadow:none}35%{box-shadow:0 0 0 3px #3d6a92}}
+#fold.flash{animation:flash 1.1s ease-in-out 2}
+.panel{background:var(--panel2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;margin:8px 0;font-size:12.5px}
+.panel h3{margin:0 0 5px;font-size:12px;text-transform:uppercase;letter-spacing:.8px;color:var(--dim)}
+.panel.invented{border-color:#5a4320;background:#1a1408}
+.panel.invented h3{color:var(--warn)}
+.panel.posture{border-color:#2f4358;background:#0d151d}
+.crit{color:var(--accent);font-size:12px}
+
+/* buttons */
+.btn{cursor:pointer;background:#1b2028;border:1px solid var(--line);border-radius:5px;
+  padding:4px 10px;font-size:12px}
+.btn:hover{background:#232a34}
+.btn.pri{background:#1d2733;border-color:#2f4358;color:var(--link)}
+.btn.on{background:#243447;border-color:#3d6a92;color:#dff0ff}
+
+/* ── 2. THE SAVE PATH IS PRESENT AND COPYABLE ────────────────────────────────────────
+   Only a fallback now — with the sidecar there is no picker and no path to paste. It
+   stays because the sheet must still work opened straight off disk with nothing running. */
+.pathbar{display:flex;gap:9px;align-items:center;flex-wrap:wrap;background:var(--panel2);
+  border:1px solid var(--line);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12px}
+.pathbar code{color:var(--link);word-break:break-all}
+.pathbar b{color:var(--dim);font-weight:600}
+/* the visible fallback for "copy JSON" when the clipboard API is refused: the work itself,
+   on screen, selectable — never a button that silently did nothing */
+#exportTa{width:100%;margin:0 0 8px;background:#0c1420;border:1px solid #2b3a4d;
+  border-radius:6px;padding:7px 9px;color:#dff0ff;font-family:ui-monospace,monospace;
+  font-size:11px;resize:vertical}
+
+/* filter bar — OUTSIDE #brief, so folding the brief never hides the search box */
+.bar{display:flex;gap:8px;align-items:center;padding:8px 18px;flex-wrap:wrap;
+  background:#101317;border-top:1px solid #1e232b}
+.bar input[type=search],.bar select{background:var(--panel2);border:1px solid var(--line);
+  border-radius:5px;padding:5px 9px;font-size:12px}
+.bar input[type=search]{min-width:240px}
+.pill{font-size:11.5px;color:var(--dim);background:#0d1014;border:1px solid var(--line);
+  border-radius:999px;padding:3px 10px;white-space:nowrap}
+.pill b{color:var(--ink)}
+.pill.live{border-color:#2f4358;color:var(--link)}
+.pill.bad{border-color:#5a2b2b;color:#ffb0b0;background:#1a0e0e}
+
+/* ── 3. THE GROUP LABEL FOLLOWS WHILE SCROLLING ──────────────────────────────────────
+   `top` is set from the MEASURED header height at the end of every render and on resize:
+   the header changes height when the brief folds, and a hardcoded offset leaves labels
+   floating in mid-page or buried under the bar. */
+.gh{position:sticky;z-index:20;background:#10141a;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);padding:5px 18px;font-size:12px;font-weight:650;
+  color:var(--accent);display:flex;gap:10px;align-items:center}
+.gh.nostick{position:static}      /* groups of <=3: a sticky label covers the only row */
+.gh .ghcount{color:var(--dim);font-weight:400}
+.gh .ghbulk{margin-left:auto;display:flex;gap:5px}
+.gh .ghbulk button{font-size:11px;padding:2px 7px}
+
+/* ── rows ──────────────────────────────────────────────────────────────────────────── */
+#list{padding-bottom:60vh}         /* so the last group can still scroll under the header */
+.row{display:flex;gap:12px;align-items:flex-start;padding:9px 18px;
+  border-bottom:1px solid #171b21}
+body.perf .row{content-visibility:auto;contain-intrinsic-size:auto var(--rowh)}
+.row:hover{background:#0f1318}
+.row.focus{background:#131a24;box-shadow:inset 3px 0 0 var(--info)}
+.row.override{box-shadow:inset 3px 0 0 var(--accent)}
+.row.focus.override{box-shadow:inset 3px 0 0 var(--info),inset 6px 0 0 var(--accent)}
+
+.thumb{width:64px;height:64px;flex:0 0 64px;border-radius:5px;border:1px solid var(--line);
+  /* checkerboard: a sprite with transparency is unjudgeable on a flat dark field */
+  background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                   linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:12px 12px;background-position:0 0,6px 6px;background-color:#1a1d22;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:zoom-in}
+.thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+.main{flex:1;min-width:0}
+.label{font-weight:600;font-size:13px;display:flex;gap:7px;align-items:baseline;flex-wrap:wrap}
+.label .id{color:#5f6b7a;font-size:11px;font-family:ui-monospace,monospace}
+/* the consequence line: what the entry DOES. Not its name. */
+.effect{color:#c3cad6;font-size:12.5px;margin-top:2px}
+.marks{display:flex;gap:5px;flex-wrap:wrap;margin-top:3px}
+.mark{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid}
+.mark.inferred{color:var(--warn);border-color:#5a4320;background:#1a1408}
+.mark.contested{color:#e8a0d8;border-color:#5a2b52;background:#1a0d17}
+.mark.absent{color:var(--dim);border-color:var(--line)}
+.mark.ovr{color:var(--accent);border-color:#5a4320;background:#1a1408}
+
+.ctrl{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch;width:210px}
+.opts{display:flex;gap:4px}
+.opts button{flex:1;cursor:pointer;background:#161a20;border:1px solid var(--line);
+  border-radius:5px;padding:5px 4px;font-size:11.5px;color:var(--dim)}
+.opts button:hover{border-color:#3d4653;color:var(--ink)}
+.opts button.sel{color:#0b0d10;font-weight:700;border-color:transparent}
+/* the note must be the most inviting control on the row, not an afterthought beside the
+   dropdown: the notes are worth more than the agreements. */
+.note{width:100%;background:#0c1420;border:1px solid #2b3a4d;border-radius:5px;
+  padding:5px 8px;font-size:12px;min-height:30px;resize:vertical;color:#dff0ff}
+.note::placeholder{color:#5c7590}
+.note:focus{outline:2px solid #3d6a92;outline-offset:-1px;background:#0e1826}
+.row.override .note{border-color:#5a4320;background:#150f06}
+
+/* ── grid / contact-sheet mode ───────────────────────────────────────────────────────── */
+body.grid #list{display:grid;gap:10px;padding:12px 18px 60vh;
+  grid-template-columns:repeat(auto-fill,minmax(var(--cell,132px),1fr))}
+body.grid .gh{grid-column:1/-1;margin:6px -18px 0}
+body.grid .row{flex-direction:column;gap:6px;padding:7px;border:1px solid #1b2028;
+  border-radius:7px;background:#0f1216;align-items:stretch}
+body.grid.perf .row{contain-intrinsic-size:auto 190px}
+body.grid .thumb{width:100%;height:var(--cell,132px);flex:none}
+body.grid .ctrl{width:auto}
+body.grid .effect{font-size:11px;max-height:2.9em;overflow:hidden}
+body.grid .note{min-height:26px;font-size:11px}
+body.grid .row.sel-tint{border-color:currentColor}
+
+/* zoom overlay — judging a sprite at 64px is judging nothing */
+#zoom{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(3,5,8,.86);cursor:zoom-out}
+#zoom.on{display:flex}
+#zoom .box{background-image:linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%),
+                            linear-gradient(45deg,#2a2f37 25%,transparent 25%,transparent 75%,#2a2f37 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px;background-color:#1a1d22;
+  border:1px solid var(--line);border-radius:8px;padding:14px}
+#zoom img{image-rendering:pixelated;max-width:70vw;max-height:70vh}
+#zoom .cap{text-align:center;color:var(--dim);font-size:12px;margin-top:8px}
+
+/* ── keymap legend ───────────────────────────────────────────────────────────────────── */
+#keys{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:60;display:none;
+  background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:16px 20px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);max-width:min(560px,92vw)}
+#keys.on{display:block}
+#keys table{border-collapse:collapse;font-size:12.5px}
+#keys td{padding:3px 12px 3px 0;vertical-align:top}
+#keys h3{margin:0 0 10px;font-size:13px}
+
+.banner{padding:8px 18px;font-size:12.5px;border-bottom:1px solid}
+.banner.bad{background:#1e0f0f;border-color:#5a2b2b;color:#ffc9c9}
+.banner.warn{background:#1c1608;border-color:#5a4320;color:#ffe2ac}
+.banner.ok{background:#0d1a12;border-color:#2b5a3b;color:#c9ffd9}
+.banner button{margin-left:8px}
+.hide{display:none !important}
+</style>
+</head>
+<body>
+
+<!-- ══ FILL IN #1 ═══════════════════════════════════════════════════════════════════ -->
+<script id="CONFIG" type="application/json">
+{
+  "sheetId": "twilight_deep_sitting_20260926",
+  "title": "The Twilight Deep — ruling sitting",
+  "subtitle": "33 open questions harvested from the two design passes that closed 2026-09-26",
+  "briefHtml": "\n<p><b>Two design documents for the Twilight Deep closed today</b>, written in parallel by different\nagents. Between them they left 45 open calls; de-duplicated they are the 33 rows below. Every row\nnames which document and section it came from, so your answer can be written back to the right place.</p>\n\n<p><b>You already ruled two things today. They are not re-asked here:</b></p>\n<ul>\n<li><b>The ceiling stays, reskinned.</b> The mechanism is unchanged — skylights are holes in it, they\ndrift and expire, the ceiling gardens hang from it, the gardener tends it — but <i>mold</i> is gone and\nit is a living canopy in lustrous blue-green. Only its <b>name</b> is still open (row 2).</li>\n<li><b>The underwater rivers still carry you.</b> They look like dry riverbeds; the denser water moves a\npawn along them. Hard ban 3 stays live as a real mechanism. Only the <b>sink's outcome</b> and whether a\npawn may ride one <i>on purpose</i> are still open (rows 8 and 9).</li>\n</ul>\n\n<p><b>Every row starts UNANSWERED — nothing here is pre-decided.</b> On each row one option is marked\n<span style=\"color:#5ac37f\">◀ BENCH position</span>: that is our proposal, never your answer, and the\ncounter at the top will keep saying <i>33 left</i> until you have actually ruled. <b>On every row\nBENCH's position is option A</b>, so <kbd>Shift</kbd>+<kbd>1</kbd> accepts a whole group in one\nkeystroke — eight keystrokes clears the sheet — and you then go back and change the ones you disagree\nwith.</p>\n\n<p><b>Controls.</b> <kbd>1</kbd>–<kbd>4</kbd> pick A/B/C/D · <kbd>5</kbd> is <i>my own answer</i> ·\n<kbd>6</kbd> parks a row for later · <kbd>n</kbd> jumps into the note box · <kbd>g</kbd> jumps to the\nnext unanswered row · <kbd>Shift</kbd>+a number rules a whole group. <b>Anything you type in a note box\noverrides the option and is the only text that counts as your words</b> — a clicked option is our\nsentence, and gets recorded as a decision taken by question card, never as a quote.</p>\n\n<p><b>Marks on a row.</b> <span style=\"color:#e8b64c\">◆ contested</span> means the two documents\ngenuinely disagree or the call is defensible both ways. A <b>ban</b> chip names which of the six hard\nbans the row strains. A <b>cost</b> chip is on every row where something has to be built; <b>treat any\nrow whose cost mentions <i>unmeasured</i> as unpriced</b> — the number is not trustworthy until someone\nreads the engine.</p>\n\n<p><b>Nothing here is filed and no design document was changed to build this page.</b> Rows you leave\nuntouched are not rulings and will be brought back.</p>\n",
+  "criterion": "Ordered by what a ruling UNBLOCKS: the four rows at the top change other rows' answers or change what gets built at all; groups 2–8 are by subject. That ranks leverage, not importance — it cannot tell you which of these you actually care about, and a row you feel strongly about sitting at #29 means the ordering was wrong, not your feeling.",
+  "invented": [
+    "The organising law for this whole ocean — “every reward here is alive, renewable, expiring or relational; if a reward survives in a stockpile with nobody tending it, it belongs to the Grey Sea” — was written by an agent today, not asked for. It is the entire basis of the conflict in row 7, so if you reject the law, row 7 dissolves rather than needing an answer.",
+    "“The oolune” and the veil / the lid / veil-fall vocabulary (row 2) is an invented proposal, not a name you gave.",
+    "“The sun-sphere frees the player from the skylight economy” (row 5) is a consequence one document invented for itself, and it is what undercuts the other document's number-one idea.",
+    "Splitting the two silver shoals by light (row 15) is an invented reconciliation of two defs that collided; neither description asks for it.",
+    "The gardener OPENING new skylights (row 22) goes beyond the frozen sheet, which says it keeps them open. Closing them is the sheet's; opening them is ours.",
+    "Every timing in the whale's five-beat sequence (row 20) is a placeholder invented to be judged by watching, not a measured number.",
+    "“Permits lapse in reverse order, highest first” (row 28) is an invented revocation rule."
+  ],
+  "posture": {
+    "mode": "ruling sitting — default UNANSWERED",
+    "explain": "Nothing on this page is decided until you touch it. Every row's `decision` is EMPTY on arrival; BENCH's own position is stored alongside it as `prefill` and shown on the row as a proposal, never as your answer. A row you never touch stays unanswered in the file and comes back. Typed notes override the option and are the only thing that counts as your words."
+  },
+  "options": [
+    {
+      "key": "a",
+      "label": "A",
+      "hotkey": "1",
+      "color": "#5ac37f",
+      "counts": "in"
+    },
+    {
+      "key": "b",
+      "label": "B",
+      "hotkey": "2",
+      "color": "#6aa6e8",
+      "counts": "in"
+    },
+    {
+      "key": "c",
+      "label": "C",
+      "hotkey": "3",
+      "color": "#e8b64c",
+      "counts": "in"
+    },
+    {
+      "key": "d",
+      "label": "D",
+      "hotkey": "4",
+      "color": "#b48ce0",
+      "counts": "in"
+    },
+    {
+      "key": "own",
+      "label": "my own answer",
+      "hotkey": "5",
+      "color": "#cfe3ff",
+      "counts": "in"
+    },
+    {
+      "key": "later",
+      "label": "park it",
+      "hotkey": "6",
+      "color": "#98a2b3",
+      "counts": "out"
+    }
+  ],
+  "groupLabel": "group",
+  "media": false,
+  "decisionsFile": "twilight_deep_sitting_2026-09-26.decisions.json",
+  "decisionsPath": "/mnt/d/Luke/dev/Rimworld/Transient/twilight_deep_sitting_2026-09-26.decisions.json",
+  "sheetPath": "/mnt/d/Luke/dev/Rimworld/Transient/twilight_deep_sitting_2026-09-26.html"
+}
+</script>
+
+<!-- ══ FILL IN #2 ═══════════════════════════════════════════════════════════════════ -->
+<script id="ITEMS" type="application/json">
+[
+ {
+  "id": "floor_persistence",
+  "group": "1 · Decide these first — they change the other answers",
+  "label": "Does a sea floor stay yours between dives?",
+  "effect": "A measured engine defect: one gravship can currently only ever visit ONE sea floor. Your answer picks the fix, and decides whether anything built under the sea survives.",
+  "question": "When your gravship opens a dive hatch and your people go down, the sea floor they arrive on is a map the game makes once and then remembers. It remembers it by the <b>hatch</b>, not by the place. So a ship that dives the Twilight, flies to the Grey Sea and dives again arrives back on its <i>Twilight</i> floor. That is a real defect, measured out of the engine today and already filed. Fixing it means first saying what a sea floor <i>is</i>.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>One floor per sea, kept forever.</b> The hatch remembers a separate floor for each sea you have visited, and everything you built down there — a kelp plot, a claim buoy, a mooring the Deepwater granted you — is still standing next time. <i>Costs a small-to-medium piece of new code: the hatch has to keep a little register of which floor belongs to which place.</i>"
+   },
+   {
+    "k": "b",
+    "text": "<b>A fresh floor every dive.</b> The old one is thrown away when the ship launches. Cheapest possible fix and the bug can never come back — but nothing under the sea survives, which deletes skylight tenancy (the headline idea), the kelp farm, the sea-pen and every mooring or lamp the Compact could ever grant you. <i>Near-zero cost.</i>"
+   },
+   {
+    "k": "c",
+    "text": "<b>One ship, one sea, for good.</b> The ship's first dive picks its ocean and it can never dive another. <i>Cheapest of all, and the most limiting thing in the list.</i>"
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §6 Q8, marquee pass §2",
+   "cost": "A: small–medium C#. B/C: near-zero.",
+   "gating": "Decides whether ANY build-under-the-sea idea can exist, and the fix shape for the filed defect SEADIVEHATCH_CACHES_FIRST_SEA_FLOOR_1."
+  }
+ },
+ {
+  "id": "canopy_name",
+  "group": "1 · Decide these first — they change the other answers",
+  "label": "What is the living ceiling called?",
+  "effect": "You already ruled the ceiling stays and stops being mold. The NAME is still open — and about eleven pieces of shipped prose wait on it.",
+  "question": "You have ruled that the ceiling stays and that the word <i>mold</i> goes: it is a living canopy in lustrous blue-green. It still needs a name, and the name has to carry into roughly eleven pieces of writing that already ship — the ocean's own description, four creature descriptions, six catch items, and the frozen sheet. The proposal is <b>the oolune</b>: one organism shore to shore, seen from below as a living stained-glass ceiling — translucent blue-green, veined gold where the sunset strikes it, thick and opaque where it is old, thin and luminous where it is new, its skylights rimmed pale the way a wound in kelp is rimmed pale. The Deepwater call it <i>the lid</i>. What it sheds is <i>veil-fall</i>, and the word every description reaches for is <i>veil</i> — never <i>mat</i>, never <i>mold</i>.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Oolune, and the veil vocabulary.</b> The eleven rewrites go ahead as one pass."
+   },
+   {
+    "k": "b",
+    "text": "<b>Keep the look, change the word.</b> Type your name in the box; the rewrites wait for it."
+   },
+   {
+    "k": "c",
+    "text": "<b>Keep the name, change what the Deepwater call it</b> (“the lid” / “veil-fall”). Type theirs."
+   },
+   {
+    "k": "d",
+    "text": "<b>Keep the name and the look, but the description should read differently.</b> Say how."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §2.1, content pass §10.2-1, content pass §11 Q1",
+   "cost": "No code. About eleven prose rewrites across shipped defs, one pass.",
+   "gating": "Eleven shipped descriptions and an edit to the frozen sheet wait on the word."
+  }
+ },
+ {
+  "id": "top_three",
+  "group": "1 · Decide these first — they change the other answers",
+  "label": "Do the three headline ideas stand, in that order?",
+  "effect": "Sets the build queue for the whole ocean and decides which shared plumbing gets paid for first.",
+  "question": "Seven big ideas were designed for this ocean and three were picked to build first. <b>(1) Skylight tenancy</b> — you never own a golden shaft of light, you hold one until the ceiling drifts and closes it; the lit ground beneath is the only fast-growing, fish-crowded ground on the floor. <b>(2) The Compact's permits</b> — the Deepwater do not sell you the Deep, they admit you to it one right at a time and can take each one back. <b>(3) The Ark Seed</b> — carry a breeding pair of the last living sea home in a tank and keep it alive. The fourth idea, <b>living light</b> (a glowing creature kept in a tank, nearly free because the pigment mod already ships the tank), is the swap-in if the Ark Seed turns out expensive.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>All three, in that order.</b> Tenancy and permits pay for most of the rest."
+   },
+   {
+    "k": "b",
+    "text": "<b>Tenancy and permits first; living light third.</b> The Ark Seed waits until its one unmeasured engine question has been read."
+   },
+   {
+    "k": "c",
+    "text": "<b>A different three.</b> Say which in the box — the other four are the dry river as a travel lane, the gardener's events, living light, and the Compact's charts and ledgers."
+   },
+   {
+    "k": "d",
+    "text": "<b>Tenancy and permits only for now.</b> Nothing third; revisit when those two are in."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §0, marquee pass §6 Q9",
+   "cost": "1 small–medium · 2 medium · 3 medium–high with an unmeasured engine gate · 4 small.",
+   "gating": "Decides the build queue and what shared machinery gets built once."
+  }
+ },
+ {
+  "id": "seaweed_cut",
+  "group": "1 · Decide these first — they change the other answers",
+  "label": "Fourteen seaweeds were drawn; you asked for twelve.",
+  "effect": "Which two go. Sets the flora build list.",
+  "question": "Fourteen seaweed analogs were designed deliberately so that two could be cut. What each one is <i>for</i>:<br><b>oruvell</b> — the kelp proper: food fronds and the wet lattice-timber the Deepwater build with; grows only in the light shafts.<br><b>ghallowyn</b> — a hollow fluted pillar, the timber tree; so slow-growing that a stand of them is a family's generational wealth, and a dead one is what they stand their lamps and chimneys in.<br><b>hoolimbre</b> — ropes of glowing bladders; harvest one and you have a torch that lasts days.<br><b>noothelm</b> — one lantern bulb on a stalk, and it is sowable: you can plant light.<br><b>sennefan</b> — a sail-fan; gives sea-silk cloth, and a field of them all facing one way shows a diver which way the current runs.<br><b>ummarel</b> — rafts drifting under the ceiling that sweep shadows across the floor; on the floor itself it appears only as sunk waterlogged tangles.<br><b>waelune</b> — a glowing weed-ball that rolls along the floor and piles up against walls.<br><b>thessmoss</b> — grazing turf for the herbivores; it stops dead at the river's stake-line, which is itself a safety tell.<br><b>murrgrave</b> — lace that grows only on the richest ground, so finding it is finding where to plant.<br><b>vaalstone</b> — a glassy crust that makes the whole floor under a shaft glitter; scraped, it is the green pigment the Compact draw their charts in.<br><b>skirroth</b> — tangle-rope that slows you down and gives net-cord.<br><b>illuvane</b> — the herbal-medicine plant, the hospital ward's stock.<br><b>sarrowhisk</b> — bait; the fish are visibly thickest where it grows.<br><b>quellith</b> — the one that stings.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Cut ummarel and ghallowyn.</b> Ummarel's floor form is thin (a sunk tangle and nothing else), and ghallowyn's timber folds into the oruvell."
+   },
+   {
+    "k": "b",
+    "text": "<b>Keep all fourteen.</b> Twelve was a floor, not a ceiling."
+   },
+   {
+    "k": "c",
+    "text": "<b>Cut two others.</b> Name them in the box."
+   },
+   {
+    "k": "d",
+    "text": "<b>Cut more than two.</b> Name them."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §3, content pass §11 Q5",
+   "cost": "Each plant is about one def and one piece of art. No code.",
+   "gating": "Sets the flora build list (build steps 4, 5, 10 and 15)."
+  }
+ },
+ {
+  "id": "growing_light",
+  "group": "2 · Where the two documents disagree",
+  "contested": true,
+  "label": "Can you farm your own sunlight — and does that kill the skylight?",
+  "effect": "CONFLICT. One document makes holding a shaft of light the headline idea; the other invents a lamp you grow that 'frees the player from the skylight economy'. Both cannot be fully true.",
+  "question": "The content pass says plants grow only where there is light, so the golden shafts are the only good farmland — which is precisely what makes a shaft worth holding. It then adds the <b>sun-sphere</b>: a glass ball of glowing micro-organisms you grow yourself until it is bright as day, and its own text says it <i>“frees the player from the skylight economy”</i>. The marquee pass, written the same day and without knowing about the sun-sphere, makes holding a shaft the number-one idea in the ocean and the thing the Deepwater meter you on. <b>If a farmed lamp equals a skylight, the shaft stops being worth holding</b> — and with it goes the reason the Compact has any leverage.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Light gates growing; the sun-sphere is real daylight but dear and late.</b> Two techprints sold only by the Compact, a real feed cost, and it lights a small area — so it frees a homestead, never a farm. The shaft stays the good ground."
+   },
+   {
+    "k": "b",
+    "text": "<b>The sun-sphere is dimmer than a shaft.</b> It keeps plants alive and slow; only real skylight gives full growth. The cleanest protection of the tenancy idea, and the weaker half of a nice toy."
+   },
+   {
+    "k": "c",
+    "text": "<b>Farmed light equals a skylight.</b> Simplest and most generous to the player; the tenancy idea then has to earn its place on fishing and beauty alone."
+   },
+   {
+    "k": "d",
+    "text": "<b>No sun-sphere.</b> Cut it and keep the ocean's light entirely in the ceiling's gift."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.2 vs marquee pass §3.1 / marquee pass §0",
+   "cost": "The sphere is a planter def plus the base game's sun-lamp glow. A and B differ only by a number. No new code either way.",
+   "conflict": "content §13.2 (written later) undercuts marquee §3.1 (ranked #1)."
+  }
+ },
+ {
+  "id": "fishing_where",
+  "group": "2 · Where the two documents disagree",
+  "contested": true,
+  "label": "Where can you actually fish?",
+  "effect": "CONFLICT. One document says fishing happens only in the lit columns; the other puts the second-richest fishing on a river weir, outside any shaft.",
+  "question": "The content pass says fishing happens only in the lit water columns — <i>“nets in the light columns”</i> is the frozen sheet's own phrase, and it is another reason a shaft is worth holding. The marquee pass gives the river <b>weirs</b>: the Deepwater drop a bundle in the channel upstream and collect it at a weir on a bank-eddy downstream, and it calls a fishing zone on a weir <i>“the biome's second-richest fishing after the wells”</i>. That is fishing well outside any shaft.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Shafts only.</b> One rule, easy to learn, and it protects the shaft's value. The weir stays — as freight, not fishing."
+   },
+   {
+    "k": "b",
+    "text": "<b>Shafts and weirs.</b> Two fishing grounds with different characters: the shaft is yours and temporary, the weir is the Compact's and needs their leave. Costs one more building and making a bank-eddy hold water."
+   },
+   {
+    "k": "c",
+    "text": "<b>Fish anywhere there is water.</b> Simplest, and the shaft loses one of its two reasons to exist."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §11 Q9 / content pass §10.2-7 vs marquee pass §3.5",
+   "cost": "A: nothing beyond what is planned. B: the weir building plus water on a bank-eddy.",
+   "conflict": "content §11 Q9 vs marquee §3.5."
+  }
+ },
+ {
+  "id": "living_decor_neglect",
+  "group": "2 · Where the two documents disagree",
+  "contested": true,
+  "label": "Does a picked plant you take home stay alive on its own?",
+  "effect": "CONFLICT. Your word was 'easily' — so one document makes living decor immortal. The other document's organising law for this whole ocean is that nothing here keeps itself.",
+  "question": "You said underwater plants stay alive after you pick them, so you can decorate with a living plant <i>easily</i>. The content pass takes that at its word: a luminous vine laid along a wall never dies, needs nothing, and glows forever — no fuel bill, in any room, a thousand cells from any water. The marquee pass's organising rule for this entire ocean is the opposite: <i>“every reward here is alive, renewable, expiring or relational — something you keep only while you keep it”</i>, with the explicit test <i>“if a reward survives in a stockpile with nobody tending it, it belongs to the Grey Sea, not here.”</i> A vine that lives forever untended fails that test outright.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Never dies.</b> Your word was <i>easily</i>; a living cutting is a sealed organism that simply keeps. The marquee pass's rule bends here."
+   },
+   {
+    "k": "b",
+    "text": "<b>Never dies, but it goes dark.</b> In a room with no light the luminous ones dim to plain green — still alive, still beautiful, no longer a lamp. Keeps <i>easily</i> and keeps a reason to go back down. <i>This is the reconciliation the conflict suggests; nobody has proposed it as a position.</i>"
+   },
+   {
+    "k": "c",
+    "text": "<b>It needs light or water.</b> Living decor dies from real neglect, like the glow tank does. Honest to the marquee rule, harshest to play, and furthest from your word."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.3 / content pass §13.7 Q15 vs marquee pass §1",
+   "cost": "A: none, pure XML. B: a small condition on the glow. C: reuse the tank's existing vitality behaviour on a building.",
+   "conflict": "content §13.3's position fails marquee §1's stated test for this biome."
+  }
+ },
+ {
+  "id": "river_lane",
+  "group": "3 · The river that carries you",
+  "contested": true,
+  "label": "May a colonist ride the current on purpose?",
+  "effect": "You ruled the channels carry you. Open: whether that is a ROAD players use, or a HAZARD they avoid. The wide reading is outside hard ban 3's plain wording.",
+  "question": "You have ruled that the channels look like dry riverbeds but the denser water in them still carries a pawn along. What is still open is whether that is a <b>road</b> or a <b>hazard</b>. The frozen sheet's hard ban 3 says: <i>“no swimmable river — entering a bottom channel means sinking with it; harvest and travel happen on the banks.”</i> If the current is a road, players will use it as free one-way freight across the floor — which is exactly what the Deepwater do. If it is only a hazard, the identical code runs and nobody chooses it.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Hazard only — inside the ban's wording.</b> Things dropped in are carried, so the Compact's freight trick works and you can copy it by hand; but a colonist who steps in is <i>swept</i>, never travelling, and never routes through a channel on purpose."
+   },
+   {
+    "k": "b",
+    "text": "<b>A real lane.</b> A colonist can deliberately ride a channel one way across the floor. The better experience, outside the ban's plain words, and it needs the ban amended at this sitting."
+   },
+   {
+    "k": "c",
+    "text": "<b>Freight only; pawns cannot enter at all.</b> Safest, and it throws away the moment where someone steps on dry-looking mud and is carried thirty cells away."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §5.1 / marquee pass §6 Q1, content pass §2.2",
+   "cost": "Identical code either way — a flow grid and a component that moves things one cell at a time. What changes is what the pathfinder is allowed to plan.",
+   "ban": "Hard ban 3 — option B breaks its plain wording and needs it amended."
+  }
+ },
+ {
+  "id": "river_sink",
+  "group": "3 · The river that carries you",
+  "label": "What happens to a colonist carried to the end?",
+  "effect": "Ban 3's words are 'sinking with it'. Is that a body you can go and fetch, or a colonist lost?",
+  "question": "Every channel ends in a sink. Hard ban 3's words are <i>“sinking with it”</i>. The question is whether that means a body someone can go down the bank and carry out, or a colonist who is simply gone.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Recoverable and dangerous.</b> They are dumped in the sink basin with a worsening condition — cold-and-drowning shaped, movement falling — and somebody has to come and carry them out. They can still die if nobody comes. A harsher setting for players who want death. <i>This matches the ruling you already gave for the Grey Sea's encasement.</i>"
+   },
+   {
+    "k": "b",
+    "text": "<b>Lost.</b> Carried past the last eddy and gone. Simplest to build and the strongest lesson; also the one that turns one bad pathfinding afternoon into a dead colonist."
+   },
+   {
+    "k": "c",
+    "text": "<b>Harmless.</b> They wash up on the bank downstream, wet and annoyed. Cheapest, and the river stops being the thing the frozen sheet says it is."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §2.2 / content pass §11 Q2",
+   "cost": "A: one injury type plus a rescue that can chase a moving pawn. B and C: less."
+  }
+ },
+ {
+  "id": "river_build_order",
+  "group": "3 · The river that carries you",
+  "label": "Build the river's LOOK before its danger?",
+  "effect": "Splits the one genuinely expensive mechanism in this ocean into a cheap visible half and a costly half.",
+  "question": "The current is the only genuinely new movement system here — a medium piece of code touching pathfinding, hauling, downed pawns, animals and saving. The part that makes it <i>look</i> like a river is cheap and is the part you actually asked to see: banked braided mud, fertile bank silt, the Deepwater's lamp-stakes every eight cells marking exactly where the pushing starts, and litter visibly skating along the bed so you can see the floor is moving.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Terrain, banks and tells first; the current second</b> — and never ship the riverbed without at least the stake-line to warn people."
+   },
+   {
+    "k": "b",
+    "text": "<b>Both together.</b> One thing lands, later, complete."
+   },
+   {
+    "k": "c",
+    "text": "<b>Current first.</b> The dressing can follow."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §10.2-3, content pass §2.2",
+   "cost": "A splits one medium item into a cheap visible half and an expensive half."
+  }
+ },
+ {
+  "id": "cage_chain",
+  "group": "4 · Farming, cages and the grown light",
+  "label": "The cage's chain — anchored down, or hung from above?",
+  "effect": "Decides where a floating farm may be placed. Same picture from directly overhead either way.",
+  "question": "You described floating cube or sphere cages with a chain leading down to a tether. That reads two ways: a cage that <b>floats and is chained down</b> to an anchor on the sea floor, or a cage <b>hung on a chain from a float</b> on the surface far above. Seen from directly overhead, which is how the game is drawn, the picture is identical.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Chained down to a floor anchor.</b> A cage can then sit above anything at all — above the river channel you cannot farm, above a kelp stand, above a house — because it only needs somewhere to put the anchor."
+   },
+   {
+    "k": "b",
+    "text": "<b>Hung from a surface float.</b> Truer to the words, and it means a cage can only hang where open water runs all the way up — fewer places, and the ceiling is in the way."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.1 / content pass §13.7 Q13",
+   "cost": "Same def either way; art and placement rules differ."
+  }
+ },
+ {
+  "id": "cage_passable",
+  "group": "4 · Farming, cages and the grown light",
+  "label": "Do your people walk underneath a cage?",
+  "effect": "The floating farm costs no floor space only if pawns can walk under it. That is slightly odd to look at in a top-down game.",
+  "question": "The whole reason you liked floating farms is that they do not use up floor space. For that to be true in a top-down game the cage has to be drawn <i>above</i> your people, so a colonist walks underneath it and stands under the crop to tend it. The cell keeps every other use — walk it, haul across it, run a path through it — you just cannot put a second building there.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Walk under it.</b> It is the whole point of your sentence. A setting for players who find it odd."
+   },
+   {
+    "k": "b",
+    "text": "<b>It occupies its cells, like hydroponics.</b> Nothing looks strange, and the cage becomes an ordinary planter with a chain drawn on it."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.1 / content pass §13.7 Q14",
+   "cost": "Both pure XML."
+  }
+ },
+ {
+  "id": "sunsphere_feed",
+  "group": "4 · Farming, cages and the grown light",
+  "label": "Does the sun-sphere run on power, or does it eat?",
+  "effect": "Decides whether a sea-floor farm needs a generator down there, or whether your fishery feeds your light and your light feeds your farm.",
+  "question": "The sun-sphere is a ball of glowing micro-organisms you grow until it is bright as day — you watch your light get brighter as it matures. Its smaller sibling, the pigment tank that already ships, runs on electricity and dies when the power lapses.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Fed, not powered.</b> You put raw floor food into it — gathered ceiling-fall, or any raw fish. Starved, it dims over days and dies back to a husk you can re-seed, rather than snapping off. So your fishery feeds your light and your light feeds your farm: one loop, and no power cable under the sea."
+   },
+   {
+    "k": "b",
+    "text": "<b>Powered, like the glow tank.</b> Consistent with the thing it is descended from, and it means every sea-floor farm needs a generator beside it."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.2 / content pass §13.7 Q16",
+   "cost": "A: the base game's refuelling behaviour plus a dimming curve. B: already-shipped behaviour."
+  }
+ },
+ {
+  "id": "techprints",
+  "group": "4 · Farming, cages and the grown light",
+  "label": "Must you buy Deepwater technology before you can build it?",
+  "effect": "Makes the cages and the sun-sphere read as THEIR engineering rather than yours.",
+  "question": "The cages, the tethers and the sun-sphere are meant to read as Deepwater engineering — the thing a diver sees working at their houses and cannot build. The base game's own mechanism for that is a <b>techprint</b>: a document you must buy before the research will unlock. The proposal is one print for tethering and two for the sun-sphere, because the sphere is the thing that frees you from needing their skylights and they know it — both sold only by the Compact.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Yes — Compact-only sellers, one print for the cages, two for the sphere.</b>"
+   },
+   {
+    "k": "b",
+    "text": "<b>Compact-only, one print each.</b> Less friction, and the sphere stops being the dear one."
+   },
+   {
+    "k": "c",
+    "text": "<b>No techprints; research it yourself.</b> Then it stops being <i>their</i> technology."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.5 / content pass §13.7 Q19",
+   "cost": "Pure XML; the Compact-only seller is a small patch on their trader stock."
+  }
+ },
+ {
+  "id": "two_shoals",
+  "group": "5 · Creatures, plants and the catch",
+  "label": "Two silver shoal fish, one niche.",
+  "effect": "They read as one creature under two names. Split them by light, or fold them into one?",
+  "question": "Two silver shoal fish occupy the same niche. One is catch-only and carries the older, richer writing — <i>“the silver of the Twilight”</i>. The other was built with a real body two days ago — <i>“seen as a shoal, never as an individual”</i>. As written they are one creature wearing two names.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Keep both, split by light.</b> One is the <i>lit</i> shoal of the golden shafts — blue-white, and it flashes. The other is the <i>dark</i> shoal of the water between — dull silver, no glow, and it is what the predator hunts. Two halves of one floor, and it makes the predator's description true."
+   },
+   {
+    "k": "b",
+    "text": "<b>One shoal.</b> The built body takes the better name; one fish, one word."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §10.2-4 / content pass §11 Q3",
+   "cost": "A: one extra body and spawn entry. B: a rename."
+  }
+ },
+ {
+  "id": "waelune",
+  "group": "5 · Creatures, plants and the catch",
+  "label": "The rolling glowing weed-ball — plant or animal?",
+  "effect": "A plant cannot move in this engine. Either it teleports quietly every few days, or it is a slow harmless creature.",
+  "question": "The waelune is a glowing weed-ball, fist- to cushion-sized, that rolls along the floor with the current and piles up in drifts against towers and house walls. A floor with waelune on it has moving lights on it. But a plant cannot move in this engine.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>A creature.</b> Slow, tame, unafraid — it genuinely rolls, it rides the channels as a native species that the current does not hurt, it gives the Deepwater children something to chase, and carried home it is the pet that is a lamp."
+   },
+   {
+    "k": "b",
+    "text": "<b>A plant that quietly teleports</b> a few cells downstream every few days. Cheaper, and it will look like a bug the first time somebody watches one."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §3.7 / content pass §11 Q11",
+   "cost": "A: one race and spawn entry, no code."
+  }
+ },
+ {
+  "id": "clinging_layer",
+  "group": "5 · Creatures, plants and the catch",
+  "label": "Six tiny creatures living on the plants — right number?",
+  "effect": "The 'lots of little things' layer. Six rows on the roster, each nearly free.",
+  "question": "Six tiny creatures were designed to live on the plants themselves — the sort of thing you only notice when it moves: one in the glowing bladders, one on the sail-fans, one in the tangle-rope, one in the lace on the rich ground, and so on. Four of them are also things you can catch and eat.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Six.</b> They are tiny, and half of them are invisible until they move."
+   },
+   {
+    "k": "b",
+    "text": "<b>Fewer.</b> Say how many in the box."
+   },
+   {
+    "k": "c",
+    "text": "<b>More.</b> Say what else should be down there."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §4 / content pass §11 Q6",
+   "cost": "One creature each plus four catch items. No code; they share one seeding rule."
+  }
+ },
+ {
+  "id": "unlimited_fishing",
+  "group": "5 · Creatures, plants and the catch",
+  "label": "'Prolific and unlimited' — in practice, or literally?",
+  "effect": "Literally unlimited makes this sea different in kind from the Grey and the Scald, where the catch is finite.",
+  "question": "You said fishing here is prolific and unlimited. There are two readings. <b>Unlimited in practice</b> means a very high population and fast regrowth: you will never fish it out by playing normally, but the number is real and someone determined could. <b>Literally unlimited</b> means the sea never depletes at all — which needs a patch, and makes this ocean different in kind from the Grey and the Scald, where the catch runs down.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Unlimited in practice by default</b>; the literal version behind a setting for anyone who wants it."
+   },
+   {
+    "k": "b",
+    "text": "<b>Literally unlimited, shipped.</b> This is the one sea that is alive, and you meant it."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §5 / content pass §11 Q4",
+   "cost": "A: numbers. B: a small patch on the fishing model."
+  }
+ },
+ {
+  "id": "hazard_plant",
+  "group": "5 · Creatures, plants and the catch",
+  "label": "One plant that hurts, in a pretty ocean.",
+  "effect": "The quellith. Low damage. The Grey Sea owns 'everything here can kill you'.",
+  "question": "One plant on this floor hurts you: a hanging curtain of translucent blue-green tissue threaded with fine white stinging lines. Beautiful, low damage, and the shelter of one small fish that is immune to it and gets netted along with it. The argument for exactly one is that this is a pretty ocean, and the Grey Sea already owns <i>everything here can kill you</i>.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>One hazard plant, low damage.</b>"
+   },
+   {
+    "k": "b",
+    "text": "<b>None.</b> The little fish then loses its shelter and moves into the tangle-rope instead."
+   },
+   {
+    "k": "c",
+    "text": "<b>More than one.</b> Say what else should bite."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §3.14 / content pass §10.2-8",
+   "cost": "Reuses a contact-damage behaviour that already ships. No code."
+  }
+ },
+ {
+  "id": "whale_sequence",
+  "group": "6 · The gardener and its passing",
+  "label": "The gardener's passing — the five-beat sequence.",
+  "effect": "Your whole description written out as a timed hour-long event. The drawn moving shadow is the one separate, art-led piece.",
+  "question": "You described the whale's shadow leading to eerie booming sounds and little light, animals freaking out, then raining detritus and glowing barnacles like gems, and the whole ecosystem going into overdrive eating them. Written out as a timed sequence about an hour long:<br><b>1 — the booming.</b> Slow calls through the ceiling and a neutral letter: the gardener is overhead.<br><b>2 — little light.</b> Every skylight dims to a fifth and the whole floor darkens, so the creatures' own glow is suddenly all the light there is.<br><b>3 — animals freak out.</b> Shoals scatter, the grazers bolt, the predator goes to ground, the clingers vanish into their hosts. The Deepwater stand outside and watch.<br><b>4 — the rain.</b> For about a minute and a half things fall through the shafts: sheets of ceiling-fall, thumb-sized biting parasites shaken off its hide, and fist-sized barnacles with glowing gems in them.<br><b>5 — overdrive.</b> Every animal on the floor goes into a feeding frenzy and eats the fallen, fast — so hauling the barnacles before the ecosystem does is a race. And for that hour the floor's predator hunts things it never normally would, your people included if they are standing in the dark between shafts.<br>All of it runs on machinery the base game already has. The one separate piece is the moving shadow actually <i>drawn</i> across the floor, which is art-led and wants your eyes on a mockup.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Build the five beats now; the drawn moving shadow later</b>, after a mockup you watch."
+   },
+   {
+    "k": "b",
+    "text": "<b>All five beats and the drawn shadow together.</b> One landing, later."
+   },
+   {
+    "k": "c",
+    "text": "<b>Trim it.</b> Say which beats to keep in the box."
+   },
+   {
+    "k": "d",
+    "text": "<b>The simple version only</b> — it goes dark and a letter arrives."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.4, content pass §11 Q7, marquee pass §3.6",
+   "cost": "A: one incident, one condition, one frenzy effect, and a falling-things route that must be read out of the base game before it is written. Small–medium. The drawn shadow is art plus a small overlay."
+  }
+ },
+ {
+  "id": "whale_label",
+  "group": "6 · The gardener and its passing",
+  "label": "Is it the lanternwhale or the Twilight Gardener?",
+  "effect": "The creature already ships under one name; every design document calls it the other.",
+  "question": "The creature already ships as the <b>lanternwhale</b> — moss-shrouded, trailing blue lantern tendrils, and <i>“it does not notice you; that is the whole of its character, until you make it.”</i> The roster asks for a <i>Twilight Gardener</i> label instead, and every design document calls it <i>the gardener</i>.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Both.</b> The animal stays <i>lanternwhale</i>; the Deepwater call it <i>the gardener</i>; the description carries both, which is how a real creature gets two names."
+   },
+   {
+    "k": "b",
+    "text": "<b>Rename it the Twilight Gardener.</b>"
+   },
+   {
+    "k": "c",
+    "text": "<b>Something else.</b> Type it."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §10.2-9",
+   "cost": "A label edit."
+  }
+ },
+ {
+  "id": "gardener_agency",
+  "group": "6 · The gardener and its passing",
+  "label": "Does the gardener open and close the skylights itself?",
+  "effect": "Turns the shaft's expiry from a hidden timer into something with a visible cause — at the cost of giving a placid animal real agency.",
+  "question": "Under the ruled canopy the gardener's job is to tend the living ceiling. The design goes further: when it grazes overhead a new skylight <b>opens</b> beneath it, and when it patches a tear one <b>closes</b> — perhaps the one you were farming under. So a shaft's expiry stops being a hidden timer and becomes something with a cause you can watch pass over your head. The argument against is that this is a great deal of agency for an animal the frozen sheet calls placid and indifferent.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Keep it.</b> It is precisely the frozen sheet's own line that the gardener decides which skylights exist."
+   },
+   {
+    "k": "b",
+    "text": "<b>It only closes wells, never opens them.</b> New wells drift open on their own; the gardener is the thing that takes them away."
+   },
+   {
+    "k": "c",
+    "text": "<b>It does neither.</b> The ceiling drifts on its own clock and the gardener is scenery that keeps the ban true."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §10.2-11, marquee pass §3.6",
+   "cost": "Same component either way; A wires two events into it.",
+   "ban": "Touches hard ban 2 (no roof without the gardener) — option A strengthens the pairing."
+  }
+ },
+ {
+  "id": "gardener_studiable",
+  "group": "6 · The gardener and its passing",
+  "label": "Can the gardener be studied rather than touched?",
+  "effect": "A reward for patience in a biome whose keeper wants to be left alone — and the only free route to knowledge the Compact otherwise sells.",
+  "question": "A patient researcher could learn the gardener's ways simply by watching it — where it grazes, which lanes it crushes flat beneath it — using a study mechanic the base game already has. That would be a reward for leaving something alone, in an ocean whose keeper wants exactly that, and it would be the only way to learn the gardener's lanes without buying a chart from the Deepwater.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Yes, and it is the only free route</b> to that knowledge."
+   },
+   {
+    "k": "b",
+    "text": "<b>Yes, but smaller.</b> Study gives research progress, not the lanes; the chart stays the only way to see them."
+   },
+   {
+    "k": "c",
+    "text": "<b>No.</b> Charts are the Compact's to sell, and that is the point of them."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §3.6 / marquee pass §6 Q6",
+   "cost": "An already-shipped behaviour plus a small unlock. Small."
+  }
+ },
+ {
+  "id": "dead_gardener",
+  "group": "6 · The gardener and its passing",
+  "contested": true,
+  "label": "If a player kills the last gardener, what happens?",
+  "effect": "The only irreversible act available in this ocean — and the row where hard ban 2 gets its reading.",
+  "question": "If a player kills the last gardener, what happens? The design deliberately does <i>not</i> collapse the ceiling — that would delete the biome. Instead the skylights simply stop opening: the ones that exist close over the years and no new ones ever come, so the floor's light only shrinks from that day on, permanently, across the whole save. Hard ban 2 says no story removes the giant and leaves the mat standing. The design reads that ban as forbidding a <i>convenient</i> separation — kill the giant, keep the sea — and reads an irreversible slow ruin as its opposite. You may read it the other way.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Slow ruin.</b> The wells stop opening forever, and every permit the Deepwater ever gave you is void — you killed the thing they keep the sea for. The only irreversible act in this ocean."
+   },
+   {
+    "k": "b",
+    "text": "<b>It cannot be killed, or it comes back.</b> The ban is then never tested, and the sea has no tragedy available in it."
+   },
+   {
+    "k": "c",
+    "text": "<b>Something else.</b> Type it — including a stricter reading of ban 2 if you have one."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §5.3 / marquee pass §6 Q3",
+   "cost": "A world-level flag, a hook on its death, and the skylight component reading the flag. Small.",
+   "ban": "Hard ban 2 — this row is where that ban gets its reading."
+  }
+ },
+ {
+  "id": "rain_parasites",
+  "group": "6 · The gardener and its passing",
+  "label": "Do the falling parasites bite your people?",
+  "effect": "Decides whether the whale's rain is something you take cover from, or pure spectacle and loot.",
+  "question": "During the gardener's passing, thumb-sized biting parasites shaken off its hide rain down through the shafts and live about a day. Do they bite your colonists too, or only the animals?",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Colonists too</b> — a minor itch-and-ache injury any doctor cures. Not lethal, not a plot. The rain should be a thing you stand out of."
+   },
+   {
+    "k": "b",
+    "text": "<b>Animals only.</b> The rain is then pure spectacle and free loot, with no reason to take cover."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.4 / content pass §13.7 Q17",
+   "cost": "Same creature; one flag."
+  }
+ },
+ {
+  "id": "orrilith_gems",
+  "group": "6 · The gardener and its passing",
+  "label": "The gems that fall off the whale — what are they for?",
+  "effect": "The only gem in this ocean, and it comes off an animal rather than out of a mine. Making it a material pulls against the designed absence of mineral wealth.",
+  "question": "The barnacles that fall off the gardener are fist-sized shells with glowing bits in them like gems. Shelled at a crafting spot they give the only gem in this ocean — and it comes off an animal, not out of a mine, which is what keeps the biome's deliberate absence of mineral wealth intact. A pass leaves a dozen, and most get eaten by the frenzy before you can haul them.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>A trade good and a decorative inlay, nothing more.</b> The moment a gem is a crafting material, somebody asks where the mine is."
+   },
+   {
+    "k": "b",
+    "text": "<b>A real material too</b> — usable in building and crafting. More useful, and it pulls against the 'nothing to dig here' premise the whole ocean is built on."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §13.4 / content pass §13.7 Q18",
+   "cost": "A: an item and a recipe. B: the same plus material properties and balancing."
+  }
+ },
+ {
+  "id": "skylight_rights",
+  "group": "7 · The Deepwater and their permits",
+  "label": "What happens if you claim a shaft of light without leave?",
+  "effect": "The sanction on the headline mechanic. The Deepwater never raid anyone — so the punishment has to be a refusal.",
+  "question": "Holding a shaft of light is the headline idea: you moor a claim buoy under a golden column and the ground beneath it is the only fast-growing, fish-crowded ground on the floor — until the ceiling drifts, the light walks away, and your plot goes dim. The Deepwater meter those rights. What happens if you hold one without their leave?",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Goodwill only.</b> Every day an unlicensed buoy stands, their opinion of you drops. They never raid — they do not raid anyone — they simply stop opening doors. And the claim itself expires with the shaft: a licence must never be able to hold a well open."
+   },
+   {
+    "k": "b",
+    "text": "<b>Goodwill, and they quietly take the buoy down.</b> A visible consequence with no violence in it."
+   },
+   {
+    "k": "c",
+    "text": "<b>No sanction.</b> Claiming a shaft is between you and the ceiling."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §8.1 / content pass §11 Q8, marquee pass §3.1 / marquee pass §5.5",
+   "cost": "A small check on the buoy; no new system.",
+   "ban": "Serves hard ban 4 (the Deepwater never turn hostile) and hard ban 5 (no permanent skylight)."
+  }
+ },
+ {
+  "id": "permit_system",
+  "group": "7 · The Deepwater and their permits",
+  "label": "How the Deepwater's permits work — and whose they are.",
+  "effect": "Eight rights, numbered differently in the two documents, need to become one ladder. And a title in this engine belongs to a PAWN, not to the colony.",
+  "question": "The Deepwater's only lever on you is admission and price. The rights on offer: <b>dock rights</b> (open your hatch over their water without offence, and shelter at one of their moorings) · <b>air</b> (a line to your mooring, so your stay is not bounded by the ship's own supply) · <b>lamplight</b> (they string lamps along your bank — real light between shafts) · <b>charts</b> (where the light is right now, and where the gardener's lanes run) · <b>the ward</b> (your wounded treated by their medic — the only friendly doctor under the sea on a planet where every other faction is a raid) · <b>the Sharing</b> (their ceremonial water-gift) · <b>tethering</b> (the right to build their floating cages) · <b>the ark-key</b> (breeding stock may leave the sea). That is eight, and the two documents count them differently, so they have to become one numbered ladder. The machinery on offer is the base game's noble-title system, which is just data and can carry a faction's own ladder without touching the Empire's. Its quirk: <b>a title belongs to one colonist, not to the colony.</b>",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Their own ladder on the base game's title system, held per colonist.</b> Four ranks, guest up to ark-keeper's friend. A named person carries your standing with them, and can die in a raid."
+   },
+   {
+    "k": "b",
+    "text": "<b>The same rights, held colony-wide.</b> Loses the stake — a colony flag is a checkbox — and costs about the same either way."
+   },
+   {
+    "k": "c",
+    "text": "<b>Our own permit system from scratch.</b> Full control, more code, no reason yet."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §3.2 / marquee pass §6 Q4, content pass §13.5",
+   "cost": "Medium: the ladder in XML, four to six small permit effects, and one hook that strips ranks when you lose their goodwill. Either way the eight rights become one list.",
+   "ban": "Hard ban 4 holds: revoking a permit is a refusal, not hostility. No warden ever raises a hand."
+  }
+ },
+ {
+  "id": "ark_key",
+  "group": "7 · The Deepwater and their permits",
+  "label": "Who holds the highest permit?",
+  "effect": "The right that gates taking living breeding stock out of the sea. A person who can die, or a colony flag.",
+  "question": "The highest right — permission to take living breeding stock out of the sea — is the one that gates the Ark Seed. Held by a person, or by the colony?",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>A person.</b> A named ark-friend who can be killed is a stake."
+   },
+   {
+    "k": "b",
+    "text": "<b>The colony.</b> Safer, duller, and it cannot be lost by bad luck."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §6 Q5",
+   "cost": "Either; one field."
+  }
+ },
+ {
+  "id": "the_sharing",
+  "group": "7 · The Deepwater and their permits",
+  "label": "Does the Deepwater's charity reach your colony?",
+  "effect": "The most surprising thing the water monopolists can do — and what makes losing their goodwill actually hurt.",
+  "question": "One of the Deepwater runs <b>the Sharing</b> — a ceremonial water-gift to anyone who arrives in need. On a desert planet, from the people who hold the water monopoly, that is the most surprising thing they can do. Does it reach your colony, or only people who turn up at their door?",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>A permit carries it to you.</b> In a drought, a standing capped water grant arrives. It is what makes losing their goodwill actually hurt."
+   },
+   {
+    "k": "b",
+    "text": "<b>At their Hold only.</b> You must go there. Purer to the ceremony, and it never touches your base."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §3.2 / marquee pass §6 Q7",
+   "cost": "A depends on a carried liquid being haulable — unmeasured, and already owed elsewhere."
+  }
+ },
+ {
+  "id": "ark_seed",
+  "group": "7 · The Deepwater and their permits",
+  "contested": true,
+  "label": "May the last living sea live in a tank on the dayside?",
+  "effect": "The strongest single reward in either document, and the one that brushes the setting's premise that everything ordinary survives ONLY here.",
+  "question": "Carry a breeding pair of sea creatures up through the hatch in a tank, install them at home in a brine basin, feed them on kelp, and if they live your home map gets a fishery — of the only ordinary fish left in the world. On a planet whose premise is that nothing grows, that is the strongest single reward in either document, and the thing a player tells someone about. It also brushes the premise: the frozen sheet says everything ordinary that survives anywhere survives <i>only here</i>, and the terminator-sea canon says nothing crosses between seas. The defence is that a pen is an aquarium, not a sea — small, artificial, dependent, revocable — and if it dies it leaves nothing behind.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Yes, as an aquarium and never a wild population.</b> Nothing escapes a pen into any map's water, and a pen that dies leaves nothing behind."
+   },
+   {
+    "k": "b",
+    "text": "<b>No.</b> The premise is the premise; the last sea stays the last sea."
+   },
+   {
+    "k": "c",
+    "text": "<b>Yes, but as a larder only.</b> You bring food home, not living fish — no fishery on the home map. Much cheaper and much less of a story."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "marquee pass §3.3 / marquee pass §5.2 / marquee pass §6 Q2",
+   "cost": "Medium–high, and it rests on one engine question nobody has measured: where the fishing system reads which species a body of water holds. Do not trust the price until that is read.",
+   "ban": "Strains the frozen sheet's §5 and terminator-sea canon — 'everything ordinary survives only here'."
+  }
+ },
+ {
+  "id": "deepwater_houses",
+  "group": "7 · The Deepwater and their permits",
+  "label": "The bottom-dwellings — per place, and whose people?",
+  "effect": "The frozen sheet already ruled the houses in. Three shapes left: per-tile or biome-wide, new people or the Hold's, and whether the proposed roles stand.",
+  "question": "Their dwellings stand on the sea floor, lamplit, on the river banks — the frozen sheet already ruled that in, and their twenty-five-person surface Hold is already written, hospital ward and all. Three small shapes are left. Are the bottom-houses a thing that exists <b>per place you dive</b>, so each sea tile has its own, or <b>one population</b> shared across the whole ocean? Is the bottom cast <b>newly written people</b> (six to eight) or <b>the Hold's existing twenty-five coming down</b>? And do the proposed roles stand as a starting sheet for your own prose?",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>Per place · a new bottom cast of six to eight · the proposed roles as your starting point.</b> The Hold is a surface seat and its people have surface hooks."
+   },
+   {
+    "k": "b",
+    "text": "<b>Per place, but the Hold's people descend.</b> No new prose owed, and the surface and the floor share one cast."
+   },
+   {
+    "k": "c",
+    "text": "<b>One population for the whole ocean.</b> Simpler, and every dive meets the same neighbours wherever you go."
+   },
+   {
+    "k": "d",
+    "text": "<b>Mixed.</b> Say which parts in the box."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §9 / content pass §10.2-10 / content pass §11 Q10",
+   "cost": "A place archetype, a house-placing step, a per-place component, three or four buildings, and six to eight character write-ups."
+  }
+ },
+ {
+  "id": "mod_settings",
+  "group": "8 · Settings",
+  "label": "The settings screen — the whole proposed set.",
+  "effect": "Every mod ships one. Each toggle below is a branch already in the design; defaults are exactly what ships.",
+  "question": "Every mod ships a real settings screen. Proposed for this one: <b>the current</b> on/off, its strength, what the sink does to a carried colonist, and the first-entry warning · <b>creature glow</b> on / hosts only / off · <b>skylight drift</b> on/off · <b>the gardener's passing</b> on/off, with rain density, frenzy strength, and whether the parasites bite people · <b>fishing</b> unlimited in practice or literally · <b>Deepwater houses</b> on/off · <b>how dense the clinging layer is</b> · <b>tethered cages</b> on/off and whether you can walk under them · <b>living decor needs light</b> (off by default) · <b>how long the sun-sphere survives being starved</b>. Defaults are exactly what ships.",
+  "options": [
+   {
+    "k": "a",
+    "rec": true,
+    "text": "<b>All of them, defaults as shipped.</b>"
+   },
+   {
+    "k": "b",
+    "text": "<b>Fewer.</b> Say which to drop — every toggle is a branch somebody has to maintain."
+   },
+   {
+    "k": "c",
+    "text": "<b>More.</b> Say what else should be adjustable."
+   }
+  ],
+  "prefill": "a",
+  "chips": {
+   "source": "content pass §11 Q12, content pass §13 (four more proposed)",
+   "cost": "One settings screen; each toggle is a branch the design already has."
+  }
+ }
+]
+</script>
+
+<header>
+  <div class="hrow">
+    <h1 id="title">Review sheet</h1>
+    <span class="sub" id="subtitle"></span>
+    <span class="spacer"></span>
+    <span class="pill" id="link">connecting…</span>
+    <button class="btn" id="fold">▾ brief</button>
+  </div>
+
+  <div id="brief">
+    <div id="briefBody"></div>
+    <div class="panel posture" id="posturePanel"></div>
+    <div class="panel invented hide" id="inventedPanel"></div>
+    <div class="pathbar hide" id="pathbar">
+      <b>Save decisions to</b>
+      <code id="dpath"></code>
+      <button class="btn" data-copy="dpath">copy path</button>
+      <span class="sub" id="pathwhy"></span>
+    </div>
+    <div class="pathbar hide" id="spathbar">
+      <b>This sheet</b> <code id="spath"></code>
+      <button class="btn" data-copy="spath">copy path</button>
+    </div>
+    <!-- The export route out of browser-only storage. It exists because SKILL.md §8 tells
+         a human whose work never reached disk to "reopen the sheet and click copy JSON" —
+         and for a long time there was no such control anywhere on the page. -->
+    <div class="pathbar hide" id="exportbar">
+      <b>Not saving to a file</b>
+      <span class="sub">your decisions are held in this browser only</span>
+      <button class="btn pri" id="copyJson">copy JSON</button>
+      <span class="sub" id="copywhy">puts the whole decisions file on the clipboard — paste it over the .json</span>
+    </div>
+    <textarea id="exportTa" class="hide" rows="8" spellcheck="false" readonly></textarea>
+  </div>
+
+  <div class="bar">
+    <input type="search" id="q" placeholder="search name, id, or effect…">
+    <select id="fstate"></select>
+    <select id="fgroup"></select>
+    <select id="fmark">
+      <option value="">all rows</option>
+      <option value="override">overrides only</option>
+      <option value="contested">contested only</option>
+      <option value="inferred">inferred only</option>
+      <option value="noted">has a note</option>
+    </select>
+    <span class="spacer"></span>
+    <span class="pill" id="progress"></span>
+    <button class="btn" id="nextUndecided" title="jump to the next undecided row (g)">next undecided</button>
+    <button class="btn hide" id="btnGrid" title="list / grid (v)">grid</button>
+    <input type="range" id="cell" class="hide" min="80" max="260" value="132" title="thumbnail size">
+    <button class="btn" id="btnKeys" title="keyboard help (?)">?</button>
+  </div>
+
+  <div class="banner bad hide" id="err"></div>
+</header>
+
+<div id="list"></div>
+
+<div id="zoom"><div><div class="box"><img id="zimg" alt=""></div><div class="cap" id="zcap"></div></div></div>
+
+<div id="keys">
+  <h3>Keyboard</h3>
+  <table id="keysBody"></table>
+  <div class="sub" style="margin-top:10px">Esc closes. Keys are ignored while typing in a note.</div>
+</div>
+
+<!-- ══ FILL IN #3 (optional) ════════════════════════════════════════════════════════
+     Only if the default row is wrong for your items. The default already handles a
+     thumbnail, a consequence line, meta chips and the inferred/contested/absent marks.
+<script id="RENDER">
+  window.itemBody = it => `<div class="effect">${esc(it.effect)}</div>`;
+</script>
+-->
+
+
+<script id="RENDER">
+window.itemBody = it => {
+  const chip = (cls, k, v) => `<span class="mark ${cls}"><b>${esc(k)}</b> ${esc(v)}</span>`;
+  const chips = [];
+  const c = it.chips || {};
+  if (c.gating)   chips.push(`<span class="mark contested"><b>gating</b> ${esc(c.gating)}</span>`);
+  if (c.conflict) chips.push(`<span class="mark contested"><b>conflict</b> ${esc(c.conflict)}</span>`);
+  if (c.ban)      chips.push(`<span class="mark inferred"><b>ban</b> ${esc(c.ban)}</span>`);
+  if (c.cost)     chips.push(chip('absent', 'cost', c.cost));
+  if (c.source)   chips.push(chip('absent', 'from', c.source));
+
+  const opts = (it.options || []).map(o => {
+    const letter = o.k === 'own' ? '✒' : o.k === 'later' ? '⏸' : o.k.toUpperCase();
+    return `<div class="qopt${o.rec ? ' rec' : ''}">`
+         + `<span class="qk">${esc(letter)}</span>`
+         + `<span class="qt">${o.text}${o.rec ? ' <span class="recmark">◀ BENCH position</span>' : ''}</span>`
+         + `</div>`;
+  }).join('');
+
+  return `<div class="qbody"><div class="qq">${it.question || ''}</div>`
+       + `<div class="qopts">${opts}</div>`
+       + (chips.length ? `<div class="qchips">${chips.join('')}</div>` : '')
+       + `<div class="qhint">Pick a letter, or type your own answer in the note box — typed text wins.</div>`
+       + `</div>`;
+};
+</script>
+<style>
+.qbody{margin-top:2px}
+.qq{font-size:13.5px;line-height:1.55;margin-bottom:9px;max-width:92ch}
+.qopts{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
+.qopt{display:flex;gap:9px;align-items:flex-start;background:#0f1216;border:1px solid #232830;
+  border-radius:5px;padding:6px 9px;font-size:12.8px;line-height:1.5;max-width:100ch}
+.qopt.rec{border-color:#3d5a3f;background:#0e1510}
+.qk{flex:0 0 20px;text-align:center;font-weight:700;color:#ffb454;font-family:ui-monospace,monospace}
+.qopt.rec .qk{color:#5ac37f}
+.qt{flex:1 1 auto;color:#d6d3cf}
+.recmark{color:#5ac37f;font-size:11px;white-space:nowrap}
+.qchips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}
+.qchips .mark{max-width:none;white-space:normal;text-align:left;line-height:1.4}
+.qhint{color:#6d7684;font-size:11px}
+</style>
+
+<script>
+"use strict";
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   config + items
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const CFG   = JSON.parse(document.getElementById('CONFIG').textContent);
+const ITEMS = JSON.parse(document.getElementById('ITEMS').textContent);
+const OPTS  = CFG.options || [];
+const OPTBY = Object.fromEntries(OPTS.map(o => [o.key, o]));
+const SIDECAR = window.__SIDECAR__ || null;
+
+
+const el   = id => document.getElementById(id);
+const esc  = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+window.esc = esc;
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   storage keys are NAMESPACED, and this is not decoration.
+
+   MEASURED: every file:// page shares ONE storage origin. A page in /tmp/a.html read a
+   key written by a page in /tmp/b/other.html — origin is literally "file://". So two
+   review sheets opened from disk share localStorage AND IndexedDB. An unnamespaced
+   'decisions' key means sheet B silently eats sheet A's review, and an unnamespaced
+   IndexedDB handle means sheet B auto-writes into sheet A's FILE while reporting "saved".
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const NS = 'rs:' + (CFG.sheetId || 'unnamed') + ':';
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(NS + k); return v === null ? d : JSON.parse(v); }
+              catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(NS + k, JSON.stringify(v)); } catch (e) {} },
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   state
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let DEC = {};                 // id -> {decision, note, prefill, at}
+let dirty = new Map();        // id -> decision object, pending flush
+const undoStack = [], redoStack = [];
+let focusIdx = -1, shown = [], backend = null, frozen = false;
+
+const prefillOf = it => (it.prefill ?? null);
+const decOf     = id => DEC[id] || null;
+const decisionOf = id => { const d = decOf(id); return d && d.decision ? d.decision : ''; };
+const isDecided = id => !!decisionOf(id);
+/* A CLEARED row is not a disagreement. {decision:'', prefill:'keep'} means "I unset this",
+   so the amber override rail and the "overrides only" filter must both leave it alone —
+   serve_sheet.py counts it the same way. */
+const isOverride = id => {
+  const d = decOf(id); if (!d || !d.decision) return false;
+  const pf = d.prefill ?? null;
+  return pf !== null && pf !== '' && d.decision !== pf;
+};
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   persistence — three backends, one interface: load() and save(ops).
+
+   The server backend is the good one. It exists because moving the write out of the page
+   relocates the rules an agent has to remember (merge per row, keep unknown top-level
+   keys, refuse a truncating write, stamp provenance) into plumbing that enforces them.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+class ServerBackend {
+  constructor(cfg) { this.cfg = cfg; this.name = 'sidecar'; this.writes = 0; }
+  async load() {
+    const r = await fetch('/decisions', { headers: { 'X-Sheet-Token': this.cfg.token } });
+    if (!r.ok) throw new Error('GET /decisions ' + r.status);
+    const doc = await r.json();
+    frozen = doc.frozen === true;
+    this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops, opts = {}) {
+    const r = await fetch('/decisions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Sheet-Token': this.cfg.token },
+      body: JSON.stringify(opts.force ? { ops, force: true } : { ops }),
+    });
+    const body = await r.json().catch(() => ({}));
+    if (r.status === 423) { frozen = true; throw new Error('frozen: ' + (body.frozenMeaning || 'read-only')); }
+    if (r.status === 409) {
+      const e = new Error(body.hint || body.error || 'refused a truncating write');
+      /* Only the truncation refusal is forceable. A "decisions is not an object" 409 is a
+         corrupt file, and forcing past it would destroy exactly what it is protecting. */
+      e.forceable = body.error === 'truncating-write';
+      throw e;
+    }
+    if (!r.ok) throw new Error(body.error || ('POST /decisions ' + r.status));
+    this.writes = body.writeCount;
+    return body;
+  }
+  get where() { return this.cfg.decisionsPath || CFG.decisionsFile; }
+}
+
+/* Fallback for a sheet opened straight off disk with nothing running. No paste: the
+   decisions file already exists next to the sheet, so the human OPENS it rather than
+   doing Save-As into a folder the picker will not let us preselect. */
+class FileBackend {
+  constructor() { this.name = 'file'; this.handle = null; this.writes = 0; }
+  static available() { return typeof window.showOpenFilePicker === 'function'; }
+
+  async idb(mode = 'readonly') {
+    if (!this._db) this._db = await new Promise((res, rej) => {
+      const r = indexedDB.open('review_sheets', 1);
+      r.onupgradeneeded = e => e.target.result.createObjectStore('handles');
+      r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+    });
+    return this._db.transaction('handles', mode).objectStore('handles');
+  }
+  // NB the key is namespaced: see the shared file:// origin note above.
+  async remember(h) { const s = await this.idb('readwrite'); s.put(h, NS + 'handle'); }
+  async recall() {
+    const s = await this.idb();
+    return new Promise(res => { const g = s.get(NS + 'handle'); g.onsuccess = () => res(g.result || null); g.onerror = () => res(null); });
+  }
+
+  async link(handle) {
+    // Verify the handle is for THIS sheet's file before writing a byte. A stale or
+    // cross-sheet handle that passes silently writes one review into another's file.
+    const want = CFG.decisionsFile;
+    if (want && handle.name !== want)
+      throw new Error(`that file is "${handle.name}", this sheet writes "${want}" — pick the right one`);
+    if (await handle.queryPermission({ mode: 'readwrite' }) !== 'granted')
+      if (await handle.requestPermission({ mode: 'readwrite' }) !== 'granted')
+        throw new Error('write permission refused');
+    this.handle = handle; await this.remember(handle); return handle;
+  }
+  async pick() {
+    const [h] = await window.showOpenFilePicker({
+      id: 'review-sheets',                     // makes the picker reopen in the same folder
+      multiple: false,
+      types: [{ description: 'Decisions', accept: { 'application/json': ['.json'] } }],
+    });
+    return this.link(h);
+  }
+  async load() {
+    const h = this.handle || await this.recall();
+    if (!h) return null;                        // not linked yet
+    if (await h.queryPermission({ mode: 'readwrite' }) !== 'granted') { this.handle = h; return null; }
+    this.handle = h;
+    const doc = JSON.parse(await (await h.getFile()).text() || '{}');
+    frozen = doc.frozen === true; this.doc = doc; this.writes = doc.writeCount || 0;
+    return doc.decisions || {};
+  }
+  async save(ops) {
+    if (!this.handle) throw new Error('not linked to a file yet');
+    // Read-modify-write, because THIS page is not the only author of its own file: a
+    // whole-file writer deletes keys it does not know about (frozen/frozenOn/…).
+    const doc = JSON.parse(await (await this.handle.getFile()).text() || '{}');
+    /* Judge the freeze on the doc we JUST read, not on a boot-time global: a freeze
+       applied while the sheet is open must bite on the next write, not after a reload.
+       The freeze is enforced, not announced. */
+    if (doc.frozen === true) {
+      frozen = true; paintLink();
+      throw new Error('frozen: ' + (doc.frozenMeaning || 'the decisions file is read-only'));
+    }
+    if (frozen) throw new Error('frozen: read-only');
+    const merged = Object.assign({}, doc.decisions || {}, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete merged[k];
+    doc.decisions = merged;
+    doc.savedBy = 'review-sheet-page'; doc.savedAt = new Date().toISOString();
+    doc.writeCount = (doc.writeCount || 0) + 1;
+    doc.decidedCount = Object.values(doc.decisions).filter(v => v && v.decision).length;
+    const w = await this.handle.createWritable();
+    await w.write(JSON.stringify(doc, null, 2) + '\n'); await w.close();
+    this.writes = doc.writeCount;
+    return { writeCount: doc.writeCount, savedAt: doc.savedAt };
+  }
+  get where() { return this.handle ? this.handle.name : (CFG.decisionsPath || CFG.decisionsFile); }
+}
+
+/* Last resort. Loud, because this is the state that once cost a human a 71-row review:
+   they finished, the file was byte-identical to the pre-fill, and every choice was in
+   localStorage. */
+class LocalBackend {
+  constructor() { this.name = 'localStorage'; this.writes = 0; }
+  async load() { return LS.get('decisions', null); }
+  async save(ops) {
+    const cur = LS.get('decisions', {}) || {};
+    Object.assign(cur, ops);
+    for (const [k, v] of Object.entries(ops)) if (v === null) delete cur[k];   // null deletes
+    LS.set('decisions', cur);
+    this.writes++; return { writeCount: this.writes };
+  }
+  get where() { return 'browser storage — NOT a file'; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   flush: debounced, op-based. Only touched rows are ever sent, so no client bug can
+   empty the file — the failure this format was bitten by.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, forceNext = false;
+/* Whether the banner currently on screen is one FLUSH put there. Only those get cleared on
+   a successful save — a seed or freeze banner is not mine to remove. */
+let saveBannerUp = false;
+function queue(id) {
+  DEC[id].at = new Date().toISOString();
+  dirty.set(id, DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, 700);       // notes are typed per keystroke
+}
+async function flush() {
+  if (saving || !dirty.size || !backend) return;
+  const ops = Object.fromEntries(dirty); dirty.clear();
+  const force = forceNext; forceNext = false;
+  saving = true; saveErr = null; paintLink();
+  try {
+    const r = await backend.save(ops, { force });
+    lastSaved = new Date(); if (r && r.writeCount) backend.writes = r.writeCount;
+    /* The write landed — so the refusal on screen is now a LIE. Nothing else clears it:
+       paintLink only repaints the pill, and a red "refused…" banner over a disabled
+       "clearing…" button left the human staring at a failure that had already succeeded.
+       Saved-but-contradicted is worse than not-saved, because he has no reason to look
+       again. Only clear it when there is nothing left pending to fail. */
+    if (saveBannerUp && !dirty.size) { clearBanner(); saveBannerUp = false; }
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const [k, v] of Object.entries(ops)) if (!dirty.has(k)) dirty.set(k, v);   // keep it pending
+    // A forced write that fails must say so with a FRESH banner and a live button, not
+    // leave the stale one up: showTruncationRefusal/showErr rebuild the node entirely.
+    if (e.forceable) showTruncationRefusal(e); else showErr(saveErr);
+    saveBannerUp = true;
+  } finally { saving = false; paintLink(); if (dirty.size && !saveErr) setTimeout(flush, 300); }
+}
+
+/* The truncation guard is right to refuse a batch that clears dozens of decided rows —
+   and undoing a bulk action is exactly such a batch when it is legitimate. Without a way
+   through, those ops sit pending forever and the screen and the file diverge silently.
+   So the page offers the way through as an explicit human act: one button, one click,
+   sending force=1 for that batch only. It is never sent automatically. */
+function showTruncationRefusal(e) {
+  const b = banner('bad',
+    esc(e.message || 'refused: this batch clears an implausible number of decided rows.')
+    + ` <b>${dirty.size}</b> change(s) are still pending in the page and nothing has been `
+    + 'written. If you meant to clear them, say so:',
+    '<button class="btn pri" id="forceSave">yes — clear them anyway</button>');
+  const btn = b.querySelector('#forceSave');
+  if (btn) btn.onclick = () => {
+    btn.disabled = true; btn.textContent = 'clearing…';
+    forceNext = true; saveErr = null; clearTimeout(flushTimer);
+    Promise.resolve(flush()).then(() => {
+      /* A success removes this whole banner and a failure rebuilds it, so in both cases
+         this node is gone. Still connected means the flush no-opped (a save already in
+         flight, nothing pending) — give the human a live button back rather than one
+         permanently reading "clearing…". */
+      if (btn.isConnected) { btn.disabled = false; btn.textContent = 'yes — clear them anyway'; }
+    });
+  };
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Unsaved decisions are still pending.'; }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   decisions
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function setDecision(id, key, opts = {}) {
+  if (frozen) { showErr('This sheet is frozen — decisions are read-only.'); return; }
+  const it = byId.get(id); if (!it) return;
+  const before = DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  if (rec.prefill === undefined) rec.prefill = prefillOf(it);
+  rec.decision = (rec.decision === key && opts.toggle) ? '' : key;
+  if (!opts.noUndo) { undoStack.push({ entries: [{ id, before }] }); redoStack.length = 0; }
+  queue(id);
+  patchRow(id);
+  paintCounts();
+  /* Deliberately NOT auto-focusing the note here. An earlier version grabbed focus and
+     demanded "why?" on every disagreement; it reads as nagging, and a control that fights
+     the human gets worked around rather than used. The row still MARKS itself as an
+     override (the ⟲ chip and the amber rail in card()), the "overrides only" filter still
+     finds them, and `serve_sheet.py --overrides` still reads them as a group — which is
+     what section 2b actually asks for, since the reader is the agent, not the human. */
+}
+function setNote(id, text) {
+  if (frozen) return;
+  const it = byId.get(id); if (!it) return;
+  const rec = DEC[id] || (DEC[id] = { decision: '', note: '', prefill: prefillOf(it) });
+  rec.note = text; queue(id); paintCounts();
+}
+/* Undo and redo work on ONE entry shape — {entries:[{id, before}]} — whether the action
+   touched one row or eighty. An earlier version had a separate batch shape that undo()
+   did not understand, so `u` silently did nothing after a bulk apply. Measured, not
+   theorised: an irreversible bulk action over 80 rows is one nobody dares use. */
+function applyEntries(entries) {
+  const inverse = entries.map(({ id }) =>
+    ({ id, before: DEC[id] ? JSON.parse(JSON.stringify(DEC[id])) : null }));
+  for (const { id, before } of entries) {
+    if (before === null) delete DEC[id]; else DEC[id] = before;
+    /* null is DELETE in the protocol. Sending an empty stub instead left a row behind that
+       reads as "looked at it, decided nothing" — undoing back to a row that was never
+       touched must remove the entry, not invent one. */
+    dirty.set(id, before === null ? null : DEC[id]);
+    patchRow(id);
+  }
+  clearTimeout(flushTimer); flushTimer = setTimeout(flush, 400);
+  paintCounts(); paintLink();
+  return inverse;
+}
+function undo() {
+  const u = undoStack.pop(); if (!u) return;
+  redoStack.push({ entries: applyEntries(u.entries) });
+}
+function redo() {
+  const r = redoStack.pop(); if (!r) return;
+  undoStack.push({ entries: applyEntries(r.entries) });
+}
+function bulkGroup(group, key) {
+  const rows = shown.filter(it => it.group === group);
+  if (!rows.length) return;
+  const entries = rows.map(it => ({ id: it.id, before: DEC[it.id] ? JSON.parse(JSON.stringify(DEC[it.id])) : null }));
+  rows.forEach(it => setDecision(it.id, key, { noUndo: true, bulk: true }));
+  undoStack.push({ entries });
+  redoStack.length = 0;
+  render();
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   render
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const byId = new Map(ITEMS.map(it => [it.id, it]));
+let renderMs = 0;
+
+function cssEsc(s) { return String(s).replace(/["\\]/g, '\\$&'); }
+
+function defaultBody(it) {
+  const marks = [];
+  if (it.inferred)  marks.push('<span class="mark inferred" title="guessed from the name — the data was empty">⚠ inferred</span>');
+  if (it.contested) marks.push('<span class="mark contested" title="defensible both ways">◆ contested</span>');
+  if (it.occurs === false) marks.push('<span class="mark absent">does not occur</span>');
+  for (const [k, v] of Object.entries(it.meta || {})) marks.push(`<span class="mark absent">${esc(k)}: ${esc(v)}</span>`);
+  return `<div class="effect">${esc(it.effect || '')}</div>`
+       + (marks.length ? `<div class="marks">${marks.join('')}</div>` : '');
+}
+
+function card(it) {
+  const d = decOf(it.id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  const ovr = isOverride(it.id);
+  const body = (window.itemBody || defaultBody)(it);
+  const thumb = it.thumb
+    ? `<div class="thumb" data-zoom="${esc(it.thumb)}" data-cap="${esc(it.label || it.id)}"><img src="${esc(it.thumb)}" loading="lazy" decoding="async" alt=""></div>`
+    : '';
+  const opts = OPTS.map(op => `<button data-set="${esc(op.key)}" class="${op.key === key ? 'sel' : ''}"`
+      + `${op.key === key ? ` style="background:${esc(op.color)}"` : ''}`
+      + ` title="${esc(op.label)} (${esc(op.hotkey || '')})">${esc(op.label)}</button>`).join('');
+  return `<div class="row${ovr ? ' override' : ''}" data-id="${esc(it.id)}"${o ? ` style="color:${esc(o.color)}"` : ''}>
+    ${thumb}
+    <div class="main">
+      <div class="label">${esc(it.label || it.id)}<span class="id">${esc(it.id)}</span>
+        ${ovr ? `<span class="mark ovr" title="you overruled the pre-fill, which said ${esc(d.prefill)}">⟲ was ${esc(d.prefill)}</span>` : ''}</div>
+      ${body}
+    </div>
+    <div class="ctrl">
+      <div class="opts">${opts}</div>
+      <textarea class="note" rows="1" placeholder="note…">${esc(d ? d.note || '' : '')}</textarea>
+    </div>
+  </div>`;
+}
+
+function passes(it) {
+  const q = el('q').value.trim().toLowerCase();
+  if (q) {
+    const hay = `${it.id} ${it.label || ''} ${it.effect || ''} ${it.group || ''}`.toLowerCase();
+    if (!hay.includes(q)) return false;
+  }
+  const fs = el('fstate').value;
+  if (fs === '__undecided' && isDecided(it.id)) return false;
+  if (fs === '__decided' && !isDecided(it.id)) return false;
+  if (fs && fs.startsWith('k:') && decisionOf(it.id) !== fs.slice(2)) return false;
+  const fg = el('fgroup').value;
+  if (fg && it.group !== fg) return false;
+  const fm = el('fmark').value;
+  if (fm === 'override' && !isOverride(it.id)) return false;
+  if (fm === 'contested' && !it.contested) return false;
+  if (fm === 'inferred' && !it.inferred) return false;
+  if (fm === 'noted' && !String((decOf(it.id) || {}).note || '').trim()) return false;
+  return true;
+}
+
+function render() {
+  const t0 = performance.now();
+  shown = ITEMS.filter(passes);
+  const groups = new Map();
+  for (const it of shown) { if (!groups.has(it.group)) groups.set(it.group, []); groups.get(it.group).push(it); }
+  let html = '';
+  for (const [name, items] of groups) {
+    const bulk = OPTS.map(op => `<button class="btn" data-bulk="${esc(op.key)}" data-group="${esc(name)}">all ${esc(op.label.toLowerCase())}</button>`).join('');
+    /* de-stick groups of <=3: a sticky label sits on top of the only row in a group of
+       one, which makes it unreadable and unclickable. */
+    html += `<div class="gh${items.length <= 3 ? ' nostick' : ''}">${esc(name)}`
+          + `<span class="ghcount">${items.length}</span><span class="ghbulk">${bulk}</span></div>`;
+    html += items.map(card).join('');
+  }
+  el('list').innerHTML = html || `<div style="padding:40px 18px;color:var(--dim)">Nothing matches these filters.</div>`;
+  for (const ta of el('list').querySelectorAll('.note')) if (ta.value) grow(ta);
+  renderMs = performance.now() - t0;
+  measure();                                  // new .gh nodes have no top yet
+  paintCounts();
+  if (focusIdx >= shown.length) focusIdx = shown.length - 1;
+  paintFocus(false);
+}
+
+/* patch ONE row instead of re-rendering the list: at 600 rows a full innerHTML rebuild
+   on every keystroke drops the caret out of the note field and feels broken. */
+function patchRow(id) {
+  const node = document.querySelector(`.row[data-id="${cssEsc(id)}"]`);
+  if (!node) return;
+  const it = byId.get(id), d = decOf(id), key = d && d.decision ? d.decision : '';
+  const o = OPTBY[key];
+  node.style.color = o ? o.color : '';
+  node.classList.toggle('override', isOverride(id));
+  for (const b of node.querySelectorAll('[data-set]')) {
+    const on = b.dataset.set === key;
+    b.classList.toggle('sel', on);
+    b.style.background = on ? OPTBY[b.dataset.set].color : '';
+  }
+  const lab = node.querySelector('.label .mark.ovr');
+  if (isOverride(id) && !lab) node.querySelector('.label').insertAdjacentHTML('beforeend',
+    `<span class="mark ovr">⟲ was ${esc(d.prefill)}</span>`);
+  if (!isOverride(id) && lab) lab.remove();
+}
+
+/* ── measured header height, every render and every resize ───────────────────────────── */
+function measure() {
+  const h = document.querySelector('header').offsetHeight;
+  document.documentElement.style.setProperty('--hh', h + 'px');
+  for (const g of document.querySelectorAll('.gh')) g.style.top = h + 'px';
+}
+addEventListener('resize', measure);
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   counts, link state, banners
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function paintCounts() {
+  const total = ITEMS.length;
+  let decided = 0, ovr = 0, noted = 0, contested = 0;
+  const per = {};
+  for (const it of ITEMS) {
+    const k = decisionOf(it.id);
+    if (k) { decided++; per[k] = (per[k] || 0) + 1; }
+    if (isOverride(it.id)) ovr++;
+    if (String((decOf(it.id) || {}).note || '').trim()) noted++;
+    if (it.contested && !isDecided(it.id)) contested++;
+  }
+  const inn = OPTS.filter(o => o.counts === 'in').reduce((n, o) => n + (per[o.key] || 0), 0);
+  const out = OPTS.filter(o => o.counts === 'out').reduce((n, o) => n + (per[o.key] || 0), 0);
+  el('progress').innerHTML =
+    `<b>${decided}</b>/${total} decided · <b>${total - decided}</b> left`
+    + (OPTS.some(o => o.counts) ? ` · ${inn} in · ${out} stripped` : '')
+    + ` · ${ovr} overruled · ${noted} noted`
+    + (shown.length !== total ? ` · showing ${shown.length}` : '')
+    + ` · render ${renderMs.toFixed(0)}ms`;
+  paintPosture(inn, out, total - decided);
+}
+
+function paintPosture(inn, out, undecided) {
+  const p = CFG.posture || {};
+  const strip = p.mode === 'whitelist';
+  el('posturePanel').innerHTML =
+    `<h3>Posture — ${esc((p.mode || 'whitelist').toUpperCase())}</h3>`
+    + `<div>${esc(p.explain || (strip
+        ? 'Default is EXCLUDE. Anything not kept will be stripped.'
+        : 'Default is INCLUDE. Only what you cut will be stripped.'))}</div>`
+    + `<div style="margin-top:5px"><b style="color:var(--ok)">${inn}</b> kept · `
+    + `<b style="color:var(--bad)">${out}</b> stripped`
+    + (strip && undecided ? ` · <b style="color:var(--warn)">${undecided} undecided, which this posture also strips</b>` : '')
+    + `</div>`;
+}
+
+function paintLink() {
+  const p = el('link');
+  const n = dirty.size;
+  let cls = 'pill live', txt;
+  if (!backend) { txt = 'connecting…'; cls = 'pill'; }
+  else if (frozen) { txt = '🔒 frozen — read only'; cls = 'pill'; }
+  else if (saveErr) { txt = '⚠ not saved — ' + saveErr.slice(0, 60); cls = 'pill bad'; }
+  else if (saving) txt = '↑ saving…';
+  else if (n) txt = `● ${n} pending`;
+  else if (backend.name === 'localStorage') { txt = '⚠ browser storage only — NOT a file'; cls = 'pill bad'; }
+  else if (backend.name === 'file' && !backend.handle) { txt = '○ not linked — click “link file”'; cls = 'pill bad'; }
+  else txt = `● ${backend.name} · saved${lastSaved ? ' ' + ago(lastSaved) : ''} · ${backend.writes} write${backend.writes === 1 ? '' : 's'}`;
+  p.className = cls; p.textContent = txt; p.title = backend ? backend.where : '';
+  /* The copy-JSON escape hatch is shown exactly while the work is NOT in a file, and it
+     disappears the moment a link is established. */
+  const unlinked = !!backend && (backend.name === 'localStorage'
+                                 || (backend.name === 'file' && !backend.handle));
+  el('exportbar').classList.toggle('hide', !unlinked);
+  if (!unlinked) el('exportTa').classList.add('hide');
+}
+const ago = d => { const s = Math.round((Date.now() - d) / 1000);
+  return s < 2 ? 'just now' : s < 60 ? s + 's ago' : Math.round(s / 60) + 'm ago'; };
+setInterval(() => { if (!dirty.size && !saving) paintLink(); }, 5000);
+
+/* Banners share one node, so every writer must set its OWN class. The seed banner used to
+   leave 'banner warn' behind and every later error — save failed, frozen, 409 — rendered
+   amber for the rest of the session. Colour is the only thing that says "this one matters". */
+function banner(cls, html, extra = '') {
+  const b = el('err');
+  b.className = 'banner ' + cls;
+  b.classList.remove('hide');
+  b.innerHTML = html + ' ' + extra
+    + ' <button class="btn" onclick="this.parentNode.classList.add(\'hide\')">dismiss</button>';
+  return b;
+}
+function showErr(msg, extra = '') { banner('bad', esc(msg), extra); }
+/* Take the banner down and empty it. Emptying matters as much as hiding: a stale node
+   left in the DOM comes back with the next classList toggle still carrying old text and
+   a disabled button. */
+function clearBanner() {
+  const b = el('err');
+  b.classList.add('hide');
+  b.className = 'banner bad hide';
+  b.innerHTML = '';
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: keyboard. Mouse-only across 600 rows is the real bottleneck.
+   ───────────────────────────────────────────────────────────────────────────────────── */
+const KEYMAP = [
+  ['j / ↓', 'next row'], ['k / ↑', 'previous row'],
+  ['1 … 9', 'set the decision for the focused row'],
+  ['⇧ + 1…9', 'apply to the whole visible group'],
+  ['n', 'jump into the note'], ['Enter', 'leave the note'],
+  ['u / ⇧U', 'undo / redo — bulk actions undo as one'],
+  ['g', 'next undecided row'], ['c', 'next contested row'],
+  ['/', 'search'], ['v', 'list / grid'],
+  ['z', 'zoom the focused thumbnail'], ['?', 'this help'],
+];
+function paintKeys() {
+  el('keysBody').innerHTML = KEYMAP.map(([k, d]) =>
+    `<tr><td><kbd>${esc(k)}</kbd></td><td>${esc(d)}</td></tr>`).join('')
+    + OPTS.map(o => `<tr><td><kbd>${esc(o.hotkey)}</kbd></td><td>= ${esc(o.label)}</td></tr>`).join('');
+}
+function focusRow(i, scroll = true) {
+  if (!shown.length) return;
+  focusIdx = Math.max(0, Math.min(shown.length - 1, i));
+  paintFocus(scroll);
+}
+function paintFocus(scroll) {
+  for (const r of document.querySelectorAll('.row.focus')) r.classList.remove('focus');
+  const it = shown[focusIdx]; if (!it) return;
+  const node = document.querySelector(`.row[data-id="${cssEsc(it.id)}"]`);
+  if (!node) return;
+  node.classList.add('focus');
+  if (scroll) {
+    const top = node.getBoundingClientRect().top;
+    const hh = document.querySelector('header').offsetHeight + 34;   // clear the sticky group label
+    if (top < hh || top > innerHeight - 90)
+      scrollBy({ top: top - hh - 8, behavior: 'instant' });
+  }
+}
+function jumpTo(pred, from = focusIdx) {
+  for (let n = 1; n <= shown.length; n++) {
+    const i = (from + n + shown.length) % shown.length;
+    if (pred(shown[i])) { focusRow(i); return true; }
+  }
+  return false;
+}
+
+addEventListener('keydown', e => {
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+  if (e.key === 'Escape') {
+    if (typing) { document.activeElement.blur(); return; }
+    el('keys').classList.remove('on'); el('zoom').classList.remove('on');
+    return;
+  }
+  if (typing) {
+    if (e.key === 'Enter' && document.activeElement.classList.contains('note')) {
+      e.preventDefault(); document.activeElement.blur();
+    }
+    return;
+  }
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = e.key;
+
+  if (k === 'j' || k === 'ArrowDown') { e.preventDefault(); focusRow(focusIdx + 1); return; }
+  if (k === 'k' || k === 'ArrowUp')   { e.preventDefault(); focusRow(focusIdx - 1); return; }
+  if (k === '/') { e.preventDefault(); el('q').focus(); el('q').select(); return; }
+  if (k === '?') { el('keys').classList.toggle('on'); return; }
+  if (k === 'u') { undo(); return; }
+  if (k === 'U') { redo(); return; }
+  if (k === 'g') { if (!jumpTo(it => !isDecided(it.id))) showErr('No undecided rows in view.'); return; }
+  if (k === 'c') { if (!jumpTo(it => it.contested)) showErr('No contested rows in view.'); return; }
+  if (k === 'v' && CFG.media) { toggleGrid(); return; }
+  if (k === 'n') { const it = shown[focusIdx]; if (it) {
+      const n = document.querySelector(`.row[data-id="${cssEsc(it.id)}"] .note`); if (n) { e.preventDefault(); n.focus(); } }
+    return; }
+  if (k === 'z') { const it = shown[focusIdx]; if (it && it.thumb) openZoom(it.thumb, it.label || it.id); return; }
+
+  const op = OPTS.find(o => o.hotkey === k);
+  if (op) {
+    const it = shown[focusIdx >= 0 ? focusIdx : 0]; if (!it) return;
+    e.preventDefault();
+    if (focusIdx < 0) focusRow(0);
+    setDecision(it.id, op.key);
+    focusRow(focusIdx + 1);                     // advance, so triage is one key per row
+    return;
+  }
+  const shifted = OPTS.find(o => o.hotkey && '!@#$%^&*('['123456789'.indexOf(o.hotkey)] === k);
+  if (shifted) { const it = shown[focusIdx]; if (it) { e.preventDefault(); bulkGroup(it.group, shifted.key); } }
+});
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   PACK: grid / contact sheet
+   ───────────────────────────────────────────────────────────────────────────────────── */
+function toggleGrid() {
+  const on = !document.body.classList.contains('grid');
+  document.body.classList.toggle('grid', on);
+  el('btnGrid').classList.toggle('on', on);
+  el('btnGrid').textContent = on ? 'list' : 'grid';
+  el('cell').classList.toggle('hide', !on);
+  LS.set('grid', on); measure(); paintFocus(false);
+}
+function openZoom(src, cap) {
+  el('zimg').src = src; el('zcap').textContent = cap; el('zoom').classList.add('on');
+}
+el('zoom').onclick = () => el('zoom').classList.remove('on');
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   wiring
+   ───────────────────────────────────────────────────────────────────────────────────── */
+el('list').addEventListener('click', e => {
+  const set = e.target.closest('[data-set]');
+  if (set) { const row = set.closest('.row'); setDecision(row.dataset.id, set.dataset.set, { toggle: true });
+             focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); return; }
+  const bulk = e.target.closest('[data-bulk]');
+  if (bulk) { bulkGroup(bulk.dataset.group, bulk.dataset.bulk); return; }
+  const th = e.target.closest('[data-zoom]');
+  if (th) { openZoom(th.dataset.zoom, th.dataset.cap); return; }
+  const row = e.target.closest('.row');
+  if (row) { focusIdx = shown.findIndex(it => it.id === row.dataset.id); paintFocus(false); }
+});
+el('list').addEventListener('input', e => {
+  if (e.target.classList.contains('note')) {
+    setNote(e.target.closest('.row').dataset.id, e.target.value);
+    grow(e.target);
+  }
+});
+/* Notes auto-grow. A one-line box that hides what the human just wrote makes the most
+   valuable field on the row look like the least important one. */
+function grow(ta) {
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 160) + 'px';
+}
+
+for (const id of ['q', 'fstate', 'fgroup', 'fmark'])
+  el(id).addEventListener(id === 'q' ? 'input' : 'change', () => { render(); LS.set('filters', filtersNow()); });
+const filtersNow = () => ({ q: el('q').value, s: el('fstate').value, g: el('fgroup').value, m: el('fmark').value });
+
+el('fold').onclick = () => { autofoldArmed = false; setFold(!document.body.classList.contains('folded')); };
+function setFold(f) {
+  document.body.classList.toggle('folded', f);
+  el('fold').textContent = f ? '▸ brief' : '▾ brief';
+  LS.set('folded', f);
+  measure();                                    // the header just changed height
+}
+
+/* The brief has two jobs that fight each other: it must be SEEN — it carries the posture
+   and any rule the agent invented, and burying those is the most expensive mistake this
+   format makes — and it must not sit in front of the rows the human came to work on.
+   Bounding its height stops the worst case. Auto-folding on the FIRST real scroll
+   resolves the rest: they see it, then the moment they start working it gets out of the
+   way, and the fold is remembered from then on. One click brings it back. */
+let autofoldArmed = false;
+function armAutofold(neverChosen) {
+  if (!neverChosen) return;                     // they have folded or unfolded before: respect it
+  autofoldArmed = true;
+  addEventListener('scroll', onFirstScroll, { passive: true });
+}
+function onFirstScroll() {
+  if (!autofoldArmed || scrollY < 220) return;
+  autofoldArmed = false;
+  removeEventListener('scroll', onFirstScroll);
+  setFold(true);
+  el('fold').classList.add('flash');            // say where it went
+  setTimeout(() => el('fold').classList.remove('flash'), 2400);
+}
+el('nextUndecided').onclick = () => { if (!jumpTo(it => !isDecided(it.id), focusIdx)) showErr('No undecided rows in view.'); };
+el('btnKeys').onclick = () => el('keys').classList.toggle('on');
+el('btnGrid').onclick = toggleGrid;
+el('cell').oninput = e => { document.documentElement.style.setProperty('--cell', e.target.value + 'px'); measure(); };
+
+/* ── copy JSON: the export route when the work is NOT in a file ───────────────────────
+   The whole decisions doc, on the clipboard, in the shape the file wants — so a session
+   that never reached disk can be recovered by pasting rather than retyped or lost. */
+function decisionsDoc() {
+  return JSON.stringify({
+    sheetId: CFG.sheetId || 'unnamed',
+    posture: (CFG.posture || {}).mode || '',
+    criterion: CFG.criterion || '',
+    exportedBy: 'review-sheet-page',        // NOT savedBy: this is a copy, not a save
+    exportedAt: new Date().toISOString(),
+    decidedCount: Object.values(DEC).filter(v => v && v.decision).length,
+    decisions: DEC,
+  }, null, 2) + '\n';
+}
+async function copyDecisions(btn) {
+  const text = decisionsDoc(), ta = el('exportTa'), why = el('copywhy');
+  let ok = false;
+  try { await navigator.clipboard.writeText(text); ok = true; } catch (e) { ok = false; }
+  if (!ok) {
+    // Show the JSON rather than fail quietly: the clipboard API is refused on some
+    // file:// pages, and a copy button that does nothing is how a review gets lost.
+    ta.classList.remove('hide'); ta.value = text; ta.focus(); ta.select();
+    try { ok = document.execCommand('copy'); } catch (e2) { ok = false; }
+    why.textContent = ok
+      ? 'copied — and shown below so you can check it landed'
+      : 'the clipboard is blocked here — the JSON is below: select all (Ctrl/⌘+A), copy, '
+        + 'and paste it over the decisions .json';
+  }
+  btn.textContent = ok ? 'copied ✓' : 'copy it below ↓';
+  setTimeout(() => { btn.textContent = 'copy JSON'; }, 2500);
+}
+el('copyJson').onclick = () => copyDecisions(el('copyJson'));
+
+for (const b of document.querySelectorAll('[data-copy]'))
+  b.onclick = () => copyText(el(b.dataset.copy).textContent, b);
+async function copyText(text, btn) {
+  const label = btn.textContent;
+  try { await navigator.clipboard.writeText(text); btn.textContent = 'copied ✓'; }
+  catch (e) {                                   /* refused on some file:// pages */
+    const ta = document.createElement('textarea'); ta.value = text;
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); btn.textContent = 'copied ✓'; }
+    catch (e2) { btn.textContent = 'press ⌘/Ctrl+C'; }
+    ta.remove();
+  }
+  setTimeout(() => btn.textContent = label, 1400);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────────────
+   boot
+   ───────────────────────────────────────────────────────────────────────────────────── */
+async function boot() {
+  el('title').textContent = CFG.title || 'Review sheet';
+  el('subtitle').textContent = CFG.subtitle || '';
+  document.title = CFG.title || 'Review sheet';
+  el('briefBody').innerHTML = (CFG.briefHtml || '')
+    + (CFG.criterion ? `<div class="crit">⭐ Ranked by: ${esc(CFG.criterion)}</div>` : '');
+
+  /* Any rule the agent INVENTED goes in its own panel, stated plainly. An invented premise
+     presented as a finding is the most expensive mistake this format makes. */
+  if ((CFG.invented || []).length) {
+    el('inventedPanel').classList.remove('hide');
+    el('inventedPanel').innerHTML = '<h3>⚠ Rules I invented — overrule these</h3><ul style="margin:4px 0 0 16px;padding:0">'
+      + CFG.invented.map(s => `<li>${esc(s)}</li>`).join('') + '</ul>';
+  }
+
+  el('fstate').innerHTML = `<option value="">any state</option><option value="__undecided">undecided</option>`
+    + `<option value="__decided">decided</option>`
+    + OPTS.map(o => `<option value="k:${esc(o.key)}">= ${esc(o.label)}</option>`).join('');
+  const groups = [...new Set(ITEMS.map(it => it.group))].sort();
+  el('fgroup').innerHTML = `<option value="">all ${esc(CFG.groupLabel || 'group')}s (${groups.length})</option>`
+    + groups.map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  paintKeys();
+  document.body.classList.add('perf');
+  if (CFG.media) el('btnGrid').classList.remove('hide');
+
+  const f = LS.get('filters', null);
+  if (f) { el('q').value = f.q || ''; el('fstate').value = f.s || ''; el('fgroup').value = f.g || ''; el('fmark').value = f.m || ''; }
+  const foldChoice = LS.get('folded', null);    // read BEFORE setFold writes it
+  setFold(foldChoice === true);
+  armAutofold(foldChoice === null);
+
+  /* pick a backend */
+  let loaded = null;
+  if (SIDECAR && SIDECAR.mode === 'server') {
+    backend = new ServerBackend(SIDECAR);
+    el('dpath').textContent = SIDECAR.decisionsPath;
+    el('spath').textContent = SIDECAR.sheetPath;
+    el('pathwhy').textContent = 'the sidecar owns this file — nothing to copy or paste';
+    el('pathbar').classList.remove('hide'); el('spathbar').classList.remove('hide');
+    try { loaded = await backend.load(); }
+    catch (e) { showErr('Could not read the decisions file: ' + e.message); }
+  } else if (FileBackend.available()) {
+    backend = new FileBackend();
+    el('pathbar').classList.remove('hide');
+    el('dpath').textContent = CFG.decisionsPath || CFG.decisionsFile;
+    el('pathwhy').innerHTML = 'no sidecar running — <button class="btn pri" id="linkBtn">link file</button> '
+      + 'or drag it onto this page';
+    el('spathbar').classList.toggle('hide', !CFG.sheetPath);
+    el('spath').textContent = CFG.sheetPath || '';
+    setTimeout(() => { const b = el('linkBtn'); if (b) b.onclick = async () => {
+      try { await backend.pick(); const d = await backend.load(); if (d) { DEC = d; render(); } paintLink(); }
+      catch (e) { showErr(e.message); } }; }, 0);
+    try { loaded = await backend.load(); } catch (e) { loaded = null; }
+    if (loaded === null) showErr('Not linked to a file yet — decisions are being held in the browser only. '
+      + 'Click “link file” (or drag the decisions .json onto this page) before you start. '
+      + 'Whatever you have already done can be lifted out with “copy JSON” in the brief above.');
+  } else {
+    backend = new LocalBackend();
+    loaded = await backend.load();
+    showErr('This browser cannot write files (no File System Access API) and no sidecar is running. '
+      + 'Work is held in browser storage only — run serve_sheet.py, or use “copy JSON” in the '
+      + 'brief above to lift it out and paste it over the decisions .json.');
+  }
+
+  /* Seed. Only rows the loaded file says NOTHING about take the pre-fill. Seeding
+     all-or-nothing is how 350 pre-filled rows once vanished because two rows had been
+     clicked — and the mirror-image bug is just as bad: ANY record for a row, including
+     one whose decision is '', is a human act. CLEARING a row is a decision, so re-seeding
+     over it puts a choice on the screen that the file does not hold, and under whitelist
+     posture the row is stripped while the sheet says it is kept. */
+  let seeded = 0, kept = 0, cleared = 0;
+  DEC = loaded && typeof loaded === 'object' ? loaded : {};
+  for (const it of ITEMS) {
+    const rec = Object.prototype.hasOwnProperty.call(DEC, it.id) ? DEC[it.id] : undefined;
+    if (rec != null) { if (rec.decision) kept++; else cleared++; continue; }
+    if (prefillOf(it) != null) {
+      DEC[it.id] = { decision: prefillOf(it), prefill: prefillOf(it), note: '' };
+      seeded++;
+    }
+  }
+  if (seeded && (kept || cleared)) {
+    banner('warn', `Filled in <b>${seeded}</b> rows from the pre-fill and left your existing `
+      + `entries untouched — <b>${kept}</b> decided`
+      + (cleared ? `, <b>${cleared}</b> deliberately cleared` : '') + '.');
+  }
+
+  /* drag the decisions file onto the page — no picker at all (Chromium) */
+  if (backend instanceof FileBackend) {
+    addEventListener('dragover', e => e.preventDefault());
+    addEventListener('drop', async e => {
+      e.preventDefault();
+      const item = e.dataTransfer.items && e.dataTransfer.items[0];
+      if (!item || !item.getAsFileSystemHandle) return;
+      try { const h = await item.getAsFileSystemHandle();
+        if (h.kind !== 'file') return showErr('Drop the decisions .json, not a folder.');
+        await backend.link(h); const d = await backend.load(); if (d) { DEC = d; render(); }
+        paintLink(); el('err').classList.add('hide');
+      } catch (err) { showErr(err.message); }
+    });
+  }
+
+  if (LS.get('grid', false) && CFG.media) toggleGrid();
+  render();
+  paintLink();
+  if (frozen) showErr('This sheet is FROZEN. The decisions file is the source of truth and is read-only.');
+}
+boot();
+</script>
+</body>
+</html>

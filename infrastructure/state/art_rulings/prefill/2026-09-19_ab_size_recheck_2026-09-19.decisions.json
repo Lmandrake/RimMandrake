@@ -1,0 +1,63 @@
+{
+  "sheetId": "ab_size_recheck_2026-09-19",
+  "posture": "whitelist",
+  "decidedCount": 0,
+  "decisions": {
+    "AB_GiantAgarilux": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_RecurvedStropharia": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_SlimyPholiota": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_GlowingAgarilux": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_LilacBeacon": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_WitchesOyster": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_ArbuscularMycorrhiza": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_AgaricusDomeCap": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_DribblingCap": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_Glowstool": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    },
+    "AB_Agarilux": {
+      "decision": "confirm",
+      "prefill": "confirm",
+      "note": ""
+    }
+  },
+  "frozen": false
+}

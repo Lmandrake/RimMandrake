@@ -1,0 +1,10 @@
+{
+ "posture": "whitelist",
+ "decisions": {},
+ "reviewStatus": {
+  "state": "prefill",
+  "by": null,
+  "at": null,
+  "evidence": "generated, no prefills, not yet opened by owner"
+ }
+}

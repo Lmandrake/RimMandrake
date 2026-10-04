@@ -1,0 +1,140 @@
+{
+  "decidedCount": 0,
+  "decisions": {
+    "RUT_Contagion__AncientGarrison": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Contagion__Ruins": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Contagion__TerraformingScar": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_CrackedLands__DryLake": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_CrackedLands__VEE_DryRiver": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_CrackedLands__Valley": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Greentide__Cavern": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "RUT_Greentide__Oasis": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Greentide__VEE_Cenotes": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Greentide__Valley": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_GreySea__Valley": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "RUT_Scarlands__AncientGarrison": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Scarlands__Ruins": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Scarlands__TerraformingScar": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Slime__Cavern": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Slime__VEE_Cenotes": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_TwilightSea__DryLake": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "RUT_TwilightSea__Valley": {
+      "decision": "cut",
+      "note": "",
+      "prefill": "cut"
+    },
+    "RUT_Webwork__Cavern": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Webwork__VEE_SerpentineCanyons": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_Webwork__Valley": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_WeepingStones__Oasis": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "RUT_WeepingStones__VEE_Cenotes": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ZBiome_Grasslands__Ruins": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ZBiome_Grasslands__TerraformingScar": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    },
+    "ZBiome_Grasslands__VEE_DryRiver": {
+      "decision": "keep",
+      "note": "",
+      "prefill": "keep"
+    }
+  },
+  "frozen": false,
+  "posture": "whitelist",
+  "reviewStatus": "retired",
+  "sheetId": "landmark_density_2026-09-19",
+  "retiredBy": "owner, typed in BENCH chat 2026-10-02: \"yes treat them as retired\" (no live item references this sheet)"
+}

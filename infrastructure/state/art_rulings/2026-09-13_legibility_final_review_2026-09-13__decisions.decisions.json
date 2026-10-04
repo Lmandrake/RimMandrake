@@ -1,0 +1,576 @@
+{
+ "criterion": "Pre-filled 'good' for every row - the gate already passed them; your flags are the errors the locked rules still make.",
+ "decidedCount": 153,
+ "decisions": {
+  "aa_terramorph_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "aa_terramorph_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "aa_terramorph_v1_north_r2": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "aa_terramorph_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "aa_thunderox_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "anooba_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "anooba_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "anooba_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "bilespawn_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "bilespawn_v1_north_r2": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "bilespawn_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "boma_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "boma_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "borcatu_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "borcatu_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "borcatu_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "cinderwing_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "cinderwing_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "corronip_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "dactillion_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "dewback_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "dewback_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "direwail_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "duskram_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "duskram_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "duskram_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "featherfeel_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "fumeback_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "fumeback_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "fumeback_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grank_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grank_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grank_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grithe_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grithe_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grutt_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grutt_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "grutt_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "huskrunner_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "huskrunner_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "huskrunner_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "insectomorph_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "insectomorph_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kinrath_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kinrath_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kinrath_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kroffa_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kroffa_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kroffa_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "kroffa_v2_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r10_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r13_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r7": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r8_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r8_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r9_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "lockjaw_improve_a_r9_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "mireflit_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "mireflitwarden_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "miremoth_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "miremoth_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "miremoth_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "mycolith_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "mycolith_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "ollopom_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "ollopom_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "ollopom_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "oozemaw_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "oozemaw_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "oozemaw_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "orray_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "orray_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "orray_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "pekopeko_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "pekopeko_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "pekopeko_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "polux_v1": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "puffmite_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "puffmite_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "puffmite_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "pyrelands_furnacebeast_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "pyrelands_furnacebeast_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "scarrend_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "wastewing_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "wastewing_v1_north_r2": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "wastewing_v1_south_r2": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "whisperbird_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "whisperbird_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "wyyyschokk_v1_east": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "wyyyschokk_v1_north": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "wyyyschokk_v1_south": {
+   "decision": "good",
+   "note": "",
+   "prefill": "good"
+  },
+  "aa_frostmite_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "aa_thunderox_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "aa_thunderox_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "boma_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "dactillion_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "dactillion_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "dewback_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "fanback_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "fanback_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "fanback_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "insectomorph_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "mantrap_improve_a_r7": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "mantrap_improve_b_r8": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "pyrelands_furnacebeast_v1": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "shiro_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "shiro_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vaewaste_megatardi_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vaewaste_megatardi_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vaewaste_megatardi_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vornskyr_v1_east": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vornskyr_v1_north": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  },
+  "vornskyr_v1_south": {
+   "decision": "good",
+   "prefill": "good",
+   "note": ""
+  }
+ },
+ "generatedBy": "bench final-review generator (locked rules)",
+ "posture": "whitelist",
+ "savedAt": "2026-09-13T15:29:13-0700",
+ "savedBy": "review-sheet-sidecar",
+ "writeCount": 8
+}

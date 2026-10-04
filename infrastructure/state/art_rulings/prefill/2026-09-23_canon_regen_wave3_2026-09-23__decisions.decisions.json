@@ -1,0 +1,14 @@
+{
+  "posture": "none",
+  "reviewStatus": {
+    "state": "prefill",
+    "by": null,
+    "at": null,
+    "evidence": "Generator wrote this at birth; fidelity grading is the owner's call, not this agent's -- no row decided."
+  },
+  "decisions": {
+    "hawkbat": { "decision": "", "note": "", "prefill": "" },
+    "kinrath": { "decision": "", "note": "", "prefill": "" },
+    "kreetle": { "decision": "", "note": "", "prefill": "" }
+  }
+}
