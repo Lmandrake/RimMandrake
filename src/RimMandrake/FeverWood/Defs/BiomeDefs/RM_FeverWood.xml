@@ -193,6 +193,8 @@
       <Fog>10</Fog>
       <Rain>0</Rain>
       <DryThunderstorm>1</DryThunderstorm>
+      <!-- FEVERWOOD_OIL_BOIL_WEATHER_1: hot still days only (temperatureRange gate, Mod Settings) -->
+      <RM_FeverWood_OilBoil>2</RM_FeverWood_OilBoil>
       <RainyThunderstorm>0</RainyThunderstorm>
       <FoggyRain>0</FoggyRain>
       <SnowGentle>0</SnowGentle>

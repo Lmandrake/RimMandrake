@@ -99,6 +99,17 @@ class FWGame(MockGame):
     def t_jawa_static_call(self, p):
         """RM_KurrethTheftProof (FEVERWOOD_ANT_THEFT_RAIDBACK_1): ProofRaid stages the column; ProofState reads
         the outcome the C# would leave -- a healthy theft takes one thornbug alive and sends the letter."""
+        if p.get("type") == "RimMandrake.FeverWood.RM_OilBoilProof":
+            m = p.get("method")
+            if m == "ProofGate":
+                return {"success": True, "result": "canOccur=%s temp=40.0 min=35.0 enabled=%s" % (
+                    self.sb("oilBoilEnabled") and "gate_stuck" not in self.brk, self.sb("oilBoilEnabled"))}
+            if m == "ProofYield":
+                return {"success": True, "result": "yieldOff=8 yieldOn=%d" % (8 if "yield_flat" in self.brk else 16)}
+            if m == "ProofSpark":
+                cold = "haze_inert" in self.brk
+                return {"success": True, "result": "flashed=%s firesBefore=0 firesAfter=%d conditionEnded=%s" % (
+                    not cold, 0 if cold else 23, not cold)}
         if p.get("type") != "RimMandrake.FeverWood.RM_KurrethTheftProof":
             raise RuntimeError("mock: unknown static_call type %s" % p.get("type"))
         if p.get("method") == "ProofRaid":
@@ -591,7 +602,7 @@ def main():
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 13, V.BOOL_TOGGLES)
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 15, V.BOOL_TOGGLES)
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 4, V.FLORA_PRODUCTS)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
@@ -663,6 +674,9 @@ def main():
         ("parasite_ignores_toggle", {"hive_parasite.with_the_parasite_toggle_off_the_kurreth_lives"}),
         ("theft_kills", {"ant_theft.a_kurreth_column_carries_thornbugs_off_alive"}),
         ("theft_silent", {"ant_theft.a_kurreth_column_carries_thornbugs_off_alive"}),
+        ("gate_stuck", {"oil_boil.gate_follows_the_temperature_setting"}),
+        ("yield_flat", {"oil_boil.seepril_yield_doubles_while_boiling"}),
+        ("haze_inert", {"oil_boil.a_spark_in_the_haze_flashes_and_burns_it_off"}),
     ]
     for brk, want in cases:
         got = reds(run((brk,)))

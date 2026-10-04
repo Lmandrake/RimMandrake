@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_OIL_BOIL_WEATHER_1: the oil boil's mechanics (RM_GameCondition_OilBoil): doubled seepril yield, the
+     haze that flashes on a spark, the pool edge that wakes the deep. Started and ended by RM_MapComponent_OilBoil. -->
+<Defs>
+  <GameConditionDef>
+    <defName>RM_OilBoilCondition</defName>
+    <conditionClass>RimMandrake.FeverWood.RM_GameCondition_OilBoil</conditionClass>
+    <label>oil boil</label>
+    <description>Boiled seep oil hangs over the open ground. Seepril yield double; a shot, a flame or a lightning strike in the haze flashes fire along it.</description>
+    <canBePermanent>true</canBePermanent>
+  </GameConditionDef>
+</Defs>
