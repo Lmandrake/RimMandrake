@@ -206,6 +206,19 @@ def _def_field(t, def_ref, field):
     return (rows[0].get("fields") or {}).get(field)
 
 
+def _class_wired(t, def_ref, xml_rel, needle):
+    """A System.Type field (driverClass / workerClass) cannot be read through jawa/get_defs ('(no such field)' -- a
+    failed instrument, not a wiring failure: load 14 FAILED three loaded defs on it). So: the shipped XML must carry
+    `needle`, and the LIVE def must have resolved (foundCount 1; an unresolvable class discards or errors the def)."""
+    import os as _o
+    path = _o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "Defs", *xml_rel.split("/"))
+    if needle not in open(path, encoding="utf-8").read():
+        raise ExpectationFailed("%s no longer carries %s" % (xml_rel, needle))
+    r = t.bridge_call("jawa/get_defs", defs=def_ref)
+    if t.session is not None and (not r or not r.get("success") or r.get("foundCount") != 1):
+        raise ExpectationFailed("%s did not load: %r" % (def_ref, r))
+
+
 # ----------------------------------------------------------------- Tier 1
 @suite.chain("ion_damage_mechanism")
 def ion_damage_mechanism(t):
@@ -365,15 +378,11 @@ def def_and_spawn_wiring(t):
             raise ExpectationFailed("GenStepDef/KOTOR_CrystalFormation.genStep did not resolve")
 
     with _pure(t, "mine_pocket_job_wired", toggle="minePocketEnabled"):
-        driver = _def_field(t, "JobDef/MinePocket_Job", "driverClass")
-        if driver != "MinePocket.MinePocketJob":
-            raise ExpectationFailed(
-                "JobDef/MinePocket_Job.driverClass read %r, expected "
-                "MinePocket.MinePocketJob" % driver)
+        _class_wired(t, "JobDef/MinePocket_Job", "Absorbed_KotorCore/Absorbed_KotorCore_JobDefs_misc.xml",
+                     "<driverClass>MinePocket.MinePocketJob</driverClass>")
     with _pure(t, "mine_pocket_defuse_time_floor", toggle="minePocketDefuseTime"):
-        driver = _def_field(t, "JobDef/MinePocket_Job", "driverClass")
-        if driver != "MinePocket.MinePocketJob":
-            raise ExpectationFailed("JobDef/MinePocket_Job.driverClass read %r" % driver)
+        _class_wired(t, "JobDef/MinePocket_Job", "Absorbed_KotorCore/Absorbed_KotorCore_JobDefs_misc.xml",
+                     "<driverClass>MinePocket.MinePocketJob</driverClass>")
 
     with _pure(t, "kolto_tank_spawns_with_comp", toggle="koltoHealEnabled"):
         cells = t.spawn("KoltoTank", count=1)
@@ -393,11 +402,9 @@ def def_and_spawn_wiring(t):
             raise ExpectationFailed("KoltoTank no longer present at anchor for the floor check")
 
     with _pure(t, "plasma_grenade_damagedef_wired", toggle="plasmaGrenadeFires"):
-        cls = _def_field(t, "DamageDef/guy762_GrenadeDamage_plasma", "workerClass")
-        if cls != "guy762_Ionization.DamageWorker_KotORPlasmaGrenade":
-            raise ExpectationFailed(
-                "DamageDef/guy762_GrenadeDamage_plasma.workerClass read %r, expected "
-                "guy762_Ionization.DamageWorker_KotORPlasmaGrenade" % cls)
+        _class_wired(t, "DamageDef/guy762_GrenadeDamage_plasma",
+                     "Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_GrenadeDamages.xml",
+                     "<workerClass>guy762_Ionization.DamageWorker_KotORPlasmaGrenade</workerClass>")
 
 
 # ------------------------------------------------- the melee ladder landed (NORTHSTAR_PARTIAL_GAPS_FILL_1)
