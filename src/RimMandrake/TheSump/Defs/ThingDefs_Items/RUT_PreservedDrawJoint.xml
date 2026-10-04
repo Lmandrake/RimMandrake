@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_PreservedDrawJoint.xml   TheSump — SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1 (capstan turret spec 4)
+
+  A preserved draw-joint from an old tar-pit capstan, found in the dig strata (RUT_DigStratumTable, strata 2-3).
+  Studying TWO of them (analysisRequiredRange 2~2, each consumed) unlocks the RM_CapstanTurret research row,
+  which carries <requiredAnalyzed>RUT_PreservedDrawJoint</requiredAnalyzed>. Vanilla mechanism, no C#: the
+  Biotech signal-chip shape (CompProperties_CompAnalyzableUnlockResearch + ResearchProjectDef.requiredAnalyzed).
+  After that the turret is researchable and buildable anywhere.
+
+  analysisID is an arbitrary unique int (vanilla uses 8-digit ids). Texture is a procedural PLACEHOLDER; art job
+  rut_preserveddrawjoint_v1 is queued. MarketValue PROVISIONAL.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_PreservedDrawJoint</defName>
+    <label>preserved draw-joint</label>
+    <description>The geared heart of an old tar-pit capstan: a ratchet drum and pawl block sealed in pitch so long the steel underneath never rusted. Pit crews used capstans like it to haul out whatever the tar swallowed.\n\nStudying two of them teaches how the winch was built, unlocking capstan turret research. Each one studied is taken apart.</description>
+    <graphicData>
+      <texPath>Things/Item/RUT_PreservedDrawJoint/RUT_PreservedDrawJoint</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <soundInteract>Metal_Drop</soundInteract>
+    <soundDrop>Standard_Drop</soundDrop>
+    <stackLimit>5</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>120</MaxHitPoints>
+      <MarketValue>180</MarketValue>
+      <Mass>6</Mass>
+      <Flammability>0.2</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="CompProperties_CompAnalyzableUnlockResearch">
+        <analysisID>61904417</analysisID>
+        <analysisRequiredRange>2~2</analysisRequiredRange>
+        <destroyedOnAnalyzed>true</destroyedOnAnalyzed>
+        <showProgress>true</showProgress>
+        <analysisDurationHours>2</analysisDurationHours>
+        <progressedLetterLabel>Draw-joint studied</progressedLetterLabel>
+        <progressedLetters>
+          <li>{PAWN_labelShort} has taken a preserved draw-joint apart and learned half of how the old capstan winch worked. One more would finish the picture.</li>
+        </progressedLetters>
+        <progressedLetterDef>NeutralEvent</progressedLetterDef>
+        <completedLetterLabel>Draw-joints studied: {RESEARCH} unlocked</completedLetterLabel>
+        <completedLetter>By taking apart two preserved draw-joints, {PAWN_labelShort} has worked out how the tar-pit capstans were built.\n\nYour researchers can now research {RESEARCH} at a research bench.</completedLetter>
+        <completedLetterDef>PositiveEvent</completedLetterDef>
+        <activateTexPath>UI/Icons/Study</activateTexPath>
+        <activateLabelString>Study...</activateLabelString>
+        <activateDescString>Take the draw-joint apart to learn how it works.</activateDescString>
+        <jobString>Study draw-joint</jobString>
+        <guiLabelString>Choose who should study this</guiLabelString>
+        <inspectString>Can be studied by a colonist.</inspectString>
+        <targetingParameters>
+          <canTargetBuildings>false</canTargetBuildings>
+          <canTargetAnimals>false</canTargetAnimals>
+          <canTargetMechs>false</canTargetMechs>
+          <onlyTargetControlledPawns>true</onlyTargetControlledPawns>
+        </targetingParameters>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
