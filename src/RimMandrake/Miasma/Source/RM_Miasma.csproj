@@ -57,6 +57,7 @@
     <Compile Include="RM_MapComponent_YoungCall.cs" />
     <Compile Include="RM_DecayCells.cs" />
     <Compile Include="RM_RottingBed.cs" />
+    <Compile Include="RM_MiasmaProof.cs" />
   </ItemGroup>
 
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">

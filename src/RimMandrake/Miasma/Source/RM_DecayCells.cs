@@ -50,6 +50,17 @@ namespace RimMandrake.Miasma
             {
                 return;
             }
+            ObserveFuel();
+        }
+
+        /// <summary>One digestion check (CompTick runs it every 250 ticks; RM_MiasmaProof drives it directly):
+        /// a fuel drop since the last look is digestion, and a cell past its lifetime feed becomes a rotting bed.</summary>
+        public void ObserveFuel()
+        {
+            if (refuelableComp == null)
+            {
+                return;
+            }
             float fuel = refuelableComp.Fuel;
             if (lastFuel >= 0f && fuel < lastFuel)
             {
