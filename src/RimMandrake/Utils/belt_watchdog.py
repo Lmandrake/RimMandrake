@@ -525,6 +525,16 @@ def gather(run_output=None, bridge=True, player_log=PLAYER_LOG, now=None, win=No
         else:
             sigs.append(Sig(name, OK, "%s for %s, beat %s ago" % (desc, _age(step_age), _age(h["age_s"]))))
 
+    # A quiet Player.log alone is not a hang (a long wait writes nothing: MEASURED 2026-10-03, 5+ min of silence on a healthy run).
+    # When the bridge's MAIN THREAD answers and a runner heartbeat is fresh and within budget, the frozen-log STALLED is only a WARN.
+    pl = [x for x in sigs if x.name == "player_log" and x.level == STALLED and "frozen?" in x.detail]
+    br_ok = any(x.name == "bridge" and x.level == OK for x in sigs)
+    hb_ok = any(x.name == "heartbeat" and x.level == OK for x in sigs)
+    if pl and br_ok and hb_ok:
+        pl[0].level = WARN
+        pl[0].detail += "; but the bridge main thread answers and the runner heartbeat is fresh: quiet, not hung"
+        pl[0].remedy = ""
+
     # run output
     path = run_output
     if not path:
