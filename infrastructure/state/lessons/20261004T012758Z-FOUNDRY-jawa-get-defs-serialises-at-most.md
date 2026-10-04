@@ -1,0 +1,1 @@
+jawa/get_defs serialises at most 64 items of any list field (deep or not): Base_Outlander_Standard read exactly 64 of ~79 trader rows, so patch rows APPENDED to a long list fall off the end and read as 'patch matched nothing' (Bacta, 2026-10-03). A read at exactly 64 cannot prove absence; Bacta suite now says UNMEASURED there.
