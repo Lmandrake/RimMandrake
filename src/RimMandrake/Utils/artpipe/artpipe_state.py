@@ -40,6 +40,10 @@ UNION_JSONL = ("registry.jsonl", "throughput.jsonl")
 PLAIN_DIRS = ("_artsrc", "_withdrawn", "logs")
 SEARCH_DIRS = ("pending", "active", "done", "failed", "_withdrawn")
 SEARCH_FILES = ("registry.jsonl", "art_status.json")
+# The PRE-MIGRATION artpipe tree (the old Rimworld repo). Its _artsrc holds ~2241
+# renders that never moved to the state dir; r31 found wireable art there that
+# `find` could not see. Searched by `find` unless --no-legacy.
+LEGACY_ROOTS = (Path("/mnt/d/Luke/dev/Rimworld/infrastructure/artpipe"),)
 
 
 # ---------------------------------------------------------------- where
@@ -110,7 +114,24 @@ def cmd_find(args) -> int:
         for t in terms:
             if n[t]:
                 hits[t].append(f"{fn}: {n[t]} line(s)")
-    print(f"searched {scanned} entries under {root}")
+    legacy_scanned = []
+    for lroot in ([] if args.no_legacy else (args.legacy or list(LEGACY_ROOTS))):
+        lroot = Path(lroot)
+        if not lroot.is_dir():
+            print(f"legacy root {lroot}: MISSING (not searched)")
+            continue
+        legacy_scanned.append(lroot)
+        for d in ("_artsrc", *SEARCH_DIRS):
+            p = lroot / d
+            if not p.is_dir():
+                continue
+            for f in p.iterdir():
+                scanned += 1
+                for t in terms:
+                    if t in f.name.lower():
+                        hits[t].append(f"LEGACY {lroot}/{d}/{f.name}" + ("/" if f.is_dir() else ""))
+    print(f"searched {scanned} entries under {root}"
+          + "".join(f" + legacy {r}" for r in legacy_scanned))
     for t in terms:
         print(f"{t}: {len(hits[t])} hit(s)")
         for h in hits[t][: args.limit]:
@@ -308,6 +329,9 @@ def main(argv=None) -> int:
     f.add_argument("terms", nargs="+")
     f.add_argument("--names-only", action="store_true", help="skip reading job JSON bodies")
     f.add_argument("--limit", type=int, default=15)
+    f.add_argument("--legacy", type=Path, action="append",
+                   help="pre-migration artpipe root to also search by name (default: LEGACY_ROOTS)")
+    f.add_argument("--no-legacy", action="store_true")
     c = sub.add_parser("collect")
     c.add_argument("job_id", nargs="?")
     c.add_argument("--to", help="repo-relative destination under src/")

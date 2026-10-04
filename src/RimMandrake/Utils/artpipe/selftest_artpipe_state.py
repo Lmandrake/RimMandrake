@@ -71,6 +71,30 @@ def test_collect(tmp: Path):
           len((st / "collected.jsonl").read_text().splitlines()) == 1)
 
 
+def test_find_legacy(tmp: Path):
+    import contextlib
+    import io
+    st, old = tmp / "state", tmp / "old"
+    (st / "_artsrc" / "korrum_v1").mkdir(parents=True)
+    (st / "done").mkdir()
+    (old / "_artsrc" / "miasma_nemreth").mkdir(parents=True)
+    (old / "done").mkdir()
+    (old / "done" / "nemreth_v0.json").write_text("{}")
+
+    def run(*extra):
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            AS.main(["--state", str(st), "find", "nemreth", "korrum", *extra])
+        return buf.getvalue()
+    out = run("--legacy", str(old))
+    check("find sees the state dir (sanity probe)", "korrum: 1 hit" in out)
+    check("find sees a legacy _artsrc dir and done/ job by name",
+          "nemreth: 2 hit" in out and "LEGACY" in out and "miasma_nemreth/" in out)
+    check("--no-legacy skips it", "nemreth: 0 hit" in run("--no-legacy"))
+    check("a missing legacy root is said, not silently empty",
+          "MISSING" in run("--legacy", str(tmp / "absent")))
+
+
 def test_migrate(tmp: Path):
     src, dst = tmp / "old", tmp / "new"
     _job(src / "done", "j1")                 # advanced past dst's pending copy
@@ -114,7 +138,7 @@ def test_requeue(tmp: Path):
 def main() -> int:
     with tempfile.TemporaryDirectory() as t:
         tmp = Path(t)
-        for i, fn in enumerate((test_resolver, test_collect, test_migrate, test_requeue)):
+        for i, fn in enumerate((test_resolver, test_collect, test_find_legacy, test_migrate, test_requeue)):
             sub = tmp / str(i)
             sub.mkdir()
             fn(sub)
