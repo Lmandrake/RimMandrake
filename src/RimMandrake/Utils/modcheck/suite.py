@@ -360,7 +360,10 @@ class TestContext(object):
             return None
         r = self.session.call("jawa/faction_create", defName=def_name, dryRun=False)
         self._record("ensure_faction(%s)" % def_name, r)
-        if (r or {}).get("success") or (r or {}).get("existingCount"):
+        # the tool's refusal carries existingCount under `details` (load 13: read at the top level it was never seen,
+        # so a world that already HAD the faction failed every suite that ensures one)
+        if (r or {}).get("success") or (r or {}).get("existingCount") \
+                or ((r or {}).get("details") or {}).get("existingCount"):
             return r
         raise ExpectationFailed(
             "jawa/faction_create(defName=%r) could not ensure a live faction "
