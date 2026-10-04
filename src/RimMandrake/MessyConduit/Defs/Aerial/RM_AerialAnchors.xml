@@ -56,9 +56,9 @@
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Aerial/AerialMast</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,2)</drawSize>
-      <drawOffset>(0,0,0.5)</drawOffset>
-      <shadowData><volume>(0.2, 0.8, 0.2)</volume></shadowData>
+      <drawSize>(1,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
       <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
     </graphicData>
     <uiIconScale>0.9</uiIconScale>
@@ -73,10 +73,10 @@
     <modExtensions>
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">
         <maxLinks>4</maxLinks>
-        <attachZ>1.33</attachZ>
+        <attachZ>2.66</attachZ>
         <insulatorSpread>0.4</insulatorSpread>
         <topTexPath>RimMandrake/MessyConduit/Aerial/AerialMastTop</topTexPath>
-        <topOffsetZ>1.0</topOffsetZ>
+        <topOffsetZ>2.33</topOffsetZ>
       </li>
     </modExtensions>
   </ThingDef>
@@ -88,9 +88,9 @@
     <graphicData>
       <texPath>RimMandrake/MessyConduit/Aerial/AerialLampMast</texPath>
       <graphicClass>Graphic_Single</graphicClass>
-      <drawSize>(1,2)</drawSize>
-      <drawOffset>(0,0,0.5)</drawOffset>
-      <shadowData><volume>(0.2, 0.8, 0.2)</volume></shadowData>
+      <drawSize>(1,4)</drawSize>
+      <drawOffset>(0,0,1.5)</drawOffset>
+      <shadowData><volume>(0.2, 1.6, 0.2)</volume></shadowData>
       <damageData><rect>(0.3,0.1,0.4,0.8)</rect></damageData>
     </graphicData>
     <costList>
@@ -113,9 +113,9 @@
     <modExtensions>
       <li Class="RimMandrake.MessyConduit.Aerial.AerialAnchorExtension">
         <maxLinks>3</maxLinks>
-        <attachZ>1.15</attachZ>
+        <attachZ>2.3</attachZ>
         <topTexPath>RimMandrake/MessyConduit/Aerial/AerialLampMastTop</topTexPath>
-        <topOffsetZ>1.0</topOffsetZ>
+        <topOffsetZ>2.15</topOffsetZ>
       </li>
     </modExtensions>
   </ThingDef>

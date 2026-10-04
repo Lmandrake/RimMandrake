@@ -355,8 +355,12 @@ def run_live(args):
     lg = B.call("rimbridge/list_logs", limit=500, minimumLevel="warning")
     new = [e for e in lg.get("logs") or [] if (e.get("Sequence") or 0) > log_base]
     errs = [e for e in new if str(e.get("Level", "")).lower() in ("error", "exception")]
+    # LEARNED 2026-10-04: the site clear's destroy_batch over a map geyser/monolith logs "Tried to destroy
+    # non-destroyable thing ..." -- the harness's own clear, not the mod (same exclusion validation_hose.py has).
+    site = [e for e in errs if "non-destroyable" in str(e.get("Message", ""))]
+    errs = [e for e in errs if e not in site]
     V.row(rows, "AZ_log_budget", "PASS" if not errs else "FAIL", "MOD",
-          {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new)})
+          {"errors": [str(e.get("Message", ""))[:240] for e in errs[:8]], "newWarnings": len(new), "siteClearErrorsExcluded": len(site)})
     B.ap("defaults")
     res["log"] = log
     res["sceneIds"] = {"m1": i1, "m3": i3, "hostileMast": ih, "battery": bat_id, "hostileBattery": hb_id}
