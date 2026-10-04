@@ -164,6 +164,14 @@ namespace RimMandrake.ExplosiveGrowth
     [HarmonyPatch(typeof(Plant), nameof(Plant.PlantCollected))]
     public static class RM_Patch_Plant_PlantCollected_Gamble
     {
+        /// <summary>The last swing's chance to set it off (0 below the tremble or with the gamble off).
+        /// 🄸 INVENTED: 15% as it starts to tremble, 60% at the very top.</summary>
+        public static float GambleChance(float charge)
+        {
+            if (!ExplosiveGrowthSettings.lastSwingGambleEnabled || charge < RM_MapComponent_ExplosiveGrowth.TrembleAt) return 0f;
+            return Mathf.Lerp(0.15f, 0.6f, Mathf.InverseLerp(RM_MapComponent_ExplosiveGrowth.TrembleAt, 1f, charge));
+        }
+
         [HarmonyPrefix]
         public static bool Prefix(Plant __instance)
         {
@@ -174,10 +182,8 @@ namespace RimMandrake.ExplosiveGrowth
             if (charge <= 0f) return true;
             comp.Dirty(__instance.Position);
 
-            if (!ExplosiveGrowthSettings.lastSwingGambleEnabled || charge < RM_MapComponent_ExplosiveGrowth.TrembleAt) return true;
-            // 🄸 INVENTED: 15% as it starts to tremble, 60% at the very top.
-            float chance = Mathf.Lerp(0.15f, 0.6f, Mathf.InverseLerp(RM_MapComponent_ExplosiveGrowth.TrembleAt, 1f, charge));
-            if (!Rand.Chance(chance)) return true;
+            float chance = GambleChance(charge);
+            if (chance <= 0f || !Rand.Chance(chance)) return true;
 
             RM_PlantProfile prof = RM_ExplosiveGrowthRegistry.For(__instance.def);
             RM_TopResolver.Fire(__instance, prof, comp);

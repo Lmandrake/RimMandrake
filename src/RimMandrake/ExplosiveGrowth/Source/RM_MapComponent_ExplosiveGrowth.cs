@@ -228,6 +228,36 @@ namespace RimMandrake.ExplosiveGrowth
 
         public float ChargeOf(Plant plant) => TryGetCharge(plant, out RM_ChargeRecord rec) ? rec.charge : 0f;
 
+        /// <summary>The tell ladder for a charge (pure; UpdateTells and the proof both read it).</summary>
+        public static RM_TellStage StageFor(float charge)
+        {
+            return charge >= SilenceAt ? RM_TellStage.Silence
+                : charge >= CreakAt ? RM_TellStage.Creak
+                : charge >= TrembleAt ? RM_TellStage.Tremble
+                : charge >= HueAt ? RM_TellStage.Hue
+                : charge >= SwellAt ? RM_TellStage.Swell
+                : RM_TellStage.Ground;
+        }
+
+        /// <summary>EXPLOSIVE_GROWTH_PROBE_TOOL_1: put one plant at an exact charge (stage follows, no side effects).
+        /// 0 removes its record.</summary>
+        public void DebugSetCharge(Plant plant, float value)
+        {
+            if (plant == null || !plant.Spawned) return;
+            if (value <= 0f)
+            {
+                charges.Remove(plant.Position);
+                return;
+            }
+            charges[plant.Position] = new RM_ChargeRecord
+            {
+                plantId = plant.thingIDNumber,
+                charge = value,
+                stage = StageFor(value),
+                clockFactor = 1f,
+            };
+        }
+
         public void AddRupture(IntVec3 center, float radius, int ticks)
         {
             ruptures.Add(new RM_RuptureZone { center = center, radius = radius, untilTick = Find.TickManager.TicksGame + ticks });
@@ -401,12 +431,7 @@ namespace RimMandrake.ExplosiveGrowth
 
         private void UpdateTells(IntVec3 c, Plant plant, RM_ChargeRecord rec)
         {
-            RM_TellStage want = rec.charge >= SilenceAt ? RM_TellStage.Silence
-                : rec.charge >= CreakAt ? RM_TellStage.Creak
-                : rec.charge >= TrembleAt ? RM_TellStage.Tremble
-                : rec.charge >= HueAt ? RM_TellStage.Hue
-                : rec.charge >= SwellAt ? RM_TellStage.Swell
-                : RM_TellStage.Ground;
+            RM_TellStage want = StageFor(rec.charge);
 
             if (want > rec.stage)
             {
