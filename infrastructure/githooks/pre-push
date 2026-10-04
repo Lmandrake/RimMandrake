@@ -6,7 +6,7 @@ root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 input=$(cat)
 command -v python3 >/dev/null 2>&1 || { echo "pre-push: python3 missing, guards skipped" >&2; exit 0; }
 rc=0
-for g in block_dll_source_mismatch.py block_ledger_lint.py; do
+for g in block_dll_source_mismatch.py block_ledger_lint.py block_unledgered_texture.py; do
   [ -f "$root/.claude/hooks/$g" ] || continue
   printf '%s\n' "$input" | python3 "$root/.claude/hooks/$g" --git-pre-push
   r=$?

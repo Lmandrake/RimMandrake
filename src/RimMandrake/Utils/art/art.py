@@ -7,7 +7,10 @@
                                             canon | rulings  (idempotent: deterministic ids)
     art.py status    <subject|texPath>      live picture(s), protections, rulings, flags
     art.py variants  <subject|texPath>      every known picture of it, with provenance
-    art.py install   <mod> <rel> <sha> (--ruling ID | --owner-said "...") [--dry-run]
+    art.py install   <mod> <rel> <sha> (--ruling ID | --owner-said "..." | --reason TAG) [--dry-run]
+                                            TAG: artpipe-collect | script:<writer path>; a mechanical
+                                            install is refused over an owner-kept picture
+    art.py guard     range A..B | worktree [paths]   texture changes the ledger did not make
     art.py purge     <sha> --owner-said "..." [--release-keep]   reject+purge (owner only)
     art.py ingest    <decisions.json>       owner sheet decisions -> ruling/purge events
     art.py index                            write the gitignored projection index.json
@@ -161,7 +164,8 @@ def cmd_status(a, verbose=False):
 
 def cmd_install(a):
     try:
-        r = L.install(a.mod, a.rel, a.sha, ruling_id=a.ruling, owner_said=a.owner_said, dry_run=a.dry_run)
+        r = L.install(a.mod, a.rel, a.sha, ruling_id=a.ruling, owner_said=a.owner_said, reason=a.reason,
+                      dry_run=a.dry_run)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
@@ -216,11 +220,17 @@ def main(argv=None):
     p = sp.add_parser("status"); p.add_argument("query")
     p = sp.add_parser("variants"); p.add_argument("query")
     p = sp.add_parser("install"); p.add_argument("mod"); p.add_argument("rel"); p.add_argument("sha")
-    p.add_argument("--ruling"); p.add_argument("--owner-said"); p.add_argument("--dry-run", action="store_true")
+    p.add_argument("--ruling"); p.add_argument("--owner-said"); p.add_argument("--reason")
+    p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("purge"); p.add_argument("sha"); p.add_argument("--owner-said", required=True)
     p.add_argument("--release-keep", action="store_true")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
     sp.add_parser("index")
+    if argv is None:
+        argv = sys.argv[1:]
+    if argv[:1] == ["guard"]:
+        import art_guard
+        return art_guard.main(argv[1:])
     a = ap.parse_args(argv)
     if a.cmd == "variants":
         return cmd_status(a, verbose=True)
