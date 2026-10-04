@@ -106,6 +106,7 @@ def judge(job, digests, crashed):
 
 def body(s, job):
     import runner
+    import run_identity
     from jobs import suite_mods
     argv = sys.argv[1:]
     mods = suite_mods()
@@ -142,12 +143,16 @@ def body(s, job):
     for m, suite in plan:
         print("  -- %s" % m)
         belt_heartbeat.step("suite %s" % m, budget_s=belt_heartbeat.DEFAULT_STEP_BUDGET_S)   # hang -> exit 4
+        fp_start = None if job.dry_run else run_identity.mod_fingerprint(m)   # DEPLOY FINGERPRINT at start (observatory S1)
         try:
             summ = runner.run_suite(suite, s, mod=None if job.dry_run else m, situational=True, policy="abort",
                                     bland_world=use_world, retile="--retile" in argv)
         except Exception as e:                                  # noqa: BLE001
             crashed.append("%s: %s: %s" % (m, type(e).__name__, e))
             continue
+        if not job.dry_run:
+            summ["run_identity"] = {"run_id": getattr(job, "run_id", None), "git": (job.evidence.get("run_identity") or {}).get("git"),
+                                    "deploy_start": fp_start, "deploy_end": run_identity.mod_fingerprint(m)}
         with open(os.path.join(job.outdir, "%s_summary.json" % m), "w", encoding="utf-8") as f:
             json.dump(summ, f, indent=1, default=str)
         spath = os.path.join(job.outdir, "%s_summary.json" % m)

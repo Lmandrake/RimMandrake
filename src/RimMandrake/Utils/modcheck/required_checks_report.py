@@ -34,6 +34,8 @@ TAINTS = ("modal-open", "stale-deploy", "log-blind", "focus-lost", "upstream-fai
           "precondition", "unverified-calls", "other")
 # unknown-reasons: evidence MIGHT hold, but nothing recorded proves it does.
 DEPLOY_UNRECORDED = "deploy-fresh-unrecorded"
+DEPLOY_UNPROVEN = "deploy-fingerprint-unproven"   # a fingerprint exists but cannot prove freshness (not drift)
+MODAL_UNCHECKED = "modal-check-failed"
 RUN_UNKNOWN = "run-identity-unknown"
 DETECTORS_UNRECORDED = "detector-coverage-unrecorded"
 
@@ -97,6 +99,40 @@ def match_run(mod, when, runs, slack_s=120):
                 r["started"] <= when <= r["finished"] + _dt.timedelta(seconds=slack_s):
             return r
     return None
+
+
+def fingerprint_verdict(mod, ri):
+    """(proven, why, hard_stale). hard_stale: the fingerprint itself shows the deployed code was not the repo's
+    (drift at start/end, or content changed mid-run) -- that is a stale-deploy taint, not a mere unknown."""
+    import run_identity as RI
+    st, en = ri.get("deploy_start"), ri.get("deploy_end")
+    if not isinstance(st, dict) or st.get("mod") != mod:
+        return False, "fingerprint names a different mod", False
+    ok, why = RI.proves_fresh(st, en, ri.get("git"))
+    if ok:
+        return True, why, False
+    drifted = any(isinstance(f, dict) and f.get("state") == "drift" for f in (st, en)) or \
+        (isinstance(en, dict) and st.get("state") == en.get("state") == "in-sync" and
+         (st.get("src_hash"), st.get("deployed_hash")) != (en.get("src_hash"), en.get("deployed_hash")))
+    return False, why, bool(drifted)
+
+
+def modal_by_chain(summary):
+    """{chain index: (no, unknown)} from the runner's per-chain modal_check. A dialog found open when the
+    NEXT chain began (or after the last one) was up during the chain before it -> modal-open. A failed
+    sweep is unknown, never clean. Records with no modal_check at all add nothing (old records)."""
+    chains = (summary or {}).get("chains", [])
+    out = {i: (set(), set()) for i in range(len(chains))}
+    probes = [(i - 1, c.get("modal_check")) for i, c in enumerate(chains) if i > 0]
+    probes.append((len(chains) - 1, (summary or {}).get("modal_check_final")))
+    for idx, mc in probes:
+        if idx < 0 or not isinstance(mc, dict):
+            continue
+        if mc.get("found_open"):
+            out[idx][0].add("modal-open")
+        if mc.get("errors"):
+            out[idx][1].add(MODAL_UNCHECKED)
+    return out
 
 
 def _applies(a, mod, t0, t1):
@@ -199,7 +235,16 @@ def judge_mod(mod, mrow, summary, run, amendments, when):
             run_no.add(a.get("reason") if a.get("reason") in TAINTS else "other")
         elif a.get("kind") == "attest" and a.get("what") == "deploy-fresh" and run is not None:
             attested = True
-    if not attested:
+    ri = (summary or {}).get("run_identity")
+    if isinstance(ri, dict) and ri.get("deploy_start") is not None:
+        ok, why, hard = fingerprint_verdict(mod, ri)
+        if ok:
+            attested = True
+        elif hard:
+            run_no.add("stale-deploy")       # recorded drift / content moved mid-run: the tested code was not the repo's
+        else:
+            run_unknown.add(DEPLOY_UNPROVEN)
+    if not attested and not any(u in run_unknown for u in (DEPLOY_UNPROVEN,)) and "stale-deploy" not in run_no:
         run_unknown.add(DEPLOY_UNRECORDED)
     digest = None
     if run is not None:
@@ -208,8 +253,10 @@ def judge_mod(mod, mrow, summary, run, amendments, when):
                 digest = d
 
     seen = {}
-    for ch in (summary or {}).get("chains", []):
+    modal = modal_by_chain(summary)
+    for ci, ch in enumerate((summary or {}).get("chains", [])):
         cno, cunk = chain_taints(ch, digest)
+        cno, cunk = cno | modal[ci][0], cunk | modal[ci][1]
         counts = {}
         for comp in ch.get("components", []):
             cid = "%s/%s" % (ch.get("name"), comp.get("name"))

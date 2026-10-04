@@ -455,14 +455,12 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
             world_before = dict(world_before or {}, retile=retile_rec)
     for name, fn in suite.chains:
         watch = None
+        _modal = None
         if situational:
             # A force-pause dialog (the colony-naming dialog that surfaces mid-run, or a Mod Settings dialog a previous
             # chain left open) is a modal_open SURPRISE that aborts and TAINTS the chain. Close them before every chain.
-            for _dlg in ("Dialog_NamePlayerFactionAndSettlement", "Dialog_ModSettings"):
-                try:
-                    session.call("jawa/window_list_close", action="close", typeName=_dlg, closeAll=True)
-                except Exception:                                  # noqa: BLE001 - housekeeping, never a verdict
-                    pass
+            import run_identity as _RI  # noqa: E402
+            _modal = _RI.modal_sweep(session.call)                 # records what was found (observatory S1)
             # The quicktest map's biome is whatever tile the game picked (TheRot LIVE 2026-10-03), and that biome's own
             # ambient weather (the Sheen weathers) coated colonists with RM_SheenCoating mid-chain: a modal-free
             # `colonist_injured_unexpectedly` that aborted every later component. Every chain starts under locked Clear;
@@ -544,8 +542,14 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                 watch.__exit__(None, None, None)
         chains_out.append({"name": name,
                            "components": [c.as_dict() for c in t.components],
-                           "situational": watch.summary() if watch is not None else None})
+                           "situational": watch.summary() if watch is not None else None,
+                           "modal_check": _modal})
     if situational:
+        try:
+            import run_identity as _RI  # noqa: E402
+            modal_final = _RI.modal_sweep(session.call)            # a dialog still up after the LAST chain
+        except Exception:     # noqa: BLE001
+            modal_final = None
         try:
             import clockgate  # noqa: E402
             save_fixtures(fixtures, clockgate.read_ticks(session))
@@ -556,6 +560,8 @@ def run_suite(suite, session, debug=False, anchor=None, mod=None,
                     for chain in chains_out for c in chain["components"])
     summary = {"chains": chains_out, "all_green": all_green,
                "findings": findings, "refused": "", "walk": walk}
+    if situational:
+        summary["modal_check_final"] = modal_final
     if bland_world:
         try:
             after = _BW.assert_world(session, expected_ids=sorted(fixtures))

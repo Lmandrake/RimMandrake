@@ -172,5 +172,53 @@ try:
 except (OSError, KeyError, ValueError) as e:
     check("sanity: manifest readable", False, e)
 
+
+# 13. S1: a recorded DEPLOY FINGERPRINT can make a result proven (no amendment needed), and a stale one cannot
+def fp(state="in-sync", sh="aa", dh=None, dirty=False, mod="M"):
+    return {"mod": mod, "state": state, "src_hash": sh, "deployed_hash": sh if dh is None else dh, "src_dirty": dirty}
+
+
+def with_ri(start, end, git=None, **extra):
+    d = dict(S_OK)
+    d["run_identity"] = {"run_id": "x", "git": git or {"source": "mirror", "sha": "abc"},
+                         "deploy_start": start, "deploy_end": end}
+    d.update(extra)
+    return d
+
+
+r, h, _ = one(with_ri(fp(), fp()), amend=())
+check("fingerprint in-sync at start+end on mirror => proven with NO amendment", h["proven"] == 1 and r["holds"] == "yes", r)
+r, h, _ = one(with_ri(fp(state="drift", dh="bb"), fp()), amend=())
+check("STALE fingerprint (drift at start) => not proven, stale-deploy", h["proven"] == 0 and "stale-deploy" in r["no"], r)
+r, h, _ = one(with_ri(fp(sh="aa"), fp(sh="cc")), amend=())
+check("content moved mid-run => not proven, stale-deploy", h["proven"] == 0 and "stale-deploy" in r["no"], r)
+r, h, _ = one(with_ri(fp(dirty=True), fp(dirty=True), git={"source": "git", "sha": "abc"}), amend=())
+check("dirty tree vs HEAD => unproven (unknown), not pending-deploy", h["proven"] == 0 and r["holds"] == "unknown" and not r["pending_deploy"], r)
+r, h, _ = one(with_ri(fp(), None), amend=())
+check("missing end fingerprint => not proven", h["proven"] == 0, r)
+r, h, _ = one(with_ri(fp(mod="Other"), fp(mod="Other")), amend=())
+check("fingerprint for a different mod => not proven", h["proven"] == 0, r)
+r, h, _ = one(S_OK, amend=())
+check("no fingerprint, no amendment => pending deploy proof (control)", h["proven"] == 0 and r["pending_deploy"], r)
+r, h, _ = one(with_ri(fp(), fp()), amend=(taint("stale-deploy"),))
+check("a stale-deploy amendment still beats a good fingerprint", h["proven"] == 0 and "stale-deploy" in r["no"], r)
+
+# 14. S1: per-chain modal check
+S2 = {"chains": [dict(chain("c", [comp("a")]), modal_check={"found_open": False, "dialogs": {}, "errors": []}),
+                 dict(chain("d", [comp("b")]), modal_check={"found_open": True, "dialogs": {"X": 1}, "errors": []})],
+      "modal_check_final": {"found_open": False, "dialogs": {}, "errors": []}}
+S2["run_identity"] = with_ri(fp(), fp())["run_identity"]
+rows, _ = R.judge_mod("M", man("c/a", "d/b"), S2, RUN, [], WHEN)
+byid = {x["id"]: x for x in rows}
+check("dialog found open when chain d began taints the PREVIOUS chain c", "modal-open" in byid["c/a"]["no"] and not byid["c/a"]["trustworthy"], byid["c/a"])
+check("chain d itself (modal closed before it, none after) stays proven", byid["d/b"]["trustworthy"], byid["d/b"])
+S3 = dict(S2, modal_check_final={"found_open": True, "dialogs": {"X": 1}, "errors": []})
+rows, _ = R.judge_mod("M", man("c/a", "d/b"), S3, RUN, [], WHEN)
+check("dialog still open after the LAST chain taints the last chain", "modal-open" in {x["id"]: x for x in rows}["d/b"]["no"])
+S4 = dict(S2, modal_check_final={"found_open": False, "dialogs": {"X": None}, "errors": ["X: boom"]})
+rows, _ = R.judge_mod("M", man("c/a", "d/b"), S4, RUN, [], WHEN)
+d4 = {x["id"]: x for x in rows}["d/b"]
+check("a FAILED modal sweep is unknown, never clean", d4["holds"] == "unknown" and not d4["trustworthy"], d4)
+
 print("ALL PASS" if not FAILS else "FAILED: %s" % FAILS)
 sys.exit(1 if FAILS else 0)
