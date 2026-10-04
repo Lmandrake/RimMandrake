@@ -1,0 +1,1 @@
+Verse.Log stops writing after 1000 messages until Log.ResetMessageCount (only called at data load): Player.log AND jawa/drain_log go blind while the game runs fine (MCR mood-chain logger hit it at 16:54 on 2026-10-03). Fix: jawa/static_call Verse.Log ResetMessageCount; runner.py does it per chain; belt_watchdog names it.
