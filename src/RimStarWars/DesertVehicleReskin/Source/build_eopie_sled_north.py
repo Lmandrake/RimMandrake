@@ -47,6 +47,12 @@ import os
 import sys
 
 from PIL import Image, ImageDraw
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 SRC_DIR = (
     "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
@@ -198,7 +204,7 @@ def main():
             animal = (0 <= ax < TEAM_W and 0 <= ay < team_h
                       and rd[ax, ay][3] > 0)
             md[x, y] = (0, 0, 0, 255) if animal else (255, 0, 0, 255)
-    mask.save(OUT_MASK)
+    _tw.save(mask, OUT_MASK)
 
     faint = 0
     for y in range(CANVAS):
@@ -210,7 +216,7 @@ def main():
     print(f"  cleared {faint} faint px (alpha 1-31)")
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    base.save(OUT)
+    _tw.save(base, OUT)
     print(f"  wrote {os.path.normpath(OUT)}")
     print(f"  bbox {base.getbbox()}")
 

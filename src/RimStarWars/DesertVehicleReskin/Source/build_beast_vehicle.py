@@ -39,6 +39,12 @@ import sys
 
 import numpy as np
 from PIL import Image, ImageFilter
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
          "3028675048/Textures/Things/Vehicles/Land/Tier0")
@@ -363,8 +369,8 @@ def build(vehicle, facing, pair_path, out_path, out_mask_path):
     M[erase & ~new] = (255, 0, 0, 255)         # anything we emptied tints if refilled
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
-    Image.fromarray(A).save(out_path)
-    Image.fromarray(M).save(out_mask_path)
+    _tw.save(Image.fromarray(A), out_path)
+    _tw.save(Image.fromarray(M), out_mask_path)
 
     ys, xs = np.nonzero(A[..., 3] > 0)
     print("  %s %s" % (vehicle, facing))

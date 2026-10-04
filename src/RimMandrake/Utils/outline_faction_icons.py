@@ -56,6 +56,12 @@ is the tool's, not the operator's memory.
 import argparse
 import os
 import sys
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 try:
     from PIL import Image
@@ -262,7 +268,7 @@ def main():
         if grew:
             note += "  ⚠️ SILHOUETTE GREW - would clip"
         if a.apply:
-            out.save(p)
+            _tw.save(out, p)
             note += "  written"
             wrote += 1
         print("%-26s %-11s %-11s %s" % (f, before, after, note))

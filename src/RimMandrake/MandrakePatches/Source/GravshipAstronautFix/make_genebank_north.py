@@ -28,6 +28,12 @@ import os
 import sys
 
 from PIL import Image
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/"
          "3609835606/Textures/Things/Structures/GravshipGenebank")
@@ -79,7 +85,7 @@ def main():
         return 1
 
     os.makedirs(OUT_DIR, exist_ok=True)
-    north.save(OUT)
+    _tw.save(north, OUT)
     print(f"OK -> {OUT}")
     return 0
 

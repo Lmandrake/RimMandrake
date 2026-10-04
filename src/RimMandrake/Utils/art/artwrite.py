@@ -14,7 +14,9 @@
 Every PNG goes through `artledger.install_bytes` (ART_VERSION_WRANGLING_1): the displaced picture
 is archived in the art store first, a `live` event is appended to the ledger, and an OWNER-KEPT
 picture is never replaced or retired — that file is left as it is and counted as `kept`. A non-PNG
-file under Textures/ (rare: .dds) is copied plainly; the guard only governs PNGs.
+file, or a file outside src/**/Textures/ (a preview sheet), is written plainly — the guard only
+governs texture PNGs — so a script can route every write through it. A PNG aimed at some other
+repo's Textures/ is refused.
 
 Commit the ledger shard (infrastructure/state/art/events/<SEAT>.jsonl) with the art, or the
 texture guard refuses the commit.
@@ -52,9 +54,30 @@ class TextureWriter:
         st = r.get("status")
         self.counts["unchanged" if st == "already-live" else "installed"] += 1
 
+    def _ledgered(self, dest: Path) -> bool:
+        """True for a PNG under this clone's src/**/Textures/ (goes through the ledger).
+        A PNG under some OTHER Textures/ (a stale path to another repo) is refused; any
+        other file (a preview sheet, a JPEG, a .dds) is written plainly."""
+        if not str(dest).lower().endswith(".png"):
+            return False
+        try:
+            L.locate(dest)
+            return True
+        except L.Refused:
+            if "/Textures/" in str(dest).replace("\\", "/"):
+                raise
+            return False
+
     def put(self, data: bytes, dest) -> bool:
         dest = Path(dest)
-        if not str(dest).lower().endswith(".png"):
+        try:
+            ledgered = self._ledgered(dest)
+        except L.Refused as e:
+            self.counts["kept"] += 1
+            self.refusals.append(f"{dest}: {e}")
+            print(f"art ledger REFUSED {dest}: {e}")
+            return False
+        if not ledgered:
             if not self.dry_run:
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 dest.write_bytes(data)
@@ -76,9 +99,18 @@ class TextureWriter:
     def copy(self, src, dest) -> bool:
         return self.put(Path(src).read_bytes(), dest)
 
-    def save(self, img, dest, fmt: str = "PNG") -> bool:
+    def save(self, img, dest, fmt: str | None = None, **kw) -> bool:
+        """Drop-in for `img.save(dest, fmt, **kw)`."""
+        dest = Path(dest)
+        if (fmt or "PNG").upper() != "PNG" or not str(dest).lower().endswith(".png"):
+            if not self.dry_run:
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                img.save(dest, fmt, **kw) if fmt else img.save(dest, **kw)
+            self.counts["plain"] += 1
+            self.written.add(dest.resolve())
+            return True
         b = io.BytesIO()
-        img.save(b, fmt)
+        img.save(b, "PNG", **kw)
         return self.put(b.getvalue(), dest)
 
     def sync(self, root) -> int:
@@ -109,6 +141,8 @@ class TextureWriter:
 
     def report(self) -> int:
         c = self.counts
+        if not any(c.values()):
+            return 0
         print(f"art ledger ({self.reason}): {c['installed']} installed, {c['unchanged']} unchanged, "
               f"{c['retired']} retired, {c['kept']} left as owner-kept/refused"
               + (f", {c['plain']} non-PNG copied" if c["plain"] else "")

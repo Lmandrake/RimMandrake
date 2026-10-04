@@ -60,6 +60,12 @@ import os
 import shutil
 import sys
 import xml.etree.ElementTree as ET
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 
 def _find_repo_root(start):
@@ -177,14 +183,14 @@ def find_and_copy_texture(tex_path, seen, missing):
         if os.path.isfile(base):
             dst = os.path.join(TEX_ROOT, tex_path.replace("/", os.sep) + ext)
             os.makedirs(os.path.dirname(dst), exist_ok=True)
-            shutil.copyfile(base, dst)
+            _tw.copy(base, dst)
             found = True
         for rot in ("_south", "_north", "_east", "_west"):
             rp = os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + rot + ext)
             if os.path.isfile(rp):
                 dst = os.path.join(TEX_ROOT, tex_path.replace("/", os.sep) + rot + ext)
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
-                shutil.copyfile(rp, dst)
+                _tw.copy(rp, dst)
                 found = True
         # Apparel WORN graphics carry a BODY TYPE segment before the rotation:
         # ApparelGraphicRecordGetter builds "<wornGraphicPath>_<BodyTypeDef>"
@@ -199,7 +205,7 @@ def find_and_copy_texture(tex_path, seen, missing):
                 if os.path.isfile(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + suffix)):
                     dst = os.path.join(TEX_ROOT, tex_path.replace("/", os.sep) + suffix)
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
-                    shutil.copyfile(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + suffix), dst)
+                    _tw.copy(os.path.join(SRC_TEX, tex_path.replace("/", os.sep) + suffix), dst)
                     found = True
         d = os.path.join(SRC_TEX, tex_path.replace("/", os.sep))
         if os.path.isdir(d):
@@ -207,7 +213,7 @@ def find_and_copy_texture(tex_path, seen, missing):
                 if fn.lower().endswith(ext):
                     dst = os.path.join(TEX_ROOT, tex_path.replace("/", os.sep), fn)
                     os.makedirs(os.path.dirname(dst), exist_ok=True)
-                    shutil.copyfile(os.path.join(d, fn), dst)
+                    _tw.copy(os.path.join(d, fn), dst)
                     found = True
     if found:
         seen.add(tex_path)

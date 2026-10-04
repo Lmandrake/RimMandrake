@@ -22,6 +22,12 @@ Run:  python3 gen_textures.py            # writes options + ships the default + 
 """
 import os, math, random, zlib
 from PIL import Image, ImageDraw, ImageFilter
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD  = os.path.dirname(HERE)
@@ -253,16 +259,16 @@ def main():
         bg, mo, cl = fn(seed=1000 + zlib.crc32(name.encode()) % 1000)
         od = os.path.join(OPTDIR, name)
         os.makedirs(od, exist_ok=True)
-        bg.save(os.path.join(od, "Widgets.ButtonBGAtlas.png"))
-        mo.save(os.path.join(od, "Widgets.ButtonBGAtlasMouseover.png"))
-        cl.save(os.path.join(od, "Widgets.ButtonBGAtlasClick.png"))
+        _tw.save(bg, os.path.join(od, "Widgets.ButtonBGAtlas.png"))
+        _tw.save(mo, os.path.join(od, "Widgets.ButtonBGAtlasMouseover.png"))
+        _tw.save(cl, os.path.join(od, "Widgets.ButtonBGAtlasClick.png"))
         made[name] = (bg, mo, cl)
 
     # ship the default style's three atlases into the theme folder
     bg, mo, cl = made[DEFAULT_STYLE]
-    bg.save(os.path.join(THEME_TEX, "Widgets.ButtonBGAtlas.png"))
-    mo.save(os.path.join(THEME_TEX, "Widgets.ButtonBGAtlasMouseover.png"))
-    cl.save(os.path.join(THEME_TEX, "Widgets.ButtonBGAtlasClick.png"))
+    _tw.save(bg, os.path.join(THEME_TEX, "Widgets.ButtonBGAtlas.png"))
+    _tw.save(mo, os.path.join(THEME_TEX, "Widgets.ButtonBGAtlasMouseover.png"))
+    _tw.save(cl, os.path.join(THEME_TEX, "Widgets.ButtonBGAtlasClick.png"))
 
     # Command.BGTex — recessed gunmetal sub-panel with a vector-line bracket
     # inset (75x75, opaque). Owner pivot 2026-09-05: matches D_helm, not rust.
@@ -270,7 +276,7 @@ def main():
     cmd = metal_plate(75, GUNMETAL, 8, rng)
     bevel(cmd, (18, 19, 22), (150, 158, 153), depth=14, invert=True, strength=1.0)  # recessed
     vector_inset(cmd, VECTOR_WHITE, inset=9, accent=BRASS_HI, accent_corners=2)
-    cmd.save(os.path.join(THEME_TEX, "Command.BGTex.png"))
+    _tw.save(cmd, os.path.join(THEME_TEX, "Command.BGTex.png"))
 
     # LoaderBar / TextBar — 10x10 brass tint swatches (RGBA), what RimThemes stretches
     for fn_name, col in (("LoaderBar.png", BRASS), ("TextBar.png", BRASS_HI)):
@@ -278,7 +284,7 @@ def main():
         d = ImageDraw.Draw(bar)
         d.line([(0, 0), (9, 0)], fill=BRASS_HI + (255,))     # top sheen
         d.line([(0, 9), (9, 9)], fill=(120, 80, 34, 255))    # bottom shade
-        bar.save(os.path.join(THEME_LOADER, fn_name))
+        _tw.save(bar, os.path.join(THEME_LOADER, fn_name))
 
     # Misc/Icon — 96x96 theme picker icon: gunmetal plate, amber ring, LED
     icon = metal_plate(96, GUNMETAL, 10, random.Random(3))
@@ -287,7 +293,7 @@ def main():
     di.ellipse([20, 20, 76, 76], outline=BRASS_HI + (255,), width=4)
     di.ellipse([30, 30, 66, 66], outline=VECTOR_WHITE + (200,), width=2)
     di.ellipse([43, 43, 53, 53], fill=LED_RED + (255,))       # LED
-    icon.save(os.path.join(THEME_MISC, "Icon.png"))
+    _tw.save(icon, os.path.join(THEME_MISC, "Icon.png"))
 
     contact_sheet(made)
     print("ships default style:", DEFAULT_STYLE)

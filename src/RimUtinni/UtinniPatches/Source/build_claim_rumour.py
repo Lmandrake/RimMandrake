@@ -25,6 +25,12 @@ import sys
 import tempfile
 
 from PIL import Image
+# ART_VERSION_WRANGLING_1: texture PNGs are written only through the art ledger (artwrite.py).
+import atexit as _atexit, pathlib as _pathlib, sys as _sys  # noqa: E401
+_sys.path.insert(0, next(str(_p / 'RimMandrake' / 'Utils' / 'art') for _p in _pathlib.Path(__file__).resolve().parents if _p.name == 'src'))
+from artwrite import TextureWriter as _TextureWriter  # noqa: E402
+_tw = _TextureWriter(__file__)
+_atexit.register(_tw.report)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MOD = os.path.dirname(HERE)
@@ -88,7 +94,7 @@ def main() -> None:
                          (MARGIN, MARGIN))
 
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    icon.save(OUT)
+    _tw.save(icon, OUT)
     a = icon.getchannel("A")
     print(f"wrote {os.path.normpath(OUT)}  {icon.size}  bbox {a.getbbox()}  "
           f"alpha max {max(a.getdata())}  corners "
