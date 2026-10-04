@@ -273,3 +273,105 @@ def pair_defs_field_values(t):
                 raise ExpectationFailed(
                     "RM_AlliancePairDef field mismatch: %s" % "; ".join(bad))
         t.screenshot()
+
+
+# ------------------------------------------------- cross-references resolved by NAME (NORTHSTAR_PARTIAL_GAPS_FILL_1)
+# The engine resolves three things by string at RUNTIME, silently: payloadIncidentDefName
+# (AftermathRuleRunner: GetNamedSilentFail -> "not found - skipping"), godTie (Ninefold's subscriber parses it to its
+# God enum; an unknown name is a warning nobody reads) and each alliance pair's a/b FactionDef names. A typo loads
+# clean and simply never fires. This checks them offline against the God enum in Ninefold/Source/God.cs and a def
+# index over src/ plus the installed game's Data (Core + DLC); a vanilla name with no reachable Data is UNMEASURED.
+import os as _os
+import re as _re
+import xml.etree.ElementTree as _ET
+
+_HERE = _os.path.dirname(_os.path.abspath(__file__))
+_SRC = _os.path.abspath(_os.path.join(_HERE, "..", ".."))
+_GOD_CS = _os.path.join(_SRC, "RimMandrake", "Ninefold", "Source", "God.cs")
+_GAME_DATA = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
+
+
+def god_names(god_cs=_GOD_CS):
+    body = _re.search(r"enum\s+God\s*\{(.*?)\}", open(god_cs, encoding="utf-8").read(), _re.S)
+    return set(_re.findall(r"^\s*(\w+)\s*,?", _re.sub(r"//[^\n]*", "", body.group(1)), _re.M)) if body else set()
+
+
+def def_index(roots, types=("IncidentDef", "FactionDef")):
+    idx = {}
+    for root in roots:
+        for dirpath, _dirs, files in _os.walk(root):
+            if "/Languages" in dirpath or "/About" in dirpath or "/Patches" in dirpath:
+                continue
+            for fn in files:
+                if not fn.endswith(".xml"):
+                    continue
+                try:
+                    top = _ET.parse(_os.path.join(dirpath, fn)).getroot()
+                except _ET.ParseError:
+                    continue
+                for el in top:
+                    if isinstance(el.tag, str) and el.tag in types:
+                        n = (el.findtext("defName") or "").strip()
+                        if n:
+                            idx.setdefault(el.tag, set()).add(n)
+    return idx
+
+
+def cross_ref_problems(defs_dir=None, gods=None, index=None, game_ok=True):
+    """(bad, unmeasured): every godTie / payloadIncidentDefName / pair a,b that does not resolve."""
+    defs_dir = defs_dir or _os.path.join(_HERE, "Defs")
+    bad, unmeasured = [], []
+    rules, pairs = [], []
+    for fn in sorted(_os.listdir(defs_dir)):
+        if fn.endswith(".xml"):
+            for el in _ET.parse(_os.path.join(defs_dir, fn)).getroot():
+                if isinstance(el.tag, str) and el.tag.endswith("RM_AftermathRuleDef"):
+                    rules.append(el)
+                elif isinstance(el.tag, str) and el.tag.endswith("RM_AlliancePairDef"):
+                    pairs.append(el)
+
+    def need(kind, name, owner):
+        if name in index.get(kind, set()):
+            return
+        ours = name.startswith(("RM_", "RSW_", "RUT_"))      # ours lives in src/, which is always indexed
+        (bad if (game_ok or ours) else unmeasured).append("%s: %s %r resolves to no def" % (owner, kind, name))
+
+    for el in rules:
+        n = el.findtext("defName")
+        god = (el.findtext("godTie") or "").strip()
+        if god and god not in gods:
+            bad.append("%s: godTie %r is not a Ninefold god %s" % (n, god, sorted(gods)))
+        inc = (el.findtext("payloadIncidentDefName") or "").strip()
+        if inc:
+            need("IncidentDef", inc, n)
+    for el in pairs:
+        n = el.findtext("defName")
+        for side in ("a", "b"):
+            f = (el.findtext(side) or "").strip()
+            if f:
+                need("FactionDef", f, n)
+    return bad, unmeasured, len(rules), len(pairs)
+
+
+@suite.chain("cross_refs_resolve_by_name")
+def cross_refs_resolve_by_name(t):
+    """Offline, no bridge: every name the engine resolves at runtime by string resolves to a real target."""
+    with t.component("gods_incidents_and_factions_resolve", beyond_toggle=True):
+        if t.session is None:            # the declaration probe: do not pay the ~8 s def index there
+            return
+        gods = god_names()
+        game_ok = _os.path.isdir(_GAME_DATA)
+        roots = [_SRC] + ([_GAME_DATA] if game_ok else [])
+        index = def_index(roots)
+        if "RaidEnemy" not in index.get("IncidentDef", set()) and game_ok:
+            raise ExpectationFailed("SANITY: the def index cannot see Core's IncidentDef RaidEnemy; it is blind")
+        if len(gods) != 9:
+            raise ExpectationFailed("SANITY: parsed %d Ninefold gods from %s, expected 9" % (len(gods), _GOD_CS))
+        bad, unmeasured, nr, np_ = cross_ref_problems(gods=gods, index=index, game_ok=game_ok)
+        if nr == 0 or np_ == 0:
+            raise ExpectationFailed("SANITY: parsed %d rule defs and %d pair defs; the parse is blind" % (nr, np_))
+        if bad:
+            raise ExpectationFailed("%d unresolvable runtime name(s): %s" % (len(bad), "; ".join(bad)))
+        if unmeasured:          # suite.py records UNMEASURED for a component entered/exited with upstream_failed set
+            t.upstream_failed = True
+            t.upstream_reason = "no game Data reachable to resolve: %s" % "; ".join(unmeasured)
