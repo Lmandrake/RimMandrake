@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RM_FlameStatues.xml        FlameStatues (mandrake.rm.flamestatues) — FLAME_STATUES_MOD_BUILD_1
+
+  design/RimMandrake/statue_mods_spec.md §3 step 4: three fuelled sculptures, each burning ONE vanilla
+  CompProperties_FireOverlay flame (Graphic_Flicker reads only the first overlay comp, §2.2, so a flame SET
+  waits for RM_CompFlamePoints, step 5). Chemfuel only, no wood (ruling R4). Woody stuff dropped (§2.1).
+  Statbases/footprints copy vanilla SculptureSmall / SculptureLarge / SculptureGrand (Buildings_Art.xml).
+
+  PROVISIONAL: fuel capacity, glow radius, fire size and the crown offsets are placeholders until the
+  step-6 art lands and the vent positions are measured from the PNGs (§2.6). Consumption is the spec's
+  (Ember 0.12/day, Dancer 0.28, Colossus 0.5). The placeholder sprite is the retired RM_FlameStatuary's.
+-->
+<Defs>
+
+  <ThingDef Name="RM_FlameStatueBase" ParentName="SculptureBase" Abstract="True">
+    <tickerType>Normal</tickerType>   <!-- CompRefuelable burns fuel in CompTick -->
+    <graphicData>
+      <texPath>Things/Building/Art/RM_FlameStatues/RM_FlameStatue_Placeholder</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <stuffCategories>
+      <li>Stony</li>
+      <li>Metallic</li>
+    </stuffCategories>
+    <recipeMaker>
+      <useIngredientsForColor>true</useIngredientsForColor>
+    </recipeMaker>
+    <designationCategory>Furniture</designationCategory>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_FlameStatueBase">
+    <defName>RM_FlameStatue_Ember</defName>
+    <label>ember idol</label>
+    <description>A squat brazier-figure carved around a single crown vent. Fed with chemfuel, a flame stands on its head and lights the room; left dry, it is only a sculpture.</description>
+    <graphicData>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+    <fillPercent>0.35</fillPercent>
+    <costStuffCount>50</costStuffCount>
+    <statBases>
+      <MaxHitPoints>90</MaxHitPoints>
+      <Mass>3</Mass>
+      <Beauty>50</Beauty>
+      <WorkToMake>18000</WorkToMake>
+      <StyleDominance>10</StyleDominance>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0.12</fuelConsumptionRate>
+        <fuelCapacity>5</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>5</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.35</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <fuelLabel>chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <outOfFuelMessage>Ember idol out of fuel</outOfFuelMessage>
+        <fuelFilter><thingDefs><li>Chemfuel</li></thingDefs></fuelFilter>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>4</glowRadius>
+        <glowColor>(255,120,40,0)</glowColor>
+        <colorPickerEnabled>false</colorPickerEnabled>
+      </li>
+      <li Class="CompProperties_FireOverlay">
+        <fireSize>0.35</fireSize>
+        <offset>(0,0,0.5)</offset>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_FlameStatueBase">
+    <defName>RM_FlameStatue_Dancer</defName>
+    <label>flame dancer</label>
+    <description>A lithe abstract figure with arms raised and palms cupped upward as vents, a third vent in its crown. Fed with chemfuel it burns; until the flame-point work lands only the crown is lit.</description>
+    <graphicData>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <fillPercent>0.5</fillPercent>
+    <costStuffCount>100</costStuffCount>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <Mass>7</Mass>
+      <Beauty>100</Beauty>
+      <WorkToMake>30000</WorkToMake>
+      <StyleDominance>20</StyleDominance>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0.28</fuelConsumptionRate>
+        <fuelCapacity>10</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>10</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.35</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <fuelLabel>chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <outOfFuelMessage>Flame dancer out of fuel</outOfFuelMessage>
+        <fuelFilter><thingDefs><li>Chemfuel</li></thingDefs></fuelFilter>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>6</glowRadius>
+        <glowColor>(255,120,40,0)</glowColor>
+        <colorPickerEnabled>false</colorPickerEnabled>
+      </li>
+      <li Class="CompProperties_FireOverlay">
+        <fireSize>0.55</fireSize>
+        <offset>(0,0,1.15)</offset>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_FlameStatueBase">
+    <defName>RM_FlameStatue_Colossus</defName>
+    <label>pyre colossus</label>
+    <description>A seated giant on a carved fire-pit ring, palms up, with vents in its crown and shoulders. Fed with chemfuel it burns and lights a wide room; until the flame-point work lands only the crown is lit.</description>
+    <size>(2,2)</size>
+    <graphicData>
+      <drawSize>(4,4)</drawSize>
+    </graphicData>
+    <fillPercent>0.5</fillPercent>
+    <costStuffCount>400</costStuffCount>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Mass>28</Mass>
+      <Beauty>400</Beauty>
+      <WorkToMake>105000</WorkToMake>
+      <StyleDominance>40</StyleDominance>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0.5</fuelConsumptionRate>
+        <fuelCapacity>20</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <targetFuelLevelConfigurable>true</targetFuelLevelConfigurable>
+        <initialConfigurableTargetFuelLevel>20</initialConfigurableTargetFuelLevel>
+        <autoRefuelPercent>0.35</autoRefuelPercent>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <drawOutOfFuelOverlay>true</drawOutOfFuelOverlay>
+        <fuelLabel>chemfuel</fuelLabel>
+        <fuelGizmoLabel>Chemfuel</fuelGizmoLabel>
+        <outOfFuelMessage>Pyre colossus out of fuel</outOfFuelMessage>
+        <fuelFilter><thingDefs><li>Chemfuel</li></thingDefs></fuelFilter>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(255,120,40,0)</glowColor>
+        <colorPickerEnabled>false</colorPickerEnabled>
+      </li>
+      <li Class="CompProperties_FireOverlay">
+        <fireSize>0.8</fireSize>
+        <offset>(0,0,1.6)</offset>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
