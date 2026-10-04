@@ -194,6 +194,46 @@ namespace RimMandrake.RustCathedral.Hum
 			return Mathf.Clamp(rawBand, 0, ceiling);
 		}
 
+		// ---- proof hooks (RM_RustCathedralHumProof, RUSTCATHEDRAL_COVERAGE_GAPS_1) ----
+
+		public float ProofIrritation => irritation;
+
+		public int ProofLayers => activeSustainers.Count;
+
+		/// <summary>Binds this map to an attitude def regardless of its biome (a quicktest map has none).</summary>
+		public void ProofUseDef(RM_BiomeAttitudeDef def)
+		{
+			cachedDef = def;
+			defLookupDone = true;
+		}
+
+		/// <summary>Sets irritation, computes the band through the real ComputeBand (hysteresis against the
+		/// current band included) and syncs the hum layers; returns the raw band.</summary>
+		public int ProofBandAt(float irr)
+		{
+			RM_BiomeAttitudeDef def = GetDef();
+			if (def == null)
+			{
+				return -1;
+			}
+			irritation = Mathf.Max(0f, irr);
+			currentBand = ComputeBand(def);
+			displayBand = ClampToStage(def, currentBand);
+			SyncSustainers(def, displayBand);
+			return currentBand;
+		}
+
+		/// <summary>Undoes ProofUseDef/ProofBandAt: silence, irritation 0, band unset, biome lookup redone.</summary>
+		public void ProofReset()
+		{
+			EndAllSustainers();
+			irritation = 0f;
+			currentBand = -1;
+			displayBand = -1;
+			cachedDef = null;
+			defLookupDone = false;
+		}
+
 		// ---- internals ----
 
 		private RM_BiomeAttitudeDef GetDef()
