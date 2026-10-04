@@ -45,6 +45,12 @@ sys.path.insert(0, str(HERE.parent))
 import game_paths as GP  # noqa: E402
 from art_zoom_sim import BG as TERRAIN  # noqa: E402   (Ash'karr desert brown, the zoom-sim's own)
 
+
+def set_terrain(rgb):
+    """Per-biome ground colour for the panel backdrop (module global read at render time)."""
+    global TERRAIN
+    TERRAIN = tuple(int(c) for c in rgb)
+
 DB = Path(GP.DUMP_ROOT) / "defs.sqlite"
 VANILLA_TEX = Path("/mnt/d/Luke/dev/RimMandrake/observed/inventory/bundle_textures/ludeon.rimworld.core")
 TIERS = [(96, "zoomed in"), (32, "normal play"), (18, "zoomed out")]
