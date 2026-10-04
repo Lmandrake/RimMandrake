@@ -65,5 +65,11 @@ None pulled. No donor sprite available (donor art is AssetBundle-only). Ships wi
 until artpipe jobs `rsw_blurrg_v1_*` finish; native drop-in folder
 `D:\Luke\dev\Rimworld\src\RimStarWars\SWBestiary\Textures\Things\Pawn\Animal\RSW_Blurrg\`.
 
+### Added 2026-10-04 by canon_gapfill.py (not yet viewed)
+- `wookieepedia_canon_1.webp` — CANON page `Blurrg`; wiki caption: infobox image. File: `Blurrg-TSWB.png` — https://static.wikia.nocookie.net/starwars/images/f/f7/Blurrg-TSWB.png/revision/latest?cb=20241114043748
+- `wookieepedia_legends_1.webp` — LEGENDS page (non-canon continuity) `Blurrg/Legends`; wiki caption: infobox image. File: `Blurrg TCW.png` — https://static.wikia.nocookie.net/starwars/images/3/37/Blurrg_TCW.png/revision/latest?cb=20220907025059
+- `wookieepedia_canon_2.webp` — CANON page `Blurrg`; wiki caption: A sleeping blurrg in the Wilds.. File: `MossyBlurrgSleeping-SmugglersGambit.png` — https://static.wikia.nocookie.net/starwars/images/7/76/MossyBlurrgSleeping-SmugglersGambit.png/revision/latest?cb=20260826040115
+- `wookieepedia_legends_2.webp` — LEGENDS page (non-canon continuity) `Blurrg/Legends`; wiki caption: A blurrg, with young, next to an Ewok for size comparison. File: `Blurrg2-woswfg.jpg` — https://static.wikia.nocookie.net/starwars/images/6/69/Blurrg2-woswfg.jpg/revision/latest?cb=20070112142710
+
 ## ruling
 (empty — owner has not reviewed this entry; canon stands unopposed.)
