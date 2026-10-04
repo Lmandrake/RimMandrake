@@ -22,6 +22,7 @@ run costs minutes. A texture swapped for one of identical byte length would not 
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -112,28 +113,47 @@ def new_identity(job_id, run_id):
 
 def mod_fingerprint(mod, dm=None, mods_dir=None):
     """Fingerprint of one mod's repo-vs-deployed state NOW. `dm` is the deploy module (injectable for tests).
-    Never raises: a failure is state `unknown` with the reason."""
+    A biome mod FOLDED into the composed `RimMandrake.Biomes` mod has no standalone folder, so it is fingerprinted
+    as the composed build vs the deployed composed folder (`fp["composed"]` names it; src_dirty is read on the
+    mod's own source folder). Never raises: a failure is state `unknown` with the reason."""
     fp = {"mod": mod, "at": time.strftime("%Y-%m-%dT%H:%M:%S"), "state": "unknown", "reason": None}
+    cleanup = None
     try:
         if dm is None:
             import deploy_custom_mods as dm
         dirs = dm.mod_dirs()
         src = dirs.get(mod)
+        holds = dm.load_holds()
+        hname, dname, dirty_dir, own = mod, mod, None, None
         if src is None:
-            fp["reason"] = "no source dir with About/About.xml for %s" % mod
-            return fp
-        dst = os.path.join(mods_dir or dm.LOCAL_MODS, mod)
-        fp["src_dir"] = os.path.relpath(src, dm.ROOT).replace(os.sep, "/")
+            fold = dm.folded() if hasattr(dm, "folded") else {}
+            if mod not in fold:
+                fp["reason"] = "no source dir with About/About.xml for %s" % mod
+                return fp
+            import biomes_compose
+            cname, csrc, extra = biomes_compose.build(dm.SRC_ROOT, dm.tree, holds, log=lambda *a, **k: None)
+            cleanup = os.path.dirname(csrc)
+            src, holds, hname, dname = csrc, holds + extra, cname, cname
+            dirty_dir = os.path.join(dm.SRC_ROOT, biomes_compose.TIER_DIR, mod)
+            fp["composed"] = cname
+            key = fold[mod][1]       # judge only THIS mod's subtree: a sibling biome's drift is not this mod's
+            own = tuple((p + "/") for p in ("Biomes/%s" % key, "Biomes/_Kits/%s" % key))
+        dst = os.path.join(mods_dir or dm.LOCAL_MODS, dname)
+        fp["src_dir"] = os.path.relpath(dirty_dir or src, dm.ROOT).replace(os.sep, "/")
         if not os.path.isdir(dst):
             fp["state"], fp["reason"] = "not-deployed", dst
             return fp
         s_all, d_all = dm.tree(src), dm.tree(dst)
-        holds = dm.load_holds()
-        _, held = dm.split_held(holds, mod, sorted(s_all))
+        if own:
+            s_all = {r for r in s_all if r.replace(os.sep, "/").startswith(own)}
+            d_all = {r for r in d_all if r.replace(os.sep, "/").startswith(own)}
+        _, held = dm.split_held(holds, hname, sorted(s_all))
         held_set = {r for r, _h in held}
         s_rels = s_all - held_set
         d_rels = d_all - held_set
         new, changed, gone, same = dm.compare(src, dst)
+        if own:
+            new, changed, gone = [[r for r in l if r.replace(os.sep, "/").startswith(own)] for l in (new, changed, gone)]
         new = [r for r in new if r not in held_set]
         changed = [r for r in changed if r not in held_set]
         gone = [r for r in gone if r not in held_set]
@@ -148,9 +168,12 @@ def mod_fingerprint(mod, dm=None, mods_dir=None):
             dlls.append({"dll": rel.replace(os.sep, "/"), "sha": _sha(os.path.join(dst, rel)),
                          "srchash": open(side, encoding="utf-8").read().strip()[:64] if os.path.isfile(side) else None})
         fp["dlls"] = dlls
-        fp["src_dirty"] = src_dirty(src, dm.ROOT)
+        fp["src_dirty"] = src_dirty(dirty_dir or src, dm.ROOT)
     except Exception as e:                                        # noqa: BLE001
         fp["state"], fp["reason"] = "unknown", "%s: %s" % (type(e).__name__, str(e)[:200])
+    finally:
+        if cleanup:
+            shutil.rmtree(cleanup, ignore_errors=True)
     return fp
 
 
